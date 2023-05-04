@@ -39,7 +39,7 @@ class ADOUtility:
                     change = {
                                 "changeType": "add",
                                 "item": {
-                                    "path": file_path.split('\s')[-1].replace('\\','/')
+                                    "path": file_path.split("\1\s")[-1].replace('\\','/')
                                 },
                                 "newContent": {
                                     "content":  base64.b64encode(content).decode(),
@@ -47,6 +47,7 @@ class ADOUtility:
                                 }
                             }
                     changes.append(change)
+                print(change)
         if changes:
             repository = git_client.get_repository(repo_details['repo_id'])
             branch_name = "automated-dev"
