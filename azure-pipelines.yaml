@@ -46,5 +46,5 @@ stages:
         displayName: BackEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -f "./react-code-gen"'
+          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
