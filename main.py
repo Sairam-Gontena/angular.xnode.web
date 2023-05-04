@@ -106,6 +106,8 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--pat", help = "ADO Personal Access Token")
     parser.add_argument("-f", "--fileloc",help = "Directory Path to Push to Repos")
     args = parser.parse_args()
+    print("############### File Location #####################")
+    print(args.fileloc)
     ado = ADOUtility(org_name=args.orgname,pat=args.pat,
                      proj_name=args.projname,repo_name=args.reponame)
     conn = ado.ado_auth()
@@ -128,6 +130,7 @@ if __name__ == "__main__":
                     "ssh_url": repo.ssh_url
                 }
     res = ado.push_code(git_client=git_client,loc=args.fileloc)
+    print(res)
 
 
 # py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "Test" -l "D:\My Files\Python\Product_dev\LogExporter\loggerapi"
