@@ -30,11 +30,12 @@ stages:
         displayName: FrontEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
+          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - job: BackEnd
       displayName: Push BackEnd Artifacts
+      dependsOn: FrontEnd
       steps:  
       - task: UsePythonVersion@0
         displayName: Install Python
@@ -46,5 +47,5 @@ stages:
         displayName: BackEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
+          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
