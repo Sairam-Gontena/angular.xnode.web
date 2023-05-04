@@ -27,10 +27,10 @@ stages:
           addToPath: true
           architecture: 'x64'
       - task: Bash@3
-        displayName: Install Required Dependencies
+        displayName: FrontEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-frontend" -l "../code-gen-react-admin"'
+          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-frontend" -f "../code-gen-react-admin"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - job: BackEnd
@@ -43,7 +43,7 @@ stages:
           addToPath: true
           architecture: 'x64'
       - task: Bash@3
-        displayName: Install Required Dependencies
+        displayName: BackEnd Repository Publish
         inputs:
           targetType: 'inline'
           script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -l "../react-code-gen"'
