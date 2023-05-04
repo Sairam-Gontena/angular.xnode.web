@@ -39,7 +39,7 @@ class ADOUtility:
                     change = {
                                 "changeType": "add",
                                 "item": {
-                                    "path": file_path.split("\1\s")[-1].replace('\\','/')
+                                    "path": file_path.split("/s")[-1].replace('\\','/')
                                 },
                                 "newContent": {
                                     "content":  base64.b64encode(content).decode(),
@@ -73,7 +73,7 @@ class ADOUtility:
                         "commited_on":response_data['commits'][0]['committer']['date'],
                         "commit_url":response_data['commits'][0]['url']
                     }
-                return push_details
+                    return push_details
             except Exception:
                 branch_name = "automated-dev-temp"
                 body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
@@ -91,7 +91,7 @@ class ADOUtility:
                         "commit_url":response_data['commits'][0]['url']
                     }
                     logging.warning(f"create a new temporary branch {branch_name}. Raise a Pull Request to Merge and Delete the branch after Merge")
-                return push_details
+                    return push_details
         else:
             return "No Changes to Push"
 
