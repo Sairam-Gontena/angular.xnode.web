@@ -62,7 +62,8 @@ class ADOUtility:
                 push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
                 response = requests.post(push_url, headers=headers, json=body)
                 response_data = response.json()
-                # if response.status_code == 200 or response.status_code == 201:
+                print(response_data)
+                print(response.status_code,response.text)
                 push_details ={
                     "commit_branch": branch_name,
                     "commit_id":response_data['commits'][0]['commitId'],
@@ -77,6 +78,8 @@ class ADOUtility:
                 push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
                 response = requests.post(push_url, headers=headers, json=body)
                 response_data = response.json()
+                print(response_data)
+                print(response.status_code,response.text)
                 # if response.status_code == 200 or response.status_code == 201:
                 push_details ={
                     "commit_branch": branch_name,
