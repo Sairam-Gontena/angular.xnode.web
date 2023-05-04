@@ -57,11 +57,23 @@ class ADOUtility:
             headers = {"Authorization": f"Basic {base64.b64encode(b'PAT:' + self.pat.encode()).decode()}"}
             response = requests.get(branch_url, headers=headers)
             response_data = response.json()
-            commit = {"comment": commit_message, "changes": changes}
-            body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
+            if len(response_data['value']) == 0:
+                branch_name = "automated-dev"
+                commit_message = "initial commit"
+                commit = {"comment": commit_message, "changes": changes}
+                body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
+
+            else:
+                branch_name = "automated-dev-temp"
+                commit_message = "updated code repo"
+                commit = {"comment": commit_message, "changes": changes}
+                body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": response_data['value'][0]['objectId']}], "commits": [commit]}
+            # commit = {"comment": commit_message, "changes": changes}
+            # body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
             push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
             response = requests.post(push_url, headers=headers, json=body)
             response_data = response.json()
+            print(response_data)
             if response.status_code == 200 or response.status_code == 201:
                 push_details ={
                     "commit_branch": branch_name,
@@ -71,26 +83,26 @@ class ADOUtility:
                     "commit_url":response_data['commits'][0]['url']
                 }
                 return push_details
-            else:
-                time.sleep(3)
-                branch_name = "automated-dev-temp"
-                logging.info(f"creating a new branch with name {branch_name}.")
-                body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
-                push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
-                response = requests.post(push_url, headers=headers, json=body)
-                response_data = response.json()
-                print(response_data)
-                print(response.status_code,response.text)
-                if response.status_code == 200 or response.status_code == 201:
-                    push_details ={
-                        "commit_branch": branch_name,
-                        "commit_id":response_data['commits'][0]['commitId'],
-                        "commited_by":response_data['commits'][0]['committer']['email'],
-                        "commited_on":response_data['commits'][0]['committer']['date'],
-                        "commit_url":response_data['commits'][0]['url']
-                    }
-                    logging.warning(f"created a new temporary branch {branch_name}. Raise a Pull Request to Merge and Delete the branch after Merge")
-                    return push_details
+            # else:
+            #     time.sleep(3)
+            #     branch_name = "automated-dev-temp"
+            #     logging.info(f"creating a new branch with name {branch_name}.")
+            #     body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
+            #     push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
+            #     response = requests.post(push_url, headers=headers, json=body)
+            #     response_data = response.json()
+            #     print(response_data)
+            #     print(response.status_code,response.text)
+            #     if response.status_code == 200 or response.status_code == 201:
+            #         push_details ={
+            #             "commit_branch": branch_name,
+            #             "commit_id":response_data['commits'][0]['commitId'],
+            #             "commited_by":response_data['commits'][0]['committer']['email'],
+            #             "commited_on":response_data['commits'][0]['committer']['date'],
+            #             "commit_url":response_data['commits'][0]['url']
+            #         }
+            #         logging.warning(f"created a new temporary branch {branch_name}. Raise a Pull Request to Merge and Delete the branch after Merge")
+            #         return push_details
         else:
             return "No Changes to Push"
 
