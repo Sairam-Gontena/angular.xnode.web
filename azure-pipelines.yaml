@@ -30,7 +30,7 @@ stages:
         displayName: Install Required Dependencies
         inputs:
           targetType: 'inline'
-          script: 'py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-frontend" -l "/code-gen-react-admin"'
+          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-frontend" -l "../code-gen-react-admin"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - job: BackEnd
@@ -46,5 +46,5 @@ stages:
         displayName: Install Required Dependencies
         inputs:
           targetType: 'inline'
-          script: 'py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -l "/react-code-gen"'
+          script: 'python3 main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -l "../react-code-gen"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
