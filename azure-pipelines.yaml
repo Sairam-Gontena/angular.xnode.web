@@ -30,9 +30,8 @@ stages:
         displayName: Install Required Dependencies
         inputs:
           targetType: 'inline'
-          script: |
-            pip install -r requirements.txt
-            pip install pylint 
+          script: 'py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-frontend" -l "/code-gen-react-admin"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - job: BackEnd
       displayName: Push BackEnd Artifacts
@@ -47,6 +46,5 @@ stages:
         displayName: Install Required Dependencies
         inputs:
           targetType: 'inline'
-          script: |
-            pip install -r requirements.txt
-            pip install pylint 
+          script: 'py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "xnode-backend" -l "/react-code-gen"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
