@@ -1,0 +1,12 @@
+.override-accordion {
+    margin: 16px;
+}
+
+.override-accordion>.p-accordion-tab>.p-accordion-header>.p-accordion-header-link {
+    height: 8px;
+    color: black;
+}
+
+.override-accordion>.p-accordion-tab>.p-toggleable-content>.p-accordion-content {
+    padding: 8px;
+}

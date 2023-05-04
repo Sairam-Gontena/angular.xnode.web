@@ -1,0 +1,34 @@
+.override-menu.p-menubar {
+    background-color: #fff;
+    color: black;
+    height: 4.375rem;
+}
+
+.override-menu.p-menubar>.p-menubar-root-list>.p-menuitem>.p-menuitem-link {
+    padding: 8px;
+}
+
+.user-photo {
+    width: 2.8rem;
+}
+
+.user-name {
+    font-size: 100%;
+    font-weight: 400;
+    color: #858796;
+}
+
+.override-listbox {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    z-index: 99;
+}
+
+.override-listbox>.p-listbox-list-wrapper>.p-listbox-list>.p-listbox-item {
+    color: black;
+}
+
+.override-listbox>.p-listbox-list-wrapper>.p-listbox-list>.p-listbox-item.p-highlight {
+    color: #3c89d6;
+}

@@ -1,0 +1,9 @@
+.line-chart-card.p-card {
+    /* width: 100%; */
+    height: 100%;
+    border-left: 4px solid #3c89d6;
+}
+
+.line-chart-card.p-card>.p-card-body>.p-card-content>.p-chart {
+    height: 200px;
+}

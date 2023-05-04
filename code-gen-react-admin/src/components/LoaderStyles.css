@@ -1,0 +1,12 @@
+.override-spinner.p-progress-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    z-index: 999;
+}
+
+.override-spinner.p-progress-spinner>.p-progress-spinner-svg>.p-progress-spinner-circle {
+    animation: p-progress-spinner-dash 1.5s ease-in-out infinite;
+    stroke: #0057e7;
+}

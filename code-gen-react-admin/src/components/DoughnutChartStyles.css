@@ -1,0 +1,16 @@
+.doughnut-chart-card.p-card {
+    /* width: 100%; */
+    height: 100%;
+    border-left: 4px solid #3c89d6;
+}
+
+.doughnut-chart-card.p-card>.p-card-body>.p-card-content>.p-chart {
+    /* width: 400px; */
+    height: 200px;
+}
+
+.doughnut-chart-card.p-card>.p-card-body>.p-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

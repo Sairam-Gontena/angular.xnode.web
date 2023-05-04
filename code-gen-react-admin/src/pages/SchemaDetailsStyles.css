@@ -1,0 +1,60 @@
+.override-upload-btns>.p-fileupload-buttonbar>.p-button,
+.override-upload-btns>.p-fileupload-buttonbar>.p-button:hover {
+    height: 36px;
+    color: #ffffff;
+    background: #3c89d6;
+
+}
+
+.override-upload-btns>.p-fileupload-content>.p-fileupload-files>.p-fileupload-row>div>.p-button.p-button-icon-only {
+    color: #ffffff;
+    background: #3c89d6;
+}
+
+.override-datatable>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead>tr>th>.p-column-filter.p-fluid.p-column-filter-row>.p-column-filter-menu-button.p-link {
+    color: #fff;
+}
+
+.override-datatable>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead>tr>th>.p-column-header-content>.p-column-filter.p-column-filter-menu>.p-column-filter-menu-button.p-link {
+    color: #fff;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.override-datatable>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead>tr>th>.p-column-header-content>.p-column-filter.p-column-filter-menu>.p-column-filter-menu-button.p-link:hover {
+    color: #3c89d6;
+    font-size: 12px;
+}
+
+.p-column-filter-overlay.p-component.p-fluid.p-column-filter-overlay-menu>.p-column-filter-operator,
+.p-column-filter-overlay.p-component.p-fluid.p-column-filter-overlay-menu>.p-column-filter-add-rule,
+.p-column-filter-overlay.p-component.p-fluid.p-column-filter-overlay-menu>.p-column-filter-buttonbar,
+.p-column-filter-overlay.p-component.p-fluid.p-column-filter-overlay-menu>.p-column-filter-constraints>.p-column-filter-constraint {
+    padding: 16px;
+}
+
+.p-column-filter-overlay.p-component.p-fluid.p-column-filter-overlay-menu>.p-column-filter-buttonbar>.p-button {
+    color: #ffffff;
+    background: #3c89d6;
+}
+
+.p-column-filter-overlay.p-component.p-fluid.p-column-filter-overlay-menu>.p-column-filter-buttonbar>.p-button.p-button-outlined {
+    color: #3c89d6;
+    background: #fff;
+}
+
+.override-datatable>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead>tr>th>.p-column-filter.p-fluid.p-column-filter-row>.p-column-filter-menu-button.p-link:hover {
+    color: #3c89d6;
+}
+
+.override-datatable>.p-datatable-wrapper>.p-datatable-table>.p-datatable-tbody>tr>td>.menu-icon>.p-button.p-button-icon-only {
+    color: #3c89d6;
+}
+
+.override-datatable>.p-datatable-wrapper>.p-datatable-table>.p-datatable-thead>tr>th {
+    padding: 10px;
+}
+
+.p-column-filter-menu-button .p-link {
+    color: #fff;
+}

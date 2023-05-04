@@ -1,0 +1,49 @@
+.stats-card.p-card {
+    min-width: 250px;
+    height: 100%;
+    border-left: 4px solid #3c89d6;
+}
+
+.stats-card.p-card>.p-card-body {
+    padding: 0;
+}
+
+.stats-title {
+    margin: 8px 0px;
+    font-size: 1.0rem;
+    color: #3c89d6;
+    font-weight: 700;
+    display: block;
+    width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stats-desc {
+    margin: 8px 0px;
+    font-size: 1.2rem;
+    color: #5a5c69;
+    font-weight: 600;
+}
+
+.app-table {
+    color: #3c89d6;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.override-progressbar.p-progressbar.p-progressbar-determinate {
+    height: 0.5rem;
+    width: 12vw;
+}
+
+.override-progressbar.p-progressbar.p-progressbar-determinate>.p-progressbar-value-animate {
+    background: #3c89d6;
+}
+
+.override-progressbar.p-progressbar.p-progressbar-determinate>.p-progressbar-label {
+    color: #211a1a;
+    display: none;
+}

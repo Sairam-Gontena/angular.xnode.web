@@ -1,0 +1,204 @@
+{
+    "entity1": {
+        "service_path": "EMP",
+        "page_title": "EMPLOYEE DETAILS",
+        "columns": [{
+                "label": "ID",
+                "name": "id",
+                "inputType": "auto",
+                "dataType": "string",
+                "canDisplay": false,
+                "canEdit": false,
+                "isRequired": true,
+                "canExport": false,
+                "canSort": true,
+                "canFilter": true,
+                "validations": []
+            },
+            {
+                "label": "Name",
+                "name": "name",
+                "inputType": "text",
+                "dataType": "string",
+                "validationType": "string",
+                "canDisplay": true,
+                "canEdit": true,
+                "isRequired": true,
+                "canExport": true,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [{
+                        "type": "required",
+                        "msg": "this field is required"
+                    },
+                    {
+                        "type": "min",
+                        "value": 5,
+                        "msg": "name cannot be less than 5 characters"
+                    },
+                    {
+                        "type": "max",
+                        "value": 10,
+                        "msg": "name cannot be more than 10 characters"
+                    }
+                ]
+            },
+            {
+                "label": "Date Of Birth",
+                "name": "dob",
+                "inputType": "date",
+                "dataType": "date",
+                "validationType": "date",
+                "canDisplay": true,
+                "canEdit": true,
+                "isRequired": true,
+                "canExport": true,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [{
+                    "type": "required",
+                    "params": ["Required"]
+                }]
+            },
+            {
+                "label": "Experience",
+                "name": "experience",
+                "inputType": "number",
+                "dataType": "number",
+                "validationType": "number",
+                "canDisplay": true,
+                "canEdit": true,
+                "isRequired": true,
+                "canExport": true,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [{
+                    "type": "required",
+                    "params": ["Required"]
+                }]
+            },
+            {
+                "label": "About",
+                "name": "about",
+                "inputType": "textarea",
+                "dataType": "string",
+                "validationType": "string",
+                "canDisplay": true,
+                "canEdit": true,
+                "isRequired": true,
+                "canExport": true,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [{
+                    "type": "required",
+                    "params": ["Required"]
+                }]
+            },
+            {
+                "label": "Address",
+                "name": "address",
+                "inputType": "textarea",
+                "dataType": "string",
+                "validationType": "string",
+                "canDisplay": true,
+                "canEdit": true,
+                "isRequired": true,
+                "canExport": true,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [{
+                    "type": "required",
+                    "params": ["Required"]
+                }]
+            },
+            {
+                "label": "Status",
+                "name": "status",
+                "inputType": "dropdown",
+                "dataType": "string",
+                "validationType": "string",
+                "canDisplay": true,
+                "canEdit": true,
+                "isRequired": true,
+                "canExport": true,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [{
+                    "type": "required",
+                    "msg": "this field is required"
+                }],
+                "options": [{
+                    "label": "Stat1",
+                    "value": "stat1"
+                }, {
+                    "label": "Stat2",
+                    "value": "stat2"
+                }, {
+                    "label": "Stat3",
+                    "value": "stat3"
+                }]
+            },
+            {
+                "label": "Created Time",
+                "name": "createdTime",
+                "inputType": "datetime",
+                "dataType": "date",
+                "canDisplay": true,
+                "canEdit": false,
+                "isRequired": false,
+                "canExport": false,
+                "canSort": true,
+                "canFilter": true,
+                "validations": []
+            },
+            {
+                "label": "Created User",
+                "name": "createdUser",
+                "inputType": "text",
+                "dataType": "string",
+                "canDisplay": true,
+                "canEdit": false,
+                "isRequired": false,
+                "canExport": false,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [],
+                "options": []
+            },
+            {
+                "label": "Modified Time",
+                "name": "modifiedTime",
+                "inputType": "datetime",
+                "dataType": "date",
+                "canDisplay": true,
+                "canEdit": false,
+                "isRequired": false,
+                "canExport": false,
+                "canSort": true,
+                "canFilter": true,
+                "validations": []
+            },
+            {
+                "label": "Modified User",
+                "name": "modifiedUser",
+                "inputType": "text",
+                "dataType": "string",
+                "canDisplay": true,
+                "canEdit": false,
+                "isRequired": false,
+                "canExport": false,
+                "canSort": true,
+                "canFilter": true,
+                "validations": [],
+                "options": []
+            }
+        ],
+        "display_order": [
+            "name",
+            "dob",
+            "experience",
+            "status",
+            "about"
+        ]
+    }
+}
