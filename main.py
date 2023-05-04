@@ -39,7 +39,7 @@ class ADOUtility:
                     change = {
                                 "changeType": "add",
                                 "item": {
-                                    "path": file_path.split('loggerapi')[-1].replace('\\','/')
+                                    "path": file_path.split('\s')[-1].replace('\\','/')
                                 },
                                 "newContent": {
                                     "content":  base64.b64encode(content).decode(),
