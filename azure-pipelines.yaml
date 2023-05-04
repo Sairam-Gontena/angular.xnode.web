@@ -1,0 +1,52 @@
+
+# parameters:
+#   - name: CheckFlag
+#     displayName: Uncheck the box to disable Consistency Check
+#     type: boolean
+#     default: true
+
+#   - name: ImageFlag
+#     displayName: Uncheck the box to disable ACR Image Scan
+#     type: boolean
+#     default: true
+
+stages:
+  - stage: PushArtifacts
+    displayName: Push Artifacts to Repository
+    pool:  
+      vmImage: 'ubuntu-latest'  
+    jobs:
+
+    - job: FrontEnd
+      displayName: Push FrontEnd Artifacts
+      steps:  
+      - task: UsePythonVersion@0
+        displayName: Install Python
+        inputs:
+          versionSpec: '3.8'
+          addToPath: true
+          architecture: 'x64'
+      - task: Bash@3
+        displayName: Install Required Dependencies
+        inputs:
+          targetType: 'inline'
+          script: |
+            pip install -r requirements.txt
+            pip install pylint 
+
+    - job: BackEnd
+      displayName: Push BackEnd Artifacts
+      steps:  
+      - task: UsePythonVersion@0
+        displayName: Install Python
+        inputs:
+          versionSpec: '3.8'
+          addToPath: true
+          architecture: 'x64'
+      - task: Bash@3
+        displayName: Install Required Dependencies
+        inputs:
+          targetType: 'inline'
+          script: |
+            pip install -r requirements.txt
+            pip install pylint 
