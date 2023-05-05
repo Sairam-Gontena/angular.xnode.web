@@ -2,17 +2,7 @@ trigger:
   - artifacts
 
 variables:
-  - group: xnode-vars
-# parameters:
-#   - name: CheckFlag
-#     displayName: Uncheck the box to disable Consistency Check
-#     type: boolean
-#     default: true
-
-#   - name: ImageFlag
-#     displayName: Uncheck the box to disable ACR Image Scan
-#     type: boolean
-#     default: true
+  - group: my-variable-group
 
 stages:
   - stage: PushArtifacts
@@ -24,32 +14,32 @@ stages:
     - job: FrontEnd
       displayName: Push FrontEnd Artifacts
       steps:  
+      - task: UsePythonVersion@0
+        displayName: Install Python
+        inputs:
+          versionSpec: '3.8'
+          addToPath: true
+          architecture: 'x64'
       - task: Bash@3
+        displayName: FrontEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: |
-            echo $(XNODE-ADO-ORGANIZATION)
-            echo $(XNODE-ADO-PROJECT)
-    #   - task: Bash@3
-    #     displayName: FrontEnd Repository Publish
-    #     inputs:
-    #       targetType: 'inline'
-    #       script: 'python3 main.py -o $XNODE-ADO-ORGANIZATION -p $XNODE-ADO-PROJECT -t $XNODE-ADO-PAT -r "frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
-    #       workingDirectory: '$(System.DefaultWorkingDirectory)'
+          script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-    # - job: BackEnd
-    #   displayName: Push BackEnd Artifacts
-    #   dependsOn: FrontEnd
-    #   steps:  
-    #   - task: UsePythonVersion@0
-    #     displayName: Install Python
-    #     inputs:
-    #       versionSpec: '3.8'
-    #       addToPath: true
-    #       architecture: 'x64'
-    #   - task: Bash@3
-    #     displayName: BackEnd Repository Publish
-    #     inputs:
-    #       targetType: 'inline'
-    #       script: 'python3 main.py -o $XNODE-ADO-ORGANIZATION -p $XNODE-ADO-PROJECT -t $XNODE-ADO-PAT -r "backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
-    #       workingDirectory: '$(System.DefaultWorkingDirectory)'
+    - job: BackEnd
+      displayName: Push BackEnd Artifacts
+      dependsOn: FrontEnd
+      steps:  
+      - task: UsePythonVersion@0
+        displayName: Install Python
+        inputs:
+          versionSpec: '3.8'
+          addToPath: true
+          architecture: 'x64'
+      - task: Bash@3
+        displayName: BackEnd Repository Publish
+        inputs:
+          targetType: 'inline'
+          script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
