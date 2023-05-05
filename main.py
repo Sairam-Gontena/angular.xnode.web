@@ -28,14 +28,35 @@ class ADOUtility:
         }
         return repo
 
-    def push_code(self,loc,git_client):
-        """Pusch Code"""
+    def get_repo(self,git_client):
+        """Get Repository Details"""
+        repositories = git_client.get_repositories(self.proj_name)
+        repo_names = []
+        for repo in repositories:
+            repo_names.append(repo.name)
+        if self.repo_name in repo_names:
+            logging.warning(f"Repository Already Available with give name {repo.name} in project {self.proj_name}")
+            repo_details={
+                "repo_name" : repo.name,
+                "repo_id" : repo.id,
+                "git_remote_url" : repo.remote_url,
+                "web_url": repo.url,
+                "ssh_url": repo.ssh_url
+            }
+        else:
+            logging.info(f"Creating New Repository {self.repo_name} in project {self.proj_name}")
+            repo_details = ado.create_repo(git_client=git_client)
+        repository = git_client.get_repository(repo_details['repo_id'])
+        return repository
+        
+    def push_code(self,loc,repository):
+        """Push Code"""
         changes = []
         for root, dirs, files in os.walk(loc):
             for file in files:
                 file_path = os.path.join(root, file)
-                with open(file_path, "rb") as fs:
-                    content = fs.read()
+                with open(file_path, "rb") as f:
+                    content = f.read()
                     change = {
                                 "changeType": "add",
                                 "item": {
@@ -47,64 +68,44 @@ class ADOUtility:
                                 }
                             }
                     changes.append(change)
-                print(change)
-        if changes:
-            repository = git_client.get_repository(repo_details['repo_id'])
+        if not changes:
+            print("No changes found in directory")
+        branch_name = "automated-dev"
+        branch_url = f"{self.org_url}/{self.proj_name}/_apis/git/repositories/{repository.name}/refs?filter=heads/{branch_name}&api-version=6.1-preview.1"
+        headers = {"Authorization": f"Basic {base64.b64encode(b'PAT:' + self.pat.encode()).decode()}"}
+        response = requests.get(branch_url, headers=headers)
+        response_data = response.json()
+        if len(response_data['value']) == 0:
             branch_name = "automated-dev"
             commit_message = "initial commit"
             commit = {"comment": commit_message, "changes": changes}
-            branch_url = f"{self.org_url}/{self.proj_name}/_apis/git/repositories/{repository.name}/refs?filter=heads/{branch_name}&api-version=6.1-preview.1"
-            headers = {"Authorization": f"Basic {base64.b64encode(b'PAT:' + self.pat.encode()).decode()}"}
-            response = requests.get(branch_url, headers=headers)
-            response_data = response.json()
-            if len(response_data['value']) == 0:
-                branch_name = "automated-dev"
-                commit_message = "initial commit"
-                commit = {"comment": commit_message, "changes": changes}
-                body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
+            body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
 
-            else:
-                branch_name = "automated-dev-temp"
-                commit_message = "updated code repo"
-                commit = {"comment": commit_message, "changes": changes}
-                body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": response_data['value'][0]['objectId']}], "commits": [commit]}
-            # commit = {"comment": commit_message, "changes": changes}
-            # body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
-            push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
-            response = requests.post(push_url, headers=headers, json=body)
-            response_data = response.json()
-            print(response_data)
-            if response.status_code == 200 or response.status_code == 201:
-                push_details ={
-                    "commit_branch": branch_name,
-                    "commit_id":response_data['commits'][0]['commitId'],
-                    "commited_by":response_data['commits'][0]['committer']['email'],
-                    "commited_on":response_data['commits'][0]['committer']['date'],
-                    "commit_url":response_data['commits'][0]['url']
-                }
-                return push_details
-            # else:
-            #     time.sleep(3)
-            #     branch_name = "automated-dev-temp"
-            #     logging.info(f"creating a new branch with name {branch_name}.")
-            #     body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
-            #     push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
-            #     response = requests.post(push_url, headers=headers, json=body)
-            #     response_data = response.json()
-            #     print(response_data)
-            #     print(response.status_code,response.text)
-            #     if response.status_code == 200 or response.status_code == 201:
-            #         push_details ={
-            #             "commit_branch": branch_name,
-            #             "commit_id":response_data['commits'][0]['commitId'],
-            #             "commited_by":response_data['commits'][0]['committer']['email'],
-            #             "commited_on":response_data['commits'][0]['committer']['date'],
-            #             "commit_url":response_data['commits'][0]['url']
-            #         }
-            #         logging.warning(f"created a new temporary branch {branch_name}. Raise a Pull Request to Merge and Delete the branch after Merge")
-            #         return push_details
         else:
-            return "No Changes to Push"
+            branch_name = "automated-dev-temp"
+            commit_message = "updated code repo"
+            commit = {"comment": commit_message, "changes": changes}
+            body = {"refUpdates": [{"name": f"refs/heads/{branch_name}", "oldObjectId": '0000000000000000000000000000000000000000'}], "commits": [commit]}
+        push_url = f"{self.org_url}/_apis/git/repositories/{repository.id}/pushes?api-version=5.1"
+        response = requests.post(push_url, headers=headers, json=body)
+        print(response)
+        response_data = response.json()
+        if response.status_code == 200 or response.status_code == 201:
+            push_details ={
+                "commit_branch": branch_name,
+                "commit_id":response_data['commits'][0]['commitId'],
+                "commited_by":response_data['commits'][0]['committer']['email'],
+                "commited_on":response_data['commits'][0]['committer']['date'],
+                "commit_url":response_data['commits'][0]['url']
+            }
+            return push_details
+        else:
+            push_details ={
+                "commit_branch": None,
+                "Message": str(response_data)
+            }
+            return push_details
+
 
 
     def ado_auth(self):
@@ -112,6 +113,19 @@ class ADOUtility:
         credentials = BasicAuthentication('', self.pat)
         connection = Connection(base_url=self.org_url, creds=credentials)
         return connection
+    
+    def create_pull_request(self,repository):
+        """Merge Branches"""
+        pull_req_url = f"{self.org_url}/{self.proj_name}/_apis/git/repositories/{repository.id}/pullrequests?api-version=7.0"
+        body = {
+        "sourceRefName": "refs/heads/automated-dev-temp",
+        "targetRefName": "refs/heads/automated-dev",
+        "title": "Branch Merge Request",
+        "description": "Rewriritng Changes"
+        }
+        response = requests.post(pull_req_url, json=body,headers={'Content-Type': 'application/json'},auth=('', self.pat))
+        response_data = response.json()
+        return response_data
 
 
 if __name__ == "__main__":
@@ -122,31 +136,17 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--pat", help = "ADO Personal Access Token")
     parser.add_argument("-f", "--fileloc",help = "Directory Path to Push to Repos")
     args = parser.parse_args()
-    print("############### File Location #####################")
-    print(args.fileloc)
     ado = ADOUtility(org_name=args.orgname,pat=args.pat,
                      proj_name=args.projname,repo_name=args.reponame)
     conn = ado.ado_auth()
     git_client = conn.clients_v7_1.get_git_client()
-    repositories = git_client.get_repositories(args.projname)
-    repo_names = []
-    for repo in repositories:
-        repo_names.append(repo.name)
-    if args.reponame not in repo_names:
-        repo_details = ado.create_repo(git_client=git_client)
-    else:
-        logging.warning("Repository Already Available with give name")
-        for repo in repositories:
-            if repo.name == 'Test':
-                repo_details={
-                    "repo_name" : repo.name,
-                    "repo_id" : repo.id,
-                    "git_remote_url" : repo.remote_url,
-                    "web_url": repo.url,
-                    "ssh_url": repo.ssh_url
-                }
-    res = ado.push_code(git_client=git_client,loc=args.fileloc)
-    print(res)
+    repo = ado.get_repo(git_client=git_client)
+    push_res = ado.push_code(loc=args.fileloc,repository=repo)
+    print(push_res)
+    if push_res['commit_branch'] == "automated-dev-temp":
+        pull_req_res = ado.create_pull_request(repository=repo)
+        print(pull_req_res)
 
 
-# py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "Test" -l "D:\My Files\Python\Product_dev\LogExporter\loggerapi"
+
+# py main.py -o "SalientMinds" -p "xnode" -t "fjlqvmpf44ekpd5ghfs7j7zjvi3mi4duajykamwwq6dcophm4isq" -r "Test" -f "D:\My Files\Python\Product_dev\LowNoCode\temp
