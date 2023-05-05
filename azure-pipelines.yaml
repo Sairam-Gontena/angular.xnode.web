@@ -2,7 +2,7 @@ trigger:
   - artifacts
 
 variables:
-  - group: my-variable-group
+  - group: xnode-vars
 # parameters:
 #   - name: CheckFlag
 #     displayName: Uncheck the box to disable Consistency Check
