@@ -2,7 +2,7 @@ trigger:
   - artifacts
 
 variables:
-  - group: my-variable-group
+  - group: xnode-vars
 
 stages:
   - stage: PushArtifacts
