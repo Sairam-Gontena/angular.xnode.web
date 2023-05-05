@@ -34,7 +34,7 @@ stages:
         displayName: FrontEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
+          script: 'python3 main.py -o $XNODE-ADO-ORGANIZATION -p $XNODE-ADO-PROJECT -t $XNODE-ADO-PAT -r "frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
     - job: BackEnd
@@ -51,5 +51,5 @@ stages:
         displayName: BackEnd Repository Publish
         inputs:
           targetType: 'inline'
-          script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
+          script: 'python3 main.py -o $XNODE-ADO-ORGANIZATION -p $XNODE-ADO-PROJECT -t $XNODE-ADO-PAT -r "backend" -f "$(System.DefaultWorkingDirectory)/react-code-gen"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
