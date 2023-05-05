@@ -28,7 +28,8 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            echo $[variables.XNODE-ADO-ORGANIZATION]
+            echo $(XNODE-ADO-ORGANIZATION)
+            echo $(XNODE-ADO-PROJECT)
     #   - task: Bash@3
     #     displayName: FrontEnd Repository Publish
     #     inputs:
