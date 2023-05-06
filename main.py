@@ -34,22 +34,23 @@ class ADOUtility:
         repo_names = []
         for repo in repositories:
             repo_names.append(repo.name)
-        for reponame in repo_names:
-            if self.repo_name == reponame:
-                logging.warning(f"Repository Already Available with give name {repo.name} in project {self.proj_name}")
-                repo_details={
-                    "repo_name" : repo.name,
-                    "repo_id" : repo.id,
-                    "git_remote_url" : repo.remote_url,
-                    "web_url": repo.url,
-                    "ssh_url": repo.ssh_url
-                }
-            else:
-                logging.info(f"Creating New Repository {self.repo_name} in project {self.proj_name}")
-                repo_details = ado.create_repo(git_client=git_client)
+        if self.repo_name not in repo_names:
+            logging.info(f"Creating New Repository {self.repo_name} in project {self.proj_name}")
+            repo_details = ado.create_repo(git_client=git_client)
             repository = git_client.get_repository(repo_details['repo_id'])
             return repository
-        
+        else:
+            for repo in repositories:
+                if self.repo_name == repo.name:
+                    logging.warning(f"Repository Already Available with give name {repo.name} in project {self.proj_name}")
+                    repo_details={
+                        "repo_name" : repo.name,
+                        "repo_id" : repo.id,
+                        "git_remote_url" : repo.remote_url,
+                        "web_url": repo.url,
+                        "ssh_url": repo.ssh_url
+                    }
+     
     def push_code(self,loc,repository):
         """Push Code"""
         changes = []
