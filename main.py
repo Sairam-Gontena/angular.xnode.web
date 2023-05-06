@@ -50,6 +50,8 @@ class ADOUtility:
                         "web_url": repo.url,
                         "ssh_url": repo.ssh_url
                     }
+                    repository = git_client.get_repository(repo_details['repo_id'])
+                    return repository
      
     def push_code(self,loc,repository):
         """Push Code"""
