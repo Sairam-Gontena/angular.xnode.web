@@ -137,7 +137,7 @@ class ADOUtility:
                 "title": response_data['title'],
                 "source_branch": response_data['sourceRefName'],
                 "target_branch": response_data['targetRefName'],
-                "pullrequest_url" : f"{self.org_url}/{self.proj_name}_apis/git/repositories/{repository.name}/pullRequests/{response_data['pullRequestId']}"
+                "pullrequest_url" : f"{self.org_url}/{self.proj_name}/_git/{repository.name}/pullRequests/{response_data['pullRequestId']}"
             }
             return pull_req_details
 
