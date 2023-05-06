@@ -135,9 +135,9 @@ class ADOUtility:
                 "pullrequest_id": response_data['pullRequestId'],
                 "created_on" : str(response_data['creationDate']),
                 "title": response_data['title'],
+                "pullrequest_url" : "{}/{}/_git/{}/pullrequest/{}".format(self.org_url,self.proj_name,repository.name,response_data['pullRequestId']),
                 "source_branch": response_data['sourceRefName'],
-                "target_branch": response_data['targetRefName'],
-                "pullrequest_url" : f"{self.org_url}/{self.proj_name}/_git/{repository.name}/pullRequests/{response_data['pullRequestId']}"
+                "target_branch": response_data['targetRefName']
             }
             return pull_req_details
 
