@@ -143,6 +143,8 @@ if __name__ == "__main__":
     conn = ado.ado_auth()
     git_client = conn.clients_v7_1.get_git_client()
     repo = ado.get_repo(git_client=git_client)
+    print("#############Repo Details###################")
+    print(repo)
     push_res = ado.push_code(loc=args.fileloc,repository=repo)
     print(push_res)
     if push_res['commit_branch'] == "automated-dev-temp":
