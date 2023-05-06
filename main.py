@@ -52,7 +52,7 @@ class ADOUtility:
                     }
                     repository = git_client.get_repository(repo_details['repo_id'])
                     return repository
-     
+    
     def push_code(self,loc,repository):
         """Push Code"""
         changes = []
@@ -129,7 +129,17 @@ class ADOUtility:
         }
         response = requests.post(pull_req_url, json=body,headers={'Content-Type': 'application/json'},auth=('', self.pat))
         response_data = response.json()
-        return response_data
+        if response.status_code ==200 or response.status_code==201:
+            pull_req_details = {
+                "repo_name": response_data["repository"]['name'],
+                "pullrequest_id": response_data['pullRequestId'],
+                "created_on" : str(response_data['creationDate']),
+                "title": response_data['title'],
+                "source_branch": response_data['sourceRefName'],
+                "target_branch": response_data['targetRefName'],
+                "pullrequest_url" : f"{self.org_url}/{self.proj_name}_apis/git/repositories/{repository.name}/pullRequests/{response_data['pullRequestId']}"
+            }
+            return pull_req_details
 
 
 if __name__ == "__main__":
