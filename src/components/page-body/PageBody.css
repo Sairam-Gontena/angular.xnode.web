@@ -1,0 +1,9 @@
+.page-body-wrapper {
+    width: calc(100% - 80px);
+}
+
+.page-content-wrapper {
+    background: #F2F2F2;
+    height: calc(100vh - 80px);
+    padding: 20px;
+}
