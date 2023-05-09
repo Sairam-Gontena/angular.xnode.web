@@ -3,7 +3,7 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 trigger:
-  - dev
+  - automated-dev
 
 stages:
   - stage: build
@@ -16,7 +16,8 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: "16.x"
+              versionSource: 'spec'
+              versionSpec: '18.x'
             displayName: "Install Node.js"
 
           - task: Bash@3
@@ -24,27 +25,43 @@ stages:
             inputs:
               targetType: 'inline'
               script: 'npm i --force'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code-gen-react-admin'
           
           - task: Bash@3
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
               script: 'npm run build'
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-          # - task: ArchiveFiles@2
-          #   displayName: 'Archive Build Artifacts'
-          #   inputs:
-          #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
-          #     includeRootFolder: true
-          #     archiveType: 'zip'
-          #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          #     replaceExistingArchive: true
+              workingDirectory: '$(System.DefaultWorkingDirectory)/code-gen-react-admin'
           
           - task: PublishPipelineArtifact@1
-            displayName: 'Publish Pipeline Artifact'
+            displayName: "Publish Artifacts"
             inputs:
-              targetPath: '$(System.DefaultWorkingDirectory)/dist'
-              artifact: 'webappdev'
+              targetPath: '$(System.DefaultWorkingDirectory)/code-gen-react-admin/build'
+              artifact: 'frontendApp'
               publishLocation: 'pipeline'
+
+  - stage: deploy 
+    dependsOn: build
+    displayName: "Deploy to Azure"
+    jobs:
+      - job: Deploy
+        displayName: "Push Artifacts to WebApp"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: "Download Pipeline Artifacts"
+            inputs:
+              buildType: 'current'
+              artifactName: 'frontendApp'
+              targetPath: '$(Build.ArtifactStagingDirectory)'
+          - task: AzureRmWebAppDeployment@4
+            displayName: "Deploy to Azure WebApp"
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'xnode-spn'
+              appType: 'webAppLinux'
+              WebAppName: 'dev-webreact'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)'
+              RuntimeStack: 'NODE|18-lts'
