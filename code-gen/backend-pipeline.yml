@@ -56,4 +56,4 @@ stages:
               appType: 'webAppLinux'
               WebAppName: 'dev-webreact'
               packageForLinux: '$(Build.ArtifactStagingDirectory)'
-              RuntimeStack: 'JAVA|11-jre11'
+              RuntimeStack: 'JAVA|11-java11'
