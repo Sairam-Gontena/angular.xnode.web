@@ -45,13 +45,13 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   - stage: CI
+    dependsOn: PushArtifacts
     displayName: Generate CI Pipelines
     pool:  
       vmImage: 'ubuntu-latest'    
     jobs:
     - job: Pipelines
       displayName: Create CI Pipelines
-      dependsOn: BackEnd
       steps:
       - task: Bash@3
         displayName: Create FrontEnd Build
