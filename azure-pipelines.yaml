@@ -37,9 +37,48 @@ stages:
           versionSpec: '3.8'
           addToPath: true
           architecture: 'x64'
+
       - task: Bash@3
         displayName: BackEnd Repository Publish
         inputs:
           targetType: 'inline'
           script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "backend" -f "$(System.DefaultWorkingDirectory)/code-gen"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      
+    - job: BackEnd
+      displayName: Create CI Pipelines
+      dependsOn: FrontEnd
+      steps:
+      - task: Bash@3
+        displayName: Create FrontEnd Build
+        inputs:
+          targetType: 'inline'
+          script: |
+                    pipelines=$(az pipelines list  --project 'xnode' --query "[].name" -o tsv)
+                    name='frontend'
+         
+                    if [[ ! " ${pipelines[@]} " =~ " ${name} " ]]; then
+                    echo $(XNODE-ADO-PAT) | az devops login
+                    az pipelines create --name $name --project $(XNODE-ADO-PROJECT) --repository 'frontend' --branch 'automated-dev' --yaml-path 'code-gen-react-admin/frontend-pipeline.yml' --repository-type 'tfsgit'
+                    else
+                    echo "Pipeline with name $name already Exists"
+                    fi
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - task: Bash@3
+        displayName: Create BackEnd Build
+        inputs:
+          targetType: 'inline'
+          script: |
+                    pipelines=$(az pipelines list  --project 'xnode' --query "[].name" -o tsv)
+                    name='backend'
+          
+                    if [[ ! " ${pipelines[@]} " =~ " ${name} " ]]; then
+                    echo $(XNODE-ADO-PAT) | az devops login
+                    az pipelines create --name $name --project $(XNODE-ADO-PROJECT) --repository 'backend' --branch 'automated-dev' --yaml-path 'code-gen/backend-pipeline.yml' --repository-type 'tfsgit'
+                    else
+                    echo "Pipeline with name $name already Exists"
+                    fi
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+        
