@@ -46,7 +46,7 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       
-    - job: BackEnd
+    - job: Pipelines
       displayName: Create CI Pipelines
       dependsOn: FrontEnd
       steps:
