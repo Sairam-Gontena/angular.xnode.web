@@ -1,0 +1,60 @@
+
+trigger:
+- automated-dev
+
+stages:
+  - stage: build
+    displayName: Build Application
+    pool:  
+      vmImage: 'ubuntu-latest'  
+    jobs:
+    - job: Build
+      displayName: Build & Publish Artifacts
+      steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          mavenVersionOption: 'Default'
+          mavenOptions: '-Xmx3072m'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+
+
+      - task: PublishPipelineArtifact@1
+        displayName: "Publish Artifacts"
+        inputs:
+          targetPath: '$(System.DefaultWorkingDirectory)/code-gen'
+          artifact: 'backendApp'
+          publishLocation: 'pipeline'
+
+
+  - stage: deploy 
+    dependsOn: build
+    displayName: "Deploy to Azure"
+    jobs:
+      - job: Deploy
+        displayName: "Push Artifacts to WebApp"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: "Download Pipeline Artifacts"
+            inputs:
+              buildType: 'current'
+              artifactName: 'backendApp'
+              targetPath: '$(Build.ArtifactStagingDirectory)'
+              
+          - task: AzureRmWebAppDeployment@4
+            displayName: "Deploy to Azure WebApp"
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'xnode-spn'
+              appType: 'webAppLinux'
+              WebAppName: 'dev-webreact'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)'
+              RuntimeStack: 'NODE|18-lts'
