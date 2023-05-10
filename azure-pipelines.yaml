@@ -10,7 +10,6 @@ stages:
     pool:  
       vmImage: 'ubuntu-latest'  
     jobs:
-
     - job: FrontEnd
       displayName: Push FrontEnd Artifacts
       steps:  
@@ -45,10 +44,14 @@ stages:
           script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "backend" -f "$(System.DefaultWorkingDirectory)/code-gen"'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      
+  - stage: CI
+    displayName: Generate CI Pipelines
+    pool:  
+      vmImage: 'ubuntu-latest'    
+    jobs:
     - job: Pipelines
       displayName: Create CI Pipelines
-      dependsOn: FrontEnd
+      dependsOn: BackEnd
       steps:
       - task: Bash@3
         displayName: Create FrontEnd Build
