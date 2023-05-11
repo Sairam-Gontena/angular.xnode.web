@@ -6,15 +6,13 @@ variables:
 
 stages:
   - stage: Infrastucture
-    displayName: Infrastucture
+    displayName: Deploying Azure Resources
     jobs:
     - job: Infrastucture
-      displayName: Deploy Azure Resources
+      displayName: Deploying Azure Resources
       pool:
         vmImage: 'ubuntu-latest'
       steps:
-      - checkout: self
-        fetchDepth: 1
       - task: AzureCLI@2
         displayName: Create Resource Group & Storage Account
         inputs:
@@ -22,9 +20,22 @@ stages:
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: >-
-            az group create -l $(LOCATION) -n $(CLIENT)$(APP)-$(ENV)
-            az storage account create -n $(CLIENT)$(APP)$(ENV) -g $(CLIENT)$(APP)-$(ENV) -l $(LOCATION) --sku Standard_LRS
-            az storage container create --account-name $(CLIENT)$(APP)$(ENV) -n terraform
+            mapfile -t group_array <<<$(az group list --query "[].name" -o tsv)
+            name=$(CLIENT)$(APP)-$(ENV)
+            if [[ ! " ${group_array[@]} " =~ " ${name} " ]]; then
+              az group create -l $(LOCATION) -n $(CLIENT)$(APP)-$(ENV)
+            else
+              echo "ResourceGroup with name $name already Exists"
+            fi
+
+            mapfile -t strg_array <<<$(az storage account list --query "[].name" -o tsv)
+            name=$(CLIENT)$(APP)-$(ENV)
+            if [[ ! " ${strg_array[@]} " =~ " ${name} " ]]; then
+              az storage account create -n $(CLIENT)$(APP)$(ENV) -g $(CLIENT)$(APP)-$(ENV) -l $(LOCATION) --sku Standard_LRS
+              az storage container create --account-name $(CLIENT)$(APP)$(ENV) -n terraform
+            else
+              echo "Storage with name $name already Exists"
+            fi
           workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
       - task: TerraformInstaller@0
         displayName: Install Terraform latest   
