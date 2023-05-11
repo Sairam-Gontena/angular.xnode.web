@@ -6,4 +6,56 @@
     background: #F2F2F2;
     height: calc(100vh - 80px);
     padding: 20px;
+    overflow-y: auto;
+}
+
+.bal-card {
+    height: 100%;
+    background: #000759;
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 20px;
+}
+
+.income-card {
+    height: 100%;
+    background: #ffffff;
+    border-radius: 10px;
+    color: #4B4B4B;
+    padding: 20px;
+}
+
+.card-details {
+    color: #C0F0FF;
+}
+
+.income-percentage {
+    background: #D3EFD1;
+    padding: 10px;
+    border-radius: 20px;
+    color: #196114;
+    font-size: 16px;
+}
+
+.income-percentage-neg {
+    background: #F2CFD0;
+    padding: 10px;
+    border-radius: 20px;
+    color: #530305;
+    font-size: 16px;
+}
+
+.stock-title {
+    color: #38363F;
+    font-size: 18px;
+}
+
+.stock-sub-title {
+    color: #B9B9B9;
+    font-size: 16px;
+}
+
+.p-chart {
+    height: 100%;
+    padding-bottom: 40px;
 }
