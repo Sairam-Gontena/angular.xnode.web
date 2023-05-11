@@ -8,6 +8,7 @@ import { getJSONData } from './util/Util'
 import Header from './components/header/Header';
 import SideMenu from './components/side-menu/SideMenu';
 import PageBody from './components/page-body/PageBody';
+import Home from './pages/home/Home';
 
 const App = () => {
   let [options, setOptions] = useState([])
@@ -16,9 +17,14 @@ const App = () => {
   }, []);
 
   return (
-    <div className='flex'>
-      <SideMenu />
-      <PageBody />
+    <div className=' w-full'>
+      {/* <SideMenu /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" caseSensitive={false} element={<Home />} />
+          <Route path="/dashboard" caseSensitive={false} element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
       {/* <MenuBar options={options}></MenuBar> */}
       {/* <BrowserRouter>
         <Routes>
