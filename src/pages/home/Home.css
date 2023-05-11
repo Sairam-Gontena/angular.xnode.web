@@ -1,26 +1,37 @@
 .search-icon {
     background-color: #ffffff;
-    color: #ccc !important;
+    color: #C7C7C7 !important;
     border-color: #ccc;
     border-right: 0;
     border-top-left-radius: 20px !important;
     border-bottom-left-radius: 20px !important;
-    background: #ffffff !important;
-    border-color: #ccc !important;
+    background: #4F4E55 !important;
+    border-right: 0px !important;
+    border: 1px solid #4F4E55 !important;
+}
+
+::placeholder {
+    color: #C7C7C7 !important;
 }
 
 .search-input {
     border-top-right-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
-    border-left: 0;
+    border-left: 0 !important;
+    background: #4F4E55 !important;
+    border-color: #4F4E55;
+    border: 1px solid #4F4E55 !important;
 }
 
+.p-inputgroup:hover,
 .p-inputtext:enabled:hover {
-    border-color: #ccc;
+    border-color: #ccc !important;
 }
 
+.p-inputgroup:focus,
+.p-button:focus,
 .p-inputtext:enabled:focus {
-    box-shadow: none;
+    box-shadow: none !important;
 }
 
 .no-dp {
@@ -47,17 +58,59 @@ p {
     cursor: pointer;
 }
 
-.rounded-btns .p-button {
+.bot-chat {
+    color: #000759;
+    right: 40px;
+    bottom: 40px;
+    background: #E4E7FB;
+    padding: 10px 20px;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-top-right-radius: 70px;
+}
+
+.rounded-btns {
     border-radius: 25px !important;
-    background-color: #f71b93;
-    border: 0;
+    background-color: #EF018F !important;
+    border: 0 !important;
+}
+
+.rounded-btn-default {
+    border-radius: 25px !important;
+    background-color: #ffffff !important;
+    border: 0 !important;
+    color: #24232C !important;
 }
 
 .rounded-btns .p-button:hover {
-    background-color: #f71b93 !important;
+    background-color: #EF018F !important;
 }
 
 .title {
     font-size: 48px;
     color: #ffffff;
+    margin: 0;
+}
+
+.bot {
+    width: 40px;
+    background: #ffffff;
+    cursor: pointer;
+    padding: 9px;
+    border-radius: 20px;
+}
+
+.p-card {
+    background-color: #4E4D55 !important;
+    border-radius: 25px !important;
+    color: #ffffff !important;
+}
+
+.p-card .p-card-title {
+    font-size: 24px;
+}
+
+.recent-view {
+    color: #02ADEE;
+    font-weight: 600;
 }

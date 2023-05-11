@@ -3,6 +3,12 @@ import X from '../../assets/x.svg';
 import NODE from '../../assets/node.svg';
 import NO_DP from '../../assets/no-dp.png';
 import DCARD from '../../assets/d-card.svg';
+import ALL_PRODUCTS from '../../assets/all-products.svg';
+import BOT from '../../assets/bot.svg';
+import BOT_CHAT from '../../assets/bot-chat.svg';
+import FAVORITE from '../../assets/favorite.svg';
+import RECENT from '../../assets/recent.svg';
+import USER from '../../assets/user.svg';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -25,7 +31,7 @@ const Home = () => {
         navigate('/dashboard');
     }
     return (
-        <div className="grid m-0">
+        <div className="grid m-0 relative h-full">
             <div className="col-12 p-0">
                 <div className="mini-header-wrapper flex">
                     <div className="w-9  flex justify-content-start flex-wrap">
@@ -41,37 +47,37 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className="col-12 p-8">
+            <div className="col-12 md:col-12 lg:col-12 p-8">
                 <div className="grid m-0">
-                    <div className="col-12">
-                        <h1 className="title">Hi, Good Morning</h1>
+                    <div className="col-12 md:col-12 lg:col-12">
+                        <p className="title">Hi, Good Morning</p>
                     </div>
 
-                    <div className="col-6">
+                    <div className="col-6 md:col-6 lg:col-6">
                         <div className="p-inputgroup flex-1">
                             <Button icon="pi pi-search" className="search-icon" />
                             <InputText placeholder="Search" className="search-input" />
                         </div>
                     </div>
-                    <div className="col-12 rounded-btns mt-4">
-                        <Button label="New with xbot AI" rounded icon="pi pi-check" size="small" />
-                        <Button label="New Project" rounded icon="pi pi-check" size="small" className="ml-4" />
+                    <div className="col-12 md:col-12 lg:col-12  mt-4">
+                        <Button label="New with xbot AI" rounded icon="pi pi-check" size="small" className="rounded-btns" />
+                        <Button label="New Project" rounded icon="pi pi-check" size="small" className="ml-4 rounded-btn-default" text raised />
 
-                        <Button label="Import" rounded icon="pi pi-check" size="small" className="ml-4" />
+                        <Button label="Import" rounded icon="pi pi-check" size="small" className="ml-4 rounded-btn-default" />
 
                     </div>
-                    <div className="col-12 rounded-btns mt-4 flex" >
-                        <div className="flex">
-                            All Products
+                    <div className="col-12  mt-4 flex" >
+                        <div className="flex all-products">
+                            <img src={ALL_PRODUCTS} alt="all products" className="mr-3" /> All Products
                         </div>
-                        <div className="flex ml-4">
-                            Recently Viewd
+                        <div className="flex ml-4 recent-view">
+                            <img src={RECENT} alt="all products" className="mr-3" />  Recently Viewd
                         </div>
-                        <div className="flex ml-4">
-                            Created by you
+                        <div className="flex ml-4  all-products">
+                            <img src={USER} alt="all products" className="mr-3" />  Created by you
                         </div>
-                        <div className="flex ml-4">
-                            Favorites
+                        <div className="flex ml-4 all-products">
+                            <img src={FAVORITE} alt="all products" className="mr-3" />   Favorites
                         </div>
 
                     </div>
@@ -83,8 +89,8 @@ const Home = () => {
                                         <img src={NO_DP} alt="dp" className="no-dp" />
                                     </div>
                                     <div class="flex align-content-center flex-wrap ml-2">
-                                        <div>
-                                            <p>Created by you</p>
+                                        <div className="text-base">
+                                            <p className="font-semibold">Created by you</p>
                                             <p>Last viewed 3 minutes ago</p>
                                         </div>
 
@@ -102,7 +108,10 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
+            <div className="fixed bot-chat">
+                <p>Hi, I’m xnode bot click here to get started</p>
+            </div>
+            <img src={BOT} alt="bot" className="bot fixed bottom-0 right-0" />
 
         </div>
     )

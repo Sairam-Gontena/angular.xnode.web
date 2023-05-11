@@ -1,6 +1,11 @@
  @import "../node_modules/react-grid-layout/css/styles.css";
  @import "../node_modules/react-resizable/css/styles.css";
 
+ @font-face {
+     font-family: Font-Regular;
+     src: url("./assets/fonts/Inter-Regular.ttf");
+ }
+
 
  .react-grid-item:not(.react-grid-placeholder) {
      background: #ccc;
@@ -9,6 +14,12 @@
 
  body {
      background: #3A3942;
+     font-family: Font-Regular;
+ }
+
+ .p-button {
+     font-family: Font-Regular !important;
+
  }
 
  .test {
@@ -22,5 +33,9 @@
      border-bottom: 1px solid #39383F;
      background: #24232C;
      color: #ffffff;
+ }
 
+ .all-products {
+     color: #C7C7C7;
+     font-weight: 600;
  }
