@@ -1,11 +1,18 @@
 trigger:
   - artifacts
 
+parameters:
+  - name: infracheck
+    displayName: Check the box to Provision Required Services on Azure
+    type: boolean
+    default: false
+
 variables:
   - group: xnode-vars
 
 stages:
   - stage: Infrastucture
+    condition: eq(${{parameters.infracheck}}, 'true')
     displayName: Deploying Azure Resources
     jobs:
     - job: Infrastucture
@@ -37,8 +44,10 @@ stages:
               echo "Storage with name $name already Exists"
             fi
           workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
+
       - task: TerraformInstaller@0
         displayName: Install Terraform latest   
+
       - task: TerraformTaskV4@4
         displayName: 'Terraform : Init'
         inputs:
@@ -50,6 +59,7 @@ stages:
           backendAzureRmStorageAccountName: '$(CLIENT)$(APP)$(ENV)'
           backendAzureRmContainerName: 'terraform'
           backendAzureRmKey: '$(CLIENT)$(APP)-$(ENV).tfstate'
+          
       - task: AzureCLI@2
         displayName: 'Terraform : Plan & Apply'
         inputs:
