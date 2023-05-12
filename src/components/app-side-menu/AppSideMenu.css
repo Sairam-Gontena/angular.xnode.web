@@ -1,0 +1,24 @@
+.side-menu-wrapper {
+    width: 80px;
+    height: calc(100vh - 42px);
+    background: #24232C;
+}
+
+.menu-label {
+    font-size: 8px;
+    color: #ffffff;
+    margin-top: 8px;
+}
+
+.active {
+    background: #302E38;
+}
+
+.menu-item-grid-height {
+    height: 80px;
+    cursor: pointer;
+}
+
+.menu-item-grid-height:hover {
+    background: #302E38;
+}
