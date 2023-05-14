@@ -1,10 +1,13 @@
 .app-header-wrapper {
     height: 42px;
+    background: #24232C;
 }
 
 .app-side-menu-wrapper {
     width: 80px;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 42px);
+    background-color: #24232C;
+    color: #ffffff;
 }
 
 .app-body-wrapper {
