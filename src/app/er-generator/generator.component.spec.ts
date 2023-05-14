@@ -8,7 +8,7 @@ describe('GeneratorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [GeneratorComponent]
+      declarations: [GeneratorComponent],
     });
     fixture = TestBed.createComponent(GeneratorComponent);
     component = fixture.componentInstance;

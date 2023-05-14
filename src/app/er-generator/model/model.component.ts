@@ -20,10 +20,9 @@ import { Schema } from '../class/schema';
 @Component({
   selector: 'model',
   templateUrl: './model.component.html',
-  styleUrls: ['./model.component.css']
+  styleUrls: ['./model.component.css'],
 })
 export class ModelComponent {
-
   // @ts-ignore
   @Input() myModel: Model;
 
@@ -35,33 +34,41 @@ export class ModelComponent {
     private dataService: DataService,
     private jsPlumbService: JsPlumbService,
     private el: ElementRef
-  ) { }
+  ) {}
 
   ngAfterViewInit() {
-    console.log('ModelComponent(' + this.myModel.id + ').ngAfterViewInit() is called!');
+    console.log(
+      'ModelComponent(' + this.myModel.id + ').ngAfterViewInit() is called!'
+    );
     this.jsPlumbService.initModel(this.myModel);
   }
 
   ngOnDestroy() {
-    console.log('ModelComponent(' + this.myModel.id + ').ngOnDestroy() is called!');
+    console.log(
+      'ModelComponent(' + this.myModel.id + ').ngOnDestroy() is called!'
+    );
     this.jsPlumbService.destroyModel(this.myModel);
   }
 
   public editModel(): void {
-    console.log('ModelComponent(' + this.myModel.id + ').editModel() is called!');
+    console.log(
+      'ModelComponent(' + this.myModel.id + ').editModel() is called!'
+    );
     this.bsModalRef = this.bsModalService.show(ModalModelComponent, {
       initialState: {
         mode: 'edit',
         model: this.myModel,
         // @ts-ignore
-        use_laravel_auth: this.dataService.data.use_laravel_auth
+        use_laravel_auth: this.dataService.data.use_laravel_auth,
       },
-      ignoreBackdropClick: true
+      ignoreBackdropClick: true,
     });
   }
 
   public deleteModel() {
-    console.log('ModelComponent(' + this.myModel.id + ').deleteModel() is called!');
+    console.log(
+      'ModelComponent(' + this.myModel.id + ').deleteModel() is called!'
+    );
     if (confirm('Want to delete ' + this.myModel.name + '?')) {
       // @ts-ignore
       this.dataService.deleteModel(this.myModel.id);
@@ -69,7 +76,9 @@ export class ModelComponent {
   }
 
   public addSchema(): void {
-    console.log('ModelComponent(' + this.myModel.id + ').addSchema() is called!');
+    console.log(
+      'ModelComponent(' + this.myModel.id + ').addSchema() is called!'
+    );
     var schema = new Schema();
     schema.parent_id = this.myModel.id;
     // @ts-ignore
@@ -83,14 +92,21 @@ export class ModelComponent {
         // @ts-ignore
         use_laravel_auth: this.dataService.data.use_laravel_auth,
         // @ts-ignore
-        parent_model: this.myModel
+        parent_model: this.myModel,
       },
-      ignoreBackdropClick: true
+      ignoreBackdropClick: true,
     });
   }
 
+  public contextMenu(params: any): void {
+    console.log('Context menu');
+    // this.jsPlumbService.r(this.myModel);
+  }
+
   public startDrag(): void {
-    console.log('ModelComponent(' + this.myModel.id + ').startDrag() is called!');
+    console.log(
+      'ModelComponent(' + this.myModel.id + ').startDrag() is called!'
+    );
     this.jsPlumbService.toggleDraggable(this.myModel);
   }
 
@@ -99,8 +115,12 @@ export class ModelComponent {
     this.jsPlumbService.toggleDraggable(this.myModel);
 
     // record position
-    let style_left = this.el.nativeElement.querySelectorAll('#' + this.myModel.getElementId())[0].style.left;
-    let style_top = this.el.nativeElement.querySelectorAll('#' + this.myModel.getElementId())[0].style.top;
+    let style_left = this.el.nativeElement.querySelectorAll(
+      '#' + this.myModel.getElementId()
+    )[0].style.left;
+    let style_top = this.el.nativeElement.querySelectorAll(
+      '#' + this.myModel.getElementId()
+    )[0].style.top;
     this.myModel.pos_x = parseInt(style_left, 10);
     this.myModel.pos_y = parseInt(style_top, 10);
   }

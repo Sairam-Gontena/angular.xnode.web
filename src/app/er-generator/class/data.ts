@@ -3,7 +3,6 @@ import { Model } from './model';
 import { Schema } from './schema';
 
 export class Data {
-
   public app_type: string | null | undefined;
   public use_laravel_auth: boolean | null | undefined;
   public models: Model[] | null | undefined;
@@ -15,53 +14,58 @@ export class Data {
     this.clearData();
   }
 
-  public getNewModelId(): number{
+  public getNewModelId(): number {
     this._next_model_id ? this._next_model_id++ : 0;
-    return this._next_model_id ? this._next_model_id-1 : 0;;
+    return this._next_model_id ? this._next_model_id - 1 : 0;
   }
 
-  public getModelById(model_id:number): Model | null{
-    const filtered_models = this.models?.filter((v, i) => v.id === model_id) ?? [];
-    if(filtered_models.length > 0){
+  public getModelById(model_id: number | undefined): Model | null {
+    const filtered_models =
+      this.models?.filter((v, i) => v.id === model_id) ?? [];
+    if (filtered_models.length > 0) {
       return filtered_models[0];
-    }else{
+    } else {
       return null;
     }
   }
 
-  public getModelByElementH2Id(model_element_h2_id:string): Model | null{
-    const filtered_models = this.models?.filter((v, i) => v.getElementH2Id() === model_element_h2_id) ?? [];
-    if(filtered_models.length > 0){
+  public getModelByElementH2Id(model_element_h2_id: string): Model | null {
+    const filtered_models =
+      this.models?.filter(
+        (v, i) => v.getElementH2Id() === model_element_h2_id
+      ) ?? [];
+    if (filtered_models.length > 0) {
       return filtered_models[0];
-    }else{
+    } else {
       return null;
     }
   }
 
-  public getModelByName(model_name:string): Model | null{
-    const filtered_models = this.models?.filter((v, i) => v.name === model_name) ?? [];
-    if(filtered_models.length > 0){
+  public getModelByName(model_name: string): Model | null {
+    const filtered_models =
+      this.models?.filter((v, i) => v.name === model_name) ?? [];
+    if (filtered_models.length > 0) {
       return filtered_models[0];
-    }else{
+    } else {
       return null;
     }
   }
 
-  public getSchemaByElementId( schema_element_id:string ):Schema | null{
+  public getSchemaByElementId(schema_element_id: string): Schema | null {
     console.log('Data.getSchemaByElementId() is called!');
     const ids = schema_element_id.replace('model', '').split('-schema');
 
     const filtered_model = this.getModelById(Number(ids[0]));
-    if( filtered_model ){
+    if (filtered_model) {
       const filtered_schema = filtered_model.getSchemaById(Number(ids[1]));
-      if( filtered_schema ){
+      if (filtered_schema) {
         return filtered_schema;
       }
     }
     return null;
   }
 
-  public clearData():void{
+  public clearData(): void {
     console.log('Data.clearData() is called!');
     this.app_type = 'web';
     this.use_laravel_auth = false;
@@ -70,13 +74,13 @@ export class Data {
     this._next_model_id = 1;
   }
 
-  public loadData(data: any):void{
+  public loadData(data: any): void {
     console.log('Data.loadData() is called!');
     this.app_type = data.app_type;
     this.use_laravel_auth = data.use_laravel_auth;
     this.models = [];
 
-    for(let i=0; i<data.models.length; i++){
+    for (let i = 0; i < data.models.length; i++) {
       var model = new Model(data.models[i]);
       this.models.push(model);
     }
