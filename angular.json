@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "xnode",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -26,7 +26,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
+              "src/assets/favicon.svg",
               "src/assets"
             ],
             "styles": [
@@ -92,8 +92,13 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets/favicon.svg",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "src/assets/fonts",
+                "output": "/assets/fonts/"
+              }
             ],
             "styles": [
               "src/styles.scss"
