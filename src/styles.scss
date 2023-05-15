@@ -1,7 +1,9 @@
 @import "primeicons/primeicons.css";
 @import './theme.scss';
+@import './app/styles/overrides.scss';
 
 body {
     font-family: var(--font-family);
     margin: 0;
+    background: #3A3942;
 }
