@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<div class="w-100">
+    <xnode-app-header></xnode-app-header>
+    <div class="flex">
+        <div class="app-side-menu-wrapper">
+            <xnode-app-side-menu></xnode-app-side-menu>
+        </div>
+        <div class="app-body-wrapper p-4">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
