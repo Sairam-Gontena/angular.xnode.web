@@ -1,5 +1,13 @@
-<gridster [options]="options">
-    <gridster-item [item]="item" *ngFor="let item of dashboard">
-        <!-- your content here -->
-    </gridster-item>
-</gridster>
+<div class="template-builder-wrapper">
+    <div class="template-builder-layout-wrapper">
+
+    </div>
+    <div class="template-builder-body-wrapper">
+        <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+
+        <gridster [options]="options">
+            <gridster-item [item]="item" *ngFor="let item of dashboard">
+            </gridster-item>
+        </gridster>
+    </div>
+</div>
