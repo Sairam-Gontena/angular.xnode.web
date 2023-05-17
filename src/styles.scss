@@ -1,6 +1,7 @@
 @import "primeicons/primeicons.css";
 @import './theme.scss';
 @import './app/styles/overrides.scss';
+@import './app/styles/utils.scss';
 
 body {
     font-family: var(--font-family);

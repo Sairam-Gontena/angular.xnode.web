@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'xnode';
+
+  isUserExists() {
+    return Boolean(localStorage.getItem('currentUser'));
+  }
 }

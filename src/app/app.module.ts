@@ -11,7 +11,11 @@ import { AppSideMenuComponent } from './components/app-side-menu/app-side-menu.c
 import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 
 @NgModule({
-  declarations: [AppComponent, AppHeaderComponent, AppSideMenuComponent],
+  declarations: [
+    AppComponent,
+    AppHeaderComponent,
+    AppSideMenuComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

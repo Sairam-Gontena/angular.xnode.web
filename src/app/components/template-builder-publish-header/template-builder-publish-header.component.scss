@@ -1,0 +1,13 @@
+.publish-header {
+    height: 88px;
+}
+
+:host ::ng-deep .p-dropdown {
+    background: #3A3942;
+    border: 0;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label,
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+    color: #ffffff;
+}
