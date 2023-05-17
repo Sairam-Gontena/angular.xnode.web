@@ -12,6 +12,7 @@ import {
   GridsterItem,
   GridType
 } from 'angular-gridster2';
+import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
 
 @Component({
   selector: 'xnode-template-builder',
@@ -22,10 +23,15 @@ import {
 export class TemplateBuilderComponent implements OnInit {
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem> | undefined;
+  layoutColumns: any;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit() {
+    this.layoutColumns = LAYOUT_COLUMNS;
+    this.dashboard = LAYOUT_COLUMNS.CONTAINER;
     this.options = {
       gridType: GridType.ScrollVertical,
       compactType: CompactType.None,
@@ -46,16 +52,12 @@ export class TemplateBuilderComponent implements OnInit {
         enabled: true
       }
     };
+  }
 
-    this.dashboard = [
-      { cols: 5, rows: 1, y: 0, x: 0 },
-      { cols: 2, rows: 1, y: 0, x: 2 },
-      { cols: 2, rows: 1, y: 0, x: 4 },
-      { cols: 2, rows: 1, y: 1, x: 0 },
-      { cols: 2, rows: 1, y: 1, x: 0 },
-      { cols: 2, rows: 1, y: 2, x: 2 },
-      { cols: 2, rows: 1, y: 2, x: 4 }
-    ];
+  getLayout(layout: string): void {
+    console.log('layout', layout);
+    if (layout)
+      this.dashboard = this.layoutColumns[layout];
   }
 
 }

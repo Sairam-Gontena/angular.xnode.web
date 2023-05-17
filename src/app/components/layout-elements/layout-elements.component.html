@@ -1,0 +1,72 @@
+<div class="flex gap-3 justify-content-center">
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        (click)="onSelectLayout('CONTAINER')" [ngClass]="{'layout-item-active': selectedContainer=== 'CONTAINER'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/container.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                Containers
+            </div>
+        </div>
+    </div>
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        (click)="onSelectLayout('ROWS')" [ngClass]="{'layout-item-active': selectedContainer=== 'ROWS'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/rows.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                Rows
+            </div>
+        </div>
+    </div>
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        (click)="onSelectLayout('ONE_COLUMN')" [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/one-column.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                One Column
+            </div>
+        </div>
+    </div>
+</div>
+<div class="flex gap-3 justify-content-center mt-3">
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        (click)="onSelectLayout('TWO_COLUMNS')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'TWO_COLUMNS'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/container.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                Two Columns
+            </div>
+        </div>
+    </div>
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        (click)="onSelectLayout('THREE_COLUMNS')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'THREE_COLUMNS'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/rows.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                Three Columns
+            </div>
+        </div>
+    </div>
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        (click)="onSelectLayout('ONE_COLUMN')" [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/one-column.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                Four Column
+            </div>
+        </div>
+    </div>
+</div>
