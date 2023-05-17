@@ -4,10 +4,12 @@
     </div>
     <div class="template-builder-body-wrapper">
         <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+        <div class="m-4 h-full">
+            <gridster [options]="options">
+                <gridster-item [item]="item" *ngFor="let item of dashboard">
+                </gridster-item>
+            </gridster>
+        </div>
 
-        <gridster [options]="options">
-            <gridster-item [item]="item" *ngFor="let item of dashboard">
-            </gridster-item>
-        </gridster>
     </div>
 </div>
