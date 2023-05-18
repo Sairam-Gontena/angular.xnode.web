@@ -20,15 +20,14 @@ export class SignUpComponent implements OnInit {
 
     });
   }
-
   ngOnInit() {
-
   }
-  get f() { return this.signUpForm.controls; }
+  get signUp() { return this.signUpForm.controls; }
   onSubmit() {
-    console.log(this.signUpForm.value)
     this.submitted = true;
-
+    // stop here if form is invalid
+    if (this.signUpForm.invalid) {
+      return;
+    }
   }
-
 }
