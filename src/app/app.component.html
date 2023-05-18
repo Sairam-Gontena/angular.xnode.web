@@ -1,7 +1,7 @@
 <div class="w-100">
     <xnode-app-header></xnode-app-header>
     <div class="flex">
-        <div class="app-side-menu-wrapper">
+        <div class="app-side-menu-wrapper" *ngIf="isUserExists()">
             <xnode-app-side-menu></xnode-app-side-menu>
         </div>
         <div class="additional-info-wrapper">

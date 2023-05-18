@@ -1,0 +1,54 @@
+:host ::ng-deep .p-inputtext {
+    border-radius: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #4F4E55;
+    border: 0;
+    width: 670px;
+    color: #ffffff;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    box-shadow: none;
+}
+
+:host ::ng-deep .p-inputtext ::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+:host ::ng-deep .p-card-body {
+    background: #4E4D55;
+    border-radius: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+:host ::ng-deep .p-card-content {
+    height: 100%;
+}
+
+:host ::ng-deep .new-card .p-card .p-card-body {
+    height: 100% !important;
+}
+
+:host ::ng-deep .p-card {
+    border-radius: 20px;
+    background: #4E4D55;
+}
+
+:host ::ng-deep .p-card-header {
+    height: 199px;
+}
+
+:host ::ng-deep .p-card .p-card-title {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.active {
+    color: #02ADEE;
+}
+
+.letter-space-1 {
+    letter-spacing: 1px;
+}
