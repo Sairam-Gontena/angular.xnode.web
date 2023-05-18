@@ -12,8 +12,10 @@ import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 // import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 @NgModule({
-  declarations: [AppComponent, AppHeaderComponent, AppSideMenuComponent,
-    // SignUpComponent
+  declarations: [
+    AppComponent,
+    AppHeaderComponent,
+    AppSideMenuComponent,
   ],
   imports: [
     BrowserModule,
