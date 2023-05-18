@@ -1,0 +1,59 @@
+.card-footer {
+    font-size: 14px;
+    height: 20px;
+}
+
+.robot-img {
+    margin-left: -114px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.vertical-bar {
+    width: 1px;
+    background-color: #4C4545;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.background-image {
+    display: flex;
+    background-image: url('../../../assets/BG.svg');
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 15rem;
+}
+
+.logo {
+    flex: 0 0 auto;
+    width: 10rem !important;
+}
+
+.bot-image {
+    flex: 1 1 auto;
+    margin-top: 45px;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-content {
+    padding: 0px !important;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-header .p-dialog-header-icon {
+    display: none;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-header {
+    padding: 0px;
+}
+
+.card-width {
+    width: 33rem;
+}

@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'xnode';
+  visible: boolean = true;
+
+  showDialog() {
+    this.visible = true;
+  }
 }

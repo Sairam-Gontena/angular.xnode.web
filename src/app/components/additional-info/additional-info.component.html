@@ -1,0 +1,44 @@
+<div class="card flex  font-semibold-500 h-300">
+    <p-button (click)="showDialog()" label="show"></p-button>
+    <p-dialog [(visible)]="visible">
+        <div class="text-2xl card-width">
+            <div class="flex  background-image">
+                <div class="logo flex flex-column justify-content-start">
+                    <img src="../assets/xnode-logo.svg" class=" flex  mt-5 ml-4 text-white" alt="Logo">
+                    <div class=" w-21rem ml-4 mt-7">
+                        <p class="flex text-2xl text-white justify-content-end font-bold">Our cutting-edge No-Code
+                            Generative AI Platform</p>
+                    </div>
+                </div>
+                <div class=" flex bot-image justify-content-end mr-5">
+                    <img src="../assets/Robot.svg" class="w-9rem h-9rem" alt="Bot image">
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <p>Dear <span class="font-bold">Raymond Nelson,</span></p>
+                <p>Thank you for your interest. We would like to move forward with the onboarding process
+                    and collect additional details.</p>
+                <p>Please <a class="text-primary font-bold">click here</a> to provide additional
+                    information.</p>
+                <p>Thanks,<br><span class="font-bold">
+                        Xonde Team</span></p>
+            </div>
+            <div class="card-footer surface-100 text-sm  font-medium h-5rem">
+                <div class="flex justify-content-center font-medium">
+                    <div class="flex-item">
+                        <p>Help</p>
+                    </div>
+                    <div class="flex-item">
+                        <div class="vertical-bar"></div>
+                        <p class="ml-2">Privacy</p>
+                    </div>
+                    <div class="flex-item">
+                        <div class="vertical-bar"></div>
+                        <p class="ml-2">Terms and Conditions</p>
+                    </div>
+                </div>
+                <p class="text-center p-0 m-0 font-normal">© xnode, All Rights Reserved</p>
+            </div>
+        </div>
+    </p-dialog>
+</div>
