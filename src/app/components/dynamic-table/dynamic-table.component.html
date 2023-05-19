@@ -1,14 +1,85 @@
 <div class="container">
-     <p-table [value]="dynamicData" [columns]="headers">
+     <p-table #dt [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" [globalFilterFields]="headers"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+          [value]="dynamicData" [columns]="headers">
+          <ng-template pTemplate="caption">
+               <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">{{heading}}</h5>
+                    <span class="p-input-icon-left">
+                         <i class="pi pi-search"></i>
+                         <input pInputText type="text" (input)="dt.filterGlobal($any($event.target)?.value, 'contains')"
+                              placeholder="Search..." />
+                    </span>
+               </div>
+          </ng-template>
           <ng-template pTemplate="header" let-columns>
                <tr>
-                    <th *ngFor="let col of headers">{{col}}</th>
+                    <th style="width: 4rem">
+                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of headers" style="min-width:15rem">
+                         <div class="flex align-items-center">
+                              {{col | titlecase}}
+                              <p-sortIcon class="ml-2 mr-2" field={{col}}></p-sortIcon>
+                              <p-columnFilter type="text" field={{col}} display="menu"></p-columnFilter>
+                         </div>
+                    </th>
+                    <th>Actions</th>
                </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
+
+
+
+          <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing"
+               *ngIf="editable; else elseBlock">
                <tr>
-                    <td *ngFor="let col of headers">{{ rowData[col] }}</td>
+                    <td>
+                         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of headers" [pEditableColumn]="rowData[col]" pEditableColumnField="col">
+                         <p-cellEditor [ngSwitch]="col">
+                              <ng-template pTemplate="output" *ngSwitchCase="'image'">
+                                   <img [src]="rowData[col]" width="120px" height="95px" alt="image" />
+                              </ng-template>
+                              <ng-template pTemplate="input" *ngSwitchDefault>
+                                   <input pInputText type="text" [(ngModel)]="rowData[col]" />
+                              </ng-template>
+                              <ng-template pTemplate="output" *ngSwitchDefault>
+                                   {{ rowData[col] }}
+                              </ng-template>
+                         </p-cellEditor>
+                    </td>
+                    <td class="flex">
+                         <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue" (click)="editableFunc()"></i>
+                         <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
+                    </td>
                </tr>
           </ng-template>
+
+          <ng-template pTemplate="body" let-rowData let-columns="columns" #elseBlock>
+               <tr>
+                    <td>
+                         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of headers">
+                         <span [ngSwitch]="col">
+                              <span *ngSwitchCase="'image'">
+                                   <img [src]="rowData[col]" width="120px" height="95px" alt="image" />
+                              </span>
+                              <span *ngSwitchDefault>
+                                   {{ rowData[col] }}
+                              </span>
+                         </span>
+                    </td>
+                    <td>
+                         <span class="flex">
+                              <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue"
+                                   (click)="editableFunc()"></i>
+                              <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
+                         </span>
+                    </td>
+               </tr>
+          </ng-template>
+
      </p-table>
 </div>

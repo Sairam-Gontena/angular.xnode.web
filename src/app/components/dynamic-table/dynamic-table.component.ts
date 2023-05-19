@@ -13,16 +13,21 @@ export class DynamicTableComponent implements OnInit {
   dynamicData: any;
   headers: any;
   values: any;
+  heading: string = "Users";
+  editable: boolean | undefined;
 
   ngOnInit(): void {
+    this.editable = false;
     this.dynamicData = dynamicTable?.dynamicTable;
-
     this.headers = Object.keys(this.dynamicData[0]);
     this.values = Object.values(this.dynamicData)
   }
 
-  parseFieldInData(data: any, field: string) {
-    return data.field;
+  editableFunc() {
+    if (this.editable == true) {
+      this.editable = false;
+    } else {
+      this.editable = true;
+    }
   }
-
 }

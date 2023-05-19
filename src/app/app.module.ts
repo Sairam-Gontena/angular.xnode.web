@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { KtdGridModule } from '@katoid/angular-grid-layout';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ERGeneratorModule } from './er-generator/generator.module';
 import { AppHeaderComponent } from './components/app-header/app-header.component';
@@ -28,6 +29,7 @@ import { TableModule } from 'primeng/table';
     CommonModule,
     KtdGridModule,
     PrimeModulesModule,
+    FormsModule,
     ReactiveFormsModule,
     // CUSTOM
     ERGeneratorModule,
