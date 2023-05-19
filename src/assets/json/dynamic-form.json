@@ -1,0 +1,72 @@
+{
+     "dynamicForm": [
+          {
+               "label": "Text Field",
+               "type": "text",
+               "required": true,
+               "regex": "",
+               "width": "",
+               "errorMessage": ""
+          },
+          {
+               "label": "Text Area",
+               "type": "textArea",
+               "required": true,
+               "regex": "",
+               "width": "",
+               "errorMessage": ""
+          },
+          {
+               "label": "Dropdown",
+               "type": "select",
+               "required": true,
+               "regex": "",
+               "width": "",
+               "errorMessage": "",
+               "options": [
+                    {
+                         "label": "options 1",
+                         "value": "op1"
+                    },
+                    {
+                         "label": "options 2",
+                         "value": "op2"
+                    }
+               ]
+          },
+          {
+               "label": "Dropdown",
+               "type": "multiSelect",
+               "required": true,
+               "regex": "",
+               "width": "",
+               "errorMessage": "",
+               "options": [
+                    {
+                         "label": "options 1",
+                         "value": "op1"
+                    },
+                    {
+                         "label": "options 2",
+                         "value": "op2"
+                    }
+               ]
+          },
+          {
+               "label": "Radio",
+               "type": "radio",
+               "required": true,
+               "regex": "",
+               "width": "",
+               "errorMessage": ""
+          },
+          {
+               "label": "Checkbox",
+               "type": "checkbox",
+               "required": true,
+               "regex": "",
+               "width": "",
+               "errorMessage": ""
+          }
+     ]
+}

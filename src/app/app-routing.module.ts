@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
     path: '',
     redirectTo: '',
     pathMatch: 'full'
+  },
+  {
+    path: 'dynamic-table',
+    component: DynamicTableComponent
   }
 ];
 
