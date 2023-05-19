@@ -12,6 +12,7 @@ import { AppSideMenuComponent } from './components/app-side-menu/app-side-menu.c
 import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
 import { TableModule } from 'primeng/table';
+// import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [

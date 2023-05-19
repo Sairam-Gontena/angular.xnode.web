@@ -5,7 +5,8 @@ import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
+    loadChildren: () => import('./pages/sign-up/signup.module').then(m => m.SignUpModule)
+
   },
   {
     path: 'home',
