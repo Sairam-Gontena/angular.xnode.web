@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     CardModule,
     DropdownModule,
-    AccordionModule
+    AccordionModule,
+    DialogModule
   ],
   exports: [
     CommonModule,
@@ -23,8 +25,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     CardModule,
     DropdownModule,
-    AccordionModule
-
+    AccordionModule,
+    DialogModule,
   ]
 })
 export class PrimeModulesModule { }
