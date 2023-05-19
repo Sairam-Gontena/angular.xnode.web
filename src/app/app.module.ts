@@ -10,6 +10,7 @@ import { AppHeaderComponent } from './components/app-header/app-header.component
 import { AppSideMenuComponent } from './components/app-side-menu/app-side-menu.component';
 import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 import { AdditionalInfoComponent } from './components/additional-info/additional-info.component';
+// import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [

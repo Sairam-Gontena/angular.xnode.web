@@ -1,0 +1,28 @@
+.sign-up-img {
+    background-color: #000759;
+}
+
+.signup-color {
+    color: #000759;
+}
+
+.heading {
+    font-weight: 700;
+    font-size: 54px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.form-container {
+    margin-left: 225px;
+    margin-right: 225px;
+}
+
+:host ::ng-deep .p-button {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.invalid-feedback {
+    color: red;
+}
