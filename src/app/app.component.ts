@@ -11,4 +11,5 @@ export class AppComponent {
   isUserExists() {
     return Boolean(localStorage.getItem('currentUser'));
   }
+
 }

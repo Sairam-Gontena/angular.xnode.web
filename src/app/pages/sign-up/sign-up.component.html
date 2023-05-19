@@ -71,7 +71,7 @@
                     </div>
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
                         <p-button label="Create Account" styleClass="p-button-rounded  font-medium text-lg"
-                            icon="pi pi-angle-right" iconPos="right" (click)="onSubmit()"></p-button>
+                            icon="pi pi-angle-right" iconPos="right" (click)="onClickSignUp()" routerLink=""></p-button>
                     </div>
                 </div>
             </form>
@@ -91,3 +91,4 @@
         </div>
     </div>
 </div>
+<xnode-additional-info [visible]="visible"></xnode-additional-info>

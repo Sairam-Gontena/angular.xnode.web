@@ -6,11 +6,13 @@ import { SignUpComponent } from './sign-up.component';
 import { SignUpRoutingModule } from './signup-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { AdditionalInfoComponent } from 'src/app/components/additional-info/additional-info.component';
+import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
 
 @NgModule({
     declarations: [
-        SignUpComponent
+        SignUpComponent,
+        AdditionalInfoComponent
     ],
     imports: [
         CommonModule,
@@ -18,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         KtdGridModule,
         ButtonModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        PrimeModulesModule
 
     ]
 })
