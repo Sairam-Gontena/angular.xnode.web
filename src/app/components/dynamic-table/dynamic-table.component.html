@@ -2,8 +2,8 @@
      <!-- (onCellEditComplete)="onCellEditComplete($event)" -->
      <p-table #dt [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" [globalFilterFields]="headers"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
-          styleClass="p-datatable-gridlines" scrollDirection="horizontal" responsiveLayout="scroll"
-          [tableStyle]="{ width: 'max-content'}" [value]="dynamicData" [columns]="headers">
+          [autoLayout]="true" scrollDirection="horizontal" [tableStyle]="{ 'width':'100%','overflow':'auto!important'}"
+          [value]="dynamicData" [columns]="headers">
           <ng-template pTemplate="caption">
                <div class="flex align-items-center justify-content-between">
                     <h5 class="m-0">{{heading}}</h5>
@@ -16,17 +16,17 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
                <tr>
-                    <th style="width: 4rem">
+                    <th>
                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <th *ngFor="let col of headers" style="min-width:15rem">
+                    <th *ngFor="let col of headers">
                          <div class="flex align-items-center">
                               {{col | titlecase}}
                               <p-sortIcon class="ml-2 mr-2" field={{col}}></p-sortIcon>
                               <p-columnFilter type="text" field={{col}} display="menu"></p-columnFilter>
                          </div>
                     </th>
-                    <th>Actions</th>
+                    <!-- <th>Actions</th> -->
                </tr>
           </ng-template>
 
@@ -38,7 +38,7 @@
                     <td *ngFor="let col of headers" [pEditableColumn]="rowData[col]" pEditableColumnField="col">
                          <p-cellEditor [ngSwitch]="col">
                               <ng-template pTemplate="output" *ngSwitchCase="'image'">
-                                   <img [src]="rowData[col]" width="120px" height="95px" alt="image" />
+                                   <img [src]="rowData[col]" width="100px" height="90px" alt="image" />
                               </ng-template>
                               <ng-template pTemplate="input" *ngSwitchDefault>
                                    <input id={{rowData.id}} pInputText type="text" [(ngModel)]="rowData[col]"
@@ -49,10 +49,10 @@
                               </ng-template>
                          </p-cellEditor>
                     </td>
-                    <td class="flex">
+                    <!-- <td class="flex">
                          <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue" (click)="editableFunc()"></i>
                          <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
-                    </td>
+                    </td> -->
                </tr>
 
                <tr *ngIf="notEditable">

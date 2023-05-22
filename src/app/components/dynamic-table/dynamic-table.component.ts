@@ -14,8 +14,8 @@ export class DynamicTableComponent implements OnInit {
   headers: any;
   values: any;
   heading: string = "Users";
-  public editable: boolean = false;
-  public notEditable: boolean = true;
+  public editable: boolean = true;
+  public notEditable: boolean = false;
   ngOnInit(): void {
     this.dynamicData = dynamicTable?.dynamicTable;
     this.headers = Object.keys(this.dynamicData[0]);
