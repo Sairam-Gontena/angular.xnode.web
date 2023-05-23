@@ -41,5 +41,4 @@ stages:
               azureSubscription: 'xnode-spn'
               appType: 'webAppLinux'
               WebAppName: 'dev-angular-xnode'
-              packageForLinux: '$(System.DefaultWorkingDirectory)'
-              RuntimeStack: 'NODE|18-lts'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
