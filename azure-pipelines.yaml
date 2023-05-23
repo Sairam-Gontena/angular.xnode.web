@@ -27,8 +27,9 @@ stages:
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            mapfile -t group_array <<<$(az group list --query "[].name" -o tsv) name=$(CLIENT)$(APP)-$(ENV) if [[ ! " ${group_array[@]} " =~ " ${name} " ]]; then az group create -l $(LOCATION) -n $(CLIENT)$(APP)-$(ENV) else echo "ResourceGroup with name $name already Exists" fi
-            mapfile -t strg_array <<<$(az storage account list --query "[].name" -o tsv) name=$(CLIENT)$(APP)-$(ENV) if [[ ! " ${strg_array[@]} " =~ " ${name} " ]]; then az storage account create -n $(CLIENT)$(APP)$(ENV) -g $(CLIENT)$(APP)-$(ENV) -l $(LOCATION) --sku Standard_LRS az storage container create --account-name $(CLIENT)$(APP)$(ENV) -n terraform else echo "Storage with name $name already Exists" fi
+            mapfile -t group_array <<<$(az group list --query "[].name" -o tsv)
+            name=$(CLIENT)$(APP)-$(ENV)
+            if [[ ! " ${group_array[@]} " =~ " ${name} " ]]; then az group create -l $(LOCATION) -n $(CLIENT)$(APP)-$(ENV); else echo "ResourceGroup with name $name already Exists"; fi
           workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
 
       - task: TerraformInstaller@0
