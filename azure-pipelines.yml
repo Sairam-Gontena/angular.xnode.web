@@ -25,37 +25,14 @@ stages:
             inputs:
               targetType: 'inline'
               script: 'npm i --force'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
           
           - task: Bash@3
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
               script: 'npm run build'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/**/*.zip'
-          
-          - task: PublishPipelineArtifact@1
-            displayName: "Publish Artifacts"
-            inputs:
-              targetPath: '$(System.DefaultWorkingDirectory)/**/*.zip/build'
-              artifact: 'frontendApp'
-              publishLocation: 'pipeline'
-
-  - stage: deploy 
-    dependsOn: build
-    displayName: "Deploy to Azure"
-    jobs:
-      - job: Deploy
-        displayName: "Push Artifacts to WebApp"
-        pool:
-          vmImage: "ubuntu-latest"
-        steps:
-          - task: DownloadPipelineArtifact@2
-            displayName: "Download Pipeline Artifacts"
-            inputs:
-              buildType: 'current'
-              artifactName: 'frontendApp'
-              targetPath: '$(Build.ArtifactStagingDirectory)'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
             displayName: "Deploy to Azure WebApp"
@@ -64,5 +41,5 @@ stages:
               azureSubscription: 'xnode-spn'
               appType: 'webAppLinux'
               WebAppName: 'dev-angular-xnode'
-              packageForLinux: '$(Build.ArtifactStagingDirectory)'
+              packageForLinux: '$(System.DefaultWorkingDirectory)'
               RuntimeStack: 'NODE|18-lts'
