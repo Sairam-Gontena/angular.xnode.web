@@ -23,7 +23,7 @@ stages:
       - task: AzureCLI@2
         displayName: Create Resource Group & Storage Account
         inputs:
-          azureSubscription: 'xnode-spn'
+          azureSubscription: $(XNODE-ADO-PROJECT)-spn
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: >-
@@ -64,7 +64,7 @@ stages:
         displayName: 'Terraform : Plan & Apply'
         inputs:
           workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
-          azureSubscription: 'xnode-spn'
+          azureSubscription: $(XNODE-ADO-PROJECT)-spn
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: terraform apply -auto-approve -var='name=$(CLIENT)' -var='app=$(APP)' -var='env=$(ENV)' -var='location=$(LOCATION)'  -var='app_service_names=$(APPS)'
