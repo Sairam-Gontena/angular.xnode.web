@@ -7,13 +7,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-
-
   signUpForm: FormGroup;
   submitted: boolean = false;
   router: any;
-  signupcomponent!: SignUpComponent;
-  visible: boolean = false;
+  openaddtionalinfopopup: boolean = false;
 
   constructor(private formBuilder: FormBuilder) {
     this.signUpForm = this.formBuilder.group({
@@ -35,7 +32,7 @@ export class SignUpComponent implements OnInit {
     }
   }
   onClickSignUp() {
-    this.visible = true;
+    this.openaddtionalinfopopup = true;
 
   }
 }
