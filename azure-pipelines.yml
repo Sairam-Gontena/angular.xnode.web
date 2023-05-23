@@ -2,30 +2,67 @@
 # Build a general Node.js project with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-- develop
+  - develop
 
-pool:
-  vmImage: ubuntu-latest
+stages:
+  - stage: build
+    displayName: "Build"
+    jobs:
+      - job: build_test
+        displayName: "Build"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSource: 'spec'
+              versionSpec: '18.x'
+            displayName: "Install Node.js"
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+          - task: Bash@3
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'npm i --force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          
+          - task: Bash@3
+            displayName: "Create Build"
+            inputs:
+              targetType: 'inline'
+              script: 'npm run build'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Artifacts"
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/**/*.zip/build'
+              artifact: 'frontendApp'
+              publishLocation: 'pipeline'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+  - stage: deploy 
+    dependsOn: build
+    displayName: "Deploy to Azure"
+    jobs:
+      - job: Deploy
+        displayName: "Push Artifacts to WebApp"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: "Download Pipeline Artifacts"
+            inputs:
+              buildType: 'current'
+              artifactName: 'frontendApp'
+              targetPath: '$(Build.ArtifactStagingDirectory)'
 
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'xnode-spn'
-    appType: 'webAppLinux'
-    WebAppName: 'dev-angular-xnode'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    RuntimeStack: 'NODE|18-lts'
-    StartupCommand: 'npm run ng serve'
+          - task: AzureRmWebAppDeployment@4
+            displayName: "Deploy to Azure WebApp"
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'xnode-spn'
+              appType: 'webAppLinux'
+              WebAppName: 'dev-angular-xnode'
+              packageForLinux: '$(Build.ArtifactStagingDirectory)'
+              RuntimeStack: 'NODE|18-lts'
