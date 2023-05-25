@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { WorkspaceComponent } from '../workspace/workspace.component';
-import { BrandGuidelinesComponent } from '../brand-guidelines/brand-guidelines.component';
+import { WorkspaceComponent } from '../../components/workspace/workspace.component';
+import { BrandGuidelinesComponent } from '../../components/brand-guidelines/brand-guidelines.component';
 @Component({
   selector: 'xnode-onboarding',
   templateUrl: './onboarding.component.html',
@@ -9,10 +9,10 @@ import { BrandGuidelinesComponent } from '../brand-guidelines/brand-guidelines.c
 export class OnboardingComponent implements OnInit {
   // @ViewChild(WorkspaceComponent) workspaceComponent: WorkspaceComponent;
 
-  showContent: boolean = true;
-  showContent1: boolean = false;
-  showContent2: boolean = false;
-  showContent3: boolean = false;
+  stepOne: boolean = true;
+  stepTwo: boolean = false;
+  stepThree: boolean = false;
+  stepFour: boolean = false;
 
   selectedCategory: any = null;
 
@@ -25,30 +25,25 @@ export class OnboardingComponent implements OnInit {
   ngOnInit() {
     this.selectedCategory = this.categories[0];
   }
-  toggleContent() {
-    this.showContent1 = true;
-    this.showContent2 = false;
-    this.showContent3 = false;
-    this.showContent = false;
+  workspaceStep() {
+    this.stepTwo = true;
+    this.stepThree = false;
+    this.stepFour = false;
+    this.stepOne = false;
   }
-  toggleContent1() {
-    this.showContent1 = false;
-    this.showContent2 = true;
-    this.showContent = false;
-    this.showContent3 = false;
+  guidelineStep() {
+    this.stepTwo = false;
+    this.stepThree = true;
+    this.stepOne = false;
+    this.stepFour = false;
 
   }
-  toggleContent2() {
-    this.showContent3 = true;
-    this.showContent1 = false;
-    this.showContent2 = false;
-    this.showContent = false;
+  aboutStep() {
+    this.stepFour = true;
+    this.stepTwo = false;
+    this.stepThree = false;
+    this.stepOne = false;
   }
-  toggleContent3() {
-    // this.showContent3 = true;
-    // this.showContent1 = false;
-    // this.showContent2 = false;
-    // this.showContent = true;
-  }
+
 
 }

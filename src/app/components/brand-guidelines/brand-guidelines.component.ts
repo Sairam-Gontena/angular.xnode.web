@@ -6,19 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./brand-guidelines.component.scss']
 })
 export class BrandGuidelinesComponent {
-  showContent: boolean = true;
-  showContent1: boolean = false;
-  showContent2: boolean = false;
-  showContent3: boolean = false;
+
   files: any[] = [];
 
-  toggleContent1() {
-    this.showContent1 = false;
-    this.showContent2 = true;
-    this.showContent = false;
-    this.showContent3 = false;
-
-  }
   onFileDropped($event: any) {
     this.prepareFilesList($event);
   }

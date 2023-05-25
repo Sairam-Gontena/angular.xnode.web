@@ -11,11 +11,11 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { OnboardingRoutingModule } from './onboarding-routing.module';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { BrandGuidelinesComponent } from '../brand-guidelines/brand-guidelines.component';
-import { WorkspaceComponent } from '../workspace/workspace.component';
-import { AboutYourSelfComponent } from '../about-your-self/about-your-self.component';
-import { ExportGetStartedComponent } from '../export-get-started/export-get-started.component';
-import { ExportComponent } from '../export/export.component';
+import { BrandGuidelinesComponent } from '../../components/brand-guidelines/brand-guidelines.component';
+import { WorkspaceComponent } from '../../components/workspace/workspace.component';
+import { AboutYourSelfComponent } from '../../components/about-your-self/about-your-self.component';
+import { ExportGetStartedComponent } from '../../components/export-get-started/export-get-started.component';
+import { ExportComponent } from '../../components/export/export.component';
 
 
 @NgModule({
