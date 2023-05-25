@@ -13,7 +13,6 @@ export class TemplatesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.removeItem('currentUser');
   }
 
   onClickCreateNewTemplate(): void {

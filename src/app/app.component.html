@@ -1,11 +1,13 @@
-<!-- <div class="w-100">
-    <xnode-app-header></xnode-app-header>
-    <div class="flex">
-        <div class="app-side-menu-wrapper" *ngIf="isUserExists()">
-            <xnode-app-side-menu></xnode-app-side-menu>
-        </div>
-        <div class="app-body-wrapper">
-            <router-outlet></router-outlet>
+<div class="w-100">
+    <div class="w-100" *ngIf="isUserExists()">
+        <xnode-app-header></xnode-app-header>
+        <div class="flex">
+            <div class="app-side-menu-wrapper">
+                <xnode-app-side-menu></xnode-app-side-menu>
+            </div>
+            <div class="app-body-wrapper">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </div>
-</div> --> <router-outlet></router-outlet>
+    <router-outlet *ngIf="!isUserExists()"></router-outlet>
