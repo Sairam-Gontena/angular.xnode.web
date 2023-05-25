@@ -66,7 +66,9 @@ export class BrandGuidelinesComponent {
   prepareFilesList(files: Array<any>) {
     for (const item of files) {
       item.progress = 0;
-      this.files.push(item);
+      if (this.files) {
+        this.files.push(item);
+      }
     }
     this.uploadFilesSimulator(0);
   }
