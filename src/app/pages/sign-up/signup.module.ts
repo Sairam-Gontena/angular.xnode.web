@@ -5,7 +5,7 @@ import { SignUpRoutingModule } from './signup-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdditionalInfoComponent } from 'src/app/components/additional-info/additional-info.component';
 import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
-
+import { DividerModule } from 'primeng/divider';
 @NgModule({
     declarations: [
         SignUpComponent,
@@ -16,7 +16,8 @@ import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
         SignUpRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        PrimeModulesModule
+        PrimeModulesModule,
+        DividerModule
     ]
 })
 export class SignUpModule { }
