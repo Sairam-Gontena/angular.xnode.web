@@ -1,5 +1,5 @@
-<div class="w-100">
-    <div class="w-100" *ngIf="isUserExists()">
+<div class="w-full h-full">
+    <div class="w-full" *ngIf="isUserExists()">
         <xnode-app-header></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper">
@@ -11,3 +11,4 @@
         </div>
     </div>
     <router-outlet *ngIf="!isUserExists()"></router-outlet>
+</div>

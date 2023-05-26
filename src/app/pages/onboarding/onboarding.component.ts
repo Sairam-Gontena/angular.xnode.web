@@ -24,6 +24,7 @@ export class OnboardingComponent implements OnInit {
 
   ngOnInit() {
     this.selectedCategory = this.categories[0];
+    localStorage.removeItem('currentUser');
   }
   workspaceStep() {
     this.stepTwo = true;
