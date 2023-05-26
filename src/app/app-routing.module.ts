@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { GeneratorComponent } from './er-generator/generator.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
   {
+    path: 'er-diagram',
+    component: GeneratorComponent,
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full'
@@ -28,6 +33,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }
