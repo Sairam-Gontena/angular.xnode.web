@@ -1,0 +1,52 @@
+<div class="card-content">
+    <p class="text-500 font-normal text-2xl text-center">Step 2/4</p>
+    <h1 class="heading-color text-6xl font-bold text-center">
+        Welcome to xnode
+    </h1>
+    <p class="text-2xl font-semibold text-center -mt-4 mx-2">Please provide brand guidelines.</p>
+    <div class="field col-10 sm:col-12 md:col-12 lg:col-10 xl:col-10 mx-7 mt-5">
+        <label htmlFor="workspace" class="font-medium text-base">Workspace Name</label>
+        <div class="align-items-center p-2 border-1 surface-border border-round-3xl w-11">
+            <p class="m-0 pl-2 font-normal text-base ">
+                FinBuddy
+            </p>
+        </div>
+    </div>
+    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-7 mt-5">
+        <label htmlFor="logo" class="font-medium text-base">Upload Logo</label>
+        <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
+            <div class="field col-5 align-items-center">
+                <input type="file" #fileDropRef id="fileDropRef" (change)="fileBrowseHandler($any($event).target.files)"
+                    *ngIf="files.length == 0; else elseBlock" />
+                <ng-template #elseBlock>
+                    <input type="file" #fileDropRef id="fileDropRef"
+                        (change)="fileBrowseHandler($any($event).target.files)" disabled />
+                </ng-template>
+                <img src="./assets/sky.svg" width="64px">
+                <h3 class="font-semibold text-sm">Drag and Drop </h3>
+            </div>
+            <div class="field col-2 ">
+                <h3 class="mt-5 font-semibold text-sm">( OR )</h3>
+            </div>
+            <div class="field col-5 mt-5">
+                <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm"
+                    styleClass=" p-button-outlined"></p-button>
+            </div>
+            <div class="font-semibold text-sm text-500">
+                Supported file types JPG, PNG (upload file size limit 2MB)
+            </div>
+        </div>
+        <div class="files-list">
+            <div class="single-file" *ngFor="let file of files; let i = index">
+                <div class="info">
+                    <h4 class="name">
+                        {{ file?.name }}
+                    </h4>
+                </div>
+                <div class="delete" (click)="deleteFile(i)">
+                    <i class="pi pi-trash" style="font-size: 1.5rem"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
