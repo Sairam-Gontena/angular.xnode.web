@@ -31,14 +31,6 @@ export class SignUpComponent implements OnInit {
 
   get signUp() { return this.signUpForm.controls; }
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.signUpForm.invalid) {
-      return;
-    }
-    localStorage.setItem('currentUser', String(true));
-    this.router.navigate(['/template-builder']);
-  }
   onClickSignUp() {
     this.openaddtionalinfopopup = true;
 

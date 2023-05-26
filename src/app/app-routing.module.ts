@@ -5,16 +5,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/sign-up/signup.module').then(m => m.SignUpModule)
-
   },
-
   {
     path: 'onboarding',
     loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule)
   },
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+    path: 'my-templates',
+    loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
   },
   {
     path: 'template-builder',
