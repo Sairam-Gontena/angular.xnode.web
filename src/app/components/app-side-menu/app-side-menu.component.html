@@ -1,1 +1,12 @@
-side-menu
+<div class="side-menu-item active flex align-content-center justify-content-center flex-wrap"
+    *ngFor="let item of sideMenuItems;let i = index;" (click)="this.selectedMenuIndex = i"
+    [ngClass]="{'active': i === selectedMenuIndex  }">
+    <div class="flex flex-column">
+        <div class="text-center">
+            <img [src]="item.icon" alt="item.label">
+        </div>
+        <div class="mt-2">
+            {{item.label}}
+        </div>
+    </div>
+</div>

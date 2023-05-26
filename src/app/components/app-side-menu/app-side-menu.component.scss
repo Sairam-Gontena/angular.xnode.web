@@ -1,0 +1,16 @@
+.side-menu-item {
+    height: 80px;
+    color: #ffffff;
+    width: 100%;
+    font-size: 8px;
+    cursor: pointer;
+}
+
+.side-menu-item:hover {
+    background: #44414e;
+
+}
+
+.active {
+    background: #302E38;
+}

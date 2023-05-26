@@ -1,14 +1,14 @@
-<div class="grid">
-    <div class="col-12 p-0 app-header-wrapper">
+<div class="w-full h-full">
+    <div class="w-full" *ngIf="isUserExists()">
         <xnode-app-header></xnode-app-header>
-    </div>
-    <div class="col-12 p-0 flex">
-        <div class="app-side-menu-wrapper">
-            <xnode-app-side-menu></xnode-app-side-menu>
+        <div class="flex">
+            <div class="app-side-menu-wrapper">
+                <xnode-app-side-menu></xnode-app-side-menu>
+            </div>
+            <div class="app-body-wrapper">
+                <router-outlet></router-outlet>
+            </div>
         </div>
-        <div class="app-body-wrapper">
-            <router-outlet></router-outlet>
-        </div>
     </div>
-
+    <router-outlet *ngIf="!isUserExists()"></router-outlet>
 </div>
