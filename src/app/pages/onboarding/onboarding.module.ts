@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OnboardingComponent } from './onboarding.component';
 import { OnboardingRoutingModule } from './onboarding-routing.module';
-import { BrandGuidelinesComponent } from '../../components/brand-guidelines/brand-guidelines.component';
-import { WorkspaceComponent } from '../../components/workspace/workspace.component';
-import { AboutYourSelfComponent } from '../../components/about-your-self/about-your-self.component';
-import { ExportGetStartedComponent } from '../../components/export-get-started/export-get-started.component';
-import { ExportComponent } from '../../components/export/export.component';
 import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
+import { BrandGuidelinesComponent } from './brand-guidelines/brand-guidelines.component';
+import { ExportGetStartedComponent } from './export-get-started/export-get-started.component';
+import { ExportComponent } from './export/export.component';
+import { WorkspaceComponent } from './workspace/workspace.component';
+import { AboutYourSelfComponent } from 'src/app/pages/onboarding/about-your-self/about-your-self.component';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
         OnboardingRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        PrimeModulesModule
+        PrimeModulesModule,
+        ButtonModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

@@ -8,16 +8,40 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sign-up/signup.module').then(m => m.SignUpModule)
   },
   {
-    path: 'onboarding',
-    loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule)
-  },
-  {
     path: 'my-templates',
     loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
   },
   {
     path: 'template-builder',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
+  },
+  {
+    path: 'workspace',
+    loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule),
+    data: {
+      type: 'Workspace'
+    }
+  },
+  {
+    path: 'brand-guideline',
+    loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule),
+    data: {
+      type: 'BrandGuidelines'
+    }
+  },
+  {
+    path: 'about-your-self',
+    loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule),
+    data: {
+      type: 'AboutYourSelf'
+    }
+  },
+  {
+    path: 'export-get-started',
+    loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule),
+    data: {
+      type: 'ExportGetStarted'
+    }
   },
   {
     path: 'er-diagram',

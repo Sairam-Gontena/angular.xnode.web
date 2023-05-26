@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-brand-guidelines',
   templateUrl: './brand-guidelines.component.html',
   styleUrls: ['./brand-guidelines.component.scss']
 })
-export class BrandGuidelinesComponent {
+export class BrandGuidelinesComponent implements OnInit {
 
+  constructor() { }
+  ngOnInit(): void {
+
+  }
   files: any[] = [];
 
   onFileDropped($event: any) {

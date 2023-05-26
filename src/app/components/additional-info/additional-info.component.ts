@@ -15,7 +15,7 @@ export class AdditionalInfoComponent {
   }
 
   navigateToOnBoarding(): void {
-    this.router.navigate(['/onboarding']);
+    this.router.navigate(['/workspace']);
   }
 }
 
