@@ -34,5 +34,6 @@ import { ButtonModule } from 'primeng/button';
   ],
   providers: [],
   bootstrap: [AppComponent],
+
 })
 export class AppModule { }
