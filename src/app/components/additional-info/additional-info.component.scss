@@ -7,13 +7,6 @@
     margin-left: -114px;
 }
 
-.vertical-bar {
-    width: 1px;
-    background-color: #4C4545;
-    height: 15px;
-    margin-right: 10px;
-}
-
 .click-here {
     color: #2C91FD;
 }
@@ -41,6 +34,12 @@
     margin-top: 45px;
 }
 
+
+:host ::ng-deep.p-divider.p-divider-vertical {
+    height: 20px;
+
+}
+
 :host ::ng-deep.p-dialog .p-dialog-content {
     padding: 0px !important;
 }
@@ -55,4 +54,16 @@
 
 .card-width {
     width: 33rem;
+}
+
+:host ::ng-deep.p-divider.p-divider-vertical {
+    padding: 0px !important;
+    margin-top: 7px;
+
+}
+
+
+:host ::ng-deep.p-divider.p-divider-vertical:before {
+    border-left: 2px solid red !important;
+
 }
