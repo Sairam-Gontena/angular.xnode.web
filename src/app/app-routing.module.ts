@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
   {
+    path: 'chats',
+    loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatModule)
+  },
+  {
     path: 'workspace',
     loadChildren: () => import('./pages/onboarding/onboarding.module').then(m => m.OnboardingModule),
     data: {

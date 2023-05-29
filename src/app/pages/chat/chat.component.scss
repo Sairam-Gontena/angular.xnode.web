@@ -1,0 +1,19 @@
+.bg-blue{
+    background-color: #000759;
+}
+.grid-chat{
+    margin-left: 26rem;
+    margin-right: 38rem;
+}
+.bot-align{
+    margin-left: 40rem;
+}
+:host ::ng-deep .export {
+    border-top-left-radius: 4rem !important;
+    border-top-right-radius: 0rem !important;
+    border-bottom-right-radius: 4rem !important;
+    border-bottom-left-radius: 4rem !important;
+    background: #E4E7FB;
+    color: #000759;
+    width: 658px;
+}

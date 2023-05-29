@@ -20,6 +20,7 @@ import { ButtonModule } from 'primeng/button';
         AboutYourSelfComponent,
         ExportGetStartedComponent,
         ExportComponent,
+
     ],
     imports: [
         CommonModule,
