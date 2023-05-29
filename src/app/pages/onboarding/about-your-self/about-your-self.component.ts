@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-about-your-self',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AboutYourSelfComponent {
 
+  constructor() { }
   selectedCategory: any = null;
 
   categories: any[] = [

@@ -5,8 +5,9 @@ import { OnboardingComponent } from './onboarding.component';
 const routes: Routes = [
     {
         path: '',
-        component: OnboardingComponent
-    }
+        component: OnboardingComponent,
+    },
+
 ];
 
 @NgModule({
