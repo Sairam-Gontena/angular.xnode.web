@@ -1,12 +1,14 @@
-.bg-blue{
-    background-color: #000759;
-}
+
 .grid-chat{
     margin-left: 26rem;
     margin-right: 38rem;
+    margin-bottom: 12.37rem;
 }
 .bot-align{
     margin-left: 40rem;
+}
+.user-align{
+    margin-left: -3rem;
 }
 :host ::ng-deep .export {
     border-top-left-radius: 4rem !important;
@@ -16,4 +18,28 @@
     background: #E4E7FB;
     color: #000759;
     width: 658px;
+}
+:host ::ng-deep .user-export {
+    border-top-left-radius: 0rem !important;
+    border-top-right-radius: 4rem !important;
+    border-bottom-right-radius: 4rem !important;
+    border-bottom-left-radius: 4rem !important;
+    background: #FFFFFF;
+    color: #000759;
+    width: 658px;
+}
+:host ::ng-deep .home-button{
+    margin-left: 520px;
+
+}
+.bg-image {
+    top: 0;
+    width: 100%;
+    height: auto;
+    background-image: url('/assets/bg-pink.svg');
+    background-position: center bottom;
+    background-repeat: no-repeat;
+  }
+  .bg-blue{
+    background-color: #000759 !important;
 }
