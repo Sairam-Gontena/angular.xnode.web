@@ -3,15 +3,14 @@
     height: 20px;
 }
 
-.robot-img {
-    margin-left: -114px;
+.click-here {
+    color: #2C91FD;
 }
 
-.vertical-bar {
-    width: 1px;
-    background-color: #4C4545;
-    height: 15px;
-    margin-right: 10px;
+.ai-platform {
+    width: 21rem;
+    margin-left: 2rem;
+    margin-top: 5rem;
 }
 
 .background-image {
@@ -23,7 +22,6 @@
 }
 
 .logo {
-
     width: 10rem !important;
 }
 
@@ -31,6 +29,7 @@
     flex: 1 1 auto;
     margin-top: 45px;
 }
+
 
 :host ::ng-deep.p-dialog .p-dialog-content {
     padding: 0px !important;
@@ -46,4 +45,13 @@
 
 .card-width {
     width: 33rem;
+}
+
+:host ::ng-deep.p-divider.p-divider-vertical {
+    padding: 0px !important;
+    margin: 0 8px;
+}
+
+:host ::ng-deep.p-divider.p-divider-vertical:before {
+    border-left: 1px solid #4C4545 !important;
 }
