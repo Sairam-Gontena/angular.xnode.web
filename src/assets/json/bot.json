@@ -1,18 +1,35 @@
 {
-    "botChat": [
-         {
-              "ID": "1",
-              "name": "Hi Raymond Nelson, I'm your xbot. What would you like to create today?"
-              
-         },
-         {
-              "ID": "2",
-              "name": "Got it, what other services  would you like to offer?"
-              
-         },
-         {
-              "ID": "3",
-              "name": "Understood! Finally, what type of integrations would you like to have with other financial institutions?"
-         }
-    ]
+     "botChat": [
+          {
+               "ID": "1",
+               "name": "Hi Raymond Nelson, I'm your xbot. What would you like to create today?",
+               "type": "bot"
+          },
+          {
+               "ID": "2",
+               "name": " I want to build an app that helps track expenses and income.",
+               "type": "user"
+          },
+          {
+               "ID": "3",
+               "name": "Got it, what other services  would you like to offer?",
+               "type": "bot"
+          },
+          {
+               "ID": "4",
+               "name": " I also would like for users to create budgets, and set their financial goals.",
+               "type": "user"   
+          },
+          {
+               "ID": "5",
+               "name": "Understood! Finally, what type of integrations would you like to have with other financial institutions?",
+               "type": "bot"
+          },
+          {
+               "ID": "6",
+               "name": "I would like the app to be able to connect to users' bank accounts and other financial institutions.",
+               "type": "user"
+
+          }
+     ]
 }
