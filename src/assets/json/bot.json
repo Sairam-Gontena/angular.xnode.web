@@ -1,0 +1,18 @@
+{
+    "botChat": [
+         {
+              "ID": "1",
+              "name": "Hi Raymond Nelson, I'm your xbot. What would you like to create today?"
+              
+         },
+         {
+              "ID": "2",
+              "name": "Got it, what other services  would you like to offer?"
+              
+         },
+         {
+              "ID": "3",
+              "name": "Understood! Finally, what type of integrations would you like to have with other financial institutions?"
+         }
+    ]
+}

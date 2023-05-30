@@ -11,23 +11,25 @@
         </div>
     </div>
     <div class="grid text-white grid-chat">
-        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngFor="let data of botData;">
             <img src="./assets/bot.svg" alt="x-logo" width="14%" class="bot-align">
-            <div class="flex flex-wrap p-3 border-0 export">
+            <div class="flex flex-wrap p-3 border-0 export" >
                 <p class="m-0 font-normal text-2xl  pointer" >
-                    Hi <b class="font-bold">Raymond Nelson</b>, I'm your xbot. What would you like to create today?
+                  {{data.name}}
                 </p>
             </div> 
         </div>
-        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngFor="let data of userData;">
             <img src="./assets/user-bot.svg" alt="x-logo" width="18%" class="user-align">
             <div class="flex flex-wrap p-3 border-0 user-export">
                 <p class="m-0 font-normal text-2xl  pointer">
+                    {{data.name}}
                     I want to build an app that helps track expenses and income.
                 </p>
             </div>
         </div>
         <!-- <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+              Hi <b class="font-bold">Raymond Nelson</b>, I'm your xbot. What would you like to create today?
             <img src="./assets/bot.svg" alt="x-logo" width="14%" class="bot-align">
             <div class="flex flex-wrap p-3 border-0 export">
                 <p class="m-0 font-normal text-2xl  pointer" >
