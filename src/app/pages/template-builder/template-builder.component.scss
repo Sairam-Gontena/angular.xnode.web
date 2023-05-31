@@ -14,7 +14,14 @@
     height: calc(100vh - 42px);
     overflow-y: auto;
 }
-
+.template-side-menu{
+    width: 60px;
+    // width: calc(100% - 360px);
+    
+}
+.template-header{
+    width: calc(100% - 60px);
+}
 :host ::ng-deep .p-inputtext {
     border-radius: 25px;
     padding-top: 10px;

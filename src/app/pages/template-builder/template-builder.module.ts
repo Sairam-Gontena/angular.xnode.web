@@ -6,18 +6,29 @@ import { GridsterModule } from 'angular-gridster2';
 import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
 import { PrimeModulesModule } from '../../prime-modules/prime-modules.module';
 import { LayoutElementsComponent } from 'src/app/components/layout-elements/layout-elements.component';
+import { TemplateHeaderComponent } from 'src/app/components/template-header/template-header.component';
+import { TemplateSideMenuComponent } from 'src/app/components/template-side-menu/template-side-menu.component';
+
+import { ButtonModule } from 'primeng/button';
+import { MenubarModule } from 'primeng/menubar';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @NgModule({
   declarations: [
     TemplateBuilderComponent,
     TemplateBuilderPublishHeaderComponent,
-    LayoutElementsComponent
+    LayoutElementsComponent,
+    TemplateHeaderComponent,
+    TemplateSideMenuComponent,
   ],
   imports: [
     CommonModule,
     TemplateBuilderRoutingModule,
     GridsterModule,
-    PrimeModulesModule
+    PrimeModulesModule,
+    MenubarModule,
+    PanelMenuModule,
+    ButtonModule,
   ],
   exports: [
     GridsterModule

@@ -1,0 +1,24 @@
+:host {
+    display: flex;
+    height: 100%;
+  }
+  
+  .sidebar {
+    width: 60px;
+    background-color: #ffff;
+  }
+  
+  .content {
+    flex: 1 1 auto;
+    padding: 8px;
+  }
+  :host ::ng-deep .p-panelmenu .p-panelmenu-header > a {
+        padding: 1.25rem;
+        border: 1px solid #ffff; 
+        color: #6c757d;
+        background: #ffff; 
+        font-weight: 700;
+        border-radius: 6px;
+        transition: box-shadow 0.2s;
+    }
+  

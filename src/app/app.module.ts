@@ -12,11 +12,13 @@ import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 import { OnboardingRoutingModule } from './pages/onboarding/onboarding-routing.module';
 import { ChatRoutingModule } from './pages/chat/chat-routing.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     AppHeaderComponent,
     AppSideMenuComponent,
+    
   ],
   imports: [
     BrowserModule,
