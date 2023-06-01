@@ -23,7 +23,7 @@
     </div>
     <div class="template-builder-body-wrapper">
         <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-        <div class="w-full">
+        <div class="w-full wrapper">
                 <div class="template-side-menu">
                     <xnode-template-side-menu></xnode-template-side-menu>
                 </div>
@@ -33,14 +33,11 @@
         </div>
         
         <div class="m-4 h-full">
-       
-     
-
-        <gridster [options]="options">
-            <gridster-item [item]="item" *ngFor="let item of dashboard">
-            </gridster-item>
-        </gridster>
-        </div>
+                <gridster [options]="options">
+                <gridster-item [item]="item" *ngFor="let item of dashboard">
+                </gridster-item>
+            </gridster>
+            </div>
 
     </div>
 </div>
