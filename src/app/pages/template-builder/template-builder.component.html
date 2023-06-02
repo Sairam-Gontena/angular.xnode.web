@@ -28,16 +28,14 @@
                     <xnode-template-side-menu></xnode-template-side-menu>
                 </div>
                 <div class="template-header">
-                <xnode-template-header></xnode-template-header>
-                </div>
-        </div>
-        
-        <div class="m-4 h-full">
-                <gridster [options]="options">
-                <gridster-item [item]="item" *ngFor="let item of dashboard">
-                </gridster-item>
-            </gridster>
-            </div>
-
+                    <xnode-template-header></xnode-template-header>
+                    <div class="m-4 h-full">
+                        <gridster [options]="options">
+                            <gridster-item [item]="item" *ngFor="let item of dashboard">
+                            </gridster-item>
+                        </gridster>
+                    </div>
+                 </div>
+           </div>
     </div>
 </div>

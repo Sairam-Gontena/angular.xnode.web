@@ -19,8 +19,15 @@ export class TemplateSideMenuComponent {
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
+  sideMenuItems: any;
+  selectedMenuIndex: any;
+
   constructor() {
     this.menuItems = [
+     
+      {
+        icon: 'custom-icon-graph'
+      },
       {
         // label: 'Home',
         icon: 'pi pi-home',
@@ -37,7 +44,10 @@ export class TemplateSideMenuComponent {
       {
         icon: 'pi pi-arrows-v',
         routerLink: '/contact',
-      }
+      },
+      {
+        icon: 'custom-icon-graph'
+      },
       
     
     ];
@@ -45,6 +55,7 @@ export class TemplateSideMenuComponent {
  
 
   ngOnInit() {
+    
     this.layoutColumns = LAYOUT_COLUMNS;
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
     this.options = {
