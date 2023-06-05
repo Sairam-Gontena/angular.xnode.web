@@ -12,6 +12,7 @@ import { TemplateSideMenuComponent } from 'src/app/components/template-side-menu
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { PanelMenuModule } from 'primeng/panelmenu';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
     MenubarModule,
     PanelMenuModule,
     ButtonModule,
+    SidebarModule
   ],
   exports: [
     GridsterModule
