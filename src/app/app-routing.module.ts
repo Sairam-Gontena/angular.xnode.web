@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
   },
   {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+  },
+  {
     path: 'template-builder',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },

@@ -31,6 +31,13 @@
 }
 .template-header{
     width: calc(100% - 60px);
+    height: 1417px !important;
+
+}
+.content{
+    // width: calc(100% - 60px);
+    // height:calc( 100% - 1417px) !important;
+
 }
 :host ::ng-deep .p-inputtext {
     border-radius: 25px;

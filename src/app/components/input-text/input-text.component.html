@@ -1,0 +1,15 @@
+<div [formGroup]="address">
+    <div class="flex flex-column  w-4 gap-2">
+        <label>Username</label>
+        <input type="text" placeholder="Name" pInputText formControlName="name" />
+
+    </div>
+    <div class="ng-invalid ng-dirty flex flex-column  w-4 gap-2">
+        <label>Phone</label>
+        <input type="number" placeholder="0000 000 000" pInputText formControlName="phone" pattern="^[789]\d{9}$"
+        max="10" min="10" required/>
+       <!-- <p-inputNumber inputId="integeronly" formControlName="phone" placeholder="0000 000 000"></p-inputNumber>  -->
+
+    </div> 
+    
+</div>
