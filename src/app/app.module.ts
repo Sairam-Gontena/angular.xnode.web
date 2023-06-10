@@ -11,6 +11,7 @@ import { AppSideMenuComponent } from './components/app-side-menu/app-side-menu.c
 import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 import { ChatComponent } from './pages/chat/chat.component';
 import { OnboardingRoutingModule } from './pages/onboarding/onboarding-routing.module';
+import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { OnboardingRoutingModule } from './pages/onboarding/onboarding-routing.m
     AppHeaderComponent,
     AppSideMenuComponent,
     ChatComponent,
+    UiFlowGraphComponent,
   ],
   imports: [
     BrowserModule,
