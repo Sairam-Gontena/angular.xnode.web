@@ -207,46 +207,7 @@ export class UiFlowGraphComponent implements AfterViewInit {
       .attr('class', 'link')
       .on('contextmenu', (event: any, selectedLink: any) => {
         // create the div element that will hold the context menu
-        d3.selectAll('.d3-context-menu')
-          .data([1])
-          .enter()
-          .append('div')
-          .attr('class', 'd3-context-menu');
-
-        // close menu
-        d3.select('body').on('click.d3-context-menu', function () {
-          d3.select('.d3-context-menu').style('display', 'none');
-        });
-
-        // this gets executed when a contextmenu event occurs
-
-        d3.selectAll('.d3-context-menu').html('');
-        var list = d3.selectAll('.d3-context-menu').append('ul');
-        list
-          .selectAll('li')
-          .data(menu)
-          .enter()
-          .append('li')
-          .html(function (d) {
-            return d.title;
-          })
-          .on('click', function (event, i) {
-            i.action(selectedLink);
-            d3.select('.d3-context-menu').style('display', 'none');
-          });
-
-        // the openCallback allows an action to fire before the menu is displayed
-        // an example usage would be closing a tooltip
-        // if (openCallback) openCallback(data, index);
-
-        // display context menu
-        d3.select('.d3-context-menu')
-          .style('left', event.pageX - 2 + 'px')
-          .style('top', event.pageY - 2 + 'px')
-          .style('display', 'block')
-          .style('position', 'absolute');
-
-        event.preventDefault();
+        contextMenu(menu, selectedLink, event);
       })
       .classed('selected', (d: any) => d === this.selectedLink)
       .style('marker-start', (d: any) => (d.left ? 'url(#start-arrow)' : ''))
@@ -405,8 +366,7 @@ export class UiFlowGraphComponent implements AfterViewInit {
     // update drag line
     this.dragLine.attr(
       'stroke',
-      `M${this.mousedownNode.x},${this.mousedownNode.y}L${
-        d3.pointer(event.currentTarget)[0]
+      `M${this.mousedownNode.x},${this.mousedownNode.y}L${d3.pointer(event.currentTarget)[0]
       },${d3.pointer(event.currentTarget)[1]}`
     );
 
@@ -502,3 +462,44 @@ export class UiFlowGraphComponent implements AfterViewInit {
     }
   }
 }
+const contextMenu = (menu: { title: string; action: (d: any) => void; disabled: boolean; }[], selectedLink: any, event: any) => {
+  d3.selectAll('.d3-context-menu')
+    .data([1])
+    .enter()
+    .append('div')
+    .attr('class', 'd3-context-menu');
+
+  // close menu
+  d3.select('body').on('click.d3-context-menu', function () {
+    d3.select('.d3-context-menu').style('display', 'none');
+  });
+
+  // this gets executed when a contextmenu event occurs
+  d3.selectAll('.d3-context-menu').html('');
+  var list = d3.selectAll('.d3-context-menu').append('ul');
+  list
+    .selectAll('li')
+    .data(menu)
+    .enter()
+    .append('li')
+    .html(function (d) {
+      return d.title;
+    })
+    .on('click', function (event, i) {
+      i.action(selectedLink);
+      d3.select('.d3-context-menu').style('display', 'none');
+    });
+
+  // the openCallback allows an action to fire before the menu is displayed
+  // an example usage would be closing a tooltip
+  // if (openCallback) openCallback(data, index);
+  // display context menu
+  d3.select('.d3-context-menu')
+    .style('left', event.pageX - 2 + 'px')
+    .style('top', event.pageY - 2 + 'px')
+    .style('display', 'block')
+    .style('position', 'absolute');
+
+  event.preventDefault();
+}
+
