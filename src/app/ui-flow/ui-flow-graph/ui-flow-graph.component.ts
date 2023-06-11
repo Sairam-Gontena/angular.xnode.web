@@ -58,13 +58,8 @@ export class UiFlowGraphComponent implements AfterViewInit {
 
     this.force = d3
       .forceSimulation()
-      .force(
-        'link',
-        d3
-          .forceLink()
-          .id((d: any) => d.id)
-          .distance(300)
-      )
+      .force('link', d3.forceLink().id((d: any) => d.id).distance(300))
+      .force('collision', d3.forceCollide().radius(function (d) { return 150 }))
       .force('charge', d3.forceManyBody().strength(-500))
       .force('x', d3.forceX(this.width / 2))
       .force('y', d3.forceY(this.height / 2))
@@ -145,8 +140,8 @@ export class UiFlowGraphComponent implements AfterViewInit {
       const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       const normX = deltaX / dist;
       const normY = deltaY / dist;
-      const sourcePadding = d.left ? 57 : 50;
-      const targetPadding = d.right ? 57 : 50;
+      const sourcePadding = d.left ? 47 : 40;
+      const targetPadding = d.right ? 47 : 40;
       const sourceX = d.source.x + sourcePadding * normX;
       const sourceY = d.source.y + sourcePadding * normY;
       const targetX = d.target.x - targetPadding * normX;
@@ -231,11 +226,7 @@ export class UiFlowGraphComponent implements AfterViewInit {
     // update existing nodes (reflexive & selected visual states)
     this.circle
       .selectAll('circle')
-      .style('fill', (d: any) =>
-        d === this.selectedNode
-          ? d3.rgb(this.colors(d.id)).brighter().toString()
-          : this.colors(d.id)
-      )
+      .style('fill', 'white')
       .classed('reflexive', (d: any) => d.reflexive);
 
     // remove old nodes
@@ -248,12 +239,8 @@ export class UiFlowGraphComponent implements AfterViewInit {
       .attr('class', 'node')
       .attr('cx', (d: any) => d.x)
       .attr('cy', (d: any) => d.y)
-      .attr('r', 50)
-      .style('fill', (d: any) =>
-        d === this.selectedNode
-          ? d3.rgb(this.colors(d.id)).brighter().toString()
-          : this.colors(d.id)
-      )
+      .attr('r', 40)
+      .style('fill', 'white')
       .style('stroke', (d: any) =>
         d3.rgb(this.colors(d.id)).darker().toString()
       )
