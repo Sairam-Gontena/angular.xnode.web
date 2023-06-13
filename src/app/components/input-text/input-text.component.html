@@ -2,27 +2,27 @@
     <div class="flex flex-column  w-4 gap-2">
         <label>Username</label>
         <input type="text" placeholder="Name" id="name" pInputText formControlName="name" required
-        [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"/>
-        <div *ngIf="submitted && signUp['firstName'].errors" class="invalid-feedback">
+        />
+        <!-- <div *ngIf="submitted && signUp['firstName'].errors" class="invalid-feedback">
             <div *ngIf="signUp['firstName'].errors?.['required']">First Name is required</div>
         </div>
         <div *ngIf="f['name'].invalid && f['name'].touched">
             <small class="text-danger" *ngIf="f['name'].errors?.['required']">Please enter the name</small>
         </div>
-        
+         -->
     </div>
     <div class="ng-invalid ng-dirty flex flex-column  w-4 gap-2">
         <label>Phone</label>
         <input type="number" placeholder="0000 000 000" pInputText formControlName="phone"
         min="10" required/>
-        <div *ngIf="f['phone'].invalid && f['phone'].touched">
+        <!-- <div *ngIf="f['phone'].invalid && f['phone'].touched">
             <small class="text-danger" *ngIf="f['phone'].errors?.['required']">Please enter the Phone Number</small>
         </div>
         <div *ngIf="f['phone'].errors?.['minlength']">
             Number must be at least 10 digits.
-          </div>
+          </div> -->
        <!-- <p-inputNumber inputId="integeronly" formControlName="phone"  pattern="^[789]\d{9}$" placeholder="0000 000 000"></p-inputNumber>  -->
-
+       <!-- [ngClass]="{ 'is-invalid': submitted && f['name'].errors }" -->
     </div> 
     
 </div>

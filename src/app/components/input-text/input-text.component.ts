@@ -9,9 +9,10 @@ import { FormGroup, Validators } from '@angular/forms';
 export class InputTextComponent {
   // @Input() childForm: FormGroup | undefined;
   @Input() address: FormGroup;
-
+  submitted:boolean = false;
   constructor() {
     this.address = new FormGroup('', Validators.required);
     
   }
+  
 }
