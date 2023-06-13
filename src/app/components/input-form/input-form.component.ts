@@ -17,7 +17,7 @@ export class InputFormComponent {
       // name: [''],
       // address: this.fb.group({ // create nested formgroup to pass to child
         name: ['',Validators.required],
-        phone: ['',Validators.required],
+        phone: ['',Validators.required,Validators.minLength(10),],
       // }),
       // textArea: this.fb.group({
         summary: ['',Validators.required],
