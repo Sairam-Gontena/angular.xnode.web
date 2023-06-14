@@ -44,6 +44,10 @@ const routes: Routes = [
     }
   },
   {
+    path: 'chat-bot',
+    loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
+  },
+  {
     path: 'er-diagram',
     component: GeneratorComponent,
   },
