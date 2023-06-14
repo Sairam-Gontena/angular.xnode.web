@@ -6,10 +6,11 @@ import { GridsterModule } from 'angular-gridster2';
 import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
 import { PrimeModulesModule } from '../../prime-modules/prime-modules.module';
 import { LayoutElementsComponent } from 'src/app/components/layout-elements/layout-elements.component';
-
+import { UiElementsComponent } from 'src/app/components/ui-elements/ui-elements.component';
 @NgModule({
   declarations: [
     TemplateBuilderComponent,
+    UiElementsComponent,
     TemplateBuilderPublishHeaderComponent,
     LayoutElementsComponent
   ],

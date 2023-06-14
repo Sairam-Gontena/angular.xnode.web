@@ -14,9 +14,10 @@
             </p-accordion>
             <p-accordion [activeIndex]="1">
                 <p-accordionTab header="UI Elemets">
-                    <p>
+                    <xnode-ui-elements></xnode-ui-elements>
+                    <!-- <p>
                         Ui Elements
-                    </p>
+                    </p> -->
                 </p-accordionTab>
             </p-accordion>
         </div>
@@ -24,8 +25,9 @@
     <div class="template-builder-body-wrapper">
         <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
         <div class="m-4 h-full">
-            <!-- https://xnode-template-builder.azurewebsites.net/-->
-            <iframe src="http://localhost:62630/" class="h-full w-full" title="Template Builder">
+            <!-- https://xnode-template-builder.azurewebsites.net/   http://localhost:50360/-->
+            <iframe src="https://xnode-template-builder.azurewebsites.net/" class="h-full w-full"
+                title="Template Builder">
             </iframe>
             <!-- <gridster [options]="options">
                 <gridster-item [item]="item" *ngFor="let item of dashboard">
