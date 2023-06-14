@@ -1,6 +1,7 @@
 <div class="flex gap-3 justify-content-center">
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        (click)="onSelectLayout('CONTAINER')" [ngClass]="{'layout-item-active': selectedContainer=== 'CONTAINER'  }">
+        id="Containers" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('CONTAINER')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'CONTAINER'  }">
         <div class="flex flex-column">
             <div class="text-center">
                 <img src="./assets/container.svg" alt="container">
@@ -11,7 +12,8 @@
         </div>
     </div>
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        (click)="onSelectLayout('ROWS')" [ngClass]="{'layout-item-active': selectedContainer=== 'ROWS'  }">
+        id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ROWS')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'ROWS'  }">
         <div class="flex flex-column">
             <div class="text-center">
                 <img src="./assets/rows.svg" alt="container">
@@ -22,7 +24,8 @@
         </div>
     </div>
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        (click)="onSelectLayout('ONE_COLUMN')" [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
+        id="One Column" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ONE_COLUMN')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
         <div class="flex flex-column">
             <div class="text-center">
                 <img src="./assets/one-column.svg" alt="container">
@@ -35,7 +38,7 @@
 </div>
 <div class="flex gap-3 justify-content-center mt-3">
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        (click)="onSelectLayout('TWO_COLUMNS')"
+        id="Two Columns" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('TWO_COLUMNS')"
         [ngClass]="{'layout-item-active': selectedContainer=== 'TWO_COLUMNS'  }">
         <div class="flex flex-column">
             <div class="text-center">
@@ -47,7 +50,7 @@
         </div>
     </div>
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        (click)="onSelectLayout('THREE_COLUMNS')"
+        id="Three Columns" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('THREE_COLUMNS')"
         [ngClass]="{'layout-item-active': selectedContainer=== 'THREE_COLUMNS'  }">
         <div class="flex flex-column">
             <div class="text-center">
@@ -59,7 +62,8 @@
         </div>
     </div>
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        (click)="onSelectLayout('ONE_COLUMN')" [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
+        id="Four Column" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ONE_COLUMN')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
         <div class="flex flex-column">
             <div class="text-center">
                 <img src="./assets/one-column.svg" alt="container">
