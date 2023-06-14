@@ -18,6 +18,9 @@ import { OnboardingRoutingModule } from './pages/onboarding/onboarding-routing.m
     AppHeaderComponent,
     AppSideMenuComponent,
     ChatComponent,
+
+
+
   ],
   imports: [
     BrowserModule,

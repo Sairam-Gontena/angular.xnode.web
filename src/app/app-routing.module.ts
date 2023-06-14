@@ -8,6 +8,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sign-up/signup.module').then(m => m.SignUpModule)
   },
   {
+    path: 'configure',
+    loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
+  },
+
+  {
     path: 'my-templates',
     loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
   },
@@ -47,6 +52,7 @@ const routes: Routes = [
     path: 'er-diagram',
     component: GeneratorComponent,
   },
+
   {
     path: '',
     redirectTo: '',
