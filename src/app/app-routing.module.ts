@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GeneratorComponent } from './er-generator/generator.component';
 import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.component';
+import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,10 @@ const routes: Routes = [
     component: UiFlowGraphComponent,
   },
   {
+    path: 'ui-flow2',
+    component: UiFlow2Component,
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',
@@ -82,4 +87,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

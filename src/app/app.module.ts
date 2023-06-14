@@ -12,6 +12,7 @@ import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 import { ChatComponent } from './pages/chat/chat.component';
 import { OnboardingRoutingModule } from './pages/onboarding/onboarding-routing.module';
 import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.component';
+import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.comp
     AppSideMenuComponent,
     ChatComponent,
     UiFlowGraphComponent,
+    UiFlow2Component,
   ],
   imports: [
     BrowserModule,
