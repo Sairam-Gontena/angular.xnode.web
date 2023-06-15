@@ -16,7 +16,6 @@ export class LayoutElementsComponent {
   }
 
   drag(ev: any) {
-    console.log(ev)
     ev.dataTransfer?.setData('text/plain', ev.target.id);
     window.frames[0].postMessage({
       type: 'dragItem', itemId: ev.target.id
