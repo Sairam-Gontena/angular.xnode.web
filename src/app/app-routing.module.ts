@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GeneratorComponent } from './er-generator/generator.component';
+import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -8,11 +9,19 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sign-up/signup.module').then(m => m.SignUpModule)
   },
   {
+    path: 'use-cases',
+    loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
+  },
+  {
+    path: 'configuration',
+    loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
+  },
+  {
     path: 'my-templates',
     loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
   },
   {
-    path: 'template-builder',
+    path: 'design',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
   {
@@ -51,16 +60,18 @@ const routes: Routes = [
     path: 'er-diagram',
     component: GeneratorComponent,
   },
+
   {
     path: '',
     redirectTo: '',
     pathMatch: 'full'
   },
+  { path: '**', component: PageNotFoundComponent }
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

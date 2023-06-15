@@ -9,7 +9,7 @@ export class AppComponent {
   title = 'xnode';
 
   isUserExists() {
-    return Boolean(localStorage.getItem('currentUser'));
+    return localStorage.getItem('currentUser') === 'true';
   }
 
 }

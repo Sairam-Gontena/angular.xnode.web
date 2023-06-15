@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,11 +6,17 @@ import { Router } from '@angular/router';
   templateUrl: './chat-bot.component.html',
   styleUrls: ['./chat-bot.component.scss']
 })
-export class ChatBotComponent {
+export class ChatBotComponent implements OnInit {
 
   constructor(private router: Router) {
   }
-  onClickContinue(): void {
-    this.router.navigate(['/my-templates']);
+
+  ngOnInit(): void {
+    localStorage.setItem('currentUser', String(false));
   }
+
+  onClickContinue(): void {
+    this.router.navigate(['/configuration']);
+  }
+
 }
