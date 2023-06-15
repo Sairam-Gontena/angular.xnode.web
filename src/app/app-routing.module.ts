@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
   {
+    path: 'over-view',
+    loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
+  },
+  {
     path: 'my-templates',
     loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
   },
