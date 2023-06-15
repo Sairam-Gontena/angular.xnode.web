@@ -1,5 +1,5 @@
 <div class="side-menu-item active flex align-content-center justify-content-center flex-wrap"
-    *ngFor="let item of sideMenuItems;let i = index;" (click)="this.selectedMenuIndex = i"
+    *ngFor="let item of sideMenuItems;let i = index;" (click)="onClickMenuItem(item,i)"
     [ngClass]="{'active': i === selectedMenuIndex  }">
     <div class="flex flex-column">
         <div class="text-center">

@@ -11,6 +11,7 @@ import { AppSideMenuComponent } from './components/app-side-menu/app-side-menu.c
 import { PrimeModulesModule } from './prime-modules/prime-modules.module';
 import { OnboardingRoutingModule } from './pages/onboarding/onboarding-routing.module';
 import { OverViewComponent } from './pages/over-view/over-view.component';
+import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { OverViewComponent } from './pages/over-view/over-view.component';
     AppHeaderComponent,
     AppSideMenuComponent,
     OverViewComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
