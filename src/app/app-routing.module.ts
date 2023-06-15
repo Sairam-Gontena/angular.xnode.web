@@ -8,10 +8,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sign-up/signup.module').then(m => m.SignUpModule)
   },
   {
+    path: 'use-cases',
+    loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
+  },
+  {
     path: 'configure',
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
-
   {
     path: 'my-templates',
     loadChildren: () => import('./pages/templates/templates.module').then(m => m.TemplatesModule)
