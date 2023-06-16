@@ -1,9 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, Input } from '@angular/core';
 import { Data } from '../class/data';
-import { Model } from '../class/model';
-import { DomSanitizer } from '@angular/platform-browser';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../service/data.service';
+import { sampleData } from './sample-data';
 import { JsPlumbService } from '../service/jsPlumb.service';
 
 @Component({
@@ -11,24 +9,25 @@ import { JsPlumbService } from '../service/jsPlumb.service';
   templateUrl: './er-modeller.component.html',
   styleUrls: ['./er-modeller.component.scss']
 })
-export class ErModellerComponent {
-  data: Data;
+export class ErModellerComponent implements AfterViewInit, AfterViewChecked {
+  data: Data | any;
 
-  public isCollapsed: boolean = true;
-  // @ts-ignore
-  public bsModalRef: BsModalRef;
-  showSchemaModel: boolean = false;
-  emptyModel: Model = new Model();
+  @Input() erModelInput: any;
 
-  constructor(
-    private dataService: DataService,
-    private jsPlumbService: JsPlumbService,
-    private bsModalService: BsModalService,
-    private sanitizer: DomSanitizer
-  ) {
-    console.log('AppComponent.constructor() is called!');
-    // @ts-ignore
+  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService) {
     this.data = this.dataService.data;
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.dataService.flg_repaint) {
+      this.dataService.flg_repaint = false;
+      this.jsPlumbService.repaintEverything();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.jsPlumbService.init();
+    this.dataService.loadData(sampleData);
   }
 
 

@@ -63,7 +63,7 @@ import { ErModellerComponent } from './er-modeller/er-modeller.component';
     DropdownModule,
   ],
   providers: [DataService, JsPlumbService],
-  exports: [GeneratorComponent],
+  exports: [GeneratorComponent, ErModellerComponent],
   bootstrap: [GeneratorComponent],
 })
-export class ERGeneratorModule {}
+export class ERGeneratorModule { }
