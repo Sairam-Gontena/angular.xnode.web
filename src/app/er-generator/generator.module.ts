@@ -28,6 +28,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 // PRIMENG
 import { CreateSchemaComponent } from './create-schema/create-schema.component';
+import { ErModellerComponent } from './er-modeller/er-modeller.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { CreateSchemaComponent } from './create-schema/create-schema.component';
     ModalDownloadComponent,
     ModalUploadComponent,
     CreateSchemaComponent,
+    ErModellerComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,7 @@ import { CreateSchemaComponent } from './create-schema/create-schema.component';
     DropdownModule,
   ],
   providers: [DataService, JsPlumbService],
-  exports: [GeneratorComponent],
+  exports: [GeneratorComponent, ErModellerComponent],
   bootstrap: [GeneratorComponent],
 })
-export class ERGeneratorModule {}
+export class ERGeneratorModule { }

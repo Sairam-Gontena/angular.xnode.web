@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
 
 // service
 import { DataService } from './service/data.service';
@@ -19,7 +19,7 @@ import { ModalUploadComponent } from './modal-upload/modal-upload.component';
   templateUrl: './generator.component.html',
   styleUrls: ['./generator.component.scss'],
 })
-export class GeneratorComponent {
+export class GeneratorComponent implements AfterViewInit, AfterViewChecked {
   data: Data;
 
   public isCollapsed: boolean = true;
