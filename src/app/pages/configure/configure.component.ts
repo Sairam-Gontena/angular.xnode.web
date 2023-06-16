@@ -8,6 +8,5 @@ import { Component, OnInit } from '@angular/core';
 export class ConfigureComponent implements OnInit {
 
   ngOnInit(): void {
-    localStorage.setItem('currentUser', String(true));
   }
 }
