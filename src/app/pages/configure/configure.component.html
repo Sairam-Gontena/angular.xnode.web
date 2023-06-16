@@ -9,9 +9,7 @@
         <div class="">
             <p-accordion [activeIndex]="0">
                 <p-accordionTab header="Data Model">
-                    <p>
-                        Data Model
-                    </p>
+                    <xnode-configure-layout (getconfigureLayout)="getLayout($event)"></xnode-configure-layout>
                 </p-accordionTab>
             </p-accordion>
             <p-accordion [activeIndex]="1">
@@ -51,9 +49,25 @@
         </div>
     </div>
     <div class="template-builder-body-wrapper">
-        <!-- <xnode-template-builder-publish-header></xnode-template-builder-publish-header> -->
-        <div class="surface-900">
-            <div class="m-4 h-full">
+        <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
+            <div class="flex align-items-center justify-content-center">
+                <p-dropdown [options]="templates"></p-dropdown>
+            </div>
+            <div class="flex align-items-center justify-content-center gap-3">
+                <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }"
+                    alt="desktop" class="image-icon" (click)="emitIconClicked('desktop')">
+                <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
+                    class="image-icon" (click)="emitIconClicked('tab')">
+                <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
+                    class="image-icon" (click)="emitIconClicked('mobile')">
+            </div>
+            <div class="flex align-items-center justify-content-center gap-3">
+                <p-button label="Save" styleClass="p-button-rounded"></p-button>
+                <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
+            </div>
+        </div>
+        <div class="surface-900 m-4 h-full">
+            <div class="h-full">
                 <div class="surface-900">
                     <h6 class="text-4xl text-white p-4 font-bold">API Integrations</h6>
                     <div class="flex flex-wrap justify-center ml-4">

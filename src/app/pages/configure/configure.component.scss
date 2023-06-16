@@ -3,8 +3,8 @@
 }
 
 .card {
-    width: 14rem;
-    height: 16rem;
+    width: 338px;
+    height: 332px;
     background-color: #302E38;
     border: 1px solid #595959;
     border-radius: 12px;
@@ -66,4 +66,24 @@
     font-size: 12px;
     padding: 10px;
     border-bottom: 1px solid #39383F;
+}
+
+
+//Publish header
+.publish-header {
+    height: 88px;
+}
+
+:host ::ng-deep .p-dropdown {
+    background: #3A3942;
+    border: 0;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label,
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+    color: #ffffff;
+}
+
+img.highlighted {
+    background-color: #02ADEE !important;
 }
