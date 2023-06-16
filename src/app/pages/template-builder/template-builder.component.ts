@@ -4,7 +4,7 @@ import {
   OnInit,
   HostListener,
   ViewEncapsulation,
-  Input, 
+  Input,
   ViewChild
 } from '@angular/core';
 
@@ -34,10 +34,11 @@ export class TemplateBuilderComponent implements OnInit {
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   constructor() {
-    
+
   }
 
   ngOnInit() {
+    localStorage.setItem('currentUser', String(true));
     this.templates = [
       { label: 'FinBuddy' }
     ]
@@ -75,5 +76,5 @@ export class TemplateBuilderComponent implements OnInit {
     // Update the contentToShow property based on the icon clicked
     this.currentView = icon;
   }
-  
+
 }
