@@ -11,7 +11,6 @@ export class BotComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.setItem('currentUser', String(false));
   }
 
   onClickContinue(): void {
