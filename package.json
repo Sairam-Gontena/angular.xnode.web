@@ -36,6 +36,7 @@
     "d3": "^7.8.5",
     "d3-context-menu": "^2.1.0",
     "jsplumb": "^2.15.6",
+    "ng": "^0.0.0",
     "ng-select": "^1.0.2",
     "ngx-bootstrap": "^10.2.0",
     "primeflex": "^3.3.0",
