@@ -26,7 +26,7 @@ import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/templa
 
 export class TemplateBuilderComponent implements OnInit {
   @ViewChild('childComponent') childComponent!: TemplateBuilderPublishHeaderComponent;
-  @Input() currentView!: string;
+  @Input() currentView: string = 'desktop';
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
