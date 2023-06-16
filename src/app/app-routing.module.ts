@@ -3,12 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { GeneratorComponent } from './er-generator/generator.component';
 import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.component';
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
+import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
       import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
+  },
+  {
+    path: 'use-cases',
+    loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
+  },
+  {
+    path: 'configuration',
+    loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
   {
     path: 'my-templates',
@@ -18,11 +27,8 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'template-builder',
-    loadChildren: () =>
-      import('./pages/template-builder/template-builder.module').then(
-        (m) => m.TemplateBuilderModule
-      ),
+    path: 'design',
+    loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
   {
     path: 'workspace',
@@ -65,9 +71,14 @@ const routes: Routes = [
     },
   },
   {
+    path: 'chat-bot',
+    loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
+  },
+  {
     path: 'er-diagram',
     component: GeneratorComponent,
   },
+
   {
     path: 'ui-flow',
     component: UiFlowGraphComponent,
@@ -81,10 +92,12 @@ const routes: Routes = [
     redirectTo: '',
     pathMatch: 'full',
   },
+  { path: '**', component: PageNotFoundComponent }
+
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

@@ -17,7 +17,6 @@ export class TemplatesComponent implements OnInit {
   }
 
   onClickCreateNewTemplate(): void {
-    localStorage.setItem('currentUser', String(true));
     this.router.navigate(['/template-builder']);
   }
 
