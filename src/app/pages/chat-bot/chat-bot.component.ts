@@ -16,7 +16,7 @@ export class ChatBotComponent implements OnInit {
   }
 
   onClickContinue(): void {
-    this.router.navigate(['/configuration']);
+    this.router.navigate(['/design']);
   }
 
 }
