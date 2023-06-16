@@ -1,78 +1,169 @@
-<div class="surface-900">
-    <h6 class="text-4xl text-white p-4 font-bold">API Integrations</h6>
-    <div class="flex flex-wrap justify-center ml-4">
-        <div
-            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-            <img src="../../assets/circle-ci.svg" alt="circle-ci-image">
-            <h5 class="text-xl mt-4 font-bold">Circle CI</h5>
-            <p class="font-normal text-base text-left md:text-center paragraph-text w-17rem">CircleCI is a
-                continuous integration and continuous delivery platform that can be used to implement DevOps
-                practice</p>
+<div class="template-builder-wrapper">
+    <div class="template-builder-layout-wrapper">
+        <div class="text-center border-bottom-2 p-3 border-primary">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Search" />
+            </span>
         </div>
-        <div
-            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-            <img src="../../assets/aws-s3.svg" alt="circle-ci-image" class="mt-4">
-            <h5 class="text-xl mt-4 font-bold">AWS S3</h5>
-            <p class="font-normal text-base text-left md:text-center paragraph-text w-17rem">Amazon S3 or Amazon
-                Simple Storage Service is a service offered by Amazon Web Services (AWS) that provides object
-                storage through a web service interface
-            </p>
-        </div>
-        <div
-            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-            <img src="../../assets/firebase.svg" alt="circle-ci-image" class="mt-4">
-            <h5 class="text-xl mt-4 font-bold">Firebase</h5>
-            <p class="font-normal text-base text-left md:text-center paragraph-text w-19rem">Firebase is an app
-                development platform that helps you build and grow apps and games users love. Backed by Google
-                and trusted by millions of businesses around the world.
-            </p>
-        </div>
-        <div
-            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-            <img src="../../assets/front.svg" alt="circle-ci-image" class="mt-2">
-            <h5 class="text-xl mt-4 font-bold">Front</h5>
-            <p class="font-normal text-base text-left md:text-center paragraph-text w-17rem">Lorem Ipsum is
-                simply dummy text of the printing and typesetting industry. Lorem Ipsum has ... The first line of Lorem
-                Ipsum
-            </p>
-        </div>
-        <div class="card-container overflow-hidden">
-            <div class="flex flex-wrap justify-center">
-                <div
-                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-                    <img src="../../assets/data-dog.svg" alt="data-dog-image" class="mt-4">
-                    <h5 class="text-xl mt-3 font-bold">Datadog</h5>
-                    <p class="font-normal text-base  md:text-center paragraph-text w-19rem">Datadog is an observability
-                        service for cloud-scale applications, providing monitoring of servers, databases, tools, and
-                        services, through a SaaS-based data analytics platform.</p>
-                </div>
-                <div
-                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-                    <img src="../../assets/close.svg" alt="close-image">
-                    <h5 class="text-xl mt-4 font-bold">Close</h5>
-                    <p class="font-normal text-base text-left md:text-center paragraph-text w-17rem">Close empowers our
-                        customers to scale their Close instance by providing helpful documentation around our API.
+        <div class="">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Data Model">
+                    <p>
+                        Data Model
                     </p>
-                </div>
-                <div
-                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-                    <img src="../../assets/asana.svg" alt="asana-image" class="mt-3">
-                    <h5 class="text-xl mt-4 font-bold">Asana</h5>
-                    <p class="font-normal text-base text-left md:text-center paragraph-text w-17rem">Asana's open API
-                        provided a means to read and input information and create programmed automation within the app
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="1">
+                <p-accordionTab header="Integrations">
+                    <!-- <xnode-layout-elements (getLayout)="getLayout($event)"></xnode-layout-elements> -->
+                    <xnode-configure-layout (getconfigureLayout)="getLayout($event)"></xnode-configure-layout>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="2">
+                <p-accordionTab header=" Authentication">
+                    <p>
+                        Authentication
                     </p>
-                </div>
-                <div
-                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-                    <img src="../../assets/firesstore.svg" alt="firesstore-image" class="mt-3">
-                    <h5 class="text-xl mt-4 font-bold">Firesstore</h5>
-                    <p class="font-normal text-base text-left md:text-center paragraph-text w-17rem">Lorem Ipsum is
-                        simply dummy text of the printing and typesetting industry. Lorem Ipsum has ... The first line
-                        of Lorem Ipsum
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="3">
+                <p-accordionTab header=" Entitlements">
+                    <p>
+                        Entitlements
                     </p>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="4">
+                <p-accordionTab header="Business Rules">
+                    <p>
+                        Business Rules
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="5">
+                <p-accordionTab header=" Work flows">
+                    <p>
+                        Work flows
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+    </div>
+    <div class="template-builder-body-wrapper">
+        <!-- <xnode-template-builder-publish-header></xnode-template-builder-publish-header> -->
+        <div class="surface-900">
+            <div class="m-4 h-full">
+                <div class="surface-900">
+                    <h6 class="text-4xl text-white p-4 font-bold">API Integrations</h6>
+                    <div class="flex flex-wrap justify-center ml-4">
+                        <div
+                            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                            <img src="../../assets/circle-ci.svg" alt="circle-ci-image" class="img-size mt-4">
+                            <h5 class="text-xl mt-4 font-bold">Circle CI</h5>
+                            <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">CircleCI is
+                                a
+                                continuous integration and continuous delivery platform that can be used to implement
+                                DevOps
+                                practice</p>
+                        </div>
+                        <div
+                            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                            <img src="../../assets/aws-s3.svg" alt="circle-ci-image" class="img-size mt-6">
+                            <h5 class="text-xl mt-4 font-bold">AWS S3</h5>
+
+                            <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Amazon S3 or
+                                Amazon
+                                Simple Storage Service is a service offered by Amazon Web Services (AWS) that provides
+                                object
+                                storage through a web service interface
+                            </p>
+                        </div>
+                        <div
+                            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                            <img src="../../assets/firebase.svg" alt="circle-ci-image" class="img-size mt-6">
+                            <h5 class="text-xl mt-4 font-bold">Firebase</h5>
+                            <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Firebase is
+                                an
+                                app
+                                development platform that helps you build and grow apps and games users love. Backed by
+                                Google
+                                and trusted by millions of businesses around the world.
+                            </p>
+                        </div>
+                        <div
+                            class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                            <img src="../../assets/front.svg" alt="circle-ci-image" class="img-size mt-4">
+                            <h5 class="text-xl mt-4 font-bold">Front</h5>
+                            <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Lorem Ipsum
+                                is
+                                simply dummy text of the printing and typesetting industry. Lorem Ipsum has ... The
+                                first
+                                line of
+                                Lorem
+                                Ipsum
+                            </p>
+                        </div>
+                        <div class="card-container overflow-hidden">
+                            <div class="flex flex-wrap justify-center">
+                                <div
+                                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                    <img src="../../assets/data-dog.svg" alt="data-dog-image" class="img-size mt-6">
+                                    <h5 class="text-xl mt-3 font-bold">Datadog</h5>
+                                    <p class="font-normal text-xs  md:text-center paragraph-text w-13rem">Datadog is an
+                                        observability
+                                        service for cloud-scale applications, providing monitoring of servers,
+                                        databases,
+                                        tools, and
+                                        services, through a SaaS-based data analytics platform.</p>
+                                </div>
+                                <div
+                                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                    <img src="../../assets/close.svg" alt="close-image" class="img-size mt-4">
+                                    <h5 class="text-xl mt-4 font-bold">Close</h5>
+                                    <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Close
+                                        empowers
+                                        our
+                                        customers to scale their Close instance by providing helpful documentation
+                                        around
+                                        our API.
+                                    </p>
+                                </div>
+                                <div
+                                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                    <img src="../../assets/asana.svg" alt="asana-image" class="img-size mt-4">
+                                    <h5 class="text-xl mt-4 font-bold">Asana</h5>
+                                    <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">
+                                        Asana's
+                                        open
+                                        API
+                                        provided a means to read and input information and create programmed automation
+                                        within the
+                                        app
+                                    </p>
+                                </div>
+                                <div
+                                    class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                    <img src="../../assets/firesstore.svg" alt="firesstore-image" class="img-size mt-4">
+                                    <h5 class="text-xl mt-4 font-bold">Firesstore</h5>
+                                    <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Lorem
+                                        Ipsum is
+                                        simply dummy text of the printing and typesetting industry. Lorem Ipsum has ...
+                                        The
+                                        first
+                                        line
+                                        of Lorem Ipsum
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
+
+
             </div>
         </div>
-
     </div>
 </div>

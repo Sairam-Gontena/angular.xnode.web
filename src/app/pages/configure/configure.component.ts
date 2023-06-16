@@ -6,8 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./configure.component.scss']
 })
 export class ConfigureComponent implements OnInit {
-
+  getconfigureLayout: any;
+  layout: any;
+  dashboard: any;
+  layoutColumns: any;
   ngOnInit(): void {
     localStorage.setItem('currentUser', String(true));
   }
+
+  getLayout(layout: any): void {
+    console.log('layout', layout);
+    if (layout)
+      this.dashboard = this.layoutColumns[layout];
+  }
+
 }
