@@ -48,9 +48,10 @@
 }
 .desktop {
     /* Styles for desktop view */
+    // margin-left: 3rem;
     width: 1200px;
-  height: 100%;
-  background-color: #f2f2f2;
+    height: 100vh !important;
+    background-color: #f2f2f2;
   }
   .mobile {
     /* Styles for mobile view */

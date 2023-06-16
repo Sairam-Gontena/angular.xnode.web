@@ -12,14 +12,22 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   templates: any;
   selectedTemplate: string = 'FinBuddy';
-  
+  highlightedIndex: string | null = null;
+
   ngOnInit(): void {
     this.templates = [
       { label: 'FinBuddy' }
     ]
   };
   emitIconClicked(icon: string) {
+   if (this.highlightedIndex === icon) {
+      this.highlightedIndex = null;
+    } else {
+      this.highlightedIndex = icon;
+    }
     this.iconClicked.emit(icon);
   }
-  
+  openNewTab(): void {
+    window.open('http://localhost:50718/', '_blank');
+  }
 }
