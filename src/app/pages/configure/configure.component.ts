@@ -11,7 +11,6 @@ export class ConfigureComponent implements OnInit {
   dashboard: any;
   layoutColumns: any;
   ngOnInit(): void {
-    localStorage.setItem('currentUser', String(true));
   }
 
   getLayout(layout: any): void {

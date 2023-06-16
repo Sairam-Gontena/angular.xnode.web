@@ -22,6 +22,7 @@
         </div>
     </div>
     <div class="template-builder-body-wrapper">
+<<<<<<< HEAD
         <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
         <div class="m-4 h-full">
             <!-- <iframe src="http://localhost:55067/" class="h-full w-full" title="Template Builder"> </iframe> -->
@@ -33,7 +34,20 @@
                 </gridster-item>
             </gridster> -->
 
+=======
+        <xnode-template-builder-publish-header #childComponent
+            (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
+        <div class="flex justify-content-center flex-wrap ">
+            <div class="flex align-items-center justify-content-center m-4 h-full">
+                <div class="" [ngClass]="currentView">
+                    <iframe src="https://xnode-template-builder.azurewebsites.net/" class="h-full w-full"
+                        title="Template Builder">
+                    </iframe>
+                </div>
+            </div>
+>>>>>>> develop
         </div>
+
 
     </div>
 </div>
