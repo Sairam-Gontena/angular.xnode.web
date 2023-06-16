@@ -22,22 +22,18 @@
         </div>
     </div>
     <div class="template-builder-body-wrapper">
-        <xnode-template-builder-publish-header  #childComponent (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
+        <xnode-template-builder-publish-header #childComponent
+            (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
         <div class="flex justify-content-center flex-wrap ">
             <div class="flex align-items-center justify-content-center m-4 h-full">
                 <div class="" [ngClass]="currentView">
-           
-                    <!-- https://xnode-template-builder.azurewebsites.net/-->
-                    <iframe src="http://localhost:50718/" class="h-full w-full" title="Template Builder">
+                    <iframe src="https://xnode-template-builder.azurewebsites.net/" class="h-full w-full"
+                        title="Template Builder">
                     </iframe>
-                    <!-- <gridster [options]="options">
-                        <gridster-item [item]="item" *ngFor="let item of dashboard">
-                        </gridster-item>
-                    </gridster> -->
                 </div>
-            </div> 
+            </div>
         </div>
-       
+
 
     </div>
 </div>
