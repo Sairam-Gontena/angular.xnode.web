@@ -17,8 +17,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
   },
   {
-    path: 'configuration',
+    path: 'configuration/data-model',
     component: ErModellerComponent
+  },
+  {
+    path: 'configuration/api-integration',
+    loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
   {
     path: 'my-templates',

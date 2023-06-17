@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GeneratorComponent } from './generator.component';
 import { ModelComponent } from './model/model.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -29,6 +29,9 @@ import { DropdownModule } from 'primeng/dropdown';
 // PRIMENG
 import { CreateSchemaComponent } from './create-schema/create-schema.component';
 import { ErModellerComponent } from './er-modeller/er-modeller.component';
+import { PrimeModulesModule } from '../prime-modules/prime-modules.module';
+import { ConfigureModule } from '../pages/configure/configure.module';
+import { ErGeneratorLayoutComponent } from './er-generator-layout/er-generator-layout.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,7 @@ import { ErModellerComponent } from './er-modeller/er-modeller.component';
     ModalUploadComponent,
     CreateSchemaComponent,
     ErModellerComponent,
+    ErGeneratorLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,9 +65,13 @@ import { ErModellerComponent } from './er-modeller/er-modeller.component';
     DialogModule,
     CheckboxModule,
     DropdownModule,
+    PrimeModulesModule,
+    ConfigureModule
   ],
   providers: [DataService, JsPlumbService],
   exports: [GeneratorComponent, ErModellerComponent],
   bootstrap: [GeneratorComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class ERGeneratorModule { }

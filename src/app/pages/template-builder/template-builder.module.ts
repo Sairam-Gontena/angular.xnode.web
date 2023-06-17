@@ -7,11 +7,15 @@ import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/templa
 import { PrimeModulesModule } from '../../prime-modules/prime-modules.module';
 import { LayoutElementsComponent } from 'src/app/components/layout-elements/layout-elements.component';
 
+
+
 @NgModule({
   declarations: [
     TemplateBuilderComponent,
     TemplateBuilderPublishHeaderComponent,
-    LayoutElementsComponent
+    LayoutElementsComponent,
+
+
   ],
   imports: [
     CommonModule,
