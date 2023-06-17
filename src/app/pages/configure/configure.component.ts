@@ -33,8 +33,9 @@ export class ConfigureComponent implements OnInit {
       this.highlightedIndex = icon;
     }
   }
+
   openNewTab(): void {
-    window.open('http://localhost:50718/', '_blank');
+    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 
 }

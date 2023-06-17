@@ -1,4 +1,4 @@
-import { Component, OnInit , HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -7,7 +7,7 @@ import { Component, OnInit , HostListener, Input, EventEmitter, Output } from '@
 })
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
- 
+
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
 
   templates: any;
@@ -20,7 +20,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     ]
   };
   emitIconClicked(icon: string) {
-   if (this.highlightedIndex === icon) {
+    if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
     } else {
       this.highlightedIndex = icon;
@@ -28,6 +28,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.iconClicked.emit(icon);
   }
   openNewTab(): void {
-    window.open('http://localhost:50718/', '_blank');
+    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 }
