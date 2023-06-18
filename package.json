@@ -28,10 +28,15 @@
     "@angular/platform-browser-dynamic": "^16.0.1",
     "@angular/platform-server": "^16.0.1",
     "@angular/router": "^16.0.1",
-    "@ng-select/ng-select": "^10.0.4",
     "@katoid/angular-grid-layout": "^2.1.0",
+    "@ng-select/ng-select": "^10.0.4",
+    "@types/d3": "^7.4.0",
     "angular-gridster2": "^16.0.0",
+    "bootstrap": "^5.2.0",
+    "d3": "^7.8.5",
+    "d3-context-menu": "^2.1.0",
     "jsplumb": "^2.15.6",
+    "ng": "^0.0.0",
     "ng-select": "^1.0.2",
     "ngx-bootstrap": "^10.2.0",
     "primeflex": "^3.3.0",
@@ -39,7 +44,7 @@
     "primeng": "^16.0.0-rc.1",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",
-    "bootstrap": "^5.2.0"
+    "zone.js": "^0.13.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.0.1",

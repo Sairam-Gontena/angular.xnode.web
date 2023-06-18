@@ -1,31 +1,24 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'xnode-layout-elements',
-  templateUrl: './layout-elements.component.html',
-  styleUrls: ['./layout-elements.component.scss']
+  selector: 'xnode-er-generator-layout',
+  templateUrl: './er-generator-layout.component.html',
+  styleUrls: ['./er-generator-layout.component.scss']
 })
-export class LayoutElementsComponent {
-  @Output() getLayout: EventEmitter<string> = new EventEmitter<string>();
-
+export class ErGeneratorLayoutComponent {
+  @Output() getconfigureLayout: EventEmitter<string> = new EventEmitter<string>();
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:62630/";
 
   onSelectLayout(layout: string): void {
     this.selectedContainer = layout
-    this.getLayout.emit(layout);
+    this.getconfigureLayout.emit(layout);
   }
 
   drag(ev: any) {
     ev.dataTransfer?.setData('text/plain', ev.target.id);
     window.frames[0].postMessage({
       type: 'dragItem', itemId: ev.target.id
-
-
-
-
-
-
     }, this.iframeUrl);
   }
 

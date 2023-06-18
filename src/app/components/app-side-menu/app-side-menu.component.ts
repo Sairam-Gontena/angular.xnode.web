@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppSideMenuItems } from '../../constants/AppSideMenuItems';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-app-side-menu',
@@ -10,12 +11,16 @@ import { Router } from '@angular/router';
 export class AppSideMenuComponent implements OnInit {
   sideMenuItems: any;
   selectedMenuIndex: any;
-  constructor(private router: Router) {
+  href: any;
+  constructor(private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.sideMenuItems = AppSideMenuItems;
     this.selectedMenuIndex = 2;
+    this.sideMenuItems = AppSideMenuItems;
+    this.route.url.subscribe(console.log);
+    console.log('>>>>>', this.route);
+
   }
 
   onClickMenuItem(item: any, i: any): void {
