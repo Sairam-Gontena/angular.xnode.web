@@ -29,6 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
 // PRIMENG
 import { CreateSchemaComponent } from './create-schema/create-schema.component';
 import { ErModellerComponent } from './er-modeller/er-modeller.component';
+import { UtilService } from './service/util.service';
 import { PrimeModulesModule } from '../prime-modules/prime-modules.module';
 import { ConfigureModule } from '../pages/configure/configure.module';
 import { ErGeneratorLayoutComponent } from './er-generator-layout/er-generator-layout.component';
@@ -68,7 +69,7 @@ import { ErGeneratorLayoutComponent } from './er-generator-layout/er-generator-l
     PrimeModulesModule,
     ConfigureModule
   ],
-  providers: [DataService, JsPlumbService],
+  providers: [DataService, JsPlumbService, UtilService],
   exports: [GeneratorComponent, ErModellerComponent],
   bootstrap: [GeneratorComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
