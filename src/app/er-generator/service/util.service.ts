@@ -11,15 +11,15 @@ export class UtilService {
 
     var currentX: number = 50;
     var currentY: number = 50;
-    var incX: boolean = false;
+    var incX: boolean = true;
     var module = "ERModule"
 
     const updateCoordinates = () => {
       if (incX) {
+        currentY = 500;
+      } else {
         currentX = currentX + 300;
         currentY = 50
-      } else {
-        currentY = 500
       };
       incX = !incX;
     }
@@ -36,7 +36,7 @@ export class UtilService {
         comment: schemaName,
         use_soft_delete: true,
         is_pivot: false,
-        schema_id_for_relation: 1,
+        schema_id_for_relation: schemaModeler.schemaIdForCreation,
         module: module,
         pos_x: currentX,
         pos_y: currentY,
@@ -61,16 +61,17 @@ export class UtilService {
 const constructCols = (colObject: any, tableId: number): any => {
   var cols: any[] = [];
   var colId: number = 1;
+  var schemaIdForCreation = 0;
   Object.keys(colObject).forEach(colName => {
     var propertyDetail = colObject[colName];
-
+    if (propertyDetail['primaryKey']) { schemaIdForCreation = colId }
     var col = {
       id: colId++,
       name: colName,
       display_name: colName,
       comment: colName,
       type: getDataType(propertyDetail['type']),
-      input_type: "text",
+      input_type: propertyDetail['foreignKey'] ? "select" : "text",
       custom_options: "",
       varidate: "",
       faker_type: null,
@@ -78,20 +79,22 @@ const constructCols = (colObject: any, tableId: number): any => {
       unique: propertyDetail['primaryKey'] ? true : false,
       show_in_list: true,
       show_in_detail: true,
-      belongsto: "",
+      belongsto: propertyDetail['foreignKey'] ? getTableName(propertyDetail['foreignKey']) : "",
       parent_id: tableId
     }
     cols.push(col);
   })
-  return { cols: cols, nextSchemaId: colId };
+  return { cols: cols, nextSchemaId: colId, schemaIdForCreation: schemaIdForCreation };
 }
 
 const getDataType = (colType: string): string => {
-
   switch (colType) {
-    case "number": return "float";
     case "number": return "float";
   }
   return colType;
+}
+
+function getTableName(foreignKey: string) {
+  return foreignKey.substring(0, foreignKey.indexOf("."))
 }
 
