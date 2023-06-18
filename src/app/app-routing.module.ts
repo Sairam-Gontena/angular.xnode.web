@@ -4,6 +4,7 @@ import { GeneratorComponent } from './er-generator/generator.component';
 import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.component';
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
+import { ErModellerComponent } from './er-generator/er-modeller/er-modeller.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
   },
   {
-    path: 'configuration',
+    path: 'configuration/data-model',
+    component: ErModellerComponent
+  },
+  {
+    path: 'configuration/api-integration',
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
   {

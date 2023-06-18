@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 @Component({
-  selector: 'xnode-chat-bot',
-  templateUrl: './chat-bot.component.html',
-  styleUrls: ['./chat-bot.component.scss']
+  selector: 'xnode-bot',
+  templateUrl: './bot.component.html',
+  styleUrls: ['./bot.component.scss']
 })
-export class ChatBotComponent implements OnInit {
+export class BotComponent implements OnInit {
 
   constructor(private router: Router) {
   }
@@ -15,7 +14,7 @@ export class ChatBotComponent implements OnInit {
   }
 
   onClickContinue(): void {
-    this.router.navigate(['/design']);
+    this.router.navigate(['/chat-bot']);
   }
 
 }
