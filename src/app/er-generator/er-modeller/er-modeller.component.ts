@@ -1,8 +1,8 @@
 import { AfterViewChecked, AfterViewInit, Component, Input } from '@angular/core';
 import { Data } from '../class/data';
 import { DataService } from '../service/data.service';
-import { sampleData } from './sample-data';
 import { JsPlumbService } from '../service/jsPlumb.service';
+import { UtilService } from '../service/util.service';
 
 @Component({
   selector: 'xnode-er-modeller',
@@ -11,10 +11,9 @@ import { JsPlumbService } from '../service/jsPlumb.service';
 })
 export class ErModellerComponent implements AfterViewInit, AfterViewChecked {
   data: Data | any;
-
   @Input() erModelInput: any;
 
-  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService) {
+  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
   }
 
@@ -27,7 +26,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked {
 
   ngAfterViewInit(): void {
     this.jsPlumbService.init();
-    this.dataService.loadData(sampleData);
+    this.dataService.loadData(this.utilService.ToModelerSchema());
   }
 
 
