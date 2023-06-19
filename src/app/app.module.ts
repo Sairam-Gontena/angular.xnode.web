@@ -17,6 +17,7 @@ import { BotComponent } from './components/bot/bot.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import { BotComponent } from './components/bot/bot.component';
     PrimeModulesModule,
     // CUSTOM
     ERGeneratorModule,
-    OnboardingRoutingModule
+    OnboardingRoutingModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],

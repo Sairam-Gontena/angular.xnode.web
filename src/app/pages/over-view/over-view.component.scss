@@ -1,3 +1,32 @@
 .bg {
     background-color: #23222B;
 }
+
+.para-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300rem !important;
+}
+
+.stake-holder {
+    background-color: none;
+    border: 1px solid #535353;
+}
+
+// .status-text {
+//     background-color: none;
+//     border: 1px solid #535353;
+// }
+
+.finbuddy-text {
+    width: 55rem;
+}
+
+:host ::ng-deep.p-button {
+    background-color: white !important;
+    color: black;
+    font-weight: 700 !important;
+    height: 2rem;
+    border-radius: 2rem;
+    font-size: 10px;
+    border: 1px solid white;
+}

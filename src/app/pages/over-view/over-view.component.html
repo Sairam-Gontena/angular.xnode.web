@@ -1,16 +1,105 @@
-<div class="bg">
-    <div class="col-12 md:col-6 ">
-        <!-- <img src="../../assets/finbuddy.png" alt="finbuddy-image"> -->
-        <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">
+<div class="bg grid">
+    <div class=" md:col-8 lg:col-8">
+        <div class="flex mt-6">
 
-            <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="ml-3">
+            <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="ml-6 ">
 
-
-            <h1 class=" text-white text-6xl font-medium">FinBuddy</h1>
-            <p class=" text-white paragraph-color font-medium"></p>
+            <h1 class="text-white text-6xl font-medium  ml-4">FinBuddy</h1>
 
         </div>
-        <div class="col-12 md:col-6 ">
+
+        <!-- <div class="card flex justify-content-center">
+            <p-rating [(ngModel)]="value" [cancel]="false"></p-rating>
+        </div> -->
+        <!-- <form [formGroup]="formGroup">
+            <p-rating formControlName="value"></p-rating>
+        </form> -->
+
+        <p class="text-white ml-6 mt-3 text-2xl font-medium finbuddy-text">
+            FinBuddy is an AI-powered personal finance assistant app designed to help you take control of your
+            finances and achieve your financial goals. With its intuitive interface and powerful features, FinBuddy
+            makes it easy to track your income, expenses, and savings, all in one place. Stay on top of your
+            finances and make informed decisions with the help of FinBuddy's advanced analytics and personalized
+            insights.
+        </p>
+        <p class="para-text ml-6 text-2xl ">Created on: April 30, 2023</p>
+
+        <div class="flex  flex-wrap card-container ml-6">
+            <div class=" w-21rem h-19rem font-bold text-white  m-2 stake-holder ml-6">
+                <h6 class="text-xl font-medium mt-4 ml-3 p-2">Primary Stakeholders</h6>
+                <div class="mt-4">
+                    <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
+                    <span class="text-white font-medium text-xl ml-3">Raymond Nelson</span>
+                </div>
+                <div class="mt-4 para-text">
+                    <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
+                    <span class=" ml-3">ramond.nelson@finlife.com</span>
+                </div>
+                <div class="mt-4 para-text">
+                    <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-4">
+                    <span class=" ml-3">+1 408 409 7788</span>
+                </div>
+            </div>
+
+
+
+
+            <div class="flex flex-column card-container ">
+                <div class="flex  w-21rem h-9rem  font-bold text-white  m-2 stake-holder align-items-center ">
+                    <div class="flex  flex-wrap card-container ml-6">
+                        <img src="../../assets/download-image.png" alt="download-image" class="h-3rem w-4rem mr-2">
+                        <div class="flex flex-column">
+                            <span class=" ml-3 para-text">Total Downloads</span>
+                            <span class="text-white font-normal text-3xl ml-3">1,014</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex align-items-center  w-21rem h-9rem  font-bold text-white  m-2 stake-holder">
+                    <div class="flex  flex-wrap card-container ml-6">
+                        <img src="../../assets/people-image.png" alt="people-image" class="h-3rem w-4rem">
+                        <div class="flex flex-column">
+                            <span class=" ml-4 para-text">Monthly Users</span>
+                            <span class="text-white font-normal text-3xl ml-4">854</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <h6 class="text-white ml-7 mt-4">Key Features</h6>
+        <div class="ml-7 mt-3">
+            <p-button label="Expense Tracking " icon="pi pi-check" class=""></p-button>
+            <p-button label="Income Management " icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label=" Budgeting" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Savings Goals " icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Bill Reminders " icon="pi pi-check" class="ml-2"></p-button>
+        </div>
+        <div class="ml-7 mt-3">
+            <p-button label="Debt Management " icon="pi pi-check" class=""></p-button>
+            <p-button label="Financial Insights & Reports " icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label=" AI-Powered Advice" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Security & Privacy " icon="pi pi-check" class="ml-2"></p-button>
+
+        </div>
+        <div class="ml-7 mt-3">
+            <p-button label="Multi-device Sync" icon="pi pi-check" class="ml-2"></p-button>
 
         </div>
     </div>
+
+
+
+
+    <div class=" md:col-4 lg:col-4">
+        <div class="card-container mt-6 mr-4 stake-holder h-screen text-white ">
+            <div class="w-26rem p-1 mt-3 ml-3">
+                <p class="text-xl font-normal">Hey <span class="font-bold">Raymond Nelson!</span> You are on
+                    the verge
+                    of
+                    using the
+                    app.</p>
+                <p class="text-lg font-medium">Please see the status below</p>
+            </div>
+        </div>
+    </div>
+</div>
