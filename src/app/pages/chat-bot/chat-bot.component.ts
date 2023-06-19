@@ -12,6 +12,7 @@ export class ChatBotComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
   }
 
   onClickContinue(): void {

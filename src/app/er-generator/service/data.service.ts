@@ -68,13 +68,13 @@ export class DataService {
     var confirm_txt = '';
     // @ts-ignore
     if (obj_model.schema_id_for_relation === schema.id) {
-      confirm_txt = 'Want to delete ' + schema.name + '?' + "\n" + "(And this Model's Relation schema is change to default(id) )";
+      // confirm_txt = 'Want to delete ' + schema.name + '?' + "\n" + "(And this Model's Relation schema is change to default(id) )";
     } else {
       confirm_txt = 'Want to delete ' + schema.name + '?';
     }
-    if (!confirm(confirm_txt)) {
-      return;
-    }
+    // if (!confirm(confirm_txt)) {
+    //   return;
+    // }
 
     // @ts-ignore
     if (obj_model.schema_id_for_relation === schema.id) {

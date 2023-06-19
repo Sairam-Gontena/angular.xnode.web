@@ -1,7 +1,7 @@
 <div class="flex gap-3 justify-content-center">
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        id="Containers" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('CONTAINER')"
-        [ngClass]="{'layout-item-active': selectedContainer=== 'CONTAINER'  }">
+        id="Containers" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('DATA_MODEL')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'DATA_MODEL'  }">
         <div class="flex flex-column">
             <div class="text-center">
                 <img src="./assets/overview.png" alt="container">
@@ -12,14 +12,17 @@
         </div>
     </div>
     <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-        id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ROWS')"
-        [ngClass]="{'layout-item-active': selectedContainer=== 'ROWS'  }">
+        id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('API_INTEGRATION')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'API_INTEGRATION'  }">
         <div class="flex flex-column">
             <div class="text-center">
                 <img src="./assets/rows.svg" alt="container">
             </div>
-            <div class="mt-2 f-8  text-center">
-                API Integrations
+            <div class="mt-2 f-8  text-center" *ngIf="type === 'data-model'">
+                New Object
+            </div>
+            <div class="mt-2 f-8" *ngIf="type === 'integrations'">
+                API Integration
             </div>
         </div>
     </div>
@@ -30,9 +33,11 @@
             <div class="text-center">
                 <img src="./assets/integration.png" alt="container">
             </div>
-            <div class="mt-2 f-8 text-center">
-
-                DB Integrations
+            <div class="mt-2 f-8 text-center" *ngIf="type === 'data-model'">
+                New Data Relation
+            </div>
+            <div class="mt-2 f-8" *ngIf="type === 'integrations'">
+                DB Integration
             </div>
         </div>
     </div>

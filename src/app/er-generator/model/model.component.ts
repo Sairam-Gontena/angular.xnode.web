@@ -34,7 +34,7 @@ export class ModelComponent {
     private dataService: DataService,
     private jsPlumbService: JsPlumbService,
     private el: ElementRef
-  ) {}
+  ) { }
 
   ngAfterViewInit() {
     console.log(
@@ -69,10 +69,10 @@ export class ModelComponent {
     console.log(
       'ModelComponent(' + this.myModel.id + ').deleteModel() is called!'
     );
-    if (confirm('Want to delete ' + this.myModel.name + '?')) {
-      // @ts-ignore
-      this.dataService.deleteModel(this.myModel.id);
-    }
+    // if (confirm('Want to delete ' + this.myModel.name + '?')) {
+    //   // @ts-ignore
+    //   this.dataService.deleteModel(this.myModel.id);
+    // }
   }
 
   public addSchema(): void {

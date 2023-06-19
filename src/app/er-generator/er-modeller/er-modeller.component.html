@@ -9,12 +9,14 @@
     <div class="">
       <p-accordion [activeIndex]="0">
         <p-accordionTab header="Data Model">
-          <xnode-er-generator-layout (getconfigureLayout)="getLayout($event)"></xnode-er-generator-layout>
+          <xnode-er-generator-layout (getconfigureLayout)="getLayout($event)"
+            type="data-model"></xnode-er-generator-layout>
         </p-accordionTab>
       </p-accordion>
       <p-accordion [activeIndex]="1">
         <p-accordionTab header="Integrations">
-          <xnode-er-generator-layout (getconfigureLayout)="getLayout($event)"></xnode-er-generator-layout>
+          <xnode-er-generator-layout (getconfigureLayout)="getLayout($event)"
+            type="integrations"></xnode-er-generator-layout>
         </p-accordionTab>
       </p-accordion>
       <p-accordion [activeIndex]="2">
@@ -66,8 +68,11 @@
       </div>
     </div>
     <div class="surface-900 m-4 h-full">
-      <div id="canvas" class="col-sm-10">
-        <model *ngFor="let model of data.models" [myModel]="model"></model>
+      <h6 class="text-4xl text-white p-4 font-bold">Data Model</h6>
+      <div class="flex flex-wrap justify-center ml-4">
+        <div id="canvas" class="col-sm-10">
+          <model *ngFor="let model of data.models" [myModel]="model"></model>
+        </div>
       </div>
     </div>
   </div>
