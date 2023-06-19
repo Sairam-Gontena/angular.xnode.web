@@ -3,6 +3,7 @@ import { Data } from '../class/data';
 import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
+import { InputDataJson } from '../service/input_data_sample';
 
 @Component({
   selector: 'xnode-er-modeller',
@@ -16,7 +17,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
-  @Input() erModelInput: any;
+  @Input() erModelInput: any = InputDataJson;
 
   constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
@@ -38,7 +39,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
 
   ngAfterViewInit(): void {
     this.jsPlumbService.init();
-    this.dataService.loadData(this.utilService.ToModelerSchema());
+    this.dataService.loadData(this.utilService.ToModelerSchema(this.erModelInput));
   }
 
   getLayout(layout: any): void {
