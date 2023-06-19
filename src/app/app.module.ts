@@ -14,7 +14,6 @@ import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.comp
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { BotComponent } from './components/bot/bot.component';
-import { PageToolsLayoutComponent } from './components/page-tools-layout/page-tools-layout.component';
 
 
 
@@ -27,7 +26,6 @@ import { PageToolsLayoutComponent } from './components/page-tools-layout/page-to
     UiFlow2Component,
     PageNotFoundComponent,
     BotComponent,
-    PageToolsLayoutComponent
   ],
   imports: [
     BrowserModule,
