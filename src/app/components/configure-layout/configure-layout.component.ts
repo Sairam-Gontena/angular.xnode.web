@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-configure-layout',
@@ -11,22 +12,23 @@ export class ConfigureLayoutComponent {
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:62630/";
 
-  onSelectLayout(layout: string): void {
-    this.selectedContainer = layout
-    this.getconfigureLayout.emit(layout);
+  constructor(private router: Router) {
   }
 
   drag(ev: any) {
     ev.dataTransfer?.setData('text/plain', ev.target.id);
     window.frames[0].postMessage({
       type: 'dragItem', itemId: ev.target.id
-
-
-
-
-
-
     }, this.iframeUrl);
+  }
+
+  onSelectLayout(layout: string): void {
+    this.selectedContainer = layout;
+    if (layout === 'DATA_MODEL') {
+      this.router.navigate(['/configuration/data-model']);
+    } else {
+      this.router.navigate(['/configuration/api-integration']);
+    }
   }
 
   allowDrop(ev: any) {

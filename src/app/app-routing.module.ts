@@ -76,7 +76,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'chat-bot',
+    path: 'x-pilot',
     loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
   },
   {

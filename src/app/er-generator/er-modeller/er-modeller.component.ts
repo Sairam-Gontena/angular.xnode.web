@@ -42,7 +42,6 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   }
 
   getLayout(layout: any): void {
-    console.log('layout', layout);
     if (layout)
       this.dashboard = this.layoutColumns[layout];
   }
