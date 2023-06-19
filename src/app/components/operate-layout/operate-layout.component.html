@@ -1,0 +1,104 @@
+<div class=" flex grid  gap-3 justify-content-center">
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+            id="Containers" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('DATA_MODEL')"
+            [ngClass]="{'layout-item-active': selectedContainer=== 'CONTAINER'  }">
+            <div class="flex flex-column">
+                <div class="text-center">
+                    <img src="./assets/Overview-icon.svg" alt="container">
+                </div>
+                <div class="mt-2 f-8">
+                    Overview
+                </div>
+            </div>
+        </div>
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+            id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ROWS')"
+            [ngClass]="{'layout-item-active': selectedContainer=== 'ROWS'  }">
+            <div class="flex flex-column">
+                <div class="text-center">
+                    <img src="./assets/ActivityLog.svg" alt="container">
+                </div>
+                <div class="mt-2 f-8  text-center">
+                    Activity Log
+                </div>
+            </div>
+        </div>
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+            id="One Column" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ONE_COLUMN')"
+            [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
+            <div class="flex flex-column">
+                <div class="text-center">
+                    <img src="./assets/Alerts.svg" alt="container">
+                </div>
+                <div class="mt-2 f-8 text-center">
+
+                Alerts
+                </div>
+            </div>
+        </div>
+    <div class="grid gap-3 ">
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('TWO_COLUMN')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'TWO_COLUMN'  }">
+                <div class="flex flex-column">
+                    <div class="text-center">
+                        <img src="./assets/Metrics.svg" alt="container">
+                    </div>
+                    <div class="mt-2 f-8  text-center">
+                       Metrics
+                    </div>
+                </div>
+            </div>                                                                           
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('THREE_COLUMN')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'THREE_COLUMN'  }">
+                <div class="flex flex-column">
+                    <div class="text-center">
+                        <img src="./assets/Logs.svg" alt="container">
+                    </div>
+                    <div class="mt-2 f-8  text-center">
+                      Logs
+                    </div>
+                </div>
+        </div>
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+            id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('FOUR_COLUMN')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'FOUR_COLUMN'  }">
+                <div class="flex flex-column">
+                    <div class="text-center">
+                        <img src="./assets/ChangeAnalysis.svg" alt="container">
+                    </div>
+                    <div class="mt-2 f-8  text-center">
+                   Change Analysis
+                    </div>
+                </div>
+        </div>      
+     </div>
+     <div class="grid gap-3 last-col">
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('TWO_COLUMN')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'TWO_COLUMN'  }">
+                <div class="flex flex-column">
+                    <div class="text-center">
+                        <img src="./assets/SystemsHealth.svg" alt="container">
+                    </div>
+                    <div class="mt-2 f-8  text-center">
+                      Service Health
+                    </div>
+                </div>
+            </div>                                                                           
+        <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('THREE_COLUMN')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'THREE_COLUMN'  }">
+                <div class="flex flex-column">
+                    <div class="text-center">
+                        <img src="./assets/LogBook.svg" alt="container">
+                    </div>
+                    <div class="mt-2 f-8  text-center">
+                     Workbooks
+                    </div>
+                </div>
+        </div>
+       
+     </div>
+</div>

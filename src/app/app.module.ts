@@ -25,7 +25,7 @@ import { BotComponent } from './components/bot/bot.component';
     UiFlowGraphComponent,
     UiFlow2Component,
     PageNotFoundComponent,
-    BotComponent
+    BotComponent,
   ],
   imports: [
     BrowserModule,
