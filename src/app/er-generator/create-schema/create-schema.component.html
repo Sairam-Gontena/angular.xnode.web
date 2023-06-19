@@ -1,6 +1,6 @@
 <p-dialog header="Header" [(visible)]="isVisible"  [modal]="true" [style]="{width: '50vw'}">
   <ng-template pTemplate="header">
-    <h3>{{mode == 'create' ? "Create Schema" : "Edit Schema"}}</h3>
+    <h3>{{mode == 'create' ? "Create Property" : "Edit Property"}}</h3>
     <form [formGroup]="formGroup" (ngSubmit)="create()">
       <input type="hidden"
              name="is_pivot"
