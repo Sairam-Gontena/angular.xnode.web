@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
-import { InputDataJson } from "./input_data_sample";
-
 
 @Injectable()
 export class UtilService {
 
-  ToModelerSchema() {
+  ToModelerSchema(inputDataJson: any) {
     var models: any[] = [];
     var nextModelId: number = 1;
 
@@ -24,8 +22,8 @@ export class UtilService {
       incX = !incX;
     }
 
-    Object.keys(InputDataJson).forEach((schemaName: string) => {
-      var schemaDetail = InputDataJson[schemaName]
+    Object.keys(inputDataJson).forEach((schemaName: string) => {
+      var schemaDetail = inputDataJson[schemaName]
       var schemaModeler = constructCols(schemaDetail['properties'], nextModelId)
       var cols: any[] = schemaModeler.cols;
       var model = {

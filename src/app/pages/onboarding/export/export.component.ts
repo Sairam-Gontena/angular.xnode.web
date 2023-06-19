@@ -11,7 +11,7 @@ export class ExportComponent {
   constructor(private router: Router) { }
 
   startChatWithBot(): void {
-    this.router.navigate(['/chat-bot']);
+    this.router.navigate(['/x-pilot']);
   }
 
 }

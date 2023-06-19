@@ -5,7 +5,7 @@
       [class.list-group-item-primary]="myModel.is_pivot === false"
       [class.list-group-item-secondary]="myModel.is_pivot === true" (contextmenu)="contextMenu($event)"
       (mousedown)="startDrag()" (mouseup)="endDrag()">
-      <span class="align-self-center mr-auto">{{myModel.id}}:{{myModel.name}}</span>
+      <span class="align-self-center mr-auto">{{myModel.name}}</span>
       <span class="icon-group align-self-center" style="min-width: 42px;" id="icon01">
          <i class="material-icons ml-3" (click)="editModel()">mode_edit</i>
          <i class="material-icons ml-1" (click)="deleteModel()">close</i>
@@ -19,8 +19,7 @@
    <div class="list-group-item text-center pl-0 pr-0">
       <div class="btm-actions w-full">
          <a href="javascript:void(0)" (click)="addSchema()"><i class="material-icons align-middle">add_circle</i> <span
-               class="align-middle">add
-               schema</span>
+               class="align-middle">add property</span>
          </a>
       </div>
 
