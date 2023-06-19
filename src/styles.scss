@@ -182,8 +182,28 @@ body {
 
 .list-group-item+.list-group-item {
   background: #D1C4E9;
+  padding: 5px 10px !important;
+  border: none !important;
 }
 
 .jtk-hover path {
-  color: blue;
+  color: blue !important;
+}
+
+.list-group-item-primary {
+  font-weight: 600 !important;
+  padding: 10px !important;
+  border-bottom: 1px solid #000000 !important;
+}
+
+// .btm-actions i,
+// .btm-actions span {
+//   color: #ffffff !important;
+//   text-decoration: none !important;
+//   border: none !important;
+// }
+
+.btm-actions a {
+  color: #000000 !important;
+  text-decoration: none !important;
 }

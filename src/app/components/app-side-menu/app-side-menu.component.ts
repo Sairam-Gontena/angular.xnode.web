@@ -19,13 +19,10 @@ export class AppSideMenuComponent implements OnInit {
     this.selectedMenuIndex = 2;
     this.sideMenuItems = AppSideMenuItems;
     this.route.url.subscribe(console.log);
-    console.log('>>>>>', this.route);
-
   }
 
   onClickMenuItem(item: any, i: any): void {
     this.selectedMenuIndex = i;
     this.router.navigate(['/' + item.path])
   }
-
 }

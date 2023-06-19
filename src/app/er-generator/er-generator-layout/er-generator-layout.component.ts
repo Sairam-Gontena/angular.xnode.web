@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-er-generator-layout',
@@ -7,12 +8,20 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class ErGeneratorLayoutComponent {
   @Output() getconfigureLayout: EventEmitter<string> = new EventEmitter<string>();
-  selectedContainer: string = 'CONTAINER';
+  selectedContainer?: string = "DATA_MODEL";
   iframeUrl: string = "http://localhost:62630/";
+  @Input() type: any;
+
+  constructor(private router: Router) {
+  }
 
   onSelectLayout(layout: string): void {
-    this.selectedContainer = layout
-    this.getconfigureLayout.emit(layout);
+    this.selectedContainer = layout;
+    if (layout === 'DATA_MODEL') {
+      this.router.navigate(['/configuration/data-model']);
+    } else {
+      this.router.navigate(['/configuration/api-integration']);
+    }
   }
 
   drag(ev: any) {
@@ -30,5 +39,9 @@ export class ErGeneratorLayoutComponent {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
+  }
+
+  onClickApiIntegration(): void {
+    this.router.navigate(['/configuration/api-integration']);
   }
 }

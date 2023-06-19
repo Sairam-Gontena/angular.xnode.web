@@ -1,8 +1,8 @@
 import { AfterViewChecked, AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { Data } from '../class/data';
 import { DataService } from '../service/data.service';
-import { sampleData } from './sample-data';
 import { JsPlumbService } from '../service/jsPlumb.service';
+import { UtilService } from '../service/util.service';
 
 @Component({
   selector: 'xnode-er-modeller',
@@ -18,7 +18,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   highlightedIndex: string | null = null;
   @Input() erModelInput: any;
 
-  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService) {
+  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
   }
 
@@ -38,11 +38,10 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
 
   ngAfterViewInit(): void {
     this.jsPlumbService.init();
-    this.dataService.loadData(sampleData);
+    this.dataService.loadData(this.utilService.ToModelerSchema());
   }
 
   getLayout(layout: any): void {
-    console.log('layout', layout);
     if (layout)
       this.dashboard = this.layoutColumns[layout];
   }

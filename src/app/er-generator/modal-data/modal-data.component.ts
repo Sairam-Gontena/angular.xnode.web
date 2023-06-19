@@ -43,7 +43,7 @@ export class ModalDataComponent {
         } else {
           // @ts-ignore
           this.dataService.data.use_laravel_auth = false;
-          alert("use_laravle_auth is changed to false");
+          // alert("use_laravle_auth is changed to false");
         }
 
       } else {
@@ -59,7 +59,7 @@ export class ModalDataComponent {
           } else {
             // @ts-ignore
             this.dataService.data.use_laravel_auth = false;
-            alert("use_laravle_auth is changed to false");
+            // alert("use_laravle_auth is changed to false");
           }
         }
       }
