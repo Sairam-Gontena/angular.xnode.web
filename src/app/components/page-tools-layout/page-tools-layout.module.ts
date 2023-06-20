@@ -14,7 +14,6 @@ import { PrimeModulesModule } from '../../prime-modules/prime-modules.module';
     PrimeModulesModule
   ],
   exports: [
-    PageToolsLayoutComponent
   ]
 })
 export class PageToolsLayoutModule { }

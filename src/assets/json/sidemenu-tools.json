@@ -60,37 +60,180 @@
                     {
                          "ID": "2",
                          "Label": "Config",
-                         "AccordianTabHeader": "",
-                         "SubSideBar": [
+                         "SideBar": [
                               {
-                                   "header": "Data Model",
-                                   "iscomponent": "true",
-                                   "component": "<xnode-er-generator-layout (getconfigureLayout)='getLayout($event)' type='data-model'></xnode-er-generator-layout>"
+                                   "AccordianTabHeader": "Data Model",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Data Object",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Data Object",
+                                             "alt": "NewDataObject",
+                                             "content": "New Data Object",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Data Relation",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "New Data Relation",
+                                             "alt": "NewDataRelation",
+                                             "content": "New Data Relation",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
                               },
                               {
-                                   "header": "Integrations",
-                                   "iscomponent": "true",
-                                   "component": "<xnode-er-generator-layout (getconfigureLayout)='getLayout($event)' type='integrations'></xnode-er-generator-layout>"
+                                   "AccordianTabHeader": "Integrations",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "API Integrations",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "API Integrations",
+                                             "alt": "APIIntegrations",
+                                             "content": "API Integrations",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "DB Integrations",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "DB Integrations",
+                                             "alt": "DBIntegrations",
+                                             "content": "DB Integrations",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
                               },
                               {
-                                   "header": "Authentication",
-                                   "iscomponent": "false",
-                                   "content": "Authentication"
+                                   "AccordianTabHeader": "Authentication",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Add Provider",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Add Provider",
+                                             "alt": "AddProvider",
+                                             "content": "Add Provider",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
                               },
                               {
-                                   "header": "Entitlements",
-                                   "iscomponent": "false",
-                                   "content": "Entitlements"
+                                   "AccordianTabHeader": "Entitlement",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Add Entitlement",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Add Entitlement",
+                                             "alt": "AddEntitlement",
+                                             "content": "Add Entitlement",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
                               },
                               {
-                                   "header": "Business Rules",
-                                   "iscomponent": "false",
-                                   "content": "Business Rules"
+                                   "AccordianTabHeader": "Business Rules",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Rule",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Rule",
+                                             "alt": "NewRule",
+                                             "content": "New Rule",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Rule",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Edit Rule",
+                                             "alt": "EditRule",
+                                             "content": "Edit Rule",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
                               },
                               {
-                                   "header": "Work flows",
-                                   "iscomponent": "false",
-                                   "content": "Work flows"
+                                   "AccordianTabHeader": "Work Flows",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Flow",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Flow",
+                                             "alt": "NewFlow",
+                                             "content": "New Flow",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Flow",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Edit Flow",
+                                             "alt": "EditFlow",
+                                             "content": "Edit Flow",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
                               }
                          ]
                     }

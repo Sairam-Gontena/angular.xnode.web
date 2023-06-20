@@ -21,7 +21,8 @@ import { LayoutElementsComponent } from 'src/app/components/layout-elements/layo
     PrimeModulesModule
   ],
   exports: [
-    GridsterModule
+    GridsterModule,
+    PageToolsLayoutComponent
   ]
 })
 export class TemplateBuilderModule { }

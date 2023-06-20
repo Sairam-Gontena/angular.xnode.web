@@ -6,7 +6,7 @@
           </span>
      </div>
      <div class="">
-          <p-accordion [activeIndex]="1" *ngFor="let menu of sideMenuItem[0]?.SideBar;">
+          <p-accordion [activeIndex]="1" *ngFor="let menu of sideMenuItem[0]?.SideBar; let i = 'index+1'">
                <p-accordionTab header="{{menu?.AccordianTabHeader}}">
                     <div class="row">
                          <!-- flex gap-3 justify-content-center mt-3 -->
@@ -14,7 +14,7 @@
                               <!-- draggable="true" (dragstart)="drag($event)" -->
                               <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
                                    [ngClass]="{'layout-item-active': selectedContainer=== '{{submenu?.selectedcontainer}}'  }"
-                                   id="{{submenu?.id}}">
+                                   id="{{submenu?.id}}" routerLink={{submenu?.routerlink}}>
                                    <div class="flex flex-column">
                                         <div class="text-center">
                                              <img src="{{submenu?.imgsrc}}" alt="{{submenu?.alt}}">

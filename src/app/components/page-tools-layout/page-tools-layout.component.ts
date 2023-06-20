@@ -37,6 +37,7 @@ export class PageToolsLayoutComponent {
   }
 
   async loadSubSideMenu(sidemenuLabel: any) {
+    console.log(this.sideMenu)
     await this.sideMenu.filter((item: any) => {
       if (item?.Label == sidemenuLabel) {
         this.sideMenuItem.push(item)
