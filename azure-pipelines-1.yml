@@ -21,10 +21,10 @@ stages:
           azureSubscription: 'xnode-spn'
           scriptType: bash
           scriptLocation: inlineScript
-          inlineScript: >-
-            az group create -l $(LOCATION) -n $(CLIENT)$(APP)-$(ENV)
-            az storage account create -n $(CLIENT)$(APP)$(ENV) -g $(CLIENT)$(APP)-$(ENV) -l $(LOCATION) --sku Standard_LRS
-            az storage container create --account-name $(CLIENT)$(APP)$(ENV) -n terraform
+          inlineScript: |
+            az group create --location $(LOCATION) --name "$(CLIENT)$(APP)-$(ENV)"
+            az storage account create --name "$(CLIENT)$(APP)$(ENV)" --resource-group "$(CLIENT)$(APP)-$(ENV)" --location $(LOCATION) --sku Standard_LRS
+            az storage container create --name terraform --account-name "$(CLIENT)$(APP)$(ENV)"
           workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
       - task: TerraformInstaller@0
         displayName: Install Terraform latest   
