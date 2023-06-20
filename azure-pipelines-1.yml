@@ -22,7 +22,7 @@ stages:
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: |
-            az group create --location $(LOCATION) --name "$(CLIENT)$(APP)-$(ENV)"
+            az group create --location "$(LOCATION)" --name "$(CLIENT)$(APP)-$(ENV)"
             az storage account create --name "$(CLIENT)$(APP)$(ENV)" --resource-group "$(CLIENT)$(APP)-$(ENV)" --location $(LOCATION) --sku Standard_LRS
             az storage container create --name terraform --account-name "$(CLIENT)$(APP)$(ENV)"
           workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
