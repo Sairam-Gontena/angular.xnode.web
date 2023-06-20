@@ -1,0 +1,130 @@
+trigger:
+  - artifacts
+
+variables:
+  - group: xnode-vars
+
+stages:
+  - stage: Infrastucture
+    displayName: Infrastucture
+    jobs:
+    - job: Infrastucture
+      displayName: Deploy Azure Resources
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+      - checkout: self
+        fetchDepth: 1
+      - task: AzureCLI@2
+        displayName: Create Resource Group & Storage Account
+        inputs:
+          azureSubscription: 'xnode-spn'
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: >-
+            az group create -l $(LOCATION) -n $(CLIENT)$(APP)-$(ENV)
+            az storage account create -n $(CLIENT)$(APP)$(ENV) -g $(CLIENT)$(APP)-$(ENV) -l $(LOCATION) --sku Standard_LRS
+            az storage container create --account-name $(CLIENT)$(APP)$(ENV) -n terraform
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
+      - task: TerraformInstaller@0
+        displayName: Install Terraform latest   
+      - task: TerraformTaskV4@4
+        displayName: 'Terraform : Init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
+          backendServiceArm: 'xnode-spn'
+          backendAzureRmResourceGroupName: '$(CLIENT)$(APP)-$(ENV)'
+          backendAzureRmStorageAccountName: '$(CLIENT)$(APP)$(ENV)'
+          backendAzureRmContainerName: 'terraform'
+          backendAzureRmKey: '$(CLIENT)$(APP)-$(ENV).tfstate'
+      - task: AzureCLI@2
+        displayName: 'Terraform : Plan & Apply'
+        inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Infrastructure'
+          azureSubscription: 'xnode-spn'
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: terraform apply -auto-approve -var='name=$(CLIENT)' -var='app=$(APP)' -var='env=$(ENV)' -var='location=$(LOCATION)'  -var='app_service_names=$(APPS)'
+  
+  - stage: PushArtifacts
+    displayName: Push Artifacts to Repository
+    pool:  
+      vmImage: 'ubuntu-latest'  
+    jobs:
+    - job: FrontEnd
+      displayName: Push FrontEnd Artifacts
+      steps:  
+      - task: UsePythonVersion@0
+        displayName: Install Python
+        inputs:
+          versionSpec: '3.8'
+          addToPath: true
+          architecture: 'x64'
+      - task: Bash@3
+        displayName: FrontEnd Repository Publish
+        inputs:
+          targetType: 'inline'
+          script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "frontend" -f "$(System.DefaultWorkingDirectory)/code-gen-react-admin"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+    - job: BackEnd
+      displayName: Push BackEnd Artifacts
+      dependsOn: FrontEnd
+      steps:  
+      - task: UsePythonVersion@0
+        displayName: Install Python
+        inputs:
+          versionSpec: '3.8'
+          addToPath: true
+          architecture: 'x64'
+
+      - task: Bash@3
+        displayName: BackEnd Repository Publish
+        inputs:
+          targetType: 'inline'
+          script: 'python3 main.py -o $(XNODE-ADO-ORGANIZATION) -p $(XNODE-ADO-PROJECT) -t $(XNODE-ADO-PAT) -r "backend" -f "$(System.DefaultWorkingDirectory)/code-gen"'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - stage: CI
+    dependsOn: PushArtifacts
+    displayName: Generate CI Pipelines
+    pool:  
+      vmImage: 'ubuntu-latest'    
+    jobs:
+    - job: Pipelines
+      displayName: Create CI Pipelines
+      steps:
+      - task: Bash@3
+        displayName: Create FrontEnd Build
+        inputs:
+          targetType: 'inline'
+          script: |
+                    pipelines=$(az pipelines list  --project 'xnode' --query "[].name" -o tsv)
+                    name='frontend'
+         
+                    if [[ ! " ${pipelines[@]} " =~ " ${name} " ]]; then
+                    echo $(XNODE-ADO-PAT) | az devops login
+                    az pipelines create --name $name --project $(XNODE-ADO-PROJECT) --repository 'frontend' --branch 'automated-dev' --yaml-path 'code-gen-react-admin/frontend-pipeline.yml' --repository-type 'tfsgit'
+                    else
+                    echo "Pipeline with name $name already Exists"
+                    fi
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - task: Bash@3
+        displayName: Create BackEnd Build
+        inputs:
+          targetType: 'inline'
+          script: |
+                    pipelines=$(az pipelines list  --project 'xnode' --query "[].name" -o tsv)
+                    name='backend'
+          
+                    if [[ ! " ${pipelines[@]} " =~ " ${name} " ]]; then
+                    echo $(XNODE-ADO-PAT) | az devops login
+                    az pipelines create --name $name --project $(XNODE-ADO-PROJECT) --repository 'backend' --branch 'automated-dev' --yaml-path 'code-gen/backend-pipeline.yml' --repository-type 'tfsgit'
+                    else
+                    echo "Pipeline with name $name already Exists"
+                    fi
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+        
