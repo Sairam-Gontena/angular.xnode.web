@@ -1,7 +1,7 @@
 <div class=" flex grid  gap-3 justify-content-center">
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-            id="Containers" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('DATA_MODEL')"
-            [ngClass]="{'layout-item-active': selectedContainer=== 'CONTAINER'  }">
+            id="Overview" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('Overview')"
+            [ngClass]="{'layout-item-active': selectedContainer=== 'Overview'  }">
             <div class="flex flex-column">
                 <div class="text-center">
                     <img src="./assets/Overview-icon.svg" alt="container">
@@ -12,8 +12,8 @@
             </div>
         </div>
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-            id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ROWS')"
-            [ngClass]="{'layout-item-active': selectedContainer=== 'ROWS'  }">
+            id="ActivityLog" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ActivityLog')"
+            [ngClass]="{'layout-item-active': selectedContainer=== 'ActivityLog'  }">
             <div class="flex flex-column">
                 <div class="text-center">
                     <img src="./assets/ActivityLog.svg" alt="container">
@@ -24,8 +24,8 @@
             </div>
         </div>
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-            id="One Column" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ONE_COLUMN')"
-            [ngClass]="{'layout-item-active': selectedContainer=== 'ONE_COLUMN'  }">
+            id="Alerts" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('Alerts')"
+            [ngClass]="{'layout-item-active': selectedContainer=== 'Alerts'  }">
             <div class="flex flex-column">
                 <div class="text-center">
                     <img src="./assets/Alerts.svg" alt="container">
@@ -38,8 +38,8 @@
         </div>
     <div class="grid gap-3 ">
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('TWO_COLUMN')"
-                [ngClass]="{'layout-item-active': selectedContainer=== 'TWO_COLUMN'  }">
+                id="Metrics" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('Metrics')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'Metrics'  }">
                 <div class="flex flex-column">
                     <div class="text-center">
                         <img src="./assets/Metrics.svg" alt="container">
@@ -50,8 +50,8 @@
                 </div>
             </div>                                                                           
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('THREE_COLUMN')"
-                [ngClass]="{'layout-item-active': selectedContainer=== 'THREE_COLUMN'  }">
+                id="Logs" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('Logs')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'Logs'  }">
                 <div class="flex flex-column">
                     <div class="text-center">
                         <img src="./assets/Logs.svg" alt="container">
@@ -62,8 +62,8 @@
                 </div>
         </div>
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-            id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('FOUR_COLUMN')"
-                [ngClass]="{'layout-item-active': selectedContainer=== 'FOUR_COLUMN'  }">
+            id="ChangeAnalysis" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ChangeAnalysis')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'ChangeAnalysis'  }">
                 <div class="flex flex-column">
                     <div class="text-center">
                         <img src="./assets/ChangeAnalysis.svg" alt="container">
@@ -76,8 +76,8 @@
      </div>
      <div class="grid gap-3 last-col">
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('TWO_COLUMN')"
-                [ngClass]="{'layout-item-active': selectedContainer=== 'TWO_COLUMN'  }">
+                id="ServiceHealth" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('ServiceHealth')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'ServiceHealth'  }">
                 <div class="flex flex-column">
                     <div class="text-center">
                         <img src="./assets/SystemsHealth.svg" alt="container">
@@ -88,8 +88,8 @@
                 </div>
             </div>                                                                           
         <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
-                id="Rows" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('THREE_COLUMN')"
-                [ngClass]="{'layout-item-active': selectedContainer=== 'THREE_COLUMN'  }">
+                id="Workbooks" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('Workbooks')"
+                [ngClass]="{'layout-item-active': selectedContainer=== 'Workbooks'  }">
                 <div class="flex flex-column">
                     <div class="text-center">
                         <img src="./assets/LogBook.svg" alt="container">

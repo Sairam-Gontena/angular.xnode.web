@@ -8,11 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class OperateComponent implements OnInit {
   getconfigureLayout: any;
   layout: any;
-  dashboard: any;
+  dashboard: any  = 'Overview';
   layoutColumns: any;
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
+  operateLayout: any;
 
   ngOnInit(): void {
     this.templates = [
@@ -21,9 +22,11 @@ export class OperateComponent implements OnInit {
   }
 
   getLayout(layout: any): void {
-    // console.log('layout', layout);
+    console.log(layout);
+    this.dashboard = layout;
     // if (layout)
     //   this.dashboard = this.layoutColumns[layout];
+    //   console.log(layout)
   }
 
   emitIconClicked(icon: string) {

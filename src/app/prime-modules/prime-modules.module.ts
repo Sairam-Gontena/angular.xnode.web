@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [],
@@ -22,7 +23,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     DialogModule,
     FileUploadModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TableModule
   ],
   exports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     DialogModule,
     FileUploadModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TableModule
   ]
 })
 export class PrimeModulesModule { }

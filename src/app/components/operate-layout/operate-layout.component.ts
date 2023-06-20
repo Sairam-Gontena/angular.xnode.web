@@ -24,10 +24,21 @@ export class OperateLayoutComponent {
 
   onSelectLayout(layout: string): void {
     this.selectedContainer = layout;
-    // if (layout === 'DATA_MODEL') {
-    //   this.router.navigate(['/configuration/data-model']);
+    if (this.selectedContainer === layout) {
+      this.selectedContainer = '';
+    } else {
+      this.selectedContainer = layout;
+    }
+    this.getconfigureLayout.emit(layout);
+    // console.log(this.selectedContainer)
+    // if (layout === 'Overview') {
+    //   this.selectedContainer == 'Overview';
+    // console.log(this.selectedContainer)
+
     // } else {
-    //   this.router.navigate(['/configuration/api-integration']);
+    //   this.selectedContainer == 'Alerts';
+    // console.log(this.selectedContainer)
+
     // }
   }
 
