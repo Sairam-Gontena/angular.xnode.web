@@ -3,49 +3,57 @@
                     {
                          "ID": "1",
                          "Label": "Design",
-                         "AccordianTabHeader": "Layout",
-                         "SubSideBar": [
+                         "SideBar": [
                               {
-                                   "id": "CONTAINER",
-                                   "imgsrc": "./assets/container.svg",
-                                   "selectedcontainer": "CONTAINER",
-                                   "alt": "container",
-                                   "content": "CONTAINER"
+                                   "AccordianTabHeader": "Layout",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "CONTAINER",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "CONTAINER",
+                                             "alt": "container",
+                                             "content": "CONTAINER"
+                                        },
+                                        {
+                                             "id": "Rows",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "ROWS",
+                                             "alt": "rows",
+                                             "content": "Rows"
+                                        },
+                                        {
+                                             "id": "One Column",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "ONE_COLUMN",
+                                             "alt": "One Column",
+                                             "content": "One Column"
+                                        },
+                                        {
+                                             "id": "Two Columns",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "TWO_COLUMNS",
+                                             "alt": "two columns",
+                                             "content": "Two Columns"
+                                        },
+                                        {
+                                             "id": "Three Columns",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "THREE_COLUMNS",
+                                             "alt": "three columns",
+                                             "content": "Three Columns"
+                                        },
+                                        {
+                                             "id": "Four Columns",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "ONE_COLUMN",
+                                             "alt": "Four columns",
+                                             "content": "Four Columns"
+                                        }
+                                   ]
                               },
                               {
-                                   "id": "Rows",
-                                   "imgsrc": "./assets/rows.svg",
-                                   "selectedcontainer": "ROWS",
-                                   "alt": "rows",
-                                   "content": "Rows"
-                              },
-                              {
-                                   "id": "One Column",
-                                   "imgsrc": "./assets/one-column.svg",
-                                   "selectedcontainer": "ONE_COLUMN",
-                                   "alt": "One Column",
-                                   "content": "One Column"
-                              },
-                              {
-                                   "id": "Two Columns",
-                                   "imgsrc": "./assets/container.svg",
-                                   "selectedcontainer": "TWO_COLUMNS",
-                                   "alt": "two columns",
-                                   "content": "Two Columns"
-                              },
-                              {
-                                   "id": "Three Columns",
-                                   "imgsrc": "./assets/rows.svg",
-                                   "selectedcontainer": "THREE_COLUMNS",
-                                   "alt": "three columns",
-                                   "content": "Three Columns"
-                              },
-                              {
-                                   "id": "Four Columns",
-                                   "imgsrc": "./assets/one-column.svg",
-                                   "selectedcontainer": "ONE_COLUMN",
-                                   "alt": "Four columns",
-                                   "content": "Four Columns"
+                                   "AccordianTabHeader": "UI Elements",
+                                   "SubSideBar": []
                               }
                          ]
                     },
