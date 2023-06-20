@@ -236,6 +236,204 @@
                                    ]
                               }
                          ]
+                    },
+                    {
+                         "ID": "3",
+                         "Label": "Publish",
+                         "SideBar": [
+                              {
+                                   "AccordianTabHeader": "Environment",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "DEV",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Dev",
+                                             "alt": "Dev",
+                                             "content": "DEV",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "UAT",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "UAT",
+                                             "alt": "UAT",
+                                             "content": "UAT",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "PROD",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "PROD",
+                                             "alt": "PROD",
+                                             "content": "PROD",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Create",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "Create",
+                                             "alt": "Create",
+                                             "content": "Create",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Test",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Test Cases",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Test Cases",
+                                             "alt": "Test Cases",
+                                             "content": "Test Cases",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "View Report",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "View Report",
+                                             "alt": "View Report",
+                                             "content": "View Report",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Mobile App",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Add Provider",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Add Provider",
+                                             "alt": "AddProvider",
+                                             "content": "Add Provider",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Launch",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Approvals",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Approvals",
+                                             "alt": "Approvals",
+                                             "content": "Approvals",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Release Notes",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Release Notes",
+                                             "alt": "Release Notes",
+                                             "content": "Release Notes",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Deploy",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Deploy",
+                                             "alt": "Deploy",
+                                             "content": "Deploy",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "A/B Test",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "A/B Test",
+                                             "alt": "A/BTest",
+                                             "content": "A/B Test",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Business Rules",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Rule",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Rule",
+                                             "alt": "NewRule",
+                                             "content": "New Rule",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Rule",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Edit Rule",
+                                             "alt": "EditRule",
+                                             "content": "Edit Rule",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Work Flows",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Flow",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Flow",
+                                             "alt": "NewFlow",
+                                             "content": "New Flow",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Flow",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Edit Flow",
+                                             "alt": "EditFlow",
+                                             "content": "Edit Flow",
+                                             "hasrouter": "true",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              }
+                         ]
                     }
                ]
           }
