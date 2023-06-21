@@ -18,6 +18,8 @@ export class PageToolsLayoutComponent {
   sideMenuItem: any = [];
   selectedContainer: string = 'CONTAINER';
 
+  iframeUrl: string = "http://localhost:50685/";
+
   constructor(private router: Router) {
     this.href = this.router.url;
     let label;
@@ -51,5 +53,23 @@ export class PageToolsLayoutComponent {
     console.log('layout', layout);
     if (layout)
       this.dashboard = this.layoutColumns[layout];
+  }
+
+  drag(ev: any) {
+    console.log(ev)
+    ev.dataTransfer?.setData('text/plain', ev.target.id);
+    window.frames[0].postMessage({
+      type: 'dragItem', itemId: ev.target.id
+    }, this.iframeUrl);
+  }
+
+  allowDrop(ev: any) {
+    ev.preventDefault();
+  }
+
+  drop(ev: any) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
   }
 }
