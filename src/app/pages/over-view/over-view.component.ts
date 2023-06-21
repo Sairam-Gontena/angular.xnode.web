@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 
@@ -8,11 +8,16 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./over-view.component.scss']
 })
 export class OverViewComponent {
+  @Input() currentStep: number= 2;
+
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
   iconClicked: any;
-
+  stepper: any;
+  show = false;
+  counter :any= 1;
+  counter2:any = 1;
   // formGroup!: FormGroup;
 
   // ngOnInit() {
@@ -37,5 +42,39 @@ export class OverViewComponent {
   }
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+  }
+
+  
+  nextStep(): void {
+    // this.stepper.nextStep();
+    if (this.currentStep < 3) {
+      this.currentStep++;
+    }
+    this.counter++;
+  }
+
+  prevStep(): void {
+    this.stepper.prevStep();
+    this.counter--;
+  }
+
+  setStep(step:any) {
+    // this.stepperRef.setStep(step);
+    this.counter = step;
+  }
+
+  nextStep2() {
+    this.stepper.nextStep();
+    this.counter2++;
+  }
+
+  prevStep2() {
+    this.stepper.prevStep();
+    this.counter2--;
+  }
+
+  setStep2(step:any) {
+    // this.stepperRef.setStep(step);
+    this.counter2 = step;
   }
 }

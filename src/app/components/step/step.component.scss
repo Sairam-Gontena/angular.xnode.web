@@ -1,0 +1,43 @@
+$height: 24px;
+.grid{
+  display: grid;
+  grid-template-columns:  $height 1fr;
+  grid-template-rows: $height 1fr;
+  grid-gap:5px 10px;
+  .indicator{
+    background-color: lightblue;
+    border-radius: 50%;
+    line-height: $height;
+    text-align: center;
+    font-size: 12px;
+  }
+  .title{
+    line-height: $height;
+    font-weight: bold;
+  }
+  .content{   
+    margin-bottom: 10px;
+  }
+  .divider{
+    position: relative;
+  }
+  .line{
+    position: absolute;
+    top: 0px;
+    bottom: 5px; 
+    width: 1px;
+    background-color: lightblue;
+    box-sizing: border-box;
+    left: 50%;
+  }
+  .check{
+       border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    height: 10px;
+    width: 5px;
+    transform: rotate(45deg);
+    display: inline-block;
+    margin-top: 3px;
+    margin-left: 1px;
+  }
+}
