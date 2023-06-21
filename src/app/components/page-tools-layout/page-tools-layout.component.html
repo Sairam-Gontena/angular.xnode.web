@@ -12,10 +12,10 @@
                          <!-- flex gap-3 justify-content-center mt-3 -->
                          <div class="col-4" *ngFor="let submenu of menu?.SubSideBar; let j = 'index+1'">
                               <!-- draggable="true" (dragstart)="drag($event)" -->
-                              <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+                              <div class="layout-item border-1 border-primary flex flex-wrap align-content-center justify-content-center pointer layout-item-active"
                                    [ngClass]="{'layout-item-active': selectedContainer=== '{{submenu?.selectedcontainer}}'  }"
                                    id="{{submenu?.id}}" routerLink={{submenu?.routerlink}}>
-                                   <div class="flex flex-column">
+                                   <div class="flex flex-column p-2">
                                         <div class="text-center">
                                              <img src="{{submenu?.imgsrc}}" alt="{{submenu?.alt}}">
                                         </div>
