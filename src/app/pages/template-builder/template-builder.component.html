@@ -1,5 +1,7 @@
 <div class="template-builder-wrapper">
-    <xnode-page-tools-layout></xnode-page-tools-layout>
+    <div class="template-builder-layout-wrapper">
+        <xnode-page-tools-layout></xnode-page-tools-layout>
+    </div>
     <div class="template-builder-body-wrapper">
         <xnode-template-builder-publish-header #childComponent
             (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
@@ -7,7 +9,7 @@
             <div class="flex align-items-center justify-content-center m-4 h-full">
                 <div class="" [ngClass]="currentView">
                     <!-- https://xnode-template-builder.azurewebsites.net/ -->
-                    <iframe src="http://localhost:50962/" class="h-full w-full" title="Template Builder">
+                    <iframe src="http://localhost:50685/" class="h-full w-full" title="Template Builder">
                     </iframe>
                 </div>
             </div>
