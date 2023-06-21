@@ -1,0 +1,12 @@
+<p-table [value]="tablevalue" [tableStyle]="{ 'min-width': '50rem' }" >
+    <ng-template pTemplate="header">
+     <tr class="surface-ground "   > 
+            <th *ngFor="let key of tablekey " class=" text-white" style="background-color: #3A3942;" >{{key}}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr *ngFor="let arr of tablevalue" class="text-white tablerow" style="background-color: #302E38;" > 
+            <td  *ngFor="let value of arr" >{{ value }}</td>
+        </tr>
+    </ng-template>
+</p-table>
