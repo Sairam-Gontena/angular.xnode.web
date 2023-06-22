@@ -18,7 +18,7 @@ export class PageToolsLayoutComponent {
   sideMenuItem: any = [];
   selectedContainer: string = 'CONTAINER';
 
-  iframeUrl: string = "http://localhost:50685/";
+  iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router) {
     this.href = this.router.url;
@@ -39,11 +39,9 @@ export class PageToolsLayoutComponent {
   }
 
   async loadSubSideMenu(sidemenuLabel: any) {
-    console.log(this.sideMenu)
     await this.sideMenu.filter((item: any) => {
       if (item?.Label == sidemenuLabel) {
-        this.sideMenuItem.push(item)
-        // return item;
+        this.sideMenuItem.push(item);
       }
     });
     console.log(this.sideMenuItem)
@@ -56,7 +54,6 @@ export class PageToolsLayoutComponent {
   }
 
   drag(ev: any) {
-    console.log(ev)
     ev.dataTransfer?.setData('text/plain', ev.target.id);
     window.frames[0].postMessage({
       type: 'dragItem', itemId: ev.target.id
