@@ -17,7 +17,7 @@
       "status": "pending",
       "children": [
         {
-          " title": "Data Model",
+          "title": "Data Model",
           "status": "active"
         },
         {
@@ -25,7 +25,7 @@
           "status": "active"
         },
         {
-          " title": "Authentication",
+          "title": "Authentication",
           "status": "active"
         },
         {
@@ -33,7 +33,7 @@
           "status": "active"
         },
         {
-          " title": "Business Rule",
+          "title": "Business Rule",
           "status": "pending"
         },
         {

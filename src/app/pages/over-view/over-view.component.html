@@ -146,11 +146,10 @@
                 <xnode-stepper #stepper [(counter)]="counter">
                     <xnode-step *ngFor="let item of jsondata">
                         <div step-title>{{ item.label }}</div>
-                        <div step-title>{{ item.children.title }}</div>
 
-                        <div step-action>
-                            <xnode-stepper *ngIf="item.children" [(counter)]="counter2">
-                                <xnode-step *ngFor="let child of item.children">
+                        <div step-action >
+                            <xnode-stepper  [(counter)]="counter2" *ngFor="let child of jsondata[3].children">
+                                <xnode-step >
                                     <div step-title>{{ child.title}}</div>
 
                                 </xnode-step>
