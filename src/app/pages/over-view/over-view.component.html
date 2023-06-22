@@ -90,7 +90,63 @@
     </div>
     <div class=" md:col-6 lg:col-4">
         <div class="card-container mt-6 mr-4 stake-holder h-screen w-24rem text-white ">
-            <div class="w-26rem p-1 mt-3 ml-3">
+         <div class="w-26rem p-1 mt-3 ml-3">
+            <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">Raymond Nelson!</span> You
+                are on
+                the verge of using the app.</p>
+            <p class="text-lg font-medium">Please see the status below</p>
+            <xnode-stepper #stepper [(counter)]="counter">
+                <xnode-step>
+                    <div step-title>Overview</div>
+                </xnode-step>
+                <xnode-step>
+                    <div step-title>Use Case</div>
+                    <!-- <div step-content> content 2</div>
+                    <div step-action> -->
+                        <!-- <button (click)="stepper.prevStep()">prevStep</button>
+                        <button (click)="stepper.nextStep()">nextStep</button> -->
+                    <!-- </div> -->
+                </xnode-step>
+                <xnode-step>
+                    <div step-title>Design</div>
+                </xnode-step>
+                <xnode-step>
+                    <div step-title>Config</div>
+                    <div step-content>
+                    <xnode-stepper [(counter)]="counter2">
+                        <xnode-step>
+                          <div step-title>Data Model</div>
+                        </xnode-step>
+                        <xnode-step>
+                          <div step-title>Integrations</div>
+                        </xnode-step>
+                        <xnode-step>
+                          <div step-title>Authentication</div>
+                        </xnode-step>
+                        <xnode-step>
+                            <div step-title>Entitlements</div>
+                          </xnode-step>
+                          <xnode-step>
+                            <div step-title>Business Rule</div>
+                          </xnode-step>
+                          <xnode-step>
+                            <div step-title>Business Rules</div>
+                          </xnode-step>
+                      </xnode-stepper>
+                   </div>
+                </xnode-step>
+                <xnode-step>
+                    <div step-title>Operate</div>
+                </xnode-step>
+                <xnode-step>
+                    <div step-title>Change</div>
+                </xnode-step>
+            </xnode-stepper>
+           
+           
+                </div>
+
+            <!-- <div class="w-26rem p-1 mt-3 ml-3">
                 <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">Raymond Nelson!</span> You
                     are on
                     the verge of using the app.</p>
@@ -139,7 +195,7 @@
                     </ul>
 
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
