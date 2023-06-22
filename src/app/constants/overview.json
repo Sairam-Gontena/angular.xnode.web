@@ -15,29 +15,29 @@
     {
       "label": "Configure",
       "status": "pending",
-      " children": [
+      "children": [
         {
-          " label": "Data Model",
+          " title": "Data Model",
           "status": "active"
         },
         {
-          "label": "Integrations",
+          "title": "Integrations",
           "status": "active"
         },
         {
-          " label": "Authentication",
+          " title": "Authentication",
           "status": "active"
         },
         {
-          "label": "Entitlements",
+          "title": "Entitlements",
           "status": "active"
         },
         {
-          " label": "Business Rule",
+          " title": "Business Rule",
           "status": "pending"
         },
         {
-          "label": "Business Rules",
+          "title": "Business Rules",
           "status": "inactive"
         }
       ]
