@@ -1,32 +1,28 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-
-
+import * as jdata from '../../constants/overview.json'
 @Component({
   selector: 'xnode-over-view',
   templateUrl: './over-view.component.html',
   styleUrls: ['./over-view.component.scss']
 })
 export class OverViewComponent {
+  jsondata: any;
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
   iconClicked: any;
+  item: any;
 
-  // formGroup!: FormGroup;
-
-  // ngOnInit() {
-  //   this.formGroup = new FormGroup({
-  //     value: new FormControl(4),
-  //   });
-  // }
-  // val2!: number;
 
   ngOnInit(): void {
+    this.jsondata = jdata?.data;
+    console.log(this.jsondata);
+
     this.templates = [
       { label: 'FinBuddy' }
     ]
-  };
+  }
+  ;
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
@@ -39,3 +35,4 @@ export class OverViewComponent {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 }
+

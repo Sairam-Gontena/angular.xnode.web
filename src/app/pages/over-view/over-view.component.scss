@@ -77,9 +77,9 @@ img.highlighted {
 .vertical-stepper li:before {
     content: '✓';
     position: absolute;
-    top: 0;
+    top: 2px;
     left: -15px;
-    font-size: 18px;
+    font-size: 12px;
     background-color: green;
     padding: 2px;
     border-radius: 50%;
@@ -99,7 +99,7 @@ img.highlighted {
     content: "";
     position: absolute;
     top: 31px;
-    left: -8px;
+    left: -10px;
     height: calc(100% - 14px);
     width: 2px;
     background-color: #535353;
@@ -134,8 +134,8 @@ img.highlighted {
 
     position: absolute;
     top: 0;
-    left: -15px;
-    font-size: 18px;
+    left: -16px;
+    font-size: 12px;
     border: black;
     padding: 2px;
     border-radius: 50%;
