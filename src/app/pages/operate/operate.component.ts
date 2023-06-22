@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OperateComponent implements OnInit {
   getconfigureLayout: any;
+  getOperateLayout: any;
   layout: any;
   dashboard: any  = 'Overview';
   layoutColumns: any;
