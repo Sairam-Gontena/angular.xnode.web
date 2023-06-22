@@ -1,4 +1,5 @@
 import { Component,Input, OnInit } from '@angular/core';
+import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
 
 @Component({
   selector: 'xnode-table',
@@ -6,57 +7,92 @@ import { Component,Input, OnInit } from '@angular/core';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-  // @Input() data:any[];
-  
-  constructor(){
-  }
+  // @Input() headers: string[] = [];
+  // @Input() data: any[] = [];
+
+
+
+
+  dynamicData: any;
+
+  headers: any;
+
+  values: any;
+
+  heading: string = "Users";
+
+  public editable: boolean = true;
+
+  public notEditable: boolean = false;
+
   ngOnInit(): void {
-    console.log("dfljdl")
-    this.getData()
+
+    this.dynamicData = dynamictabledata?.dynamicTable;
+
+    this.headers = Object.keys(this.dynamicData[0]);
+
+    this.values = Object.values(this.dynamicData)
 
   }
-  tablekey:any=[]
-  tablevalue:any=[]
-  array:any =[
-    {
-      "Version":"3.0",
-      "Deployed On":"2023-07-01",
-      "Deployed By":"Address1",
-      "Notes":'thimma@gmail.comm',
-      "Status":"pending"
-    },
-    {
-      "Version":"2.0",
-      "Deployed On":"2023-05-01",
-      "Deployed By":"Address1",
-      "Notes":'thimma@gmail.comm',
-      "Status":"deployed"
 
-    },
-    {
-      "Version":"1.0",
-      "Deployed On":"2023-04-01",
-      "Deployed By":"Address1",
-      "Notes":'thimma@gmail.comm',
-      "Status":"deployed"
 
-    },
-    {
-      "Version":"0.1",
-      "Deployed On":"2023-03-01",
-      "Deployed By":"Address1",
-      "Notes":'thimma@gmail.comm',
-      "Status":"deployed"
 
-    },
-  ]
 
-  getData(){
-    this.array.forEach((element:any) => {
-      this.tablekey=Object.keys(element);
-      this.tablevalue.push(Object.values(element))
-    });
+  constructor() {
 
   }
+
+
+
+
+
+  editableFunc() {
+
+    if (this.editable) {
+
+      this.editable = false;
+
+      this.notEditable = true;
+
+    } else {
+
+      this.editable = true;
+
+      this.notEditable = false;
+
+    }
+
+  }
+
+
+
+
+  onCellInputBlur(event: any) {
+
+    console.log(event.target.id)
+
+    console.log(event.target.value)
+
+  }
+
+
+
+
+  onCellEditComplete(event: any) {
+
+    const editedRowData = event.data; // edited row data
+
+    const editedColumnField = event.field; // edited column field
+
+    const newValue = event.field[event.field]; // new value
+
+    console.log(editedRowData)
+
+    console.log(editedColumnField)
+
+    console.log(newValue)
+
+  }
+
 
 }

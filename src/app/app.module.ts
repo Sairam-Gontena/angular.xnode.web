@@ -17,6 +17,7 @@ import { BotComponent } from './components/bot/bot.component';
 import {TableComponent} from './components/table/table.component'
 import { TableModule } from 'primeng/table';
 import { PublishComponent } from './publish/publish.component';
+import {PublishLayoutComponent} from './publish/publish-layout/publish-layout.component'
 
 
 
@@ -30,7 +31,8 @@ import { PublishComponent } from './publish/publish.component';
     PageNotFoundComponent,
     BotComponent,
     TableComponent,
-    PublishComponent
+    PublishComponent,
+    PublishLayoutComponent
   ],
   imports: [
     BrowserModule,
