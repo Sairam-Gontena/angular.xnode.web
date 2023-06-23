@@ -14,10 +14,10 @@
     },
     {
       "label": "Configure",
-      "status": "pending",
+      "status": "inprogress",
       "children": [
         {
-          " title": "Data Model",
+          "title": "Data Model",
           "status": "active"
         },
         {
@@ -25,7 +25,7 @@
           "status": "active"
         },
         {
-          " title": "Authentication",
+          "title": "Authentication",
           "status": "active"
         },
         {
@@ -33,7 +33,7 @@
           "status": "active"
         },
         {
-          " title": "Business Rule",
+          "title": "Business Rule",
           "status": "pending"
         },
         {
@@ -44,11 +44,11 @@
     },
     {
       "label": "Operate",
-      "status": "active"
+      "status": "inactive"
     },
     {
-      " label": "Change",
-      "status": "active"
+      "label": "Change",
+      "status": "inactive"
     }
   ]
 }

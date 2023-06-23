@@ -72,20 +72,37 @@
         </div>
         <h6 class="text-white ml-7 mt-4">Key Features</h6>
         <div class="ml-7 mt-3">
-            <p-button label="Expense Tracking " icon="pi pi-check" class=""></p-button>
-            <p-button label="Income Management " icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label=" Budgeting" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Savings Goals " icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Bill Reminders " icon="pi pi-check" class="ml-2"></p-button>
+            <button type="button" class="keyfeature-button w-11rem"><span class="check-mark">&#10003;</span>Expense
+                Tracking</button>
+            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-12rem"><span
+                    class="check-mark">&#10003;</span>Income Management</button>
+            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-8rem"> <span
+                    class="check-mark">&#10003;</span>Budgeting</button>
+            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-8rem"> <span
+                    class="check-mark">&#10003;</span>Savings Goals</button>
+            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-8rem"> <span
+                    class="check-mark">&#10003;</span>Bill Reminders</button>
         </div>
         <div class="ml-7 mt-3">
-            <p-button label="Debt Management " icon="pi pi-check" class=""></p-button>
-            <p-button label="Financial Insights & Reports " icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label=" AI-Powered Advice" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Security & Privacy " icon="pi pi-check" class="ml-2"></p-button>
+            <button label="Debt Management " icon="pi pi-check" class="keyfeature-button w-11rem"> <span
+                    class="check-mark">&#10003;</span>Debt
+                Management</button>
+            <button label="Financial Insights & Reports " icon="pi pi-check" class="ml-2 w-13rem keyfeature-button">
+                <span class="check-mark">&#10003;</span>Financial
+                Insights & Reports
+            </button>
+            <button label=" AI-Powered Advice" icon="pi pi-check" class="ml-2 w-10rem keyfeature-button"> <span
+                    class="check-mark">&#10003;</span>AI-Powered
+                Advice</button>
+            <button label="Security & Privacy " icon="pi pi-check" class="ml-2 w-10rem keyfeature-button"> <span
+                    class="check-mark">&#10003;</span>Security &
+                Privacy</button>
         </div>
         <div class="ml-7 mt-3">
-            <p-button label="Multi-device Sync" icon="pi pi-check" class="ml-2"></p-button>
+            <button label="Multi-device Sync" icon="pi pi-check" class="ml-2 w-11rem keyfeature-button"> <span
+                    class="check-mark">&#10003;</span> Multi-device
+                Sync</button>
+
         </div>
     </div>
     <div class=" md:col-6 lg:col-4">
@@ -95,123 +112,20 @@
                     are on
                     the verge of using the app.</p>
                 <p class="text-lg font-medium">Please see the status below</p>
-                <xnode-stepper #stepper [(counter)]="counter">
-                    <xnode-step>
-                        <div step-title>Over view</div>
-                    </xnode-step>
-                    <xnode-step>
-                        <div step-title>Use Case</div>
-                        <!-- <div step-content> content 2</div>
-                    <div step-action> -->
-                        <!-- <button (click)="stepper.prevStep()">prevStep</button>
-                        <button (click)="stepper.nextStep()">nextStep</button> -->
-                        <!-- </div> -->
-                    </xnode-step>
-                    <xnode-step>
-                        <div step-title>Design</div>
-                    </xnode-step>
-                    <xnode-step>
-                        <div step-title>Config</div>
 
-                        <div step-content>
-                            <xnode-stepper [(counter)]="counter2">
-                                <xnode-step>
-                                    <div step-title>Data Model</div>
-                                </xnode-step>
-                                <xnode-step>
-                                    <div step-title>Integrations</div>
-                                </xnode-step>
-                                <xnode-step>
-                                    <div step-title>Authentication</div>
-                                </xnode-step>
-                                <xnode-step>
-                                    <div step-title>Entitlements</div>
-                                </xnode-step>
-                                <xnode-step>
-                                    <div step-title>Business Rule</div>
-                                </xnode-step>
-                                <xnode-step>
-                                    <div step-title>Business Rules</div>
-                                </xnode-step>
-                            </xnode-stepper>
+
+                <xnode-step [status]=item?.status *ngFor="let item of jsondata">
+                    <div step-title>{{ item.label }}</div>
+                    <div step-action>
+                        <div *ngIf="item.children">
+                            <xnode-step [status]=child?.status *ngFor="let child of item.children">
+                                <div step-title>{{ child.title}}</div>
+                                <div *ngFor="let child of jsondata[3].children">{{ child[' title'] }}</div>
+                            </xnode-step>
                         </div>
-                    </xnode-step>
-                    <xnode-step>
-                        <div step-title>Operate</div>
-                    </xnode-step>
-                    <xnode-step>
-                        <div step-title>Change</div>
-                    </xnode-step>
-                </xnode-stepper>
-                <xnode-stepper #stepper [(counter)]="counter">
-                    <xnode-step *ngFor="let item of jsondata">
-                        <div step-title>{{ item.label }}</div>
-                        <div step-title>{{ item.children.title }}</div>
+                    </div>
+                </xnode-step>
 
-                        <div step-action>
-                            <xnode-stepper *ngIf="item.children" [(counter)]="counter2">
-                                <xnode-step *ngFor="let child of item.children">
-                                    <div step-title>{{ child.title}}</div>
-
-                                </xnode-step>
-                            </xnode-stepper>
-                        </div>
-                    </xnode-step>
-                </xnode-stepper>
-
-
-
-
-                <!-- <div class="w-26rem p-1 mt-3 ml-3">
-                <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">Raymond Nelson!</span> You
-                    are on
-                    the verge of using the app.</p>
-                <p class="text-lg font-medium">Please see the status below</p>
-                <div class="stepper text-white font-semibold">
-                    <ul class="vertical-stepper">
-                        <li class="active">
-                            <span class="step-label">Overview</span>
-                        </li>
-                        <li>
-                            <span class="step-label">Usecase</span>
-                        </li>
-                        <li>
-                            <span class="step-label">Design</span>
-                        </li>
-                        <li class="configure">
-                            <span class="step-label">Configure</span>
-                            <ul class="vertical-stepper child-stepper p-3 ">
-                                <li>
-                                    <span class="step-label font-normal">Data Model</span>
-                                </li>
-                                <li>
-                                    <span class="step-label font-normal">Integrations</span>
-                                </li>
-                                <li>
-                                    <span class="step-label font-normal">Authentication</span>
-                                </li>
-                                <li>
-                                    <span class="step-label font-normal">Entitlements</span>
-                                </li>
-                                <li class="businessrule">
-                                    <span class="step-label font-normal">Business Rule</span>
-                                </li>
-                                <li>
-                                    <span class="step-label font-normal">Business Rules</span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="operate">
-                            <span class="step-label">Operate</span>
-                        </li>
-                        <li class="change">
-                            <span class="step-label">Change</span>
-                        </li>
-
-                    </ul>
-
-                </div>
-            </div> -->
             </div>
         </div>
     </div>

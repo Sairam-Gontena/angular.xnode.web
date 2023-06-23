@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import *as data from '../../constants/overview.json';
+import { text } from 'd3';
 
 @Component({
   selector: 'xnode-over-view',
@@ -19,11 +20,15 @@ export class OverViewComponent {
   counter: any = 1;
   counter2: any = 1;
   jsondata: any;
+  status: any;
+  item: any;
+  active: any;
 
   ngOnInit(): void {
     this.jsondata = data?.data;
     console.log(this.jsondata);
-    console.log(this.jsondata[3][" children"][0][" title"]);
+
+    console.log(this.jsondata[3].children[0][" title"])
 
     this.templates = [
       { label: 'FinBuddy' }

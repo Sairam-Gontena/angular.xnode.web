@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import *as data from '../../constants/overview.json';
 @Component({
   selector: 'xnode-step',
   templateUrl: './step.component.html',
@@ -10,14 +10,17 @@ export class StepComponent implements OnInit {
   isLast = false;
   isFirst = false;
   currentStep = 1;
+  active: any;
+  item: any;
+  jsondata: any;
 
+  @Input() status: any;
   constructor() {
   }
 
   ngOnInit() {
-  }
 
-  ngDoCheck() {
-    console.log(`ngDoCheck: ${this.stepNumber}`);
+    console.log(this.status)
+
   }
 }

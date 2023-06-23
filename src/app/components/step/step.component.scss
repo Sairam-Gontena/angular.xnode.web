@@ -1,37 +1,64 @@
 $height: 24px;
-.grid{
+
+.grid {
   display: grid;
-  grid-template-columns:  $height 1fr;
+  grid-template-columns: $height 1fr;
   grid-template-rows: $height 1fr;
-  grid-gap:5px 10px;
-  .indicator{
-    background-color: lightblue;
+  grid-gap: 10px 10px;
+
+  .indicator {
+    background-color: #5CAE29;
     border-radius: 50%;
     line-height: $height;
     text-align: center;
     font-size: 12px;
   }
-  .title{
+
+  .black-indicator {
+    background-color:
+      #3A3942;
+    border-radius: 50%;
+    line-height: $height;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .yellow-indicator {
+    background-color: orangered;
+    border-radius: 50%;
+    line-height: $height;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .title {
     line-height: $height;
     font-weight: bold;
+    // margin-top: 10px;
   }
-  .content{   
-    margin-bottom: 10px;
+
+  .content {
+    margin-bottom: 15px;
   }
-  .divider{
+
+  .divider {
     position: relative;
   }
-  .line{
+
+  .line {
     position: absolute;
-    top: 0px;
-    bottom: 5px; 
+    top: -9px;
+    bottom: 5px;
     width: 1px;
-    background-color: lightblue;
+    background-color:
+      #535353;
     box-sizing: border-box;
     left: 50%;
+
   }
-  .check{
-       border-right: 2px solid white;
+
+  .check {
+    border-right: 2px solid white;
     border-bottom: 2px solid white;
     height: 10px;
     width: 5px;
@@ -39,5 +66,22 @@ $height: 24px;
     display: inline-block;
     margin-top: 3px;
     margin-left: 1px;
+
   }
+
+  .away {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: gray;
+  }
+
+
+
 }

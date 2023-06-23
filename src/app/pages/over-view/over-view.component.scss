@@ -20,15 +20,27 @@
 }
 
 :host ::ng-deep.p-button {
-    background-color: white !important;
-    color: black;
+    // background-color: white !important;
+    color: white;
     font-weight: 700 !important;
     height: 2rem;
     border-radius: 2rem;
     font-size: 10px;
+    // border: 1px solid white;
+
+}
+
+.keyfeature-button {
+    background-color: white !important;
+    color: black;
+    font-weight: 600 !important;
+    height: 2rem;
+    border-radius: 2rem;
+    font-size: 12px;
     border: 1px solid white;
 
 }
+
 
 .publish-header {
     height: 88px;
@@ -64,80 +76,23 @@ img.highlighted {
     margin-left: 2rem;
 }
 
-.vertical-stepper {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.vertical-stepper li {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.vertical-stepper li:before {
-    content: '✓';
-    position: absolute;
-    top: 2px;
-    left: -15px;
-    font-size: 12px;
-    background-color: green;
-    padding: 2px;
-    border-radius: 50%;
-    color: white;
-}
-
-.vertical-stepper li .step-label {
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: none;
+    background-color: #ccc;
+    color: #fff;
     font-weight: bold;
-    margin-left: 25px;
+    font-size: 10px;
+    cursor: pointer;
 }
 
-.vertical-stepper .child-stepper {
-    margin-left: 50px;
-}
-
-.vertical-stepper li:after {
-    content: "";
-    position: absolute;
-    top: 31px;
-    left: -10px;
-    height: calc(100% - 14px);
-    width: 2px;
-    background-color: #535353;
-}
-
-.vertical-stepper .child-stepper li:last-child:after {
-    display: none;
-
-}
-
-.vertical-stepper li:last-child:after {
-    display: none;
-
-}
-
-.vertical-stepper li.configure:before {
-    content: '✓';
-    background-color: #FF823C;
-    color: black;
-}
-
-.vertical-stepper .child-stepper li.businessrule:before {
-    content: '✓';
-    background-color: #FF823C;
-    color: black;
-}
-
-.vertical-stepper li.operate:before,
-.vertical-stepper li.change:before {
-    content: '✓';
-    background-color: #535353;
-
-    position: absolute;
-    top: 0;
-    left: -16px;
-    font-size: 12px;
-    border: black;
-    padding: 2px;
+.check-mark {
+    font-size: 15px;
+    color: white;
+    background-color: #4B4B4B;
     border-radius: 50%;
-    color: #535353;
+    margin-right: 10px;
 }
