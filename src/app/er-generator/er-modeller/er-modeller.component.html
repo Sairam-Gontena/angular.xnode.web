@@ -28,9 +28,8 @@
       </p-accordion>
       <p-accordion [activeIndex]="3">
         <p-accordionTab header=" Entitlements">
-          <p>
-            Entitlements
-          </p>
+          <xnode-er-generator-layout (getconfigureLayout)="getLayout($event)"
+            type="data-model"></xnode-er-generator-layout>
         </p-accordionTab>
       </p-accordion>
       <p-accordion [activeIndex]="4">

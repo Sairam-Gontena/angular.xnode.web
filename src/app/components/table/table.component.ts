@@ -30,6 +30,7 @@ export class TableComponent implements OnInit {
     this.dynamicData = dynamictabledata?.dynamicTable;
 
     this.headers = Object.keys(this.dynamicData[0]);
+    console.log(this.headers)
 
     this.values = Object.values(this.dynamicData)
 
