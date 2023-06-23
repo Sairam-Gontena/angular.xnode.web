@@ -15,12 +15,16 @@ export class OperateComponent implements OnInit {
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
   operateLayout: any;
-
+  data: any;
+  doughnutData: any;
+  doughnutOptions: any;
+  options: any;
   ngOnInit(): void {
     this.templates = [
       { label: 'FinBuddy' }
     ]
-  }
+   
+    }
 
   getLayout(layout: any): void {
     console.log(layout);

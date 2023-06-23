@@ -6,12 +6,16 @@ import { OperateComponent } from './operate.component';
 import { OperateLayoutComponent } from 'src/app/components/operate-layout/operate-layout.component';
 import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
 import { OperateFeedbackComponent } from 'src/app/components/operate-feedback/operate-feedback.component';
+import { AlertComponent } from './alert/alert.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 @NgModule({
   declarations: [
     OperateLayoutComponent,
     OperateComponent,
-    OperateFeedbackComponent
+    OperateFeedbackComponent,
+    AlertComponent,
+    FeedbackComponent
   ],
   imports: [
     CommonModule,
