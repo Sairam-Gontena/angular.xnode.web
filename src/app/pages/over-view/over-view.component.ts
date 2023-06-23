@@ -20,15 +20,12 @@ export class OverViewComponent {
   counter: any = 1;
   counter2: any = 1;
   jsondata: any;
-  status: any;
-  item: any;
-  active: any;
+  childData: any;
 
   ngOnInit(): void {
     this.jsondata = data?.data;
     console.log(this.jsondata);
-
-    console.log(this.jsondata[3].children[0][" title"])
+    console.log(this.jsondata[3].children[3].title);
 
     this.templates = [
       { label: 'FinBuddy' }
