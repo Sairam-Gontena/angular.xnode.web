@@ -30,6 +30,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
   {
+    path: 'overview',
+    loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
+  },
+  {
     path: 'my-templates',
     loadChildren: () =>
       import('./pages/templates/templates.module').then(
@@ -39,6 +43,10 @@ const routes: Routes = [
   {
     path: 'design',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
+  },
+  {
+    path: 'operate',
+    loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
   },
   {
     path: 'workspace',
