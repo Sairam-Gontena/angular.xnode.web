@@ -1,21 +1,5 @@
 <xnode-app-header></xnode-app-header>
-<div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
-    <div class="flex align-items-center justify-content-center">
-        <p-dropdown [options]="templates"></p-dropdown>
-    </div>
-    <div class="flex align-items-center justify-content-center gap-3">
-        <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }" alt="desktop"
-            class="image-icon" (click)="emitIconClicked('desktop')">
-        <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
-            class="image-icon" (click)="emitIconClicked('tab')">
-        <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
-            class="image-icon" (click)="emitIconClicked('mobile')">
-    </div>
-    <div class="flex align-items-center justify-content-center gap-3">
-        <p-button label="Save" styleClass="p-button-rounded"></p-button>
-        <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
-    </div>
-</div>
+<xnode-template-builder></xnode-template-builder>
 <div class="bg grid">
     <div class=" md:col-6 lg:col-8">
         <div class="flex mt-6">
@@ -71,37 +55,23 @@
             </div>
         </div>
         <h6 class="text-white ml-7 mt-4">Key Features</h6>
-        <div class="ml-7 mt-3">
-            <button type="button" class="keyfeature-button w-11rem"><span class="check-mark">&#10003;</span>Expense
-                Tracking</button>
-            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-12rem"><span
-                    class="check-mark">&#10003;</span>Income Management</button>
-            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-8rem"> <span
-                    class="check-mark">&#10003;</span>Budgeting</button>
-            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-8rem"> <span
-                    class="check-mark">&#10003;</span>Savings Goals</button>
-            <button type="button" icon="pi pi-check" class="ml-2 keyfeature-button w-8rem"> <span
-                    class="check-mark">&#10003;</span>Bill Reminders</button>
+        <div class="ml-7 mt-3 feature-button">
+            <p-button label="Expense Tracking" icon="pi pi-check"></p-button>
+            <p-button label="Income Management" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Budgeting" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Savings Goals" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Bill Reminders" icon="pi pi-check" class="ml-2"></p-button>
+
+
         </div>
         <div class="ml-7 mt-3">
-            <button label="Debt Management " icon="pi pi-check" class="keyfeature-button w-11rem"> <span
-                    class="check-mark">&#10003;</span>Debt
-                Management</button>
-            <button label="Financial Insights & Reports " icon="pi pi-check" class="ml-2 w-13rem keyfeature-button">
-                <span class="check-mark">&#10003;</span>Financial
-                Insights & Reports
-            </button>
-            <button label=" AI-Powered Advice" icon="pi pi-check" class="ml-2 w-10rem keyfeature-button"> <span
-                    class="check-mark">&#10003;</span>AI-Powered
-                Advice</button>
-            <button label="Security & Privacy " icon="pi pi-check" class="ml-2 w-10rem keyfeature-button"> <span
-                    class="check-mark">&#10003;</span>Security &
-                Privacy</button>
+            <p-button label="Debt Management " icon="pi pi-check"></p-button>
+            <p-button label="Financial Insights & Reports" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="AI-Powered Advice" icon="pi pi-check" class="ml-2"></p-button>
+            <p-button label="Security & Privacy" icon="pi pi-check" class="ml-2"></p-button>
         </div>
         <div class="ml-7 mt-3">
-            <button label="Multi-device Sync" icon="pi pi-check" class="ml-2 w-11rem keyfeature-button"> <span
-                    class="check-mark">&#10003;</span> Multi-device
-                Sync</button>
+            <p-button label="Multi-device Sync" icon="pi pi-check"> </p-button>
 
         </div>
     </div>
