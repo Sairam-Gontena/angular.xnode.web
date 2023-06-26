@@ -1,0 +1,33 @@
+<div class="grid">
+	<div [ngClass]="{
+		'indicator':status=='active',
+		'black-indicator':status=='inactive',
+		'yellow-indicator':status=='inprogress'||status=='pending'
+	}">
+		<ng-container *ngIf="(currentStep <= stepNumber) ||  
+             (currentStep > stepNumber && isLast) ; then stepOngoing; else stepDone">
+		</ng-container>
+
+		<ng-template #stepOngoing>
+			{{stepNumber}}
+
+		</ng-template>
+		<ng-template #stepDone>
+			<div class="check"
+				[ngClass]="{'away': status == 'inactive','away-symbol':status == 'pending'|| status =='inprogress'}">
+			</div>
+		</ng-template>
+	</div>
+	<div class="title">
+		<ng-content select="[step-title]"></ng-content>
+	</div>
+	<div class="divider">
+		<div class="line" *ngIf="!isLast"></div>
+	</div>
+	<div class="content">
+		<ng-content select="[step-content]"></ng-content>
+		<ng-content select="[step-action]"></ng-content>
+	</div>
+
+
+</div>
