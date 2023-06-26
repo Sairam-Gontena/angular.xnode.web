@@ -1,0 +1,83 @@
+
+<div class="template-builder-wrapper">
+    <div class="template-builder-layout-wrapper">
+      <div class="text-center border-bottom-2 p-3 border-primary">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input type="text" pInputText placeholder="Search" />
+        </span>
+      </div>
+      <div class="">
+        <p-accordion [activeIndex]="0">
+          <p-accordionTab header="Environment">
+              <xnode-publish-layout></xnode-publish-layout>
+          </p-accordionTab>
+        </p-accordion>
+        <p-accordion [activeIndex]="1">
+          <p-accordionTab header="Test">
+          </p-accordionTab>
+        </p-accordion>
+        <p-accordion [activeIndex]="2">
+          <p-accordionTab header="Mobile App">
+            <p>
+              Authentication
+            </p>
+          </p-accordionTab>
+        </p-accordion>
+        <p-accordion [activeIndex]="3">
+          <p-accordionTab header=" Launch">
+            <p>
+              Entitlements
+            </p>
+          </p-accordionTab>
+        </p-accordion>
+      
+      </div>
+    </div>
+    <div class="template-builder-body-wrapper">
+      <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4 mt-3">
+        <div class="flex align-items-center justify-content-center">
+          <p-dropdown [options]="templates"></p-dropdown>
+        </div>
+        <div class="flex align-items-center justify-content-center gap-3">
+          <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }" alt="desktop"
+            class="image-icon">
+          <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
+            class="image-icon">
+          <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
+            class="image-icon">
+        </div>
+        <div class="flex align-items-center justify-content-center gap-3">
+          <p-button label="Save" styleClass="p-button-rounded"></p-button>
+          <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
+        </div>
+      </div>
+      <div class=" m-4  p-4 bodycontainer "  >
+        <h6 class="text-4xl text-white  font-bold">Dev</h6>
+       
+        <div class="flex align-items-center justify-content-between mt-4  pb-4"  >
+            <div class="flex" >
+                <div class="text-white text-sm" >Cloud Provider : </div>
+                <div class="text-white text-sm font-bold ml-2" > Azure</div>
+            </div>
+               
+            <div class="flex pl-5" >
+                <div class="flex justify-content-center align-items-center deployvbtn text-xs border-round-3xl text-white" >
+                    Deploy v3.0
+                </div>
+            </div>
+          </div>
+        <xnode-table  class="mt-2" 
+         >  </xnode-table>
+         <div class="flex mt-4 pl-1">
+            <img src="./assets/publishoverview.png" alt="container"  class="w-full h-full" >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- [headers]="tableHeaders" [data]="tableData" -->
+
+
+
+

@@ -5,6 +5,7 @@ import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.comp
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { ErModellerComponent } from './er-generator/er-modeller/er-modeller.component';
+import { PublishComponent } from './publish/publish.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'configuration/data-model',
     component: ErModellerComponent
+  },
+  {
+    path: 'publish',
+    component: PublishComponent
   },
   {
     path: 'configuration/api-integration',
