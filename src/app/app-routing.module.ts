@@ -25,7 +25,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
   },
   {
-    path: 'over-view',
+    path: 'overview',
     loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
   },
   {

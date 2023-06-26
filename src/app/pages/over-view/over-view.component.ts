@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import *as data from '../../constants/overview.json';
-import { text } from 'd3';
 
 @Component({
   selector: 'xnode-over-view',
   templateUrl: './over-view.component.html',
   styleUrls: ['./over-view.component.scss']
 })
+
 export class OverViewComponent {
   @Input() currentStep: number = 2;
 
@@ -24,14 +23,11 @@ export class OverViewComponent {
 
   ngOnInit(): void {
     this.jsondata = data?.data;
-    console.log(this.jsondata);
-    console.log(this.jsondata[3].children[3].title);
-
     this.templates = [
       { label: 'FinBuddy' }
     ]
-  }
-  ;
+  };
+
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
@@ -40,13 +36,13 @@ export class OverViewComponent {
     }
     this.iconClicked.emit(icon);
   }
+
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 
 
   nextStep(): void {
-    // this.stepper.nextStep();
     if (this.currentStep < 3) {
       this.currentStep++;
     }
@@ -59,7 +55,6 @@ export class OverViewComponent {
   }
 
   setStep(step: any) {
-    // this.stepperRef.setStep(step);
     this.counter = step;
   }
 
@@ -74,7 +69,6 @@ export class OverViewComponent {
   }
 
   setStep2(step: any) {
-    // this.stepperRef.setStep(step);
     this.counter2 = step;
   }
 }

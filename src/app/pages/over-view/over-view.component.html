@@ -6,9 +6,6 @@
             <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="ml-6 w-1 h-1">
             <h1 class="text-white text-4xl font-medium  ml-4">FinBuddy</h1>
         </div>
-        <!-- <div class="card flex justify-content-center">
-            <p-rating [(ngModel)]="val2" [cancel]="false"></p-rating>
-        </div> -->
         <p class=" ml-6 mt-3 text-xl font-medium finbuddy-text">
             FinBuddy is an AI-powered personal finance assistant app designed to help you take control of your
             finances and achieve your financial goals. With its intuitive interface and powerful features, FinBuddy
@@ -82,8 +79,6 @@
                     are on
                     the verge of using the app.</p>
                 <p class="text-lg font-medium">Please see the status below</p>
-
-
                 <xnode-step [status]=item?.status *ngFor="let item of jsondata">
                     <div step-title>{{ item.label }}</div>
                     <div step-action>
