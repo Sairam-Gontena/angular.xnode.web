@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
   {
+    path: 'operate',
+    loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
+  },
+  {
     path: 'workspace',
     loadChildren: () =>
       import('./pages/onboarding/onboarding.module').then(

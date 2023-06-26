@@ -23,5 +23,11 @@ export const AppSideMenuItems = [
         label: 'Publish',
         icon: './assets/publish.svg',
         path: 'publish'
-    }
+    },
+    {
+        label: 'Operate',
+        icon: './assets/settings.svg',
+        path: 'operate'
+    },
+
 ]
