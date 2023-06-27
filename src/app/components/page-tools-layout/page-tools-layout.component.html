@@ -1,4 +1,6 @@
-<div class="template-builder-layout-wrapper h-100" id="sub-left-main-panel">
+<div class="" (click)="toggleMenu()">
+    <div  *ngIf="isOpen">
+     <span class="pi pi-arrow-right text-white" [class.open]="isOpen"></span>
      <div class="text-center border-bottom-2 p-3 border-primary">
           <span class="p-input-icon-left">
                <i class="pi pi-search"></i>
@@ -43,4 +45,5 @@
                </p-accordionTab>
           </p-accordion>
      </div>
+  </div>
 </div>

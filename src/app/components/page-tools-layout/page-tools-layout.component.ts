@@ -11,6 +11,8 @@ import * as sidemenu from '../../../assets/json/sidemenu-tools.json';
   styleUrls: ['./page-tools-layout.component.scss']
 })
 export class PageToolsLayoutComponent {
+
+  isOpen = false;
   sideMenu = sidemenu?.sidemenu;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
@@ -38,6 +40,11 @@ export class PageToolsLayoutComponent {
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
   }
 
+  
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+  }
+  
   async loadSubSideMenu(sidemenuLabel: any) {
     await this.sideMenu.filter((item: any) => {
       if (item?.Label == sidemenuLabel) {
