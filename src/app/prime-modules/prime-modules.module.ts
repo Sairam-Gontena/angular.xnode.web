@@ -11,6 +11,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -26,7 +27,9 @@ import { ChartModule } from 'primeng/chart';
     RadioButtonModule,
     InputTextareaModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     CommonModule,
@@ -40,7 +43,9 @@ import { ChartModule } from 'primeng/chart';
     RadioButtonModule,
     InputTextareaModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class PrimeModulesModule { }

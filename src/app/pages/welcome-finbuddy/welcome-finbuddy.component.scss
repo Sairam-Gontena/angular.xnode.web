@@ -1,0 +1,45 @@
+.login-img{
+    background-image: url('../../../assets/BG1.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #000759;
+    // opacity: 98%;
+}
+.parent {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  .image1 {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+.piggy-image{
+    position: absolute;
+    top: 113px;
+    left: 40px;
+  }
+.signup-color {
+    color: #000759;
+}
+
+.finbuddy-color {
+    color: #28CCFF;
+}
+
+.form-container {
+    margin-left: 225px;
+    margin-right: 225px;
+}
+
+:host ::ng-deep .p-button {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    background: #2C91FD !important;
+    border: 1px solid #2C91FD !important;
+}
+
+.invalid-feedback {
+    color: red;
+}

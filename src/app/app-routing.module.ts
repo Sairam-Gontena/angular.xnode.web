@@ -34,6 +34,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
   },
   {
+    path: 'welcome',
+    loadChildren: () => import('./pages/welcome-finbuddy/welcome-finbuddy.module').then(m => m.WelcomeFinbuddyModule)
+  },
+  {
     path: 'my-templates',
     loadChildren: () =>
       import('./pages/templates/templates.module').then(

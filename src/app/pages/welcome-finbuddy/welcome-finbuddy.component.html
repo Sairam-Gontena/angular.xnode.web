@@ -1,0 +1,83 @@
+<div class="grid m-0 h-full">
+    <div class="sm:col-12 md:col-12 lg:col-7 xl:col-7 pt-5 bg-white">
+        <img src=" ./assets/FinbuddyLogo.svg" alt="x-logo" class="ml-8">
+        <div class="form-container pt-8">
+            <form [formGroup]="signUpForm">
+                <h1 class="signup-color font-bold font-normal text-6xl">Login</h1>
+                <p class="font-semibold font-normal text-base">Have an account? Please
+                    <a class="text-blue-700">Sign In</a>
+                </p>
+                <div class="grid mt-4">
+                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+                            <img src="./assets/google.png" width="16px">
+                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                                CONTINUE WITH GOOGLE
+                            </p>
+                        </div>
+                    </div>
+                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+                            <img src="./assets/linkedin.png" width="16px">
+                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                                CONTINUE WITH LINKEDIN
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="formgrid grid mt-4">
+                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                        <label htmlFor="email" class="font-medium text-base">Email</label>
+                        <input pInputText id="email" placeholder="Please enter email" formControlName="email"
+                            [ngClass]="{ 'is-invalid': submitted && signUp['email'].errors }"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+                        <div *ngIf="submitted && signUp['email'].errors" class="invalid-feedback">
+                            <div *ngIf="signUp['email'].errors?.['required']">Email is required</div>
+                            <div *ngIf="signUp['email'].errors['email']">Email must be a valid email address</div>
+                        </div>
+                    </div>
+                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                        <label htmlFor="password" class="font-medium text-base">Password</label>
+                        <input pInputText id="password" placeholder="Please enter password" formControlName="password"
+                            [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+                        <div *ngIf="submitted && signUp['password'].errors" class="invalid-feedback">
+                            <div *ngIf="signUp['password'].errors['required']">Password is required</div>
+                            <div *ngIf="signUp['password'].errors['minlength']">Password must be at least 6 characters
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                        <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
+                            icon="pi pi-angle-right" iconPos="right"></p-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 login-img text-white text-center text-left">
+        <div class="p-8">
+            <div class="flex flex-wrap gap-3">
+                <div class="font-bold text-6xl justify-content-center">Welcome! </div>
+                <div class="font-bold text-6xl finbuddy-color justify-content-center"> Finbuddy</div> 
+            </div>
+                <p class="text-lg font-normal text-start">
+                    Our platform is designed to be user-friendly and accessible to everyone, providing 
+                    intuitive interfaces and powerful algorithms that can generate accurate and 
+                    reliable models in just a few clicks.
+                </p>
+            <div class="flex flex-wrap justify-content-center">
+                <div class="flex flex-wrap grid parent">
+                    <div class="flex col image1 pt-2">
+                        <img src=" ./assets/PiggyBG1.svg" alt="logo" class="">
+                        <img src=" ./assets/PiggyBG2.svg" alt="logo" class="">
+                     </div>
+                    <div class="flex col piggy-image">
+                     <img src=" ./assets/Piggybank.svg" alt="logo" width="350px" class="justify-content-center">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
