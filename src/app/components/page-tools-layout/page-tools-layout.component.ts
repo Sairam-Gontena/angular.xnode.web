@@ -12,7 +12,7 @@ import * as sidemenu from '../../../assets/json/sidemenu-tools.json';
 })
 export class PageToolsLayoutComponent {
 
-  isOpen = false;
+  isOpen = true;
   sideMenu = sidemenu?.sidemenu;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
@@ -41,7 +41,8 @@ export class PageToolsLayoutComponent {
   }
 
   
-  toggleMenu() {
+  toggleMenu(data:any) {
+    console.log(data)
     this.isOpen = !this.isOpen;
   }
   
