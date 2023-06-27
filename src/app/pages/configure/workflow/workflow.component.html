@@ -1,0 +1,82 @@
+<div class="template-builder-wrapper">
+    <div class="template-builder-layout-wrapper">
+        <div class="text-center border-bottom-2 p-3 border-primary">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Search" />
+            </span>
+        </div>
+         <div class="">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Monitor">
+                    <!-- <xnode-operate-layout (getconfigureLayout)="getLayout($event)"></xnode-operate-layout>  -->
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="1">
+                <p-accordionTab header="Support">
+                  <!-- <xnode-operate-layout (getconfigureLayout)="getLayout($event)"></xnode-operate-layout> -->
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="2">
+                <p-accordionTab header=" Training">
+                    <p>
+                        Training
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="3">
+                <p-accordionTab header=" Change">
+                    <p>
+                        Change
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="4">
+                <p-accordionTab header="Feedback">
+                    <!-- <xnode-operate-feedback (getOperateLayout)="getLayout($event)"></xnode-operate-feedback>  -->
+                </p-accordionTab>
+            </p-accordion>
+        </div> 
+    </div>
+    <div class="template-builder-body-wrapper">
+        <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
+            <div class="flex align-items-center justify-content-center">
+                <p-dropdown [options]="templates"></p-dropdown>
+            </div>
+            <div class="flex align-items-center justify-content-center gap-3">
+                <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }"
+                    alt="desktop" class="image-icon" (click)="emitIconClicked('desktop')">
+                <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
+                    class="image-icon" (click)="emitIconClicked('tab')">
+                <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
+                    class="image-icon" (click)="emitIconClicked('mobile')">
+            </div>
+            <div class="flex align-items-center justify-content-center gap-3">
+                <p-button label="Save" styleClass="p-button-rounded"></p-button>
+                <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
+            </div>
+        </div>
+        <div class="surface-900 m-4 h-full" >
+            <div class="h-full text-white">
+                <div class="surface-900">
+                    <h6 class="text-4xl  p-4 font-bold">Overview</h6>
+                    <div class="grid">
+                         <div class="flex flex-wrap ml-5 gap-4">
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-1 py-1 border-round-xl card">
+                                <img src="../../assets/OW.svg" alt="circle-ci-image" class="img-size mt-4" (click)="onboarding()">
+                                <h5 class="text-xl mt-4 font-bold">Onboarding Workflow</h5>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/LW.svg" alt="circle-ci-image" class="img-size mt-3" (click)="login()">
+                                <h5 class="text-xl mt-4 font-bold">Login Workflow</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            
+            
+         </div>
+</div>
