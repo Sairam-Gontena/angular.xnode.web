@@ -13,10 +13,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
+  templatesOptions: any;
+  templateEvent: any;
 
   ngOnInit(): void {
     this.templates = [
       { label: 'FinBuddy' }
+    ]
+
+    this.templatesOptions = [
+      { label: 'Preview'},
+      { label: 'Publish'}
     ]
   };
   emitIconClicked(icon: string) {
@@ -27,7 +34,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     this.iconClicked.emit(icon);
   }
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+  onDropdownOptionClick(event: any) {
+   this.templateEvent = event.value.label;
+    if(this.templateEvent == 'Preview'){
+      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+    }
   }
 }
