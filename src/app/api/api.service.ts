@@ -10,20 +10,16 @@ export class ApiService {
   constructor() { }
 
   getID(email: String) {
-    return axios.get('https://xpilot.azurewebsites.net/docs#/default/get_meta_data_crud_get_metadata__email__get', {
-      params: { email: email}
-    });
+    return axios.get('https://xpilot.azurewebsites.net/crud/get_metadata/' + email);
   }
 
   getUsecase(email: String, id: String) {
-    return axios.get('https://xpilot.azurewebsites.net/docs#/default/read_insights_data_crud_retrive_insights__email___id__get', {
-      params: {
-        email: email,
-        id: id
-      }
+    console.log(id, 'id');
+
+    return axios.get('https://xpilot.azurewebsites.net/crud/retrive_insights/' + email + "/" + id, {
     });
   }
 
- 
+
 
 }
