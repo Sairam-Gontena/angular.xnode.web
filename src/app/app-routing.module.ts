@@ -5,6 +5,7 @@ import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.comp
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { ErModellerComponent } from './er-generator/er-modeller/er-modeller.component';
+import { PublishComponent } from './publish/publish.component';
 
 const routes: Routes = [
   {
@@ -21,8 +22,16 @@ const routes: Routes = [
     component: ErModellerComponent
   },
   {
+    path: 'publish',
+    component: PublishComponent
+  },
+  {
     path: 'configuration/api-integration',
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
+  },
+  {
+    path: 'overview',
+    loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
   },
   {
     path: 'my-templates',
@@ -34,6 +43,10 @@ const routes: Routes = [
   {
     path: 'design',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
+  },
+  {
+    path: 'operate',
+    loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
   },
   {
     path: 'workspace',

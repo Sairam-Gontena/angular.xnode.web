@@ -69,7 +69,7 @@ import { ErGeneratorLayoutComponent } from './er-generator-layout/er-generator-l
     CheckboxModule,
     DropdownModule,
     PrimeModulesModule,
-    ConfigureModule
+    // ConfigureModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
   exports: [GeneratorComponent, ErModellerComponent],

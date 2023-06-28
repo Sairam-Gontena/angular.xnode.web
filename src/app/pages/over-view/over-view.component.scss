@@ -1,0 +1,66 @@
+.bg {
+    background-color: #23222B;
+    width: 100%;
+
+}
+
+.para-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400rem !important;
+    font-size: 1rem;
+}
+
+.stake-holder {
+    background-color: none;
+    border: 1px solid #535353;
+}
+
+.finbuddy-text {
+    width: 53rem;
+    color: #FFFFFF;
+}
+
+:host ::ng-deep.p-button {
+    color: white;
+    font-weight: 700 !important;
+    height: 2rem;
+    border-radius: 2rem;
+    font-size: 10px;
+}
+
+:host ::ng-deep .p-dropdown {
+    background: #3A3942;
+    border: 0;
+}
+
+@media screen and (max-width: 780px) {
+    .finbuddy-text {
+        width: 19rem !important;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .nelson-name {
+        width: 10rem !important;
+    }
+}
+
+.stepper {
+    margin-left: 2rem;
+}
+
+:host ::ng-deep.p-button {
+    background: #FFFFFF !important;
+    color: black;
+    font-weight: 700;
+    font-size: 10px;
+    border: none;
+}
+
+:host ::ng-deep.p-button .p-button-icon-left {
+    margin-right: 0.5rem;
+    background-color: #4B4B4B;
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+}
