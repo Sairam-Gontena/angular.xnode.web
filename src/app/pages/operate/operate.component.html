@@ -1,0 +1,146 @@
+<div class="template-builder-wrapper">
+    <div class="template-builder-layout-wrapper">
+        <div class="text-center border-bottom-2 p-3 border-primary">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText placeholder="Search" />
+            </span>
+        </div>
+        <div class="">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Monitor">
+                    <xnode-operate-layout (getconfigureLayout)="getLayout($event)"></xnode-operate-layout>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="1">
+                <p-accordionTab header="Support">
+                    <xnode-operate-layout (getconfigureLayout)="getLayout($event)"></xnode-operate-layout>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="2">
+                <p-accordionTab header=" Training">
+                    <p>
+                        Training
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="3">
+                <p-accordionTab header=" Change">
+                    <p>
+                        Change
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+            <p-accordion [activeIndex]="4">
+                <p-accordionTab header="Feedback">
+                    <xnode-operate-feedback (getOperateLayout)="getLayout($event)"></xnode-operate-feedback>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+    </div>
+    <div class="template-builder-body-wrapper">
+        <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
+            <div class="flex align-items-center justify-content-center">
+                <p-dropdown [options]="templates"></p-dropdown>
+            </div>
+            <div class="flex align-items-center justify-content-center gap-3">
+                <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }"
+                    alt="desktop" class="image-icon" (click)="emitIconClicked('desktop')">
+                <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
+                    class="image-icon" (click)="emitIconClicked('tab')">
+                <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
+                    class="image-icon" (click)="emitIconClicked('mobile')">
+            </div>
+            <div class="flex align-items-center justify-content-center gap-3">
+                <p-button label="Save" styleClass="p-button-rounded"></p-button>
+                <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
+            </div>
+        </div>
+        <div class="surface-900 m-4 h-full" >
+            <div class="h-full text-white" *ngIf ="dashboard == 'Overview'">
+                <div class="grid surface-900">
+                    <h6 class="text-4xl  p-4 font-bold">Overview</h6>
+                    <div class="">
+                        <div class="text-xl font-bold  ml-5">
+                            Insights
+                        </div>
+                        <p class="font-normal text-base  ml-5">Use curated monitoring views for specific resources <span class="text-blue-700">View all Insights</span></p>
+                        <div class="flex flex-wrap justify-center ml-4 gap-4">
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-1 py-1 border-round-xl card">
+                                <img src="../../assets/AppInsights.svg" alt="circle-ci-image" class="img-size mt-4">
+                                <h5 class="text-xl mt-4 font-bold">Application Insights</h5>
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">Monitor your App’s availability
+                                    performance , errors, and usage</p>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/ContainerInsights.svg" alt="circle-ci-image" class="img-size mt-5">
+                                <h5 class="text-xl mt-4 font-bold">Container Insights</h5>
+
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Gain visibility into the performance
+                                    and health of your controllers,nodes, and containers
+                                </p>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/VMInsights.svg" alt="circle-ci-image" class="img-size mt-5">
+                                <h5 class="text-xl mt-4 font-bold">VM Insights</h5>
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Monitor the health, performance, and
+                                     dependencies of your VM’S and V, scale sets.
+                                </p>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/NetworkInsights.svg" alt="circle-ci-image" class="img-size mt-4">
+                                <h5 class="text-xl mt-4 font-bold">Network Insights</h5>
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">View the health and metrics for all
+                                    deployed network resources
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="text-xl font-bold ml-5">
+                            Detection, triage and diagonisis
+                        </div>
+                        <p class="font-normal text-base  ml-5">Visualize, analyze, and respond to moitoring data and events.<span class="text-blue-700"> Learn more about monitoring</span></p>
+                        <div class="flex flex-wrap justify-center ml-4 gap-4">
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/Metrics-ci.svg" alt="circle-ci-image" class="img-size mt-7">
+                                <h5 class="text-xl mt-4 font-bold">Metrics</h5>
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">Create charts to monitor and investigate the usage and performance 
+                                    of your resources</p>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/Alerts-ci.svg" alt="circle-ci-image" class="img-size mt-6">
+                                <h5 class="text-xl mt-4 font-bold">Alerts</h5>
+
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Get notified and respond using alerts and actions
+                                </p>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/Logs-ci.svg" alt="circle-ci-image" class="img-size mt-6">
+                                <h5 class="text-xl mt-4 font-bold">Logs</h5>
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Analyze and diagnose issues with 
+                                    log queries
+                                </p>
+                            </div>
+                            <div
+                                class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
+                                <img src="../../assets/Workbooks.svg" alt="circle-ci-image" class="img-size mt-5">
+                                <h5 class="text-xl mt-4 font-bold">Workbooks</h5>
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">View, create and share interactive reports
+                                </p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+             </div>
+            
+            
+         </div>
+</div>

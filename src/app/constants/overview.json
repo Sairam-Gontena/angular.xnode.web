@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "label": "Overview",
+      "status": "active"
+    },
+    {
+      "label": "Usecase",
+      "status": "active"
+    },
+    {
+      "label": "Design",
+      "status": "active"
+    },
+    {
+      "label": "Configure",
+      "status": "inprogress",
+      "children": [
+        {
+          "title": "Data Model",
+          "status": "active"
+        },
+        {
+          "title": "Integrations",
+          "status": "active"
+        },
+        {
+          "title": "Authentication",
+          "status": "active"
+        },
+        {
+          "title": "Entitlements",
+          "status": "active"
+        },
+        {
+          "title": "Business Rule",
+          "status": "pending"
+        },
+        {
+          "title": "Business Rules",
+          "status": "inactive"
+        }
+      ]
+    },
+    {
+      "label": "Operate",
+      "status": "inactive"
+    },
+    {
+      "label": "Change",
+      "status": "inactive"
+    }
+  ]
+}

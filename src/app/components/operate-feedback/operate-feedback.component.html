@@ -1,0 +1,27 @@
+<div class=" flex grid  gap-3 justify-content-center last-col">
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer "
+        id="Feed-Overview" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('Feed-Overview')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'Feed-Overview'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/Overview-icon.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8">
+                Overview
+            </div>
+        </div>
+    </div>
+    <div class="layout-item border-1 border-primary flex flex-wrap align-content-center  justify-content-center pointer"
+        id="DefineSurvey" draggable="true" (dragstart)="drag($event)" (click)="onSelectLayout('DefineSurvey')"
+        [ngClass]="{'layout-item-active': selectedContainer=== 'DefineSurvey'  }">
+        <div class="flex flex-column">
+            <div class="text-center">
+                <img src="./assets/DefineSurvey.svg" alt="container">
+            </div>
+            <div class="mt-2 f-8  text-center">
+                Define Survey
+            </div>
+        </div>
+    </div>
+  
+</div>
