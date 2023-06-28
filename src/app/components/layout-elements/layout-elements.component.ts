@@ -9,7 +9,7 @@ export class LayoutElementsComponent {
   @Output() getLayout: EventEmitter<string> = new EventEmitter<string>();
 
   selectedContainer: string = 'CONTAINER';
-  iframeUrl: string = "http://localhost:62630/";
+  iframeUrl: string = "http://localhost:60939/";
 
   onSelectLayout(layout: string): void {
     this.selectedContainer = layout
@@ -20,12 +20,6 @@ export class LayoutElementsComponent {
     ev.dataTransfer?.setData('text/plain', ev.target.id);
     window.frames[0].postMessage({
       type: 'dragItem', itemId: ev.target.id
-
-
-
-
-
-
     }, this.iframeUrl);
   }
 

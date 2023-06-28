@@ -1,27 +1,8 @@
-<div class="template-builder-wrapper">
+<div class="template-builder-wrapper" >
     <div class="template-builder-layout-wrapper">
-        <div class="text-center border-bottom-2 p-3 border-primary">
-            <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search" />
-            </span>
-        </div>
-        <div class="">
-            <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Layout">
-                    <xnode-layout-elements (getLayout)="getLayout($event)"></xnode-layout-elements>
-                </p-accordionTab>
-            </p-accordion>
-            <p-accordion [activeIndex]="1">
-                <p-accordionTab header="UI Elemets">
-                    <p>
-                        Ui Elements
-                    </p>
-                </p-accordionTab>
-            </p-accordion>
-        </div>
+        <xnode-page-tools-layout></xnode-page-tools-layout>
     </div>
-    <div class="template-builder-body-wrapper">
+    <div class="template-builder-body-wrapper" [ngClass]="!isOpen? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'" >
         <xnode-template-builder-publish-header #childComponent
             (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
         <div class="flex justify-content-center flex-wrap ">
@@ -33,7 +14,5 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
