@@ -49,7 +49,7 @@
       </p-accordion>
     </div>
   </div> -->
-  <div class="template-builder-body-wrapper" >
+  <div class="" [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
     <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
       <div class="flex align-items-center justify-content-center">
         <p-dropdown [options]="templates"></p-dropdown>
