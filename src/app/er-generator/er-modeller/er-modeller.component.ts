@@ -4,7 +4,6 @@ import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
 import { InputDataJson } from '../service/input_data_sample';
-import { UseCasesComponent } from 'src/app/pages/use-cases/use-cases.component';
 
 @Component({
   selector: 'xnode-er-modeller',
@@ -24,59 +23,12 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
   isOpen = true;
-  @Input() erModelInput: any = {
-    "User": {
-      "type": "object",
-      "properties": {
-        "user_id": {
-          "type": "integer",
-          "primaryKey": true
-        },
-        "first_name": {
-          "type": "string"
-        },
-        "last_name": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "Accounts": {
-      "type": "object",
-      "properties": {
-        "account_id": {
-          "type": "integer",
-          "primaryKey": true
-        },
-        "user_id": {
-          "type": "integer",
-          "foreignKey": "User.user_id"
-        },
-        "account_name": {
-          "type": "string"
-        },
-        "account_type": {
-          "type": "string"
-        },
-        "account_balance": {
-          "type": "number"
-        },
-        "interest_rate": {
-          "type": "number"
-        },
-        "minimum_payment": {
-          "type": "number"
-        }
-      }
-    }
-  };
+  id: String = '';
+  email = 'admin@xnode.ai';
+  testModel: any;
+  @Input() erModelInput: any;
 
-  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private useCasesComponent: UseCasesComponent ) {
+  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
   }
 
@@ -84,6 +36,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
     this.templates = [
       { label: 'FinBuddy' }
     ]
+    this.get_ID()
   }
   toggleMenu() {
     this.isOpen = !this.isOpen;
@@ -97,8 +50,8 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
 
 
   ngAfterViewInit(): void {
-    this.jsPlumbService.init();
-    this.dataService.loadData(this.utilService.ToModelerSchema(this.erModelInput));
+    // this.jsPlumbService.init();
+    // this.dataService.loadData(this.utilService.ToModelerSchema(this.erModelInput));
   }
 
   getLayout(layout: any): void {
@@ -108,6 +61,33 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
 
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+  }
+
+  //get calls 
+  get_ID() {
+    this.apiService.getID(this.email)
+      .then(response => {
+        this.id = response.data.data[0].id;
+        this.get_Usecases();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  get_Usecases() {
+    this.apiService.getUsecase(this.email, this.id)
+      .then(response => {
+        this.testModel = response?.data?.data?.insights_data[0]?.DataModel;
+        console.log('erModelInput', this.erModelInput);
+        this.jsPlumbService.init();
+        this.dataService.loadData(this.utilService.ToModelerSchema(this.testModel));
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
   }
 
 }
