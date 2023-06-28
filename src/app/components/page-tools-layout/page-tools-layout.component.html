@@ -1,14 +1,8 @@
-<div class="template-builder-layout-wrapper h-100" id="sub-left-main-panel" (click)="toggleMenu($event)">
-     <div class="menu-item flex justify-content-between" >
-          <span class="pi pi-arrow-left text-white" id="close" [class.close]="!isOpen"></span>
-          <span class="pi pi-arrow-right text-white" id="open" [class.open]="isOpen"></span>
-
-        </div>
-        <!-- <div class="submenu" *ngIf="isOpen">
-          <div class="submenu-item">Submenu Item 1</div>
-          <div class="submenu-item">Submenu Item 2</div>
-          <div class="submenu-item">Submenu Item 3</div>
-        </div> -->
+<div class="template-builder-layout-wrapper h-100" [ngClass]="{'open': isOpen, 'close': !isOpen}" (click)="toggleMenu($event)">
+     <div class="flex" >
+          <div class="pi pi-angle-left text-white p-4 m-2 p-icon"  [ngClass]="{'hide-icon': !isOpen, 'show-icon': isOpen}"></div>
+          <div class="pi pi-angle-right text-white p-4 m-2 p-icon" [ngClass]="{'hide-icon': isOpen, 'show-icon': !isOpen}"></div>
+     </div>
    <div class="submenu" *ngIf="isOpen">
      <div class="text-center border-bottom-2 p-3 border-primary">
           <span class="p-input-icon-left">
