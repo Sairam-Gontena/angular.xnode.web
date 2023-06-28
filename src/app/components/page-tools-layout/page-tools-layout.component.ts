@@ -41,7 +41,7 @@ export class PageToolsLayoutComponent {
   }
 
   
-  toggleMenu(data:any) {
+  toggleMenu() {
     this.isOpen = !this.isOpen;
   }
   

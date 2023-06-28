@@ -30,7 +30,7 @@ export class TemplateBuilderComponent implements OnInit {
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
-
+  isOpen = true;
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   constructor() {
@@ -66,7 +66,7 @@ export class TemplateBuilderComponent implements OnInit {
       }
     };
   }
-
+  
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
     this.currentView = icon;

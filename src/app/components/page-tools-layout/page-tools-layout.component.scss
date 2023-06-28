@@ -18,6 +18,9 @@
 .show-icon {
      display: block;
 }
-.p-icon {
-     font-size: 2rem
- }
+:host ::ng-deep .p-button {
+     font-size: 2rem;
+     background: #4F4E55;
+     border: 1px solid #24232C !important;
+     cursor: pointer;
+   }

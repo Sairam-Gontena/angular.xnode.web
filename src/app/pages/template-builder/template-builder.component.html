@@ -1,8 +1,8 @@
-<div class="template-builder-wrapper">
+<div class="template-builder-wrapper" >
     <div class="template-builder-layout-wrapper">
         <xnode-page-tools-layout></xnode-page-tools-layout>
     </div>
-    <div class="template-builder-body-wrapper">
+    <div  [ngClass]="{'template-builder-body-wrapper': isOpen, 'another-template-builder-body-wrapper': isOpen}" (click)="this.isOpen = !this.isOpen">
         <xnode-template-builder-publish-header #childComponent
             (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
         <div class="flex justify-content-center flex-wrap ">
