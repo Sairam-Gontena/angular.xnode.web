@@ -8,7 +8,7 @@ import { ApiService } from 'src/app/api/api.service';
 })
 export class UseCasesComponent implements OnInit {
 
-  useCases: String = '';
+  useCases: any;
   id: String = '';
   email = 'admin@xnode.ai';
 
@@ -34,11 +34,22 @@ export class UseCasesComponent implements OnInit {
       .then(response => {
         console.log('response', response);
         this.useCases = response?.data?.data?.insights_data[0]?.Usecase;
+        // this.useCases = this.stringToJSON(this.useCases)
+        console.log("UseCase-->",this.useCases);
+        console.log("usecase", this.useCases[0])
       })
       .catch(error => {
         console.log(error);
       });
 
+  }
+
+  //convert string to JSON
+  stringToJSON(string: any){
+    for (let item of string){
+      // item = JSON.stringify(item);
+      item = JSON.parse(item);
+    }
   }
 
 }

@@ -4,6 +4,7 @@ import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
 import { InputDataJson } from '../service/input_data_sample';
+import { UseCasesComponent } from 'src/app/pages/use-cases/use-cases.component';
 
 @Component({
   selector: 'xnode-er-modeller',
@@ -11,6 +12,11 @@ import { InputDataJson } from '../service/input_data_sample';
   styleUrls: ['./er-modeller.component.scss']
 })
 export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnInit {
+  // for testing only
+  id: String ='';
+  insightData: String = '';
+  ///................../////
+
   data: Data | any;
   dashboard: any;
   layoutColumns: any;
@@ -70,7 +76,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
     }
   };
 
-  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
+  constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private useCasesComponent: UseCasesComponent ) {
     this.data = this.dataService.data;
   }
 
