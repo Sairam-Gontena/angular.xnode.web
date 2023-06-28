@@ -23,6 +23,7 @@ export class ChatBotComponent implements OnInit {
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
+          console.log('event', event);
 
           // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin !== 'https://xpilot.azurewebsites.net') {

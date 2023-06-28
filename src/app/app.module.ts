@@ -19,6 +19,8 @@ import { TableModule } from 'primeng/table';
 import { PublishComponent } from './publish/publish.component';
 import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
+import {Axios} from 'axios';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { StepperComponent } from './components/stepper/stepper.component';
     CommonModule,
     KtdGridModule,
     PrimeModulesModule,
+    
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
