@@ -23,6 +23,8 @@ export class AppSideMenuComponent implements OnInit {
 
   onClickMenuItem(item: any, i: any): void {
     this.selectedMenuIndex = i;
-    this.router.navigate(['/' + item.path])
+    setTimeout(() => {
+      this.router.navigate(['/' + item.path])
+    }, 500);
   }
 }
