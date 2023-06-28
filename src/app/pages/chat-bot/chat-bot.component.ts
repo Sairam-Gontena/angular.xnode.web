@@ -23,7 +23,6 @@ export class ChatBotComponent implements OnInit {
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
-          window.location.href = "https://dev-angular-xnode.azurewebsites.net/#/overview";
 
           // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin !== 'https://xpilot.azurewebsites.net') {
@@ -32,6 +31,7 @@ export class ChatBotComponent implements OnInit {
 
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
+            window.location.href = "https://dev-angular-xnode.azurewebsites.net/#/overview";
             // Trigger a custom event in the parent window
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
