@@ -49,7 +49,7 @@
       </p-accordion>
     </div>
   </div> -->
-  <div class="" [ngClass]="{'template-builder-body-wrapper': !isOpen, 'another-template-builder-body-wrapper': isOpen}" >
+  <div class="" [ngClass]="{'template-builder-body-wrapper': !isOpen, 'another-template-builder-body-wrapper': isOpen}">
     <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
       <div class="flex align-items-center justify-content-center">
         <p-dropdown [options]="templates"></p-dropdown>
@@ -67,7 +67,7 @@
         <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
       </div>
     </div>
-    <div class="surface-900 m-4 h-full">
+    <div class="surface-900 m-4 data-model-div">
       <h6 class="text-4xl text-white p-4 font-bold">Data Model</h6>
       <div class="flex flex-wrap justify-center ml-4">
         <div id="canvas" class="col-sm-10">
