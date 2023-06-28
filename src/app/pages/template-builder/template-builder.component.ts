@@ -67,11 +67,6 @@ export class TemplateBuilderComponent implements OnInit {
     };
   }
 
-  getLayout(layout: string): void {
-    console.log('layout', layout);
-    if (layout)
-      this.dashboard = this.layoutColumns[layout];
-  }
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
     // this.currentView = icon;
