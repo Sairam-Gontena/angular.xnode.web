@@ -18,7 +18,57 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
   isOpen = true;
-  @Input() erModelInput: any = InputDataJson;
+  @Input() erModelInput: any = {
+    "User": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "primaryKey": true
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Accounts": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "type": "integer",
+          "primaryKey": true
+        },
+        "user_id": {
+          "type": "integer",
+          "foreignKey": "User.user_id"
+        },
+        "account_name": {
+          "type": "string"
+        },
+        "account_type": {
+          "type": "string"
+        },
+        "account_balance": {
+          "type": "number"
+        },
+        "interest_rate": {
+          "type": "number"
+        },
+        "minimum_payment": {
+          "type": "number"
+        }
+      }
+    }
+  };
 
   constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
