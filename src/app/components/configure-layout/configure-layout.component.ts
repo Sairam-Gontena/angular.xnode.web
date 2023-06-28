@@ -10,7 +10,7 @@ export class ConfigureLayoutComponent {
   @Output() getconfigureLayout: EventEmitter<string> = new EventEmitter<string>();
 
   selectedContainer: string = 'CONTAINER';
-  iframeUrl: string = "http://localhost:62630/";
+  iframeUrl: string = "http://localhost:60939/";
 
   constructor(private router: Router) {
   }

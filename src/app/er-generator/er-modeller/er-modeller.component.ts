@@ -17,6 +17,7 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
+  isOpen = true;
   @Input() erModelInput: any = InputDataJson;
 
   constructor(private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
@@ -28,7 +29,9 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
       { label: 'FinBuddy' }
     ]
   }
-
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+  }
   ngAfterViewChecked(): void {
     if (this.dataService.flg_repaint) {
       this.dataService.flg_repaint = false;
