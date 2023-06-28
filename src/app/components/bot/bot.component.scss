@@ -5,7 +5,15 @@
   display: flex;
   flex-direction: column;
   z-index: 1;
+
 }
+
+.bg-bot {
+  background-color: #3a3942;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .bot-text {
   border-bottom-left-radius: 261px;
   border-top-left-radius: 261px;
@@ -15,6 +23,7 @@
   background-color: #d8d8d8;
   margin-right: 64px;
 }
+
 .bot-logo {
   align-self: flex-end;
   width: 64px;
@@ -28,4 +37,17 @@
   align-self: center;
   text-align: center;
   margin-top: 15px;
+}
+
+.x-pilot-iframe {
+  height: 80vh;
+}
+
+.close-span {
+  height: 20vh;
+}
+
+.pi-times {
+  color: white;
+  cursor: pointer;
 }

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./bot.component.scss']
 })
 export class BotComponent implements OnInit {
-
+  displayoff: boolean = false;
   constructor(private router: Router) {
   }
 
@@ -14,7 +14,12 @@ export class BotComponent implements OnInit {
   }
 
   onClickContinue(): void {
-    this.router.navigate(['/chat-bot']);
+    this.displayoff ? this.displayoff = false : this.displayoff = true;
+    // this.router.navigate(['/chat-bot']);
+  }
+
+  displayoffFunc() {
+    this.displayoff ? this.displayoff = false : this.displayoff = true;
   }
 
 }
