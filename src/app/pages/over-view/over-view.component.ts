@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import *as data from '../../constants/overview.json';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-over-view',
@@ -21,11 +22,18 @@ export class OverViewComponent {
   jsondata: any;
   childData: any;
 
+  overview: any;
+  id: String = '';
+  email = 'admin@xnode.ai';
+  constructor(private apiService: ApiService) {
+
+  }
   ngOnInit(): void {
     this.jsondata = data?.data;
     this.templates = [
       { label: 'FinBuddy' }
     ]
+    this.get_ID();
   };
 
   emitIconClicked(icon: string) {
@@ -70,6 +78,32 @@ export class OverViewComponent {
 
   setStep2(step: any) {
     this.counter2 = step;
+  }
+
+  get_ID() {
+    this.apiService.getID(this.email)
+      .then(response => {
+        this.id = response.data.data[0].id;
+        this.getMeOverview();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  getMeOverview() {
+    this.apiService.get("/retrive_overview" + "/" + this.email + "/" + "cdbc6fbc-dc6c-4c7b-bbf5-77949784fa45")
+      .then(response => {
+        console.log('response', response);
+        if (response?.status === 200) {
+          this.overview = response.data;
+        }
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
   }
 }
 
