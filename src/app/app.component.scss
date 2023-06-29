@@ -14,3 +14,51 @@
 .app-body-wrapper {
     width: calc(100vw - 80px);
 }
+
+.side-window {
+    position: relative;
+    top: 0;
+    right: 0;
+    height:calc(100vh - 42px);
+    width: 10%;
+    background-color: #212529;
+    color: #fff;
+    z-index: 1000;
+    overflow: hidden;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .side-window.open {
+    width: 30%;
+    
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 900;
+    display: none;
+  }
+  
+  .content {
+    position: relative;
+    // height: 100%;
+    padding: 10px;
+    margin-top: 20px; /* Increase margin as needed */
+    height: calc(100% - 100px); 
+  }
+  .botButton {
+    position: relative;
+     top: 15px; 
+     left: 40%;
+  }
+//   .side-window-content {
+//     padding: 0px;
+//     margin-top: 20px; /* Increase margin as needed */
+//     height: calc(100% - 100px); 
+//   }
+  

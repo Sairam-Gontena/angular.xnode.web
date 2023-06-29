@@ -1,4 +1,4 @@
-<div class="bot-container  ">
+<div *ngIf="!botDisplayFlag"class="bot-container">
     <div (click)="onClickContinue()" class="bot-text flex justify-content-center ">
         <p (click)="onClickContinue()" class="text text-center ">Click here
             next!</p>
@@ -8,3 +8,4 @@
         <img (click)="onClickContinue()" src="./assets/bot.svg" width="70%">
     </div>
 </div>
+  

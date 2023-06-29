@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'xnode-root',
@@ -8,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
 
   title = 'xnode';
+  botOutput = ['false'];
+  isSideWindowOpen: boolean = false;
 
-  constructor() {
+  constructor(private router : Router) {
 
   }
 
@@ -21,6 +24,20 @@ export class AppComponent implements OnInit {
     // Temporary
     return localStorage.getItem('currentUser') === 'true' || window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate";
+  }
+
+  addItem(newItem : boolean){
+    this.botOutput.push(newItem.toString());
+    this.isSideWindowOpen = newItem;
+    console.log(this.botOutput);
+  }
+
+  toggleSideWindow() {
+    this.isSideWindowOpen = !this.isSideWindowOpen;
+  }
+
+  closeSideWindow() {
+    this.isSideWindowOpen = false;
   }
 
   parentdata: any[] = [

@@ -1,13 +1,21 @@
 <div class="w-full h-full">
-    <div class="w-full" *ngIf="isUserExists()">
-        <xnode-bot></xnode-bot>
+    <div class="w-full"  *ngIf="isUserExists()">
+        <xnode-bot [botDisplayFlag] ="this.isSideWindowOpen" (chatBotFlag)="addItem($event)"></xnode-bot>
         <xnode-app-header></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper">
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
             <div class="app-body-wrapper">
-                <router-outlet></router-outlet>
+                <router-outlet></router-outlet> 
+            </div>
+            <div class="side-window" *ngIf="this.isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
+                <p-button class="botButton" label="Navi" styleClass="p-button-rounded" (click)="toggleSideWindow()"></p-button>
+                <div class="content">
+                    <iframe id="myIframe" src="https://xpilot.azurewebsites.net/" allow="microphone"
+                        class="w-full h-full  pl-5 pr-5">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>

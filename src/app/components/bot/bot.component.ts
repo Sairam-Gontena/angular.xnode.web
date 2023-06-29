@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Output, EventEmitter } from '@angular/core';
+
 @Component({
   selector: 'xnode-bot',
   templateUrl: './bot.component.html',
   styleUrls: ['./bot.component.scss']
 })
 export class BotComponent implements OnInit {
+
+  @Output() chatBotFlag = new EventEmitter<boolean>();
+  @Input() botDisplayFlag: boolean = true;
 
   constructor(private router: Router) {
   }
@@ -14,7 +19,11 @@ export class BotComponent implements OnInit {
   }
 
   onClickContinue(): void {
-    this.router.navigate(['/chat-bot']);
+    // this.chatBotFlag = !this.chatBotFlag;
+    console.log(event);
+    console.log("window pane flage", this.botDisplayFlag)
+    this.chatBotFlag.emit(true);
+    // this.router.navigate(['/x-pilot']);
   }
 
 }
