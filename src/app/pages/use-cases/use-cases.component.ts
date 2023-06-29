@@ -21,7 +21,6 @@ export class UseCasesComponent implements OnInit {
     this.apiService.getID(this.email)
       .then(response => {
         this.id = response.data.data[0].id;
-        console.log("In UseCaseComponent--> ID", this.id);
         this.get_Usecases();
       })
       .catch(error => {
@@ -32,11 +31,8 @@ export class UseCasesComponent implements OnInit {
   get_Usecases() {
     this.apiService.getUsecase(this.email, this.id)
       .then(response => {
-        console.log('response', response);
-        this.useCases = response?.data?.data?.insights_data[0]?.Usecase;
-        // this.useCases = this.stringToJSON(this.useCases)
-        console.log("UseCase-->",this.useCases);
-        console.log("usecase", this.useCases[0])
+        var insightsData = response?.data?.data?.insights_data;
+        this.useCases = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("Usecase"))?.Usecase;
       })
       .catch(error => {
         console.log(error);
@@ -45,8 +41,8 @@ export class UseCasesComponent implements OnInit {
   }
 
   //convert string to JSON
-  stringToJSON(string: any){
-    for (let item of string){
+  stringToJSON(string: any) {
+    for (let item of string) {
       // item = JSON.stringify(item);
       item = JSON.parse(item);
     }
