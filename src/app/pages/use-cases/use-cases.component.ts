@@ -32,7 +32,8 @@ export class UseCasesComponent implements OnInit {
     this.apiService.getUsecase(this.email, this.id)
       .then(response => {
         var insightsData = response?.data?.data?.insights_data;
-        this.useCases = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("Usecase"))?.Usecase;
+        //this.useCases = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("Usecase"))?.Usecase;
+        this.useCases = insightsData?.Usecase;
       })
       .catch(error => {
         console.log(error);
