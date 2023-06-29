@@ -75,7 +75,9 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
     this.apiService.getUsecase(this.email, this.id)
       .then(response => {
         var insightsData = response?.data?.data?.insights_data;
-        this.testModel = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("DataModel"))?.DataModel;
+        // this.testModel = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("DataModel"))?.DataModel;
+        this.testModel = insightsData?.DataModel;
+
         console.log('erModelInput', this.erModelInput);
         this.jsPlumbService.init();
         this.dataService.loadData(this.utilService.ToModelerSchema(this.testModel));
