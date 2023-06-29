@@ -6,7 +6,7 @@ import axios from 'axios';
   providedIn: 'root'
 })
 export class ApiService {
-
+  endPoint = "https://xpilot.azurewebsites.net/crud";
   constructor() { }
 
   getID(email: String) {
@@ -20,6 +20,10 @@ export class ApiService {
     });
   }
 
+  get(url: string) {
+    return axios.get(this.endPoint + url, {
+    });
+  }
 
 
 }

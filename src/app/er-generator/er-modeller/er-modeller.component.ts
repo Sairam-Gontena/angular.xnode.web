@@ -1,9 +1,8 @@
-import { AfterViewChecked, AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
 import { Data } from '../class/data';
 import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
-import { InputDataJson } from '../service/input_data_sample';
 import { ApiService } from 'src/app/api/api.service';
 
 @Component({
@@ -11,17 +10,19 @@ import { ApiService } from 'src/app/api/api.service';
   templateUrl: './er-modeller.component.html',
   styleUrls: ['./er-modeller.component.scss']
 })
-export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnInit {
+
+export class ErModellerComponent implements AfterViewChecked, OnInit {
   data: Data | any;
   dashboard: any;
   layoutColumns: any;
   templates: any;
+  loading: boolean = true;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
   isOpen = true;
   id: String = '';
   email = 'admin@xnode.ai';
-  testModel: any;
+  dataModel: any;
   @Input() erModelInput: any;
 
   constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
@@ -32,22 +33,18 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
     this.templates = [
       { label: 'FinBuddy' }
     ]
-    this.get_ID()
+    this.getMeUserId()
   }
+
   toggleMenu() {
     this.isOpen = !this.isOpen;
   }
+
   ngAfterViewChecked(): void {
     if (this.dataService.flg_repaint) {
       this.dataService.flg_repaint = false;
       this.jsPlumbService.repaintEverything();
     }
-  }
-
-
-  ngAfterViewInit(): void {
-    // this.jsPlumbService.init();
-    // this.dataService.loadData(this.utilService.ToModelerSchema(this.erModelInput));
   }
 
   getLayout(layout: any): void {
@@ -60,28 +57,30 @@ export class ErModellerComponent implements AfterViewInit, AfterViewChecked, OnI
   }
 
   //get calls 
-  get_ID() {
-    this.apiService.getID(this.email)
+  getMeUserId() {
+    this.apiService.get("/get_metadata/" + this.email)
       .then(response => {
-        this.id = response.data.data[0].id;
-        this.get_Usecases();
+        if (response?.status === 200) {
+          this.id = response.data.data[0].id;
+          this.getMeDataModel();
+        }
+        this.loading = false;
       })
       .catch(error => {
         console.log(error);
+        this.loading = false;
       });
   }
 
-  get_Usecases() {
-    this.apiService.getUsecase(this.email, this.id)
+  getMeDataModel() {
+    this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
       .then(response => {
-        var insightsData = response?.data?.data?.insights_data;
-        // this.testModel = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("DataModel"))?.DataModel;
-        this.testModel = insightsData?.DataModel;
-
-        console.log('erModelInput', this.erModelInput);
-        this.jsPlumbService.init();
-        this.dataService.loadData(this.utilService.ToModelerSchema(this.testModel));
-
+        if (response?.status === 200) {
+          const data = response?.data?.data?.insights_data;
+          this.dataModel = Array.isArray(data) ? data[0].DataModel : data.DataModel;
+          this.jsPlumbService.init();
+          this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+        }
       })
       .catch(error => {
         console.log(error);
