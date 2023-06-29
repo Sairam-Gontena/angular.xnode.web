@@ -17,7 +17,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   onClickCreateNewTemplate(): void {
-    this.router.navigate(['/template-builder']);
+    this.router.navigate(['/design']);
   }
 
 }
