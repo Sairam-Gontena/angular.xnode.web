@@ -10,7 +10,7 @@ import { ApiService } from 'src/app/api/api.service';
 
 export class OverViewComponent {
   @Input() currentStep: number = 2;
-
+  loading: boolean = true;
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
@@ -86,22 +86,25 @@ export class OverViewComponent {
         this.id = response.data.data[0].id;
         this.getMeOverview();
       })
+
       .catch(error => {
         console.log(error);
+        this.loading = false;
+
       });
   }
 
   getMeOverview() {
-    this.apiService.get("/retrive_overview" + "/" + this.email + "/" + "cdbc6fbc-dc6c-4c7b-bbf5-77949784fa45")
+    this.apiService.get("/retrive_overview/" + this.email + "/" + this.id)
       .then(response => {
-        console.log('response', response);
         if (response?.status === 200) {
           this.overview = response.data;
         }
-
+        this.loading = false;
       })
       .catch(error => {
         console.log(error);
+        this.loading = false;
       });
 
   }

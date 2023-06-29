@@ -11,6 +11,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [],
@@ -26,7 +27,8 @@ import { ChartModule } from 'primeng/chart';
     RadioButtonModule,
     InputTextareaModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    ProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { ChartModule } from 'primeng/chart';
     RadioButtonModule,
     InputTextareaModule,
     TableModule,
-    ChartModule
+    ChartModule,
+    ProgressSpinnerModule
   ]
 })
 export class PrimeModulesModule { }

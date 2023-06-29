@@ -8,9 +8,10 @@ import { ApiService } from 'src/app/api/api.service';
 })
 export class UseCasesComponent implements OnInit {
 
-  useCases: any;
+  useCases: any = [];
   id: String = '';
   email = 'admin@xnode.ai';
+  loading: boolean = true;
 
   constructor(private apiService: ApiService) { }
   ngOnInit(): void {
@@ -18,25 +19,29 @@ export class UseCasesComponent implements OnInit {
   }
   //get calls 
   get_ID() {
-    this.apiService.getID(this.email)
+    this.apiService.get("/get_metadata/" + this.email)
       .then(response => {
         this.id = response.data.data[0].id;
         this.get_Usecases();
+        this.loading = false;
       })
       .catch(error => {
         console.log(error);
+        this.loading = false;
       });
   }
 
   get_Usecases() {
-    this.apiService.getUsecase(this.email, this.id)
+    this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
       .then(response => {
-        var insightsData = response?.data?.data?.insights_data;
-        //this.useCases = insightsData?.find((element: { hasOwnProperty: (arg0: string) => any; }) => element.hasOwnProperty("Usecase"))?.Usecase;
-        this.useCases = insightsData?.Usecase;
+        if (response?.status === 200) {
+          const data = response?.data?.data?.insights_data;
+          this.useCases = Array.isArray(data) ? data[0].Usecase : [];
+        }
+        this.loading = false;
       })
       .catch(error => {
-        console.log(error);
+        this.loading = false;
       });
 
   }
