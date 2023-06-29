@@ -47,13 +47,13 @@
   .content {
     position: relative;
     // height: 100%;
-    padding: 10px;
+    padding: 10px 0px 0px 0px;
     margin-top: 20px; /* Increase margin as needed */
     height: calc(100% - 100px); 
   }
   .botButton {
     position: relative;
-     top: 15px; 
+     top: 10px; 
      left: 40%;
   }
 //   .side-window-content {
