@@ -36,7 +36,6 @@ export class TemplatesComponent implements OnInit {
         if (response?.status === 200) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
-          console.log(this.templateCard)
           // this.getMeDataModel();
         }
         this.loading = false;
