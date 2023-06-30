@@ -24,29 +24,30 @@
         </p-button>
     </div>
     <div class="col-12 flex text-base font-semibold letter-space-1 mt-4">
-        <div class="flex">
+        <div class="flex flex-wrap  align-items-center ">
             <img alt="all product" src="./assets/all-products.svg" />
-            <p class="ml-2 text-white">All Products</p>
+            <p class="m-0 pl-2 text-white">All Products</p>
         </div>
-        <div class="flex ml-4">
+        <div class="flex flex-wrap  align-items-center  ml-4">
             <img alt="all product" src="./assets/recent.svg" />
-            <p class="ml-2 active">Recently Viewed</p>
+            <p class="m-0 pl-2 active">Recently Viewed</p>
         </div>
-        <div class="flex ml-4">
+        <div class="flex flex-wrap  align-items-center  ml-4">
             <img alt="all product" src="./assets/user.svg" />
-            <p class="ml-2 text-white">Created by you</p>
+            <p class="m-0 pl-2 text-white">Created by you</p>
         </div>
-        <div class="flex ml-4">
+        <div class="flex flex-wrap  align-items-center  ml-4">
             <img alt="all product" src="./assets/favorite.svg" />
-            <p class="ml-2 text-white">Favorites</p>
+            <p class="m-0 pl-2 text-white">Favorites</p>
         </div>
     </div>
     <div class="col-12 mt-4">
-        <div class="flex gap-6">
+        <div class="card-grid gap-8" *ngIf="templateCard">
             <p-card header="FinBuddy" [style]="{ width: '314px', height: '348px'}" class="pointer"
-                (click)="onClickCreateNewTemplate()">
+                (click)="onClickCreateNewTemplate()" *ngFor="let data of templateCard ; let i=index">
                 <ng-template pTemplate="header">
-                    <img alt="template card" src="./assets/d-card.svg" height="199" />
+                        <img alt="template card" src="./assets/d-card.svg" height="199" />
+                        <div class="overlay">{{ i + 1 }}</div>
                 </ng-template>
                 <div class="flex">
                     <img alt="dp" src="./assets/dp.svg" width="30" />
