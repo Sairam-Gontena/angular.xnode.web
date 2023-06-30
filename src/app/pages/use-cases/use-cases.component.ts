@@ -17,6 +17,8 @@ export class UseCasesComponent implements OnInit {
   ngOnInit(): void {
     if (localStorage.getItem('record_id') === null) {
       this.get_ID();
+    } else {
+      this.get_Usecases();
     }
   }
   //get calls 
