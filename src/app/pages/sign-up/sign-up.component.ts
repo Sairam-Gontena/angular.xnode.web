@@ -21,11 +21,20 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('signUp-data');
+    localStorage.getItem('signUp-data')
   }
 
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
+    this.submitted = true;
+    localStorage.setItem('signUp-data', JSON.stringify(this.signUpForm.value));
+    // Stop here if the form is invalid
+    if (this.signUpForm.invalid) {
+      return;
+    }
     this.router.navigate(['/workspace']);
+
   }
 }
