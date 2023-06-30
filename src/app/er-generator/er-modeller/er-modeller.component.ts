@@ -35,6 +35,8 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     ]
     if (localStorage.getItem('record_id') === null) {
       this.getMeUserId();
+    } else {
+      this.getMeDataModel();
     }
   }
 
@@ -77,17 +79,21 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   getMeDataModel() {
+    this.dataModel = null;
     this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-          const data = response?.data?.insights_data;
-          this.dataModel = data.DataModel;
+          const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
+          this.dataModel = Array.isArray(data.DataModel) ? data.DataModel[0] : data.DataModel;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
+        this.loading = false;
       })
       .catch(error => {
         console.log(error);
+        this.loading = false;
+
       });
 
   }
