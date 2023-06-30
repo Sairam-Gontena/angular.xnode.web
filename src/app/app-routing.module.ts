@@ -9,13 +9,13 @@ import { PublishComponent } from './publish/publish.component';
 
 const routes: Routes = [
   {
-    path: 'signUP',
+    path: '',
     loadChildren: () =>
       import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
   },
   {
     path: 'login',
-    loadChildren:() => import('./pages/login/login.module').then(m => m.LoginModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'use-cases',
