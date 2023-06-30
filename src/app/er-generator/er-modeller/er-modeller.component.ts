@@ -73,10 +73,10 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   getMeDataModel() {
-    this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
+    this.apiService.get("/retrive_insights/" + this.email + "/" + '495ca64c-c0ba-4e78-9edf-8645650a0800')
       .then(response => {
         if (response?.status === 200) {
-          const data = response?.data?.data?.insights_data;
+          const data = response?.data?.insights_data;
           this.dataModel = Array.isArray(data) ? data[0].DataModel : data.DataModel;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
@@ -87,5 +87,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       });
 
   }
+
+ 
 
 }
