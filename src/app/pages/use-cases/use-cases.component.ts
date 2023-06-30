@@ -43,7 +43,7 @@ export class UseCasesComponent implements OnInit {
           } else if (!Array.isArray(data.Usecase) && data.Usecase.Response) {
             this.useCases = data.Usecase.Response
           } else {
-            this.useCases = data.Usecase.Response
+            this.useCases = data.Usecase
           }
         }
         this.loading = false;

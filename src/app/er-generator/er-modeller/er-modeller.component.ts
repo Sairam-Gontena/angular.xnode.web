@@ -84,7 +84,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           } else if (!Array.isArray(data.DataModel) && data.DataModel.Response) {
             this.dataModel = data.DataModel.Response
           } else {
-            this.dataModel = data.DataModel.Response
+            this.dataModel = data.DataModel
           }
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
