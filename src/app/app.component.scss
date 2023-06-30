@@ -46,10 +46,11 @@
   
   .content {
     position: relative;
-    padding: 10px 0px 0px 0px;
-    top: 0;
+    padding: 0px 0px 0px 0px;
+    top: -5%;
+    left: -2%;
     right: 0;
-    height:calc(100vh - 65px);
+    height:calc(100vh - 25px);
     width: 100%;
     z-index: 1000;
     // overflow: hidden;
@@ -57,13 +58,13 @@
 
   .circular-button {
     position: relative;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
     padding: 10px;
-    top: 5px;
-    left: 92%;
+    top: 6%;
+    left: 90%;
     right: 0;
-    border-radius: 45%;
+    border-radius: 50%;
   }
 
 //   .side-window-content {

@@ -11,10 +11,12 @@
             </div>
             
             <div class="side-window" *ngIf="this.isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
-                <div class="side-window-header">
+                <!-- <div class="side-window-header">
                     <button class="circular-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
-                </div>
+                </div> -->
                 <div class="content">
+                    <button class="circular-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
+
                     <iframe id="myIframe" src="https://xpilot.azurewebsites.net/" allow="microphone"
                         class="w-full h-full  pl-1 pr-1">
                     </iframe>
