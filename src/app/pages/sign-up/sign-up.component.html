@@ -5,7 +5,7 @@
             <form [formGroup]="signUpForm">
                 <h1 class="signup-color font-bold font-normal text-6xl">Sign up</h1>
                 <p class="font-semibold font-normal text-base">Have an account? Please
-                    <a class="text-blue-700">Sign In</a>
+                    <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
                 </p>
                 <div class="grid">
                     <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
                         <p-button label="Create Account" styleClass="p-button-rounded  font-medium text-lg"
-                            icon="pi pi-angle-right" iconPos="right" (click)="onClickSignUp()" ></p-button>
+                            icon="pi pi-angle-right" iconPos="right" (click)="onClickSignUp()"></p-button>
                     </div>
                 </div>
             </form>
