@@ -5,6 +5,7 @@ import { LoginRoutingModule } from './login-routing.module';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
 import { DividerModule } from 'primeng/divider';
+import { PasswordModule } from 'primeng/password';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { DividerModule } from 'primeng/divider';
     CommonModule,
     LoginRoutingModule,
     PrimeModulesModule,
-    DividerModule
+    DividerModule,
+    PasswordModule,
 
   ]
 })

@@ -3,6 +3,9 @@
         <img src=" ./assets/XLogo.svg" alt="x-logo" class="ml-8">
         <div class="form-container pt-8">
             <form [formGroup]="loginForm">
+                <div class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
+                    <a class="text-blue-700 pointer" routerLink="/signUp">Sign In</a>
+                </div>
                 <div class="formgrid grid mt-6">
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <label htmlFor="email" class="font-medium text-base">Email</label>
@@ -16,6 +19,7 @@
                     </div>
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <label htmlFor="password" class="font-medium text-base">Password</label>
+                        <!-- <p-password formControlName="password" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></p-password> -->
                         <input pInputText id="password" placeholder="Please enter password" formControlName="password"
                             [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
