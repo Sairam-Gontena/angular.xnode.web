@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(private formBuilder: FormBuilder, public router: Router) {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -20,12 +20,19 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
   }
 
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
+    this.submitted = true;
+    localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
+    // Stop here if the form is invalid
+    if (this.signUpForm.invalid) {
+      return;
+    }
     this.router.navigate(['/workspace']);
+
   }
 }
