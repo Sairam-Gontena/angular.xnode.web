@@ -1,0 +1,72 @@
+.bg {
+    background-color: #23222B;
+}
+
+:host ::ng-deep.p-button {
+    background: #437FEC !important;
+    font-weight: 500;
+    font-size: 12px;
+    border: none;
+    border-radius: 2rem;
+}
+
+
+:host ::ng-deep.p-dropdown {
+    background-color: black;
+    border-radius: 2rem;
+    border: none;
+    height: 2rem;
+}
+
+:host ::ng-deep.p-dropdown.p-dropdown-clearable .p-dropdown-label {
+    padding-right: 1rem !important;
+    padding: 6px;
+    color: white;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.inprogress-bg {
+    background-color: #3A3942;
+}
+
+.test-card {
+    width: 15rem;
+    height: 10rem;
+    background-color: #2E2D36;
+    color: white;
+    border-color: #595959;
+}
+
+.p-inputtext.p-inputtext-sm {
+    background-color: #3A3942;
+}
+
+:host ::ng-deep.list-group-item {
+    background-color: #2E2D36 !important;
+    color: white;
+}
+
+.arrow {
+    width: 2rem;
+    height: 2rem;
+    margin-top: 3rem;
+}
+
+:host ::ng-deep.input-button {
+    border: green !important;
+}
+
+.card-images {
+    margin-top: -20px;
+    margin-left: -15px;
+    width: 3rem;
+    height: 3rem;
+}
+
+@media screen and (max-width: 780px) {
+    .p-inputtext.p-inputtext-sm {
+        width: 6rem;
+        font-size: 10px;
+    }
+}

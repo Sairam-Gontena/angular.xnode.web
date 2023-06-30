@@ -29,6 +29,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
   },
   {
+    path: 'test-cases',
+    loadChildren: () => import('./pages/test-cases/test-cases.module').then(m => m.TestCasesModule)
+  },
+  {
     path: 'my-templates',
     loadChildren: () =>
       import('./pages/templates/templates.module').then(

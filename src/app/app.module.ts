@@ -15,6 +15,8 @@ import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { BotComponent } from './components/bot/bot.component';
 import { StepperComponent } from './components/stepper/stepper.component';
+import { TestCasesComponent } from './pages/test-cases/test-cases.component';
+import { PanelModule } from 'primeng/panel';
 
 
 
@@ -29,6 +31,7 @@ import { StepperComponent } from './components/stepper/stepper.component';
     PageNotFoundComponent,
     BotComponent,
     StepperComponent,
+    TestCasesComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,7 @@ import { StepperComponent } from './components/stepper/stepper.component';
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
-
+    PanelModule
   ],
   providers: [],
   bootstrap: [AppComponent],
