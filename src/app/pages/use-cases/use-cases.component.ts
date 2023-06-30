@@ -35,18 +35,20 @@ export class UseCasesComponent implements OnInit {
     this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-          console.log('response', response);
 
           const data = response?.data?.insights_data;
-          if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
-            this.useCases = data.Usecase[0].Response
-          } else if (Array.isArray(data.Usecase) && !data.Usecase[0].Response) {
-            this.useCases = data.Usecase[0]
-          } else if (!Array.isArray(data.Usecase) && data.Usecase.Response) {
-            this.useCases = data.Usecase.Response
-          } else {
-            this.useCases = data.Usecase
-          }
+          // if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
+          //   this.useCases = data.Usecase[0].Response
+          // } else if (Array.isArray(data.Usecase) && !data.Usecase[0].Response) {
+          //   this.useCases = data.Usecase[0]
+          // } else if (!Array.isArray(data.Usecase) && data.Usecase.Response) {
+          //   this.useCases = data.Usecase.Response
+          // } else {
+          //   this.useCases = data.Usecase
+          // }
+          this.useCases = data.Usecase
+          console.log('response', data.Usecase);
+
         }
         this.loading = false;
       })
