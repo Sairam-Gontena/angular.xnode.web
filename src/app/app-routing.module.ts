@@ -9,7 +9,7 @@ import { PublishComponent } from './publish/publish.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'signUP',
     loadChildren: () =>
       import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
   },
