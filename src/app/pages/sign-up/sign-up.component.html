@@ -60,7 +60,8 @@
                     </div>
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <label htmlFor="password" class="font-medium text-base">Password</label>
-                        <input pInputText id="password" placeholder="Please enter password" formControlName="password"
+                        <input pInputText type="password" id="password" placeholder="Please enter password"
+                            formControlName="password"
                             [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
                         <div *ngIf="submitted && signUp['password'].errors" class="invalid-feedback">
