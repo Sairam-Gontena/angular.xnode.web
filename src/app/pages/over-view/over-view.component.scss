@@ -64,3 +64,8 @@
     border-radius: 50%;
     font-size: 10px;
 }
+
+.overview-body {
+    height: calc(100vh - 50px);
+    overflow: auto;
+}
