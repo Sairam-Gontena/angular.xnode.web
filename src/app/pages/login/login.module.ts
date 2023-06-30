@@ -15,7 +15,7 @@ import { PasswordModule } from 'primeng/password';
     LoginRoutingModule,
     PrimeModulesModule,
     DividerModule,
-    PasswordModule,
+    // PasswordModule,
 
   ]
 })
