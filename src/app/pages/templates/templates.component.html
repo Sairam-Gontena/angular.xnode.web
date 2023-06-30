@@ -43,7 +43,8 @@
     </div>
     <div class="col-12 mt-4">
         <div class="flex gap-6">
-            <p-card header="FinBuddy" [style]="{ width: '314px', height: '348px'}">
+            <p-card header="FinBuddy" [style]="{ width: '314px', height: '348px'}" class="pointer"
+                (click)="onClickCreateNewTemplate()">
                 <ng-template pTemplate="header">
                     <img alt="template card" src="./assets/d-card.svg" height="199" />
                 </ng-template>
@@ -51,7 +52,7 @@
                     <img alt="dp" src="./assets/dp.svg" width="30" />
                     <div class="text-white ml-4">
                         <p class="m-0 font-bold">Created by you</p>
-                        <p class="m-0">Last viewed 3 minuts ago</p>
+                        <p class="m-0">Last viewed 3 minutes ago</p>
                     </div>
                 </div>
             </p-card>

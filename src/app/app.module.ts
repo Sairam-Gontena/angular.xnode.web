@@ -19,6 +19,9 @@ import { TableModule } from 'primeng/table';
 import { PublishComponent } from './publish/publish.component';
 import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
+import { Axios } from 'axios';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 
 @NgModule({
   declarations: [
@@ -41,11 +44,14 @@ import { StepperComponent } from './components/stepper/stepper.component';
     CommonModule,
     KtdGridModule,
     PrimeModulesModule,
+    ProgressSpinnerModule,
+
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
     TableModule
   ],
+  exports: [ProgressSpinnerModule],
   providers: [],
   bootstrap: [AppComponent],
 
