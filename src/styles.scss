@@ -171,19 +171,27 @@ body {
 
 .model-node {
   width: 200px;
-  background: #D1C4E9;
+  background: #f8f9fa;
 }
 
 #canvas .model-node h2,
 #canvas .model-node .h2 {
-  background: #D1C4E9;
+  background: #f8f9fa;
   border: 0;
 }
 
 .list-group-item+.list-group-item {
-  background: #D1C4E9;
+  background: #ffffff;
   padding: 5px 10px !important;
   border: none !important;
+}
+
+#canvas .model-node:hover {
+  opacity: unset !important;
+}
+
+#canvas .model-node {
+  opacity: unset !important;
 }
 
 .jtk-hover path {

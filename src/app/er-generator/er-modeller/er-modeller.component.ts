@@ -76,8 +76,16 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
       .then(response => {
         if (response?.status === 200) {
-          const data = response?.data?.data?.insights_data;
-          this.dataModel = Array.isArray(data) ? data[0].DataModel : data.DataModel;
+          const data = response?.data?.insights_data;
+          if (Array.isArray(data.DataModel) && data.DataModel[0].Response) {
+            this.dataModel = data.DataModel[0].Response
+          } else if (Array.isArray(data.DataModel) && !data.DataModel[0].Response) {
+            this.dataModel = data.DataModel[0]
+          } else if (!Array.isArray(data.DataModel) && data.DataModel.Response) {
+            this.dataModel = data.DataModel.Response
+          } else {
+            this.dataModel = data.DataModel.Response
+          }
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
