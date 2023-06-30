@@ -29,7 +29,7 @@
   }
   
   .side-window.open {
-    width: 30%;
+    width: 40%;
     
   }
   
@@ -56,13 +56,23 @@
     // overflow: hidden;
   }
 
-  .circular-button {
+  .close-button {
     position: relative;
     width: 0.5rem;
     height: 0.5rem;
     padding: 10px;
     top: 6%;
-    left: 90%;
+    left: 91%;
+    right: 0;
+    border-radius: 50%;
+  }
+  .hide-button {
+    position: relative;
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 10px;
+    top: 6%;
+    left: -2%;
     right: 0;
     border-radius: 50%;
   }

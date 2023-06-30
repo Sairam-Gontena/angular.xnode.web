@@ -10,14 +10,17 @@
                 <router-outlet></router-outlet> 
             </div>
             
-            <div class="side-window" *ngIf="this.isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
+            <div id="side-window" class="side-window" *ngIf="this.isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
                 <!-- <div class="side-window-header">
                     <button class="circular-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
                 </div> -->
                 <div class="content">
-                    <button class="circular-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
-
-                    <iframe id="myIframe" src="https://xpilot.azurewebsites.net/" allow="microphone"
+                    <button class="close-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
+                    <button class="hide-button" pButton icon="pi pi-angle-right" (click)="hideSideWindow()"></button>
+                    <!-- <iframe #myIframe src="https://xpilot.azurewebsites.net/" allow="microphone"
+                        class="w-full h-full  pl-1 pr-1">
+                    </iframe> -->
+                    <iframe id ="myIframe" src="http://127.0.0.1:8000/" allow="microphone"
                         class="w-full h-full  pl-1 pr-1">
                     </iframe>
                 </div>
