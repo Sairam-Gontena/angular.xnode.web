@@ -19,9 +19,6 @@ export class BotComponent implements OnInit {
   }
 
   onClickContinue(): void {
-    // this.chatBotFlag = !this.chatBotFlag;
-    console.log(event);
-    console.log("window pane flage", this.botDisplayFlag)
     this.chatBotFlag.emit(true);
     // this.router.navigate(['/x-pilot']);
   }

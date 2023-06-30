@@ -9,13 +9,16 @@
             <div class="app-body-wrapper">
                 <router-outlet></router-outlet> 
             </div>
+            
             <div class="side-window" *ngIf="this.isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
-                <p-button class="botButton" label="Navi" styleClass="p-button-rounded" (click)="toggleSideWindow()"></p-button>
-                <!-- <div class="content"> -->
-                <iframe id="myIframe" src="https://xpilot.azurewebsites.net/" allow="microphone"
-                    class="w-full h-full  pl-1 pr-1">
-                </iframe>
-                <!-- </div> -->
+                <div class="side-window-header">
+                    <button class="circular-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
+                </div>
+                <div class="content">
+                    <iframe id="myIframe" src="https://xpilot.azurewebsites.net/" allow="microphone"
+                        class="w-full h-full  pl-1 pr-1">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>
