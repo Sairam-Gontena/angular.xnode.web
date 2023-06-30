@@ -52,3 +52,18 @@
 .letter-space-1 {
     letter-spacing: 1px;
 }
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Display 4 columns with equal width */
+  }
+  .overlay {
+    position: relative; 
+    bottom: 200px; 
+    color: #4E4D55;
+    font-size: 40px;
+    font-weight: 700;
+    padding: 4px;
+    text-align: right;
+  }
+  
+  
