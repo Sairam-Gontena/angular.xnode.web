@@ -5,9 +5,9 @@
             <form [formGroup]="signUpForm">
                 <h1 class="signup-color font-bold font-normal text-6xl">Sign up</h1>
                 <p class="font-semibold font-normal text-base">Have an account? Please
-                    <a class="text-blue-700">Sign In</a>
+                    <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
                 </p>
-                <div class="grid m-0">
+                <div class="grid">
                     <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
                         <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
                             <img src="./assets/google.png" width="16px">
