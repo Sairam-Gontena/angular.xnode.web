@@ -17,8 +17,6 @@ export class TemplatesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.clear();
-
     this.getMeUserId()
   }
 
