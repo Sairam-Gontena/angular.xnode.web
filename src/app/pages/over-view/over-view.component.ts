@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import *as data from '../../constants/overview.json';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-over-view',
@@ -9,7 +10,7 @@ import *as data from '../../constants/overview.json';
 
 export class OverViewComponent {
   @Input() currentStep: number = 2;
-
+  loading: boolean = true;
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
@@ -21,11 +22,18 @@ export class OverViewComponent {
   jsondata: any;
   childData: any;
 
+  overview: any;
+  id: String = '';
+  email = 'admin@xnode.ai';
+  constructor(private apiService: ApiService) {
+
+  }
   ngOnInit(): void {
     this.jsondata = data?.data;
     this.templates = [
       { label: 'FinBuddy' }
     ]
+    this.get_ID();
   };
 
   emitIconClicked(icon: string) {
@@ -70,6 +78,35 @@ export class OverViewComponent {
 
   setStep2(step: any) {
     this.counter2 = step;
+  }
+
+  get_ID() {
+    this.apiService.getID(this.email)
+      .then(response => {
+        this.id = response.data.data[0].id;
+        this.getMeOverview();
+      })
+
+      .catch(error => {
+        console.log(error);
+        this.loading = false;
+
+      });
+  }
+
+  getMeOverview() {
+    this.apiService.get("/retrive_overview/" + this.email + "/" + this.id)
+      .then(response => {
+        if (response?.status === 200) {
+          this.overview = response.data;
+        }
+        this.loading = false;
+      })
+      .catch(error => {
+        console.log(error);
+        this.loading = false;
+      });
+
   }
 }
 

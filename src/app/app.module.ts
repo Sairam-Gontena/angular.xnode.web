@@ -21,7 +21,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { PublishComponent } from './publish/publish.component';
 import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
-import {Axios} from 'axios';
+import { Axios } from 'axios';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -45,14 +46,15 @@ import {Axios} from 'axios';
     CommonModule,
     KtdGridModule,
     PrimeModulesModule,
-    FormsModule,
-    
+    ProgressSpinnerModule,
+
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
     TableModule,
     ToggleButtonModule
   ],
+  exports: [ProgressSpinnerModule],
   providers: [],
   bootstrap: [AppComponent],
 
