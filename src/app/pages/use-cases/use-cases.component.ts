@@ -47,7 +47,7 @@ export class UseCasesComponent implements OnInit {
           //   this.useCases = data.Usecase
           // }
           this.useCases = data.Usecase
-          console.log('response', data.Usecase);
+          console.log('response', response);
 
         }
         this.loading = false;
