@@ -23,6 +23,5 @@ export class OnboardingComponent implements OnInit {
       this.stepData = data.type;
     })
     this.selectedCategory = this.categories[0];
-    localStorage.removeItem('currentUser');
   }
 }

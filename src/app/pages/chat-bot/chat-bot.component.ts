@@ -1,19 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ElementRef } from 'jsplumb';
 
 @Component({
   selector: 'xnode-chat-bot',
   templateUrl: './chat-bot.component.html',
   styleUrls: ['./chat-bot.component.scss']
 })
-export class ChatBotComponent implements OnInit {
+export class ChatBotComponent implements AfterViewInit, OnInit {
+  @ViewChild('myIframe') iframe?: ElementRef;
 
   constructor(private router: Router) {
+  }
 
+  ngAfterViewInit() {
+    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    console.log('iframe', iframe);
+
+    if (iframe) {
+      iframe.contentWindow?.postMessage('dev@xnode.ai')
+    }
   }
 
   ngOnInit(): void {
-    localStorage.clear();
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     // Needs to be refactor
     // Add a load event listener to the iframe
