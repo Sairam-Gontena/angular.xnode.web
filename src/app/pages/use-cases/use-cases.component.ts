@@ -32,9 +32,11 @@ export class UseCasesComponent implements OnInit {
   }
 
   get_Usecases() {
-    this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
+    this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
+          console.log('response', response);
+
           const data = response?.data?.insights_data;
           if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
             this.useCases = data.Usecase[0].Response

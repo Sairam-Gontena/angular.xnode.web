@@ -95,7 +95,7 @@ export class OverViewComponent {
   }
 
   getMeOverview() {
-    this.apiService.get("/retrive_overview/" + this.email + "/" + this.id)
+    this.apiService.get("/retrive_overview/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
