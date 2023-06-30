@@ -33,7 +33,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.templates = [
       { label: 'FinBuddy' }
     ]
-    this.getMeUserId()
+    if (localStorage.getItem('record_id') === null) {
+      this.getMeUserId();
+    }
   }
 
   toggleMenu() {
@@ -62,6 +64,8 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       .then(response => {
         if (response?.status === 200) {
           this.id = response.data.data[0].id;
+          localStorage.setItem('record_id', response.data.data[0].id)
+
           this.getMeDataModel();
         }
         this.loading = false;

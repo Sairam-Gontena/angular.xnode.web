@@ -33,7 +33,9 @@ export class OverViewComponent {
     this.templates = [
       { label: 'FinBuddy' }
     ]
-    this.get_ID();
+    if (localStorage.getItem('record_id') === null) {
+      this.get_ID();
+    }
   };
 
   emitIconClicked(icon: string) {
@@ -84,6 +86,7 @@ export class OverViewComponent {
     this.apiService.getID(this.email)
       .then(response => {
         this.id = response.data.data[0].id;
+        localStorage.setItem('record_id', response.data.data[0].id)
         this.getMeOverview();
       })
 
