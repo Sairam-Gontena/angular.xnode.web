@@ -13,7 +13,7 @@ export class TemplatesComponent implements OnInit {
   id: String = '';
   email = 'admin@xnode.ai';
   templateCard: any;
-  constructor(private router: Router, private apiService: ApiService,) {
+  constructor(public router: Router, private apiService: ApiService,) {
   }
 
   ngOnInit(): void {
