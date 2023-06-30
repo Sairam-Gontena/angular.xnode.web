@@ -21,6 +21,7 @@ import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.
 import { StepperComponent } from './components/stepper/stepper.component';
 import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LoginComponent } from './pages/login/login.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PublishComponent,
     PublishLayoutComponent,
     StepperComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

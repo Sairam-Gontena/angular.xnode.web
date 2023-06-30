@@ -19,5 +19,7 @@ export class TemplatesComponent implements OnInit {
   onClickCreateNewTemplate(): void {
     this.router.navigate(['/design']);
   }
-
+  onClickgotoxPilot() {
+    this.router.navigate(['/x-pilot']);
+  }
 }
