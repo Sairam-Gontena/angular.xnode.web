@@ -103,6 +103,9 @@ export class OverViewComponent {
     this.apiService.get("/retrive_overview/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
+          console.log("this is response")
+          console.log(response.data);
+          console.log("this is response")
           this.overview = response.data;
         }
         this.loading = false;
