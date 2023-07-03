@@ -81,7 +81,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   getMeDataModel() {
     this.dataModel = null;
-    this.apiService.get("/retrive_insights/" + this.email + "/" + '87845b67-5858-460c-bf84-8c8579237c51')
+    this.apiService.get("/retrive_insights/" + this.email + "/" +localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
