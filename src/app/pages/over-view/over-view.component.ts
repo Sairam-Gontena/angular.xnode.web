@@ -98,7 +98,10 @@ export class OverViewComponent {
     this.apiService.get("/retrive_overview/" + this.email + "/" + this.id)
       .then(response => {
         if (response?.status === 200) {
-          console.log(response);
+          console.log("this is response")
+          console.log(response.data);
+          console.log("this is response")
+
           this.overview = response.data;
         }
         this.loading = false;

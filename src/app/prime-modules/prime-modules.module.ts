@@ -12,6 +12,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -28,7 +29,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputTextareaModule,
     TableModule,
     ChartModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
@@ -43,7 +46,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputTextareaModule,
     TableModule,
     ChartModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class PrimeModulesModule { }
