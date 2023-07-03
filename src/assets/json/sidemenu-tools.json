@@ -1,0 +1,566 @@
+          {
+               "sidemenu": [
+                    {
+                         "ID": "1",
+                         "Label": "Design",
+                         "SideBar": [
+                              {
+                                   "AccordianTabHeader": "Layout",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "CONTAINER",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "CONTAINER",
+                                             "alt": "container",
+                                             "content": "CONTAINER"
+                                        },
+                                        {
+                                             "id": "Rows",
+                                             "imgsrc": "./assets/Row.svg",
+                                             "selectedcontainer": "ROWS",
+                                             "alt": "rows",
+                                             "content": "Rows"
+                                        },
+                                        {
+                                             "id": "One Column",
+                                             "imgsrc": "./assets/One Column.svg",
+                                             "selectedcontainer": "ONE_COLUMN",
+                                             "alt": "One Column",
+                                             "content": "One Column"
+                                        },
+                                        {
+                                             "id": "Two Columns",
+                                             "imgsrc": "./assets/Two Column.svg",
+                                             "selectedcontainer": "TWO_COLUMNS",
+                                             "alt": "two columns",
+                                             "content": "Two Columns"
+                                        },
+                                        {
+                                             "id": "Three Columns",
+                                             "imgsrc": "./assets/Three Column.svg",
+                                             "selectedcontainer": "THREE_COLUMNS",
+                                             "alt": "three columns",
+                                             "content": "Three Columns"
+                                        },
+                                        {
+                                             "id": "Four Columns",
+                                             "imgsrc": "./assets/Four Column.svg",
+                                             "selectedcontainer": "Four_COLUMN",
+                                             "alt": "Four columns",
+                                             "content": "Four Columns"
+                                        },
+                                        {
+                                             "id": "Five Column",
+                                             "imgsrc": "./assets/Five Column.svg",
+                                             "selectedcontainer": "Five_COLUMN",
+                                             "alt": "Five Column",
+                                             "content": "Five Column"
+                                        },
+                                        {
+                                             "id": "Six Columns",
+                                             "imgsrc": "./assets/Six Column.svg",
+                                             "selectedcontainer": "Six_COLUMNS",
+                                             "alt": "Six columns",
+                                             "content": "Six Columns"
+                                        },
+                                        {
+                                             "id": "Seven Columns",
+                                             "imgsrc": "./assets/Seven Column.svg",
+                                             "selectedcontainer": "Seven_COLUMNS",
+                                             "alt": "Seven columns",
+                                             "content": "Seven Columns"
+                                        },
+                                        {
+                                             "id": "Eight Column",
+                                             "imgsrc": "./assets/Eight Column.svg",
+                                             "selectedcontainer": "Eight_COLUMN",
+                                             "alt": "Eight Column",
+                                             "content": "Eight Column"
+                                        },
+                                        {
+                                             "id": "Nine Columns",
+                                             "imgsrc": "./assets/Nine Column.svg",
+                                             "selectedcontainer": "Nine_COLUMNS",
+                                             "alt": "Nine columns",
+                                             "content": "Nine Columns"
+                                        },
+                                        {
+                                             "id": "Ten Columns",
+                                             "imgsrc": "./assets/Ten Column.svg",
+                                             "selectedcontainer": "Ten_COLUMNS",
+                                             "alt": "Ten columns",
+                                             "content": "Ten Columns"
+                                        },
+                                        {
+                                             "id": "Eleven Columns",
+                                             "imgsrc": "./assets/Eleven Column.svg",
+                                             "selectedcontainer": "Eleven_COLUMN",
+                                             "alt": "Eleven columns",
+                                             "content": "Eleven Columns"
+                                        },
+                                        {
+                                             "id": "Twelve Columns",
+                                             "imgsrc": "./assets/Twelve Column.svg",
+                                             "selectedcontainer": "Twelve_COLUMN",
+                                             "alt": "Twelve columns",
+                                             "content": "Twelve Columns"
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "UI Elements",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Text",
+                                             "imgsrc": "./assets/Text.svg",
+                                             "selectedcontainer": "Text",
+                                             "alt": "Text",
+                                             "content": "Text"
+                                        },
+                                        {
+                                             "id": "Button",
+                                             "imgsrc": "./assets/Button.png",
+                                             "selectedcontainer": "Button",
+                                             "alt": "Button",
+                                             "content": "Button"
+                                        },
+                                        {
+                                             "id": "Icon",
+                                             "imgsrc": "./assets/Icons.svg",
+                                             "selectedcontainer": "Icon",
+                                             "alt": "Icon",
+                                             "content": "Icon"
+                                        },
+                                        {
+                                             "id": "Link",
+                                             "imgsrc": "./assets/Link.svg",
+                                             "selectedcontainer": "Link",
+                                             "alt": "Link",
+                                             "content": "Link"
+                                        },
+                                        {
+                                             "id": "Image",
+                                             "imgsrc": "./assets/Image.svg",
+                                             "selectedcontainer": "Image",
+                                             "alt": "Image",
+                                             "content": "Image"
+                                        },
+                                        {
+                                             "id": "Shape",
+                                             "imgsrc": "./assets/Shape.svg",
+                                             "selectedcontainer": "Shape",
+                                             "alt": "Shape",
+                                             "content": "Shape"
+                                        },
+                                        {
+                                             "id": "Alert",
+                                             "imgsrc": "./assets/Alert.svg",
+                                             "selectedcontainer": "Link",
+                                             "alt": "Link",
+                                             "content": "Link"
+                                        },
+                                        {
+                                             "id": "Video",
+                                             "imgsrc": "./assets/Video.svg",
+                                             "selectedcontainer": "Video",
+                                             "alt": "Video",
+                                             "content": "Video"
+                                        },
+                                        {
+                                             "id": "HTML",
+                                             "imgsrc": "./assets/HTML.svg",
+                                             "selectedcontainer": "HTML",
+                                             "alt": "HTML",
+                                             "content": "HTML"
+                                        },
+                                        {
+                                             "id": "Map",
+                                             "imgsrc": "./assets/Map 1.svg",
+                                             "selectedcontainer": "Map",
+                                             "alt": "Map",
+                                             "content": "Map"
+                                        }
+                                   ]
+                              }
+                         ]
+                    },
+                    {
+                         "ID": "2",
+                         "Label": "Config",
+                         "SideBar": [
+                              {
+                                   "AccordianTabHeader": "Data Model",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/Overview 1.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Data Object",
+                                             "imgsrc": "./assets/New Data Object.svg",
+                                             "selectedcontainer": "New Data Object",
+                                             "alt": "NewDataObject",
+                                             "content": "New Data Object",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Data Relation",
+                                             "imgsrc": "./assets/New Data Relation.svg",
+                                             "selectedcontainer": "New Data Relation",
+                                             "alt": "NewDataRelation",
+                                             "content": "New Data Relation",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Integrations",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/Overview 2.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "API Integrations",
+                                             "imgsrc": "./assets/API.svg",
+                                             "selectedcontainer": "API Integrations",
+                                             "alt": "APIIntegrations",
+                                             "content": "API Integrations",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "DB Integrations",
+                                             "imgsrc": "./assets/DB Integration.svg",
+                                             "selectedcontainer": "DB Integrations",
+                                             "alt": "DBIntegrations",
+                                             "content": "DB Integrations",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Authentication",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/Overview 3.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Add Provider",
+                                             "imgsrc": "./assets/Add Provider.svg",
+                                             "selectedcontainer": "Add Provider",
+                                             "alt": "AddProvider",
+                                             "content": "Add Provider",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Entitlement",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/Overview 3.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Add Entitlement",
+                                             "imgsrc": "./assets/Add Entitlements.svg",
+                                             "selectedcontainer": "Add Entitlement",
+                                             "alt": "AddEntitlement",
+                                             "content": "Add Entitlement",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Business Rules",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/Overview 3.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Rule",
+                                             "imgsrc": "./assets/New Rule.svg",
+                                             "selectedcontainer": "New Rule",
+                                             "alt": "NewRule",
+                                             "content": "New Rule",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Rule",
+                                             "imgsrc": "./assets/Edit Rule.svg",
+                                             "selectedcontainer": "Edit Rule",
+                                             "alt": "EditRule",
+                                             "content": "Edit Rule",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Work Flows",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/Overview 3.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Flow",
+                                             "imgsrc": "./assets/New Flow.svg",
+                                             "selectedcontainer": "New Flow",
+                                             "alt": "NewFlow",
+                                             "content": "New Flow",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Flow",
+                                             "imgsrc": "./assets/Edit Flow.svg",
+                                             "selectedcontainer": "Edit Flow",
+                                             "alt": "EditFlow",
+                                             "content": "Edit Flow",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              }
+                         ]
+                    },
+                    {
+                         "ID": "3",
+                         "Label": "Publish",
+                         "SideBar": [
+                              {
+                                   "AccordianTabHeader": "Environment",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "DEV",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Dev",
+                                             "alt": "Dev",
+                                             "content": "DEV",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "UAT",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "UAT",
+                                             "alt": "UAT",
+                                             "content": "UAT",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "PROD",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "PROD",
+                                             "alt": "PROD",
+                                             "content": "PROD",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Create",
+                                             "imgsrc": "./assets/one-column.svg",
+                                             "selectedcontainer": "Create",
+                                             "alt": "Create",
+                                             "content": "Create",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Test",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Test Cases",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Test Cases",
+                                             "alt": "Test Cases",
+                                             "content": "Test Cases",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "View Report",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "View Report",
+                                             "alt": "View Report",
+                                             "content": "View Report",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Mobile App",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Add Provider",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Add Provider",
+                                             "alt": "AddProvider",
+                                             "content": "Add Provider",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Launch",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Approvals",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Approvals",
+                                             "alt": "Approvals",
+                                             "content": "Approvals",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Release Notes",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Release Notes",
+                                             "alt": "Release Notes",
+                                             "content": "Release Notes",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Deploy",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Deploy",
+                                             "alt": "Deploy",
+                                             "content": "Deploy",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "A/B Test",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "A/B Test",
+                                             "alt": "A/BTest",
+                                             "content": "A/B Test",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Business Rules",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Rule",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Rule",
+                                             "alt": "NewRule",
+                                             "content": "New Rule",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Rule",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Edit Rule",
+                                             "alt": "EditRule",
+                                             "content": "Edit Rule",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Work Flows",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/container.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "New Flow",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "New Flow",
+                                             "alt": "NewFlow",
+                                             "content": "New Flow",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Edit Flow",
+                                             "imgsrc": "./assets/rows.svg",
+                                             "selectedcontainer": "Edit Flow",
+                                             "alt": "EditFlow",
+                                             "content": "Edit Flow",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              }
+                         ]
+                    }
+               ]
+          }

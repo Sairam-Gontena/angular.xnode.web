@@ -14,11 +14,14 @@ import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.comp
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { BotComponent } from './components/bot/bot.component';
+import { TableComponent } from './components/table/table.component'
+import { TableModule } from 'primeng/table';
+import { PublishComponent } from './publish/publish.component';
+import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
-import { TestCasesComponent } from './pages/test-cases/test-cases.component';
-import { PanelModule } from 'primeng/panel';
-
-
+import { Axios } from 'axios';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LoginComponent } from './pages/login/login.component';
 
 
 @NgModule({
@@ -30,8 +33,11 @@ import { PanelModule } from 'primeng/panel';
     UiFlow2Component,
     PageNotFoundComponent,
     BotComponent,
+    TableComponent,
+    PublishComponent,
+    PublishLayoutComponent,
     StepperComponent,
-    TestCasesComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,11 +46,14 @@ import { PanelModule } from 'primeng/panel';
     CommonModule,
     KtdGridModule,
     PrimeModulesModule,
+    ProgressSpinnerModule,
+
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
-    PanelModule
+    TableModule
   ],
+  exports: [ProgressSpinnerModule],
   providers: [],
   bootstrap: [AppComponent],
 

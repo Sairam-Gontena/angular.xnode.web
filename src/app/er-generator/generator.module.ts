@@ -14,6 +14,7 @@ import { ModalDataComponent } from './modal-data/modal-data.component';
 import { ModalModelComponent } from './modal-model/modal-model.component';
 import { ModalSchemaComponent } from './modal-schema/modal-schema.component';
 import { SchemaComponent } from './schema/schema.component';
+import { TemplateBuilderModule } from '../pages/template-builder/template-builder.module';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -53,6 +54,7 @@ import { ErGeneratorLayoutComponent } from './er-generator-layout/er-generator-l
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    TemplateBuilderModule,
     FormsModule,
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
@@ -67,7 +69,7 @@ import { ErGeneratorLayoutComponent } from './er-generator-layout/er-generator-l
     CheckboxModule,
     DropdownModule,
     PrimeModulesModule,
-    ConfigureModule
+    // ConfigureModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
   exports: [GeneratorComponent, ErModellerComponent],

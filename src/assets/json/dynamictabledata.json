@@ -1,0 +1,40 @@
+{
+    "dynamicTable": [
+
+     {
+          "Version":"3.0",
+          "Deployed On":"2023-07-01",
+          "Deployed By":"Address1",
+          "Notes":"Updated business rules",
+          "Status":"pending"
+        },
+        {
+          "Version":"2.0",
+          "Deployed On":"2023-05-01",
+          "Deployed By":"Address1",
+          "Status":"deployed",
+          "Notes":"Updated work flow"
+
+    
+        },
+        {
+          "Version":"1.0",
+          "Deployed On":"2023-04-01",
+          "Deployed By":"Address1",
+          "Status":"deployed",
+          "Notes":"Updated work flow"
+
+    
+        },
+        {
+          "Version":"0.1",
+          "Deployed On":"2023-03-01",
+          "Deployed By":"Address1",
+          "Status":"deployed",
+          "Notes":"First Revision"
+
+    
+        }
+
+   ]
+}

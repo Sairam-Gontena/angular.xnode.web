@@ -1,16 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import *as data from '../../constants/overview.json';
-import { text } from 'd3';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-over-view',
   templateUrl: './over-view.component.html',
   styleUrls: ['./over-view.component.scss']
 })
+
 export class OverViewComponent {
   @Input() currentStep: number = 2;
-
+  loading: boolean = true;
   templates: any;
   selectedTemplate: string = 'FinBuddy';
   highlightedIndex: string | null = null;
@@ -22,16 +22,24 @@ export class OverViewComponent {
   jsondata: any;
   childData: any;
 
+  overview: any;
+  id: String = '';
+  email = 'admin@xnode.ai';
+  constructor(private apiService: ApiService) {
+
+  }
   ngOnInit(): void {
     this.jsondata = data?.data;
-    console.log(this.jsondata);
-    console.log(this.jsondata[3].children[3].title);
-
     this.templates = [
       { label: 'FinBuddy' }
     ]
-  }
-  ;
+    if (localStorage.getItem('record_id') === null) {
+      this.get_ID();
+    } else {
+      this.getMeOverview();
+    }
+  };
+
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
@@ -40,13 +48,13 @@ export class OverViewComponent {
     }
     this.iconClicked.emit(icon);
   }
+
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 
 
   nextStep(): void {
-    // this.stepper.nextStep();
     if (this.currentStep < 3) {
       this.currentStep++;
     }
@@ -59,7 +67,6 @@ export class OverViewComponent {
   }
 
   setStep(step: any) {
-    // this.stepperRef.setStep(step);
     this.counter = step;
   }
 
@@ -74,8 +81,37 @@ export class OverViewComponent {
   }
 
   setStep2(step: any) {
-    // this.stepperRef.setStep(step);
     this.counter2 = step;
+  }
+
+  get_ID() {
+    this.apiService.getID(this.email)
+      .then(response => {
+        this.id = response.data.data[0].id;
+        localStorage.setItem('record_id', response.data.data[0].id)
+        this.getMeOverview();
+      })
+
+      .catch(error => {
+        console.log(error);
+        this.loading = false;
+
+      });
+  }
+
+  getMeOverview() {
+    this.apiService.get("/retrive_overview/" + this.email + "/" + localStorage.getItem('record_id'))
+      .then(response => {
+        if (response?.status === 200) {
+          this.overview = response.data;
+        }
+        this.loading = false;
+      })
+      .catch(error => {
+        console.log(error);
+        this.loading = false;
+      });
+
   }
 }
 

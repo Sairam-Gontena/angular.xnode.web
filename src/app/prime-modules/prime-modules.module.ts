@@ -9,6 +9,11 @@ import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TableModule } from 'primeng/table';
+import { ChartModule } from 'primeng/chart';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [],
@@ -22,7 +27,13 @@ import { FileUploadModule } from 'primeng/fileupload';
     DialogModule,
     FileUploadModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TableModule,
+    ChartModule,
+    ProgressSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PasswordModule
   ],
   exports: [
     CommonModule,
@@ -34,7 +45,13 @@ import { FileUploadModule } from 'primeng/fileupload';
     DialogModule,
     FileUploadModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    TableModule,
+    ChartModule,
+    ProgressSpinnerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PasswordModule
   ]
 })
 export class PrimeModulesModule { }

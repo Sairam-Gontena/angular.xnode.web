@@ -1,7 +1,7 @@
 .bg {
     background-color: #23222B;
     width: 100%;
-
+    margin: 0px;
 }
 
 .para-text {
@@ -63,4 +63,9 @@
     color: white;
     border-radius: 50%;
     font-size: 10px;
+}
+
+.overview-body {
+    height: calc(100vh - 50px);
+    overflow: auto;
 }

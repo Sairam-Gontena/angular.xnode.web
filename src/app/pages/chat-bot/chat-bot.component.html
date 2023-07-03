@@ -1,4 +1,4 @@
-<div class=" chat-bot-container">
+<div class="chat-bot-container">
     <div class="grid m-0">
         <div class="col-12 md:col-6 lg:col-3 p-5 grid m-0">
             <div class="col-6 md:col-6 lg:col-3 p-0">
@@ -9,11 +9,9 @@
             </div>
         </div>
         <div class="col-6 col-offset-3 bot-height">
-            <iframe src="https://xnode-copilot.azurewebsites.net/" class="w-full h-full  pl-5 pr-5">
+            <iframe id="myIframe" src="https://xpilot.azurewebsites.net/" allow="microphone"
+                class="w-full h-full  pl-5 pr-5">
             </iframe>
-            <div class="col-12 md:col-12 lg:col-12 pl-5 pr-5 m-0 text-right">
-                <p-button label="Continue" styleClass="p-button-rounded" (click)="onClickContinue()"></p-button>
-            </div>
         </div>
     </div>
 </div>
