@@ -78,11 +78,18 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = newItem;
     console.log(this.botOutput);
   }
+  
   sendDataToIframe(data: any){
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    console.log(iframe);
+    // document.addEventListener('DOMContentLoaded', function (event) {
+    //     document.getElementById('main').addEventListener('load', function() {
+    //         console.log('The `iframe` has loaded!')
+    //     })
+    // })
     if(iframe.contentWindow){
       console.log("this is iframe content Window, content doc",iframe.contentDocument, iframe.contentWindow);
-      iframe.contentWindow.postMessage(data, "http://127.0.0.1:8000/");
+      iframe.contentWindow.postMessage(data, "https://xpilot.azurewebsites.net/");
       console.log("FINISHED Transaction")
     }
   }
