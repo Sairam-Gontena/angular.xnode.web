@@ -33,7 +33,11 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.templates = [
       { label: 'FinBuddy' }
     ]
-    this.getMeUserId()
+    if (localStorage.getItem('record_id') === null) {
+      this.getMeUserId();
+    } else {
+      this.getMeDataModel();
+    }
   }
 
   toggleMenu() {
@@ -62,6 +66,8 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       .then(response => {
         if (response?.status === 200) {
           this.id = response.data.data[0].id;
+          localStorage.setItem('record_id', response.data.data[0].id)
+
           this.getMeDataModel();
         }
         this.loading = false;
@@ -73,17 +79,21 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   getMeDataModel() {
-    this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
+    this.dataModel = null;
+    this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-          const data = response?.data?.data?.insights_data;
-          this.dataModel = Array.isArray(data) ? data[0].DataModel : data.DataModel;
+          const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
+          this.dataModel = Array.isArray(data.DataModel) ? data.DataModel[0] : data.DataModel;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
+        this.loading = false;
       })
       .catch(error => {
         console.log(error);
+        this.loading = false;
+
       });
 
   }

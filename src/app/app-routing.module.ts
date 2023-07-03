@@ -15,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren:() => import('./pages/login/login.module').then(m => m.LoginModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'use-cases',
