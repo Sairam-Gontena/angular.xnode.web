@@ -1,25 +1,26 @@
-<div id="{{myModel.getElementId()}}" class="model-node list-group d-inline-flex" [style.left.px]="myModel.pos_x"
-   [style.top.px]="myModel.pos_y">
+<div id="{{myModel.getElementId()}}" class="model-node list-group d-inline-flex border-1  "
+   style="border-color: #ccc;background-color: white;" [style.left.px]="myModel.pos_x" [style.top.px]="myModel.pos_y">
 
-    <h2 id="{{myModel.getElementH2Id()}}" class="list-group-item list-group-item-primary d-flex m-0 card-header-footer" style="background-color:#3A3942"
-      [class.list-group-item-primary]="myModel.is_pivot === false"
+   <h2 id="{{myModel.getElementH2Id()}}" class="list-group-item list-group-item-primary d-flex m-0 p-0 card-header-footer "
+      style="background-color:#f0efeb" [class.list-group-item-primary]="myModel.is_pivot === false"
       [class.list-group-item-secondary]="myModel.is_pivot === true" (contextmenu)="contextMenu($event)"
-      (mousedown)="startDrag()" (mouseup)="endDrag()" >
-      <span class="align-self-center mr-auto  text-white font-bold inter "  >{{myModel.name}}</span>
-      <span class="icon-group align-self-center" style="min-width: 42px;" id="icon01">
-         <i class="material-icons ml-3 text-white" (click)="editModel()">mode_edit</i>      
-         <i class="material-icons ml-1 text-white" (click)="deleteModel()">close</i>
+      (mousedown)="startDrag()" (mouseup)="endDrag()">
+      <span class="align-self-center mr-auto  font-bold inter text-700  ">{{myModel.name}}</span>
+      <span class="icon-group align-self-center align-middle mt-2 " style="min-width: 42px;" id="icon01">
+         <i class="material-icons ml-3  text-700" (click)="editModel()">mode_edit</i>
+         <i class="material-icons ml-1 text-700" (click)="deleteModel()">close</i>
       </span>
    </h2>
-
+   
    <schema *ngFor="let schema of myModel.schemas; let first=first; let last=last;" [mySchema]="schema" [first]="first"
       [last]="last" [is_pivot]="myModel.is_pivot" id="{{schema.getElementId()}}" class="list-group-item d-flex">
    </schema>
 
-   <div class="list-group-item text-center pl-0 pr-0 card-header-footer font-bold inter "   >
+   <div class="list-group-item text-center pl-0 pr-0 card-header-footer font-bold inter ">
       <div class="btm-actions w-full">
-         <a href="javascript:void(0)" (click)="addSchema()"><i class="material-icons align-middle text-white " >add_circle</i> <span
-               class="align-middle text-white ml-1">add property</span>
+         <a href="javascript:void(0)" (click)="addSchema()"><i
+               class="material-icons align-middle text-700  " style="padding-top: 1px;" >add_circle</i> <span
+               class="align-middle  ml-1 text-700">add property</span>
          </a>
       </div>
    </div>

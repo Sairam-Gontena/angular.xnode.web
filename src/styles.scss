@@ -67,7 +67,7 @@ body {
 }
 
 .jtk-endpoint {
-  opacity: 0.3;
+  opacity: 1;
 
   svg {
     circle {
@@ -82,11 +82,11 @@ body {
 }
 
 .jtk-connector {
-  opacity: 0.3;
+  opacity: 1;
 
   path {
     stroke: #437FEC;
-    stroke-width: 4px;
+    stroke-width: 2px;
   }
 
   &.jtk-hover {
@@ -99,7 +99,7 @@ body {
 
   path {
     stroke: orange;
-    stroke-width: 5px;
+    stroke-width: 2px;
   }
 
   svg {
