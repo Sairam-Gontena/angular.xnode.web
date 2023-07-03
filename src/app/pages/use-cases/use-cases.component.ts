@@ -41,7 +41,7 @@ export class UseCasesComponent implements OnInit {
       .then(response => {
         if (response?.status === 200) {
 
-          const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
+          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           // this.useCases = Array.isArray(data.useCases) ? data.DataModel[0] : data.DataModel;
           // if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
           //   this.useCases = data.Usecase[0].Response
