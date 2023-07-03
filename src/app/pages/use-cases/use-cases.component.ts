@@ -15,13 +15,18 @@ export class UseCasesComponent implements OnInit {
 
   constructor(private apiService: ApiService) { }
   ngOnInit(): void {
-    this.get_ID();
+    if (localStorage.getItem('record_id') === null) {
+      this.get_ID();
+    } else {
+      this.get_Usecases();
+    }
   }
   //get calls 
   get_ID() {
     this.apiService.get("/get_metadata/" + this.email)
       .then(response => {
         this.id = response.data.data[0].id;
+        localStorage.setItem('record_id', response.data.data[0].id);
         this.get_Usecases();
         this.loading = false;
       })
@@ -32,19 +37,24 @@ export class UseCasesComponent implements OnInit {
   }
 
   get_Usecases() {
-    this.apiService.get("/retrive_insights/" + this.email + "/" + this.id)
+    this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-          const data = response?.data?.insights_data;
-          if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
-            this.useCases = data.Usecase[0].Response
-          } else if (Array.isArray(data.Usecase) && !data.Usecase[0].Response) {
-            this.useCases = data.Usecase[0]
-          } else if (!Array.isArray(data.Usecase) && data.Usecase.Response) {
-            this.useCases = data.Usecase.Response
-          } else {
-            this.useCases = data.Usecase.Response
-          }
+
+          const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
+          // this.useCases = Array.isArray(data.useCases) ? data.DataModel[0] : data.DataModel;
+          // if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
+          //   this.useCases = data.Usecase[0].Response
+          // } else if (Array.isArray(data.Usecase) && !data.Usecase[0].Response) {
+          //   this.useCases = data.Usecase[0]
+          // } else if (!Array.isArray(data.Usecase) && data.Usecase.Response) {
+          //   this.useCases = data.Usecase.Response
+          // } else {
+          //   this.useCases = data.Usecase
+          // }
+          this.useCases = data.Usecase
+          console.log('response', response);
+
         }
         this.loading = false;
       })

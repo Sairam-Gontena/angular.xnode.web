@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [],
@@ -31,7 +32,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ChartModule,
     ProgressSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PasswordModule
   ],
   exports: [
     CommonModule,
@@ -48,7 +50,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ChartModule,
     ProgressSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PasswordModule
   ]
 })
 export class PrimeModulesModule { }

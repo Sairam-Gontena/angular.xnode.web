@@ -1,4 +1,4 @@
-<div class="grid ml-6">
+<div class="grid m-0 p-6">
     <div class="col-12 mt-5">
         <p class="text-6xl m-0 text-white">Hi, Good Morning!</p>
     </div>
@@ -11,7 +11,7 @@
     <div class="col-12 mt-4">
         <p-button styleClass="p-button-rounded mr-4">
             <img alt="bot-btn-icon" src="./assets/bot-btn-icon.svg" />
-            <span class="ml-2 mr-2 ">New with xbot AI</span>
+            <span class="ml-2 mr-2 " (click)="this.router.navigate(['/x-pilot'])">New with xbot AI</span>
             <i class="pi pi-angle-right"></i>
         </p-button>
         <p-button styleClass="p-button-secondary p-button-rounded mr-4">
@@ -43,17 +43,19 @@
     </div>
     <div class="col-12 mt-4">
         <div class="card-grid gap-8" *ngIf="templateCard">
-            <p-card header="FinBuddy" [style]="{ width: '314px', height: '348px'}" class="pointer"
-                (click)="onClickCreateNewTemplate()" *ngFor="let data of templateCard ; let i=index">
+            <p-card header="{{data.product_name}}" [style]="{ width: '314px', height: '348px'}" class="pointer"
+                (click)="onClickCreateNewTemplate(data)" *ngFor="let data of templateCard ; let i=index">
                 <ng-template pTemplate="header">
-                        <img alt="template card" src="./assets/d-card.svg" height="199" />
-                        <div class="overlay">{{ i + 1 }}</div>
+                    <img alt="template card" src="./assets/d-card.svg" height="199" />
+                    <div class="overlay">{{ i + 1 }}</div>
                 </ng-template>
                 <div class="flex">
-                    <img alt="dp" src="./assets/dp.svg" width="30" />
+                    <img alt="dp" src="./assets/dp.svg" width="40" />
                     <div class="text-white ml-4">
                         <p class="m-0 font-bold">Created by you</p>
-                        <p class="m-0">Last viewed 3 minutes ago</p>
+                        <p class="m-0 text-xs">Last viewed 3 minutes ago</p>
+                        <p class="m-0 text-xs">created on: {{data.created_on | date:'medium'}}</p>
+
                     </div>
                 </div>
             </p-card>
@@ -66,5 +68,6 @@
         </div>
 
     </div>
+    <p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>
 
 </div>

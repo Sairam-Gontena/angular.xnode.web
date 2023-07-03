@@ -13,17 +13,16 @@ export class TemplatesComponent implements OnInit {
   id: String = '';
   email = 'admin@xnode.ai';
   templateCard: any;
-
-  constructor(private router: Router,private apiService: ApiService,) {
+  constructor(public router: Router, private apiService: ApiService,) {
   }
 
   ngOnInit(): void {
-    localStorage.clear();
-
     this.getMeUserId()
   }
 
-  onClickCreateNewTemplate(): void {
+  onClickCreateNewTemplate(data: any): void {
+    console.log('data', data);
+    localStorage.setItem('record_id', data.id)
     this.router.navigate(['/design']);
   }
   onClickgotoxPilot() {

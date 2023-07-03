@@ -3,10 +3,15 @@
         <img src=" ./assets/XLogo.svg" alt="x-logo" class="ml-8">
         <div class="form-container pt-8">
             <form [formGroup]="loginForm">
+                <div class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
+                    <a class="text-blue-700 pointer" routerLink="/">Sign Up</a>
+                </div>
                 <div class="formgrid grid mt-6">
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                        <label htmlFor="email" class="font-medium text-base">Email</label>
-                        <input pInputText id="email" placeholder="Please enter email" formControlName="email"
+                        <div>
+                            <label htmlFor="email" class="font-medium text-base">Email</label>
+                        </div>
+                        <input pInputText id="email" placeholder="Enter email" formControlName="email"
                             [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
                         <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
@@ -15,10 +20,13 @@
                         </div>
                     </div>
                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                        <label htmlFor="password" class="font-medium text-base">Password</label>
-                        <input pInputText id="password" placeholder="Please enter password" formControlName="password"
-                            [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"
-                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+                        <div>
+                            <label htmlFor="password" class="font-medium text-base">Password</label>
+                        </div>
+                        <p-password formControlName="password" class="password-field"
+                            [ngClass]="{ 'is-invalid': submitted && login['password'].errors }" [toggleMask]="true"
+                            [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                            placeholder="Enter password"></p-password>
                         <div *ngIf="submitted && login['password'].errors" class="invalid-feedback">
                             <div *ngIf="login['password'].errors['required']">Password is required</div>
                             <div *ngIf="login['password'].errors['minlength']">Password must be at least 6 characters

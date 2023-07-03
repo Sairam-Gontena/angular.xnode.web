@@ -33,7 +33,11 @@ export class OverViewComponent {
     this.templates = [
       { label: 'FinBuddy' }
     ]
-    this.get_ID();
+    if (localStorage.getItem('record_id') === null) {
+      this.get_ID();
+    } else {
+      this.getMeOverview();
+    }
   };
 
   emitIconClicked(icon: string) {
@@ -84,6 +88,7 @@ export class OverViewComponent {
     this.apiService.getID(this.email)
       .then(response => {
         this.id = response.data.data[0].id;
+        localStorage.setItem('record_id', response.data.data[0].id)
         this.getMeOverview();
       })
 
@@ -95,13 +100,12 @@ export class OverViewComponent {
   }
 
   getMeOverview() {
-    this.apiService.get("/retrive_overview/" + this.email + "/" + this.id)
+    this.apiService.get("/retrive_overview/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           console.log("this is response")
           console.log(response.data);
           console.log("this is response")
-
           this.overview = response.data;
         }
         this.loading = false;
