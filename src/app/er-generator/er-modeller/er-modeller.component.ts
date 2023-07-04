@@ -4,7 +4,6 @@ import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
 import { ApiService } from 'src/app/api/api.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'xnode-er-modeller',
