@@ -1,12 +1,14 @@
-<div class="template-builder-wrapper" >
+<div class="template-builder-wrapper">
     <div class="template-builder-layout-wrapper">
         <xnode-page-tools-layout></xnode-page-tools-layout>
     </div>
-    <div class="template-builder-body-wrapper" [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'" >
+    <div class="template-builder-body-wrapper"
+        [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
         <xnode-template-builder-publish-header #childComponent
             (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
-        <div class="flex justify-content-center flex-wrap ">
-            <div class="flex align-items-center justify-content-center m-4 h-full">
+        <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
+            <!-- flex align-items-center justify-content-center m-4 h-full -->
+            <div class="flex align-items-center justify-content-center h-full w-full">
                 <div class="" [ngClass]="currentView">
                     <iframe src="https://xnode-template-builder.azurewebsites.net/" class="h-full w-full"
                         title="Template Builder">
