@@ -9,7 +9,7 @@ export class ApiService {
   endPoint = "https://xpilot.azurewebsites.net/crud";
   constructor() { }
 
-  getID(email: String) {
+  getID(email: string) {
     return axios.get('https://xpilot.azurewebsites.net/crud/get_metadata/' + email);
   }
 

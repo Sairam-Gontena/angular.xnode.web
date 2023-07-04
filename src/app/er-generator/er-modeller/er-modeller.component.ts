@@ -4,7 +4,7 @@ import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
 import { ApiService } from 'src/app/api/api.service';
-
+import { UserUtil, User } from '../../utils/user-util';
 @Component({
   selector: 'xnode-er-modeller',
   templateUrl: './er-modeller.component.html',
@@ -21,12 +21,13 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   highlightedIndex: string | null = null;
   isOpen = true;
   id: String = '';
-  email = 'admin@xnode.ai';
+  currentUser?: User;
   dataModel: any;
   @Input() erModelInput: any;
 
   constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
@@ -62,12 +63,11 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   //get calls 
   getMeUserId() {
-    this.apiService.get("/get_metadata/" + this.email)
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200) {
           this.id = response.data.data[0].id;
           localStorage.setItem('record_id', response.data.data[0].id)
-
           this.getMeDataModel();
         }
         this.loading = false;
@@ -80,10 +80,10 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   getMeDataModel() {
     this.dataModel = null;
-    this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
+    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-          const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
+          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.dataModel = Array.isArray(data.DataModel) ? data.DataModel[0] : data.DataModel;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
@@ -93,9 +93,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       .catch(error => {
         console.log(error);
         this.loading = false;
-
       });
-
   }
-
 }

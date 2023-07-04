@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
+import { UserUtil, User } from '../../utils/user-util';
 
 @Component({
   selector: 'xnode-use-cases',
@@ -7,13 +8,15 @@ import { ApiService } from 'src/app/api/api.service';
   styleUrls: ['./use-cases.component.scss']
 })
 export class UseCasesComponent implements OnInit {
-
   useCases: any = [];
   id: String = '';
-  email = 'admin@xnode.ai';
   loading: boolean = true;
+  currentUser?: User;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {
+    this.currentUser = UserUtil.getCurrentUser();
+  }
+
   ngOnInit(): void {
     if (localStorage.getItem('record_id') === null) {
       this.get_ID();
@@ -23,7 +26,7 @@ export class UseCasesComponent implements OnInit {
   }
   //get calls 
   get_ID() {
-    this.apiService.get("/get_metadata/" + this.email)
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         this.id = response.data.data[0].id;
         localStorage.setItem('record_id', response.data.data[0].id);
@@ -37,24 +40,11 @@ export class UseCasesComponent implements OnInit {
   }
 
   get_Usecases() {
-    this.apiService.get("/retrive_insights/" + this.email + "/" + localStorage.getItem('record_id'))
+    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-
-          const data = Array.isArray(response?.data?.insights_data) ? response?.data?.insights_data[0] : response?.data?.insights_data;
-          // this.useCases = Array.isArray(data.useCases) ? data.DataModel[0] : data.DataModel;
-          // if (Array.isArray(data.Usecase) && data.Usecase[0].Response) {
-          //   this.useCases = data.Usecase[0].Response
-          // } else if (Array.isArray(data.Usecase) && !data.Usecase[0].Response) {
-          //   this.useCases = data.Usecase[0]
-          // } else if (!Array.isArray(data.Usecase) && data.Usecase.Response) {
-          //   this.useCases = data.Usecase.Response
-          // } else {
-          //   this.useCases = data.Usecase
-          // }
+          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data.Usecase
-          console.log('response', response);
-
         }
         this.loading = false;
       })
@@ -63,13 +53,4 @@ export class UseCasesComponent implements OnInit {
       });
 
   }
-
-  //convert string to JSON
-  stringToJSON(string: any) {
-    for (let item of string) {
-      // item = JSON.stringify(item);
-      item = JSON.parse(item);
-    }
-  }
-
 }

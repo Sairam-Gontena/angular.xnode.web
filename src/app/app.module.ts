@@ -24,6 +24,7 @@ import { StepperComponent } from './components/stepper/stepper.component';
 import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoginComponent } from './pages/login/login.component';
+import { DragDropModule } from 'primeng/dragdrop';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { LoginComponent } from './pages/login/login.component';
     KtdGridModule,
     PrimeModulesModule,
     ProgressSpinnerModule,
-
+    DragDropModule,
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
