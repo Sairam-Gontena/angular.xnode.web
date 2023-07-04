@@ -16,13 +16,20 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedMenuIndex = 2;
+    const storedMenuIndex = localStorage.getItem('selectedMenuIndex');
+    if (storedMenuIndex) {
+      this.selectedMenuIndex = parseInt(storedMenuIndex);
+    } else {
+      this.selectedMenuIndex = 0;
+    }
+    // this.selectedMenuIndex = 2;
     this.sideMenuItems = AppSideMenuItems;
     this.route.url.subscribe(console.log);
   }
 
   onClickMenuItem(item: any, i: any): void {
     this.selectedMenuIndex = i;
+    localStorage.setItem('selectedMenuIndex', i.toString());
     this.router.navigate(['/' + item.path])
   }
 }

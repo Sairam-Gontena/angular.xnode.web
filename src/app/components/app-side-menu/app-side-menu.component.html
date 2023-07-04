@@ -1,6 +1,8 @@
-<div class="side-menu-item active flex align-content-center justify-content-center flex-wrap"
-    *ngFor="let item of sideMenuItems;let i = index;" (click)="onClickMenuItem(item,i)"
-    [ngClass]="{'active': i === selectedMenuIndex  }">
+<div
+    class="side-menu-item active flex align-content-center justify-content-center flex-wrap"
+    *ngFor="let item of sideMenuItems;let i = index;"
+    (click)="onClickMenuItem(item,i)"
+    [class.active]="selectedMenuIndex === i">
     <div class="flex flex-column">
         <div class="text-center">
             <img [src]="item.icon" alt="item.label">
