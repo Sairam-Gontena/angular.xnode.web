@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import *as data from '../../constants/overview.json';
 import { ApiService } from 'src/app/api/api.service';
+import { UserUtil, User } from '../../utils/user-util';
 
 @Component({
   selector: 'xnode-over-view',
@@ -21,18 +22,22 @@ export class OverViewComponent {
   counter2: any = 1;
   jsondata: any;
   childData: any;
-
+  currentUser?: User;
   overview: any;
   id: String = '';
-  email = 'admin@xnode.ai';
-  constructor(private apiService: ApiService) {
+  email = '';
 
+  constructor(private apiService: ApiService) {
+    this.currentUser = UserUtil.getCurrentUser();
   }
+
   ngOnInit(): void {
     this.jsondata = data?.data;
     this.templates = [
       { label: 'FinBuddy' }
     ]
+    if (this.currentUser?.email)
+      this.email = this.currentUser?.email;
     this.get_ID();
   };
 
@@ -85,23 +90,16 @@ export class OverViewComponent {
       .then(response => {
         this.id = response.data.data[0].id;
         this.getMeOverview();
-      })
-
-      .catch(error => {
+      }).catch(error => {
         console.log(error);
         this.loading = false;
-
       });
   }
 
   getMeOverview() {
-    this.apiService.get("/retrive_overview/" + this.email + "/" + localStorage.getItem('record_id'))
+    this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
-          console.log("this is response")
-          console.log(response.data);
-          console.log("this is response")
-
           this.overview = response.data;
         }
         this.loading = false;

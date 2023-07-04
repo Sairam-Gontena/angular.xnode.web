@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
+import { UserUtil, User } from '../../utils/user-util';
 
 @Component({
   selector: 'xnode-templates',
@@ -11,9 +12,10 @@ import { ApiService } from 'src/app/api/api.service';
 export class TemplatesComponent implements OnInit {
   loading: boolean = true;
   id: String = '';
-  email = 'admin@xnode.ai';
   templateCard: any;
-  constructor(public router: Router, private apiService: ApiService,) {
+  currentUser?: User;
+  constructor(public router: Router, private apiService: ApiService) {
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
@@ -30,12 +32,11 @@ export class TemplatesComponent implements OnInit {
   }
   //get calls 
   getMeUserId() {
-    this.apiService.get("/get_metadata/" + this.email)
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
-          // this.getMeDataModel();
         }
         this.loading = false;
       })
