@@ -4,6 +4,7 @@ import { DataService } from '../service/data.service';
 import { JsPlumbService } from '../service/jsPlumb.service';
 import { UtilService } from '../service/util.service';
 import { ApiService } from 'src/app/api/api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'xnode-er-modeller',
@@ -25,8 +26,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   dataModel: any;
   @Input() erModelInput: any;
 
-  constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
+  constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private http: HttpClient) {
     this.data = this.dataService.data;
+    console.log(this.data)
   }
 
   ngOnInit(): void {
@@ -38,7 +40,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     } else {
       this.getMeDataModel();
     }
-
+    this.http.get("https://dev-xnode-tdg.azurewebsites.net/faker/list").subscribe((data: any) => {
+      console.log(data);
+    });
   }
 
   toggleMenu() {
