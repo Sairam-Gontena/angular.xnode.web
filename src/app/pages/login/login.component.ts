@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted: boolean = false;
+  errorMessage!: string;
   constructor(private formBuilder: FormBuilder, private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -71,7 +72,7 @@ export class LoginComponent implements OnInit {
     if (matchedUser) {
       this.router.navigate(['/my-templates']);
     } else {
-
+      this.errorMessage = 'Email and password do not match.';
     }
 
   }

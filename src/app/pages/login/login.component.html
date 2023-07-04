@@ -3,50 +3,71 @@
         <img src=" ./assets/XLogo.svg" alt="x-logo" class="ml-8">
         <div class="form-container pt-8">
             <form [formGroup]="loginForm">
-                <div class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
+                <div
+                    class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
                     <a class="text-blue-700 pointer" routerLink="/">Sign Up</a>
                 </div>
                 <div class="formgrid grid mt-6">
-                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                    <div
+                        class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <div>
                             <label htmlFor="email" class="font-medium text-base">Email</label>
                         </div>
-                        <input pInputText id="email" placeholder="Enter email" formControlName="email"
+                        <input pInputText id="email" placeholder="Enter email"
+                            formControlName="email"
                             [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                        <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
-                            <div *ngIf="login['email'].errors?.['required']">Email is required</div>
-                            <div *ngIf="login['email'].errors['email']">Email must be a valid email address</div>
+                        <div *ngIf="submitted && login['email'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="login['email'].errors?.['required']">Email
+                                is required</div>
+                            <div *ngIf="login['email'].errors['email']">Email
+                                must be a valid email address</div>
                         </div>
                     </div>
-                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                    <div
+                        class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <div>
-                            <label htmlFor="password" class="font-medium text-base">Password</label>
+                            <label htmlFor="password"
+                                class="font-medium text-base">Password</label>
                         </div>
-                        <p-password formControlName="password" class="password-field"
-                            [ngClass]="{ 'is-invalid': submitted && login['password'].errors }" [toggleMask]="true"
-                            [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                        <p-password formControlName="password"
+                            class="password-field"
+                            [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"
+                            [toggleMask]="true"
+                            [style]="{'width':'100%'}"
+                            [inputStyle]="{'width':'100%'}"
                             placeholder="Enter password"></p-password>
-                        <div *ngIf="submitted && login['password'].errors" class="invalid-feedback">
-                            <div *ngIf="login['password'].errors['required']">Password is required</div>
-                            <div *ngIf="login['password'].errors['minlength']">Password must be at least 6 characters
+                        <div *ngIf="submitted && login['password'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="login['password'].errors['required']">Password
+                                is required</div>
+                            <div *ngIf="login['password'].errors['minlength']">Password
+                                must be at least 6 characters
                             </div>
                         </div>
                     </div>
-                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                        <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
-                            icon="pi pi-angle-right" iconPos="right" (click)="onClickLogin()"></p-button>
+                    <div
+                        class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                        <p *ngIf="errorMessage" class="error-message">{{
+                            errorMessage }}</p>
+                        <p-button label="Login"
+                            styleClass="p-button-rounded  font-medium text-lg"
+                            icon="pi pi-angle-right" iconPos="right"
+                            (click)="onClickLogin()"></p-button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 sign-up-img text-white text-center text-left">
+    <div
+        class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 sign-up-img text-white text-center text-left">
         <div class="p-8">
             <h1 class="heading">Start your journey with us.</h1>
             <p class="text-lg font-normal font-normal">
                 Our platform is designed to be user-friendly and
-                accessible to everyone, providing intuitive interfaces and powerful algorithms that can generate
+                accessible to everyone, providing intuitive interfaces and
+                powerful algorithms that can generate
                 accurate and reliable models in just a few clicks.
             </p>
             <div class="flex flex-wrap justify-content-center">

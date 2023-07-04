@@ -4,22 +4,28 @@
         <div class="form-container pt-8">
             <form [formGroup]="signUpForm">
                 <h1 class="signup-color font-bold font-normal text-6xl">Sign up</h1>
-                <p class="font-semibold font-normal text-base">Have an account? Please
-                    <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
+                <p class="font-semibold font-normal text-base">Have an account?
+                    Please
+                    <a class="text-blue-700 pointer"
+                        (click)="this.router.navigate(['/login'])">Sign In</a>
                 </p>
                 <div class="grid">
                     <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+                        <div
+                            class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
                             <img src="./assets/google.png" width="16px">
-                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                            <p
+                                class="m-0 pl-2 font-semibold font-normal text-sm ">
                                 CONTINUE WITH GOOGLE
                             </p>
                         </div>
                     </div>
                     <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+                        <div
+                            class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
                             <img src="./assets/linkedin.png" width="16px">
-                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                            <p
+                                class="m-0 pl-2 font-semibold font-normal text-sm ">
                                 CONTINUE WITH LINKEDIN
                             </p>
                         </div>
@@ -30,60 +36,88 @@
                     <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
                         <label for="firstName" class="font-medium text-base">First
                             Name</label>
-                        <input id="firstName" type="text" placeholder="Please enter first name"
+                        <input id="firstName" type="text"
+                            placeholder="Please enter first name"
                             formControlName="firstName"
                             [ngClass]="{ 'is-invalid': submitted && signUp['firstName'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        <div *ngIf="submitted && signUp['firstName'].errors" class="invalid-feedback">
-                            <div *ngIf="signUp['firstName'].errors?.['required']">First Name is required</div>
+                        <div *ngIf="submitted && signUp['firstName'].errors"
+                            class="invalid-feedback">
+                            <div
+                                *ngIf="signUp['firstName'].errors?.['required']">First
+                                Name is required</div>
                         </div>
                     </div>
                     <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
                         <label for="lastName" class="font-medium text-base">Last
                             Name</label>
-                        <input id="lastName" type="text" placeholder="Please enter last name" formControlName="lastName"
+                        <input id="lastName" type="text"
+                            placeholder="Please enter last name"
+                            formControlName="lastName"
                             [ngClass]="{ 'is-invalid': submitted && signUp['lastName'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                        <div *ngIf="submitted && signUp['lastName'].errors" class="invalid-feedback">
-                            <div *ngIf="signUp['lastName'].errors['required']">Last Name is required</div>
+                        <div *ngIf="submitted && signUp['lastName'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="signUp['lastName'].errors['required']">Last
+                                Name is required</div>
                         </div>
                     </div>
-                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                    <div
+                        class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <label htmlFor="email" class="font-medium text-base">Email</label>
-                        <input pInputText id="email" placeholder="Please enter email" formControlName="email"
+                        <input pInputText id="email"
+                            placeholder="Please enter email"
+                            formControlName="email"
                             [ngClass]="{ 'is-invalid': submitted && signUp['email'].errors }"
                             class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                        <div *ngIf="submitted && signUp['email'].errors" class="invalid-feedback">
-                            <div *ngIf="signUp['email'].errors?.['required']">Email is required</div>
-                            <div *ngIf="signUp['email'].errors['email']">Email must be a valid email address</div>
+                        <div *ngIf="submitted && signUp['email'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="signUp['email'].errors?.['required']">Email
+                                is required</div>
+                            <div *ngIf="signUp['email'].errors['email']">Email
+                                must be a valid email address</div>
                         </div>
                     </div>
-                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                    <div
+                        class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                         <label htmlFor="password" class="font-medium text-base">Password</label>
-                        <input pInputText type="password" id="password" placeholder="Please enter password"
-                            formControlName="password"
+                        <p-password formControlName="password"
+                            class="password-field"
                             [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
-                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                        <div *ngIf="submitted && signUp['password'].errors" class="invalid-feedback">
-                            <div *ngIf="signUp['password'].errors['required']">Password is required</div>
-                            <div *ngIf="signUp['password'].errors['minlength']">Password must be at least 6 characters
+                            [toggleMask]="true"
+                            [style]="{'width':'100%'}"
+                            [inputStyle]="{'width':'100%'}"
+                            placeholder="Enter password"></p-password>
+                        <div *ngIf="submitted && signUp['password'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="signUp['password'].errors['required']">Password
+                                is required</div>
+                            <div *ngIf="signUp['password'].errors['minlength']">Password
+                                must be at least 6 characters
                             </div>
                         </div>
                     </div>
-                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                        <p-button label="Create Account" styleClass="p-button-rounded  font-medium text-lg"
-                            icon="pi pi-angle-right" iconPos="right" (click)="onClickSignUp()"></p-button>
+                    <div
+                        class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                        <p *ngIf="errorMessage" class="error-message">{{
+                            errorMessage }}</p>
+                        <p-button label="Create Account"
+                            styleClass="p-button-rounded  font-medium text-lg"
+                            icon="pi pi-angle-right" iconPos="right"
+                            (click)="onClickSignUp()"></p-button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <div class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 sign-up-img text-white text-center text-left">
+    <div
+        class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 sign-up-img text-white text-center text-left">
         <div class="p-8">
             <h1 class="heading">Start your journey with us.</h1>
             <p class="text-lg font-normal font-normal">
                 Our platform is designed to be user-friendly and
-                accessible to everyone, providing intuitive interfaces and powerful algorithms that can generate
+                accessible to everyone, providing intuitive interfaces and
+                powerful algorithms that can generate
                 accurate and reliable models in just a few clicks.
             </p>
             <div class="flex flex-wrap justify-content-center">
