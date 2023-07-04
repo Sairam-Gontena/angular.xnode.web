@@ -98,7 +98,8 @@ export class AppComponent implements OnInit {
       // Access the iframe's content window only when it has fully loaded
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
-        contentWindow.postMessage("this is from Xnode", "http://127.0.0.1:8000/");
+        console.log("in Postmessage")
+        contentWindow.postMessage("admin@xnode.ai", "*");
         console.log("iFrame window content", contentWindow);
       }
    

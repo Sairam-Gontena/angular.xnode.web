@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef} from '@angular/core';
 import { Router } from '@angular/router';
-import { Output, EventEmitter } from '@angular/core';
+import { Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'xnode-bot',
@@ -9,11 +9,18 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class BotComponent implements OnInit {
 
-  constructor(private router: Router) {
+  constructor(private elementRef: ElementRef,private router: Router) {
   }
+  @Output() chatBotFlag = new EventEmitter<boolean>();
+  @Input() botDisplayFlag: boolean = true;
+  
+  private isDragging: boolean = false;
+  private initialX: number = 0;
+  private initialY: number = 0;
+  private offsetX: number = 0;
+  private offsetY: number = 0;
+  private botContainer: HTMLElement | null = null;
 
-  ngOnInit(): void {
-  }
 
   onClickContinue(): void {
     this.chatBotFlag.emit(true);
