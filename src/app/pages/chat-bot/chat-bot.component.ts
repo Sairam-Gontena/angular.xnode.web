@@ -15,10 +15,8 @@ export class ChatBotComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    console.log('iframe', iframe);
-
     if (iframe) {
-      iframe.contentWindow?.postMessage('dev@xnode.ai')
+      iframe.contentWindow?.postMessage('dev@xnode.ai');
     }
   }
 
