@@ -14,8 +14,8 @@
 }
 
 .form-container {
-    margin-left: 215px;
-    margin-right: 215px;
+    margin-left: 200px;
+    margin-right: 200px;
 }
 
 :host ::ng-deep .p-button {
@@ -25,4 +25,15 @@
 
 .invalid-feedback {
     color: red;
+}
+
+.error-message {
+    color: red;
+}
+
+@media screen and (max-width: 780px) {
+    .form-container {
+        margin-left: 84px;
+        margin-right: 84px;
+    }
 }
