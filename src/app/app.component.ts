@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
 import { ApiService } from './api/api.service';
+import { selector } from 'd3';
+import axios from 'axios';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'xnode-root',
@@ -79,28 +82,36 @@ export class AppComponent implements OnInit {
     console.log(this.botOutput);
   }
   
-  sendDataToIframe(data: any){
+  async sendDataToIframe(data: String): Promise<void> {
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    console.log(iframe);
-    // document.addEventListener('DOMContentLoaded', function (event) {
-    //     document.getElementById('main').addEventListener('load', function() {
-    //         console.log('The `iframe` has loaded!')
-    //     })
-    // })
-    if(iframe.contentWindow){
-      console.log("this is iframe content Window, content doc",iframe.contentDocument, iframe.contentWindow);
-      iframe.contentWindow.postMessage(data, "https://xpilot.azurewebsites.net/");
-      console.log("FINISHED Transaction")
-    }
+    // Needs to be refactor
+    // Add a load event listener to the iframe
+    console.log("Hi IFRAME")
+    // const response = await axios({
+    //     method: 'post',
+    //     url: "http://127.0.0.1:8000/xnode",
+    //     data: "this is from Xnode",
+    //     headers: {
+    //         'Content-Type': `multipart/form-data; `,
+    //     },
+    // });
+      // Access the iframe's content window only when it has fully loaded
+      const contentWindow = iframe.contentWindow;
+      if (contentWindow) {
+        contentWindow.postMessage("this is from Xnode", "http://127.0.0.1:8000/");
+        console.log("iFrame window content", contentWindow);
+      }
+   
   }
 
-  hideSideWindow(){}
+  hideSideWindow(){
+    
+  }
   toggleSideWindow() {
     // this.sideWindow.style.display = '';
     this.isSideWindowOpen = !this.isSideWindowOpen;
     console.log(this.id);
-    console.log(this.get_Conversation());
-    this.sendDataToIframe("This is ashish. Lets create something");
+    // console.log(this.get_Conversation());
   }
 
   closeSideWindow() {
