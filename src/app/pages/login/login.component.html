@@ -2,6 +2,11 @@
     <div class="sm:col-12 md:col-12 lg:col-7 xl:col-7 pt-5 bg-white">
         <img src=" ./assets/XLogo.svg" alt="x-logo" class="ml-8">
         <div class="form-container pt-8">
+            <div class="grid m-0">
+                <div class="col-12 p-0">
+                    <p-messages [(value)]="messages" [enableService]="false"></p-messages>
+                </div>
+            </div>
             <form [formGroup]="loginForm">
                 <div class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
                     <a class="text-blue-700 pointer" routerLink="/">Sign Up</a>

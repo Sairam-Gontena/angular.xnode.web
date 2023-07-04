@@ -6,6 +6,7 @@
   flex-direction: column;
   z-index: 1;
 }
+
 .bot-text {
   border-bottom-left-radius: 261px;
   border-top-left-radius: 261px;
@@ -15,6 +16,7 @@
   background-color: #d8d8d8;
   margin-right: 64px;
 }
+
 .bot-logo {
   align-self: flex-end;
   width: 64px;
@@ -28,4 +30,10 @@
   align-self: center;
   text-align: center;
   margin-top: 15px;
+}
+
+.draggable {
+  position: absolute;
+  cursor: move;
+  user-select: none;
 }
