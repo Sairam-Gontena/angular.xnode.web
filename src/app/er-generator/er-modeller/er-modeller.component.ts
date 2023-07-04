@@ -26,9 +26,8 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   dataModel: any;
   @Input() erModelInput: any;
 
-  constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private http: HttpClient) {
+  constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
-    console.log(this.data)
   }
 
   ngOnInit(): void {
@@ -40,9 +39,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     } else {
       this.getMeDataModel();
     }
-    this.http.get("https://dev-xnode-tdg.azurewebsites.net/faker/list").subscribe((data: any) => {
-      console.log(data);
-    });
   }
 
   toggleMenu() {
