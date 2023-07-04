@@ -14,6 +14,7 @@ import { ChartModule } from 'primeng/chart';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
   declarations: [],
@@ -33,7 +34,8 @@ import { PasswordModule } from 'primeng/password';
     ProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
-    PasswordModule
+    PasswordModule,
+    MessagesModule
   ],
   exports: [
     CommonModule,
@@ -51,7 +53,8 @@ import { PasswordModule } from 'primeng/password';
     ProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
-    PasswordModule
+    PasswordModule,
+    MessagesModule
   ]
 })
 export class PrimeModulesModule { }

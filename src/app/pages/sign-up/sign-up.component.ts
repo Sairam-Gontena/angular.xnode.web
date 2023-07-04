@@ -14,10 +14,10 @@ export class SignUpComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.signUpForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      firstName: ['dev', Validators.required],
+      lastName: ['user', Validators.required],
+      email: ['dev@xnode.ai', [Validators.required, Validators.email]],
+      password: ['dev@123', [Validators.required, Validators.minLength(6)]],
     });
     // Store the three users in localStorage
     localStorage.setItem('user1', JSON.stringify({ email: 'demo@xnode.ai', password: 'demo@123' }));
