@@ -30,3 +30,10 @@
 .error-message {
     color: red;
 }
+
+@media screen and (max-width: 780px) {
+    .form-container {
+        margin-left: 90px;
+        margin-right: 90px;
+    }
+}
