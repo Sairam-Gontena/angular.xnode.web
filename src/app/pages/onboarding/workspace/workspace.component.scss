@@ -11,3 +11,22 @@
     padding-left: 3rem !important;
     padding-right: 3rem !important;
 }
+
+.invalid-feedback {
+    color: red !important;
+}
+
+
+
+.selected>div {
+    background-color: rgb(232, 240, 254);
+
+}
+
+.select-option {
+    margin-right: 50px !important;
+}
+
+// :host ::ng-deep.border-primary:focus {
+//     border-color: none !important;
+// }

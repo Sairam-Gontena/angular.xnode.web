@@ -1,14 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 @Component({
   selector: 'xnode-brand-guidelines',
   templateUrl: './brand-guidelines.component.html',
   styleUrls: ['./brand-guidelines.component.scss']
 })
 export class BrandGuidelinesComponent implements OnInit {
+  brandguidelinesForm!: FormGroup;
+  submitted: boolean = false;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder, public router: Router) {
+    this.brandguidelinesForm = this.formBuilder.group({
+      workspaceName: ['', Validators.required],
+      logoFile: [null, Validators.required, this.validateLogoFile]
+    });
+  }
+  get Form() { return this.brandguidelinesForm.controls; }
   ngOnInit(): void {
 
   }
@@ -16,6 +26,9 @@ export class BrandGuidelinesComponent implements OnInit {
 
   onFileDropped($event: any) {
     this.prepareFilesList($event);
+    this.brandguidelinesForm.patchValue({
+      logoFile: $event[0]
+    });
   }
 
   /**
@@ -23,9 +36,11 @@ export class BrandGuidelinesComponent implements OnInit {
    */
   fileBrowseHandler(files: any) {
     this.prepareFilesList(files);
-    console.log(files)
+    console.log(files);
+    this.brandguidelinesForm.patchValue({
+      logoFile: files[0] // Update the value of the logoFile control
+    });
   }
-
   /**
    * Delete file from files list
    * @param index (File index)
@@ -82,5 +97,31 @@ export class BrandGuidelinesComponent implements OnInit {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+  onClickbrandGuideLine() {
+    this.submitted = true;
+
+    localStorage.setItem('currentUser', JSON.stringify(this.brandguidelinesForm.value));
+    console.log('Form Valid:', this.brandguidelinesForm.valid);
+    if (this.brandguidelinesForm.invalid) {
+      return;
+    }
+    this.router.navigate(['/about-your-self']);
+  }
+  validateLogoFile(control: AbstractControl) {
+    const file = control.value;
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (file) {
+      if (!allowedTypes.includes(file.type)) {
+        return { invalidType: true };
+      }
+
+      if (file.size > maxSize) {
+        return { invalidSize: true };
+      }
+    }
+    return null;
   }
 }
