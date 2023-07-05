@@ -17,6 +17,7 @@ import {
 } from 'angular-gridster2';
 import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
 import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'xnode-template-builder',
@@ -32,8 +33,11 @@ export class TemplateBuilderComponent implements OnInit {
   layoutColumns: any;
   isOpen = true;
   templates: any;
+  emailData: any;
+  recordId: any;
+  iframeSrc: any;
   selectedTemplate: string = 'FinBuddy';
-  constructor() {
+  constructor(private sanitizer: DomSanitizer) {
 
   }
 
@@ -64,6 +68,15 @@ export class TemplateBuilderComponent implements OnInit {
         enabled: true
       }
     };
+    this.emailData = localStorage.getItem('currentUser');
+    if (this.emailData) {
+      let JsonData = JSON.parse(this.emailData)
+      this.emailData = JsonData?.email;
+    }
+    this.recordId = localStorage.getItem('record_id');
+    // http://localhost:4200/?email=admin@xnode.ai&id=89467239832783298
+    let iframeSrc = "http://localhost:4200/?email=" + this.emailData + "&id=" + this.recordId + "";
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
   onIconClicked(icon: string) {
