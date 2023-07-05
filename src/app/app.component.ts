@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
 import { ApiService } from './api/api.service';
 import { selector } from 'd3';
 import axios from 'axios';
 import { HttpHeaders } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'xnode-root',
@@ -12,24 +13,44 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AppComponent implements OnInit {
 
-  // @ViewChild('myIframe') iframeRef !: ElementRef;
-
   title = 'xnode';
   botOutput = ['false'];
   isSideWindowOpen: boolean = false;
-  email : String = 'admin@xnode.ai';
+  email : String = '';
   id : String = '';
   sideWindow: any = document.getElementById('side-window');
+  productContext: string | null = '';
+  iframeUrl : SafeResourceUrl = '';
 
-  constructor(private router : Router, private apiService : ApiService) {
+  constructor(
+    private router : Router, 
+    private domSanitizer: DomSanitizer,
+    private apiService : ApiService) 
+    {
 
   }
 
   ngOnInit(): void {
 
     this.get_id();
-    // this.get_Conversation();
+    this.getUserData();
     
+  }
+
+  getUserData(){
+    let currentUser = localStorage.getItem('currentUser');
+    if(currentUser){
+      this.email = JSON.parse(currentUser).email;
+      console.log(currentUser, this.email)
+    }
+  }
+
+  makeTrustedUrl(): void{
+    // let email = 'admin@xnode.ai';
+    let rawUrl = 'http://127.0.0.1:8000/?email='+ this.email +
+                                        '&productContext='+ this.productContext +
+                                        '&xnode_flag='+'XNODE-APP';
+    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
 
   get_id() {
@@ -48,7 +69,7 @@ export class AppComponent implements OnInit {
 
         // this.loading = false;
       });
-
+      
   }
 
   get_Conversation(){
@@ -56,8 +77,6 @@ export class AppComponent implements OnInit {
       .then(response => {
         if (response?.status === 200) {
           const data = response?.data;
-          // this.id = data.id;
-          // this.id = Array.isArray(data) ? data[0].Usecase : [];
           console.log(data, response)
         }
         // this.loading = false;
@@ -76,50 +95,23 @@ export class AppComponent implements OnInit {
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate";
   }
 
-  addItem(newItem : boolean){
+  addItem(newItem : any){
+    console.log(newItem)
     this.botOutput.push(newItem.toString());
-    this.isSideWindowOpen = newItem;
-    console.log(this.botOutput);
-  }
-  
-  async sendDataToIframe(data: String): Promise<void> {
-    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    // Needs to be refactor
-    // Add a load event listener to the iframe
-    console.log("Hi IFRAME")
-    // const response = await axios({
-    //     method: 'post',
-    //     url: "http://127.0.0.1:8000/xnode",
-    //     data: "this is from Xnode",
-    //     headers: {
-    //         'Content-Type': `multipart/form-data; `,
-    //     },
-    // });
-      // Access the iframe's content window only when it has fully loaded
-      const contentWindow = iframe.contentWindow;
-      if (contentWindow) {
-        console.log("in Postmessage")
-        contentWindow.postMessage("admin@xnode.ai", "*");
-        console.log("iFrame window content", contentWindow);
-      }
-   
+    this.isSideWindowOpen = newItem.cbFlag;
+    // this.isSideWindowOpen = true;
+    this.productContext = newItem.productContext;
+    this.makeTrustedUrl();
+    console.log(this.isSideWindowOpen, this.productContext);
   }
 
-  hideSideWindow(){
-    
-  }
   toggleSideWindow() {
-    // this.sideWindow.style.display = '';
     this.isSideWindowOpen = !this.isSideWindowOpen;
-    console.log(this.id);
-    // console.log(this.get_Conversation());
   }
 
   closeSideWindow() {
     this.isSideWindowOpen = false;
   }
-
-
 
   parentdata: any[] = [
     {

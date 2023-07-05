@@ -1,6 +1,6 @@
 <div class="w-full h-full">
     <div class="w-full"  *ngIf="isUserExists()">
-        <xnode-bot [botDisplayFlag] ="this.isSideWindowOpen" (chatBotFlag)="addItem($event)"></xnode-bot>
+        <xnode-bot [botDisplayFlag] ="this.isSideWindowOpen" (valueChange)="addItem($event)"></xnode-bot>
         <xnode-app-header></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper">
@@ -9,25 +9,10 @@
             <div class="app-body-wrapper">
                 <router-outlet></router-outlet> 
             </div>
-            
-            
             <div id="side-window" class="side-window" *ngIf="this.isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
-                <!-- <div class="side-window-header">
-                    <button class="circular-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
-                </div> -->
                 <div class="content">
                     <button class="close-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
-                    <button class="hide-button" pButton icon="pi pi-angle-right" (click)="sendDataToIframe('I am from Xnode')"></button>
-                    <!-- <iframe #myIframe src="https://xpilot.azurewebsites.net/" allow="microphone"
-                        class="w-full h-full  pl-1 pr-1">
-                    </iframe> -->
-                    <!-- <embed src="https://xpilot.azurewebsites.net/" allow="microphone"
-                        width=100%
-                        height=100%
-                        onerror="alert('URL invalid !!');" /> -->
-                    <!-- <iframe id ="test" src="content.php?url=http://127.0.0.1:8000/"></iframe> -->
-
-                    <iframe id ="myIframe" src="http://127.0.0.1:8000/" allow="microphone"  Cross-Origin-Opener-Policy ="*"
+                    <iframe id ="myIframe" [src]="this.iframeUrl" allow="microphone"  Cross-Origin-Opener-Policy ="*"
                         class="w-full h-full  pl-1 pr-1">
                     </iframe>
                 </div>

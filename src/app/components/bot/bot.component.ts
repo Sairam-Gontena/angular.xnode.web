@@ -7,11 +7,13 @@ import { Output, EventEmitter, Input } from '@angular/core';
   templateUrl: './bot.component.html',
   styleUrls: ['./bot.component.scss']
 })
+
 export class BotComponent implements OnInit {
 
   constructor(private elementRef: ElementRef,private router: Router) {
   }
-  @Output() chatBotFlag = new EventEmitter<boolean>();
+  // @Output() chatBotFlag = new EventEmitter<boolean>();
+  @Output() valueChange = new EventEmitter<any>();
   @Input() botDisplayFlag: boolean = true;
   
   private isDragging: boolean = false;
@@ -23,7 +25,8 @@ export class BotComponent implements OnInit {
 
 
   onClickContinue(): void {
-    this.chatBotFlag.emit(true);
+    let productContext = localStorage.getItem('record_id');
+    this.valueChange.emit({'productContext': productContext, 'cbFlag':true});
     // this.router.navigate(['/x-pilot']);
   }
   ngOnInit(): void {
