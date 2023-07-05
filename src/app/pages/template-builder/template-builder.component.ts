@@ -38,7 +38,6 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   ngOnInit() {
-    localStorage.setItem('currentUser', String(true));
     this.templates = [
       { label: 'FinBuddy' }
     ]
@@ -66,7 +65,7 @@ export class TemplateBuilderComponent implements OnInit {
       }
     };
   }
-  
+
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
     this.currentView = icon;

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Emails } from 'src/app/utils/login-util';
+
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -10,6 +12,8 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
+  errorMessage!: string;
+
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -20,19 +24,22 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.clear();
+    localStorage.removeItem('currentUser');
   }
 
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
     this.submitted = true;
-    localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
-    // Stop here if the form is invalid
     if (this.signUpForm.invalid) {
       return;
     }
-    this.router.navigate(['/workspace']);
-
+    const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
+    localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
+    if (matchedUser) {
+      this.router.navigate(['/workspace']);
+    } else {
+      this.errorMessage = 'Email and password do not match.';
+    }
   }
 }

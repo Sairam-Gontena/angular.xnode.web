@@ -27,6 +27,10 @@
     color: red;
 }
 
+.error-message {
+    color: red;
+}
+
 .custom-password .p-password input {
     width: 300px;
     /* Set the desired width value */
@@ -34,4 +38,11 @@
 
 :host ::ng-deep.p-input-icon-right>.p-inputtext {
     padding: 8px !important;
+}
+
+@media screen and (max-width: 780px) {
+    .form-container {
+        margin-left: 90px;
+        margin-right: 90px;
+    }
 }
