@@ -1,7 +1,7 @@
-// .template-builder-layout-wrapper {
-//     width: 300px;
-//     background: #24232C;
-// }
+
+.template-builder{
+    overflow: auto;
+}
 
 .template-builder-wrapper {
     width: 100%;
@@ -12,7 +12,7 @@
 .template-builder-body-wrapper {
     width: calc(100% - 300px);
     height: calc(100vh - 42px);
-    // overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .another-template-builder-body-wrapper {
