@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     // let email = 'admin@xnode.ai';
-    let rawUrl = 'http://127.0.0.1:8000/?email=' + this.email +
+    let rawUrl = 'https://xpilot.azurewebsites.net/?email=' + this.email +
       '&productContext=' + this.productContext +
       '&xnode_flag=' + 'XNODE-APP';
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
