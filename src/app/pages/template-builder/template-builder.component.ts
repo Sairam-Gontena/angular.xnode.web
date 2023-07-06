@@ -75,7 +75,7 @@ export class TemplateBuilderComponent implements OnInit {
     }
     this.recordId = localStorage.getItem('record_id');
     // http://localhost:4200/?email=admin@xnode.ai&id=89467239832783298
-    let iframeSrc = "http://localhost:4201/?email=" + this.emailData + "&id=" + this.recordId + "";
+    let iframeSrc = "https://xnode-template-builder.azurewebsites.net/?email=" + this.emailData + "&id=" + this.recordId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
