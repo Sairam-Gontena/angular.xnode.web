@@ -5,7 +5,7 @@ import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.comp
 import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { ErModellerComponent } from './er-generator/er-modeller/er-modeller.component';
-import { PublishComponent } from './publish/publish.component';
+import { PublishComponent } from './pages/publish/publish.component';
 
 const routes: Routes = [
   {
@@ -25,10 +25,7 @@ const routes: Routes = [
     path: 'configuration/data-model',
     component: ErModellerComponent
   },
-  {
-    path: 'publish',
-    component: PublishComponent
-  },
+
   {
     path: 'configuration/api-integration',
     loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
@@ -51,6 +48,10 @@ const routes: Routes = [
   {
     path: 'operate',
     loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
+  },
+  {
+    path: 'publish',
+    loadChildren: () => import('./pages/publish/publish.module').then(m => m.PublishModule)
   },
   {
     path: 'workspace',

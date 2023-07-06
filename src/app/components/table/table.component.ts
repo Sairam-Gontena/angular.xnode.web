@@ -7,11 +7,6 @@ import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-  // @Input() headers: string[] = [];
-  // @Input() data: any[] = [];
-
-
-
 
   dynamicData: any;
 

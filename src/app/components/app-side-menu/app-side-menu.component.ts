@@ -24,11 +24,12 @@ export class AppSideMenuComponent implements OnInit {
         this.selectedMenuIndex = index;
       }
     });
-    this.route.url.subscribe(console.log);
+    // this.route.url.subscribe(console.log);
   }
 
   onClickMenuItem(item: any, i: any): void {
     this.selectedMenuIndex = i;
+    console.log(this.selectedMenuIndex)
     this.router.navigate(['/' + item.path])
   }
 }

@@ -16,13 +16,12 @@ import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-f
 import { BotComponent } from './components/bot/bot.component';
 import { TableComponent } from './components/table/table.component'
 import { TableModule } from 'primeng/table';
-import { PublishComponent } from './publish/publish.component';
-import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
 import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoginComponent } from './pages/login/login.component';
 import { DragDropModule } from 'primeng/dragdrop';
+import { PublishComponent } from './pages/publish/publish.component';
 
 
 @NgModule({
@@ -35,10 +34,9 @@ import { DragDropModule } from 'primeng/dragdrop';
     PageNotFoundComponent,
     BotComponent,
     TableComponent,
-    PublishComponent,
-    PublishLayoutComponent,
     StepperComponent,
     LoginComponent,
+    PublishComponent,
   ],
   imports: [
     BrowserModule,
