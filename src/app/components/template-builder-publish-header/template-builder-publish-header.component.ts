@@ -11,19 +11,19 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
 
   templates: any;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem('app_name');
   highlightedIndex: string | null = null;
   templatesOptions: any;
   templateEvent: any;
 
   ngOnInit(): void {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem('app_name') }
     ]
 
     this.templatesOptions = [
-      { label: 'Preview'},
-      { label: 'Publish'}
+      { label: 'Preview' },
+      { label: 'Publish' }
     ]
   };
   emitIconClicked(icon: string) {
@@ -35,8 +35,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.iconClicked.emit(icon);
   }
   onDropdownOptionClick(event: any) {
-   this.templateEvent = event.value.label;
-    if(this.templateEvent == 'Preview'){
+    this.templateEvent = event.value.label;
+    if (this.templateEvent == 'Preview') {
       window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
     }
   }

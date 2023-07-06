@@ -9,10 +9,10 @@ export class OperateComponent implements OnInit {
   getconfigureLayout: any;
   getOperateLayout: any;
   layout: any;
-  dashboard: any  = 'Overview';
+  dashboard: any = 'Overview';
   layoutColumns: any;
   templates: any;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   operateLayout: any;
   data: any;
@@ -21,10 +21,10 @@ export class OperateComponent implements OnInit {
   options: any;
   ngOnInit(): void {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
-   
-    }
+
+  }
 
   getLayout(layout: any): void {
     console.log(layout);

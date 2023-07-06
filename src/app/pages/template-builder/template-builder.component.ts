@@ -36,14 +36,14 @@ export class TemplateBuilderComponent implements OnInit {
   emailData: any;
   recordId: any;
   iframeSrc: any;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem("app_name");
   constructor(private sanitizer: DomSanitizer) {
 
   }
 
   ngOnInit() {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
 
     this.layoutColumns = LAYOUT_COLUMNS;
@@ -75,7 +75,7 @@ export class TemplateBuilderComponent implements OnInit {
     }
     this.recordId = localStorage.getItem('record_id');
     // http://localhost:4200/?email=admin@xnode.ai&id=89467239832783298
-    let iframeSrc = "https://xnode-template-builder.azurewebsites.net/?email=" + this.emailData + "&id=" + this.recordId + "";
+    let iframeSrc = "http://localhost:4201/?email=" + this.emailData + "&id=" + this.recordId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
