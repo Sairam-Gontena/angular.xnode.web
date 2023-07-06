@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container"   >
 
     <!-- (onCellEditComplete)="onCellEditComplete($event)" -->
 
@@ -22,7 +22,6 @@
 
                              {{col | titlecase}}
 
-                             <!-- <p-sortIcon class="ml-2 mr-2" field={{col}}></p-sortIcon> -->
                              <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
 
                             
@@ -53,7 +52,6 @@
                              </ng-template>
 
                              <ng-template pTemplate="input" *ngSwitchDefault>
-                                <!-- [(ngModel)]="rowData[col]" -->
                                   <input id={{rowData.id}} pInputText type="text" 
 
                                        (input)="onCellInputBlur($event)" />

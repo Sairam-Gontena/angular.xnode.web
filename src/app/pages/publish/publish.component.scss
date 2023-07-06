@@ -1,0 +1,114 @@
+.container{
+    padding:20px;
+    background-color:#23222B;
+}
+
+
+.bodycontainer{
+    background-color: #23222B;
+    height: calc(100vh - 42px);
+    overflow-y: auto;
+}
+.savebtn{
+    height: 32px;
+    width: 60px;
+    background-color: #23222B;
+    margin-right: 15px;
+}
+.publishbtn{
+    height: 32px;
+    width: 101px;
+    background-color: #EF018F; 
+}
+.deployvbtn{
+    background-color: #437FEC;
+    padding-left: 10px;
+    padding-right:10px;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+
+.template-builder-layout-wrapper {
+    width: 300px;
+    background: #24232C;
+}
+
+.template-builder-wrapper {
+    width: 100%;
+    display: flex;
+    height: calc(100vh - 42px);
+}
+
+.template-builder-body-wrapper {
+    width: calc(100% - 300px);
+    height: calc(100vh - 42px);
+    // overflow-y: auto;
+}
+
+:host ::ng-deep .p-inputtext {
+    border-radius: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #4F4E55;
+    border: 0;
+    width: 100%;
+    color: #ffffff;
+}
+
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link,
+:host ::ng-deep.p-accordion .p-accordion-content {
+    background-color: #24232C;
+    color: #ffffff;
+    border: 0;
+}
+:host ::ng-deep .p-dropdown {
+
+    background: #3A3942;
+
+    border: 0;
+
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label,
+
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+
+    color: #ffffff;
+
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+    box-shadow: none;
+}
+
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+    font-weight: normal;
+    font-size: 12px;
+    padding: 10px;
+    border-bottom: 1px solid #39383F;
+}
+.desktop {
+    /* Styles for desktop view */
+    // margin-left: 3rem;
+    width: 1200px;
+    height: 100vh !important;
+    background-color: #f2f2f2;
+  }
+  .mobile {
+    /* Styles for mobile view */
+    width: 375px;
+    height: 667px;
+    background-color: #f2f2f2;
+  }
+  .tab {
+    /* Styles for tab view */
+    width: 768px;
+    height: 1024px;
+    background-color: #f2f2f2;
+  }
+
+
