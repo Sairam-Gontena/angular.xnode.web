@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="template-builder-body-wrapper">
-        <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
+        <div class="flex justify-content-between flex-wrap p-4 pb-1">
             <div class="flex align-items-center justify-content-center">
                 <p-dropdown [options]="templates"></p-dropdown>
             </div>
@@ -56,29 +56,33 @@
                 <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
             </div>
         </div>
-        <div class="surface-900 m-4 h-full pages-container" >
-            <div class="h-full text-white" *ngIf ="dashboard == 'Overview'">
+        <div class="surface-900  h-full overflow-auto m-4 p-3">
+            <div class="h-full text-white" *ngIf="dashboard == 'Overview'">
                 <div class="grid surface-900">
                     <h6 class="text-4xl  p-4 font-bold">Overview</h6>
-                    <div class="">
+                    <div>
                         <div class="text-xl font-bold  ml-5">
                             Insights
                         </div>
-                        <p class="font-normal text-base  ml-5">Use curated monitoring views for specific resources <span class="text-blue-700">View all Insights</span></p>
+                        <p class="font-normal text-base  ml-5">Use curated monitoring views for specific resources <span
+                                class="text-blue-700">View all Insights</span></p>
                         <div class="flex flex-wrap justify-center ml-4 gap-4">
                             <div
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-1 py-1 border-round-xl card">
                                 <img src="../../assets/AppInsights.svg" alt="circle-ci-image" class="img-size mt-4">
                                 <h5 class="text-xl mt-4 font-bold">Application Insights</h5>
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">Monitor your App’s availability
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">Monitor
+                                    your App’s availability
                                     performance , errors, and usage</p>
                             </div>
                             <div
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
-                                <img src="../../assets/ContainerInsights.svg" alt="circle-ci-image" class="img-size mt-5">
+                                <img src="../../assets/ContainerInsights.svg" alt="circle-ci-image"
+                                    class="img-size mt-5">
                                 <h5 class="text-xl mt-4 font-bold">Container Insights</h5>
 
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Gain visibility into the performance
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Gain
+                                    visibility into the performance
                                     and health of your controllers,nodes, and containers
                                 </p>
                             </div>
@@ -86,15 +90,17 @@
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
                                 <img src="../../assets/VMInsights.svg" alt="circle-ci-image" class="img-size mt-5">
                                 <h5 class="text-xl mt-4 font-bold">VM Insights</h5>
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Monitor the health, performance, and
-                                     dependencies of your VM’S and V, scale sets.
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Monitor
+                                    the health, performance, and
+                                    dependencies of your VM’S and V, scale sets.
                                 </p>
                             </div>
                             <div
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
                                 <img src="../../assets/NetworkInsights.svg" alt="circle-ci-image" class="img-size mt-4">
                                 <h5 class="text-xl mt-4 font-bold">Network Insights</h5>
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">View the health and metrics for all
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">View the
+                                    health and metrics for all
                                     deployed network resources
                                 </p>
                             </div>
@@ -104,13 +110,15 @@
                         <div class="text-xl font-bold ml-5">
                             Detection, triage and diagonisis
                         </div>
-                        <p class="font-normal text-base  ml-5">Visualize, analyze, and respond to moitoring data and events.<span class="text-blue-700"> Learn more about monitoring</span></p>
+                        <p class="font-normal text-base  ml-5">Visualize, analyze, and respond to moitoring data and
+                            events.<span class="text-blue-700"> Learn more about monitoring</span></p>
                         <div class="flex flex-wrap justify-center ml-4 gap-4">
                             <div
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
                                 <img src="../../assets/Metrics-ci.svg" alt="circle-ci-image" class="img-size mt-7">
                                 <h5 class="text-xl mt-4 font-bold">Metrics</h5>
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">Create charts to monitor and investigate the usage and performance 
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem ">Create
+                                    charts to monitor and investigate the usage and performance
                                     of your resources</p>
                             </div>
                             <div
@@ -118,14 +126,16 @@
                                 <img src="../../assets/Alerts-ci.svg" alt="circle-ci-image" class="img-size mt-6">
                                 <h5 class="text-xl mt-4 font-bold">Alerts</h5>
 
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Get notified and respond using alerts and actions
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Get
+                                    notified and respond using alerts and actions
                                 </p>
                             </div>
                             <div
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
                                 <img src="../../assets/Logs-ci.svg" alt="circle-ci-image" class="img-size mt-6">
                                 <h5 class="text-xl mt-4 font-bold">Logs</h5>
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Analyze and diagnose issues with 
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">Analyze
+                                    and diagnose issues with
                                     log queries
                                 </p>
                             </div>
@@ -133,12 +143,13 @@
                                 class="flex flex-col align-items-center justify-content-center font-bold text-white m-2 px-2 py-2 border-round-xl card">
                                 <img src="../../assets/Workbooks.svg" alt="circle-ci-image" class="img-size mt-5">
                                 <h5 class="text-xl mt-4 font-bold">Workbooks</h5>
-                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">View, create and share interactive reports
+                                <p class="font-normal text-xs text-left md:text-center paragraph-text w-13rem">View,
+                                    create and share interactive reports
                                 </p>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-             </div>
-         </div>
-</div>
+        </div>
+    </div>

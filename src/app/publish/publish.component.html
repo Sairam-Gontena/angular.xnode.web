@@ -9,7 +9,6 @@
     <div class="">
       <p-accordion [activeIndex]="0">
         <p-accordionTab header="Environment">
-          <xnode-publish-layout></xnode-publish-layout>
         </p-accordionTab>
       </p-accordion>
       <p-accordion [activeIndex]="1">
@@ -33,8 +32,8 @@
 
     </div>
   </div>
-  <div class="template-builder-body-wrapper">
-    <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4 mt-3">
+  <div class="template-builder-body-wrapper ">
+    <div class="flex justify-content-between flex-wrap publish-header p-4 pb-1">
       <div class="flex align-items-center justify-content-center">
         <p-dropdown [options]="templates"></p-dropdown>
       </div>
@@ -51,14 +50,13 @@
         <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
       </div>
     </div>
-    <div class=" m-4  p-4 bodycontainer overflow-auto" >
+    <div class="surface-900  h-full overflow-auto m-4 p-4">
       <h6 class="text-4xl text-white  font-bold">Dev</h6>
       <div class="flex align-items-center justify-content-between mt-4  pb-4">
         <div class="flex">
           <div class="text-white text-sm">Cloud Provider : </div>
           <div class="text-white text-sm font-bold ml-2"> Azure</div>
         </div>
-
         <div class="flex pl-5">
           <div class="flex justify-content-center align-items-center deployvbtn text-xs border-round-3xl text-white">
             Deploy v3.0
@@ -69,9 +67,5 @@
       <div class="flex mt-4 pl-1">
         <img src="./assets/publishoverview.png" alt="container" class="w-full h-full">
       </div>
-   
     </div>
   </div>
-</div>
-
-<!-- [headers]="tableHeaders" [data]="tableData" -->
