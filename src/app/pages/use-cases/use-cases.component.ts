@@ -44,7 +44,7 @@ export class UseCasesComponent implements OnInit {
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.useCases = data.Usecase
+          this.useCases = data.usecase
         }
         this.loading = false;
       })
