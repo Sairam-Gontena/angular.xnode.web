@@ -8,9 +8,13 @@
         <div class="field col-10 sm:col-12 md:col-12 lg:col-10 xl:col-10 mx-7 mt-5">
             <label htmlFor="workspace" class="font-medium text-base">Workspace Name</label>
 
-            <input id="workspaceName" type="text" placeholder="FinBuddy" formControlName="workspaceName"
-                [ngClass]="{ 'is-invalid': submitted && Form['workspaceName'].errors }"
-                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary border-round-3xl w-12">
+            <input id="workspaceName" type="text" [placeholder]="isPlaceholderVisible? 'FinBuddy' : ''"
+                formControlName="workspaceName" [ngClass]="{'is-invalid': submitted && Form['workspaceName'].errors }"
+                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary border-round-3xl w-12"
+                (focus)="onInputFocus()" (blur)="onInputBlur()">
+
+
+
             <div *ngIf="submitted && Form['workspaceName'].errors" class="invalid-feedback">
                 <div *ngIf="Form['workspaceName'].errors?.['required']">Company Name is required</div>
             </div>
@@ -22,13 +26,7 @@
                     <input type="file" #fileDropRef id="fileDropRef"
                         (change)="fileBrowseHandler($any($event).target.files)"
                         [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
-                    <div *ngIf="submitted && brandguidelinesForm.get('logoFile')?.errors" class="invalid-feedback">
-                        <div *ngIf="brandguidelinesForm.get('logoFile')?.errors?.['required']">Logo is required</div>
-                        <div *ngIf="brandguidelinesForm.get('logoFile')?.errors?.['invalidType']">Invalid file type.
-                            Only JPG and PNG are allowed.</div>
-                        <div *ngIf="brandguidelinesForm.get('logoFile')?.errors?.['invalidSize']">File size exceeds the
-                            limit (2MB).</div>
-                    </div>
+
 
                     <ng-template #elseBlock>
                         <input type="file" #fileDropRef id="fileDropRef"

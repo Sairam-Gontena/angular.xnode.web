@@ -8,16 +8,29 @@
     <p class="text-2xl font-semibold text-center mx-2">This helps us craft better
         experiences.
     </p>
+
     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-8 mt-5">
         <label htmlFor="plan" class="font-medium text-base">How do you plan to use xnode
             *</label>
+
         <div class="">
-            <div *ngFor="let category of categories" class="field-checkbox">
-                <p-radioButton [inputId]="category.key" name="category" [value]="category"
-                    [(ngModel)]="selectedCategory"></p-radioButton>
-                <label [for]="category.key" class="ml-2 font-normal text-base">
-                    {{ category.name}}</label>
+            <!-- <div *ngFor="let category of categories" class="field-checkbox">
+                    <p-radioButton [inputId]="category.key" name="category" [value]="category"
+                        [(ngModel)]="selectedCategory"></p-radioButton>
+                    <label [for]="category.key" class="ml-2 font-normal text-base">
+                        {{ category.name}}</label>
+                </div> -->
+
+            <div class="card flex justify-content-center">
+                <div class="flex flex-column gap-3">
+                    <div *ngFor="let category of categories" class="field-checkbox">
+                        <p-radioButton [inputId]="category.key" [value]="category"
+                            formControlName="selectedCategory"></p-radioButton>
+                        <label [for]="category.key" class="ml-2">{{ category.name }}</label>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
     <div class="error-msg" *ngIf="isFormSubmitted && myForm.controls['paymentOptions'].errors?.['required']">
@@ -36,7 +49,7 @@
     </div>
     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
         <p-button label="Get Started" styleClass="p-button-rounded  font-medium text-lg" icon="pi pi-angle-right"
-            iconPos="right" routerLink="/export-get-started"></p-button>
+            iconPos="right" (click)="onClickWorkSpace()" routerLink="/export-get-started"></p-button>
     </div>
 
 </div>

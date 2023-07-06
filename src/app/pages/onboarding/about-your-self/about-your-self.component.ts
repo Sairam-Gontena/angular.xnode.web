@@ -46,6 +46,7 @@ export class AboutYourSelfComponent implements OnInit {
   selectedCategory: any = null;
   isFormSubmitted = false;
   myForm!: FormGroup;
+  aboutyourself!: FormGroup;
   categories: any[] = [
     { name: 'For Personal', key: 'P' },
     { name: 'For Commercial', key: 'C' },
@@ -53,7 +54,11 @@ export class AboutYourSelfComponent implements OnInit {
   ];
   submittedValue: undefined;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {
+    this.myForm = this.formBuilder.group({
+      paymentOptions: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.selectedCategory = this.categories[0];
@@ -62,7 +67,7 @@ export class AboutYourSelfComponent implements OnInit {
       additionalInfo: ['']
     });
   }
-  submitForm() {
+  onClickWorkSpace() {
     this.isFormSubmitted = true;
     console.log('valid', this.myForm.valid);
     if (!this.myForm.valid) {

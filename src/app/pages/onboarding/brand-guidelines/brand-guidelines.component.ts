@@ -11,6 +11,9 @@ import { AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 export class BrandGuidelinesComponent implements OnInit {
   brandguidelinesForm!: FormGroup;
   submitted: boolean = false;
+  isPlaceholderVisible!: boolean;
+  isInvalid: boolean = false;
+  placeholderValue: string = 'FinBuddy';
 
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.brandguidelinesForm = this.formBuilder.group({
@@ -35,6 +38,7 @@ export class BrandGuidelinesComponent implements OnInit {
    * handle file from browsing
    */
   fileBrowseHandler(files: any) {
+    this.files = [];
     this.prepareFilesList(files);
     console.log(files);
     this.brandguidelinesForm.patchValue({
@@ -104,6 +108,7 @@ export class BrandGuidelinesComponent implements OnInit {
     localStorage.setItem('currentUser', JSON.stringify(this.brandguidelinesForm.value));
     console.log('Form Valid:', this.brandguidelinesForm.valid);
     if (this.brandguidelinesForm.invalid) {
+      this.isInvalid = true;
       return;
     }
     this.router.navigate(['/about-your-self']);
@@ -124,4 +129,12 @@ export class BrandGuidelinesComponent implements OnInit {
     }
     return null;
   }
+  onInputFocus() {
+    this.isPlaceholderVisible = false;
+  }
+
+  onInputBlur() {
+    this.isPlaceholderVisible = false;
+  }
+
 }

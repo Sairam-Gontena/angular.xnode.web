@@ -17,6 +17,9 @@ export class WorkspaceComponent implements OnInit {
   teamOrCompanySelected!: boolean;
   personalSelected!: boolean;
   isInvalid: boolean = false;
+  isPlaceholderVisible: boolean = true;
+
+
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.workspaceForm = this.formBuilder.group({
       companyName: ['', Validators.required],
@@ -38,6 +41,10 @@ export class WorkspaceComponent implements OnInit {
     this.submitted = true;
     this.isFormSubmitted = true;
     localStorage.setItem('currentUser', JSON.stringify(this.workspaceForm.value));
+    if (!this.teamOrCompanySelected && !this.personalSelected) {
+      this.isInvalid = true;
+      return;
+    }
     if (this.workspaceForm.invalid) {
       this.isInvalid = true;
       return;
@@ -47,6 +54,7 @@ export class WorkspaceComponent implements OnInit {
     this.router.navigate(['/brand-guideline']);
 
   }
+
   selectTeamOrCompany() {
     this.teamOrCompanySelected = true;
     this.personalSelected = false;
@@ -56,4 +64,12 @@ export class WorkspaceComponent implements OnInit {
     this.teamOrCompanySelected = false;
     this.personalSelected = true;
   }
+  onInputFocus() {
+    this.isPlaceholderVisible = false;
+  }
+
+  onInputBlur() {
+    this.isPlaceholderVisible = false;
+  }
+
 }
