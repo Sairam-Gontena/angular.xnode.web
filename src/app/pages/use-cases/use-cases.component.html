@@ -1,5 +1,23 @@
 <div class="surface-900 relative use-case-body">
-    <h1 class="text-white text-4xl p-3 font-bold">Use cases</h1>
+    <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
+        <div class="flex align-items-center justify-content-center">
+            <h1 class="text-white text-4xl p-3 font-bold">Use cases</h1>
+            <p-dropdown [options]="templates"></p-dropdown>
+        </div>
+        <div class="flex align-items-center justify-content-center gap-3">
+            <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }" alt="desktop"
+                class="image-icon">
+            <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
+                class="image-icon">
+            <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
+                class="image-icon">
+        </div>
+        <div class="flex align-items-center justify-content-center gap-3">
+            <p-button label="Save" styleClass="p-button-rounded"></p-button>
+            <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
+        </div>
+    </div>
+
     <div *ngIf="!loading && useCases?.length > 0">
         <div *ngFor="let usecase of useCases">
             <div class="flex justify-content-center flex-wrap card-container">
