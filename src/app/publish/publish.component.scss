@@ -5,6 +5,7 @@
 
 .bodycontainer{
     background-color: #23222B;
+    // overflow-y:auto;
 }
 
 .savebtn{
@@ -40,7 +41,7 @@
 .template-builder-body-wrapper {
     width: calc(100% - 300px);
     height: calc(100vh - 42px);
-    overflow-y: auto;
+    overflow:hidden;
 }
 
 :host ::ng-deep .p-inputtext {
