@@ -25,12 +25,13 @@ import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoginComponent } from './pages/login/login.component';
 import { DragDropModule } from 'primeng/dragdrop';
+import { TemplatesModule } from './pages/templates/templates.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppHeaderComponent,
+    // AppHeaderComponent,
     AppSideMenuComponent,
     UiFlowGraphComponent,
     UiFlow2Component,
@@ -55,7 +56,8 @@ import { DragDropModule } from 'primeng/dragdrop';
     ERGeneratorModule,
     OnboardingRoutingModule,
     TableModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    TemplatesModule
   ],
   exports: [ProgressSpinnerModule],
   providers: [],
