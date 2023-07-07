@@ -17,7 +17,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   layoutColumns: any;
   templates: any;
   loading: boolean = true;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   isOpen = true;
   id: String = '';
@@ -32,7 +32,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   ngOnInit(): void {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
     if (localStorage.getItem('record_id') === null) {
       this.getMeUserId();
@@ -84,7 +84,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.dataModel = Array.isArray(data.DataModel) ? data.DataModel[0] : data.DataModel;
+          this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }

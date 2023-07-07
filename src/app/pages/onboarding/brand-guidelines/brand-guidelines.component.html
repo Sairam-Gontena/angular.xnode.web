@@ -15,11 +15,22 @@
                 <div *ngIf="Form['workspaceName'].errors?.['required']">Please enter workspace name</div>
             </div>
         </div>
+<<<<<<< HEAD
         <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-7 mt-5">
             <label htmlFor="logo" class="font-medium text-base">Upload Logo</label>
             <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
                 <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
                     [class.selected]=" draganddropSelected" [class.invalid]="isFormSubmitted && !draganddropSelected">
+=======
+    </div>
+    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-7 mt-3">
+        <label htmlFor="logo" class="font-medium text-base">Upload Logo</label>
+        <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
+            <div class="field col-5 align-items-center">
+                <input type="file" #fileDropRef id="fileDropRef" (change)="fileBrowseHandler($any($event).target.files)"
+                    *ngIf="files.length == 0; else elseBlock" />
+                <ng-template #elseBlock>
+>>>>>>> develop
                     <input type="file" #fileDropRef id="fileDropRef"
                         (change)="fileBrowseHandler($any($event).target.files)"
                         [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
@@ -59,9 +70,17 @@
                 <p class="text-red-500 text-sm select-option">Please select logo</p>
             </div>
         </div>
+<<<<<<< HEAD
         <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
             <p-button label="Create Workspace" styleClass="p-button-rounded  font-medium text-lg"
                 icon="pi pi-angle-right" iconPos="right" (click)="onClickbrandGuideLine()"></p-button>
         </div>
     </form>
+=======
+    </div>
+    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
+        <p-button label="Create Workspace" styleClass="p-button-rounded  font-medium text-lg" icon="pi pi-angle-right"
+            iconPos="right" routerLink="/about-your-self"></p-button>
+    </div>
+>>>>>>> develop
 </div>

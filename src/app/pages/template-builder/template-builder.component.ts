@@ -17,6 +17,7 @@ import {
 } from 'angular-gridster2';
 import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
 import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'xnode-template-builder',
@@ -32,14 +33,17 @@ export class TemplateBuilderComponent implements OnInit {
   layoutColumns: any;
   isOpen = true;
   templates: any;
-  selectedTemplate: string = 'FinBuddy';
-  constructor() {
+  emailData: any;
+  recordId: any;
+  iframeSrc: any;
+  selectedTemplate = localStorage.getItem("app_name");
+  constructor(private sanitizer: DomSanitizer) {
 
   }
 
   ngOnInit() {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
 
     this.layoutColumns = LAYOUT_COLUMNS;
@@ -64,6 +68,15 @@ export class TemplateBuilderComponent implements OnInit {
         enabled: true
       }
     };
+    this.emailData = localStorage.getItem('currentUser');
+    if (this.emailData) {
+      let JsonData = JSON.parse(this.emailData)
+      this.emailData = JsonData?.email;
+    }
+    this.recordId = localStorage.getItem('record_id');
+    // http://localhost:4200/?email=admin@xnode.ai&id=89467239832783298
+    let iframeSrc = "https://xnode-template-builder.azurewebsites.net/?email=" + this.emailData + "&id=" + this.recordId + "";
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
   onIconClicked(icon: string) {

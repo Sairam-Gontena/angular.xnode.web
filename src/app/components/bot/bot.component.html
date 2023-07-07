@@ -1,8 +1,11 @@
-<div id="botContainer" class="bot-container draggable">
-    <div class="bot-text flex justify-content-center">
-        <p class="text text-center">Click here next!</p>
+<div *ngIf="!botDisplayFlag"class="bot-container draggable">
+    <div (click)="onClickContinue()" class="bot-text flex justify-content-center ">
+        <p (click)="onClickContinue()" class="text text-center ">Click here
+            next!</p>
+
     </div>
     <div class="bot-logo" (mousedown)="onMouseDown($event)">
         <img src="./assets/bot.svg" width="70%">
     </div>
 </div>
+  

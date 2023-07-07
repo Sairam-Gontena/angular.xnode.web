@@ -13,7 +13,7 @@ export class OverViewComponent {
   @Input() currentStep: number = 2;
   loading: boolean = true;
   templates: any;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   iconClicked: any;
   stepper: any;
@@ -34,7 +34,7 @@ export class OverViewComponent {
   ngOnInit(): void {
     this.jsondata = data?.data;
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
     if (this.currentUser?.email)
       this.email = this.currentUser?.email;

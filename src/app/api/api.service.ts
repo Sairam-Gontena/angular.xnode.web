@@ -25,5 +25,9 @@ export class ApiService {
     });
   }
 
+  getConversation(email: String, id: String) {
+    return axios.get('https://xpilot.azurewebsites.net/crud/get_conversation/' +email + "/" + id);
+  }
+
 
 }

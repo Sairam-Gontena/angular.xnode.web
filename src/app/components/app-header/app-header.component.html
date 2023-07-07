@@ -1,6 +1,6 @@
 <div class="app-header-wrapper flex align-content-center flex-wrap">
     <div class="w-9 flex gap-5">
-        <div>
+        <div class="flex flex-row">
             <img src="./assets/logo-x.svg" alt="x-logo">
             <img src="./assets/logo-node.svg" alt="x-node" routerLink="/my-templates" class="pointer">
         </div>
@@ -8,13 +8,11 @@
             {{item.label}}
         </div>
     </div>
-    <div class="w-3 flex gap-2 justify-content-end">
-        <img src="./assets/dp.svg" alt="dp">
-        <div class="header-menu-item">
-            Rymond Nelson
-        </div>
-        <div class="flex align-items-center">
-            <i class="pi pi-angle-down"></i>
+    <div class="w-3 flex gap-2 justify-content-end align-content-center">
+        <img src="./assets/dp.svg" alt="dp" class="mr-2">
+        <div>
+            <p-dropdown [options]="values" id="user-options-header" [(ngModel)]="selectedValue" optionLabel="name"
+                (onChange)="onOptionSelected($event.value)" class="custom-dropdown"></p-dropdown>
         </div>
     </div>
 </div>

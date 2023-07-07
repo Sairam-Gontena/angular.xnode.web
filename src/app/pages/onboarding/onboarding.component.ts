@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class OnboardingComponent implements OnInit {
   stepData: any;
   selectedCategory: any = null;
+  h_full_true: boolean = false;
   categories: any[] = [
     { name: 'For Personal', key: 'P' },
     { name: 'For Commercial', key: 'C' },
@@ -21,6 +22,7 @@ export class OnboardingComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: any) => {
       this.stepData = data.type;
+      data?.type == "Workspace" || data?.type == "AboutYourSelf" || data?.type == "ExportGetStarted" ? this.h_full_true = true : this.h_full_true = false;
     })
     this.selectedCategory = this.categories[0];
   }

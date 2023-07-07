@@ -12,7 +12,8 @@ export class UseCasesComponent implements OnInit {
   id: String = '';
   loading: boolean = true;
   currentUser?: User;
-
+  templates: any;
+  highlightedIndex: any;
   constructor(private apiService: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
@@ -23,6 +24,12 @@ export class UseCasesComponent implements OnInit {
     } else {
       this.get_Usecases();
     }
+    this.templates = [
+      { label: localStorage.getItem("app_name") }
+    ]
+  }
+  openNewTab(): void {
+    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
   //get calls 
   get_ID() {
@@ -39,12 +46,16 @@ export class UseCasesComponent implements OnInit {
       });
   }
 
+  onIconClicked(e: any): void {
+
+  }
+
   get_Usecases() {
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.useCases = data.Usecase
+          this.useCases = data.usecase
         }
         this.loading = false;
       })
