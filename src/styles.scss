@@ -236,6 +236,8 @@ body {
 
 #user-options-header .p-dropdown .p-inputtext {
   color: white !important;
+  position: relative;
+  top: -3px;
 }
 
 #user-options-header .p-dropdown:not(.p-disabled).p-focus {
