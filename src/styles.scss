@@ -234,6 +234,61 @@ body {
   height: 42px !important;
 }
 
-#user-options-header .p-dropdown .p-inputtext {
+#user-options-header .p-dropdown .p-inputtext,
+#design-template-options-header .p-dropdown .p-inputtext {
+  color: white !important;
+  position: relative;
+  top: -3px;
+}
+
+#user-options-header .p-dropdown:not(.p-disabled).p-focus,
+#design-template-options-header .p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: none !important;
+}
+
+#user-options-header .p-dropdown:not(.p-disabled):hover,
+#design-template-options-header .p-dropdown:not(.p-disabled):hover {
+  box-shadow: none !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper,
+#design-template-options-header .p-dropdown-items-wrapper {
+  background: #24232c !important;
+  color: white !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper .p-ripple p-element p-dropdown-item p-highlight,
+#design-template-options-header .p-dropdown-items-wrapper .p-ripple p-element p-dropdown-item p-highlight {
+  background: #24232c !important;
+  color: white !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper .p-dropdown-items .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+#design-template-options-header .p-dropdown-items-wrapper .p-dropdown-items .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: #24232c !important;
+  color: white !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper .p-dropdown-items .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+#design-template-options-header .p-dropdown-items-wrapper .p-dropdown-items .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: #24232c !important;
+  color: white !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper .p-dropdown-items .p-element .p-ripple p-element p-dropdown-item:hover,
+#design-template-options-header .p-dropdown-items-wrapper .p-dropdown-items .p-element .p-ripple p-element p-dropdown-item:hover {
+  background: #24232c !important;
+  color: white !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper .p-element:hover,
+#design-template-options-header .p-dropdown-items-wrapper .p-element:hover {
+  background: #24232c !important;
+  color: white !important;
+}
+
+#user-options-header .p-dropdown-items-wrapper .p-element,
+#design-template-options-header .p-dropdown-items-wrapper .p-element {
+  background: #24232c !important;
   color: white !important;
 }
