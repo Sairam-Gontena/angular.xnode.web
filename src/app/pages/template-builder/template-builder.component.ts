@@ -18,6 +18,7 @@ import {
 import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
 import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-template-builder',
@@ -74,8 +75,7 @@ export class TemplateBuilderComponent implements OnInit {
       this.emailData = JsonData?.email;
     }
     this.recordId = localStorage.getItem('record_id');
-    // http://localhost:4200/?email=admin@xnode.ai&id=89467239832783298
-    let iframeSrc = "https://xnode-template-builder.azurewebsites.net/?email=" + this.emailData + "&id=" + this.recordId + "";
+    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
