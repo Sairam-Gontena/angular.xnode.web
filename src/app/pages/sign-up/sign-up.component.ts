@@ -24,7 +24,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
   }
 
   get signUp() { return this.signUpForm.controls; }

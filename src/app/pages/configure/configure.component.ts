@@ -11,12 +11,12 @@ export class ConfigureComponent implements OnInit {
   dashboard: any;
   layoutColumns: any;
   templates: any;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
 
   ngOnInit(): void {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
   }
 

@@ -36,14 +36,14 @@ export class TemplateBuilderComponent implements OnInit {
   emailData: any;
   recordId: any;
   iframeSrc: any;
-  selectedTemplate: string = 'FinBuddy';
+  selectedTemplate = localStorage.getItem("app_name");
   constructor(private sanitizer: DomSanitizer) {
 
   }
 
   ngOnInit() {
     this.templates = [
-      { label: 'FinBuddy' }
+      { label: localStorage.getItem("app_name") }
     ]
 
     this.layoutColumns = LAYOUT_COLUMNS;
