@@ -1,5 +1,4 @@
 <div class="card-content">
-
     <form [formGroup]="workspaceForm">
         <p class="text-500 font-normal text-2xl text-center">Step 1/4</p>
         <h1 class="heading-color text-6xl font-bold text-center">
@@ -15,9 +14,6 @@
                     <img src="./assets/People.svg" width="20px">
                     <p class="m-0 pl-2 font-semibold text-sm">TEAM OR COMPANY</p>
                 </div>
-                <!-- <div *ngIf="isFormSubmitted && !teamOrCompanySelected" class="error-message">
-                    <p class="text-red-500 text-sm p-2 select-option">Please select an option</p>
-                </div> -->
             </div>
             <div class="field col-6 sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="selectPersonal()"
                 [class.selected]="personalSelected" [class.invalid]="isFormSubmitted && !personalSelected">
@@ -27,20 +23,18 @@
                 </div>
             </div>
             <div *ngIf="isFormSubmitted && !teamOrCompanySelected && !personalSelected" class="error-message">
-                <p class="text-red-500 text-sm select-option">Please select an option</p>
+                <p class="text-red-500 text-sm select-option">Please select any option above!</p>
             </div>
         </div>
         <div class="grid mx-7 mt-2">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <label htmlFor="companyName" class="font-medium text-base">Company Name</label>
-                <input id="companyName" type="text" [placeholder]="isPlaceholderVisible ? '' : ''"
+                <input id="companyName" type="text" [placeholder]="isPlaceholderVisible ? 'enter company name' : ''"
                     formControlName="companyName" [ngClass]="{ 'is-invalid': isInvalid }"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary border-round-3xl w-12"
                     (focus)="onInputFocus()" (blur)="onInputBlur()">
-
-
                 <div *ngIf="submitted && Form['companyName'].errors" class="invalid-feedback">
-                    <div *ngIf="Form['companyName'].errors?.['required']">Company Name is required</div>
+                    <div *ngIf="Form['companyName'].errors?.['required']">Please enter company name</div>
                 </div>
             </div>
         </div>
@@ -49,6 +43,4 @@
                 iconPos="right" (click)="onClickWorkSpace()"></p-button>
         </div>
     </form>
-
-
 </div>

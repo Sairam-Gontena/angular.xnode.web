@@ -1,40 +1,6 @@
-// import { Component } from '@angular/core';
-// import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-// import { ActivatedRoute } from '@angular/router';
-
-// @Component({
-//   selector: 'xnode-about-your-self',
-//   templateUrl: './about-your-self.component.html',
-//   styleUrls: ['./about-your-self.component.scss']
-// })
-// export class AboutYourSelfComponent {
-//   aboutYourForm!: FormGroup;
-//   formBuilder: any;
-//   constructor() { }
-//   selectedCategory: any = null;
-// form!: FormGroup;
-//   categories: any[] = [
-//     { name: 'For Personal', key: 'P' },
-//     { name: 'For Commercial', key: 'C' },
-//     { name: 'Others', key: 'O' }
-//   ];
-
-//   ngOnInit() {
-//     this.selectedCategory = this.categories[0];
-//     this.form = this.formBuilder.group({
-//       category: ['', Validators.required],
-//       additionalInfo: ['']
-//     });
-//     onSubmit(){
-//       if (this.form.valid) {
-//         // Process the form data here
-//         console.log(this.form.value);
-//       }
-//     }
-//   }
-// }
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-about-your-self',
@@ -42,45 +8,34 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./about-your-self.component.scss']
 })
 export class AboutYourSelfComponent implements OnInit {
-  form!: FormGroup;
+  aboutyourselfForm!: FormGroup;
   selectedCategory: any = null;
-  isFormSubmitted = false;
-  myForm!: FormGroup;
-  aboutyourself!: FormGroup;
+  submitted!: boolean;
+  isPlaceholderVisible: boolean = true;
   categories: any[] = [
     { name: 'For Personal', key: 'P' },
     { name: 'For Commercial', key: 'C' },
     { name: 'Others', key: 'O' }
   ];
-  submittedValue: undefined;
-
-  constructor(private formBuilder: FormBuilder) {
-    this.myForm = this.formBuilder.group({
-      paymentOptions: ['', Validators.required],
-    });
-  }
-
+  constructor(private formBuilder: FormBuilder, public router: Router) { }
   ngOnInit() {
-    this.selectedCategory = this.categories[0];
-    this.form = this.formBuilder.group({
-      category: ['', Validators.required],
-      additionalInfo: ['']
+    this.aboutyourselfForm = this.formBuilder.group({
+      selectedCategory: ['', Validators.required],
+      Additionalinfo: ['', Validators.required]
     });
   }
-  onClickWorkSpace() {
-    this.isFormSubmitted = true;
-    console.log('valid', this.myForm.valid);
-    if (!this.myForm.valid) {
-      console.log('Please provide all the required values!');
-      this.submittedValue = undefined;
-      return false;
-    } else {
-      console.log(this.myForm.value);
-      this.submittedValue = this.categories.find(
-        (rv) => rv.value === this.myForm.value['paymentOptions']
-      );
-      return true;
+  get Form() { return this.aboutyourselfForm.controls; }
+  onClickaboutYourSelf() {
+    this.submitted = true;
+    if (this.aboutyourselfForm.invalid) {
+      return;
     }
+    localStorage.setItem('currentUser', JSON.stringify(this.aboutyourselfForm.value));
+    this.router.navigate(['/export-get-started']);
+  }
+  onInputFocus() {
+    this.isPlaceholderVisible = false;
   }
 
 }
+
