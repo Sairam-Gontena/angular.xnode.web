@@ -12,7 +12,8 @@ export class UseCasesComponent implements OnInit {
   id: String = '';
   loading: boolean = true;
   currentUser?: User;
-
+  templates: any;
+  highlightedIndex: any;
   constructor(private apiService: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
@@ -23,6 +24,12 @@ export class UseCasesComponent implements OnInit {
     } else {
       this.get_Usecases();
     }
+    this.templates = [
+      { label: localStorage.getItem("app_name") }
+    ]
+  }
+  openNewTab(): void {
+    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
   //get calls 
   get_ID() {
@@ -37,6 +44,10 @@ export class UseCasesComponent implements OnInit {
         console.log(error);
         this.loading = false;
       });
+  }
+
+  onIconClicked(e: any): void {
+
   }
 
   get_Usecases() {

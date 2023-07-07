@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -16,6 +17,7 @@ import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-f
 import { BotComponent } from './components/bot/bot.component';
 import { TableComponent } from './components/table/table.component'
 import { TableModule } from 'primeng/table';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { PublishComponent } from './publish/publish.component';
 import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
@@ -52,7 +54,8 @@ import { DragDropModule } from 'primeng/dragdrop';
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
-    TableModule
+    TableModule,
+    ToggleButtonModule
   ],
   exports: [ProgressSpinnerModule],
   providers: [],

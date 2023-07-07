@@ -23,8 +23,8 @@ export class TemplatesComponent implements OnInit {
   }
 
   onClickCreateNewTemplate(data: any): void {
-    console.log('data', data);
-    localStorage.setItem('record_id', data.id)
+    localStorage.setItem('record_id', data.id);
+    localStorage.setItem('app_name', data.title);
     this.router.navigate(['/design']);
   }
   onClickgotoxPilot() {

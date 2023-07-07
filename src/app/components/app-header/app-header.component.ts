@@ -12,11 +12,10 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
   values: any;
   selectedValue: any;
+
   constructor() {
 
   }
-
-
 
   ngOnInit(): void {
     this.headerItems = HeaderItems;
@@ -27,9 +26,8 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onOptionSelected(value: any) {
-    console.log('Selected option:', value);
     if (value.code == 'lg') {
-      localStorage.removeItem('currentUser');
+      localStorage.clear();
       window.location.href = '/';
     }
   }

@@ -1,20 +1,33 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef} from '@angular/core';
 import { Router } from '@angular/router';
+import { Output, EventEmitter, Input } from '@angular/core';
+
 @Component({
   selector: 'xnode-bot',
   templateUrl: './bot.component.html',
   styleUrls: ['./bot.component.scss']
 })
+
 export class BotComponent implements OnInit {
+
+  constructor(private elementRef: ElementRef,private router: Router) {
+  }
+  // @Output() chatBotFlag = new EventEmitter<boolean>();
+  @Output() valueChange = new EventEmitter<any>();
+  @Input() botDisplayFlag: boolean = true;
+  
   private isDragging: boolean = false;
   private initialX: number = 0;
   private initialY: number = 0;
   private offsetX: number = 0;
   private offsetY: number = 0;
   private botContainer: HTMLElement | null = null;
-  constructor(private elementRef: ElementRef, private router: Router) { }
+
+
   onClickContinue(): void {
-    this.router.navigate(['/chat-bot']);
+    let productContext = localStorage.getItem('record_id');
+    this.valueChange.emit({'productContext': productContext, 'cbFlag':true});
+    // this.router.navigate(['/x-pilot']);
   }
   ngOnInit(): void {
     this.botContainer = this.elementRef.nativeElement.querySelector('#botContainer');
