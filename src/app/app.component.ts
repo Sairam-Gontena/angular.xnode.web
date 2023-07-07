@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { environment } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-root',
