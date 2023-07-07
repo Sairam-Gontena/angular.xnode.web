@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    production: true,
     xpilotUrl: 'https://xpilot.azurewebsites.net/',
     designStudioUrl: 'https://xnode-template-builder.azurewebsites.net/',
 }
