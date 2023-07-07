@@ -25,7 +25,7 @@ import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoginComponent } from './pages/login/login.component';
 import { DragDropModule } from 'primeng/dragdrop';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
