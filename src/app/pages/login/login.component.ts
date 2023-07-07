@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private router: Router) {
     this.loginForm = this.formBuilder.group({
-      email: ['admin@xnode.ai', [Validators.required, Validators.email]],
-      password: ['admin@123', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -32,15 +32,17 @@ export class LoginComponent implements OnInit {
     // Stop here if the form is invalid
     if (this.loginForm.invalid) {
       return;
-    }
-    const matchedUser = Emails.find(user => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password);
-    if (matchedUser) {
-      localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
-      this.router.navigate(['/my-templates']);
     } else {
-      this.messages = [
-        { severity: 'error', summary: 'Error', detail: 'User not found' }
-      ]
+      this.router.navigate(['/my-templates']);
     }
+    // const matchedUser = Emails.find(user => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password);
+    // if (matchedUser) {
+    //   localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
+    //   this.router.navigate(['/my-templates']);
+    // } else {
+    //   this.messages = [
+    //     { severity: 'error', summary: 'Error', detail: 'User not found' }
+    //   ]
+    // }
   }
 }
