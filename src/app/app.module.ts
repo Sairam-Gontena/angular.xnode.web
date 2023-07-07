@@ -19,7 +19,6 @@ import { TableComponent } from './components/table/table.component'
 import { TableModule } from 'primeng/table';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { PublishComponent } from './publish/publish.component';
-import { PublishLayoutComponent } from './publish/publish-layout/publish-layout.component'
 import { StepperComponent } from './components/stepper/stepper.component';
 import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -38,7 +37,6 @@ import { DragDropModule } from 'primeng/dragdrop';
     BotComponent,
     TableComponent,
     PublishComponent,
-    PublishLayoutComponent,
     StepperComponent,
     LoginComponent,
   ],
