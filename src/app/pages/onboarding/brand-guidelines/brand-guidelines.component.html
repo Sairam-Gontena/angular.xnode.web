@@ -22,10 +22,8 @@
                     [class.selected]=" draganddropSelected" [class.invalid]="isFormSubmitted && !draganddropSelected">
                     <input type="file" #fileDropRef id="fileDropRef"
                         (change)="fileBrowseHandler($any($event).target.files)"
-                        *ngIf="files.length == 0; else elseBlock"
                         [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
                     <ng-template #elseBlock>
-
                         <input type="file" #fileDropRef id="fileDropRef"
                             (change)="fileBrowseHandler($any($event).target.files)" disabled />
                     </ng-template>
@@ -45,7 +43,7 @@
                 </div>
 
             </div>
-            <div class="files-list">
+            <div class="files-list mt-2">
                 <div class="single-file" *ngFor="let file of files; let i = index">
                     <div class="info">
                         <h4 class="name">
@@ -56,15 +54,15 @@
                         <i class="pi pi-trash" style="font-size: 1.5rem"></i>
                     </div>
                 </div>
-            </div>
-            <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
-                <p class="text-red-500 text-sm select-option">Please select logo</p>
+                <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
+                    <p class="text-red-500 text-sm">Please upload logo</p>
+                </div>
             </div>
 
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
-                <p-button label="Create Workspace" styleClass="p-button-rounded  font-medium text-lg"
-                    icon="pi pi-angle-right" iconPos="right" (click)="onClickbrandGuideLine()"></p-button>
-            </div>
+        </div>
+        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
+            <p-button label="Create Workspace" styleClass="p-button-rounded  font-medium text-lg"
+                icon="pi pi-angle-right" iconPos="right" (click)="onClickbrandGuideLine()"></p-button>
         </div>
     </form>
 </div>
