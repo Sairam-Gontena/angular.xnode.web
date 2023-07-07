@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'xnode-feedback',
-  templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.scss']
+    selector: 'xnode-feedback',
+    templateUrl: './feedback.component.html',
+    styleUrls: ['./feedback.component.scss']
 })
 export class FeedbackComponent implements OnInit {
-  
-  data: any;
-  doughnutData: any;
-  doughnutOptions: any;
-  options: any;
-  getconfigureLayout: any;
-  getOperateLayout: any;
-  layout: any;
-  dashboard: any  = 'Overview';
-  layoutColumns: any;
-  templates: any;
-  selectedTemplate: string = 'FinBuddy';
-  highlightedIndex: string | null = null;
-  operateLayout: any;
-  ngOnInit(): void {
-    
-    const documentStyle = getComputedStyle(document.documentElement);
+
+    data: any;
+    doughnutData: any;
+    doughnutOptions: any;
+    options: any;
+    getconfigureLayout: any;
+    getOperateLayout: any;
+    layout: any;
+    dashboard: any = 'Overview';
+    layoutColumns: any;
+    templates: any;
+    selectedTemplate = localStorage.getItem("app_name");
+    highlightedIndex: string | null = null;
+    operateLayout: any;
+    ngOnInit(): void {
+
+        const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--primary-color-text');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
@@ -34,25 +34,25 @@ export class FeedbackComponent implements OnInit {
                     type: 'bar',
                     label: 'Very Satisfied',
                     backgroundColor: documentStyle.getPropertyValue('#44B347'),
-                    data: [0,0,0,0,0,0,1.5]
+                    data: [0, 0, 0, 0, 0, 0, 1.5]
                 },
                 {
                     type: 'bar',
                     label: 'Satisfied',
                     backgroundColor: documentStyle.getPropertyValue('#845AE6'),
-                    data: [0,0,0,0,0,0,0.4]
+                    data: [0, 0, 0, 0, 0, 0, 0.4]
                 },
                 {
                     type: 'bar',
                     label: 'Unsatisfied',
                     backgroundColor: documentStyle.getPropertyValue('#F99369'),
-                    data: [0,0,0,0,0,0,0.4,]
+                    data: [0, 0, 0, 0, 0, 0, 0.4,]
                 },
                 {
                     type: 'bar',
                     label: 'Very Unsatisfied',
                     backgroundColor: documentStyle.getPropertyValue('#F3778B'),
-                    data: [0,0,0,0,0,0,0.4,]
+                    data: [0, 0, 0, 0, 0, 0, 0.4,]
                 },
             ]
         };
@@ -103,8 +103,8 @@ export class FeedbackComponent implements OnInit {
             labels: ['A'],
             datasets: [
                 {
-                    data: [100,67],
-                    backgroundColor: ['#7652D4','#24232C'],
+                    data: [100, 67],
+                    backgroundColor: ['#7652D4', '#24232C'],
                     hoverBackgroundColor: [documentStyleColor.getPropertyValue('#7652D4')]
                 }
             ]
@@ -115,24 +115,24 @@ export class FeedbackComponent implements OnInit {
             rotation: 270,
             plugins: {
                 legend: false,
-               centertext: "67%"
+                centertext: "67%"
 
             },
         };
     }
     getLayout(layout: any): void {
-      console.log(layout);
-      this.dashboard = layout;
-         }
+        console.log(layout);
+        this.dashboard = layout;
+    }
     emitIconClicked(icon: string) {
-      if (this.highlightedIndex === icon) {
-        this.highlightedIndex = null;
-      } else {
-        this.highlightedIndex = icon;
-      }
+        if (this.highlightedIndex === icon) {
+            this.highlightedIndex = null;
+        } else {
+            this.highlightedIndex = icon;
+        }
     }
-      openNewTab(): void {
-      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+    openNewTab(): void {
+        window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
     }
-  
+
 }

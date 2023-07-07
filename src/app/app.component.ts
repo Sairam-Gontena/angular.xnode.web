@@ -1,91 +1,57 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Router, RouterEvent } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
-import { selector } from 'd3';
-import axios from 'axios';
-import { HttpHeaders } from '@angular/common/http';
-import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
 
+export class AppComponent implements OnInit {
   title = 'xnode';
   botOutput = ['false'];
   isSideWindowOpen: boolean = false;
-  email : String = '';
-  id : String = '';
+  email: String = '';
+  id: String = '';
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
-  iframeUrl : SafeResourceUrl = '';
+  iframeUrl: SafeResourceUrl = '';
 
   constructor(
-    private router : Router, 
     private domSanitizer: DomSanitizer,
-    private apiService : ApiService) 
-    {
-
+    private apiService: ApiService) {
   }
 
   ngOnInit(): void {
-
-    this.get_id();
     this.getUserData();
-    
   }
 
-  getUserData(){
+  getUserData() {
     let currentUser = localStorage.getItem('currentUser');
-    if(currentUser){
+    if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
-      console.log(currentUser, this.email)
+      this.get_Conversation();
     }
   }
 
-  makeTrustedUrl(): void{
-    // let email = 'admin@xnode.ai';
-    let rawUrl = 'http://127.0.0.1:8000/?email='+ this.email +
-                                        '&productContext='+ this.productContext +
-                                        '&xnode_flag='+'XNODE-APP';
+  makeTrustedUrl(): void {
+    let rawUrl = environment.xpilotUrl + '?email=' + this.email +
+      '&productContext=' + this.productContext +
+      '&xnode_flag=' + 'XNODE-APP';
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
 
-  get_id() {
-    this.apiService.get("/get_metadata/" + this.email)
-      .then(response => {
-        if (response?.status === 200) {
-          const data = response?.data?.data[0];
-          this.id = data.id;
-          // this.id = Array.isArray(data) ? data[0].Usecase : [];
-        }
-        // this.loading = false;
-        console.log(this.id, response)
-      })
-      .catch(error => {
-        console.log(error);
-
-        // this.loading = false;
-      });
-      
-  }
-
-  get_Conversation(){
-    this.apiService.get("/get_conversation/" + this.email + "/" + this.id)
+  get_Conversation() {
+    this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           const data = response?.data;
-          console.log(data, response)
         }
-        // this.loading = false;
-        
       })
       .catch(error => {
         console.log(error);
-
-        // this.loading = false;
       });
   }
 
@@ -95,14 +61,11 @@ export class AppComponent implements OnInit {
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish";
   }
 
-  addItem(newItem : any){
-    console.log(newItem)
+  addItem(newItem: any) {
     this.botOutput.push(newItem.toString());
     this.isSideWindowOpen = newItem.cbFlag;
-    // this.isSideWindowOpen = true;
     this.productContext = newItem.productContext;
     this.makeTrustedUrl();
-    console.log(this.isSideWindowOpen, this.productContext);
   }
 
   toggleSideWindow() {
