@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'xnode-root',
@@ -29,15 +30,14 @@ export class AppComponent implements OnInit {
 
   getUserData() {
     let currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
+    if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
       this.get_Conversation();
     }
   }
 
   makeTrustedUrl(): void {
-    // let email = 'admin@xnode.ai';
-    let rawUrl = 'https://xpilot.azurewebsites.net/?email=' + this.email +
+    let rawUrl = environment.xpilotUrl + '?email=' + this.email +
       '&productContext=' + this.productContext +
       '&xnode_flag=' + 'XNODE-APP';
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
