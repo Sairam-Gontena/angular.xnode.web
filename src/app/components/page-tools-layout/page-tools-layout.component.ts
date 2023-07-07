@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LayoutElementsComponent } from '../layout-elements/layout-elements.component';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
 import * as sidemenu from '../../../assets/json/sidemenu-tools.json';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-page-tools-layout',
@@ -22,7 +23,7 @@ export class PageToolsLayoutComponent {
 
   iframeUrl: string = "http://localhost:54809/";
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private apiService: ApiService) {
     this.href = this.router.url;
     let label;
     if (this.href.includes('design')) {
@@ -38,13 +39,17 @@ export class PageToolsLayoutComponent {
   ngOnInit() {
     this.layoutColumns = LAYOUT_COLUMNS;
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
+
+    this.apiService.openSubmenu.subscribe((data: any) => {
+      this.isOpen = data;
+    })
   }
 
-  
+
   toggleMenu() {
     this.isOpen = !this.isOpen;
   }
-  
+
   async loadSubSideMenu(sidemenuLabel: any) {
     await this.sideMenu.filter((item: any) => {
       if (item?.Label == sidemenuLabel) {

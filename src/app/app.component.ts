@@ -72,6 +72,10 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = !this.isSideWindowOpen;
   }
 
+  submenuFunc() {
+    this.isSideWindowOpen ? this.apiService.falseOpen() : this.apiService.trueOpen();
+  }
+
   closeSideWindow() {
     this.isSideWindowOpen = false;
   }
