@@ -7,7 +7,7 @@
         <p class="text-2xl font-semibold text-center mx-2">Please provide brand guidelines.</p>
         <div class="field col-10 sm:col-12 md:col-12 lg:col-10 xl:col-10 mx-7 mt-5">
             <label htmlFor="workspace" class="font-medium text-base">Workspace Name</label>
-            <input id="workspaceName" type="text" [placeholder]="isPlaceholderVisible ? 'enter workspace name' : ''"
+            <input id="workspaceName" type="text" [placeholder]="isPlaceholderVisible ? 'Enter workspace name' : ''"
                 formControlName="workspaceName" [ngClass]="{'is-invalid': submitted && Form['workspaceName'].errors }"
                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary border-round-3xl w-12"
                 (focus)="onInputFocus()" (blur)="onInputBlur()">
