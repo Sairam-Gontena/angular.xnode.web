@@ -24,6 +24,7 @@ import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoginComponent } from './pages/login/login.component';
 import { DragDropModule } from 'primeng/dragdrop';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -49,6 +50,8 @@ import { DragDropModule } from 'primeng/dragdrop';
     PrimeModulesModule,
     ProgressSpinnerModule,
     DragDropModule,
+    ReactiveFormsModule,
+    FormsModule,
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,

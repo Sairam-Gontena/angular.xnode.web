@@ -11,3 +11,17 @@
     padding-left: 3rem !important;
     padding-right: 3rem !important;
 }
+
+.invalid-feedback {
+    color: red !important;
+
+}
+
+.selected>div {
+    background-color: rgb(232, 240, 254);
+
+}
+
+.field {
+    cursor: pointer;
+}
