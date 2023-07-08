@@ -1,36 +1,44 @@
 <div class="card-content">
-    <p class="text-500 font-normal text-2xl text-center">Step 3/4</p>
-    <h1 class="heading-color text-6xl font-bold text-center">
-        Tell us about yourself
-    </h1>
-    <p class="text-2xl font-semibold text-center mx-2">This helps us craft better
-        experiences.
-    </p>
-    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-8 mt-5">
-        <label htmlFor="plan" class="font-medium text-base">How do you plan to use xnode
-            *</label>
-        <div class="">
+    <form [formGroup]="aboutyourselfForm" (ngSubmit)="onClickaboutYourSelf()">
+        <p class="text-500 font-normal text-2xl text-center">Step 3/4</p>
+        <h1 class="heading-color text-6xl font-bold text-center mt-6">
+            Tell us about yourself
+        </h1>
+        <p class="text-2xl font-semibold text-center mx-2">This helps us craft better
+            experiences.
+        </p>
+        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-8 mt-5">
+            <label htmlFor="plan" class="font-medium text-base">How do you plan to use xnode
+                *</label>
             <div *ngFor="let category of categories" class="field-checkbox">
-                <p-radioButton [inputId]="category.key" name="category" [value]="category"
-                    [(ngModel)]="selectedCategory"></p-radioButton>
-                <label [for]="category.key" class="ml-2 font-normal text-base">
-                    {{ category.name}}</label>
+                <p-radioButton [inputId]="category.key" [value]="category"
+                    formControlName="selectedCategory"></p-radioButton>
+                <label [for]="category.key" class="ml-2">{{ category.name }}</label>
+            </div>
+            <div class="error-msg text-sm text-red-500" *ngIf="submitted && Form['selectedCategory'].errors">
+                Please select any option above!
             </div>
         </div>
-    </div>
-    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-8 mt-3">
-        <label htmlFor="plan" class="font-medium text-base">Additional
-            Information</label>
-        <div class="flex p-float-label">
-            <textarea id="float-input" class="border-round-3xl" rows=" 3" cols="55" pInputTextarea></textarea>
-            <label for="float-input" class=" font-normal text-base">Please share any
-                additional
-                information
-                about your product.</label>
+        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-8 mt-3">
+            <label htmlFor="plan" class="font-medium text-base">Additional
+                Information</label>
+            <div class="flex p-float-label">
+                <textarea id="float-input" class="border-round-3xl" rows=" 3" cols="55" pInputTextarea
+                    [autoResize]="true" formControlName="Additionalinfo" type="text"
+                    placeholder="Please share any additional information about your product"
+                    (focus)="onInputFocus()"></textarea>
+                <label for="float-input" class="font-normal text-base" *ngIf="isPlaceholderVisible">Please share any
+                    additional
+                    information
+                    about your product.</label>
+            </div>
+            <span class="error-msg text-sm text-red-500" *ngIf="submitted && Form['Additionalinfo'].errors">
+                Please provide additional information!
+            </span>
         </div>
-    </div>
-    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
-        <p-button label="Get Started" styleClass="p-button-rounded  font-medium text-lg" icon="pi pi-angle-right"
-            iconPos="right" routerLink="/export-get-started"></p-button>
-    </div>
+        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
+            <p-button label="Get Started" styleClass="p-button-rounded  font-medium text-lg" icon="pi pi-angle-right"
+                iconPos="right" (onClick)="onClickaboutYourSelf()"></p-button>
+        </div>
+    </form>
 </div>
