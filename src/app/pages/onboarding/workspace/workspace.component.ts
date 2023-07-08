@@ -27,7 +27,6 @@ export class WorkspaceComponent implements OnInit {
   onClickWorkSpace() {
     this.submitted = true;
     this.isFormSubmitted = true;
-    localStorage.setItem('currentUser', JSON.stringify(this.workspaceForm.value));
     if (!this.teamOrCompanySelected && !this.personalSelected) {
       this.isInvalid = true;
       return;
@@ -37,7 +36,6 @@ export class WorkspaceComponent implements OnInit {
       return;
     }
     this.isInvalid = false;
-    localStorage.setItem('currentUser', JSON.stringify(this.workspaceForm.value));
     this.router.navigate(['/brand-guideline']);
   }
   selectTeamOrCompany() {

@@ -22,27 +22,24 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   get login() { return this.loginForm.controls; }
 
   onClickLogin() {
     this.submitted = true;
+    const matchedUser = Emails.find(user => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password);
     // Stop here if the form is invalid
     if (this.loginForm.invalid) {
       return;
-    } else {
-      this.router.navigate(['/my-templates']);
     }
-    // const matchedUser = Emails.find(user => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password);
-    // if (matchedUser) {
-    //   localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
-    //   this.router.navigate(['/my-templates']);
-    // } else {
-    //   this.messages = [
-    //     { severity: 'error', summary: 'Error', detail: 'User not found' }
-    //   ]
-    // }
+    if (matchedUser) {
+      localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
+      this.router.navigate(['/my-templates']);
+    } else {
+      this.messages = [
+        { severity: 'error', summary: 'Error', detail: 'User not found' }
+      ]
+    }
   }
 }
