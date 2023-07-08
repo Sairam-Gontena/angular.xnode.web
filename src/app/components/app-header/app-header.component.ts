@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
+import { Router } from '@angular/router';
 
 
 
@@ -13,7 +14,7 @@ export class AppHeaderComponent implements OnInit {
   values: any;
   selectedValue: any;
 
-  constructor() {
+  constructor(private router: Router) {
 
   }
 
@@ -28,7 +29,8 @@ export class AppHeaderComponent implements OnInit {
   onOptionSelected(value: any) {
     if (value.code == 'lg') {
       localStorage.clear();
-      window.location.href = '/';
+      this.router.navigate(['/'])
+      // window.location.href = '/';
     }
   }
 

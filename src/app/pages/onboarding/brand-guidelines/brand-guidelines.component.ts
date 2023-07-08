@@ -105,7 +105,6 @@ export class BrandGuidelinesComponent implements OnInit {
       return;
     }
     this.isInvalid = false;
-    localStorage.setItem('currentUser', JSON.stringify(this.brandguidelinesForm.value));
     this.router.navigate(['/about-your-self']);
   }
   validateLogoFile(control: AbstractControl) {
