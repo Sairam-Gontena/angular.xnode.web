@@ -45,6 +45,13 @@
     }
 }
 
+@media (max-width: 768px) {
+    :host ::ng-deep.p-button {
+        margin: 10px;
+        margin-left: 10px;
+    }
+}
+
 .stepper {
     margin-left: 2rem;
 }

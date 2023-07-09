@@ -1,14 +1,23 @@
 <xnode-app-header></xnode-app-header>
 <xnode-template-builder></xnode-template-builder>
 <div class="bg grid overview-body" *ngIf="!loading">
-    <div class=" md:col-6 lg:col-8">
+    <div class="lg:col-8 md:col-12">
         <div class="flex mt-6">
             <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="ml-6 w-1 h-1">
+            <h6 class="text-white text-6xl pl-4">FinBuddy</h6>
             <h1 class="text-white text-4xl font-medium  ml-4">{{selectedTemplate}}</h1>
         </div>
         <p class=" ml-6 mt-3 text-xl font-medium finbuddy-text">
             {{overview?.Description}}
         </p>
+        <p class="text-white font-medium text-2xl ml-6">FinBuddy is an AI-powered personal finance assistant app
+            designed to
+            help you
+            take control
+            of your finances and achieve your financial goals. With its intuitive interface and powerful features,
+            FinBuddy makes it easy to track your income, expenses, and savings, all in one place. Stay on top of your
+            finances and make informed decisions with the help of FinBuddy's advanced analytics and personalized
+            insights.</p>
         <p class="para-text ml-6 text-2xl ">Created on: April 30, 2023</p>
         <div class="flex  flex-wrap card-container ml-6">
             <div class=" w-21rem h-19rem font-bold text-white  m-2 stake-holder ml-6">
@@ -48,27 +57,26 @@
             </div>
         </div>
         <h6 class="text-white ml-7 mt-4">Key Features</h6>
-        <div class="ml-7 mt-3 feature-button">
-            <p-button label="Expense Tracking" icon="pi pi-check"></p-button>
-            <p-button label="Income Management" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Budgeting" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Savings Goals" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Bill Reminders" icon="pi pi-check" class="ml-2"></p-button>
-
-
-        </div>
-        <div class="ml-7 mt-3">
-            <p-button label="Debt Management " icon="pi pi-check"></p-button>
-            <p-button label="Financial Insights & Reports" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="AI-Powered Advice" icon="pi pi-check" class="ml-2"></p-button>
-            <p-button label="Security & Privacy" icon="pi pi-check" class="ml-2"></p-button>
-        </div>
-        <div class="ml-7 mt-3">
-            <p-button label="Multi-device Sync" icon="pi pi-check"> </p-button>
-
+        <div class="md:col-6 lg:col-10">
+            <div class="ml-7 mt-3 feature-button">
+                <p-button label="Expense Tracking" icon="pi pi-check"></p-button>
+                <p-button label="Income Management" icon="pi pi-check" class="ml-2"></p-button>
+                <p-button label="Budgeting" icon="pi pi-check" class="ml-2"></p-button>
+                <p-button label="Savings Goals" icon="pi pi-check" class="ml-2"></p-button>
+                <p-button label="Bill Reminders" icon="pi pi-check" class="ml-2"></p-button>
+            </div>
+            <div class="ml-7 mt-3">
+                <p-button label="Debt Management " icon="pi pi-check"></p-button>
+                <p-button label="Financial Insights & Reports" icon="pi pi-check" class="ml-2"></p-button>
+                <p-button label="AI-Powered Advice" icon="pi pi-check" class="ml-2"></p-button>
+                <p-button label="Security & Privacy" icon="pi pi-check" class="ml-2"></p-button>
+            </div>
+            <div class="ml-7 mt-3">
+                <p-button label="Multi-device Sync" icon="pi pi-check"> </p-button>
+            </div>
         </div>
     </div>
-    <div class=" md:col-6 lg:col-4">
+    <div class="lg:col-4 md:col-12">
         <div class="card-container mt-6 mr-4 stake-holder h-screen w-24rem text-white ">
             <div class="w-26rem p-1 mt-3 ml-3">
                 <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">Raymond Nelson!</span> You
@@ -86,7 +94,6 @@
                         </div>
                     </div>
                 </xnode-step>
-
             </div>
         </div>
     </div>
