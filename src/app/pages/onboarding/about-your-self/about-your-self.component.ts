@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './about-your-self.component.html',
   styleUrls: ['./about-your-self.component.scss']
 })
+
 export class AboutYourSelfComponent implements OnInit {
   aboutyourselfForm!: FormGroup;
   selectedCategory: any = null;
@@ -17,22 +18,26 @@ export class AboutYourSelfComponent implements OnInit {
     { name: 'For Commercial', key: 'C' },
     { name: 'Others', key: 'O' }
   ];
+
   constructor(private formBuilder: FormBuilder, public router: Router) { }
+
   ngOnInit() {
     this.aboutyourselfForm = this.formBuilder.group({
       selectedCategory: ['', Validators.required],
       Additionalinfo: ['', Validators.required]
     });
   }
+
   get Form() { return this.aboutyourselfForm.controls; }
+
   onClickaboutYourSelf() {
     this.submitted = true;
     if (this.aboutyourselfForm.invalid) {
       return;
     }
-    localStorage.setItem('currentUser', JSON.stringify(this.aboutyourselfForm.value));
     this.router.navigate(['/export-get-started']);
   }
+
   onInputFocus() {
     this.isPlaceholderVisible = false;
   }

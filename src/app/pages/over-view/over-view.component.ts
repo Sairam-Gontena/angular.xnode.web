@@ -96,11 +96,17 @@ export class OverViewComponent {
       });
   }
 
+  getMeProductId() {
+    return !localStorage.getItem('record_id') ? this.id : localStorage.getItem('record_id');
+  }
+
   getMeOverview() {
-    this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + this.getMeProductId())
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
+          this.selectedTemplate = response?.data?.Title;
+          localStorage.setItem("app_name", response?.data?.Title);
         }
         this.loading = false;
       })

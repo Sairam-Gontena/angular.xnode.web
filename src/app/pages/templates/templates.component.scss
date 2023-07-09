@@ -1,4 +1,4 @@
-:host ::ng-deep .p-inputtext {
+:host ::ng-deep .search .p-inputtext {
     border-radius: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -112,8 +112,13 @@
 }
 
 @media screen and (max-width: 600px) {
-    .p-inputtext {
+    .search .p-inputtext {
         width: 260px;
 
     }
+}
+
+.tmp-page-height {
+    height: calc(100vh - 30px);
+    overflow: auto;
 }

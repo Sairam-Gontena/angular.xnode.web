@@ -10,10 +10,9 @@ export class UserUtil {
   private static currentUser: User | undefined;
 
   static getCurrentUser(): User | undefined {
-    if (!UserUtil.currentUser) {
-      const storedCurrentUser = localStorage.getItem('currentUser');
-      UserUtil.currentUser = storedCurrentUser ? JSON.parse(storedCurrentUser) : undefined;
-    }
+    const storedCurrentUser = localStorage.getItem('currentUser');
+    UserUtil.currentUser = storedCurrentUser ? JSON.parse(storedCurrentUser) : undefined;
+
     return UserUtil.currentUser;
   }
 }
