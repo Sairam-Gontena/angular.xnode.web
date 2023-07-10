@@ -1,5 +1,5 @@
 <div class="card-content">
-    <form [formGroup]="aboutyourselfForm" (ngSubmit)="onClickaboutYourSelf()" (keydown)="onKeyDown($event)">
+    <form [formGroup]="aboutyourselfForm" (ngSubmit)="onClickaboutYourSelf()">
         <p class="text-500 font-normal text-2xl text-center">Step 3/4</p>
         <h1 class="heading-color text-6xl font-bold text-center mt-6">
             Tell us about yourself
@@ -39,6 +39,8 @@
         <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
             <p-button label="Get Started" styleClass="p-button-rounded  font-medium text-lg" icon="pi pi-angle-right"
                 iconPos="right" (onClick)="onClickaboutYourSelf()"></p-button>
+
         </div>
+        <button type="submit" style="display: none;"></button>
     </form>
 </div>

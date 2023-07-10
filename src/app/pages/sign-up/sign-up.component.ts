@@ -25,6 +25,9 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.clear();
+    this.signUpForm.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    });
   }
 
   get signUp() { return this.signUpForm.controls; }
@@ -43,10 +46,5 @@ export class SignUpComponent implements OnInit {
       this.errorMessage = 'Email and password do not match.';
     }
   }
-  onKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      this.onClickSignUp();
-    }
-  }
+
 }

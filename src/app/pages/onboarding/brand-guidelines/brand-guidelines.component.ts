@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -15,6 +15,7 @@ export class BrandGuidelinesComponent implements OnInit {
   isFormSubmitted!: boolean;
   draganddropSelected!: boolean;
   browserSelected!: boolean;
+  errorMessage!: string;
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.brandguidelinesForm = this.formBuilder.group({
       workspaceName: ['', Validators.required],
@@ -23,6 +24,9 @@ export class BrandGuidelinesComponent implements OnInit {
   }
   get Form() { return this.brandguidelinesForm.controls; }
   ngOnInit(): void {
+    this.brandguidelinesForm.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    });
   }
   files: any[] = [];
   onFileDropped($event: any) {
@@ -107,9 +111,10 @@ export class BrandGuidelinesComponent implements OnInit {
     this.isInvalid = false;
     this.router.navigate(['/about-your-self']);
   }
-  onKeyDown(event: KeyboardEvent) {
+  @HostListener('document:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    // Check if the Enter key was pressed
     if (event.key === 'Enter') {
-      event.preventDefault();
       this.onClickbrandGuideLine();
     }
   }

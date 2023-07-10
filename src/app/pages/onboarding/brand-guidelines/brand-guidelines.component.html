@@ -1,68 +1,75 @@
 <div class="card-content">
-    <form [formGroup]="brandguidelinesForm" (keydown)="onKeyDown($event)">
-        <p class="text-500 font-normal text-2xl text-center">Step 2/4</p>
-        <h1 class="heading-color text-6xl font-bold text-center">
-            Welcome to xnode
-        </h1>
-        <p class="text-2xl font-semibold text-center mx-2">Please provide brand guidelines.</p>
-        <div class="field col-10 sm:col-12 md:col-12 lg:col-10 xl:col-10 mx-7 mt-5">
-            <label htmlFor="workspace" class="font-medium text-base">Workspace Name</label>
-            <input id="workspaceName" type="text" [placeholder]="isPlaceholderVisible ? 'Enter workspace name' : ''"
-                formControlName="workspaceName" [ngClass]="{'is-invalid': submitted && Form['workspaceName'].errors }"
-                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary border-round-3xl w-12"
-                (focus)="onInputFocus()" (blur)="onInputBlur()">
-            <div *ngIf="submitted && Form['workspaceName'].errors" class="invalid-feedback text-red-500">
-                <div *ngIf="Form['workspaceName'].errors?.['required']">Please enter workspace name</div>
+    <div>
+        <form [formGroup]="brandguidelinesForm" (ngSubmit)="onClickbrandGuideLine()">
+            <p class="text-500 font-normal text-2xl text-center">Step 2/4</p>
+            <h1 class="heading-color text-6xl font-bold text-center">
+                Welcome to xnode
+            </h1>
+            <p class="text-2xl font-semibold text-center mx-2">Please provide brand guidelines.</p>
+            <div class="field col-10 sm:col-12 md:col-12 lg:col-10 xl:col-10 mx-7 mt-5">
+                <label htmlFor="workspace" class="font-medium text-base">Workspace Name</label>
+                <input id="workspaceName" type="text" [placeholder]="isPlaceholderVisible ? 'Enter workspace name' : ''"
+                    formControlName="workspaceName"
+                    [ngClass]="{'is-invalid': submitted && Form['workspaceName'].errors }"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary border-round-3xl w-12"
+                    (focus)="onInputFocus()" (blur)="onInputBlur()">
+                <div *ngIf="submitted && Form['workspaceName'].errors" class="invalid-feedback text-red-500">
+                    <div *ngIf="Form['workspaceName'].errors?.['required']">Please enter workspace name</div>
+                </div>
             </div>
-        </div>
-        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-7 mt-5">
-            <label htmlFor="logo" class="font-medium text-base">Upload Logo</label>
-            <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
-                <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
-                    [class.selected]=" draganddropSelected" [class.invalid]="isFormSubmitted && !draganddropSelected">
-                    <input type="file" #fileDropRef id="fileDropRef"
-                        (change)="fileBrowseHandler($any($event).target.files)"
-                        [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
-                    <ng-template #elseBlock>
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mx-7 mt-5">
+                <label htmlFor="logo" class="font-medium text-base">Upload Logo</label>
+                <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
+                    <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
+                        [class.selected]=" draganddropSelected"
+                        [class.invalid]="isFormSubmitted && !draganddropSelected">
                         <input type="file" #fileDropRef id="fileDropRef"
-                            (change)="fileBrowseHandler($any($event).target.files)" disabled />
-                    </ng-template>
-                    <img src="./assets/sky.svg" width="64px">
-                    <h3 class="font-semibold text-sm">Drag and Drop </h3>
+                            (change)="fileBrowseHandler($any($event).target.files)"
+                            [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
+                        <ng-template #elseBlock>
+                            <input type="file" #fileDropRef id="fileDropRef"
+                                (change)="fileBrowseHandler($any($event).target.files)" disabled />
+                        </ng-template>
+                        <img src="./assets/sky.svg" width="64px">
+                        <h3 class="font-semibold text-sm">Drag and Drop </h3>
+                    </div>
+                    <div class="field col-2 ">
+                        <h3 class="mt-5 font-semibold text-sm">( OR )</h3>
+                    </div>
+                    <div class="field col-5 mt-5" (click)="selectBrowser()" [class.selected]="browserSelected"
+                        [class.invalid]="isFormSubmitted && !browserSelected">
+                        <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm"
+                            styleClass=" p-button-outlined"></p-button>
+                    </div>
+                    <div class="font-semibold text-sm text-500">
+                        Supported file types JPG, PNG (upload file size limit 2MB)
+                    </div>
+
                 </div>
-                <div class="field col-2 ">
-                    <h3 class="mt-5 font-semibold text-sm">( OR )</h3>
-                </div>
-                <div class="field col-5 mt-5" (click)="selectBrowser()" [class.selected]="browserSelected"
-                    [class.invalid]="isFormSubmitted && !browserSelected">
-                    <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm"
-                        styleClass=" p-button-outlined"></p-button>
-                </div>
-                <div class="font-semibold text-sm text-500">
-                    Supported file types JPG, PNG (upload file size limit 2MB)
+                <div class="files-list mt-2">
+                    <div class="single-file" *ngFor="let file of files; let i = index">
+                        <div class="info">
+                            <h4 class="name">
+                                {{ file?.name }}
+                            </h4>
+                        </div>
+                        <div class="delete" (click)="deleteFile(i)">
+                            <i class="pi pi-trash" style="font-size: 1.5rem"></i>
+                        </div>
+                    </div>
+                    <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
+                        <p class="text-red-500 text-sm">Please upload logo</p>
+                    </div>
                 </div>
 
             </div>
-            <div class="files-list mt-2">
-                <div class="single-file" *ngFor="let file of files; let i = index">
-                    <div class="info">
-                        <h4 class="name">
-                            {{ file?.name }}
-                        </h4>
-                    </div>
-                    <div class="delete" (click)="deleteFile(i)">
-                        <i class="pi pi-trash" style="font-size: 1.5rem"></i>
-                    </div>
-                </div>
-                <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
-                    <p class="text-red-500 text-sm">Please upload logo</p>
-                </div>
-            </div>
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
+                <p-button label="Create Workspace" styleClass="p-button-rounded  font-medium text-lg"
+                    icon="pi pi-angle-right" iconPos="right" (click)="onClickbrandGuideLine()"></p-button>
 
-        </div>
-        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6 text-center">
-            <p-button label="Create Workspace" styleClass="p-button-rounded  font-medium text-lg"
-                icon="pi pi-angle-right" iconPos="right" (click)="onClickbrandGuideLine()"></p-button>
-        </div>
-    </form>
+            </div>
+            <button type="submit" style="display: none;"></button>
+
+        </form>
+    </div>
 </div>

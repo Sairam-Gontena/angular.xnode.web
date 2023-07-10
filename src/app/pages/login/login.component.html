@@ -7,7 +7,7 @@
                     <p-messages [(value)]="messages" [enableService]="false"></p-messages>
                 </div>
             </div>
-            <form [formGroup]="loginForm" (keydown)="onKeyDown($event)">
+            <form [formGroup]="loginForm" (ngSubmit)="onClickLogin()">
                 <div class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
                     <a class="text-blue-700 pointer" routerLink="/">Sign Up</a>
                 </div>
@@ -46,6 +46,9 @@
                         <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
                             icon="pi pi-angle-right" iconPos="right" (click)="onClickLogin()"></p-button>
                     </div>
+                    <fieldset class="submit-fieldset">
+                        <button type="submit" style="display: none;"></button>
+                    </fieldset>
                 </div>
             </form>
         </div>

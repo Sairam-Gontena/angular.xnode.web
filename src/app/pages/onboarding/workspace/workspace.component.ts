@@ -16,6 +16,7 @@ export class WorkspaceComponent implements OnInit {
   personalSelected!: boolean;
   isInvalid: boolean = false;
   isPlaceholderVisible: boolean = true;
+  errorMessage!: string;
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.workspaceForm = this.formBuilder.group({
       companyName: ['', Validators.required],
@@ -23,6 +24,9 @@ export class WorkspaceComponent implements OnInit {
   }
   get Form() { return this.workspaceForm.controls; }
   ngOnInit(): void {
+    this.workspaceForm.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    });
   }
   onClickWorkSpace() {
     this.submitted = true;
@@ -52,10 +56,5 @@ export class WorkspaceComponent implements OnInit {
   onInputBlur() {
     this.isPlaceholderVisible = false;
   }
-  onKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      this.onClickWorkSpace();
-    }
-  }
+
 }

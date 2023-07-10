@@ -1,5 +1,5 @@
 <div class="card-content">
-    <form [formGroup]="workspaceForm" (keydown)="onKeyDown($event)">
+    <form [formGroup]="workspaceForm" (ngSubmit)="onClickWorkSpace()">
         <p class="text-500 font-normal text-2xl text-center">Step 1/4</p>
         <h1 class="heading-color text-6xl font-bold text-center mt-5">
             Welcome to xnode
@@ -45,5 +45,8 @@
             <p-button label="Continue" styleClass="p-button-rounded  font-medium text-lg" icon="pi pi-angle-right"
                 iconPos="right" (click)="onClickWorkSpace()"></p-button>
         </div>
+        <fieldset class="submit-fieldset">
+            <button type="submit" style="display: none;"></button>
+        </fieldset>
     </form>
 </div>
