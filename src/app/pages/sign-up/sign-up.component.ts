@@ -13,6 +13,7 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
   errorMessage!: string;
+  loading: boolean = true;
 
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.signUpForm = this.formBuilder.group({
@@ -38,8 +39,10 @@ export class SignUpComponent implements OnInit {
     localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
     if (matchedUser) {
       this.router.navigate(['/workspace']);
+      this.loading = false;
     } else {
       this.errorMessage = 'Email and password do not match.';
+      this.loading = false;
     }
   }
 }
