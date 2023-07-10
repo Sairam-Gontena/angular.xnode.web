@@ -21,7 +21,6 @@ export class AppHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.headerItems = HeaderItems;
     this.values = [
-      { name: '', code: 'NY' },
       { name: 'Logout', code: 'lg' }
     ];
   }
