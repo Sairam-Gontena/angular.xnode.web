@@ -52,4 +52,10 @@ export class WorkspaceComponent implements OnInit {
   onInputBlur() {
     this.isPlaceholderVisible = false;
   }
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onClickWorkSpace();
+    }
+  }
 }

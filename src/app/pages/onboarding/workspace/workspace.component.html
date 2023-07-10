@@ -1,5 +1,5 @@
 <div class="card-content">
-    <form [formGroup]="workspaceForm">
+    <form [formGroup]="workspaceForm" (keydown)="onKeyDown($event)">
         <p class="text-500 font-normal text-2xl text-center">Step 1/4</p>
         <h1 class="heading-color text-6xl font-bold text-center mt-5">
             Welcome to xnode

@@ -107,6 +107,12 @@ export class BrandGuidelinesComponent implements OnInit {
     this.isInvalid = false;
     this.router.navigate(['/about-your-self']);
   }
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onClickbrandGuideLine();
+    }
+  }
   validateLogoFile(control: AbstractControl) {
     const file = control.value;
     const allowedTypes = ['image/jpeg', 'image/png'];

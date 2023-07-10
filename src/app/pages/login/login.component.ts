@@ -42,4 +42,10 @@ export class LoginComponent implements OnInit {
       ]
     }
   }
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onClickLogin();
+    }
+  }
 }

@@ -37,7 +37,12 @@ export class AboutYourSelfComponent implements OnInit {
     }
     this.router.navigate(['/export-get-started']);
   }
-
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onClickaboutYourSelf();
+    }
+  }
   onInputFocus() {
     this.isPlaceholderVisible = false;
   }

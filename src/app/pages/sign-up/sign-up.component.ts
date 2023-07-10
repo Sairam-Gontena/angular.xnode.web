@@ -31,6 +31,7 @@ export class SignUpComponent implements OnInit {
 
   onClickSignUp() {
     this.submitted = true;
+
     if (this.signUpForm.invalid) {
       return;
     }
@@ -40,6 +41,12 @@ export class SignUpComponent implements OnInit {
       this.router.navigate(['/workspace']);
     } else {
       this.errorMessage = 'Email and password do not match.';
+    }
+  }
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.onClickSignUp();
     }
   }
 }
