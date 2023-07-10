@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
-
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   endPoint = "https://xpilot.azurewebsites.net/crud";
-  constructor() { }
+  private open: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public openSubmenu: Observable<boolean> = this.open.asObservable();
+  constructor() {
+  }
+
+  falseOpen() {
+    this.open.next(false);
+  }
+
+  trueOpen() {
+    this.open.next(true);
+  }
 
   getID(email: string) {
     return axios.get('https://xpilot.azurewebsites.net/crud/get_metadata/' + email);
@@ -26,7 +37,7 @@ export class ApiService {
   }
 
   getConversation(email: String, id: String) {
-    return axios.get('https://xpilot.azurewebsites.net/crud/get_conversation/' +email + "/" + id);
+    return axios.get('https://xpilot.azurewebsites.net/crud/get_conversation/' + email + "/" + id);
   }
 
 
