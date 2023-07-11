@@ -32,7 +32,8 @@ img.highlighted {
 
 }
 
-:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-items-wrapper{
-    background-color: #24232C;
-    color: #24232C;
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper{
+    background: #24232C !important;
+    color: white !important;
 }
