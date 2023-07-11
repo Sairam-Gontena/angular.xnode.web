@@ -11,6 +11,9 @@ export class PublishComponent {
   templates: any;
   selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
+  templatesOptions: any;
+  templateEvent: any;
+  dropdownSelectedValue: any;
 
   tableHeaders: string[] = ['Version', 'Deployed On', 'Deployed By', "Notes", "Status"];
   tableData: any[] = [
@@ -52,6 +55,12 @@ export class PublishComponent {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
+    this.templatesOptions = [
+      { label: 'Preview' },
+      { label: 'Publish' }
+
+    ]
+    this.dropdownSelectedValue = this.templatesOptions[0].label;
   }
 
   // ngAfterViewChecked(): void {
@@ -72,7 +81,14 @@ export class PublishComponent {
       this.dashboard = this.layoutColumns[layout];
   }
 
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+  onDropdownOptionClick(event: any) {
+    this.templateEvent = event.value.label;
+    this.dropdownSelectedValue = this.templateEvent
+  }
+
+  navigateOnClick() {
+    if (this.dropdownSelectedValue == 'Preview') {
+      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+    }
   }
 }

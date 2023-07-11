@@ -19,11 +19,21 @@ export class OperateComponent implements OnInit {
   doughnutData: any;
   doughnutOptions: any;
   options: any;
+
+  templatesOptions: any;
+  templateEvent: any;
+  dropdownSelectedValue: any;
+
   ngOnInit(): void {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
+    this.templatesOptions = [
+      { label: 'Preview' },
+      { label: 'Publish' }
 
+    ]
+    this.dropdownSelectedValue = this.templatesOptions[0].label;
   }
 
   getLayout(layout: any): void {
@@ -42,8 +52,15 @@ export class OperateComponent implements OnInit {
     }
   }
 
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+  onDropdownOptionClick(event: any) {
+    this.templateEvent = event.value.label;
+    this.dropdownSelectedValue = this.templateEvent
+  }
+
+  navigateOnClick() {
+    if (this.dropdownSelectedValue == 'Preview') {
+      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+    }
   }
 
 }

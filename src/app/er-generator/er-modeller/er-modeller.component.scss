@@ -97,3 +97,21 @@
 img.highlighted {
     background-color: #02ADEE !important;
 }
+
+:host ::ng-deep .p-button-rounded.custom-button {
+    background-color: #24232C;
+    border-color: #24232C;
+
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label,
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+    color: #ffffff;
+    height: 35px;
+    width: 10px;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label {
+    display: none;
+
+}

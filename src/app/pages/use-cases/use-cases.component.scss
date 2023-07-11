@@ -52,3 +52,18 @@
     width: 100%;
     color: #ffffff;
 }
+
+:host ::ng-deep .p-dropdown .p-dropdown-label{
+    display: none;
+}
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+    color: #ffffff;
+    background-color: #212529;
+    height: 35px;
+    width: 10px; 
+}
+:host ::ng-deep .p-button-rounded.custom-button {
+    background-color: #3A3942;
+    border-color: #3A3942;
+
+}

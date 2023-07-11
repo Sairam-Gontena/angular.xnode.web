@@ -12,10 +12,9 @@
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded custom-button"></p-button>
-        <p-button styleClass="p-button-rounded " (click)="navigateOnClick()">{{dropdownSelectedValue}}</p-button>
+        <p-button styleClass="p-button-rounded" (click)="navigateOnClick()">{{dropdownSelectedValue}}</p-button>
         <p-dropdown [options]="templatesOptions" id="design-template-options-header" class="custom-dropdown"
             (onChange)="onDropdownOptionClick($event)" appendTo="body">
         </p-dropdown>
-        <!-- <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button> -->
     </div>
 </div>

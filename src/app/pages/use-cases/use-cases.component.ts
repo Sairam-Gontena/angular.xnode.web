@@ -14,9 +14,15 @@ export class UseCasesComponent implements OnInit {
   currentUser?: User;
   templates: any;
   highlightedIndex: any;
+  templatesOptions: any;
   constructor(private apiService: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
+
+  dropdownSelectedValue: any;
+
+
+
 
   ngOnInit(): void {
     if (localStorage.getItem('record_id') === null) {
@@ -27,6 +33,14 @@ export class UseCasesComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
+
+    this.templatesOptions = [
+      { label: 'Preview' },
+      { label: 'Publish' }
+
+    ]
+    this.dropdownSelectedValue = this.templatesOptions[0].label;
+
   }
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
@@ -63,5 +77,13 @@ export class UseCasesComponent implements OnInit {
         this.loading = false;
       });
 
+  }
+  onDropdownOptionClick(event: any) {
+    this.dropdownSelectedValue = event.value.label;
+  }
+  navigateOnClick() {
+    if (this.dropdownSelectedValue == 'Preview') {
+      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+    }
   }
 }

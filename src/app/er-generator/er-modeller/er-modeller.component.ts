@@ -25,6 +25,10 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   dataModel: any;
   @Input() erModelInput: any;
 
+  templatesOptions: any;
+  templateEvent: any;
+  dropdownSelectedValue: any;
+
   constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
@@ -39,6 +43,17 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     } else {
       this.getMeDataModel();
     }
+
+    this.templates = [
+      { label: localStorage.getItem('app_name') }
+    ]
+
+    this.templatesOptions = [
+      { label: 'Preview' },
+      { label: 'Publish' }
+      
+    ]
+    this.dropdownSelectedValue = this.templatesOptions[0].label;
   }
 
   toggleMenu() {
@@ -55,10 +70,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   getLayout(layout: any): void {
     if (layout)
       this.dashboard = this.layoutColumns[layout];
-  }
-
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 
   //get calls 
@@ -95,4 +106,17 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
         this.loading = false;
       });
   }
+
+ 
+  onDropdownOptionClick(event: any) {
+    this.templateEvent = event.value.label;
+    this.dropdownSelectedValue = this.templateEvent
+  }
+
+  navigateOnClick() {
+    if (this.dropdownSelectedValue == 'Preview') {
+      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+    }
+  }
+  
 }

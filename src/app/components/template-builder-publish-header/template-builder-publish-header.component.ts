@@ -23,8 +23,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     ]
 
     this.templatesOptions = [
-      { label: 'Publish' },
-      { label: 'Preview' }
+      { label: 'Preview' },
+      { label: 'Publish' }
+      
     ]
     this.dropdownSelectedValue = this.templatesOptions[0].label;
   };

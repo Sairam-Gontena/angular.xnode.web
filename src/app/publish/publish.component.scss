@@ -76,7 +76,12 @@
 :host ::ng-deep .p-dropdown .p-dropdown-trigger {
 
     color: #ffffff;
+    height: 35px;
+    width: 10px;
+}
 
+:host ::ng-deep .p-dropdown .p-dropdown-label {
+    display: none;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
@@ -112,4 +117,10 @@
     width: 768px;
     height: 1024px;
     background-color: #f2f2f2;
+}
+
+:host ::ng-deep .p-button-rounded.custom-button {
+    background-color: #24232C;
+    border-color: #24232C;
+
 }

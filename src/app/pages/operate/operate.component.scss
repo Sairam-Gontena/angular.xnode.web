@@ -116,6 +116,12 @@
 :host ::ng-deep .p-dropdown .p-dropdown-label,
 :host ::ng-deep .p-dropdown .p-dropdown-trigger {
     color: #ffffff;
+    height: 30px;
+    width: 10px;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label{
+    display: none;
 }
 
 img.highlighted {
@@ -125,4 +131,10 @@ img.highlighted {
     width: 1413px;
     height: 0px;
     border: 1px solid #2E2D36;
+}
+
+:host ::ng-deep .p-button-rounded.custom-button {
+    background-color: #24232C;
+    border-color: #24232C;
+
 }
