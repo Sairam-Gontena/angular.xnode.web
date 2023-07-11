@@ -16,7 +16,7 @@
 }
 
 .finbuddy-text {
-    width: 53rem;
+    width: auto;
     color: #FFFFFF;
 }
 
@@ -35,7 +35,7 @@
 
 @media screen and (max-width: 780px) {
     .finbuddy-text {
-        width: 19rem !important;
+        width: auto !important;
     }
 }
 
