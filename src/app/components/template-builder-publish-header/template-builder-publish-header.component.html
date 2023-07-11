@@ -1,6 +1,6 @@
 <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
     <div class="flex align-items-center justify-content-center">
-        <p-dropdown [options]="templates"></p-dropdown>
+        <p-dropdown [options]="templates" appendTo="body"></p-dropdown>
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }" alt="desktop"
@@ -10,7 +10,7 @@
         <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
             class="image-icon" (click)="emitIconClicked('mobile')">
     </div>
-    <div class="flex align-items-center justify-content-center gap-3">
+    <div class="flex align-items-center justify-content-center gap-3 ">
         <p-button label="Save" styleClass="p-button-rounded custom-button"></p-button>
         <p-button styleClass="p-button-rounded" (click)="navigateOnClick()">{{dropdownSelectedValue}}</p-button>
         <p-dropdown [options]="templatesOptions" id="design-template-options-header" class="custom-dropdown"
