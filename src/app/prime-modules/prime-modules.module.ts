@@ -15,6 +15,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { MessagesModule } from 'primeng/messages';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { ToolbarModule } from 'primeng/toolbar';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [],
@@ -35,7 +38,10 @@ import { MessagesModule } from 'primeng/messages';
     FormsModule,
     ReactiveFormsModule,
     PasswordModule,
-    MessagesModule
+    MessagesModule,
+    SplitButtonModule,
+    ToolbarModule,
+    SelectButtonModule
   ],
   exports: [
     CommonModule,
@@ -54,7 +60,10 @@ import { MessagesModule } from 'primeng/messages';
     FormsModule,
     ReactiveFormsModule,
     PasswordModule,
-    MessagesModule
+    MessagesModule,
+    SplitButtonModule,
+    ToolbarModule,
+    SelectButtonModule
   ]
 })
 export class PrimeModulesModule { }

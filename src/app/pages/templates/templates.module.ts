@@ -5,9 +5,6 @@ import { TemplatesRoutingModule } from './templates-routing.module';
 import { TemplatesComponent } from './templates.component';
 import { PrimeModulesModule } from '../../prime-modules/prime-modules.module';
 import { AppHeaderComponent } from 'src/app/components/app-header/app-header.component';
-
-
-
 @NgModule({
   declarations: [
     TemplatesComponent,
@@ -16,7 +13,8 @@ import { AppHeaderComponent } from 'src/app/components/app-header/app-header.com
   imports: [
     CommonModule,
     TemplatesRoutingModule,
-    PrimeModulesModule
+    PrimeModulesModule,
+
   ],
   exports: [
     AppHeaderComponent,
