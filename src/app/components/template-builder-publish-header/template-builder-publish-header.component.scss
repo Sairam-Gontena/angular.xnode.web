@@ -5,13 +5,34 @@
 :host ::ng-deep .p-dropdown {
     background: #3A3942;
     border: 0;
+    height: 42px !important;
+    top: 5px;
+
 }
 
 :host ::ng-deep .p-dropdown .p-dropdown-label,
 :host ::ng-deep .p-dropdown .p-dropdown-trigger {
     color: #ffffff;
+    height: 35px;
+    width: 10px;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label {
+    display: none;
+
 }
 
 img.highlighted {
     background-color: #02ADEE !important;
+}
+
+:host ::ng-deep .p-button-rounded.custom-button {
+    background-color: #24232C;
+    border-color: #24232C;
+
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-items-wrapper{
+    background-color: #24232C;
+    color: #24232C;
 }

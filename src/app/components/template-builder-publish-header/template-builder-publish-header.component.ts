@@ -15,6 +15,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   highlightedIndex: string | null = null;
   templatesOptions: any;
   templateEvent: any;
+  dropdownSelectedValue: any;
 
   ngOnInit(): void {
     this.templates = [
@@ -22,9 +23,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     ]
 
     this.templatesOptions = [
-      { label: 'Preview' },
-      { label: 'Publish' }
+      { label: 'Publish' },
+      { label: 'Preview' }
     ]
+    this.dropdownSelectedValue = this.templatesOptions[0].label;
   };
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
@@ -36,7 +38,11 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
   onDropdownOptionClick(event: any) {
     this.templateEvent = event.value.label;
-    if (this.templateEvent == 'Preview') {
+    this.dropdownSelectedValue = this.templateEvent
+  }
+
+  navigateOnClick() {
+    if (this.dropdownSelectedValue == 'Preview') {
       window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
     }
   }
