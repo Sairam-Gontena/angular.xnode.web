@@ -8,6 +8,9 @@
                 </div>
             </div>
             <form [formGroup]="loginForm">
+                <div>
+                    <p-progressspinner class="absolute top-50 left-50"></p-progressspinner>
+                </div>
                 <div
                     class="font-semibold font-normal text-base flex flex-wrap justify-content-end">
                     <a class="text-blue-700 pointer" routerLink="/">Sign Up</a>
@@ -63,6 +66,7 @@
             </form>
         </div>
     </div>
+
     <div
         class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 sign-up-img text-white text-center text-left">
         <div class="p-8">

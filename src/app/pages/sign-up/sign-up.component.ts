@@ -26,6 +26,8 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.clear();
+
+
   }
 
   get signUp() { return this.signUpForm.controls; }
@@ -38,11 +40,11 @@ export class SignUpComponent implements OnInit {
     const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
     localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
     if (matchedUser) {
+      this.loading = false;
       this.router.navigate(['/workspace']);
-      this.loading = false;
     } else {
-      this.errorMessage = 'Email and password do not match.';
       this.loading = false;
+      this.errorMessage = 'Email and password do not match.';
     }
   }
 }

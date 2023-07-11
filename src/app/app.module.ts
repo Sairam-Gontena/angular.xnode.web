@@ -22,10 +22,11 @@ import { PublishComponent } from './publish/publish.component';
 import { StepperComponent } from './components/stepper/stepper.component';
 import { Axios } from 'axios';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { LoginComponent } from './pages/login/login.component';
 import { DragDropModule } from 'primeng/dragdrop';
 import { TemplatesModule } from './pages/templates/templates.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoginModule } from './pages/login/login.module';
+import { SignUpModule } from './pages/sign-up/signup.module';
 
 
 @NgModule({
@@ -40,7 +41,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     TableComponent,
     PublishComponent,
     StepperComponent,
-    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +56,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
+    LoginModule,
+    SignUpModule,
     TableModule,
     ToggleButtonModule,
     TemplatesModule

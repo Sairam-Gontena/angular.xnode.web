@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TemplateBuilderRoutingModule } from './template-builder-routing.module';
 import { TemplateBuilderComponent } from './template-builder.component';
@@ -23,6 +23,8 @@ import { LayoutElementsComponent } from 'src/app/components/layout-elements/layo
   exports: [
     GridsterModule,
     PageToolsLayoutComponent
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class TemplateBuilderModule { }

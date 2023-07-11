@@ -13,6 +13,7 @@ export class AboutYourSelfComponent implements OnInit {
   selectedCategory: any = null;
   submitted!: boolean;
   isPlaceholderVisible: boolean = true;
+  loading: boolean = true;
   categories: any[] = [
     { name: 'For Personal', key: 'P' },
     { name: 'For Commercial', key: 'C' },
@@ -35,6 +36,7 @@ export class AboutYourSelfComponent implements OnInit {
     if (this.aboutyourselfForm.invalid) {
       return;
     }
+    this.loading = false;
     this.router.navigate(['/export-get-started']);
   }
 

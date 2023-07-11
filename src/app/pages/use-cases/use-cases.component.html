@@ -5,25 +5,33 @@
             <p-dropdown [options]="templates"></p-dropdown>
         </div>
         <div class="flex align-items-center justify-content-center gap-3">
-            <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }" alt="desktop"
+            <img src="./assets/Computer.svg"
+                [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }"
+                alt="desktop"
                 class="image-icon">
-            <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
+            <img src="./assets/tab.svg"
+                [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }"
+                alt="tab"
                 class="image-icon">
-            <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
+            <img src="./assets/mobile.svg"
+                [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }"
+                alt="mobile"
                 class="image-icon">
         </div>
         <div class="flex align-items-center justify-content-center gap-3">
             <p-button label="Save" styleClass="p-button-rounded"></p-button>
-            <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
+            <p-button label="Publish" (click)="openNewTab()"
+                styleClass="p-button-rounded"></p-button>
         </div>
     </div>
-
     <div *ngIf="!loading && useCases?.length > 0">
         <div *ngFor="let usecase of useCases">
             <div class="flex justify-content-center flex-wrap card-container">
-                <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">
+                <div
+                    class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">
                     <div class="col-2 md:col-2 lg:col-2">
-                        <img src="../../assets/case-0{{usecase.id}}.svg" alt="usecase-01" class="ml-3 w-7 h-5">
+                        <img src="../../assets/case-0{{usecase.id}}.svg"
+                            alt="usecase-01" class="ml-3 w-7 h-5">
                     </div>
                     <div class="col-10 md:col-10 lg:col-10">
                         <h1 class=" text-white text-xl mt-3 font-bold">{{usecase.title}}</h1>
@@ -36,5 +44,5 @@
     <div *ngIf="!loading && useCases?.length === 0">
         <h2 class="text-center text-white">No Use cases found</h2>
     </div>
-    <p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>
+    <p-progressspinner class="absolute top-50 left-50" *ngIf="loading"></p-progressspinner>
 </div>

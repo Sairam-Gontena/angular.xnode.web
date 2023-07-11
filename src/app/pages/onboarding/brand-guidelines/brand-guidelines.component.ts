@@ -15,6 +15,8 @@ export class BrandGuidelinesComponent implements OnInit {
   isFormSubmitted!: boolean;
   draganddropSelected!: boolean;
   browserSelected!: boolean;
+  loading: boolean = true;
+
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.brandguidelinesForm = this.formBuilder.group({
       workspaceName: ['', Validators.required],
@@ -105,6 +107,9 @@ export class BrandGuidelinesComponent implements OnInit {
       return;
     }
     this.isInvalid = false;
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000);
     this.router.navigate(['/about-your-self']);
   }
   validateLogoFile(control: AbstractControl) {

@@ -16,6 +16,8 @@ export class WorkspaceComponent implements OnInit {
   personalSelected!: boolean;
   isInvalid: boolean = false;
   isPlaceholderVisible: boolean = true;
+  loading: boolean = true;
+
   constructor(private formBuilder: FormBuilder, public router: Router) {
     this.workspaceForm = this.formBuilder.group({
       companyName: ['', Validators.required],
@@ -36,6 +38,7 @@ export class WorkspaceComponent implements OnInit {
       return;
     }
     this.isInvalid = false;
+    this.loading = false;
     this.router.navigate(['/brand-guideline']);
   }
   selectTeamOrCompany() {
