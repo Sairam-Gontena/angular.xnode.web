@@ -19,6 +19,8 @@ import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
 import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { User } from 'src/app/utils/user-util';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-template-builder',
@@ -37,8 +39,13 @@ export class TemplateBuilderComponent implements OnInit {
   emailData: any;
   recordId: any;
   iframeSrc: any;
+  currentUser?: User;
+  overview: any;
+  id: String = '';
+  loading = true;
+  email = '';
   selectedTemplate = localStorage.getItem("app_name");
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer, private apiService: ApiService) {
 
   }
 
@@ -46,7 +53,6 @@ export class TemplateBuilderComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-
     this.layoutColumns = LAYOUT_COLUMNS;
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
     this.options = {
@@ -74,14 +80,34 @@ export class TemplateBuilderComponent implements OnInit {
       let JsonData = JSON.parse(this.emailData)
       this.emailData = JsonData?.email;
     }
-    this.recordId = localStorage.getItem('record_id');
-    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
-    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+    if (localStorage.getItem('record_id')) {
+      this.recordId = localStorage.getItem('record_id');
+      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+    } else {
+      this.get_ID();
+    }
+
   }
 
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
     this.currentView = icon;
   }
+  get_ID() {
+    this.apiService.getID(this.emailData)
+      .then(response => {
+        this.recordId = response.data.data[0].id;
+        this.loadDesignStudio()
+        this.loading = false;
+      }).catch(error => {
+        console.log(error);
+        this.loading = false;
+      });
+  }
 
+  loadDesignStudio() {
+    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+  }
 }
