@@ -2,6 +2,7 @@
     background-color: #23222B;
     width: 100%;
     margin: 0px;
+
 }
 
 .para-text {
@@ -33,6 +34,11 @@
     border: 0;
 }
 
+.stepper-card {
+    width: 566px;
+    margin-left: 55px;
+}
+
 @media screen and (max-width: 780px) {
     .finbuddy-text {
         width: auto !important;
@@ -52,6 +58,22 @@
     }
 }
 
+@media (max-width: 780px) {
+
+    .stepper-card {
+        width: 500px;
+        margin-left: 49px;
+    }
+}
+
+@media (max-width: 780px) {
+
+    .nelson-name {
+        width: 370px !important;
+
+    }
+}
+
 .stepper {
     margin-left: 2rem;
 }
@@ -66,6 +88,7 @@
 
 :host ::ng-deep.p-button .p-button-icon-left {
     margin-right: 0.5rem;
+
     background-color: #4B4B4B;
     color: white;
     border-radius: 50%;
@@ -75,4 +98,13 @@
 .overview-body {
     height: calc(100vh - 50px);
     overflow: auto;
+}
+
+.feature-button {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 52px;
 }
