@@ -28,9 +28,9 @@ export class ChatBotComponent implements OnInit {
       'email': email,
       'flag': 'x-pilot'
     }
-
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext' + localStorage.getItem('record_id');
     // Needs to be refactor
     // Add a load event listener to the iframe
     iframe.addEventListener('load', () => {
