@@ -60,6 +60,14 @@
               ],
               "outputHashing": "all"
             },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
+            },
             "qa": {
               "fileReplacements": [
                 {
@@ -92,6 +100,9 @@
           "configurations": {
             "production": {
               "browserTarget": "xnode:build:production"
+            },
+            "dev": {
+              "browserTarget": "xnode:build:dev"
             },
             "qa": {
               "browserTarget": "xnode:build:qa"
