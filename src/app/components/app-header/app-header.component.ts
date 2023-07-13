@@ -16,24 +16,24 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
 
   selectedValue: any;
-  values: MenuItem[] | undefined;
+  values: any;
 
   constructor(private router: Router) {
     this.values = [
-      // { name: 'Rymond Nelson', code: 'rn', disabled: true },
-      { label: 'Logout' }
-
-      ,];
+      { name: 'Logout', code: 'lg' },
+      // { name: '', code: '' }
+    ];
   }
 
   ngOnInit(): void {
     this.headerItems = HeaderItems;
+    localStorage.clear();
+
 
   }
-
-  onOptionSelected(value: any) {
-    console.log(value.code)
-    if (value.code == 'lg') {
+  onOptionSelected(event: any) {
+    console.log(event.value.code, '1245')
+    if (event.value.code === 'lg') {
       localStorage.clear();
       this.router.navigate(['/'])
       // window.location.href = '/';

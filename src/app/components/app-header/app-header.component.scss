@@ -22,3 +22,11 @@
     background-color: blue;
     /* Replace with your desired background color */
 }
+
+:host ::ng-deep.p-dropdown-label {
+    display: none;
+}
+
+:host ::ng-deep.p-overlay {
+    left: -64px !important;
+}

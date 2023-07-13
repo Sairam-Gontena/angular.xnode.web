@@ -11,20 +11,14 @@
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <!-- <label class="mt-3 font-medium text-xs">Rymond Nelson</label> -->
+        <div class="mt-3 font-medium text-xs">Rymond Nelson</div>
 
         <div class="flex justify-content-center align-content-center ">
-
-            <!-- <p-splitbutton label="Rymond Nelson" icon="pi pi-check" [model]="items"
-                styleClass="p-button-warning"></p-splitbutton> -->
-
-            <!-- <i class="pi pi-angle-down" (click)="toggleDropdown()"></i>
-
             <p-dropdown [options]="values" id="user-options-header"
-                optionLabel="name"
-                (onChange)="onOptionSelected($event.value)"
-                class="custom-dropdown"
-                *ngIf="isDropdownVisible"></p-dropdown> -->
+                optionLabel="name" [(ngModel)]="selectedValue"
+                (onChange)="onOptionSelected($event)"
+                class="custom-dropdown"></p-dropdown>
+
         </div>
 
     </div>
