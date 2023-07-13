@@ -11,6 +11,7 @@ import { Emails } from 'src/app/utils/login-util';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted: boolean = false;
+  errorMessage!: string;
   messages: any = [
   ];
 
@@ -22,6 +23,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.loginForm.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    });
   }
 
   get login() { return this.loginForm.controls; }
@@ -42,4 +47,5 @@ export class LoginComponent implements OnInit {
       ]
     }
   }
+
 }
