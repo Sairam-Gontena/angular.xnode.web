@@ -60,6 +60,22 @@
               ],
               "outputHashing": "all"
             },
+            "qa": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ]
+            },
+            "uat": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.uat.ts"
+                }
+              ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -76,6 +92,12 @@
           "configurations": {
             "production": {
               "browserTarget": "xnode:build:production"
+            },
+            "qa": {
+              "browserTarget": "xnode:build:qa"
+            },
+            "demo": {
+              "browserTarget": "xnode:build:demo"
             },
             "development": {
               "browserTarget": "xnode:build:development"
