@@ -14,11 +14,8 @@ export class AboutYourSelfComponent implements OnInit {
   submitted!: boolean;
   isPlaceholderVisible: boolean = true;
   errorMessage!: string;
-  categories: any[] = [
-    { name: 'For Personal', key: 'P' },
-    { name: 'For Commercial', key: 'C' },
-    { name: 'Others', key: 'O' }
-  ];
+  categories: any;
+
 
 
   constructor(private formBuilder: FormBuilder, public router: Router) { }
@@ -29,7 +26,11 @@ export class AboutYourSelfComponent implements OnInit {
       selectedCategory: ['', Validators.required],
       Additionalinfo: ['', Validators.required]
     });
-
+    this.categories = [
+      { name: 'For Personal', key: 'P' },
+      { name: 'For Commercial', key: 'C' },
+      { name: 'Others', key: 'O' }
+    ];
   }
 
   get Form() { return this.aboutyourselfForm.controls; }

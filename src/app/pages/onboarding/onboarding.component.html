@@ -1,16 +1,18 @@
 <div class="grid bg-white m-0" [ngClass]="{'h-full':h_full_true }">
     <div class="bg-image bg-cover bg-no-repeat w-full
      h-full">
-        <div class="">
+        <div class>
             <div class="flex justify-content-end m-8">
-                <img src=" ./assets/XLogo.svg" alt="x-logo" class="">
+                <img src=" ./assets/XLogo.svg" alt="x-logo" class>
             </div>
             <div class="flex justify-content-center -mt-8">
-                <p-card [style]=" { width: '766px' ,height: 'auto' }" class="shadow-8">
+                <p-card [style]=" { width: '766px' ,height: 'auto' }"
+                    class="shadow-8">
                     <xnode-workspace *ngIf="stepData == 'Workspace'"></xnode-workspace>
                     <xnode-brand-guidelines *ngIf="stepData =='BrandGuidelines'"></xnode-brand-guidelines>
                     <xnode-about-your-self *ngIf="stepData =='AboutYourSelf'"></xnode-about-your-self>
-                    <xnode-export-get-started *ngIf="stepData =='ExportGetStarted'"></xnode-export-get-started>
+                    <xnode-export-get-started
+                        *ngIf="stepData =='ExportGetStarted'"></xnode-export-get-started>
                 </p-card>
             </div>
         </div>
