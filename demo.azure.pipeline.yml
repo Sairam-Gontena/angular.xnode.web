@@ -40,5 +40,5 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'xnode-spn'
               appType: 'webAppLinux'
-              WebAppName: 'demo-angular-xnode'
+              WebAppName: 'demo-xnode'
               packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
