@@ -5,7 +5,11 @@
     "ng": "ng",
     "i": "npm i --legacy-peer-deps",
     "start": "ng serve",
-    "build": "ng build",
+    "build:prod": "ng build --configuration=prod",
+    "build:qa": "ng build --configuration=qa",
+    "build:dev": "ng build --configuration=dev",
+    "build:uat": "ng build --configuration=uat",
+    "build:demo": "ng build --configuration=demo",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
