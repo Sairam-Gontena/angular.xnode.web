@@ -1,6 +1,6 @@
 export const environment = {
-    production: true,
-    baseUrl: 'https://dev-angular-xnode.azurewebsites.net/',
+    production: false,
+    baseUrl: 'https://prod-xnode.azurewebsites.net/',
     xpilotUrl: 'https://xpilot.azurewebsites.net/',
-    designStudioUrl: 'https://xnode-template-builder.azurewebsites.net/',
+    designStudioUrl: ' https://prod-xnode-tmpbld.azurewebsites.net/',
 }
