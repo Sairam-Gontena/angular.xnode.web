@@ -19,16 +19,15 @@ export class AppHeaderComponent implements OnInit {
   values: any;
 
   constructor(private router: Router) {
-    this.values = [
-      { name: 'Logout', code: 'lg' },
-      // { name: '', code: '' }
-    ];
+    
   }
 
   ngOnInit(): void {
     this.headerItems = HeaderItems;
-    localStorage.clear();
-
+    this.values = [
+      { name: 'Logout', code: 'lg' },
+      // { name: '', code: '' }
+    ];
 
   }
   onOptionSelected(event: any) {
