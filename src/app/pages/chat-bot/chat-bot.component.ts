@@ -40,14 +40,12 @@ export class ChatBotComponent implements OnInit {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
           console.log('event', event.origin, this.targetUrl);
-          console.log(event)
           // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return; // Ignore messages from untrusted sources
           }
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
-            console.log('desired place after', event)
             window.location.href = this.baseUrl + '#/design';
             // Trigger a custom event in the parent window
             const customEvent = new Event('customEvent');
