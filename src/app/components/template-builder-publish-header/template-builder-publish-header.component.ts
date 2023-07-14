@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -37,7 +38,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onDropdownOptionClick(event: any) {
     this.templateEvent = event.value.label;
     if (this.templateEvent == 'Preview') {
-      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+      window.open(environment.designStudioUrl, '_blank');
     }
   }
 }
