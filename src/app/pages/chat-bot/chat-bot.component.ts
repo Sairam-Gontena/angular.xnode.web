@@ -30,7 +30,7 @@ export class ChatBotComponent implements OnInit {
     }
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext' + localStorage.getItem('record_id');
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext=' + localStorage.getItem('record_id');
     // Needs to be refactor
     // Add a load event listener to the iframe
     iframe.addEventListener('load', () => {
@@ -40,9 +40,8 @@ export class ChatBotComponent implements OnInit {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
           console.log('event', event.origin, this.targetUrl);
-
           // Check the origin of the message to ensure it's from the iframe's domain
-          if (event.origin + '/' !== this.targetUrl) {
+          if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return; // Ignore messages from untrusted sources
           }
           // Check the message content and trigger the desired event
