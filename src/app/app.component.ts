@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
 
   handleRouterChange() {
     this.isSideWindowOpen = false;
-    console.log(this.isSideWindowOpen)
   }
 
   getUserData() {
