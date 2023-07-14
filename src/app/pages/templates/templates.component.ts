@@ -19,7 +19,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMeUserId()
+    this.getMeUserId();
   }
 
   onClickCreateNewTemplate(data: any): void {

@@ -12,7 +12,7 @@
             </div>
             <div id="side-window" class="side-window" *ngIf="this.isSideWindowOpen"
                 [ngClass]="{ 'open': isSideWindowOpen }">
-                <div class="content">
+                <div class="content-class-pilot h-full">
                     <button class="close-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
                     <iframe id="myIframe" [src]="this.iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                         class="w-full h-full  pl-1 pr-1">
