@@ -8,6 +8,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DropdownModule } from 'primeng/dropdown';
     ProgressSpinnerModule,
     ButtonModule,
     SharedModule,
-    DropdownModule
+    DropdownModule,
+    ToastModule
   ]
 })
 export class OverViewModule {

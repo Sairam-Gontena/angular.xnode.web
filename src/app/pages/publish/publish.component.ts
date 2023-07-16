@@ -11,7 +11,7 @@ export class PublishComponent {
   templates: any;
   selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
-
+  isOpen = false;
   tableHeaders: string[] = ['Version', 'Deployed On', 'Deployed By', "Notes", "Status"];
   tableData: any[] = [
     {

@@ -11,7 +11,7 @@ import { ApiService } from 'src/app/api/api.service';
   styleUrls: ['./page-tools-layout.component.scss']
 })
 export class PageToolsLayoutComponent {
-  isOpen = true;
+  isOpen = false;
   sideMenu = sidemenu?.sidemenu;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
@@ -28,7 +28,9 @@ export class PageToolsLayoutComponent {
     } if (this.href.includes('data-model')) {
       label = "Config";
     } if (this.href.includes('publish')) {
-      label = "publish";
+      label = "Publish";
+    } else {
+      label = "Publish";
     }
     this.loadSubSideMenu(label);
   }
@@ -37,6 +39,7 @@ export class PageToolsLayoutComponent {
     this.layoutColumns = LAYOUT_COLUMNS;
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
     this.apiService.openSubmenu.subscribe((data: any) => {
+      console.log('data', data);
       this.isOpen = data;
     })
   }

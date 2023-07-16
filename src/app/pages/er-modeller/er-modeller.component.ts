@@ -5,12 +5,13 @@ import { JsPlumbService } from './service/jsPlumb.service';
 import { UtilService } from './service/util.service';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'xnode-er-modeller',
   templateUrl: './er-modeller.component.html',
   styleUrls: ['./er-modeller.component.scss'],
-  providers: [DataService, JsPlumbService, UtilService],
+  providers: [DataService, JsPlumbService, UtilService, MessageService],
 })
 
 export class ErModellerComponent implements AfterViewChecked, OnInit {
@@ -27,7 +28,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   dataModel: any;
   @Input() erModelInput: any;
 
-  constructor(private apiService: ApiService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
   }
@@ -59,9 +60,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       this.dashboard = this.layoutColumns[layout];
   }
 
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
-  }
 
   //get calls 
   getMeUserId() {
@@ -76,6 +74,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       })
       .catch(error => {
         console.log(error);
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
   }
@@ -94,7 +93,12 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
       })
       .catch(error => {
         console.log(error);
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
+  }
+  showToast(severity: string, message: string, code: string) {
+    this.messageService.clear();
+    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
 }
