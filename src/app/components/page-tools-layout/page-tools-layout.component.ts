@@ -28,7 +28,9 @@ export class PageToolsLayoutComponent {
     } if (this.href.includes('data-model')) {
       label = "Config";
     } if (this.href.includes('publish')) {
-      label = "publish";
+      label = "Publish";
+    } else {
+      label = "Publish";
     }
     this.loadSubSideMenu(label);
   }

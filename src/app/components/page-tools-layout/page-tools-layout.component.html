@@ -6,49 +6,39 @@
                (click)="toggleMenu()"></div>
      </div>
      <div class="submenu" *ngIf="isOpen">
-          <div class="text-center border-bottom-2 p-3 border-primary">
-               <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Search" />
-               </span>
-          </div>
-          <div class="">
-               <p-accordion [activeIndex]="1" *ngFor="let menu of sideMenuItem[0]?.SideBar; let i = 'index+1'">
-                    <p-accordionTab header="{{menu?.AccordianTabHeader}}">
-                         <div class="row">
-                              <div class="col-4" *ngFor="let submenu of menu?.SubSideBar; let j = 'index+1'">
-                                   <div class="layout-item border-1 border-primary flex flex-wrap align-content-center justify-content-center pointer layout-item-active"
-                                        id="{{submenu?.id}}" draggable="true" (dragstart)="drag($event)"
-                                        [ngClass]="{'layout-item-active': selectedContainer=== '{{submenu?.selectedcontainer}}'  }">
-                                        <span *ngIf="submenu?.hasrouter=='true'; else elseBlock">
-                                             <div class="flex flex-column p-2">
-                                                  <div class="text-center">
-                                                       <img src="{{submenu?.imgsrc}}" alt="{{submenu?.alt}}"
-                                                            id="{{submenu?.id}}" draggable="true"
-                                                            (dragstart)="drag($event)">
-                                                  </div>
-                                                  <div class="mt-2 f-8" id="{{submenu?.id}}">
-                                                       <p class="text-xs text-center">{{submenu?.content}}</p>
-                                                  </div>
+          <p-accordion [activeIndex]="1" *ngFor="let menu of sideMenuItem[0]?.SideBar; let i = 'index+1'">
+               <p-accordionTab header="{{menu?.AccordianTabHeader}}">
+                    <div class="row">
+                         <div class="col-4" *ngFor="let submenu of menu?.SubSideBar; let j = 'index+1'">
+                              <div class="layout-item border-1 border-primary flex flex-wrap align-content-center justify-content-center pointer layout-item-active"
+                                   id="{{submenu?.id}}" draggable="true" (dragstart)="drag($event)"
+                                   [ngClass]="{'layout-item-active': selectedContainer=== '{{submenu?.selectedcontainer}}'  }">
+                                   <span *ngIf="submenu?.hasrouter=='true'; else elseBlock">
+                                        <div class="flex flex-column p-2">
+                                             <div class="text-center">
+                                                  <img src="{{submenu?.imgsrc}}" alt="{{submenu?.alt}}"
+                                                       id="{{submenu?.id}}" draggable="true" (dragstart)="drag($event)">
                                              </div>
-                                        </span>
-                                        <ng-template #elseBlock>
-                                             <div class="flex flex-column p-2">
-                                                  <div class="text-center">
-                                                       <img src="{{submenu?.imgsrc}}" alt="{{submenu?.alt}}"
-                                                            id="{{submenu?.id}}" draggable="true"
-                                                            (dragstart)="drag($event)">
-                                                  </div>
-                                                  <div class="mt-2 f-8" id="{{submenu?.id}}">
-                                                       <p class="text-xs text-center">{{submenu?.content}}</p>
-                                                  </div>
+                                             <div class="mt-2 f-8" id="{{submenu?.id}}">
+                                                  <p class="text-xs text-center">{{submenu?.content}}</p>
                                              </div>
-                                        </ng-template>
-                                   </div>
+                                        </div>
+                                   </span>
+                                   <ng-template #elseBlock>
+                                        <div class="flex flex-column p-2">
+                                             <div class="text-center">
+                                                  <img src="{{submenu?.imgsrc}}" alt="{{submenu?.alt}}"
+                                                       id="{{submenu?.id}}" draggable="true" (dragstart)="drag($event)">
+                                             </div>
+                                             <div class="mt-2 f-8" id="{{submenu?.id}}">
+                                                  <p class="text-xs text-center">{{submenu?.content}}</p>
+                                             </div>
+                                        </div>
+                                   </ng-template>
                               </div>
                          </div>
-                    </p-accordionTab>
-               </p-accordion>
-          </div>
+                    </div>
+               </p-accordionTab>
+          </p-accordion>
      </div>
 </div>

@@ -1,64 +1,13 @@
 <div class="template-builder-wrapper">
     <div class="template-builder-layout-wrapper">
-        <div class="text-center border-bottom-2 p-3 border-primary">
-            <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search" />
-            </span>
-        </div>
-        <div class="">
-            <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Monitor">
-                    <xnode-operate-layout (getconfigureLayout)="getLayout($event)"></xnode-operate-layout>
-                </p-accordionTab>
-            </p-accordion>
-            <p-accordion [activeIndex]="1">
-                <p-accordionTab header="Support">
-                    <xnode-operate-layout (getconfigureLayout)="getLayout($event)"></xnode-operate-layout>
-                </p-accordionTab>
-            </p-accordion>
-            <p-accordion [activeIndex]="2">
-                <p-accordionTab header=" Training">
-                    <p>
-                        Training
-                    </p>
-                </p-accordionTab>
-            </p-accordion>
-            <p-accordion [activeIndex]="3">
-                <p-accordionTab header=" Change">
-                    <p>
-                        Change
-                    </p>
-                </p-accordionTab>
-            </p-accordion>
-            <p-accordion [activeIndex]="4">
-                <p-accordionTab header="Feedback">
-                    <xnode-operate-feedback (getOperateLayout)="getLayout($event)"></xnode-operate-feedback>
-                </p-accordionTab>
-            </p-accordion>
-        </div>
+        <xnode-page-tools-layout></xnode-page-tools-layout>
     </div>
-    <div class="template-builder-body-wrapper">
-        <div class="flex justify-content-between flex-wrap p-4 pb-1">
-            <div class="flex align-items-center justify-content-center">
-                <p-dropdown [options]="templates"></p-dropdown>
-            </div>
-            <div class="flex align-items-center justify-content-center gap-3">
-                <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'desktop' }"
-                    alt="desktop" class="image-icon" (click)="emitIconClicked('desktop')">
-                <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'tab' }" alt="tab"
-                    class="image-icon" (click)="emitIconClicked('tab')">
-                <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': highlightedIndex === 'mobile' }" alt="mobile"
-                    class="image-icon" (click)="emitIconClicked('mobile')">
-            </div>
-            <div class="flex align-items-center justify-content-center gap-3">
-                <p-button label="Save" styleClass="p-button-rounded"></p-button>
-                <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button>
-            </div>
-        </div>
-        <div class="surface-900  h-full overflow-auto m-4 p-3">
+    <div class="template-builder-body-wrapper overflow-hidden"
+        [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
+        <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+        <div class="surface-900 operate-body ml-4 mr-4 p-3">
             <div class="h-full text-white" *ngIf="dashboard == 'Overview'">
-                <div class="grid surface-900">
+                <div class=" surface-900">
                     <h6 class="text-4xl  p-4 font-bold">Overview</h6>
                     <div>
                         <div class="text-xl font-bold  ml-5">
