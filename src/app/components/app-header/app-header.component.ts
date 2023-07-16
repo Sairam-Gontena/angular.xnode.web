@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 export class AppHeaderComponent implements OnInit {
   headerItems: any;
-  values: any;
+  logoutDropdown: any;
   selectedValue: any;
 
   constructor(private router: Router) {
@@ -18,16 +18,14 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.headerItems = HeaderItems;
-    this.values = [
-      { name: 'Rymond Nelson', code: 'NY' },
-      { name: 'Logout', code: 'lg' }
+    this.logoutDropdown = [
+      {
+        label: 'Logout',
+        command: () => {
+          localStorage.clear();
+          this.router.navigate(['/'])
+        }
+      },
     ];
-  }
-
-  onOptionSelected(value: any) {
-    if (value.code == 'lg') {
-      localStorage.clear();
-      this.router.navigate(['/'])
-    }
   }
 }

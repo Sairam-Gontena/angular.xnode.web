@@ -18,7 +18,18 @@
     color: #959494;
 }
 
-.custom-dropdown .p-dropdown-trigger {
-    background-color: blue;
-    /* Replace with your desired background color */
+:host ::ng-deep.p-button {
+    border: none;
+    background: #24232C !important;
+    padding: 0;
+}
+
+:host ::ng-deep.p-button:enabled:hover {
+    border: none;
+}
+
+:host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
+    top: 23px !important;
+    left: unset !important;
+    right: 13px !important;
 }

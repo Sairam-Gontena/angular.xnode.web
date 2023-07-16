@@ -10,9 +10,6 @@
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <div>
-            <p-dropdown [options]="values" id="user-options-header" [(ngModel)]="selectedValue" optionLabel="name"
-                (onChange)="onOptionSelected($event.value)" class="custom-dropdown"></p-dropdown>
-        </div>
+        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown" styleClass="p-button-raised"></p-splitButton>
     </div>
 </div>
