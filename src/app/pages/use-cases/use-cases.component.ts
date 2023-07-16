@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'xnode-use-cases',
   templateUrl: './use-cases.component.html',
-  styleUrls: ['./use-cases.component.scss']
+  styleUrls: ['./use-cases.component.scss'],
+  providers: [MessageService]
 })
 export class UseCasesComponent implements OnInit {
   useCases: any = [];
@@ -14,7 +17,8 @@ export class UseCasesComponent implements OnInit {
   currentUser?: User;
   templates: any;
   highlightedIndex: any;
-  constructor(private apiService: ApiService) {
+
+  constructor(private apiService: ApiService, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -28,9 +32,7 @@ export class UseCasesComponent implements OnInit {
       { label: localStorage.getItem("app_name") }
     ]
   }
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
-  }
+
   //get calls 
   get_ID() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
@@ -42,6 +44,7 @@ export class UseCasesComponent implements OnInit {
       })
       .catch(error => {
         console.log(error);
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
   }
@@ -60,8 +63,12 @@ export class UseCasesComponent implements OnInit {
         this.loading = false;
       })
       .catch(error => {
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
-
+  }
+  showToast(severity: string, message: string, code: string) {
+    this.messageService.clear();
+    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
 }

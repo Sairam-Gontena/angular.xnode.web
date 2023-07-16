@@ -12,6 +12,7 @@ export class OperateComponent implements OnInit {
   dashboard: any = 'Overview';
   layoutColumns: any;
   templates: any;
+  isOpen = true;
   selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   operateLayout: any;

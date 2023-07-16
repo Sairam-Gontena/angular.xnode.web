@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ApiService {
   endPoint = "https://xpilot.azurewebsites.net/crud";
-  private open: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private open: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public openSubmenu: Observable<boolean> = this.open.asObservable();
   constructor() {
   }

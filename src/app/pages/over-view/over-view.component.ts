@@ -2,18 +2,20 @@ import { Component, Input } from '@angular/core';
 import *as data from '../../constants/overview.json';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'xnode-over-view',
   templateUrl: './over-view.component.html',
-  styleUrls: ['./over-view.component.scss']
+  styleUrls: ['./over-view.component.scss'],
+  providers: [MessageService]
 })
 
 export class OverViewComponent {
   @Input() currentStep: number = 2;
   loading: boolean = true;
   templates: any;
-  selectedTemplate = localStorage.getItem("app_name");
+  appName = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   iconClicked: any;
   stepper: any;
@@ -26,8 +28,9 @@ export class OverViewComponent {
   overview: any;
   id: String = '';
   email = '';
+  features: any;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -54,7 +57,10 @@ export class OverViewComponent {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 
-
+  showToast(severity: string, message: string, code: string) {
+    this.messageService.clear();
+    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  }
   nextStep(): void {
     if (this.currentStep < 3) {
       this.currentStep++;
@@ -92,6 +98,7 @@ export class OverViewComponent {
         this.getMeOverview();
       }).catch(error => {
         console.log(error);
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
   }
@@ -105,13 +112,15 @@ export class OverViewComponent {
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
-          this.selectedTemplate = response?.data?.Title;
-          localStorage.setItem("app_name", response?.data?.Title);
+          this.features = response.data?.Features.split(',');
+          this.appName = response?.data?.product_name;
+          localStorage.setItem("app_name", response?.data?.product_name);
         }
         this.loading = false;
       })
       .catch(error => {
         console.log(error);
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
 
