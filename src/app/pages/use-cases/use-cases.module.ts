@@ -5,14 +5,14 @@ import { UseCasesRoutingModule } from './use-cases-routing.module';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-// import { PrimeModule } from 'src/app/prime-modules/prime.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [UseCasesComponent],
   imports: [
     CommonModule,
     UseCasesRoutingModule,
-    // PrimeModule,
+    SharedModule,
     ButtonModule,
     DropdownModule,
     ProgressSpinnerModule
