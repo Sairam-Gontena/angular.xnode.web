@@ -73,4 +73,9 @@ export class ChatBotComponent implements OnInit {
     this.router.navigate(['/design']);
   }
 
+  onClickHome(): void {
+    this.router.navigate(['/my-templates']);
+
+  }
+
 }
