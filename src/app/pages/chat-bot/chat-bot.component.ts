@@ -30,7 +30,7 @@ export class ChatBotComponent implements OnInit {
     }
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext=' + localStorage.getItem('record_id');
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext=' + localStorage.getItem('record_id') + '&targetUrl=' + environment.baseUrl;
     // Needs to be refactor
     // Add a load event listener to the iframe
     iframe.addEventListener('load', () => {
@@ -64,6 +64,8 @@ export class ChatBotComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    console.log('????', this.targetUrl);
+
     this.safeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 

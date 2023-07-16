@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   makeTrustedUrl(): void {
     let rawUrl = environment.xpilotUrl + '?email=' + this.email +
       '&productContext=' + localStorage.getItem('record_id') +
+      '&targetUrl=' + environment.baseUrl +
       '&xnode_flag=' + 'XNODE-APP';
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }

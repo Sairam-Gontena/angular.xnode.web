@@ -20,6 +20,7 @@ export class TemplatesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.removeItem('record_id');
     this.getMeUserId();
   }
 
