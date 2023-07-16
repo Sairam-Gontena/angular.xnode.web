@@ -2,8 +2,7 @@
     <div class="lg:col-7 md:col-12">
         <div class="flex mt-6">
             <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="ml-6 w-1 h-1">
-
-            <h1 class="text-white text-4xl font-medium  ml-4">{{selectedTemplate}}</h1>
+            <h1 class="text-white text-4xl font-medium  ml-4">{{appName}}</h1>
         </div>
         <p class=" ml-6 mt-3 text-xl font-medium finbuddy-text">
             {{overview?.Description}}
@@ -18,7 +17,7 @@
                 </div>
                 <div class="mt-4 para-text">
                     <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
-                    <span class=" ml-3">ramond.nelson@finlife.com</span>
+                    <span class=" ml-3">{{email}}</span>
                 </div>
                 <div class="mt-4 para-text">
                     <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-4">
@@ -47,17 +46,8 @@
             </div>
         </div>
         <h6 class="text-white ml-7 mt-4">Key Features</h6>
-        <div class="feature-button  mt-4">
-            <p-button label="Expense Tracking" icon="pi pi-check"></p-button>
-            <p-button label="Income Management" icon="pi pi-check" class=""></p-button>
-            <p-button label="Budgeting" icon="pi pi-check" class=""></p-button>
-            <p-button label="Savings Goals" icon="pi pi-check" class=""></p-button>
-            <p-button label="Bill Reminders" icon="pi pi-check" class=""></p-button>
-            <p-button label="Debt Management " icon="pi pi-check"></p-button>
-            <p-button label="Financial Insights & Reports" icon="pi pi-check" class=""></p-button>
-            <p-button label="AI-Powered Advice" icon="pi pi-check" class=""></p-button>
-            <p-button label="Security & Privacy" icon="pi pi-check" class=""></p-button>
-            <p-button label="Multi-device Sync" icon="pi pi-check"> </p-button>
+        <div class="feature-button  mt-4" *ngFor="let feature of features">
+            <p-button [label]="feature" icon="pi pi-check"></p-button>
         </div>
     </div>
     <div class="lg:col-5 md:col-12">

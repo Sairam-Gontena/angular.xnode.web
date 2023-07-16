@@ -13,7 +13,7 @@ export class OverViewComponent {
   @Input() currentStep: number = 2;
   loading: boolean = true;
   templates: any;
-  selectedTemplate = localStorage.getItem("app_name");
+  appName = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   iconClicked: any;
   stepper: any;
@@ -26,6 +26,7 @@ export class OverViewComponent {
   overview: any;
   id: String = '';
   email = '';
+  features: any;
 
   constructor(private apiService: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -105,7 +106,8 @@ export class OverViewComponent {
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
-          this.selectedTemplate = response?.data?.Title;
+          this.features = response.data?.Features.split(',');
+          this.appName = response?.data?.Title;
           localStorage.setItem("app_name", response?.data?.Title);
         }
         this.loading = false;
