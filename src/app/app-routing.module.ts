@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GeneratorComponent } from './er-generator/generator.component';
-import { UiFlowGraphComponent } from './ui-flow/ui-flow-graph/ui-flow-graph.component';
-import { UiFlow2Component } from './ui-flow/ui-flow2/ui-flow2.component';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
-import { ErModellerComponent } from './er-generator/er-modeller/er-modeller.component';
-import { PublishComponent } from './publish/publish.component';
 
 const routes: Routes = [
   {
@@ -22,12 +17,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
   },
   {
-    path: 'configuration/data-model',
-    component: ErModellerComponent
-  },
-  {
     path: 'publish',
-    component: PublishComponent
+    loadChildren: () => import('./pages/publish/publish.module').then(m => m.PublishModule)
   },
   {
     path: 'configuration/api-integration',
@@ -49,8 +40,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
   {
+    path: 'sample',
+    loadChildren: () => import('./pages/sample/sample.module').then(m => m.SampleModule)
+  },
+  {
     path: 'operate',
     loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
+  },
+  {
+    path: 'configuration/data-model',
+    loadChildren: () => import('./pages/er-modeller/er-modeller.module').then(m => m.ErModellerModule)
   },
   {
     path: 'workspace',
@@ -96,19 +95,7 @@ const routes: Routes = [
     path: 'x-pilot',
     loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
   },
-  {
-    path: 'er-diagram',
-    component: GeneratorComponent,
-  },
 
-  {
-    path: 'ui-flow',
-    component: UiFlowGraphComponent,
-  },
-  {
-    path: 'ui-flow2',
-    component: UiFlow2Component,
-  },
   {
     path: '',
     redirectTo: '',

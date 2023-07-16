@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'xnode-operate',
   templateUrl: './operate.component.html',
   styleUrls: ['./operate.component.scss']
 })
+
 export class OperateComponent implements OnInit {
   getconfigureLayout: any;
   getOperateLayout: any;
@@ -23,15 +23,10 @@ export class OperateComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-
   }
 
   getLayout(layout: any): void {
-    console.log(layout);
     this.dashboard = layout;
-    // if (layout)
-    //   this.dashboard = this.layoutColumns[layout];
-    //   console.log(layout)
   }
 
   emitIconClicked(icon: string) {

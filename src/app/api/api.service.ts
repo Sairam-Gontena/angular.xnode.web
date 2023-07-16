@@ -25,8 +25,6 @@ export class ApiService {
   }
 
   getUsecase(email: String, id: String) {
-    console.log(id, 'id');
-
     return axios.get('https://xpilot.azurewebsites.net/crud/retrive_insights/' + email + "/" + id, {
     });
   }

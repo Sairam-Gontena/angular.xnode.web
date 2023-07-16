@@ -1,22 +1,15 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   OnInit,
-  HostListener,
-  ViewEncapsulation,
   Input,
-  ViewChild
 } from '@angular/core';
-
 import {
   CompactType,
-  DisplayGrid,
   GridsterConfig,
   GridsterItem,
   GridType
 } from 'angular-gridster2';
 import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
-import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/utils/user-util';
@@ -29,7 +22,6 @@ import { ApiService } from 'src/app/api/api.service';
 })
 
 export class TemplateBuilderComponent implements OnInit {
-  @ViewChild('childComponent') childComponent!: TemplateBuilderPublishHeaderComponent;
   @Input() currentView: string = 'desktop';
   options: GridsterConfig = {};
   dashboard: Array<GridsterItem> | undefined;
@@ -45,11 +37,14 @@ export class TemplateBuilderComponent implements OnInit {
   loading = true;
   email = '';
   selectedTemplate = localStorage.getItem("app_name");
+
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService) {
 
   }
 
   ngOnInit() {
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
@@ -94,6 +89,7 @@ export class TemplateBuilderComponent implements OnInit {
     // Update the contentToShow property based on the icon clicked
     this.currentView = icon;
   }
+
   get_ID() {
     this.apiService.getID(this.emailData)
       .then(response => {

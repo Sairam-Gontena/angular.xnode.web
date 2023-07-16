@@ -1,19 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfigureRoutingModule } from './configure-routing.module';
-import { ConfigureLayoutComponent } from 'src/app/components/configure-layout/configure-layout.component';
 import { ConfigureComponent } from './configure.component';
-import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { AccordionModule } from 'primeng/accordion';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    ConfigureLayoutComponent,
     ConfigureComponent,
   ],
   imports: [
     CommonModule,
     ConfigureRoutingModule,
-    PrimeModulesModule
+    ButtonModule,
+    DropdownModule,
+    AccordionModule,
+    SharedModule
   ],
 })
 

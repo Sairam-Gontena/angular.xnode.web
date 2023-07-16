@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -9,7 +10,7 @@ import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@a
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
-
+  selectedOption: string = 'Preview';
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
   highlightedIndex: string | null = null;
@@ -22,9 +23,19 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     ]
 
     this.templatesOptions = [
-      { label: 'Preview' },
-      { label: 'Publish' }
-    ]
+      {
+        label: 'Preview',
+        command: () => {
+          this.selectedOption = 'Preview';
+        }
+      },
+      {
+        label: 'Publish',
+        command: () => {
+          this.selectedOption = 'Publish';
+        }
+      },
+    ];
   };
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
@@ -34,10 +45,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     this.iconClicked.emit(icon);
   }
-  onDropdownOptionClick(event: any) {
-    this.templateEvent = event.value.label;
-    if (this.templateEvent == 'Preview') {
-      window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+
+  onSelectOption(): void {
+    if (this.selectedOption == 'Preview') {
+      window.open(environment.designStudioUrl, '_blank');
     }
   }
 }

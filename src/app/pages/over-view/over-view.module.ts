@@ -1,29 +1,28 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OverViewRoutingModule } from './over-view-routing.module';
 import { OverViewComponent } from './over-view.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { RatingModule } from 'primeng/rating';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ButtonModule } from 'primeng/button';
-import { StepComponent } from 'src/app/components/step/step.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
     OverViewComponent,
-     StepComponent
   ],
   imports: [
     CommonModule,
     OverViewRoutingModule,
     FlexLayoutModule,
-    RatingModule,
     ReactiveFormsModule,
+    ProgressSpinnerModule,
     ButtonModule,
-
-
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    SharedModule,
+    DropdownModule
+  ]
 })
 export class OverViewModule {
 

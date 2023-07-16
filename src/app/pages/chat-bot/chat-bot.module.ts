@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ChatBotRoutingModule } from './chat-bot-routing.module';
 import { ChatBotComponent } from './chat-bot.component';
-import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
-
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -12,8 +11,9 @@ import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
   ],
   imports: [
     CommonModule,
-    PrimeModulesModule,
-    ChatBotRoutingModule
+    ChatBotRoutingModule,
+    ButtonModule,
+    DropdownModule
   ]
 })
 export class ChatBotModule { }

@@ -9,7 +9,7 @@ import { StepComponent } from '../step/step.component';
 export class StepperComponent {
   // private currentStep: number = 2;
   private internalSteps!: QueryList<StepComponent>;
-  @Input() currentStep: number= 2;
+  @Input() currentStep: number = 2;
   @Input() counter = 1;
   @Output() counterChange = new EventEmitter<number>()
 
@@ -40,7 +40,7 @@ export class StepperComponent {
     this.counterChange.emit(this.counter);
   }
 
-  setStep(step:any) {
+  setStep(step: any) {
     this.counterChange.emit(step);
   }
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
+import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -21,11 +21,21 @@ export class AppComponent implements OnInit {
 
   constructor(
     private domSanitizer: DomSanitizer,
-    private apiService: ApiService) {
+    private apiService: ApiService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
     this.getUserData();
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.handleRouterChange();
+      }
+    });
+  }
+
+  handleRouterChange() {
+    this.isSideWindowOpen = false;
   }
 
   getUserData() {
@@ -38,7 +48,8 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     let rawUrl = environment.xpilotUrl + '?email=' + this.email +
-      '&productContext=' + this.productContext +
+      '&productContext=' + localStorage.getItem('record_id') +
+      '&targetUrl=' + environment.baseUrl +
       '&xnode_flag=' + 'XNODE-APP';
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
@@ -57,7 +68,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return localStorage.getItem('currentUser') === 'true' || window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish";
   }
 

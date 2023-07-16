@@ -28,9 +28,9 @@ export class ChatBotComponent implements OnInit {
       'email': email,
       'flag': 'x-pilot'
     }
-
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext=' + localStorage.getItem('record_id') + '&targetUrl=' + environment.baseUrl;
     // Needs to be refactor
     // Add a load event listener to the iframe
     iframe.addEventListener('load', () => {
@@ -39,12 +39,15 @@ export class ChatBotComponent implements OnInit {
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
-          console.log('event', event.origin, this.targetUrl);
-
+          console.log('event', event.origin, this.targetUrl.split('?')[0]);
           // Check the origin of the message to ensure it's from the iframe's domain
-          if (event.origin + '/' !== this.targetUrl) {
+          if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+            console.log('not matched');
+
             return; // Ignore messages from untrusted sources
           }
+          console.log('event.data', event.data);
+
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
             window.location.href = this.baseUrl + '#/design';
@@ -61,6 +64,8 @@ export class ChatBotComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    console.log('????', this.targetUrl);
+
     this.safeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
