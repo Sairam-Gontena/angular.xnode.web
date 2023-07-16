@@ -94,7 +94,7 @@ export class TemplateBuilderComponent implements OnInit {
     this.apiService.getID(this.emailData)
       .then(response => {
         this.recordId = response.data.data[0].id;
-        localStorage.setItem("app_name", response.data.data[0].title)
+        localStorage.setItem("app_name", response.data.data[0].product_name)
         this.loadDesignStudio()
         this.loading = false;
       }).catch(error => {
