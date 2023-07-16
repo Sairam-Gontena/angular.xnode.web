@@ -39,9 +39,6 @@ export class UiFlow2Component implements OnInit {
   ngOnInit(): void {
     const div: any = document.getElementById('#container');
     const svg = d3.select('#body');
-
-    console.log(svg);
-
     const simulation = forceSimulation(this.nodes)
       .force('link', d3.forceLink(this.links)
         .id((d: any) => d.id).distance(50))
@@ -75,7 +72,6 @@ export class UiFlow2Component implements OnInit {
     this.links.forEach(link => {
       let src: any = this.nodes.find(n => n == link.source)
       let target: any = this.nodes.find(n => n == link.target)
-      console.log('src:', src, 'target:', target)
       svg.append('svg').append('line')
         .style("stroke", "lightgreen")
         .style("stroke-width", 10)

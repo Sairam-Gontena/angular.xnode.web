@@ -3,20 +3,22 @@ import { CommonModule } from '@angular/common';
 import { SignUpComponent } from './sign-up.component';
 import { SignUpRoutingModule } from './signup-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdditionalInfoComponent } from 'src/app/components/additional-info/additional-info.component';
-import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
+// import { PrimeModule } from 'src/app/prime-modules/prime.module';
 import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
 @NgModule({
     declarations: [
         SignUpComponent,
-        AdditionalInfoComponent
     ],
     imports: [
         CommonModule,
         SignUpRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        PrimeModulesModule,
+        // PrimeModule,
+        ButtonModule,
+        PasswordModule,
         DividerModule
     ]
 })

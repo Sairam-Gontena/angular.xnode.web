@@ -1,26 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { TemplatesRoutingModule } from './templates-routing.module';
 import { TemplatesComponent } from './templates.component';
-import { PrimeModulesModule } from '../../prime-modules/prime-modules.module';
-import { AppHeaderComponent } from 'src/app/components/app-header/app-header.component';
-
-
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { TemplatesRoutingModule } from './templates-routing.module';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
     TemplatesComponent,
-    AppHeaderComponent
   ],
   imports: [
     CommonModule,
+    ButtonModule,
+    InputTextModule,
     TemplatesRoutingModule,
-    PrimeModulesModule
+    CardModule,
+    DropdownModule,
+    SharedModule,
+    ProgressSpinnerModule,
+    ToastModule,
   ],
-  exports: [
-    AppHeaderComponent,
-
-  ]
 })
 export class TemplatesModule { }

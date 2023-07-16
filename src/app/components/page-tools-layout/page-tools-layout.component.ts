@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GridsterItem } from 'angular-gridster2';
 import { Router } from '@angular/router';
-import { LayoutElementsComponent } from '../layout-elements/layout-elements.component';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
 import * as sidemenu from '../../../assets/json/sidemenu-tools.json';
 import { ApiService } from 'src/app/api/api.service';
@@ -12,7 +11,6 @@ import { ApiService } from 'src/app/api/api.service';
   styleUrls: ['./page-tools-layout.component.scss']
 })
 export class PageToolsLayoutComponent {
-
   isOpen = true;
   sideMenu = sidemenu?.sidemenu;
   dashboard: Array<GridsterItem> | undefined;
@@ -20,7 +18,6 @@ export class PageToolsLayoutComponent {
   href: any;
   sideMenuItem: any = [];
   selectedContainer: string = 'CONTAINER';
-
   iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router, private apiService: ApiService) {
@@ -39,7 +36,6 @@ export class PageToolsLayoutComponent {
   ngOnInit() {
     this.layoutColumns = LAYOUT_COLUMNS;
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
-
     this.apiService.openSubmenu.subscribe((data: any) => {
       this.isOpen = data;
     })
@@ -56,11 +52,9 @@ export class PageToolsLayoutComponent {
         this.sideMenuItem.push(item);
       }
     });
-    console.log(this.sideMenuItem)
   }
 
   getLayout(layout: string): void {
-    console.log('layout', layout);
     if (layout)
       this.dashboard = this.layoutColumns[layout];
   }

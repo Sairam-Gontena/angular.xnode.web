@@ -24,7 +24,6 @@ export class AppSideMenuComponent implements OnInit {
         this.selectedMenuIndex = index;
       }
     });
-    this.route.url.subscribe(console.log);
   }
 
   onClickMenuItem(item: any, i: any): void {

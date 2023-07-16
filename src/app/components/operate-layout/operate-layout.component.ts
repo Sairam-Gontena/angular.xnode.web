@@ -30,16 +30,6 @@ export class OperateLayoutComponent {
       this.selectedContainer = layout;
     }
     this.getconfigureLayout.emit(layout);
-    // console.log(this.selectedContainer)
-    // if (layout === 'Overview') {
-    //   this.selectedContainer == 'Overview';
-    // console.log(this.selectedContainer)
-
-    // } else {
-    //   this.selectedContainer == 'Alerts';
-    // console.log(this.selectedContainer)
-
-    // }
   }
 
   allowDrop(ev: any) {
