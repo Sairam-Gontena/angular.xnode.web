@@ -6,6 +6,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [UseCasesComponent],
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     ButtonModule,
     DropdownModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ToastModule
   ]
 })
 export class UseCasesModule { }

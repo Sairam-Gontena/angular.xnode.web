@@ -17,6 +17,7 @@ import { ModalDataComponent } from './modal-data/modal-data.component';
 import { ModalModelComponent } from './modal-model/modal-model.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { InputTextModule } from 'primeng/inputtext';
     NgSelectModule,
     ReactiveFormsModule,
     InputTextModule,
+    ToastModule,
     ModalModule.forRoot()
   ]
 })

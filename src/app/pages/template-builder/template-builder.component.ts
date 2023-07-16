@@ -14,11 +14,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/utils/user-util';
 import { ApiService } from 'src/app/api/api.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'xnode-template-builder',
   templateUrl: './template-builder.component.html',
-  styleUrls: ['./template-builder.component.scss']
+  styleUrls: ['./template-builder.component.scss'],
+  providers: [MessageService]
 })
 
 export class TemplateBuilderComponent implements OnInit {
@@ -38,13 +40,11 @@ export class TemplateBuilderComponent implements OnInit {
   email = '';
   selectedTemplate = localStorage.getItem("app_name");
 
-  constructor(private sanitizer: DomSanitizer, private apiService: ApiService) {
+  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService) {
 
   }
 
   ngOnInit() {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
@@ -99,6 +99,7 @@ export class TemplateBuilderComponent implements OnInit {
         this.loading = false;
       }).catch(error => {
         console.log(error);
+        this.showToast('error', error.message, error.code);
         this.loading = false;
       });
   }
@@ -106,5 +107,9 @@ export class TemplateBuilderComponent implements OnInit {
   loadDesignStudio() {
     let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+  }
+  showToast(severity: string, message: string, code: string) {
+    this.messageService.clear();
+    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
 }
