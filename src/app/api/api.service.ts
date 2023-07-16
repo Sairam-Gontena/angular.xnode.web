@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  endPoint = "https://xpilot.azurewebsites.net/crud";
+  endPoint = environment.xpilotUrl +"crud";
   private open: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public openSubmenu: Observable<boolean> = this.open.asObservable();
   constructor() {
@@ -21,13 +22,14 @@ export class ApiService {
   }
 
   getID(email: string) {
-    return axios.get('https://xpilot.azurewebsites.net/crud/get_metadata/' + email);
+    return axios.get(this.endPoint + "/get_metadata/" + email);
   }
 
   getUsecase(email: String, id: String) {
-    return axios.get('https://xpilot.azurewebsites.net/crud/retrive_insights/' + email + "/" + id, {
+    return axios.get(this.endPoint + "retrive_insights/" + email + "/" + id, {
     });
   }
+
 
   get(url: string) {
     return axios.get(this.endPoint + url, {
@@ -35,7 +37,7 @@ export class ApiService {
   }
 
   getConversation(email: String, id: String) {
-    return axios.get('https://xpilot.azurewebsites.net/crud/get_conversation/' + email + "/" + id);
+    return axios.get( this.endPoint + "get_conversation/" + email + "/" + id)
   }
 
 
