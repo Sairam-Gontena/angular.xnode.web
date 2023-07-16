@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingPageRoutingModule } from './landing-page-routing.module';
-import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
+// import { PrimeModule } from 'src/app/prime-modules/prime.module';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     LandingPageRoutingModule,
-    PrimeModulesModule
+    // PrimeModule
   ]
 })
 

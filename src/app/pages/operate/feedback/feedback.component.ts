@@ -121,7 +121,6 @@ export class FeedbackComponent implements OnInit {
         };
     }
     getLayout(layout: any): void {
-        console.log(layout);
         this.dashboard = layout;
     }
     emitIconClicked(icon: string) {

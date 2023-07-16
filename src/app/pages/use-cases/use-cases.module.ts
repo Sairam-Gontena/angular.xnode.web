@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UseCasesComponent } from './use-cases.component';
-
 import { UseCasesRoutingModule } from './use-cases-routing.module';
-import { PrimeModulesModule } from 'src/app/prime-modules/prime-modules.module';
-// import { TemplateBuilderPublishHeaderComponent } from 'src/app/components/template-builder-publish-header/template-builder-publish-header.component';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+// import { PrimeModule } from 'src/app/prime-modules/prime.module';
 
 @NgModule({
   declarations: [UseCasesComponent],
   imports: [
     CommonModule,
     UseCasesRoutingModule,
-    PrimeModulesModule
+    // PrimeModule,
+    ButtonModule,
+    DropdownModule,
+    ProgressSpinnerModule
   ]
 })
 export class UseCasesModule { }

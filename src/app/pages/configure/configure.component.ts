@@ -21,9 +21,6 @@ export class ConfigureComponent implements OnInit {
   }
 
   getLayout(layout: any): void {
-    // console.log('layout', layout);
-    // if (layout)
-    //   this.dashboard = this.layoutColumns[layout];
   }
 
   emitIconClicked(icon: string) {

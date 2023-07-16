@@ -41,7 +41,6 @@ export class BrandGuidelinesComponent implements OnInit {
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
-    console.log(files);
     this.brandguidelinesForm.patchValue({
       logoFile: files[0] // Update the value of the logoFile control
     });

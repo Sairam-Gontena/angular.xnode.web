@@ -13,14 +13,11 @@ export class StepComponent implements OnInit {
   active: any;
   item: any;
   jsondata: any;
-
   @Input() status: any;
+
   constructor() {
   }
 
   ngOnInit() {
-
-    console.log(this.status)
-
   }
 }

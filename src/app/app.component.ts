@@ -49,6 +49,7 @@ export class AppComponent implements OnInit {
   makeTrustedUrl(): void {
     let rawUrl = environment.xpilotUrl + '?email=' + this.email +
       '&productContext=' + localStorage.getItem('record_id') +
+      '&targetUrl=' + environment.baseUrl +
       '&xnode_flag=' + 'XNODE-APP';
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
@@ -67,7 +68,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return localStorage.getItem('currentUser') === 'true' || window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish";
   }
 

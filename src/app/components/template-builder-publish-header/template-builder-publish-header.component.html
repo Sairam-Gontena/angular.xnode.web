@@ -12,8 +12,7 @@
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded"></p-button>
-        <p-dropdown [options]="templatesOptions" id="design-template-options-header"
-            (onChange)="onDropdownOptionClick($event)"></p-dropdown>
-        <!-- <p-button label="Publish" (click)="openNewTab()" styleClass="p-button-rounded"></p-button> -->
+        <p-splitButton [label]="selectedOption" [model]="templatesOptions" styleClass="p-button-raised p-button-rounded"
+            (onClick)="onSelectOption()"></p-splitButton>
     </div>
 </div>

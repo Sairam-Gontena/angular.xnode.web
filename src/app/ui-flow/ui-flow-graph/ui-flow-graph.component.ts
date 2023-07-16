@@ -46,7 +46,6 @@ export class UiFlowGraphComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const rect = this.graphContainer.nativeElement.getBoundingClientRect();
-    console.log(rect.width, rect.height);
 
     this.width = rect.width;
 
@@ -176,19 +175,15 @@ export class UiFlowGraphComponent implements AfterViewInit {
       {
         title: 'Remove link',
         action: function (d: any) {
-          console.log('Before:', outerThis.links);
-          console.log('Remove link clicked!', d);
           outerThis.links = outerThis.links.filter((link) => {
             if (
               link.source.id == d.source.id &&
               link.target.id == d.target.id
             ) {
-              console.log('link', link);
               return false;
             }
             return true;
           });
-          console.log('After:', outerThis.links);
           outerThis.selectedNode = null;
           outerThis.restart();
         },
