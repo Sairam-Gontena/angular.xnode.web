@@ -29,8 +29,10 @@ export class PageToolsLayoutComponent {
       label = "Config";
     } if (this.href.includes('publish')) {
       label = "Publish";
+    } if (this.href.includes('operate')) {
+      label = "Operate";
     } else {
-      label = "Publish";
+      label = "Config";
     }
     this.loadSubSideMenu(label);
   }
