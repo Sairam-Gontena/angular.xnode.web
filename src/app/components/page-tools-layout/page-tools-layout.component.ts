@@ -32,7 +32,7 @@ export class PageToolsLayoutComponent {
     } if (this.href.includes('operate')) {
       label = "Operate";
     } else {
-      label = "Config";
+      label = "Operate";
     }
     this.loadSubSideMenu(label);
   }
