@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
-
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  SocialUser,
+} from '@abacritt/angularx-social-login';
+// declare const gapi: any;
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -13,8 +18,15 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
   errorMessage!: string;
+  ContinueWithGoogleSelected!: boolean;
+  ContinueWithLinkedInSelected!: boolean;
+  isInvalid: boolean = false;
+  isFormSubmitted!: boolean;
+  socialUser!: SocialUser;
+  isLoggedin?: boolean;
 
-  constructor(private formBuilder: FormBuilder, public router: Router) {
+
+  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService) {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -28,16 +40,40 @@ export class SignUpComponent implements OnInit {
     this.signUpForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      this.isLoggedin = user != null;
+      console.log(this.socialUser);
+
+    });
+
+    const firstNameValue = '';
+    const lastNameValue = '';
+
+
+
+    this.signUpForm.patchValue({
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+
+    });
+
   }
 
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
     this.submitted = true;
-
-    if (this.signUpForm.invalid) {
+    if (this.ContinueWithGoogleSelected || this.ContinueWithLinkedInSelected) {
+      this.router.navigate(['/workspace']);
       return;
     }
+    if (this.signUpForm.invalid) {
+      this.isInvalid = true;
+      return;
+    }
+
+
     const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
     localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
     if (matchedUser) {
@@ -45,6 +81,19 @@ export class SignUpComponent implements OnInit {
     } else {
       this.errorMessage = 'Email and password do not match.';
     }
+
+  }
+  ContinueWithGoogle() {
+    this.ContinueWithGoogleSelected = true;
+    this.ContinueWithLinkedInSelected = false;
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+
+
+  }
+  ContinueWithLinkedIn() {
+    this.ContinueWithGoogleSelected = false;
+    this.ContinueWithLinkedInSelected = true;
+
   }
 
 }

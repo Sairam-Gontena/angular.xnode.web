@@ -26,7 +26,11 @@ import { LoginComponent } from './pages/login/login.component';
 import { DragDropModule } from 'primeng/dragdrop';
 import { TemplatesModule } from './pages/templates/templates.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleLoginProvider,
+} from '@abacritt/angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -53,15 +57,30 @@ import { ReactiveFormsModule } from '@angular/forms';
     DragDropModule,
     ReactiveFormsModule,
     FormsModule,
+    SocialLoginModule,
     // CUSTOM
     ERGeneratorModule,
     OnboardingRoutingModule,
     TableModule,
     ToggleButtonModule,
-    TemplatesModule
+    TemplatesModule,
+
   ],
   exports: [ProgressSpinnerModule],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('428503221481-aul4gv3ulnehnf46jovp602rc5j2hckv.apps.googleusercontent.com'),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+  ],
   bootstrap: [AppComponent],
 
 })

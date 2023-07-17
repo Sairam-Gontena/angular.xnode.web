@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.1.0",
     "@angular-eslint/eslint-plugin": "16.0.1",
     "@angular-eslint/eslint-plugin-template": "16.0.1",
     "@angular-eslint/schematics": "16.0.1",
@@ -31,6 +32,7 @@
     "@katoid/angular-grid-layout": "^2.1.0",
     "@ng-select/ng-select": "^10.0.4",
     "@types/d3": "^7.4.0",
+    "@types/gapi.auth2": "^0.0.57",
     "angular-gridster2": "^16.0.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.0",

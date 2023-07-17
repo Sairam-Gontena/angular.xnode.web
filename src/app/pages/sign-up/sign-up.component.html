@@ -2,31 +2,40 @@
     <div class="sm:col-12 md:col-12 lg:col-7 xl:col-7 pt-5 bg-white">
         <img src=" ./assets/XLogo.svg" alt="x-logo" class="ml-8">
         <div class="form-container pt-8">
-            <form [formGroup]="signUpForm" (ngSubmit)="onClickSignUp()">
-                <h1 class="signup-color font-bold font-normal text-6xl">Sign up</h1>
-                <p class="font-semibold font-normal text-base">Have an account?
-                    Please
-                    <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
-                </p>
-                <div class="grid">
-                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
-                            <img src="./assets/google.png" width="16px">
-                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
-                                CONTINUE WITH GOOGLE
-                            </p>
-                        </div>
-                    </div>
-                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
-                            <img src="./assets/linkedin.png" width="16px">
-                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
-                                CONTINUE WITH LINKEDIN
-                            </p>
-                        </div>
+
+            <h1 class="signup-color font-bold font-normal text-6xl">Sign up</h1>
+            <p class="font-semibold font-normal text-base">Have an account?
+                Please
+                <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
+            </p>
+            <div class="grid">
+
+                <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="ContinueWithGoogle()"
+                    [class.selected]="ContinueWithGoogleSelected"
+                    [class.invalid]="isFormSubmitted && !ContinueWithGoogleSelected">
+                    <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+                        <img src="./assets/google.png" width="16px">
+                        <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                            CONTINUE WITH GOOGLE
+                        </p>
                     </div>
                 </div>
-                <p class="font-medium text-base text-500 py-3">Or</p>
+
+
+                <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="ContinueWithLinkedIn()"
+                    [class.selected]="ContinueWithLinkedInSelected"
+                    [class.invalid]="isFormSubmitted && !ContinueWithLinkedInSelected">
+                    <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+                        <img src="./assets/linkedin.png" width="16px">
+                        <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                            CONTINUE WITH LINKEDIN
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="font-medium text-base text-500 py-3">Or</p>
+            <form [formGroup]="signUpForm" (ngSubmit)="onClickSignUp()">
                 <div class="formgrid grid">
                     <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
                         <label for="firstName" class="font-medium text-base">First
@@ -104,4 +113,5 @@
             </div>
         </div>
     </div>
+
 </div>
