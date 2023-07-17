@@ -58,7 +58,7 @@ export class UseCasesComponent implements OnInit {
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.useCases = data.usecase
+          this.useCases = data?.usecase || [];
         }
         this.loading = false;
       })
@@ -66,6 +66,8 @@ export class UseCasesComponent implements OnInit {
         this.showToast('error', error.message, error.code);
         this.loading = false;
       });
+    console.log('useCases', this.useCases);
+
   }
   showToast(severity: string, message: string, code: string) {
     this.messageService.clear();
