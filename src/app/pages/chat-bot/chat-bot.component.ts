@@ -75,7 +75,6 @@ export class ChatBotComponent implements OnInit {
 
   onClickHome(): void {
     this.router.navigate(['/my-templates']);
-
   }
 
 }

@@ -88,7 +88,7 @@ export class OverViewComponent {
   }
 
   get_ID() {
-    this.apiService.getID(this.email)
+    this.apiService.get('/get_metadata/' + this.email)
       .then(response => {
         this.id = response.data.data[0].id;
         this.getMeOverview();
