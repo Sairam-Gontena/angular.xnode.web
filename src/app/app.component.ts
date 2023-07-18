@@ -11,7 +11,6 @@ import { environment } from 'src/environments/environment';
 
 export class AppComponent implements OnInit {
   title = 'xnode';
-  botOutput = ['false'];
   isSideWindowOpen: boolean = false;
   email: String = '';
   id: String = '';
@@ -47,11 +46,14 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    console.log('email to navi', this.email);
     let rawUrl = environment.xpilotUrl + '?email=' + this.email +
       '&productContext=' + localStorage.getItem('record_id') +
       '&targetUrl=' + environment.baseUrl +
       '&xnode_flag=' + 'XNODE-APP';
-    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+    setTimeout(() => {
+      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+    }, 2000);
   }
 
   get_Conversation() {
@@ -72,8 +74,7 @@ export class AppComponent implements OnInit {
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish";
   }
 
-  addItem(newItem: any) {
-    this.botOutput.push(newItem.toString());
+  openNavi(newItem: any) {
     this.isSideWindowOpen = newItem.cbFlag;
     this.productContext = newItem.productContext;
     this.makeTrustedUrl();
