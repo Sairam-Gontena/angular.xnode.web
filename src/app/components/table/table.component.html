@@ -5,7 +5,7 @@
           <ng-template pTemplate="header" let-columns>
                <tr>
                     <th *ngFor="let col of headers" class="text-xs font-bold tableheader" style="background-color: #3A3942;
-                    border-color: #595959;" >
+                    border-color: #595959;">
                          <div class="flex align-items-center text-white ">
                               {{col | titlecase}}
                               <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
@@ -30,7 +30,7 @@
                          </p-cellEditor>
                     </td>
                </tr>
-               <tr *ngIf="notEditable">
+               <tr *ngIf="!editable">
                     <td>
                          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                     </td>
@@ -47,7 +47,7 @@
                     <td>
                          <span class="flex">
                               <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue"
-                                   (click)="onCellClickEdit()"></i>
+                                   (click)="onClickCellEdit()"></i>
                               <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
                          </span>
                     </td>
