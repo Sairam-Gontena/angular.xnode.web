@@ -1,133 +1,57 @@
 <div class="container">
-
-    <!-- (onCellEditComplete)="onCellEditComplete($event)" -->
-
-    <p-table #dt [rows]="10"  [rowHover]="true" dataKey="id" [globalFilterFields]="headers"
-
-    styleClass="p-datatable-sm"
-
-         [autoLayout]="true" scrollDirection="horizontal" [tableStyle]="{ 'width':'100%','overflow':'auto!important'}"
-
-         [value]="dynamicData" [columns]="headers">
-
-      
-
-         <ng-template pTemplate="header" let-columns  >
-
-              <tr  >
-
-                   <th *ngFor="let col of headers"  style="background-color: #3A3942; border-color: #595959;" class="text-xs font-bold" >
-
-                        <div class="flex align-items-center text-white ">
-
-                             {{col | titlecase}}
-
-                             <!-- <p-sortIcon class="ml-2 mr-2" field={{col}}></p-sortIcon> -->
-                             <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
-
-                            
-                        </div>
-
-                   </th>
-
-
-              </tr>
-
-         </ng-template>
-
-
-
-
-         <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing">
-
-              <tr *ngIf="editable" class="text-white text-xs " >
-
-                   <td *ngFor="let col of headers" class="" [pEditableColumn]="rowData[col]" pEditableColumnField="col" style="background-color: #302E38; border-color: #595959;" >
-
-                        <p-cellEditor [ngSwitch]="col" class=" font-light " >
-
-                             <ng-template pTemplate="output" *ngSwitchCase="'image'">
-
-                                  <img [src]="rowData[col]" width="100px" height="90px" alt="image" />
-
-                             </ng-template>
-
-                             <ng-template pTemplate="input" *ngSwitchDefault>
-                                <!-- [(ngModel)]="rowData[col]" -->
-                                  <input id={{rowData.id}} pInputText type="text" 
-
-                                       (input)="onCellInputBlur($event)" />
-
-                             </ng-template>
-
-                             <ng-template pTemplate="output" *ngSwitchDefault>
-
-                                  {{ rowData[col] }}
-
-                             </ng-template>
-
-                        </p-cellEditor>
-
-                   </td>
-
-                  
-
-              </tr>
-
-
-
-
-              <tr *ngIf="notEditable">
-
-                   <td>
-
-                        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-
-                   </td>
-
-                   <td *ngFor="let col of headers">
-
-                        <span [ngSwitch]="col">
-
-                             <span *ngSwitchCase="'image'">
-
-                                  <img [src]="rowData[col]" width="120px" height="95px" alt="image" />
-
-                             </span>
-
-                             <span *ngSwitchDefault>
-
-                                  {{ rowData[col] }}
-
-                             </span>
-
-                        </span>
-
-                   </td>
-
-                   <td>
-
-                        <span class="flex">
-
-                             <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue"
-
-                                  (click)="editableFunc()"></i>
-
-                             <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
-
-                        </span>
-
-                   </td>
-
-              </tr>
-
-         </ng-template>
-
-
-
-
-    </p-table>
-
+     <p-table #dt [rows]="10" [rowHover]="true" dataKey="id" [globalFilterFields]="headers" styleClass="p-datatable-sm"
+          [autoLayout]="true" scrollDirection="horizontal" [tableStyle]="{ 'width':'100%','overflow':'auto!important'}"
+          [value]="dynamicData" [columns]="headers">
+          <ng-template pTemplate="header" let-columns>
+               <tr>
+                    <th *ngFor="let col of headers" class="text-xs font-bold tableheader" style="background-color: #3A3942;
+                    border-color: #595959;" >
+                         <div class="flex align-items-center text-white ">
+                              {{col | titlecase}}
+                              <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
+                         </div>
+                    </th>
+               </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing">
+               <tr *ngIf="editable" class="text-white text-xs ">
+                    <td *ngFor="let col of headers" class="" [pEditableColumn]="rowData[col]" pEditableColumnField="col"
+                         style="background-color: #302E38; border-color: #595959;">
+                         <p-cellEditor [ngSwitch]="col" class=" font-light ">
+                              <ng-template pTemplate="output" *ngSwitchCase="'image'">
+                                   <img [src]="rowData[col]" width="100px" height="90px" alt="image" />
+                              </ng-template>
+                              <ng-template pTemplate="input" *ngSwitchDefault>
+                                   <input id={{rowData.id}} pInputText type="text" (input)="onCellInputBlur($event)" />
+                              </ng-template>
+                              <ng-template pTemplate="output" *ngSwitchDefault>
+                                   {{ rowData[col] }}
+                              </ng-template>
+                         </p-cellEditor>
+                    </td>
+               </tr>
+               <tr *ngIf="notEditable">
+                    <td>
+                         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of headers">
+                         <span [ngSwitch]="col">
+                              <span *ngSwitchCase="'image'">
+                                   <img [src]="rowData[col]" width="120px" height="95px" alt="image" />
+                              </span>
+                              <span *ngSwitchDefault>
+                                   {{ rowData[col] }}
+                              </span>
+                         </span>
+                    </td>
+                    <td>
+                         <span class="flex">
+                              <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue"
+                                   (click)="onCellClickEdit()"></i>
+                              <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
+                         </span>
+                    </td>
+               </tr>
+          </ng-template>
+     </p-table>
 </div>
-
-

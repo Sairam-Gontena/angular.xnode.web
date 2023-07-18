@@ -7,22 +7,12 @@ import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-  // @Input() headers: string[] = [];
-  // @Input() data: any[] = [];
-
-
-
-
   dynamicData: any;
-
   headers: any;
-
   values: any;
-
   heading: string = "Users";
 
   public editable: boolean = true;
-
   public notEditable: boolean = false;
 
   ngOnInit(): void {
@@ -31,11 +21,7 @@ export class TableComponent implements OnInit {
     this.values = Object.values(this.dynamicData)
   }
 
-  constructor() {
-
-  }
-
-  editableFunc() {
+  onCellClickEdit() {
     if (this.editable) {
       this.editable = false;
       this.notEditable = true;
