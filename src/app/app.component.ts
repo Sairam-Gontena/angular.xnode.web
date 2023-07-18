@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
+import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
-    private router: Router) {
+    private router: Router,
+    private subMenuLayoutUtil: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class AppComponent implements OnInit {
   }
 
   submenuFunc() {
-    this.apiService.falseOpen()
+    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu()
   }
 
   closeSideWindow() {
