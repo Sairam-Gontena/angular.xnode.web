@@ -46,7 +46,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       },
     ];
   };
-  emitIconClicked(icon: string) {
+  deviceIconClicked(icon: string) {
     if (this.selectedDeviceIndex === icon) {
       this.selectedDeviceIndex = null;
     } else {
