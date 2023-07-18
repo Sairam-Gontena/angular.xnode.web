@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,7 +17,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   highlightedIndex: string | null = null;
   templatesOptions: any;
   templateEvent: any;
+  constructor(private apiService: ApiService) {
 
+  }
   ngOnInit(): void {
     this.templates = [
       { label: localStorage.getItem('app_name') }
@@ -49,6 +52,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
+    } else {
+      this.apiService.publishApp({ name: localStorage.getItem('app_name') })
+        .then(response => {
+          console.log('response', response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
     }
   }
 }
