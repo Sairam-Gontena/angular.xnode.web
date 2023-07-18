@@ -39,6 +39,39 @@
     margin-left: 55px;
 }
 
+.container {
+    display: inline-block;
+    background-color: white;
+    padding: 10px;
+    width: auto;
+    border-radius: 20px;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+
+.checkmark {
+    background-color: black;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.checkmark span {
+    display: block;
+    color: white;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.text {
+    margin-left: 10px;
+}
+
+
 @media screen and (max-width: 780px) {
     .finbuddy-text {
         width: auto !important;

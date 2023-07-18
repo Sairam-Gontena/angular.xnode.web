@@ -9,15 +9,32 @@
                     <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
                 </p>
                 <div class="grid">
-                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                    <!-- <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
                         <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
                             <img src="./assets/google.png" width="16px">
                             <p class="m-0 pl-2 font-semibold font-normal text-sm ">
                                 CONTINUE WITH GOOGLE
                             </p>
                         </div>
+                    </div> -->
+                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="ContinueWithGoogle()"
+                        [class.selected]="ContinueWithGoogleSelected"
+                        [class.invalid]="isFormSubmitted && !ContinueWithGoogleSelected">
+                        <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
+
+                            <asl-google-signin-button type='icon' size="small">
+                            </asl-google-signin-button>
+                            <p class="m-0 pl-2 font-semibold font-normal text-sm ">
+                                CONTINUE WITH GOOGLE
+                            </p>
+
+                        </div>
+                        <!-- <asl-google-signin-button type='icon' size='medium'></asl-google-signin-button> -->
                     </div>
-                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
+
+                    <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="ContinueWithLinkedIn()"
+                        [class.selected]="ContinueWithLinkedInSelected"
+                        [class.invalid]="isFormSubmitted && !ContinueWithLinkedInSelected">
                         <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
                             <img src="./assets/linkedin.png" width="16px">
                             <p class="m-0 pl-2 font-semibold font-normal text-sm ">

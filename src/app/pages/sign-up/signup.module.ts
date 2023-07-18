@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 @NgModule({
     declarations: [
         SignUpComponent,
@@ -19,7 +21,8 @@ import { PasswordModule } from 'primeng/password';
         // PrimeModule,
         ButtonModule,
         PasswordModule,
-        DividerModule
+        DividerModule,
+        GoogleSigninButtonModule
     ]
 })
 export class SignUpModule { }
