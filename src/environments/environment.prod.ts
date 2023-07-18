@@ -3,4 +3,5 @@ export const environment = {
     baseUrl: 'https://prod-xnode.azurewebsites.net/',
     xpilotUrl: 'https://prod.azurewebsites.net/',
     designStudioUrl: ' https://prod-xnode-tmpbld.azurewebsites.net/',
+    publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/'  //for now we have only dev url
 }

@@ -91,7 +91,7 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   get_ID() {
-    this.apiService.getID(this.emailData)
+    this.apiService.get('/get_metadata/' + this.emailData)
       .then(response => {
         this.recordId = response.data.data[0].id;
         localStorage.setItem("app_name", response.data.data[0].product_name)
