@@ -45,8 +45,10 @@
     padding: 10px;
     width: auto;
     border-radius: 20px;
-    margin-right: 2rem;
+    margin-right: 1rem;
     margin-bottom: 1rem;
+    font-size: 11px;
+
 }
 
 
@@ -54,8 +56,8 @@
 .checkmark {
     background-color: black;
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     text-align: center;
 }
@@ -63,8 +65,8 @@
 .checkmark span {
     display: block;
     color: white;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 13px;
+    // line-height: 24px;
 }
 
 .text {
