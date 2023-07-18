@@ -15,17 +15,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   selectedOption: string = 'Preview';
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
-  highlightedIndex: string | null = null;
+  selectedDeviceIndex: string | null = null;
   templatesOptions: any;
   templateEvent: any;
-  showDesign: boolean = false;
+  showDeviceIcons: boolean = false;
   constructor(private apiService: ApiService, private router: Router) {
 
   }
   ngOnInit(): void {
     const currentUrl = this.router.url;
     if (currentUrl === '/design') {
-      this.showDesign = true;
+      this.showDeviceIcons = true;
     }
     this.templates = [
       { label: localStorage.getItem('app_name') }
@@ -47,10 +47,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     ];
   };
   emitIconClicked(icon: string) {
-    if (this.highlightedIndex === icon) {
-      this.highlightedIndex = null;
+    if (this.selectedDeviceIndex === icon) {
+      this.selectedDeviceIndex = null;
     } else {
-      this.highlightedIndex = icon;
+      this.selectedDeviceIndex = icon;
     }
     this.iconClicked.emit(icon);
   }
