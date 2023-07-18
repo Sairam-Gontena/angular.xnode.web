@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 
@@ -9,18 +10,23 @@ import { environment } from 'src/environments/environment';
 })
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
-
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
+
   selectedOption: string = 'Preview';
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
   highlightedIndex: string | null = null;
   templatesOptions: any;
   templateEvent: any;
-  constructor(private apiService: ApiService) {
+  showDesign: boolean = false;
+  constructor(private apiService: ApiService, private router: Router) {
 
   }
   ngOnInit(): void {
+    const currentUrl = this.router.url;
+    if (currentUrl === '/design') {
+      this.showDesign = true;
+    }
     this.templates = [
       { label: localStorage.getItem('app_name') }
     ]
