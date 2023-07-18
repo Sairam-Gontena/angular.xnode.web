@@ -53,13 +53,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
     } else {
-      this.apiService.publishApp({ name: 'Finbuddy' })
+      this.apiService.publishApp({ name: localStorage.getItem('app_name') })
         .then(response => {
           console.log('response', response);
         })
         .catch(error => {
           console.log('error', error);
-
         });
     }
   }
