@@ -1,7 +1,7 @@
 <div class="w-full h-full overflow-hidden">
     <div class="w-full" *ngIf="isUserExists()">
         <span (click)="submenuFunc()">
-            <xnode-bot [botDisplayFlag]="this.isSideWindowOpen" (valueChange)="addItem($event)"></xnode-bot></span>
+            <xnode-bot [botDisplayFlag]="this.isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
         <xnode-app-header></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper">
