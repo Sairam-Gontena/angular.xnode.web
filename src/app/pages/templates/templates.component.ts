@@ -26,7 +26,7 @@ export class TemplatesComponent implements OnInit {
 
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.product_name);
+    localStorage.setItem('app_name', data.title);
     this.router.navigate(['/design']);
   }
   onClickgotoxPilot() {

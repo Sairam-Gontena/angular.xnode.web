@@ -53,10 +53,6 @@ export class OverViewComponent {
     this.iconClicked.emit(icon);
   }
 
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
-  }
-
   showToast(severity: string, message: string, code: string) {
     this.messageService.clear();
     this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
@@ -92,7 +88,7 @@ export class OverViewComponent {
   }
 
   get_ID() {
-    this.apiService.getID(this.email)
+    this.apiService.get('/get_metadata/' + this.email)
       .then(response => {
         this.id = response.data.data[0].id;
         this.getMeOverview();
@@ -113,8 +109,8 @@ export class OverViewComponent {
         if (response?.status === 200) {
           this.overview = response.data;
           this.features = response.data?.Features.split(',');
-          this.appName = response?.data?.product_name;
-          localStorage.setItem("app_name", response?.data?.product_name);
+          this.appName = response?.data?.Title;
+          localStorage.setItem("app_name", response?.data?.Title);
         }
         this.loading = false;
       })
