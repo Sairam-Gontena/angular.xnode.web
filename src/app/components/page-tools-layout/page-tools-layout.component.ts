@@ -26,12 +26,12 @@ export class PageToolsLayoutComponent {
     let label;
     if (this.href.includes('design')) {
       label = "Design";
-    } if (this.href.includes('data-model')) {
+    } else if (this.href.includes('data-model')) {
       label = "Config";
-    } if (this.href.includes('publish')) {
+    } else if (this.href.includes('publish')) {
       label = "Publish";
     } else {
-      label = "Publish";
+      label = "Operate";
     }
     this.loadSubSideMenu(label);
   }

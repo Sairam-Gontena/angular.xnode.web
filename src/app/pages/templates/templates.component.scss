@@ -29,6 +29,7 @@
 
 :host ::ng-deep .new-card .p-card .p-card-body {
     height: 100% !important;
+
 }
 
 :host ::ng-deep .p-card {
@@ -41,7 +42,7 @@
 }
 
 :host ::ng-deep .p-card .p-card-title {
-    max-width: 200px;
+    max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
