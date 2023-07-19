@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserData();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
@@ -81,6 +80,7 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem: any) {
+    this.getUserData();
     this.isSideWindowOpen = newItem.cbFlag;
     this.productContext = newItem.productContext;
     this.makeTrustedUrl();
