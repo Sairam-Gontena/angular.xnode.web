@@ -48,8 +48,13 @@
                 </div>
             </div>
             <h6 class="text-white ml-7 mt-4">Key Features</h6>
-            <div class="feature-button mt-4" *ngFor="let feature of features">
-                <p-button class="chips" [label]="feature" icon="pi pi-check"></p-button>
+            <div class="mt-3 ml-7">
+                <div class="mt-3 mr-3 feature-key" *ngFor="let feature of features">
+                    <div class="feature-value">
+                        <i class="pi pi-check icon-check"></i>
+                        <span class="feature-text">{{ feature }}</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="lg:col-5 md:col-12">
