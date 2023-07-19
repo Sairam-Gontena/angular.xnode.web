@@ -31,9 +31,20 @@
     color: red;
 }
 
-@media screen and (max-width: 780px) {
-    .form-container {
-        margin-left: 84px;
-        margin-right: 84px;
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    .signup-form,
+    .sign-up-img {
+        width: 100%;
+    }
+}
+
+/* Media Query for Laptops and Desktops */
+@media (min-width: 1025px) and (max-width: 1280px) {
+
+    .signup-form,
+    .sign-up-img {
+        width: 100%;
     }
 }
