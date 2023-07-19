@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
+import { ApiService } from '../../api/api.service';
+
 
 @Component({
   selector: 'xnode-sign-up',
@@ -14,7 +16,7 @@ export class SignUpComponent implements OnInit {
   submitted: boolean = false;
   errorMessage!: string;
 
-  constructor(private formBuilder: FormBuilder, public router: Router) {
+  constructor(private formBuilder: FormBuilder, public router: Router, private apiService: ApiService) {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -41,10 +43,27 @@ export class SignUpComponent implements OnInit {
     const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
     localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
     if (matchedUser) {
+      this.getRecordId();
       this.router.navigate(['/workspace']);
     } else {
       this.errorMessage = 'Email and password do not match.';
     }
+  }
+
+  getRecordId() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      let email = JSON.parse(currentUser).email;
+      this.apiService.get("/get_metadata/" + email)
+        .then(response => {
+          localStorage.setItem('record_id', response.data.data[0].id);
+          console.log(localStorage.getItem('record_id'))
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
   }
 
 }

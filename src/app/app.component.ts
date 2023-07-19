@@ -42,18 +42,24 @@ export class AppComponent implements OnInit {
     if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
       this.get_Conversation();
+    } else {
+      console.log("current user not found");
     }
   }
 
   makeTrustedUrl(): void {
-    console.log('email to navi', this.email);
-    let rawUrl = environment.xpilotUrl + '?email=' + this.email +
-      '&productContext=' + localStorage.getItem('record_id') +
-      '&targetUrl=' + environment.baseUrl +
-      '&xnode_flag=' + 'XNODE-APP';
-    setTimeout(() => {
-      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-    }, 2000);
+    if (localStorage.getItem('record_id') !== null) {
+      let rawUrl = environment.xpilotUrl + '?email=' + this.email +
+        '&productContext=' + localStorage.getItem('record_id') +
+        '&targetUrl=' + environment.baseUrl +
+        '&xnode_flag=' + 'XNODE-APP';
+      setTimeout(() => {
+        this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      }, 2000);
+    } else {
+      alert("Invalid record id")
+    }
+
   }
 
   get_Conversation() {

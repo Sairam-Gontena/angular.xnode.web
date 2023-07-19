@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
+import { ApiService } from '../../api/api.service';
 @Component({
   selector: 'xnode-login',
   templateUrl: './login.component.html',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   messages: any = [
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -41,11 +42,28 @@ export class LoginComponent implements OnInit {
     if (matchedUser) {
       localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
       this.router.navigate(['/my-templates']);
+      this.getRecordId()
     } else {
       this.messages = [
         { severity: 'error', summary: 'Error', detail: 'User not found' }
       ]
     }
+  }
+
+  getRecordId() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      let email = JSON.parse(currentUser).email;
+      this.apiService.get("/get_metadata/" + email)
+        .then(response => {
+          localStorage.setItem('record_id', response.data.data[0].id);
+          console.log(localStorage.getItem('record_id'))
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
   }
 
 }
