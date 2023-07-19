@@ -13,9 +13,13 @@
             <div id="side-window" class="side-window" *ngIf="this.isSideWindowOpen"
                 [ngClass]="{ 'open': isSideWindowOpen }">
                 <div class="content-class-pilot h-full">
-                    <button class="close-button" pButton icon="pi pi-times" (click)="toggleSideWindow()"></button>
-                    <iframe id="myIframe" [src]="this.iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
-                        class="w-full h-full  pl-1 pr-1">
+                    <span class="flex flex-row justify-content-end text-white p-2 chatbot-close"
+                        (click)="toggleSideWindow()">
+                        <i class="pi pi-times m-2 pt-1 pi-icon-close"></i>
+                        <span class="m-1">Close</span>
+                    </span>
+                    <iframe id=" myIframe" [src]="this.iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                        class="w-full h-full pl-0 pr-1">
                     </iframe>
                 </div>
             </div>
