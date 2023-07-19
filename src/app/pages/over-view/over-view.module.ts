@@ -9,7 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
-
+import { ChipModule } from 'primeng/chip';
 @NgModule({
   declarations: [
     OverViewComponent,
@@ -23,7 +23,8 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     SharedModule,
     DropdownModule,
-    ToastModule
+    ToastModule,
+    ChipModule
   ]
 })
 export class OverViewModule {
