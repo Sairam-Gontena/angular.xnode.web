@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
 
+
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -46,5 +47,6 @@ export class SignUpComponent implements OnInit {
       this.errorMessage = 'Email and password do not match.';
     }
   }
+
 
 }
