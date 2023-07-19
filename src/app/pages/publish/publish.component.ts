@@ -12,67 +12,10 @@ export class PublishComponent {
   selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
   isOpen = false;
-  tableHeaders: string[] = ['Version', 'Deployed On', 'Deployed By', "Notes", "Status"];
-  tableData: any[] = [
-    {
-      "Version": "3.0",
-      "Deployed On": "2023-07-01",
-      "Deployed By": "Address1",
-      "Notes": 'thimma@gmail.comm',
-      "Status": "pending"
-    },
-    {
-      "Version": "2.0",
-      "Deployed On": "2023-05-01",
-      "Deployed By": "Address1",
-      "Notes": 'thimma@gmail.comm',
-      "Status": "deployed"
-
-    },
-    {
-      "Version": "1.0",
-      "Deployed On": "2023-04-01",
-      "Deployed By": "Address1",
-      "Notes": 'thimma@gmail.comm',
-      "Status": "deployed"
-
-    },
-    {
-      "Version": "0.1",
-      "Deployed On": "2023-03-01",
-      "Deployed By": "Address1",
-      "Notes": 'thimma@gmail.comm',
-      "Status": "deployed"
-
-    },];
-
-
 
   ngOnInit(): void {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-  }
-
-  // ngAfterViewChecked(): void {
-  //   if (this.dataService.flg_repaint) {
-  //     this.dataService.flg_repaint = false;
-  //     this.jsPlumbService.repaintEverything();
-  //   }
-  // }
-
-
-  // ngAfterViewInit(): void {
-  //   this.jsPlumbService.init();
-  //   this.dataService.loadData(this.utilService.ToModelerSchema(this.erModelInput));
-  // }
-
-  getLayout(layout: any): void {
-    if (layout)
-      this.dashboard = this.layoutColumns[layout];
-  }
-
-  openNewTab(): void {
-    window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 }
