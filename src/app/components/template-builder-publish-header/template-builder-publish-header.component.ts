@@ -53,7 +53,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
     } else {
-      this.apiService.publishApp({ name: localStorage.getItem('app_name') })
+      this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
         .then(response => {
           console.log('response', response);
         })
