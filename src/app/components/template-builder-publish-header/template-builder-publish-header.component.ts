@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 
@@ -9,18 +10,23 @@ import { environment } from 'src/environments/environment';
 })
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
-
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
+
   selectedOption: string = 'Preview';
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
-  highlightedIndex: string | null = null;
+  selectedDeviceIndex: string | null = null;
   templatesOptions: any;
   templateEvent: any;
-  constructor(private apiService: ApiService) {
+  showDeviceIcons: boolean = false;
+  constructor(private apiService: ApiService, private router: Router) {
 
   }
   ngOnInit(): void {
+    const currentUrl = this.router.url;
+    if (currentUrl === '/design') {
+      this.showDeviceIcons = true;
+    }
     this.templates = [
       { label: localStorage.getItem('app_name') }
     ]
@@ -40,11 +46,11 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       },
     ];
   };
-  emitIconClicked(icon: string) {
-    if (this.highlightedIndex === icon) {
-      this.highlightedIndex = null;
+  deviceIconClicked(icon: string) {
+    if (this.selectedDeviceIndex === icon) {
+      this.selectedDeviceIndex = null;
     } else {
-      this.highlightedIndex = icon;
+      this.selectedDeviceIndex = icon;
     }
     this.iconClicked.emit(icon);
   }
