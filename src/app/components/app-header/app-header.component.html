@@ -9,6 +9,18 @@
         </div>
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
+        <div class=" flex justify-content-center align-content-center">
+            <i class="pi pi-bell text-base notification-icon" pBadge value="2" (click)="toggleAccordion()">
+            </i>
+            <div class="badge">
+                {{notifications.length}}
+            </div>
+            <div *ngIf="enableNotificationCard" class="notification-card">
+                <div *ngFor="let notification of notifications" class="p-2 border-50">
+                    <div>{{notification}}</div>
+                </div>
+            </div>
+        </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
         <p-splitButton label="Raymond Nelson" [model]="logoutDropdown" styleClass="p-button-raised"></p-splitButton>
     </div>
