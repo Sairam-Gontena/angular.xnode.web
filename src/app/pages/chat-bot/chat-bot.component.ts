@@ -50,7 +50,7 @@ export class ChatBotComponent implements OnInit {
 
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
-            window.location.href = this.baseUrl + '#/design';
+            window.location.href = this.baseUrl + '#/my-templates';
             // Trigger a custom event in the parent window
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);

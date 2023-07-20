@@ -13,7 +13,7 @@
             <i class="pi pi-bell text-base notification-icon" pBadge value="2" (click)="toggleAccordion()">
             </i>
             <div class="badge">
-                {{notifications.length}}
+                {{notificationCount}}
             </div>
             <div *ngIf="enableNotificationCard" class="notification-card">
                 <div *ngFor="let notification of notifications" class="p-2 border-50">

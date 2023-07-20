@@ -20,6 +20,7 @@ export class AppHeaderComponent implements OnInit {
   channel: any;
   email: String = '';
   notifications: any[] = [];
+  notificationCount: Number = 0;
 
 
   constructor(private router: Router) {
@@ -51,11 +52,13 @@ export class AppHeaderComponent implements OnInit {
     this.channel = this.pusher.subscribe('navi-notifier');
     this.channel.bind(this.email, (data: any) => {
       this.notifications.push(data);
+      this.notificationCount = this.notifications.length
     });
   }
 
   toggleAccordion() {
     this.enableNotificationCard = !this.enableNotificationCard
+    this.notificationCount = 0;
   }
 
 }
