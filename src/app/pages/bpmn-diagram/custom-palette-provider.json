@@ -1,0 +1,18 @@
+{
+     "pallete_tools_class": [
+          "entry bpmn-icon-hand-tool",
+          "entry bpmn-icon-lasso-tool",
+          "entry bpmn-icon-space-tool",
+          "entry bpmn-icon-connection-multi",
+          "entry bpmn-icon-start-event-none",
+          "entry bpmn-icon-intermediate-event-none",
+          "entry bpmn-icon-end-event-none",
+          "entry bpmn-icon-gateway-none",
+          "entry bpmn-icon-task",
+          "entry bpmn-icon-subprocess-expanded",
+          "entry bpmn-icon-data-object",
+          "entry bpmn-icon-data-store",
+          "entry bpmn-icon-participant",
+          "entry bpmn-icon-group"
+     ]
+}
