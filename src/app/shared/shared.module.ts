@@ -20,6 +20,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { FormsModule } from '@angular/forms';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -44,7 +45,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
     DialogModule,
     DividerModule,
     FormsModule,
-    SplitButtonModule
+    SplitButtonModule,
+    ToastModule
   ],
   exports: [
     AdditionalInfoComponent,
