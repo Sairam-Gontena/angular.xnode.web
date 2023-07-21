@@ -13,7 +13,7 @@ import { UtilsService } from '../services/utils.service';
 })
 export class PageToolsLayoutComponent {
   isOpen = false;
-  sideMenu = sidemenu?.sidemenu;
+  sideMenu = sidemenu?.subMenuConfig;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
   href: any;
@@ -22,18 +22,6 @@ export class PageToolsLayoutComponent {
   iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
-    this.href = this.router.url;
-    let label;
-    if (this.href.includes('design')) {
-      label = "Design";
-    } else if (this.href.includes('data-model')) {
-      label = "Config";
-    } else if (this.href.includes('publish')) {
-      label = "Publish";
-    } else {
-      label = "Operate";
-    }
-    this.loadSubSideMenu(label);
   }
 
   ngOnInit() {
@@ -42,17 +30,17 @@ export class PageToolsLayoutComponent {
     this.subMenuLayoutUtil.openSubmenu.subscribe((data: any) => {
       this.isOpen = data;
     })
+    this.loadSubMenu();
   }
-
 
   toggleMenu() {
     this.isOpen = !this.isOpen;
   }
 
-  async loadSubSideMenu(sidemenuLabel: any) {
-    await this.sideMenu.filter((item: any) => {
-      if (item?.Label == sidemenuLabel) {
-        this.sideMenuItem.push(item);
+  loadSubMenu() {
+    this.sideMenu.forEach((item: any) => {
+      if (item.path == this.router.url) {
+        this.sideMenuItem = item;
       }
     });
   }
