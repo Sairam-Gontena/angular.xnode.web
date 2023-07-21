@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
+import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
 
 const routes: Routes = [
   {
@@ -95,10 +96,10 @@ const routes: Routes = [
     path: 'x-pilot',
     loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
   },
-  {
-    path: 'x-bpmn',
-    loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
-  },
+  // {
+  //   path: 'x-bpmn',
+  //   loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
+  // },
   {
     path: '',
     redirectTo: '',

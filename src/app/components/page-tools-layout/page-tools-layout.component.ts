@@ -43,6 +43,19 @@ export class PageToolsLayoutComponent {
         this.sideMenuItem = item;
       }
     });
+    setTimeout(() => {
+      this.sideMenuItem.subMenuItems.map((item: any, i: any) => {
+        item.accordianContent.map((innerItem: any, j: any) => {
+          if (i == 0 && j == 0) {
+            let category = item.accordianHeader;
+            let innerCategory = innerItem.id;
+            console.log(category + innerCategory)
+            let contentElem = document.getElementById(category + innerCategory) as HTMLElement;
+            contentElem.style.background = '#302e38';
+          }
+        });
+      });
+    }, 10000);
   }
 
   getLayout(layout: string): void {
@@ -65,5 +78,17 @@ export class PageToolsLayoutComponent {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
+  }
+
+  selectedSubMenu(id: any) {
+    this.sideMenuItem.subMenuItems.map((item: any) => {
+      let category = item.accordianHeader;
+      item.accordianContent.map((innerItem: any) => {
+        let contentElem = document.getElementById(item.accordianHeader + innerItem.id) as HTMLElement;
+        contentElem.style.background = '#24232c';
+      });
+    });
+    let idElem = document.getElementById(id) as HTMLElement;
+    idElem.style.background = '#302e38';
   }
 }

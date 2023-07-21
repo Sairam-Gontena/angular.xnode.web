@@ -28,7 +28,6 @@ import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { from, Observable } from 'rxjs';
 
-
 @Component({
   selector: 'xnode-bpmn-diagram',
   templateUrl: './bpmn-diagram.component.html',

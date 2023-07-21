@@ -18,6 +18,7 @@ import { ModalModelComponent } from './modal-model/modal-model.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { BpmnDiagramComponent } from '../bpmn-diagram/bpmn-diagram.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ToastModule } from 'primeng/toast';
     SchemaComponent,
     ModalSchemaComponent,
     ModalDataComponent,
-    ModalModelComponent
+    ModalModelComponent,
+    BpmnDiagramComponent
   ],
   imports: [
     CommonModule,
