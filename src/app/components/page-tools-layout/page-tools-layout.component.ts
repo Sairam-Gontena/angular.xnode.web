@@ -22,16 +22,6 @@ export class PageToolsLayoutComponent {
   iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
-
-    // if (this.href.includes('design')) {
-    //   label = "Design";
-    // } else if (this.href.includes('data-model')) {
-    //   label = "Config";
-    // } else if (this.href.includes('publish')) {
-    //   label = "Publish";
-    // } else {
-    //   label = "Operate";
-    // }
   }
 
   ngOnInit() {
@@ -40,11 +30,8 @@ export class PageToolsLayoutComponent {
     this.subMenuLayoutUtil.openSubmenu.subscribe((data: any) => {
       this.isOpen = data;
     })
-
     this.loadSubMenu();
-
   }
-
 
   toggleMenu() {
     this.isOpen = !this.isOpen;
