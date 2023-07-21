@@ -16,8 +16,11 @@
                 {{notificationCount}}
             </div>
             <div *ngIf="enableNotificationCard" class="notification-card">
-                <div *ngFor="let notification of notifications" class="p-2 border-50">
-                    <div>{{notification}}</div>
+                <div *ngFor="let notification of notifications" class="p-2 border-50 notif-card">
+                    <div>{{notification.message}}</div>
+                    <div>Status: {{notification.status}}</div>
+                    <div *ngIf="notification?.execution_time">Exiicution Time: {{notification.execution_time}}</div>
+                    <a *ngIf="notification.status === 'completed'" (click)="goToProducts()">Go to Products</a>
                 </div>
             </div>
         </div>
@@ -25,3 +28,4 @@
         <p-splitButton label="Raymond Nelson" [model]="logoutDropdown" styleClass="p-button-raised"></p-splitButton>
     </div>
 </div>
+<p-toast></p-toast>
