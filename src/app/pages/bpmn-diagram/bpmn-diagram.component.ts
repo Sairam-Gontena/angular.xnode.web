@@ -25,6 +25,7 @@ import * as camundaModdleDescriptors from 'camunda-bpmn-moddle/resources/camunda
 import * as palette_tools_class from './custom-palette-provider.json';
 import * as custom from './custom.json';
 import Modeler from 'bpmn-js/lib/Modeler';
+import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { from, Observable } from 'rxjs';
 
 
@@ -46,9 +47,9 @@ export class BpmnDiagramComponent implements OnInit, AfterContentInit {
   ngOnInit(): void {
     this.bpmnJS = new Modeler({
       container: '#diagramRef',
-      propertiesPanel: {
-        // parent: '#propertiesRef'
-      },
+      // propertiesPanel: {
+      //   parent: '#propertiesRef'
+      // },
       additionalModules: [
         BpmnPropertiesPanelModule,
         BpmnPropertiesProviderModule,
@@ -59,14 +60,21 @@ export class BpmnDiagramComponent implements OnInit, AfterContentInit {
       moddleExtensions: {
         custom: custom,
         camunda: camundaModdleDescriptors
+      }, keyboard: {
+        bindTo: window
       }
     });
+
 
     // this.bpmnJS = new Modeler({
     //   container: '#diagramRef', keyboard: {
     //     bindTo: window
     //   }
     // });
+    const propertiesPanel = new PropertiesPanel({
+      parent: '#js-properties-panel',
+    });
+    this.bpmnJS.propertiesPanel = propertiesPanel;
 
     this.pallete_classes = palette_tools_class;
     this.selected_classes = [
