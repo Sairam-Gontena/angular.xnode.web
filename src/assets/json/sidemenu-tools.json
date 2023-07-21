@@ -181,6 +181,262 @@
                                    "content": "Map"
                               }
                          ]
+                    },
+                    {
+                         "ID": "4",
+                         "Label": "Operate",
+                         "SideBar": [
+                              {
+                                   "AccordianTabHeader": "Monitor",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/overview-sm.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Activity Log",
+                                             "imgsrc": "./assets/ActivityLog.svg",
+                                             "selectedcontainer": "Activity Log",
+                                             "alt": "ActivityLog",
+                                             "content": "Activity Log",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Alerts",
+                                             "imgsrc": "./assets/Alerts.svg",
+                                             "selectedcontainer": "Alerts",
+                                             "alt": "Alerts",
+                                             "content": "Alerts",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Metrics",
+                                             "imgsrc": "./assets/Metrics.svg",
+                                             "selectedcontainer": "Metrics",
+                                             "alt": "Metrics",
+                                             "content": "Metrics",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Logs",
+                                             "imgsrc": "./assets/Logs.svg",
+                                             "selectedcontainer": "Logs",
+                                             "alt": "Logs",
+                                             "content": "Logs",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Change Analysis",
+                                             "imgsrc": "./assets/ChangeAnalysis.svg",
+                                             "selectedcontainer": "Change Analysis",
+                                             "alt": "ChangeAnalysis",
+                                             "content": "Change Analysis",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Service Health",
+                                             "imgsrc": "./assets/medical-report.svg",
+                                             "selectedcontainer": "Service Health",
+                                             "alt": "ServiceHealth",
+                                             "content": "Service Health",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Workbooks",
+                                             "imgsrc": "./assets/notebook.svg",
+                                             "selectedcontainer": "Workbooks",
+                                             "alt": "Workbooks",
+                                             "content": "Workbooks",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Support",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/overview-sm.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "AI-Powered Chatbots",
+                                             "imgsrc": "./assets/chatbot.svg",
+                                             "selectedcontainer": "AI-Powered Chatbots",
+                                             "alt": "AI-PoweredChatbots",
+                                             "content": "AI-Powered Chatbots",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Predictive Analysis",
+                                             "imgsrc": "./assets/prediction.svg",
+                                             "selectedcontainer": "Predictive Analysis",
+                                             "alt": "PredictiveAnalysis",
+                                             "content": "Predictive Analysis",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Sentiment Analysis",
+                                             "imgsrc": "./assets/analysis.svg",
+                                             "selectedcontainer": "Sentiment Analysis",
+                                             "alt": "SentimentAnalysis",
+                                             "content": "Sentiment Analysis",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Training",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/overview-sm.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Personalized Learning",
+                                             "imgsrc": "./assets/personalized-learn.svg",
+                                             "selectedcontainer": "Personalized Learning",
+                                             "alt": "PersonalizedLearning",
+                                             "content": "Personalized Learning",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Automated Content Update",
+                                             "imgsrc": "./assets/automated-content.svg",
+                                             "selectedcontainer": "Automated Content Update",
+                                             "alt": "AutomatedContentUpdate",
+                                             "content": "Automated Content Update",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Knowledge Management",
+                                             "imgsrc": "./assets/knowledge-manage.svg",
+                                             "selectedcontainer": "Knowledge Management",
+                                             "alt": "KnowledgeManagement",
+                                             "content": "Knowledge Management",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Skill Gap Analysis",
+                                             "imgsrc": "./assets/skill-development.svg",
+                                             "selectedcontainer": "Skill Gap Analysis",
+                                             "alt": "SkillGapAnalysis",
+                                             "content": "Skill Gap Analysis",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Change",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/overview-sm.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Request Form",
+                                             "imgsrc": "./assets/Request-form.svg",
+                                             "selectedcontainer": "Request Form",
+                                             "alt": "RequestForm",
+                                             "content": "Request Form",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Request View",
+                                             "imgsrc": "./assets/Request-view.svg",
+                                             "selectedcontainer": "Request View",
+                                             "alt": "RequestView",
+                                             "content": "Request View",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Implementation View",
+                                             "imgsrc": "./assets/Implementation-view.svg",
+                                             "selectedcontainer": "Implementation View",
+                                             "alt": "ImplementationView",
+                                             "content": "Implementation View",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Version Control",
+                                             "imgsrc": "./assets/version-control.svg",
+                                             "selectedcontainer": "Version Control",
+                                             "alt": "VersionControl",
+                                             "content": "Version Control",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "History Log",
+                                             "imgsrc": "./assets/History-log.svg",
+                                             "selectedcontainer": "History Log",
+                                             "alt": "HistoryLog",
+                                             "content": "History Log",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              },
+                              {
+                                   "AccordianTabHeader": "Feedback",
+                                   "SubSideBar": [
+                                        {
+                                             "id": "Overview",
+                                             "imgsrc": "./assets/overview-sm.svg",
+                                             "selectedcontainer": "Overview",
+                                             "alt": "Overview",
+                                             "content": "Overview",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        },
+                                        {
+                                             "id": "Define Survey",
+                                             "imgsrc": "./assets/Define-Survey.svg",
+                                             "selectedcontainer": "Define Survey",
+                                             "alt": "DefineSurvey",
+                                             "content": "Define Survey",
+                                             "hasrouter": "false",
+                                             "routerlink": ""
+                                        }
+                                   ]
+                              }
+                         ]
                     }
                ]
           },
