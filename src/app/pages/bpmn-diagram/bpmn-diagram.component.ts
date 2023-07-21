@@ -34,8 +34,7 @@ import { from, Observable } from 'rxjs';
   styleUrls: ['./bpmn-diagram.component.scss']
 })
 export class BpmnDiagramComponent implements OnInit, AfterContentInit {
-
-  private bpmnJS!: Modeler;
+  bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
@@ -45,40 +44,30 @@ export class BpmnDiagramComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
+    this.bpmnJS = new Modeler({
+      container: '#diagramRef',
+      propertiesPanel: {
+        // parent: '#propertiesRef'
+      },
+      additionalModules: [
+        BpmnPropertiesPanelModule,
+        BpmnPropertiesProviderModule,
+        // customPropertiesProvider
+        CamundaPlatformPropertiesProviderModule,
+        // camundaCloudBehaviors
+      ],
+      moddleExtensions: {
+        custom: custom,
+        camunda: camundaModdleDescriptors
+      }
+    });
+
     // this.bpmnJS = new Modeler({
-    //   container: '#diagramRef',
-    //   propertiesPanel: {
-    //     parent: '#propertiesRef'
-    //   },
-    //   additionalModules: [
-    //     BpmnPropertiesPanelModule,
-    //     BpmnPropertiesProviderModule,
-    //     // customPropertiesProvider
-    //     CamundaPlatformPropertiesProviderModule,
-    //     // camundaCloudBehaviors
-    //   ],
-    //   moddleExtensions: {
-    //     custom: custom,
-    //     camunda: camundaModdleDescriptors
-    //   }, textRenderer: {
-    //     defaultStyle: {
-    //       fontFamily: '"Nothing You Could Do", cursive',
-    //       fontWeight: 'bold'
-    //     },
-    //     externalStyle: {
-    //       fontSize: '16px',
-    //       lineHeight: 1.5
-    //     }
-    //   },
-    //   // customize default colors
-    //   bpmnRenderer: {
-    //     defaultFillColor: '#333',
-    //     defaultStrokeColor: '#fff'
+    //   container: '#diagramRef', keyboard: {
+    //     bindTo: window
     //   }
     // });
-    this.bpmnJS = new Modeler({
-      container: '#diagramRef'
-    });
+
     this.pallete_classes = palette_tools_class;
     this.selected_classes = [
       "entry bpmn-icon-subprocess-expanded",
@@ -87,15 +76,20 @@ export class BpmnDiagramComponent implements OnInit, AfterContentInit {
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
-    let propertiesPanel: any;
-    this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
-    this.importDiagram(this.xml);
+    // let propertiesPanel: any;
+    // this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
+    // propertiesPanel = this.bpmnJS.get('propertiesPanel');
+    // propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
+    // this.importDiagram(this.xml);
 
   }
 
   ngAfterContentInit(): void {
+    this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
+    // const propertiesPanel = this.bpmnJS.get('propertiesPanel');
+    // propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
+    this.importDiagram(this.xml);
+
     // let bpmnElement = document.getElementById('diagramRef') as HTMLElement;
     // this.bpmnJS.attachTo(bpmnElement);
     // let propertiesPanel: any;
