@@ -17,6 +17,7 @@ import { MessagesModule } from 'primeng/messages';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AccordionModule } from 'primeng/accordion';
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   declarations: [],
@@ -39,7 +40,8 @@ import { AccordionModule } from 'primeng/accordion';
     MessagesModule,
     DragDropModule,
     TableModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    BadgeModule
   ],
   exports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { AccordionModule } from 'primeng/accordion';
     MessagesModule,
     DragDropModule,
     TableModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    BadgeModule
   ]
 })
 export class PrimeModule { }
