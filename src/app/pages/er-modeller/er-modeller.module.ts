@@ -18,6 +18,9 @@ import { ModalModelComponent } from './modal-model/modal-model.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { DataService } from './service/data.service';
+import { JsPlumbService } from './service/jsPlumb.service';
+import { UtilService } from './service/util.service';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,7 @@ import { ToastModule } from 'primeng/toast';
     InputTextModule,
     ToastModule,
     ModalModule.forRoot()
-  ]
+  ],
+  providers: [DataService, JsPlumbService, UtilService],
 })
 export class ErModellerModule { }

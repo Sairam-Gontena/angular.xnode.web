@@ -37,7 +37,7 @@ export class TemplatesComponent implements OnInit {
   getMeUserId() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
-        if (response?.status === 200) {
+        if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
         }
