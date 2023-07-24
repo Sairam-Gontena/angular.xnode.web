@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChatBotComponent } from './chat-bot.component';
+import { NaviComponent } from './navi.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChatBotComponent
+    component: NaviComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ChatBotRoutingModule { }
+export class NaviRoutingModule { }

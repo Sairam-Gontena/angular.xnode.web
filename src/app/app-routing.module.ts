@@ -26,13 +26,13 @@ const routes: Routes = [
   },
   {
     path: 'overview',
-    loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
+    loadChildren: () => import('./pages/overview/overview.module').then(m => m.OverViewModule)
   },
   {
-    path: 'my-templates',
+    path: 'my-products',
     loadChildren: () =>
-      import('./pages/templates/templates.module').then(
-        (m) => m.TemplatesModule
+      import('./pages/my-products/my-products.module').then(
+        (m) => m.MyProductsModule
       ),
   },
   {
@@ -93,7 +93,7 @@ const routes: Routes = [
   },
   {
     path: 'x-pilot',
-    loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
+    loadChildren: () => import('./pages/navi/navi.module').then(m => m.NaviModule),
   },
 
   {
