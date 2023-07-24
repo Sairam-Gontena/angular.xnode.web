@@ -2,8 +2,7 @@
     <div class="w-9 flex gap-5">
         <div class="flex flex-row">
             <img src="./assets/logo-x.svg" alt="x-logo">
-            <img src="./assets/logo-node.svg" alt="x-node"
-                routerLink="/my-products" class="pointer">
+            <img src="./assets/logo-node.svg" alt="x-node" routerLink="/my-products" class="pointer">
         </div>
         <div *ngFor="let item of headerItems" class="header-menu-item">
             {{item.label}}
@@ -11,27 +10,69 @@
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class=" flex justify-content-center align-content-center">
-            <i class="pi pi-bell text-base notification-icon" pBadge value="2"
-                (click)="toggleAccordion()">
-            </i>
-            <div class="badge">
-                {{notificationCount}}
-            </div>
-            <div *ngIf="enableNotificationCard" class="notification-card">
-                <div *ngFor="let notification of notifications"
-                    class="p-2 border-50 notif-card">
-                    <div>{{notification.message}}</div>
-                    <div>Status: {{notification.status}}</div>
-                    <div *ngIf="notification?.execution_time">Exiicution Time:
-                        {{notification.execution_time}}</div>
-                    <a *ngIf="notification.status === 'completed'"
-                        (click)="goToProducts()">Go to Products</a>
+            <i class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge value={{notificationCount}} severity="danger"
+                (click)=" op.show($event)"></i>
+            <p-overlayPanel #op
+                [style]="{'width': '350px','height':'500px','background-color':'#24232C','padding':'0'}">
+                <div class="flex justify-content-between">
+                    <div class="text-white text-base">Notifications</div>
+                    <div class="flex">
+                        <i class="pi pi-bell text-lg  mr-2 "></i>
+                        <i class="pi pi-ellipsis-h text-lg  "></i>
+                    </div>
                 </div>
-            </div>
+                <div *ngIf="notifications.length > 0" class="flex  mt-3 notification-btns">
+                    <div class="flex align-items-center">
+                        <div class="text-white text-sm">Recent</div>
+                        <div
+                            style="height: 8px;width: 8px;border-radius: 4px;background-color: #F90707;margin-left: 5px;">
+                        </div>
+                    </div>
+                    <div class="flex align-items-center ml-3">
+                        <div class="text-sm">Important</div>
+                        <div
+                            style="height: 8px;width: 8px;border-radius: 4px;background-color: #F90707;margin-left: 5px;">
+                        </div>
+                    </div>
+                    <div class="flex align-items-center ml-3">
+                        <div class="text-sm">Pinned</div>
+                    </div>
+                </div>
+                <div *ngIf="notifications.length > 0" class="flex justify-content-between mt-3 text-white">
+                    <div class="flex align-items-center">
+                        <div class="text-xs">Filter</div>
+                        <i class="pi pi-sort-amount-up text-xs ml-2"></i>
+                    </div>
+                    <div class="flex align-items-center">
+                        <div class="text-xs">See all in activity log</div>
+                        <i class="pi pi-arrow-right text-xs ml-2"></i>
+                    </div>
+                </div>
+                <div class="notif-list" *ngIf="notifications.length > 0">
+                    <div *ngFor="let notification of notifications" class="p-2 border-50 notif-card text-white text-xs">
+                        <div>{{notification.message}}</div>
+                        <div>Status: {{notification.status}}</div>
+                        <div *ngIf="notification?.execution_time">Exiicution Time: {{notification.execution_time}}
+                        </div>
+                        <a *ngIf="notification.product_status !== 'completed'" (click)="goToProducts()">Go to
+                            Products</a>
+                        <!-- <div *ngIf="notification.product_status !== 'completed'">
+                            <p class="mb-0">
+                                You changes got saved and ready to publish
+                            </p>
+                            <p-button label="Primary" class="publish-btn"
+                                styleClass=" p-button-outlined p-button-rounded p-button-sm"></p-button>
+                        </div> -->
+
+                    </div>
+                </div>
+                <div class="mt-5" *ngIf="notifications.length === 0">
+                    <h5>No New Notifications Found</h5>
+                </div>
+            </p-overlayPanel>
         </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown"
-            styleClass="p-button-raised"></p-splitButton>
+        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown" styleClass="p-button-raised"></p-splitButton>
     </div>
 </div>
 <p-toast></p-toast>

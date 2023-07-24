@@ -8,7 +8,7 @@ import { WebSocketService } from 'src/app/web-socket.service';
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 
 export class AppHeaderComponent implements OnInit {
@@ -21,9 +21,7 @@ export class AppHeaderComponent implements OnInit {
   notifications: any[] = [];
   notificationCount: Number = 0;
 
-
   constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
-
   }
 
   ngOnInit(): void {
@@ -38,19 +36,19 @@ export class AppHeaderComponent implements OnInit {
         }
       },
     ];
-    this.pusherInitializer()
+    this.initializeWebsocket();
   }
 
   goToProducts(): void {
     this.router.navigate(['/my-products']);
   }
 
-  pusherInitializer() {
+  initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
-    this.webSocketService.emit('join', 'navi-notifier');
+    this.webSocketService.emit('join', 'xnode-notifier');
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
       this.notifications.push(data);
       this.notificationCount = this.notifications.length
