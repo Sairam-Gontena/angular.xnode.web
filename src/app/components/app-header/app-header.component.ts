@@ -38,19 +38,19 @@ export class AppHeaderComponent implements OnInit {
         }
       },
     ];
-    this.pusherInitializer()
+    this.initializeWebsocket();
   }
 
   goToProducts(): void {
     this.router.navigate(['/my-templates']);
   }
 
-  pusherInitializer() {
+  initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
-    this.webSocketService.emit('join', 'navi-notifier');
+    this.webSocketService.emit('join', 'xnode-notifier');
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
       this.notifications.push(data);
       this.notificationCount = this.notifications.length
