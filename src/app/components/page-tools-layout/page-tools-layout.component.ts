@@ -24,7 +24,6 @@ export class PageToolsLayoutComponent {
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
     console.log(subMenuConfig)
     this.sideMenu = subMenuConfig?.subMenuConfig;
-    console.log(this.sideMenu)
   }
 
   ngOnInit() {
