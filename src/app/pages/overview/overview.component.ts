@@ -5,9 +5,9 @@ import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'xnode-over-view',
-  templateUrl: './over-view.component.html',
-  styleUrls: ['./over-view.component.scss'],
+  selector: 'xnode-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.scss'],
   providers: [MessageService]
 })
 

@@ -2,17 +2,25 @@
     <div class="flex align-items-center justify-content-center">
         <p-dropdown [options]="templates"></p-dropdown>
     </div>
-    <div class="flex align-items-center justify-content-center gap-3" *ngIf="showDeviceIcons">
-        <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': selectedDeviceIndex === 'desktop' }" alt="desktop"
+    <div class="flex align-items-center justify-content-center gap-3  pointer"
+        *ngIf="showDeviceIcons">
+        <img src="./assets/Computer.svg"
+            [ngClass]="{ 'highlighted': selectedDeviceIndex === 'desktop' }"
+            alt="desktop"
             class="image-icon" (click)="deviceIconClicked('desktop')">
-        <img src="./assets/tab.svg" [ngClass]="{ 'highlighted': selectedDeviceIndex === 'tab' }" alt="tab"
+        <img src="./assets/tab.svg"
+            [ngClass]="{ 'highlighted': selectedDeviceIndex === 'tab' }"
+            alt="tab"
             class="image-icon" (click)="deviceIconClicked('tab')">
-        <img src="./assets/mobile.svg" [ngClass]="{ 'highlighted': selectedDeviceIndex === 'mobile' }" alt="mobile"
+        <img src="./assets/mobile.svg"
+            [ngClass]="{ 'highlighted': selectedDeviceIndex === 'mobile' }"
+            alt="mobile"
             class="image-icon" (click)="deviceIconClicked('mobile')">
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded save-btn"></p-button>
-        <p-splitButton [label]="selectedOption" [model]="templatesOptions" styleClass="p-button-raised p-button-rounded"
+        <p-splitButton [label]="selectedOption" [model]="templatesOptions"
+            styleClass="p-button-raised p-button-rounded"
             (onClick)="onSelectOption()"></p-splitButton>
     </div>
 </div>
