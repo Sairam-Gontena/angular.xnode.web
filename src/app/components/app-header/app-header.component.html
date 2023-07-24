@@ -13,12 +13,52 @@
             <i class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge value={{notificationCount}} severity="danger"
                 (click)="notifications.length > 0 && op.show($event)"></i>
             <p-overlayPanel #op
-                [style]="{'width': '350px','height':'300px','background-color':'#24232C', 'overflow-y': 'auto'}">
-                <div *ngFor="let notification of notifications" class="p-2 border-50 notif-card text-white text-xs">
-                    <div>{{notification.message}}</div>
-                    <div>Status: {{notification.status}}</div>
-                    <div *ngIf="notification?.execution_time">Exiicution Time: {{notification.execution_time}}</div>
-                    <a *ngIf="notification.product_status === 'completed'" (click)="goToProducts()">Go to Products</a>
+                [style]="{'width': '350px','height':'500px','background-color':'#24232C','padding':'0'}">
+
+                <div>
+                    <div class="flex justify-content-between">
+                        <div class="text-white text-base">Notifications</div>
+                        <div class="flex">
+                            <i class="pi pi-bell text-lg  mr-2 "></i>
+                            <i class="pi pi-ellipsis-h text-lg  "></i>
+                        </div>
+                    </div>
+                    <div class="flex  mt-3 notification-btns">
+                        <div class="flex align-items-center">
+                            <div class="text-white text-sm">Recent</div>
+                            <div
+                                style="height: 8px;width: 8px;border-radius: 4px;background-color: #F90707;margin-left: 5px;">
+                            </div>
+                        </div>
+                        <div class="flex align-items-center ml-3">
+                            <div class="text-sm">Important</div>
+                            <div
+                                style="height: 8px;width: 8px;border-radius: 4px;background-color: #F90707;margin-left: 5px;">
+                            </div>
+                        </div>
+                        <div class="flex align-items-center ml-3">
+                            <div class="text-sm">Pinned</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-content-between mt-3 text-white">
+                        <div class="flex align-items-center">
+                            <div class="text-xs">Filter</div>
+                            <i class="pi pi-sort-amount-up text-xs ml-2"></i>
+                        </div>
+                        <div class="flex align-items-center">
+                            <div class="text-xs">See all in activity log</div>
+                            <i class="pi pi-arrow-right text-xs ml-2"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div *ngFor="let notification of notifications" class="p-2 border-50 notif-card text-white text-xs">
+                        <div>{{notification.message}}</div>
+                        <div>Status: {{notification.status}}</div>
+                        <div *ngIf="notification?.execution_time">Exiicution Time: {{notification.execution_time}}
+                        </div>
+                        <a *ngIf="notification.status === 'completed'" (click)="goToProducts()">Go to Products</a>
+                    </div>
                 </div>
             </p-overlayPanel>
         </div>

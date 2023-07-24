@@ -8,7 +8,7 @@ import { WebSocketService } from 'src/app/web-socket.service';
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 
 export class AppHeaderComponent implements OnInit {
@@ -18,7 +18,7 @@ export class AppHeaderComponent implements OnInit {
   enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
-  notifications: any[] = [];
+  notifications: any[] = [{ message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' },{ message: 'this is your message', status: 'Success', execution_time: '123456789' },];
   notificationCount: Number = 0;
 
 
