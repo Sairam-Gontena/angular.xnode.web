@@ -8,6 +8,7 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-sign-up',
@@ -16,10 +17,9 @@ import {
 })
 
 export class SignUpComponent implements OnInit {
-  private linkedInCredentials = {
-    clientId: "86t2uk8j3axxnd",
-    redirectUrl: "https://www.linkedin.com/developers/tools/oauth/redirect"
-  };
+
+
+
   signUpForm: FormGroup;
   submitted: boolean = false;
   errorMessage!: string;
@@ -29,8 +29,8 @@ export class SignUpComponent implements OnInit {
   socialUser!: SocialUser;
   isLoggedin?: boolean;
   linkedInToken: any;
-
-  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService) {
+  user: SocialUser | null = null;
+  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute) {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -49,17 +49,21 @@ export class SignUpComponent implements OnInit {
       this.isLoggedin = user != null;
       console.log(this.socialUser);
       if (user) {
+        this.user = user;
+        this.storeUserDataInLocalStorage(user);
+
+
         this.router.navigate(['/workspace']);
       }
     });
-    // this.linkedInToken = this.router.snapshot.queryParams["code"];
-    // this.socialAuthService.ContinueWithLinkedIn(this.linkedInToken).subscribe(res => {
-    //   localStorage.setItem('token', res.jwtToken);
-    //   this.router.navigate(['/dashboard']);
-    // }, error => {
-    //   console.log(error)
-    // });
+    this.route.queryParams.subscribe(params => {
+      const authorizationCode = params['code'];
+      if (authorizationCode) {
+        this.handleLinkedInCallback(authorizationCode);
+      }
+    });
   }
+
 
   get signUp() { return this.signUpForm.controls; }
 
@@ -83,10 +87,19 @@ export class SignUpComponent implements OnInit {
   ContinueWithGoogle() {
     this.ContinueWithGoogleSelected = true;
     this.ContinueWithLinkedInSelected = false;
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then((userData: SocialUser) => {
+        if (userData) {
+          this.user = userData;
+          this.storeUserDataInLocalStorage(userData);
+          this.router.navigate(['/workspace']);
 
+        }
+      }
 
-  }
+      )
+  };
+
   ContinueWithLinkedIn() {
     this.ContinueWithGoogleSelected = false;
     this.ContinueWithLinkedInSelected = true;
@@ -95,7 +108,23 @@ export class SignUpComponent implements OnInit {
     const scope = 'r_liteprofile r_emailaddress';
     const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
     window.location.href = authUrl;
+    console.log(authUrl);
 
+
+  }
+  storeUserDataInLocalStorage(user: SocialUser) {
+    localStorage.setItem('firstName', user.firstName);
+    localStorage.setItem('lastName', user.lastName);
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('user', JSON.stringify(user));
+
+  }
+  handleLinkedInCallback(authorizationCode: string) {
+    const clientId = '86t2uk8j3axxnd';
+    const redirectUri = 'https://www.linkedin.com/developers/tools/oauth/redirect';
+    const tokenEndpoint = 'https://www.linkedin.com/oauth/v2/accessToken';
+    const scope = 'r_liteprofile r_emailaddress';
+    const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
   }
 
 }

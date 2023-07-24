@@ -11,20 +11,22 @@
                         <a class="text-blue-700 pointer" (click)="this.router.navigate(['/login'])">Sign In</a>
                     </p>
                     <div class="grid">
-                        <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="ContinueWithGoogle()"
+                        <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6 google-button" (click)="ContinueWithGoogle()"
                             [class.selected]="ContinueWithGoogleSelected"
                             [class.invalid]="isFormSubmitted && !ContinueWithGoogleSelected">
-                            <asl-google-signin-button type="standard" size="medium" width="200"
-                                class=""></asl-google-signin-button>
+                            <asl-google-signin-button type="standard" size="medium" width="271"
+                                class="google-button"></asl-google-signin-button>
+
                         </div>
                         <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6" (click)="ContinueWithLinkedIn()"
                             [class.selected]="ContinueWithLinkedInSelected"
                             [class.invalid]="isFormSubmitted && !ContinueWithLinkedInSelected">
-                            <div class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
-                                <img src="./assets/linkedin.png" width="16px">
+                            <div
+                                class="flex flex-wrap  align-items-center p-1 border-1 surface-border border-round linkedin-div">
+                                <img src="./assets/linkedin.png" width="17px" class="ml-1">
 
-                                <p class="m-0 pl-2 font-semibold font-normal text-sm ">
-                                    CONTINUE WITH LINKEDIN
+                                <p class="m-0 pl-4 font-medium linked-para">
+                                    Continue With LinkedIn
                                 </p>
                             </div>
                         </div>

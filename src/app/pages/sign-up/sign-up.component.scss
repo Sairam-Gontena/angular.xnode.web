@@ -13,6 +13,12 @@
     align-items: flex-end;
 }
 
+.linked-para {
+    font-size: 14px;
+    font-weight: 500;
+    height: 22px;
+}
+
 
 
 :host ::ng-deep .p-button {
@@ -33,10 +39,6 @@
 
 }
 
-
-
-
-
 @media screen and (max-width: 780px) {
     .form-container {
         margin-left: 84px;
@@ -49,6 +51,17 @@
             .sign-up-img {
                 width: 100%;
             }
+        }
+    }
+
+    @media screen and (max-width: 780px) {
+        .linked-para {
+            font-size: 13px;
+        }
+
+        .linkedin-div {
+            width: 216px;
+            height: 27px;
         }
     }
 }
