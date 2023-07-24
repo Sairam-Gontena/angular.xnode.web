@@ -7,11 +7,13 @@
 .text-xs {
      font-size: 0.5rem !important;
 }
-.close{
+
+.hide-template-builder-body-wrapper {
      width: calc(300px - 250px) !important;
      background: #24232C;
      transition: width 0.5s ease;
 }
+
 .hide-icon {
      display: none;
 }
@@ -19,9 +21,14 @@
 .show-icon {
      display: block;
 }
+
 :host ::ng-deep .p-button {
      font-size: 2rem;
      background: #4F4E55;
      border: 1px solid #24232C !important;
      cursor: pointer;
-   }
+}
+
+.layout-item {
+     height: 92px;
+}

@@ -22,7 +22,6 @@ import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
         SignUpRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        // PrimeModule,
         ButtonModule,
         PasswordModule,
         DividerModule,

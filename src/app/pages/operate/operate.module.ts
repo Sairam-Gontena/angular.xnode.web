@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OperateRoutingModule } from './operate-routing.module';
-import { ButtonModule } from 'primeng/button';
 import { OperateComponent } from './operate.component';
-import { DropdownModule } from 'primeng/dropdown';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AccordionModule } from 'primeng/accordion';
-
+import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 @NgModule({
   declarations: [
     OperateComponent
@@ -14,10 +11,8 @@ import { AccordionModule } from 'primeng/accordion';
   imports: [
     CommonModule,
     OperateRoutingModule,
-    ButtonModule,
-    DropdownModule,
     SharedModule,
-    AccordionModule
+    SharedComponentModule
   ]
 })
 export class OperateModule { }
