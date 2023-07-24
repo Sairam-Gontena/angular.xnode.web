@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { GridsterItem } from 'angular-gridster2';
 import { Router } from '@angular/router';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
-import * as sidemenu from '../../../assets/json/sidemenu-tools.json';
+import subMenuConfig from '../../../assets/json/sidemenu-tools.json';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from '../services/utils.service';
 
@@ -13,15 +13,18 @@ import { UtilsService } from '../services/utils.service';
 })
 export class PageToolsLayoutComponent {
   isOpen = true;
-  sideMenu = sidemenu?.subMenuConfig;
+  sideMenu: any;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
   href: any;
-  sideMenuItem: any = [];
+  sideMenuItem: any;
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
+    console.log(subMenuConfig)
+    this.sideMenu = subMenuConfig?.subMenuConfig;
+    console.log(this.sideMenu)
   }
 
   ngOnInit() {
@@ -44,8 +47,14 @@ export class PageToolsLayoutComponent {
       }
     });
     setTimeout(() => {
-      this.sideMenuItem.subMenuItems.forEach((item: any, i: any) => {
-        item.accordianContent.forEach((innerItem: any, j: any) => {
+      this.sideSubMenu();
+    }, 5000);
+  }
+
+  sideSubMenu() {
+    if (this.sideMenuItem?.subMenuItems) {
+      this.sideMenuItem?.subMenuItems?.forEach((item: any, i: any) => {
+        item?.accordianContent?.forEach((innerItem: any, j: any) => {
           if (i == 0 && j == 0) {
             let category = item.accordianHeader;
             let innerCategory = innerItem.id;
@@ -54,7 +63,7 @@ export class PageToolsLayoutComponent {
           }
         });
       });
-    }, 2000);
+    }
   }
 
   getLayout(layout: string): void {
@@ -80,9 +89,8 @@ export class PageToolsLayoutComponent {
   }
 
   selectedSubMenu(id: any) {
-    this.sideMenuItem.subMenuItems.map((item: any) => {
-      let category = item.accordianHeader;
-      item.accordianContent.map((innerItem: any) => {
+    this.sideMenuItem?.subMenuItems?.forEach((item: any) => {
+      item?.accordianContent?.forEach((innerItem: any) => {
         let contentElem = document.getElementById(item.accordianHeader + innerItem.id) as HTMLElement;
         contentElem.style.background = '#24232c';
       });
