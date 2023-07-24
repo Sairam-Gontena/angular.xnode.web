@@ -42,7 +42,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   goToProducts(): void {
-    this.router.navigate(['/my-templates']);
+    this.router.navigate(['/my-products']);
   }
 
   pusherInitializer() {
