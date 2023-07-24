@@ -5,12 +5,12 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'xnode-chat-bot',
-  templateUrl: './chat-bot.component.html',
-  styleUrls: ['./chat-bot.component.scss']
+  selector: 'xnode-navi',
+  templateUrl: './navi.component.html',
+  styleUrls: ['./navi.component.scss']
 })
 
-export class ChatBotComponent implements OnInit {
+export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
   constructor(
     private router: Router,
@@ -50,7 +50,7 @@ export class ChatBotComponent implements OnInit {
 
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
-            window.location.href = this.baseUrl + '#/design';
+            window.location.href = this.baseUrl + '#/my-products';
             // Trigger a custom event in the parent window
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
@@ -74,7 +74,7 @@ export class ChatBotComponent implements OnInit {
   }
 
   onClickHome(): void {
-    this.router.navigate(['/my-templates']);
+    this.router.navigate(['/my-products']);
   }
 
 }

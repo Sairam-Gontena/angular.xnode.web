@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SignUpComponent } from './sign-up.component';
 import { SignUpRoutingModule } from './signup-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { PrimeModule } from 'src/app/prime-modules/prime.module';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
@@ -16,7 +15,6 @@ import { PasswordModule } from 'primeng/password';
         SignUpRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        // PrimeModule,
         ButtonModule,
         PasswordModule,
         DividerModule

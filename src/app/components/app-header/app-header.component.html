@@ -2,14 +2,36 @@
     <div class="w-9 flex gap-5">
         <div class="flex flex-row">
             <img src="./assets/logo-x.svg" alt="x-logo">
-            <img src="./assets/logo-node.svg" alt="x-node" routerLink="/my-templates" class="pointer">
+            <img src="./assets/logo-node.svg" alt="x-node"
+                routerLink="/my-products" class="pointer">
         </div>
         <div *ngFor="let item of headerItems" class="header-menu-item">
             {{item.label}}
         </div>
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
+        <div class=" flex justify-content-center align-content-center">
+            <i class="pi pi-bell text-base notification-icon" pBadge value="2"
+                (click)="toggleAccordion()">
+            </i>
+            <div class="badge">
+                {{notificationCount}}
+            </div>
+            <div *ngIf="enableNotificationCard" class="notification-card">
+                <div *ngFor="let notification of notifications"
+                    class="p-2 border-50 notif-card">
+                    <div>{{notification.message}}</div>
+                    <div>Status: {{notification.status}}</div>
+                    <div *ngIf="notification?.execution_time">Exiicution Time:
+                        {{notification.execution_time}}</div>
+                    <a *ngIf="notification.status === 'completed'"
+                        (click)="goToProducts()">Go to Products</a>
+                </div>
+            </div>
+        </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown" styleClass="p-button-raised"></p-splitButton>
+        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown"
+            styleClass="p-button-raised"></p-splitButton>
     </div>
 </div>
+<p-toast></p-toast>

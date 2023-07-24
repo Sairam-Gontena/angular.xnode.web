@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
 
 @Component({
-  selector: 'xnode-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  selector: 'xnode-dynamic-table',
+  templateUrl: './dynamic-table.component.html',
+  styleUrls: ['./dynamic-table.component.scss']
 })
-export class TableComponent implements OnInit {
+export class DynamicTableComponent implements OnInit {
   dynamicData: any;
   headers: any;
   heading: string = "Users";

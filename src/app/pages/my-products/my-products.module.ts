@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PublishComponent } from './publish.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { PublishRoutingModule } from './publish-routing.module';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
+import { MyProductsComponent } from './my-products.component';
+import { MyProductsRoutingModule } from './my-products-routing.module';
 
 @NgModule({
   declarations: [
-    PublishComponent,
+    MyProductsComponent,
   ],
   imports: [
     CommonModule,
-    PublishRoutingModule,
+    MyProductsRoutingModule,
     SharedModule,
     SharedComponentModule
-  ]
+  ],
 })
-export class PublishModule { }
+export class MyProductsModule { }

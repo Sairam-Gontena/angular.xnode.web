@@ -4,13 +4,13 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 @Component({
-  selector: 'xnode-templates',
-  templateUrl: './templates.component.html',
-  styleUrls: ['./templates.component.scss'],
+  selector: 'xnode-my-products',
+  templateUrl: './my-products.component.html',
+  styleUrls: ['./my-products.component.scss'],
   providers: [MessageService]
 })
 
-export class TemplatesComponent implements OnInit {
+export class MyProductsComponent implements OnInit {
   loading: boolean = true;
   id: String = '';
   templateCard: any;
@@ -37,7 +37,7 @@ export class TemplatesComponent implements OnInit {
   getMeUserId() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
-        if (response?.status === 200) {
+        if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
         }
