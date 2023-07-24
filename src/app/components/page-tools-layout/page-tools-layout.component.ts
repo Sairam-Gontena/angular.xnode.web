@@ -92,10 +92,14 @@ export class PageToolsLayoutComponent {
     this.sideMenuItem?.subMenuItems?.forEach((item: any) => {
       item?.accordianContent?.forEach((innerItem: any) => {
         let contentElem = document.getElementById(item.accordianHeader + innerItem.id) as HTMLElement;
-        contentElem.style.background = '#24232c';
+        if (contentElem) {
+          contentElem.style.background = '#24232c';
+        }
       });
     });
     let idElem = document.getElementById(id) as HTMLElement;
-    idElem.style.background = '#302e38';
+    if (idElem) {
+      idElem.style.background = '#302e38';
+    }
   }
 }
