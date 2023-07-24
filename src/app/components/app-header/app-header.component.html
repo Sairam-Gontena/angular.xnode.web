@@ -11,7 +11,7 @@
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class=" flex justify-content-center align-content-center">
             <i class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge value={{notificationCount}} severity="danger"
-                (click)="op.show($event)"></i>
+                (click)="notifications.length > 0 && op.show($event)"></i>
             <p-overlayPanel #op
                 [style]="{'width': '350px','height':'300px','background-color':'#24232C', 'overflow-y': 'auto'}">
                 <div *ngFor="let notification of notifications" class="p-2 border-50 notif-card text-white text-xs">
