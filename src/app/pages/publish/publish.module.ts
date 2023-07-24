@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AccordionModule } from 'primeng/accordion';
 import { PublishComponent } from './publish.component';
-import { DropdownModule } from 'primeng/dropdown';
-import { ButtonModule } from 'primeng/button';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PublishRoutingModule } from './publish-routing.module';
+import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 
 @NgModule({
   declarations: [
@@ -14,10 +12,8 @@ import { PublishRoutingModule } from './publish-routing.module';
   imports: [
     CommonModule,
     PublishRoutingModule,
-    AccordionModule,
     SharedModule,
-    DropdownModule,
-    ButtonModule
+    SharedComponentModule
   ]
 })
 export class PublishModule { }
