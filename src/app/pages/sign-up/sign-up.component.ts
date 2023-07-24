@@ -8,6 +8,7 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 
+
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -15,6 +16,10 @@ import {
 })
 
 export class SignUpComponent implements OnInit {
+  private linkedInCredentials = {
+    clientId: "86t2uk8j3axxnd",
+    redirectUrl: "https://www.linkedin.com/developers/tools/oauth/redirect"
+  };
   signUpForm: FormGroup;
   submitted: boolean = false;
   errorMessage!: string;
@@ -23,6 +28,8 @@ export class SignUpComponent implements OnInit {
   isFormSubmitted!: boolean;
   socialUser!: SocialUser;
   isLoggedin?: boolean;
+  linkedInToken: any;
+
   constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService) {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -41,7 +48,17 @@ export class SignUpComponent implements OnInit {
       this.socialUser = user;
       this.isLoggedin = user != null;
       console.log(this.socialUser);
+      if (user) {
+        this.router.navigate(['/workspace']);
+      }
     });
+    // this.linkedInToken = this.router.snapshot.queryParams["code"];
+    // this.socialAuthService.ContinueWithLinkedIn(this.linkedInToken).subscribe(res => {
+    //   localStorage.setItem('token', res.jwtToken);
+    //   this.router.navigate(['/dashboard']);
+    // }, error => {
+    //   console.log(error)
+    // });
   }
 
   get signUp() { return this.signUpForm.controls; }
@@ -73,7 +90,13 @@ export class SignUpComponent implements OnInit {
   ContinueWithLinkedIn() {
     this.ContinueWithGoogleSelected = false;
     this.ContinueWithLinkedInSelected = true;
+    const clientId = '86t2uk8j3axxnd';
+    const redirectUri = 'https://www.linkedin.com/developers/tools/oauth/redirect';
+    const scope = 'r_liteprofile r_emailaddress';
+    const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
+    window.location.href = authUrl;
 
   }
 
 }
+
