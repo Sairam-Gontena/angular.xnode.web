@@ -54,7 +54,7 @@
                         <div>Status: {{notification.status}}</div>
                         <div *ngIf="notification?.execution_time">Exiicution Time: {{notification.execution_time}}
                         </div>
-                        <a *ngIf="notification.product_status !== 'completed'" (click)="goToProducts()">Go to
+                        <a *ngIf="notification.product_status === 'completed'" (click)="goToProducts()">Go to
                             Products</a>
                         <!-- <div *ngIf="notification.product_status !== 'completed'">
                             <p class="mb-0">
