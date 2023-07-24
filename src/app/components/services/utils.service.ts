@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UtilsService {
-  private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public openSubmenu: Observable<boolean> = this.showLayoutSubmenu.asObservable();
   constructor() { }
 

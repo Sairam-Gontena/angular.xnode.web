@@ -12,7 +12,7 @@ import { UtilsService } from '../services/utils.service';
   styleUrls: ['./page-tools-layout.component.scss']
 })
 export class PageToolsLayoutComponent {
-  isOpen = false;
+  isOpen = true;
   sideMenu = sidemenu?.subMenuConfig;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
@@ -44,18 +44,17 @@ export class PageToolsLayoutComponent {
       }
     });
     setTimeout(() => {
-      this.sideMenuItem.subMenuItems.map((item: any, i: any) => {
-        item.accordianContent.map((innerItem: any, j: any) => {
+      this.sideMenuItem.subMenuItems.forEach((item: any, i: any) => {
+        item.accordianContent.forEach((innerItem: any, j: any) => {
           if (i == 0 && j == 0) {
             let category = item.accordianHeader;
             let innerCategory = innerItem.id;
-            console.log(category + innerCategory)
             let contentElem = document.getElementById(category + innerCategory) as HTMLElement;
             contentElem.style.background = '#302e38';
           }
         });
       });
-    }, 10000);
+    }, 2000);
   }
 
   getLayout(layout: string): void {
