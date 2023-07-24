@@ -1,19 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TemplatesComponent } from './templates.component';
+import { OverViewRoutingModule } from './overview-routing.module';
+import { OverViewComponent } from './overview.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { TemplatesRoutingModule } from './templates-routing.module';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 
 @NgModule({
   declarations: [
-    TemplatesComponent,
+    OverViewComponent,
   ],
   imports: [
     CommonModule,
-    TemplatesRoutingModule,
+    OverViewRoutingModule,
+    FlexLayoutModule,
     SharedModule,
     SharedComponentModule
-  ],
+  ]
 })
-export class TemplatesModule { }
+export class OverViewModule {
+
+}

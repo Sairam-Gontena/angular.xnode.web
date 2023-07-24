@@ -10,9 +10,9 @@ import { OperateFeedbackComponent } from '../components/operate-feedback/operate
 import { OperateLayoutComponent } from '../components/operate-layout/operate-layout.component';
 import { PageToolsLayoutComponent } from '../components/page-tools-layout/page-tools-layout.component';
 import { StepComponent } from '../components/step/step.component';
-import { TableComponent } from '../components/table/table.component';
 import { TemplateBuilderPublishHeaderComponent } from '../components/template-builder-publish-header/template-builder-publish-header.component';
 import { SharedModule } from './shared.module';
+import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import { SharedModule } from './shared.module';
         OperateLayoutComponent,
         PageToolsLayoutComponent,
         StepComponent,
-        TableComponent,
+        DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent
     ],
     imports: [
@@ -45,7 +45,7 @@ import { SharedModule } from './shared.module';
         OperateLayoutComponent,
         PageToolsLayoutComponent,
         StepComponent,
-        TableComponent,
+        DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent
     ]
 })
