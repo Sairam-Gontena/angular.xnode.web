@@ -22,7 +22,6 @@ export class PageToolsLayoutComponent {
   iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
-    console.log(subMenuConfig)
     this.sideMenu = subMenuConfig?.subMenuConfig;
   }
 
@@ -58,7 +57,9 @@ export class PageToolsLayoutComponent {
             let category = item.accordianHeader;
             let innerCategory = innerItem.id;
             let contentElem = document.getElementById(category + innerCategory) as HTMLElement;
-            contentElem.style.background = '#302e38';
+            if (contentElem) {
+              contentElem.style.background = '#302e38';
+            }
           }
         });
       });
