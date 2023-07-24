@@ -4,13 +4,13 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 @Component({
-  selector: 'xnode-templates',
-  templateUrl: './templates.component.html',
-  styleUrls: ['./templates.component.scss'],
+  selector: 'xnode-my-products',
+  templateUrl: './my-products.component.html',
+  styleUrls: ['./my-products.component.scss'],
   providers: [MessageService]
 })
 
-export class TemplatesComponent implements OnInit {
+export class MyProductsComponent implements OnInit {
   loading: boolean = true;
   id: String = '';
   templateCard: any;

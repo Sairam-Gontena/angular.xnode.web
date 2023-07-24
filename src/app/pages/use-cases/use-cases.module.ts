@@ -2,11 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UseCasesComponent } from './use-cases.component';
 import { UseCasesRoutingModule } from './use-cases-routing.module';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ToastModule } from 'primeng/toast';
+import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 
 @NgModule({
   declarations: [UseCasesComponent],
@@ -14,10 +11,7 @@ import { ToastModule } from 'primeng/toast';
     CommonModule,
     UseCasesRoutingModule,
     SharedModule,
-    ButtonModule,
-    DropdownModule,
-    ProgressSpinnerModule,
-    ToastModule
+    SharedComponentModule
   ]
 })
 export class UseCasesModule { }
