@@ -18,12 +18,10 @@ export class AppHeaderComponent implements OnInit {
   enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
-  notifications: any[] = [{ message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' },{ message: 'this is your message', status: 'Success', execution_time: '123456789' },];
+  notifications: any[] = [];
   notificationCount: Number = 0;
 
-
   constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
-
   }
 
   ngOnInit(): void {
