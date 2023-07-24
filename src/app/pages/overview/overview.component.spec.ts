@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TemplatesComponent } from './templates.component';
+import { OverViewComponent } from './overview.component';
 
-describe('TemplatesComponent', () => {
-  let component: TemplatesComponent;
-  let fixture: ComponentFixture<TemplatesComponent>;
+describe('OverViewComponent', () => {
+  let component: OverViewComponent;
+  let fixture: ComponentFixture<OverViewComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TemplatesComponent]
+      declarations: [OverViewComponent]
     });
-    fixture = TestBed.createComponent(TemplatesComponent);
+    fixture = TestBed.createComponent(OverViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
