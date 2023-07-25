@@ -53,3 +53,32 @@ a:hover {
     color: #ffffff;
     font-weight: bold;
 }
+
+.notif-list {
+    height: 370px;
+    overflow: auto;
+    padding-right: 10px;
+    margin-top: 10px;
+}
+
+:host::ng-deep.publish-btn.p-button.p-button-sm {
+    padding: 2px 10px !important;
+    font-size: 10px !important;
+}
+
+.notification-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accept-btn {
+    background-color: #EF018F;
+}
+
+.icon {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background-color: gray;
+}
