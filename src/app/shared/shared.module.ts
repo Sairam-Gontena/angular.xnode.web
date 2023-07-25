@@ -14,6 +14,8 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
+import { BadgeModule } from 'primeng/badge';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 @NgModule({
   declarations: [
   ],
@@ -31,7 +33,9 @@ import { InputTextModule } from 'primeng/inputtext';
     DialogModule,
     DividerModule,
     TableModule,
-    InputTextModule
+    InputTextModule,
+    BadgeModule,
+    OverlayPanelModule
   ],
   exports: [
     FormsModule,
@@ -48,7 +52,9 @@ import { InputTextModule } from 'primeng/inputtext';
     DialogModule,
     DividerModule,
     TableModule,
-    InputTextModule
+    InputTextModule,
+    BadgeModule,
+    OverlayPanelModule
   ]
 })
 export class SharedModule { }
