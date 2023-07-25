@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
+import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
 
 const routes: Routes = [
   {
@@ -26,13 +27,13 @@ const routes: Routes = [
   },
   {
     path: 'overview',
-    loadChildren: () => import('./pages/over-view/over-view.module').then(m => m.OverViewModule)
+    loadChildren: () => import('./pages/overview/overview.module').then(m => m.OverViewModule)
   },
   {
-    path: 'my-templates',
+    path: 'my-products',
     loadChildren: () =>
-      import('./pages/templates/templates.module').then(
-        (m) => m.TemplatesModule
+      import('./pages/my-products/my-products.module').then(
+        (m) => m.MyProductsModule
       ),
   },
   {
@@ -93,12 +94,12 @@ const routes: Routes = [
   },
   {
     path: 'x-pilot',
-    loadChildren: () => import('./pages/chat-bot/chat-bot.module').then(m => m.ChatBotModule),
+    loadChildren: () => import('./pages/navi/navi.module').then(m => m.NaviModule),
   },
-  {
-    path: 'x-bpmn',
-    loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
-  },
+  // {
+  //   path: 'x-bpmn',
+  //   loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
+  // },
   {
     path: '',
     redirectTo: '',

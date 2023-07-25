@@ -1,64 +1,60 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdditionalInfoComponent } from '../components/additional-info/additional-info.component';
-import { AppHeaderComponent } from '../components/app-header/app-header.component';
-import { AppSideMenuComponent } from '../components/app-side-menu/app-side-menu.component';
-import { BotComponent } from '../components/bot/bot.component';
-import { ConfigureLayoutComponent } from '../components/configure-layout/configure-layout.component';
-import { LayoutElementsComponent } from '../components/layout-elements/layout-elements.component';
-import { OperateFeedbackComponent } from '../components/operate-feedback/operate-feedback.component';
-import { OperateLayoutComponent } from '../components/operate-layout/operate-layout.component';
-import { PageToolsLayoutComponent } from '../components/page-tools-layout/page-tools-layout.component';
-import { StepComponent } from '../components/step/step.component';
-import { TableComponent } from '../components/table/table.component';
-import { TemplateBuilderPublishHeaderComponent } from '../components/template-builder-publish-header/template-builder-publish-header.component';
-import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
 import { AccordionModule } from 'primeng/accordion';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
-import { FormsModule } from '@angular/forms';
-import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { BadgeModule } from 'primeng/badge';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 @NgModule({
   declarations: [
-    AdditionalInfoComponent,
-    AppHeaderComponent,
-    AppSideMenuComponent,
-    BotComponent,
-    ConfigureLayoutComponent,
-    LayoutElementsComponent,
-    OperateFeedbackComponent,
-    OperateLayoutComponent,
-    PageToolsLayoutComponent,
-    StepComponent,
-    TableComponent,
-    TemplateBuilderPublishHeaderComponent,
   ],
   imports: [
     CommonModule,
-    DropdownModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgSelectModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    CardModule,
     ButtonModule,
-    TableModule,
-    AccordionModule,
+    SplitButtonModule,
+    CheckboxModule,
     DialogModule,
     DividerModule,
-    FormsModule,
-    SplitButtonModule
+    TableModule,
+    InputTextModule,
+    BadgeModule,
+    OverlayPanelModule
   ],
   exports: [
-    AdditionalInfoComponent,
-    AppHeaderComponent,
-    AppSideMenuComponent,
-    BotComponent,
-    ConfigureLayoutComponent,
-    LayoutElementsComponent,
-    OperateFeedbackComponent,
-    OperateLayoutComponent,
-    PageToolsLayoutComponent,
-    StepComponent,
-    TableComponent,
-    TemplateBuilderPublishHeaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NgSelectModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    CardModule,
+    ButtonModule,
+    DropdownModule,
+    AccordionModule,
+    SplitButtonModule,
+    CheckboxModule,
+    DialogModule,
+    DividerModule,
+    TableModule,
+    InputTextModule,
+    BadgeModule,
+    OverlayPanelModule
   ]
 })
 export class SharedModule { }

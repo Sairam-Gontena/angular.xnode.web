@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { GridsterItem } from 'angular-gridster2';
 import { Router } from '@angular/router';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
-import * as sidemenu from '../../../assets/json/sidemenu-tools.json';
+import subMenuConfig from '../../../assets/json/sidemenu-tools.json';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from '../services/utils.service';
 
@@ -12,16 +12,17 @@ import { UtilsService } from '../services/utils.service';
   styleUrls: ['./page-tools-layout.component.scss']
 })
 export class PageToolsLayoutComponent {
-  isOpen = false;
-  sideMenu = sidemenu?.subMenuConfig;
+  isOpen = true;
+  sideMenu: any;
   dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
   href: any;
-  sideMenuItem: any = [];
+  sideMenuItem: any;
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
 
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
+    this.sideMenu = subMenuConfig?.subMenuConfig;
   }
 
   ngOnInit() {
@@ -43,6 +44,26 @@ export class PageToolsLayoutComponent {
         this.sideMenuItem = item;
       }
     });
+    setTimeout(() => {
+      this.sideSubMenu();
+    }, 5000);
+  }
+
+  sideSubMenu() {
+    if (this.sideMenuItem?.subMenuItems) {
+      this.sideMenuItem?.subMenuItems?.forEach((item: any, i: any) => {
+        item?.accordianContent?.forEach((innerItem: any, j: any) => {
+          if (i == 0 && j == 0) {
+            let category = item.accordianHeader;
+            let innerCategory = innerItem.id;
+            let contentElem = document.getElementById(category + innerCategory) as HTMLElement;
+            if (contentElem) {
+              contentElem.style.background = '#302e38';
+            }
+          }
+        });
+      });
+    }
   }
 
   getLayout(layout: string): void {
@@ -65,5 +86,20 @@ export class PageToolsLayoutComponent {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
+  }
+
+  selectedSubMenu(id: any) {
+    this.sideMenuItem?.subMenuItems?.forEach((item: any) => {
+      item?.accordianContent?.forEach((innerItem: any) => {
+        let contentElem = document.getElementById(item.accordianHeader + innerItem.id) as HTMLElement;
+        if (contentElem) {
+          contentElem.style.background = '#24232c';
+        }
+      });
+    });
+    let idElem = document.getElementById(id) as HTMLElement;
+    if (idElem) {
+      idElem.style.background = '#302e38';
+    }
   }
 }

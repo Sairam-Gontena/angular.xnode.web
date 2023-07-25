@@ -5,11 +5,14 @@ import { BpmnDiagramRoutingModule } from './bpmn-diagram-routing.module';
 
 @NgModule({
   declarations: [
-    BpmnDiagramComponent
+
   ],
   imports: [
     CommonModule,
     BpmnDiagramRoutingModule
+  ],
+  exports: [
+
   ]
 })
 export class BpmnDiagramModule { }

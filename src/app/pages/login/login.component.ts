@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     }
     if (matchedUser) {
       localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
-      this.router.navigate(['/my-templates']);
+      this.router.navigate(['/my-products']);
     } else {
       this.messages = [
         { severity: 'error', summary: 'Error', detail: 'User not found' }
@@ -48,6 +48,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  
+
 
 }

@@ -2,7 +2,7 @@
     <div class="flex align-items-center justify-content-center">
         <p-dropdown [options]="templates"></p-dropdown>
     </div>
-    <div class="flex align-items-center justify-content-center gap-3"
+    <div class="flex align-items-center justify-content-center gap-3  pointer"
         *ngIf="showDeviceIcons">
         <img src="./assets/Computer.svg"
             [ngClass]="{ 'highlighted': selectedDeviceIndex === 'desktop' }"
@@ -19,8 +19,8 @@
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded save-btn"></p-button>
-        <!-- <p-splitbutton [label]="selectedOption" [model]="templatesOptions"
+        <p-splitButton [label]="selectedOption" [model]="templatesOptions"
             styleClass="p-button-raised p-button-rounded"
-            (onClick)="onSelectOption()"></p-splitbutton> -->
+            (onClick)="onSelectOption()"></p-splitButton>
     </div>
 </div>
