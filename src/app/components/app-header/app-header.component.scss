@@ -55,7 +55,7 @@ a:hover {
 }
 
 .notif-list {
-    height: 370px;
+    height: 395px;
     overflow: auto;
     padding-right: 10px;
     margin-top: 10px;
@@ -81,4 +81,12 @@ a:hover {
     width: 20px;
     border-radius: 10px;
     background-color: gray;
+}
+
+.dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 4px;
+    background-color: #F90707;
+    margin-left: 5px;
 }
