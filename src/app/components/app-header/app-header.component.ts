@@ -32,7 +32,7 @@ export class AppHeaderComponent implements OnInit {
       { id: 3, title: 'this is your 3 message', description: 'this is a description', status: 'reject', type: 'notification', receivedon: '2m', read: true, important: true, pined: true, recent: false },
       { id: 4, title: 'this is your 4 message', description: 'this is a description', type: 'request', img: '', receivedon: '1h', read: true, important: false, pined: false, recent: true },
       { id: 5, title: 'this is your 5 message', description: 'this is a description', type: 'publish', icon: 'bell', receivedon: '10s', read: false, important: true, pined: true, recent: false },];
-  notificationCount: Number = 0;
+  notificationCount: any = 0;
 
   constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
   }
@@ -76,7 +76,7 @@ export class AppHeaderComponent implements OnInit {
 
   navigateToUrl() {
 
-    this.router.navigate(['/overview'])
+    this.router.navigate(['/activity'])
   }
 
 

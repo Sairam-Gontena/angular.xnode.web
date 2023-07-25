@@ -10,8 +10,9 @@
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class=" flex justify-content-center align-content-center">
-            <i class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge="false" value={{notificationCount}}
-                severity="danger" (click)=" op.show($event)"></i>
+            <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge="false"
+                value={{notificationCount}} severity="danger" (click)=" op.show($event)"></i>
+            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon" (click)=" op.show($event)"></i>
             <p-overlayPanel #op
                 [style]="{'width': '350px','height':'500px','background-color':'#24232C','padding':'0'}">
                 <div>
