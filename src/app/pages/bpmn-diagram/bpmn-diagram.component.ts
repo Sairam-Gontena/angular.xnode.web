@@ -42,6 +42,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   ngOnInit(): void {
     this.bpmnJS = new Modeler({
       container: '#diagramRef',
+      features:{
+        palette:{
+          enabled: true,
+          visible: true,
+        },
+      },
       additionalModules: [
         BpmnPropertiesPanelModule,
         BpmnPropertiesProviderModule,
