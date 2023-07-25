@@ -4,6 +4,8 @@
 @import './theme.scss';
 @import './app/styles/overrides.scss';
 @import './app/styles/utils.scss';
+@import 'node_modules/bpmn-js/dist/assets/diagram-js.css';
+@import 'node_modules/bpmn-js/dist/assets/bpmn-js.css';
 
 html {
   position: relative;
