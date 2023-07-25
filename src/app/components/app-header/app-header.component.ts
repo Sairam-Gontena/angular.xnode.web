@@ -18,7 +18,7 @@ export class AppHeaderComponent implements OnInit {
   enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
-  notifications: any[] = [{ message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' },{ message: 'this is your message', status: 'Success', execution_time: '123456789' },];
+  notifications: any[] = [{ message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' }, { message: 'this is your message', status: 'Success', execution_time: '123456789' },];
   notificationCount: Number = 0;
 
 
@@ -60,6 +60,11 @@ export class AppHeaderComponent implements OnInit {
   toggleAccordion() {
     this.enableNotificationCard = !this.enableNotificationCard
     this.notificationCount = 0;
+  }
+
+  navigateToUrl() {
+    
+    // this.router.navigate(['/activity'])
   }
 
 }
