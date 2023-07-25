@@ -1,27 +1,13 @@
-import {
-  AfterContentInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-  OnInit,
-  Renderer2
-} from '@angular/core';
-
+import { AfterContentInit, Component, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 
 import {
-  BpmnPropertiesPanelModule,
-  BpmnPropertiesProviderModule,
-  CamundaPlatformPropertiesProviderModule
+  BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule
 } from 'bpmn-js-properties-panel';
 
-// import magicPropertiesProviderModule from './provider/magic';
-// import magicModdleDescriptor from './descriptors/magic';
-// import * as camundaCloudBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
-
-// import camundaCloudBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
+import camundaCloudBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
 import * as camundaModdleDescriptors from 'camunda-bpmn-moddle/resources/camunda.json';
 import * as palette_tools_class from './custom-palette-provider.json';
+import BpmnPalletteModule from 'bpmn-js/lib/features/palette';
 import * as custom from './custom.json';
 import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
@@ -30,12 +16,13 @@ import { from, Observable } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json'
 import { ApiService } from 'src/app/api/api.service';
 
+// import "bpmn-js/dist/assets/diagram-js.css"
 @Component({
   selector: 'xnode-bpmn-diagram',
   templateUrl: './bpmn-diagram.component.html',
   styleUrls: ['./bpmn-diagram.component.scss']
 })
-export class BpmnDiagramComponent implements OnInit, AfterContentInit {
+export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit {
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
@@ -55,30 +42,23 @@ export class BpmnDiagramComponent implements OnInit, AfterContentInit {
   ngOnInit(): void {
     this.bpmnJS = new Modeler({
       container: '#diagramRef',
-      // propertiesPanel: {
-      //   parent: '#propertiesRef'
-      // },
       additionalModules: [
         BpmnPropertiesPanelModule,
         BpmnPropertiesProviderModule,
         // customPropertiesProvider
         CamundaPlatformPropertiesProviderModule,
-        // camundaCloudBehaviors
+        camundaCloudBehaviors
       ],
       moddleExtensions: {
         custom: custom,
         camunda: camundaModdleDescriptors
       }, keyboard: {
         bindTo: window
-      }
+      },
+      BpmnPalletteModule
     });
 
 
-    // this.bpmnJS = new Modeler({
-    //   container: '#diagramRef', keyboard: {
-    //     bindTo: window
-    //   }
-    // });
     const propertiesPanel = new PropertiesPanel({
       parent: '#js-properties-panel',
     });
@@ -92,33 +72,13 @@ export class BpmnDiagramComponent implements OnInit, AfterContentInit {
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
-    // let propertiesPanel: any;
-    // this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    // propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    // propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
-    // this.importDiagram(this.xml);
   }
 
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    // const propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    // propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
+    const propertiesPanel = this.bpmnJS.get('propertiesPanel');
+    propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
     this.importDiagram(this.xml);
-
-    // let bpmnElement = document.getElementById('diagramRef') as HTMLElement;
-    // this.bpmnJS.attachTo(bpmnElement);
-    // let propertiesPanel: any;
-    // propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    // let propertyPanel = document.getElementById('propertiesRef') as HTMLElement;
-    // propertiesPanel.attachTo(propertyPanel);
-    // this.importDiagram(this.xml);
-
-
-    // let propertiesPanel: any;
-    // this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    // propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    // propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
-    // this.importDiagram(this.xml);
   }
 
 
