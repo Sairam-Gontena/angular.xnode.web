@@ -3,6 +3,7 @@ import { HeaderItems } from '../../constants/AppHeaderItems'
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
+import { ApiService } from '../../api/api.service'
 
 @Component({
   selector: 'xnode-app-header',
@@ -35,8 +36,7 @@ export class AppHeaderComponent implements OnInit {
       { id: 5, title: 'Your app got published', description: 'Your app got published and ready to use with url https://example.com', type: 'publish', icon: 'bell', receivedon: '10s', read: false, important: true, pinned: true, recent: false },];
   notificationCount: any = 0;
 
-
-  constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
   ngOnInit(): void {
@@ -112,6 +112,16 @@ export class AppHeaderComponent implements OnInit {
   toggleNotificationPinned(val: any, id: number) {
     const index = this.allNotifications.findIndex(item => item.id === id);
     this.allNotifications[index].pinned = val === 'pinned';
+  }
+
+  navigateToPublish() {
+    this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
+      .then(response => {
+        console.log('response', response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   }
 
 

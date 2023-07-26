@@ -14,7 +14,7 @@
                 value={{notificationCount}} severity="danger" (click)=" op.show($event)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon"
                 (click)=" op.show($event)"></i>
-            <p-overlayPanel #op [style]="{'width': '369px','height':'560px','background-color':'#24232C'}">
+            <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <div class="m-3">
                     <div class="flex justify-content-between">
                         <div class="text-white text-2xl font-semibold">Notifications</div>
@@ -83,11 +83,14 @@
                                         Accept</div>
                                 </div>
                                 <div class="flex mt-2" *ngIf="notification.type === 'publish'">
-                                    <div
-                                        class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
-                                        Click here to publish
+                                    <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer"
+                                        (click)="navigateToPublish()">
+                                        Publish
                                         <i class=" text-white pi pi-arrow-right text-xs ml-2"></i>
                                     </div>
+                                    <div
+                                        class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+                                        Go to Product</div>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-5" *ngIf="allNotifications.length === 0">
+                <div class="mt-5 d-flex justify-content-center" *ngIf="allNotifications.length === 0">
                     <h5>No New Notifications Found</h5>
                 </div>
             </p-overlayPanel>
