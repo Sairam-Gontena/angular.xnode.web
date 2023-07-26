@@ -79,6 +79,7 @@ export class TemplateBuilderComponent implements OnInit {
       this.recordId = localStorage.getItem('record_id');
       let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+      this.loading = false;
     } else {
       this.get_ID();
     }
@@ -108,8 +109,13 @@ export class TemplateBuilderComponent implements OnInit {
     let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
+
   showToast(severity: string, message: string, code: string) {
     this.messageService.clear();
     this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  }
+
+  loadSpinner(event: boolean): void {
+    this.loading = event;
   }
 }
