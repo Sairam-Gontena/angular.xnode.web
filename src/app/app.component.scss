@@ -70,3 +70,7 @@
 //     margin-top: 20px; /* Increase margin as needed */
 //     height: calc(100% - 100px); 
 //   }
+
+:host::ng-deep.p-overlaypanel .p-overlaypanel-content {
+  padding: 0px !important;
+}

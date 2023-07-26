@@ -18,8 +18,17 @@ export class AppHeaderComponent implements OnInit {
   enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
-  notifications: any[] = [];
+  notifications: any[] = []
+  activeFilter: string = '';
+  filterTypes: any = {
+    recent: false,
+    important: false,
+    pinned: false,
+    all: true
+  }
+  allNotifications: any[] = [];
   notificationCount: any = 0;
+
 
   constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
   }
@@ -37,6 +46,7 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
+    this.notifications = this.allNotifications
   }
 
   goToProducts(): void {
@@ -59,5 +69,44 @@ export class AppHeaderComponent implements OnInit {
     this.enableNotificationCard = !this.enableNotificationCard
     this.notificationCount = 0;
   }
+
+  navigateToUrl() {
+
+    this.router.navigate(['/activity'])
+  }
+
+  filterNotifications(val: any) {
+    if (val === 'all') {
+      this.filterTypes = {
+        recent: false,
+        important: false,
+        pinned: false,
+        all: true
+      };
+      this.notifications = this.allNotifications;
+    } else {
+      this.filterTypes = {
+        recent: false,
+        important: false,
+        pinned: false,
+        all: false,
+        [val]: true
+      };
+      this.notifications = this.allNotifications.filter((x) => x[val]);
+    }
+
+  }
+
+  toggleNotificationRead(val: any, id: number) {
+    const index = this.allNotifications.findIndex(item => item.id === id);
+    this.allNotifications[index].read = val === 'read';
+  }
+
+
+  toggleNotificationPinned(val: any, id: number) {
+    const index = this.allNotifications.findIndex(item => item.id === id);
+    this.allNotifications[index].pinned = val === 'pinned';
+  }
+
 
 }
