@@ -342,3 +342,7 @@ body {
 .chatbot-closing {
   animation: chatbot-close 1s forwards;
 }
+
+p-sidebar div.p-sidebar {
+  position: relative !important;
+}

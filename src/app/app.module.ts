@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
+import { SidebarModule } from 'primeng/sidebar';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { SharedModule } from './shared/shared.module';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    SharedComponentModule
+    SharedComponentModule,
+    SidebarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

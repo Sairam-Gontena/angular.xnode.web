@@ -1,4 +1,34 @@
 <div class="container bpmn-component">
-     <div id="diagramRef" class="diagram-container"></div>
-     <div #propertiesRef class="properties-container"></div>
+     <div id="diagramRef" class="diagram-container">
+          
+          <!-- <p-button class ="btn" 
+          label="Property Panel" 
+          styleClass="p-button-raised p-button-secondary" 
+          (click)="sidebarVisible2 = true">
+     </p-button>    -->
+     <div class="btn">
+          <p-button class= "btn"label="Property Panel"(click)="sidebarVisible = true" icon="fa fa-list"></p-button>
+     </div>
+     </div>
+     <!-- <div #propertiesRef class="properties-container"></div> -->
+
+     <p-sidebar [(visible)]="sidebarVisible" position="right">
+          <div #propertiesRef class="properties-container"></div>
+
+          <ng-template pTemplate="header">Header Content</ng-template>
+          <ng-template pTemplate="content">
+               Body Content
+               <div>this can be accessed</div>
+               <div #propertiesRef class="properties-container"></div>
+
+               <!-- <div id ='properties' class="properties-container"></div> -->
+
+          </ng-template>
+          <ng-template pTemplate="footer">Footer Content</ng-template>
+      </p-sidebar>
+      
+          
+      
+     
+
 </div>

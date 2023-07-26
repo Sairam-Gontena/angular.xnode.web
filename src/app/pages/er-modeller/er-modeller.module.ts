@@ -17,6 +17,8 @@ import { DataService } from './service/data.service';
 import { JsPlumbService } from './service/jsPlumb.service';
 import { UtilService } from './service/util.service';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
     ErModellerRoutingModule,
     SharedModule,
     SharedComponentModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    SidebarModule,
+    ButtonModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
 })
