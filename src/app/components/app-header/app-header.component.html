@@ -60,21 +60,21 @@
                         class="flex p-2 border-50 notif-card text-white text-xs justify-content-between">
                         <div class="flex">
                             <div>
-                                <ng-container [ngSwitch]="notification.status">
+                                <ng-container [ngSwitch]="notification?.status">
                                     <img *ngSwitchCase="'success'" src="../../../assets/success.svg">
                                     <img *ngSwitchCase="'pending'" src="../../../assets/pending.svg">
                                     <img *ngSwitchCase="'reject'" src="../../../assets/cancel.svg">
                                 </ng-container>
-                                <i class=" text-white pi pi-bell text-base" *ngIf="notification.type == 'publish'"></i>
+                                <i class=" text-white pi pi-bell text-base" *ngIf="notification?.type == 'publish'"></i>
                                 <div
-                                    *ngIf="notification.type == 'request' && notification.status != 'success' && notification.status != 'pending' && notification.status != 'reject'">
+                                    *ngIf="notification?.type == 'request' && notification?.status != 'success' && notification?.status != 'pending' && notification?.status != 'reject'">
                                     <img src="../../../assets/user-image.svg" class="w-0.5rem h-0.5rem">
                                 </div>
                             </div>
                             <div class="ml-2">
-                                <div class="text-sm font-medium">{{notification.title}}</div>
-                                <div class="text-500 mt-2 text-sm font-normal">{{notification.description}}</div>
-                                <div class="flex mt-2" *ngIf="notification.type === 'request'">
+                                <div class="text-sm font-medium">{{notification?.title}}</div>
+                                <div class="text-500 mt-2 text-sm font-normal">{{notification?.message}}</div>
+                                <div class="flex mt-2" *ngIf="notification?.type === 'request'">
                                     <div
                                         class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
                                         Decline</div>
@@ -82,8 +82,8 @@
                                         class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
                                         Accept</div>
                                 </div>
-                                <div class="flex mt-2" *ngIf="notification.type === 'publish'">
-                                    <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer"
+                                <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
+                                    <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
                                         (click)="navigateToPublish()">
                                         Publish
                                         <i class=" text-white pi pi-arrow-right text-xs ml-2"></i>
@@ -100,28 +100,28 @@
                                 <div class="flex pt-2 pl-2 pr-2">
                                     <img src="../../../assets/double-check.svg" class="w-0.5rem h-0.5rem">
                                     <div class="text-xs text-500 ml-2"
-                                        (click)="toggleNotificationRead('read',notification.id)"
-                                        *ngIf="!notification.read">Mark as read
+                                        (click)="toggleNotificationRead('read',notification?.id)"
+                                        *ngIf="!notification?.read">Mark as read
                                     </div>
                                     <div class="text-xs text-500 ml-2"
-                                        (click)="toggleNotificationRead('unread',notification.id)"
-                                        *ngIf="notification.read">Mark as unread
+                                        (click)="toggleNotificationRead('unread',notification?.id)"
+                                        *ngIf="notification?.read">Mark as unread
                                     </div>
                                 </div>
                                 <div class="flex mt-2 pl-2 pr-2 pb-2">
                                     <img src="../../../assets/pin.svg" class="w-0.5rem h-0.5rem">
                                     <div class="text-xs text-500 ml-2"
-                                        (click)="toggleNotificationPinned('pinned',notification.id)"
-                                        *ngIf="!notification.pinned">Pin
+                                        (click)="toggleNotificationPinned('pinned',notification?.id)"
+                                        *ngIf="!notification?.pinned">Pin
                                     </div>
                                     <div class="text-xs text-500 ml-2"
-                                        (click)="toggleNotificationPinned('unpinned',notification.id)"
-                                        *ngIf="notification.pinned">
+                                        (click)="toggleNotificationPinned('unpinned',notification?.id)"
+                                        *ngIf="notification?.pinned">
                                         Un Pin
                                     </div>
                                 </div>
                             </p-overlayPanel>
-                            <div class="text-500 mt-1 text-xs font-semibold">{{notification.receivedon}}</div>
+                            <div class="text-500 mt-1 text-xs font-semibold">{{notification?.receivedon}}</div>
                         </div>
                     </div>
                 </div>
