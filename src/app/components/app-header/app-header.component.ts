@@ -19,7 +19,7 @@ export class AppHeaderComponent implements OnInit {
   channel: any;
   email: string = '';
   notifications: any[] = [];
-  notificationCount: Number = 0;
+  notificationCount: any = 0;
 
   constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
   }
