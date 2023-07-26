@@ -13,6 +13,8 @@ import {
     SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
     declarations: [
         SignUpComponent,
@@ -27,7 +29,7 @@ import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
         DividerModule,
         GoogleSigninButtonModule,
         SocialLoginModule,
-
+        HttpClientModule
     ],
     providers: [
         {
