@@ -4,5 +4,6 @@ export const environment = {
     xpilotUrl: 'http://localhost:8000/',
     designStudioUrl: 'http://localhost:4201/dashboard/',
     publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular',
-    webSocketNotifier: 'dev-xnode-notifier'
+    webSocketNotifier: 'dev-xnode-notifier',
+    name: 'dev'
 }

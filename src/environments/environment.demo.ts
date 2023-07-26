@@ -4,5 +4,6 @@ export const environment = {
     xpilotUrl: 'https://demo-navi.azurewebsites.net/',
     designStudioUrl: 'https://demo-ui-gen.azurewebsites.net/dashboard/',
     publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/', //for now we have only dev url
-    webSocketNotifier: 'demo-xnode-notifier'
+    webSocketNotifier: 'demo-xnode-notifier',
+    name: 'demo'
 }

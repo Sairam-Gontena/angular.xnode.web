@@ -73,7 +73,7 @@
                             </div>
                             <div class="ml-2">
                                 <div class="text-sm font-medium">{{notification?.title}}</div>
-                                <div class="text-500 mt-2 text-sm font-normal">{{notification?.message}}</div>
+                                <div class="text-500 mt-2 text-sm font-normal">{{notification?.description}}</div>
                                 <div class="flex mt-2" *ngIf="notification?.type === 'request'">
                                     <div
                                         class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
@@ -88,8 +88,8 @@
                                         Publish
                                         <i class=" text-white pi pi-arrow-right text-xs ml-2"></i>
                                     </div>
-                                    <div
-                                        class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+                                    <div class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
+                                        (click)="navigateToPublish()">
                                         Go to Product</div>
                                 </div>
                             </div>

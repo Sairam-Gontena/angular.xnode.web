@@ -73,7 +73,6 @@ export class AppHeaderComponent implements OnInit {
   }
 
   navigateToUrl() {
-
     this.router.navigate(['/activity'])
   }
 
