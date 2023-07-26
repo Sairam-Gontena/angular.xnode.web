@@ -26,13 +26,7 @@ export class AppHeaderComponent implements OnInit {
     pinned: false,
     all: true
   }
-  allNotifications: any[] =
-    [
-      { id: 1, title: 'Your finbuddy app got published', description: 'Your finbuddy app got published and ready to use with the url https://finbuddy.com', status: 'success', type: 'notification', receivedon: '1s', read: false, important: false, pinned: false, recent: true },
-      { id: 2, title: 'Your todo app is in pending', description: 'Your todo app is in pending state publish your todo app', status: 'pending', type: 'notification', receivedon: '5m', read: false, important: false, pinned: true, recent: true },
-      { id: 3, title: 'Finbuddy app declined', description: 'Your todo app got rejected for in security rules, please update the security rules and publish the app', status: 'reject', type: 'notification', receivedon: '2m', read: true, important: true, pinned: true, recent: false },
-      { id: 4, title: 'Tim requested finbuddy app to publish', type: 'request', img: '', receivedon: '1h', read: true, important: false, pinned: false, recent: true },
-      { id: 5, title: 'Your app got published', description: 'Your app got published and ready to use with url https://example.com', type: 'publish', icon: 'bell', receivedon: '10s', read: false, important: true, pinned: true, recent: false },];
+  allNotifications: any[] = [];
   notificationCount: any = 0;
 
 
