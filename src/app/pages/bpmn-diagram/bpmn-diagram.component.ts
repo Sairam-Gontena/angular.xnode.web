@@ -27,25 +27,27 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
+  xml: string = "";
   sidebarVisible: any;
   jsonWorkflow: any;
   
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
 
-  private xml: string = staticXml.xml;
   constructor(private renderer: Renderer2, private elementRef: ElementRef, private api: ApiService) {
-    // this.api.postWorkFlow(workflow).then((response: any) => {
-    //   console.log('response', response);
-    // }).catch(error => {
-    //   console.log('error', error);
-    // });
+    this.api.postWorkFlow(workflow).then((response: any) => {
+      console.log('response', response);
+      this.xml = response?.data;
+      this.importDiagram(this.xml);
+    }).catch(error => {
+      console.log('error', error);
+    });
   }
 
   ngOnInit(): void {
     this.bpmnJS = new Modeler({
       container: '#diagramRef',
-      features:{
-        palette:{
+      features: {
+        palette: {
           enabled: true,
           visible: true,
         },
@@ -87,7 +89,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     const propertiesPanel = this.bpmnJS.get('propertiesPanel');
     console.log("properties panel data",propertiesPanel);
     propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
-    this.importDiagram(this.xml);
   }
 
 
