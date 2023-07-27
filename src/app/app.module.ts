@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
 
+import {HeaderDataService} from './header-data.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -25,7 +27,7 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     SharedComponentModule
   ],
-  providers: [],
+  providers: [HeaderDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

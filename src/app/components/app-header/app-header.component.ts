@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
+import { HeaderDataService } from '../../header-data.service'
 
 @Component({
   selector: 'xnode-app-header',
@@ -30,7 +31,7 @@ export class AppHeaderComponent implements OnInit {
   allNotifications: any[] = []
   notificationCount: any = 0;
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private headerDataService: HeaderDataService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
   ngOnInit(): void {
@@ -48,6 +49,7 @@ export class AppHeaderComponent implements OnInit {
     this.initializeWebsocket();
   }
 
+
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -55,10 +57,13 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      
       this.allNotifications.push(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
+      if (data.product_status === 'completed') {
+        this.headerDataService.updateHeaderData('');
+      }
+
     })
   }
 
