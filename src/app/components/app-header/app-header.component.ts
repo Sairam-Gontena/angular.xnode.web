@@ -46,7 +46,6 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
-    this.notifications = this.allNotifications
   }
 
   initializeWebsocket() {
@@ -56,8 +55,8 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('socket', data);
-      this.notifications.push(data);
+      this.allNotifications.push(data);
+      this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
     })
   }
