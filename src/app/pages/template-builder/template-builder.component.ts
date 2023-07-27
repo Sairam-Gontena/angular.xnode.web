@@ -31,7 +31,7 @@ export class TemplateBuilderComponent implements OnInit {
   isOpen = true;
   templates: any;
   emailData: any;
-  recordId: any;
+  productId: any;
   iframeSrc: any;
   currentUser?: User;
   overview: any;
@@ -76,9 +76,10 @@ export class TemplateBuilderComponent implements OnInit {
       this.emailData = JsonData?.email;
     }
     if (localStorage.getItem('record_id')) {
-      this.recordId = localStorage.getItem('record_id');
-      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
+      this.productId = localStorage.getItem('record_id');
+      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+      this.loading = false;
     } else {
       this.get_ID();
     }
@@ -93,8 +94,8 @@ export class TemplateBuilderComponent implements OnInit {
   get_ID() {
     this.apiService.get('/get_metadata/' + this.emailData)
       .then(response => {
-        this.recordId = response?.data?.data[0]?.id;
-        localStorage.setItem("app_name", response?.data?.data[0]?.product_name)
+        this.productId = response.data.data[0].id;
+        localStorage.setItem("app_name", response.data.data[0].product_name)
         this.loadDesignStudio()
         this.loading = false;
       }).catch(error => {
@@ -105,11 +106,16 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   loadDesignStudio() {
-    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.recordId + "";
+    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
+
   showToast(severity: string, message: string, code: string) {
     this.messageService.clear();
     this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  }
+
+  loadSpinner(event: boolean): void {
+    this.loading = event;
   }
 }

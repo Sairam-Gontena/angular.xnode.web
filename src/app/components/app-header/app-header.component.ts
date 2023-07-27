@@ -3,6 +3,8 @@ import { HeaderItems } from '../../constants/AppHeaderItems'
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
+import { ApiService } from '../../api/api.service'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-app-header',
@@ -18,10 +20,18 @@ export class AppHeaderComponent implements OnInit {
   enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
-  notifications: any[] = [];
+  notifications: any[] = []
+  activeFilter: string = '';
+  filterTypes: any = {
+    recent: false,
+    important: false,
+    pinned: false,
+    all: true
+  }
+  allNotifications: any[] = [];
   notificationCount: any = 0;
 
-  constructor(private router: Router, private messageService: MessageService, private webSocketService: WebSocketService) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
   ngOnInit(): void {
@@ -37,6 +47,7 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
+    this.notifications = this.allNotifications
   }
 
   goToProducts(): void {
@@ -48,8 +59,9 @@ export class AppHeaderComponent implements OnInit {
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
-    this.webSocketService.emit('join', 'xnode-notifier');
+    this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
+      console.log('socket', data);
       this.notifications.push(data);
       this.notificationCount = this.notifications.length
     })
@@ -59,5 +71,53 @@ export class AppHeaderComponent implements OnInit {
     this.enableNotificationCard = !this.enableNotificationCard
     this.notificationCount = 0;
   }
+
+  navigateToUrl() {
+    this.router.navigate(['/activity'])
+  }
+
+  filterNotifications(val: any) {
+    if (val === 'all') {
+      this.filterTypes = {
+        recent: false,
+        important: false,
+        pinned: false,
+        all: true
+      };
+      this.notifications = this.allNotifications;
+    } else {
+      this.filterTypes = {
+        recent: false,
+        important: false,
+        pinned: false,
+        all: false,
+        [val]: true
+      };
+      this.notifications = this.allNotifications.filter((x) => x[val]);
+    }
+
+  }
+
+  toggleNotificationRead(val: any, id: number) {
+    const index = this.allNotifications.findIndex(item => item.id === id);
+    this.allNotifications[index].read = val === 'read';
+  }
+
+
+  toggleNotificationPinned(val: any, id: number) {
+    const index = this.allNotifications.findIndex(item => item.id === id);
+    this.allNotifications[index].pinned = val === 'pinned';
+  }
+
+  navigateToPublish() {
+    this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
+      .then(response => {
+        console.log('response', response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }
+
 
 }
