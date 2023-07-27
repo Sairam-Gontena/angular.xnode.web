@@ -4,12 +4,12 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class HeaderDataService {
+export class RefreshListService {
   private headerDataSubject = new BehaviorSubject<string>('Initial Value');
 
   headerData$ = this.headerDataSubject.asObservable();
 
-  updateHeaderData(newValue: string) {
+  updateData(newValue: string) {
     this.headerDataSubject.next(newValue);
   }
 }

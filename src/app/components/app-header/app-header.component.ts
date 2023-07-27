@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
-import { HeaderDataService } from '../../header-data.service'
+import { RefreshListService } from '../../RefreshList.service'
 
 @Component({
   selector: 'xnode-app-header',
@@ -20,18 +20,18 @@ export class AppHeaderComponent implements OnInit {
   selectedValue: any;
   channel: any;
   email: string = '';
-  notifications: any[] = []
   activeFilter: string = '';
   filterTypes: any = {
     recent: false,
     important: false,
     pinned: false,
     all: true
-  }
-  allNotifications: any[] = []
+  };
+  allNotifications: any[] = [];
+  notifications: any[] = [];
   notificationCount: any = 0;
 
-  constructor(private headerDataService: HeaderDataService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
   ngOnInit(): void {
@@ -49,7 +49,6 @@ export class AppHeaderComponent implements OnInit {
     this.initializeWebsocket();
   }
 
-
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -58,10 +57,11 @@ export class AppHeaderComponent implements OnInit {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
       this.allNotifications.push(data);
+      console.log(data)
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
       if (data.product_status === 'completed') {
-        this.headerDataService.updateHeaderData('');
+        this.RefreshListService.updateData('refreshproducts');
       }
 
     })

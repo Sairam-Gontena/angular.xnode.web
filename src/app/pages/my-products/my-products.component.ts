@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
-import { HeaderDataService } from '../../header-data.service'
+import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 @Component({
   selector: 'xnode-my-products',
@@ -18,10 +18,12 @@ export class MyProductsComponent implements OnInit {
   templateCard: any;
   currentUser?: User;
   private subscription: Subscription;
-  constructor(private headerDataService: HeaderDataService, public router: Router, private apiService: ApiService, private messageService: MessageService) {
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.subscription = this.headerDataService.headerData$.subscribe((data) => {
-      this.getMeUserId()
+    this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
+      if (data === 'refreshproducts') {
+        this.getMeUserId()
+      }
     });
   }
 

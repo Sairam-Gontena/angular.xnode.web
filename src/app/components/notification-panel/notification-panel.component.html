@@ -33,7 +33,7 @@
         <div class="text-sm font-medium">Filter</div>
         <i class="pi pi-sort-amount-up text-xs ml-2 pointer"></i>
     </div>
-    <div class="flex align-items-center pointer" (click)="navigateToUrl()">
+    <div class="flex align-items-center pointer" (click)="navigateToActivity()">
         <div class="text-sm font-medium">See all in activity log</div>
         <i class="pi pi-arrow-right text-xs ml-2"></i>
     </div>
@@ -55,22 +55,22 @@
                 </div>
             </div>
             <div class="ml-2">
-                <div class="text-sm font-medium">{{notification?.title}}</div>
+                <div class="text-sm font-medium">{{notification?.title?.toUpperCase().replaceAll('_',' ')}}</div>
                 <div class="text-500 mt-2 text-sm font-normal">{{notification?.message}}</div>
                 <div class="flex mt-2" *ngIf="notification?.type === 'request'">
                     <div class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
                         Decline</div>
-                    <div (click)="goToProducts()"
+                    <div
                         class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
                         Accept</div>
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
                     <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
-                        (click)="navigateToPublish()">
+                        (click)="publishApp()">
                         Publish
                         <i class=" text-white pi pi-arrow-right text-xs ml-2"></i>
                     </div>
-                    <div (click)="goToProducts()"
+                    <div (click)="navigateToProduct(notification.product_id)"
                         class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
                         Go to Product</div>
                 </div>

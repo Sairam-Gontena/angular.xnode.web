@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 
+
 @Component({
   selector: 'xnode-notification-panel',
   templateUrl: './notification-panel.component.html',
@@ -30,11 +31,12 @@ export class NotificationPanelComponent {
     this.notifications = this.allNotifications
   }
 
-  goToProducts(): void {
-    this.router.navigate(['/my-products']);
+  navigateToProduct(productId: any): void {
+    localStorage.setItem('record_id', productId)
+    this.router.navigate(['/design']);
   }
 
-  navigateToUrl() {
+  navigateToActivity() {
     this.router.navigate(['/activity'])
   }
 
@@ -71,7 +73,7 @@ export class NotificationPanelComponent {
     this.allNotifications[index].pinned = val === 'pinned';
   }
 
-  navigateToPublish() {
+  publishApp() {
     this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
       .then(response => {
         console.log('response', response);
