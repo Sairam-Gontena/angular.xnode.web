@@ -16,7 +16,6 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
-  enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
   notifications: any[] = []
@@ -27,7 +26,7 @@ export class AppHeaderComponent implements OnInit {
     pinned: false,
     all: true
   }
-  allNotifications: any[] = [];
+  allNotifications: any[] = []
   notificationCount: any = 0;
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
@@ -49,10 +48,6 @@ export class AppHeaderComponent implements OnInit {
     this.notifications = this.allNotifications
   }
 
-  goToProducts(): void {
-    this.router.navigate(['/my-products']);
-  }
-
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -66,57 +61,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   toggleAccordion() {
-    this.enableNotificationCard = !this.enableNotificationCard
     this.notificationCount = 0;
   }
-
-  navigateToUrl() {
-
-    this.router.navigate(['/activity'])
-  }
-
-  filterNotifications(val: any) {
-    if (val === 'all') {
-      this.filterTypes = {
-        recent: false,
-        important: false,
-        pinned: false,
-        all: true
-      };
-      this.notifications = this.allNotifications;
-    } else {
-      this.filterTypes = {
-        recent: false,
-        important: false,
-        pinned: false,
-        all: false,
-        [val]: true
-      };
-      this.notifications = this.allNotifications.filter((x) => x[val]);
-    }
-
-  }
-
-  toggleNotificationRead(val: any, id: number) {
-    const index = this.allNotifications.findIndex(item => item.id === id);
-    this.allNotifications[index].read = val === 'read';
-  }
-
-
-  toggleNotificationPinned(val: any, id: number) {
-    const index = this.allNotifications.findIndex(item => item.id === id);
-    this.allNotifications[index].pinned = val === 'pinned';
-  }
-
-  navigateToPublish() {
-    this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
-      .then(response => {
-        console.log('response', response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }
-
 
 }
