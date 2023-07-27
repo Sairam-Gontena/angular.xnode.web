@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-app-header',
@@ -53,8 +54,9 @@ export class AppHeaderComponent implements OnInit {
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
-    this.webSocketService.emit('join', 'xnode-notifier');
+    this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
+      console.log('socket', data);
       this.notifications.push(data);
       this.notificationCount = this.notifications.length
     })
