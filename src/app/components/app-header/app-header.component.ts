@@ -55,6 +55,7 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
+      
       this.allNotifications.push(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
