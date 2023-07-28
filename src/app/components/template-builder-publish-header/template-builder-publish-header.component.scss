@@ -22,3 +22,18 @@ img.highlighted {
     padding-bottom: 6px;
     border: 1px solid #23222B;
 }
+
+:host ::ng-deep.p-dropdown .p-dropdown-trigger {
+    color: #fff;
+}
+
+:host ::ng-deep .dropdown .p-dropdown {
+    background: #EF018F;
+    height: 30px;
+}
+
+:host ::ng-deep .dropdown .p-dropdown-label {
+    padding-top: 5px;
+    font-size: 12px;
+    background: #EF018F;
+}

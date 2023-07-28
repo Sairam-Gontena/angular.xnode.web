@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
+import { RefreshListService } from '../../RefreshList.service'
 
 @Component({
   selector: 'xnode-app-header',
@@ -17,21 +18,20 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
-  enableNotificationCard: boolean = false;
   channel: any;
   email: string = '';
-  notifications: any[] = []
   activeFilter: string = '';
   filterTypes: any = {
     recent: false,
     important: false,
     pinned: false,
     all: true
-  }
+  };
   allNotifications: any[] = [];
+  notifications: any[] = [];
   notificationCount: any = 0;
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
   ngOnInit(): void {
@@ -47,11 +47,6 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
-    this.notifications = this.allNotifications
-  }
-
-  goToProducts(): void {
-    this.router.navigate(['/my-products']);
   }
 
   initializeWebsocket() {
@@ -61,63 +56,18 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('socket', data);
-      this.notifications.push(data);
+      console.log('socket message', data)
+      this.allNotifications.unshift(data);
+      this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
+      if (data.product_status === 'completed') {
+        this.RefreshListService.updateData('refreshproducts');
+      }
     })
   }
 
   toggleAccordion() {
-    this.enableNotificationCard = !this.enableNotificationCard
     this.notificationCount = 0;
   }
-
-  navigateToUrl() {
-    this.router.navigate(['/activity'])
-  }
-
-  filterNotifications(val: any) {
-    if (val === 'all') {
-      this.filterTypes = {
-        recent: false,
-        important: false,
-        pinned: false,
-        all: true
-      };
-      this.notifications = this.allNotifications;
-    } else {
-      this.filterTypes = {
-        recent: false,
-        important: false,
-        pinned: false,
-        all: false,
-        [val]: true
-      };
-      this.notifications = this.allNotifications.filter((x) => x[val]);
-    }
-
-  }
-
-  toggleNotificationRead(val: any, id: number) {
-    const index = this.allNotifications.findIndex(item => item.id === id);
-    this.allNotifications[index].read = val === 'read';
-  }
-
-
-  toggleNotificationPinned(val: any, id: number) {
-    const index = this.allNotifications.findIndex(item => item.id === id);
-    this.allNotifications[index].pinned = val === 'pinned';
-  }
-
-  navigateToPublish() {
-    this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
-      .then(response => {
-        console.log('response', response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }
-
 
 }

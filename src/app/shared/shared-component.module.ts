@@ -13,6 +13,7 @@ import { StepComponent } from '../components/step/step.component';
 import { TemplateBuilderPublishHeaderComponent } from '../components/template-builder-publish-header/template-builder-publish-header.component';
 import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
+import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table
         PageToolsLayoutComponent,
         StepComponent,
         DynamicTableComponent,
-        TemplateBuilderPublishHeaderComponent
+        TemplateBuilderPublishHeaderComponent,
+        NotificationPanelComponent
     ],
     imports: [
         CommonModule,
@@ -46,7 +48,8 @@ import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table
         PageToolsLayoutComponent,
         StepComponent,
         DynamicTableComponent,
-        TemplateBuilderPublishHeaderComponent
+        TemplateBuilderPublishHeaderComponent,
+        NotificationPanelComponent
     ]
 })
 export class SharedComponentModule { }
