@@ -85,7 +85,6 @@
     font-weight: 700;
     font-size: 13px;
     border: none;
-    height: 33px;
     border-radius: 20px;
     display: inline-block;
 }
@@ -98,17 +97,15 @@
     font-size: 13px;
     margin-right: 10px;
     margin-left: 10px;
+    height:15px;
+    width: 15px;
+    margin-top:2px;
 }
 
 .feature-value {
     align-items: center;
     width: auto;
-    margin-top: 10px;
-}
-
-.feature-text {
-    margin-top: 10px;
-    margin-right: 17px;
+    justify-content: center;
 }
 
 :host ::ng-deep .p-dropdown .p-dropdown-label {

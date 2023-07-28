@@ -53,7 +53,7 @@ export class UseCasesComponent implements OnInit {
 
   }
 
-  get_Usecases() {
+  get_Usecases() { 
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {

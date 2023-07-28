@@ -1,6 +1,6 @@
 <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
     <div class="flex align-items-center justify-content-center">
-        <p-dropdown [options]="templates"></p-dropdown>
+        <p-dropdown [options]="templates" class="app-dropdown" ></p-dropdown>
     </div>
     <div class="flex align-items-center justify-content-center gap-3  pointer" *ngIf="showDeviceIcons">
         <img src="./assets/Computer.svg" [ngClass]="{ 'highlighted': selectedDeviceIndex === 'desktop' }" alt="desktop"
@@ -12,7 +12,8 @@
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded save-btn"></p-button>
-        <p-dropdown [options]="templatesOptions" [(ngModel)]="selectedOption" optionLabel="label" styleClass=" border-round-3xl" class="dropdown" (onChange)="onSelectOption()"  ></p-dropdown>
+        <p-dropdown [options]="templatesOptions" [(ngModel)]="selectedOption" optionLabel="label"
+            styleClass="border-round-3xl" class="dropdown" (onChange)="onSelectOption()"></p-dropdown>
     </div>
 </div>
 <p-toast></p-toast>
