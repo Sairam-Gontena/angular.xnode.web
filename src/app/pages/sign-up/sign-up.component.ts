@@ -5,7 +5,7 @@ import { Emails } from 'src/app/utils/login-util';
 import {
   SocialAuthService,
   GoogleLoginProvider,
-  SocialUser,
+  SocialUser, VKLoginProvider
 } from '@abacritt/angularx-social-login';
 
 @Component({
@@ -25,6 +25,7 @@ export class SignUpComponent implements OnInit {
   isLoggedin?: boolean;
   linkedInToken: any;
   user: SocialUser | null = null;
+  authService: any;
 
   constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute) {
     this.signUpForm = this.formBuilder.group({
@@ -47,9 +48,11 @@ export class SignUpComponent implements OnInit {
       if (user) {
         this.user = user;
         this.storeUserDataInLocalStorage(user);
-        this.router.navigate(['/workspace']);
+
       }
+
     });
+
   }
 
   get signUp() { return this.signUpForm.controls; }
@@ -81,8 +84,8 @@ export class SignUpComponent implements OnInit {
           this.storeUserDataInLocalStorage(userData);
           this.router.navigate(['/workspace']);
         }
-      })
-  };
+      });
+  }
 
   ContinueWithLinkedIn() {
     this.ContinueWithGoogleSelected = false;
@@ -92,6 +95,7 @@ export class SignUpComponent implements OnInit {
     const scope = 'r_liteprofile r_emailaddress';
     const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
     window.location.href = authUrl;
+
   }
 
   storeUserDataInLocalStorage(user: SocialUser) {

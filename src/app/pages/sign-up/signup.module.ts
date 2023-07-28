@@ -13,7 +13,9 @@ import {
     SocialAuthServiceConfig,
 } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
-import { HttpClientModule } from '@angular/common/http';
+
+import { Component } from '@angular/core';
+
 
 @NgModule({
     declarations: [
@@ -29,7 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
         DividerModule,
         GoogleSigninButtonModule,
         SocialLoginModule,
-        HttpClientModule
+
     ],
     providers: [
         {
@@ -41,6 +43,7 @@ import { HttpClientModule } from '@angular/common/http';
                         id: GoogleLoginProvider.PROVIDER_ID,
                         provider: new GoogleLoginProvider('428503221481-aul4gv3ulnehnf46jovp602rc5j2hckv.apps.googleusercontent.com'),
                     },
+
                 ],
             } as SocialAuthServiceConfig,
         },
