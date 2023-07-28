@@ -57,7 +57,7 @@
             </div>
             <div class="ml-2">
                 <div class="text-sm font-medium">{{notification?.title?.toUpperCase().replaceAll('_',' ')}}</div>
-                <div class="text-500 mt-2 text-sm font-normal">{{notification?.message}}</div>
+                <div class="text-500 mt-2 text-sm font-normal">{{notification?.description}}</div>
                 <div class="flex mt-2" *ngIf="notification?.type === 'request'">
                     <div class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
                         Decline</div>
