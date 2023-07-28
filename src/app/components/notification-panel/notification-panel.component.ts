@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NotificationPanelComponent {
   @Input() data: any;
+  @Output() showToast: EventEmitter<any> = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -90,11 +91,11 @@ export class NotificationPanelComponent {
     }
     this.apiService.publishApp(body)
       .then(response => {
-        console.log('response', response);
       })
       .catch(error => {
         console.log('error', error);
       });
+    this.showToast.emit({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true })
   }
 
 }
