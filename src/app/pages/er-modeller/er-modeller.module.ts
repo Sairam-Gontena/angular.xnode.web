@@ -17,8 +17,12 @@ import { DataService } from './service/data.service';
 import { JsPlumbService } from './service/jsPlumb.service';
 import { UtilService } from './service/util.service';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
-import { SidebarModule } from 'primeng/sidebar';
+import { SidebarModule, } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
+import { AccordionModule } from 'primeng/accordion';
+import { FieldsetModule } from 'primeng/fieldset';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +42,10 @@ import { ButtonModule } from 'primeng/button';
     SharedComponentModule,
     ModalModule.forRoot(),
     SidebarModule,
-    ButtonModule
+    ButtonModule,
+    TabViewModule,
+    AccordionModule,
+    FieldsetModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
 })

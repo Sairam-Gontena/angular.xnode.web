@@ -65,12 +65,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       }, keyboard: {
         bindTo: window
       },
-      BpmnPalletteModule
+      BpmnPalletteModule,
+      
     });
 
 
     const propertiesPanel = new PropertiesPanel({
       parent: '#js-properties-panel',
+      
     });
     this.bpmnJS.propertiesPanel = propertiesPanel;
 
@@ -82,13 +84,44 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
+
   }
 
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
+    console.log(this.bpmnJS)
+    var elementRegistry = this.bpmnJS.get('elementRegistry');
+    console.log(elementRegistry._eventBus);
     const propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    console.log("properties panel data",propertiesPanel);
+
+    console.log("properties panel data",propertiesPanel._container.children);
     propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
+    console.log(propertiesPanel.getTab('General'))
+    // propertiesPanel.attachTo(document.getElementById('js-properties-panel') as HTMLElement);
+    // const allInputs = document.querySelectorAll('#js-properties-panel');
+    // console.log(allInputs)
+    
+  }
+  getElement(){
+
+    console.log('triggered')
+    console.log(this.bpmnJS.get('eventBus'))
+    this.bpmnJS.get('eventBus').on('element.click', 999999, function(event:any) {
+      console.log('Did you just try to create something?!', event);
+      event.element.collapsed = true;
+      event.element.di.isExpanded = false;
+    });
+    this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
+    console.log(document.getElementsByClassName('bio-properties-container'))
+  }
+  getExtension(element:any, type:any) {
+    if (!element) {
+      return null;
+    }
+  
+    return element.filter(function(e:any) {
+      return e.$instanceOf(type);
+    })[0];
   }
 
 

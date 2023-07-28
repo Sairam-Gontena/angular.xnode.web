@@ -8,14 +8,70 @@
      </p-button>    -->
      <div class="btn">
           <p-button class= "btn"label="Property Panel"(click)="sidebarVisible = true" icon="fa fa-list"></p-button>
+          <p-button class= "btn"label="test"(click)="this.getElement()" icon="fa fa-list"></p-button>
+
      </div>
      </div>
-     <!-- <div #propertiesRef class="properties-container"></div> -->
+     <div #propertiesRef class="properties-container"></div>
 
-     <p-sidebar [(visible)]="sidebarVisible" position="right">
-          <div #propertiesRef class="properties-container"></div>
+     <p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem">
+          <ng-template pTemplate="header"><b>Budget</b></ng-template>
 
-          <ng-template pTemplate="header">Header Content</ng-template>
+          <div>
+               
+               <p>
+                    <b>Task</b>
+                    Budgeting
+               </p>
+               <p-divider type="solid"></p-divider>
+              
+               <p-tabView>
+                    <p-tabPanel header="General">
+                    <p>
+                         Lorem ipsum dolor 
+                    </p>
+                    </p-tabPanel>
+                    <p-tabPanel header="Properties">
+                         <!-- <div #propertiesRef class="properties-container"></div> -->
+
+                         <p-accordion >
+                              <p-accordionTab header="Flows">
+                                  <p>
+                                      Lorem 
+                                  </p>
+                              </p-accordionTab>
+                              <p-accordionTab header="User Flow" >
+                                  <p>
+                                      Sed
+                                  </p>
+                              </p-accordionTab>
+                              <p-accordionTab header="Backend Flow">
+                                  <p>
+                                      At 
+                                  </p>
+                              </p-accordionTab>
+                          </p-accordion>
+                    <p>
+                         Sed ut perspiciatis 
+                    </p>
+                    </p-tabPanel>
+                    <p-tabPanel header="JSON">
+                    <p>
+                         At vero eos et accusamus 
+                    </p>
+                    </p-tabPanel>
+                    <p-tabPanel header="Comments">
+                         <p>
+                              At vero eos et accusamus 
+                         </p>
+                    </p-tabPanel>
+               </p-tabView>
+               <p-divider type="dashed"></p-divider>
+               <p>
+                    Temporibus
+               </p>
+          </div>
+          <div id="js-properties-panel" class="properties-container"></div>
           <ng-template pTemplate="content">
                Body Content
                <div>this can be accessed</div>
