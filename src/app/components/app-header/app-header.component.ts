@@ -35,7 +35,6 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.add({ severity: 'warning', summary: '', detail: "test" });
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {
@@ -70,4 +69,8 @@ export class AppHeaderComponent implements OnInit {
     this.notificationCount = 0;
   }
 
+  prepareToastToShow(event: any): void {
+    this.messageService.clear();
+    this.messageService.add(event);
+  }
 }
