@@ -5,6 +5,10 @@ import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil, User } from '../../utils/user-util';
 
+interface DropdownOption {
+  label: string;
+  value: string;
+}
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -15,15 +19,18 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
-  selectedOption: string = 'Preview';
+  selectedOption: DropdownOption = {
+    label: 'Preview',
+    value: 'Preview'
+  };
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
   selectedDeviceIndex: string | null = null;
-  templatesOptions: any;
+  templatesOptions: DropdownOption[] = [];
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
-  options: any[] = [{ "name": "preview"},{"name": "published"}];
+  options: any[] = [{ "name": "preview" }, { "name": "published" }];
   selectedDropDownOption: string = 'Preview'
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
@@ -38,19 +45,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem('app_name') }
     ]
-
     this.templatesOptions = [
       {
         label: 'Preview',
-        command: () => {
-          this.selectedOption = 'Preview';
-        }
+        value: 'Preview'
       },
       {
         label: 'Publish',
-        command: () => {
-          this.selectedOption = 'Publish';
-        }
+        value: 'Publish'
       },
     ];
   };
@@ -64,7 +66,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
-    if (this.selectedOption == 'Preview') {
+    if (this.selectedOption.value == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
     } else {
       this.loadSpinnerInParent.emit(true);

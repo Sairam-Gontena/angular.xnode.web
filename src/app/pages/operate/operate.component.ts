@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'xnode-operate',
   templateUrl: './operate.component.html',
-  styleUrls: ['./operate.component.scss']
+  styleUrls: ['./operate.component.scss'],
+  providers: [MessageService]
+
 })
 
 export class OperateComponent implements OnInit {
@@ -20,6 +24,10 @@ export class OperateComponent implements OnInit {
   doughnutData: any;
   doughnutOptions: any;
   options: any;
+
+  constructor(private messageService: MessageService) {
+  }
+
   ngOnInit(): void {
     this.templates = [
       { label: localStorage.getItem("app_name") }
@@ -40,6 +48,11 @@ export class OperateComponent implements OnInit {
 
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
+  }
+
+  showToast(severity: string, message: string, code: string) {
+    this.messageService.clear();
+    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
 
 }
