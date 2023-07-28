@@ -16,6 +16,7 @@ import { from, Observable } from 'rxjs';
 
 import * as workflow from '../../../assets/json/flows_modified.json'
 import { ApiService } from 'src/app/api/api.service';
+import { layoutProcess } from 'bpmn-auto-layout';
 import {staticXml} from './bpmn-xml'
 // import "bpmn-js/dist/assets/diagram-js.css"
 @Component({
@@ -34,10 +35,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef, private api: ApiService) {
-    this.api.postWorkFlow(workflow).then((response: any) => {
-      console.log('response', response);
+    this.api.postWorkFlow(workflow).then(async (response: any) => {
       this.xml = response?.data;
-      this.importDiagram(this.xml);
+      const layoutedDiagramXML = await layoutProcess(this.xml);
+      this.importDiagram(layoutedDiagramXML);
     }).catch(error => {
       console.log('error', error);
     });
