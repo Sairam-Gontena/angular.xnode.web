@@ -7,6 +7,11 @@
     border: 0;
 }
 
+// :host ::ng-deep.dropdown .p-dropdown {
+//     background: #EF018F;
+//     height: 20px;
+// }
+
 img.highlighted {
     background-color: #02ADEE !important;
 }
@@ -21,4 +26,20 @@ img.highlighted {
     padding-top: 6px;
     padding-bottom: 6px;
     border: 1px solid #23222B;
+}
+
+:host ::ng-deep.p-dropdown .p-dropdown-trigger {
+    color: #fff;
+}
+
+:host ::ng-deep .dropdown .p-dropdown {
+    background: #EF018F;
+    height: 30px;
+    // border-radius: 20px;
+}
+
+:host ::ng-deep .dropdown .p-dropdown-label {
+    padding-top: 5px;
+    font-size: 12px;
+    background: #EF018F;
 }

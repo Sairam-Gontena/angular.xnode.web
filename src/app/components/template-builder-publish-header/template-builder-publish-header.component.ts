@@ -23,6 +23,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
+  options: any[] = [{ "name": "preview"},{"name": "published"}];
+  selectedDropDownOption: string = 'Preview'
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
