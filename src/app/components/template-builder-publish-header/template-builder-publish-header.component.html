@@ -12,8 +12,7 @@
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded save-btn"></p-button>
-        <p-splitButton [label]="selectedOption" [model]="templatesOptions" styleClass="p-button-raised p-button-rounded"
-            (onClick)="onSelectOption()"></p-splitButton>
+        <p-dropdown [options]="templatesOptions" [(ngModel)]="selectedOption" optionLabel="label" styleClass=" border-round-3xl" class="dropdown" (onClick)="onSelectOption()"  ></p-dropdown>
     </div>
 </div>
 <p-toast></p-toast>
