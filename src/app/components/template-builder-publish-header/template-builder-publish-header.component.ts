@@ -20,8 +20,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
   selectedOption: DropdownOption = {
-    label: 'Preview',
-    value: 'Preview'
+    label: 'Select',
+    value: 'Select'
   };
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
@@ -47,6 +47,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     ]
     this.templatesOptions = [
       {
+        label: 'Select',
+        value: 'Select'
+      },
+      {
         label: 'Preview',
         value: 'Preview'
       },
@@ -68,7 +72,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption.value == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else {
+    } else if (this.selectedOption.value == 'Publish') {
       this.loadSpinnerInParent.emit(true);
       const body = {
         repoName: localStorage.getItem('app_name'),
@@ -90,6 +94,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
           this.loadSpinnerInParent.emit(false);
         });
+    } else {
+      return;
     }
   }
 }

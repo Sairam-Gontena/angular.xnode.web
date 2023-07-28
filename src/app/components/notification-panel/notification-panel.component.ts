@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
+import { UserUtil, User } from '../../utils/user-util';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -15,6 +17,7 @@ export class NotificationPanelComponent {
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
+  currentUser?: User;
 
   filterTypes: any = {
     recent: false,
@@ -24,6 +27,7 @@ export class NotificationPanelComponent {
   }
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
@@ -31,8 +35,9 @@ export class NotificationPanelComponent {
     this.notifications = this.allNotifications
   }
 
-  navigateToProduct(productId: any): void {
-    localStorage.setItem('record_id', productId)
+  navigateToProduct(obj: any): void {
+    localStorage.setItem('record_id', obj.product_id);
+    localStorage.setItem('app_name', obj.product_name);
     this.router.navigate(['/design']);
   }
 
@@ -73,8 +78,17 @@ export class NotificationPanelComponent {
     this.allNotifications[index].pinned = val === 'pinned';
   }
 
-  publishApp() {
-    this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
+  publishApp(obj: any) {
+    localStorage.setItem('record_id', obj.product_id);
+    localStorage.setItem('app_name', obj.product_name);
+    const body = {
+      repoName: obj.product_name,
+      projectName: 'xnode',
+      email: this.currentUser?.email,
+      envName: environment.name,
+      productId: obj.product_id
+    }
+    this.apiService.publishApp(body)
       .then(response => {
         console.log('response', response);
       })
