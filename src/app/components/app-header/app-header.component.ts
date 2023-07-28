@@ -56,14 +56,13 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
+      console.log('socket message', data)
       this.allNotifications.unshift(data);
-      console.log(data)
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
       if (data.product_status === 'completed') {
         this.RefreshListService.updateData('refreshproducts');
       }
-
     })
   }
 
