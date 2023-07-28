@@ -79,8 +79,10 @@ export class NotificationPanelComponent {
   }
 
   publishApp(obj: any) {
+    localStorage.setItem('record_id', obj.product_id);
+    localStorage.setItem('app_name', obj.product_name);
     const body = {
-      repoName: localStorage.getItem('app_name'),
+      repoName: obj.product_name,
       projectName: 'xnode',
       email: this.currentUser?.email,
       envName: environment.name,
