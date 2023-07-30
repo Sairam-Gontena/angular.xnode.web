@@ -9,10 +9,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
+import { RefreshListService } from './RefreshList.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +26,7 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     SharedComponentModule
   ],
-  providers: [],
+  providers: [RefreshListService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

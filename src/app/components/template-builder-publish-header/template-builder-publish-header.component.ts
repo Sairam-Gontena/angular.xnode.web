@@ -1,8 +1,14 @@
 import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
+import { UserUtil, User } from '../../utils/user-util';
 
+interface DropdownOption {
+  label: string;
+  value: string;
+}
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -11,15 +17,24 @@ import { environment } from 'src/environments/environment';
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
-
-  selectedOption: string = 'Preview';
+  @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() productId?: string;
+  selectedOption: DropdownOption = {
+    label: 'Select',
+    value: 'Select'
+  };
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
   selectedDeviceIndex: string | null = null;
-  templatesOptions: any;
+  templatesOptions: DropdownOption[] = [];
   templateEvent: any;
   showDeviceIcons: boolean = false;
-  constructor(private apiService: ApiService, private router: Router) {
+  currentUser?: any;
+  options: any[] = [{ "name": "preview" }, { "name": "published" }];
+  selectedDropDownOption: string = 'Preview'
+
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
+    this.currentUser = UserUtil.getCurrentUser();
 
   }
   ngOnInit(): void {
@@ -30,19 +45,18 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem('app_name') }
     ]
-
     this.templatesOptions = [
       {
+        label: 'Select',
+        value: 'Select'
+      },
+      {
         label: 'Preview',
-        command: () => {
-          this.selectedOption = 'Preview';
-        }
+        value: 'Preview'
       },
       {
         label: 'Publish',
-        command: () => {
-          this.selectedOption = 'Publish';
-        }
+        value: 'Publish'
       },
     ];
   };
@@ -56,16 +70,32 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
-    if (this.selectedOption == 'Preview') {
+    if (this.selectedOption.value == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else {
-      this.apiService.publishApp({ repoName: localStorage.getItem('app_name'), projectName: 'xnode' })
+    } else if (this.selectedOption.value == 'Publish') {
+      this.loadSpinnerInParent.emit(true);
+      const body = {
+        repoName: localStorage.getItem('app_name'),
+        projectName: 'xnode',
+        email: this.currentUser?.email,
+        envName: environment.name,
+        productId: this.productId
+      }
+      this.apiService.publishApp(body)
         .then(response => {
           console.log('response', response);
+          if (response) {
+            this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
+            this.loadSpinnerInParent.emit(false);
+          }
         })
         .catch(error => {
           console.log('error', error);
+          this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
+          this.loadSpinnerInParent.emit(false);
         });
+    } else {
+      return;
     }
   }
 }
