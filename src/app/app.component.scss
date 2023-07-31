@@ -19,15 +19,6 @@
   margin-top: 30px;
 }
 
-// .side-window {
-//   background-color: #000759;
-//   transition: all 0.5s ease-in-out;
-// }
-
-// .side-window.open {
-//   width: 40%;
-// }
-
 .chatbot-close {
   cursor: pointer;
 }
@@ -54,8 +45,6 @@
 
 .close-button {
   position: absolute;
-  // width: 0.5rem;
-  // height: 0.5rem;
   padding: 10px;
   top: 5px;
   right: 5px;
@@ -72,12 +61,6 @@
   right: 0;
   border-radius: 50%;
 }
-
-//   .side-window-content {
-//     padding: 0px;
-//     margin-top: 20px; /* Increase margin as needed */
-//     height: calc(100% - 100px); 
-//   }
 
 :host::ng-deep.p-overlaypanel .p-overlaypanel-content {
   padding: 0px !important;
