@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
+import { SidebarModule } from 'primeng/sidebar';
+
 import { RefreshListService } from './RefreshList.service';
 
 @NgModule({
@@ -24,7 +26,8 @@ import { RefreshListService } from './RefreshList.service';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    SharedComponentModule
+    SharedComponentModule,
+    SidebarModule,
   ],
   providers: [RefreshListService],
   bootstrap: [AppComponent],
