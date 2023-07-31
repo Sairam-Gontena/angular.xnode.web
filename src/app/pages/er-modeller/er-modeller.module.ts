@@ -22,7 +22,10 @@ import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { AccordionModule } from 'primeng/accordion';
 import { FieldsetModule } from 'primeng/fieldset';
-
+import { PanelModule } from 'primeng/panel';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,11 @@ import { FieldsetModule } from 'primeng/fieldset';
     ButtonModule,
     TabViewModule,
     AccordionModule,
-    FieldsetModule
+    FieldsetModule,
+    PanelModule,
+    AvatarGroupModule,
+    AvatarModule,
+    InputTextareaModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
 })
