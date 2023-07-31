@@ -20,8 +20,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
   selectedOption = 'PREVIEW';
+  selectedProductName = {};
   templates: any;
-  selectedTemplate = localStorage.getItem('app_name');
+  selectedTemplate = null
   selectedDeviceIndex: string | null = null;
   templatesOptions: DropdownOption[] = [];
   templateEvent: any;
@@ -55,9 +56,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
     }
-    this.templates = [
-      { label: localStorage.getItem('app_name') }
-    ]
+    this.getAllProducts()
   };
 
   deviceIconClicked(icon: string) {
@@ -102,5 +101,28 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  //get calls 
+  getAllProducts(): void {
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const data = response.data.data.map((obj: any) => ({
+            label: obj.title,
+            value: obj.id
+          }));
+          this.templates = data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+  selectedProduct(data: any): void {
+    const app_name = this.templates.filter((item: any) => item.value === data.value)[0].label
+    localStorage.setItem('record_id', data.value);
+    localStorage.setItem('app_name', app_name);
+    this.router.navigate(['/design']);
   }
 }
