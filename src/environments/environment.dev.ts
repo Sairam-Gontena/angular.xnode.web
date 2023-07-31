@@ -5,5 +5,6 @@ export const environment = {
     designStudioUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
     publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
     webSocketNotifier: 'dev-xnode-notifier',
-    name: 'dev'
+    name: 'dev',
+    workFlowUrl: 'https://dev-xnode-xflows.azurewebsites.net/'
 }
