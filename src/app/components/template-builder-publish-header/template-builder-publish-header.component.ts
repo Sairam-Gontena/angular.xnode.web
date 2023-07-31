@@ -1,10 +1,10 @@
-import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
-import { UserUtil, User } from '../../utils/user-util';
-
+import { UserUtil } from '../../utils/user-util';
+import { MenuItem } from 'primeng/api';
 interface DropdownOption {
   label: string;
   value: string;
@@ -19,10 +19,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
-  selectedOption: DropdownOption = {
-    label: 'Select',
-    value: 'Select'
-  };
+  selectedOption = 'PREVIEW';
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
   selectedDeviceIndex: string | null = null;
@@ -32,9 +29,25 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   currentUser?: any;
   options: any[] = [{ "name": "preview" }, { "name": "published" }];
   selectedDropDownOption: string = 'Preview'
-
+  productOptions: MenuItem[];
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.productOptions = [
+      {
+        label: 'Preview',
+        icon: 'pi pi-refresh',
+        command: () => {
+          this.onChangeOption('PREVIEW');
+        }
+      },
+      {
+        label: 'Publish',
+        icon: 'pi pi-times',
+        command: () => {
+          this.onChangeOption('PUBLISH');
+        }
+      },
+    ];
 
   }
   ngOnInit(): void {
@@ -45,21 +58,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem('app_name') }
     ]
-    this.templatesOptions = [
-      {
-        label: 'Select',
-        value: 'Select'
-      },
-      {
-        label: 'Preview',
-        value: 'Preview'
-      },
-      {
-        label: 'Publish',
-        value: 'Publish'
-      },
-    ];
   };
+
   deviceIconClicked(icon: string) {
     if (this.selectedDeviceIndex === icon) {
       this.selectedDeviceIndex = null;
@@ -69,10 +69,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.iconClicked.emit(icon);
   }
 
+  onChangeOption(event: string) {
+    this.selectedOption = event;
+    this.onSelectOption();
+  }
+
   onSelectOption(): void {
-    if (this.selectedOption.value == 'Preview') {
+    if (this.selectedOption == 'PREVIEW') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption.value == 'Publish') {
+    } else if (this.selectedOption == 'PUBLISH') {
       this.loadSpinnerInParent.emit(true);
       const body = {
         repoName: localStorage.getItem('app_name'),
