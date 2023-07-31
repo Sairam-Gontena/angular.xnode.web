@@ -39,16 +39,5 @@
 }
 
 :host ::ng-deep .p-dropdown {
-    background: #4F4E55 !important;
     border: none !important;
-}
-
-:host ::ng-deep .p-inputtext {
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #4F4E55;
-    border: 0;
-    width: 100%;
-    color: #ffffff;
 }

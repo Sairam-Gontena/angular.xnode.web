@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
+import { RefreshListService } from '../../RefreshList.service'
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -15,13 +17,23 @@ export class MyProductsComponent implements OnInit {
   id: String = '';
   templateCard: any;
   currentUser?: User;
-  constructor(public router: Router, private apiService: ApiService, private messageService: MessageService) {
+  private subscription: Subscription;
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
+      if (data === 'refreshproducts') {
+        this.getMeUserId()
+      }
+    });
   }
 
   ngOnInit(): void {
     localStorage.removeItem('record_id');
     this.getMeUserId();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onClickCreateNewTemplate(data: any): void {

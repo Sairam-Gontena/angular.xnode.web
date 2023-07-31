@@ -108,7 +108,7 @@ export class OverViewComponent {
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
-          this.features = response.data?.Features.split(',');
+          this.features = response.data?.Features;
           this.appName = response?.data?.Title;
           localStorage.setItem("app_name", response?.data?.Title);
         }
