@@ -6,5 +6,5 @@ export const environment = {
     publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',  //for now we have only dev url
     webSocketNotifier: 'qa-xnode-notifier',
     name: 'qa',
-    workFlowUrl: 'https://dev-xnode-xflows.azurewebsites.net/'
+    workFlowUrl: 'https://dev-xnode-xflows.azurewebsites.net/' //QA env not configured yet
 }
