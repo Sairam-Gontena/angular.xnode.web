@@ -37,6 +37,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'acitvity',
+    loadChildren: () =>
+      import('./pages/activity-logs/activity-logs.module').then(
+        (m) => m.ActivityLogsModule
+      ),
+  },
+  {
     path: 'design',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },

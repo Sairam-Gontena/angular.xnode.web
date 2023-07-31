@@ -4,8 +4,8 @@
     </div>
     <div class="template-builder-body-wrapper overflow-hidden"
         [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
-        <xnode-template-builder-publish-header #childComponent
-            (iconClicked)="onIconClicked($event)"></xnode-template-builder-publish-header>
+        <xnode-template-builder-publish-header (loadSpinnerInParent)="loadSpinner($event)"
+            (iconClicked)="onIconClicked($event)" [productId]="productId"></xnode-template-builder-publish-header>
         <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
             <div class="flex align-items-center justify-content-center h-full w-full">
                 <div class="" [ngClass]="currentView">
@@ -17,3 +17,4 @@
     </div>
 </div>
 <p-toast></p-toast>
+<p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>

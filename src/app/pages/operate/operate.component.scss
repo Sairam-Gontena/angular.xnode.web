@@ -75,16 +75,6 @@
     overflow-y: hidden;
 }
 
-:host ::ng-deep .p-inputtext {
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #4F4E55;
-    border: 0;
-    width: 100%;
-    color: #ffffff !important;
-}
-
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link,

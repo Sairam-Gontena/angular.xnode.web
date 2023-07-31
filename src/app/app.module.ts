@@ -11,6 +11,7 @@ import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 
+import { RefreshListService } from './RefreshList.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { SidebarModule } from 'primeng/sidebar';
     SharedComponentModule,
     SidebarModule,
   ],
-  providers: [],
+  providers: [RefreshListService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

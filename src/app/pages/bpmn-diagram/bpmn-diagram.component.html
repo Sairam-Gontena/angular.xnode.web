@@ -29,11 +29,14 @@
                <!-- General Tab -->
                <p-tabPanel header="General">
                     <p-panel header="General" [toggleable]="true">
-                         <label htmlFor="username">{{this.generalInfo[0].label}}</label>
-                         <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[0].value" />
-
-                         <label htmlFor="username">{{this.generalInfo[1].label}}</label>
-                         <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[1].value" />
+                         <div class="row">
+                              <label htmlFor="username">{{this.generalInfo[0].label}}</label>
+                              <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[0].value" />
+                         </div>
+                         <div class="row">
+                              <label htmlFor="username">{{this.generalInfo[1].label}}</label>
+                              <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[1].value" />
+                         </div>
                      </p-panel>
                      <p-panel header="Documentation" [toggleable]="true">
                          <label htmlFor="username">{{this.generalInfo[2].label}}</label>
@@ -60,7 +63,7 @@
                               </ng-template>
                          </p-table>
                     </p-panel>
-                    <a *ngIf="this.elementList?.type ==='bpmn:ServiceTask'" href="/">View DMN Decision Flow</a>
+                    <a *ngIf="this.elementList?.type ==='bpmn:ServiceTask'&&!this.sP" href="/">View DMN Decision Flow</a>
 
                     <p-panel *ngIf="this.sP" header="Userflows" [toggleable]="true" [collapsed]="true" styleClass="{ 'width': '30rem' }">
                          <p-table [value]="this.userTask" [tableStyle]="{ 'min-width': '30rem' }">

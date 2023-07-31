@@ -1,3 +1,4 @@
+
 import { AfterContentInit, Component, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { SidebarModule } from 'primeng/sidebar';
 
@@ -14,6 +15,7 @@ import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { from, Observable } from 'rxjs';
 
+
 import * as workflow from '../../../assets/json/flows_modified.json'
 import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
@@ -24,6 +26,8 @@ import {staticXml} from './bpmn-xml'
   templateUrl: './bpmn-diagram.component.html',
   styleUrls: ['./bpmn-diagram.component.scss']
 })
+
+
 export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit {
   bpmnJS: any;
   pallete_classes: any;
@@ -67,7 +71,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       additionalModules: [
         BpmnPropertiesPanelModule,
         BpmnPropertiesProviderModule,
-        // customPropertiesProvider
         CamundaPlatformPropertiesProviderModule,
         camundaCloudBehaviors
       ],
@@ -87,7 +90,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       
     });
     this.bpmnJS.propertiesPanel = propertiesPanel;
-
     this.pallete_classes = palette_tools_class;
     this.selected_classes = [
       "entry bpmn-icon-subprocess-expanded",
@@ -119,7 +121,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // console.log(allInputs)
     
   }
-  async getElement(){
+  
+  getElement(){
     var ele;
     console.log('triggered')
     this.sidebarVisible = !this.sidebarVisible;
@@ -169,7 +172,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       } else {}
     });
   }
-
 
   getDisplayProperty(element:any){
     console.log("raw element data", element);
