@@ -1,11 +1,8 @@
 
 import { AfterContentInit, Component, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { SidebarModule } from 'primeng/sidebar';
-
 import {
   BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule
 } from 'bpmn-js-properties-panel';
-
 import camundaCloudBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
 import * as camundaModdleDescriptors from 'camunda-bpmn-moddle/resources/camunda.json';
 import * as palette_tools_class from './custom-palette-provider.json';
@@ -14,13 +11,10 @@ import * as custom from './custom.json';
 import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { from, Observable } from 'rxjs';
-
-
 import * as workflow from '../../../assets/json/flows_modified.json'
 import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
-import {staticXml} from './bpmn-xml'
-// import "bpmn-js/dist/assets/diagram-js.css"
+import { UserUtil } from '../../utils/user-util';
 @Component({
   selector: 'xnode-bpmn-diagram',
   templateUrl: './bpmn-diagram.component.html',
@@ -35,8 +29,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   xml: string = "";
   sidebarVisible: any;
   jsonWorkflow: any;
-
-
   elementList: any;
   flowInfo: any;
   userTask: any;
@@ -45,17 +37,21 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   task: boolean = false;
   taskHeader: any;
   generalInfo: any;
-  
+  currentUser: any;
+
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, private api: ApiService) {
-    this.api.postWorkFlow(workflow).then(async (response: any) => {
-      this.xml = response?.data;
-      const layoutedDiagramXML = await layoutProcess(this.xml);
-      // console.log(this.xml)
-      this.importDiagram(layoutedDiagramXML);
+  constructor(private api: ApiService) {
+    this.currentUser = UserUtil.getCurrentUser();
+    this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
+      if (response) {
+        this.loadXFlows(response.data);
+      } else {
+        this.loadXFlows(workflow);
+      }
     }).catch(error => {
       console.log('error', error);
+      this.loadXFlows(workflow);
     });
   }
 
@@ -81,13 +77,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         bindTo: window
       },
       BpmnPalletteModule,
-      
     });
-
-
     const propertiesPanel = new PropertiesPanel({
       parent: '#js-properties-panel',
-      
+
     });
     this.bpmnJS.propertiesPanel = propertiesPanel;
     this.pallete_classes = palette_tools_class;
@@ -98,138 +91,117 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
-
   }
 
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    // console.log(this.bpmnJS)
-    var elementRegistry = this.bpmnJS.get('elementRegistry');
-    this.generalInfo =[
-      {'index':0, 'label':'Entity', 'value':'XFLow-Budget'},
-      {'index':1, 'label':'Name', 'value':'Business Model Budgeting Process Collaborative X Flow'},
-      {'index':2, 'label':'Element Documentation', 'value':'Business Model Budgeting Process Collaborative X Flow'},
+    this.generalInfo = [
+      { 'index': 0, 'label': 'Entity', 'value': 'XFLow-Budget' },
+      { 'index': 1, 'label': 'Name', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
+      { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
     ];
-    this.jsonWorkflow = JSON.stringify(workflow,null, 2);
-
-    console.log(this.jsonWorkflow);
+    this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     const propertiesPanel = this.bpmnJS.get('propertiesPanel');
     propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
-    // console.log(propertiesPanel.getTab('General'))
-    // propertiesPanel.attachTo(document.getElementById('js-properties-panel') as HTMLElement);
-    // const allInputs = document.querySelectorAll('#js-properties-panel');
-    // console.log(allInputs)
-    
   }
-  
-  getElement(){
-    var ele;
-    console.log('triggered')
-    this.sidebarVisible = !this.sidebarVisible;
-    this.bpmnJS.get('eventBus').on('element.click', 9, (event:any) => {
-      console.log('Did you just try to create something?!', event);
 
-      if (event.element.type ==='bpmn:Process'){
+  getElement() {
+    this.sidebarVisible = !this.sidebarVisible;
+    this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
+      if (event.element.type === 'bpmn:Process') {
         this.flowInfo = this.getDisplayProperty(event.element);
         this.sP = false;
         this.task = false;
-        this.taskHeader ={
+        this.taskHeader = {
           'label': 'Pool',
           'task': event.element.id,
-          'pHeader' : 'Flow'
+          'pHeader': 'Flow'
         };
-
-      } else if (event.element.type ==='bpmn:SubProcess'){
+      } else if (event.element.type === 'bpmn:SubProcess') {
         let res = this.getDisplayProperty(event.element)
         this.flowInfo = res.fI;
         this.userTask = res.uT;
         this.serviceTask = res.sT;
         this.sP = true;
         this.task = false;
-        this.taskHeader ={
+        this.taskHeader = {
           'label': 'Activity',
           'task': event.element.businessObject.name,
-          'pHeader' : 'Flow'
+          'pHeader': 'Flow'
         };
-        console.log("pareant function", this.flowInfo, this.userTask, this.serviceTask)
-
-      } else if (event.element.type ==='bpmn:UserTask' || event.element.type ==='bpmn:ServiceTask'){
+      } else if (event.element.type === 'bpmn:UserTask' || event.element.type === 'bpmn:ServiceTask') {
         let pHeader = '';
         this.flowInfo = this.getDisplayProperty(event.element);
         this.task = true;
         this.sP = false;
         this.elementList = event.element;
-        if (event.element.type==='bpmn:UserTask'){
+        if (event.element.type === 'bpmn:UserTask') {
           pHeader = 'UserFlow'
         } else {
           pHeader = 'BackendFlow'
         }
-        this.taskHeader ={
+        this.taskHeader = {
           'label': 'Task',
           'task': event.element.businessObject.name,
           'pHeader': pHeader
         };
-      } else {}
+      } else { }
     });
   }
 
-  getDisplayProperty(element:any){
-    console.log("raw element data", element);
+  getDisplayProperty(element: any) {
     let flowElements = element.businessObject.flowElements;
     let userTasks, serviceTasks;
-    // console.log("inside getProperty",flowElements)
-    if (element.type==='bpmn:Process'){
-      flowElements = flowElements.filter((fe:any) => fe.$type ==='bpmn:SubProcess');
-      for (let i=0; i<flowElements.length; i++){
+    if (element.type === 'bpmn:Process') {
+      flowElements = flowElements.filter((fe: any) => fe.$type === 'bpmn:SubProcess');
+      for (let i = 0; i < flowElements.length; i++) {
         flowElements[i].index = i;
-        flowElements[i].label= 'Flow '+(i+1);
+        flowElements[i].label = 'Flow ' + (i + 1);
       }
-      console.log("processElement", flowElements)
       return flowElements;
-
-    } else if ( element.type ==='bpmn:SubProcess'){
+    } else if (element.type === 'bpmn:SubProcess') {
       let flow_Info = [
-        {'index':0,'label':'Name', 'name':element.businessObject.name},
-        {'index':1,'label':'type', 'name': element.type},
-        {'index':2,'label':'Role', 'name': ''},
-        {'index':3,'label':'StartEvent', 'name': flowElements[0].id},
-        {'index':4,'label':'EndEvent', 'name': flowElements[flowElements.length-1].id},
-        {'index':5,'label':'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name},
-        {'index':6,'label':'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name},
+        { 'index': 0, 'label': 'Name', 'name': element.businessObject.name },
+        { 'index': 1, 'label': 'type', 'name': element.type },
+        { 'index': 2, 'label': 'Role', 'name': '' },
+        { 'index': 3, 'label': 'StartEvent', 'name': flowElements[0].id },
+        { 'index': 4, 'label': 'EndEvent', 'name': flowElements[flowElements.length - 1].id },
+        { 'index': 5, 'label': 'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name },
+        { 'index': 6, 'label': 'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name },
       ];
-      
-      userTasks= flowElements.filter((fe:any) => fe.$type ==='bpmn:UserTask');
-      serviceTasks= flowElements.filter((fe:any) => fe.$type ==='bpmn:ServiceTask');
-      for (let i=0; i<userTasks.length; i++){
+      userTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:UserTask');
+      serviceTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:ServiceTask');
+      for (let i = 0; i < userTasks.length; i++) {
         userTasks[i].index = i;
       }
-      for (let i=0; i<serviceTasks.length; i++){
+      for (let i = 0; i < serviceTasks.length; i++) {
         serviceTasks[i].index = i;
       }
-      // console.log(flow_Info.forEach())
-      console.log("subprocess",flow_Info, userTasks, serviceTasks);
-      return {'fI':flow_Info,
-              'uT': userTasks,
-              'sT': serviceTasks};
+      console.log("subprocess", flow_Info, userTasks, serviceTasks);
+      return {
+        'fI': flow_Info,
+        'uT': userTasks,
+        'sT': serviceTasks
+      };
 
-    } else if ( element.type ==='bpmn:UserTask'|| element.type==='bpmn:ServiceTask'){
+    } else if (element.type === 'bpmn:UserTask' || element.type === 'bpmn:ServiceTask') {
       console.log("Task", element);
       let business_obj = element.businessObject;
-      let start_event = business_obj.$parent.flowElements.filter((fe:any)=> fe.$type ==='bpmn:StartEvent')[0];
-      let end_event = business_obj.$parent.flowElements.filter((fe:any)=> fe.$type === 'bpmn:EndEvent')[0];
+      let start_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:StartEvent')[0];
+      let end_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:EndEvent')[0];
       // flowElements = flowElements.filter((fe:any) => fe.$type ==='bpmn:UserTask');
-      console.log("test",start_event)
+      console.log("test", start_event)
       let flow_Info = [
-        {'index':0,'label':'UserTask', 'name':business_obj.name},
-        {'index':1,'label':'Role', 'name':business_obj.extensionElements.values[0].candidateGroups},
-        {'index':2,'label':'Entity', 'name': business_obj.$parent.$parent.name},
-        {'index':3,'label':'TaskStatus', 'name': ''},
-        {'index':4,'label':'StartEvent', 'name':start_event.id},
-        {'index':5,'label':'EndEvent', 'name': end_event.id},
-        {'index':6,'label':'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name},
-        {'index':7,'label':'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name},
-        {'index':8,'label':'Condition', 'name': ''},
-        {'index':9,'label':'EntityState', 'name': ''},
+        { 'index': 0, 'label': 'UserTask', 'name': business_obj.name },
+        { 'index': 1, 'label': 'Role', 'name': business_obj.extensionElements.values[0].candidateGroups },
+        { 'index': 2, 'label': 'Entity', 'name': business_obj.$parent.$parent.name },
+        { 'index': 3, 'label': 'TaskStatus', 'name': '' },
+        { 'index': 4, 'label': 'StartEvent', 'name': start_event.id },
+        { 'index': 5, 'label': 'EndEvent', 'name': end_event.id },
+        { 'index': 6, 'label': 'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name },
+        { 'index': 7, 'label': 'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name },
+        { 'index': 8, 'label': 'Condition', 'name': '' },
+        { 'index': 9, 'label': 'EntityState', 'name': '' },
       ];
       console.log(flow_Info)
       return flow_Info;
@@ -239,12 +211,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   }
 
-  getExtension(element:any, type:any) {
+  getExtension(element: any, type: any) {
     if (!element) {
       return null;
     }
-  
-    return element.filter(function(e:any) {
+
+    return element.filter(function (e: any) {
       return e.$instanceOf(type);
     })[0];
   }
@@ -255,5 +227,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   private importDiagram(xml: string): Observable<{ warnings: Array<any> }> {
     return from(this.bpmnJS.importXML(xml) as Promise<{ warnings: Array<any> }>);
+  }
+
+  loadXFlows(xFlowJson: any): void {
+    this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
+      this.xml = response?.data;
+      const layoutedDiagramXML = await layoutProcess(this.xml);
+      this.importDiagram(layoutedDiagramXML);
+    }).catch(error => {
+      console.log('error', error);
+    });
   }
 }

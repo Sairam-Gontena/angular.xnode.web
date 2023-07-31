@@ -19,7 +19,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
-  selectedOption = 'PREVIEW';
+  selectedOption = 'Preview';
   templates: any;
   selectedTemplate = localStorage.getItem('app_name');
   selectedDeviceIndex: string | null = null;
@@ -27,29 +27,26 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
-  options: any[] = [{ "name": "preview" }, { "name": "published" }];
-  selectedDropDownOption: string = 'Preview'
   productOptions: MenuItem[];
+
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
         label: 'Preview',
-        icon: 'pi pi-refresh',
         command: () => {
-          this.onChangeOption('PREVIEW');
+          this.onChangeOption('Preview');
         }
       },
       {
         label: 'Publish',
-        icon: 'pi pi-times',
         command: () => {
-          this.onChangeOption('PUBLISH');
+          this.onChangeOption('Publish');
         }
       },
     ];
-
   }
+
   ngOnInit(): void {
     const currentUrl = this.router.url;
     if (currentUrl === '/design') {
@@ -75,9 +72,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
-    if (this.selectedOption == 'PREVIEW') {
+    if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'PUBLISH') {
+    } else if (this.selectedOption == 'Publish') {
       this.loadSpinnerInParent.emit(true);
       const body = {
         repoName: localStorage.getItem('app_name'),
@@ -88,7 +85,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       }
       this.apiService.publishApp(body)
         .then(response => {
-          console.log('response', response);
           if (response) {
             this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
             this.loadSpinnerInParent.emit(false);
