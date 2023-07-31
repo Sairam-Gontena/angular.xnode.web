@@ -19,14 +19,21 @@
   margin-top: 30px;
 }
 
-.side-window {
-  background-color: #000759;
-  transition: all 0.5s ease-in-out;
+// .side-window {
+//   background-color: #000759;
+//   transition: all 0.5s ease-in-out;
+// }
+
+// .side-window.open {
+//   width: 40%;
+// }
+
+.chatbot-close {
+  cursor: pointer;
 }
 
-.side-window.open {
-  width: 40%;
-
+.pi-icon-close {
+  font-size: 0.75rem;
 }
 
 .overlay {
@@ -42,12 +49,13 @@
 
 .content-class-pilot {
   position: relative;
+  background-color: #3a3942 !important;
 }
 
 .close-button {
   position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
+  // width: 0.5rem;
+  // height: 0.5rem;
   padding: 10px;
   top: 5px;
   right: 5px;

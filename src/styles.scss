@@ -293,7 +293,44 @@ body {
   color: white !important;
 }
 
+.side-window {
+  position: fixed;
+  top: 15%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 30vw;
+  height: 75vh;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: none;
+}
 
+@keyframes chatbot-open {
+  0% {
+    transform: translateY(100%);
+  }
 
+  100% {
+    transform: translateY(0);
+  }
+}
 
+.open {
+  animation: chatbot-open 1s forwards;
+}
 
+@keyframes chatbot-close {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.chatbot-closing {
+  animation: chatbot-close 1s forwards;
+}

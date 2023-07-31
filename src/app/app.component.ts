@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
   isUserExists() {
     // Temporary
     return window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity";
+      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/data-model/x-bpmn";
   }
 
 
@@ -92,10 +92,22 @@ export class AppComponent implements OnInit {
 
   toggleSideWindow() {
     this.isSideWindowOpen = !this.isSideWindowOpen;
+    const chatbotContainer = document.getElementById('side-window') as HTMLElement;
+    chatbotContainer.classList.remove('open');
+    chatbotContainer.classList.add('chatbot-closing');
+    setTimeout(() => {
+      chatbotContainer.style.display = 'none';
+      chatbotContainer.classList.remove('chatbot-closing');
+    }, 1000);
   }
 
   submenuFunc() {
     this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu()
+    if (this.isSideWindowOpen) {
+      const chatbotContainer = document.getElementById('side-window') as HTMLElement;
+      chatbotContainer.style.display = 'block';
+      chatbotContainer.classList.add('open');
+    }
   }
 
   closeSideWindow() {

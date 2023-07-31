@@ -8,13 +8,17 @@ import { environment } from 'src/environments/environment';
 })
 export class ApiService {
   endPoint = environment.xpilotUrl + "crud";
-
+  workFlow = environment.workFlowUrl + 'api/json-bpmn';
   constructor() {
   }
 
   // Temporary
   publishApp(body: any) {
     return axios.post(environment.publishUrl, body);
+  }
+
+  postWorkFlow(body: any) {
+    return axios.post(this.workFlow, body);
   }
 
   get(url: string) {

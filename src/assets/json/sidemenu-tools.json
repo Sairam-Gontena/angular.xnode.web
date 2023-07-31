@@ -197,7 +197,7 @@
                                    "selectedContainer": "Overview",
                                    "alt": "Overview",
                                    "content": "Overview",
-                                   "hasrouter": "false",
+                                   "hasrouter": "true",
                                    "routerlink": ""
                               },
                               {
@@ -339,8 +339,8 @@
                                    "selectedContainer": "Overview",
                                    "alt": "Overview",
                                    "content": "Overview",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
+                                   "hasrouter": "true",
+                                   "routerlink": "x-bpmn"
                               },
                               {
                                    "id": "New Flow",

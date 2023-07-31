@@ -10,6 +10,9 @@ import { ModalSchemaComponent } from './modal-schema/modal-schema.component';
 import { ModalDataComponent } from './modal-data/modal-data.component';
 import { ModalModelComponent } from './modal-model/modal-model.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { BpmnDiagramComponent } from '../bpmn-diagram/bpmn-diagram.component';
 import { DataService } from './service/data.service';
 import { JsPlumbService } from './service/jsPlumb.service';
 import { UtilService } from './service/util.service';
@@ -23,7 +26,8 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
     SchemaComponent,
     ModalSchemaComponent,
     ModalDataComponent,
-    ModalModelComponent
+    ModalModelComponent,
+    BpmnDiagramComponent
   ],
   imports: [
     CommonModule,
