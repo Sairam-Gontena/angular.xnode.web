@@ -39,6 +39,7 @@ export class PageToolsLayoutComponent {
   }
 
   loadSubMenu() {
+    console.log(this.sideMenu)
     this.sideMenu.forEach((item: any) => {
       if (item.path == this.router.url) {
         this.sideMenuItem = item;
@@ -50,8 +51,8 @@ export class PageToolsLayoutComponent {
   }
 
   sideSubMenu() {
-    if (this.sideMenuItem?.subMenuItems) {
-      this.sideMenuItem?.subMenuItems?.forEach((item: any, i: any) => {
+    if (this.sideMenu?.subMenuItems) {
+      this.sideMenu?.subMenuItems?.forEach((item: any, i: any) => {
         item?.accordianContent?.forEach((innerItem: any, j: any) => {
           if (i == 0 && j == 0) {
             let category = item.accordianHeader;

@@ -4,6 +4,14 @@
 @import './theme.scss';
 @import './app/styles/overrides.scss';
 @import './app/styles/utils.scss';
+@import 'node_modules/bpmn-js/dist/assets/diagram-js.css';
+@import 'node_modules/bpmn-js/dist/assets/bpmn-js.css';
+
+@import '~bpmn-js/dist/assets/diagram-js.css';
+@import '~bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
+@import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+@import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
+// @import '~bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
 
 html {
   position: relative;
@@ -334,3 +342,7 @@ body {
 // .chatbot-closing {
 //   animation: chatbot-close 1s forwards;
 // }
+
+p-sidebar div.p-sidebar {
+  position: relative !important;
+}
