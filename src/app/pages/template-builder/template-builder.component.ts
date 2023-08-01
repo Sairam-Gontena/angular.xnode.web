@@ -41,7 +41,7 @@ export class TemplateBuilderComponent implements OnInit {
   email = '';
   selectedTemplate = localStorage.getItem("app_name");
 
-  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utilService:UtilsService) {
+  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
 
   }
 
@@ -93,6 +93,7 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   get_ID() {
+
     this.apiService.get('/get_metadata/' + this.emailData)
       .then(response => {
         this.productId = response.data.data[0].id;
@@ -101,8 +102,9 @@ export class TemplateBuilderComponent implements OnInit {
         this.loading = false;
       }).catch(error => {
         console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        // this.showToast('error', error.message, error.code);
+        // this.loading = false;
+        this.utilService.endSpinnerInApp('severity', error.message, error.code);
       });
   }
 
@@ -111,10 +113,10 @@ export class TemplateBuilderComponent implements OnInit {
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  }
+  // showToast(severity: string, message: string, code: string) {
+  //   this.messageService.clear();
+  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  // }
 
   loadSpinner(event: boolean): void {
     this.loading = event;

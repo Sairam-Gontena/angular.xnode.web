@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-publish',
   templateUrl: './publish.component.html',
@@ -15,7 +16,7 @@ export class PublishComponent {
   highlightedIndex: string | null = null;
   isOpen = false;
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private utilService: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -24,10 +25,10 @@ export class PublishComponent {
     ]
   }
 
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  }
+  // showToast(severity: string, message: string, code: string) {
+  //   this.messageService.clear();
+  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  // }
 
-  
+
 }

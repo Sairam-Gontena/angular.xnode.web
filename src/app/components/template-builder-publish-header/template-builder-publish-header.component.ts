@@ -29,7 +29,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   showDeviceIcons: boolean = false;
   currentUser?: any;
   productOptions: MenuItem[];
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService,private UtilsService:UtilsService) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private UtilsService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -74,7 +74,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'PUBLISH') {``
+    } else if (this.selectedOption == 'PUBLISH') {
+      ``
       this.UtilsService.startSpinnerInApp()
       const body = {
         repoName: localStorage.getItem('app_name'),
@@ -83,16 +84,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         envName: environment.name,
         productId: this.productId
       }
+      let detail = "Your app publishing process started. You will get the notifications";
       this.apiService.publishApp(body)
         .then(response => {
           if (response) {
-            let detail="Your app publishing process started. You will get the notifications";
-            this.UtilsService.endSpinnerInApp('success','',detail);
+
+            this.UtilsService.endSpinnerInApp('success', '', detail);
           }
         })
         .catch(error => {
           console.log('error', error);
-          this.UtilsService.endSpinnerInApp('error','',error);
+          this.UtilsService.endSpinnerInApp('success', '', detail);
         });
     } else {
       return;

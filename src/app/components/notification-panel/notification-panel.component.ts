@@ -5,7 +5,7 @@ import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
-
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -27,7 +27,7 @@ export class NotificationPanelComponent {
     all: true
   }
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -95,7 +95,9 @@ export class NotificationPanelComponent {
       .catch(error => {
         console.log('error', error);
       });
-    this.showToast.emit({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true })
+    let detail = 'Your app publishing process started. You will get the notifications';
+    // this.showToast.emit({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true })
+    this.utilService.endSpinnerInApp('success', '', detail);
   }
 
 }

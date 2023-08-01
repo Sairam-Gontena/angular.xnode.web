@@ -3,7 +3,7 @@ import *as data from '../../constants/overview.json';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
-
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
@@ -30,7 +30,7 @@ export class OverViewComponent {
   email = '';
   features: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -53,10 +53,11 @@ export class OverViewComponent {
     this.iconClicked.emit(icon);
   }
 
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  }
+  // showToast(severity: string, message: string, code: string) {
+  // this.messageService.clear();
+  // this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  // }
+
   nextStep(): void {
     if (this.currentStep < 3) {
       this.currentStep++;
@@ -94,8 +95,9 @@ export class OverViewComponent {
         this.getMeOverview();
       }).catch(error => {
         console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        // this.showToast('error', error.message, error.code);
+        // this.loading = false;
+        this.utilService.endSpinnerInApp('severity', error.message, error.code);
       });
   }
 
@@ -116,8 +118,9 @@ export class OverViewComponent {
       })
       .catch(error => {
         console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        this.utilService.endSpinnerInApp('severity', error.message, error.code);
+        // this.showToast('error', error.message, error.code);
+        // this.loading = false;
       });
 
   }

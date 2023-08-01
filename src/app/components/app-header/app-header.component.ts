@@ -6,7 +6,7 @@ import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
-
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -31,7 +31,7 @@ export class AppHeaderComponent implements OnInit {
   notifications: any[] = [];
   notificationCount: any = 0;
 
-  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService, private utilService: UtilsService) {
   }
 
   ngOnInit(): void {

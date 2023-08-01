@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
-
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-use-cases',
@@ -18,7 +18,7 @@ export class UseCasesComponent implements OnInit {
   templates: any;
   highlightedIndex: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -44,8 +44,9 @@ export class UseCasesComponent implements OnInit {
       })
       .catch(error => {
         console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        // this.showToast('error', error.message, error.code);
+        // this.loading = false;
+        this.utilService.endSpinnerInApp('error', error.message, error.code);
       });
   }
 
@@ -53,7 +54,7 @@ export class UseCasesComponent implements OnInit {
 
   }
 
-  get_Usecases() { 
+  get_Usecases() {
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -63,14 +64,15 @@ export class UseCasesComponent implements OnInit {
         this.loading = false;
       })
       .catch(error => {
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        // this.showToast('error', error.message, error.code);
+        // this.loading = false;
+        this.utilService.endSpinnerInApp('error', error.message, error.code);
       });
     console.log('useCases', this.useCases);
 
   }
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  }
+  // showToast(severity: string, message: string, code: string) {
+  //   this.messageService.clear();
+  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  // }
 }

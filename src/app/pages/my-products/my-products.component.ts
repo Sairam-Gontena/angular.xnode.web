@@ -5,6 +5,7 @@ import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -18,7 +19,7 @@ export class MyProductsComponent implements OnInit {
   templateCard: any;
   currentUser?: User;
   private subscription: Subscription;
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService) {
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -57,14 +58,15 @@ export class MyProductsComponent implements OnInit {
       })
       .catch(error => {
         console.log(error);
-        this.loading = false;
-        this.showToast('error', error.message, error.code);
+        // this.loading = false;
+        // this.showToast('error', error.message, error.code);
+        this.utilService.endSpinnerInApp('error', error.message, error.code);
       });
   }
 
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  }
+  // showToast(severity: string, message: string, code: string) {
+  //   this.messageService.clear();
+  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  // }
 
 }
