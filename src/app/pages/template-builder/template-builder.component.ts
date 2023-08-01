@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/utils/user-util';
 import { ApiService } from 'src/app/api/api.service';
 import { MessageService } from 'primeng/api';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-template-builder',
@@ -40,7 +41,7 @@ export class TemplateBuilderComponent implements OnInit {
   email = '';
   selectedTemplate = localStorage.getItem("app_name");
 
-  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService) {
+  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utilService:UtilsService) {
 
   }
 

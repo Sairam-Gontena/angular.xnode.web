@@ -4,10 +4,12 @@ import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [MessageService]
 })
 
 export class AppComponent implements OnInit {
@@ -15,6 +17,7 @@ export class AppComponent implements OnInit {
   isSideWindowOpen: boolean = false;
   email: String = '';
   id: String = '';
+  loading = true;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
@@ -22,7 +25,9 @@ export class AppComponent implements OnInit {
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
-    private router: Router,
+    private router: Router, 
+    private utilsService:UtilsService,
+    private messageService:MessageService,
     private subMenuLayoutUtil: UtilsService) {
   }
 
@@ -32,7 +37,20 @@ export class AppComponent implements OnInit {
         this.handleRouterChange();
       }
     });
+    this.utilsService.startSpinner.subscribe((event:boolean)=>{
+      console.log(event)
+      this.loadSpinner(event);
+    });
   }
+
+  loadSpinner(event: boolean): void {
+    this.loading = event;
+    console.log(this.loading)
+    setTimeout(() => {
+      console.log(this.utilsService.toasterObject);
+      this.showToast(this.utilsService.toasterObject.severity,this.utilsService.toasterObject.message,this.utilsService.toasterObject.code);
+    }, 3000);
+  } 
 
   handleRouterChange() {
     this.isSideWindowOpen = false;
@@ -137,4 +155,8 @@ export class AppComponent implements OnInit {
     },
   ]
 
+  showToast(severity: string, message: string, code: string) {
+    this.messageService.clear();
+    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+  }
 }

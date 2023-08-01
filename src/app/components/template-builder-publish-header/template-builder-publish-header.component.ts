@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
+import { UtilsService } from '../services/utils.service';
 interface DropdownOption {
   label: string;
   value: string;
@@ -30,7 +31,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   options: any[] = [{ "name": "preview" }, { "name": "published" }];
   selectedDropDownOption: string = 'Preview'
   productOptions: MenuItem[];
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService,private UtilsService:UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -77,8 +78,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption == 'PREVIEW') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'PUBLISH') {
-      this.loadSpinnerInParent.emit(true);
+    } else if (this.selectedOption == 'PUBLISH') {``
+      this.UtilsService.startSpinnerInApp()
+      // this.loadSpinnerInParent.emit(true);
       const body = {
         repoName: localStorage.getItem('app_name'),
         projectName: 'xnode',
@@ -90,14 +92,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         .then(response => {
           console.log('response', response);
           if (response) {
-            this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
-            this.loadSpinnerInParent.emit(false);
+            let detail="Your app publishing process started. You will get the notifications";
+            this.UtilsService.endSpinnerInApp('success','',detail);
+            // this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
+            // this.loadSpinnerInParent.emit(false);
           }
         })
         .catch(error => {
           console.log('error', error);
-          this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
-          this.loadSpinnerInParent.emit(false);
+          this.UtilsService.endSpinnerInApp('error','',error);
+          // this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
+          // this.loadSpinnerInParent.emit(false);
         });
     } else {
       return;
