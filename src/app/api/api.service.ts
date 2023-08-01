@@ -30,5 +30,8 @@ export class ApiService {
     return axios.get(this.endPoint + url, {
     });
   }
+  patch(body: any) {
+    return axios.patch(this.endPoint + '/update_product_url', body)
+  }
 
 }

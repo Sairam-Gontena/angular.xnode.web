@@ -52,9 +52,11 @@
         <div class="col-12 mt-4">
             <div class="card-grid" *ngIf="templateCard">
                 <p-card header="{{data.title}}" [title]="data.title"
-                    [style]="{ width: '314px', height: '348px'}" class="pointer"
+                    [style]="{ width: '314px', height: '348px'}"
+                    class="pointer"
                     (click)="onClickCreateNewTemplate(data)"
                     *ngFor="let data of templateCard ; let i=index">
+
                     <ng-template pTemplate="header">
                         <img alt="template card" src="./assets/d-card.svg"
                             height="199" />
@@ -63,8 +65,12 @@
                                 style="font-size: 1.5rem"></i>
                         </div>
                         <div class="overlay">{{ i + 1 }}</div>
+                        <i
+                            class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"               (click)="openExternalLink(data.product_url)"></i>
+
                     </ng-template>
                     <div class="flex">
+
                         <img alt="dp" src="./assets/dp.svg" width="40" />
                         <div class="text-white ml-4">
                             <p class="m-0 font-bold">Created by you</p>
