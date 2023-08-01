@@ -1,8 +1,8 @@
 <div class="container bpmn-component">
      <div id="diagramRef" class="diagram-container">
-          <div class="btn">
+          <!-- <div class="btn">
                <p-button class= "btn"label="Property Panel"(click)="this.getElement()" icon="fa fa-list"></p-button>
-          </div>
+          </div> -->
      </div>
      <!-- <div #propertiesRef class="properties-container"></div> -->
 
@@ -102,7 +102,7 @@
 
                <!-- JSON Tab -->
                <p-tabPanel header="JSON">
-                    <textarea rows="5" cols="55" [autoResize]="true" pInputTextarea [(ngModel)]="this.jsonWorkflow"></textarea>
+                    <textarea rows="5" cols="55"  pInputTextarea [(ngModel)]="this.jsonWorkflow"></textarea>
                </p-tabPanel>
 
                <!-- Comments Tab -->
@@ -110,6 +110,6 @@
           </p-tabView>
           
           <!-- <div #propertiesRef class="properties-container"></div> -->
-          <ng-template pTemplate="footer"><strong>XNODE >> XFLOW >> {{this.flowInfo[0]?.name}}</strong></ng-template>
+          <!-- <ng-template pTemplate="footer"><strong>XNODE >> XFLOW >> {{this.flowInfo[0]?.name}}</strong></ng-template> -->
       </p-sidebar>
 </div>
