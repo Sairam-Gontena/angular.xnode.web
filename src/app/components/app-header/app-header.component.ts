@@ -15,7 +15,6 @@ import { RefreshListService } from '../../RefreshList.service'
 })
 
 export class AppHeaderComponent implements OnInit {
-  @Input() productId?: string;
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -32,9 +31,8 @@ export class AppHeaderComponent implements OnInit {
   allNotifications: any[] = [];
   notifications: any[] = [];
   notificationCount: any = 0;
-  product_url: any;
-  // product_id: any;
-  // product_url: string = "https://dev-navi.azurewebsites.net/";
+  // product_url: any;
+  product_url: string = "https://dev-navi.azurewebsites.net/";
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService,
     private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
@@ -56,9 +54,11 @@ export class AppHeaderComponent implements OnInit {
 
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
+    let storedRecordId = localStorage.getItem('record_id');
+    console.log(storedRecordId)
+
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
-      this.id = JSON.parse(currentUser).record_id;
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
@@ -69,37 +69,26 @@ export class AppHeaderComponent implements OnInit {
       if (data.product_status === 'completed') {
         this.RefreshListService.updateData('refreshproducts');
       }
-      const body = {
-        repoName: localStorage.getItem('app_name'),
-        productUrl: this.product_url,
-        productId: this.productId
-      }
-      console.log(this.productId)
+
       if (data.product_status === 'deployed') {
+        const body = {
+          productUrl: data.product_url,
+          product_id: storedRecordId,
+        }
+        console.log(body)
         this.apiService.patch(body)
           .then(response => {
+            console.log(response)
+
             if (response) {
-              this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
-              // this.loadSpinnerInParent.emit(false);
+              this.messageService.add({ severity: 'success', summary: '', sticky: true });
             }
           })
           .catch(error => {
             console.log('error', error);
             this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
-            // this.loadSpinnerInParent.emit(false);
           });
-        // this.apiService.patch(data).then(
-        //   (response: any) => {
-        //     this.product_id = response.record_id;
-        //     this.product_url = response.product_url;
-        //     console.log('PATCH request successful:', response);
-        //     // Handle the successful response here, if needed
-        //   },
-        //   (error: any) => {
-        //     console.error('Error in PATCH request:', error);
-        //     // Handle errors here, if needed
-        //   }
-        // );
+
       }
     })
   }
