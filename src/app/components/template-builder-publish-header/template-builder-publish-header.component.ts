@@ -9,6 +9,10 @@ interface DropdownOption {
   label: string;
   value: string;
 }
+interface Product {
+  name: string;
+  value: string;
+}
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -20,14 +24,16 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
   selectedOption = 'Preview';
-  templates: any;
-  selectedTemplate = localStorage.getItem('app_name');
   selectedDeviceIndex: string | null = null;
   templatesOptions: DropdownOption[] = [];
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
   productOptions: MenuItem[];
+
+  templates: Product[] | undefined;
+  selectedTemplate: Product | undefined
+
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -52,10 +58,18 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
     }
-    this.templates = [
-      { label: localStorage.getItem('app_name') }
-    ]
+    this.getAllProducts()
+    let name = localStorage.getItem('app_name')
+    let value = localStorage.getItem('record_id')
+    this.selectedTemplate = { name: name ? name : '', value: value ? value : '' };
   };
+
+  refreshCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
 
   deviceIconClicked(icon: string) {
     if (this.selectedDeviceIndex === icon) {
@@ -98,5 +112,29 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  //get calls 
+  getAllProducts(): void {
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const data = response.data.data.map((obj: any) => ({
+            name: obj.title,
+            value: obj.id
+          }));
+          this.templates = data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+  selectedProduct(data: any): void {
+    const app_name = this.templates?.filter((item: any) => item.value === data.value.value)[0].name
+    localStorage.setItem('record_id', data.value.value);
+    localStorage.setItem('app_name', app_name ? app_name : '');
+    this.selectedTemplate = { name: app_name ? app_name : '', value: data.value.value };
+    this.refreshCurrentRoute()
   }
 }
