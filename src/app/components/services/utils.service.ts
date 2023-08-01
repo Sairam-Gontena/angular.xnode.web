@@ -35,7 +35,6 @@ export class UtilsService {
     this.toasterObject.severity = severity;
     this.toasterObject.message = message;
     this.toasterObject.code = code;
-    console.log(this.toasterObject)
   }
 
 }

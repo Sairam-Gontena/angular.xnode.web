@@ -38,16 +38,13 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.startSpinner.subscribe((event:boolean)=>{
-      console.log(event)
       this.loadSpinner(event);
     });
   }
 
   loadSpinner(event: boolean): void {
     this.loading = event;
-    console.log(this.loading)
     setTimeout(() => {
-      console.log(this.utilsService.toasterObject);
       this.showToast(this.utilsService.toasterObject.severity,this.utilsService.toasterObject.message,this.utilsService.toasterObject.code);
     }, 3000);
   } 

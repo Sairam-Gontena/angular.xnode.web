@@ -80,7 +80,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       window.open(environment.designStudioUrl, '_blank');
     } else if (this.selectedOption == 'PUBLISH') {``
       this.UtilsService.startSpinnerInApp()
-      // this.loadSpinnerInParent.emit(true);
       const body = {
         repoName: localStorage.getItem('app_name'),
         projectName: 'xnode',
@@ -94,15 +93,11 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           if (response) {
             let detail="Your app publishing process started. You will get the notifications";
             this.UtilsService.endSpinnerInApp('success','',detail);
-            // this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
-            // this.loadSpinnerInParent.emit(false);
           }
         })
         .catch(error => {
           console.log('error', error);
           this.UtilsService.endSpinnerInApp('error','',error);
-          // this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
-          // this.loadSpinnerInParent.emit(false);
         });
     } else {
       return;
