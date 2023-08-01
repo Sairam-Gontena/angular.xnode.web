@@ -12,13 +12,18 @@ export class ApiService {
   constructor() {
   }
 
+  config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
   // Temporary
   publishApp(body: any) {
     return axios.post(environment.publishUrl, body);
   }
 
   postWorkFlow(body: any) {
-    return axios.post(this.workFlow, body);
+    return axios.post(this.workFlow, body, this.config);
   }
 
   get(url: string) {
