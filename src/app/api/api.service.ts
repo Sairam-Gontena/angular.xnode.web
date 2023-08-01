@@ -30,8 +30,18 @@ export class ApiService {
     return axios.get(this.endPoint + url, {
     });
   }
-  patch(body: any) {
-    return axios.patch(this.endPoint + '/update_product_url', body)
+
+
+async patch(body: any) {
+    try {
+
+      const response = await axios.patch(`${this.endPoint}/update_product_url`, body);
+      return response.data;
+    } catch (error) {
+      // Handle errors here (e.g., show error messages or log them)
+      console.error('Error:', error);
+      throw error; // Rethrow the error to the caller if needed
+    }
   }
 
 }

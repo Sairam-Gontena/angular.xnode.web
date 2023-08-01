@@ -72,8 +72,8 @@ export class AppHeaderComponent implements OnInit {
 
       if (data.product_status === 'deployed') {
         const body = {
-          productUrl: data.product_url,
           product_id: storedRecordId,
+          product_url: data.product_url,
         }
         console.log(body)
         this.apiService.patch(body)
