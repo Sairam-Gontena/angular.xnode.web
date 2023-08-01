@@ -90,8 +90,11 @@ export class OverViewComponent {
   get_ID() {
     this.apiService.get('/get_metadata/' + this.email)
       .then(response => {
+
         this.id = response.data.data[0].id;
+        this.counter = response.data.data.created_on;
         this.getMeOverview();
+
       }).catch(error => {
         console.log(error);
         this.showToast('error', error.message, error.code);
@@ -108,6 +111,7 @@ export class OverViewComponent {
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
+          console.log(this.overview)
           this.features = response.data?.Features;
           this.appName = response?.data?.Title;
           localStorage.setItem("app_name", response?.data?.Title);
