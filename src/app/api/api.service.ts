@@ -11,7 +11,6 @@ export class ApiService {
   workFlow = environment.workFlowUrl + 'api/json-bpmn';
   constructor() {
   }
-
   config = {
     headers: {
       'Content-Type': 'application/json'
@@ -21,27 +20,17 @@ export class ApiService {
   publishApp(body: any) {
     return axios.post(environment.publishUrl, body);
   }
-
   postWorkFlow(body: any) {
     return axios.post(this.workFlow, body, this.config);
   }
-
   get(url: string) {
     return axios.get(this.endPoint + url, {
     });
   }
-
-
-async patch(body: any) {
-    try {
-
-      const response = await axios.patch(`${this.endPoint}/update_product_url`, body);
-      return response.data;
-    } catch (error) {
-      // Handle errors here (e.g., show error messages or log them)
-      console.error('Error:', error);
-      throw error; // Rethrow the error to the caller if needed
-    }
+  post(body: any, url: string) {
+    return axios.post(this.endPoint + url, body, this.config);
   }
-
+  patch(body: any, url: string) {
+    return axios.patch(this.endPoint + url, body, this.config);
+  }
 }

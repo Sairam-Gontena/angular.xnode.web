@@ -51,12 +51,8 @@ export class AppHeaderComponent implements OnInit {
     ];
     this.initializeWebsocket();
   }
-
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
-    let storedRecordId = localStorage.getItem('record_id');
-    console.log(storedRecordId)
-
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
@@ -69,34 +65,28 @@ export class AppHeaderComponent implements OnInit {
       if (data.product_status === 'completed') {
         this.RefreshListService.updateData('refreshproducts');
       }
-
       if (data.product_status === 'deployed') {
+        console.log("if deployed", data)
         const body = {
-          product_id: storedRecordId,
+          product_id: data.product_id,
           product_url: data.product_url,
         }
-        console.log(body)
-        this.apiService.patch(body)
+        this.apiService.patch(body, '/update_product_url')
           .then(response => {
-            console.log(response)
-
-            if (response) {
-              this.messageService.add({ severity: 'success', summary: '', sticky: true });
+            if (!response) {
+              this.messageService.add({ severity: 'error', summary: 'Network Issue', sticky: true });
             }
           })
           .catch(error => {
             console.log('error', error);
             this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
           });
-
       }
     })
   }
-
   toggleAccordion() {
     this.notificationCount = 0;
   }
-
   prepareToastToShow(event: any): void {
     this.messageService.clear();
     this.messageService.add(event);
