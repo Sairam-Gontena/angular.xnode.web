@@ -42,13 +42,20 @@
 }
 
 :host ::ng-deep .p-card .p-card-title {
-    max-width: 250px;
+    max-width: 235px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
     position: relative;
     color: #ffffff;
+}
+
+.external-link-icon {
+    position: relative;
+    color: white;
+    margin-left: 16rem;
+    bottom: 118px;
 }
 
 :host ::ng-deep .p-card .p-.card-title:hover {
