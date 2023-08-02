@@ -7,6 +7,17 @@
     border: 0;
 }
 
+::ng-deep .p-dropdown .p-dropdown-label {
+    position: relative;
+}
+
+::ng-deep .p-dropdown .p-dropdown-label .pi-external-link {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
 img.highlighted {
     background-color: #02ADEE !important;
 }
