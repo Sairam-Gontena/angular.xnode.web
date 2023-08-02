@@ -6,6 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+import {
+    SocialLoginModule,
+    SocialAuthServiceConfig,
+} from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 @NgModule({
     declarations: [
         SignUpComponent,
@@ -17,7 +23,23 @@ import { PasswordModule } from 'primeng/password';
         ReactiveFormsModule,
         ButtonModule,
         PasswordModule,
-        DividerModule
-    ]
+        DividerModule,
+        SocialLoginModule,
+        GoogleSigninButtonModule,
+    ],
+    providers: [
+        {
+            provide: 'SocialAuthServiceConfig',
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider('428503221481-aul4gv3ulnehnf46jovp602rc5j2hckv.apps.googleusercontent.com'),
+                    },
+                ],
+            } as SocialAuthServiceConfig,
+        },
+    ],
 })
 export class SignUpModule { }
