@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
@@ -16,7 +16,8 @@ interface Product {
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
-  styleUrls: ['./template-builder-publish-header.component.scss']
+  styleUrls: ['./template-builder-publish-header.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
@@ -35,7 +36,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   selectedTemplate: Product | undefined
 
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -89,27 +92,41 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
     } else if (this.selectedOption == 'Publish') {
-      this.loadSpinnerInParent.emit(true);
-      const body = {
-        repoName: localStorage.getItem('app_name'),
-        projectName: 'xnode',
-        email: this.currentUser?.email,
-        envName: environment.name,
-        productId: this.productId
-      }
-      this.apiService.publishApp(body)
-        .then(response => {
-          if (response) {
-            this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
-            this.loadSpinnerInParent.emit(false);
+
+      this.confirmationService.confirm({
+        message: 'Are you sure you want to publish this product?',
+        //icon: 'pi pi-exclamation-triangle',
+
+        accept: () => {
+          console.log('yes');
+
+          this.loadSpinnerInParent.emit(true);
+          const body = {
+            repoName: localStorage.getItem('app_name'),
+            projectName: 'xnode',
+            email: this.currentUser?.email,
+            envName: environment.name,
+            productId: this.productId
           }
-        })
-        .catch(error => {
-          console.log('error', error);
-          this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
-          this.loadSpinnerInParent.emit(false);
-        });
-    } else {
+          this.apiService.publishApp(body)
+            .then(response => {
+              if (response) {
+                this.loadSpinnerInParent.emit(false);
+              }
+            })
+            .catch(error => {
+              console.log('error', error);
+              this.loadSpinnerInParent.emit(false);
+              //  this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+            });
+        },
+        reject: () => {
+          this.confirmationService.close();
+        }
+      });
+
+    }
+    else {
       return;
     }
   }

@@ -16,6 +16,8 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+
 @NgModule({
   declarations: [
   ],
@@ -35,7 +37,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     TableModule,
     InputTextModule,
     BadgeModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ConfirmPopupModule
   ],
   exports: [
     FormsModule,
@@ -54,7 +57,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     TableModule,
     InputTextModule,
     BadgeModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ConfirmPopupModule
   ]
 })
 export class SharedModule { }
