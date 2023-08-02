@@ -67,7 +67,7 @@
                         <i
                             class="pi pi-external-link external-link-icon external-link-icon "
                             [title]="data.product_url"
-                            (click)="openExternalLink(data.product_url)"></i>
+                            (click)="openExternalLink(data.product_url)" *ngIf="data.product_url !== ''"></i>
 
                     </ng-template>
                     <div class="flex">
