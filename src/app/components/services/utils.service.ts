@@ -11,10 +11,10 @@ export class UtilsService {
   private spinner: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public startSpinner: Observable<boolean> = this.spinner.asObservable();
 
-  toasterObject :any= {
-    severity:'',
-    message:'',
-    code:''
+  toasterObject: any = {
+    severity: '',
+    message: '',
+    code: ''
   }
   constructor() { }
 
@@ -26,11 +26,13 @@ export class UtilsService {
     this.showLayoutSubmenu.next(true);
   }
 
-  startSpinnerInApp(){
+  startSpinnerInApp() {
     this.spinner.next(true)
   }
-
-  endSpinnerInApp(severity: string, message: string, code: string){
+  endSpinner() {
+    this.spinner.next(false)
+  }
+  endSpinnerInApp(severity: string, message: string, code: string) {
     this.spinner.next(false);
     this.toasterObject.severity = severity;
     this.toasterObject.message = message;

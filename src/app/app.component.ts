@@ -21,13 +21,14 @@ export class AppComponent implements OnInit {
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
+  toast = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
-    private router: Router, 
-    private utilsService:UtilsService,
-    private messageService:MessageService,
+    private router: Router,
+    private utilsService: UtilsService,
+    private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService) {
   }
 
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit {
         this.handleRouterChange();
       }
     });
-    this.utilsService.startSpinner.subscribe((event:boolean)=>{
+    this.utilsService.startSpinner.subscribe((event: boolean) => {
       this.loadSpinner(event);
     });
   }
@@ -45,9 +46,9 @@ export class AppComponent implements OnInit {
   loadSpinner(event: boolean): void {
     this.loading = event;
     setTimeout(() => {
-      this.showToast(this.utilsService.toasterObject.severity,this.utilsService.toasterObject.message,this.utilsService.toasterObject.code);
+      this.showToast(this.utilsService.toasterObject.severity, this.utilsService.toasterObject.message, this.utilsService.toasterObject.code);
     }, 3000);
-  } 
+  }
 
   handleRouterChange() {
     this.isSideWindowOpen = false;
@@ -153,6 +154,7 @@ export class AppComponent implements OnInit {
   ]
 
   showToast(severity: string, message: string, code: string) {
+    this.toast = true;
     this.messageService.clear();
     this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
