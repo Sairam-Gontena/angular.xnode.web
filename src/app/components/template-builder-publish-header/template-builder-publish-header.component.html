@@ -14,7 +14,7 @@
     <div class="flex align-items-center justify-content-center gap-3">
         <p-button label="Save" styleClass="p-button-rounded save-btn"></p-button>
         <p-toast></p-toast>
-        <p-confirmPopup></p-confirmPopup>
+        <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
         <p-splitButton [label]="selectedOption" [model]="this.productOptions" (onClick)="onSelectOption()"
             styleClass="p-button-sm p-button-rounded"></p-splitButton>
 
