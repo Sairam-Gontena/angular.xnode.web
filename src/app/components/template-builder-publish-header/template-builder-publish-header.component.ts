@@ -120,8 +120,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
-        // this.productData = response.data.data;
-        // console.log(this.productData)
         if (response?.status === 200 && response.data.data?.length) {
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
@@ -141,7 +139,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     localStorage.setItem('product_url', data.value.url ? data.value.url : '');
 
     this.selectedTemplate = { name: data.value.name, value: data.value.value };
-    // url: data.value.url
     this.refreshCurrentRoute()
   }
 
