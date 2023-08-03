@@ -101,6 +101,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   showConfirmationPopup(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',
+      header: 'Confirmation',
       accept: () => {
         console.log(this.productId)
         const body = {
@@ -110,23 +111,27 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           envName: environment.name,
           productId: this.productId ? this.productId : localStorage.getItem('record_id')
         }
-        this.apiService.publishApp(body)
-          .then(response => {
-            if (response) {
-              this.loadSpinnerInParent.emit(false);
-            }
-          })
-          .catch(error => {
-            console.log('error', error);
-            this.loadSpinnerInParent.emit(false);
-            this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
-          });
+        this.publishProduct(body);
       },
       reject: () => {
         this.confirmationService.close();
       }
     });
+  }
 
+  publishProduct(body: any): void {
+    this.apiService.publishApp(body)
+      .then(response => {
+        if (response) {
+          this.loadSpinnerInParent.emit(false);
+          this.messageService.add({ severity: 'success', summary: '', detail: 'App published successfully.' });
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+        this.loadSpinnerInParent.emit(false);
+        this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+      });
   }
   //get calls 
   getAllProducts(): void {
