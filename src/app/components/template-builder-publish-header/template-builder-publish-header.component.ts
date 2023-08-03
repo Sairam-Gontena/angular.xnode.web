@@ -5,13 +5,11 @@ import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
-interface DropdownOption {
-  label: string;
-  value: string;
-}
+
 interface Product {
   name: string;
   value: string;
+  url?: string;
 }
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -25,15 +23,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Input() productId?: string;
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
-  templatesOptions: DropdownOption[] = [];
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
   productOptions: MenuItem[];
 
   templates: Product[] | undefined;
-  selectedTemplate: Product | undefined
-
+  selectedTemplate: Product | undefined;
+  url: any;
+  productData: any;
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -61,8 +59,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.getAllProducts()
     let name = localStorage.getItem('app_name')
     let value = localStorage.getItem('record_id')
-    this.selectedTemplate = { name: name ? name : '', value: value ? value : '' };
+    let url = localStorage.getItem('product_url');
+    this.selectedTemplate = { name: name ? name : '', value: value ? value : '', url: url ? url : '' };
   };
+  openExternalLink(productUrl: string | undefined) {
+    window.open(productUrl, '_blank');
+  }
 
   refreshCurrentRoute(): void {
     const currentUrl = this.router.url;
@@ -121,7 +123,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         if (response?.status === 200 && response.data.data?.length) {
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
-            value: obj.id
+            value: obj.id,
+            url: obj.product_url
           }));
           this.templates = data;
         }
@@ -131,10 +134,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       });
   }
   selectedProduct(data: any): void {
-    const app_name = this.templates?.filter((item: any) => item.value === data.value.value)[0].name
     localStorage.setItem('record_id', data.value.value);
-    localStorage.setItem('app_name', app_name ? app_name : '');
-    this.selectedTemplate = { name: app_name ? app_name : '', value: data.value.value };
+    localStorage.setItem('app_name', data.value.name);
+    localStorage.setItem('product_url', data.value.url ? data.value.url : '');
+
+    this.selectedTemplate = { name: data.value.name, value: data.value.value };
     this.refreshCurrentRoute()
   }
+
+
 }
+
