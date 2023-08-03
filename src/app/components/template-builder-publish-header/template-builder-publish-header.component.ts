@@ -57,6 +57,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     const currentUrl = this.router.url;
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
@@ -91,46 +92,40 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'Publish') {
-
-      this.confirmationService.confirm({
-        message: 'Are you sure you want to publish this product?',
-        //icon: 'pi pi-exclamation-triangle',
-
-        accept: () => {
-          console.log('yes');
-
-          this.loadSpinnerInParent.emit(true);
-          const body = {
-            repoName: localStorage.getItem('app_name'),
-            projectName: 'xnode',
-            email: this.currentUser?.email,
-            envName: environment.name,
-            productId: this.productId
-          }
-          this.apiService.publishApp(body)
-            .then(response => {
-              if (response) {
-                this.loadSpinnerInParent.emit(false);
-              }
-            })
-            .catch(error => {
-              console.log('error', error);
-              this.loadSpinnerInParent.emit(false);
-              //  this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
-            });
-        },
-        reject: () => {
-          this.confirmationService.close();
-        }
-      });
-
-    }
-    else {
-      return;
+    } else {
+      this.showConfirmationPopup();
     }
   }
+  showConfirmationPopup(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to publish this product?',
+      accept: () => {
+        console.log(this.productId)
+        const body = {
+          repoName: localStorage.getItem('app_name'),
+          projectName: 'xnode',
+          email: this.currentUser?.email,
+          envName: environment.name,
+          productId: this.productId ? this.productId : localStorage.getItem('record_id')
+        }
+        this.apiService.publishApp(body)
+          .then(response => {
+            if (response) {
+              this.loadSpinnerInParent.emit(false);
+            }
+          })
+          .catch(error => {
+            console.log('error', error);
+            this.loadSpinnerInParent.emit(false);
+            this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+          });
+      },
+      reject: () => {
+        this.confirmationService.close();
+      }
+    });
 
+  }
   //get calls 
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
