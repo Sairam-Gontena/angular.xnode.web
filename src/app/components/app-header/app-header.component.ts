@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -20,6 +20,7 @@ export class AppHeaderComponent implements OnInit {
   selectedValue: any;
   channel: any;
   email: string = '';
+  id: string = '';
   activeFilter: string = '';
   filterTypes: any = {
     recent: false,
@@ -30,8 +31,11 @@ export class AppHeaderComponent implements OnInit {
   allNotifications: any[] = [];
   notifications: any[] = [];
   notificationCount: any = 0;
+  // product_url: any;
+  product_url: string = "https://dev-navi.azurewebsites.net/";
 
-  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private RefreshListService: RefreshListService, private apiService: ApiService,
+    private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
   ngOnInit(): void {
@@ -47,7 +51,6 @@ export class AppHeaderComponent implements OnInit {
     ];
     this.initializeWebsocket();
   }
-
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -62,13 +65,28 @@ export class AppHeaderComponent implements OnInit {
       if (data.product_status === 'completed') {
         this.RefreshListService.updateData('refreshproducts');
       }
+      if (data.product_status === 'deployed') {
+        console.log("if deployed", data)
+        const body = {
+          product_id: data.product_id,
+          product_url: data.product_url,
+        }
+        this.apiService.patch(body, '/update_product_url')
+          .then(response => {
+            if (!response) {
+              this.messageService.add({ severity: 'error', summary: 'Network Issue', sticky: true });
+            }
+          })
+          .catch(error => {
+            console.log('error', error);
+            this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
+          });
+      }
     })
   }
-
   toggleAccordion() {
     this.notificationCount = 0;
   }
-
   prepareToastToShow(event: any): void {
     this.messageService.clear();
     this.messageService.add(event);
