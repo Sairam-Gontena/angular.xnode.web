@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
@@ -14,7 +14,8 @@ interface Product {
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
-  styleUrls: ['./template-builder-publish-header.component.scss']
+  styleUrls: ['./template-builder-publish-header.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
@@ -33,7 +34,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   url: any;
   productData: any;
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -52,6 +55,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     const currentUrl = this.router.url;
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
@@ -90,32 +94,45 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'Publish') {
-      this.loadSpinnerInParent.emit(true);
-      const body = {
-        repoName: localStorage.getItem('app_name'),
-        projectName: 'xnode',
-        email: this.currentUser?.email,
-        envName: environment.name,
-        productId: this.productId
-      }
-      this.apiService.publishApp(body)
-        .then(response => {
-          if (response) {
-            this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
-            this.loadSpinnerInParent.emit(false);
-          }
-        })
-        .catch(error => {
-          console.log('error', error);
-          this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
-          this.loadSpinnerInParent.emit(false);
-        });
     } else {
-      return;
+      this.showConfirmationPopup();
     }
   }
+  showConfirmationPopup(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to publish this product?',
+      header: 'Confirmation',
+      accept: () => {
+        console.log(this.productId)
+        const body = {
+          repoName: localStorage.getItem('app_name'),
+          projectName: 'xnode',
+          email: this.currentUser?.email,
+          envName: environment.name,
+          productId: this.productId ? this.productId : localStorage.getItem('record_id')
+        }
+        this.publishProduct(body);
+      },
+      reject: () => {
+        this.confirmationService.close();
+      }
+    });
+  }
 
+  publishProduct(body: any): void {
+    this.apiService.publishApp(body)
+      .then(response => {
+        if (response) {
+          this.loadSpinnerInParent.emit(false);
+          this.messageService.add({ severity: 'success', summary: '', detail: 'App published successfully.' });
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+        this.loadSpinnerInParent.emit(false);
+        this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+      });
+  }
   //get calls 
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
