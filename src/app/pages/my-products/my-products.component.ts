@@ -52,6 +52,7 @@ export class MyProductsComponent implements OnInit {
   }
   //get calls 
   getMeUserId() {
+    this.utilService.startSpinnerInApp()
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
@@ -59,18 +60,12 @@ export class MyProductsComponent implements OnInit {
           this.templateCard = response.data.data;
         }
         this.loading = false;
+        this.utilService.endSpinner()
       })
       .catch(error => {
         console.log(error);
-        // this.loading = false;
-        // this.showToast('error', error.message, error.code);
         this.utilService.endSpinnerInApp('error', error.message, error.code);
       });
   }
-
-  // showToast(severity: string, message: string, code: string) {
-  //   this.messageService.clear();
-  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
 
 }

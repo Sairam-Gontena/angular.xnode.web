@@ -75,17 +75,16 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
         }
-        this.loading = false;
       })
       .catch(error => {
         console.log(error);
         // this.showToast('error', error.message, error.code);
-        // this.loading = false;
         this.utilsService.endSpinnerInApp('severity', error.message, error.code);
       });
   }
 
   getMeDataModel() {
+    this.utilsService.startSpinnerInApp()
     this.dataModel = null;
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
@@ -95,7 +94,8 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
-        this.loading = false;
+        this.utilsService.endSpinner()
+
       })
       .catch(error => {
         console.log(error);

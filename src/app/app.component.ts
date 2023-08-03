@@ -156,6 +156,7 @@ export class AppComponent implements OnInit {
   showToast(severity: string, message: string, code: string) {
     this.toast = true;
     this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+    this.messageService.add({ severity: severity, summary: code, detail: message, life: 1000 });
+
   }
 }

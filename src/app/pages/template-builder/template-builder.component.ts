@@ -99,11 +99,8 @@ export class TemplateBuilderComponent implements OnInit {
         this.productId = response.data.data[0].id;
         localStorage.setItem("app_name", response.data.data[0].product_name)
         this.loadDesignStudio()
-        this.loading = false;
       }).catch(error => {
         console.log(error);
-        // this.showToast('error', error.message, error.code);
-        // this.loading = false;
         this.utilService.endSpinnerInApp('severity', error.message, error.code);
       });
   }
@@ -113,10 +110,7 @@ export class TemplateBuilderComponent implements OnInit {
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
-  // showToast(severity: string, message: string, code: string) {
-  //   this.messageService.clear();
-  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
+
 
   loadSpinner(event: boolean): void {
     this.loading = event;

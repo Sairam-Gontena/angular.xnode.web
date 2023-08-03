@@ -30,6 +30,7 @@ export class OverViewComponent {
   email = '';
   features: any;
   createOn: any;
+  overviewData: any;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -53,12 +54,6 @@ export class OverViewComponent {
     }
     this.iconClicked.emit(icon);
   }
-
-  // showToast(severity: string, message: string, code: string) {
-  // this.messageService.clear();
-  // this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
-
   nextStep(): void {
     if (this.currentStep < 3) {
       this.currentStep++;
@@ -96,17 +91,15 @@ export class OverViewComponent {
         this.getMeOverview();
       }).catch(error => {
         console.log(error);
-        // this.showToast('error', error.message, error.code);
-        // this.loading = false;
-        this.utilService.endSpinnerInApp('severity', error.message, error.code);
       });
   }
 
   getMeProductId() {
     return !localStorage.getItem('record_id') ? this.id : localStorage.getItem('record_id');
   }
-
   getMeOverview() {
+    this.utilService.startSpinnerInApp()
+
     this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + this.getMeProductId())
       .then(response => {
         if (response?.status === 200) {
@@ -117,12 +110,11 @@ export class OverViewComponent {
           localStorage.setItem("app_name", response?.data?.Title);
         }
         this.loading = false;
+        this.utilService.endSpinner()
       })
       .catch(error => {
         console.log(error);
         this.utilService.endSpinnerInApp('severity', error.message, error.code);
-        // this.showToast('error', error.message, error.code);
-        // this.loading = false;
       });
 
   }

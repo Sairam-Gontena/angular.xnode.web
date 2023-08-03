@@ -44,8 +44,6 @@ export class UseCasesComponent implements OnInit {
       })
       .catch(error => {
         console.log(error);
-        // this.showToast('error', error.message, error.code);
-        // this.loading = false;
         this.utilService.endSpinnerInApp('error', error.message, error.code);
       });
   }
@@ -55,6 +53,7 @@ export class UseCasesComponent implements OnInit {
   }
 
   get_Usecases() {
+    this.utilService.startSpinnerInApp()
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -62,17 +61,13 @@ export class UseCasesComponent implements OnInit {
           this.useCases = data?.usecase || [];
         }
         this.loading = false;
+        this.utilService.endSpinner()
       })
       .catch(error => {
-        // this.showToast('error', error.message, error.code);
-        // this.loading = false;
         this.utilService.endSpinnerInApp('error', error.message, error.code);
       });
     console.log('useCases', this.useCases);
 
   }
-  // showToast(severity: string, message: string, code: string) {
-  //   this.messageService.clear();
-  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
+
 }

@@ -31,7 +31,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   selectedTemplate: Product | undefined;
   url: any;
   productData: any;
-
+  toast = false;
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private UtilsService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
