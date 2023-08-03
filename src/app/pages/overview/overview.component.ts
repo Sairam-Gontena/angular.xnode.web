@@ -110,9 +110,9 @@ export class OverViewComponent {
         if (response?.status === 200) {
           this.overview = response.data;
           this.features = response.data?.Features;
-          this.appName = response?.data?.title;
+          this.appName = response?.data?.Title ? response?.data?.Title : response?.data?.title;
           this.createOn = response?.data?.created_on;
-          localStorage.setItem("app_name", response?.data?.Title);
+          localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
         }
         this.loading = false;
       })
