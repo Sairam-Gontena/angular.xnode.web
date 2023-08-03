@@ -29,6 +29,7 @@ export class OverViewComponent {
   id: String = '';
   email = '';
   features: any;
+  createOn: any;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -111,7 +112,8 @@ export class OverViewComponent {
         if (response?.status === 200) {
           this.overview = response.data;
           this.features = response.data?.Features;
-          this.appName = response?.data?.Title;
+          this.appName = response?.data?.title;
+          this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title);
         }
         this.loading = false;

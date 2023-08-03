@@ -46,8 +46,11 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         this.loadXFlows(response.data);
+        let data = JSON.parse(response.data)
+        this.jsonWorkflow = JSON.stringify(data, null, 2);
       } else {
         this.loadXFlows(workflow);
+        this.jsonWorkflow = JSON.stringify(workflow, null, 2);
       }
     }).catch(error => {
       console.log('error', error);
@@ -91,22 +94,30 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
+    this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
+      console.log("after content init")
+      this.getElement();
+    });
   }
 
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
+    var element = this.bpmnJS.get('elementRegistry');
+    console.log(element);
     this.generalInfo = [
       { 'index': 0, 'label': 'Entity', 'value': 'XFLow-Budget' },
       { 'index': 1, 'label': 'Name', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
       { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
     ];
-    this.jsonWorkflow = JSON.stringify(workflow, null, 2);
+    // this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     const propertiesPanel = this.bpmnJS.get('propertiesPanel');
     propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
+    
   }
 
   getElement() {
-    this.sidebarVisible = !this.sidebarVisible;
+    // this.sidebarVisible = !this.sidebarVisible;
+    this.sidebarVisible = true;
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       if (event.element.type === 'bpmn:Process') {
         this.flowInfo = this.getDisplayProperty(event.element);
@@ -233,6 +244,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
       this.xml = response?.data;
       const layoutedDiagramXML = await layoutProcess(this.xml);
+      console.log(layoutedDiagramXML);
       this.importDiagram(layoutedDiagramXML);
     }).catch(error => {
       console.log('error', error);

@@ -6,11 +6,11 @@ import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { UtilsService } from '../services/utils.service';
-interface DropdownOption {
-  label: string;
+interface Product {
+  name: string;
   value: string;
-}
-@Component({
+  url?: string;
+}@Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
   styleUrls: ['./template-builder-publish-header.component.scss']
@@ -21,14 +21,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string;
   selectedOption = 'Preview';
-  templates: any;
-  selectedTemplate = localStorage.getItem('app_name');
   selectedDeviceIndex: string | null = null;
-  templatesOptions: DropdownOption[] = [];
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
   productOptions: MenuItem[];
+
+  templates: Product[] | undefined;
+  selectedTemplate: Product | undefined;
+  url: any;
+  productData: any;
+
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private UtilsService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -52,10 +55,22 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
     }
-    this.templates = [
-      { label: localStorage.getItem('app_name') }
-    ]
+    this.getAllProducts()
+    let name = localStorage.getItem('app_name')
+    let value = localStorage.getItem('record_id')
+    let url = localStorage.getItem('product_url');
+    this.selectedTemplate = { name: name ? name : '', value: value ? value : '', url: url ? url : '' };
   };
+  openExternalLink(productUrl: string | undefined) {
+    window.open(productUrl, '_blank');
+  }
+
+  refreshCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
 
   deviceIconClicked(icon: string) {
     if (this.selectedDeviceIndex === icon) {
@@ -100,4 +115,33 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       return;
     }
   }
+
+  //get calls 
+  getAllProducts(): void {
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const data = response.data.data.map((obj: any) => ({
+            name: obj.title,
+            value: obj.id,
+            url: obj.product_url
+          }));
+          this.templates = data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+  selectedProduct(data: any): void {
+    localStorage.setItem('record_id', data.value.value);
+    localStorage.setItem('app_name', data.value.name);
+    localStorage.setItem('product_url', data.value.url ? data.value.url : '');
+
+    this.selectedTemplate = { name: data.value.name, value: data.value.value };
+    this.refreshCurrentRoute()
+  }
+
+
 }
+

@@ -26,6 +26,7 @@ export class MyProductsComponent implements OnInit {
         this.getMeUserId()
       }
     });
+
   }
 
   ngOnInit(): void {
@@ -45,7 +46,10 @@ export class MyProductsComponent implements OnInit {
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
   }
+  openExternalLink(productUrl: string) {
+    window.open(productUrl, '_blank');
 
+  }
   //get calls 
   getMeUserId() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
