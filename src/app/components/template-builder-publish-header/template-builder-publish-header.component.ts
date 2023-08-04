@@ -103,7 +103,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       header: 'Confirmation',
       accept: () => {
         console.log(this.productId)
-        this.UtilsService.startSpinnerInApp()
+        this.UtilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
           projectName: 'xnode',
@@ -126,16 +126,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         if (response) {
           this.loadSpinnerInParent.emit(false);
           this.messageService.add({ severity: 'success', summary: '', detail: 'App published successfully.' });
-          this.UtilsService.endSpinnerInApp('success', '', detail);
-
+          this.UtilsService.loadSpinner(false)
         }
       })
       .catch(error => {
         console.log('error', error);
         this.loadSpinnerInParent.emit(false);
         this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
-        this.UtilsService.endSpinnerInApp('success', '', detail);
-
+        this.UtilsService.loadSpinner(false)
       });
   }
   //get calls 
@@ -159,7 +157,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     localStorage.setItem('record_id', data.value.value);
     localStorage.setItem('app_name', data.value.name);
     localStorage.setItem('product_url', data.value.url ? data.value.url : '');
-
     this.selectedTemplate = { name: data.value.name, value: data.value.value };
     this.refreshCurrentRoute()
   }

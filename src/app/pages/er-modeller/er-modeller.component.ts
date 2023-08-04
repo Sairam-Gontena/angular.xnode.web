@@ -39,6 +39,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   ngOnInit(): void {
+    this.utilsService.loadSpinner(true);
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
@@ -75,16 +76,15 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
         }
+        this.utilsService.loadSpinner(false);
       })
       .catch(error => {
         console.log(error);
-        // this.showToast('error', error.message, error.code);
-        this.utilsService.endSpinnerInApp('severity', error.message, error.code);
+        this.utilsService.loadSpinner(false)
       });
   }
 
   getMeDataModel() {
-    this.utilsService.startSpinnerInApp()
     this.dataModel = null;
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
@@ -94,18 +94,11 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
-        this.utilsService.endSpinner()
-
+        this.utilsService.loadSpinner(false);
       })
       .catch(error => {
         console.log(error);
-        // this.showToast('error', error.message, error.code);
-        //this.loading = false;
-        this.utilsService.endSpinnerInApp('severity', error.message, error.code);
+        this.utilsService.loadSpinner(false);
       });
   }
-  // showToast(severity: string, message: string, code: string) {
-  //   this.messageService.clear();
-  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
 }

@@ -93,15 +93,13 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   get_ID() {
-
     this.apiService.get('/get_metadata/' + this.emailData)
       .then(response => {
         this.productId = response.data.data[0].id;
         localStorage.setItem("app_name", response.data.data[0].product_name)
         this.loadDesignStudio()
       }).catch(error => {
-        console.log(error);
-        this.utilService.endSpinnerInApp('severity', error.message, error.code);
+        this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
       });
   }
 
@@ -109,8 +107,6 @@ export class TemplateBuilderComponent implements OnInit {
     let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
-
-
 
   loadSpinner(event: boolean): void {
     this.loading = event;

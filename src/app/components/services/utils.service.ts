@@ -8,14 +8,12 @@ export class UtilsService {
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public openSubmenu: Observable<boolean> = this.showLayoutSubmenu.asObservable();
 
-  private spinner: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public startSpinner: Observable<boolean> = this.spinner.asObservable();
+  private showSpinner: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public startSpinner: Observable<boolean> = this.showSpinner.asObservable();
 
-  toasterObject: any = {
-    severity: '',
-    message: '',
-    code: ''
-  }
+  private showToaster: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
+  public getMeToastObject: Observable<Object> = this.showToaster.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -26,17 +24,12 @@ export class UtilsService {
     this.showLayoutSubmenu.next(true);
   }
 
-  startSpinnerInApp() {
-    this.spinner.next(true)
+  loadSpinner(event: boolean): void {
+    this.showSpinner.next(event);
   }
-  endSpinner() {
-    this.spinner.next(false)
-  }
-  endSpinnerInApp(severity: string, message: string, code: string) {
-    this.spinner.next(false);
-    this.toasterObject.severity = severity;
-    this.toasterObject.message = message;
-    this.toasterObject.code = code;
+
+  loadToaster(obj: any): void {
+    this.showToaster.next(obj);
   }
 
 }

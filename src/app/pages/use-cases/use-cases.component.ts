@@ -13,7 +13,6 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class UseCasesComponent implements OnInit {
   useCases: any = [];
   id: String = '';
-  loading: boolean = true;
   currentUser?: User;
   templates: any;
   highlightedIndex: any;
@@ -23,6 +22,7 @@ export class UseCasesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilService.loadSpinner(true);
     if (localStorage.getItem('record_id') === null) {
       this.get_ID();
     } else {
@@ -40,11 +40,10 @@ export class UseCasesComponent implements OnInit {
         this.id = response.data.data[0].id;
         localStorage.setItem('record_id', response.data.data[0].id);
         this.get_Usecases();
-        this.loading = false;
+        this.utilService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.utilService.endSpinnerInApp('error', error.message, error.code);
+        this.utilService.loadSpinner(false);
       });
   }
 
@@ -53,21 +52,17 @@ export class UseCasesComponent implements OnInit {
   }
 
   get_Usecases() {
-    this.utilService.startSpinnerInApp()
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
         }
-        this.loading = false;
-        this.utilService.endSpinner()
+        this.utilService.loadSpinner(false);
       })
       .catch(error => {
-        this.utilService.endSpinnerInApp('error', error.message, error.code);
+        this.utilService.loadSpinner(false);
       });
-    console.log('useCases', this.useCases);
-
   }
 
 }

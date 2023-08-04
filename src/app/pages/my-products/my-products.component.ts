@@ -14,7 +14,6 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 
 export class MyProductsComponent implements OnInit {
-  loading: boolean = true;
   id: String = '';
   templateCard: any;
   currentUser?: User;
@@ -30,6 +29,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilService.loadSpinner(true);
     localStorage.removeItem('record_id');
     this.getMeUserId();
   }
@@ -52,19 +52,16 @@ export class MyProductsComponent implements OnInit {
   }
   //get calls 
   getMeUserId() {
-    this.utilService.startSpinnerInApp()
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
         }
-        this.loading = false;
-        this.utilService.endSpinner()
+        this.utilService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.utilService.endSpinnerInApp('error', error.message, error.code);
+        this.utilService.loadSpinner(false);
       });
   }
 

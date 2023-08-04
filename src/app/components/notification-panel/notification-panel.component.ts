@@ -91,13 +91,15 @@ export class NotificationPanelComponent {
     }
     this.apiService.publishApp(body)
       .then(response => {
+        if (response) {
+          this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Your app publishing process started. You will get the notifications', life: 3000 });
+        } else {
+          this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+        }
       })
       .catch(error => {
-        console.log('error', error);
+        this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
       });
-    let detail = 'Your app publishing process started. You will get the notifications';
-    // this.showToast.emit({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true })
-    this.utilService.endSpinnerInApp('success', '', detail);
   }
 
 }

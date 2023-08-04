@@ -37,6 +37,7 @@ export class OverViewComponent {
   }
 
   ngOnInit(): void {
+    this.utilService.loadSpinner(true)
     this.jsondata = data?.data;
     this.templates = [
       { label: localStorage.getItem("app_name") }
@@ -98,8 +99,6 @@ export class OverViewComponent {
     return !localStorage.getItem('record_id') ? this.id : localStorage.getItem('record_id');
   }
   getMeOverview() {
-    this.utilService.startSpinnerInApp()
-
     this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + this.getMeProductId())
       .then(response => {
         if (response?.status === 200) {
@@ -109,12 +108,11 @@ export class OverViewComponent {
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
         }
-        this.loading = false;
-        this.utilService.endSpinner()
+        this.utilService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.utilService.endSpinnerInApp('severity', error.message, error.code);
+        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utilService.loadSpinner(false);
       });
 
   }

@@ -17,11 +17,11 @@ export class AppComponent implements OnInit {
   isSideWindowOpen: boolean = false;
   email: String = '';
   id: String = '';
-  loading = true;
+  loading?: boolean;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
-  toast = false;
+  toastObj: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -39,16 +39,15 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      this.loadSpinner(event);
+      this.loading = event;
+    });
+    this.utilsService.getMeToastObject.subscribe((event: any) => {
+      console.log('>>>>toast', event);
+
+      this.messageService.add(event);
     });
   }
 
-  loadSpinner(event: boolean): void {
-    this.loading = event;
-    setTimeout(() => {
-      this.showToast(this.utilsService.toasterObject.severity, this.utilsService.toasterObject.message, this.utilsService.toasterObject.code);
-    }, 3000);
-  }
 
   handleRouterChange() {
     this.isSideWindowOpen = false;
@@ -153,10 +152,4 @@ export class AppComponent implements OnInit {
     },
   ]
 
-  showToast(severity: string, message: string, code: string) {
-    this.toast = true;
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, life: 1000 });
-
-  }
 }
