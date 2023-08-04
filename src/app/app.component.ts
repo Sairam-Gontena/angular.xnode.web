@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
         }
       })
       .catch(error => {
-        console.log(error);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
   }
 

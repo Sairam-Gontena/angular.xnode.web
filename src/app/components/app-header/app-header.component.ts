@@ -78,7 +78,6 @@ export class AppHeaderComponent implements OnInit {
             }
           })
           .catch(error => {
-            console.log('error', error);
             this.UtilsService.loadToaster({ severity: 'error', summary: '', detail: error });
           });
       }

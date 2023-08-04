@@ -149,7 +149,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         }
       })
       .catch(error => {
-        console.log(error);
+        this.UtilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
   selectedProduct(data: any): void {

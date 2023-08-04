@@ -91,7 +91,8 @@ export class OverViewComponent {
         this.id = response.data.data[0].id;
         this.getMeOverview();
       }).catch(error => {
-        console.log(error);
+        this.utilService.loadToaster({ severity: 'error', summary: '', detail: error });
+
       });
   }
 
