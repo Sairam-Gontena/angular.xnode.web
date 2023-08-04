@@ -44,14 +44,21 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   isOpen: boolean = true;
   templates: any;
-
+  testData: any;
   constructor(private api: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
+    console.log(localStorage.getItem('record_id'));
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
-        this.loadXFlows(response.data);
+        let appName = localStorage.getItem('app_name')
+        let xflowJson = JSON.parse(response.data);
+        xflowJson.Product = appName;
+        console.log("josn---->",xflowJson)
+        this.loadXFlows(xflowJson);
+
         let data = JSON.parse(response.data)
         this.jsonWorkflow = JSON.stringify(data, null, 2);
+        console.log("JSON",response.data)
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
