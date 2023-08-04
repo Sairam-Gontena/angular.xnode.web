@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
-
+import { DomSanitizer } from '@angular/platform-browser';
 interface Product {
   name: string;
   value: string;
@@ -21,7 +21,8 @@ interface Product {
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() productId?: string;
+  @Input() productId?: string | null;
+
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;
@@ -33,9 +34,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   selectedTemplate: Product | undefined;
   url: any;
   productData: any;
+  iframeSrc: any;
+  emailData: any;
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private sanitizer: DomSanitizer
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -65,6 +69,18 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     let value = localStorage.getItem('record_id')
     let url = localStorage.getItem('product_url');
     this.selectedTemplate = { name: name ? name : '', value: value ? value : '', url: url ? url : '' };
+
+    this.emailData = localStorage.getItem('currentUser');
+    if (this.emailData) {
+      let JsonData = JSON.parse(this.emailData)
+      this.emailData = JsonData?.email;
+    }
+    if (localStorage.getItem('record_id')) {
+      this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
+      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+
+    }
   };
   openExternalLink(productUrl: string | undefined) {
     window.open(productUrl, '_blank');
@@ -93,7 +109,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioUrl, '_blank');
+      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "");
+
+
     } else {
       this.showConfirmationPopup();
     }
