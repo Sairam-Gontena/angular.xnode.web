@@ -90,8 +90,8 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return window.location.hash === "#/configuration/data-model" || window.location.hash === "#/use-cases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/data-model/x-bpmn";
+    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
   }
 
 

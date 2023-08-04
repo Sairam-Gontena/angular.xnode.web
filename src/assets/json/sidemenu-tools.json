@@ -186,7 +186,7 @@
           },
           {
                "id": "2",
-               "path": "/configuration/data-model",
+               "path": "/configuration/data-model/overview",
                "subMenuItems": [
                     {
                          "accordianHeader": "Data Model",
@@ -340,7 +340,187 @@
                                    "alt": "Overview",
                                    "content": "Overview",
                                    "hasrouter": "true",
-                                   "routerlink": "x-bpmn"
+                                   "routerlink": "/configuration/workflow/overview"
+                              },
+                              {
+                                   "id": "New Flow",
+                                   "imgSrc": "./assets/New Flow.svg",
+                                   "selectedContainer": "New Flow",
+                                   "alt": "NewFlow",
+                                   "content": "New Flow",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Edit Flow",
+                                   "imgSrc": "./assets/Edit Flow.svg",
+                                   "selectedContainer": "Edit Flow",
+                                   "alt": "EditFlow",
+                                   "content": "Edit Flow",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    }
+               ]
+          },
+          {
+               "id": "2",
+               "path": "/configuration/workflow/overview",
+               "subMenuItems": [
+                    {
+                         "accordianHeader": "Data Model",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/Overview 1.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "true",
+                                   "routerlink": "/configuration/data-model/overview"
+                              },
+                              {
+                                   "id": "New Data Object",
+                                   "imgSrc": "./assets/New Data Object.svg",
+                                   "selectedContainer": "New Data Object",
+                                   "alt": "NewDataObject",
+                                   "content": "New Data Object",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "New Data Relation",
+                                   "imgSrc": "./assets/New Data Relation.svg",
+                                   "selectedContainer": "New Data Relation",
+                                   "alt": "NewDataRelation",
+                                   "content": "New Data Relation",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Integrations",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/Overview 2.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "API Integrations",
+                                   "imgSrc": "./assets/API.svg",
+                                   "selectedContainer": "API Integrations",
+                                   "alt": "APIIntegrations",
+                                   "content": "API Integrations",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "DB Integrations",
+                                   "imgSrc": "./assets/DB Integration.svg",
+                                   "selectedContainer": "DB Integrations",
+                                   "alt": "DBIntegrations",
+                                   "content": "DB Integrations",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Authentication",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/Overview 3.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Add Provider",
+                                   "imgSrc": "./assets/Add Provider.svg",
+                                   "selectedContainer": "Add Provider",
+                                   "alt": "AddProvider",
+                                   "content": "Add Provider",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Entitlement",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/Overview 3.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Add Entitlement",
+                                   "imgSrc": "./assets/Add Entitlements.svg",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Business Rules",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/Overview 3.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "New Rule",
+                                   "imgSrc": "./assets/New Rule.svg",
+                                   "selectedContainer": "New Rule",
+                                   "alt": "NewRule",
+                                   "content": "New Rule",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Edit Rule",
+                                   "imgSrc": "./assets/Edit Rule.svg",
+                                   "selectedContainer": "Edit Rule",
+                                   "alt": "EditRule",
+                                   "content": "Edit Rule",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Work Flows",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/Overview 3.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "true",
+                                   "routerlink": "/configuration/workflow/overview"
                               },
                               {
                                    "id": "New Flow",

@@ -15,9 +15,10 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 
 export class MyProductsComponent implements OnInit {
   id: String = '';
-  templateCard: any;
+  templateCard: any[] = [];
   currentUser?: User;
   private subscription: Subscription;
+  isLoading: boolean = true;
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
@@ -31,7 +32,9 @@ export class MyProductsComponent implements OnInit {
   ngOnInit(): void {
     this.utilService.loadSpinner(true);
     localStorage.removeItem('record_id');
+    localStorage.removeItem('app_name')
     this.getMeUserId();
+
   }
 
   ngOnDestroy() {

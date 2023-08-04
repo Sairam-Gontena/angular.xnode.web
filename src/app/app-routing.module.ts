@@ -56,7 +56,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
   },
   {
-    path: 'configuration/data-model',
+    path: 'configuration/data-model/overview',
     loadChildren: () => import('./pages/er-modeller/er-modeller.module').then(m => m.ErModellerModule)
   },
   {
@@ -103,10 +103,10 @@ const routes: Routes = [
     path: 'x-pilot',
     loadChildren: () => import('./pages/navi/navi.module').then(m => m.NaviModule),
   },
-  // {
-  //   path: 'x-bpmn',
-  //   loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
-  // },
+  {
+    path: 'configuration/workflow/overview',
+    loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
+  },
   {
     path: '',
     redirectTo: '',
