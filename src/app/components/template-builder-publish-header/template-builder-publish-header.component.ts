@@ -93,28 +93,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'PUBLISH') {
-      ``
-      this.UtilsService.startSpinnerInApp()
-      const body = {
-        repoName: localStorage.getItem('app_name'),
-        projectName: 'xnode',
-        email: this.currentUser?.email,
-        envName: environment.name,
-        productId: this.productId
-      }
-      let detail = "Your app publishing process started. You will get the notifications";
-      this.apiService.publishApp(body)
-        .then(response => {
-          if (response) {
-
-            this.UtilsService.endSpinnerInApp('success', '', detail);
-          }
-        })
-        .catch(error => {
-          console.log('error', error);
-          this.UtilsService.endSpinnerInApp('success', '', detail);
-        });
     } else {
       this.showConfirmationPopup();
     }
@@ -125,6 +103,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       header: 'Confirmation',
       accept: () => {
         console.log(this.productId)
+        this.UtilsService.startSpinnerInApp()
         const body = {
           repoName: localStorage.getItem('app_name'),
           projectName: 'xnode',
@@ -141,17 +120,22 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   publishProduct(body: any): void {
+    let detail = "Your app publishing process started. You will get the notifications";
     this.apiService.publishApp(body)
       .then(response => {
         if (response) {
           this.loadSpinnerInParent.emit(false);
           this.messageService.add({ severity: 'success', summary: '', detail: 'App published successfully.' });
+          this.UtilsService.endSpinnerInApp('success', '', detail);
+
         }
       })
       .catch(error => {
         console.log('error', error);
         this.loadSpinnerInParent.emit(false);
         this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.UtilsService.endSpinnerInApp('success', '', detail);
+
       });
   }
   //get calls 
