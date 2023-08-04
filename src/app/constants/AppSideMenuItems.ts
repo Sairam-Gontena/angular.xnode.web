@@ -17,7 +17,7 @@ export const AppSideMenuItems = [
     {
         label: 'Config',
         icon: './assets/config.svg',
-        path: 'configuration/data-model'
+        path: 'configuration/data-model/overview'
     },
     {
         label: 'Publish',
