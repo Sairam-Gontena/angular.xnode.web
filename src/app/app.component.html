@@ -1,7 +1,8 @@
 <div class="w-full h-full overflow-hidden">
     <div class="w-full" *ngIf="isUserExists()">
         <span (click)="submenuFunc()">
-            <xnode-bot [botDisplayFlag]="this.isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
+            <xnode-bot [botDisplayFlag]="this.isSideWindowOpen"
+                (valueChange)="openNavi($event)"></xnode-bot></span>
         <xnode-app-header></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper">
@@ -10,15 +11,18 @@
             <div class="app-body-wrapper">
                 <router-outlet></router-outlet>
             </div>
-            <div id="side-window" class="side-window" *ngIf="this.isSideWindowOpen"
+            <div id="side-window" class="side-window"
+                *ngIf="this.isSideWindowOpen"
                 [ngClass]="{ 'open': isSideWindowOpen }">
                 <div class="content-class-pilot h-full">
-                    <span class="flex flex-row justify-content-end text-white p-2 chatbot-close"
+                    <span
+                        class="flex flex-row justify-content-end text-white p-2 chatbot-close"
                         (click)="toggleSideWindow()">
                         <i class="pi pi-times m-2 pt-1 pi-icon-close"></i>
                         <!-- <span class="m-1">Close</span> -->
                     </span>
-                    <iframe id=" myIframe" [src]="this.iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                    <iframe id="myIframe" [src]="this.iframeUrl"
+                        allow="microphone" Cross-Origin-Opener-Policy="*"
                         class="w-full h-full pl-0 pr-1">
                     </iframe>
                 </div>
@@ -27,3 +31,5 @@
     </div>
     <router-outlet *ngIf="!isUserExists()"></router-outlet>
 </div>
+<p-toast></p-toast>
+<p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>  

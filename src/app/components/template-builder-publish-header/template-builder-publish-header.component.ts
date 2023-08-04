@@ -5,13 +5,12 @@ import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
-
+import { UtilsService } from '../services/utils.service';
 interface Product {
   name: string;
   value: string;
   url?: string;
-}
-@Component({
+}@Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
   styleUrls: ['./template-builder-publish-header.component.scss'],
@@ -35,7 +34,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   productData: any;
 
   constructor(private apiService: ApiService, private router: Router, private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private UtilsService: UtilsService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -55,7 +54,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     const currentUrl = this.router.url;
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
@@ -104,6 +102,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       header: 'Confirmation',
       accept: () => {
         console.log(this.productId)
+        this.UtilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
           projectName: 'xnode',
@@ -120,17 +119,20 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   publishProduct(body: any): void {
+    let detail = "Your app publishing process started. You will get the notifications";
     this.apiService.publishApp(body)
       .then(response => {
         if (response) {
           this.loadSpinnerInParent.emit(false);
-          this.messageService.add({ severity: 'success', summary: '', detail: 'App published successfully.' });
+          this.UtilsService.loadToaster({ severity: 'success', summary: '', detail: detail });
+          this.UtilsService.loadSpinner(false)
         }
       })
       .catch(error => {
         console.log('error', error);
         this.loadSpinnerInParent.emit(false);
-        this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.UtilsService.loadToaster({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.UtilsService.loadSpinner(false)
       });
   }
   //get calls 
@@ -147,14 +149,13 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         }
       })
       .catch(error => {
-        console.log(error);
+        this.UtilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
   selectedProduct(data: any): void {
     localStorage.setItem('record_id', data.value.value);
     localStorage.setItem('app_name', data.value.name);
     localStorage.setItem('product_url', data.value.url ? data.value.url : '');
-
     this.selectedTemplate = { name: data.value.name, value: data.value.value };
     this.refreshCurrentRoute()
   }
