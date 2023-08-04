@@ -34,7 +34,7 @@ export class AppHeaderComponent implements OnInit {
   // product_url: any;
   product_url: string = "https://dev-navi.azurewebsites.net/";
 
-  constructor(private RefreshListService: RefreshListService, private apiService: ApiService,
+  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private UtilsService: UtilsService,
     private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
   }
 
@@ -74,12 +74,12 @@ export class AppHeaderComponent implements OnInit {
         this.apiService.patch(body, '/update_product_url')
           .then(response => {
             if (!response) {
-              this.messageService.add({ severity: 'error', summary: 'Network Issue', sticky: true });
+              this.UtilsService.loadToaster({ severity: 'error', summary: 'Network Issue' });
             }
           })
           .catch(error => {
             console.log('error', error);
-            this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
+            this.UtilsService.loadToaster({ severity: 'error', summary: '', detail: error });
           });
       }
     })

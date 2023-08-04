@@ -79,7 +79,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
         this.utilsService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false)
       });
   }
@@ -97,7 +97,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
         this.utilsService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false);
       });
   }

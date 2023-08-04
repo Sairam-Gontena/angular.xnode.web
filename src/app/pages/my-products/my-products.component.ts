@@ -62,6 +62,8 @@ export class MyProductsComponent implements OnInit {
       })
       .catch(error => {
         this.utilService.loadSpinner(false);
+        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+
       });
   }
 

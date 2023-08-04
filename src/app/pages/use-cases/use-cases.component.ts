@@ -43,6 +43,7 @@ export class UseCasesComponent implements OnInit {
         this.utilService.loadSpinner(false);
       })
       .catch(error => {
+        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilService.loadSpinner(false);
       });
   }
@@ -61,6 +62,7 @@ export class UseCasesComponent implements OnInit {
         this.utilService.loadSpinner(false);
       })
       .catch(error => {
+        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilService.loadSpinner(false);
       });
   }

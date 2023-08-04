@@ -54,7 +54,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     const currentUrl = this.router.url;
     if (currentUrl === '/design') {
       this.showDeviceIcons = true;
@@ -125,14 +124,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       .then(response => {
         if (response) {
           this.loadSpinnerInParent.emit(false);
-          this.messageService.add({ severity: 'success', summary: '', detail: 'App published successfully.' });
+          this.UtilsService.loadToaster({ severity: 'success', summary: '', detail: detail });
           this.UtilsService.loadSpinner(false)
         }
       })
       .catch(error => {
         console.log('error', error);
         this.loadSpinnerInParent.emit(false);
-        this.messageService.add({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.UtilsService.loadToaster({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
         this.UtilsService.loadSpinner(false)
       });
   }

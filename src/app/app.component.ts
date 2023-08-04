@@ -42,8 +42,6 @@ export class AppComponent implements OnInit {
       this.loading = event;
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
-      console.log('>>>>toast', event);
-
       this.messageService.add(event);
     });
   }

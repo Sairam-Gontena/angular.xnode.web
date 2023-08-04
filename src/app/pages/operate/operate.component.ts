@@ -51,9 +51,4 @@ export class OperateComponent implements OnInit {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
   }
 
-  // showToast(severity: string, message: string, code: string) {
-  //   this.messageService.clear();
-  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
-
 }

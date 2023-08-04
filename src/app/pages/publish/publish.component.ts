@@ -25,10 +25,4 @@ export class PublishComponent {
     ]
   }
 
-  // showToast(severity: string, message: string, code: string) {
-  //   this.messageService.clear();
-  //   this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
-  // }
-
-
 }
