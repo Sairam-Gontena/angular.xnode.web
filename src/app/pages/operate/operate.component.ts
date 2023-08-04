@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-operate',
@@ -25,7 +26,7 @@ export class OperateComponent implements OnInit {
   doughnutOptions: any;
   options: any;
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private utilService: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -48,11 +49,6 @@ export class OperateComponent implements OnInit {
 
   openNewTab(): void {
     window.open('https://xnode-template-builder.azurewebsites.net/', '_blank');
-  }
-
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
 
 }

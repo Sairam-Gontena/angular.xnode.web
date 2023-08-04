@@ -346,3 +346,10 @@ body {
 p-sidebar div.p-sidebar {
   position: relative !important;
 }
+
+.p-toast .p-toast-message .p-toast-message-content {
+  padding: 1rem;
+  border-width: 0 0 0 6px;
+  background-color: white;
+
+}

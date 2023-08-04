@@ -1,7 +1,6 @@
 <div class="w-full h-full">
     <xnode-app-header></xnode-app-header>
-    <div [ngClass]="{' tmp-page-height': templateCard?.length }"
-        class="grid m-0 p-6 " *ngIf="!loading">
+    <div [ngClass]="{' tmp-page-height': templateCard?.length }" class="grid m-0 p-6 ">
         <div class="col-12 mt-5">
             <p class="text-6xl m-0 text-white text-wrap">Hi, Good Morning!</p>
         </div>
@@ -16,22 +15,19 @@
         <div class="col-12 mt-4 flex flex-wrap row-gap-4">
             <p-button styleClass="p-button-rounded mr-4">
                 <img alt="bot-btn-icon" src="./assets/bot-btn-icon.svg" />
-                <span class="ml-2 mr-2"
-                    (click)="this.router.navigate(['/x-pilot'])">New with NAVI</span>
+                <span class="ml-2 mr-2" (click)="this.router.navigate(['/x-pilot'])">New with NAVI</span>
                 <i class="pi pi-angle-right"></i>
             </p-button>
             <p-button styleClass="p-button-secondary p-button-rounded mr-4">
                 <i class="pi pi-plus"></i>
-                <span class="ml-2 mr-2 "
-                    (click)="this.router.navigate(['/design'])">New Project</span>
+                <span class="ml-2 mr-2 " (click)="this.router.navigate(['/design'])">New Project</span>
             </p-button>
             <p-button styleClass="p-button-secondary p-button-rounded mr-4">
                 <img alt="bot-btn-icon" src="./assets/import.svg" />
                 <span class="ml-2 ">Import</span>
             </p-button>
         </div>
-        <div
-            class="col-12 flex flex-wrap row-gap-4 text-base font-semibold letter-space-1 mt-4">
+        <div class="col-12 flex flex-wrap row-gap-4 text-base font-semibold letter-space-1 mt-4">
             <div class="flex flex-wrap  align-items-center mr-4">
                 <img alt="all product" src="./assets/all-products.svg" />
                 <p class="m-0 pl-2 text-white">All Products</p>
@@ -51,22 +47,17 @@
         </div>
         <div class="col-12 mt-4">
             <div class="card-grid" *ngIf="templateCard">
-                <p-card header="{{data.title}}" [title]="data.title"
-                    [style]="{ width: '314px', height: '348px'}"
+                <p-card header="{{data.title}}" [title]="data.title" [style]="{ width: '314px', height: '348px'}"
                     class="pointer" (click)="onClickCreateNewTemplate(data)"
                     *ngFor="let data of templateCard ; let i=index">
 
                     <ng-template pTemplate="header">
-                        <img alt="template card" src="./assets/d-card.svg"
-                            height="199" />
+                        <img alt="template card" src="./assets/d-card.svg" height="199" />
                         <div class="overlay-heart">
-                            <i class="pi pi-heart-fill"
-                                style="font-size: 1.5rem"></i>
+                            <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
                         </div>
                         <div class="overlay">{{ i + 1 }}</div>
-                        <i
-                            class="pi pi-external-link external-link-icon external-link-icon "
-                            [title]="data.product_url"
+                        <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
                             (click)="openExternalLink(data.product_url)" *ngIf="data.product_url !== ''"></i>
 
                     </ng-template>
@@ -85,15 +76,11 @@
                 </p-card>
                 <p-card [style]="{ width: '316px', height: '364px'}"
                     class="flex  align-items-center justify-content-center flex-wrap new-card ">
-                    <div
-                        class="flex align-items-center justify-content-center text-white h-full">
-                        <i class="pi pi-plus text-4xl pointer"
-                            (click)="onClickgotoxPilot()"></i>
+                    <div class="flex align-items-center justify-content-center text-white h-full">
+                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     </div>
                 </p-card>
             </div>
         </div>
     </div>
-    <p-toast></p-toast>
-    <p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>
 </div>
