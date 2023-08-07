@@ -16,7 +16,7 @@ export class NaviComponent implements OnInit {
     private router: Router,
     private domSanitizer: DomSanitizer,) {
   }
-  targetUrl: string = environment.xpilotUrl;
+  targetUrl: string = environment.naviUrl; // xpilotUrl
   safeUrl: SafeResourceUrl = '';
   baseUrl: string = environment.baseUrl;
   ngOnInit(): void {
