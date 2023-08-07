@@ -55,9 +55,13 @@ const routes: Routes = [
     path: 'operate',
     loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
   },
+  // {
+  //   path: 'configuration/data-model/overview',
+  //   loadChildren: () => import('./pages/er-modeller/er-modeller.module').then(m => m.ErModellerModule)
+  // },
   {
-    path: 'configuration/data-model/overview',
-    loadChildren: () => import('./pages/er-modeller/er-modeller.module').then(m => m.ErModellerModule)
+    path: 'products-config',
+    loadChildren: () => import('./pages/products-config/products-config.module').then(m => m.ProductsConfigModule)
   },
   {
     path: 'workspace',
