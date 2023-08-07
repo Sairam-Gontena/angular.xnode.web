@@ -38,16 +38,27 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   taskHeader: any;
   generalInfo: any;
   currentUser: any;
+  dashboard: any;
+  layoutColumns: any;
 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
-
+  isOpen: boolean = true;
+  templates: any;
+  testData: any;
   constructor(private api: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
+    console.log(localStorage.getItem('record_id'));
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
-        this.loadXFlows(response.data);
+        let appName = localStorage.getItem('app_name')
+        let xflowJson = JSON.parse(response.data);
+        xflowJson.Product = appName;
+        console.log("josn---->",xflowJson)
+        this.loadXFlows(xflowJson);
+
         let data = JSON.parse(response.data)
         this.jsonWorkflow = JSON.stringify(data, null, 2);
+        console.log("JSON",response.data)
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
@@ -59,6 +70,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   ngOnInit(): void {
+    this.templates = [
+      { label: localStorage.getItem("app_name") }
+    ]
     this.bpmnJS = new Modeler({
       container: '#diagramRef',
       features: {
@@ -99,7 +113,13 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.getElement();
     });
   }
-
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+  }
+  getLayout(layout: any): void {
+    if (layout)
+      this.dashboard = this.layoutColumns[layout];
+  }
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
     var element = this.bpmnJS.get('elementRegistry');
@@ -112,7 +132,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     const propertiesPanel = this.bpmnJS.get('propertiesPanel');
     propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
-    
+
   }
 
   getElement() {

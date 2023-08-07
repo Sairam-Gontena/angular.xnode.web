@@ -3,7 +3,7 @@ import *as data from '../../constants/overview.json';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
-
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
@@ -30,12 +30,14 @@ export class OverViewComponent {
   email = '';
   features: any;
   createOn: any;
+  overviewData: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
+    this.utilService.loadSpinner(true)
     this.jsondata = data?.data;
     this.templates = [
       { label: localStorage.getItem("app_name") }
@@ -52,11 +54,6 @@ export class OverViewComponent {
       this.highlightedIndex = icon;
     }
     this.iconClicked.emit(icon);
-  }
-
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
   nextStep(): void {
     if (this.currentStep < 3) {
@@ -94,32 +91,29 @@ export class OverViewComponent {
         this.id = response.data.data[0].id;
         this.getMeOverview();
       }).catch(error => {
-        console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        this.utilService.loadToaster({ severity: 'error', summary: '', detail: error });
+
       });
   }
 
   getMeProductId() {
     return !localStorage.getItem('record_id') ? this.id : localStorage.getItem('record_id');
   }
-
   getMeOverview() {
     this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + this.getMeProductId())
       .then(response => {
         if (response?.status === 200) {
           this.overview = response.data;
           this.features = response.data?.Features;
-          this.appName = response?.data?.title;
+          this.appName = response?.data?.Title ? response?.data?.Title : response?.data?.title;
           this.createOn = response?.data?.created_on;
-          localStorage.setItem("app_name", response?.data?.Title);
+          localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
         }
-        this.loading = false;
+        this.utilService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utilService.loadSpinner(false);
       });
 
   }

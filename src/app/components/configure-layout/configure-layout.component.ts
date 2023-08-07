@@ -25,7 +25,7 @@ export class ConfigureLayoutComponent {
   onSelectLayout(layout: string): void {
     this.selectedContainer = layout;
     if (layout === 'DATA_MODEL') {
-      this.router.navigate(['/configuration/data-model']);
+      this.router.navigate(['/configuration/data-model/overview']);
     } else {
       this.router.navigate(['/configuration/api-integration']);
     }

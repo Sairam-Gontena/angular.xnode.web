@@ -1,26 +1,28 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
 import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
-
+import { DomSanitizer } from '@angular/platform-browser';
+import { UtilsService } from '../services/utils.service';
 interface Product {
   name: string;
   value: string;
   url?: string;
-}
-@Component({
+}@Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
-  styleUrls: ['./template-builder-publish-header.component.scss']
+  styleUrls: ['./template-builder-publish-header.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() productId?: string;
+  @Input() productId?: string | null;
+
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;
@@ -32,8 +34,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   selectedTemplate: Product | undefined;
   url: any;
   productData: any;
+  iframeSrc: any;
+  emailData: any;
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {
+  constructor(private apiService: ApiService, private router: Router,
+    private confirmationService: ConfirmationService,
+    private sanitizer: DomSanitizer,
+    private utilsService: UtilsService
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -61,6 +69,18 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     let value = localStorage.getItem('record_id')
     let url = localStorage.getItem('product_url');
     this.selectedTemplate = { name: name ? name : '', value: value ? value : '', url: url ? url : '' };
+
+    this.emailData = localStorage.getItem('currentUser');
+    if (this.emailData) {
+      let JsonData = JSON.parse(this.emailData)
+      this.emailData = JsonData?.email;
+    }
+    if (localStorage.getItem('record_id')) {
+      this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
+      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+
+    }
   };
   openExternalLink(productUrl: string | undefined) {
     window.open(productUrl, '_blank');
@@ -88,34 +108,54 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
+
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioUrl, '_blank');
-    } else if (this.selectedOption == 'Publish') {
-      this.loadSpinnerInParent.emit(true);
-      const body = {
-        repoName: localStorage.getItem('app_name'),
-        projectName: 'xnode',
-        email: this.currentUser?.email,
-        envName: environment.name,
-        productId: this.productId
-      }
-      this.apiService.publishApp(body)
-        .then(response => {
-          if (response) {
-            this.messageService.add({ severity: 'success', summary: '', detail: 'Your app publishing process started. You will get the notifications', sticky: true });
-            this.loadSpinnerInParent.emit(false);
-          }
-        })
-        .catch(error => {
-          console.log('error', error);
-          this.messageService.add({ severity: 'error', summary: '', detail: error, sticky: true });
-          this.loadSpinnerInParent.emit(false);
-        });
+      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "");
+
+
     } else {
-      return;
+      this.showConfirmationPopup();
     }
   }
+  showConfirmationPopup(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to publish this product?',
+      header: 'Confirmation',
+      accept: () => {
+        console.log(this.productId)
+        this.utilsService.loadSpinner(true)
+        const body = {
+          repoName: localStorage.getItem('app_name'),
+          projectName: 'xnode',
+          email: this.currentUser?.email,
+          envName: environment.name,
+          productId: this.productId ? this.productId : localStorage.getItem('record_id')
+        }
+        this.publishProduct(body);
+      },
+      reject: () => {
+        this.confirmationService.close();
+      }
+    });
+  }
 
+  publishProduct(body: any): void {
+    let detail = "Your app publishing process started. You will get the notifications";
+    this.apiService.publishApp(body)
+      .then(response => {
+        if (response) {
+          this.loadSpinnerInParent.emit(false);
+          this.utilsService.loadToaster({ severity: 'success', summary: '', detail: detail });
+          this.utilsService.loadSpinner(false)
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+        this.loadSpinnerInParent.emit(false);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.utilsService.loadSpinner(false)
+      });
+  }
   //get calls 
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
@@ -127,18 +167,20 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             url: obj.product_url
           }));
           this.templates = data;
+          console.log(this.templates)
+
         }
       })
       .catch(error => {
-        console.log(error);
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
   selectedProduct(data: any): void {
     localStorage.setItem('record_id', data.value.value);
     localStorage.setItem('app_name', data.value.name);
     localStorage.setItem('product_url', data.value.url ? data.value.url : '');
-
-    this.selectedTemplate = { name: data.value.name, value: data.value.value };
+    this.selectedTemplate = { name: data.value.name, value: data.value.value, url: data.value.url };
+    console.log(data)
     this.refreshCurrentRoute()
   }
 

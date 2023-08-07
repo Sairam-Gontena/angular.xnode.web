@@ -20,7 +20,7 @@ export class PageToolsLayoutComponent {
   sideMenuItem: any;
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
-
+  activatedAccIndex = 1;
   constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
     this.sideMenu = subMenuConfig?.subMenuConfig;
   }
@@ -32,6 +32,10 @@ export class PageToolsLayoutComponent {
       this.isOpen = data;
     })
     this.loadSubMenu();
+    console.log(this.router.url);
+    if (this.router.url === '/configuration/workflow/overview') {
+      this.activatedAccIndex = 6;
+    }
   }
 
   toggleMenu() {
@@ -49,7 +53,15 @@ export class PageToolsLayoutComponent {
       this.sideSubMenu();
     }, 5000);
   }
+  onClickSubMenuItem(subMenuItem: any) {
+    if (subMenuItem.routerlink !== '') {
+      this.router.navigate([subMenuItem.routerlink])
 
+    }
+  }
+  onClickAccordian(item: any, index: number) {
+    this.activatedAccIndex = index;
+  }
   sideSubMenu() {
     if (this.sideMenu?.subMenuItems) {
       this.sideMenu?.subMenuItems?.forEach((item: any, i: any) => {
