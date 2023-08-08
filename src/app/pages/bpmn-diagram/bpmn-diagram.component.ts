@@ -49,18 +49,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   testData: any;
   constructor(private api: ApiService) {
     this.currentUser = UserUtil.getCurrentUser();
-    console.log(localStorage.getItem('record_id'));
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let appName = localStorage.getItem('app_name')
         let xflowJson = JSON.parse(response.data);
         xflowJson.Product = appName;
-        // console.log("josn---->",xflowJson)
         this.loadXFlows(xflowJson);
 
         let data = JSON.parse(response.data)
         this.jsonWorkflow = JSON.stringify(data, null, 2);
-        // console.log("JSON",response.data)
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
@@ -113,7 +110,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-group"
     ];
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
-      console.log("after content init")
       this.getElement();
     });
 
@@ -129,17 +125,13 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
     var element = this.bpmnJS.get('elementRegistry')._elements;
-    
-    console.log(element);
     let appName = localStorage.getItem('app_name')
     this.generalInfo = [
       { 'index': 0, 'label': 'Entity', 'value': appName },
       { 'index': 1, 'label': 'Name', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
       { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
     ];
-    // this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
-    // propertiesPanel.attachTo(document.getElementById('property-panel') as HTMLElement)
     
   }
   getOverview() {
@@ -148,7 +140,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         if (response?.status === 200) {
           this.overview = response.data;
           this.sideBar = true;
-          console.log(this.overview)
         }
       })
       .catch((error:any) => {
@@ -158,7 +149,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   getElement() {
-    // this.sidebarVisible = !this.sidebarVisible;
     this.sidebarVisible = true;
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       if (event.element.type === 'bpmn:Process') {
@@ -230,7 +220,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       for (let i = 0; i < serviceTasks.length; i++) {
         serviceTasks[i].index = i;
       }
-      console.log("subprocess", flow_Info, userTasks, serviceTasks);
       return {
         'fI': flow_Info,
         'uT': userTasks,
@@ -238,12 +227,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       };
 
     } else if (element.type === 'bpmn:UserTask' || element.type === 'bpmn:ServiceTask') {
-      console.log("Task", element);
       let business_obj = element.businessObject;
       let start_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:StartEvent')[0];
       let end_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:EndEvent')[0];
       // flowElements = flowElements.filter((fe:any) => fe.$type ==='bpmn:UserTask');
-      console.log("test", start_event)
       let flow_Info = [
         { 'index': 0, 'label': 'UserTask', 'name': business_obj.name },
         { 'index': 1, 'label': 'Role', 'name': business_obj.extensionElements.values[0].candidateGroups },
@@ -256,7 +243,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         { 'index': 8, 'label': 'Condition', 'name': '' },
         { 'index': 9, 'label': 'EntityState', 'name': '' },
       ];
-      console.log(flow_Info)
       return flow_Info;
     } else {
 
@@ -286,7 +272,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
       this.xml = response?.data;
       const layoutedDiagramXML = await layoutProcess(this.xml);
-      // console.log(layoutedDiagramXML);
       this.importDiagram(layoutedDiagramXML);
     }).catch(error => {
       console.log('error', error);
