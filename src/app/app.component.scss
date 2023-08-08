@@ -26,8 +26,15 @@
 
 .side-window.open {
   width: 40%;
-
 }
+
+.chatbot-close {
+  cursor: pointer;
+}
+
+// .pi-icon-close {
+//   font-size: 0.75rem;
+// }
 
 .overlay {
   position: fixed;
@@ -42,6 +49,7 @@
 
 .content-class-pilot {
   position: relative;
+  // background-color: #3a3942 !important;
 }
 
 .close-button {
@@ -65,8 +73,6 @@
   border-radius: 50%;
 }
 
-//   .side-window-content {
-//     padding: 0px;
-//     margin-top: 20px; /* Increase margin as needed */
-//     height: calc(100% - 100px); 
-//   }
+:host::ng-deep.p-overlaypanel .p-overlaypanel-content {
+  padding: 0px !important;
+}

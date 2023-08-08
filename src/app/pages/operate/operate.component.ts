@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { UtilsService } from 'src/app/components/services/utils.service';
+
 @Component({
   selector: 'xnode-operate',
   templateUrl: './operate.component.html',
-  styleUrls: ['./operate.component.scss']
+  styleUrls: ['./operate.component.scss'],
+  providers: [MessageService]
+
 })
 
 export class OperateComponent implements OnInit {
@@ -20,6 +25,10 @@ export class OperateComponent implements OnInit {
   doughnutData: any;
   doughnutOptions: any;
   options: any;
+
+  constructor(private messageService: MessageService, private utilService: UtilsService) {
+  }
+
   ngOnInit(): void {
     this.templates = [
       { label: localStorage.getItem("app_name") }

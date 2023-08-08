@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
+import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'acitvity',
+    loadChildren: () =>
+      import('./pages/activity-logs/activity-logs.module').then(
+        (m) => m.ActivityLogsModule
+      ),
+  },
+  {
     path: 'design',
     loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
   },
@@ -48,7 +56,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
   },
   {
-    path: 'configuration/data-model',
+    path: 'configuration/data-model/overview',
     loadChildren: () => import('./pages/er-modeller/er-modeller.module').then(m => m.ErModellerModule)
   },
   {
@@ -95,7 +103,10 @@ const routes: Routes = [
     path: 'x-pilot',
     loadChildren: () => import('./pages/navi/navi.module').then(m => m.NaviModule),
   },
-
+  {
+    path: 'configuration/workflow/overview',
+    loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
+  },
   {
     path: '',
     redirectTo: '',

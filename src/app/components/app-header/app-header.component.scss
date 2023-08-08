@@ -38,12 +38,6 @@
     cursor: pointer;
 }
 
-.notif-card {
-    background: #3A3942;
-    margin-top: 10px;
-    border-radius: 4px;
-}
-
 a {
     color: #9f9ea5;
     font-weight: bold;
@@ -54,14 +48,24 @@ a:hover {
     font-weight: bold;
 }
 
-.notif-list {
-    height: 370px;
-    overflow: auto;
-    padding-right: 10px;
-    margin-top: 10px;
-}
 
 :host::ng-deep.publish-btn.p-button.p-button-sm {
     padding: 2px 10px !important;
     font-size: 10px !important;
+}
+
+:host::ng-deep.p-overlaypanel .p-overlaypanel-content {
+    padding: 0px !important;
+}
+
+
+.small-badge .p-badge {
+    font-size: 10px;
+    /* Adjust the font size as per your requirement */
+    width: 16px;
+    /* Adjust the width of the badge */
+    height: 16px;
+    /* Adjust the height of the badge */
+    line-height: 16px;
+    /* Center the content vertically in the badge */
 }

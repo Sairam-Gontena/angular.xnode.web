@@ -43,3 +43,17 @@
 .p-button.p-button-secondary:enabled:focus {
     box-shadow: none;
 }
+
+.p-confirm-dialog-reject {
+    background: var(--secondary-color);
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.p-confirm-dialog-reject:hover {
+    background: var(--secondary-color) !important;
+    color: var(--primary-color) !important;
+}

@@ -15,8 +15,7 @@ export class WebSocketService {
 
   // Emit an event to the server
   emit(event: string, data: any): void {
-    console.log('emit');
-
+    console.log('socket connected');
     this.socket.emit(event, data);
   }
 
@@ -26,4 +25,5 @@ export class WebSocketService {
       this.socket.on(event, (data: any) => observer.next(data));
     });
   }
+
 }

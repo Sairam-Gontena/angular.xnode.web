@@ -1,0 +1,674 @@
+{
+    "Flows": [{
+            "Name": "Budgeting",
+            "StartEvent": "StartBudgeting",
+            "EndEvent": "EndBudgeting",
+            "NextFlow": ["CreateBudget"],
+            "PreviousFlow": [],
+            "UserFlow": [{
+                    "TaskId": "UT1",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "DefineBudgetCategories",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "BudgetCategoriesDefined",
+                    "SequenceFlow": ["ST1", "UT2"],
+                    "Condition": [{
+                        "Name":"BudgetCategoriesValid"
+                    }],
+                    "EntityState": "Draft"
+                }, {
+                    "TaskId": "UT2",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "AllocateFundsToCategories",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "BudgetCategoriesDefined",
+                    "EndEvent": "FundsAllocated",
+                    "SequenceFlow": ["ST2", "UT3"],
+                    "Condition": [{
+                        "Name":"FundsAllocationValid"
+                    }],
+                    "EntityState": "Reviewed"
+                }, {
+                    "TaskId": "UT3",
+					"Roles": ["BudgetManager","BudgetManager2"],
+                    "UserTask": "ReviewBudgetAllocation",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "FundsAllocated",
+                    "EndEvent": "BudgetAllocationReviewed",
+                    "SequenceFlow": ["ST3", "UT4"],
+                    "Condition": [{
+                        "Name":"BudgetAllocationReviewedValid"
+					}],
+                    "EntityState": "Valid"
+                }, {
+                    "TaskId": "UT4",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "ConfirmBudgetAllocation",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "BudgetAllocationReviewed",
+                    "EndEvent": "BudgetAllocationConfirmed",
+                    "SequenceFlow": ["ST4"],
+                    "Condition": [{
+                        "Name":"BudgetAllocationConfirmedValid"
+					}],
+                    "EntityState": "Saved"
+                }
+            ],
+            "BackendFlow": [{
+                    "TaskId": "ST1",
+                    "SystemTask": "ValidateBudgetCategories",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "BudgetCategoriesDefined",
+                    "SequenceFlow": ["UT2"],
+                    "Condition": [{
+                        "Name":"BudgetCategoriesValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule6",
+                        "Type": "Validation",
+                        "Description": "Check if all budget categories are valid",
+                        "Parameters": [{
+                                "Name": "BudgetCategories",
+                                "DataType": "Array",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If all budget categories are not null and valid",
+                        "Action": "Mark BudgetCategories as valid"
+                    },
+                    "EntityState": "CategoriesValidation"
+                }, {
+                    "TaskId": "ST2",
+                    "SystemTask": "ValidateFundsAllocation",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "BudgetCategoriesDefined",
+                    "EndEvent": "FundsAllocated",
+                    "SequenceFlow": ["UT3"],
+                    "Condition": [{
+                        "Name":"FundsAllocationValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule7",
+                        "Type": "Validation",
+                        "Description": "Check if the funds allocation for all categories is valid",
+                        "Parameters": [{
+                                "Name": "FundsAllocation",
+                                "DataType": "Array",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If all funds allocations are valid and the sum of allocations does not exceed total budget",
+                        "Action": "Mark FundsAllocation as valid"
+                    },
+                    "EntityState": "FundsAllocationValidation"
+                }, {
+                    "TaskId": "ST3",
+                    "SystemTask": "SaveBudgetAllocation",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "FundsAllocated",
+                    "EndEvent": "BudgetAllocationSaved",
+                    "SequenceFlow": ["UT4"],
+                    "Condition": [{
+                        "Name":"IsSaved"
+					}],
+                    "Rule": {
+                        "Id": "Rule8",
+                        "Type": "DataStorage",
+                        "Description": "Check if the budget allocation can be saved",
+                        "Parameters": [{
+                                "Name": "BudgetAllocation",
+                                "DataType": "Array",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If database is accessible and budget allocation is valid",
+                        "Action": "Save Budget Allocation to database"
+                    },
+                    "EntityState": "BudgetAllocationSaving"
+                }, {
+                    "TaskId": "ST4",
+                    "SystemTask": "SendBudgetAllocationConfirmation",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "BudgetAllocationSaved",
+                    "EndEvent": "ConfirmationSent",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name": "ConfirmationSent"
+					}],
+                    "Rule": {
+                        "Id": "Rule9",
+                        "Type": "Communication",
+                        "Description": "Send budget allocation confirmation to the user",
+                        "Parameters": [{
+                                "Name": "UserEmail",
+                                "DataType": "String",
+                                "IsRequired": true
+                            }, {
+                                "Name": "ConfirmationMessage",
+                                "DataType": "String",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If user email is valid and ConfirmationMessage is not null",
+                        "Action": "Send budget allocation confirmation to the user"
+                    },
+                    "EntityState": "ConfirmationSending"
+                }
+            ]
+        }, {
+            "Name": "CreateBudget",
+            "StartEvent": "StartCreateBudget",
+            "EndEvent": "EndCreateBudget",
+            "NextFlow": ["ViewBudget", "UpdateBudget", "DeleteBudget"],
+            "PreviousFlow": ["Budgeting"],
+            "UserFlow": [{
+                    "TaskId": "UT1",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "InputBudgetDetails",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "Draft",
+                    "SequenceFlow": ["UT2", "ST1"],
+                    "Condition": [{
+                        "Name":"DraftValid"
+					}],
+                    "EntityState": "Draft"
+                }, {
+                    "TaskId": "UT2",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "ReviewBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Draft",
+                    "EndEvent": "Reviewed",
+                    "SequenceFlow": ["UT3", "ST2"],
+                    "Condition":[{
+                        "Name":"ReviewedValid"
+					}],
+                    "EntityState": "Reviewed"
+                }, {
+                    "TaskId": "UT3",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "ConfirmBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Reviewed",
+                    "EndEvent": "Confirmed",
+                    "SequenceFlow": ["ST3"],
+                    "Condition": [{
+                        "Name":"ConfirmedValid"
+					}],
+                    "EntityState": "Confirmed"
+                }
+            ],
+            "BackendFlow": [{
+                    "TaskId": "ST1",
+                    "SystemTask": "ReceiveBudgetDetails",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "Draft",
+                    "SequenceFlow": ["ST2"],
+                    "Condition": [{
+                        "Name":"DraftValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule1",
+                        "Type": "Validation",
+                        "Description": "Check if all necessary data is present",
+                        "Parameters": [{
+                                "Name": "BudgetAmount",
+                                "DataType": "Number",
+                                "IsRequired": true
+                            }, {
+                                "Name": "BudgetStart",
+                                "DataType": "Date",
+                                "IsRequired": true
+                            }, {
+                                "Name": "BudgetEnd",
+                                "DataType": "Date",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If all required parameters are not null",
+                        "Action": "Mark Draft as valid"
+                    },
+                    "EntityState": "Draft"
+                }, {
+                    "TaskId": "ST2",
+                    "SystemTask": "ValidateBudgetDetails",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Draft",
+                    "EndEvent": "Valid",
+                    "SequenceFlow": ["ST3"],
+                    "Condition": [{
+                        "Name":"IsValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule2",
+                        "Type": "Validation",
+                        "Description": "Check if the data meets all requirements",
+                        "Parameters": [{
+                                "Name": "BudgetAmount",
+                                "DataType": "Number",
+                                "IsRequired": true,
+                                "MinimumValue": 0
+                            }, {
+                                "Name": "BudgetStart",
+                                "DataType": "Date",
+                                "IsRequired": true
+                            }, {
+                                "Name": "BudgetEnd",
+                                "DataType": "Date",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If all parameters meet their respective requirements",
+                        "Action": "Mark Budget as valid"
+                    },
+                    "EntityState": "Valid"
+                }, {
+                    "TaskId": "ST3",
+                    "SystemTask": "SaveBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Valid",
+                    "EndEvent": "Saved",
+                    "SequenceFlow": ["ST4"],
+                    "Condition":[{
+                        "Name":"IsSaved"
+					}],
+                    "Rule": {
+                        "Id": "Rule3",
+                        "Type": "DataStorage",
+                        "Description": "Check if the data can be saved",
+                        "Parameters": [{
+                                "Name": "Budget",
+                                "DataType": "Object",
+                                "IsRequired": true
+                            }
+                        ],
+                        "Condition": "If database is accessible and object is valid",
+                        "Action": "Save Budget to database"
+                    },
+                    "EntityState": "Saved"
+                }, {
+                    "TaskId": "ST4",
+                    "SystemTask": "SetDiscretionarySpend",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Saved",
+                    "EndEvent": "DiscretionarySpendSet",
+                    "SequenceFlow": ["ST5"],
+                    "Condition": [{
+                        "Name":"DiscretionarySpendSet"
+					}],
+                    "Rule": {
+                        "Id": "Rule4",
+                        "Type": "DiscretionarySpend",
+                        "Description": "Set discretionary spending limit",
+                        "Parameters": [{
+                                "Name": "BudgetAmount",
+                                "DataType": "Number",
+                                "IsRequired": true
+                            }, {
+                                "Name": "DiscretionarySpendPercentage",
+                                "DataType": "Number",
+                                "IsRequired": true,
+                                "MinimumValue": 0,
+                                "MaximumValue": 100
+                            }
+                        ],
+                        "Condition": "If user input for DiscretionarySpendPercentage is valid",
+                        "Action": "Calculate and set DiscretionarySpendAmount as (DiscretionarySpendPercentage/100) * BudgetAmount"
+                    },
+                    "EntityState": "DiscretionarySpendSet"
+                }, {
+                    "TaskId": "ST5",
+                    "SystemTask": "ChangeDiscretionarySpend",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "DiscretionarySpendSet",
+                    "EndEvent": "DiscretionarySpendChanged",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name":"DiscretionarySpendChanged"
+					}],
+                    "Rule": {
+                        "Id": "Rule5",
+                        "Type": "DiscretionarySpend",
+                        "Description": "Change discretionary spending limit",
+                        "Parameters": [{
+                                "Name": "BudgetAmount",
+                                "DataType": "Number",
+                                "IsRequired": true
+                            }, {
+                                "Name": "NewDiscretionarySpendPercentage",
+                                "DataType": "Number",
+                                "IsRequired": true,
+                                "MinimumValue": 0,
+                                "MaximumValue": 100
+                            }
+                        ],
+                        "Condition": "If user input for NewDiscretionarySpendPercentage is valid",
+                        "Action": "Calculate and set new DiscretionarySpendAmount as (NewDiscretionarySpendPercentage/100) * BudgetAmount"
+                    },
+                    "EntityState": "DiscretionarySpendChanged"
+                }
+            ]
+        }, {
+            "Name": "ViewBudget",
+            "StartEvent": "StartViewBudget",
+            "EndEvent": "EndViewBudget",
+            "NextFlow": ["UpdateBudget", "DeleteBudget"],
+            "PreviousFlow": ["CreateBudget"],
+            "UserFlow": [{
+                    "TaskId": "UT1",
+					"Roles": ["BudgetViewer"],
+                    "UserTask": "InputBudgetId",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "IdInput",
+                    "SequenceFlow": ["FetchBudget"],
+                    "Condition": [{
+                        "Name":"IdInputValid"
+					}],
+                    "EntityState": "BudgetIdInput"
+                }, {
+                    "TaskId": "UT2",
+					"Roles": ["BudgetViewer"],
+                    "UserTask": "FetchBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "IdInput",
+                    "EndEvent": "BudgetFetched",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name":"BudgetFetchedValid"
+					}],
+                    "EntityState": "BudgetFetched"
+                }
+            ],
+            "BackendFlow": [{
+                    "TaskId": "ST1",
+                    "SystemTask": "ReceiveBudgetId",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "IdReceived",
+                    "SequenceFlow": ["ValidateBudgetId"],
+                    "Condition": [{
+                        "Name":"IdReceivedValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule1",
+                        "Type": "Validation",
+                        "Description": "Check if the received ID is valid",
+                        "Parameters": [    ],
+                        "Condition": "If received ID is not null",
+                        "Action": "Mark ID as valid"
+                    },
+                    "EntityState": "BudgetIdReceived"
+                }, {
+                    "TaskId": "ST2",
+                    "SystemTask": "ValidateBudgetId",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "IdReceived",
+                    "EndEvent": "IdValid",
+                    "SequenceFlow": ["RetrieveBudget"],
+                    "Condition": [{
+                        "Name":"IdIsValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule2",
+                        "Type": "Validation",
+                        "Description": "Check if the received ID exists in the system",
+                        "Parameters": [                       ],
+                        "Condition": "If received ID matches any ID in the system",
+                        "Action": "Mark ID as valid"
+                    },
+                    "EntityState": "BudgetIdValidated"
+                }, {
+                    "TaskId": "ST3",
+                    "SystemTask": "RetrieveBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "StartEvent": "IdValid",
+                    "EndEvent": "BudgetRetrieved",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name":"BudgetIsRetrieved"
+					}],
+                    "Rule": {
+                        "Id": "Rule3",
+                        "Type": "DataRetrieval",
+                        "Description": "Retrieve budget details from the system",
+                        "Parameters": [ ],
+                        "Condition": "If database is accessible and ID is valid",
+                        "Action": "Retrieve Budget from database"
+                    },
+                    "EntityState": "BudgetRetrieved"
+                }
+            ]
+        }, {
+            "Name": "UpdateBudget",
+            "StartEvent": "StartUpdateBudget",
+            "EndEvent": "EndUpdateBudget",
+            "NextFlow": ["DeleteBudget", "ViewBudget"],
+            "PreviousFlow": ["ViewBudget", "CreateBudget"],
+            "UserFlow": [{
+                    "TaskId": "UT1",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "InputUpdatedBudgetDetails",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "Draft",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "UpdatedDraft",
+                    "SequenceFlow": ["UT2"],
+                    "Condition":[{
+                        "Name":"UpdatedDraftValid"
+					}]
+                }, {
+                    "TaskId": "UT2",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "ReviewUpdatedBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "UpdatedDraft",
+                    "StartEvent": "UpdatedDraft",
+                    "EndEvent": "UpdatedReviewed",
+                    "SequenceFlow": ["UT3"],
+                    "Condition": [{
+                        "Name":"UpdatedReviewedValid"
+					}]
+                }, {
+                    "TaskId": "UT3",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "ConfirmUpdatedBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "UpdatedReviewed",
+                    "StartEvent": "UpdatedReviewed",
+                    "EndEvent": "UpdatedConfirmed",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name":"UpdatedConfirmedValid"
+					}]
+                }
+            ],
+            "BackendFlow": [{
+                    "TaskId": "ST1",
+                    "SystemTask": "ReceiveUpdatedBudgetDetails",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "Draft",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "UpdatedDraft",
+                    "SequenceFlow": ["ST2"],
+                    "Condition": [{
+                        "Name":"UpdatedDraftValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule1",
+                        "Type": "Validation",
+                        "Description": "Check if all necessary updated data is present",
+                        "Parameters": [                   ],
+                        "Condition": "If all required parameters are not null",
+                        "Action": "Mark UpdatedDraft as valid"
+                    }
+                }, {
+                    "TaskId": "ST2",
+                    "SystemTask": "ValidateUpdatedBudgetDetails",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "UpdatedDraft",
+                    "StartEvent": "UpdatedDraft",
+                    "EndEvent": "UpdatedValid",
+                    "SequenceFlow": ["ST3"],
+                    "Condition": [{
+                        "Name":"UpdatedIsValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule2",
+                        "Type": "Validation",
+                        "Description": "Check if the updated data meets all requirements",
+                        "Parameters": [],
+                        "Condition": "If all parameters meet their respective requirements",
+                        "Action": "Mark Updated Budget as valid"
+                    }
+                }, {
+                    "TaskId": "ST3",
+                    "SystemTask": "SaveUpdatedBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "UpdatedValid",
+                    "StartEvent": "UpdatedValid",
+                    "EndEvent": "UpdatedSaved",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name": "UpdatedIsSaved"
+					}],
+                    "Rule": {
+                        "Id": "Rule3",
+                        "Type": "DataStorage",
+                        "Description": "Check if the updated data can be saved",
+                        "Parameters": [ ],
+                        "Condition": "If database is accessible and updated object is valid",
+                        "Action": "Save Updated Budget to database"
+                    }
+                }
+            ]
+        }, {
+            "Name": "DeleteBudget",
+            "StartEvent": "StartDeleteBudget",
+            "EndEvent": "EndDeleteBudget",
+            "NextFlow": [],
+            "PreviousFlow": ["CreateBudget", "ViewBudget", "UpdateBudget"],
+            "UserFlow": [{
+                    "TaskId": "UT1",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "InputBudgetId",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "Non-existent",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "IdInput",
+                    "SequenceFlow": ["UT2"],
+                    "Condition": [{
+                        "Name": "IdInputValid"
+					}]
+                }, {
+                    "TaskId": "UT2",
+					"Roles": ["BudgetManager"],
+                    "UserTask": "ConfirmDeletion",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "IdInput",
+                    "StartEvent": "IdInput",
+                    "EndEvent": "DeletionConfirmed",
+                    "SequenceFlow": [],
+                    "Condition": [{
+                        "Name": "DeletionConfirmedValid"
+					}]
+                }
+            ],
+            "BackendFlow": [{
+                    "TaskId": "ST1",
+                    "SystemTask": "ReceiveBudgetId",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "Non-existent",
+                    "StartEvent": "Non-existent",
+                    "EndEvent": "IdReceived",
+                    "SequenceFlow": ["ST2"],
+                    "Condition": [{
+                        "Name":"IdReceivedValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule1",
+                        "Type": "Validation",
+                        "Description": "Check if the received ID is valid",
+                        "Parameters": [ ],
+                        "Condition": "If received ID is not null",
+                        "Action": "Mark ID as valid"
+                    }
+                }, {
+                    "TaskId": "ST2",
+                    "SystemTask": "ValidateBudgetId",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "IdReceived",
+                    "StartEvent": "IdReceived",
+                    "EndEvent": "IdValid",
+                    "SequenceFlow": ["ST3"],
+                    "Condition": [{
+                        "Name":"IdIsValid"
+					}],
+                    "Rule": {
+                        "Id": "Rule2",
+                        "Type": "Validation",
+                        "Description": "Check if the received ID exists in the system",
+                        "Parameters": [   ],
+                        "Condition": "If received ID matches any ID in the system",
+                        "Action": "Mark ID as valid"
+                    }
+                }, {
+                    "TaskId": "ST3",
+                    "SystemTask": "DeleteBudget",
+                    "Entity": "Budget",
+                    "TaskStatus": "Not Started",
+                    "EntityState": "IdValid",
+                    "StartEvent": "IdValid",
+                    "EndEvent": "BudgetDeleted",
+                    "SequenceFlow": [],
+                    "Condition": [{
+					"Name":"BudgetIsDeleted"
+					}],
+                    "Rule": {
+                        "Id": "Rule3",
+                        "Type": "DataDeletion",
+                        "Description": "Delete budget from the system",
+                        "Parameters": [ ],
+                        "Condition": "If database is accessible and ID is valid",
+                        "Action": "Delete Budget from database"
+                    }
+                }
+            ]
+        }
+    ]
+}
