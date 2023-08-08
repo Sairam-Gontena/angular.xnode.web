@@ -1,5 +1,5 @@
 <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-<div class="overview-body" *ngIf="!loading">
+<div class="overview-body">
     <div class="grid ml-4 mr-4 bg">
         <div class="lg:col-7 md:col-12">
             <div class="flex mt-6">
@@ -9,13 +9,15 @@
             <p class=" ml-6 mt-3 text-xl font-medium finbuddy-text">
                 {{overview?.Description}}
             </p>
-            <p class="para-text ml-6 text-2xl ">Created on: April 30, 2023</p>
+            <p class="para-text ml-6 text-2xl ">Created on: {{createOn | date:'longDate'}} </p>
             <div class="flex  flex-wrap card-container ml-6">
                 <div class=" w-21rem h-19rem font-bold text-white  m-2 stake-holder ml-6">
-                    <h6 class="text-xl font-medium mt-4 ml-3 p-2">Primary Stakeholders</h6>
+                    <h6 class="text-xl font-medium mt-4 ml-3 p-2">Primary
+                        Stakeholders</h6>
                     <div class="mt-4">
                         <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
-                        <span class="text-white font-medium text-xl ml-3">Raymond Nelson</span>
+                        <span class="text-white font-medium text-xl ml-3">Raymond
+                            Nelson</span>
                     </div>
                     <div class="mt-4 para-text">
                         <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
@@ -62,14 +64,16 @@
                 <div class="w-26rem p-1 mt-3 ml-5">
                     <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">Raymond Nelson!</span> You
                         are on the verge of using the app.</p>
-                    <p class="text-lg font-medium mb-4">Please see the status below</p>
+                    <p class="text-lg font-medium mb-4">Please see the status
+                        below</p>
                     <xnode-step [status]=item?.status *ngFor="let item of jsondata">
                         <div step-title>{{ item.label }}</div>
                         <div step-action>
                             <div *ngIf="item.children">
                                 <xnode-step [status]=child?.status *ngFor="let child of item.children">
                                     <div step-title>{{ child.title}}</div>
-                                    <div *ngFor="let child of jsondata[3].children">{{ child[' title'] }}</div>
+                                    <div *ngFor="let child of jsondata[3].children">{{
+                                        child[' title'] }}</div>
                                 </xnode-step>
                             </div>
                         </div>
@@ -79,5 +83,3 @@
         </div>
     </div>
 </div>
-<p-toast></p-toast>
-<p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>

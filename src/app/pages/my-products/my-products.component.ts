@@ -5,6 +5,7 @@ import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -13,23 +14,27 @@ import { Subscription } from 'rxjs';
 })
 
 export class MyProductsComponent implements OnInit {
-  loading: boolean = true;
   id: String = '';
-  templateCard: any;
+  templateCard: any[] = [];
   currentUser?: User;
   private subscription: Subscription;
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService) {
+  isLoading: boolean = true;
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
         this.getMeUserId()
       }
     });
+
   }
 
   ngOnInit(): void {
+    this.utilService.loadSpinner(true);
     localStorage.removeItem('record_id');
+    localStorage.removeItem('app_name')
     this.getMeUserId();
+
   }
 
   ngOnDestroy() {
@@ -44,7 +49,10 @@ export class MyProductsComponent implements OnInit {
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
   }
+  openExternalLink(productUrl: string) {
+    window.open(productUrl, '_blank');
 
+  }
   //get calls 
   getMeUserId() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
@@ -53,18 +61,13 @@ export class MyProductsComponent implements OnInit {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
         }
-        this.loading = false;
+        this.utilService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.loading = false;
-        this.showToast('error', error.message, error.code);
-      });
-  }
+        this.utilService.loadSpinner(false);
+        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
+      });
   }
 
 }

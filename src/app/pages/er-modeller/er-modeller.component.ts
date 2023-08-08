@@ -1,12 +1,13 @@
 import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
 import { Data } from './class/data';
+import { Router } from '@angular/router';
 import { DataService } from './service/data.service';
 import { JsPlumbService } from './service/jsPlumb.service';
 import { UtilService } from './service/util.service';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
-
+import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-er-modeller',
   templateUrl: './er-modeller.component.html',
@@ -16,6 +17,7 @@ import { MessageService } from 'primeng/api';
 
 export class ErModellerComponent implements AfterViewChecked, OnInit {
   data: Data | any;
+  bpmnSubUrl: boolean = false;
   dashboard: any;
   layoutColumns: any;
   templates: any;
@@ -28,12 +30,16 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   dataModel: any;
   @Input() erModelInput: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private router: Router, private utilsService: UtilsService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
+    this.router.events.subscribe((data: any) => {
+      this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
+    });
   }
 
   ngOnInit(): void {
+    this.utilsService.loadSpinner(true);
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
@@ -70,12 +76,11 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
         }
-        this.loading = false;
+        this.utilsService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utilsService.loadSpinner(false)
       });
   }
 
@@ -89,16 +94,11 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
-        this.loading = false;
+        this.utilsService.loadSpinner(false);
       })
       .catch(error => {
-        console.log(error);
-        this.showToast('error', error.message, error.code);
-        this.loading = false;
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utilsService.loadSpinner(false);
       });
-  }
-  showToast(severity: string, message: string, code: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: severity, summary: code, detail: message, sticky: true });
   }
 }

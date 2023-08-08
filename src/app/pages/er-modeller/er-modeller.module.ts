@@ -10,10 +10,22 @@ import { ModalSchemaComponent } from './modal-schema/modal-schema.component';
 import { ModalDataComponent } from './modal-data/modal-data.component';
 import { ModalModelComponent } from './modal-model/modal-model.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { BpmnDiagramComponent } from '../bpmn-diagram/bpmn-diagram.component';
 import { DataService } from './service/data.service';
 import { JsPlumbService } from './service/jsPlumb.service';
 import { UtilService } from './service/util.service';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
+import { SidebarModule, } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
+import { AccordionModule } from 'primeng/accordion';
+import { FieldsetModule } from 'primeng/fieldset';
+import { PanelModule } from 'primeng/panel';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -23,14 +35,24 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
     SchemaComponent,
     ModalSchemaComponent,
     ModalDataComponent,
-    ModalModelComponent
+    ModalModelComponent,
+    BpmnDiagramComponent
   ],
   imports: [
     CommonModule,
     ErModellerRoutingModule,
     SharedModule,
     SharedComponentModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    SidebarModule,
+    ButtonModule,
+    TabViewModule,
+    AccordionModule,
+    FieldsetModule,
+    PanelModule,
+    AvatarGroupModule,
+    AvatarModule,
+    InputTextareaModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
 })

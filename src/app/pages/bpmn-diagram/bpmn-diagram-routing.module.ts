@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ErModellerComponent } from './er-modeller.component';
+import { BpmnDiagramComponent } from './bpmn-diagram.component';
+
 const routes: Routes = [
   {
     path: '',
-    component: ErModellerComponent,
+    component: BpmnDiagramComponent
   }
 ];
 
@@ -12,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ErModellerRoutingModule { }
+export class BpmnDiagramRoutingModule { }

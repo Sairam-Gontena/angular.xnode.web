@@ -25,4 +25,5 @@ export class WebSocketService {
       this.socket.on(event, (data: any) => observer.next(data));
     });
   }
+
 }
