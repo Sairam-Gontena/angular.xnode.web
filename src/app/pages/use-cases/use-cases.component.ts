@@ -178,7 +178,7 @@ graph(data:any){
       // Compute the tree height; this approach will allow the height of the
       // SVG to scale according to the breadth (width) of the tree layout.
       const root = d3.hierarchy(data);
-      const dx = 80;
+      const dx = 20;
       const dy = width / (root.height + 1);
 
       // Create a tree layout.
@@ -200,13 +200,18 @@ graph(data:any){
 
       // Compute the adjusted height of the tree.
       const height = x1 - x0 + dx * 2;
+      const maxEndTranslate = height;
+      const maxStartTranslate = height/2;
+      
 
       const svg = d3.create("svg")
           .attr("width", width)
           .attr("height", height)
           .attr("viewBox", [-dy / 3, x0 - dx, width, height])
           // .attr("viewBox", [0, 0, 1010, 666])
-          .attr("style", "max-width: 100%; height: max-content; font: 10px sans-serif;");
+          .attr("style", "max-width: 100%; height: max-content;  font: 10px sans-serif;")
+      
+      
 
       const link = svg.append("g")
           .attr("fill", "none")
@@ -227,14 +232,15 @@ graph(data:any){
         .data(root.descendants())
         .join("g")
           .attr("transform", (d:any) => `translate(${d.y},${d.x})`);
+          
 
       node.append("circle")
           .attr("fill", (d:any) => d.children ? "#555" : "#999")
           .attr("r", 2.5);
 
       node.append("text")
-          .attr("dy", "1em")
-          .attr("dx", (d:any) => d.children ? -12 : 12)
+          .attr("dy", "0.3em")
+          .attr("dx", (d:any) => d.children ? -6 : 6)
           .attr("text-anchor", (d:any) => d.children ? "end" : "start")
           .text((d:any) => d.data.title)
         .clone(true).lower()
