@@ -34,7 +34,7 @@ export class UseCasesComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-    this.graph();
+    // this.graph();
     console.log(this.router.events,this.router)
   }
 
@@ -63,6 +63,7 @@ export class UseCasesComponent implements OnInit {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
+          this.graph(this.useCases);
         }
         this.utilService.loadSpinner(false);
       })
@@ -106,20 +107,7 @@ export class UseCasesComponent implements OnInit {
           "value": 10,
           "type": "grey",
           "level": "red",
-          "children": [
-             {
-                "name": "Enos",
-                "value": 7.5,
-                "type": "grey",
-                "level": "purple"
-             },
-             {
-                "name": "Noam",
-                "value": 7.5,
-                "type": "grey",
-                "level": "purple"
-             }
-          ]
+          
        },
        {
           "name": "Abel",
@@ -132,14 +120,7 @@ export class UseCasesComponent implements OnInit {
           "value": 10,
           "type": "grey",
           "level": "green",
-          "children": [
-             {
-                "name": "Enoch",
-                "value": 7.5,
-                "type": "grey",
-                "level": "orange"
-             }
-          ]
+          
        },
        {
           "name": "Azura",
@@ -160,9 +141,17 @@ export class UseCasesComponent implements OnInit {
 //     treeLayout(root)
     
 //   }
-graph(){
+graph(data:any){
+  console.log(data)
+  var treeData = {
+    'description': "Farm2Home",
+    'id' :  1,
+    'role': "User",
+    'title': "Faem2Home",
+    'children': data};
+
   var ele = document.getElementById('graph');
-  var svgNode = this._chart(d3,this.tree);
+  var svgNode = this._chart(d3,treeData);
   console.log(svgNode);
   ele?.append(svgNode);
   ele?.addEventListener('click', function(event){
@@ -177,7 +166,7 @@ graph(){
   if(node){
     node[4].addEventListener('click', (event)=>{
       console.log("clicked on node[0]", event);
-      this.router.navigate(['/configuration/data-model/x-bpmn'], { relativeTo: this.activateRoute });
+      this.router.navigate(['/configuration/workflow/overview'], { relativeTo: this.activateRoute });
     })
   }
 }
@@ -196,7 +185,7 @@ graph(){
       const tree = d3.tree().nodeSize([dx, dy]);
 
       // Sort the tree and apply the layout.
-      root.sort((a:any, b:any) => d3.ascending(a.data.name, b.data.name));
+      root.sort((a:any, b:any) => d3.ascending(a.data.title, b.data.title));
       tree(root);
 
       // Compute the extent of the tree. Note that x and y are swapped here
@@ -217,7 +206,7 @@ graph(){
           .attr("height", height)
           .attr("viewBox", [-dy / 3, x0 - dx, width, height])
           // .attr("viewBox", [0, 0, 1010, 666])
-          .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
+          .attr("style", "max-width: 100%; height: max-content; font: 10px sans-serif;");
 
       const link = svg.append("g")
           .attr("fill", "none")
@@ -244,10 +233,10 @@ graph(){
           .attr("r", 2.5);
 
       node.append("text")
-          .attr("dy", "0.31em")
-          .attr("dx", (d:any) => d.children ? -6 : 6)
+          .attr("dy", "1em")
+          .attr("dx", (d:any) => d.children ? -12 : 12)
           .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-          .text((d:any) => d.data.name)
+          .text((d:any) => d.data.title)
         .clone(true).lower()
           .attr("stroke", "white");
       
