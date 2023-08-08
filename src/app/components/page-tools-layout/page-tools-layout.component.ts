@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { GridsterItem } from 'angular-gridster2';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
 import subMenuConfig from '../../../assets/json/sidemenu-tools.json';
 import { ApiService } from 'src/app/api/api.service';
@@ -21,7 +21,8 @@ export class PageToolsLayoutComponent {
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
   activatedAccIndex = 1;
-  constructor(private router: Router, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
+  dynamicPath: any;
+  constructor(private router: Router, private route: ActivatedRoute, private apiService: ApiService, private subMenuLayoutUtil: UtilsService) {
     this.sideMenu = subMenuConfig?.subMenuConfig;
   }
 
@@ -45,7 +46,7 @@ export class PageToolsLayoutComponent {
   loadSubMenu() {
     console.log(this.sideMenu)
     this.sideMenu.forEach((item: any) => {
-      if (item.path == this.router.url) {
+      if (item.path == this.router.url || this.router.url.includes(item.path)) {
         this.sideMenuItem = item;
       }
     });
@@ -54,9 +55,11 @@ export class PageToolsLayoutComponent {
     }, 5000);
   }
   onClickSubMenuItem(subMenuItem: any) {
+    console.log(subMenuItem.routerlink)
     if (subMenuItem.routerlink !== '') {
-      this.router.navigate([subMenuItem.routerlink])
-
+      this.dynamicPath = subMenuItem.routerlink;
+      // this.router.navigate([subMenuItem.routerlink])
+      this.router.navigate([this.dynamicPath], { relativeTo: this.route });
     }
   }
   onClickAccordian(item: any, index: number) {

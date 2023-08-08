@@ -9,16 +9,17 @@ const routes: Routes = [
   {
     path: '',
     component: ProductsConfigComponent,
-    // children: [
-    //   {
-    //     path: 'data-model/overview',
-    //     component: ErModellerComponent,
-    //   },
-    //   // {
-    //   //   path: "workflow/overview",
-    //   //   component: BpmnDiagramComponent,
-    //   // }
-    // ]
+    children: [
+      {
+        path: "workflow/overview",
+        component: BpmnDiagramComponent,
+      },
+      {
+        path: 'data-modal/overview',
+        component: ErModellerComponent,
+      },
+    ]
+
   }
 
 ];

@@ -198,7 +198,7 @@
                                    "alt": "Overview",
                                    "content": "Overview",
                                    "hasrouter": "true",
-                                   "routerlink": "/data-modal/overview"
+                                   "routerlink": "/products-config/data-modal/overview"
                               },
                               {
                                    "id": "New Data Object",
@@ -340,7 +340,7 @@
                                    "alt": "Overview",
                                    "content": "Overview",
                                    "hasrouter": "true",
-                                   "routerlink": "/configuration/workflow/overview"
+                                   "routerlink": "/products-config/workflow/overview"
                               },
                               {
                                    "id": "New Flow",
@@ -491,70 +491,6 @@
                                    "selectedContainer": "A/B Test",
                                    "alt": "A/BTest",
                                    "content": "A/B Test",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              }
-                         ]
-                    },
-                    {
-                         "accordianHeader": "Business Rules",
-                         "accordianContent": [
-                              {
-                                   "id": "Overview",
-                                   "imgSrc": "./assets/container.svg",
-                                   "selectedContainer": "Overview",
-                                   "alt": "Overview",
-                                   "content": "Overview",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              },
-                              {
-                                   "id": "New Rule",
-                                   "imgSrc": "./assets/rows.svg",
-                                   "selectedContainer": "New Rule",
-                                   "alt": "NewRule",
-                                   "content": "New Rule",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              },
-                              {
-                                   "id": "Edit Rule",
-                                   "imgSrc": "./assets/rows.svg",
-                                   "selectedContainer": "Edit Rule",
-                                   "alt": "EditRule",
-                                   "content": "Edit Rule",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              }
-                         ]
-                    },
-                    {
-                         "accordianHeader": "Work Flows",
-                         "accordianContent": [
-                              {
-                                   "id": "Overview",
-                                   "imgSrc": "./assets/container.svg",
-                                   "selectedContainer": "Overview",
-                                   "alt": "Overview",
-                                   "content": "Overview",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              },
-                              {
-                                   "id": "New Flow",
-                                   "imgSrc": "./assets/rows.svg",
-                                   "selectedContainer": "New Flow",
-                                   "alt": "NewFlow",
-                                   "content": "New Flow",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              },
-                              {
-                                   "id": "Edit Flow",
-                                   "imgSrc": "./assets/rows.svg",
-                                   "selectedContainer": "Edit Flow",
-                                   "alt": "EditFlow",
-                                   "content": "Edit Flow",
                                    "hasrouter": "false",
                                    "routerlink": ""
                               }

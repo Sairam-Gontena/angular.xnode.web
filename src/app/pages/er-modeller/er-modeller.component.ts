@@ -34,7 +34,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
     this.router.events.subscribe((data: any) => {
-      this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
+      this.router.url == "/products-config/workflow/overview" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
     });
   }
 
@@ -91,7 +91,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
-          this.jsPlumbService.init();
+          // this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         }
         this.utilsService.loadSpinner(false);

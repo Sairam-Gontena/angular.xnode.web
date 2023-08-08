@@ -61,7 +61,7 @@ const routes: Routes = [
   // },
   {
     path: 'products-config',
-    loadChildren: () => import('./pages/products-config/products-config.module').then(m => m.ProductsConfigModule)
+    loadChildren: () => import('./pages/products-config/products-config.module').then(m => m.ProductsConfigModule),
   },
   {
     path: 'workspace',
@@ -107,10 +107,10 @@ const routes: Routes = [
     path: 'x-pilot',
     loadChildren: () => import('./pages/navi/navi.module').then(m => m.NaviModule),
   },
-  {
-    path: 'configuration/workflow/overview',
-    loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
-  },
+  // {
+  //   path: 'configuration/workflow/overview',
+  //   loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
+  // },
   {
     path: '',
     redirectTo: '',

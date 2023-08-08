@@ -30,7 +30,7 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
     ],
     imports: [
         CommonModule,
@@ -49,7 +49,7 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
     ]
 })
 export class SharedComponentModule { }

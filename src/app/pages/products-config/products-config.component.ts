@@ -27,12 +27,12 @@ export class ProductsConfigComponent implements OnInit {
   currentUser?: User;
   dataModel: any;
   @Input() erModelInput: any;
-  constructor(private apiService: ApiService, private messageService: MessageService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private router: Router, private utilsService: UtilsService) {
+  constructor(private apiService: ApiService, private router: Router,) {
     // this.data = this.dataService.data;
-    // this.currentUser = UserUtil.getCurrentUser();
-    // this.router.events.subscribe((data: any) => {
-    //   this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
-    // });
+    this.currentUser = UserUtil.getCurrentUser();
+    this.router.events.subscribe((data: any) => {
+      this.router.url == "/products-config/workflow/overview" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
+    });
   }
 
   ngOnInit(): void {
@@ -47,49 +47,49 @@ export class ProductsConfigComponent implements OnInit {
     // }
   }
 
-  toggleMenu() {
-    this.isOpen = !this.isOpen;
-  }
+  // toggleMenu() {
+  //   this.isOpen = !this.isOpen;
+  // }
 
 
-  getLayout(layout: any): void {
-    if (layout)
-      this.dashboard = this.layoutColumns[layout];
-  }
+  // getLayout(layout: any): void {
+  //   if (layout)
+  //     this.dashboard = this.layoutColumns[layout];
+  // }
 
 
-  //get calls 
-  getMeUserId() {
-    this.apiService.get("/get_metadata/" + this.currentUser?.email)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          this.id = response.data.data[0].id;
-          localStorage.setItem('record_id', response.data.data[0].id)
-          this.getMeDataModel();
-        }
-        this.utilsService.loadSpinner(false);
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utilsService.loadSpinner(false)
-      });
-  }
+  // //get calls 
+  // getMeUserId() {
+  //   this.apiService.get("/get_metadata/" + this.currentUser?.email)
+  //     .then((response: any) => {
+  //       if (response?.status === 200) {
+  //         this.id = response.data.data[0].id;
+  //         localStorage.setItem('record_id', response.data.data[0].id)
+  //         this.getMeDataModel();
+  //       }
+  //       this.utilsService.loadSpinner(false);
+  //     })
+  //     .catch((error: any) => {
+  //       this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+  //       this.utilsService.loadSpinner(false)
+  //     });
+  // }
 
-  getMeDataModel() {
-    this.dataModel = null;
-    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
-      .then((response: any) => {
-        if (response?.status === 200) {
-          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
-          this.jsPlumbService.init();
-          this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
-        }
-        this.utilsService.loadSpinner(false);
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utilsService.loadSpinner(false);
-      });
-  }
+  // getMeDataModel() {
+  //   this.dataModel = null;
+  //   this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
+  //     .then((response: any) => {
+  //       if (response?.status === 200) {
+  //         const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
+  //         this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
+  //         this.jsPlumbService.init();
+  //         this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+  //       }
+  //       this.utilsService.loadSpinner(false);
+  //     })
+  //     .catch((error: any) => {
+  //       this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+  //       this.utilsService.loadSpinner(false);
+  //     });
+  // }
 }
