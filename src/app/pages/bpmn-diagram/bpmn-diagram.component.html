@@ -10,8 +10,8 @@
                </div>
                <!-- <div #propertiesRef class="properties-container"></div> -->
 
-               <p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
-                    <ng-template pTemplate="header"><b>Budget</b></ng-template>
+               <p-sidebar *ngIf="this.sideBar"  id="property-panel"[(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
+                    <ng-template pTemplate="header"><b>{{this.overview.title}}</b></ng-template>
                     <div class="container text-left">
                          <div class="row">
                               <div class="col-auto">
@@ -35,16 +35,16 @@
                               <p-panel header="General" [toggleable]="true">
                                    <div class="row">
                                         <label htmlFor="username">{{this.generalInfo[0].label}}</label>
-                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[0].value" />
+                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.overview.Tag" />
                                    </div>
                                    <div class="row">
                                         <label htmlFor="username">{{this.generalInfo[1].label}}</label>
-                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[1].value" />
+                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.overview.title" />
                                    </div>
                               </p-panel>
                               <p-panel header="Documentation" [toggleable]="true">
                                    <label htmlFor="username">{{this.generalInfo[2].label}}</label>
-                                   <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="this.generalInfo[2].value"></textarea>
+                                   <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="this.overview.Description"></textarea>
 
                               </p-panel>
                          </p-tabPanel>

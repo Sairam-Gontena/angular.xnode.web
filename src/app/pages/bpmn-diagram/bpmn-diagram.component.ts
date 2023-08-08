@@ -40,6 +40,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   currentUser: any;
   dashboard: any;
   layoutColumns: any;
+  overview:any;
+  sideBar: boolean = false;
 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   isOpen: boolean = true;
@@ -53,12 +55,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         let appName = localStorage.getItem('app_name')
         let xflowJson = JSON.parse(response.data);
         xflowJson.Product = appName;
-        console.log("josn---->",xflowJson)
+        // console.log("josn---->",xflowJson)
         this.loadXFlows(xflowJson);
 
         let data = JSON.parse(response.data)
         this.jsonWorkflow = JSON.stringify(data, null, 2);
-        console.log("JSON",response.data)
+        // console.log("JSON",response.data)
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
@@ -67,6 +69,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       console.log('error', error);
       this.loadXFlows(workflow);
     });
+    this.getOverview();
+
   }
 
   ngOnInit(): void {
@@ -112,6 +116,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       console.log("after content init")
       this.getElement();
     });
+
   }
   toggleMenu() {
     this.isOpen = !this.isOpen;
@@ -120,18 +125,35 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     if (layout)
       this.dashboard = this.layoutColumns[layout];
   }
+  
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    var element = this.bpmnJS.get('elementRegistry');
+    var element = this.bpmnJS.get('elementRegistry')._elements;
+    
     console.log(element);
+    let appName = localStorage.getItem('app_name')
     this.generalInfo = [
-      { 'index': 0, 'label': 'Entity', 'value': 'XFLow-Budget' },
+      { 'index': 0, 'label': 'Entity', 'value': appName },
       { 'index': 1, 'label': 'Name', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
       { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
     ];
     // this.jsonWorkflow = JSON.stringify(workflow, null, 2);
-    const propertiesPanel = this.bpmnJS.get('propertiesPanel');
-    propertiesPanel.attachTo(this.propertiesRef!.nativeElement);
+    const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
+    // propertiesPanel.attachTo(document.getElementById('property-panel') as HTMLElement)
+    
+  }
+  getOverview() {
+    this.api.get("/retrive_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
+      .then(response => {
+        if (response?.status === 200) {
+          this.overview = response.data;
+          this.sideBar = true;
+          console.log(this.overview)
+        }
+      })
+      .catch((error:any) => {
+        console.log(error)
+      });
 
   }
 
@@ -264,7 +286,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
       this.xml = response?.data;
       const layoutedDiagramXML = await layoutProcess(this.xml);
-      console.log(layoutedDiagramXML);
+      // console.log(layoutedDiagramXML);
       this.importDiagram(layoutedDiagramXML);
     }).catch(error => {
       console.log('error', error);
