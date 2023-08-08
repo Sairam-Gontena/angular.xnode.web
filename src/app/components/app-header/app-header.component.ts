@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
@@ -11,7 +11,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss'],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 
 export class AppHeaderComponent implements OnInit {
@@ -31,11 +31,11 @@ export class AppHeaderComponent implements OnInit {
   allNotifications: any[] = [];
   notifications: any[] = [];
   notificationCount: any = 0;
-  // product_url: any;
   product_url: string = "https://dev-navi.azurewebsites.net/";
 
-  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private UtilsService: UtilsService,
-    private router: Router, private messageService: MessageService, private webSocketService: WebSocketService,) {
+  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
+    private router: Router, private webSocketService: WebSocketService,
+    private confirmationService: ConfirmationService) {
   }
 
   ngOnInit(): void {
@@ -51,6 +51,7 @@ export class AppHeaderComponent implements OnInit {
     ];
     this.initializeWebsocket();
   }
+
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -74,20 +75,54 @@ export class AppHeaderComponent implements OnInit {
         this.apiService.patch(body, '/update_product_url')
           .then(response => {
             if (!response) {
-              this.UtilsService.loadToaster({ severity: 'error', summary: 'Network Issue' });
+              this.utilsService.loadToaster({ severity: 'error', summary: 'Network Issue' });
             }
           })
           .catch(error => {
-            this.UtilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
           });
       }
     })
   }
+
   toggleAccordion() {
     this.notificationCount = 0;
   }
-  prepareToastToShow(event: any): void {
-    this.messageService.clear();
-    this.messageService.add(event);
+
+  preparePublishPopup(obj: any): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to publish this product?',
+      header: 'Confirmation',
+      accept: () => {
+        this.publishApp(obj);
+      },
+      reject: () => {
+        this.confirmationService.close();
+      }
+    });
+  }
+
+  publishApp(obj: any): void {
+    this.utilsService.loadSpinner(true)
+    const body = {
+      repoName: obj.product_name,
+      projectName: 'xnode',
+      email: this.email,
+      envName: environment.name,
+      productId: obj.product_id
+    }
+    this.apiService.publishApp(body)
+      .then(response => {
+        if (response) {
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Your app publishing process started. You will get the notifications', life: 3000 });
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch(error => {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
+        this.utilsService.loadSpinner(false);
+      });
   }
 }

@@ -108,15 +108,13 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
-
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "");
-
-
+      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
       this.showConfirmationPopup();
     }
   }
+
   showConfirmationPopup(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',
