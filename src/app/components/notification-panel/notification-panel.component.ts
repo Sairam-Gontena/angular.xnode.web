@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NotificationPanelComponent {
   @Input() data: any;
-  @Output() preparePublishPopup: EventEmitter<any> = new EventEmitter<any>();
+  @Output() preparePublishPopup = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
