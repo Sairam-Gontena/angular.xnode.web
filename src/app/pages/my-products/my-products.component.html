@@ -1,6 +1,6 @@
 <div class="w-full h-full">
     <xnode-app-header></xnode-app-header>
-    <div [ngClass]="{' tmp-page-height': templateCard?.length }" class="grid m-0 p-6 ">
+    <div [ngClass]="{' tmp-page-height': templateCard.length }" class="grid m-0 p-6 ">
         <div class="col-12 mt-5">
             <p class="text-6xl m-0 text-white text-wrap">Hi, Good Morning!</p>
         </div>
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </p-card>
-                <p-card  [style]="{ width: '316px', height: '364px'}" 
+                <p-card [style]="{ width: '316px', height: '364px'}"
                     class="flex  align-items-center justify-content-center flex-wrap new-card ">
                     <div class="flex align-items-center justify-content-center text-white h-full">
                         <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
@@ -83,4 +83,4 @@
             </div>
         </div>
     </div>
-   </div>
+</div>

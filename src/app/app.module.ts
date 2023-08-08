@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
-
 import { RefreshListService } from './RefreshList.service';
 
 @NgModule({
