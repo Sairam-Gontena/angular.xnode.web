@@ -16,7 +16,7 @@
                 (click)=" op.show($event)"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <xnode-notification-panel [data]="allNotifications"
-                    (showToast)="prepareToastToShow($event)"></xnode-notification-panel>
+                    preparePublishPopup="publishApp($event)"></xnode-notification-panel>
             </p-overlayPanel>
         </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
@@ -24,3 +24,4 @@
     </div>
 </div>
 <p-toast></p-toast>
+<p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
