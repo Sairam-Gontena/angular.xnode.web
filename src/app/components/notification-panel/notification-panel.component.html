@@ -76,7 +76,7 @@
                         Go to Product</div>
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
-                    <a [href]="notification?.product_url">{{notification?.product_url}}</a>
+                    <a [href]="notification?.product_url" target="_blank">{{notification?.product_url}}</a>
                 </div>
             </div>
         </div>
