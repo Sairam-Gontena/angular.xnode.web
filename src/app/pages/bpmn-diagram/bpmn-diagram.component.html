@@ -4,12 +4,7 @@
          <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
           <div class="container bpmn-component">
                <div id="diagramRef" class="diagram-container">
-                    <!-- <div class="btn">
-                         <p-button class= "btn"label="Property Panel"(click)="getElement()" icon="fa fa-list"></p-button>
-                    </div> -->
                </div>
-               <!-- <div #propertiesRef class="properties-container"></div> -->
-
                <p-sidebar *ngIf="sideBar"  id="property-panel"[(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
                     <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
                     <div class="container text-left">
@@ -112,9 +107,6 @@
                          <!-- Comments Tab -->
                          <p-tabPanel header="Comments"> </p-tabPanel>
                     </p-tabView>
-                    
-                    <!-- <div #propertiesRef class="properties-container"></div> -->
-                    <!-- <ng-template pTemplate="footer"><strong>XNODE >> XFLOW >> {{flowInfo[0]?.name}}</strong></ng-template> -->
                </p-sidebar>
           </div>
      </div>
