@@ -35,7 +35,6 @@ export class SignUpComponent implements OnInit {
 
   onClickSignUp() {
     this.submitted = true;
-
     if (this.signUpForm.invalid) {
       return;
     }

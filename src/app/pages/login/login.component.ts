@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.loginForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -33,23 +32,18 @@ export class LoginComponent implements OnInit {
   get login() { return this.loginForm.controls; }
 
   onClickLogin() {
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
     this.apiService.post(this.loginForm.value, '/login')
       .then(res => {
         const responseData = res.data;
         console.log(res.data)
-        if (this.loginForm.invalid) {
-          return;
-        }
+        localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
         if (responseData) {
-          localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
-          this.router.navigate(['/my-products']);
+          this.router.navigate(['/workspace']);
         }
-        else {
-          this.messages = [
-            { severity: 'error', summary: 'Error', detail: 'User not found' }
-          ]
-        }
-      }
-      )
+      })
   }
 }
