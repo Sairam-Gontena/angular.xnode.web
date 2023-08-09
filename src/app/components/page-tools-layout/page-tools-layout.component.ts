@@ -32,7 +32,6 @@ export class PageToolsLayoutComponent {
       this.isOpen = data;
     })
     this.loadSubMenu();
-    console.log(this.router.url);
     if (this.router.url === '/configuration/workflow/overview') {
       this.activatedAccIndex = 6;
     }
@@ -43,7 +42,6 @@ export class PageToolsLayoutComponent {
   }
 
   loadSubMenu() {
-    console.log(this.sideMenu)
     this.sideMenu.forEach((item: any) => {
       if (item.path == this.router.url) {
         this.sideMenuItem = item;
