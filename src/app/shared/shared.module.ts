@@ -16,7 +16,6 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [
@@ -38,7 +37,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputTextModule,
     BadgeModule,
     OverlayPanelModule,
-
     ConfirmDialogModule
   ],
   exports: [
@@ -59,7 +57,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputTextModule,
     BadgeModule,
     OverlayPanelModule,
-
     ConfirmDialogModule
   ]
 })

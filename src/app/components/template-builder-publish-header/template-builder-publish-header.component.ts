@@ -108,15 +108,13 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
-
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "");
-
-
+      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
       this.showConfirmationPopup();
     }
   }
+
   showConfirmationPopup(): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',
@@ -164,11 +162,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
             value: obj.id,
-            url: obj.product_url
+            url: obj.product_url !== undefined ? obj.product_url : ''
           }));
           this.templates = data;
-          console.log(this.templates)
-
         }
       })
       .catch(error => {
@@ -179,8 +175,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     localStorage.setItem('record_id', data.value.value);
     localStorage.setItem('app_name', data.value.name);
     localStorage.setItem('product_url', data.value.url ? data.value.url : '');
-    this.selectedTemplate = { name: data.value.name, value: data.value.value, url: data.value.url };
-    console.log(data)
     this.refreshCurrentRoute()
   }
 
