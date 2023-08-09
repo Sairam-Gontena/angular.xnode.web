@@ -10,6 +10,7 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { AboutYourSelfComponent } from 'src/app/pages/onboarding/about-your-self/about-your-self.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         FormsModule,
         ReactiveFormsModule,
         ButtonModule,
-        InputTextareaModule
+        InputTextareaModule,
+        RadioButtonModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

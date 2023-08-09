@@ -1,11 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { WebSocketService } from 'src/app/web-socket.service';
-import { ApiService } from '../../api/api.service'
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
-import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -14,32 +10,35 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class NotificationPanelComponent {
   @Input() data: any;
-  @Output() showToast: EventEmitter<any> = new EventEmitter<any>();
+  @Output() preparePublishPopup = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
   currentUser?: User;
-
   filterTypes: any = {
     recent: false,
     important: false,
     pinned: false,
     all: true
-  }
+  };
 
-  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService, private webSocketService: WebSocketService, private utilService: UtilsService) {
-    this.currentUser = UserUtil.getCurrentUser();
+  constructor(
+    private router: Router) {
   }
 
   ngOnInit(): void {
     this.allNotifications = this.data
-    this.notifications = this.allNotifications
+    this.notifications = this.allNotifications;
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    this.router.navigate(['/design']);
+    let url: any;
+    if (this.currentUser)
+      url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
+    window.open(url, "_blank");
   }
 
   navigateToActivity() {
@@ -79,27 +78,9 @@ export class NotificationPanelComponent {
     this.allNotifications[index].pinned = val === 'pinned';
   }
 
-  publishApp(obj: any) {
+  onClickPublish(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    const body = {
-      repoName: obj.product_name,
-      projectName: 'xnode',
-      email: this.currentUser?.email,
-      envName: environment.name,
-      productId: obj.product_id
-    }
-    this.apiService.publishApp(body)
-      .then(response => {
-        if (response) {
-          this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Your app publishing process started. You will get the notifications', life: 3000 });
-        } else {
-          this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
-        }
-      })
-      .catch(error => {
-        this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
-      });
+    this.preparePublishPopup.emit(obj)
   }
-
 }
