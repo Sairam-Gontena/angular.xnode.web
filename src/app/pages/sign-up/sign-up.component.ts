@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
-
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-sign-up',
@@ -15,10 +15,10 @@ export class SignUpComponent implements OnInit {
   submitted: boolean = false;
   errorMessage!: string;
 
-  constructor(private formBuilder: FormBuilder, public router: Router) {
+  constructor(private formBuilder: FormBuilder, public router: Router, private apiService: ApiService) {
     this.signUpForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -34,19 +34,27 @@ export class SignUpComponent implements OnInit {
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
-    this.submitted = true;
 
     if (this.signUpForm.invalid) {
       return;
     }
-    const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
-    localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
-    if (matchedUser) {
+    this.apiService.post(this.signUpForm.value, '/sign-up').then(response => {
+      alert('SIGNIN SUCCESFUL');
+      console.log(response);
       this.router.navigate(['/workspace']);
-    } else {
-      this.errorMessage = 'Email and password do not match.';
+      const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
+      localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
+      if (matchedUser) {
+        this.router.navigate(['/workspace']);
+      }
+      else {
+        this.errorMessage = 'Email and password do not match.';
+      }
     }
+
+    )
   }
 
-
 }
+
+
