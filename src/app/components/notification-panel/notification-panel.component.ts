@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NotificationPanelComponent {
   @Input() data: any;
-  @Output() preparePublishPopup: EventEmitter<any> = new EventEmitter<any>();
+  @Output() preparePublishPopup = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -35,7 +35,6 @@ export class NotificationPanelComponent {
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    this.router.navigate(['/design']);
     let url: any;
     if (this.currentUser)
       url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
