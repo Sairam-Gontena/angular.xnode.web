@@ -39,11 +39,14 @@ export class LoginComponent implements OnInit {
     this.apiService.post(this.loginForm.value, '/login')
       .then(res => {
         const responseData = res.data;
-        console.log(res.data)
-        localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
+        console.log(responseData)
         if (responseData) {
-          this.router.navigate(['/workspace']);
+          localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
+          this.router.navigate(['/my-products']);
         }
       })
+      .catch(error => {
+        console.error('User not found:', error);
+      });
   }
 }
