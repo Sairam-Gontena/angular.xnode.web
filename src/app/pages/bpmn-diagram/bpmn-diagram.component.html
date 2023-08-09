@@ -1,115 +1,113 @@
-<div class="container bpmn-component">
-     <div id="diagramRef" class="diagram-container">
-          <!-- <div class="btn">
-               <p-button class= "btn"label="Property Panel"(click)="this.getElement()" icon="fa fa-list"></p-button>
-          </div> -->
-     </div>
-     <!-- <div #propertiesRef class="properties-container"></div> -->
-
-     <p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
-          <ng-template pTemplate="header"><b>Budget</b></ng-template>
-          <div class="container text-left">
-               <div class="row">
-                    <div class="col-auto">
+<div class="template-builder-wrapper">
+     <xnode-page-tools-layout></xnode-page-tools-layout>
+     <div class="" [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
+         <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+          <div class="container bpmn-component">
+               <div id="diagramRef" class="diagram-container">
+               </div>
+               <p-sidebar *ngIf="sideBar"  id="property-panel"[(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
+                    <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
+                    <div class="container text-left">
                          <div class="row">
-                              <p-avatar *ngIf="this.taskHeader?.label==='Task'" label="T" styleClass="mr-2" size="large"></p-avatar>
-                              <p-avatar *ngIf="this.taskHeader?.label==='Pool'" label="P" styleClass="mr-2" size="large"></p-avatar>
-                              <p-avatar *ngIf="this.taskHeader?.label==='Activity'" label="A" styleClass="mr-2" size="large"></p-avatar>
-                         </div>
+                              <div class="col-auto">
+                                   <div class="row">
+                                        <p-avatar *ngIf="taskHeader?.label==='Task'" label="T" styleClass="mr-2" size="large"></p-avatar>
+                                        <p-avatar *ngIf="taskHeader?.label==='Pool'" label="P" styleClass="mr-2" size="large"></p-avatar>
+                                        <p-avatar *ngIf="taskHeader?.label==='Activity'" label="A" styleClass="mr-2" size="large"></p-avatar>
+                                   </div>
+                              </div>
+                              <div class="col-auto">
+                                   <div class="row">{{taskHeader?.label}}</div>
+                                   <div class="row"><strong>{{taskHeader?.task}}</strong></div>
+                              </div>
+                         </div> 
                     </div>
-                    <div class="col-auto">
-                         <div class="row">{{this.taskHeader?.label}}</div>
-                         <div class="row"><strong>{{this.taskHeader?.task}}</strong></div>
-                    </div>
-               </div> 
+                    <p-divider></p-divider>
+                              
+                    <p-tabView>
+                         <!-- General Tab -->
+                         <p-tabPanel header="General">
+                              <p-panel header="General" [toggleable]="true">
+                                   <div class="row">
+                                        <label htmlFor="username">{{generalInfo[0].label}}</label>
+                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="overview.Tag" />
+                                   </div>
+                                   <div class="row">
+                                        <label htmlFor="username">{{generalInfo[1].label}}</label>
+                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="overview.title" />
+                                   </div>
+                              </p-panel>
+                              <p-panel header="Documentation" [toggleable]="true">
+                                   <label htmlFor="username">{{generalInfo[2].label}}</label>
+                                   <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="overview.Description"></textarea>
+
+                              </p-panel>
+                         </p-tabPanel>
+
+                         <!-- Properties tab -->
+                         <p-tabPanel header="Properties">
+                              <p-panel header={{taskHeader?.pHeader}} [toggleable]="true" [collapsed]="true" >
+                                   <p-table [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
+                                        <ng-template pTemplate="body" let-product >
+                                             <tr *ngIf="product.index%2===0">
+                                                  <td >
+                                                       <label htmlFor="username">{{product.label}}</label>
+                                                       <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="product.name" />
+                                                  </td>
+                                                  <td *ngIf="flowInfo[product.index+1]">
+                                                       <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
+                                                       <input pInputText id="username" aria-describedby="username-help" [(ngModel)]="flowInfo[product.index+1].name" />
+                                                  </td>
+                                             </tr>
+                                        </ng-template>
+                                   </p-table>
+                              </p-panel>
+                              <a *ngIf="elementList?.type ==='bpmn:ServiceTask'&&!sP" href="/">View DMN Decision Flow</a>
+
+                              <p-panel *ngIf="sP" header="Userflows" [toggleable]="true" [collapsed]="true" styleClass="{ 'width': '30rem' }">
+                                   <p-table [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
+                                        <ng-template pTemplate="body" let-product >
+                                             <tr *ngIf="product.index%2===0">
+                                                  <td >
+                                                       <label>TaskId</label>
+                                                       <input  pInputText  [(ngModel)]="product.name" />
+                                                  </td>
+                                                  <td *ngIf="userTask[product.index+1]">
+                                                       <label >TaskId</label>
+                                                       <input pInputText [(ngModel)]="userTask[product.index+1].name" />
+                                                  </td>
+                                             </tr>
+                                        </ng-template>
+                                   </p-table>
+                              </p-panel>
+
+                              <p-panel *ngIf="sP" header="Backendflows" [toggleable]="true" [collapsed]="true" >
+                                   <p-table [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
+                                        <ng-template pTemplate="body" let-product >                         
+                                             <tr *ngIf="product.index%2===0">
+                                                  <td >
+                                                       <label>TaskId</label>
+                                                       <input  pInputText  [(ngModel)]="product.name" />
+                                                  </td>
+                                                  <td *ngIf="serviceTask[product.index+1]">
+                                                       <label >TaskId</label>
+                                                       <input pInputText [(ngModel)]="serviceTask[product.index+1].name" />
+                                                  </td>
+                                             </tr>
+                                        </ng-template>                        
+                                   </p-table>
+                              </p-panel>
+                         </p-tabPanel>
+
+                         <!-- JSON Tab -->
+                         <p-tabPanel header="JSON">
+                              <textarea rows="5" cols="55"  pInputTextarea [(ngModel)]="jsonWorkflow"></textarea>
+                         </p-tabPanel>
+
+                         <!-- Comments Tab -->
+                         <p-tabPanel header="Comments"> </p-tabPanel>
+                    </p-tabView>
+               </p-sidebar>
           </div>
-          <p-divider></p-divider>
-                    
-          <p-tabView>
-               <!-- General Tab -->
-               <p-tabPanel header="General">
-                    <p-panel header="General" [toggleable]="true">
-                         <div class="row">
-                              <label htmlFor="username">{{this.generalInfo[0].label}}</label>
-                              <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[0].value" />
-                         </div>
-                         <div class="row">
-                              <label htmlFor="username">{{this.generalInfo[1].label}}</label>
-                              <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.generalInfo[1].value" />
-                         </div>
-                     </p-panel>
-                     <p-panel header="Documentation" [toggleable]="true">
-                         <label htmlFor="username">{{this.generalInfo[2].label}}</label>
-                         <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="this.generalInfo[2].value"></textarea>
-
-                     </p-panel>
-               </p-tabPanel>
-
-               <!-- Properties tab -->
-               <p-tabPanel header="Properties">
-                    <p-panel header={{this.taskHeader?.pHeader}} [toggleable]="true" [collapsed]="true" >
-                         <p-table [value]="this.flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
-                              <ng-template pTemplate="body" let-product >
-                                   <tr *ngIf="product.index%2===0">
-                                        <td >
-                                             <label htmlFor="username">{{product.label}}</label>
-                                             <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="product.name" />
-                                        </td>
-                                        <td *ngIf="this.flowInfo[product.index+1]">
-                                             <label htmlFor="username">{{this.flowInfo[product.index+1].label}}</label>
-                                             <input pInputText id="username" aria-describedby="username-help" [(ngModel)]="this.flowInfo[product.index+1].name" />
-                                        </td>
-                                   </tr>
-                              </ng-template>
-                         </p-table>
-                    </p-panel>
-                    <a *ngIf="this.elementList?.type ==='bpmn:ServiceTask'&&!this.sP" href="/">View DMN Decision Flow</a>
-
-                    <p-panel *ngIf="this.sP" header="Userflows" [toggleable]="true" [collapsed]="true" styleClass="{ 'width': '30rem' }">
-                         <p-table [value]="this.userTask" [tableStyle]="{ 'min-width': '30rem' }">
-                              <ng-template pTemplate="body" let-product >
-                                   <tr *ngIf="product.index%2===0">
-                                        <td >
-                                             <label>TaskId</label>
-                                             <input  pInputText  [(ngModel)]="product.name" />
-                                        </td>
-                                        <td *ngIf="this.userTask[product.index+1]">
-                                             <label >TaskId</label>
-                                             <input pInputText [(ngModel)]="this.userTask[product.index+1].name" />
-                                        </td>
-                                   </tr>
-                              </ng-template>
-                         </p-table>
-                    </p-panel>
-
-                    <p-panel *ngIf="this.sP" header="Backendflows" [toggleable]="true" [collapsed]="true" >
-                         <p-table [value]="this.serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
-                              <ng-template pTemplate="body" let-product >                         
-                                   <tr *ngIf="product.index%2===0">
-                                        <td >
-                                             <label>TaskId</label>
-                                             <input  pInputText  [(ngModel)]="product.name" />
-                                        </td>
-                                        <td *ngIf="this.serviceTask[product.index+1]">
-                                             <label >TaskId</label>
-                                             <input pInputText [(ngModel)]="this.serviceTask[product.index+1].name" />
-                                        </td>
-                                   </tr>
-                              </ng-template>                        
-                         </p-table>
-                    </p-panel>
-               </p-tabPanel>
-
-               <!-- JSON Tab -->
-               <p-tabPanel header="JSON">
-                    <textarea rows="5" cols="55"  pInputTextarea [(ngModel)]="this.jsonWorkflow"></textarea>
-               </p-tabPanel>
-
-               <!-- Comments Tab -->
-               <p-tabPanel header="Comments"> </p-tabPanel>
-          </p-tabView>
-          
-          <!-- <div #propertiesRef class="properties-container"></div> -->
-          <!-- <ng-template pTemplate="footer"><strong>XNODE >> XFLOW >> {{this.flowInfo[0]?.name}}</strong></ng-template> -->
-      </p-sidebar>
-</div>
+     </div>
+   </div>

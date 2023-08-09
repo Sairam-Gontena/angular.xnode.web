@@ -10,6 +10,7 @@
 :host ::ng-deep .p-card-body {
     padding-left: 3rem !important;
     padding-right: 3rem !important;
+
 }
 
 .container {
@@ -20,7 +21,8 @@
     text-align: center;
     border: dashed 1px #2C91FD;
     position: relative;
-    // /* margin: 0 auto;
+    height: 100%;
+    display: flex;
 
     input {
         opacity: 0;
@@ -31,6 +33,15 @@
         top: 0;
         left: 0;
     }
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin-bottom: 20rem;
+    flex-direction: column;
 }
 
 .fileover {

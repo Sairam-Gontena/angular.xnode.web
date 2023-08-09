@@ -7,8 +7,8 @@
      </div>
      <div class="submenu" *ngIf="isOpen">
           <p-accordion *ngFor="let item of sideMenuItem.subMenuItems; let i = 'index+1';first as isFirst">
-               <p-accordionTab [selected]="i === 1" class="accordianTab{{item.accordianHeader}}"
-                    header="{{item.accordianHeader}}">
+               <p-accordionTab [selected]="i === activatedAccIndex" class="accordianTab{{item.accordianHeader}}"
+                    header="{{item.accordianHeader}}" (click)="onClickAccordian(item,i)">
                     <div class="row">
                          <div class="col-4" *ngFor="let submenu of item?.accordianContent; let j = 'index+1'">
                               <div class="layout-item border-1 border-primary flex flex-wrap align-content-center justify-content-center pointer"
@@ -18,7 +18,7 @@
                                    [ngClass]="{'layout-item-active': selectedContainer=== '{{submenu?.selectedcontainer}}'}">
                                    <span *ngIf="submenu?.hasrouter=='true'; else elseBlock">
                                         <div class="flex flex-column p-2" id="sub-router"
-                                             routerLink="{{submenu?.routerlink}}">
+                                             (click)="onClickSubMenuItem(submenu)">
                                              <div class="text-center">
                                                   <img src="{{submenu?.imgSrc}}" alt="{{submenu?.alt}}"
                                                        id="{{submenu?.id}}" draggable="true" (dragstart)="drag($event)">

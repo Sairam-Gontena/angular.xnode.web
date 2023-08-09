@@ -1,6 +1,6 @@
 <div class="w-full h-full">
     <xnode-app-header></xnode-app-header>
-    <div [ngClass]="{' tmp-page-height': templateCard?.length }" class="grid m-0 p-6 " *ngIf="!loading">
+    <div [ngClass]="{' tmp-page-height': templateCard.length }" class="grid m-0 p-6 ">
         <div class="col-12 mt-5">
             <p class="text-6xl m-0 text-white text-wrap">Hi, Good Morning!</p>
         </div>
@@ -50,14 +50,19 @@
                 <p-card header="{{data.title}}" [title]="data.title" [style]="{ width: '314px', height: '348px'}"
                     class="pointer" (click)="onClickCreateNewTemplate(data)"
                     *ngFor="let data of templateCard ; let i=index">
+
                     <ng-template pTemplate="header">
                         <img alt="template card" src="./assets/d-card.svg" height="199" />
                         <div class="overlay-heart">
                             <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
                         </div>
                         <div class="overlay">{{ i + 1 }}</div>
+                        <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
+                            (click)="openExternalLink(data.product_url)" *ngIf="data.product_url !== ''"></i>
+
                     </ng-template>
                     <div class="flex">
+
                         <img alt="dp" src="./assets/dp.svg" width="40" />
                         <div class="text-white ml-4">
                             <p class="m-0 font-bold">Created by you</p>
@@ -78,6 +83,4 @@
             </div>
         </div>
     </div>
-    <p-toast></p-toast>
-    <p-progressSpinner class="absolute top-50 left-50" *ngIf="loading"></p-progressSpinner>
 </div>
