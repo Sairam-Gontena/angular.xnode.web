@@ -34,27 +34,19 @@ export class SignUpComponent implements OnInit {
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
+    this.submitted = true;
 
     if (this.signUpForm.invalid) {
       return;
     }
     this.apiService.post(this.signUpForm.value, '/sign-up').then(response => {
-      alert('SIGNIN SUCCESFUL');
       console.log(response);
-      this.router.navigate(['/workspace']);
-      const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
       localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
-      if (matchedUser) {
+      if (response) {
         this.router.navigate(['/workspace']);
       }
-      else {
-        this.errorMessage = 'Email and password do not match.';
-      }
-    }
-
-    )
+    })
   }
-
 }
 
 
