@@ -90,8 +90,6 @@ export class AppHeaderComponent implements OnInit {
   }
 
   showMePublishPopup(obj: any): void {
-    console.log('obj', obj);
-
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',
       header: 'Confirmation',

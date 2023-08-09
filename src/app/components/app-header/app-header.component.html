@@ -16,11 +16,12 @@
                 (click)=" op.show($event)"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <xnode-notification-panel [data]="allNotifications"
-                    preparePublishPopup="showMePublishPopup($event)"></xnode-notification-panel>
+                    (preparePublishPopup)="showMePublishPopup($event)"></xnode-notification-panel>
             </p-overlayPanel>
         </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown" styleClass="p-button-raised"></p-splitButton>
+        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown"
+            styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
 </div>
 <p-toast></p-toast>
