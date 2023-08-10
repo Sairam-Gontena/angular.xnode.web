@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
   targetUrl: string = environment.naviUrl;
+  currentPath = window.location.hash;
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
@@ -140,7 +141,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
   }
 
