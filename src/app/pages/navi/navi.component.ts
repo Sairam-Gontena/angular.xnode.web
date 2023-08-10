@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ElementRef } from 'jsplumb';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -19,6 +19,7 @@ export class NaviComponent implements OnInit {
   targetUrl: string = environment.xpilotUrl;
   safeUrl: SafeResourceUrl = '';
   baseUrl: string = environment.baseUrl;
+
   ngOnInit(): void {
     //get user data from local storage
     let userData: any
@@ -64,17 +65,11 @@ export class NaviComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
-    console.log('????', this.targetUrl);
-
     this.safeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
   onClickContinue(): void {
     this.router.navigate(['/design']);
-  }
-
-  onClickHome(): void {
-    this.router.navigate(['/my-products']);
   }
 
 }
