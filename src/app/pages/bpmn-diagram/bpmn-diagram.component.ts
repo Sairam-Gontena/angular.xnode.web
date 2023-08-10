@@ -16,7 +16,6 @@ import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
-import * as flare from '../use-cases/flare.json'
 
 @Component({
   selector: 'xnode-bpmn-diagram',
