@@ -3,9 +3,6 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import * as d3 from 'd3';
-import * as flare from './flare.json'
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-use-cases',
@@ -20,7 +17,7 @@ export class UseCasesComponent implements OnInit {
   templates: any;
   highlightedIndex: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService, private router: Router, private activateRoute: ActivatedRoute) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -34,8 +31,6 @@ export class UseCasesComponent implements OnInit {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-    // this.graph();
-    console.log(this.router.events,this.router)
   }
 
   //get calls 
@@ -63,7 +58,6 @@ export class UseCasesComponent implements OnInit {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
-          // this.graph(this.useCases);
         }
         this.utilService.loadSpinner(false);
       })
