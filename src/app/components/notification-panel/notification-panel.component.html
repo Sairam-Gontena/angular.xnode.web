@@ -67,7 +67,7 @@
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
                     <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
-                        (click)="publishApp(notification)">
+                        (click)="onClickPublish(notification)">
                         Publish
                         <i class=" text-white pi pi-arrow-right text-xs ml-2"></i>
                     </div>
@@ -76,7 +76,7 @@
                         Go to Product</div>
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
-                    <a [href]="notification?.product_url">{{notification?.product_url}}</a>
+                    <a [href]="notification?.product_url" target="_blank">{{notification?.product_url}}</a>
                 </div>
             </div>
         </div>

@@ -63,17 +63,40 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
-      let rawUrl = environment.xpilotUrl + '?email=' + this.email +
+      let rawUrl = environment.naviUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.baseUrl +
-        '&xnode_flag=' + 'XNODE-APP';
+        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
       }, 2000);
     } else {
       alert("Invalid record id")
     }
+  }
 
+  getMeComponent() {
+    let comp = '';
+    switch (this.router.url) {
+      case '/design':
+        comp = 'dashboard'
+        break;
+      case '/overview':
+        comp = 'overview'
+        break;
+      case '/usecases':
+        comp = 'usecases'
+        break;
+      case '/configuration/workflow/overview':
+        comp = 'xflows'
+        break;
+      case '/configuration/data-model/overview':
+        comp = 'data_model'
+        break;
+      default:
+        break;
+    }
+    return comp;
   }
 
   get_Conversation() {
