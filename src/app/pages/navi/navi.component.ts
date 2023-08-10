@@ -31,7 +31,10 @@ export class NaviComponent implements OnInit {
     }
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext=' + localStorage.getItem('record_id') + '&targetUrl=' + environment.baseUrl;
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.baseUrl;
+    if (localStorage.getItem('record_id')) {
+      this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
+    }
     // Needs to be refactor
     // Add a load event listener to the iframe
     iframe.addEventListener('load', () => {

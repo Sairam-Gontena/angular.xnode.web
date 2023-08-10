@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
-      let rawUrl = environment.xpilotUrl + '?email=' + this.email +
+      let rawUrl = environment.naviUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.baseUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
