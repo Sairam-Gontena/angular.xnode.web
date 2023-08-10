@@ -52,12 +52,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let appName = localStorage.getItem('app_name')
-        let xflowJson = JSON.parse(response.data);
+        console.log("xflows response data", response.data)
+        let xflowJson = response.data;
         xflowJson.Product = appName;
         this.loadXFlows(xflowJson);
 
-        let data = JSON.parse(response.data)
-        this.jsonWorkflow = JSON.stringify(data, null, 2);
+        this.jsonWorkflow = JSON.stringify(response.data, null, 2);
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
@@ -73,7 +73,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-    setTimeout(() => {
       this.bpmnJS = new Modeler({
         container: '#diagramRef',
         features: {
@@ -96,7 +95,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         },
         BpmnPalletteModule,
       });
-    }, 500)
     const propertiesPanel = new PropertiesPanel({
       parent: '#js-properties-panel',
 
@@ -110,9 +108,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
+    console.log(this.bpmnJS)
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       this.getElement();
     });
+
+    let appName = localStorage.getItem('app_name')
+    this.generalInfo = [
+      { 'index': 0, 'label': 'Entity', 'value': appName },
+      { 'index': 1, 'label': 'Name', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
+      { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
+    ];
 
   }
   toggleMenu() {
@@ -126,12 +132,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
     var element = this.bpmnJS.get('elementRegistry')._elements;
-    let appName = localStorage.getItem('app_name')
-    this.generalInfo = [
-      { 'index': 0, 'label': 'Entity', 'value': appName },
-      { 'index': 1, 'label': 'Name', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
-      { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
-    ];
+    
     const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
 
   }
