@@ -40,7 +40,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   currentUser: any;
   dashboard: any;
   layoutColumns: any;
-  overview:any;
+  overview: any;
   sideBar: boolean = false;
 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
@@ -67,35 +67,36 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.loadXFlows(workflow);
     });
     this.getOverview();
-
   }
 
   ngOnInit(): void {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-    this.bpmnJS = new Modeler({
-      container: '#diagramRef',
-      features: {
-        palette: {
-          enabled: true,
-          visible: true,
+    setTimeout(() => {
+      this.bpmnJS = new Modeler({
+        container: '#diagramRef',
+        features: {
+          palette: {
+            enabled: true,
+            visible: true,
+          },
         },
-      },
-      additionalModules: [
-        BpmnPropertiesPanelModule,
-        BpmnPropertiesProviderModule,
-        CamundaPlatformPropertiesProviderModule,
-        camundaCloudBehaviors
-      ],
-      moddleExtensions: {
-        custom: custom,
-        camunda: camundaModdleDescriptors
-      }, keyboard: {
-        bindTo: window
-      },
-      BpmnPalletteModule,
-    });
+        additionalModules: [
+          BpmnPropertiesPanelModule,
+          BpmnPropertiesProviderModule,
+          CamundaPlatformPropertiesProviderModule,
+          camundaCloudBehaviors
+        ],
+        moddleExtensions: {
+          custom: custom,
+          camunda: camundaModdleDescriptors
+        }, keyboard: {
+          bindTo: window
+        },
+        BpmnPalletteModule,
+      });
+    }, 500)
     const propertiesPanel = new PropertiesPanel({
       parent: '#js-properties-panel',
 
@@ -121,7 +122,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     if (layout)
       this.dashboard = this.layoutColumns[layout];
   }
-  
+
   ngAfterContentInit(): void {
     this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
     var element = this.bpmnJS.get('elementRegistry')._elements;
@@ -132,7 +133,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       { 'index': 2, 'label': 'Element Documentation', 'value': 'Business Model Budgeting Process Collaborative X Flow' },
     ];
     const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
-    
+
   }
   getOverview() {
     this.api.get("/retrive_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
@@ -142,7 +143,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           this.sideBar = true;
         }
       })
-      .catch((error:any) => {
+      .catch((error: any) => {
         console.log(error)
       });
 
