@@ -14,6 +14,10 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
   errorMessage!: string;
+  firstname: any;
+  lastname: any;
+  email: any;
+  password: any;
 
   constructor(private formBuilder: FormBuilder, public router: Router, private apiService: ApiService) {
     this.signUpForm = this.formBuilder.group({
@@ -40,11 +44,22 @@ export class SignUpComponent implements OnInit {
     }
     this.apiService.post(this.signUpForm.value, '/sign-up').then(response => {
       console.log(response);
-      localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
+      this.firstname = response.data[0].first_name;
+      this.lastname = response.data[0].last_name;
+      this.email = response.data[0].email;
+      this.password = response.data[0].password;
       if (response) {
+        localStorage.setItem('firstname', this.firstname);
+        localStorage.setItem('lastname', this.lastname);
+        localStorage.setItem('email', this.email);
+        localStorage.setItem('password', this.password);
+        localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
         this.router.navigate(['/workspace']);
       }
     })
+      .catch(error => {
+        console.error('Email and password do not match', error);
+      });
   }
 }
 
