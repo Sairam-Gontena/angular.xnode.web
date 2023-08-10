@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
-
+  targetUrl: string = environment.naviUrl;
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
@@ -43,6 +43,31 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
+    });
+  }
+
+  loadIframeUrl(): void {
+    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    iframe.addEventListener('load', () => {
+      const contentWindow = iframe.contentWindow;
+      if (contentWindow) {
+        // Add an event listener to listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+          // Check the origin of the message to ensure it's from the iframe's domain
+          if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+            console.log('not matched');
+            return; // Ignore messages from untrusted sources
+          }
+          // Check the message content and trigger the desired event
+          if (event.data === 'triggerCustomEvent') {
+            this.isSideWindowOpen = false;
+            const customEvent = new Event('customEvent');
+            window.dispatchEvent(customEvent);
+          }
+        });
+        // Trigger the message to the iframe
+        // contentWindow.postMessage(data, this.targetUrl);
+      }
     });
   }
 
@@ -69,10 +94,12 @@ export class AppComponent implements OnInit {
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.loadIframeUrl();
       }, 2000);
     } else {
       alert("Invalid record id")
     }
+
   }
 
   getMeComponent() {
