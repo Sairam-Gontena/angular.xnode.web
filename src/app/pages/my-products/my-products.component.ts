@@ -32,7 +32,9 @@ export class MyProductsComponent implements OnInit {
   ngOnInit(): void {
     this.utilService.loadSpinner(true);
     localStorage.removeItem('record_id');
-    localStorage.removeItem('app_name')
+    localStorage.removeItem('app_name');
+    // localStorage.getItem('record_id')
+
     this.getMeUserId();
 
   }
@@ -44,6 +46,7 @@ export class MyProductsComponent implements OnInit {
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('app_name', data.title);
+    console.log(data.id)
     this.router.navigate(['/design']);
   }
   onClickgotoxPilot() {
