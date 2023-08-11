@@ -6,7 +6,12 @@ const routes: Routes = [
   {
     path: '',
     component: BpmnDiagramComponent
-  }
+  },
+  {
+    path: 'showgraph',
+    component: BpmnDiagramComponent
+  },
+
 ];
 
 @NgModule({

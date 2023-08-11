@@ -16,7 +16,9 @@ import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
-import * as flare from '../use-cases/flare.json'
+import { UtilsService } from 'src/app/components/services/utils.service';
+import { MenuItem } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -47,13 +49,16 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   sideBar: boolean = false;
   showUsecaseGraph: boolean = true;
   useCases: any;
+  items: MenuItem[] | undefined;
+  home: MenuItem | undefined;
+  xflowData: any;
 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   isOpen: boolean = true;
   templates: any;
   testData: any;
-  constructor(private api: ApiService) {
-    
+  constructor(private api: ApiService, private utilService: UtilsService, private route: ActivatedRoute) {
+  
   }
 
 
@@ -61,11 +66,16 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ];
-    this.showUsecaseGraph = true;
-    var bpmnWindow = document.getElementById("diagramRef");
-    if(bpmnWindow) bpmnWindow.style.display = 'None';
-    var graphWindow = document.getElementById("sc");
-    if(graphWindow) graphWindow.style.display = '';
+    console.log("inside OnInit")
+
+    setTimeout(()=> {
+      this.showUsecaseGraph = true;
+      var bpmnWindow = document.getElementById("diagramRef");
+      if(bpmnWindow) bpmnWindow.style.display = 'None';
+      var graphWindow = document.getElementById("sc");
+      if(graphWindow) graphWindow.style.display = '';
+    }, 0);
+    
     // this.getFlow();
     setTimeout(()=>{
       console.log("usecase",this.useCases)
@@ -73,8 +83,20 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     }, 500);
 
     this.initializeBpmn();
+    this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
+    this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
 
     // this.initializeBpmn();
+  }
+
+  switchWindow(){
+    var bpmnWindow = document.getElementById("diagramRef");
+    if(bpmnWindow) bpmnWindow.style.display = 'None';
+    var graphWindow = document.getElementById("sc");
+    if(graphWindow) graphWindow.style.display = '';
+
+    if(this.bpmnJS) this.bpmnJS.destroy();
+    this.initializeBpmn();
   }
 
 
@@ -145,13 +167,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'Flows':response.data.Flows.filter((f:any) => f.Name.toLowerCase() ===flow.toLowerCase()),
           'Product': appName
         };
-        // let xflowJson = response.data
-        
-        // xflowJson.Product = appName;
+        this.xflowData = response.data;
         console.log(xflowJson)
         this.loadXFlows(xflowJson);
-
-        this.jsonWorkflow = JSON.stringify(response.data, null, 2);
+        this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
@@ -159,6 +178,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     }).catch(error => {
       console.log('error', error);
       this.loadXFlows(workflow);
+      this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     });
     this.getOverview();
   }
@@ -182,7 +202,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
 
   }
-  
+
 
   get_Usecases() {
     // this.graph('this is the data')
@@ -223,9 +243,11 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   getElement() {
     this.sidebarVisible = true;
+    
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
-      if (event.element.type === 'bpmn:Process') {
-        this.flowInfo = this.getDisplayProperty(event.element);
+      let type = event.element.type;
+      if (type === 'bpmn:Process') {
+        this.flowInfo = this.getDisplayProperty(type, this.xflowData, event.element);
         this.sP = false;
         this.task = false;
         this.taskHeader = {
@@ -234,7 +256,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'pHeader': 'Flow'
         };
       } else if (event.element.type === 'bpmn:SubProcess') {
-        let res = this.getDisplayProperty(event.element)
+        console.log("SubProcess JSON flow =<", JSON.parse(this.jsonWorkflow), "events", event)
+        let subProcessFlow = JSON.parse(this.jsonWorkflow).Flows.filter((sbf:any) => sbf.Name.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
+        console.log(subProcessFlow[0])
+        let res = this.getDisplayProperty(type, subProcessFlow[0], event.element)
         this.flowInfo = res.fI;
         this.userTask = res.uT;
         this.serviceTask = res.sT;
@@ -246,8 +271,21 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'pHeader': 'Flow'
         };
       } else if (event.element.type === 'bpmn:UserTask' || event.element.type === 'bpmn:ServiceTask') {
+        
+        console.log("inside getElement -< JSON flow", JSON.parse(this.jsonWorkflow), "event", event)
+        let subProcessFlow = JSON.parse(this.jsonWorkflow).Flows.filter((sbf:any) => sbf.Name.toLowerCase().trim() === event.element.businessObject.$parent.name.toLowerCase().trim());
+        console.log("subProcessFlow",subProcessFlow )
+        let userTask, serviceTask;
+        if (type === 'bpmn:UserTask' ){
+          userTask = subProcessFlow[0].UserFlow.filter((uT:any) => uT.TaskId.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
+          this.flowInfo = this.getDisplayProperty(type, userTask, '');
+        } else if (type === 'bpmn:ServiceTask'){
+          serviceTask = subProcessFlow[0].BackendFlow.filter((uT:any) => uT.TaskId.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
+          this.flowInfo = this.getDisplayProperty(type, serviceTask, '');
+        } else {}
+        console.log("userTask", userTask, "serviceTask", serviceTask)
+
         let pHeader = '';
-        this.flowInfo = this.getDisplayProperty(event.element);
         this.task = true;
         this.sP = false;
         this.elementList = event.element;
@@ -266,26 +304,39 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
 
-  getDisplayProperty(element: any) {
-    let flowElements = element.businessObject.flowElements;
-    let userTasks, serviceTasks;
-    if (element.type === 'bpmn:Process') {
-      flowElements = flowElements.filter((fe: any) => fe.$type === 'bpmn:SubProcess');
-      for (let i = 0; i < flowElements.length; i++) {
-        flowElements[i].index = i;
-        flowElements[i].label = 'Flow ' + (i + 1);
-      }
-      return flowElements;
-    } else if (element.type === 'bpmn:SubProcess') {
+  getDisplayProperty(elementType:String, element:any, eventElement:any) {
+    
+    if (elementType === 'bpmn:Process') {
+      console.log("element", element)
+      let flow = element.Flows.map((f:any, index:number) => {
+        return {
+          "index": index,
+          "label": "Flow" + (index+1),
+          "name": f.Name
+        }
+      })
+      return flow;
+    } else if (elementType === 'bpmn:SubProcess') {
+      let flowElements = eventElement?.businessObject?.flowElements;
+      let userTasks, serviceTasks;
+      let roles, prevFlow, nextFlow ;
+      if(element.Roles && element.Roles.length>0) roles = element.Roles.reduce((acc:string, cur:string) => acc + " " + cur);
+      else roles = element.Roles;
+      if(element.PreviousFlow && element.PreviousFlow.length>0) prevFlow = element.PreviousFlow.reduce((acc:string, cur:string) => acc + " " + cur);
+      else prevFlow = element.SequenceFlow;
+      if(element.NextFlow && element.NextFlow.length>0) nextFlow = element.NextFlow.reduce((acc:string, cur:string) => acc + " " + cur);
+      else nextFlow = element.NextFlow;
+
       let flow_Info = [
-        { 'index': 0, 'label': 'Name', 'name': element.businessObject.name },
-        { 'index': 1, 'label': 'type', 'name': element.type },
-        { 'index': 2, 'label': 'Role', 'name': '' },
-        { 'index': 3, 'label': 'StartEvent', 'name': flowElements[0].id },
-        { 'index': 4, 'label': 'EndEvent', 'name': flowElements[flowElements.length - 1].id },
-        { 'index': 5, 'label': 'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name },
-        { 'index': 6, 'label': 'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name },
+        { 'index': 0, 'label': 'Name', 'name': element.Name },
+        { 'index': 1, 'label': 'Type', 'name': elementType },
+        { 'index': 2, 'label': 'Role', 'name': roles },
+        { 'index': 3, 'label': 'StartEvent', 'name': element.StartEvent },
+        { 'index': 4, 'label': 'EndEvent', 'name': element.EndEvent},
+        { 'index': 5, 'label': 'NextEvent', 'name': nextFlow },
+        { 'index': 6, 'label': 'PreviousEvent', 'name': prevFlow },
       ];
+
       userTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:UserTask');
       serviceTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:ServiceTask');
       for (let i = 0; i < userTasks.length; i++) {
@@ -294,28 +345,35 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       for (let i = 0; i < serviceTasks.length; i++) {
         serviceTasks[i].index = i;
       }
+
       return {
         'fI': flow_Info,
         'uT': userTasks,
         'sT': serviceTasks
       };
 
-    } else if (element.type === 'bpmn:UserTask' || element.type === 'bpmn:ServiceTask') {
-      let business_obj = element.businessObject;
-      let start_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:StartEvent')[0];
-      let end_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:EndEvent')[0];
-      // flowElements = flowElements.filter((fe:any) => fe.$type ==='bpmn:UserTask');
+    } else if (elementType === 'bpmn:UserTask' || elementType === 'bpmn:ServiceTask') {
+      console.log("JSON workflow",JSON.parse(this.jsonWorkflow), "element", element);
+      let roles, seqFlow, condition = '';
+      if(element[0].Roles.length>0) roles = element[0].Roles.reduce((acc:string, cur:string) => acc + " " + cur);
+      else roles = element[0].Roles;
+      if(element[0].SequenceFlow.length>0) seqFlow = element[0].SequenceFlow.reduce((acc:string, cur:string) => acc + " " + cur);
+      else seqFlow = element[0].SequenceFlow;
+      for (let i =0; i<element[0].Condition.length; i++){
+        condition = condition + ' ' + element[0].Condition[i].Name;
+      }
+      console.log(roles, seqFlow, condition)
       let flow_Info = [
-        { 'index': 0, 'label': 'UserTask', 'name': business_obj.name },
-        { 'index': 1, 'label': 'Role', 'name': business_obj.extensionElements.values[0].candidateGroups },
-        { 'index': 2, 'label': 'Entity', 'name': business_obj.$parent.$parent.name },
-        { 'index': 3, 'label': 'TaskStatus', 'name': '' },
-        { 'index': 4, 'label': 'StartEvent', 'name': start_event.id },
-        { 'index': 5, 'label': 'EndEvent', 'name': end_event.id },
-        { 'index': 6, 'label': 'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name },
-        { 'index': 7, 'label': 'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name },
-        { 'index': 8, 'label': 'Condition', 'name': '' },
-        { 'index': 9, 'label': 'EntityState', 'name': '' },
+        { 'index': 0, 'label': 'UserTask', 'name': element[0].TaskId },
+        { 'index': 1, 'label': 'Role', 'name': roles },
+        { 'index': 2, 'label': 'Entity', 'name': element[0].Entity },
+        { 'index': 3, 'label': 'TaskStatus', 'name': element[0].TaskStatus },
+        { 'index': 4, 'label': 'StartEvent', 'name': element[0].StartEvent },
+        { 'index': 5, 'label': 'EndEvent', 'name': element[0].EndEvent },
+        { 'index': 6, 'label': 'SequenceFlow', 'name':  seqFlow},
+        { 'index': 7, 'label': 'PreviousEvent', 'name': '' },
+        { 'index': 8, 'label': 'Condition', 'name': condition },
+        { 'index': 9, 'label': 'EntityState', 'name': element[0].EntityState },
       ];
       return flow_Info;
     } else {
@@ -346,8 +404,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   loadXFlows(xFlowJson: any): void {
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
       this.xml = response?.data;
+      console.log(this.xml)
       const layoutedDiagramXML = await layoutProcess(this.xml);
       this.importDiagram(layoutedDiagramXML);
+      this.utilService.loadSpinner(false);
     }).catch(error => {
       console.log('error', error);
     });
@@ -425,6 +485,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       let e = event.target.__data__;
       let flow = e.data.title;
       if (e.depth ==2) {
+        this.utilService.loadSpinner(true);
         this.showUsecaseGraph = false;
         var bpmnWindow = document.getElementById("diagramRef");
         if(bpmnWindow) bpmnWindow.style.display = '';
@@ -451,7 +512,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       // Compute the tree height; this approach will allow the height of the
       // SVG to scale according to the breadth (width) of the tree layout.
       const root = d3.hierarchy(data);
-      const dx = 30;
+      const dx = 50;
       const dy = width / (root.height + 1);
       // Create a tree layout.
       const tree = d3.tree().nodeSize([dx, dy]);
@@ -575,14 +636,21 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr('y', '-1.5em')
           .attr('x', (d:any)=> {return -7.5*d.data.title.length;})
           .attr("rx", 15)
+          .style("stroke", '#959595')
+          .style("stroke-width", 2)
       
       nodeC.append("text")
-          .attr('x', (d:any)=> {return d.data.title.length-3})
+          .attr('x', (d:any)=> {return d.data.title.length})
           .attr('y', '15')
-          .attr('dy', '-1.2em')
+          .attr('dy', '-0.8em')
         // .attr("dy", "0.3em")
-        .attr("dx", (d:any)=> {return-d.data.title.length*3})
-        .attr("text-anchor", (d:any) => d.children ? "start" : "end")
+        .attr("dx", (d:any)=> {return-d.data.title.length*1.5})
+        // .attr("text-anchor", (d:any) => d.children ? "start" : "end")
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .style("font-size", "14px")
+        .style("font-weight", 600)
+        .style("fill", "#000000")
         .text((d:any) => {return d.data.role})
       .clone(true).lower()
         .attr("stroke", "white");
@@ -594,14 +662,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         .data(leftNodes)
         .join("g")
           .attr("transform", (d:any) => `translate(${-d.y/2},${d.x})`)
-          .attr("cursor", "pointer")
+          .attr("cursor", (d:any)=> { if(d.depth ==2) return "pointer";
+                                      else return "text"})
           .attr("pointer-events", "all");
       nodeL.append("circle")
           .attr("fill", (d:any) => d.children ? "#555" : "#999")
           .attr("r", 3.5);
       nodeL.append("rect")
             // .attr("class", "rect")
-            .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.length*4;
+            .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.length*4.2;
                                         else return d.data.title.length*8;})
             // .attr("width", "120")
             .attr("height", (d:any)=> { if(d.depth ==1) return 40;
@@ -612,31 +681,43 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
             .attr("x", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
                                     else return -d.data.title.length*7;})
             .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
-                                    else return '-1em'})
+                                    else return '-1.5em'})
             .attr("rx", (d:any)=> { if(d.depth ==1) return 15;
                                     else return 10})
+            .style("stroke", '#959595')
+            .style("stroke-width", 2)
       
       nodeL.append("text")
-            .attr('x', (d:any)=> {d.data.title.length-3})
+            .attr('x', (d:any)=> {return d.data.title.length*1.8})
             .attr('y', '15')
-            .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.4em';
-                                    else return '-1.2em'})
+            .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
+                                    else return '-1.4em'})
           // .attr("dy", "0.3em")
-          .attr("dx", (d:any)=> { if(d.depth ==1) return -d.data.title.length*2;
+          .attr("dx", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
                                   else return -d.data.title.length*5})
+                                  
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("fill", "#767474")
+          .style("font-weight", 550)
           // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
           // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
           .text((d:any) => {return d.data.title.split("-")[0]})
         .clone(true).lower()
           .attr("stroke", "white");
     nodeL.append("text")
-          .attr('x', (d:any)=> {d.data.title.length-3})
+          .attr('x', (d:any)=> {return d.data.title.length*1.5})
           .attr('y', '15')
-          .attr('dy', '-1.00em')
+          .attr('dy', '-0.8em')
         // .attr("dy", "0.3em")
-        .attr("dx", (d:any)=> {return -d.data.title.length*2.7;})
-        .attr("text-anchor", (d:any) => d.children ? "start" : "end")
-        .text((d:any) => {return d.data.title.split("-")[1]})
+        .attr("dx", (d:any)=> {return -d.data.title.length*2.4;})
+        // .attr("text-anchor", (d:any) => d.children ? "start" : "end")
+        
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .style("font-weight", 550)
+        .style("fill", "#000000")
+        .text((d:any) => {return d.data.title.split("-").slice(1)})
       .clone(true).lower()
         .attr("stroke", "white");
       
@@ -659,8 +740,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       
       nodeR.append("rect")
             // .attr("class", "rect")
-            .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.length*4;
-                                        else return d.data.title.length*8;})
+            .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.1;
+                                        else return d.data.title.trim().length*8;})
             // .attr("width", "120")
             .attr("height", (d:any)=> { if(d.depth ==1) return 40;
                                         else return 30;})
@@ -669,31 +750,45 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
             // .attr("fill", "#FFFFFA")
             .attr("x", (d:any)=> {return -d.data.title.length*1;})
             .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
-                                    else return '-1em'})
+                                    else return '-1.4em'})
             .attr("rx", (d:any)=> { if(d.depth ==1) return 15;
                                     else return 10})
+            .attr("stroke-width", "8") 
+            .style("stroke", '#959595')
+            .style("stroke-width", 2)
       
       nodeR.append("text")
-            .attr('x', (d:any)=> {d.data.title.length-3})
+            .attr('x', (d:any)=> {return d.data.title.length;})
             .attr('y', '15')
-            .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.4em';
-                                    else return '-1.2em'})
+            .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
+                                    else return '-1.4em'})
           // .attr("dy", "0.3em")
-          .attr("dx", (d:any)=> {return d.data.title.length*0.2;})
-          // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
+                                  else return '1.5em'})
+          // .attr("dx", "0.5em")
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("fill", "#767474")
+          .style("font-weight", 550)
           // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
           .text((d:any) => {return d.data.title.split("-")[0]})
         .clone(true).lower()
           .attr("stroke", "white");
       nodeR.append("text")
-            .attr('x', (d:any)=> {d.data.title.length-3;})
+            .attr('x', (d:any)=> {return d.data.title.length;})
             .attr('y', '15')
-            .attr('dy', '-1.00em')
+            .attr('dy', '-0.8em')
+            
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("font-weight", 550)
+          .style("fill", "#000000")
           // .attr("dy", "0.3em")
-          .attr("dx", (d:any)=> {return -d.data.title.length*0.5;})
+          // .attr("dx", (d:any)=> {return -d.data.title.length*0.5;})
+          // .attr("dx", "0.5em")
           // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
           // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-          .text((d:any) => {return d.data.title.split("-")[1]})
+          .text((d:any) => {return d.data.title.split("-").slice(1)})
         .clone(true).lower()
           .attr("stroke", "white")
       console.log(nodeL,nodeR)

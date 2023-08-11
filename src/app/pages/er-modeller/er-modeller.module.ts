@@ -26,6 +26,7 @@ import { PanelModule } from 'primeng/panel';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     PanelModule,
     AvatarGroupModule,
     AvatarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    BreadcrumbModule
   ],
   providers: [DataService, JsPlumbService, UtilService],
 })
