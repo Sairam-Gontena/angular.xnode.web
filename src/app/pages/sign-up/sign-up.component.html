@@ -75,6 +75,7 @@
                             <input pInputText id="email"
                                 placeholder="Please enter email"
                                 formControlName="email"
+                                autocomplete="userName"
                                 [ngClass]="{ 'is-invalid': submitted && signUp['email'].errors }"
                                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
                             <div *ngIf="submitted && signUp['email'].errors"
@@ -90,13 +91,12 @@
                             class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                             <label htmlFor="password"
                                 class="font-medium text-base">Password</label>
-                            <p-password formControlName="password"
-                                class="password-field"
-                                [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
-                                [toggleMask]="true"
-                                [style]="{'width':'100%'}"
-                                [inputStyle]="{'width':'100%', 'height': '42px'}"
-                                placeholder="Enter password"></p-password>
+                                <input pInputText type="password" formControlName="password"
+                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                                    [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
+                                    [style]="{'width':'100%', 'height': '42px'}"
+                                    placeholder="Enter password"
+                                    autocomplete="current-password">
                             <div *ngIf="submitted && signUp['password'].errors"
                                 class="invalid-feedback">
                                 <div

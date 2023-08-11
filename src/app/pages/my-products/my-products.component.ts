@@ -32,7 +32,9 @@ export class MyProductsComponent implements OnInit {
   ngOnInit(): void {
     this.utilService.loadSpinner(true);
     localStorage.removeItem('record_id');
-    localStorage.removeItem('app_name')
+    localStorage.removeItem('app_name');
+    // localStorage.getItem('record_id')
+
     this.getMeUserId();
 
   }
