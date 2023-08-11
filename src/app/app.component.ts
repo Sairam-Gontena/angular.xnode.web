@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
+    this.currentPath = window.location.hash;
   }
 
   loadIframeUrl(): void {
@@ -98,7 +99,10 @@ export class AppComponent implements OnInit {
         this.loadIframeUrl();
       }, 2000);
     } else {
-      alert("Invalid record id")
+      // alert("Invalid record id")
+      let rawUrl = environment.naviUrl;
+      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      this.loadIframeUrl();
     }
 
   }
@@ -141,7 +145,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases" || window.location.hash === "#/my-products"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
   }
 

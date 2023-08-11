@@ -1,13 +1,20 @@
 <div class="w-full h-full overflow-hidden">
     <div class="w-full" *ngIf="isUserExists()">
         <span (click)="submenuFunc()">
-            <xnode-bot [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
-        <xnode-app-header></xnode-app-header>
+            <xnode-bot [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot>
+        </span>
+        <span *ngIf="currentPath !== '#/my-products'">
+            <xnode-app-header></xnode-app-header>
+        </span>
         <div class="flex" *ngIf="currentPath !== '#/x-pilot'">
-            <div class="app-side-menu-wrapper">
-                <xnode-app-side-menu></xnode-app-side-menu>
+            <div class="app-side-menu-wrapper" *ngIf="currentPath !== '#/my-products'">
+                <span>
+                    <xnode-app-side-menu></xnode-app-side-menu>
+                </span>
             </div>
-            <div class=" app-body-wrapper">
+            <div class="app-body-wrapper" [ngClass]="{
+                'w-full':currentPath == '#/my-products' || currentPath == '#/x-pilot'
+                }" >
                 <router-outlet></router-outlet>
             </div>
             <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
