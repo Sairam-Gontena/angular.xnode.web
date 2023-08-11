@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   isSideWindowOpen: boolean = false;
   email: String = '';
   id: String = '';
-  loading?: boolean;
+  loading: boolean = true;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService) {
+    private subMenuLayoutUtil: UtilsService,
+    private changeDetector: ChangeDetectorRef,) {
   }
 
   ngOnInit(): void {
@@ -40,7 +41,12 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      this.loading = event;
+      setTimeout(() => {
+        this.loading = event;
+      }, 0);
+      // Promise.resolve().then(() => {
+      // });
+
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
@@ -110,28 +116,32 @@ export class AppComponent implements OnInit {
   getMeComponent() {
     let comp = '';
     switch (this.router.url) {
-      case '/design':
-        comp = 'dashboard'
-        break;
-      case '/overview':
-        comp = 'overview'
-        break;
-      case '/usecases':
-        comp = 'usecases'
-        break;
-      case '/configuration/workflow/overview':
-        comp = 'xflows'
-        break;
-      case '/configuration/data-model/overview':
-        comp = 'data_model'
-        break;
-      default:
-        break;
+    case '/design':
+      comp = 'dashboard'
+      break;
+    case '/overview':
+      comp = 'overview'
+      break;
+    case '/usecases':
+      comp = 'usecases'
+      break;
+    case '/configuration/workflow/overview':
+      comp = 'xflows'
+      break;
+    case '/configuration/data-model/overview':
+      comp = 'data_model'
+      break;
+    default:
+      break;
     }
     return comp;
   }
 
   get_Conversation() {
+    console.log("================================================")
+    console.log("================================================")
+    console.log(this.email)
+    console.log(localStorage.getItem('record_id'))
     this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
