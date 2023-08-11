@@ -134,6 +134,10 @@ export class AppComponent implements OnInit {
   }
 
   get_Conversation() {
+    console.log("================================================")
+    console.log("================================================")
+    console.log(this.email)
+    console.log(localStorage.getItem('record_id'))
     this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
