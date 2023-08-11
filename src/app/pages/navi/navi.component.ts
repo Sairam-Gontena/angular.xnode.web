@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ElementRef } from 'jsplumb';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -16,9 +16,10 @@ export class NaviComponent implements OnInit {
     private router: Router,
     private domSanitizer: DomSanitizer,) {
   }
-  targetUrl: string = environment.xpilotUrl;
+  targetUrl: string = environment.naviUrl;
   safeUrl: SafeResourceUrl = '';
   baseUrl: string = environment.baseUrl;
+
   ngOnInit(): void {
     //get user data from local storage
     let userData: any
@@ -30,7 +31,10 @@ export class NaviComponent implements OnInit {
     }
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&productContext=' + localStorage.getItem('record_id') + '&targetUrl=' + environment.baseUrl;
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.baseUrl;
+    if (localStorage.getItem('record_id')) {
+      this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
+    }
     // Needs to be refactor
     // Add a load event listener to the iframe
     iframe.addEventListener('load', () => {
@@ -64,17 +68,11 @@ export class NaviComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
-    console.log('????', this.targetUrl);
-
     this.safeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
   onClickContinue(): void {
     this.router.navigate(['/design']);
-  }
-
-  onClickHome(): void {
-    this.router.navigate(['/my-products']);
   }
 
 }

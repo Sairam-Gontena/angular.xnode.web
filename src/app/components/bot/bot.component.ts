@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Output, EventEmitter, Input } from '@angular/core';
 
@@ -10,12 +10,12 @@ import { Output, EventEmitter, Input } from '@angular/core';
 
 export class BotComponent implements OnInit {
 
-  constructor(private elementRef: ElementRef,private router: Router) {
+  constructor(private elementRef: ElementRef, private router: Router) {
   }
   // @Output() chatBotFlag = new EventEmitter<boolean>();
   @Output() valueChange = new EventEmitter<any>();
   @Input() botDisplayFlag: boolean = true;
-  
+
   private isDragging: boolean = false;
   private initialX: number = 0;
   private initialY: number = 0;
@@ -26,8 +26,7 @@ export class BotComponent implements OnInit {
 
   onClickContinue(): void {
     let productContext = localStorage.getItem('record_id');
-    this.valueChange.emit({'productContext': productContext, 'cbFlag':true});
-    // this.router.navigate(['/x-pilot']);
+    this.valueChange.emit({ 'productContext': productContext, 'cbFlag': true });
   }
   ngOnInit(): void {
     this.botContainer = this.elementRef.nativeElement.querySelector('#botContainer');
