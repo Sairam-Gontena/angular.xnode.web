@@ -10,7 +10,7 @@
             <div class=" app-body-wrapper">
                 <router-outlet></router-outlet>
             </div>
-            <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
+            <div id="side-window" class="side-window overflow-y-hidden" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
                 <div class="content-class-pilot h-full">
                     <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                         class="w-full h-full pl-0 pr-1">
