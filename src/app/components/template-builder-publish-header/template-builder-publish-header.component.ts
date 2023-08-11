@@ -164,6 +164,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             value: obj.id,
             url: obj.product_url !== undefined ? obj.product_url : ''
           }));
+          console.log(response.data.data)
           this.templates = data;
         }
       })
