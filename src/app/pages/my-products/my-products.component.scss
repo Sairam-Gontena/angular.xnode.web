@@ -76,25 +76,74 @@
     letter-spacing: 1px;
 }
 
+// .card-grid {
+//     display: grid;
+//     // grid-template-columns: repeat(auto-fit, minmax(314px, 1fr));
+//     grid-template-columns: repeat(4, 1fr);
+//     /* 4 cards for desktop */
+//     grid-gap: 45px;
+//     grid-row-gap: 70px;
+
+//     @media (max-width: 1200px) {
+//         grid-template-columns: repeat(3, 1fr);
+//         /* 3 cards for larger screens */
+//     }
+
+//     @media (max-width: 1024px) {
+//         grid-template-columns: repeat(2, 1fr);
+//         /* 2 cards for iPad */
+//     }
+
+//     @media (max-width: 600px) {
+//         grid-template-columns: 1fr;
+//         justify-content: center;
+//         /* 1 card for mobile */
+//     }
+// }
+
 .card-grid {
-    display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(314px, 1fr));
-    grid-template-columns: repeat(4, 1fr);
-    /* 4 cards for desktop */
-    grid-gap: 45px;
-    grid-row-gap: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: -22.5px;
+    row-gap: 4rem !important;
 
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 cards for iPad */
-    }
+    /* Adjust for the grid-gap */
+}
 
-    @media (max-width: 600px) {
-        grid-template-columns: 1fr;
-        justify-content: center;
-        /* 1 card for mobile */
+.card-item {
+    width: calc(25% - 45px);
+    /* Adjust for the grid-gap */
+    margin: 22.5px;
+    /* Half of the grid-gap */
+}
+
+@media (max-width: 1200px) {
+    .card-item {
+        width: calc(75% - 45px);
+        /* Adjust for the grid-gap */
+        margin: 22.5px;
+        /* Half of the grid-gap */
     }
 }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+    .card-item {
+        width: calc(50% - 45px);
+        /* Adjust for the grid-gap */
+    }
+}
+
+@media (max-width: 600px) {
+    .card-item {
+        width: calc(100% - 45px);
+        /* Adjust for the grid-gap */
+        margin: 22.5px auto;
+        /* Center the single card */
+    }
+}
+
 
 .overlay {
     position: relative;

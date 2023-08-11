@@ -3,7 +3,7 @@
         <span (click)="submenuFunc()">
             <xnode-bot [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot>
         </span>
-        <span *ngIf="currentPath !== '#/my-products'">
+        <span >
             <xnode-app-header></xnode-app-header>
         </span>
         <div class="flex" *ngIf="currentPath !== '#/x-pilot'">
@@ -13,7 +13,7 @@
                 </span>
             </div>
             <div class="app-body-wrapper" [ngClass]="{
-                'w-full':currentPath == '#/my-products' || currentPath == '#/x-pilot'
+                'w-full':currentPath === '#/my-products' || currentPath === '#/x-pilot'
                 }" >
                 <router-outlet></router-outlet>
             </div>
