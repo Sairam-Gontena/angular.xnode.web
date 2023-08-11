@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
-
+  targetUrl: string = environment.naviUrl;
+  currentPath = window.location.hash;
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
@@ -51,6 +52,33 @@ export class AppComponent implements OnInit {
       this.messageService.add(event);
     });
   }
+
+  loadIframeUrl(): void {
+    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    iframe.addEventListener('load', () => {
+      const contentWindow = iframe.contentWindow;
+      if (contentWindow) {
+        // Add an event listener to listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+          // Check the origin of the message to ensure it's from the iframe's domain
+          if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+            console.log('not matched');
+            return; // Ignore messages from untrusted sources
+          }
+          // Check the message content and trigger the desired event
+          if (event.data === 'triggerCustomEvent') {
+            this.isSideWindowOpen = false;
+            const customEvent = new Event('customEvent');
+            window.dispatchEvent(customEvent);
+          }
+        });
+        // Trigger the message to the iframe
+        // contentWindow.postMessage(data, this.targetUrl);
+      }
+    });
+  }
+
+
   handleRouterChange() {
     this.isSideWindowOpen = false;
   }
@@ -67,16 +95,18 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
-      let rawUrl = environment.xpilotUrl + '?email=' + this.email +
+      let rawUrl = environment.naviUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.baseUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.loadIframeUrl();
       }, 2000);
     } else {
       alert("Invalid record id")
     }
+
   }
 
   getMeComponent() {
@@ -117,7 +147,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
   }
 

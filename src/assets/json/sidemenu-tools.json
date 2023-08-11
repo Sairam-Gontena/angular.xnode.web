@@ -288,8 +288,35 @@
                                    "routerlink": ""
                               },
                               {
-                                   "id": "Add Entitlement",
-                                   "imgSrc": "./assets/Add Entitlements.svg",
+                                   "id": "Users",
+                                   "imgSrc": "./assets/users.png",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Roles",
+                                   "imgSrc": "./assets/roles.png",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "User Groups",
+                                   "imgSrc": "./assets/userGroups.png",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Permissions",
+                                   "imgSrc": "./assets/permissions.png",
                                    "selectedContainer": "Add Entitlement",
                                    "alt": "AddEntitlement",
                                    "content": "Add Entitlement",
@@ -299,39 +326,7 @@
                          ]
                     },
                     {
-                         "accordianHeader": "Business Rules",
-                         "accordianContent": [
-                              {
-                                   "id": "Overview",
-                                   "imgSrc": "./assets/Overview 3.svg",
-                                   "selectedContainer": "Overview",
-                                   "alt": "Overview",
-                                   "content": "Overview",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              },
-                              {
-                                   "id": "New Rule",
-                                   "imgSrc": "./assets/New Rule.svg",
-                                   "selectedContainer": "New Rule",
-                                   "alt": "NewRule",
-                                   "content": "New Rule",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              },
-                              {
-                                   "id": "Edit Rule",
-                                   "imgSrc": "./assets/Edit Rule.svg",
-                                   "selectedContainer": "Edit Rule",
-                                   "alt": "EditRule",
-                                   "content": "Edit Rule",
-                                   "hasrouter": "false",
-                                   "routerlink": ""
-                              }
-                         ]
-                    },
-                    {
-                         "accordianHeader": "Work Flows",
+                         "accordianHeader": "X Flows",
                          "accordianContent": [
                               {
                                    "id": "Overview",
@@ -343,20 +338,20 @@
                                    "routerlink": "/configuration/workflow/overview"
                               },
                               {
-                                   "id": "New Flow",
-                                   "imgSrc": "./assets/New Flow.svg",
-                                   "selectedContainer": "New Flow",
-                                   "alt": "NewFlow",
-                                   "content": "New Flow",
+                                   "id": "New Rule",
+                                   "imgSrc": "./assets/newRule.svg",
+                                   "selectedContainer": "New Rule",
+                                   "alt": "NewFRule",
+                                   "content": "New Rule",
                                    "hasrouter": "false",
                                    "routerlink": ""
                               },
                               {
-                                   "id": "Edit Flow",
-                                   "imgSrc": "./assets/Edit Flow.svg",
-                                   "selectedContainer": "Edit Flow",
-                                   "alt": "EditFlow",
-                                   "content": "Edit Flow",
+                                   "id": "Edit Rule",
+                                   "imgSrc": "./assets/editRule.svg",
+                                   "selectedContainer": "Edit Rule",
+                                   "alt": "EditRule",
+                                   "content": "Edit Rule",
                                    "hasrouter": "false",
                                    "routerlink": ""
                               }
@@ -456,7 +451,7 @@
                          ]
                     },
                     {
-                         "accordianHeader": "Entitlement",
+                         "accordianHeader": "Entitlements",
                          "accordianContent": [
                               {
                                    "id": "Overview",
@@ -468,8 +463,35 @@
                                    "routerlink": ""
                               },
                               {
-                                   "id": "Add Entitlement",
-                                   "imgSrc": "./assets/Add Entitlements.svg",
+                                   "id": "Users",
+                                   "imgSrc": "./assets/users.png",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Roles",
+                                   "imgSrc": "./assets/roles.png",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "User Groups",
+                                   "imgSrc": "./assets/userGroups.png",
+                                   "selectedContainer": "Add Entitlement",
+                                   "alt": "AddEntitlement",
+                                   "content": "Add Entitlement",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Permissions",
+                                   "imgSrc": "./assets/permissions.png",
                                    "selectedContainer": "Add Entitlement",
                                    "alt": "AddEntitlement",
                                    "content": "Add Entitlement",
