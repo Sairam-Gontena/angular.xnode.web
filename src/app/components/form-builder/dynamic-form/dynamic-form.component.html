@@ -1,0 +1,14 @@
+<div>
+  <form [formGroup]="formGroup">
+
+    <div *ngFor="let control of inputControls " class="form-row"> </div>
+
+    <div class="form-row">
+      <button type="submit" [disabled]="true">Save</button>
+    </div>
+  </form>
+
+  <div  class="form-row">
+    <strong>Saved the following values</strong><br>
+  </div>
+</div>
