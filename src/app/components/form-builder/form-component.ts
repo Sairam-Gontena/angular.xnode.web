@@ -6,7 +6,7 @@ export class FormComponent {
   controlType: string;
   type: string;
   order: number;
-  options: { key: string; value: string }[];
+  options?: { key: string; value: string }[];
 
   constructor(
     options: {
