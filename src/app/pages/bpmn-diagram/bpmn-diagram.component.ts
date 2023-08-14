@@ -16,7 +16,10 @@ import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
-import { UtilsService } from '../../components/services/utils.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
+import { MenuItem } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
+// import { UtilsService } from '../../components/services/utils.service';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -47,13 +50,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   sideBar: boolean = false;
   showUsecaseGraph: boolean = true;
   useCases: any;
+  items: MenuItem[] | undefined;
+  home: MenuItem | undefined;
+  xflowData: any;
 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   isOpen: boolean = true;
   templates: any;
   testData: any;
-  constructor(private api: ApiService, private utilsService: UtilsService,) {
 
+  constructor(private api: ApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
+  
   }
 
   ngOnInit(): void {
@@ -61,20 +68,33 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ];
-    this.showUsecaseGraph = true;
-    var bpmnWindow = document.getElementById("diagramRef");
-    if (bpmnWindow) bpmnWindow.style.display = 'None';
-    var graphWindow = document.getElementById("sc");
-    if (graphWindow) graphWindow.style.display = '';
-    // this.getFlow();
+
+    setTimeout(()=> {
+      this.showUsecaseGraph = true;
+      var bpmnWindow = document.getElementById("diagramRef");
+      if (bpmnWindow) bpmnWindow.style.display = 'None';
+      var graphWindow = document.getElementById("sc");
+      if (graphWindow) graphWindow.style.display = '';
+    }, 0);
+    
     setTimeout(() => {
-      console.log("usecase", this.useCases)
       if (this.showUsecaseGraph) this.get_Usecases();
     }, 500);
 
     this.initializeBpmn();
+    this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
+    this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
 
-    // this.initializeBpmn();
+  }
+
+  switchWindow(){
+    var bpmnWindow = document.getElementById("diagramRef");
+    if(bpmnWindow) bpmnWindow.style.display = 'None';
+    var graphWindow = document.getElementById("sc");
+    if(graphWindow) graphWindow.style.display = '';
+
+    if(this.bpmnJS) this.bpmnJS.destroy();
+    this.initializeBpmn();
   }
 
 
@@ -113,7 +133,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
-    console.log(this.bpmnJS)
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       this.getElement();
     });
@@ -134,23 +153,18 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
 
   getFlow(flow: String) {
-    console.log("input", flow)
     this.currentUser = UserUtil.getCurrentUser();
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let appName = localStorage.getItem('app_name')
-        console.log("xflows response data", response.data)
         let xflowJson = {
           'Flows': response.data.Flows.filter((f: any) => f.Name.toLowerCase() === flow.toLowerCase()),
           'Product': appName
         };
-        // let xflowJson = response.data
-
-        // xflowJson.Product = appName;
-        console.log(xflowJson)
+        this.xflowData = response.data;
+        
         this.loadXFlows(xflowJson);
-
-        this.jsonWorkflow = JSON.stringify(response.data, null, 2);
+        this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
@@ -158,8 +172,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     }).catch(error => {
       console.log('error', error);
       this.loadXFlows(workflow);
-      this.utilsService.loadSpinner(false);
-
+      this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     });
     this.getOverview();
   }
@@ -177,10 +190,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
 
   ngAfterContentInit(): void {
-    // this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
-    // var element = this.bpmnJS.get('elementRegistry')._elements;
-
-    // const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
 
   }
 
@@ -189,7 +198,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // this.graph('this is the data')
     let currentUserString = localStorage.getItem('currentUser');
     let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
-    console.log(currentUser)
     this.api.get("/retrive_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -204,8 +212,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .catch(error => {
         console.log(error);
         this.utilsService.loadSpinner(false);
-        // this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        // this.utilService.loadSpinner(false);
       });
   }
 
@@ -227,9 +233,11 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   getElement() {
     this.sidebarVisible = true;
+    
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
-      if (event.element.type === 'bpmn:Process') {
-        this.flowInfo = this.getDisplayProperty(event.element);
+      let type = event.element.type;
+      if (type === 'bpmn:Process') {
+        this.flowInfo = this.getDisplayProperty(type, this.xflowData, event.element);
         this.sP = false;
         this.task = false;
         this.taskHeader = {
@@ -238,7 +246,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'pHeader': 'Flow'
         };
       } else if (event.element.type === 'bpmn:SubProcess') {
-        let res = this.getDisplayProperty(event.element)
+        let subProcessFlow = JSON.parse(this.jsonWorkflow).Flows.filter((sbf:any) => sbf.Name.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
+        let res = this.getDisplayProperty(type, subProcessFlow[0], event.element)
         this.flowInfo = res.fI;
         this.userTask = res.uT;
         this.serviceTask = res.sT;
@@ -249,9 +258,19 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'task': event.element.businessObject.name,
           'pHeader': 'Flow'
         };
+
       } else if (event.element.type === 'bpmn:UserTask' || event.element.type === 'bpmn:ServiceTask') {
+        let subProcessFlow = JSON.parse(this.jsonWorkflow).Flows.filter((sbf:any) => sbf.Name.toLowerCase().trim() === event.element.businessObject.$parent.name.toLowerCase().trim());
+        let userTask, serviceTask;
+        if (type === 'bpmn:UserTask' ){
+          userTask = subProcessFlow[0].UserFlow.filter((uT:any) => uT.TaskId.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
+          this.flowInfo = this.getDisplayProperty(type, userTask, '');
+        } else if (type === 'bpmn:ServiceTask'){
+          serviceTask = subProcessFlow[0].BackendFlow.filter((uT:any) => uT.TaskId.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
+          this.flowInfo = this.getDisplayProperty(type, serviceTask, '');
+        } else {}
+
         let pHeader = '';
-        this.flowInfo = this.getDisplayProperty(event.element);
         this.task = true;
         this.sP = false;
         this.elementList = event.element;
@@ -271,26 +290,38 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
 
-  getDisplayProperty(element: any) {
-    let flowElements = element.businessObject.flowElements;
-    let userTasks, serviceTasks;
-    if (element.type === 'bpmn:Process') {
-      flowElements = flowElements.filter((fe: any) => fe.$type === 'bpmn:SubProcess');
-      for (let i = 0; i < flowElements.length; i++) {
-        flowElements[i].index = i;
-        flowElements[i].label = 'Flow ' + (i + 1);
-      }
-      return flowElements;
-    } else if (element.type === 'bpmn:SubProcess') {
+  getDisplayProperty(elementType:String, element:any, eventElement:any) {
+    
+    if (elementType === 'bpmn:Process') {
+      let flow = element.Flows.map((f:any, index:number) => {
+        return {
+          "index": index,
+          "label": "Flow" + (index+1),
+          "name": f.Name
+        }
+      })
+      return flow;
+    } else if (elementType === 'bpmn:SubProcess') {
+      let flowElements = eventElement?.businessObject?.flowElements;
+      let userTasks, serviceTasks;
+      let roles, prevFlow, nextFlow ;
+      if(element.Roles && element.Roles.length>0) roles = element.Roles.reduce((acc:string, cur:string) => acc + " " + cur);
+      else roles = element.Roles;
+      if(element.PreviousFlow && element.PreviousFlow.length>0) prevFlow = element.PreviousFlow.reduce((acc:string, cur:string) => acc + " " + cur);
+      else prevFlow = element.SequenceFlow;
+      if(element.NextFlow && element.NextFlow.length>0) nextFlow = element.NextFlow.reduce((acc:string, cur:string) => acc + " " + cur);
+      else nextFlow = element.NextFlow;
+
       let flow_Info = [
-        { 'index': 0, 'label': 'Name', 'name': element.businessObject.name },
-        { 'index': 1, 'label': 'type', 'name': element.type },
-        { 'index': 2, 'label': 'Role', 'name': '' },
-        { 'index': 3, 'label': 'StartEvent', 'name': flowElements[0].id },
-        { 'index': 4, 'label': 'EndEvent', 'name': flowElements[flowElements.length - 1].id },
-        { 'index': 5, 'label': 'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name },
-        { 'index': 6, 'label': 'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name },
+        { 'index': 0, 'label': 'Name', 'name': element.Name },
+        { 'index': 1, 'label': 'Type', 'name': elementType },
+        { 'index': 2, 'label': 'Role', 'name': roles },
+        { 'index': 3, 'label': 'StartEvent', 'name': element.StartEvent },
+        { 'index': 4, 'label': 'EndEvent', 'name': element.EndEvent},
+        { 'index': 5, 'label': 'NextEvent', 'name': nextFlow },
+        { 'index': 6, 'label': 'PreviousEvent', 'name': prevFlow },
       ];
+
       userTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:UserTask');
       serviceTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:ServiceTask');
       for (let i = 0; i < userTasks.length; i++) {
@@ -299,28 +330,33 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       for (let i = 0; i < serviceTasks.length; i++) {
         serviceTasks[i].index = i;
       }
+
       return {
         'fI': flow_Info,
         'uT': userTasks,
         'sT': serviceTasks
       };
 
-    } else if (element.type === 'bpmn:UserTask' || element.type === 'bpmn:ServiceTask') {
-      let business_obj = element.businessObject;
-      let start_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:StartEvent')[0];
-      let end_event = business_obj.$parent.flowElements.filter((fe: any) => fe.$type === 'bpmn:EndEvent')[0];
-      // flowElements = flowElements.filter((fe:any) => fe.$type ==='bpmn:UserTask');
+    } else if (elementType === 'bpmn:UserTask' || elementType === 'bpmn:ServiceTask') {
+      let roles, seqFlow, condition = '';
+      if(element[0].Roles && element[0].Roles.length>0) roles = element[0].Roles.reduce((acc:string, cur:string) => acc + " " + cur);
+      else roles = element[0].Roles;
+      if(element[0].SequenceFlow && element[0].SequenceFlow.length>0) seqFlow = element[0].SequenceFlow.reduce((acc:string, cur:string) => acc + " " + cur);
+      else seqFlow = element[0].SequenceFlow;
+      for (let i =0; i<element[0].Condition.length; i++){
+        condition = condition + ' ' + element[0].Condition[i].Name;
+      }
       let flow_Info = [
-        { 'index': 0, 'label': 'UserTask', 'name': business_obj.name },
-        { 'index': 1, 'label': 'Role', 'name': business_obj.extensionElements.values[0].candidateGroups },
-        { 'index': 2, 'label': 'Entity', 'name': business_obj.$parent.$parent.name },
-        { 'index': 3, 'label': 'TaskStatus', 'name': '' },
-        { 'index': 4, 'label': 'StartEvent', 'name': start_event.id },
-        { 'index': 5, 'label': 'EndEvent', 'name': end_event.id },
-        { 'index': 6, 'label': 'NextEvent', 'name': element.businessObject.outgoing[0].targetRef?.name },
-        { 'index': 7, 'label': 'PreviousEvent', 'name': element.businessObject.incoming[0].sourceRef?.name },
-        { 'index': 8, 'label': 'Condition', 'name': '' },
-        { 'index': 9, 'label': 'EntityState', 'name': '' },
+        { 'index': 0, 'label': 'UserTask', 'name': element[0].TaskId },
+        { 'index': 1, 'label': 'Role', 'name': roles },
+        { 'index': 2, 'label': 'Entity', 'name': element[0].Entity },
+        { 'index': 3, 'label': 'TaskStatus', 'name': element[0].TaskStatus },
+        { 'index': 4, 'label': 'StartEvent', 'name': element[0].StartEvent },
+        { 'index': 5, 'label': 'EndEvent', 'name': element[0].EndEvent },
+        { 'index': 6, 'label': 'SequenceFlow', 'name':  seqFlow},
+        { 'index': 7, 'label': 'PreviousEvent', 'name': '' },
+        { 'index': 8, 'label': 'Condition', 'name': condition },
+        { 'index': 9, 'label': 'EntityState', 'name': element[0].EntityState },
       ];
       return flow_Info;
     } else {
@@ -383,10 +419,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   graph(data: any) {
 
-    console.log("i am here graph")
-    console.log("before modification", data)
     let mod_data = this.modifyGraphData(data);
-    console.log("after modifications", mod_data)
     this.showUsecaseGraph = true;
 
     //TBD 
@@ -403,83 +436,60 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     var ele = document.getElementById('graph') as HTMLElement;
     // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
-    console.log("svgNode", svgNode);
     ele?.appendChild(svgNode);
-    console.log("div ele appended with svg", ele)
-    //   ele?.addEventListener('click', function(event){
-    //     console.log(event);
-    //   })
+
     let nodes: NodeListOf<SVGGElement> | undefined;
     nodes = svgNode?.querySelectorAll('g')
-    // //   console.log("node", node)
     var svg_ele = document.getElementById('graph')
-    console.log(nodes, ';..........;', svg_ele)
 
-    //   if(nodes){
-    //     nodes.forEach((node:any)=> {
-    //       if(node.__data__){
-    //       node.addEventListener('click', (event:any)=>{
-    //         console.log("click on:", node, event);
-    //         const para = document.createElement("text");
-    //         para.append("Test is here");
-    //         const e = node.appendChild(para)
-    //       })
-    //     }
-    //     })
-    //   }
-    if (svg_ele) {
-      svg_ele.addEventListener('click', (event: any) => {
-        console.log("node is clicked", event)
-        let e = event.target.__data__;
-        let flow = e.data.title;
-        if (e.depth == 2) {
-          this.showUsecaseGraph = false;
-          var bpmnWindow = document.getElementById("diagramRef");
-          if (bpmnWindow) bpmnWindow.style.display = '';
-          var graphWindow = document.getElementById("sc");
-          if (graphWindow) graphWindow.style.display = 'None';
-          this.getFlow(flow);
+      if (svg_ele){
+        svg_ele.addEventListener('click', (event:any) => {
+          let e = event.target.__data__;
+          let flow = e.data.title;
+          if (e.depth ==2) {
+            this.utilsService.loadSpinner(true);
+            this.showUsecaseGraph = false;
+            var bpmnWindow = document.getElementById("diagramRef");
+            if(bpmnWindow) bpmnWindow.style.display = '';
+            var graphWindow = document.getElementById("sc");
+            if(graphWindow) graphWindow.style.display = 'None';
+            this.getFlow(flow);
 
-        }
+            }
 
-      })
+        })
+      }
+    
+  
     }
-
-    //   if(node){
-    //     node[4].addEventListener('click', (event)=>{
-    //       console.log("clicked on node[0]", event);
-    //       this.router.navigate(['/configuration/workflow/overview'], { relativeTo: this.activateRoute });
-    //     })
-    //   }
-    this.utilsService.loadSpinner(true);
-  }
-
-  _chart(d3: any, data: any) {
-    const width = 928;
-    // Compute the tree height; this approach will allow the height of the
-    // SVG to scale according to the breadth (width) of the tree layout.
-    const root = d3.hierarchy(data);
-    const dx = 30;
-    const dy = width / (root.height + 1);
-    // Create a tree layout.
-    const tree = d3.tree().nodeSize([dx, dy]);
-    // Sort the tree and apply the layout.
-    root.sort((a: any, b: any) => d3.ascending(a.data.title, b.data.title));
-    tree(root);
-    // Compute the extent of the tree. Note that x and y are swapped here
-    // because in the tree layout, x is the breadth, but when displayed, the
-    // tree extends right rather than down.
-    let x0 = Infinity;
-    let x1 = -x0;
-    root.each((d: any) => {
-      if (d.x > x1) x1 = d.x;
-      if (d.x < x0) x0 = d.x;
-    });
-    // Compute the adjusted height of the tree.
-    const height = x1 - x0 + dx * 2;
-    const maxEndTranslate = height;
-    const maxStartTranslate = height / 2;
-    const margin = { top: 100, right: 20, bottom: 20, left: 100 };
+    
+  _chart(d3:any,data:any)
+    {
+      const width = 928;
+      // Compute the tree height; this approach will allow the height of the
+      // SVG to scale according to the breadth (width) of the tree layout.
+      const root = d3.hierarchy(data);
+      const dx = 50;
+      const dy = width / (root.height + 1);
+      // Create a tree layout.
+      const tree = d3.tree().nodeSize([dx, dy]);
+      // Sort the tree and apply the layout.
+      root.sort((a:any, b:any) => d3.ascending(a.data.title, b.data.title));
+      tree(root);
+      // Compute the extent of the tree. Note that x and y are swapped here
+      // because in the tree layout, x is the breadth, but when displayed, the
+      // tree extends right rather than down.
+      let x0 = Infinity;
+      let x1 = -x0;
+      root.each((d:any) => {
+        if (d.x > x1) x1 = d.x;
+        if (d.x < x0) x0 = d.x;
+      });
+      // Compute the adjusted height of the tree.
+      const height = x1 - x0 + dx * 2;
+      const maxEndTranslate = height;
+      const maxStartTranslate = height/2;
+      const margin = { top: 100, right: 20, bottom: 20, left: 100 };
 
     const svg = d3.create("svg")
       .attr("width", width)
@@ -489,37 +499,25 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       // .attr("viewBox", [0, 0, 1010, 666])
       .attr("style", "max-width: 100%; height: max-content;  font: 10px sans-serif;")
 
-    console.log("At start of chart function", svg)
-    // .append('g')
-    // .attr('transform', `translate(${width}, ${height})`);
-    // console.log(svg)
-    // console.log("links",root.links())
-
     const rightLink: any = [];
     for (let node of root.links()) {
       if (node.target.depth == 1 && node.target.data.id % 2 != 0) {
-        // console.log(node, node.target.data.id)
         rightLink.push(node);
       }
       if (node.target.depth == 2 && node.source.data.id && node.source.data.id % 2 != 0) {
-        // console.log(node,node.target.depth,node.source.data.id)
         rightLink.push(node)
       };
     }
     const leftLink: any = [];
-    // root.links().filter((node:any)=>node.target.data.id%2==0);
     for (let node of root.links()) {
       if (node.target.depth == 1 && node.target.data.id % 2 == 0) {
-        // console.log(node, node.target.data.id)
         leftLink.push(node);
       }
       if (node.target.depth == 2 && node.source.data.id && node.source.data.id % 2 == 0) {
-        // console.log(node,node.target.depth,node.source.data.id)
         leftLink.push(node)
       };
     }
 
-    // console.log( "rightLink",rightLink, "leftLink", leftLink)
     const linkR = svg.append("g")
       .attr("fill", "none")
       .attr("stroke", "#555")
@@ -544,15 +542,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         .x((d: any) => -d.y / 2)
         .y((d: any) => d.x));
 
-    console.log("after links", svg)
     const rightNodes: any = [];
     for (let node of root.descendants()) {
       if (node.depth == 1 && node.data.id % 2 != 0) {
-        // console.log(node, node.target.data.id)
         rightNodes.push(node);
       }
       if (node.depth == 2 && node.parent.data.id && node.parent.data.id % 2 != 0) {
-        // console.log(node,node.target.depth,node.source.data.id)
         rightNodes.push(node)
       };
     }
@@ -560,191 +555,174 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // root.links().filter((node:any)=>node.target.data.id%2==0);
     for (let node of root.descendants()) {
       if (node.depth == 1 && node.data.id % 2 == 0) {
-        // console.log(node, node.target.data.id)
         leftNodes.push(node);
       }
       if (node.depth == 2 && node.parent.data.id && node.parent.data.id % 2 == 0) {
-        // console.log(node,node.target.depth,node.source.data.id)
         leftNodes.push(node)
       };
     }
-    const centralNode = root.descendants().filter((node: any) => !node.parent);
+      const centralNode = root.descendants().filter((node:any)=> !node.parent);
+      
+      const nodeC = svg.append("g")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-width", 3)
+          .selectAll()
+          .data(centralNode)
+          .join("g")
+          .attr("transform", (d:any) => `translate(${-d.y/2},${d.x})`);
 
-    console.log("Nodes", centralNode, leftNodes, rightNodes)
-    const nodeC = svg.append("g")
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-width", 3)
-      .selectAll()
-      .data(centralNode)
-      .join("g")
-      .attr("transform", (d: any) => `translate(${-d.y / 2},${d.x})`);
-    nodeC.append("circle")
-      .attr("fill", (d: any) => d.children ? "#555" : "#999")
-      .attr("r", 3.5);
-    nodeC.append("rect")
-      // .attr("class", "rect")
-      .attr("width", (d: any) => { return d.data.title.length * 15; })
-      .attr("height", "40")
-      // .attr("fill", "#FFFFFA")
-      .attr("fill", (d: any) => {
-        if (d.depth == 1) return "#B0B0B3";
-        else return "#FFFFFA";
-      })
-      .attr('y', '-1.5em')
-      .attr('x', (d: any) => { return -7.5 * d.data.title.length; })
-      .attr("rx", 15)
+      nodeC.append("circle")
+          .attr("fill", (d:any) => d.children ? "#555" : "#999")
+          .attr("r", 3.5);
 
-    nodeC.append("text")
-      .attr('x', (d: any) => { return d.data.title.length - 3 })
-      .attr('y', '15')
-      .attr('dy', '-1.2em')
-      // .attr("dy", "0.3em")
-      .attr("dx", (d: any) => { return -d.data.title.length * 3 })
-      .attr("text-anchor", (d: any) => d.children ? "start" : "end")
-      .text((d: any) => { return d.data.role })
-      .clone(true).lower()
-      .attr("stroke", "white");
+      nodeC.append("rect")
+          .attr("width", (d:any)=> {return d.data.title.length*15;})
+          .attr("height", "40")
+          .attr("fill", (d:any)=> { if(d.depth ==1) return "#B0B0B3";
+                                      else return "#FFFFFA";} )
+          .attr('y', '-1.5em')
+          .attr('x', (d:any)=> {return -7.5*d.data.title.length;})
+          .attr("rx", 15)
+          .style("stroke", '#959595')
+          .style("stroke-width", 2)
+      
+      nodeC.append("text")
+          .attr('x', (d:any)=> {return d.data.title.length})
+          .attr('y', '15')
+          .attr('dy', '-0.8em')
+          .attr("dx", (d:any)=> {return-d.data.title.length*1.5})
+          // .attr("text-anchor", (d:any) => d.children ? "start" : "end")
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("font-size", "14px")
+          .style("font-weight", 600)
+          .style("fill", "#000000")
+          .text((d:any) => {return d.data.role})
+          .clone(true).lower()
+          .attr("stroke", "white");
 
-    const nodeL = svg.append("g")
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-width", 3)
-      .selectAll()
-      .data(leftNodes)
-      .join("g")
-      .attr("transform", (d: any) => `translate(${-d.y / 2},${d.x})`)
-      .attr("cursor", "pointer")
-      .attr("pointer-events", "all");
-    nodeL.append("circle")
-      .attr("fill", (d: any) => d.children ? "#555" : "#999")
-      .attr("r", 3.5);
-    nodeL.append("rect")
-      // .attr("class", "rect")
-      .attr("width", (d: any) => {
-        if (d.depth == 1) return d.data.title.length * 4;
-        else return d.data.title.length * 8;
-      })
-      // .attr("width", "120")
-      .attr("height", (d: any) => {
-        if (d.depth == 1) return 40;
-        else return 30;
-      })
-      // .attr("fill", "#FFFFFA")
-      .attr("fill", (d: any) => {
-        if (d.depth == 1) return "#B0B0B3";
-        else return "#FFFFFA";
-      })
-      .attr("x", (d: any) => {
-        if (d.depth == 1) return -d.data.title.length * 3;
-        else return -d.data.title.length * 7;
-      })
-      .attr('y', (d: any) => {
-        if (d.depth == 1) return '-1.9em';
-        else return '-1em'
-      })
-      .attr("rx", (d: any) => {
-        if (d.depth == 1) return 15;
-        else return 10
-      })
+      const nodeL = svg.append("g")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-width", 3)
+          .selectAll()
+          .data(leftNodes)
+          .join("g")
+          .attr("transform", (d:any) => `translate(${-d.y/2},${d.x})`)
+          .attr("cursor", (d:any)=> { if(d.depth ==2) return "pointer";
+                                      else return "text"})
+          .attr("pointer-events", "all");
 
-    nodeL.append("text")
-      .attr('x', (d: any) => { d.data.title.length - 3 })
-      .attr('y', '15')
-      .attr('dy', (d: any) => {
-        if (d.depth == 1) return '-2.4em';
-        else return '-1.2em'
-      })
-      // .attr("dy", "0.3em")
-      .attr("dx", (d: any) => {
-        if (d.depth == 1) return -d.data.title.length * 2;
-        else return -d.data.title.length * 5
-      })
-      // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-      // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-      .text((d: any) => { return d.data.title.split("-")[0] })
-      .clone(true).lower()
-      .attr("stroke", "white");
-    nodeL.append("text")
-      .attr('x', (d: any) => { d.data.title.length - 3 })
-      .attr('y', '15')
-      .attr('dy', '-1.00em')
-      // .attr("dy", "0.3em")
-      .attr("dx", (d: any) => { return -d.data.title.length * 2.7; })
-      .attr("text-anchor", (d: any) => d.children ? "start" : "end")
-      .text((d: any) => { return d.data.title.split("-")[1] })
-      .clone(true).lower()
-      .attr("stroke", "white");
+      nodeL.append("circle")
+          .attr("fill", (d:any) => d.children ? "#555" : "#999")
+          .attr("r", 3.5);
 
-    const nodeR = svg.append("g")
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-width", 3)
-      .selectAll()
-      .data(rightNodes)
-      .join("g")
-      .attr("transform", (d: any) => `translate(${d.y / 2},${d.x})`)
-      .attr("cursor", "pointer")
-      .attr("pointer-events", "all");
-    // .append("rect")
-    // .attr("class", "rect")
-    // .attr('width', (d:any) =>{console.log(d); return d.data.title.length*10})
-    // .attr('height', '25');
-    nodeR.append("circle")
-      .attr("fill", (d: any) => d.children ? "#555" : "#999")
-      .attr("r", 2.5);
+      nodeL.append("rect")
+          .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.length*4.2;
+                                      else return d.data.title.length*8;})
+          .attr("height", (d:any)=> { if(d.depth ==1) return 40;
+                                      else return 30;})
+          .attr("fill", (d:any)=> { if(d.depth ==1) return "#B0B0B3";
+                                    else return "#FFFFFA";} )
+          .attr("x", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
+                                  else return -d.data.title.length*7;})
+          .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
+                                  else return '-1.5em'})
+          .attr("rx", (d:any)=> { if(d.depth ==1) return 15;
+                                  else return 10})
+          .style("stroke", '#959595')
+          .style("stroke-width", 2)
+      
+      nodeL.append("text")
+          .attr('x', (d:any)=> {return d.data.title.length*1.8})
+          .attr('y', '15')
+          .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
+                                  else return '-1.4em'})
+          .attr("dx", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
+                                  else return -d.data.title.length*5})  
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("fill", "#767474")
+          .style("font-weight", 550)
+          // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .text((d:any) => {return d.data.title.split("-")[0]})
+          .clone(true).lower()
+          .attr("stroke", "white");
 
-    nodeR.append("rect")
-      // .attr("class", "rect")
-      .attr("width", (d: any) => {
-        if (d.depth == 1) return d.data.title.length * 4;
-        else return d.data.title.length * 8;
-      })
-      // .attr("width", "120")
-      .attr("height", (d: any) => {
-        if (d.depth == 1) return 40;
-        else return 30;
-      })
-      .attr("fill", (d: any) => {
-        if (d.depth == 1) return "#B0B0B3";
-        else return "#FFFFFA";
-      })
-      // .attr("fill", "#FFFFFA")
-      .attr("x", (d: any) => { return -d.data.title.length * 1; })
-      .attr('y', (d: any) => {
-        if (d.depth == 1) return '-1.9em';
-        else return '-1em'
-      })
-      .attr("rx", (d: any) => {
-        if (d.depth == 1) return 15;
-        else return 10
-      })
+      nodeL.append("text")
+          .attr('x', (d:any)=> {return d.data.title.length*1.5})
+          .attr('y', '15')
+          .attr('dy', '-0.8em')
+        // .attr("dy", "0.3em")
+          .attr("dx", (d:any)=> {return -d.data.title.length*2.4;})
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("font-weight", 550)
+          .style("fill", "#000000")
+          .text((d:any) => {return d.data.title.split("-").slice(1)})
+          .clone(true).lower()
+          .attr("stroke", "white");
+      
+      const nodeR = svg.append("g")
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-width", 3)
+          .selectAll()
+          .data(rightNodes)
+          .join("g")
+          .attr("transform", (d:any) => `translate(${d.y/2},${d.x})`)
+          .attr("cursor", "pointer")
+          .attr("pointer-events", "all");
 
-    nodeR.append("text")
-      .attr('x', (d: any) => { d.data.title.length - 3 })
-      .attr('y', '15')
-      .attr('dy', (d: any) => {
-        if (d.depth == 1) return '-2.4em';
-        else return '-1.2em'
-      })
-      // .attr("dy", "0.3em")
-      .attr("dx", (d: any) => { return d.data.title.length * 0.2; })
-      // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-      // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-      .text((d: any) => { return d.data.title.split("-")[0] })
-      .clone(true).lower()
-      .attr("stroke", "white");
-    nodeR.append("text")
-      .attr('x', (d: any) => { d.data.title.length - 3; })
-      .attr('y', '15')
-      .attr('dy', '-1.00em')
-      // .attr("dy", "0.3em")
-      .attr("dx", (d: any) => { return -d.data.title.length * 0.5; })
-      // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-      // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
-      .text((d: any) => { return d.data.title.split("-")[1] })
-      .clone(true).lower()
-      .attr("stroke", "white")
-    console.log(nodeL, nodeR)
-    console.log("inside graph function: svgNode", svg.node())
-    return svg.node();
+      nodeR.append("circle")
+          .attr("fill", (d:any) => d.children ? "#555" : "#999")
+          .attr("r", 2.5);
+      
+      nodeR.append("rect")
+          .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.1;
+                                      else return d.data.title.trim().length*8;})
+          .attr("height", (d:any)=> { if(d.depth ==1) return 40;
+                                      else return 30;})
+          .attr("fill", (d:any)=> { if(d.depth ==1) return "#B0B0B3";
+                                    else return "#FFFFFA";} )
+          .attr("x", (d:any)=> {return -d.data.title.length*1;})
+          .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
+                                  else return '-1.4em'})
+          .attr("rx", (d:any)=> { if(d.depth ==1) return 15;
+                                  else return 10})
+          .attr("stroke-width", "8") 
+          .style("stroke", '#959595')
+          .style("stroke-width", 2)
+      
+      nodeR.append("text")
+          .attr('x', (d:any)=> {return d.data.title.length;})
+          .attr('y', '15')
+          .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
+                                    else return '-1.4em'})
+          // .attr("dy", "0.3em")
+          .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
+                                  else return '1.5em'})
+          // .attr("dx", "0.5em")
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("fill", "#767474")
+          .style("font-weight", 550)
+          // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .text((d:any) => {return d.data.title.split("-")[0]})
+        .clone(true).lower()
+          .attr("stroke", "white");
+
+      nodeR.append("text")
+          .attr('x', (d:any)=> {return d.data.title.length;})
+          .attr('y', '15')
+          .attr('dy', '-0.8em')
+            
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .style("font-weight", 550)
+          .style("fill", "#000000")
+          .text((d:any) => {return d.data.title.split("-").slice(1)})
+          .clone(true).lower()
+          .attr("stroke", "white")
+
+      return svg.node();
   }
-
 }

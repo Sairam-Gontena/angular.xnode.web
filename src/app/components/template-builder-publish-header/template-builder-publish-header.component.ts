@@ -89,6 +89,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   refreshCurrentRoute(): void {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      localStorage.setItem('trigger', 'graph');
       this.router.navigate([currentUrl]);
     });
   }
