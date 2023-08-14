@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
+    this.currentPath = window.location.hash;
   }
 
   loadIframeUrl(): void {
