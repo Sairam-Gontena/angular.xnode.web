@@ -1,22 +1,26 @@
 <div class="w-full h-full overflow-hidden">
     <div class="w-full" *ngIf="isUserExists()">
         <span (click)="submenuFunc()">
-            <xnode-bot [botDisplayFlag]="this.isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
+            <xnode-bot [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
         <xnode-app-header></xnode-app-header>
-        <div class="flex">
+        <div class="flex" *ngIf="currentPath !== '#/x-pilot'">
             <div class="app-side-menu-wrapper">
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
-            <div class="app-body-wrapper">
+            <div class=" app-body-wrapper">
                 <router-outlet></router-outlet>
             </div>
-            <div id="side-window" class="side-window" *ngIf="this.isSideWindowOpen"
-                [ngClass]="{ 'open': isSideWindowOpen }">
+            <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
                 <div class="content-class-pilot h-full">
-                    <iframe id="myIframe" [src]="this.iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                    <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                         class="w-full h-full pl-0 pr-1">
                     </iframe>
                 </div>
+            </div>
+        </div>
+        <div class="flex" *ngIf="currentPath === '#/x-pilot'">
+            <div class="w-100 h-90">
+                <router-outlet></router-outlet>
             </div>
         </div>
     </div>
