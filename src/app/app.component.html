@@ -6,16 +6,16 @@
         <span >
             <xnode-app-header></xnode-app-header>
         </span>
-        <div class="flex" *ngIf="currentPath !== '#/x-pilot'">
-            <div class="app-side-menu-wrapper" *ngIf="currentPath !== '#/my-products'">
+        <div class="flex" *ngIf="activateUrl !== '/x-pilot'">
+            <div class="app-side-menu-wrapper" *ngIf="activateUrl !== '/my-products'">
                 <span>
                     <xnode-app-side-menu></xnode-app-side-menu>
                 </span>
             </div>
             <div class="app-body-wrapper" [ngClass]="{
-                'w-full':currentPath === '#/my-products' || currentPath === '#/x-pilot'
+                'w-full':activateUrl === '/my-products' || activateUrl === '/x-pilot'
                 }" >
-                <router-outlet></router-outlet>
+                <router-outlet ></router-outlet>
             </div>
             <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
                 <div class="content-class-pilot h-full">
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="flex" *ngIf="currentPath === '#/x-pilot'">
+        <div class="flex" *ngIf="activateUrl === '/x-pilot'">
             <div class="w-100 h-90">
                 <router-outlet></router-outlet>
             </div>

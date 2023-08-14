@@ -1,7 +1,7 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, ParamMap, NavigationStart } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -24,16 +24,27 @@ export class AppComponent implements OnInit {
   toastObj: any;
   targetUrl: string = environment.naviUrl;
   currentPath = window.location.hash;
+  activateUrl: any;
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
     private router: Router,
+    private route: ActivatedRoute,
     private utilsService: UtilsService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private changeDetector: ChangeDetectorRef,) {
+
+    this.router.events.subscribe((ev) => {
+      if (ev instanceof NavigationStart) {
+        this.changeOfRoutes(ev.url);
+      }
+    });
   }
 
+  changeOfRoutes(url: any) {
+    this.activateUrl = url;
+  }
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -84,16 +95,39 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = false;
   }
 
+  // getUserData() {
+  //   let currentUser = localStorage.getItem('currentUser');
+  //   console.log("============");
+  //   console.log(currentUser);
+  //   console.log(localStorage.getItem('record_id'))
+  //   if (currentUser && localStorage.getItem('record_id')) {
+  //     let user = JSON.parse(currentUser)
+  //     this.email = user.email
+  //     this.get_Conversation();
+  //   } else {
+  //          console.log("current user not found");
+  //   }
+  // }
   getUserData() {
     let currentUser = localStorage.getItem('currentUser');
-    if (currentUser && localStorage.getItem('record_id')) {
-      this.email = JSON.parse(currentUser).email;
-      this.get_Conversation();
+
+    if (currentUser) {
+      let user = JSON.parse(currentUser);
+      this.email = user.email;
+      console.log("============");
+      console.log(this.email);
+      console.log(localStorage.getItem('record_id'));
+
+      if (localStorage.getItem('record_id')) {
+        this.get_Conversation();
+      } else {
+        console.log("record_id not found");
+        console.log(this.email, '7777777');
+      }
     } else {
       console.log("current user not found");
     }
   }
-
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
       let rawUrl = environment.naviUrl + '?email=' + this.email +
@@ -106,8 +140,11 @@ export class AppComponent implements OnInit {
       }, 2000);
     } else {
       // alert("Invalid record id")
-      let rawUrl = environment.naviUrl;
+      let rawUrl = environment.naviUrl + '?email=' + this.email +
+        '&targetUrl=' + environment.baseUrl +
+        '&xnode_flag=' + 'XNODE-APP' + '&component=my-products';
       this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      console.log(this.iframeUrl, "1111")
       this.loadIframeUrl();
     }
 
