@@ -68,7 +68,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ];
-    console.log("inside OnInit")
 
     setTimeout(()=> {
       this.showUsecaseGraph = true;
@@ -134,7 +133,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       "entry bpmn-icon-participant",
       "entry bpmn-icon-group"
     ];
-    console.log(this.bpmnJS)
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       this.getElement();
     });
@@ -155,7 +153,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
 
   getFlow(flow: String) {
-    console.log("input", flow)
     this.currentUser = UserUtil.getCurrentUser();
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
@@ -201,7 +198,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // this.graph('this is the data')
     let currentUserString = localStorage.getItem('currentUser');
     let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
-    console.log(currentUser)
     this.api.get("/retrive_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -297,7 +293,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   getDisplayProperty(elementType:String, element:any, eventElement:any) {
     
     if (elementType === 'bpmn:Process') {
-      console.log("element", element)
       let flow = element.Flows.map((f:any, index:number) => {
         return {
           "index": index,
@@ -449,7 +444,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
       if (svg_ele){
         svg_ele.addEventListener('click', (event:any) => {
-          console.log("node is clicked", event)
           let e = event.target.__data__;
           let flow = e.data.title;
           if (e.depth ==2) {
