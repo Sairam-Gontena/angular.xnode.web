@@ -45,7 +45,6 @@
 
 .content-class-pilot {
   position: relative;
-  // background-color: #3a3942 !important;
 }
 
 .close-button {
@@ -75,4 +74,12 @@
 
 .h-90 {
   height: 96vh;
+}
+
+.expanded-navi {
+  position: absolute;
+  height: calc(100vh - 50px);
+  width: calc(100% - 80px);
+  right: 0;
+  transition: all 0.5s ease-in-out;
 }

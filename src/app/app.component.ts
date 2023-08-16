@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
@@ -13,8 +13,11 @@ import { MessageService } from 'primeng/api';
 })
 
 export class AppComponent implements OnInit {
+  @ViewChild('myIframe') iframe?: ElementRef;
+  @ViewChild('expand-navi-iframe') expandNaviIframe?: ElementRef;
+  safeUrl: SafeResourceUrl = '';
   title = 'xnode';
-  isSideWindowOpen: boolean = false;
+  isNaviOpened: boolean = false;
   email: String = '';
   id: String = '';
   loading: boolean = true;
@@ -24,14 +27,15 @@ export class AppComponent implements OnInit {
   toastObj: any;
   targetUrl: string = environment.naviUrl;
   currentPath = window.location.hash;
+  showMeExpandedNavi?: boolean;
+
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService,
-    private changeDetector: ChangeDetectorRef,) {
+    private subMenuLayoutUtil: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -44,9 +48,6 @@ export class AppComponent implements OnInit {
       setTimeout(() => {
         this.loading = event;
       }, 0);
-      // Promise.resolve().then(() => {
-      // });
-
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
@@ -68,20 +69,51 @@ export class AppComponent implements OnInit {
           }
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
-            this.isSideWindowOpen = false;
+            this.isNaviOpened = false;
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
           }
+          if (event.data === 'expand-navi') {
+            this.isNaviOpened = false;
+            this.showMeExpandedNavi = true;
+            console.log('showMeExpandedNavi', this.showMeExpandedNavi);
+
+          }
         });
-        // Trigger the message to the iframe
-        // contentWindow.postMessage(data, this.targetUrl);
+      }
+    });
+    const expandNaviIframe = document.getElementById('expand-navi-iframe') as HTMLIFrameElement;
+    expandNaviIframe.addEventListener('load', () => {
+      const contentWindow = expandNaviIframe.contentWindow;
+      if (contentWindow) {
+        // Add an event listener to listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+          // Check the origin of the message to ensure it's from the iframe's domain
+          if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+            console.log('not matched');
+            return; // Ignore messages from untrusted sources
+          }
+          // Check the message content and trigger the desired event
+          if (event.data === 'triggerCustomEvent') {
+            this.isNaviOpened = false;
+            const customEvent = new Event('customEvent');
+            window.dispatchEvent(customEvent);
+          }
+          if (event.data === 'expand-navi') {
+            this.isNaviOpened = false;
+            this.showMeExpandedNavi = true;
+            console.log('showMeExpandedNavi', this.showMeExpandedNavi);
+
+          }
+        });
       }
     });
   }
 
 
+
   handleRouterChange() {
-    this.isSideWindowOpen = false;
+    this.isNaviOpened = false;
   }
 
   getUserData() {
@@ -102,6 +134,7 @@ export class AppComponent implements OnInit {
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.safeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
       }, 2000);
     } else {
@@ -156,13 +189,13 @@ export class AppComponent implements OnInit {
 
   openNavi(newItem: any) {
     this.getUserData();
-    this.isSideWindowOpen = newItem.cbFlag;
+    this.isNaviOpened = newItem.cbFlag;
     this.productContext = newItem.productContext;
     this.makeTrustedUrl();
   }
 
   toggleSideWindow() {
-    this.isSideWindowOpen = !this.isSideWindowOpen;
+    this.isNaviOpened = !this.isNaviOpened;
     const chatbotContainer = document.getElementById('side-window') as HTMLElement;
     chatbotContainer.classList.remove('open');
     chatbotContainer.classList.add('chatbot-closing');
@@ -173,8 +206,8 @@ export class AppComponent implements OnInit {
   }
 
   submenuFunc() {
-    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu()
-    if (this.isSideWindowOpen) {
+    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
+    if (this.isNaviOpened) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';
       chatbotContainer.classList.add('open');
@@ -182,31 +215,8 @@ export class AppComponent implements OnInit {
   }
 
   closeSideWindow() {
-    this.isSideWindowOpen = false;
+    this.isNaviOpened = false;
   }
-
-  parentdata: any[] = [
-    {
-      Name: "Thimma chowdary",
-      Age: 25,
-      Address: "Address1",
-      Email: 'thimma@gmail.comm'
-    },
-    {
-      Name: "Thimma1",
-      Age: 26,
-      Address: "Address12",
-      Email: 'thimma@gmail.comm'
-
-    },
-    {
-      Name: "Thimma1",
-      Age: 26,
-      Address: "Address12",
-      Email: 'thimma@gmail.comm'
-
-    },
-  ];
 
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"

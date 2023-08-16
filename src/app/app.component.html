@@ -1,7 +1,7 @@
 <div class="w-full h-full overflow-hidden">
     <div class="w-full" *ngIf="isUserExists()">
         <span (click)="submenuFunc()">
-            <xnode-bot [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
+            <xnode-bot [botDisplayFlag]="isNaviOpened" (valueChange)="openNavi($event)"></xnode-bot></span>
         <xnode-app-header></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
@@ -10,10 +10,17 @@
             <div [ngClass]="showSideMenu() ? 'app-body-wrapper' : 'app-body-wrapper-full'">
                 <router-outlet></router-outlet>
             </div>
-            <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
-                <div class="content-class-pilot h-full">
+            <div id="side-window" class="side-window" [ngClass]="{ 'open': isNaviOpened }">
+                <div class="content-class-pilot h-full" *ngIf="isNaviOpened">
                     <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                         class="w-full h-full pl-0 pr-1">
+                    </iframe>
+                </div>
+            </div>
+            <div *ngIf="showMeExpandedNavi" class="expanded-navi">
+                <div class="h-full">
+                    <iframe *ngIf="showMeExpandedNavi" id="exapnd-navi-iframe" [src]="safeUrl" allow="microphone"
+                        Cross-Origin-Opener-Policy="*" class="w-full h-full">
                     </iframe>
                 </div>
             </div>

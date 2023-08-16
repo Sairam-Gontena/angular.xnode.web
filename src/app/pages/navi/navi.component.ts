@@ -12,13 +12,14 @@ import { environment } from 'src/environments/environment';
 
 export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
+  targetUrl: string = environment.naviUrl;
+  safeUrl: SafeResourceUrl = '';
+  baseUrl: string = environment.baseUrl;
+
   constructor(
     private router: Router,
     private domSanitizer: DomSanitizer,) {
   }
-  targetUrl: string = environment.naviUrl;
-  safeUrl: SafeResourceUrl = '';
-  baseUrl: string = environment.baseUrl;
 
   ngOnInit(): void {
     //get user data from local storage
@@ -40,6 +41,8 @@ export class NaviComponent implements OnInit {
     iframe.addEventListener('load', () => {
       // Access the iframe's content window only when it has fully loaded
       const contentWindow = iframe.contentWindow;
+      console.log('contentWindow', contentWindow);
+
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
