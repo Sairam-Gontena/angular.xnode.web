@@ -173,7 +173,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       console.log('error', error);
       this.loadXFlows(workflow);
       this.jsonWorkflow = JSON.stringify(workflow, null, 2);
-    });
+    });  
     this.getOverview();
   }
 
@@ -269,7 +269,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           serviceTask = subProcessFlow[0].BackendFlow.filter((uT:any) => uT.TaskId.toLowerCase().trim() === event.element.businessObject.name.toLowerCase().trim());
           this.flowInfo = this.getDisplayProperty(type, serviceTask, '');
         } else {}
-
         let pHeader = '';
         this.task = true;
         this.sP = false;
@@ -454,12 +453,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
             var graphWindow = document.getElementById("sc");
             if(graphWindow) graphWindow.style.display = 'None';
             this.getFlow(flow);
-
             }
-
         })
       }
-    
   
     }
     
@@ -677,7 +673,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("r", 2.5);
       
       nodeR.append("rect")
-          .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.1;
+          .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.5;
                                       else return d.data.title.trim().length*8;})
           .attr("height", (d:any)=> { if(d.depth ==1) return 40;
                                       else return 30;})
@@ -692,14 +688,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("stroke", '#959595')
           .style("stroke-width", 2)
       
-      nodeR.append("text")
+      nodeR.append("text")  //complete right white box
           .attr('x', (d:any)=> {return d.data.title.length;})
           .attr('y', '15')
           .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
                                     else return '-1.4em'})
           // .attr("dy", "0.3em")
           .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
-                                  else return '1.5em'})
+                                  else return '2.5em'})
           // .attr("dx", "0.5em")
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
@@ -714,7 +710,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr('x', (d:any)=> {return d.data.title.length;})
           .attr('y', '15')
           .attr('dy', '-0.8em')
-            
+          .attr("dx", (d:any)=> {return d.data.title.length*0.2;})
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .style("font-weight", 550)

@@ -65,7 +65,8 @@
                                              <tr *ngIf="product.index%2===0">
                                                   <td >
                                                        <label htmlFor="username">{{product.label}}</label>
-                                                       <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="product.name" />
+                                                       <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="jsonWorkflow.Flows[0].Name" /> 
+                                                       <!-- product.name -->
                                                   </td>
                                                   <td *ngIf="flowInfo[product.index+1]">
                                                        <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
@@ -121,8 +122,8 @@
                          <p-tabPanel header="Comments"> </p-tabPanel>
                     </p-tabView>
                </p-sidebar>
-               <div id ="sc"class="scrollable-container" style="width:100%; height:100%; overflow: auto;">
-                    <div class="col-12 h-full" style="overflow-y:scroll" id="graph">   
+               <div id ="sc"class="scrollable-container w-full h-full overflow-auto">
+                    <div class="col-12 overflow-y-scroll" id="graph">   
                </div>
           </div>
           
