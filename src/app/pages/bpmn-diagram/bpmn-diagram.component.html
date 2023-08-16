@@ -65,8 +65,7 @@
                                              <tr *ngIf="product.index%2===0">
                                                   <td >
                                                        <label htmlFor="username">{{product.label}}</label>
-                                                       <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="jsonWorkflow.Flows[0].Name" /> 
-                                                       <!-- product.name -->
+                                                       <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="product.name" /> 
                                                   </td>
                                                   <td *ngIf="flowInfo[product.index+1]">
                                                        <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
