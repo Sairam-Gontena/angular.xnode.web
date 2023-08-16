@@ -3,11 +3,11 @@
         <span (click)="submenuFunc()">
             <xnode-bot [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"></xnode-bot></span>
         <xnode-app-header></xnode-app-header>
-        <div class="flex" *ngIf="currentPath !== '#/x-pilot'">
-            <div class="app-side-menu-wrapper">
+        <div class="flex">
+            <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
-            <div class=" app-body-wrapper">
+            <div [ngClass]="showSideMenu() ? 'app-body-wrapper' : 'app-body-wrapper-full'">
                 <router-outlet></router-outlet>
             </div>
             <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
@@ -16,11 +16,6 @@
                         class="w-full h-full pl-0 pr-1">
                     </iframe>
                 </div>
-            </div>
-        </div>
-        <div class="flex" *ngIf="currentPath === '#/x-pilot'">
-            <div class="w-100 h-90">
-                <router-outlet></router-outlet>
             </div>
         </div>
     </div>

@@ -113,32 +113,28 @@ export class AppComponent implements OnInit {
   getMeComponent() {
     let comp = '';
     switch (this.router.url) {
-    case '/design':
-      comp = 'dashboard'
-      break;
-    case '/overview':
-      comp = 'overview'
-      break;
-    case '/usecases':
-      comp = 'usecases'
-      break;
-    case '/configuration/workflow/overview':
-      comp = 'xflows'
-      break;
-    case '/configuration/data-model/overview':
-      comp = 'data_model'
-      break;
-    default:
-      break;
+      case '/design':
+        comp = 'dashboard'
+        break;
+      case '/overview':
+        comp = 'overview'
+        break;
+      case '/usecases':
+        comp = 'usecases'
+        break;
+      case '/configuration/workflow/overview':
+        comp = 'xflows'
+        break;
+      case '/configuration/data-model/overview':
+        comp = 'data_model'
+        break;
+      default:
+        break;
     }
     return comp;
   }
 
   get_Conversation() {
-    console.log("================================================")
-    console.log("================================================")
-    console.log(this.email)
-    console.log(localStorage.getItem('record_id'))
     this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -210,6 +206,12 @@ export class AppComponent implements OnInit {
       Email: 'thimma@gmail.comm'
 
     },
-  ]
+  ];
+
+  showSideMenu() {
+    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
+
+  }
 
 }
