@@ -41,6 +41,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   serviceTask: any;
   sP: boolean = false;
   task: boolean = false;
+  graphRedirection:boolean=false;
   taskHeader: any;
   generalInfo: any;
   currentUser: any;
@@ -73,6 +74,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById("diagramRef");
       if (bpmnWindow) bpmnWindow.style.display = 'None';
+      this.graphRedirection=false;
       var graphWindow = document.getElementById("sc");
       if (graphWindow) graphWindow.style.display = '';
     }, 0);
@@ -90,6 +92,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   switchWindow(){
     var bpmnWindow = document.getElementById("diagramRef");
     if(bpmnWindow) bpmnWindow.style.display = 'None';
+    this.graphRedirection=false;
     var graphWindow = document.getElementById("sc");
     if(graphWindow) graphWindow.style.display = '';
 
@@ -436,6 +439,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);
+    ele.classList.add('overflow-y-scroll')
 
     let nodes: NodeListOf<SVGGElement> | undefined;
     nodes = svgNode?.querySelectorAll('g')
@@ -450,6 +454,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
             this.showUsecaseGraph = false;
             var bpmnWindow = document.getElementById("diagramRef");
             if(bpmnWindow) bpmnWindow.style.display = '';
+            this.graphRedirection=true;
             var graphWindow = document.getElementById("sc");
             if(graphWindow) graphWindow.style.display = 'None';
             this.getFlow(flow);
@@ -689,13 +694,13 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("stroke-width", 2)
       
       nodeR.append("text")  //complete right white box
-          .attr('x', (d:any)=> {return d.data.title.length;})
+          .attr('x', (d:any)=> {return d.data.title.length * 1.1;})
           .attr('y', '15')
           .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
                                     else return '-1.4em'})
-          // .attr("dy", "0.3em")
+          // // .attr("dy", "0.3em")
           .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
-                                  else return '2.5em'})
+                                  else return '2.2em'})
           // .attr("dx", "0.5em")
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
@@ -718,7 +723,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
           .attr("stroke", "white")
+          
 
+          // const rightNode = document.getElementById('right-node') as HTMLElement;
+          // rightNode.style.cssText = "display:flex;flex-direction:row;justify-content:center";
       return svg.node();
   }
 }
