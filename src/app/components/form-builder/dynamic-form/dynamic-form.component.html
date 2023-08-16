@@ -1,0 +1,17 @@
+<div>
+  <h1>dynamic form</h1>
+  <form [formGroup]="formGroup">
+
+    <div *ngFor="let control of inputControls " class="form-row">
+      <xnode-dynamic-control [control]="control" [formGroup]="formGroup"></xnode-dynamic-control>
+    </div>
+
+    <div class="form-row">
+      <button type="submit" [disabled]="true">Save</button>
+    </div>
+  </form>
+
+  <div  class="form-row">
+    <strong>Saved the following values</strong><br>
+  </div>
+</div>

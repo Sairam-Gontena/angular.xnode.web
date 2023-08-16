@@ -1,0 +1,12 @@
+<div [formGroup]="formGroup">
+  <label [attr.for]="control.key">{{control.label}}</label>
+
+  <div [ngSwitch]="control.controlType">
+
+    <xnode-text-box *ngSwitchCase="'textbox'" [control]="control"></xnode-text-box>
+    <xnode-email-input *ngSwitchCase="'email'" [control]="control"></xnode-email-input>
+
+  </div>
+
+  <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div>
+</div>

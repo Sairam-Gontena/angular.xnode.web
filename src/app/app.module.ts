@@ -11,11 +11,10 @@ import { SharedComponentModule } from './shared/shared-component.module';
 import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
+import { FormBuilderModule } from './components/form-builder/form-builder.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -27,8 +26,9 @@ import { RefreshListService } from './RefreshList.service';
     SharedModule,
     SharedComponentModule,
     SidebarModule,
+    FormBuilderModule,
   ],
   providers: [RefreshListService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
