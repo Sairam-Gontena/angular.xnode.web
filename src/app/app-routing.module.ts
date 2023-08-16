@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
 import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
+import { DynamicFormComponent } from './components/form-builder/dynamic-form/dynamic-form.component';
 
 const routes: Routes = [
   {
@@ -11,23 +12,32 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'use-cases',
-    loadChildren: () => import('./pages/use-cases/use-cases.module').then(m => m.UseCasesModule)
+    loadChildren: () =>
+      import('./pages/use-cases/use-cases.module').then(
+        (m) => m.UseCasesModule
+      ),
   },
   {
     path: 'publish',
-    loadChildren: () => import('./pages/publish/publish.module').then(m => m.PublishModule)
+    loadChildren: () =>
+      import('./pages/publish/publish.module').then((m) => m.PublishModule),
   },
   {
     path: 'configuration/api-integration',
-    loadChildren: () => import('./pages/configure/configure.module').then(m => m.ConfigureModule)
+    loadChildren: () =>
+      import('./pages/configure/configure.module').then(
+        (m) => m.ConfigureModule
+      ),
   },
   {
     path: 'overview',
-    loadChildren: () => import('./pages/overview/overview.module').then(m => m.OverViewModule)
+    loadChildren: () =>
+      import('./pages/overview/overview.module').then((m) => m.OverViewModule),
   },
   {
     path: 'my-products',
@@ -45,19 +55,27 @@ const routes: Routes = [
   },
   {
     path: 'design',
-    loadChildren: () => import('./pages/template-builder/template-builder.module').then(m => m.TemplateBuilderModule)
+    loadChildren: () =>
+      import('./pages/template-builder/template-builder.module').then(
+        (m) => m.TemplateBuilderModule
+      ),
   },
   {
     path: 'sample',
-    loadChildren: () => import('./pages/sample/sample.module').then(m => m.SampleModule)
+    loadChildren: () =>
+      import('./pages/sample/sample.module').then((m) => m.SampleModule),
   },
   {
     path: 'operate',
-    loadChildren: () => import('./pages/operate/operate.module').then(m => m.OperateModule)
+    loadChildren: () =>
+      import('./pages/operate/operate.module').then((m) => m.OperateModule),
   },
   {
     path: 'configuration/data-model/overview',
-    loadChildren: () => import('./pages/er-modeller/er-modeller.module').then(m => m.ErModellerModule)
+    loadChildren: () =>
+      import('./pages/er-modeller/er-modeller.module').then(
+        (m) => m.ErModellerModule
+      ),
   },
   {
     path: 'workspace',
@@ -101,23 +119,30 @@ const routes: Routes = [
   },
   {
     path: 'x-pilot',
-    loadChildren: () => import('./pages/navi/navi.module').then(m => m.NaviModule),
+    loadChildren: () =>
+      import('./pages/navi/navi.module').then((m) => m.NaviModule),
   },
   {
     path: 'configuration/workflow/overview',
-    loadChildren: () => import('./pages/bpmn-diagram/bpmn-diagram.module').then(m => m.BpmnDiagramModule),
+    loadChildren: () =>
+      import('./pages/bpmn-diagram/bpmn-diagram.module').then(
+        (m) => m.BpmnDiagramModule
+      ),
+  },
+  {
+    path: 'dynamic-form',
+    component: DynamicFormComponent,
   },
   {
     path: '',
     redirectTo: '',
     pathMatch: 'full',
   },
-  { path: '**', component: PageNotFoundComponent }
-
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

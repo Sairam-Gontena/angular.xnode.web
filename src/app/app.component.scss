@@ -15,12 +15,7 @@
   width: calc(100vw - 80px);
 }
 
-#myIframe {
-  margin-top: 30px;
-}
-
 .side-window {
-  background-color: #000759;
   transition: all 0.5s ease-in-out;
 }
 
@@ -31,10 +26,6 @@
 .chatbot-close {
   cursor: pointer;
 }
-
-// .pi-icon-close {
-//   font-size: 0.75rem;
-// }
 
 .overlay {
   position: fixed;
@@ -75,4 +66,8 @@
 
 :host::ng-deep.p-overlaypanel .p-overlaypanel-content {
   padding: 0px !important;
+}
+
+.h-90 {
+  height: 96vh;
 }

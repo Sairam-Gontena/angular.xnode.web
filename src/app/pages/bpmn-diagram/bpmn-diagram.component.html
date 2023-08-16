@@ -1,8 +1,21 @@
+<head>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
 <div class="template-builder-wrapper">
      <xnode-page-tools-layout></xnode-page-tools-layout>
      <div class="" [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
          <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+          <!-- <div >
+               <p-breadcrumb class="max-w-full" [model]="items" [home]="home"></p-breadcrumb>
+          </div> -->
+          <div>
+               <button type="button" class="btn btn-link" style=" height: 30px; color: rgb(239, 248, 248);  margin-top: -10px; border-radius: 20px;vertical-align: top;; font-size: 12px;margin-left: 10px;" (click)="switchWindow()">
+                    <i class="bi bi-arrow-left" style ="margin-right: 4px;"></i>
+                    <strong>Back to Graph</strong>
+               </button>
+          </div>
           <div class="container bpmn-component">
+               
                <div id="diagramRef" class="diagram-container">
                </div>
                <p-sidebar *ngIf="sideBar"  id="property-panel"[(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
@@ -108,6 +121,10 @@
                          <p-tabPanel header="Comments"> </p-tabPanel>
                     </p-tabView>
                </p-sidebar>
+               <div id ="sc"class="scrollable-container" style="width:100%; height:100%; overflow: auto;">
+                    <div class="col-12 h-full" style="overflow-y:scroll" id="graph">   
+               </div>
           </div>
+          
      </div>
    </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
@@ -17,19 +17,21 @@ export class AppComponent implements OnInit {
   isSideWindowOpen: boolean = false;
   email: String = '';
   id: String = '';
-  loading?: boolean;
+  loading: boolean = true;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
-
+  targetUrl: string = environment.naviUrl;
+  currentPath = window.location.hash;
   constructor(
     private domSanitizer: DomSanitizer,
     private apiService: ApiService,
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService) {
+    private subMenuLayoutUtil: UtilsService,
+    private changeDetector: ChangeDetectorRef,) {
   }
 
   ngOnInit(): void {
@@ -39,10 +41,41 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      this.loading = event;
+      setTimeout(() => {
+        this.loading = event;
+      }, 0);
+      // Promise.resolve().then(() => {
+      // });
+
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
+    });
+    this.currentPath = window.location.hash;
+  }
+
+  loadIframeUrl(): void {
+    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    iframe.addEventListener('load', () => {
+      const contentWindow = iframe.contentWindow;
+      if (contentWindow) {
+        // Add an event listener to listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+          // Check the origin of the message to ensure it's from the iframe's domain
+          if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+            console.log('not matched');
+            return; // Ignore messages from untrusted sources
+          }
+          // Check the message content and trigger the desired event
+          if (event.data === 'triggerCustomEvent') {
+            this.isSideWindowOpen = false;
+            const customEvent = new Event('customEvent');
+            window.dispatchEvent(customEvent);
+          }
+        });
+        // Trigger the message to the iframe
+        // contentWindow.postMessage(data, this.targetUrl);
+      }
     });
   }
 
@@ -63,43 +96,49 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
-      let rawUrl = environment.xpilotUrl + '?email=' + this.email +
+      let rawUrl = environment.naviUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.baseUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.loadIframeUrl();
       }, 2000);
     } else {
       alert("Invalid record id")
     }
+
   }
 
   getMeComponent() {
     let comp = '';
     switch (this.router.url) {
-      case '/design':
-        comp = 'dashboard'
-        break;
-      case '/overview':
-        comp = 'overview'
-        break;
-      case '/usecases':
-        comp = 'usecases'
-        break;
-      case '/configuration/workflow/overview':
-        comp = 'xflows'
-        break;
-      case '/configuration/data-model/overview':
-        comp = 'data_model'
-        break;
-      default:
-        break;
+    case '/design':
+      comp = 'dashboard'
+      break;
+    case '/overview':
+      comp = 'overview'
+      break;
+    case '/usecases':
+      comp = 'usecases'
+      break;
+    case '/configuration/workflow/overview':
+      comp = 'xflows'
+      break;
+    case '/configuration/data-model/overview':
+      comp = 'data_model'
+      break;
+    default:
+      break;
     }
     return comp;
   }
 
   get_Conversation() {
+    console.log("================================================")
+    console.log("================================================")
+    console.log(this.email)
+    console.log(localStorage.getItem('record_id'))
     this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -113,7 +152,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
       || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
   }
 
