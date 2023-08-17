@@ -43,11 +43,11 @@
                               <p-panel header="General" [toggleable]="true">
                                    <div class="row">
                                         <label htmlFor="username">{{generalInfo[0].label}}</label>
-                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="overview.Tag" />
+                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="overview.title" /> <!--overview.Tag  -->
                                    </div>
                                    <div class="row">
                                         <label htmlFor="username">{{generalInfo[1].label}}</label>
-                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="overview.title" />
+                                        <input  pInputText id="username" aria-describedby="username-help" [value]="flowInfo?.[0]?.name"/> <!--[(ngModel)]='overview.title'  -->
                                    </div>
                               </p-panel>
                               <p-panel header="Documentation" [toggleable]="true">

@@ -261,7 +261,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'task': event.element.businessObject.name,
           'pHeader': 'Flow'
         };
-
       } else if (event.element.type === 'bpmn:UserTask' || event.element.type === 'bpmn:ServiceTask') {
         let subProcessFlow = JSON.parse(this.jsonWorkflow).Flows.filter((sbf:any) => sbf.Name.toLowerCase().trim() === event.element.businessObject.$parent.name.toLowerCase().trim());
         let userTask, serviceTask;
@@ -287,13 +286,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'pHeader': pHeader
         };
       } else { }
-
+      this.centerAndFitViewport(this.bpmnJS);
     });
   }
 
 
   getDisplayProperty(elementType:String, element:any, eventElement:any) {
-    
     if (elementType === 'bpmn:Process') {
       let flow = element.Flows.map((f:any, index:number) => {
         return {
@@ -332,7 +330,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       for (let i = 0; i < serviceTasks.length; i++) {
         serviceTasks[i].index = i;
       }
-
       return {
         'fI': flow_Info,
         'uT': userTasks,
@@ -383,7 +380,22 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   private importDiagram(xml: string): Observable<{ warnings: Array<any> }> {
-    return from(this.bpmnJS.importXML(xml) as Promise<{ warnings: Array<any> }>);
+    // return from(this.bpmnJS.importXML(xml) as Promise<{ warnings: Array<any> }>);
+    return this.bpmnJS.importXML(xml).then((result:any) => {
+      this.centerAndFitViewport(this.bpmnJS);
+    }).catch((error:any) => {
+      console.error("Error importing XML:", error);
+    });
+  }
+
+  centerAndFitViewport(modeler:any) {
+    const canvas = modeler.get("canvas");
+    const { inner } = canvas.viewbox();
+    const center = {
+      x: inner.x + inner.width / 2,
+      y: inner.y + inner.height / 2
+    };
+    canvas.zoom("fit-viewport", center);
   }
 
   loadXFlows(xFlowJson: any): void {
@@ -458,6 +470,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
             var graphWindow = document.getElementById("sc");
             if(graphWindow) graphWindow.style.display = 'None';
             this.getFlow(flow);
+            this.centerAndFitViewport(this.bpmnJS)
             }
         })
       }
@@ -579,8 +592,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       nodeC.append("rect")
           .attr("width", (d:any)=> {return d.data.title.length*15;})
           .attr("height", "40")
-          .attr("fill", (d:any)=> { if(d.depth ==1) return "#B0B0B3";
-                                      else return "#FFFFFA";} )
+          .attr("fill", "#FFFFFA")
           .attr('y', '-1.5em')
           .attr('x', (d:any)=> {return -7.5*d.data.title.length;})
           .attr("rx", 15)
@@ -592,7 +604,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr('y', '15')
           .attr('dy', '-0.8em')
           .attr("dx", (d:any)=> {return-d.data.title.length*1.5})
-          // .attr("text-anchor", (d:any) => d.children ? "start" : "end")
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .style("font-size", "14px")
@@ -622,8 +633,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
                                       else return d.data.title.length*8;})
           .attr("height", (d:any)=> { if(d.depth ==1) return 40;
                                       else return 30;})
-          .attr("fill", (d:any)=> { if(d.depth ==1) return "#B0B0B3";
-                                    else return "#FFFFFA";} )
+          .attr("fill", "#FFFFFA")
           .attr("x", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
                                   else return -d.data.title.length*7;})
           .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
@@ -642,9 +652,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
                                   else return -d.data.title.length*5})  
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
-          .style("fill", "#767474")
-          .style("font-weight", 550)
-          // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .style("font-family","Inter")
+          .style("font-weight", 600) 
+          .style("color", '#000')
           .text((d:any) => {return d.data.title.split("-")[0]})
           .clone(true).lower()
           .attr("stroke", "white");
@@ -653,12 +663,13 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr('x', (d:any)=> {return d.data.title.length*1.5})
           .attr('y', '15')
           .attr('dy', '-0.8em')
-        // .attr("dy", "0.3em")
           .attr("dx", (d:any)=> {return -d.data.title.length*2.4;})
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
-          .style("font-weight", 550)
+          .style("font-family","Inter")
+          .style("font-weight", 600)
           .style("fill", "#000000")
+          .style("color", '#000')
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
           .attr("stroke", "white");
@@ -682,8 +693,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
                                       else return d.data.title.trim().length*8;})
           .attr("height", (d:any)=> { if(d.depth ==1) return 40;
                                       else return 30;})
-          .attr("fill", (d:any)=> { if(d.depth ==1) return "#B0B0B3";
-                                    else return "#FFFFFA";} )
+          .attr("fill", "#FFFFFA")
           .attr("x", (d:any)=> {return -d.data.title.length*1;})
           .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
                                   else return '-1.4em'})
@@ -694,19 +704,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("stroke-width", 2)
       
       nodeR.append("text")  //complete right white box
-          .attr('x', (d:any)=> {return d.data.title.length * 1.1;})
-          .attr('y', '15')
-          .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
-                                    else return '-1.4em'})
-          // // .attr("dy", "0.3em")
-          .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
-                                  else return '2.2em'})
-          // .attr("dx", "0.5em")
+      .attr('x', (d:any)=> {return d.data.title.length * 1.2;})
+      .attr('y', '15')
+      .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
+                                else return '-1.4em'})
+      .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
+                              else return '2.2em'})
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
-          .style("fill", "#767474")
-          .style("font-weight", 550)
-          // .attr("text-anchor", (d:any) => d.children ? "end" : "start")
+          .style("font-family","Inter")
+          .style("font-weight", 600)
+          .style("color", '#000')
           .text((d:any) => {return d.data.title.split("-")[0]})
         .clone(true).lower()
           .attr("stroke", "white");
@@ -718,15 +726,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("dx", (d:any)=> {return d.data.title.length*0.2;})
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
-          .style("font-weight", 550)
+          .style("font-weight", 600)
+          .style("font-family","Inter")
           .style("fill", "#000000")
+          .style("color", '#000')
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
           .attr("stroke", "white")
-          
-
-          // const rightNode = document.getElementById('right-node') as HTMLElement;
-          // rightNode.style.cssText = "display:flex;flex-direction:row;justify-content:center";
+        
       return svg.node();
   }
 }
