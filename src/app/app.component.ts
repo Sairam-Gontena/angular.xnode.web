@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
       case '/overview':
         comp = 'overview'
         break;
-      case '/usecases':
+      case '/use-cases':
         comp = 'usecases'
         break;
       case '/configuration/workflow/overview':
