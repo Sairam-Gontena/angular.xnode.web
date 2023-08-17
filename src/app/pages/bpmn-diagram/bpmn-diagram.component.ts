@@ -451,7 +451,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);
-    ele.classList.add('overflow-y-scroll')
+    ele.classList.add('overflow-y-auto')
 
     let nodes: NodeListOf<SVGGElement> | undefined;
     nodes = svgNode?.querySelectorAll('g')
@@ -479,7 +479,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     
   _chart(d3:any,data:any)
     {
-      const width = 928;
+      const width = 1028;//928;
       // Compute the tree height; this approach will allow the height of the
       // SVG to scale according to the breadth (width) of the tree layout.
       const root = d3.hierarchy(data);
@@ -638,10 +638,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
                                   else return -d.data.title.length*7;})
           .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
                                   else return '-1.5em'})
-          .attr("rx", (d:any)=> { if(d.depth ==1) return 15;
-                                  else return 10})
-          .style("stroke", '#959595')
-          .style("stroke-width", 2)
+          .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
+                                  else return 20})
+          .attr("stroke-width", "2") 
+          .attr("stroke", '#959595')
       
       nodeL.append("text")
           .attr('x', (d:any)=> {return d.data.title.length*1.8})
@@ -654,10 +654,11 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("dominant-baseline", "middle")
           .style("font-family","Inter")
           .style("font-weight", 600) 
-          .style("color", '#000')
+          .style("fill", '#7a7a7a')
+          .style("font-size","10px")
           .text((d:any) => {return d.data.title.split("-")[0]})
           .clone(true).lower()
-          .attr("stroke", "white");
+          .attr("stroke", "white");   //left first
 
       nodeL.append("text")
           .attr('x', (d:any)=> {return d.data.title.length*1.5})
@@ -670,9 +671,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("font-weight", 600)
           .style("fill", "#000000")
           .style("color", '#000')
+          .style("font-size","10px")
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
-          .attr("stroke", "white");
+          .attr("stroke", "white");  //left second
       
       const nodeR = svg.append("g")
           .attr("stroke-linejoin", "round")
@@ -697,11 +699,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("x", (d:any)=> {return -d.data.title.length*1;})
           .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
                                   else return '-1.4em'})
-          .attr("rx", (d:any)=> { if(d.depth ==1) return 15;
-                                  else return 10})
-          .attr("stroke-width", "8") 
-          .style("stroke", '#959595')
-          .style("stroke-width", 2)
+          .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
+                                  else return 20})
+          .attr("stroke-width", "2") 
+          .attr("stroke", '#959595')
       
       nodeR.append("text")  //complete right white box
       .attr('x', (d:any)=> {return d.data.title.length * 1.2;})
@@ -714,7 +715,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("dominant-baseline", "middle")
           .style("font-family","Inter")
           .style("font-weight", 600)
+          .style("fill", '#7a7a7a')
           .style("color", '#000')
+          .style("font-size","10px")
           .text((d:any) => {return d.data.title.split("-")[0]})
         .clone(true).lower()
           .attr("stroke", "white");
@@ -730,6 +733,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("font-family","Inter")
           .style("fill", "#000000")
           .style("color", '#000')
+          .style("font-size","10px")
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
           .attr("stroke", "white")
