@@ -128,6 +128,12 @@ export class AppComponent implements OnInit {
       case '/configuration/data-model/overview':
         comp = 'data_model'
         break;
+      case '/operate':
+        comp = 'operate'
+        break;
+      case '/publish':
+        comp = 'publish'
+        break;
       default:
         break;
     }
