@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 export class AppComponent implements OnInit {
   title = 'xnode';
   isSideWindowOpen: boolean = false;
+  isBotIconVisible: boolean = true;
   email: String = '';
   id: String = '';
   loading: boolean = true;
@@ -32,21 +33,24 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private changeDetector: ChangeDetectorRef,) {
+
   }
 
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
+        if (event.url === '/x-pilot') {
+          this.isBotIconVisible = false
+        } else {
+          this.isBotIconVisible = true;
+        }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         this.loading = event;
       }, 0);
-      // Promise.resolve().then(() => {
-      // });
-
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
@@ -78,7 +82,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
   handleRouterChange() {
     this.isSideWindowOpen = false;
@@ -187,23 +190,23 @@ export class AppComponent implements OnInit {
 
   parentdata: any[] = [
     {
-      Name: "Thimma chowdary",
+      Name: "User1",
       Age: 25,
       Address: "Address1",
-      Email: 'thimma@gmail.comm'
+      Email: 'user1@gmail.comm'
     },
     {
-      Name: "Thimma1",
+      Name: "User2",
       Age: 26,
       Address: "Address12",
-      Email: 'thimma@gmail.comm'
+      Email: 'user2@gmail.comm'
 
     },
     {
-      Name: "Thimma1",
+      Name: "User3",
       Age: 26,
       Address: "Address12",
-      Email: 'thimma@gmail.comm'
+      Email: 'User3@gmail.comm'
 
     },
   ];
