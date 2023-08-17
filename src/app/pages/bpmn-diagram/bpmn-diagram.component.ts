@@ -61,7 +61,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   testData: any;
 
   constructor(private api: ApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
-  
+
   }
 
   ngOnInit(): void {
@@ -78,7 +78,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       var graphWindow = document.getElementById("sc");
       if (graphWindow) graphWindow.style.display = '';
     }, 0);
-    
+
     setTimeout(() => {
       if (this.showUsecaseGraph) this.get_Usecases();
     }, 500);
@@ -165,7 +165,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'Product': appName
         };
         this.xflowData = response.data;
-        
+
         this.loadXFlows(xflowJson);
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
       } else {
@@ -178,6 +178,18 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.jsonWorkflow = JSON.stringify(workflow, null, 2);
     });  
     this.getOverview();
+  }
+
+  getOnboardingFlow() {
+    this.currentUser = UserUtil.getCurrentUser();
+    this.api.get('/retrieve_xflows/' +this.currentUser?.email +'/' +localStorage.getItem('record_id')).then(async (response: any) => {
+        if (response) {
+          let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
+          console.log(onboardingFlow);
+        }
+      }).catch((error) => {
+        console.log('error', error);
+      });
   }
 
 
@@ -236,7 +248,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   getElement() {
     this.sidebarVisible = true;
-    
+
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       let type = event.element.type;
       if (type === 'bpmn:Process') {
@@ -420,7 +432,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       for (let i = 0; i < d.xflows.length; i++) {
         temp_title = d.xflows[i].name;
         // d.xflows[i] = {};
-        // d.xflows[i] = 
+        // d.xflows[i] =
         d.children.push({
           "id": i,
           "title": temp_title
@@ -436,7 +448,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     let mod_data = this.modifyGraphData(data);
     this.showUsecaseGraph = true;
 
-    //TBD 
+    //TBD
     //group by usecase role and create different spider web where centre of web is role
     let firstRole = mod_data ? mod_data[0].role : '';
     var treeData = {
@@ -474,9 +486,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
             }
         })
       }
-  
     }
-    
+
   _chart(d3:any,data:any)
     {
       const width = 1028;//928;
@@ -576,7 +587,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       };
     }
       const centralNode = root.descendants().filter((node:any)=> !node.parent);
-      
+
       const nodeC = svg.append("g")
           .attr("stroke-linejoin", "round")
           .attr("stroke-width", 3)
@@ -598,7 +609,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("rx", 15)
           .style("stroke", '#959595')
           .style("stroke-width", 2)
-      
+
       nodeC.append("text")
           .attr('x', (d:any)=> {return d.data.title.length})
           .attr('y', '15')
@@ -649,7 +660,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
                                   else return '-1.4em'})
           .attr("dx", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
-                                  else return -d.data.title.length*5})  
+                                  else return -d.data.title.length*5})
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .style("font-family","Inter")
@@ -689,7 +700,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       nodeR.append("circle")
           .attr("fill", (d:any) => d.children ? "#555" : "#999")
           .attr("r", 2.5);
-      
+
       nodeR.append("rect")
           .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.5;
                                       else return d.data.title.trim().length*8;})
