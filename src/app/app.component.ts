@@ -162,16 +162,13 @@ export class AppComponent implements OnInit {
   isUserExists() {
     // Temporary
     return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
+      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/my-products";
   }
 
 
 
-  openNavi(newItem: any) {
-    this.getUserData();
-    this.isSideWindowOpen = newItem.cbFlag;
-    this.productContext = newItem.productContext;
-    this.makeTrustedUrl();
+  openNavi() {
+    this.router.navigate(['/x-pilot'])
   }
 
   toggleSideWindow() {
