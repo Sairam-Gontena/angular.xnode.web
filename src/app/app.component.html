@@ -2,7 +2,7 @@
     <div class="w-full" *ngIf="isUserExists()">
         <span (click)="submenuFunc()">
             <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen"
-                (valueChange)="openNavi()"></xnode-bot>
+                (valueChange)="openNavi($event)"></xnode-bot>
         </span>
         <xnode-app-header></xnode-app-header>
         <div class="flex">
