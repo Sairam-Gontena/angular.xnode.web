@@ -22,11 +22,9 @@
 
 .side-window {
   transition: all 0.5s ease-in-out;
-}
-
-.side-window.open {
   width: 40%;
 }
+
 
 .chatbot-close {
   cursor: pointer;
@@ -45,7 +43,6 @@
 
 .content-class-pilot {
   position: relative;
-  // background-color: #3a3942 !important;
 }
 
 .close-button {
@@ -75,4 +72,12 @@
 
 .h-90 {
   height: 96vh;
+}
+
+.full-screen-navi {
+  position: absolute;
+  width: calc(100vw - 80px);
+  right: 0;
+  height: calc(100vh - 48px);
+  transition: all 0.5s ease-in-out;
 }

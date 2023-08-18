@@ -67,7 +67,6 @@ export class AppHeaderComponent implements OnInit {
         this.RefreshListService.updateData('refreshproducts');
       }
       if (data.product_status === 'deployed') {
-        console.log("if deployed", data)
         const body = {
           product_id: data.product_id,
           product_url: data.product_url,

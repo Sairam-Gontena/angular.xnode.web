@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   email: String = '';
   id: String = '';
   loading: boolean = true;
+  isNaviExpanded?: boolean;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
@@ -73,12 +74,15 @@ export class AppComponent implements OnInit {
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
             this.isSideWindowOpen = false;
-            const customEvent = new Event('customEvent');
-            window.dispatchEvent(customEvent);
+            this.isNaviExpanded = false;
+          }
+          if (event.data === 'expand-navi') {
+            this.isNaviExpanded = true;
+          }
+          if (event.data === 'contract-navi') {
+            this.isNaviExpanded = false;
           }
         });
-        // Trigger the message to the iframe
-        // contentWindow.postMessage(data, this.targetUrl);
       }
     });
   }
