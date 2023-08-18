@@ -18,7 +18,7 @@
                
                <div id="diagramRef" class="diagram-container">
                </div>
-               <p-sidebar *ngIf="sideBar"  id="property-panel"[(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
+               <p-sidebar *ngIf="sideBar"  id="property-panel" [(visible)]="sidebarVisible" position="right" styleClass="w-30rem" [modal]="false">
                     <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
                     <div class="container text-left">
                          <div class="row">
@@ -43,7 +43,7 @@
                               <p-panel header="General" [toggleable]="true">
                                    <div class="row">
                                         <label htmlFor="username">{{generalInfo[0].label}}</label>
-                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="overview.title" /> <!--overview.Tag  -->
+                                        <input  pInputText id="username" aria-describedby="username-help" [(ngModel)]="entity" /> <!--overview.Tag  overview.title -->
                                    </div>
                                    <div class="row">
                                         <label htmlFor="username">{{generalInfo[1].label}}</label>
