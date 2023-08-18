@@ -37,7 +37,11 @@ export class NotificationPanelComponent {
     localStorage.setItem('app_name', obj.product_name);
     let url: any;
     if (obj.component && obj.component !== '') {
-      this.router.navigate(['/' + obj.component]);
+      if (window.location.hash === '#/' + obj.component) {
+        window.location.reload();
+      } else {
+        this.router.navigate(['/' + obj.component]);
+      }
     } else {
       if (this.currentUser)
         url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
