@@ -54,6 +54,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   items: MenuItem[] | undefined;
   home: MenuItem | undefined;
   xflowData: any;
+  entity:any;
 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   isOpen: boolean = true;
@@ -185,7 +186,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.get('/retrieve_xflows/' +this.currentUser?.email +'/' +localStorage.getItem('record_id')).then(async (response: any) => {
         if (response) {
           let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
-          console.log(onboardingFlow);
         }
       }).catch((error) => {
         console.log('error', error);
@@ -333,7 +333,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         { 'index': 5, 'label': 'NextEvent', 'name': nextFlow },
         { 'index': 6, 'label': 'PreviousEvent', 'name': prevFlow },
       ];
-
+      this.entity = this.overview.title;
       userTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:UserTask');
       serviceTasks = flowElements.filter((fe: any) => fe.$type === 'bpmn:ServiceTask');
       for (let i = 0; i < userTasks.length; i++) {
@@ -369,6 +369,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         { 'index': 8, 'label': 'Condition', 'name': condition },
         { 'index': 9, 'label': 'EntityState', 'name': element[0].EntityState },
       ];
+      this.entity = element[0].Entity
       return flow_Info;
     } else {
 
