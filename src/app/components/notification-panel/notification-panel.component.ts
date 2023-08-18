@@ -35,7 +35,18 @@ export class NotificationPanelComponent {
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    this.router.navigate([obj.component ? '/' + obj.component : '/design'])
+    let url: any;
+    if (obj.component && obj.component !== '') {
+      this.router.navigate(['/' + obj.component]);
+    } else {
+      if (this.currentUser)
+        url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
+      window.open(url, "_blank");
+    }
+  }
+
+  getMeLabel(obj: any) {
+    return obj.component && obj.component !== '' ? 'View Update' : 'Go to Product'
   }
 
   navigateToActivity() {
