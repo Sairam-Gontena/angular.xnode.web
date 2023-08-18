@@ -61,7 +61,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     const currentUrl = this.router.url;
-    if (currentUrl === '/design') {
+    if (currentUrl === '/dashboard') {
       this.showDeviceIcons = true;
     }
     this.getAllProducts()
