@@ -12,7 +12,7 @@ export const AppSideMenuItems = [
     {
         label: 'Design',
         icon: './assets/design.svg',
-        path: 'design'
+        path: 'dashboard'
     },
     {
         label: 'Config',

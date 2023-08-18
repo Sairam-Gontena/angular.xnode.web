@@ -120,7 +120,7 @@ export class AppComponent implements OnInit {
   getMeComponent() {
     let comp = '';
     switch (this.router.url) {
-      case '/design':
+      case '/dashboard':
         comp = 'dashboard'
         break;
       case '/overview':
@@ -227,7 +227,7 @@ export class AppComponent implements OnInit {
 
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
 
   }
 

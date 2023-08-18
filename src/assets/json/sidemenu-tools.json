@@ -2,7 +2,7 @@
      "subMenuConfig": [
           {
                "id": "1",
-               "path": "/design",
+               "path": "/dashboard",
                "subMenuItems": [
                     {
                          "accordianHeader": "Layout",
