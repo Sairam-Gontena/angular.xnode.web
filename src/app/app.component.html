@@ -9,10 +9,11 @@
             <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
-            <div [ngClass]="showSideMenu() ? 'app-body-wrapper' : 'app-body-wrapper-full'">
+            <div [ngClass]="showSideMenu()  ? 'app-body-wrapper' : 'app-body-wrapper-full'">
                 <router-outlet></router-outlet>
             </div>
-            <div id="side-window" class="side-window" *ngIf="isSideWindowOpen" [ngClass]="{ 'open': isSideWindowOpen }">
+            <div id="side-window" [ngClass]=" isNaviExpanded ? 'full-screen-navi': 'side-window'"
+                *ngIf="isSideWindowOpen">
                 <div class="content-class-pilot h-full">
                     <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                         class="w-full h-full pl-0 pr-0">
