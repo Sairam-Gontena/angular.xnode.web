@@ -35,10 +35,7 @@ export class NotificationPanelComponent {
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    let url: any;
-    if (this.currentUser)
-      url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
-    window.open(url, "_blank");
+    this.router.navigate([obj.component ? '/' + obj.component : '/design'])
   }
 
   navigateToActivity() {
