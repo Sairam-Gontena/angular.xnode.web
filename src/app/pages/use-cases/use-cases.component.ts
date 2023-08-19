@@ -15,6 +15,7 @@ export class UseCasesComponent implements OnInit {
   id: String = '';
   currentUser?: User;
   templates: any;
+  loading: boolean = true;
   highlightedIndex: any;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
@@ -23,6 +24,11 @@ export class UseCasesComponent implements OnInit {
 
   ngOnInit(): void {
     this.utilService.loadSpinner(true);
+    this.utilService.startSpinner.subscribe((event: boolean) => {
+      setTimeout(() => {
+        this.loading = event;
+      }, 0);
+    });
     if (localStorage.getItem('record_id') === null) {
       this.get_ID();
     } else {
@@ -67,5 +73,5 @@ export class UseCasesComponent implements OnInit {
       });
   }
 
-  
+
 }

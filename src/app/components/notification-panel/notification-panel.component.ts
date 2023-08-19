@@ -36,9 +36,21 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     let url: any;
-    if (this.currentUser)
-      url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
-    window.open(url, "_blank");
+    if (obj.component && obj.component !== '') {
+      if (window.location.hash === '#/' + obj.component) {
+        window.location.reload();
+      } else {
+        this.router.navigate(['/' + obj.component]);
+      }
+    } else {
+      if (this.currentUser)
+        url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
+      window.open(url, "_blank");
+    }
+  }
+
+  getMeLabel(obj: any) {
+    return obj.component && obj.component !== '' ? 'View Update' : 'Go to Product'
   }
 
   navigateToActivity() {

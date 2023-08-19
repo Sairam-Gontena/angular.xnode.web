@@ -15,9 +15,11 @@ import { MessageService } from 'primeng/api';
 export class AppComponent implements OnInit {
   title = 'xnode';
   isSideWindowOpen: boolean = false;
+  isBotIconVisible: boolean = true;
   email: String = '';
   id: String = '';
   loading: boolean = true;
+  isNaviExpanded?: boolean;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
@@ -32,21 +34,24 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private changeDetector: ChangeDetectorRef,) {
+
   }
 
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
+        if (event.url === '/x-pilot') {
+          this.isBotIconVisible = false
+        } else {
+          this.isBotIconVisible = true;
+        }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         this.loading = event;
       }, 0);
-      // Promise.resolve().then(() => {
-      // });
-
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
@@ -69,16 +74,18 @@ export class AppComponent implements OnInit {
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
             this.isSideWindowOpen = false;
-            const customEvent = new Event('customEvent');
-            window.dispatchEvent(customEvent);
+            this.isNaviExpanded = false;
+          }
+          if (event.data === 'expand-navi') {
+            this.isNaviExpanded = true;
+          }
+          if (event.data === 'contract-navi') {
+            this.isNaviExpanded = false;
           }
         });
-        // Trigger the message to the iframe
-        // contentWindow.postMessage(data, this.targetUrl);
       }
     });
   }
-
 
   handleRouterChange() {
     this.isSideWindowOpen = false;
@@ -113,32 +120,34 @@ export class AppComponent implements OnInit {
   getMeComponent() {
     let comp = '';
     switch (this.router.url) {
-    case '/design':
-      comp = 'dashboard'
-      break;
-    case '/overview':
-      comp = 'overview'
-      break;
-    case '/usecases':
-      comp = 'usecases'
-      break;
-    case '/configuration/workflow/overview':
-      comp = 'xflows'
-      break;
-    case '/configuration/data-model/overview':
-      comp = 'data_model'
-      break;
-    default:
-      break;
+      case '/dashboard':
+        comp = 'dashboard'
+        break;
+      case '/overview':
+        comp = 'overview'
+        break;
+      case '/use-cases':
+        comp = 'usecases'
+        break;
+      case '/configuration/workflow/overview':
+        comp = 'xflows'
+        break;
+      case '/configuration/data-model/overview':
+        comp = 'data_model'
+        break;
+      case '/operate':
+        comp = 'operate'
+        break;
+      case '/publish':
+        comp = 'publish'
+        break;
+      default:
+        break;
     }
     return comp;
   }
 
   get_Conversation() {
-    console.log("================================================")
-    console.log("================================================")
-    console.log(this.email)
-    console.log(localStorage.getItem('record_id'))
     this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
@@ -153,16 +162,20 @@ export class AppComponent implements OnInit {
   isUserExists() {
     // Temporary
     return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/design" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/my-products";
   }
 
 
 
   openNavi(newItem: any) {
-    this.getUserData();
-    this.isSideWindowOpen = newItem.cbFlag;
-    this.productContext = newItem.productContext;
-    this.makeTrustedUrl();
+    if (window.location.hash === "#/my-products") {
+      this.router.navigate(['/x-pilot'])
+    } else {
+      this.getUserData();
+      this.isSideWindowOpen = newItem.cbFlag;
+      this.productContext = newItem.productContext;
+      this.makeTrustedUrl();
+    }
   }
 
   toggleSideWindow() {
@@ -191,25 +204,31 @@ export class AppComponent implements OnInit {
 
   parentdata: any[] = [
     {
-      Name: "Thimma chowdary",
+      Name: "User1",
       Age: 25,
       Address: "Address1",
-      Email: 'thimma@gmail.comm'
+      Email: 'user1@gmail.comm'
     },
     {
-      Name: "Thimma1",
+      Name: "User2",
       Age: 26,
       Address: "Address12",
-      Email: 'thimma@gmail.comm'
+      Email: 'user2@gmail.comm'
 
     },
     {
-      Name: "Thimma1",
+      Name: "User3",
       Age: 26,
       Address: "Address12",
-      Email: 'thimma@gmail.comm'
+      Email: 'User3@gmail.comm'
 
     },
-  ]
+  ];
+
+  showSideMenu() {
+    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
+
+  }
 
 }
