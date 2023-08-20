@@ -1,5 +1,4 @@
 <div class="w-full h-full">
-    <xnode-app-header></xnode-app-header>
     <div [ngClass]="{' tmp-page-height': templateCard.length }" class="grid m-0 p-6 ">
         <div class="col-12 mt-5">
             <p class="text-6xl m-0 text-white text-wrap">Hi, Good Morning!</p>
@@ -20,7 +19,7 @@
             </p-button>
             <p-button styleClass="p-button-secondary p-button-rounded mr-4">
                 <i class="pi pi-plus"></i>
-                <span class="ml-2 mr-2 " (click)="this.router.navigate(['/design'])">New Project</span>
+                <span class="ml-2 mr-2 " (click)="this.router.navigate(['/dashboard'])">New Project</span>
             </p-button>
             <p-button styleClass="p-button-secondary p-button-rounded mr-4">
                 <img alt="bot-btn-icon" src="./assets/import.svg" />
@@ -58,7 +57,8 @@
                         </div>
                         <div class="overlay">{{ i + 1 }}</div>
                         <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
-                            (click)="openExternalLink(data.product_url)" *ngIf="data.product_url !== ''"></i>
+                            (click)="openExternalLink(data.product_url)"
+                            *ngIf="data.product_url && data.product_url !== ''"></i>
 
                     </ng-template>
                     <div class="flex">

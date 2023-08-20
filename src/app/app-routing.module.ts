@@ -54,7 +54,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'design',
+    path: 'dashboard',
     loadChildren: () =>
       import('./pages/template-builder/template-builder.module').then(
         (m) => m.TemplateBuilderModule
@@ -145,4 +145,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

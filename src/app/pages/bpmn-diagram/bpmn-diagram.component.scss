@@ -17,6 +17,10 @@
      // transform: rotate(90deg);
 }
 
+#graph{
+     height: 80vh;
+}
+
 .paragraph-text {
      color: rgba(255, 255, 255, 0.6);
 }
@@ -106,3 +110,17 @@
 img.highlighted {
      background-color: #02ADEE !important;
 }
+
+#graph::-webkit-scrollbar {
+     width: 8px;
+ }
+ 
+ #graph::-webkit-scrollbar-track {
+     background-color: #3A3942;
+     border-radius: 100px;
+ }
+ 
+ #graph::-webkit-scrollbar-thumb {
+     background-color: #F5F5F5;
+     border-radius: 100px;
+ }

@@ -15,11 +15,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="useCases?.length === 0">
+    <div *ngIf="!loading && useCases?.length === 0">
         <h2 class="text-center text-white">No Use cases found</h2>
     </div>
 </div>
-
-
-
-

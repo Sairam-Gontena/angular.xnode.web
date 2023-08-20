@@ -43,14 +43,11 @@ export class NaviComponent implements OnInit {
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
-          console.log('event', event.origin, this.targetUrl.split('?')[0]);
           // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-            console.log('not matched');
 
             return; // Ignore messages from untrusted sources
           }
-          console.log('event.data', event.data);
 
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
@@ -72,7 +69,7 @@ export class NaviComponent implements OnInit {
   }
 
   onClickContinue(): void {
-    this.router.navigate(['/design']);
+    this.router.navigate(['/dashboard']);
   }
 
 }

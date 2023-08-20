@@ -59,7 +59,7 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('socket message', data)
+      // console.log('socket message', data)
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
@@ -67,7 +67,6 @@ export class AppHeaderComponent implements OnInit {
         this.RefreshListService.updateData('refreshproducts');
       }
       if (data.product_status === 'deployed') {
-        console.log("if deployed", data)
         const body = {
           product_id: data.product_id,
           product_url: data.product_url,

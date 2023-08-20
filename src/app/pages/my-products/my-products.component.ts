@@ -46,7 +46,7 @@ export class MyProductsComponent implements OnInit {
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('app_name', data.title);
-    this.router.navigate(['/design']);
+    this.router.navigate(['/dashboard']);
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
