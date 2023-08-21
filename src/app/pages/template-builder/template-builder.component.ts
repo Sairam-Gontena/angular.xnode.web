@@ -78,7 +78,7 @@ export class TemplateBuilderComponent implements OnInit {
     }
     if (localStorage.getItem('record_id')) {
       this.productId = localStorage.getItem('record_id');
-      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "&targetUrl="+environment.baseUrl;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
       this.loading = false;
     } else {
@@ -104,7 +104,7 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   loadDesignStudio() {
-    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+    let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "&targetUrl="+environment.baseUrl;
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
