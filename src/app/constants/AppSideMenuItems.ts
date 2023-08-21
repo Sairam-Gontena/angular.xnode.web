@@ -7,7 +7,7 @@ export const AppSideMenuItems = [
     {
         label: 'Usecase',
         icon: './assets/overview.svg',
-        path: 'use-cases'
+        path: 'usecases'
     },
     {
         label: 'Design',
