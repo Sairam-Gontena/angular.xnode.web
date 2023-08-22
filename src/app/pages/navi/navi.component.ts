@@ -16,9 +16,9 @@ export class NaviComponent implements OnInit {
     private router: Router,
     private domSanitizer: DomSanitizer,) {
   }
-  targetUrl: string = environment.naviUrl;
+  targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
-  baseUrl: string = environment.baseUrl;
+  xnodeAppUrl: string = environment.xnodeAppUrl;
 
   ngOnInit(): void {
     //get user data from local storage
@@ -31,7 +31,7 @@ export class NaviComponent implements OnInit {
     }
     //get Iframe and receive data
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.baseUrl;
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.xnodeAppUrl;
     if (localStorage.getItem('record_id')) {
       this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
     }
@@ -51,7 +51,7 @@ export class NaviComponent implements OnInit {
 
           // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
-            window.location.href = this.baseUrl + '#/my-products';
+            window.location.href = this.xnodeAppUrl + '#/my-products';
             // Trigger a custom event in the parent window
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);

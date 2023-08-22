@@ -1,9 +1,11 @@
 export const environment = {
     production: false,
-    baseUrl: 'https://prod-xnode.azurewebsites.net/',
-    xpilotUrl: 'https://prod.azurewebsites.net/',
-    naviUrl: 'https://prod-navi-web.azurewebsites.net/',
-    designStudioUrl: 'https://prod-ui-gen.azurewebsites.net/',
-    publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',  //for now we have only dev url
-    workFlowUrl: 'https://dev-xnode-xflows.azurewebsites.net/' //Prod env not configured yet
+    apiUrl: 'https://prod.azurewebsites.net/',
+    xnodeAppUrl: 'https://prod-xnode.azurewebsites.net/',
+    naviAppUrl: 'https://prod-navi-web.azurewebsites.net/',
+    designStudioAppUrl: 'https://prod-ui-gen.azurewebsites.net/',
+    publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',  //for now we have only dev url
+    workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/', //Prod env not configured yet
+    webSocketNotifier: 'prod-xnode-notifier',
+    branchName: 'prod'
 } 
