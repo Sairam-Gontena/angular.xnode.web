@@ -14,5 +14,9 @@ export const Emails = [
     {
         email: 'dev@xnode.ai',
         password: 'Devuser123'
+    },
+    {
+        email: 'user@xnode.ai',
+        password: 'user123'
     }
 ]
