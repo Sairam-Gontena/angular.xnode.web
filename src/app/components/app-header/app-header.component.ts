@@ -107,7 +107,7 @@ export class AppHeaderComponent implements OnInit {
       repoName: obj.product_name,
       projectName: 'xnode',
       email: this.email,
-      envName: environment.name,
+      envName: environment.branchName,
       productId: obj.product_id
     }
     this.apiService.publishApp(body)
