@@ -634,6 +634,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("transform", (d:any) => `translate(${-d.y/2},${d.x})`)
           .attr("cursor", (d:any)=> { if(d.depth ==2) return "pointer";
                                       else return "text"})
+          .attr("cursor", "pointer")
           .attr("pointer-events", "all");
 
       nodeL.append("circle")
@@ -641,13 +642,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("r", 3.5);
 
       nodeL.append("rect")
-          .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.length*4.2;
-                                      else return d.data.title.length*8;})
-          .attr("height", (d:any)=> { if(d.depth ==1) return 40;
-                                      else return 30;})
+          .attr("width", (d:any)=> { if(d.depth ==1) { 
+                                      return 120; // return d.data.title.length*3.5;
+                                        }
+                                      else {  
+                                      return 100; // return d.data.title.length*8;
+                                    }})
+          .attr("height", (d:any)=> { if(d.depth ==1) return 50;
+                                      else return 40;})
           .attr("fill", "#FFFFFA")
-          .attr("x", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
-                                  else return -d.data.title.length*7;})
+          .attr("x", (d:any)=> { if(d.depth ==1) return -d.data.title.length*2.5;
+                                  else {return -d.data.title.length*6.1;}})
           .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
                                   else return '-1.5em'})
           .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
@@ -656,25 +661,49 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("stroke", '#959595')
       
       nodeL.append("text")
-          .attr('x', (d:any)=> {return d.data.title.length*1.8})
-          .attr('y', '15')
-          .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
-                                  else return '-1.4em'})
-          .attr("dx", (d:any)=> { if(d.depth ==1) return -d.data.title.length*3;
-                                  else return -d.data.title.length*5})
+          .attr('x', (d:any)=> {
+            if(d.depth ==1){
+              return 60//return d.data.title.length*2.2 
+            }else{
+              return 30 //40// return d.data.title.length*1.8
+            }
+          })
+          .attr('y', '20')
+          .attr('dy', (d:any)=> { if(d.depth ==1){ return '-2.2em';}
+                                  else{ return '-1.4em'}})
+          .attr("dx", (d:any)=> { if(d.depth ==1){  return -d.data.title.length*3;}
+                                  else{ return -d.data.title.length*5; }})
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .style("font-family","Inter")
           .style("font-weight", 600) 
           .style("fill", '#7a7a7a')
-          .style("font-size","10px")
-          .text((d:any) => {return d.data.title.split("-")[0]})
+          .style("font-size","12px")
+          .text((d:any) => {
+            let title = d.data.title.split("-"); 
+            if(title[0]){
+              title = title[0]
+            }
+            if (title.length > 9) {
+                return title.substring(0, 9) + "...";
+            } else {
+                return title;
+            }// return d.data.title.split("-")[0]
+          })
           .clone(true).lower()
-          .attr("stroke", "white");   //left first
+          .attr("stroke", "white");
+
+      nodeL.append("title").text((d:any) => d.data.title);
 
       nodeL.append("text")
-          .attr('x', (d:any)=> {return d.data.title.length*1.5})
-          .attr('y', '15')
+          .attr('x', (d:any)=> {
+            if(d.depth ==1){
+              return 40// return d.data.title.length*1 
+            }else{
+              return 20 //20// return d.data.title.length*1.2
+            }
+          })
+          .attr('y', '20')
           .attr('dy', '-0.8em')
           .attr("dx", (d:any)=> {return -d.data.title.length*2.4;})
           .attr("text-anchor", "middle")
@@ -683,10 +712,22 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("font-weight", 600)
           .style("fill", "#000000")
           .style("color", '#000')
-          .style("font-size","10px")
-          .text((d:any) => {return d.data.title.split("-").slice(1)})
+          .style("font-size","12px")
+          .text((d:any) => {
+            let title = d.data.title.split("-").slice(1);
+            if(title[0]){
+              title = title[0]
+            }
+            if (title.length > 9) {
+                return title.substring(0, 9) + "...";
+            } else {
+                return title;
+            }
+          })
           .clone(true).lower()
-          .attr("stroke", "white");  //left second
+          .attr("stroke", "white");  
+        
+      nodeL.append("title").text((d:any) => d.data.title);
       
       const nodeR = svg.append("g")
           .attr("stroke-linejoin", "round")
@@ -703,10 +744,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("r", 2.5);
 
       nodeR.append("rect")
-          .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.5;
-                                      else return d.data.title.trim().length*8;})
-          .attr("height", (d:any)=> { if(d.depth ==1) return 40;
-                                      else return 30;})
+          // .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.5;
+          //                             else return d.data.title.trim().length*8;})
+          // .attr("height", (d:any)=> { if(d.depth ==1) return 40;
+          //                             else return 30;})
+          .attr("width",120)
+          .attr("height",50)
           .attr("fill", "#FFFFFA")
           .attr("x", (d:any)=> {return -d.data.title.length*1;})
           .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
@@ -714,11 +757,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
                                   else return 20})
           .attr("stroke-width", "2") 
-          .attr("stroke", '#959595')
+          .attr("stroke", '#959595');
       
-      nodeR.append("text")  //complete right white box
-      .attr('x', (d:any)=> {return d.data.title.length * 1.2;})
-      .attr('y', '15')
+      nodeR.append("text")
+      .attr('x', (d:any)=> {
+        if(d.depth ==1){
+          return 24
+        }else{
+          return 20 // return d.data.title.length*0.6
+        } 
+      })
+      .attr('y', '20')
       .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
                                 else return '-1.4em'})
       .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
@@ -729,14 +778,33 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("font-weight", 600)
           .style("fill", '#7a7a7a')
           .style("color", '#000')
-          .style("font-size","10px")
-          .text((d:any) => {return d.data.title.split("-")[0]})
+          .style("font-size","12px")
+          .text((d:any) => { 
+            let title = d.data.title.split("-"); 
+            if(title[0]){
+              title = title[0]
+            }
+            if (title.length > 9) {
+                return title.substring(0, 9) + "...";
+            } else {
+                return title;
+            }
+            // return d.data.title.split("-")[0]
+          })
         .clone(true).lower()
-          .attr("stroke", "white");
+        .attr("stroke", "white");
+
+        nodeR.append("title").text((d:any) => d.data.title);
 
       nodeR.append("text")
-          .attr('x', (d:any)=> {return d.data.title.length;})
-          .attr('y', '15')
+          .attr('x', (d:any)=> {
+              if(d.depth ==1){
+                return 24
+              }else{
+                return 30 // return d.data.title.length*0.6;
+              }          
+          })
+          .attr('y', '20')
           .attr('dy', '-0.8em')
           .attr("dx", (d:any)=> {return d.data.title.length*0.2;})
           .attr("text-anchor", "middle")
@@ -745,10 +813,22 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .style("font-family","Inter")
           .style("fill", "#000000")
           .style("color", '#000')
-          .style("font-size","10px")
-          .text((d:any) => {return d.data.title.split("-").slice(1)})
+          .style("font-size","12px")
+          .text((d:any) => {
+            let title = d.data.title.split("-").slice(1);
+            if(title[0]){
+              title = title[0]
+            }
+            if (title.length > 9) {
+                return title.substring(0, 9) + "...";
+            } else {
+                return title;
+            }
+          })
           .clone(true).lower()
-          .attr("stroke", "white")
+          .attr("stroke", "white");
+
+      nodeR.append("title").text((d:any) => d.data.title);
         
       return svg.node();
   }
