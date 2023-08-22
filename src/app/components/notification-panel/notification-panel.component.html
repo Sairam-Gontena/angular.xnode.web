@@ -66,7 +66,7 @@
                         class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
                         Accept</div>
                 </div>
-                <div class="flex mt-2" *ngIf="notification?.product_status === 'completed' && !notification?.component">
+                <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
                     <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
                         (click)="onClickPublish(notification)">
                         Publish
