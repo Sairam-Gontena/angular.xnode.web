@@ -9,7 +9,8 @@
         </div>
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
-        <div class=" flex justify-content-center align-content-center">
+        <div class="flex justify-content-center align-content-center">
+            <img src="./assets/Feedback.svg" (click)="showDialog()" class="mr-3"/>
             <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge
                 value={{notificationCount}} severity="danger" (click)=" op.show($event)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon"
@@ -23,6 +24,72 @@
         <p-splitButton label="Raymond Nelson" [model]="logoutDropdown"
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
+    <p-dialog header="Give feedback to xnode" class="feedback" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '60vw'}" [draggable]="false" [resizable]="false">
+        <ng-template pTemplate="header">
+            <div class="dialog-header grid">
+                <div>
+                    <img src="./assets/feedback-popup.svg" alt="dp" class="text-2xl font-bold mr-2 mt-1" width="30px" height="30px">
+                </div>
+                <div>
+                    <h2>Give feedback to xnode</h2>
+                    <p class="text-base font-medium">Please enter the details below.</p>
+                </div>
+            </div>
+        </ng-template>
+        <form >
+            <div class="p-4">
+                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
+                    <div class="text-sm font-medium">Product</div>
+                    <input type="text" pInputText formControlName="product" placeholder="Select Product" class="col-11"/>
+                    <!-- <p-dropdown formControlName="product" [options]="products" optionLabel="name" class="col-11"></p-dropdown> -->
+                </div>
+                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
+                    <div class="text-sm font-medium">Component</div>
+                    <input type="text" pInputText formControlName="component" placeholder="e.g., Dashboard" class="col-11"/>
+               </div>
+               <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
+               <div class="text-sm font-medium"> Help us improve</div>
+                 <textarea rows="5" cols="30" pInputTextarea class="col-11" placeholder="Share your thoughts on the product"></textarea>
+               </div>
+               <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
+               <div class="text-sm font-medium">Attach File</div>
+               <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
+                <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
+                    [class.selected]=" draganddropSelected"
+                    [class.invalid]="isFormSubmitted && !draganddropSelected">
+                    <input type="file" #fileDropRef id="fileDropRef"
+                        (change)="fileBrowseHandler($any($event).target.files)"
+                        [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
+                    <ng-template #elseBlock>
+                        <input type="file" #fileDropRef id="fileDropRef"
+                            (change)="fileBrowseHandler($any($event).target.files)" disabled />
+                    </ng-template>
+                    <img src="./assets/sky.svg" width="64px">
+                    <h3 class="font-semibold text-sm">Drag and Drop </h3>
+                </div>
+                <div class="field col-2 ">
+                    <h3 class="mt-5 font-semibold text-sm">( OR )</h3>
+                </div>
+                <div class="field col-5 mt-5" (click)="selectBrowser()" [class.selected]="browserSelected"
+                    [class.invalid]="isFormSubmitted && !browserSelected">
+                    <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm border-round-3xl"
+                        styleClass="p-button-outlined"></p-button>
+                </div>
+                <div class="font-semibold text-sm text-500">
+                    Supported file types JPG, PNG (upload file size limit 2MB)
+                </div>
+
+            </div>
+               </div>
+               <p class="text-xs font-medium ml-3">Your feedback will be used to improve xnode products and services</p>
+           </div>
+           <div class="flex justify-content-end flex-wrap mr-4 gap-3">
+            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
+            <p-button label="Submit" styleClass="p-button-rounded p-button-primary"></p-button>
+
+           </div>
+        </form>
+    </p-dialog>
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
