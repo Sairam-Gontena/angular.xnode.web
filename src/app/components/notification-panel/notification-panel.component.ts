@@ -44,7 +44,7 @@ export class NotificationPanelComponent {
       }
     } else {
       if (this.currentUser)
-        url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
+        url = `${environment.designStudioAppUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
       window.open(url, "_blank");
     }
   }

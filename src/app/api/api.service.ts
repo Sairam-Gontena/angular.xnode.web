@@ -7,8 +7,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
-  endPoint = environment.xpilotUrl + "crud";
-  workFlow = environment.workFlowUrl + 'api/json-bpmn';
+  endPoint = environment.apiUrl + "crud";
+  workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   constructor() {
   }
   config = {
@@ -18,7 +18,7 @@ export class ApiService {
   };
   // Temporary
   publishApp(body: any) {
-    return axios.post(environment.publishUrl, body);
+    return axios.post(environment.publishApiUrl, body);
   }
   postWorkFlow(body: any) {
     return axios.post(this.workFlow, body, this.config);

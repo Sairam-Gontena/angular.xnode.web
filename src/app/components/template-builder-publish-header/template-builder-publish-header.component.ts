@@ -77,7 +77,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     if (localStorage.getItem('record_id')) {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
-      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
 
     }
@@ -110,7 +110,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
+      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
       this.showConfirmationPopup();
     }
@@ -127,7 +127,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           repoName: localStorage.getItem('app_name'),
           projectName: 'xnode',
           email: this.currentUser?.email,
-          envName: environment.name,
+          envName: environment.branchName,
           productId: this.productId ? this.productId : localStorage.getItem('record_id')
         }
         this.publishProduct(body);

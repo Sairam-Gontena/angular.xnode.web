@@ -59,7 +59,7 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      // console.log('socket message', data)
+      console.log('socket message', data)
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
@@ -107,7 +107,7 @@ export class AppHeaderComponent implements OnInit {
       repoName: obj.product_name,
       projectName: 'xnode',
       email: this.email,
-      envName: environment.name,
+      envName: environment.branchName,
       productId: obj.product_id
     }
     this.apiService.publishApp(body)
