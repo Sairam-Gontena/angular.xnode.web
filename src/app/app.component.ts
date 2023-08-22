@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
-  targetUrl: string = environment.naviUrl;
+  targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
   constructor(
     private domSanitizer: DomSanitizer,
@@ -76,6 +76,10 @@ export class AppComponent implements OnInit {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
+          if (event.data === 'close-docked-navi') {
+            this.isSideWindowOpen = false;
+            this.isNaviExpanded = false;
+          }
           if (event.data === 'expand-navi') {
             this.isNaviExpanded = true;
           }
@@ -103,9 +107,9 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
-      let rawUrl = environment.naviUrl + '?email=' + this.email +
+      let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
-        '&targetUrl=' + environment.baseUrl +
+        '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
@@ -126,8 +130,8 @@ export class AppComponent implements OnInit {
       case '/overview':
         comp = 'overview'
         break;
-      case '/use-cases':
-        comp = 'usecases'
+      case '/usecases':
+        comp = 'usecase'
         break;
       case '/configuration/workflow/overview':
         comp = 'xflows'
@@ -161,7 +165,7 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     // Temporary
-    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/my-products";
   }
 
@@ -226,7 +230,7 @@ export class AppComponent implements OnInit {
   ];
 
   showSideMenu() {
-    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/use-cases"
+    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
 
   }
