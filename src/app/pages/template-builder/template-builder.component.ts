@@ -41,8 +41,7 @@ export class TemplateBuilderComponent implements OnInit {
   email = '';
   selectedTemplate = localStorage.getItem("app_name");
 
-  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
-
+  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
   }
 
   ngOnInit() {
@@ -95,11 +94,15 @@ export class TemplateBuilderComponent implements OnInit {
   get_ID() {
     this.apiService.get('/get_metadata/' + this.emailData)
       .then(response => {
-        this.productId = response.data.data[0].id;
-        localStorage.setItem("app_name", response.data.data[0].product_name)
-        this.loadDesignStudio()
+        if (response) {
+          this.productId = response.data.data[0].id;
+          localStorage.setItem("app_name", response.data.data[0].product_name)
+          this.loadDesignStudio();
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: 'Network error' });
+        }
       }).catch(error => {
-        this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
       });
   }
 

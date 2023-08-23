@@ -18,13 +18,13 @@ export class UseCasesComponent implements OnInit {
   loading: boolean = true;
   highlightedIndex: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
-    this.utilService.loadSpinner(true);
-    this.utilService.startSpinner.subscribe((event: boolean) => {
+    this.utils.loadSpinner(true);
+    this.utils.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         this.loading = event;
       }, 0);
@@ -43,14 +43,18 @@ export class UseCasesComponent implements OnInit {
   get_ID() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
-        this.id = response.data.data[0].id;
-        localStorage.setItem('record_id', response.data.data[0].id);
-        this.get_Usecases();
-        this.utilService.loadSpinner(false);
+        if (response) {
+          this.id = response.data.data[0].id;
+          localStorage.setItem('record_id', response.data.data[0].id);
+          this.get_Usecases();
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+        }
+        this.utils.loadSpinner(false);
       })
       .catch(error => {
-        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utilService.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utils.loadSpinner(false);
       });
   }
 
@@ -64,12 +68,14 @@ export class UseCasesComponent implements OnInit {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
         }
-        this.utilService.loadSpinner(false);
+        this.utils.loadSpinner(false);
       })
       .catch(error => {
-        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utilService.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utils.loadSpinner(false);
       });
   }
 
