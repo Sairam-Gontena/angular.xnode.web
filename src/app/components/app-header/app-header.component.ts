@@ -7,7 +7,7 @@ import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -42,12 +42,19 @@ export class AppHeaderComponent implements OnInit {
   isPlaceholderVisible!: boolean;
   draganddropSelected!: boolean;
   browserSelected!: boolean;
-  // formGroup: FormGroup;
+  feedbackForm: FormGroup;
+
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,private fb: FormBuilder) {
+      this.feedbackForm = this.fb.group({
+        product: ['', Validators.required],
+        component: ['', Validators.required],
+        helpUsImprove: ['', Validators.required],
+        logoFile: [null, Validators.required]
+      });
   }
-
+  get Form() { return this.feedbackForm.controls; }
   ngOnInit(): void {
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
@@ -61,22 +68,24 @@ export class AppHeaderComponent implements OnInit {
     ];
     this.initializeWebsocket();
     this.products = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
+      { name: 'Select Product', code: 'select Product' },
+      { name: 'Other', code: 'other' },
     ];
     //   this.formGroup = new FormGroup({
     //     // selectedCity: new FormControl<City | null>(null)
     // });
   }
+  getFeedback() {
+    const formValues = this.feedbackForm.value;
+    console.log(formValues);
+  }
+
   files: any[] = [];
   onFileDropped($event: any) {
     this.prepareFilesList($event);
-    // this.brandguidelinesForm.patchValue({
-    //   logoFile: $event[0]
-    // });
+    this.feedbackForm.patchValue({
+      logoFile: $event[0]
+    });
   }
   /**
     * handle file from browsing
@@ -84,9 +93,9 @@ export class AppHeaderComponent implements OnInit {
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
-    // this.brandguidelinesForm.patchValue({
-    //   logoFile: files[0] // Update the value of the logoFile control
-    // });
+    this.feedbackForm.patchValue({
+      logoFile: files[0] // Update the value of the logoFile control
+    });
   }
 
   /**

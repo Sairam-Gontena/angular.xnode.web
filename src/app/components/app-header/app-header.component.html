@@ -24,36 +24,35 @@
         <p-splitButton label="Raymond Nelson" [model]="logoutDropdown"
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
-    <p-dialog header="Give feedback to xnode" class="feedback" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw', height: '60vw'}" [draggable]="false" [resizable]="false">
+    <p-dialog header="Give feedback to xnode" class="feedback" [(visible)]="visible" [modal]="true" [style]="{ width: '40vw', height: '50vw'}" [draggable]="false" [resizable]="false">
         <ng-template pTemplate="header">
             <div class="dialog-header grid">
                 <div>
-                    <img src="./assets/feedback-popup.svg" alt="dp" class="text-2xl font-bold mr-2 mt-1" width="30px" height="30px">
+                    <img src="./assets/feedback-popup.svg" alt="dp" class="text-2xl font-bold mr-3 mt-1" width="50px" height="50px">
                 </div>
                 <div>
                     <h2>Give feedback to xnode</h2>
-                    <p class="text-base font-medium">Please enter the details below.</p>
+                    <p class="text-base font-medium text-500">Please enter the details below.</p>
                 </div>
             </div>
         </ng-template>
-        <form >
+        <form [formGroup]="feedbackForm">
             <div class="p-4">
                 <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
                     <div class="text-sm font-medium">Product</div>
-                    <input type="text" pInputText formControlName="product" placeholder="Select Product" class="col-11"/>
-                    <!-- <p-dropdown formControlName="product" [options]="products" optionLabel="name" class="col-11"></p-dropdown> -->
+                    <p-dropdown formControlName="product" [options]="products" optionLabel="name" class="custom-dropdown"></p-dropdown>
                 </div>
                 <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
                     <div class="text-sm font-medium">Component</div>
-                    <input type="text" pInputText formControlName="component" placeholder="e.g., Dashboard" class="col-11"/>
+                    <input type="text" pInputText formControlName="component" placeholder="e.g., Dashboard" class="col-12"/>
                </div>
                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
                <div class="text-sm font-medium"> Help us improve</div>
-                 <textarea rows="5" cols="30" pInputTextarea class="col-11" placeholder="Share your thoughts on the product"></textarea>
+                 <textarea rows="5" cols="30" pInputTextarea formControlName="helpUsImprove" class="col-12" placeholder="Share your thoughts on the product"></textarea>
                </div>
                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
                <div class="text-sm font-medium">Attach File</div>
-               <div class="container grid m-0 mt-2" appDnd (fileDropped)="onFileDropped($event)">
+               <div class="container grid m-0 mt-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 " appDnd (fileDropped)="onFileDropped($event)">
                 <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
                     [class.selected]=" draganddropSelected"
                     [class.invalid]="isFormSubmitted && !draganddropSelected">
@@ -68,24 +67,37 @@
                     <h3 class="font-semibold text-sm">Drag and Drop </h3>
                 </div>
                 <div class="field col-2 ">
-                    <h3 class="mt-5 font-semibold text-sm">( OR )</h3>
+                    <h3 class="mt-4 font-semibold text-sm">( OR )</h3>
                 </div>
-                <div class="field col-5 mt-5" (click)="selectBrowser()" [class.selected]="browserSelected"
+                <div class="field col-5 mt-4" (click)="selectBrowser()" [class.selected]="browserSelected"
                     [class.invalid]="isFormSubmitted && !browserSelected">
-                    <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm border-round-3xl"
-                        styleClass="p-button-outlined"></p-button>
+                    <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm browseFiles"
+                        styleClass=""></p-button>
                 </div>
                 <div class="font-semibold text-sm text-500">
                     Supported file types JPG, PNG (upload file size limit 2MB)
                 </div>
 
             </div>
+            <div class="files-list mt-3">
+                <div class="single-file grid" *ngFor="let file of files; let i = index">
+                    <div class="info ml-3">
+                        <h4 class="name">
+                            {{ file?.name }}
+                        </h4>
+                    </div>
+                    <div class="delete ml-3" (click)="deleteFile(i)">
+                        <i class="pi pi-trash" style="font-size: 1.5rem"></i>
+                    </div>
+                </div>
+                
+            </div>
+            <p class="text-xs font-medium ml-3 text-500">Your feedback will be used to improve xnode products and services</p>
                </div>
-               <p class="text-xs font-medium ml-3">Your feedback will be used to improve xnode products and services</p>
            </div>
            <div class="flex justify-content-end flex-wrap mr-4 gap-3">
             <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
-            <p-button label="Submit" styleClass="p-button-rounded p-button-primary"></p-button>
+            <p-button label="Submit" styleClass="p-button-rounded p-button-primary" (click)="getFeedback()"></p-button>
 
            </div>
         </form>

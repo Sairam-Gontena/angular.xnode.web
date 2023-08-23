@@ -77,7 +77,7 @@ a:hover {
 }
 
 .container {
-    width: 500px;
+    width: 510px;
     height: 220px;
     border-radius: 15px;
     padding: 2rem;
@@ -117,4 +117,15 @@ textarea {
     padding-top: 6px;
     padding-bottom: 6px;
     border: 1px solid #2E2D36;
+}
+:host::ng-deep.custom-dropdown .p-dropdown{
+    width: 100%; /* or any other desired width */
+    color: #ffffff;
+    background: #2E2D36;
+}
+:host::ng-deep.browseFiles .p-button{
+    border-radius: 2rem;
+    background-color: #23222B !important;
+    color: #2C91FD !important;
+    border: solid 1px #2C91FD;
 }
