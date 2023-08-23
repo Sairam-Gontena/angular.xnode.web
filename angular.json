@@ -124,6 +124,27 @@
               ],
               "outputHashing": "all"
             },
+            "beta": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -149,6 +170,9 @@
             },
             "demo": {
               "browserTarget": "xnode:build:demo"
+            },
+            "beta": {
+              "browserTarget": "xnode:build:beta"
             },
             "development": {
               "browserTarget": "xnode:build:development"
