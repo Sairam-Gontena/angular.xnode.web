@@ -177,19 +177,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       console.log('error', error);
       this.loadXFlows(workflow);
       this.jsonWorkflow = JSON.stringify(workflow, null, 2);
-    });  
+    });
     this.getOverview();
-  }
-
-  getOnboardingFlow() {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.api.get('/retrieve_xflows/' +this.currentUser?.email +'/' +localStorage.getItem('record_id')).then(async (response: any) => {
-        if (response) {
-          let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
-        }
-      }).catch((error) => {
-        console.log('error', error);
-      });
   }
 
 
@@ -652,9 +641,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
                                   else return '-1.5em'})
           .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
                                   else return 20})
-          .attr("stroke-width", "2") 
+          .attr("stroke-width", "2")
           .attr("stroke", '#959595')
-      
+
       nodeL.append("text")
           .attr('x', (d:any)=> {return d.data.title.length*1.8})
           .attr('y', '15')
@@ -665,7 +654,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
           .style("font-family","Inter")
-          .style("font-weight", 600) 
+          .style("font-weight", 600)
           .style("fill", '#7a7a7a')
           .style("font-size","10px")
           .text((d:any) => {return d.data.title.split("-")[0]})
@@ -687,7 +676,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
           .attr("stroke", "white");  //left second
-      
+
       const nodeR = svg.append("g")
           .attr("stroke-linejoin", "round")
           .attr("stroke-width", 3)
@@ -713,9 +702,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
                                   else return '-1.4em'})
           .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
                                   else return 20})
-          .attr("stroke-width", "2") 
+          .attr("stroke-width", "2")
           .attr("stroke", '#959595')
-      
+
       nodeR.append("text")  //complete right white box
       .attr('x', (d:any)=> {return d.data.title.length * 1.2;})
       .attr('y', '15')
@@ -749,7 +738,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .text((d:any) => {return d.data.title.split("-").slice(1)})
           .clone(true).lower()
           .attr("stroke", "white")
-        
+
       return svg.node();
   }
 }

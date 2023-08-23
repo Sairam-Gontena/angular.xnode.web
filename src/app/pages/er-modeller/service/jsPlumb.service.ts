@@ -114,15 +114,21 @@ export class JsPlumbService {
         source: source_id,
         target: target_id,
         connector: 'StateMachine',
-        paintStyle: { stroke: '#456', strokeWidth: 2 },
+        paintStyle: { stroke: '#456', strokeWidth: 1 },
         overlays: [
+          ['Custom', {
+            create:(component:any) => {
+                const d = document.createElement("h1")
+                d.innerHTML = "c"
+                return d
+            } , width: 1, length: 1, location: 1 }],
           // @ts-ignore
           [
             'Label',
             {
               label:
                 '<div class="text-center">' +
-                this.dataService.data?.getModelByName(schema?.belongsto)?.name +
+                this.dataService.data?.getModelByName(schema?.belongsto)?.name + ' ( 1:N ) '+
                 '<br>' +
                 this.dataService.data?.getModelById(schema?.parent_id)?.name +
                 '</div>',
@@ -133,10 +139,10 @@ export class JsPlumbService {
       };
       if (this._instance.getConnections(option).length === 0) {
         var connection = this._instance.connect(option);
-        if (connection) {
-          connection.bind('contextmenu', function (conn: any) {
-          });
-        }
+        // if (connection) {
+        //   connection.bind('contextmenu', function (conn: any) {
+        //   });
+        // }
       } else {
       }
     }
