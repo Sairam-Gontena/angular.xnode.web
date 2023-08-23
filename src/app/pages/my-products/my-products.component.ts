@@ -19,7 +19,7 @@ export class MyProductsComponent implements OnInit {
   currentUser?: User;
   private subscription: Subscription;
   isLoading: boolean = true;
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -30,7 +30,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utilService.loadSpinner(true);
+    this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
     // localStorage.getItem('record_id')
@@ -62,12 +62,14 @@ export class MyProductsComponent implements OnInit {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
         }
-        this.utilService.loadSpinner(false);
+        this.utils.loadSpinner(false);
       })
       .catch(error => {
-        this.utilService.loadSpinner(false);
-        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 
       });
   }

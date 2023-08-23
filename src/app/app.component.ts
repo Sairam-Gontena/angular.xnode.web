@@ -99,7 +99,6 @@ export class AppComponent implements OnInit {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
-      this.get_Conversation();
     } else {
       console.log("current user not found");
     }
@@ -149,18 +148,6 @@ export class AppComponent implements OnInit {
         break;
     }
     return comp;
-  }
-
-  get_Conversation() {
-    this.apiService.get("/get_conversation/" + this.email + "/" + localStorage.getItem('record_id'))
-      .then(response => {
-        if (response?.status === 200) {
-          const data = response?.data;
-        }
-      })
-      .catch(error => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-      });
   }
 
   isUserExists() {

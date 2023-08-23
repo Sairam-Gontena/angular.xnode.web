@@ -144,14 +144,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       .then(response => {
         if (response) {
           this.loadSpinnerInParent.emit(false);
-          this.utilsService.loadToaster({ severity: 'success', summary: '', detail: detail });
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
           this.utilsService.loadSpinner(false)
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
         }
       })
       .catch(error => {
-        console.log('error', error);
         this.loadSpinnerInParent.emit(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false)
       });
   }
