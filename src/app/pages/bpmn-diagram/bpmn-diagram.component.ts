@@ -607,7 +607,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("fill", "#FFFFFA")
           .attr('y', '-1.5em')
           .attr('x', (d:any)=> {return -7.5*d.data.title.length;})
-          .attr("rx", 15)
+          .attr("rx", 25)
           .style("stroke", '#959595')
           .style("stroke-width", 2)
 
@@ -640,12 +640,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 3.5);
   
   nodeL.append("rect")
-      .attr("width", (d:any) => (d.depth === 1 ? 120 : 100))
+      .attr("width", (d:any) => (d.depth === 1 ? 160 : 130))
       .attr("height", (d:any) => (d.depth === 1 ? 50 : 40))
       .attr("fill", "#FFFFFA")
       .attr("x", (d:any) => (d.depth === 1 ? -60 : -50))
       .attr("y", (d:any) => (d.depth === 1 ? -25 : -20))
-      .attr("rx", (d:any) => (d.depth === 1 ? 25 : 20))
+      .attr("rx", (d:any) => (d.depth === 1 ? 25 : 25))
       .attr("stroke-width", "2")
       .attr("stroke", "#959595")
       .text((d:any) => {
@@ -661,7 +661,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           });
   
   const titleText = nodeL.append("text")
-      .attr("x", 0)
+      .attr("x", 12)
       .attr("y", (d:any)=>{
         if(d.depth==1){
           return -6;
@@ -688,7 +688,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
               }
         }); 
   const subTitleText = nodeL.append("text")
-      .attr("x", 0)
+      .attr("x", (d:any)=>{
+        console.log('d depth',d.data.title, d.depth)
+        if(d.depth==1){
+          return 16 
+        }else{
+          return 12 
+        }
+      })
       .attr("y", (d:any)=> {
         if(d.depth==1){
           return 9;
@@ -742,8 +749,8 @@ nodeR.append("circle")
     .attr("r", 2.5);
 
 nodeR.append("rect")
-    .attr("width", 120)
-    .attr("height", 50)
+.attr("width", (d:any) => (d.depth === 1 ? 160 : 130))
+.attr("height", (d:any) => (d.depth === 1 ? 50 : 40))
     .attr("fill", "#FFFFFA")
     .attr("x", -60) 
     .attr("y", -25) 
@@ -752,13 +759,18 @@ nodeR.append("rect")
     .attr("stroke", "#959595");
 
     const rightTitleText = nodeR.append("text")
-    .attr("x", 0)
-    .attr("y",  (d:any)=>{
-      console.log('depth',d.depth,d.data.title);
+    .attr("x",(d:any)=>{
+      if(d.depth==1){
+        return 9 
+      }else{
+        return 7 
+      }
+    })
+    .attr("y", (d:any)=>{
       if(d.depth==1){
         return -6
       }else{
-        return -1
+        return -6
       }
     })  //-7 -3
     .attr("text-anchor", "middle")
@@ -781,11 +793,16 @@ nodeR.append("rect")
     });
 
 const  rightSubTitleText = nodeR.append("text")
-    .attr("x", 0)
-    .attr("y", (d:any)=>{
-      console.log('depth',d.depth,d.data.title);
+    .attr("x", (d:any)=>{
       if(d.depth==1){
-        return 17
+        return 16
+      }else{
+        return 7
+      }
+    })
+    .attr("y", (d:any)=>{
+      if(d.depth==1){
+        return 18
       }else{
         return 8
       }
