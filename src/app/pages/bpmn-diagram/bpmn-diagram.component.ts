@@ -626,209 +626,201 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           .attr("stroke", "white");
 
       const nodeL = svg.append("g")
-          .attr("stroke-linejoin", "round")
-          .attr("stroke-width", 3)
-          .selectAll()
-          .data(leftNodes)
-          .join("g")
-          .attr("transform", (d:any) => `translate(${-d.y/2},${d.x})`)
-          .attr("cursor", (d:any)=> { if(d.depth ==2) return "pointer";
-                                      else return "text"})
-          .attr("cursor", "pointer")
-          .attr("pointer-events", "all");
-
-      nodeL.append("circle")
-          .attr("fill", (d:any) => d.children ? "#555" : "#999")
-          .attr("r", 3.5);
-
-      nodeL.append("rect")
-          .attr("width", (d:any)=> { if(d.depth ==1) { 
-                                      return 120; // return d.data.title.length*3.5;
-                                        }
-                                      else {  
-                                      return 100; // return d.data.title.length*8;
-                                    }})
-          .attr("height", (d:any)=> { if(d.depth ==1) return 50;
-                                      else return 40;})
-          .attr("fill", "#FFFFFA")
-          .attr("x", (d:any)=> { if(d.depth ==1) return -d.data.title.length*2.5;
-                                  else {return -d.data.title.length*6.1;}})
-          .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
-                                  else return '-1.5em'})
-          .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
-                                  else return 20})
-          .attr("stroke-width", "2") 
-          .attr("stroke", '#959595')
-      
-      nodeL.append("text")
-          .attr('x', (d:any)=> {
-            if(d.depth ==1){
-              return 60//return d.data.title.length*2.2 
-            }else{
-              return 30 //40// return d.data.title.length*1.8
-            }
-          })
-          .attr('y', '20')
-          .attr('dy', (d:any)=> { if(d.depth ==1){ return '-2.2em';}
-                                  else{ return '-1.4em'}})
-          .attr("dx", (d:any)=> { if(d.depth ==1){  return -d.data.title.length*3;}
-                                  else{ return -d.data.title.length*5; }})
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "middle")
-          .style("font-family","Inter")
-          .style("font-weight", 600) 
-          .style("fill", '#7a7a7a')
-          .style("font-size","12px")
-          .text((d:any) => {
-            let title = d.data.title.split("-"); 
-            if(title[0]){
-              title = title[0]
-            }
-            if (title.length > 9) {
-                return title.substring(0, 9) + "...";
-            } else {
-                return title;
-            }// return d.data.title.split("-")[0]
-          })
-          .clone(true).lower()
-          .attr("stroke", "white");
-
-      nodeL.append("title").text((d:any) => d.data.title);
-
-      nodeL.append("text")
-          .attr('x', (d:any)=> {
-            if(d.depth ==1){
-              return 40// return d.data.title.length*1 
-            }else{
-              return 20 //20// return d.data.title.length*1.2
-            }
-          })
-          .attr('y', '20')
-          .attr('dy', '-0.8em')
-          .attr("dx", (d:any)=> {return -d.data.title.length*2.4;})
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "middle")
-          .style("font-family","Inter")
-          .style("font-weight", 600)
-          .style("fill", "#000000")
-          .style("color", '#000')
-          .style("font-size","12px")
-          .text((d:any) => {
-            let title = d.data.title.split("-").slice(1);
-            if(title[0]){
-              title = title[0]
-            }
-            if (title.length > 9) {
-                return title.substring(0, 9) + "...";
-            } else {
-                return title;
-            }
-          })
-          .clone(true).lower()
-          .attr("stroke", "white");  
-        
-      nodeL.append("title").text((d:any) => d.data.title);
-      
-      const nodeR = svg.append("g")
-          .attr("stroke-linejoin", "round")
-          .attr("stroke-width", 3)
-          .selectAll()
-          .data(rightNodes)
-          .join("g")
-          .attr("transform", (d:any) => `translate(${d.y/2},${d.x})`)
-          .attr("cursor", "pointer")
-          .attr("pointer-events", "all");
-
-      nodeR.append("circle")
-          .attr("fill", (d:any) => d.children ? "#555" : "#999")
-          .attr("r", 2.5);
-
-      nodeR.append("rect")
-          // .attr("width", (d:any)=> { if(d.depth ==1) return d.data.title.trim().length*4.5;
-          //                             else return d.data.title.trim().length*8;})
-          // .attr("height", (d:any)=> { if(d.depth ==1) return 40;
-          //                             else return 30;})
-          .attr("width",120)
-          .attr("height",50)
-          .attr("fill", "#FFFFFA")
-          .attr("x", (d:any)=> {return -d.data.title.length*1;})
-          .attr('y', (d:any)=> { if(d.depth ==1) return '-1.9em';
-                                  else return '-1.4em'})
-          .attr("rx", (d:any)=> { if(d.depth ==1) return 25;
-                                  else return 20})
-          .attr("stroke-width", "2") 
-          .attr("stroke", '#959595');
-      
-      nodeR.append("text")
-      .attr('x', (d:any)=> {
-        if(d.depth ==1){
-          return 24
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-width", 3)
+      .selectAll()
+      .data(leftNodes)
+      .join("g")
+      .attr("transform", (d:any) => `translate(${-d.y / 2},${d.x})`)
+      .attr("cursor", (d:any) => (d.depth === 2 ? "pointer" : "text"))
+      .attr("pointer-events", "all");
+  
+  nodeL.append("circle")
+      .attr("fill", (d:any) => (d.children ? "#555" : "#999"))
+      .attr("r", 3.5);
+  
+  nodeL.append("rect")
+      .attr("width", (d:any) => (d.depth === 1 ? 120 : 100))
+      .attr("height", (d:any) => (d.depth === 1 ? 50 : 40))
+      .attr("fill", "#FFFFFA")
+      .attr("x", (d:any) => (d.depth === 1 ? -60 : -50))
+      .attr("y", (d:any) => (d.depth === 1 ? -25 : -20))
+      .attr("rx", (d:any) => (d.depth === 1 ? 25 : 20))
+      .attr("stroke-width", "2")
+      .attr("stroke", "#959595")
+      .text((d:any) => {
+              let title = d.data.title.split("-").slice(1);
+              if(title[0]){
+                title = title[0]
+              }
+              if (title.length > 9) {
+                  return title.substring(0, 9) + "...";
+              } else {
+                  return title;
+              }
+          });
+  
+  const titleText = nodeL.append("text")
+      .attr("x", 0)
+      .attr("y", (d:any)=>{
+        if(d.depth==1){
+          return -6;
         }else{
-          return 20 // return d.data.title.length*0.6
-        } 
+          return -1;
+        }
       })
-      .attr('y', '20')
-      .attr('dy', (d:any)=> { if(d.depth ==1) return '-2.2em';
-                                else return '-1.4em'})
-      .attr("dx", (d:any)=> { if(d.depth ==1) return '0em';
-                              else return '2.2em'})
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "middle")
-          .style("font-family","Inter")
-          .style("font-weight", 600)
-          .style("fill", '#7a7a7a')
-          .style("color", '#000')
-          .style("font-size","12px")
-          .text((d:any) => { 
-            let title = d.data.title.split("-"); 
-            if(title[0]){
-              title = title[0]
-            }
-            if (title.length > 9) {
-                return title.substring(0, 9) + "...";
-            } else {
-                return title;
-            }
-            // return d.data.title.split("-")[0]
-          })
-        .clone(true).lower()
-        .attr("stroke", "white");
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .style("font-family", "Inter")
+      .style("font-weight", 600)
+      .style("fill", "#7a7a7a")
+      .style("font-size", "12px")
+      .style("opacity", 0)
+      .text((d:any) => {
+              let title = d.data.title.split("-");
+              if (title[0]) {
+                  title = title[0];
+              }
+              if (title.length > 9) {
+                  return title.substring(0, 9) + "...";
+              } else {
+                  return title;
+              }
+        }); 
+  const subTitleText = nodeL.append("text")
+      .attr("x", 0)
+      .attr("y", (d:any)=> {
+        if(d.depth==1){
+          return 9;
+        }else{
+          return 11;
+        }
+      }) 
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .style("font-family", "Inter")
+      .style("font-weight", 600)
+      .style("fill", "#000000")
+      .style("font-size", "12px")
+      .style("opacity", 0)
+      .text((d:any) => {
+        let title = d.data.title.split("-").slice(1);
+        if(title[0]){
+          title = title[0]
+        }
+        if (title.length > 9) {
+            return title.substring(0, 9) + "...";
+        } else {
+            return title;
+        }
+      });
+  
+  
+  titleText.transition()
+      .delay(500) 
+      .style("opacity", 1);
+  
 
-        nodeR.append("title").text((d:any) => d.data.title);
+  subTitleText.transition()
+      .delay(1000) 
+      .style("opacity", 1);
+  
+  nodeL.append("title").text((d:any) => d.data.title);
+  
+  const nodeR = svg.append("g")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-width", 3)
+    .selectAll()
+    .data(rightNodes)
+    .join("g")
+    .attr("transform", (d:any) => `translate(${d.y / 2},${d.x})`)
+    .attr("cursor", "pointer")
+    .attr("pointer-events", "all");
 
-      nodeR.append("text")
-          .attr('x', (d:any)=> {
-              if(d.depth ==1){
-                return 24
-              }else{
-                return 30 // return d.data.title.length*0.6;
-              }          
-          })
-          .attr('y', '20')
-          .attr('dy', '-0.8em')
-          .attr("dx", (d:any)=> {return d.data.title.length*0.2;})
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "middle")
-          .style("font-weight", 600)
-          .style("font-family","Inter")
-          .style("fill", "#000000")
-          .style("color", '#000')
-          .style("font-size","12px")
-          .text((d:any) => {
-            let title = d.data.title.split("-").slice(1);
-            if(title[0]){
-              title = title[0]
-            }
-            if (title.length > 9) {
-                return title.substring(0, 9) + "...";
-            } else {
-                return title;
-            }
-          })
-          .clone(true).lower()
-          .attr("stroke", "white");
+nodeR.append("circle")
+    .attr("fill", (d:any) => (d.children ? "#555" : "#999"))
+    .attr("r", 2.5);
 
-      nodeR.append("title").text((d:any) => d.data.title);
+nodeR.append("rect")
+    .attr("width", 120)
+    .attr("height", 50)
+    .attr("fill", "#FFFFFA")
+    .attr("x", -60) 
+    .attr("y", -25) 
+    .attr("rx", (d:any) => (d.depth === 1 ? 25 : 25))
+    .attr("stroke-width", "2")
+    .attr("stroke", "#959595");
+
+    const rightTitleText = nodeR.append("text")
+    .attr("x", 0)
+    .attr("y",  (d:any)=>{
+      console.log('depth',d.depth,d.data.title);
+      if(d.depth==1){
+        return -6
+      }else{
+        return -1
+      }
+    })  //-7 -3
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .style("font-family", "Inter")
+    .style("font-weight", 600)
+    .style("fill", "#7a7a7a")
+    .style("font-size", "12px")
+    .style("opacity", 0)
+    .text((d:any) => {
+        let title = d.data.title.split("-");
+        if (title[0]) {
+            title = title[0];
+        }
+        if (title.length > 9) {
+            return title.substring(0, 9) + "...";
+        } else {
+            return title;
+        }
+    });
+
+const  rightSubTitleText = nodeR.append("text")
+    .attr("x", 0)
+    .attr("y", (d:any)=>{
+      console.log('depth',d.depth,d.data.title);
+      if(d.depth==1){
+        return 17
+      }else{
+        return 8
+      }
+    })
+    .attr("dy", "-0.8em")
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .style("font-weight", 600)
+    .style("font-family", "Inter")
+    .style("fill", "#000000")
+    .style("opacity", 0)
+    .style("font-size", "12px")
+    .text((d:any) => {
+        let title = d.data.title.split("-").slice(1);
+        if (title[0]) {
+            title = title[0];
+        }
+        if (title.length > 9) {
+            return title.substring(0, 9) + "...";
+        } else {
+            return title;
+        }
+    });
+
+  rightTitleText.transition()
+      .delay(500) 
+      .style("opacity", 1);
+  
+
+  rightSubTitleText.transition()
+      .delay(1000) 
+      .style("opacity", 1);
+
+  nodeR.append("title").text((d:any) => d.data.title);
+
         
       return svg.node();
   }
