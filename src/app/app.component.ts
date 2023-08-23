@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   isNaviExpanded?: boolean;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
-  iframeUrl: SafeResourceUrl = '';
+  naviUrl: SafeResourceUrl = '';
   toastObj: any;
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
@@ -41,22 +41,24 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
-        if (event.url === '/x-pilot') {
-          this.isBotIconVisible = false
-        } else {
-          this.isBotIconVisible = true;
-        }
+        this.handleBotIcon(event);
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      setTimeout(() => {
-        this.loading = event;
-      }, 0);
+      this.loading = event;
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
     this.currentPath = window.location.hash;
+  }
+
+  handleBotIcon(event: any): void {
+    if (event.url === '/x-pilot') {
+      this.isBotIconVisible = false
+    } else {
+      this.isBotIconVisible = true;
+    }
   }
 
   loadIframeUrl(): void {
@@ -66,6 +68,8 @@ export class AppComponent implements OnInit {
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
+          console.log('event.data', event.data);
+
           // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             console.log('not matched');
@@ -76,6 +80,7 @@ export class AppComponent implements OnInit {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
+
           if (event.data === 'close-docked-navi') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
@@ -110,10 +115,10 @@ export class AppComponent implements OnInit {
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
-      setTimeout(() => {
-        this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-        this.loadIframeUrl();
-      }, 2000);
+      // setTimeout(() => {
+      this.naviUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      this.loadIframeUrl();
+      // }, 2000);
     } else {
       alert("Invalid record id")
     }
