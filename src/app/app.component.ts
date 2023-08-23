@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
-  targetUrl: string = environment.naviUrl;
+  targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
   constructor(
     private domSanitizer: DomSanitizer,
@@ -107,9 +107,9 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(): void {
     if (localStorage.getItem('record_id') !== null) {
-      let rawUrl = environment.naviUrl + '?email=' + this.email +
+      let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
-        '&targetUrl=' + environment.baseUrl +
+        '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
