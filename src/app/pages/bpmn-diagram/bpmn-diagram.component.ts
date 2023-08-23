@@ -689,7 +689,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         }); 
   const subTitleText = nodeL.append("text")
       .attr("x", (d:any)=>{
-        console.log('d depth',d.data.title, d.depth)
         if(d.depth==1){
           return 16 
         }else{
