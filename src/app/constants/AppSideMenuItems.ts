@@ -4,22 +4,22 @@ export const AppSideMenuItems =
         {
             label: 'Home',
             icon: './assets/home.svg',
-            path: 'admin/userinvitation'
+            path: 'admin/user-invitation'
         },
         {
             label: 'Accounts',
             icon: './assets/accounts.svg',
-            path: 'admin/userapproval'
+            path: 'admin/user-approval'
         },
         {
             label: 'Contacts',
             icon: './assets/contacts.svg',
-            path: 'overview'
+            path: 'contacts'
         },
         {
             label: 'Reports',
             icon: './assets/reports.svg',
-            path: 'overview'
+            path: 'reports'
         },
     ],
     UserSideMenu: [

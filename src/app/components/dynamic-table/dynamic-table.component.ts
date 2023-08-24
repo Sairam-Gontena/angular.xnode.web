@@ -24,9 +24,9 @@ export class DynamicTableComponent implements OnInit {
   ngOnInit(): void {
     this.dynamicData = dynamictabledata?.dynamicTable?.Invitation;
     const currentUrl = this.router.url;
-    if (currentUrl == '/admin/userinvitation') {
+    if (currentUrl == '/admin/user-invitation') {
       this.dynamicData = dynamictabledata?.dynamicTable?.Invitation;
-    } else if (currentUrl == '/admin/userapproval') {
+    } else if (currentUrl == '/admin/user-approval') {
       this.dynamicData = dynamictabledata?.dynamicTable?.Approvals;
     } else if (currentUrl == '/publish') {
       this.dynamicData = dynamictabledata?.dynamicTable?.PublishTable;
