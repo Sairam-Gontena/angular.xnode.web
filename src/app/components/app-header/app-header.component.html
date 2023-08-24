@@ -21,7 +21,7 @@
             </p-overlayPanel>
         </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <p-splitButton label="Raymond Nelson" [model]="logoutDropdown"
+        <p-splitButton [label]="username" [model]="logoutDropdown"
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
     <p-dialog header="Give feedback to xnode" class="feedback" [(visible)]="visible" [modal]="true" [style]="{ width: '35vw', height: '43vw'}" [draggable]="false" [resizable]="false">
