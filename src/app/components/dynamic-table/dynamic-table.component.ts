@@ -30,10 +30,7 @@ export class DynamicTableComponent implements OnInit {
       this.dynamicData = dynamictabledata?.dynamicTable?.Approvals;
     } else if (currentUrl == '/publish') {
       this.dynamicData = dynamictabledata?.dynamicTable?.PublishTable;
-    } else {
     }
-
-
     this.headers = Object.keys(this.dynamicData[0]);
   }
 
