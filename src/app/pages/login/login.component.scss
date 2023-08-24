@@ -21,6 +21,7 @@
 :host ::ng-deep .p-button {
     padding-top: 14px;
     padding-bottom: 14px;
+    width: 100%;
 }
 
 .invalid-feedback {
@@ -45,4 +46,35 @@
         margin-left: 90px;
         margin-right: 90px;
     }
+}
+.bg-image {
+    background-image: url('/assets/OnboardingBG.svg');
+}
+.heading-color {
+    color: #000759;
+}
+:host ::ng-deep .p-card-body {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+}
+.divider {
+	width:500px;
+	text-align:center;
+}
+
+.divider hr {
+	margin-left:auto;
+	margin-right:auto;
+	width:40%;
+}
+
+.left {
+	float:left;
+}
+
+.right {
+	float:right;
+}
+.forgot-pwd{
+    color: #EF018F;
 }
