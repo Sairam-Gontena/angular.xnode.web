@@ -220,7 +220,7 @@ export class AppHeaderComponent implements OnInit {
         this.apiService.patch(body, '/update_product_url')
           .then(response => {
             if (!response) {
-              this.utilsService.loadToaster({ severity: 'error', summary: 'Network Issue' });
+              this.utilsService.loadToaster({ severity: 'error', summary: '                                                                                                                       ' });
             }
           })
           .catch(error => {
