@@ -115,10 +115,7 @@ export class AppComponent implements OnInit {
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
-      // setTimeout(() => {
       this.naviUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-      this.loadIframeUrl();
-      // }, 2000);
     } else {
       alert("Invalid record id")
     }

@@ -4,7 +4,7 @@ export const environment = {
 
     xnodeAppUrl: 'http://localhost:4200/',
 
-    naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
+    naviAppUrl: 'http://localhost:4202/',
 
     designStudioAppUrl: 'http://localhost:4201/dashboard/',
 
