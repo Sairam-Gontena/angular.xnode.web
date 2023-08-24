@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
-
+import { ConfirmPasswordValidator } from './confirm-password.validator';
 
 @Component({
   selector: 'xnode-sign-up',
@@ -13,6 +13,7 @@ import { Emails } from 'src/app/utils/login-util';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
+  confirmPasswordValidator:boolean = false;
   errorMessage!: string;
 
   constructor(private formBuilder: FormBuilder, public router: Router) {
@@ -21,6 +22,10 @@ export class SignUpComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]] ,
+    },
+    {
+      validator: ConfirmPasswordValidator("password", "confirmPassword")
     });
   }
 
@@ -35,7 +40,11 @@ export class SignUpComponent implements OnInit {
 
   onClickSignUp() {
     this.submitted = true;
-
+    let pswdValidator = this.signUpForm.get('confirmPassword')?.errors?.['confirmPasswordValidator'];
+    if(pswdValidator || pswdValidator==undefined){
+      this.confirmPasswordValidator=true;
+      return;
+    }
     if (this.signUpForm.invalid) {
       return;
     }
