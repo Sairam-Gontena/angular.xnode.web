@@ -9,17 +9,17 @@
         },
         {
             "project": "Xnode",
-            "productName": "",
-            "description": "Setting up required Infrastructure",
-            "status": "Initializing",
-            "createdOn": ""  
-        },
-        {
-            "project": "Xnode",
             "productName": "DoctorFinder",
             "description": "Application Build Complete",
             "status": "Completed",
             "createdOn": "2023-08-24T09:53:44Z"
+        },
+        {
+            "project": "Xnode",
+            "productName": "",
+            "description": "Setting up required Infrastructure",
+            "status": "Initializing",
+            "createdOn": ""  
         },
         {
             "project": "Xnode",
