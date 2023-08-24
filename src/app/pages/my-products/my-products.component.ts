@@ -62,7 +62,7 @@ export class MyProductsComponent implements OnInit {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
-        } else {
+        } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
         }
         this.utils.loadSpinner(false);
