@@ -18,8 +18,8 @@ export class DynamicTableComponent implements OnInit {
   showHeaderMenu: boolean = true;
 
   ngOnInit(): void {
-    // this.dynamicData = dynamictabledata?.dynamicTable;
-    this.headers = Object.keys(this.dynamicData[0]);
+    if (this.dynamicData?.length)
+      this.headers = Object.keys(this.dynamicData[0]);
   }
 
   onClickCellEdit() {
