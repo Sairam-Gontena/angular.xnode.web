@@ -8,6 +8,7 @@
     "build:dev": "ng build --configuration dev",
     "build:qa": "ng build --configuration qa",
     "build:demo": "ng build --configuration demo",
+    "build:beta": "ng build --configuration beta",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

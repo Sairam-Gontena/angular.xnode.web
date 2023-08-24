@@ -7,16 +7,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { DynamicControlComponent } from './dynamic-control/dynamic-control.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SignupDynamicFormComponent } from './signup-dynamic-form/signup-dynamic-form.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, SharedModule],
-  exports: [],
+  exports: [SignupDynamicFormComponent],
   providers: [BuilderService],
   declarations: [
     DynamicFormComponent,
     TextBoxComponent,
     EmailInputComponent,
     DynamicControlComponent,
+    SignupDynamicFormComponent,
   ],
 })
 export class FormBuilderModule {}
