@@ -153,9 +153,10 @@ export class AppComponent implements OnInit {
   isUserExists() {
     // Temporary
     return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" 
-      || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/my-products"
-      || window.location.hash === "#/admin/userinvitation" || window.location.hash === "#/logs";
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
+      || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
+      || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
+      || window.location.hash === "#/logs";
   }
 
 
@@ -195,32 +196,9 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = false;
   }
 
-  parentdata: any[] = [
-    {
-      Name: "User1",
-      Age: 25,
-      Address: "Address1",
-      Email: 'user1@gmail.comm'
-    },
-    {
-      Name: "User2",
-      Age: 26,
-      Address: "Address12",
-      Email: 'user2@gmail.comm'
-
-    },
-    {
-      Name: "User3",
-      Age: 26,
-      Address: "Address12",
-      Email: 'User3@gmail.comm'
-
-    },
-  ];
-
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" 
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
       || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs";
 
   }
