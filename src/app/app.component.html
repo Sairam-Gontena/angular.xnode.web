@@ -15,8 +15,8 @@
             <div id="side-window" [ngClass]=" isNaviExpanded ? 'full-screen-navi': 'side-window'"
                 *ngIf="isSideWindowOpen">
                 <div class="content-class-pilot h-full">
-                    <iframe id="myIframe" [src]="naviUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
-                        class="w-full h-full pl-0 pr-0" (load)="loadIframeUrl">
+                    <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                        class="w-full h-full pl-0 pr-0">
                     </iframe>
                 </div>
             </div>

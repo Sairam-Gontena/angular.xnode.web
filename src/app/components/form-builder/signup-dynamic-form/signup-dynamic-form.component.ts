@@ -23,7 +23,6 @@ export class SignupDynamicFormComponent implements OnInit {
     this.apiService.get('/retrieve_xflows/' + email +'/' +localStorage.getItem('record_id')).then(async (response: any) => {
         if (response) {
           let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
-          console.log(onboardingFlow);
           let userProfile = onboardingFlow[0].BackendFlow.find((flow:any) =>{
            return flow.TaskId == 'CreateUserProfile';
           })
@@ -37,7 +36,6 @@ export class SignupDynamicFormComponent implements OnInit {
           }
         }
       }).catch((error) => {
-        console.log('error', error);
       });
   }
 
@@ -47,8 +45,6 @@ export class SignupDynamicFormComponent implements OnInit {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           let dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
-          console.log('dataModel', dataModel[entity])
-
         }
         this.utilsService.loadSpinner(false);
       })
