@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
-import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
-import { DynamicFormComponent } from './components/form-builder/dynamic-form/dynamic-form.component';
+import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 
 const routes: Routes = [
   {
@@ -138,7 +137,7 @@ const routes: Routes = [
   },
   {
     path: 'dynamic-form',
-    component: DynamicFormComponent,
+    component: SignupDynamicFormComponent,
   },
   {
     path: '',
