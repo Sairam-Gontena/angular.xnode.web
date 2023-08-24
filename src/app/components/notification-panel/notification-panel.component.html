@@ -33,11 +33,10 @@
         <div class="text-sm font-medium">Filter</div>
         <i class="pi pi-sort-amount-up text-xs ml-2 pointer"></i>
     </div>
-    <!-- Dont remove this -->
-    <!-- <div class="flex align-items-center pointer" (click)="navigateToActivity()">
-        <div class="text-sm font-medium">See all in activity log</div>
+    <div class="flex align-items-center pointer" (click)="navigateToActivity()">
+        <div class="text-sm font-medium">See all in activity logs</div>
         <i class="pi pi-arrow-right text-xs ml-2"></i>
-    </div> -->
+    </div>
 </div>
 <div class="notif-list ml-3 pr-3 " *ngIf="allNotifications.length > 0">
     <div *ngFor="let notification of notifications"

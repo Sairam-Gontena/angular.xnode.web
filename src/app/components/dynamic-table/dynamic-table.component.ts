@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
+// import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
 
 @Component({
   selector: 'xnode-dynamic-table',
@@ -7,7 +7,8 @@ import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements OnInit {
-  dynamicData: any;
+  @Input() dynamicData: any;
+  // dynamicData: any;
   headers: any;
   heading: string = "Users";
   editable: boolean = true;
@@ -17,7 +18,7 @@ export class DynamicTableComponent implements OnInit {
   showHeaderMenu: boolean = true;
 
   ngOnInit(): void {
-    this.dynamicData = dynamictabledata?.dynamicTable;
+    // this.dynamicData = dynamictabledata?.dynamicTable;
     this.headers = Object.keys(this.dynamicData[0]);
   }
 

@@ -136,6 +136,10 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'logs',
+    loadChildren:() => import('./pages/logs/logs.module').then((m) => m.LogsModule)
+  },
+  {
     path: 'dynamic-form',
     component: SignupDynamicFormComponent,
   },
