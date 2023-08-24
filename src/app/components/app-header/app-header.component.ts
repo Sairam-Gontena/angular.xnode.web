@@ -35,12 +35,12 @@ export class AppHeaderComponent implements OnInit {
   product_url: string = "https://dev-navi.azurewebsites.net/";
   visible: boolean = false;
   products: any[] = [];
-  submitted!: boolean;
-  isFormSubmitted!: boolean;
+  submitted: boolean  = false;
+  isFormSubmitted: boolean  = false;
   brandguidelinesForm: any;
-  isInvalid!: boolean;
-  isPlaceholderVisible!: boolean;
-  draganddropSelected!: boolean;
+  isInvalid: boolean = false;
+  isPlaceholderVisible: boolean  = false;
+  draganddropSelected: boolean  = false;
   browserSelected!: boolean;
   feedbackForm: FormGroup;
 
@@ -54,7 +54,7 @@ export class AppHeaderComponent implements OnInit {
         logoFile: [null, Validators.required]
       });
   }
-  get Form() { return this.feedbackForm.controls; }
+  get feedback() { return this.feedbackForm.controls; }
   ngOnInit(): void {
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
@@ -71,13 +71,20 @@ export class AppHeaderComponent implements OnInit {
       { name: 'Select Product', code: 'select Product' },
       { name: 'Other', code: 'other' },
     ];
-    //   this.formGroup = new FormGroup({
-    //     // selectedCity: new FormControl<City | null>(null)
-    // });
+   
   }
   getFeedback() {
-    const formValues = this.feedbackForm.value;
-    console.log(formValues);
+    this.submitted = true;
+    this.isFormSubmitted = true;
+      if (this.feedbackForm.valid) {
+      this.isInvalid = false;
+      const formValues = this.feedbackForm.value;
+      console.log(formValues);
+    }else{
+      this.isInvalid = true;
+      console.log("error");
+     
+    }
   }
 
   files: any[] = [];
@@ -152,21 +159,12 @@ export class AppHeaderComponent implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-  onClickbrandGuideLine() {
-    this.submitted = true;
-    this.isFormSubmitted = true;
-    if (this.brandguidelinesForm.invalid) {
-      this.isInvalid = true;
-      return;
-    }
-    this.isInvalid = false;
-    this.router.navigate(['/about-your-self']);
-  }
+  
   @HostListener('document:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     // Check if the Enter key was pressed
     if (event.key === 'Enter') {
-      this.onClickbrandGuideLine();
+      this.getFeedback();
     }
   }
   validateLogoFile(control: AbstractControl) {

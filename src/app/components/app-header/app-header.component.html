@@ -37,19 +37,40 @@
             </div>
         </ng-template>
         <div class="p-3 -mt-4">
-        <form [formGroup]="feedbackForm">
+        <form [formGroup]="feedbackForm" (ngSubmit)="getFeedback()">
                 <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                     <div class="text-sm font-medium">Product</div>
-                    <p-dropdown formControlName="product" [options]="products" optionLabel="name" class="custom-dropdown"></p-dropdown>
+                    <p-dropdown formControlName="product" [options]="products"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="name" class="custom-dropdown"></p-dropdown>
+                    <div *ngIf="submitted && feedback['product'].errors"
+                                class="invalid-feedback">
+                                <div
+                                    *ngIf="feedback['product'].errors?.['required']">
+                                    Product is required</div>
+                     </div>
                 </div>
                 <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
                     <div class="text-sm font-medium">Component</div>
-                    <input type="text" pInputText formControlName="component" placeholder="e.g., Dashboard" class="col-12"/>
+                    <input type="text" pInputText formControlName="component" placeholder="e.g., Dashboard"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['component'].errors }" class="col-12"/>
+                    <div *ngIf="submitted && feedback['component'].errors"
+                      class="invalid-feedback">
+                     <div
+                        *ngIf="feedback['component'].errors?.['required']">
+                        Component is required</div>
+                     </div>
                </div>
                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
                <div class="text-sm font-medium"> Help us improve</div>
-                 <textarea rows="3" cols="30" pInputTextarea formControlName="helpUsImprove" class="col-12" placeholder="Share your thoughts on the product"></textarea>
-               </div>
+                 <textarea rows="3" cols="30" pInputTextarea formControlName="helpUsImprove"
+                 [ngClass]="{ 'is-invalid': submitted && feedback['helpUsImprove'].errors }" class="col-12" placeholder="Share your thoughts on the product"></textarea>
+                    <div *ngIf="submitted && feedback['helpUsImprove'].errors"
+                    class="invalid-feedback">
+                    <div
+                    *ngIf="feedback['helpUsImprove'].errors?.['required']">
+                    Help us improve is required</div>
+                    </div>
+                </div>
                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-3">
                <div class="text-sm font-medium">Attach File</div>
                <div class="container grid m-0 mt-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 " appDnd (fileDropped)="onFileDropped($event)">
@@ -58,7 +79,7 @@
                     [class.invalid]="isFormSubmitted && !draganddropSelected">
                     <input type="file" #fileDropRef id="fileDropRef"
                         (change)="fileBrowseHandler($any($event).target.files)"
-                        [ngClass]="{ 'is-invalid': submitted && brandguidelinesForm.get('logoFile')?.errors }" />
+                         [ngClass]="{ 'is-invalid': submitted && feedbackForm.get('logoFile')?.errors }"/>
                     <ng-template #elseBlock>
                         <input type="file" #fileDropRef id="fileDropRef"
                             (change)="fileBrowseHandler($any($event).target.files)" disabled />
@@ -66,7 +87,7 @@
                     <img src="./assets/sky.svg" width="64px">
                     <h3 class="font-semibold text-sm">Drag and Drop </h3>
                 </div>
-                <div class="field col-2 ">
+                <div class="field col-2">
                     <h3 class="mt-4 font-semibold text-sm">( OR )</h3>
                 </div>
                 <div class="field col-5 mt-4" (click)="selectBrowser()" [class.selected]="browserSelected"
@@ -79,18 +100,20 @@
                 </div>
 
             </div>
-            <div class="files-list mt-3">
-                <div class="single-file grid" *ngFor="let file of files; let i = index">
-                    <div class="info ml-3">
+            <div class="files-list mt-2">
+                <div class="single-file grid ml-4" *ngFor="let file of files; let i = index">
+                    <div class="info">
                         <h4 class="name">
                             {{ file?.name }}
                         </h4>
                     </div>
-                    <div class="delete ml-3" (click)="deleteFile(i)">
+                    <div class="delete ml-4" (click)="deleteFile(i)">
                         <i class="pi pi-trash" style="font-size: 1.5rem"></i>
                     </div>
                 </div>
-                
+                <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
+                    <p class="text-red-500 text-sm">Please upload logo</p>
+                </div>
             </div>
             <p class="text-xs font-medium ml-3 text-500">Your feedback will be used to improve xnode products and services</p>
                </div>

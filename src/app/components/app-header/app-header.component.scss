@@ -77,8 +77,6 @@ a:hover {
 }
 
 .container {
-    width: 570px;
-    height: 144px;
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
@@ -132,4 +130,11 @@ textarea {
 }
 :host::ng-deep.p-dialog .p-dialog-header {
     padding: 1rem;
-  }
+}
+  .invalid-feedback {
+    color: red;
+}
+
+.error-message {
+    color: red;
+}
