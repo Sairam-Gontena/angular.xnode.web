@@ -103,17 +103,14 @@ export class ModalSchemaComponent implements OnDestroy {
   ];
 
   modalRef?: BsModalRef;
-  constructor(
-    public modalService: BsModalService,
-    public dataService: DataService
-  ) { }
+  constructor(public modalService: BsModalService,private dataService: DataService) { }
 
   ngOnDestroy() {
     this.dataService.flg_repaint = true;
   }
 
   public create() {
-    this.dataService.addSchema(this.schema);
+    this.dataService.addSchema(this.schema, this.parent_model);
     this.modalService.hide();
   }
 }
