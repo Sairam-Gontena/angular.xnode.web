@@ -1,40 +1,444 @@
 {
-    "dynamicTable": [
-
-     {
-          "Version":"3.0",
-          "Deployed On":"2023-07-01",
-          "Deployed By":"Address1",
-          "Notes":"Updated business rules",
-          "Status":"pending"
-        },
+  "dynamicTable": [
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
         {
-          "Version":"2.0",
-          "Deployed On":"2023-05-01",
-          "Deployed By":"Address1",
-          "Status":"deployed",
-          "Notes":"Updated work flow"
-
-    
-        },
-        {
-          "Version":"1.0",
-          "Deployed On":"2023-04-01",
-          "Deployed By":"Address1",
-          "Status":"deployed",
-          "Notes":"Updated work flow"
-
-    
-        },
-        {
-          "Version":"0.1",
-          "Deployed On":"2023-03-01",
-          "Deployed By":"Address1",
-          "Status":"deployed",
-          "Notes":"First Revision"
-
-    
+          "high": true,
+          "medium": false,
+          "low": false
         }
-
-   ]
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "02",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": true,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "03",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": false,
+          "low": true
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": true
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": true,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "02",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": true,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "03",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": false,
+          "low": true
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": true
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": true,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "02",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": true,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "03",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": false,
+          "low": true
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": true
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": true,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "02",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": true,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "03",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": false,
+          "medium": false,
+          "low": true
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": false,
+          "reject": true
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": false,
+          "hold": true,
+          "reject": false
+        }
+      ]
+    },
+    {
+      "Lead No": "01",
+      "First Name": "Raymond",
+      "Last Name": "Nelson",
+      "Email": "raymondnelson@xnode.ai",
+      "Phone Number": "+91 9999999999",
+      "Interest Level": [
+        {
+          "high": true,
+          "medium": false,
+          "low": false
+        }
+      ],
+      "Notes": "This project is released under the MIT license",
+      "Action": [
+        {
+          "invited": true,
+          "hold": false,
+          "reject": false
+        }
+      ]
+    }
+  ]
 }

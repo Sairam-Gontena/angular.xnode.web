@@ -129,6 +129,17 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin/userinvitation',
+    loadChildren: () =>
+      import('./pages/user-invitation/user-invitation.module').then(
+        (m) => m.UserInvitationModule
+      ),
+  },
+  {
+    path: 'logs',
+    loadChildren:() => import('./pages/logs/logs.module').then((m) => m.LogsModule)
+  },
+  {
     path: 'dynamic-form',
     component: SignupDynamicFormComponent,
   },
