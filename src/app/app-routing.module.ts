@@ -140,7 +140,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/user-approval/user-approval.module').then(
         (m) => m.UserApprovalModule
-      ),
+      )
+  },
+  {
+    path: 'logs',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule)
   },
   {
     path: 'dynamic-form',

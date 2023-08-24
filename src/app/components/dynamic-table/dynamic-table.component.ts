@@ -8,7 +8,8 @@ import { NavigationEnd } from '@angular/router';
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements OnInit {
-  dynamicData: any;
+  @Input() dynamicData: any;
+  // dynamicData: any;
   headers: any;
   heading: string = "Users";
   editable: boolean = true;

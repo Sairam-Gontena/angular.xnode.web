@@ -42,13 +42,13 @@ export class UseCasesComponent implements OnInit {
   //get calls 
   get_ID() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
-      .then(response => {
-        if (response) {
+      .then((response: any) => {
+        if (response?.status === 200) {
           this.id = response.data.data[0].id;
           localStorage.setItem('record_id', response.data.data[0].id);
           this.get_Usecases();
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
         }
         this.utils.loadSpinner(false);
       })
@@ -69,7 +69,7 @@ export class UseCasesComponent implements OnInit {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
         }
         this.utils.loadSpinner(false);
       })

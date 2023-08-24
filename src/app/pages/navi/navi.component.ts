@@ -37,12 +37,15 @@ export class NaviComponent implements OnInit {
     }
     // Needs to be refactor
     // Add a load event listener to the iframe
+    console.log('$$$$$$$$$$$$$$');
+
     iframe.addEventListener('load', () => {
       // Access the iframe's content window only when it has fully loaded
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
         // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
+
           // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
 
@@ -50,7 +53,7 @@ export class NaviComponent implements OnInit {
           }
 
           // Check the message content and trigger the desired event
-          if (event.data === 'triggerCustomEvent') {
+          if (event.data === 'triggerCustomEvent' || event.data === 'close-docked-navi') {
             window.location.href = this.xnodeAppUrl + '#/my-products';
             // Trigger a custom event in the parent window
             const customEvent = new Event('customEvent');
