@@ -37,6 +37,8 @@ export class NaviComponent implements OnInit {
     }
     // Needs to be refactor
     // Add a load event listener to the iframe
+    console.log('$$$$$$$$$$$$$$');
+
     iframe.addEventListener('load', () => {
       // Access the iframe's content window only when it has fully loaded
       const contentWindow = iframe.contentWindow;
