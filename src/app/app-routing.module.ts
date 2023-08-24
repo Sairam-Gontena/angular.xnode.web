@@ -136,7 +136,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'logs',
+    path: 'activity',
     loadChildren:() => import('./pages/logs/logs.module').then((m) => m.LogsModule)
   },
   {
