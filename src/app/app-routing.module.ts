@@ -130,6 +130,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin/userinvitation',
+    loadChildren: () =>
+      import('./pages/user-invitation/user-invitation.module').then(
+        (m) => m.UserInvitationModule
+      ),
+  },
+  {
     path: 'dynamic-form',
     component: DynamicFormComponent,
   },

@@ -1,57 +1,78 @@
-<div class="container">
-     <p-table #dt [rows]="10" [rowHover]="true" dataKey="id" [globalFilterFields]="headers" styleClass="p-datatable-sm"
-          [autoLayout]="true" scrollDirection="horizontal" [tableStyle]="{ 'width':'100%','overflow':'auto!important'}"
-          [value]="dynamicData" [columns]="headers">
-          <ng-template pTemplate="header" let-columns>
-               <tr>
-                    <th *ngFor="let col of headers" class="text-xs font-bold tableheader" style="background-color: #3A3942;
+<p-table #dt [rows]="10" [rowHover]="true" dataKey="id" [globalFilterFields]="headers" styleClass="p-datatable-sm"
+     [autoLayout]="true" scrollDirection="horizontal" [tableStyle]="{ 'width':'100%','overflow':'auto!important'}"
+     [value]="dynamicData" [columns]="headers">
+     <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
+          <div class="flex justify-content-between align-items-center" style="background-color: #302E38;">
+               <span class="p-input-icon-left" *ngIf="showSearch">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" placeholder="Search by User Name, Lead No ..." />
+               </span>
+               <div>
+                    <p-button styleClass="p-button-rounded mr-3" *ngIf="showDelete">
+                         <img src="../../assets/delete.svg" alt="circle-ci-image" class="text-sm ml-1">
+                         <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
+                    </p-button>
+                    <p-button styleClass="p-button-rounded mr-3 " *ngIf="showExport">
+                         <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm">
+                         <span class=" text-sm font-semibold font-family-inter ml-2">Export</span>
+                         <i class="pi pi-chevron-down ml-2"></i>
+                    </p-button>
+               </div>
+          </div>
+     </ng-template>
+     <ng-template pTemplate="header" let-columns>
+          <tr class="custom-cell">
+               <th *ngFor="let col of headers" class="text-xs font-bold tableheader" style="background-color: #3A3942;
                     border-color: #595959;">
-                         <div class="flex align-items-center text-white ">
-                              {{col | titlecase}}
-                              <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
+                    <div class="flex align-items-center text-white ">
+                         {{col | titlecase}}
+                         <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
+                    </div>
+               </th>
+          </tr>
+     </ng-template>
+     <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
+          <tr *ngIf="editable" class="text-white text-xs custom-cell"
+               [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
+               <td *ngFor="let col of headers" class="border-transparent" [pEditableColumn]="rowData[col]"
+                    pEditableColumnField="col">
+                    <ng-container *ngIf="col !== 'Action' && col !== 'Interest Level'">
+                         {{ rowData[col] }}
+                    </ng-container>
+                    <ng-container *ngIf="col === 'Interest Level'">
+                         <div *ngFor="let item of rowData[col]" class="flex">
+                              <span *ngIf="item.high" class="invited">High</span>
+                              <span *ngIf="item.medium" class="rejected">Medium</span>
+                              <span *ngIf="item.low" class="hold">Low</span>
                          </div>
-                    </th>
-               </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing">
-               <tr *ngIf="editable" class="text-white text-xs ">
-                    <td *ngFor="let col of headers" class="" [pEditableColumn]="rowData[col]" pEditableColumnField="col"
-                         style="background-color: #302E38; border-color: #595959;">
-                         <p-cellEditor [ngSwitch]="col" class=" font-light ">
-                              <ng-template pTemplate="output" *ngSwitchCase="'image'">
-                                   <img [src]="rowData[col]" width="100px" height="90px" alt="image" />
-                              </ng-template>
-                              <ng-template pTemplate="input" *ngSwitchDefault>
-                                   <input id={{rowData.id}} pInputText type="text" (input)="onCellInputBlur($event)" />
-                              </ng-template>
-                              <ng-template pTemplate="output" *ngSwitchDefault>
-                                   {{ rowData[col] }}
-                              </ng-template>
-                         </p-cellEditor>
-                    </td>
-               </tr>
-               <tr *ngIf="!editable">
-                    <td>
-                         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                    </td>
-                    <td *ngFor="let col of headers">
-                         <span [ngSwitch]="col">
-                              <span *ngSwitchCase="'image'">
-                                   <img [src]="rowData[col]" width="120px" height="95px" alt="image" />
-                              </span>
-                              <span *ngSwitchDefault>
-                                   {{ rowData[col] }}
-                              </span>
-                         </span>
-                    </td>
-                    <td>
-                         <span class="flex">
-                              <i class="pi pi-file-edit m-1" style="font-size: 2rem;color:blue"
-                                   (click)="onClickCellEdit()"></i>
-                              <i class="pi pi-trash m-1" style="font-size: 2rem;color:red"></i>
-                         </span>
-                    </td>
-               </tr>
-          </ng-template>
-     </p-table>
-</div>
+                    </ng-container>
+                    <ng-container *ngIf="col === 'Action'">
+                         <div class="flex">
+                              <div *ngFor="let item of rowData[col]" class="flex">
+                                   <div *ngIf="!item.invited && !item.hold && !item.reject">
+                                        <p-button styleClass="p-button-rounded status invited-background"
+                                             *ngIf="!item.invited">
+                                             <span class=" text-sm font-semibold font-family-inter">Invite</span>
+                                        </p-button>
+                                        <p-button styleClass="p-button-rounded status ml-2 hold-background"
+                                             *ngIf="!item.hold">
+                                             <span class=" text-sm font-semibold font-family-inter">Hold</span>
+                                        </p-button>
+                                        <p-button styleClass="p-button-rounded status ml-2 rejected-background"
+                                             *ngIf="!item.reject">
+                                             <span
+                                                  class=" text-sm font-semibold font-family-inter reject-background ">Reject</span>
+                                        </p-button>
+                                   </div>
+                                   <div *ngIf="item.invited || item.hold || item.reject">
+                                        <span *ngIf="item.invited" class="invited">Invited</span>
+                                        <span *ngIf="item.hold" class="rejected">Hold</span>
+                                        <span *ngIf="item.reject" class="hold">Rejected</span>
+                                   </div>
+                              </div>
+                         </div>
+                    </ng-container>
+               </td>
+          </tr>
+     </ng-template>
+</p-table>

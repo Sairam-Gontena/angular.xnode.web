@@ -11,6 +11,10 @@ export class DynamicTableComponent implements OnInit {
   headers: any;
   heading: string = "Users";
   editable: boolean = true;
+  showSearch: boolean = true;
+  showDelete: boolean = true;
+  showExport: boolean = true;
+  showHeaderMenu: boolean = true;
 
   ngOnInit(): void {
     this.dynamicData = dynamictabledata?.dynamicTable;
