@@ -59,7 +59,6 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('socket message table', data)
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
@@ -74,7 +73,7 @@ export class AppHeaderComponent implements OnInit {
         this.apiService.patch(body, '/update_product_url')
           .then(response => {
             if (!response) {
-              this.utilsService.loadToaster({ severity: 'error', summary: 'Network Error' });
+              this.utilsService.loadToaster({ severity: 'error', summary: '                                                                                                                       ' });
             }
           })
           .catch(error => {

@@ -88,11 +88,11 @@ export class OverViewComponent {
   get_ID() {
     this.apiService.get('/get_metadata/' + this.email)
       .then(response => {
-        if (response) {
+        if (response?.status === 200) {
           this.id = response.data.data[0].id;
           this.getMeOverview();
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
         }
         this.utils.loadSpinner(false);
       }).catch(error => {
@@ -114,7 +114,7 @@ export class OverViewComponent {
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: '', detail: 'Network Error' });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
         }
         this.utils.loadSpinner(false);
       })

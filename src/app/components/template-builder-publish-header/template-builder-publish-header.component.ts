@@ -121,7 +121,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       message: 'Are you sure you want to publish this product?',
       header: 'Confirmation',
       accept: () => {
-        console.log(this.productId)
         this.utilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
