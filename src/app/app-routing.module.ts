@@ -136,6 +136,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin/userapproval',
+    loadChildren: () =>
+      import('./pages/user-approval/user-approval.module').then(
+        (m) => m.UserApprovalModule
+      ),
+  },
+  {
     path: 'dynamic-form',
     component: SignupDynamicFormComponent,
   },

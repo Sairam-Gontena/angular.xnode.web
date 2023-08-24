@@ -1,13 +1,13 @@
-<p-table #dt [rows]="10" [rowHover]="true" dataKey="id" [globalFilterFields]="headers" styleClass="p-datatable-sm"
-     [autoLayout]="true" scrollDirection="horizontal" [tableStyle]="{ 'width':'100%','overflow':'auto!important'}"
-     [value]="dynamicData" [columns]="headers">
+<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="490px" [rowHover]="true" dataKey="id"
+     [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal"
+     [tableStyle]="{ 'width':'100%'}" [value]="dynamicData" [columns]="headers">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center" style="background-color: #302E38;">
                <span class="p-input-icon-left" *ngIf="showSearch">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" placeholder="Search by User Name, Lead No ..." />
                </span>
-               <div>
+               <div class="flex-wrap">
                     <p-button styleClass="p-button-rounded mr-3" *ngIf="showDelete">
                          <img src="../../assets/delete.svg" alt="circle-ci-image" class="text-sm ml-1">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
@@ -20,10 +20,13 @@
                </div>
           </div>
      </ng-template>
-     <ng-template pTemplate="header" let-columns>
+     <ng-template pTemplate="header">
           <tr class="custom-cell">
+               <th style="width: 10px;background-color: #3A3942;border-width: 0px;">
+                    <p-tableHeaderCheckbox class="check-box"></p-tableHeaderCheckbox>
+               </th>
                <th *ngFor="let col of headers" class="text-xs font-bold tableheader" style="background-color: #3A3942;
-                    border-color: #595959;">
+                    border-color: #595959;min-width:280px;max-width: 500px;">
                     <div class="flex align-items-center text-white ">
                          {{col | titlecase}}
                          <i class="pi pi-chevron-down ml-1  text-xs font-small    "></i>
@@ -34,6 +37,9 @@
      <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
           <tr *ngIf="editable" class="text-white text-xs custom-cell"
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
+               <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
+                    <p-tableCheckbox [value]="true"></p-tableCheckbox>
+               </td>
                <td *ngFor="let col of headers" class="border-transparent" [pEditableColumn]="rowData[col]"
                     pEditableColumnField="col">
                     <ng-container *ngIf="col !== 'Action' && col !== 'Interest Level'">
@@ -48,27 +54,27 @@
                     </ng-container>
                     <ng-container *ngIf="col === 'Action'">
                          <div class="flex">
-                              <div *ngFor="let item of rowData[col]" class="flex">
-                                   <div *ngIf="!item.invited && !item.hold && !item.reject">
-                                        <p-button styleClass="p-button-rounded status invited-background"
-                                             *ngIf="!item.invited">
-                                             <span class=" text-sm font-semibold font-family-inter">Invite</span>
-                                        </p-button>
-                                        <p-button styleClass="p-button-rounded status ml-2 hold-background"
-                                             *ngIf="!item.hold">
-                                             <span class=" text-sm font-semibold font-family-inter">Hold</span>
-                                        </p-button>
-                                        <p-button styleClass="p-button-rounded status ml-2 rejected-background"
-                                             *ngIf="!item.reject">
-                                             <span
-                                                  class=" text-sm font-semibold font-family-inter reject-background ">Reject</span>
+                              <div *ngFor="let key of getObjectKeys(rowData[col].values)">
+                                   <div *ngIf="allValuesTrue(rowData[col].values)"> <p-button
+                                             [styleClass]="'p-button-rounded status mr-2 ' + rowData[col].color[key]"
+                                             *ngIf="!rowData[col].values[key]">
+                                             <span class="text-sm font-semibold font-family-inter">
+                                                  {{ key | titlecase }}
+                                             </span>
                                         </p-button>
                                    </div>
-                                   <div *ngIf="item.invited || item.hold || item.reject">
-                                        <span *ngIf="item.invited" class="invited">Invited</span>
-                                        <span *ngIf="item.hold" class="rejected">Hold</span>
-                                        <span *ngIf="item.reject" class="hold">Rejected</span>
-                                   </div>
+                                   <ng-container *ngIf=" !allValuesTrue(rowData[col].values)">
+                                        <span class="text-sm font-semibold font-family-inter"
+                                             [ngClass]="rowData[col].color[key]"
+                                             *ngIf="rowData[col].values[key] && rowData[col].color[key] == 'Success' ">
+                                             {{ key + 'd' | titlecase }}
+                                        </span>
+                                        <span class="text-sm font-semibold font-family-inter"
+                                             [ngClass]="rowData[col].color[key]"
+                                             *ngIf="rowData[col].values[key] && rowData[col].color[key] !== 'Success'">
+                                             {{ key | titlecase }}
+                                        </span>
+                                   </ng-container>
                               </div>
                          </div>
                     </ng-container>

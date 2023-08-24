@@ -32,6 +32,7 @@ export class AppHeaderComponent implements OnInit {
   notifications: any[] = [];
   notificationCount: any = 0;
   product_url: string = "https://dev-navi.azurewebsites.net/";
+  username: string = ''
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
@@ -39,6 +40,15 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let data = localStorage.getItem("currentUser")
+    if (data) {
+      let currentUser = JSON.parse(data);
+      if (currentUser && currentUser.email == "admin@xnode.ai") {
+        this.username = 'Mike Abbott'
+      } else {
+        this.username = 'Raymond Nelson'
+      }
+    }
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {

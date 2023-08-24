@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppSideMenuItems } from '../../constants/AppSideMenuItems';
 import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 @Component({
   selector: 'xnode-app-side-menu',
@@ -16,8 +16,16 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (event.url == '/admin/userinvitation' || event.url == '/admin/userapproval') {
+          this.sideMenuItems = AppSideMenuItems.AdminSideMenu;
+        } else {
+          this.sideMenuItems = AppSideMenuItems.UserSideMenu;
+        }
+      }
+    });
     this.selectedMenuIndex = 2;
-    this.sideMenuItems = AppSideMenuItems;
     this.sideMenuItems.map((item: any, index: any) => {
       let href = this.location.path();
       if ("/" + item?.path == href) {
