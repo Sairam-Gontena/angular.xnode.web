@@ -40,6 +40,38 @@
     }
 }
 
+@media (min-width: 1330px) and (max-width: 1800px) {
+    .signup-form{
+        padding-top: 0.25rem!important;
+    }
+    .form-container{
+        padding-top: 1.5rem!important;
+    }
+    .xnode-image-one{
+        width: 100px!important;
+    }
+    .xnode-image-one-div{
+        height: 13rem!important;
+    }
+    .sign-up-img-text{
+        padding:0px 48px!important;
+        margin-bottom: 0px!important;
+        font-size: 3rem!important;
+    }
+    .xnode-image-two{
+        height: 300px!important;
+    }
+    .create-account-div{
+        margin-top:1.5rem!important;
+    }
+    .xnode-logo-img{
+        padding:1.5rem!important;
+    }
+    .or-signup-div{
+        margin-top: 0.5rem!important;
+    }
+}
+
 /*New screen css*/
 .step-para-opacity{
     color:#4B4B4B;

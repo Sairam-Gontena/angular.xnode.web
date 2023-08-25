@@ -1,67 +1,71 @@
-<div class="grid m-0 h-full overflow-y-auto">
-    <div class="sm:col-12 md:col:12 lg:col-5 signup-image p-0">
+<div class="grid bg-xnode-blue m-0 h-full overflow-y-auto">
+    <div class="hidden-sm hidden-xs md:col:12 lg:col-5 signup-image p-0">
         <div class="flex flex-column justify-content-between h-full">
-            <div class="flex flex-column justify-content-end text-center p-8"> <!-- h-20rem-->
-                <div class="flex flex-row justify-content-center p-4">
+            <div class="xnode-logo-div flex flex-column justify-content-end text-center p-8"> <!-- h-20rem-->
+                <div class="logo-div flex flex-row justify-content-center p-4">
                     <img src="../../../assets/xnode-signup.svg" alt="xnode-image" width="278px"/>
                 </div>
             </div>
             <div class="p-2 text-center">
-                <p class="text-white font-bold text-7xl p-6 pt-2">Start your<br/> journey with xnode.</p>
+                <p class="account-type-text text-white font-bold text-7xl p-6 pt-2">Start your<br/> journey with xnode.</p>
             </div>
-            <img src="../../../assets/Frame.svg" alt="signup-frame"/>
-            <div>
-                
+            <div class="flex flex-row justify-content-start">
+                <img src="../../../assets/Frame.svg" class="account-type-image" alt="signup-frame"/>
             </div>
         </div>
     </div>
-    <div class="sm:col-12 md:col:12 lg:col-7 signup-div p-8">
-        <div class="grid pt-6">
-            <div class="sm:col-12 md:col:12 lg:col-3"></div>
-            <div class="sm:col-12 md:col:12 lg:col-6 w-29rem">
+    <div class="signup-div sm:col-12 md:col:12 lg:col-7 p-8">
+        <div class="account-type-div grid pt-6">
+            <div class="sm:col-12 xs:col-12 hidden-md hidden-lg w-full">
+                <div class="flex flex-row justify-content-center m-3">
+                        <img src="../../../assets/xnode-signup.svg"  alt="xnode-image" width="84px"/>
+                </div>
+            </div>
+            <div class="hidden-sm hidden-xs md:col:12 lg:col-3"></div>
+            <div class="account-type-form sm:col-12 md:col:12 lg:col-6 bg-white w-29rem">
                 <form [formGroup]="accountTypeForm" (ngSubmit)="onSubmit(accountTypeForm)">
                 <p class="step-para-opacity text-lg font-medium">Step 1 of 2</p> 
                 <p class="page-header text-6xl font-semibold">Create Account</p>
-                <div class="grid pl-3">
-                    <p class="step-para font-medium text-lg">Already a member?</p>
+                <div class="grid pl-3 p-l-xs-2">
+                    <p class="step-para p-size-18 font-medium text-lg">Already a member?</p>
                     <a class="text-blue-700 pl-2 text-lg cursor-pointer" routerLink="/login">Login</a>
                 </div> 
-                <p class="step-para text-xl font-medium">How would you like to use xnode?</p>
+                <p class="step-para text-xl p-size-18 font-medium">How would you like to use xnode?</p>
                 <div class="border-div border-200 border-round-xl flex flex-row justify-content-between mb-3 px-4">
                     <img src="../../../assets/clarity_building-solid.svg" alt="building"/>
-                    <div class="cursor-pointer">
+                    <div class="cursor-pointer p-l-xs-2">
                         <p class="step-para text-lg font-medium my-2">Company or Team</p>
-                        <p class="step-para text-sm font-medium my-2">I’m looking for a team level to access</p>
+                        <p class="step-para text-sm p-size-12 font-medium my-2">I’m looking for a team level to access</p>
                     </div>
                     <p-radioButton name="accountFor" formControlName="accountFor" value="CompanyorTeam"></p-radioButton>
                 </div>
                 <div class="border-div border-200 border-round-xl flex flex-row justify-content-between mt-3 px-4">
                     <img src="../../../assets/profile.svg" alt="profile"/>
-                    <div class="cursor-pointer">
+                    <div class="cursor-pointer p-l-xs-2">
                         <p class="step-para text-lg font-medium my-2">Personal</p>
-                        <p class="step-para text-sm font-medium my-2">I’m looking for a myself to build a website</p>
+                        <p class="step-para text-sm p-size-12 font-medium my-2">I’m looking for a myself to build a website</p>
                     </div>
                     <p-radioButton name="accountFor" formControlName="accountFor" value="Personal"></p-radioButton>
                 </div>
                 <div *ngIf="accountTypeForm.get('accountFor')?.invalid && (accountTypeForm.get('accountFor')?.dirty || accountTypeForm.get('accountFor')?.touched)" class="text-red-400">
                     Please select your usage of xnode.
                 </div>
-                <div class="mt-4 w-full">
-                    <p class="step-para text-xl font-medium">Business Type</p>
+                <div class="mt-4 mt-xs-4 w-full">
+                    <p class="step-para text-xl p-size-18 font-medium">Business Type</p>
                     <p-dropdown class="business-type block h-3rem w-full" placeholder="Select your business type" formControlName="businessType" [options]="businesstype" optionLabel="name"></p-dropdown>
                     <div *ngIf="accountTypeForm.get('businessType')?.invalid && (accountTypeForm.get('businessType')?.dirty || accountTypeForm.get('businessType')?.touched)" class="text-red-400">
                         Please select business type.
                     </div>
                 </div>
-                <div class="mt-6" (click)="onSubmit(accountTypeForm)">
-                    <p-button class="btn-next" type="submit" label="Next"></p-button>
+                <div class="m-md-3 my-xs-4 mt-6" (click)="onSubmit(accountTypeForm)">
+                    <p-button class="btn-next w-full text-center mx-2" type="submit" label="Next"></p-button>
                 </div>
                 </form>
-                <div class="text-center mt-6">
+                <div class="m-md-3 my-xs-4 text-center mt-6">
                     <p class="step-para">By creating an account, you agree to xnode’s <a class="cursor-pointer text-sm">Terms of Service</a> and <a class="cursor-pointer text-sm">Privacy Policy</a></p>
                 </div>
             </div>
-            <div class="sm:col-12 md:col:12 lg:col-3"></div>
+            <div class="hidden-sm hidden-xs md:col:12 lg:col-3"></div>
         </div>
     </div>
 </div>
