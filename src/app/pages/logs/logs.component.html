@@ -1,3 +1,14 @@
-<div class="p-4">
-  <xnode-dynamic-table [dynamicData]="logsData"></xnode-dynamic-table>
+<div class="template-builder-wrapper">
+  <div class="template-builder-layout-wrapper">
+    <xnode-page-tools-layout></xnode-page-tools-layout>
+  </div>
+  <div class="template-builder-body-wrapper overflow-hidden"
+    [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
+    <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+    <div class="grid m-0">
+      <div class="col-12">
+        <xnode-dynamic-table [dynamicData]="logsData"></xnode-dynamic-table>
+      </div>
+    </div>
+  </div>
 </div>

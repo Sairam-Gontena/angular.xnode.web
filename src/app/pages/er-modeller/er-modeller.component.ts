@@ -76,7 +76,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utilsService.loadSpinner(false);
       })
@@ -96,7 +96,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utilsService.loadSpinner(false);
       })

@@ -140,6 +140,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule)
   },
   {
+    path: 'operate/change/history-log',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule)
+  },
+  {
     path: 'admin/user-approval',
     loadChildren: () =>
       import('./pages/user-approval/user-approval.module').then(
