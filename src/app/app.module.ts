@@ -12,7 +12,6 @@ import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

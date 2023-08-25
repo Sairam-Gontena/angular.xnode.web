@@ -1,5 +1,4 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ApiService } from './api/api.service';
+import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -22,18 +21,17 @@ export class AppComponent implements OnInit {
   isNaviExpanded?: boolean;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
-  naviUrl: SafeResourceUrl = '';
+  iframeUrl: SafeResourceUrl = '';
   toastObj: any;
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
+
   constructor(
     private domSanitizer: DomSanitizer,
-    private apiService: ApiService,
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService,
-    private changeDetector: ChangeDetectorRef,) {
+    private subMenuLayoutUtil: UtilsService) {
 
   }
 
@@ -41,11 +39,17 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
-        this.handleBotIcon(event);
+        if (event.url === '/x-pilot') {
+          this.isBotIconVisible = false
+        } else {
+          this.isBotIconVisible = true;
+        }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      this.loading = event;
+      setTimeout(() => {
+        this.loading = event;
+      }, 0);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
@@ -53,34 +57,20 @@ export class AppComponent implements OnInit {
     this.currentPath = window.location.hash;
   }
 
-  handleBotIcon(event: any): void {
-    if (event.url === '/x-pilot') {
-      this.isBotIconVisible = false
-    } else {
-      this.isBotIconVisible = true;
-    }
-  }
-
   loadIframeUrl(): void {
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
-        // Add an event listener to listen for messages from the iframe
         window.addEventListener('message', (event) => {
-          console.log('event.data', event.data);
-
-          // Check the origin of the message to ensure it's from the iframe's domain
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             console.log('not matched');
-            return; // Ignore messages from untrusted sources
+            return;
           }
-          // Check the message content and trigger the desired event
           if (event.data === 'triggerCustomEvent') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
-
           if (event.data === 'close-docked-navi') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
@@ -115,7 +105,10 @@ export class AppComponent implements OnInit {
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
-      this.naviUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      setTimeout(() => {
+        this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.loadIframeUrl();
+      }, 2000);
     } else {
       alert("Invalid record id")
     }
@@ -155,7 +148,10 @@ export class AppComponent implements OnInit {
   isUserExists() {
     // Temporary
     return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/my-products";
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
+      || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
+      || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
+      || window.location.hash === "#/logs";
   }
 
 
@@ -183,7 +179,7 @@ export class AppComponent implements OnInit {
   }
 
   submenuFunc() {
-    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu()
+    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
     if (this.isSideWindowOpen) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';
@@ -195,32 +191,10 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = false;
   }
 
-  parentdata: any[] = [
-    {
-      Name: "User1",
-      Age: 25,
-      Address: "Address1",
-      Email: 'user1@gmail.comm'
-    },
-    {
-      Name: "User2",
-      Age: 26,
-      Address: "Address12",
-      Email: 'user2@gmail.comm'
-
-    },
-    {
-      Name: "User3",
-      Age: 26,
-      Address: "Address12",
-      Email: 'User3@gmail.comm'
-
-    },
-  ];
-
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview";
+      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
+      || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs";
 
   }
 

@@ -1,0 +1,20 @@
+.inner-div {
+    background-color: #23222B;
+}
+
+.active-color {
+    color: #437FEC
+}
+
+.font-family {
+    font-family: 'Inter'
+}
+
+::ng-deep .p-button-rounded.mr-2 {
+    background-color: #23222B !important;
+    border-color: white;
+}
+
+.table-div {
+    height: 530px;
+}
