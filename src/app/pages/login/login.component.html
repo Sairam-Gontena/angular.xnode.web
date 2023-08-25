@@ -6,11 +6,11 @@
                 <img src=" ./assets/XLogo.svg" alt="x-logo" class="">
             </div>
             <div class="flex justify-content-center -mt-8">
-                <p-card [style]=" { width: '766px' ,height: '786px' }" class="shadow-8">
-                <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-8 bg-white">
-                    <!-- <div class="text-lg font-medium text-500">Step 1/2</div> -->
-                    <div class="heading-color text-6xl font-bold">Login to xnode</div>
-                    <div class="text-lg font-medium text-500">Enter the details to login to xnode</div>
+                <p-card [style]=" { width: '720px' ,height: '780px' }" class="shadow-8">
+                <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-8 -mt-7">
+                    <div class="text-lg font-medium text-500 -ml-2">Step 1/2</div>
+                    <div class="heading-color text-6xl font-bold -ml-2">Login to xnode</div>
+                    <div class="font-semibold text-color text-lg -ml-2">No account yet?<a class="underline text-primary-500">Signup</a></div>
                     <div class="grid form-container pt-5">
                         <div class="">
                         <p-messages [(value)]="messages" [enableService]="false"></p-messages>
@@ -50,9 +50,9 @@
                                             placeholder="Enter password"
                                             autocomplete="current-password">
                                         <div *ngIf="submitted && login['password'].errors"
-                                            class="invalid-feedback">
+                                           class="invalid-feedback">
                                             <div
-                                                *ngIf="login['password'].errors['required']">Password
+                                                 *ngIf="login['password'].errors['required']">Password
                                                 is required</div>
                                             <div
                                                 *ngIf="login['password'].errors['minlength']">Password
@@ -63,10 +63,17 @@
                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                                        <div class="flex justify-content-between">
                                        <div class="">
-                                        <p-checkbox formControlName="rememberMe"></p-checkbox>
+                                        <p-checkbox formControlName="rememberMe" value="Remember me" 
+                                        [ngClass]="{ 'is-invalid': submitted && login['rememberMe'].errors }" inputId="ny"></p-checkbox>
                                         <label for="rememberMe" class="ml-2">Remember me</label>
+                                        <div *ngIf="submitted && login['rememberMe'].errors"
+                                           class="invalid-feedback">
+                                            <div
+                                                 *ngIf="login['rememberMe'].errors['required']">Remember me
+                                                is required</div>
+                                        </div>
                                        </div>
-                                        <label class="font-medium text-base underline forgot-pwd">Forgot Password?</label>
+                                        <label class="font-medium text-base underline">Forgot Password?</label>
                                       </div>
                                     </div>
                                     <div
@@ -76,19 +83,27 @@
                                             icon="pi pi-angle-right" iconPos="right"
                                             (click)="onClickLogin()"></p-button>
                                     </div>
-                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-3">
-                                        <p class="flex justify-content-center underline text-sm font-medium  pt-8">Terms of servce and privacy policy</p>                                
+                                    <div class="divider mt-4">
+                                        <hr class="left"/>Or Log in with<hr class="right" />
                                     </div>
-                                        <!-- <fieldset class="submit-fieldset">
-                                        <button type="submit" style="display: none;"></button>
-                                    </fieldset> -->
+                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                                       <div class="flex justify-content-center gap-6">
+                                        <img src=" ./assets/logingoogle.png" alt="google" class="">
+                                        <img src=" ./assets/loginlinkedin.png" alt="linkedin" class="">
+                                        <img src=" ./assets/locker.png" alt="Lock" class="">
+                                       </div>
+                                    </div>
+                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-8">
+                                        <p class="flex justify-content-center underline text-sm font-medium">Terms of servce and privacy policy</p>                                
+                                    </div>
+                                       
                                 </div>
 
                             </form>
                         </div>
                     </div>
                  </div>
-            </p-card>
+                </p-card>
             </div>
         </div>
     </div>

@@ -20,7 +20,8 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [true]
+      // rememberMe: [true]
+      rememberMe: new FormControl<string | null>(null)
     });
   }
 
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
 
   onClickLogin() {
     this.submitted = true;
+    console.log(this.loginForm)
     const matchedUser = Emails.find(user => user.email === this.loginForm.value.email && user.password === this.loginForm.value.password);
     // Stop here if the form is invalid
     if (this.loginForm.invalid) {
@@ -48,6 +50,7 @@ export class LoginComponent implements OnInit {
         { severity: 'error', summary: 'Error', detail: 'User not found' }
       ]
     }
+   
   }
 
 
