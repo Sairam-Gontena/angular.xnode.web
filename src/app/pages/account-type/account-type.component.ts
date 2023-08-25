@@ -28,8 +28,10 @@ export class AccountTypeComponent implements OnInit{
   onSubmit(form:any){
     if (form.valid) {
       console.log(form.value);
+      let route = `sign-up?account=${form.value.accountFor}&businesstype=${form.value.businessType.name}`;
+      this.router.navigateByUrl(route);
     } else {
-        form.markAllAsTouched(); // Mark controls as touched to trigger error messages
+        form.markAllAsTouched();
     }
   }
 }

@@ -179,13 +179,13 @@
                                 Name</label>
                             <input id="firstName" type="text"
                                 placeholder="Please enter first name"
-                                formControlName="firstName"
-                                [ngClass]="{ 'is-invalid': submitted && signUp['firstName'].errors }"
+                                formControlName="firstname"
+                                [ngClass]="{ 'is-invalid': submitted && signUp['firstname'].errors }"
                                 class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            <div *ngIf="submitted && signUp['firstName'].errors"
+                            <div *ngIf="submitted && signUp['firstname'].errors"
                                 class="invalid-feedback">
                                 <div
-                                    *ngIf="signUp['firstName'].errors?.['required']">First
+                                    *ngIf="signUp['firstname'].errors?.['required']">First
                                     Name is required</div>
                             </div>
                         </div>
@@ -195,13 +195,13 @@
                                 Name</label>
                             <input id="lastName" type="text"
                                 placeholder="Please enter last name"
-                                formControlName="lastName"
-                                [ngClass]="{ 'is-invalid': submitted && signUp['lastName'].errors }"
+                                formControlName="lastname"
+                                [ngClass]="{ 'is-invalid': submitted && signUp['lastname'].errors }"
                                 class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            <div *ngIf="submitted && signUp['lastName'].errors"
+                            <div *ngIf="submitted && signUp['lastname'].errors"
                                 class="invalid-feedback">
                                 <div
-                                    *ngIf="signUp['lastName'].errors['required']">Last
+                                    *ngIf="signUp['lastname'].errors['required']">Last
                                     Name is required</div>
                             </div>
                     </div>
@@ -273,36 +273,10 @@
                         </div>
                         <p *ngIf="errorMessage" class="error-message">{{
                             errorMessage }}</p>
+                        </div>                      
+                        <div class="create-account-div field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6" >
+                            <p-button  type="submit" class="create-account-btn w-full" label="Create Account" styleClass="p-button-rounded font-medium text-lg" iconPos="right"></p-button>
                         </div>
-                        <!--New pswd changes -->
-                        <!-- <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                            <label htmlFor="password"
-                                class="font-medium text-lg">Password</label>
-                                <input pInputText type="password" formControlName="password"
-                                class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                    [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
-                                    [style]="{'width':'100%', 'height': '42px'}"
-                                    placeholder="Enter password"
-                                    autocomplete="current-password">
-                            <div *ngIf="submitted && signUp['password'].errors"
-                                class="invalid-feedback">
-                                <div
-                                    *ngIf="signUp['password'].errors['required']">Password
-                                    is required</div>
-                                <div
-                                    *ngIf="signUp['password'].errors['minlength']">Password
-                                    must be at least 6 characters
-                                </div>
-                            </div>
-                        </div> -->
-                      
-                        <div class="create-account-div field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                            <p-button label="Create Account" styleClass="p-button-rounded w-full font-medium text-lg"
-                                iconPos="right" (click)="onClickSignUp()"></p-button>
-                        </div>
-                        <fieldset class="submit-fieldset">
-                            <button type="submit" style="display: none;"></button>
-                        </fieldset>
                     </div>
                     <div class="flex flex-row justify-content-center ml-4">
                         <hr class="w-3"/><span class="mx-3">Or Signup with</span><hr class="w-3"/>

@@ -22,6 +22,8 @@ export class SignUpComponent implements OnInit {
   errorMessage!: string;
   socialUser!: SocialUser;
   isLoggedin?: boolean;
+  accountType:any;
+  businessType:any;
   linkedInCredentials = {
     clientId: "867kfsdknrsm4q",
     redirectUrl: "https://y8pud.codesandbox.io/linkedInLogin",
@@ -29,20 +31,26 @@ export class SignUpComponent implements OnInit {
   };
 
   constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute) {
-    this.signUpForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]] ,
-    },
-    {
-      validator: ConfirmPasswordValidator("password", "confirmPassword")
+    this.route.queryParams.subscribe((params:any) => {
+      this.accountType = params.account; 
+      this.businessType=params.businesstype;
     });
+
+      this.signUpForm = this.formBuilder.group({
+        firstname: ['', Validators.required],
+        lastname: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required, Validators.minLength(6)]] ,
+        account_type: this.accountType ,
+        business_type: this.businessType
+      },{
+        validator: ConfirmPasswordValidator("password", "confirmPassword")
+      });
   }
 
   ngOnInit(): void {
-    console.log(environment.xnodeAppUrl+'#/')
+    // console.log(environment.xnodeAppUrl+'#/')
     localStorage.clear();
     this.signUpForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
@@ -84,20 +92,21 @@ export class SignUpComponent implements OnInit {
   onClickSignUp() {
     this.submitted = true;
     let pswdValidator = this.signUpForm.get('confirmPassword')?.errors?.['confirmPasswordValidator'];
-    if(pswdValidator || pswdValidator==undefined){
+    if(pswdValidator){
       this.confirmPasswordValidator=true;
       return;
     }
     if (this.signUpForm.invalid) {
       return;
     }
-    const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
-    localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
-    if (matchedUser) {
-      this.router.navigate(['/workspace']);
-    } else {
-      this.errorMessage = 'Email and password do not match.';
-    }
+    console.log('value',this.signUpForm.value);
+    // const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
+    // localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
+    // if (matchedUser) {
+    //   this.router.navigate(['/workspace']);
+    // } else {
+    //   this.errorMessage = 'Email and password do not match.';
+    // }
   }
 
 

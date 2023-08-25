@@ -8,12 +8,12 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
+      import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
   },
   {
-    path: 'account-type',
+    path: 'sign-up',
     loadChildren: () =>
-      import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
+      import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
   },
   {
     path: 'login',
