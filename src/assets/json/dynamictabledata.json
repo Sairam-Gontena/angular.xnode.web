@@ -188,19 +188,17 @@
           "notes": "This project is released under the MIT license",
           "action": {
             "color": {
-              "Invite": "Success",
-              "Hold": "Warning",
-              "Reject": "Danger"
+              "Approve": "Success",
+              "Denay": "Danger"
             },
             "values": {
-              "Invite": false,
-              "Hold": false,
-              "Reject": false
+              "Approve": false,
+              "Denay": false
             }
           }
         },
         {
-          "leadno": "02",
+          "leadno": "01",
           "firstname": "Raymond",
           "lastname": "Nelson",
           "email": "raymondnelson@xnode.ai",
@@ -213,14 +211,12 @@
           "notes": "This project is released under the MIT license",
           "action": {
             "color": {
-              "Invite": "Success",
-              "Hold": "Warning",
-              "Reject": "Danger"
+              "Approve": "Success",
+              "Denay": "Danger"
             },
             "values": {
-              "Invite": false,
-              "Hold": true,
-              "Reject": false
+              "Approve": false,
+              "Denay": false
             }
           }
         },
@@ -231,80 +227,123 @@
           "email": "raymondnelson@xnode.ai",
           "phonenumber": "+91 9999999999",
           "interestlevel": {
-            "high": false,
+            "high": true,
             "medium": false,
-            "low": true
-          },
-          "notes": "This project is released under the MIT license",
-          "action": {
-            "color": {
-              "Invite": "Success",
-              "Hold": "Warning",
-              "Reject": "Danger"
-            },
-            "values": {
-              "Invite": false,
-              "Hold": true,
-              "Reject": false
-            }
-          }
-        },
-        {
-          "leadno": "01",
-          "firstname": "Raymond",
-          "lastname": "Nelson",
-          "email": "raymondnelson@xnode.ai",
-          "phonenumber": "+91 9999999999",
-          "interestlevel": {
-            "high": false,
-            "medium": true,
             "low": false
           },
           "notes": "This project is released under the MIT license",
           "action": {
             "color": {
-              "Invite": "Success",
-              "Hold": "Warning",
-              "Reject": "Danger"
+              "Approve": "Success",
+              "Denay": "Danger"
             },
             "values": {
-              "Invite": false,
-              "Hold": false,
-              "Reject": true
+              "Approve": false,
+              "Denay": false
+            }
+          }
+        },
+        {
+          "leadno": "01",
+          "firstname": "Raymond",
+          "lastname": "Nelson",
+          "email": "raymondnelson@xnode.ai",
+          "phonenumber": "+91 9999999999",
+          "interestlevel": {
+            "high": true,
+            "medium": false,
+            "low": false
+          },
+          "notes": "This project is released under the MIT license",
+          "action": {
+            "color": {
+              "Approve": "Success",
+              "Denay": "Danger"
+            },
+            "values": {
+              "Approve": true,
+              "Denay": false
+            }
+          }
+        },
+        {
+          "leadno": "01",
+          "firstname": "Raymond",
+          "lastname": "Nelson",
+          "email": "raymondnelson@xnode.ai",
+          "phonenumber": "+91 9999999999",
+          "interestlevel": {
+            "high": true,
+            "medium": false,
+            "low": false
+          },
+          "notes": "This project is released under the MIT license",
+          "action": {
+            "color": {
+              "Approve": "Success",
+              "Denay": "Danger"
+            },
+            "values": {
+              "Approve": false,
+              "Denay": true
             }
           }
         }
       ]
     },
-    "PublishTable": [
-      {
-        "Version": "3.0",
-        "Deployed On": "2023-07-01",
-        "Deployed By": "Address1",
-        "Notes": "Updated business rules",
-        "Status": "Pending"
-      },
-      {
-        "Version": "2.0",
-        "Deployed On": "2023-05-01",
-        "Deployed By": "Address1",
-        "Status": "Deployed",
-        "Notes": "Updated work flow"
-      },
-      {
-        "Version": "1.0",
-        "Deployed On": "2023-04-01",
-        "Deployed By": "Address1",
-        "Status": "Deployed",
-        "Notes": "Updated work flow"
-      },
-      {
-        "Version": "0.1",
-        "Deployed On": "2023-03-01",
-        "Deployed By": "Address1",
-        "Status": "Deployed",
-        "Notes": "First Revision"
-      }
-    ]
+    "PublishTable": {
+      "Columns": [
+        {
+          "field": "version",
+          "header": "Version"
+        },
+        {
+          "field": "deployedon",
+          "header": "Deployed On"
+        },
+        {
+          "field": "deployedby",
+          "header": "Deployed By"
+        },
+        {
+          "field": "notes",
+          "header": "Notes"
+        },
+        {
+          "field": "status",
+          "header": "Status"
+        }
+      ],
+      "Rows": [
+        {
+          "Version": "3.0",
+          "Deployed On": "2023-07-01",
+          "Deployed By": "Address1",
+          "Notes": "Updated business rules",
+          "Status": "Pending"
+        },
+        {
+          "Version": "2.0",
+          "Deployed On": "2023-05-01",
+          "Deployed By": "Address1",
+          "Status": "Deployed",
+          "Notes": "Updated work flow"
+        },
+        {
+          "Version": "1.0",
+          "Deployed On": "2023-04-01",
+          "Deployed By": "Address1",
+          "Status": "Deployed",
+          "Notes": "Updated work flow"
+        },
+        {
+          "Version": "0.1",
+          "Deployed On": "2023-03-01",
+          "Deployed By": "Address1",
+          "Status": "Deployed",
+          "Notes": "First Revision"
+        }
+      ]
+    }
   }
 }

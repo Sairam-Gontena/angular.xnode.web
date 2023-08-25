@@ -32,12 +32,13 @@ export class DynamicTableComponent implements OnInit {
     const currentUrl = this.router.url;
     if (currentUrl == '/admin/user-invitation') {
       this.cols = dynamictabledata?.dynamicTable?.Invitation?.Columns
-      console.log(this.cols)
       this.dynamicData = dynamictabledata?.dynamicTable?.Invitation?.Rows;
     } else if (currentUrl == '/admin/user-approval') {
-      this.dynamicData = dynamictabledata?.dynamicTable?.Approvals;
+      this.cols = dynamictabledata?.dynamicTable?.Approvals?.Columns
+      this.dynamicData = dynamictabledata?.dynamicTable?.Approvals?.Rows;
     } else if (currentUrl == '/publish') {
-      this.dynamicData = dynamictabledata?.dynamicTable?.PublishTable;
+      this.cols = dynamictabledata?.dynamicTable?.PublishTable?.Columns
+      this.dynamicData = dynamictabledata?.dynamicTable?.PublishTable?.Rows;
     }
     this.headers = Object.keys(this.dynamicData[0]);
   }
