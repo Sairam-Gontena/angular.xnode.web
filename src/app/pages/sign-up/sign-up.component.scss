@@ -49,15 +49,11 @@
     }
 
     .form-container {
-        padding-top: 1.5rem !important;
+        padding-top: 0.75rem !important;
     }
 
     .xnode-image-one {
-        width: 100px !important;
-    }
-
-    .xnode-image-one-div {
-        height: 13rem !important;
+        width: 95px !important;
     }
 
     .sign-up-img-text {
@@ -75,11 +71,29 @@
     }
 
     .xnode-logo-img {
-        padding: 1.5rem !important;
+        padding: 1rem !important;
     }
 
     .or-signup-div {
         margin-top: 0.5rem !important;
+    }
+
+    .step-para-opacity, .login-route-div, .formgrid .field{
+        font-size: 1rem!important;
+        margin-bottom:5px!important;
+    }
+    .signup-color{
+        font-size:2rem!important;
+    }
+    :host ::ng-deep .formgrid .text-lg{
+        font-size: 14px!important;
+    }
+    .create-account-div{
+        margin-top:1.5rem!important;
+    }
+    .hr-div .mx-3{
+        margin:5px 5px!important;
+        font-size: 14px!important;
     }
 }
 

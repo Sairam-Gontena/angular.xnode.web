@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
+import { ApiService } from 'src/app/api/api.service';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
 import {
   SocialAuthService,
@@ -9,6 +10,8 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment';
+import { UtilsService } from 'src/app/components/services/utils.service';
+
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -32,12 +35,12 @@ export class SignUpComponent implements OnInit {
     scope: "r_liteprofile%20r_emailaddress%20w_member_social" // To read basic user profile data and email
   };
 
-  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private apiService:ApiService,private utilService:UtilsService) {
     this.route.queryParams.subscribe((params: any) => {
       this.accountType = params.account;
       this.businessType = params.businesstype;
     });
-
+    let currentDateTime = new Date().toJSON("yyyy/MM/dd HH:mm");
     this.signUpForm = this.formBuilder.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -45,7 +48,11 @@ export class SignUpComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
       account_type: this.accountType,
-      business_type: this.businessType
+      business_type: this.businessType,
+      user_status:'active',
+      created_on:currentDateTime,
+      activate_on:currentDateTime,
+      modified_on:currentDateTime
     }, {
       validator: ConfirmPasswordValidator("password", "confirmPassword")
     });
@@ -93,9 +100,6 @@ export class SignUpComponent implements OnInit {
 
   onClickSignUp() {
     this.submitted = true;
-    if (this.signUpForm.valid) {
-      this.visible = true;
-    }
     let pswdValidator = this.signUpForm.get('confirmPassword')?.errors?.['confirmPasswordValidator'];
     if (pswdValidator) {
       this.confirmPasswordValidator = true;
@@ -104,21 +108,19 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
-    // if (this.signUpForm.valid) {
-    //   this.onClickSignUp();
-
-
-    // }
-
-    console.log('value', this.signUpForm.value);
-    // const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
-    // localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
-    // if (matchedUser) {
-    //   this.router.navigate(['/workspace']);
-    // } else {
-    //   this.errorMessage = 'Email and password do not match.';
-    // }
+    this.apiService.postAuth(this.signUpForm.value,'auth/signup').then((response:any)=>{
+      if(response.data.message=="success"){ 
+        this.visible=true;
+        this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message, life: 3000 });
+      }
+    }).catch(error => {
+      this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+    });
   }
 
+  cancel() {  
+    this.visible=false;
+    console.log(this.visible)
+   }
 
 }

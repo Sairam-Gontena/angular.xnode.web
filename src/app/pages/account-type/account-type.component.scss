@@ -23,20 +23,10 @@
     border: 1px solid #BFBFBF;
  }
 
- .btn-next{
-    border-radius: 44px;
-    background: #EF018F;
-    color:#FFF;
-    padding: 18px 190px;
-    border-color: transparent;
- }
+
  
  .business-type{
     font-family: Inter;
- }
-
- :host ::ng-deep .btn-next .p-button{
-   font-size:18px!important;
  }
 
  @media (min-width: 1330px) and (max-width: 1800px) {
@@ -78,9 +68,6 @@
       width: 100%!important;    
       border-radius: 15px!important;
       padding: 20px!important;
-   }
-   .btn-next{
-      padding: unset!important;
    }
    .border-div{
       padding: 0.25rem 0.5rem!important;
@@ -132,10 +119,6 @@
       padding: 1rem 5rem!important;
       border-radius: 8px!important;
       width: 75%!important;
-   }
-   .btn-next{
-      padding: unset!important;
-      margin: 3rem 0rem 5rem 0rem!important
    }
    .bg-image{
       padding: 0px!important;

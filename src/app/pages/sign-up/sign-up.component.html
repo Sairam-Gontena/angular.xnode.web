@@ -1,152 +1,8 @@
 <div class="grid m-0 h-full overflow-y-auto">
-    <!-- <div class="sm:col-12 md:col-12 lg:col-7 xl:col-7 pt-5 bg-white signup-form">
-        <img src=" ./assets/XLogo.svg" alt="x-logo" class="ml-8">
-        <div class="grid form-container pt-8 ">
-            <div class="col-2"></div>
-            <div class="col-7 ml-5">
-                <form [formGroup]="signUpForm" (ngSubmit)="onClickSignUp()">
-                    <h1 class="signup-color font-bold font-normal text-6xl">Sign
-                        up</h1>
-                    <p class="font-semibold font-normal text-base">Have an
-                        account?
-                        Please
-                        <a class="text-blue-700 pointer"
-                            (click)="this.router.navigate(['/login'])">Sign In</a>
-                    </p>
-                    <div class="grid">
-                        <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                            <div
-                                class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
-                                <img src="./assets/google.png" width="16px">
-                                <p
-                                    class="m-0 pl-2 font-semibold font-normal text-sm ">
-                                    CONTINUE WITH GOOGLE
-                                </p>
-                            </div>
-                        </div>
-                        <div class="sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                            <div
-                                class="flex flex-wrap  align-items-center p-2 border-1 surface-border border-round ">
-                                <img src="./assets/linkedin.png" width="16px">
-                                <p
-                                    class="m-0 pl-2 font-semibold font-normal text-sm ">
-                                    CONTINUE WITH LINKEDIN
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="font-medium text-base text-500 py-3">Or</p>
-                    <div class="formgrid grid">
-                        <div
-                            class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                            <label for="firstName" class="font-medium text-base">First
-                                Name</label>
-                            <input id="firstName" type="text"
-                                placeholder="Please enter first name"
-                                formControlName="firstName"
-                                [ngClass]="{ 'is-invalid': submitted && signUp['firstName'].errors }"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            <div *ngIf="submitted && signUp['firstName'].errors"
-                                class="invalid-feedback">
-                                <div
-                                    *ngIf="signUp['firstName'].errors?.['required']">First
-                                    Name is required</div>
-                            </div>
-                        </div>
-                        <div
-                            class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                            <label for="lastName" class="font-medium text-base">Last
-                                Name</label>
-                            <input id="lastName" type="text"
-                                placeholder="Please enter last name"
-                                formControlName="lastName"
-                                [ngClass]="{ 'is-invalid': submitted && signUp['lastName'].errors }"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            <div *ngIf="submitted && signUp['lastName'].errors"
-                                class="invalid-feedback">
-                                <div
-                                    *ngIf="signUp['lastName'].errors['required']">Last
-                                    Name is required</div>
-                            </div>
-                        </div>
-                        <div
-                            class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                            <label htmlFor="email" class="font-medium text-base">Email</label>
-                            <input pInputText id="email"
-                                placeholder="Please enter email"
-                                formControlName="email"
-                                autocomplete="userName"
-                                [ngClass]="{ 'is-invalid': submitted && signUp['email'].errors }"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                            <div *ngIf="submitted && signUp['email'].errors"
-                                class="invalid-feedback">
-                                <div
-                                    *ngIf="signUp['email'].errors?.['required']">Email
-                                    is required</div>
-                                <div *ngIf="signUp['email'].errors['email']">Email
-                                    must be a valid email address</div>
-                            </div>
-                        </div>
-                        <div
-                            class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                            <label htmlFor="password"
-                                class="font-medium text-base">Password</label>
-                                <input pInputText type="password" formControlName="password"
-                                class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                    [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
-                                    [style]="{'width':'100%', 'height': '42px'}"
-                                    placeholder="Enter password"
-                                    autocomplete="current-password">
-                            <div *ngIf="submitted && signUp['password'].errors"
-                                class="invalid-feedback">
-                                <div
-                                    *ngIf="signUp['password'].errors['required']">Password
-                                    is required</div>
-                                <div
-                                    *ngIf="signUp['password'].errors['minlength']">Password
-                                    must be at least 6 characters
-                                </div>
-                            </div>
-                        </div>
-                        <p *ngIf="errorMessage" class="error-message">{{
-                            errorMessage }}</p>
-                        <div
-                            class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                            <p-button label="Create Account"
-                                styleClass="p-button-rounded  font-medium text-lg"
-                                icon="pi pi-angle-right" iconPos="right"
-                                (click)="onClickSignUp()"></p-button>
-                        </div>
-                        <fieldset class="submit-fieldset">
-                            <button type="submit" style="display: none;"></button>
-                        </fieldset>
-                    </div>
-                </form>
-            </div>
-            <div class="col-1"></div>
-        </div>
-    </div>
-    <div
-        class="sm:col-12 md:col-12 lg:col-5 xl:col-5 pt-6 sign-up-img text-white text-center text-left">
-        <div class="p-8">
-            <h1 class="heading">Start your journey with us.</h1>
-            <p class="text-lg font-normal font-normal">
-                Our platform is designed to be user-friendly and
-                accessible to everyone, providing intuitive interfaces and
-                powerful algorithms that can generate
-                accurate and reliable models in just a few clicks.
-            </p>
-            <div class="flex flex-wrap justify-content-center">
-                <img src=" ./assets/sign-up.png" alt="logo" width="218px">
-            </div>
-        </div>
-    </div> -->
-    <!--  -->
-
     <div class="sm:col-12 md:col-12 lg:col-5 xl:col-5 sign-up-img text-white p-0">
         <div class="flex flex-column justify-content-between h-full">
-            <div class="flex flex-column justify-content-end text-center xnode-image-one-div h-20rem">
-                <div class="flex flex-row justify-content-end">
+            <div class="flex flex-row justify-content-end text-center">
+                <div>
                     <img src="../../../assets/Group-1000004253.svg" class="xnode-image-one" alt="xnode-image" />
                 </div>
             </div>
@@ -170,7 +26,7 @@
                     < Step 2 of 2</p>
                         <form [formGroup]="signUpForm" (ngSubmit)="onClickSignUp()">
                             <h1 class="signup-color font-semibold font-normal text-6xl">Create Account</h1>
-                            <p class="font-semibold font-normal text-base">Already a member?
+                            <p class="login-route-div font-semibold font-normal text-base">Already a member?
                                 <a class="text-blue-700 pointer" routerLink="/login">Login</a>
                             </p>
                             <div class="formgrid grid">
@@ -211,7 +67,6 @@
                                             must be a valid email address</div>
                                     </div>
                                 </div>
-                                <!--New pswd changes-->
                                 <div class="formgrid grid">
                                     <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
                                         <label htmlFor="password" class="font-medium text-lg">Password</label>
@@ -219,12 +74,6 @@
                                             placeholder="Enter password"
                                             class="signup-password text-lg text-color surface-overlay border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary pr-0"
                                             [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"></p-password>
-
-                                        <!-- class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                    [ngClass]="{ 'is-invalid': submitted && signUp['password'].errors }"
-                                    [style]="{'width':'100%', 'height': '42px'}"
-                                    placeholder="Enter password"
-                                    autocomplete="current-password" -->
                                         <div *ngIf="submitted && signUp['password'].errors" class="invalid-feedback">
                                             <div *ngIf="signUp['password'].errors['required']">Password
                                                 is required</div>
@@ -239,12 +88,6 @@
                                             class="signup-password text-lg text-color surface-overlay border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary pr-0"
                                             placeholder="Enter confirm password"
                                             [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"></p-password>
-                                        <!-- type="password" formControlName="confirmPassword"
-                                class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                                    [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"
-                                    [style]="{'width':'100%', 'height': '42px'}"
-                                    placeholder="Enter confirmPassword"
-                                    autocomplete="current-password" -->
                                         <div *ngIf="submitted && signUp['confirmPassword'].errors"
                                             class="invalid-feedback">
                                             <div *ngIf="signUp['confirmPassword'].errors['required']">confirm Password
@@ -264,10 +107,11 @@
                                 <div
                                     class="create-account-div field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
                                     <p-button type="submit" class="create-account-btn w-full" label="Create Account"
+                                        [disabled]="signUpForm.invalid"
                                         styleClass="p-button-rounded font-medium text-lg" iconPos="right"></p-button>
                                 </div>
                             </div>
-                            <div class="flex flex-row justify-content-center ml-4">
+                            <div class="hr-div flex flex-row justify-content-center ml-4">
                                 <hr class="w-3" /><span class="mx-3">Or Signup with</span>
                                 <hr class="w-3" />
                             </div>
@@ -278,9 +122,6 @@
                                         <asl-google-signin-button type='icon' size='large'
                                             color-scheme="light"></asl-google-signin-button>
                                     </div>
-                                    <!-- <span class="social-login w-max p-3 border-1 surface-border border-circle cursor-pointer" >
-                                <img src="./assets/google.png" width="16px"> (click)="loginWithGoogle()"
-                            </span> -->
                                 </div>
                                 <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center mt-2">
                                     <span
@@ -289,24 +130,32 @@
                                         <img src="./assets/linkedin.png" width="20px">
                                     </span>
                                 </div>
+                                <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center">
+                                    <div class="flex flex-row justify-content-start">
+                                        <span
+                                            class="social-login w-max p-2 border-1 surface-border border-round-sm cursor-pointer"
+                                            (click)="ContinueWithLinkedIn()">
+                                            <img src="./assets/ic_round-key.svg" width="20px">
+                                        </span>
+                                    </div>
+                                </div>
+
                             </div>
                         </form>
             </div>
             <div class="col-3"></div>
         </div>
     </div>
+</div>
 
-</div>
-<div class="card flex justify-content-center">
-    <p-button (click)="onClickSignUp()" icon="pi pi-external-link" label="Show"></p-button>
-    <p-dialog header="" [(visible)]="visible" [style]="{width:'41vw'}" class="popup">
-        <div class="flex">
-            <img src="../../../assets/popup-tick.png" alt="popup" class="w-3rem h-3rem">
-            <p class="text-xl font-medium  ml-5">
-                We got your application, our admin will sooner approve your account and share a login link to the
-                registered email.
-            </p>
-        </div>
-        <p-button label="Close" class="popup-close flex justify-content-end mr-4"></p-button>
-    </p-dialog>
-</div>
+<p-dialog header="" *ngIf="visible" [(visible)]="visible" [style]="{width:'41vw'}">
+    <div class="flex">
+        <img src="../../../assets/popup-tick.png" alt="popup" class="w-3rem h-3rem">
+        <p class="text-xl font-medium  ml-5">
+            We got your application, our admin will sooner approve your account and share a login link to the
+            registered email.
+        </p>
+    </div>
+    <p-button label="Close" (click)="cancel()" class="flex justify-content-end mr-4"
+        styleClass="p-button-rounded"></p-button>
+</p-dialog>
