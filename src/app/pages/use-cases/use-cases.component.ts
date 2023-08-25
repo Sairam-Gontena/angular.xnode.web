@@ -48,7 +48,7 @@ export class UseCasesComponent implements OnInit {
           localStorage.setItem('record_id', response.data.data[0].id);
           this.get_Usecases();
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
       })
@@ -69,7 +69,7 @@ export class UseCasesComponent implements OnInit {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
       })

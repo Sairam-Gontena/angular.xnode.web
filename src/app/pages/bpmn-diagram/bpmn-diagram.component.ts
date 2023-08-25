@@ -222,7 +222,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           this.useCases = data?.usecase || [];
           this.graph(this.useCases);
           this.utilsService.loadSpinner(false);
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
         }
       })
       .catch(error => {
