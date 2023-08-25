@@ -6,8 +6,9 @@ import * as logsTableData from '../../../assets/json/logs.json'
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.scss']
 })
-export class LogsComponent implements OnInit{
+export class LogsComponent implements OnInit {
   logsData: any;
+  isOpen = true;
 
 
   ngOnInit(): void {

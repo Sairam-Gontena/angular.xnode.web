@@ -151,7 +151,7 @@ export class AppComponent implements OnInit {
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
       || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
       || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/logs";
+      || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
   }
 
 
@@ -194,7 +194,7 @@ export class AppComponent implements OnInit {
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs";
+      || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
 
   }
 
