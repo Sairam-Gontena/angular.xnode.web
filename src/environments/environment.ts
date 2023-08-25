@@ -2,7 +2,7 @@ export const environment = {
     production: false,
     apiUrl: 'http://localhost:8000/',
 
-    xnodeAppUrl: 'https://dev-xnode.azurewebsites.net/',
+    xnodeAppUrl: 'http://localhost:4200/',
 
     naviAppUrl: 'http://localhost:4202/',
 
