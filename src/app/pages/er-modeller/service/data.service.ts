@@ -30,13 +30,20 @@ export class DataService {
     this.flg_repaint = true;
   }
 
-  public addSchema(schema: Schema): void {
+  public addSchemafromObj(schema: Schema): void {
+
+    var obj_model = this.data?.getModelById(schema.parent_id);
+   this.addSchema(schema, obj_model)
+  }
+
+
+  public addSchema(schema: Schema, parentModel: Model | null | undefined): void {
     // @ts-ignore
-    var obj_model = this.data.getModelById(schema.parent_id);
+    var obj_model = parentModel //this.data.getModelById(schema.parent_id);
     // confirm changing schema id for relation or not change
     var f_schema_id_for_relation = false;
     // @ts-ignore
-    if (obj_model.schema_id_for_relation === 0 && obj_model.is_pivot === false) {
+    if (obj_model && obj_model.schema_id_for_relation === 0 && obj_model.is_pivot === false) {
       if (confirm("This model's Schema id for relation is default(0:id).\nWant to set new schema? ")) {
         f_schema_id_for_relation = true;
       }
@@ -221,27 +228,25 @@ export class DataService {
     var model_user = this.data?.getModelByName('user');
 
     // other column turn nullable to true
-    model_user?.schemas?.forEach((v: any) => {
-      v.nullable = true;
-    });
+    model_user?.schemas?.forEach((v: any) => { v.nullable = true; });
 
     if (model_user?.getSchemaByName('name') === null) {
       var schema = new Schema();
       schema.name = 'name';
       schema.parent_id = model_user.id;
-      this.addSchema(schema);
+      this.addSchemafromObj(schema);
     }
     if (model_user?.getSchemaByName('email') === null) {
       var schema = new Schema();
       schema.name = 'email';
       schema.parent_id = model_user.id;
-      this.addSchema(schema);
+      this.addSchemafromObj(schema);
     }
     if (model_user?.getSchemaByName('password') === null) {
       var schema = new Schema();
       schema.name = 'password';
       schema.parent_id = model_user.id;
-      this.addSchema(schema);
+      this.addSchemafromObj(schema);
     }
 
     var model_user_schema_name = model_user?.getSchemaByName('name');

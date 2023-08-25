@@ -14,6 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -35,6 +36,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DividerModule,
     TableModule,
     InputTextModule,
+    InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule
@@ -55,6 +57,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DividerModule,
     TableModule,
     InputTextModule,
+    InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule

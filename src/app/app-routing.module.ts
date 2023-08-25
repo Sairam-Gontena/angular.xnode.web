@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
-import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
-import { DynamicFormComponent } from './components/form-builder/dynamic-form/dynamic-form.component';
+import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 
 const routes: Routes = [
   {
@@ -135,8 +134,26 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin/user-invitation',
+    loadChildren: () =>
+      import('./pages/user-invitation/user-invitation.module').then(
+        (m) => m.UserInvitationModule
+      ),
+  },
+  {
+    path: 'activity',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule)
+  },
+  {
+    path: 'admin/user-approval',
+    loadChildren: () =>
+      import('./pages/user-approval/user-approval.module').then(
+        (m) => m.UserApprovalModule
+      )
+  },
+  {
     path: 'dynamic-form',
-    component: DynamicFormComponent,
+    component: SignupDynamicFormComponent,
   },
   {
     path: '',

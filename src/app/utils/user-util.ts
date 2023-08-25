@@ -4,6 +4,7 @@ export interface User {
   password: string;
   email: string;
   id?: number;
+  role?: string;
 }
 
 export class UserUtil {
