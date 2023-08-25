@@ -39,72 +39,80 @@
   border-width: 0px;
 }
 
-:host ::ng-deep.p-button.invited-background {
-  background-color: #2FB273 !important;
-  color: #045830 !important;
-  padding-left: 0px;
-  padding-right: 0px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 30px !important;
-  width: 70px;
-  height: 30;
-}
-
-:host ::ng-deep.p-button.invited-background:enabled:hover {
-  background-color: #2FB273 !important;
-  color: #045830 !important;
-  padding-left: 0px;
-  padding-right: 0px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 30px !important;
-  width: 70px;
-  height: 30;
-}
-
-:host ::ng-deep.p-button.rejected-background {
-  background-color: #D65B5B !important;
-  color: #6F1010 !important;
-  padding-left: 0px;
-  padding-right: 0px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 30px !important;
-  width: 70px;
-  height: 30;
-}
-
-:host ::ng-deep.p-button.rejected-background:enabled:hover {
-  background-color: #D65B5B !important;
-  color: #6F1010 !important;
-  border-radius: 30px !important;
-}
-
-:host ::ng-deep.p-button.hold-background {
-  background-color: #E1CF6B !important;
-  color: #665910 !important;
-  border-radius: 30px !important;
-}
-
-:host ::ng-deep.p-button.hold-background:enabled:hover {
-  background-color: #E1CF6B !important;
-  color: #665910 !important;
-  border-radius: 30px !important;
-}
-
 :host ::ng-deep.header-menu {
   background-color: #E1CF6B !important;
 }
 
-.invited {
+.Success {
   color: #92FCC9
 }
 
-.rejected {
+.Warning {
+  color: #E1CF6B
+}
+
+.Danger {
   color: #D65B5B
 }
 
-.hold {
-  color: #E1CF6B
+
+:host ::ng-deep.p-button.Success {
+  background-color: #2FB273 !important;
+  color: #045830 !important;
+  padding-left: 0px;
+  padding-right: 0px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px !important;
+  width: 70px;
+  height: 30;
+}
+
+:host ::ng-deep.p-button.Success:enabled:hover {
+  background-color: #2FB273 !important;
+  color: #045830 !important;
+  padding-left: 0px;
+  padding-right: 0px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px !important;
+  width: 70px;
+  height: 30;
+}
+
+
+:host ::ng-deep.p-button.Danger {
+  background-color: #D65B5B !important;
+  color: #6F1010 !important;
+  padding-left: 0px;
+  padding-right: 0px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px !important;
+  width: 70px;
+  height: 30;
+}
+
+:host ::ng-deep.p-button.Danger:enabled:hover {
+  background-color: #D65B5B !important;
+  color: #6F1010 !important;
+  border-radius: 30px !important;
+}
+
+:host ::ng-deep.p-button.Warning {
+  background-color: #E1CF6B !important;
+  color: #665910 !important;
+  border-radius: 30px !important;
+}
+
+:host ::ng-deep.p-button.Warning:enabled:hover {
+  background-color: #E1CF6B !important;
+  color: #665910 !important;
+  border-radius: 30px !important;
+}
+
+.check-box {
+  width: 2rem;
+  background-color: #3A3942;
+  border-width: 0px
 }

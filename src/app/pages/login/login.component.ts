@@ -42,8 +42,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-    if (matchedUser) {
-      localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
+    localStorage.setItem('currentUser', JSON.stringify(matchedUser));
+    if (matchedUser && matchedUser.role === 'admin') {
+      this.router.navigate(['/admin/user-invitation']);
+    } else if (matchedUser && matchedUser.role !== 'admin') {
       this.router.navigate(['/my-products']);
     } else {
       this.messages = [

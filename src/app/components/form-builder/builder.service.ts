@@ -19,4 +19,40 @@ export class BuilderService {
     });
     return new FormGroup(formGroup);
   }
+
+  entityToDynamicForm(obj:any):FormComponent[] {
+    let props = obj.properties;
+    let controls:FormComponent[] = []
+    let orderCnt =1;
+    for (let key of Object.keys(props) ) {
+      const element = props[key];
+      controls.push(
+        {
+          key: key,
+          label: key,
+          value: '',
+          required: true,
+          order: orderCnt++,
+          type: this.dataType(element),
+          controlType: this.controlType(element),
+        })
+    }
+    return controls;
+  }
+
+  dataType(element:any):string{
+    switch (element.type) {
+      case 'integer': return 'number';
+      case 'float': return 'number';
+    }
+    return 'string';
+  }
+
+  controlType(element:any):string{
+    switch (element.type) {
+      case 'integer': return 'number';
+      case 'float': return 'number';
+    }
+    return 'textbox';
+  }
 }
