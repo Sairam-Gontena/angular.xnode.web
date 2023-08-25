@@ -1,0 +1,58 @@
+.template-builder-wrapper {
+    width: 100%;
+    display: flex;
+    height: calc(100vh - 42px);
+}
+
+.template-builder-body-wrapper {
+    width: calc(100% - 300px);
+    height: calc(100vh - 42px);
+    overflow-y: hidden;
+}
+
+.another-template-builder-body-wrapper {
+    width: calc(100% - 50px);
+    height: calc(100vh - 50px);
+}
+
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link,
+:host ::ng-deep.p-accordion .p-accordion-content {
+    background-color: #24232C;
+    color: #ffffff;
+    border: 0;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
+    box-shadow: none;
+}
+
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
+:host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+    font-weight: normal;
+    font-size: 12px;
+    padding: 10px;
+    border-bottom: 1px solid #39383F;
+}
+
+.desktop {
+    width: 100%;
+    height: 100vh !important;
+    background-color: #f2f2f2;
+}
+
+.mobile {
+    /* Styles for mobile view */
+    width: 375px;
+    height: 667px;
+    background-color: #f2f2f2;
+}
+
+.tab {
+    /* Styles for tab view */
+    width: 768px;
+    height: 1024px;
+    background-color: #f2f2f2;
+}
