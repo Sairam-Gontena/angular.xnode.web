@@ -18,12 +18,14 @@ import { environment } from 'src/environments/environment';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   submitted: boolean = false;
-  confirmPasswordValidator:boolean = false;
+  confirmPasswordValidator: boolean = false;
   errorMessage!: string;
   socialUser!: SocialUser;
   isLoggedin?: boolean;
-  accountType:any;
-  businessType:any;
+  accountType: any;
+  businessType: any;
+  visible: boolean = false;
+
   linkedInCredentials = {
     clientId: "867kfsdknrsm4q",
     redirectUrl: "https://y8pud.codesandbox.io/linkedInLogin",
@@ -31,22 +33,22 @@ export class SignUpComponent implements OnInit {
   };
 
   constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute) {
-    this.route.queryParams.subscribe((params:any) => {
-      this.accountType = params.account; 
-      this.businessType=params.businesstype;
+    this.route.queryParams.subscribe((params: any) => {
+      this.accountType = params.account;
+      this.businessType = params.businesstype;
     });
 
-      this.signUpForm = this.formBuilder.group({
-        firstname: ['', Validators.required],
-        lastname: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required, Validators.minLength(6)]] ,
-        account_type: this.accountType ,
-        business_type: this.businessType
-      },{
-        validator: ConfirmPasswordValidator("password", "confirmPassword")
-      });
+    this.signUpForm = this.formBuilder.group({
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+      account_type: this.accountType,
+      business_type: this.businessType
+    }, {
+      validator: ConfirmPasswordValidator("password", "confirmPassword")
+    });
   }
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class SignUpComponent implements OnInit {
       this.errorMessage = '';
     });
     this.socialAuthService.authState.subscribe((user) => {
-      if(user){
+      if (user) {
         this.socialUser = user;
         this.isLoggedin = user != null;
         this.loginWithGoogle(this.socialUser)
@@ -64,7 +66,7 @@ export class SignUpComponent implements OnInit {
     });
 
     let linkedInToken = this.route.snapshot.queryParams["code"];
-    console.log('linkedin token',linkedInToken)
+    console.log('linkedin token', linkedInToken)
     // this.authService.signInWithLinkedIn(linkedInToken).subscribe((res:any) => {
     //   localStorage.setItem('token', res.jwtToken);
     //   this.router.navigate(['/dashboard']);
@@ -73,33 +75,42 @@ export class SignUpComponent implements OnInit {
     // });
   }
 
-  loginWithGoogle(user:any): void {
+  loginWithGoogle(user: any): void {
     // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-        console.log(user);
+    console.log(user);
   }
 
-  
-  ContinueWithLinkedIn() { 
+
+  ContinueWithLinkedIn() {
     const clientId = '868i5bmc7kt8yj'; //environment.xnodeAppUrl+'#/'
-    const redirectUri =environment.xnodeAppUrl+'ref=/sign-up';//'https://www.linkedin.com/developers/tools/oauth/redirect';
+    const redirectUri = environment.xnodeAppUrl + 'ref=/sign-up';//'https://www.linkedin.com/developers/tools/oauth/redirect';
     const scope = 'r_liteprofile r_emailaddress';
     const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
-    window.location.href = authUrl; 
+    window.location.href = authUrl;
   }
 
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
     this.submitted = true;
+    if (this.signUpForm.valid) {
+      this.visible = true;
+    }
     let pswdValidator = this.signUpForm.get('confirmPassword')?.errors?.['confirmPasswordValidator'];
-    if(pswdValidator){
-      this.confirmPasswordValidator=true;
+    if (pswdValidator) {
+      this.confirmPasswordValidator = true;
       return;
     }
     if (this.signUpForm.invalid) {
       return;
     }
-    console.log('value',this.signUpForm.value);
+    // if (this.signUpForm.valid) {
+    //   this.onClickSignUp();
+
+
+    // }
+
+    console.log('value', this.signUpForm.value);
     // const matchedUser = Emails.find(user => user.email === this.signUpForm.value.email && user.password === this.signUpForm.value.password);
     // localStorage.setItem('currentUser', JSON.stringify(this.signUpForm.value));
     // if (matchedUser) {
