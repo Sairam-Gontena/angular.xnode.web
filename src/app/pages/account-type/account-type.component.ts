@@ -13,8 +13,21 @@ export class AccountTypeComponent implements OnInit{
 
   constructor(private router:Router,private fb: FormBuilder){
       this.businesstype = [
-        { name: 'Personal' },
-        { name: 'Company' },
+        { name: 'Tech & Software',value:'TECH_SFT' },
+        { name: 'E-Commerce',value:'ECOM' },
+        { name: 'Healthcare',value:'HEALTHCARE' },
+        { name: 'Services',value:'SERVICES' },
+        { name: 'Hospitality & Tourism',value:'HSPTLY_TRSM' },
+        { name: 'Media & Entertainment',value:'MEDIA_ENTRNMNT' },
+        { name: 'Education',value:'EDCTN' },
+        { name: 'Non-Profit & Community',value:'NONPRFT_CMNTY' },
+        { name: 'Agriculture & Farming',value:'AGR_FRMNG' },
+        { name: 'Manufacturing',value:'MANUFACTURING' },
+        { name: 'Creative',value:'CREATIVE' },
+        { name: 'Transport & Logistics',value:'TRNSPRT_LOGSTCS' },
+        { name: 'Environmental & Energy',value:'ENV_ENRGY' },
+        { name: 'Freelancers & Solopreneurs',value:'FREELANCE_SOLO' },
+        { name: 'Others',value:'OTHERS' },
     ];
   }
 
@@ -28,7 +41,7 @@ export class AccountTypeComponent implements OnInit{
   onSubmit(form:any){
     if (form.valid) {
       console.log(form.value);
-      let route = `sign-up?account=${form.value.accountFor}&businesstype=${form.value.businessType.name}`;
+      let route = `sign-up?account=${form.value.accountFor}&businesstype=${form.value.businessType.value}`;
       this.router.navigateByUrl(route);
     } else {
         form.markAllAsTouched();
