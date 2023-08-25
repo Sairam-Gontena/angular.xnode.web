@@ -37,7 +37,7 @@
                         <p class="step-para text-lg font-medium my-2">Company or Team</p>
                         <p class="step-para text-sm p-size-12 font-medium my-2">I’m looking for a team level to access</p>
                     </div>
-                    <p-radioButton name="accountFor" formControlName="accountFor" value="CompanyorTeam"></p-radioButton>
+                    <p-radioButton tickmark="&#9729;" name="accountFor" formControlName="accountFor" value="CompanyorTeam"></p-radioButton>
                 </div>
                 <div class="border-div border-200 border-round-xl flex flex-row justify-content-between mt-3 px-4">
                     <img src="../../../assets/profile.svg" alt="profile"/>
@@ -45,7 +45,7 @@
                         <p class="step-para text-lg font-medium my-2">Personal</p>
                         <p class="step-para text-sm p-size-12 font-medium my-2">I’m looking for a myself to build a website</p>
                     </div>
-                    <p-radioButton name="accountFor" formControlName="accountFor" value="Personal"></p-radioButton>
+                    <p-radioButton tickmark="&#9729;" name="accountFor" formControlName="accountFor" value="Personal"></p-radioButton>
                 </div>
                 <div *ngIf="accountTypeForm.get('accountFor')?.invalid && (accountTypeForm.get('accountFor')?.dirty || accountTypeForm.get('accountFor')?.touched)" class="text-red-400">
                     Please select your usage of xnode.
@@ -57,15 +57,16 @@
                         Please select business type.
                     </div>
                 </div>
-                <div class="m-md-3 my-xs-4 mt-6" (click)="onSubmit(accountTypeForm)">
-                    <p-button class="btn-next w-full text-center" type="submit" label="Next"></p-button>
+                <div class="m-md-6 m-xs-3 my-xs-4 my-6">
+                    <p-button [disabled]="accountTypeForm.invalid" class="btn-next w-full text-center text-2xl font-medium" type="submit" label="Next"></p-button>
                 </div>
                 </form>
                 <div class="m-md-3 my-xs-4 text-center mt-6">
-                    <p class="step-para">By creating an account, you agree to xnode’s <a class="cursor-pointer text-sm">Terms of Service</a> and <a class="cursor-pointer text-sm">Privacy Policy</a></p>
+                    <p class="step-para text-sm">By creating an account, you agree to xnode’s <a class="cursor-pointer text-sm">Terms of Service</a> and <a class="cursor-pointer text-sm">Privacy Policy</a></p>
                 </div>
             </div>
             <div class="hidden-sm hidden-xs md:col:12 lg:col-3"></div>
         </div>
+        <!-- <img src="../../../assets/Group-1000004251-11.svg" class="bg-image sm:col-12 xs:col-12 hidden-md hidden-lg w-full" alt="bg-image"> -->
     </div>
 </div>

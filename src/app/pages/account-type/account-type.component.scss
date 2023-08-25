@@ -35,6 +35,10 @@
     font-family: Inter;
  }
 
+ :host ::ng-deep .btn-next .p-button{
+   font-size:18px!important;
+ }
+
  @media (min-width: 1330px) and (max-width: 1800px) {
    .xnode-logo-div{
       padding: 2rem!important;
@@ -48,7 +52,7 @@
       height: 330px!important;
    }
    .signup-div{
-      padding: 1.5rem!important;
+      padding: 0.5rem!important;
    }
    .m-md-3{
       margin: 1.5rem 0.25rem!important;
@@ -64,18 +68,19 @@
       margin-bottom: 0.25rem!important;
    }
    .signup-div {
-      padding:2rem!important;
+      padding:0rem!important;
       width: 100%!important;
       border-radius: 0.25rem!important;
       background-color: #000759!important;
    }
    .account-type-form{
+      margin:20px!important;
       width: 100%!important;    
       border-radius: 15px!important;
       padding: 20px!important;
    }
    .btn-next{
-      // padding: 10px 105px!important;
+      padding: unset!important;
    }
    .border-div{
       padding: 0.25rem 0.5rem!important;
@@ -104,13 +109,13 @@
       padding-left: 0.5rem!important;
    }
    .account-type-div{
-      padding-top: 2rem!important;
+      padding: 2rem 2rem 0rem 2rem!important; 
    }
  }
 
  @media (min-width: 641px) and (max-width: 992px) {
    .signup-div {
-      padding:2rem!important;
+      padding:0rem!important;
       width: 100%!important;
       border-radius: 0.25rem!important;
       background-color: #000759!important;
@@ -126,10 +131,13 @@
    .account-type-form{
       padding: 1rem 5rem!important;
       border-radius: 8px!important;
+      width: 75%!important;
    }
-
    .btn-next{
       padding: unset!important;
+      margin: 3rem 0rem 5rem 0rem!important
    }
-   
+   .bg-image{
+      padding: 0px!important;
+   }
  }
