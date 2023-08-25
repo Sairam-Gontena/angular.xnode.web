@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 export class ApiService {
   endPoint = environment.apiUrl + "crud";
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
+  authEndPoint = environment.authApiUrl;
   constructor() {
   }
   config = {
@@ -29,6 +30,9 @@ export class ApiService {
   }
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
+  }
+  login(body: any, url: string) {
+    return axios.post(this.authEndPoint + url, body, this.config);
   }
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);

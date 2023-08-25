@@ -12,13 +12,23 @@
                     <div class="heading-color text-6xl font-bold -ml-2">Verify your identity</div>
                     <div class="font-semibold text-500 text-lg -ml-2">
                         For additional security, an email with a required verification
-                         code has been sent to<a class="text-color no-underline"> r***********n@finlife360.com</a> 
+                         code has been sent to <a class="text-color no-underline">{{loginResponse.email}}</a> 
                     </div>
                     <div class="grid form-container pt-5">
                         <div class="flex justify-content-center ml-8">
                             <ng-otp-input  (onInputChange)="onOtpChange($event)"  [config]="{length:6}"></ng-otp-input>
 
                         </div>
+                    </div>
+                    <div
+                        class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                        <p-button label="Verify Account"
+                            styleClass="p-button-rounded  font-medium text-lg"
+                            icon="pi pi-angle-right" iconPos="right"
+                            (click)="verifyAccount()"></p-button>
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                        <div class="text-lg font-medium flex justify-content-center">Resend verification code in <a class="no-underline"> 20 s</a> </div>
                     </div>
                  </div>
                 </p-card>
