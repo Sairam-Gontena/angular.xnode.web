@@ -2,12 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
 import { Router } from '@angular/router';
 import { NavigationEnd } from '@angular/router';
+interface Column {
+  field: string;
+  header: string;
+}
 @Component({
   selector: 'xnode-dynamic-table',
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements OnInit {
+  cols!: Column[];
+  rows: any;
   @Input() dynamicData: any;
   // dynamicData: any;
   headers: any;
@@ -25,7 +31,9 @@ export class DynamicTableComponent implements OnInit {
     this.dynamicData = dynamictabledata?.dynamicTable?.Invitation;
     const currentUrl = this.router.url;
     if (currentUrl == '/admin/user-invitation') {
-      this.dynamicData = dynamictabledata?.dynamicTable?.Invitation;
+      this.cols = dynamictabledata?.dynamicTable?.Invitation?.Columns
+      console.log(this.cols)
+      this.dynamicData = dynamictabledata?.dynamicTable?.Invitation?.Rows;
     } else if (currentUrl == '/admin/user-approval') {
       this.dynamicData = dynamictabledata?.dynamicTable?.Approvals;
     } else if (currentUrl == '/publish') {
