@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../../services/utils.service';
+import { BuilderService } from '../builder.service';
+import { FormComponent } from '../form-component';
 
 @Component({
   selector: 'xnode-signup-dynamic-form',
@@ -9,18 +11,19 @@ import { UtilsService } from '../../services/utils.service';
   styleUrls: ['./signup-dynamic-form.component.scss']
 })
 export class SignupDynamicFormComponent implements OnInit {
-  currentUser: User | undefined;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService){
-    this.currentUser = UserUtil.getCurrentUser();
+  currentUser: User | undefined;
+  inputControls:FormComponent[] =[]
+
+  constructor(private apiService: ApiService, private utilsService: UtilsService, private builderService:BuilderService){
   }
 
   ngOnInit(): void {
-    this.fetchOnboardingFlow(this.currentUser?.email)
+    this.fetchOnboardingFlow()
   }
 
-  fetchOnboardingFlow(email:string|undefined) {
-    this.apiService.get('/retrieve_xflows/' + email +'/' +localStorage.getItem('record_id')).then(async (response: any) => {
+  fetchOnboardingFlow() {
+    this.apiService.get('/retrieve_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
         if (response) {
           let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
           console.log(onboardingFlow);
@@ -33,7 +36,7 @@ export class SignupDynamicFormComponent implements OnInit {
              })
           }
           if(userProfile) {
-            this.fetchDataModel(email, userProfile.Entity)
+            this.fetchDataModel(userProfile.Entity)
           }
         }
       }).catch((error) => {
@@ -41,14 +44,13 @@ export class SignupDynamicFormComponent implements OnInit {
       });
   }
 
-  fetchDataModel(email:string|undefined, entity:string) {
-    this.apiService.get("/retrive_insights/" + email + "/" + localStorage.getItem('record_id'))
+  fetchDataModel(entityName:string) {
+    this.apiService.get("/retrive_insights/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           let dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
-          console.log('dataModel', dataModel[entity])
-
+          this.inputControls = this.builderService.entityToDynamicForm(dataModel[entityName])
         }
         this.utilsService.loadSpinner(false);
       })
@@ -57,4 +59,6 @@ export class SignupDynamicFormComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
+
+
 }
