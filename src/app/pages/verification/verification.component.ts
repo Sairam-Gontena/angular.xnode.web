@@ -11,37 +11,35 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class VerificationComponent implements OnInit {
   otp: any;
   loginResponse: any;
+  currentUser: any;
   email: any;
-  constructor(private router: Router,private apiService:ApiService,private utilsService: UtilsService ){
-  
-}
+
+  constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
+
+  }
 
   ngOnInit(): void {
-    const loginResponseString = localStorage.getItem('currentUser');
-    if (loginResponseString) {
-       this.loginResponse = JSON.parse(loginResponseString);
-    }
+    this.utilsService.getMeLoginUser.subscribe((event: any) => {
+      this.currentUser = event;
+    });
   }
 
-  onOtpChange(otp:any) {
+  onOtpChange(otp: any) {
     this.otp = otp;
   }
-  verifyAccount(){
-    this.apiService.login({email:"mtulasip@gmail.com",otp:this.otp},"/mfa/verifyOTP")
-    .then((response :any )=> {
-      if (response?.status === 200) {
-      this.router.navigate(['/x-pilot']); 
-
-      this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.detail});
-      
-      }else{
-      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail});
-
-      }
-    })
-    .catch((error:any) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-
-    });
+  verifyAccount() {
+    this.apiService.login({ email: this.currentUser.email, otp: this.otp }, "mfa/verifyOTP")
+      .then((response: any) => {
+        if (response) {
+          localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+          this.router.navigate(['/x-pilot']);
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Otp verfied successfully' });
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      });
   }
 }
