@@ -7,6 +7,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
+      import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
+  },
+  {
+    path: 'sign-up',
+    loadChildren: () =>
       import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
   },
   {
