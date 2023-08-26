@@ -21,20 +21,29 @@ export class ApiService {
   publishApp(body: any) {
     return axios.post(environment.publishApiUrl, body);
   }
+
   postWorkFlow(body: any) {
     return axios.post(this.workFlow, body, this.config);
   }
+
   get(url: string) {
     return axios.get(this.endPoint + url, {
     });
   }
+  
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }
+
   login(body: any, url: string) {
     return axios.post(this.authEndPoint + url, body, this.config);
   }
+
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);
+  }
+
+  postAuth(body: any, url: string) {
+    return axios.post(this.authEndPoint + url, body, this.config);
   }
 }

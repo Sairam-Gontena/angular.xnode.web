@@ -15,6 +15,7 @@
   },
   "private": true,
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.1.0",
     "@angular-eslint/eslint-plugin": "16.0.1",
     "@angular-eslint/eslint-plugin-template": "16.0.1",
     "@angular-eslint/schematics": "16.0.1",
