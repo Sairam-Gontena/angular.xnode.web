@@ -76,3 +76,16 @@
 .right {
 	float:right;
 }
+:host ::ng-deep.otp-input{
+    width: 70px;
+    height:none !important;
+    border-radius: 0px !important;
+    border-top-width: 0px !important;
+    border-left-width: 0px !important;
+    border-right-width: 0px !important;
+    border-bottom-width: solid 5px #c5c5c5 ;
+    gap: 2rem !important;
+    // border: solid 1px #c5c5c5;
+    text-align: center;
+    font-size: 32px;
+}

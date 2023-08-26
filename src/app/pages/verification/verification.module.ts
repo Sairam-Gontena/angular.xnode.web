@@ -1,21 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { VerificationRoutingModule } from './verification-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginRoutingModule } from './login-routing.module';
-import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
-import { LoginComponent } from './login.component';
-import { PasswordModule } from 'primeng/password';
-import { MessagesModule } from 'primeng/messages';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DividerModule } from 'primeng/divider';
+import { MessagesModule } from 'primeng/messages';
+import { PasswordModule } from 'primeng/password';
+import { VerificationComponent } from './verification.component';
+import { NgOtpInputModule } from  'ng-otp-input';
+
+
 @NgModule({
   declarations: [
-    LoginComponent
+    VerificationComponent
   ],
   imports: [
     CommonModule,
-    LoginRoutingModule,
+    VerificationRoutingModule,
     ButtonModule,
     DividerModule,
     PasswordModule,
@@ -23,7 +27,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ReactiveFormsModule,
     MessagesModule,
     CardModule,
-    CheckboxModule
+    CheckboxModule,
+    NgOtpInputModule
   ]
 })
-export class LoginModule { }
+export class VerificationModule { }

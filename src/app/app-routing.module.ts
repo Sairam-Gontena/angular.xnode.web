@@ -20,6 +20,10 @@ const routes: Routes = [
       import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
+    path: 'verification',
+    loadChildren: () => import('./pages/verification/verification.module').then((m) =>m.VerificationModule)
+  },
+  {
     path: 'usecases',
     loadChildren: () =>
       import('./pages/use-cases/use-cases.module').then(
