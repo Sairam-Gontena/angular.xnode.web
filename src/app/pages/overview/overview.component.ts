@@ -92,7 +92,7 @@ export class OverViewComponent {
           this.id = response.data.data[0].id;
           this.getMeOverview();
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
       }).catch(error => {
@@ -114,7 +114,7 @@ export class OverViewComponent {
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.details });
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
       })
