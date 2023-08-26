@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
     scope: "r_liteprofile%20r_emailaddress%20w_member_social" // To read basic user profile data and email
   };
 
-  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private apiService:ApiService,private utilService:UtilsService) {
+  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private apiService: ApiService, private utilService: UtilsService) {
     this.route.queryParams.subscribe((params: any) => {
       this.accountType = params.account;
       this.businessType = params.businesstype;
@@ -49,17 +49,16 @@ export class SignUpComponent implements OnInit {
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
       account_type: this.accountType,
       business_type: this.businessType,
-      user_status:'active',
-      created_on:currentDateTime,
-      activate_on:currentDateTime,
-      modified_on:currentDateTime
+      user_status: 'active',
+      created_on: currentDateTime,
+      activate_on: currentDateTime,
+      modified_on: currentDateTime
     }, {
       validator: ConfirmPasswordValidator("password", "confirmPassword")
     });
   }
 
   ngOnInit(): void {
-    // console.log(environment.xnodeAppUrl+'#/')
     localStorage.clear();
     this.signUpForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
@@ -71,20 +70,10 @@ export class SignUpComponent implements OnInit {
         this.loginWithGoogle(this.socialUser)
       }
     });
-
     let linkedInToken = this.route.snapshot.queryParams["code"];
-    console.log('linkedin token', linkedInToken)
-    // this.authService.signInWithLinkedIn(linkedInToken).subscribe((res:any) => {
-    //   localStorage.setItem('token', res.jwtToken);
-    //   this.router.navigate(['/dashboard']);
-    // }, (error:any) => {
-    //   console.log(error)
-    // });
   }
 
   loginWithGoogle(user: any): void {
-    // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    console.log(user);
   }
 
 
@@ -108,19 +97,19 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
-    this.apiService.postAuth(this.signUpForm.value,'auth/signup').then((response:any)=>{
-      if(response.data.message=="success"){ 
-        this.visible=true;
-        this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message, life: 3000 });
+    this.apiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
+      if (response.data.message == "success") {
+        this.visible = true;
+        this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Congratulations, your account has been successfully created", life: 3000 });
       }
-    }).catch(error => {
+    }).catch((error: any) => {
       this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
     });
   }
 
-  cancel() {  
-    this.visible=false;
+  cancel() {
+    this.visible = false;
     console.log(this.visible)
-   }
+  }
 
 }
