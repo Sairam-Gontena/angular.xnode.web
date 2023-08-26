@@ -42,9 +42,15 @@ export class LoginComponent implements OnInit {
     this.apiService.login(body, "auth/login")
       .then((response: any) => {
         if (response?.status === 200) {
-          this.utilsService.loadLoginUser(body);
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
-          this.router.navigate(['/verification']);
+          if (response?.data?.detail) {
+            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          } else {
+            this.utilsService.loadLoginUser(body);
+            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
+            this.router.navigate(['/verification']);
+          }
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
       })
       .catch((error: any) => {

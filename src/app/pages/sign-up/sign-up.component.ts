@@ -98,6 +98,10 @@ export class SignUpComponent implements OnInit {
       return;
     }
     this.apiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
+      if (response?.data?.detail) {
+        this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail, life: 3000 });
+        return
+      }
       if (response.data.message == "success") {
         this.visible = true;
         this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Congratulations, your account has been successfully created", life: 3000 });
