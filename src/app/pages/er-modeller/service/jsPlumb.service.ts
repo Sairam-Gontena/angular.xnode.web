@@ -113,15 +113,19 @@ export class JsPlumbService {
       var option = {
         source: source_id,
         target: target_id,
-        connector: 'StateMachine',
-        paintStyle: { stroke: '#456', strokeWidth: 1 },
+        connector: 'Straight',
+        dashstyle: "2 4",
+        hoverPaintStyle: { stroke: "blue" },
         overlays: [
           ['Custom', {
             create:(component:any) => {
-                const d = document.createElement("h1")
-                d.innerHTML = "c"
+                const d = document.createElement("div")
+                d.innerHTML = `<svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 0.999999L1 16.5172M1 32.0345L1 16.5172M1 16.5172L31 16.5172M1 16.5172L31 0.999999M1 16.5172L31 32.0345" stroke="black" stroke-width="2"/>
+                </svg>
+                `
                 return d
-            } , width: 1, length: 1, location: 1 }],
+            } , location: 1 }],
           // @ts-ignore
           [
             'Label',
