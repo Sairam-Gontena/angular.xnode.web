@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   messages: any = [
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService,
+     private utilsService: UtilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilsService.loadSpinner(true);
     this.loginForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -52,8 +54,10 @@ export class LoginComponent implements OnInit {
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
+        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
+        this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
   }

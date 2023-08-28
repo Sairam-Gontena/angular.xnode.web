@@ -20,11 +20,14 @@ export class VerifyOtpComponent implements OnInit {
 }
 
   ngOnInit(): void {
+    this.utilsService.loadSpinner(true);
     const loginResponseString = localStorage.getItem('currentUser');
     if (loginResponseString) {
        this.loginResponse = JSON.parse(loginResponseString);
     }
-    this.maskedEmail = this.maskEmail(this.loginResponse.email);
+    // this.maskedEmail = this.maskEmail(this.loginResponse.email);
+    this.maskedEmail = this.maskEmail('mtulasip@gmail.com');
+
     this.startResendTimer();
   }
 
@@ -48,7 +51,25 @@ export class VerifyOtpComponent implements OnInit {
   }
   resendVerification() {
     this.resendTimer = 60;
-    this.startResendTimer(); 
+    this.apiService.login({email:"mtulasip@gmail.com"},"/mfa/resendverfication")
+    .then((response :any )=> {
+      if (response?.status === 200) {
+      this.router.navigate(['/x-pilot']); 
+
+      this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.detail});
+      
+      }else{
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail});
+
+      }
+      this.utilsService.loadSpinner(false);
+
+    })
+    .catch((error:any) => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+
+    }); 
   }
   verifyAccount(){
     this.apiService.login({email:"mtulasip@gmail.com",otp:this.otp},"/mfa/verifyOTP")
@@ -62,8 +83,10 @@ export class VerifyOtpComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail});
 
       }
+      this.utilsService.loadSpinner(false);
     })
     .catch((error:any) => {
+      this.utilsService.loadSpinner(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
 
     });
