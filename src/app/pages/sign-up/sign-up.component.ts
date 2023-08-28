@@ -88,11 +88,9 @@ export class SignUpComponent implements OnInit {
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
-
     if (this.signUpForm.valid) {
       this.visible = true;
     }
-
     this.submitted = true;
     let pswdValidator = this.signUpForm.get('confirmPassword')?.errors?.['confirmPasswordValidator'];
     if (pswdValidator) {

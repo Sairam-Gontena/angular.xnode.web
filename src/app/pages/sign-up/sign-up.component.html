@@ -23,130 +23,124 @@
             <div class="col-3"></div>
             <div class="col-6">
                 <p class="step-para-opacity text-lg font-medium">
-                    < Step 2 of 2</p>
-                        <form [formGroup]="signUpForm" (ngSubmit)="onClickSignUp()">
-                            <h1 class="signup-color font-semibold font-normal text-6xl">Create Account</h1>
-                            <p class="login-route-div font-semibold font-normal text-base">Already a member?
-                                <a class="text-blue-700 pointer" routerLink="/login">Login</a>
-                            </p>
-                            <div class="formgrid grid">
-                                <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                                    <label for="firstName" class="text-lg font-medium">First
-                                        Name</label>
-                                    <input id="firstName" type="text" placeholder="Please enter first name"
-                                        formControlName="firstname"
-                                        [ngClass]="{ 'is-invalid': submitted && signUp['firstname'].errors }"
-                                        class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                                    <div *ngIf="submitted && signUp['firstname'].errors" class="invalid-feedback">
-                                        <div *ngIf="signUp['firstname'].errors?.['required']">First
-                                            Name is required</div>
+                    Step 2 of 2</p>
+                <form [formGroup]="signUpForm" (ngSubmit)="onClickSignUp()">
+                    <h1 class="signup-color font-semibold font-normal text-6xl">Create Account</h1>
+                    <p class="login-route-div font-semibold font-normal text-base">Already a member?
+                        <a class="text-blue-700 pointer" routerLink="/login">Login</a>
+                    </p>
+                    <div class="formgrid grid">
+                        <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                            <label for="firstName" class="text-lg font-medium">First
+                                Name</label>
+                            <input id="firstName" type="text" placeholder="Please enter first name"
+                                formControlName="firstname"
+                                [ngClass]="{ 'is-invalid': submitted && signUp['firstname'].errors }"
+                                class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <div *ngIf="submitted && signUp['firstname'].errors" class="invalid-feedback">
+                                <div *ngIf="signUp['firstname'].errors?.['required']">First
+                                    Name is required</div>
+                            </div>
+                        </div>
+                        <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                            <label for="lastName" class="font-medium text-lg">Last
+                                Name</label>
+                            <input id="lastName" type="text" placeholder="Please enter last name"
+                                formControlName="lastname"
+                                [ngClass]="{ 'is-invalid': submitted && signUp['lastname'].errors }"
+                                class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <div *ngIf="submitted && signUp['lastname'].errors" class="invalid-feedback">
+                                <div *ngIf="signUp['lastname'].errors['required']">Last
+                                    Name is required</div>
+                            </div>
+                        </div>
+                        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                            <label htmlFor="email" class="font-medium text-lg">Email</label>
+                            <input pInputText id="email" placeholder="Please enter email" formControlName="email"
+                                autocomplete="userName"
+                                [ngClass]="{ 'is-invalid': submitted && signUp['email'].errors }"
+                                class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
+                            <div *ngIf="submitted && signUp['email'].errors" class="invalid-feedback">
+                                <div *ngIf="signUp['email'].errors?.['required']">Email
+                                    is required</div>
+                                <div *ngIf="signUp['email'].errors['email']">Email
+                                    must be a valid email address</div>
+                            </div>
+                        </div>
+                        <div class="formgrid grid">
+                            <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                                <label htmlFor="password" class="font-medium text-lg">Password</label>
+                                <p-password [toggleMask]="true" formControlName="password" placeholder="Enter password"
+                                    class="signup-password text-lg text-color surface-overlay border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary pr-0"
+                                    [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"></p-password>
+                                <div *ngIf="submitted && signUp['password'].errors" class="invalid-feedback">
+                                    <div *ngIf="signUp['password'].errors['required']">Password
+                                        is required</div>
+                                    <div *ngIf="signUp['password'].errors['minlength']">Password
+                                        must be at least 6 characters
                                     </div>
-                                </div>
-                                <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                                    <label for="lastName" class="font-medium text-lg">Last
-                                        Name</label>
-                                    <input id="lastName" type="text" placeholder="Please enter last name"
-                                        formControlName="lastname"
-                                        [ngClass]="{ 'is-invalid': submitted && signUp['lastname'].errors }"
-                                        class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                                    <div *ngIf="submitted && signUp['lastname'].errors" class="invalid-feedback">
-                                        <div *ngIf="signUp['lastname'].errors['required']">Last
-                                            Name is required</div>
-                                    </div>
-                                </div>
-                                <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                    <label htmlFor="email" class="font-medium text-lg">Email</label>
-                                    <input pInputText id="email" placeholder="Please enter email"
-                                        formControlName="email" autocomplete="userName"
-                                        [ngClass]="{ 'is-invalid': submitted && signUp['email'].errors }"
-                                        class="text-lg text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" />
-                                    <div *ngIf="submitted && signUp['email'].errors" class="invalid-feedback">
-                                        <div *ngIf="signUp['email'].errors?.['required']">Email
-                                            is required</div>
-                                        <div *ngIf="signUp['email'].errors['email']">Email
-                                            must be a valid email address</div>
-                                    </div>
-                                </div>
-                                <div class="formgrid grid">
-                                    <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                                        <label htmlFor="password" class="font-medium text-lg">Password</label>
-                                        <p-password [toggleMask]="true" formControlName="password"
-                                            placeholder="Enter password"
-                                            class="signup-password text-lg text-color surface-overlay border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary pr-0"
-                                            [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"></p-password>
-                                        <div *ngIf="submitted && signUp['password'].errors" class="invalid-feedback">
-                                            <div *ngIf="signUp['password'].errors['required']">Password
-                                                is required</div>
-                                            <div *ngIf="signUp['password'].errors['minlength']">Password
-                                                must be at least 6 characters
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
-                                        <label htmlFor="password" class="font-medium text-lg">Confirm Password</label>
-                                        <p-password [toggleMask]="true" formControlName="confirmPassword"
-                                            class="signup-password text-lg text-color surface-overlay border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary pr-0"
-                                            placeholder="Enter confirm password"
-                                            [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"></p-password>
-                                        <div *ngIf="submitted && signUp['confirmPassword'].errors"
-                                            class="invalid-feedback">
-                                            <div *ngIf="signUp['confirmPassword'].errors['required']">confirm Password
-                                                is required</div>
-                                            <div *ngIf="signUp['confirmPassword'].errors['minlength']">confirm Password
-                                                must be at least 6 characters
-                                            </div>
-                                        </div>
-                                        <div class="invalid-feedback" *ngIf="confirmPasswordValidator">
-                                            Passsword and Confirm Password didn't match.
-                                        </div>
-
-                                    </div>
-                                    <p *ngIf="errorMessage" class="error-message">{{
-                                        errorMessage }}</p>
-                                </div>
-                                <div
-                                    class="create-account-div field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                                    <p-button type="submit" class="create-account-btn w-full" label="Create Account"
-                                        [disabled]="signUpForm.invalid"
-                                        styleClass="p-button-rounded font-medium text-lg" iconPos="right"></p-button>
                                 </div>
                             </div>
-                            <div class="hr-div flex flex-row justify-content-center ml-4">
-                                <hr class="w-3" /><span class="mx-3">Or Signup with</span>
-                                <hr class="w-3" />
-                            </div>
-
-                            <div class="or-signup-div grid mt-4">
-                                <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center">
-                                    <div class="flex flex-row justify-content-end">
-                                        <asl-google-signin-button type='icon' size='large'
-                                            color-scheme="light"></asl-google-signin-button>
+                            <div class="field  sm:col-12 md:col-12 lg:col-6 xl:col-6">
+                                <label htmlFor="password" class="font-medium text-lg">Confirm Password</label>
+                                <p-password [toggleMask]="true" formControlName="confirmPassword"
+                                    class="signup-password text-lg text-color surface-overlay border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary pr-0"
+                                    placeholder="Enter confirm password"
+                                    [ngClass]="{ 'is-invalid': submitted && signUp['confirmPassword'].errors }"></p-password>
+                                <div *ngIf="submitted && signUp['confirmPassword'].errors" class="invalid-feedback">
+                                    <div *ngIf="signUp['confirmPassword'].errors['required']">confirm Password
+                                        is required</div>
+                                    <div *ngIf="signUp['confirmPassword'].errors['minlength']">confirm Password
+                                        must be at least 6 characters
                                     </div>
                                 </div>
-                                <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center mt-2">
-                                    <span
-                                        class="social-login w-max p-2 border-1 surface-border border-round-sm cursor-pointer"
-                                        (click)="ContinueWithLinkedIn()">
-                                        <img src="./assets/linkedin.png" width="20px">
-                                    </span>
-                                </div>
-                                <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center">
-                                    <div class="flex flex-row justify-content-start">
-                                        <span
-                                            class="social-login w-max p-2 border-1 surface-border border-round-sm cursor-pointer"
-                                            (click)="ContinueWithLinkedIn()">
-                                            <img src="./assets/ic_round-key.svg" width="20px">
-                                        </span>
-                                    </div>
+                                <div class="invalid-feedback" *ngIf="confirmPasswordValidator">
+                                    Passsword and Confirm Password didn't match.
                                 </div>
 
                             </div>
-                        </form>
+                            <p *ngIf="errorMessage" class="error-message">{{
+                                errorMessage }}</p>
+                        </div>
+                        <div class="create-account-div field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                            <p-button type="submit" class="create-account-btn w-full" label="Create Account"
+                                [disabled]="signUpForm.invalid" styleClass="p-button-rounded font-medium text-lg"
+                                iconPos="right"></p-button>
+                        </div>
+                    </div>
+                    <div class="hr-div flex flex-row justify-content-center ml-4">
+                        <hr class="w-3" /><span class="mx-3">Or Signup with</span>
+                        <hr class="w-3" />
+                    </div>
+
+                    <div class="or-signup-div grid mt-4">
+                        <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center">
+                            <div class="flex flex-row justify-content-end">
+                                <asl-google-signin-button type='icon' size='large'
+                                    color-scheme="light"></asl-google-signin-button>
+                            </div>
+                        </div>
+                        <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center mt-2">
+                            <span class="social-login w-max p-2 border-1 surface-border border-round-sm cursor-pointer"
+                                (click)="ContinueWithLinkedIn()">
+                                <img src="./assets/linkedin.png" width="20px">
+                            </span>
+                        </div>
+                        <div class="sm:col-12 md:col-14 lg:col-4 xl:col-4 text-center">
+                            <div class="flex flex-row justify-content-start">
+                                <span
+                                    class="social-login w-max p-2 border-1 surface-border border-round-sm cursor-pointer"
+                                    (click)="ContinueWithLinkedIn()">
+                                    <img src="./assets/ic_round-key.svg" width="20px">
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
             </div>
             <div class="col-3"></div>
         </div>
     </div>
 </div>
-
-
 <xnode-create-account-popup [visible]="visible" (showPopup)="handlePopupEvent($event)"></xnode-create-account-popup>
