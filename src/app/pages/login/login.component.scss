@@ -37,7 +37,10 @@
 }
 :host::ng-deep.p-card{
     background-color:#23222B !important;
-    }
+}
+.forgot-pwd{
+    color: #02ADEE;
+}
 @media screen and (max-width: 780px) {
     .form-container {
         margin-left: 90px;
