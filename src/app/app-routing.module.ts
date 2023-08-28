@@ -7,21 +7,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
-  },
-  {
-    path: 'sign-up',
-    loadChildren: () =>
-      import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
-  },
-  {
-    path: 'login',
-    loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'verify-otp',
-    loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) =>m.VerifyOtpModule)
+    loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule)
   },
   {
     path: 'usecases',
