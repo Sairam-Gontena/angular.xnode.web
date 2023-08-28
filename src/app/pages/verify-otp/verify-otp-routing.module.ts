@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VerificationComponent } from './verification.component';
+import { VerifyOtpComponent } from './verify-otp.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: VerificationComponent
+    path:'',
+    component: VerifyOtpComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class VerificationRoutingModule { }
+export class VerifyOtpRoutingModule { }

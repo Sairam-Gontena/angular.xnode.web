@@ -1,9 +1,5 @@
-.sign-up-img {
-    background-color: #000759;
-}
-
-.signup-color {
-    color: #000759;
+.bg-color {
+    background: #343541 !important;
 }
 
 .heading {
@@ -13,15 +9,10 @@
     align-items: flex-end;
 }
 
-.form-container {
-    // margin-left: 220px;
-    // margin-right: 220px;
-}
-
 :host ::ng-deep .p-button {
     padding-top: 14px;
     padding-bottom: 14px;
-    width: 100%;
+    // width: 100%;
 }
 
 .invalid-feedback {
@@ -40,7 +31,16 @@
 :host ::ng-deep.p-input-icon-right>.p-inputtext {
     padding: 8px !important;
 }
-
+:host ::ng-deep.p-checkbox .p-checkbox-box {
+    background: #23222B;
+    color: #ffffff;
+}
+:host::ng-deep.p-card{
+    background-color:#23222B !important;
+}
+.forgot-pwd{
+    color: #02ADEE;
+}
 @media screen and (max-width: 780px) {
     .form-container {
         margin-left: 90px;
@@ -51,7 +51,7 @@
     background-image: url('/assets/OnboardingBG.svg');
 }
 .heading-color {
-    color: #000759;
+    color: #DEDEDE;
 }
 :host ::ng-deep .p-card-body {
     padding-left: 3rem !important;
