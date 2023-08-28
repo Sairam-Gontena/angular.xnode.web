@@ -1,1 +1,41 @@
-<p>verify-otp works!</p>
+<div class="grid m-0 h-full bg-color">
+    <div class="bg-image bg-cover bg-no-repeat w-full
+     h-full">
+        <div class="">
+            <div class="flex justify-content-end m-8">
+                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="">
+            </div>
+            <div class="flex justify-content-center -mt-8">
+                <p-card [style]=" { width: '780px' ,height: 'auto' }" class="shadow-8  bg-black">
+                <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-5">
+                    <div class="text-lg font-medium text-500 ml-2">Step 2 of 2</div>
+                    <div class="heading-color text-6xl font-bold ml-2">Verify your identity</div>
+                    <div class="font-semibold text-500 text-lg ml-2">
+                        For additional security, an email with a required verification
+                         code has been sent to {{ maskedEmail }}
+                         <!-- <a class="no-underline heading-color">{{ maskedEmail }}</a>  -->
+                    </div>
+                    <div class="grid form-container pt-5">
+                        <div class="flex justify-content-center ml-5">
+                            <ng-otp-input  (onInputChange)="onOtpChange($event)"  [config]="{length:6}"></ng-otp-input>
+                        </div>
+                    </div>
+                    <div
+                        class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                        <p-button label="Verify Account" class="flex justify-content-center "
+                            styleClass="p-button-rounded  font-medium text-lg"
+                            (click)="verifyAccount()"></p-button>
+                    </div>
+                   <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                        <div class="text-lg font-medium flex justify-content-center heading-color">Resend verification code in <a class="no-underline ml-2">{{ resendTimer }}s</a> </div>
+                      </div>
+                      <div *ngIf="resendTimer === 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                        <a class="no-underline" class="text-lg font-medium flex justify-content-center no-underline" (click)="resendVerification()">Resend Code</a>
+                      </div>
+                 </div>
+                </p-card>
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -15,7 +15,7 @@ import { FormBuilderModule } from './components/form-builder/form-builder.module
 import { NgxCaptureModule } from 'ngx-capture';
 
 @NgModule({
-  declarations: [AppComponent, VerifyOtpComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

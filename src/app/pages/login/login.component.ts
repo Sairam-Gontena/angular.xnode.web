@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
           } else {
             this.utilsService.loadLoginUser(body);
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
-            this.router.navigate(['/verification']);
+            this.router.navigate(['/verify-otp']);
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
