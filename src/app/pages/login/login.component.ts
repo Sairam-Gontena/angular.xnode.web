@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     }
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
-    this.apiService.login(body, "auth/login")
+    this.apiService.login(body, "auth/beta/login")
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data?.detail) {

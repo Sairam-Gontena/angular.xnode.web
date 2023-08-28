@@ -3,9 +3,11 @@
   line-height: 10px;
 }
 
-.tableheader {
+:host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
   background-color: #3A3942;
   border-color: #595959;
+  min-width: 280px;
+  color: #fff
 }
 
 .tablerow {
