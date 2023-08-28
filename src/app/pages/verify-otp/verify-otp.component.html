@@ -12,7 +12,7 @@
                         <div class="heading-color text-6xl font-bold ml-2">Verify your identity</div>
                         <div class="font-semibold text-500 text-lg ml-2">
                             For additional security, an email with a required verification
-                        code has been sent to {{maskedEmail}}
+                            code has been sent to {{maskedEmail}}
                         </div>
                         <div class="flex justify-content-center mt-5">
                             <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6}"></ng-otp-input>
@@ -26,7 +26,8 @@
                                 verification code in <a class="no-underline ml-2">{{ resendTimer }}s</a> </div>
                         </div>
                         <div *ngIf="resendTimer === 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                            <a class="no-underline" class="text-lg font-medium flex justify-content-center no-underline"
+                            <a class="no-underline"
+                                class="text-lg font-medium flex justify-content-center no-underline pointer"
                                 (click)="resendVerification()">Resend Code</a>
                         </div>
                     </div>

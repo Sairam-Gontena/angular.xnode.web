@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   ];
 
   constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService,
-     private utilsService: UtilsService) {
+    private utilsService: UtilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+    this.utilsService.loadSpinner(true);
     localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
