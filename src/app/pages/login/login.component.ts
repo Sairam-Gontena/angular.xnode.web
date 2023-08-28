@@ -57,8 +57,4 @@ export class LoginComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
   }
-
-  onClickSignup() {
-    this.router.navigate(['/'])
-  }
 }

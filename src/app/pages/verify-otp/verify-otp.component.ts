@@ -24,8 +24,7 @@ export class VerifyOtpComponent implements OnInit {
     if (loginResponseString) {
        this.loginResponse = JSON.parse(loginResponseString);
     }
-    // this.maskedEmail = this.maskEmail(this.loginResponse.email);
-    this.maskedEmail = this.maskEmail("mtulasip@gmail.com");
+    this.maskedEmail = this.maskEmail(this.loginResponse.email);
     this.startResendTimer();
   }
 
