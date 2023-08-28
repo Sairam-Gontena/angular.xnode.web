@@ -148,14 +148,5 @@
     </div>
 </div>
 
-<p-dialog header="" *ngIf="visible" [(visible)]="visible" [style]="{width:'41vw'}">
-    <div class="flex">
-        <img src="../../../assets/popup-tick.png" alt="popup" class="w-3rem h-3rem">
-        <p class="text-xl font-medium  ml-5">
-            We got your application, our admin will sooner approve your account and share a login link to the
-            registered email.
-        </p>
-    </div>
-    <p-button label="Close" (click)="cancel()" class="flex justify-content-end mr-4"
-        styleClass="p-button-rounded"></p-button>
-</p-dialog>
+
+<xnode-create-account-popup [visible]="visible" (showPopup)="handlePopupEvent($event)"></xnode-create-account-popup>
