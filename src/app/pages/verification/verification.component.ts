@@ -12,6 +12,7 @@ export class VerificationComponent implements OnInit {
   otp: any;
   loginResponse: any;
   email: any;
+  maskedEmail!: string;
   constructor(private router: Router,private apiService:ApiService,private utilsService: UtilsService ){
   
 }
@@ -21,10 +22,17 @@ export class VerificationComponent implements OnInit {
     if (loginResponseString) {
        this.loginResponse = JSON.parse(loginResponseString);
     }
+    this.maskedEmail = this.maskEmail(this.loginResponse.email);
   }
 
   onOtpChange(otp:any) {
     this.otp = otp;
+  }
+  maskEmail(email: string): string {
+    const parts = email.split('@');
+    const username = parts[0];
+    const maskedUsername = '*'.repeat(username.length);
+    return maskedUsername + '@' + parts[1];
   }
   verifyAccount(){
     this.apiService.login({email:"mtulasip@gmail.com",otp:this.otp},"/mfa/verifyOTP")

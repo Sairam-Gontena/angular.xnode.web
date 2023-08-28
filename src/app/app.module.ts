@@ -12,8 +12,9 @@ import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
+import { VerifyOtpComponent } from './pages/verify-otp/verify-otp.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, VerifyOtpComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
