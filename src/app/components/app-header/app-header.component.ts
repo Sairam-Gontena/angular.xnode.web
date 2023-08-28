@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { NgxCaptureService } from 'ngx-capture';
+import { tap } from 'rxjs';
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -44,10 +46,11 @@ export class AppHeaderComponent implements OnInit {
   draganddropSelected: boolean  = false;
   browserSelected!: boolean;
   feedbackForm: FormGroup;
+  screenshot:any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService,private fb: FormBuilder) {
+    private confirmationService: ConfirmationService,private fb: FormBuilder, private captureService: NgxCaptureService) {
       this.feedbackForm = this.fb.group({
         product: ['', Validators.required],
         component: ['', Validators.required],
@@ -55,7 +58,9 @@ export class AppHeaderComponent implements OnInit {
         logoFile: [null, Validators.required]
       });
   }
-  get feedback() { return this.feedbackForm.controls; }
+  get feedback() {
+    return this.feedbackForm.controls; }
+
   ngOnInit(): void {
     let data = localStorage.getItem("currentUser")
     if (data) {
@@ -81,7 +86,7 @@ export class AppHeaderComponent implements OnInit {
       { name: 'Select Product', code: 'select Product' },
       { name: 'Other', code: 'other' },
     ];
-   
+
   }
   getFeedback() {
     this.submitted = true;
@@ -93,7 +98,7 @@ export class AppHeaderComponent implements OnInit {
     }else{
       this.isInvalid = true;
       console.log("error");
-     
+
     }
   }
 
@@ -169,7 +174,7 @@ export class AppHeaderComponent implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-  
+
   @HostListener('document:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     // Check if the Enter key was pressed
@@ -207,6 +212,14 @@ export class AppHeaderComponent implements OnInit {
   }
   showDialog() {
     this.visible = true;
+    this.captureService
+    .getImage(document.body, true)
+    .pipe(
+      tap((img) => {
+        this.screenshot = img;
+      })
+    )
+    .subscribe();
   }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');

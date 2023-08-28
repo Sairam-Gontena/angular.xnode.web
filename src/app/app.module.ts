@@ -12,7 +12,8 @@ import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
-import { VerifyOtpComponent } from './pages/verify-otp/verify-otp.component';
+import { NgxCaptureModule } from 'ngx-capture';
+
 @NgModule({
   declarations: [AppComponent, VerifyOtpComponent],
   imports: [
@@ -27,6 +28,7 @@ import { VerifyOtpComponent } from './pages/verify-otp/verify-otp.component';
     SharedComponentModule,
     SidebarModule,
     FormBuilderModule,
+    NgxCaptureModule,
   ],
   providers: [RefreshListService],
   bootstrap: [AppComponent],

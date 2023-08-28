@@ -11,6 +11,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class VerificationComponent implements OnInit {
   otp: any;
   loginResponse: any;
+  currentUser: any;
   email: any;
   maskedEmail!: string;
   constructor(private router: Router,private apiService:ApiService,private utilsService: UtilsService ){
@@ -52,4 +53,6 @@ export class VerificationComponent implements OnInit {
 
     });
   }
+
+  
 }
