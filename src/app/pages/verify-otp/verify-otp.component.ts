@@ -54,7 +54,7 @@ export class VerifyOtpComponent implements OnInit {
     this.apiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
       .then((response: any) => {
         if (response?.status === 200) {
-          this.router.navigate(['/x-pilot']);
+          this.startResendTimer();
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.detail });
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
