@@ -13,9 +13,10 @@ import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxCaptureModule } from 'ngx-capture';
+import { FeedbackComponent } from './components/feedback/feedback.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FeedbackComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
