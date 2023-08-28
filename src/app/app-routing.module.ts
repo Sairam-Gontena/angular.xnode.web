@@ -10,6 +10,11 @@ const routes: Routes = [
       import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
   },
   {
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./pages/forgot-password/forgotpassword.module').then((m) => m.ForgotPasswordModule),
+  },
+  {
     path: 'sign-up',
     loadChildren: () =>
       import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
@@ -21,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'verification',
-    loadChildren: () => import('./pages/verification/verification.module').then((m) =>m.VerificationModule)
+    loadChildren: () => import('./pages/verification/verification.module').then((m) => m.VerificationModule)
   },
   {
     path: 'usecases',
