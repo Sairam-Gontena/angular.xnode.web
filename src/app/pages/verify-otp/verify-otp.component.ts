@@ -22,11 +22,11 @@ export class VerifyOtpComponent implements OnInit {
   ngOnInit(): void {
     this.utilsService.loadSpinner(true);
     const loginResponseString = localStorage.getItem('currentUser');
+
     if (loginResponseString) {
        this.loginResponse = JSON.parse(loginResponseString);
     }
-    // this.maskedEmail = this.maskEmail(this.loginResponse.email);
-    this.maskedEmail = this.maskEmail('mtulasip@gmail.com');
+    this.maskedEmail = this.maskEmail(this.loginResponse.email);
 
     this.startResendTimer();
   }
@@ -51,7 +51,7 @@ export class VerifyOtpComponent implements OnInit {
   }
   resendVerification() {
     this.resendTimer = 60;
-    this.apiService.login({email:"mtulasip@gmail.com"},"/mfa/resendverfication")
+    this.apiService.login({email:this.loginResponse.email},"/mfa/resendverfication")
     .then((response :any )=> {
       if (response?.status === 200) {
       this.router.navigate(['/x-pilot']); 
@@ -67,7 +67,7 @@ export class VerifyOtpComponent implements OnInit {
     }); 
   }
   verifyAccount(){
-    this.apiService.login({email:"mtulasip@gmail.com",otp:this.otp},"/mfa/verifyOTP")
+    this.apiService.login({email:this.loginResponse.email,otp:this.otp},"/mfa/verifyOTP")
     .then((response :any )=> {
       if (response?.status === 200) {
       this.router.navigate(['/x-pilot']); 
