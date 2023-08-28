@@ -13,6 +13,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxCaptureModule } from 'ngx-capture';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,7 +29,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     SharedComponentModule,
     SidebarModule,
     FormBuilderModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxCaptureModule,
   ],
   providers: [RefreshListService],
   bootstrap: [AppComponent],
