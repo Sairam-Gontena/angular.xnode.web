@@ -55,20 +55,15 @@ export class VerifyOtpComponent implements OnInit {
     .then((response :any )=> {
       if (response?.status === 200) {
       this.router.navigate(['/x-pilot']); 
-
       this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.detail});
-      
       }else{
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail});
-
       }
       this.utilsService.loadSpinner(false);
-
     })
     .catch((error:any) => {
       this.utilsService.loadSpinner(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-
     }); 
   }
   verifyAccount(){
@@ -76,12 +71,9 @@ export class VerifyOtpComponent implements OnInit {
     .then((response :any )=> {
       if (response?.status === 200) {
       this.router.navigate(['/x-pilot']); 
-
       this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.detail});
-      
       }else{
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail});
-
       }
       this.utilsService.loadSpinner(false);
     })
