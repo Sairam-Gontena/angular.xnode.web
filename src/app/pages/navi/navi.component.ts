@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ElementRef } from 'jsplumb';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-navi',
@@ -14,6 +15,7 @@ export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
   constructor(
     private router: Router,
+    private utils: UtilsService,
     private domSanitizer: DomSanitizer,) {
   }
   targetUrl: string = environment.naviAppUrl;
@@ -50,6 +52,7 @@ export class NaviComponent implements OnInit {
       }
     });
     this.makeTrustedUrl();
+    this.utils.loadSpinner(false);
   }
 
   makeTrustedUrl(): void {
