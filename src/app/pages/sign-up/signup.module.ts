@@ -13,10 +13,13 @@ import {
 } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import { DialogModule } from 'primeng/dialog';
+import { CreateAccountPopupComponent } from '../create-account-popup/create-account-popup.component';
 
 @NgModule({
   declarations: [
     SignUpComponent,
+
+    CreateAccountPopupComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +31,7 @@ import { DialogModule } from 'primeng/dialog';
     DividerModule,
     GoogleSigninButtonModule,
     SocialLoginModule,
-    DialogModule
+    DialogModule,
   ],
   providers: [{
     provide: 'SocialAuthServiceConfig',

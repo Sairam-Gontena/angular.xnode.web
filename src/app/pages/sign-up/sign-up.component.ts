@@ -11,7 +11,7 @@ import {
 } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
-
+import { CreateAccountPopupComponent } from '../create-account-popup/create-account-popup.component';
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -88,6 +88,9 @@ export class SignUpComponent implements OnInit {
   get signUp() { return this.signUpForm.controls; }
 
   onClickSignUp() {
+    if (this.signUpForm.valid) {
+      this.visible = true;
+    }
     this.submitted = true;
     let pswdValidator = this.signUpForm.get('confirmPassword')?.errors?.['confirmPasswordValidator'];
     if (pswdValidator) {
@@ -116,4 +119,10 @@ export class SignUpComponent implements OnInit {
     console.log(this.visible)
   }
 
+  showPopup() {
+    this.visible = true;
+  }
+  handlePopupEvent(visible: boolean) {
+    this.visible = visible;
+  }
 }

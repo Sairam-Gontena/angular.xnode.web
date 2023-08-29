@@ -49,11 +49,7 @@ export class AppHeaderComponent implements OnInit {
     let data = localStorage.getItem("currentUser")
     if (data) {
       let currentUser = JSON.parse(data);
-      if (currentUser && currentUser.email == "admin@xnode.ai") {
-        this.username = 'Mike Abbott'
-      } else {
-        this.username = 'Raymond Nelson'
-      }
+      this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
     }
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
@@ -72,13 +68,13 @@ export class AppHeaderComponent implements OnInit {
   toggleDialog() {
     this.showDialog = !this.showDialog;
     this.captureService
-    .getImage(document.body, true)
-    .pipe(
-      tap((img) => {
-        this.screenshot = img;
-      })
-    )
-    .subscribe();
+      .getImage(document.body, true)
+      .pipe(
+        tap((img) => {
+          this.screenshot = img;
+        })
+      )
+      .subscribe();
   }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');

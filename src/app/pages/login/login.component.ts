@@ -45,16 +45,14 @@ export class LoginComponent implements OnInit {
     delete body.rememberMe;
     this.apiService.login(body, "auth/beta/login")
       .then((response: any) => {
-        if (response?.status === 200) {
-          if (response?.data?.detail) {
-            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          } else {
-            this.utilsService.loadLoginUser(body);
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
+        if (response?.status === 200 && !response?.data?.detail) {
+          this.utilsService.loadLoginUser(body);
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
+          setTimeout(() => {
             this.router.navigate(['/verify-otp']);
-          }
+          }, 1000);
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
         }
         this.utilsService.loadSpinner(false);
       })
