@@ -41,7 +41,7 @@ export class ForgotPasswordComponent implements OnInit {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         } else {
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.Message });
-          // this.router.navigate(['/reset-password']);  //?email=this.forgotPasswordForm.get('email')?.value
+          this.router.navigate(['/']);
         }
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });

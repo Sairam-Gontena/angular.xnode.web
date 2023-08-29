@@ -75,4 +75,8 @@ export class ConfirmationPopupComponent {
       });
   }
 
+  getMeHeader(header: any) {
+    return header.toUppercase();
+  }
+
 }

@@ -70,20 +70,23 @@ export class VerifyOtpComponent implements OnInit {
     this.apiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && response?.data) {
+          if (response?.data?.role === 'admin') {
+            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
+            this.router.navigate(['/admin/user-invitation']);
+          } else {
+            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
+            this.router.navigate(['/x-pilot']);
+          }
           localStorage.setItem('currentUser', JSON.stringify(response?.data))
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
-          this.router.navigate(['/x-pilot']);
+
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
-        console.log('error', error);
-
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
-
       });
   }
 
