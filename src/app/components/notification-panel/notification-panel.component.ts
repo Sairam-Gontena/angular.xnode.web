@@ -54,7 +54,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToActivity() {
-    this.router.navigate(['/activity'])
+    this.router.navigate(['/operate/change/history-log'])
   }
 
   filterNotifications(val: any) {
