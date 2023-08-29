@@ -48,4 +48,10 @@ export class ApiService {
       return axios.patch(this.authEndPoint + url, {});
     }
   }
+
+  //Temp
+  get(url: string) {
+    return axios.get(environment.apiUrl + "crud" + url, {
+    });
+  }
 }

@@ -50,7 +50,8 @@ export class ResetPasswordComponent implements OnInit {
     if (this.resetPasswordForm.invalid) {
       return;
     }
-    let body = { ...this.resetPasswordForm.value };//?email=
+    let body = { ...this.resetPasswordForm.value };
+    this.utilsService.loadSpinner(true);
     this.apiService.patchAuth('', "auth/beta/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
       .then((response: any) => {
         if (response?.status === 200) {
@@ -61,12 +62,15 @@ export class ResetPasswordComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'success' }); //response.data.message
             this.router.navigate(['/']);
           }
+          this.utilsService.loadSpinner(true);
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.utilsService.loadSpinner(true);
         }
       })
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadSpinner(true);
       });
   }
 

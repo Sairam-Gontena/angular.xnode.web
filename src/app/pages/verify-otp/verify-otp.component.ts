@@ -76,18 +76,35 @@ export class VerifyOtpComponent implements OnInit {
             this.router.navigate(['/admin/user-invitation']);
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
-            this.router.navigate(['/x-pilot']);
+            this.getAllProducts(response.data)
           }
           localStorage.setItem('currentUser', JSON.stringify(response?.data))
-
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.utilsService.loadSpinner(true);
         }
-        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
+      });
+  }
+  //get calls 
+  getAllProducts(user: any): void {
+    this.apiService.get("/get_metadata/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          if (response?.data?.data.length > 0) {
+            this.router.navigate(['/my-products']);
+          } else {
+            this.router.navigate(['/x-pilot']);
+          }
+          this.utilsService.loadSpinner(true);
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadSpinner(true);
       });
   }
 
