@@ -12,6 +12,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted: boolean = false;
+  loginBtn: boolean = false;
   errorMessage!: string;
   messages: any = [
   ];
@@ -26,7 +27,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utilsService.loadSpinner(true);
     this.loginForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -43,19 +43,20 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
-    this.apiService.login(body, "auth/beta/login")
-      .then((response: any) => {
-        if (response?.status === 200 && !response?.data?.detail) {
-          this.utilsService.loadLoginUser(body);
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
-          setTimeout(() => {
-            this.router.navigate(['/verify-otp']);
-          }, 1000);
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
-        }
+    this.loginBtn = true;
+    this.apiService.login(body, "auth/beta/login").then((response: any) => {
+      if (response?.status === 200 && !response?.data?.detail) {
+        this.utilsService.loadLoginUser(body);
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
-      })
+        this.loginBtn = false;
+        this.router.navigate(['/verify-otp']);
+      } else {
+        this.loginBtn = false;
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });

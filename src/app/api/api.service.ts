@@ -39,5 +39,4 @@ export class ApiService {
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);
   }
-
 }

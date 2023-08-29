@@ -20,14 +20,11 @@ export class VerifyOtpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utilsService.loadSpinner(true);
     const loginResponseString = localStorage.getItem('currentUser');
-
     if (loginResponseString) {
       this.loginResponse = JSON.parse(loginResponseString);
     }
     this.maskedEmail = this.maskEmail(this.loginResponse.email);
-
     this.startResendTimer();
   }
 
@@ -51,11 +48,13 @@ export class VerifyOtpComponent implements OnInit {
   }
   resendVerification() {
     this.resendTimer = 60;
+    this.utilsService.loadSpinner(true);
     this.apiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
       .then((response: any) => {
+        console.log('response', response);
         if (response?.status === 200) {
           this.startResendTimer();
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.detail });
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response?.data?.Message });
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
@@ -80,10 +79,17 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
+        console.log('error', error);
+
         this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
 
       });
+  }
+
+  onClickLogout(): void {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 
 
