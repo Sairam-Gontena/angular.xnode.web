@@ -23,8 +23,8 @@
     color: red;
 }
 :host ::ng-deep.p-input-icon-right>.p-inputtext,input {
-    background: #2E2D36;
-    color: #ffffff;
+    background: #2E2D36 !important;
+    color: #ffffff !important;
     width:100% !important;
     border: solid 1px #2E2D36;
     border-radius: 0.75rem !important;
