@@ -14,7 +14,7 @@ import { TemplateBuilderPublishHeaderComponent } from '../components/template-bu
 import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
-
+import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +30,8 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
+        ConfirmationPopupComponent
     ],
     imports: [
         CommonModule,
@@ -49,7 +50,8 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
+        ConfirmationPopupComponent
     ]
 })
 export class SharedComponentModule { }

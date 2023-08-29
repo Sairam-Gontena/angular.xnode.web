@@ -1,0 +1,11 @@
+<div class="card flex justify-content-center confirm">
+    <p-button (click)="showDialog()" icon="pi pi-external-link" label="Show"></p-button>
+    <p-dialog header="Header" [(visible)]="visible" [style]="{width: '50vw'}">
+        <p>
+            Are you sure you want to {{invitationType}}
+        </p>
+        <div class="flex justify-content-end"><p-button label="Submit" class="mr-3" (click)="onSuccess()"></p-button>
+            <p-button label="Cancel" (click)="onReject()"></p-button>
+        </div>
+    </p-dialog>
+</div>

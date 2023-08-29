@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiService } from 'src/app/api/api.service';
+import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import TableData from '../../../assets/json/table_users.json'
 import { RefreshListService } from '../../RefreshList.service'

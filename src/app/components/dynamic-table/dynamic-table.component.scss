@@ -22,6 +22,7 @@
 :host ::ng-deep.p-datatable .p-datatable-header {
   padding: 0px !important;
   border-width: 0px;
+  background-color: #302E38;
 }
 
 :host ::ng-deep.p-inputtext {
@@ -111,10 +112,4 @@
   background-color: #E1CF6B !important;
   color: #665910 !important;
   border-radius: 30px !important;
-}
-
-.check-box {
-  width: 2rem;
-  background-color: #3A3942;
-  border-width: 0px
 }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { RefreshListService } from '../../RefreshList.service';
-import { ApiService } from 'src/app/api/api.service';
+import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 interface Column {
   field: string;
@@ -24,6 +24,8 @@ export class DynamicTableComponent implements OnInit {
   showDelete: boolean = true;
   showExport: boolean = true;
   showHeaderMenu: boolean = true;
+  userDetails: any;
+
 
   constructor(private router: Router, private refreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,) {
   }
@@ -60,42 +62,8 @@ export class DynamicTableComponent implements OnInit {
     return Object.values(values).every(value => value === false);
   }
   onClickAction(action: any): void {
-    this.utilsService.loadSpinner(true)
-    if (action.type === 'invite') {
-      this.updateUserId(action.id, 'invited')
-    } else if (action.type === 'hold') {
-      this.updateUserId(action.id, 'hold')
-
-    } else if (action.type === 'reject') {
-      this.updateUserId(action.id, 'rejected')
-
-    }
+    this.userDetails = action;
   }
-  updateUserId(id: string, action: string): void {
-    let url = 'auth/beta/update_user/' + 'dev.xnode@salientminds.com'
-    let body = {
-      "id": id,
-      "action": action
-    }
-    this.apiService.authPut(body, url)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          if (response?.data) {
-            this.refreshListService.toggleAdminUserListRefresh();
-          } else {
-            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          }
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-        }
-        this.utilsService.loadSpinner(false)
 
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-        this.utilsService.loadSpinner(false)
 
-      });
-
-  }
 }

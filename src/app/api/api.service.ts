@@ -31,27 +31,13 @@ export class ApiService {
     });
   }
 
-  getData(url: string) {
-    return axios.get(this.authEndPoint + url, {
-    });
-  }
-  authPut(body: any, url: string) {
-    return axios.put(this.authEndPoint + url, body);
-  }
-
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }
 
-  login(body: any, url: string) {
-    return axios.post(this.authEndPoint + url, body, this.config);
-  }
 
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);
   }
 
-  postAuth(body: any, url: string) {
-    return axios.post(this.authEndPoint + url, body, this.config);
-  }
 }
