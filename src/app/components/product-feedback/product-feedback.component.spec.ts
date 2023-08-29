@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllFeedbackComponent } from './all-feedback.component';
+import { AllFeedbackComponent } from './product-feedback.component';
 
 describe('AllFeedbackComponent', () => {
   let component: AllFeedbackComponent;

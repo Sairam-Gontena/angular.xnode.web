@@ -10,7 +10,7 @@
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class="flex justify-content-center align-content-center">
-            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3"/>
+            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge
                 value={{notificationCount}} severity="danger" (click)=" op.show($event)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon"
@@ -24,7 +24,7 @@
         <p-splitButton [label]="username" [model]="logoutDropdown"
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
-    <xnode-all-feedback [showDialog]="showDialog" [screenshot]="screenshot"></xnode-all-feedback>
+    <xnode-product-feedback [showDialog]="showDialog" [screenshot]="screenshot"></xnode-product-feedback>
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>

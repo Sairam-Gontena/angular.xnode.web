@@ -9,36 +9,37 @@ import { UtilsService } from '../services/utils.service';
 import { tap } from 'rxjs';
 
 @Component({
-  selector: 'xnode-all-feedback',
-  templateUrl: './all-feedback.component.html',
-  styleUrls: ['./all-feedback.component.scss']
+  selector: 'xnode-product-feedback',
+  templateUrl: './product-feedback.component.html',
+  styleUrls: ['./product-feedback.component.scss']
 })
-export class AllFeedbackComponent implements OnInit {
+export class ProductFeedbackComponent implements OnInit {
   @Input() showDialog = false;
   @Input() screenshot: any;
 
   products: any[] = [];
-  submitted: boolean  = false;
-  isFormSubmitted: boolean  = false;
+  submitted: boolean = false;
+  isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
   isInvalid: boolean = false;
-  isPlaceholderVisible: boolean  = false;
-  draganddropSelected: boolean  = false;
+  isPlaceholderVisible: boolean = false;
+  draganddropSelected: boolean = false;
   browserSelected!: boolean;
   feedbackForm: FormGroup;
-  
+
   constructor(private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService,private fb: FormBuilder, private captureService: NgxCaptureService) {
-      this.feedbackForm = this.fb.group({
-        product: ['', Validators.required],
-        component: ['', Validators.required],
-        helpUsImprove: ['', Validators.required],
-        logoFile: [null, Validators.required]
-      });
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    this.feedbackForm = this.fb.group({
+      product: ['', Validators.required],
+      component: ['', Validators.required],
+      helpUsImprove: ['', Validators.required],
+      logoFile: [null, Validators.required]
+    });
   }
   get feedback() {
-    return this.feedbackForm.controls; }
+    return this.feedbackForm.controls;
+  }
 
   ngOnInit(): void {
     this.products = [
@@ -49,11 +50,11 @@ export class AllFeedbackComponent implements OnInit {
   getFeedback() {
     this.submitted = true;
     this.isFormSubmitted = true;
-      if (this.feedbackForm.valid) {
+    if (this.feedbackForm.valid) {
       this.isInvalid = false;
       const formValues = this.feedbackForm.value;
       console.log(formValues);
-    }else{
+    } else {
       this.isInvalid = true;
       console.log("error");
 
@@ -168,5 +169,5 @@ export class AllFeedbackComponent implements OnInit {
     this.draganddropSelected = false;
     this.browserSelected = true;
   }
-  
+
 }
