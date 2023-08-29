@@ -30,7 +30,7 @@ export class ApiService {
     return axios.get(this.endPoint + url, {
     });
   }
-  
+
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }
@@ -44,6 +44,18 @@ export class ApiService {
   }
 
   postAuth(body: any, url: string) {
-    return axios.post(this.authEndPoint + url, body, this.config);
+    if (body != '') {
+      return axios.post(this.authEndPoint + url, body, this.config);
+    } else {
+      return axios.post(this.authEndPoint + url, {})
+    }
+  }
+
+  patchAuth(body: any, url: string) {
+    if (body != '') {
+      return axios.patch(this.authEndPoint + url, body, this.config);
+    } else {
+      return axios.patch(this.authEndPoint + url, {});
+    }
   }
 }

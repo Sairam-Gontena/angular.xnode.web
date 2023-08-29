@@ -22,46 +22,56 @@
 .error-message {
     color: red;
 }
-:host ::ng-deep.p-input-icon-right>.p-inputtext,input {
-    background: #2E2D36 !important;
-    color: #ffffff !important;
-    width:100% !important;
+
+:host ::ng-deep.p-input-icon-right>.p-inputtext,
+input {
+    background: #2E2D36;
+    color: #ffffff;
+    width: 100% !important;
     border: solid 1px #2E2D36;
     border-radius: 0.75rem !important;
 }
+
 :host ::ng-deep.p-checkbox .p-checkbox-box {
     background: #23222B !important;
     border: solid 1px #9E9E9E;
 }
+
 :host ::ng-deep.p-checkbox .p-checkbox-box .p-checkbox-icon {
     transition-duration: 0.2s;
-    color: #23222B; 
+    color: #23222B;
     font-size: 14px;
 }
+
 :host ::ng-deep.p-checkbox .p-checkbox-box.p-highlight {
-    background: #ffffff!important;
-    color: #23222B!important;
+    background: #ffffff !important;
+    color: #23222B !important;
     border: solid 1px #ffffff;
 }
-:host::ng-deep.p-card{
-    background-color:#23222B !important;
+
+:host::ng-deep.p-card {
+    background-color: #23222B !important;
 }
-.forgot-pwd{
+
+.forgot-pwd {
     color: #02ADEE;
 }
+
 @media screen and (max-width: 780px) {
     .form-container {
         margin-left: 90px;
         margin-right: 90px;
     }
 }
+
 .bg-image {
     background-image: url('/assets/OnboardingBG.svg');
 }
+
 .heading-color {
     color: #DEDEDE;
 }
+
 :host ::ng-deep .p-card-body {
-   
-    color: black;
+    color: 23222B;
 }
