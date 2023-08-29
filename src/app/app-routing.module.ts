@@ -30,8 +30,8 @@ const routes: Routes = [
       import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'verification',
-    loadChildren: () => import('./pages/verification/verification.module').then((m) => m.VerificationModule)
+    path: 'verify-otp',
+    loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule)
   },
   {
     path: 'usecases',

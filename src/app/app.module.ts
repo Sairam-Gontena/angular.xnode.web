@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { NgxCaptureModule } from 'ngx-capture';
     SharedComponentModule,
     SidebarModule,
     FormBuilderModule,
+    NgxSpinnerModule,
     NgxCaptureModule,
   ],
   providers: [RefreshListService],

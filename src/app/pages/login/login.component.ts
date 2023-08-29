@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   messages: any = [
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService,
+    private utilsService: UtilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utilsService.loadSpinner(true);
     this.loginForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -37,9 +39,11 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+    this.utilsService.loadSpinner(true);
+    localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
-    this.apiService.login(body, "auth/login")
+    this.apiService.login(body, "auth/beta/login")
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data?.detail) {
@@ -47,18 +51,16 @@ export class LoginComponent implements OnInit {
           } else {
             this.utilsService.loadLoginUser(body);
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
-            this.router.navigate(['/verification']);
+            this.router.navigate(['/verify-otp']);
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
+        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
+        this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
-  }
-
-  onClickSignup() {
-    this.router.navigate(['/'])
   }
 }

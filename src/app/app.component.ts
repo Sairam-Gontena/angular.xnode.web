@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -31,8 +32,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService) {
-
+    private subMenuLayoutUtil: UtilsService,
+    private spinner: NgxSpinnerService) {
   }
 
   ngOnInit(): void {
@@ -49,12 +50,20 @@ export class AppComponent implements OnInit {
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         this.loading = event;
+        this.loadSpinner();
       }, 0);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
     this.currentPath = window.location.hash;
+  }
+
+  loadSpinner() {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 1000);
   }
 
   loadIframeUrl(): void {
