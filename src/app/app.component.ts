@@ -49,8 +49,11 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
-        this.loading = event;
-        this.loadSpinner();
+        if (event) {
+          this.spinner.show();
+        } else {
+          this.spinner.hide();
+        }
       }, 0);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
@@ -59,12 +62,6 @@ export class AppComponent implements OnInit {
     this.currentPath = window.location.hash;
   }
 
-  loadSpinner() {
-    this.spinner.show();
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 1000);
-  }
 
   loadIframeUrl(): void {
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;

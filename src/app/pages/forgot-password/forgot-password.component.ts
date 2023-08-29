@@ -54,4 +54,8 @@ export class ForgotPasswordComponent implements OnInit {
   onClickSignup() {
     this.router.navigate(['/'])
   }
+
+  backToLogin() {
+    this.router.navigate(['/'])
+  }
 }

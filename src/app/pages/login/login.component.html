@@ -5,7 +5,7 @@
             <div class="flex justify-content-end m-8">
                 <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="">
             </div>
-            <div class="flex justify-content-center -mt-8">
+            <div class="flex justify-content-center mt-8">
                 <p-card [style]=" { width: '680px' ,height: '660px' }" class="shadow-8">
                     <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-8">
                         <div class="heading-color text-6xl font-bold -ml-2">Login to xnode</div>
@@ -65,11 +65,8 @@
                                                 Password?</a>
                                         </div>
                                     </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4" [ngClass]="{
-                                        'pointer-events-none' : loginBtn
-                                     }">
-                                        <p-button label="Login" class="flex justify-content-center"
-                                            styleClass="p-button-rounded  font-medium text-lg"
+                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
+                                        <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
                                             [disabled]="loginForm.invalid" (click)="onClickLogin()"></p-button>
                                     </div>
                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-8">

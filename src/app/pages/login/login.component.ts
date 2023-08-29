@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utilsService.loadSpinner(true);
     this.loginForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -49,15 +48,14 @@ export class LoginComponent implements OnInit {
       if (response?.status === 200 && !response?.data?.detail) {
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
-        setTimeout(() => {
-          this.loginBtn = false;
-          this.router.navigate(['/verify-otp']);
-        }, 1000);
+        this.utilsService.loadSpinner(false);
+        this.loginBtn = false;
+        this.router.navigate(['/verify-otp']);
       } else {
         this.loginBtn = false;
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
+        this.utilsService.loadSpinner(false);
       }
-      this.utilsService.loadSpinner(false);
     })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
