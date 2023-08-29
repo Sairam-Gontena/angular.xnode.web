@@ -93,7 +93,9 @@ export class VerifyOtpComponent implements OnInit {
   getAllProducts(user: any): void {
     this.apiService.get("/get_metadata/" + user?.email)
       .then((response: any) => {
-        if (response?.status === 200 && response.data.data?.length) {
+        console.log('response', response);
+
+        if (response?.status === 200) {
           if (response?.data?.data.length > 0) {
             this.router.navigate(['/my-products']);
           } else {
