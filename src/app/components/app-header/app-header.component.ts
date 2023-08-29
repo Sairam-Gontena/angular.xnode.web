@@ -66,7 +66,7 @@ export class AppHeaderComponent implements OnInit {
     let data = localStorage.getItem("currentUser")
     if (data) {
       let currentUser = JSON.parse(data);
-      this.username = currentUser.first_name + " " + currentUser.last_name;
+      this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
     }
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
