@@ -13,15 +13,18 @@
     align-items: flex-end;
 }
 
-.form-container {
-    // margin-left: 200px;
-    // margin-right: 200px;
-}
-
 :host ::ng-deep .p-button {
     padding-top: 14px;
     padding-bottom: 14px;
 }
+
+:host ::ng-deep .popup-close .p-button {
+    background-color: #23222B !important;
+    border-radius: 31px;
+    border: none;
+}
+
+
 
 .invalid-feedback {
     color: red;
@@ -38,4 +41,68 @@
     .sign-up-img {
         width: 100%;
     }
+}
+
+@media (min-width: 1330px) and (max-width: 1800px) {
+    .signup-form {
+        padding-top: 0.25rem !important;
+    }
+
+    .form-container {
+        padding-top: 0.75rem !important;
+    }
+
+    .xnode-image-one {
+        width: 95px !important;
+    }
+
+    .sign-up-img-text {
+        padding: 0px 48px !important;
+        margin-bottom: 0px !important;
+        font-size: 3rem !important;
+    }
+
+    .xnode-image-two {
+        height: 300px !important;
+    }
+
+    .create-account-div {
+        margin-top: 1.5rem !important;
+    }
+
+    .xnode-logo-img {
+        padding: 1rem !important;
+    }
+
+    .or-signup-div {
+        margin-top: 0.5rem !important;
+    }
+
+    .step-para-opacity, .login-route-div, .formgrid .field{
+        font-size: 1rem!important;
+        margin-bottom:5px!important;
+    }
+    .signup-color{
+        font-size:2rem!important;
+    }
+    :host ::ng-deep .formgrid .text-lg{
+        font-size: 14px!important;
+    }
+    .create-account-div{
+        margin-top:1.5rem!important;
+    }
+    .hr-div .mx-3{
+        margin:5px 5px!important;
+        font-size: 14px!important;
+    }
+}
+
+/*New screen css*/
+.step-para-opacity {
+    color: #4B4B4B;
+    opacity: 0.6;
+}
+
+.social-login {
+    background: #F1F0F0;
 }

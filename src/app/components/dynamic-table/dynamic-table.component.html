@@ -36,7 +36,41 @@
                </th>
           </tr>
      </ng-template>
-     <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
+
+     <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
+          <tr class="text-white text-xs custom-cell"
+               [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
+               <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
+                    <p-tableCheckbox [value]="true"></p-tableCheckbox>
+               </td>
+               <td *ngFor="let col of columns" class="border-transparent">
+                    {{rowData[col.field]}}
+                    <ng-container *ngIf="col.field=== 'action'">
+                         <div class="flex" *ngIf="rowData[col.field] == null">
+                              <p-button (click)="onClickAction({type:'invite',id:rowData.id})"
+                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Success'">
+                                   <span class="text-sm font-semibold font-family-inter">
+                                        Invite
+                                   </span>
+                              </p-button>
+                              <p-button (click)="onClickAction({type:'hold',id:rowData.id})"
+                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Warning'">
+                                   <span class="text-sm font-semibold font-family-inter">
+                                        Hold
+                                   </span>
+                              </p-button>
+                              <p-button (click)="onClickAction({type:'reject',id:rowData.id})"
+                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Danger'">
+                                   <span class="text-sm font-semibold font-family-inter">
+                                        Reject
+                                   </span>
+                              </p-button>
+                         </div>
+                    </ng-container>
+               </td>
+          </tr>
+     </ng-template>
+     <!-- <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
           <tr *ngIf="editable" class="text-white text-xs custom-cell"
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
                <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
@@ -45,7 +79,7 @@
                <td *ngFor="let col of headers" class="border-transparent" [pEditableColumn]="rowData[col]"
                     pEditableColumnField="col">
                     <ng-container *ngIf="col !== 'action' && col !== 'interestlevel'">
-                         {{ rowData[col] }}
+                         {{ rowData[col.field] }}
                     </ng-container>
                     <ng-container *ngIf="col === 'interestlevel'">
                          <div class="flex">
@@ -82,5 +116,5 @@
                     </ng-container>
                </td>
           </tr>
-     </ng-template>
+     </ng-template> -->
 </p-table>
