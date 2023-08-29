@@ -60,14 +60,17 @@
                                                         is required</div>
                                                 </div>
                                             </div>
-                                            <a class="font-medium text-base no-underline forgot-pwd pointer">Forgot
+                                            <a class="font-medium text-base no-underline forgot-pwd pointer"
+                                                routerLink="/forgot-password">Forgot
                                                 Password?</a>
                                         </div>
                                     </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4" [ngClass]="{
+                                        'pointer-events-none' : loginBtn
+                                     }">
                                         <p-button label="Login" class="flex justify-content-center"
                                             styleClass="p-button-rounded  font-medium text-lg"
-                                            (click)="onClickLogin()"></p-button>
+                                            [disabled]="loginForm.invalid" (click)="onClickLogin()"></p-button>
                                     </div>
                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-8">
                                         <a

@@ -35,12 +35,13 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.forgotPasswordForm.invalid) {
       return;
     }
-    this.apiService.patchAuth('auth/beta/resetpassword/' + this.forgotPasswordForm.get('email')?.value).then((response: any) => {
+    this.apiService.postAuth('', 'mfa/forgotpassword?email=' + this.forgotPasswordForm.get('email')?.value).then((response: any) => {
       if (response?.status === 200) {
         if (response?.data?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         } else {
-          console.log(response)
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.Message });
+          // this.router.navigate(['/reset-password']);  //?email=this.forgotPasswordForm.get('email')?.value
         }
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
@@ -48,23 +49,6 @@ export class ForgotPasswordComponent implements OnInit {
     }).catch((error: any) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
     });
-    // this.apiService.login(body, "auth/login")
-    //   .then((response: any) => {
-    //     if (response?.status === 200) {
-    //       if (response?.data?.detail) {
-    //         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-    //       } else {
-    //         this.utilsService.loadLoginUser(body);
-    //         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
-    //         this.router.navigate(['/verification']);
-    //       }
-    //     } else {
-    //       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-    //   });
   }
 
   onClickSignup() {

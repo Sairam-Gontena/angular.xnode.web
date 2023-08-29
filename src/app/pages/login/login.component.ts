@@ -12,6 +12,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted: boolean = false;
+  loginBtn: boolean = false;
   errorMessage!: string;
   messages: any = [
   ];
@@ -43,21 +44,23 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
-    this.apiService.login(body, "auth/beta/login")
-      .then((response: any) => {
-        if (response?.status === 200) {
-          if (response?.data?.detail) {
-            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          } else {
-            this.utilsService.loadLoginUser(body);
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
-            this.router.navigate(['/verify-otp']);
-          }
-        } else {
+    this.loginBtn = true;
+    this.apiService.login(body, "auth/beta/login").then((response: any) => {
+      if (response?.status === 200) {
+        if (response?.data?.detail) {
+          this.loginBtn = false;
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        } else {
+          this.utilsService.loadLoginUser(body);
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
+          this.router.navigate(['/verify-otp']);
         }
-        this.utilsService.loadSpinner(false);
-      })
+      } else {
+        this.loginBtn = false;
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+      }
+      this.utilsService.loadSpinner(false);
+    })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
