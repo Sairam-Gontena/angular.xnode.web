@@ -4,11 +4,16 @@ import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-f
 import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () =>
-      import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
-  },
+  // {
+  //   path: '',
+  //   loadChildren: () =>
+  //     import('./pages/account-type/accounttype.module').then((m) => m.AccountTypeModule),
+  // },
+  // {
+  //   path: 'sign-up',
+  //   loadChildren: () =>
+  //     import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
+  // },
   {
     path: 'forgot-password',
     loadChildren: () =>
@@ -20,12 +25,7 @@ const routes: Routes = [
       import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
   },
   {
-    path: 'sign-up',
-    loadChildren: () =>
-      import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
-  },
-  {
-    path: 'login',
+    path: '',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),
   },
