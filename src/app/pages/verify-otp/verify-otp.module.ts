@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { VerificationRoutingModule } from './verification-routing.module';
+import { VerifyOtpRoutingModule } from './verify-otp-routing.module';
+import { VerifyOtpComponent } from './verify-otp.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgOtpInputModule } from 'ng-otp-input';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
-import { VerificationComponent } from './verification.component';
-import { NgOtpInputModule } from  'ng-otp-input';
 
 
 @NgModule({
   declarations: [
-    VerificationComponent
+    VerifyOtpComponent
   ],
   imports: [
     CommonModule,
-    VerificationRoutingModule,
+    VerifyOtpRoutingModule,
     ButtonModule,
     DividerModule,
     PasswordModule,
@@ -31,4 +31,4 @@ import { NgOtpInputModule } from  'ng-otp-input';
     NgOtpInputModule
   ]
 })
-export class VerificationModule { }
+export class VerifyOtpModule { }
