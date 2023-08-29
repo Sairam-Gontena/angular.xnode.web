@@ -38,38 +38,35 @@ export class AppHeaderComponent implements OnInit {
   username: string = ''
   visible: boolean = false;
   products: any[] = [];
-  submitted: boolean  = false;
-  isFormSubmitted: boolean  = false;
+  submitted: boolean = false;
+  isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
   isInvalid: boolean = false;
-  isPlaceholderVisible: boolean  = false;
-  draganddropSelected: boolean  = false;
+  isPlaceholderVisible: boolean = false;
+  draganddropSelected: boolean = false;
   browserSelected!: boolean;
   feedbackForm: FormGroup;
-  screenshot:any;
+  screenshot: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService,private fb: FormBuilder, private captureService: NgxCaptureService) {
-      this.feedbackForm = this.fb.group({
-        product: ['', Validators.required],
-        component: ['', Validators.required],
-        helpUsImprove: ['', Validators.required],
-        logoFile: [null, Validators.required]
-      });
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    this.feedbackForm = this.fb.group({
+      product: ['', Validators.required],
+      component: ['', Validators.required],
+      helpUsImprove: ['', Validators.required],
+      logoFile: [null, Validators.required]
+    });
   }
   get feedback() {
-    return this.feedbackForm.controls; }
+    return this.feedbackForm.controls;
+  }
 
   ngOnInit(): void {
     let data = localStorage.getItem("currentUser")
     if (data) {
       let currentUser = JSON.parse(data);
-      if (currentUser && currentUser.email == "admin@xnode.ai") {
-        this.username = 'Mike Abbott'
-      } else {
-        this.username = 'Raymond Nelson'
-      }
+      this.username = currentUser.first_name + " " + currentUser.last_name;
     }
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
@@ -91,11 +88,11 @@ export class AppHeaderComponent implements OnInit {
   getFeedback() {
     this.submitted = true;
     this.isFormSubmitted = true;
-      if (this.feedbackForm.valid) {
+    if (this.feedbackForm.valid) {
       this.isInvalid = false;
       const formValues = this.feedbackForm.value;
       console.log(formValues);
-    }else{
+    } else {
       this.isInvalid = true;
       console.log("error");
 
@@ -213,13 +210,13 @@ export class AppHeaderComponent implements OnInit {
   showDialog() {
     this.visible = true;
     this.captureService
-    .getImage(document.body, true)
-    .pipe(
-      tap((img) => {
-        this.screenshot = img;
-      })
-    )
-    .subscribe();
+      .getImage(document.body, true)
+      .pipe(
+        tap((img) => {
+          this.screenshot = img;
+        })
+      )
+      .subscribe();
   }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
