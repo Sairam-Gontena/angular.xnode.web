@@ -14,6 +14,7 @@ import { TemplateBuilderPublishHeaderComponent } from '../components/template-bu
 import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
+import { AllFeedbackComponent } from '../components/all-feedback/all-feedback.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
+        AllFeedbackComponent
     ],
     imports: [
         CommonModule,
