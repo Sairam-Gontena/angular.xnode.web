@@ -33,4 +33,4 @@ import { NgxCaptureModule } from 'ngx-capture';
   providers: [RefreshListService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

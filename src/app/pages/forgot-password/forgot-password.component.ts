@@ -3,66 +3,68 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { ConfirmPasswordValidator } from '../sign-up/confirm-password.validator';
 @Component({
   selector: 'xnode-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
-  resetPasswordForm: FormGroup;
+  forgotPasswordForm: FormGroup;
   submitted: boolean = false;
   confirmPasswordValidator: boolean = false;
   errorMessage!: string;
-  messages: any = [
-  ];
+  messages: any = [];
   constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
-    this.resetPasswordForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
-    }, {
-      validator: ConfirmPasswordValidator("password", "confirmpassword")
+    this.forgotPasswordForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
   ngOnInit(): void {
-    this.resetPasswordForm.valueChanges.subscribe(() => {
+    this.forgotPasswordForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
   }
 
-  get reset() {
-    return this.resetPasswordForm.controls;
+  get forgot() {
+    return this.forgotPasswordForm.controls;
   }
 
   onClick() {
     this.submitted = true;
-    let pswdValidator = this.resetPasswordForm.get('confirmpassword')?.errors?.['confirmPasswordValidator'];
-    if (pswdValidator) {
-      this.confirmPasswordValidator = true;
+    if (this.forgotPasswordForm.invalid) {
       return;
     }
-    if (this.resetPasswordForm.invalid) {
-      return;
-    }
-    let body = { ...this.resetPasswordForm.value };
-    this.apiService.login(body, "auth/login")
-      .then((response: any) => {
-        if (response?.status === 200) {
-          if (response?.data?.detail) {
-            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          } else {
-            this.utilsService.loadLoginUser(body);
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
-            this.router.navigate(['/verification']);
-          }
-        } else {
+    this.apiService.patchAuth('auth/beta/resetpassword/' + this.forgotPasswordForm.get('email')?.value).then((response: any) => {
+      if (response?.status === 200) {
+        if (response?.data?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        } else {
+          console.log(response)
         }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      });
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+      }
+    }).catch((error: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+    });
+    // this.apiService.login(body, "auth/login")
+    //   .then((response: any) => {
+    //     if (response?.status === 200) {
+    //       if (response?.data?.detail) {
+    //         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+    //       } else {
+    //         this.utilsService.loadLoginUser(body);
+    //         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.message });
+    //         this.router.navigate(['/verification']);
+    //       }
+    //     } else {
+    //       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+    //   });
   }
 
   onClickSignup() {

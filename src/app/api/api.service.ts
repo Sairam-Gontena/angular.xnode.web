@@ -30,7 +30,7 @@ export class ApiService {
     return axios.get(this.endPoint + url, {
     });
   }
-  
+
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }
@@ -45,5 +45,10 @@ export class ApiService {
 
   postAuth(body: any, url: string) {
     return axios.post(this.authEndPoint + url, body, this.config);
+  }
+
+  patchAuth(url: string) {
+    return axios.patch(this.endPoint + url, {
+    });
   }
 }
