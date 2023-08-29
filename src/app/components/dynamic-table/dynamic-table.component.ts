@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import * as dynamictabledata from '../../../assets/json/dynamictabledata.json'
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavigationEnd } from '@angular/router';
+import { RefreshListService } from '../../RefreshList.service';
+import { ApiService } from 'src/app/api/auth.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
 interface Column {
   field: string;
   header: string;
@@ -12,37 +13,37 @@ interface Column {
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements OnInit {
-  cols!: Column[];
+
   rows: any;
   @Input() dynamicData: any;
-  // dynamicData: any;
+  @Input() inputData: any;
+  @Input() cols: any[] = [];
   headers: any;
-  heading: string = "Users";
   editable: boolean = true;
   showSearch: boolean = true;
   showDelete: boolean = true;
   showExport: boolean = true;
   showHeaderMenu: boolean = true;
+  userDetails: any;
 
-  constructor(private router: Router) {
+
+  constructor(private router: Router, private refreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.dynamicData = this.inputData;
   }
 
   ngOnInit(): void {
-    this.dynamicData = dynamictabledata?.dynamicTable?.Invitation;
-    const currentUrl = this.router.url;
-    if (currentUrl == '/admin/user-invitation') {
-      this.cols = dynamictabledata?.dynamicTable?.Invitation?.Columns
-      this.dynamicData = dynamictabledata?.dynamicTable?.Invitation?.Rows;
-    } else if (currentUrl == '/admin/user-approval') {
-      this.cols = dynamictabledata?.dynamicTable?.Approvals?.Columns
-      this.dynamicData = dynamictabledata?.dynamicTable?.Approvals?.Rows;
-    } else if (currentUrl == '/publish') {
-      this.cols = dynamictabledata?.dynamicTable?.PublishTable?.Columns
-      this.dynamicData = dynamictabledata?.dynamicTable?.PublishTable?.Rows;
-    }
-    this.headers = Object.keys(this.dynamicData[0]);
+    this.loadTableData(this.inputData);
   }
 
+  private loadTableData(data: any): void {
+    this.dynamicData = data;
+    if (this.dynamicData) {
+      this.headers = Object.keys(this.dynamicData[0]);
+    }
+  }
   onClickCellEdit() {
     if (this.editable) {
       this.editable = false;
@@ -60,4 +61,9 @@ export class DynamicTableComponent implements OnInit {
   allValuesTrue(values: any): boolean {
     return Object.values(values).every(value => value === false);
   }
+  onClickAction(action: any): void {
+    this.userDetails = action;
+  }
+
+
 }

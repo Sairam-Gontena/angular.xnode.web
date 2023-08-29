@@ -70,7 +70,6 @@ export class AppComponent implements OnInit {
       if (contentWindow) {
         window.addEventListener('message', (event) => {
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-            console.log('not matched');
             return;
           }
           if (event.data === 'triggerCustomEvent') {

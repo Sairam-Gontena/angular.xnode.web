@@ -1,18 +1,19 @@
+<xnode-confirmation-popup [Data]="userDetails"></xnode-confirmation-popup>¸
 <p-table #dt [rows]="10" [scrollable]="true" scrollHeight="490px" [rowHover]="true" dataKey="id"
      [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal"
-     [tableStyle]="{ 'width':'100%'}" [value]="dynamicData" [columns]="cols">
+     [value]="dynamicData" [columns]="cols">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
-          <div class="flex justify-content-between align-items-center" style="background-color: #302E38;">
+          <div class="flex justify-content-between align-items-center">
                <span class="p-input-icon-left" *ngIf="showSearch">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" placeholder="Search by User Name, Lead No ..." />
                </span>
                <div class="flex-wrap">
-                    <p-button styleClass="p-button-rounded mr-3" *ngIf="showDelete">
+                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="showDelete">
                          <img src="../../assets/delete.svg" alt="circle-ci-image" class="text-sm ml-1">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
                     </p-button>
-                    <p-button styleClass="p-button-rounded mr-3 " *ngIf="showExport">
+                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="showExport">
                          <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Export</span>
                          <i class="pi pi-chevron-down ml-2"></i>
@@ -36,7 +37,41 @@
                </th>
           </tr>
      </ng-template>
-     <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
+
+     <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
+          <tr class="text-white text-xs custom-cell" [ngClass]="i % 2 == 0 ? 'even' : 'odd'"
+               [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
+               <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
+                    <p-tableCheckbox [value]="true"></p-tableCheckbox>
+               </td>
+               <td *ngFor="let col of columns" class="border-transparent">
+                    {{rowData[col.field]}}
+                    <ng-container *ngIf="col.field=== 'action'">
+                         <div class="flex" *ngIf="rowData[col.field] == null">
+                              <p-button (click)="onClickAction({type:'invite',userData:rowData})"
+                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Success'">
+                                   <span class="text-sm font-semibold font-family-inter">
+                                        Invite
+                                   </span>
+                              </p-button>
+                              <p-button (click)="onClickAction({type:'hold',userData:rowData})"
+                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Warning'">
+                                   <span class="text-sm font-semibold font-family-inter">
+                                        Hold
+                                   </span>
+                              </p-button>
+                              <p-button (click)="onClickAction({type:'reject',userData:rowData})"
+                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Danger'">
+                                   <span class="text-sm font-semibold font-family-inter">
+                                        Reject
+                                   </span>
+                              </p-button>
+                         </div>
+                    </ng-container>
+               </td>
+          </tr>
+     </ng-template>
+     <!-- <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
           <tr *ngIf="editable" class="text-white text-xs custom-cell"
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
                <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
@@ -45,7 +80,7 @@
                <td *ngFor="let col of headers" class="border-transparent" [pEditableColumn]="rowData[col]"
                     pEditableColumnField="col">
                     <ng-container *ngIf="col !== 'action' && col !== 'interestlevel'">
-                         {{ rowData[col] }}
+                         {{ rowData[col.field] }}
                     </ng-container>
                     <ng-container *ngIf="col === 'interestlevel'">
                          <div class="flex">
@@ -82,5 +117,5 @@
                     </ng-container>
                </td>
           </tr>
-     </ng-template>
+     </ng-template> -->
 </p-table>

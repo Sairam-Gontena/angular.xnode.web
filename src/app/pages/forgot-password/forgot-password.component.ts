@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
+import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-forgot-password',
@@ -41,7 +41,7 @@ export class ForgotPasswordComponent implements OnInit {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         } else {
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data.Message });
-          // this.router.navigate(['/reset-password']);  //?email=this.forgotPasswordForm.get('email')?.value
+          this.router.navigate(['/']);
         }
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });

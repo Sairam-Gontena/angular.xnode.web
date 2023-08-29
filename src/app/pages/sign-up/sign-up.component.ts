@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Emails } from 'src/app/utils/login-util';
-import { ApiService } from 'src/app/api/api.service';
+import { ApiService } from 'src/app/api/auth.service';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
 import {
   SocialAuthService,
@@ -116,7 +116,6 @@ export class SignUpComponent implements OnInit {
 
   cancel() {
     this.visible = false;
-    console.log(this.visible)
   }
 
   showPopup() {

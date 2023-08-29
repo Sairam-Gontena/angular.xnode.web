@@ -14,6 +14,7 @@ import { TemplateBuilderPublishHeaderComponent } from '../components/template-bu
 import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
+import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
 import { ProductFeedbackComponent } from '../components/product-feedback/product-feedback.component';
 
 
@@ -32,6 +33,7 @@ import { ProductFeedbackComponent } from '../components/product-feedback/product
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
         NotificationPanelComponent,
+        ConfirmationPopupComponent,
         ProductFeedbackComponent
     ],
     imports: [
@@ -51,7 +53,9 @@ import { ProductFeedbackComponent } from '../components/product-feedback/product
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
+        ConfirmationPopupComponent,
+        ProductFeedbackComponent
     ]
 })
 export class SharedComponentModule { }

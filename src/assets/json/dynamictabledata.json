@@ -1,10 +1,10 @@
 {
   "dynamicTable": {
-    "Invitation": {
+    "Users": {
       "Columns": [
         {
-          "field": "leadno",
-          "header": "Lead No"
+          "field": "account_type",
+          "header": "Account Type"
         },
         {
           "field": "firstname",

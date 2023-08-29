@@ -35,27 +35,8 @@ export class ApiService {
     return axios.post(this.endPoint + url, body, this.config);
   }
 
-  login(body: any, url: string) {
-    return axios.post(this.authEndPoint + url, body, this.config);
-  }
 
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);
-  }
-
-  postAuth(body: any, url: string) {
-    if (body != '') {
-      return axios.post(this.authEndPoint + url, body, this.config);
-    } else {
-      return axios.post(this.authEndPoint + url, {})
-    }
-  }
-
-  patchAuth(body: any, url: string) {
-    if (body != '') {
-      return axios.patch(this.authEndPoint + url, body, this.config);
-    } else {
-      return axios.patch(this.authEndPoint + url, {});
-    }
   }
 }
