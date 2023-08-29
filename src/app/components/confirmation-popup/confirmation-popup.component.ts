@@ -2,20 +2,22 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
+import { User, UserUtil } from 'src/app/utils/user-util';
 
 @Component({
   selector: 'xnode-confirmation-popup',
   templateUrl: './confirmation-popup.component.html',
   styleUrls: ['./confirmation-popup.component.scss']
 })
-export class ConfirmationPopupComponent {
 
+export class ConfirmationPopupComponent {
   @Input() Data: any;
   invitationType: string = '';
   visible: boolean = false;
-
+  currentUser?: User;
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
 
@@ -49,29 +51,28 @@ export class ConfirmationPopupComponent {
 
   updateUserId(id: string, action: string): void {
     this.utilsService.loadSpinner(true)
-    let url = 'auth/beta/update_user/' + 'dev.xnode@salientminds.com'
+    let url = 'auth/beta/update_user/' + this.currentUser?.email;
     let body = {
       "id": id,
       "action": action
-    }
+    };
     this.apiService.authPut(body, url)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data) {
             this.refreshListService.toggleAdminUserListRefresh();
+            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been invited successfully' });
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
-        this.utilsService.loadSpinner(false)
-
+        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-        this.utilsService.loadSpinner(false)
-
+        this.utilsService.loadSpinner(false);
       });
   }
 

@@ -46,12 +46,13 @@ export class VerifyOtpComponent implements OnInit {
       }
     }, 1000);
   }
+
   resendVerification() {
     this.resendTimer = 60;
+    this.otp = '';
     this.utilsService.loadSpinner(true);
     this.apiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
       .then((response: any) => {
-        console.log('response', response);
         if (response?.status === 200) {
           this.startResendTimer();
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response?.data?.Message });

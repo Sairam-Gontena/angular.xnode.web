@@ -6,19 +6,24 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ApiService {
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
+
   constructor() {
   }
+
   config = {
     headers: {
       'Content-Type': 'application/json'
     }
   };
+
   authPut(body: any, url: string) {
     return axios.put(this.authEndPoint + url, body);
   }
+
   getData(url: string) {
     return axios.get(this.authEndPoint + url, {
     });
