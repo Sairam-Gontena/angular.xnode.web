@@ -1,7 +1,13 @@
-<p-dialog header="Header" [(visible)]="visible" [style]="{width: '40vw'}">
-    <p>
-        Are you sure you want to {{invitationType}}
-    </p>
+<p-dialog [header]="Data?.type + ' User'" [(visible)]="visible" [style]="{width: '40vw'}">
+    <div class="flex">
+        <span>
+            Are you sure you want to <p class="font-bold user-txt">
+                {{invitationType}}
+            </p>
+        </span>
+
+    </div>
+
     <div class="flex justify-content-end">
         <p-button label="Submit" styleClass="p-button-sm p-button-rounded" class="mr-3"
             (click)="onSuccess()"></p-button>

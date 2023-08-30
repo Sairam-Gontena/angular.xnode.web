@@ -52,6 +52,7 @@ export class DynamicTableComponent implements OnInit {
 
   onCellInputBlur(event: any) {
   }
+  
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
