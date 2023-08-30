@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'xnode-login',
   templateUrl: './login.component.html',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   messages: any = [
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService,
+  constructor(private formBuilder: FormBuilder, private router: Router, private authService: AuthService, private apiService: ApiService,
     private utilsService: UtilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -44,13 +45,14 @@ export class LoginComponent implements OnInit {
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
     this.loginBtn = true;
-    this.apiService.login(body, "auth/beta/login").then((response: any) => {
+    this.authService.login(body).then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
         this.loginBtn = false;
         this.router.navigate(['/verify-otp']);
+        this.authService.setToken('123');
       } else {
         this.loginBtn = false;
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });

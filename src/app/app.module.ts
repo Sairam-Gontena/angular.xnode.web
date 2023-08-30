@@ -14,6 +14,8 @@ import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from 'src/auth.interceptor';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -31,7 +33,14 @@ import { NgxCaptureModule } from 'ngx-capture';
     NgxSpinnerModule,
     NgxCaptureModule,
   ],
-  providers: [RefreshListService],
+  providers: [
+    RefreshListService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor, // Use your interceptor
+      multi: true, // This is important to allow multiple interceptors
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

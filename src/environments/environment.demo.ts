@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     apiUrl: 'https://demo-navi.azurewebsites.net/',
-    authApiUrl: 'https://demo-xnode-auth-api.azurewebsites.net/',
+    authApiUrl: 'https://demo-xnode-auth-api.azurewebsites.net/auth/beta/',
     xnodeAppUrl: 'https://demo-xnode.azurewebsites.net/',
     naviAppUrl: 'https://demo-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://demo-ui-gen.azurewebsites.net/dashboard/',

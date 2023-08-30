@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     apiUrl: 'https://qa-navi.azurewebsites.net/',
-    authApiUrl: 'https://qa-xnode-auth-api.azurewebsites.net/',
+    authApiUrl: 'https://qa-xnode-auth-api.azurewebsites.net/auth/beta/',
     xnodeAppUrl: 'https://qa-xnode.azurewebsites.net/',
     naviAppUrl: 'https://qa-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://qa-ui-gen.azurewebsites.net/dashboard/',
