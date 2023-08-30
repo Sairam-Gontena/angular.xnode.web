@@ -1,14 +1,17 @@
-<div class="card flex justify-content-center confirm">
-    <p-button (click)="showDialog()" icon="pi pi-external-link" label="Show"></p-button>
-    <p-dialog header="Header" [(visible)]="visible" [style]="{width: '40vw'}">
-        <p>
-            Are you sure you want to {{invitationType}}
-        </p>
-        <div class="flex justify-content-end">
-            <p-button label="Submit" styleClass="p-button-sm p-button-rounded" class="mr-3"
-                (click)="onSuccess()"></p-button>
-            <p-button label="Cancel" styleClass="p-button-sm p-button-rounded p-button-secondary"
-                (click)="onReject()"></p-button>
-        </div>
-    </p-dialog>
-</div>
+<p-dialog [header]="Data?.type + ' User'" [(visible)]="visible" [style]="{width: '40vw'}">
+    <div class="flex">
+        <span>
+            Are you sure you want to <p class="font-bold user-txt">
+                {{invitationType}}
+            </p>
+        </span>
+
+    </div>
+
+    <div class="flex justify-content-end">
+        <p-button label="Submit" styleClass="p-button-sm p-button-rounded" class="mr-3"
+            (click)="onSuccess()"></p-button>
+        <p-button label="Cancel" styleClass="p-button-sm p-button-rounded p-button-secondary"
+            (click)="onReject()"></p-button>
+    </div>
+</p-dialog>

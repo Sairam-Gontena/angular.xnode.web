@@ -1,3 +1,11 @@
 :host ::ng-deep.card {
     background-color: transparent !important;
 }
+
+:host ::ng-deep.p-button-sm p-button-rounded p-button-secondary:hover {
+    color: '#fff'
+}
+
+.user-txt{
+    font-size: 18px;
+}

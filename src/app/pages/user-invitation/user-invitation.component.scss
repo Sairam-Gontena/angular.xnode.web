@@ -1,5 +1,18 @@
-.inner-div {
-    background-color: #23222B;
+.main-div {
+    height: calc(100vh - 80px);
+}
+
+.table-header {
+    height: 10%;
+}
+
+.table-body {
+    height: 90%;
+}
+
+.header-div {
+    height: 40%;
+    background-color: green;
 }
 
 .active-color {

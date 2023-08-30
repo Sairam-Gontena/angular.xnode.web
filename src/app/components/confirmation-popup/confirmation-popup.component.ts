@@ -23,7 +23,7 @@ export class ConfirmationPopupComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + this.Data.userData.first_name;
+      this.invitationType = this.Data.type + ' ' + this.Data.userData.first_name + ' ' + this.Data.userData.last_name;
       this.showDialog()
     }
   }

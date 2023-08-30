@@ -25,13 +25,11 @@ export class DynamicTableComponent implements OnInit {
   showExport: boolean = true;
   showHeaderMenu: boolean = true;
   userDetails: any;
-
-
-  constructor(private router: Router, private refreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,) {
-  }
+  tableData: any;
 
   ngOnChanges(changes: SimpleChanges): void {
     this.dynamicData = this.inputData;
+    this.tableData = this.inputData;
   }
 
   ngOnInit(): void {
@@ -54,6 +52,7 @@ export class DynamicTableComponent implements OnInit {
 
   onCellInputBlur(event: any) {
   }
+  
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
@@ -65,5 +64,19 @@ export class DynamicTableComponent implements OnInit {
     this.userDetails = action;
   }
 
+  onInputChange(event: any) {
+    const inputValue = event.target.value;
+    this.dynamicData = this.tableData.filter((obj: any) => {
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key) && typeof obj[key] === 'string') {
+          if (obj[key].includes(inputValue)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+
+  }
 
 }

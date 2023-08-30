@@ -3,12 +3,19 @@
   line-height: 10px;
 }
 
+:host ::ng-deep.p-datatable {
+  background-color: #3A3942;
+  border-color: #595959;
+  border-width: 2px;
+}
+
 :host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
   background-color: #3A3942;
   border-color: #595959;
   min-width: 280px;
-  color: #fff
+  color: #fff;
 }
+
 
 .tablerow {
   background-color: #302E38;
@@ -28,10 +35,11 @@
 :host ::ng-deep.p-inputtext {
   background-color: #302E38 !important;
   border-width: 0px;
+  color: #fff
 }
 
 :host ::ng-deep.t-header-btn {
-  background-color: #23222B !important;
+  background-color: transparent !important;
   border-radius: 5px !important;
   border-width: 0px;
 }
@@ -69,6 +77,8 @@
   border-radius: 30px !important;
   width: 70px;
   height: 30;
+  border-width: 0px;
+
 }
 
 :host ::ng-deep.p-button.Success:enabled:hover {
@@ -81,6 +91,8 @@
   border-radius: 30px !important;
   width: 70px;
   height: 30;
+  border-width: 0px;
+
 }
 
 
@@ -92,6 +104,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 30px !important;
+  border-width: 0px;
   width: 70px;
   height: 30;
 }
@@ -100,16 +113,31 @@
   background-color: #D65B5B !important;
   color: #6F1010 !important;
   border-radius: 30px !important;
+  border-width: 0px;
 }
 
 :host ::ng-deep.p-button.Warning {
   background-color: #E1CF6B !important;
   color: #665910 !important;
   border-radius: 30px !important;
+  border-width: 0px;
 }
 
 :host ::ng-deep.p-button.Warning:enabled:hover {
   background-color: #E1CF6B !important;
   color: #665910 !important;
   border-radius: 30px !important;
+  border-width: 0px;
+}
+
+:host ::ng-deep.p-datatable ::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+:host ::ng-deep.p-inputtext {
+  background-color: #888;
+  border-radius: 3px;
+  width: 400px;
+  border-width: 0px;
 }
