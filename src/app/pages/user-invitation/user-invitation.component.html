@@ -1,6 +1,6 @@
-<div class="p-4 pb-6">
-    <div class="inner-div p-4">
-        <div class="flex justify-content-between">
+<div class="p-4">
+    <div class="surface-900 p-4 main-div">
+        <div class="table-header flex justify-content-between ">
             <div class="flex align-items-center">
                 <div class="flex font-medium text-xl active-color font-family">
                     Home
@@ -8,8 +8,14 @@
                 <div class="flex text-white font-medium ">
                     <i class="pi pi-chevron-right ml-1  text-sm"></i>
                 </div>
-                <div class="flex text-white font-semibold text-xl ml-1 font-family">
+                <div class="flex font-medium text-xl active-color font-family">
                     Accounts
+                </div>
+                <div class="flex text-white font-medium ">
+                    <i class="pi pi-chevron-right ml-1  text-sm"></i>
+                </div>
+                <div class="flex text-white font-semibold text-xl ml-1 font-family">
+                    Beta Users
                 </div>
             </div>
             <div class="flex align-items-center">
@@ -22,9 +28,8 @@
                 </p-button>
             </div>
         </div>
-        <div class="table-div mt-3">
+        <div class="table-body overflow-auto">
             <xnode-dynamic-table [inputData]="usersList" [cols]="cols"> </xnode-dynamic-table>
         </div>
     </div>
-
 </div>

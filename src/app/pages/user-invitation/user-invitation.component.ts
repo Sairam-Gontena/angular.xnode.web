@@ -21,7 +21,7 @@ export class UserInvitationComponent {
   }
 
   ngOnInit(): void {
-    this.utilsService.loadSpinner(true)
+    // this.utilsService.loadSpinner(true)
     this.getAllUsers()
     this.cols = TableData.Columns;
   }
