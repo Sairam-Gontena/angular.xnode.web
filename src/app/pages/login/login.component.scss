@@ -26,7 +26,7 @@
 :host ::ng-deep.p-input-icon-right>.p-inputtext,
 input {
     background: #2E2D36;
-    color: #ffffff;
+    color: #DEDEDE;
     width: 100% !important;
     border: solid 1px #2E2D36;
     border-radius: 0.75rem !important;
@@ -65,7 +65,8 @@ input {
 }
 
 .bg-image {
-    background-image: url('/assets/OnboardingBG.svg');
+    background-image: url('/assets/bg-image.svg');
+    background-position: left bottom;
 }
 
 .heading-color {
@@ -73,5 +74,5 @@ input {
 }
 
 :host ::ng-deep .p-card-body {
-    color: 23222B;
+    color: #23222B;
 }
