@@ -8,7 +8,7 @@
 
 .search-help {
     height: 50px !important;
-    width: 60vw !important;
+    width: 45vw !important;
 }
 
 :host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
@@ -24,4 +24,13 @@
 :host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
     color: white !important;
     border-color: transparent !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-tab-active .active-sub-item {
+    background-color: #1c3e52 !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-tab-active .side-menu-item:hover {
+    background-color: #1c3e52 !important;
+    opacity: 0.5 !important;
 }

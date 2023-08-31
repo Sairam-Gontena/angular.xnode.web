@@ -38,11 +38,11 @@ export class AppHeaderComponent implements OnInit {
   username: string = ''
   visible!: boolean;
   screenshot: any;
-  showDialog:boolean = false;
+  showDialog: boolean = false;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService,private fb: FormBuilder, private captureService: NgxCaptureService) {
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
   }
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
-    
+
 
   }
   toggleDialog() {
@@ -158,4 +158,13 @@ export class AppHeaderComponent implements OnInit {
   //   )
   //   .subscribe();
   // }
+
+  isHelpCentre() {
+    // Temporary
+    if (window.location.hash === "#/x-pilot" || window.location.hash === "#/my-products") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
