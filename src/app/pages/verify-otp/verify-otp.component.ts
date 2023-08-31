@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -9,12 +9,15 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   styleUrls: ['./verify-otp.component.scss']
 })
 export class VerifyOtpComponent implements OnInit {
+  @ViewChild('ngOtpInput') ngOtpInputRef: any;
   otp: any;
   loginResponse: any;
   currentUser: any;
   email: any;
   maskedEmail!: string;
   resendTimer: number = 60;
+  allowNumbersOnly = true;
+
   constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
 
   }
@@ -50,6 +53,7 @@ export class VerifyOtpComponent implements OnInit {
   resendVerification() {
     this.resendTimer = 60;
     this.otp = '';
+    this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
     this.apiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
       .then((response: any) => {

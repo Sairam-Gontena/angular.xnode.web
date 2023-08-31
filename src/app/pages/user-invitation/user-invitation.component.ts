@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import TableData from '../../../assets/json/table_users.json'
 import { RefreshListService } from '../../RefreshList.service'
+import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'xnode-user-invitation',
   templateUrl: './user-invitation.component.html',
@@ -11,6 +12,8 @@ import { RefreshListService } from '../../RefreshList.service'
 export class UserInvitationComponent {
   cols: any[] = [];
   usersList: any;
+  Actions: any[] = [];
+  items: MenuItem[] | undefined;
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService) {
     this.refreshListService.RefreshAdminUserList().subscribe((data) => {
@@ -24,6 +27,9 @@ export class UserInvitationComponent {
     this.utilsService.loadSpinner(true)
     this.getAllUsers()
     this.cols = TableData.Columns;
+    this.Actions = TableData.Actions;
+    this.items = [{ label: 'Home' }, { label: 'Accounts' }, { label: 'Beta Users' }];
+
   }
 
   getAllUsers(): void {

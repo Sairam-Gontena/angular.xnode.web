@@ -18,6 +18,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 @NgModule({
   declarations: [
   ],
@@ -39,7 +40,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    BreadcrumbModule
   ],
   exports: [
     FormsModule,
@@ -60,7 +62,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    BreadcrumbModule
   ]
 })
 export class SharedModule { }

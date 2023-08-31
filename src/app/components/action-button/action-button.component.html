@@ -1,0 +1,8 @@
+<div *ngFor="let btn of Actions">
+    <p-button [styleClass]="'p-button-rounded status mr-2 ' + btn.backgroundColor"
+        (click)="onClickAction({type:btn.label,userData:Data})">
+        <span class="text-sm font-semibold font-family-inter">
+            {{btn.label}}
+        </span>
+    </p-button>
+</div>

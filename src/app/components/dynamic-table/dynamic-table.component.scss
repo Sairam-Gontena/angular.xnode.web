@@ -7,6 +7,7 @@
   background-color: #3A3942;
   border-color: #595959;
   border-width: 2px;
+  border: 1px solid #595959
 }
 
 :host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
@@ -140,4 +141,22 @@
   border-radius: 3px;
   width: 400px;
   border-width: 0px;
+}
+
+:host ::ng-deep.p-inputtext:focus-visible {
+  border-color: green !important;
+  border-width: 0px !important;
+}
+
+:host ::ng-deep.p-paginator {
+  background-color: #23222B;
+  border-color: transparent;
+}
+
+:host ::ng-deep.p-paginator .p-dropdown .p-dropdown-label {
+  border-radius: 10px;
+}
+
+.email-text-color {
+  color: #02ADEE
 }
