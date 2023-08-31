@@ -11,6 +11,7 @@ import { RefreshListService } from '../../RefreshList.service'
 export class UserInvitationComponent {
   cols: any[] = [];
   usersList: any;
+  Actions: any[] = [];
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService) {
     this.refreshListService.RefreshAdminUserList().subscribe((data) => {
@@ -24,6 +25,7 @@ export class UserInvitationComponent {
     this.utilsService.loadSpinner(true)
     this.getAllUsers()
     this.cols = TableData.Columns;
+    this.Actions = TableData.Actions;
   }
 
   getAllUsers(): void {
