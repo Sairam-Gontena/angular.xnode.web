@@ -111,7 +111,8 @@ export class AppComponent implements OnInit {
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
-      '&username=' + JSON.parse(currentUser).first_name + " " + JSON.parse(currentUser).last_name;
+      if (currentUser)
+        '&username=' + JSON.parse(currentUser).first_name + " " + JSON.parse(currentUser).last_name;
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
