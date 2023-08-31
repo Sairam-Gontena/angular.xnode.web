@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -15,6 +16,7 @@ export class VerifyOtpComponent implements OnInit {
   email: any;
   maskedEmail!: string;
   resendTimer: number = 60;
+  // veifyOtpForm: FormGroup;
   constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
 
   }
