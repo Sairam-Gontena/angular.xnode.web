@@ -18,6 +18,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() dynamicData: any;
   @Input() inputData: any;
   @Input() cols: any[] = [];
+  @Input() Actions: any[] = [];
   headers: any;
   editable: boolean = true;
   showSearch: boolean = true;
@@ -61,9 +62,13 @@ export class DynamicTableComponent implements OnInit {
   allValuesTrue(values: any): boolean {
     return Object.values(values).every(value => value === false);
   }
+  handleDataAndAction(data: any) {
+    console.log(data)
+    this.showConfirmationPopover = true;
+    this.userDetails = data;
+  }
   onClickAction(action: any): void {
-    this.showConfirmationPopover = true
-    this.userDetails = action;
+
   }
 
   onInputChange(event: any) {

@@ -31,6 +31,24 @@
         {
             "field": "action",
             "header": "Action"
+        },
+        {
+            "field": "role",
+            "header": "Role"
+        }
+    ],
+    "Actions": [
+        {
+            "label": "Invite",
+            "backgroundColor": "Success"
+        },
+        {
+            "label": "Hold",
+            "backgroundColor": "Warning"
+        },
+        {
+            "label": "Reject",
+            "backgroundColor": "Danger"
         }
     ]
 }

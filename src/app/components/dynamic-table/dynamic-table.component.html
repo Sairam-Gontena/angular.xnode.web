@@ -1,7 +1,7 @@
-<xnode-confirmation-popup [Data]="userDetails" *ngIf="showConfirmationPopover" ></xnode-confirmation-popup>
-<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="490px"  [rowHover]="true" dataKey="id" [globalFilterFields]="headers"
-     styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal" [value]="dynamicData"
-     [columns]="cols">
+<xnode-confirmation-popup [Data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
+<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="490px" [rowHover]="true" dataKey="id"
+     [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal"
+     [value]="dynamicData" [columns]="cols">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center">
                <span class="p-input-icon-left" *ngIf="showSearch">
@@ -55,74 +55,12 @@
                               {{rowData[col.field]}}
                          </div>
                          <div class="flex" *ngIf="rowData[col.field] == null">
-                              <p-button (click)="onClickAction({type:'invite',userData:rowData})"
-                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Success'">
-                                   <span class="text-sm font-semibold font-family-inter">
-                                        Invite
-                                   </span>
-                              </p-button>
-                              <p-button (click)="onClickAction({type:'hold',userData:rowData})"
-                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Warning'">
-                                   <span class="text-sm font-semibold font-family-inter">
-                                        Hold
-                                   </span>
-                              </p-button>
-                              <p-button (click)="onClickAction({type:'reject',userData:rowData})"
-                                   [styleClass]="'p-button-rounded status mr-2 ' + 'Danger'">
-                                   <span class="text-sm font-semibold font-family-inter">
-                                        Reject
-                                   </span>
-                              </p-button>
+                              <xnode-action-button [Actions]="Actions" [Data]="rowData"
+                                   (dataActionEvent)="handleDataAndAction($event)"
+                                   class="flex flex-row flex-wrap"></xnode-action-button>
                          </div>
                     </ng-container>
                </td>
           </tr>
      </ng-template>
-     <!-- <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-i="rowIndex">
-          <tr *ngIf="editable" class="text-white text-xs custom-cell"
-               [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
-               <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
-                    <p-tableCheckbox [value]="true"></p-tableCheckbox>
-               </td>
-               <td *ngFor="let col of headers" class="border-transparent" [pEditableColumn]="rowData[col]"
-                    pEditableColumnField="col">
-                    <ng-container *ngIf="col !== 'action' && col !== 'interestlevel'">
-                         {{ rowData[col.field] }}
-                    </ng-container>
-                    <ng-container *ngIf="col === 'interestlevel'">
-                         <div class="flex">
-                              <ng-container *ngFor="let key of rowData[col] | keyvalue">
-                                   <span *ngIf="key.value">{{ key.key}}</span>
-                              </ng-container>
-                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="col === 'action'">
-                         <div class="flex">
-                              <div *ngFor="let key of getObjectKeys(rowData[col].values)">
-                                   <div *ngIf="allValuesTrue(rowData[col].values)"> <p-button
-                                             [styleClass]="'p-button-rounded status mr-2 ' + rowData[col].color[key]"
-                                             *ngIf="!rowData[col].values[key]">
-                                             <span class="text-sm font-semibold font-family-inter">
-                                                  {{ key | titlecase }}
-                                             </span>
-                                        </p-button>
-                                   </div>
-                                   <ng-container *ngIf=" !allValuesTrue(rowData[col].values)">
-                                        <span class="text-sm font-semibold font-family-inter"
-                                             [ngClass]="rowData[col].color[key]"
-                                             *ngIf="rowData[col].values[key] && rowData[col].color[key] == 'Success' ">
-                                             {{ key + 'd' | titlecase }}
-                                        </span>
-                                        <span class="text-sm font-semibold font-family-inter"
-                                             [ngClass]="rowData[col].color[key]"
-                                             *ngIf="rowData[col].values[key] && rowData[col].color[key] !== 'Success'">
-                                             {{ key | titlecase }}
-                                        </span>
-                                   </ng-container>
-                              </div>
-                         </div>
-                    </ng-container>
-               </td>
-          </tr>
-     </ng-template> -->
 </p-table>
