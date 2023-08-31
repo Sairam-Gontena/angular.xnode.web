@@ -15,7 +15,10 @@ import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
 import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
-import { ProductFeedbackComponent } from '../components/product-feedback/product-feedback.component';
+import { ReportBugComponent } from '../components/report-bug/report-bug.component';
+import { CustomerFeedbackComponent } from '../components/customer-feedback/customer-feedback.component';
+import { ThankYouComponent } from '../components/thank-you/thank-you.component';
+import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
 
 
 @NgModule({
@@ -34,7 +37,10 @@ import { ProductFeedbackComponent } from '../components/product-feedback/product
         TemplateBuilderPublishHeaderComponent,
         NotificationPanelComponent,
         ConfirmationPopupComponent,
-        ProductFeedbackComponent
+        ReportBugComponent,
+        CustomerFeedbackComponent,
+        ThankYouComponent,
+        GeneralFeedbackComponent
     ],
     imports: [
         CommonModule,
@@ -55,7 +61,10 @@ import { ProductFeedbackComponent } from '../components/product-feedback/product
         TemplateBuilderPublishHeaderComponent,
         NotificationPanelComponent,
         ConfirmationPopupComponent,
-        ProductFeedbackComponent
+        ReportBugComponent,
+        CustomerFeedbackComponent,
+        ThankYouComponent,
+        GeneralFeedbackComponent
     ]
 })
 export class SharedComponentModule { }

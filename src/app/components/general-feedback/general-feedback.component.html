@@ -1,0 +1,90 @@
+<p-dialog *ngIf="generalFeedbackDialog" header="Report a bug" class="feedback" [(visible)]="generalFeedbackDialog"
+    [modal]="true" [style]="{ width: '38vw', height: '43vw'}" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header" class="p-2">
+        <div class="flex align-items-center">
+            <i class="pi pi-angle-left mr-3" (click)="customFeedback()"></i>
+            <div>
+                <p class="m-0 font-bold text-2xl heading-color">General Feedback</p>
+                <p class="m-0 text-sm font-medium heading-color">Your feedback will be used to improve xnode</p>
+            </div>
+
+        </div>
+    </ng-template>
+    <div class="p-4 mt-4">
+        <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback()">
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                <div class="flex justify-content-end">
+                    <a class="font-medium text-base no-underline pointer">View feedback history<i
+                            class="pi pi-arrow-right"></i> </a>
+                </div>
+            </div>
+            <div class="grid flex justify-content-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                <p class="text-base font-medium">How would you like to rate your experience</p>
+            </div>
+            <div class="grid flex justify-content-center field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                <p-rating [(ngModel)]="value" [stars]="1">
+                    <ng-template pTemplate="cancel">
+                        <img src="./assets/star1.svg" width="25px" height="25px" />
+                    </ng-template>
+                    <ng-template pTemplate="onicon">
+                        <img src="./assets/star5.svg" width="25px" height="25px" />
+                    </ng-template>
+                    <ng-template pTemplate="officon">
+                        <div class="flex flex-wrap justify-content-center gap-3">
+                            <img src="./assets/star1.svg" width="60px" height="60px" />
+                            <img src="./assets/star2.svg" width="60px" height="60px" />
+                            <img src="./assets/star3.svg" width="60px" height="60px" />
+                            <img src="./assets/star4.svg" width="60px" height="60px" />
+                            <img src="./assets/star5.svg" width="60px" height="60px" />
+                        </div>
+                    </ng-template>
+                </p-rating>
+            </div>
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
+                <div class="text-sm font-normal">Tell us more (optional)</div>
+                <textarea rows="3" cols="30" pInputTextarea formControlName="tellUsMore"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['tellUsMore'].errors }" class="col-12"
+                    placeholder="Describe more about your experience"></textarea>
+                <div *ngIf="submitted && feedback['tellUsMore'].errors" class="invalid-feedback">
+                    <div *ngIf="feedback['tellUsMore'].errors?.['required']">
+                        Help us improve is required</div>
+                </div>
+            </div>
+            <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+                    <div class="text-sm font-normal">Product</div>
+                    <input type="text" pInputText formControlName="product" placeholder="Finbuddy"
+                        [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
+                    <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
+                        <div *ngIf="feedback['product'].errors?.['required']">
+                            Product is required</div>
+                    </div>
+                </div>
+                <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+                    <div class="text-sm font-normal">Section</div>
+                    <input type="text" pInputText formControlName="section" placeholder="e.g., Dashboard"
+                        [ngClass]="{ 'is-invalid': submitted && feedback['section'].errors }" class="col-12" />
+                    <div *ngIf="submitted && feedback['section'].errors" class="invalid-feedback">
+                        <div *ngIf="feedback['section'].errors?.['required']">
+                            section is required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
+
+                <div class="text-sm font-normal">Screenshot</div>
+                <div class="container grid m-0 mt-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
+                    <img [src]="screenshot" width="40%">
+                </div>
+            </div>
+        </form>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
+        <p-button label="Send Feedback" styleClass="p-button-rounded p-button-primary"
+            (click)="sendFeedback()"></p-button>
+
+    </ng-template>
+</p-dialog>
+<xnode-thank-you [thanksDialog]="thanksDialog"></xnode-thank-you>

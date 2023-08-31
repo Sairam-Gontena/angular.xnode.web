@@ -1,0 +1,19 @@
+.heading-color {
+    color: #DEDEDE;
+}
+
+.circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    background-color: #2E2D36;
+    border-color: 1px solid #535354;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+:host::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #ccc;
+}

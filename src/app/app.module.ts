@@ -14,6 +14,7 @@ import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [

@@ -1,18 +1,22 @@
+.heading-color {
+    color: #DEDEDE;
+}
+
 .container {
     border-radius: 15px;
     padding: 1.5rem;
     text-align: center;
-    border: dashed 1px #595959;
+    // border: dashed 1px #595959;
     position: relative;
-    height: 100%;
+    height: 60%;
     display: flex;
 
     input {
         opacity: 0;
         position: absolute;
         z-index: 2;
-        width: 100%;
-        height: 100%;
+        width: 40%;
+        height: 70%;
         top: 0;
         left: 0;
     }
@@ -39,21 +43,26 @@ textarea {
     padding-bottom: 6px;
     border: 1px solid #2E2D36;
 }
-:host::ng-deep.custom-dropdown .p-dropdown{
-    width: 100%; /* or any other desired width */
+
+:host::ng-deep.custom-dropdown .p-dropdown {
+    width: 100%;
+    /* or any other desired width */
     color: #ffffff;
     background: #2E2D36;
 }
-:host::ng-deep.browseFiles .p-button{
+
+:host::ng-deep.browseFiles .p-button {
     border-radius: 2rem;
     background-color: #23222B !important;
     color: #2C91FD !important;
     border: solid 1px #2C91FD;
 }
-:host::ng-deep.p-dialog .p-dialog-header {
-    padding: 1rem;
+
+:host::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #ccc;
 }
-  .invalid-feedback {
+
+.invalid-feedback {
     color: red;
 }
 
