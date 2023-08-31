@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
+        console.log(event.url)
         if (event.url === '/x-pilot') {
           this.isBotIconVisible = false
         } else {
@@ -156,7 +157,7 @@ export class AppComponent implements OnInit {
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
       || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
       || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
+      || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log' || window.location.hash === '#/help-centre';
   }
 
 
