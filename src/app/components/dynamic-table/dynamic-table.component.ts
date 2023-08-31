@@ -26,6 +26,7 @@ export class DynamicTableComponent implements OnInit {
   showHeaderMenu: boolean = true;
   userDetails: any;
   tableData: any;
+  showConfirmationPopover: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     this.dynamicData = this.inputData;
@@ -52,7 +53,7 @@ export class DynamicTableComponent implements OnInit {
 
   onCellInputBlur(event: any) {
   }
-  
+
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
@@ -61,6 +62,7 @@ export class DynamicTableComponent implements OnInit {
     return Object.values(values).every(value => value === false);
   }
   onClickAction(action: any): void {
+    this.showConfirmationPopover = true
     this.userDetails = action;
   }
 
