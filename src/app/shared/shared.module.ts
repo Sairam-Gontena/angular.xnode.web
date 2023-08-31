@@ -18,6 +18,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { ChipModule } from 'primeng/chip';
+import { SelectButtonModule } from 'primeng/selectbutton';
 @NgModule({
   declarations: [
   ],
@@ -39,7 +43,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
-    ConfirmDialogModule
+    AvatarModule,
+    AvatarGroupModule,
+    ConfirmDialogModule,
+    ChipModule,
+    SelectButtonModule
   ],
   exports: [
     FormsModule,
@@ -60,7 +68,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AvatarModule,
+    AvatarGroupModule,
+    ChipModule,
+    SelectButtonModule
   ]
 })
 export class SharedModule { }
