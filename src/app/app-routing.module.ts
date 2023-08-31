@@ -19,19 +19,16 @@ const routes: Routes = [
     path: 'forgot-password',
     loadChildren: () =>
       import('./pages/forgot-password/forgotpassword.module').then((m) => m.ForgotPasswordModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'reset-password',
     loadChildren: () =>
       import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
-    canActivate: [AuthGuard]
 
   },
   {
     path: 'verify-otp',
     loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'usecases',
@@ -196,7 +193,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
   { path: '**', component: PageNotFoundComponent },

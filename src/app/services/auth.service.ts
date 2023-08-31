@@ -13,7 +13,7 @@ export class AuthService {
     private token: string | null = null;
 
     login(body: any) {
-        return axios.post(`${this.apiUrl}/login`, body);
+        return axios.post(`${this.apiUrl}auth/beta/login`, body);
     }
 
     logout(): void {

@@ -105,11 +105,13 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    const currentUser = localStorage.getItem('currentUser');
     if (localStorage.getItem('record_id') !== null) {
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
+      '&username=' + JSON.parse(currentUser).first_name + " " + JSON.parse(currentUser).last_name;
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
