@@ -1,10 +1,14 @@
 <xnode-confirmation-popup [Data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
-<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="490px" [rowHover]="true" dataKey="id"
-     [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal"
-     [value]="dynamicData" [columns]="cols">
+<p-table [paginator]="true" [rows]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+     [rowsPerPageOptions]="[10, 25, 50]" #dt [rows]="10" [scrollable]="true" scrollHeight="420px" [rowHover]="true"
+     dataKey="id" [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true"
+     scrollDirection="horizontal" [value]="dynamicData" [columns]="cols"
+     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" showCurrentPageReport]="true"
+>
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center">
-               <span class="p-input-icon-left" *ngIf="showSearch">
+               <span class="p-input-icon-left" *ngIf="showSearch"> showCurrentPageReport]="true"
+
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" placeholder="Search by User Name, Lead No ..."
                          (input)="onInputChange($event)" />
@@ -42,11 +46,12 @@
                     <p-tableCheckbox [value]="true"></p-tableCheckbox>
                </td>
                <td *ngFor="let col of columns" class="border-transparent">
-                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'">
+                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'"
+                         [ngClass]="col.field === 'email' ? 'email-text-color':''">
                          {{rowData[col.field]}}
                     </div>
-                    <div *ngIf="col.field === 'interest_level'"
-                         [ngClass]="rowData[col.field] === 'High' ? 'Success' : rowData[col.field] === 'Medium' ? 'Warning' : rowData[col.field] === 'Low' ? 'Danger' : null">
+                    <div *ngIf=" col.field==='interest_level'" [ngClass]=" rowData[col.field]==='High' ? 'Success' : rowData[col.field]==='Medium'
+                         ? 'Warning' : rowData[col.field]==='Low' ? 'Danger' : null">
                          {{rowData[col.field]}}
                     </div>
                     <ng-container *ngIf="col.field === 'action'">
@@ -62,5 +67,11 @@
                     </ng-container>
                </td>
           </tr>
+     </ng-template>
+     <ng-template pTemplate="paginatorleft">
+          <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+     </ng-template>
+     <ng-template pTemplate="paginatorright">
+          <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
      </ng-template>
 </p-table>
