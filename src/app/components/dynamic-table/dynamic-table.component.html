@@ -28,9 +28,9 @@
      </ng-template>
      <ng-template pTemplate="header" let-columns>
           <tr class="custom-cell">
-               <th style="justify-content: center;align-items: center; min-width: 30px;">
+               <!-- <th style="justify-content: center;align-items: center; min-width: 30px;">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-               </th>
+               </th> -->
                <th *ngFor="let col of columns" [ngClass]="'tableheader'">
                     {{ col.header }}
                     <p-columnFilter type="text" [field]="col.field" display="menu"></p-columnFilter>
@@ -42,9 +42,9 @@
      <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
           <tr class="text-white text-xs custom-cell" [ngClass]="i % 2 == 0 ? 'even' : 'odd'"
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
-               <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
+               <!-- <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
                     <p-tableCheckbox [value]="true"></p-tableCheckbox>
-               </td>
+               </td> -->
                <td *ngFor="let col of columns" class="border-transparent">
                     <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'"
                          [ngClass]="col.field === 'email' ? 'email-text-color':''">
