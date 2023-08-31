@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
-        console.log(event.url)
         if (event.url === '/x-pilot') {
           this.isBotIconVisible = false
         } else {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HelpCentreComponent } from './help-centre.component';
 import { HelpCentreRoutingModule } from './help-centre-routing.module';
 import { ButtonModule } from 'primeng/button';
-
+import { AccordionModule } from 'primeng/accordion';
 @NgModule({
     declarations: [
         HelpCentreComponent,
@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
         CommonModule,
         ButtonModule,
         HelpCentreRoutingModule,
+        AccordionModule,
     ]
 })
 export class HelpCentreModule { }

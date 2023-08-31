@@ -1,3 +1,27 @@
+.help-centre-div {
+    background-color: #23222B;
+}
+
 .send-email-div {
     background-color: #000759 !important;
+}
+
+.search-help {
+    height: 50px !important;
+    width: 60vw !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
+    background-color: transparent !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-content {
+    background-color: transparent !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
+    color: white !important;
+    border-color: transparent !important;
 }

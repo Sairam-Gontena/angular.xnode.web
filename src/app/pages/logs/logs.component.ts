@@ -20,7 +20,7 @@ export class LogsComponent implements OnInit {
     let localItem = localStorage.getItem('currentUser')
     if (localItem) {
       let user = JSON.parse(localItem);
-      this.apiService.get('/get_metadata/' + user?.email).then((response: any) => {
+      this.apiService.getApi('notifications/retrieve/dev?email=' + user?.email).then((response: any) => {
         this.logsData = response.data.data;
       }).catch((err: any) => {
         console.log(err);
