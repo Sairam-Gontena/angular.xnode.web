@@ -9,16 +9,16 @@
             "header": "Product Name"
         },
         {
-            "field": "product_description",
+            "field": "description",
             "header": "Description"
         },
         {
-            "field": "created_on",
-            "header": "Created on"
+            "field": "start_time",
+            "header": "Start Time"
         },
         {
-            "field": "product_url",
-            "header": "Url"
+            "field": "end_time",
+            "header": "End Time"
         },
         {
             "field": "status",
