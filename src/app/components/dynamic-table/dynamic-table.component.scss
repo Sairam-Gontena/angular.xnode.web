@@ -148,6 +148,15 @@
   border-width: 0px !important;
 }
 
-:host ::ng-deep.p-column-filter-overlay-menu .p-column-filter-operator {
-  background-color: blue;
+:host ::ng-deep.p-paginator {
+  background-color: #23222B;
+  border-color: transparent;
+}
+
+:host ::ng-deep.p-paginator .p-dropdown .p-dropdown-label {
+  border-radius: 10px;
+}
+
+.email-text-color {
+  color: #02ADEE
 }
