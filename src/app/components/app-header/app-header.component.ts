@@ -171,17 +171,10 @@ export class AppHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
-  // showDialog() {
-  //   this.visible = true;
-  //   this.captureService
-  //   .getImage(document.body, true)
-  //   .pipe(
-  //     tap((img) => {
-  //       this.screenshot = img;
-  //     })
-  //   )
-  //   .subscribe();
-  // }
+  onClickLogo(): void {
+    this.utilsService.showProductStatusPopup(false);
+    this.router.navigate(['/my-products']);
+  }
 
   isHelpCentre() {
     // Temporary

@@ -49,8 +49,8 @@ export class UseCasesComponent implements OnInit {
           this.get_Usecases();
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utils.loadSpinner(false);
         }
-        this.utils.loadSpinner(false);
       })
       .catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
@@ -70,6 +70,7 @@ export class UseCasesComponent implements OnInit {
           this.useCases = data?.usecase || [];
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utils.showProductStatusPopup(true);
         }
         this.utils.loadSpinner(false);
       })
