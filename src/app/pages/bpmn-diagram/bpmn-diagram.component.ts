@@ -222,6 +222,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           this.useCases = data?.usecase || [];
           this.graph(this.useCases);
           this.utilsService.loadSpinner(false);
+        } else {
+          this.utilsService.showProductStatusPopup(true);
         }
       })
       .catch(error => {

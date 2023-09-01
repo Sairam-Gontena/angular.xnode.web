@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UtilsService {
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public openSubmenu: Observable<boolean> = this.showLayoutSubmenu.asObservable();
@@ -13,6 +14,12 @@ export class UtilsService {
 
   private showToaster: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
   public getMeToastObject: Observable<Object> = this.showToaster.asObservable();
+
+  private loginUser: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
+  public getMeLoginUser: Observable<Object> = this.loginUser.asObservable();
+
+  private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
   constructor() { }
 
@@ -30,6 +37,14 @@ export class UtilsService {
 
   loadToaster(obj: any): void {
     this.showToaster.next(obj);
+  }
+
+  loadLoginUser(obj: any): void {
+    this.loginUser.next(obj);
+  }
+
+  showProductStatusPopup(event: any): void {
+    this.productStatus.next(event);
   }
 
 }

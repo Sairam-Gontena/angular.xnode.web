@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -14,6 +15,7 @@ import { MessageService } from 'primeng/api';
 export class AppComponent implements OnInit {
   title = 'xnode';
   isSideWindowOpen: boolean = false;
+  showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
   email: String = '';
   id: String = '';
@@ -31,8 +33,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
-    private subMenuLayoutUtil: UtilsService) {
-
+    private subMenuLayoutUtil: UtilsService,
+    private spinner: NgxSpinnerService) {
   }
 
   ngOnInit(): void {
@@ -48,14 +50,22 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
-        this.loading = event;
+        if (event) {
+          this.spinner.show();
+        } else {
+          this.spinner.hide();
+        }
       }, 0);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
+    this.utilsService.getMeProductStatus.subscribe((event: any) => {
+      this.showProductStatusPopup = event;
+    });
     this.currentPath = window.location.hash;
   }
+
 
   loadIframeUrl(): void {
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
@@ -64,7 +74,6 @@ export class AppComponent implements OnInit {
       if (contentWindow) {
         window.addEventListener('message', (event) => {
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
-            console.log('not matched');
             return;
           }
           if (event.data === 'triggerCustomEvent') {
@@ -151,7 +160,7 @@ export class AppComponent implements OnInit {
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
       || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
       || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
+      || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log' || window.location.hash === '#/help-centre';
   }
 
 

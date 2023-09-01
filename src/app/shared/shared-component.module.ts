@@ -14,7 +14,10 @@ import { TemplateBuilderPublishHeaderComponent } from '../components/template-bu
 import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
-
+import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
+import { ProductFeedbackComponent } from '../components/product-feedback/product-feedback.component';
+import { ActionButtonComponent } from '../components/action-button/action-button.component';
+import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +33,11 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
+        ConfirmationPopupComponent,
+        ProductFeedbackComponent,
+        ActionButtonComponent,
+        ProductAlertPopupComponent
     ],
     imports: [
         CommonModule,
@@ -49,7 +56,11 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
         StepComponent,
         DynamicTableComponent,
         TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent
+        NotificationPanelComponent,
+        ConfirmationPopupComponent,
+        ProductFeedbackComponent,
+        ActionButtonComponent,
+        ProductAlertPopupComponent
     ]
 })
 export class SharedComponentModule { }

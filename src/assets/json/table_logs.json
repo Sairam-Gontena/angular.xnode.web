@@ -1,0 +1,28 @@
+{
+    "Columns": [
+        {
+            "field": "title",
+            "header": "Project"
+        },
+        {
+            "field": "product_name",
+            "header": "Product Name"
+        },
+        {
+            "field": "description",
+            "header": "Description"
+        },
+        {
+            "field": "start_time",
+            "header": "Start Time"
+        },
+        {
+            "field": "end_time",
+            "header": "End Time"
+        },
+        {
+            "field": "status",
+            "header": "Status"
+        }
+    ]
+}
