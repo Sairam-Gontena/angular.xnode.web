@@ -34,11 +34,11 @@ export class ConfirmationPopupComponent {
   }
 
   onSuccess(): void {
-    if (this.Data.type === 'invite') {
+    if (this.Data.type === 'Invite') {
       this.updateUserId(this.Data.userData.id, 'invited')
-    } else if (this.Data.type === 'hold') {
+    } else if (this.Data.type === 'Hold') {
       this.updateUserId(this.Data.userData.id, 'hold')
-    } else if (this.Data.type === 'reject') {
+    } else if (this.Data.type === 'Reject') {
       this.updateUserId(this.Data.userData.id, 'rejected')
     }
     this.visible = false;

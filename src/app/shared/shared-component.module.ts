@@ -16,7 +16,8 @@ import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
 import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
 import { ProductFeedbackComponent } from '../components/product-feedback/product-feedback.component';
-
+import { ActionButtonComponent } from '../components/action-button/action-button.component';
+import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,9 @@ import { ProductFeedbackComponent } from '../components/product-feedback/product
         TemplateBuilderPublishHeaderComponent,
         NotificationPanelComponent,
         ConfirmationPopupComponent,
-        ProductFeedbackComponent
+        ProductFeedbackComponent,
+        ActionButtonComponent,
+        ProductAlertPopupComponent
     ],
     imports: [
         CommonModule,
@@ -55,7 +58,9 @@ import { ProductFeedbackComponent } from '../components/product-feedback/product
         TemplateBuilderPublishHeaderComponent,
         NotificationPanelComponent,
         ConfirmationPopupComponent,
-        ProductFeedbackComponent
+        ProductFeedbackComponent,
+        ActionButtonComponent,
+        ProductAlertPopupComponent
     ]
 })
 export class SharedComponentModule { }

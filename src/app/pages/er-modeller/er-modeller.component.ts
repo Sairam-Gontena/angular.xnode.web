@@ -30,7 +30,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   dataModel: any;
   @Input() erModelInput: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private router: Router, private utilsService: UtilsService) {
+  constructor(private apiService: ApiService, private messageService: MessageService,
+    private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private router: Router,
+    private utilsService: UtilsService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
     this.router.events.subscribe((data: any) => {
@@ -97,6 +99,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utilsService.showProductStatusPopup(true);
         }
         this.utilsService.loadSpinner(false);
       })

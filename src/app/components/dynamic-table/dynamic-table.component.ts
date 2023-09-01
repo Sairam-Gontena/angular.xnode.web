@@ -18,6 +18,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() dynamicData: any;
   @Input() inputData: any;
   @Input() cols: any[] = [];
+  @Input() Actions: any[] = [];
   headers: any;
   editable: boolean = true;
   showSearch: boolean = true;
@@ -26,6 +27,7 @@ export class DynamicTableComponent implements OnInit {
   showHeaderMenu: boolean = true;
   userDetails: any;
   tableData: any;
+  showConfirmationPopover: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     this.dynamicData = this.inputData;
@@ -52,7 +54,7 @@ export class DynamicTableComponent implements OnInit {
 
   onCellInputBlur(event: any) {
   }
-  
+
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
@@ -60,8 +62,13 @@ export class DynamicTableComponent implements OnInit {
   allValuesTrue(values: any): boolean {
     return Object.values(values).every(value => value === false);
   }
+  handleDataAndAction(data: any) {
+    console.log(data)
+    this.showConfirmationPopover = true;
+    this.userDetails = data;
+  }
   onClickAction(action: any): void {
-    this.userDetails = action;
+
   }
 
   onInputChange(event: any) {
