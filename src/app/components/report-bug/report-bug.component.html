@@ -13,12 +13,13 @@
     <div class="p-4 mt-4">
         <form [formGroup]="feedbackForm" (ngSubmit)="feedbackReport()">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                <div class="flex justify-content-between">
-                    <p class="text-sm font-normal">Product</p>
-                    <a class="font-medium text-base no-underline pointer" routerLink="/forgot-password">View bug
+                <label class="flex justify-content-between flex-wrap">
+                    <div class="text-sm font-normal">Product</div>
+                    <a class="font-medium text-base no-underline pointer">View bug
                         history <i class="pi pi-arrow-right"></i> </a>
-                </div>
+                </label>
                 <input type="text" pInputText formControlName="product" placeholder="Finbuddy"
+                    [(ngModel)]="templates[0].name"
                     [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
                 <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                     <div *ngIf="feedback['product'].errors?.['required']">
@@ -26,25 +27,26 @@
                 </div>
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
-                <div class="text-sm font-normal">Section</div>
+                <label class="text-sm font-normal">Section</label>
                 <input type="text" pInputText formControlName="section" placeholder="e.g., Dashboard"
                     [ngClass]="{ 'is-invalid': submitted && feedback['section'].errors }" class="col-12" />
                 <div *ngIf="submitted && feedback['section'].errors" class="invalid-feedback">
                     <div *ngIf="feedback['section'].errors?.['required']">
-                        section is required</div>
+                        Section is required</div>
                 </div>
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
-                <div class="text-sm font-normal">Choose priority</div>
-                <input type="text" pInputText formControlName="priority" placeholder="Priority"
-                    [ngClass]="{ 'is-invalid': submitted && feedback['priority'].errors }" class="col-12" />
+                <label class="text-sm font-normal">Choose priority</label>
+                <p-dropdown formControlName="priority" [options]="priorities"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['priority'].errors }" optionLabel="name"
+                    class="custom-dropdown"></p-dropdown>
                 <div *ngIf="submitted && feedback['priority'].errors" class="invalid-feedback">
-                    <div *ngIf="feedback['priority'].errors?.['priority']">
-                        priority is required</div>
+                    <div *ngIf="feedback['priority'].errors?.['required']">
+                        Choose priority is required</div>
                 </div>
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
-                <div class="text-sm font-normal"> Help us improve</div>
+                <label class="text-sm font-normal"> Help us improve</label>
                 <textarea rows="3" cols="30" pInputTextarea formControlName="helpUsImprove"
                     [ngClass]="{ 'is-invalid': submitted && feedback['helpUsImprove'].errors }" class="col-12"
                     placeholder="Share your thoughts on the product"></textarea>
@@ -53,19 +55,76 @@
                         Help us improve is required</div>
                 </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngIf="screenshot !== ''">
+                <label class="text-sm font-normal">Screenshot</label>
+                <div class="container-img grid m-0">
+                    <img [src]="screenshot" width="59%">
+                </div>
+                <div class="single-file grid ml-0 mt-0 w-7 h-7 p-2">
+                    <div class="info ml-4">
+                        <h4 class="name">
+                            image.png
+                        </h4>
+                    </div>
+                    <div class="delete ml-8">
+                        <i class="pi pi-trash" style="font-size: 1.5rem" (click)="onDeleteImage()"></i>
+                    </div>
+                </div>
 
-                <div class="text-sm font-normal">Screenshot</div>
-                <div class="container grid m-0 mt-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
-                    <img [src]="screenshot" width="40%">
+            </div>
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-3" *ngIf="screenshot === ''">
+                <div class="text-sm font-medium">Attach File</div>
+                <div class="container grid m-0 mt-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 " appDnd
+                    (fileDropped)="onFileDropped($event)">
+                    <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
+                        [class.selected]=" draganddropSelected"
+                        [class.invalid]="isFormSubmitted && !draganddropSelected">
+                        <input type="file" #fileDropRef id="fileDropRef"
+                            (change)="fileBrowseHandler($any($event).target.files)"
+                            [ngClass]="{ 'is-invalid': submitted && feedbackForm.get('logoFile')?.errors }" />
+                        <ng-template #elseBlock>
+                            <input type="file" #fileDropRef id="fileDropRef"
+                                (change)="fileBrowseHandler($any($event).target.files)" disabled />
+                        </ng-template>
+                        <img src="./assets/sky.svg" width="64px">
+                        <h3 class="font-semibold text-sm">Drag and Drop </h3>
+                    </div>
+                    <div class="field col-2">
+                        <h3 class="mt-4 font-semibold text-sm">(OR)</h3>
+                    </div>
+                    <div class="field col-5 mt-4" (click)="selectBrowser()" [class.selected]="browserSelected"
+                        [class.invalid]="isFormSubmitted && !browserSelected">
+                        <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm browseFiles"
+                            styleClass=""></p-button>
+                    </div>
+                    <div class="font-semibold text-sm text-500">
+                        Supported file types JPG, PNG (upload file size limit 2MB)
+                    </div>
+
+                </div>
+                <div class="files-list mt-2">
+                    <div class="single-file grid ml-0 mt-0 w-7 h-7 p-2" *ngFor="let file of files; let i = index">
+                        <div class="info">
+                            <h4 class="name">
+                                {{ file?.name }}
+                            </h4>
+                        </div>
+                        <div class="delete ml-4" (click)="deleteFile(i)">
+                            <i class="pi pi-trash" style="font-size: 1.5rem"></i>
+                        </div>
+                    </div>
+                    <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
+                        <p class="text-red-500 text-sm">Please upload logo</p>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
-        <p-button label="Report" styleClass="p-button-rounded p-button-primary" (click)="feedbackReport()"></p-button>
-
+        <div class="mt-3">
+            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
+            <p-button label="Report" styleClass="p-button-rounded p-button-primary"
+                (click)="feedbackReport()"></p-button>
+        </div>
     </ng-template>
 </p-dialog>
-<xnode-thank-you [thanksDialog]="thanksDialog"></xnode-thank-you>

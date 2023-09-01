@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 
@@ -10,9 +10,10 @@ import { tap } from 'rxjs';
 export class CustomerFeedbackComponent implements OnInit {
 
   @Input() showDialog = false;
-  @Input() thanksDialog = false;
+  @Input() displayReportDialog = false;
+  @Output() dataActionEvent = new EventEmitter<string>();
 
-  displayReportDialog: boolean = false;
+  // displayReportDialog: boolean = false;
   screenshot!: string;
   generalFeedbackDialog: boolean = false;
 
@@ -20,29 +21,45 @@ export class CustomerFeedbackComponent implements OnInit {
 
   }
   ngOnInit(): void {
+
   }
-  showCustomerFeedback() {
-    this.showDialog = false;
-    this.displayReportDialog = true;
-    this.captureService
-      .getImage(document.body, true)
-      .pipe(
-        tap((img) => {
-          this.screenshot = img;
-        })
-      )
-      .subscribe();
+  // showCustomerFeedback() {
+  //   this.showDialog = false;
+  //   this.displayReportDialog = true;
+  //   this.captureService
+  //     .getImage(document.body, true)
+  //     .pipe(
+  //       tap((img) => {
+  //         this.screenshot = img;
+  //         console.log('checking')
+  //       })
+  //     )
+  //     .subscribe();
+  // }
+  // showGeneralFeedback() {
+  //   this.showDialog = false;
+  //   this.generalFeedbackDialog = true;
+  //   this.captureService
+  //     .getImage(document.body, true)
+  //     .pipe(
+  //       tap((img) => {
+  //         this.screenshot = img;
+  //       })
+  //     )
+  //     .subscribe();
+  // }
+  handleDataAndAction(value: any) {
+    // this.showDialog = false;
+    this.dataActionEvent.emit(value)
+    // this.displayReportDialog = true;
+
+    console.log(value, "55555555555555555")
   }
-  showGeneralFeedback() {
-    this.showDialog = false;
-    this.generalFeedbackDialog = true;
-    this.captureService
-      .getImage(document.body, true)
-      .pipe(
-        tap((img) => {
-          this.screenshot = img;
-        })
-      )
-      .subscribe();
+  generalHandleDataAndAction(value: any) {
+    // this.showDialog = false;
+    this.dataActionEvent.emit(value)
+    // this.displayReportDialog = true;
+
+    console.log(value, "8888888888")
   }
 }

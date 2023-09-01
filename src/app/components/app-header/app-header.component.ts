@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -10,6 +10,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
+import { UserUtil } from 'src/app/utils/user-util';
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -38,11 +39,16 @@ export class AppHeaderComponent implements OnInit {
   username: string = ''
   visible!: boolean;
   screenshot: any;
-  showDialog:boolean = false;
+  showDialog: boolean = false;
+  thanksDialog: boolean = false;
+  displayReportDialog: boolean = false;
+  generalFeedbackDialog: boolean = false;
+  currentUser: any;
+  templates: any[] = [];
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService,private fb: FormBuilder, private captureService: NgxCaptureService) {
+    private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
   }
 
   ngOnInit(): void {
@@ -51,6 +57,10 @@ export class AppHeaderComponent implements OnInit {
       let currentUser = JSON.parse(data);
       this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
     }
+    this.currentUser = UserUtil.getCurrentUser();
+
+    this.getAllProducts()
+
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {
@@ -62,11 +72,68 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
-    
+
 
   }
+  //get calls 
+  getAllProducts(): void {
+    this.apiService.get("/get_metadata/" + this.currentUser.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const data = response.data.data.map((obj: any) => ({
+            name: obj.title,
+            value: obj.id,
+            url: obj.product_url !== undefined ? obj.product_url : ''
+          }));
+          this.templates = data;
+          console.log(this.templates)
+        }
+      })
+      .catch(error => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+      });
+  }
   toggleDialog() {
-    this.showDialog = !this.showDialog;
+    this.showDialog = true;
+  }
+  handleDataAndAction(value: any) {
+    console.log(value)
+    if (value === 'reportBug') {
+      this.showDialog = false;
+      this.displayReportDialog = true;
+      this.generalFeedbackDialog = false;
+      this.thanksDialog = false;
+    }
+    // switch (value) {
+    //   case 'feedback':
+    //     this.showDialog = true;
+    //     this.displayReportDialog = false;
+    //     this.generalFeedbackDialog = false;
+    //     this.thanksDialog = false;
+    //     break;
+    //   case 'reportBug':
+    //     this.showDialog = false;
+    //     this.displayReportDialog = true;
+    //     this.generalFeedbackDialog = false;
+    //     this.thanksDialog = false;
+    //     break;
+    //   case 'generalFeedback':
+    //     this.showDialog = false;
+    //     this.displayReportDialog = false;
+    //     this.generalFeedbackDialog = true;
+    //     this.thanksDialog = false;
+    //     break;
+    //   case 'thankYou':
+    //     this.showDialog = false;
+    //     this.displayReportDialog = false;
+    //     this.generalFeedbackDialog = false;
+    //     this.thanksDialog = true;
+    //     break;
+    //   default:
+    //     // Handle unknown action types or provide a default action
+    //     break;
+    // }
+    // this.displayReportDialog = true;
     this.captureService
       .getImage(document.body, true)
       .pipe(
@@ -76,6 +143,43 @@ export class AppHeaderComponent implements OnInit {
       )
       .subscribe();
   }
+  handleDataAndAction2(value: boolean) {
+    this.displayReportDialog = true;
+    this.thanksDialog = false;
+
+  }
+  backEvent() {
+    this.showDialog = true;
+    this.displayReportDialog = false;
+    this.thanksDialog = false;
+  }
+  handleDataAndAction3(value: boolean) {
+    this.generalFeedbackDialog = true;
+    this.thanksDialog = false;
+    this.captureService
+      .getImage(document.body, true)
+      .pipe(
+        tap((img) => {
+          this.screenshot = img;
+        })
+      )
+      .subscribe();
+  }
+  handleDataAndAction4(value: boolean) {
+    // this.displayReportDialog = true;
+    // this.thanksDialog = false;
+  }
+  // handleDataAndAction(actionType: string) {
+  //   console.log(actionType, "222222222222")
+  //   if (actionType === 'reportBug') {
+  //     this.displayReportDialog = true;
+  //     this.thanksDialog = false;
+  //   } else if (actionType === 'generalFeedback') {
+  //     this.generalFeedbackDialog = true;
+  //     this.thanksDialog = false;
+  //   } else {
+  //   }
+  // }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -147,15 +251,5 @@ export class AppHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
-  // showDialog() {
-  //   this.visible = true;
-  //   this.captureService
-  //   .getImage(document.body, true)
-  //   .pipe(
-  //     tap((img) => {
-  //       this.screenshot = img;
-  //     })
-  //   )
-  //   .subscribe();
-  // }
+
 }

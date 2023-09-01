@@ -20,7 +20,7 @@
                 </div>
                 <div class="field">
                     <a class="font-medium text-xl heading-color no-underline pointer"
-                        (click)="showCustomerFeedback()">Report a bug</a>
+                        (click)="handleDataAndAction($event)">Report a bug</a>
                     <p class="text-base font-medium text-500">Let us know what’s the bug</p>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="field">
                     <a class="font-medium text-xl heading-color no-underline pointer"
-                        (click)="showGeneralFeedback()">General feedback</a>
+                        (click)="generalHandleDataAndAction($event)">General feedback</a>
                     <p class="text-base font-medium text-500">A general feedback this page</p>
                 </div>
             </div>
@@ -48,7 +48,7 @@
         </form>
     </div>
 </p-dialog>
-<xnode-report-bug [displayReportDialog]="displayReportDialog" [showDialog]="showDialog"
-    [screenshot]="screenshot"></xnode-report-bug>
-<xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [showDialog]="showDialog"
-    [screenshot]="screenshot"></xnode-general-feedback>
+<!-- <xnode-report-bug [displayReportDialog]="displayReportDialog" [screenshot]="screenshot"
+    (dataActionEvent)="handleDataAndAction($event)"></xnode-report-bug>
+<xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [screenshot]="screenshot"
+    (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback> -->
