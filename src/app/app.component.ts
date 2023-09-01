@@ -15,6 +15,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class AppComponent implements OnInit {
   title = 'xnode';
   isSideWindowOpen: boolean = false;
+  showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
   email: String = '';
   id: String = '';
@@ -58,6 +59,9 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
+    });
+    this.utilsService.getMeProductStatus.subscribe((event: any) => {
+      this.showProductStatusPopup = event;
     });
     this.currentPath = window.location.hash;
   }
