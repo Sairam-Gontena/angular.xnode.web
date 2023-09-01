@@ -10,16 +10,16 @@
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class="flex justify-content-center align-content-center">
-            <i class="pi pi-question-circle text-lg mr-2 mt-1 cursor-pointer" *ngIf="isHelpCentre()"
+            <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" *ngIf="isHelpCentre()"
                 routerLink="/help-centre"></i>
             <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3" />
-            <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge
+            <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 pointer" pBadge
                 value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
-            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon"
+            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 pointer"
                 (click)="overlayToggle($event, op)"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
-                    (onHistoryLog)="hiddenIcon($event)"></xnode-notification-panel>
+                    (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"></xnode-notification-panel>
             </p-overlayPanel>
         </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">

@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class NotificationPanelComponent {
   @Input() data: any;
   @Output() preparePublishPopup = new EventEmitter<any>();
-  @Output() onHistoryLog = new EventEmitter<any>();
+  @Output() closeNotificationPanel = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -54,7 +54,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToActivity() {
-    this.onHistoryLog.emit(true)
+    this.closeNotificationPanel.emit(true)
     this.router.navigate(['/operate/change/history-log'])
   }
 

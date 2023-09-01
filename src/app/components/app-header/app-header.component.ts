@@ -114,21 +114,24 @@ export class AppHeaderComponent implements OnInit {
     this.notificationCount = 0;
   }
 
-  overlayToggle(event: any, element: any) {
-    this.eventOverlay = event;
-    this.opOverlay = element;
+  overlayToggle(event?: any, element?: any) {
+    if (event) {
+      this.eventOverlay = event;
+    } if (element) {
+      this.opOverlay = element;
+    }
     if (this.closeOverlay) {
-      element.hide(event);
+      this.opOverlay.hide(this.eventOverlay);
     } else {
-      element.show(event);
+      this.opOverlay.show(this.eventOverlay);
     }
     this.closeOverlay = false;
   }
 
-  hiddenIcon(event: any) {
-    if (event == true) {
+  overlayToggleFromNotificationPanel(event: any) {
+    if (event) {
       this.closeOverlay = true;
-      this.overlayToggle(this.eventOverlay, this.opOverlay);
+      this.overlayToggle();
     }
   }
 

@@ -24,6 +24,15 @@
 :host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
     color: white !important;
     border-color: transparent !important;
+    flex-direction: row-reverse !important;
+    justify-content: space-between !important;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link:hover {
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
 }
 
 :host::ng-deep.p-accordion .p-accordion-tab-active .active-sub-item {
