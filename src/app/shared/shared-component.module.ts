@@ -17,6 +17,7 @@ import { NotificationPanelComponent } from '../components/notification-panel/not
 import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
 import { ProductFeedbackComponent } from '../components/product-feedback/product-feedback.component';
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
+import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { ActionButtonComponent } from '../components/action-button/action-button
         NotificationPanelComponent,
         ConfirmationPopupComponent,
         ProductFeedbackComponent,
-        ActionButtonComponent
+        ActionButtonComponent,
+        ProductAlertPopupComponent
     ],
     imports: [
         CommonModule,
@@ -57,7 +59,8 @@ import { ActionButtonComponent } from '../components/action-button/action-button
         NotificationPanelComponent,
         ConfirmationPopupComponent,
         ProductFeedbackComponent,
-        ActionButtonComponent
+        ActionButtonComponent,
+        ProductAlertPopupComponent
     ]
 })
 export class SharedComponentModule { }

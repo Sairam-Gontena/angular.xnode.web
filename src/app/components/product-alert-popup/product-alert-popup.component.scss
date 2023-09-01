@@ -1,0 +1,41 @@
+.list-item {
+    background: #535354;
+    color: #DEDEDE;
+    padding: 10px;
+    cursor: pointer;
+}
+
+:host::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #ccc;
+}
+
+:host::ng-deep .p-dropdown,
+:host::ng-deep .p-inputtext,
+:host::ng-deep .p-dialog .p-dialog-content,
+:host::ng-deep .p-dialog .p-dialog-header,
+:host::ng-deep .p-dialog .p-dialog-footer {
+    background: #23222B;
+    color: #fff;
+}
+
+:host::ng-deep .p-inputtext {
+    border: 0 !important
+}
+
+:host::ng-deep .p-dropdown .p-dropdown-label.p-placeholder,
+:host::ng-deep .p-input-icon-right>.p-inputtext {
+    padding: 2px 5px;
+}
+
+:host::ng-deep .p-dialog .p-dialog-content {
+    padding: 0;
+}
+
+:host::ng-deep .p-chip .p-chip-text {
+    margin: 0;
+    font-size: 14px;
+}
+
+.feedback-list {
+    border-right: 1px solid #ccc;
+}
