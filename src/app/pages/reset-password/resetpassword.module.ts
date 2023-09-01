@@ -10,6 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CardModule } from 'primeng/card';
+import { FieldsetModule } from 'primeng/fieldset';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { CardModule } from 'primeng/card';
         CheckboxModule,
         DropdownModule,
         RadioButtonModule,
-        CardModule
+        CardModule,
+        FieldsetModule
     ]
 })
 export class ResetPasswordModule { }
