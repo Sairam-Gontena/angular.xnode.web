@@ -111,6 +111,15 @@ export class AppHeaderComponent implements OnInit {
     this.notificationCount = 0;
   }
 
+  hiddenIcon(event: any) {
+    if (event == true) {
+      let hiddenIcon = document.getElementById('hidden-icon') as HTMLElement;
+      setTimeout(() => {
+        hiddenIcon.click();
+      }, 500);
+    }
+  }
+
   showMePublishPopup(obj: any): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',

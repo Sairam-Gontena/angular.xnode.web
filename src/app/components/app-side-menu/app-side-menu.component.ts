@@ -32,7 +32,7 @@ export class AppSideMenuComponent implements OnInit {
     if (this.currentUser?.role === 'admin' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
-    } else if (this.currentUser?.role === 'user') {
+    } else if (this.currentUser?.role === 'User') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }

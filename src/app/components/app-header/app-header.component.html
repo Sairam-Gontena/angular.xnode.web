@@ -17,9 +17,10 @@
                 value={{notificationCount}} severity="danger" (click)=" op.show($event)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon"
                 (click)=" op.show($event)"></i>
+            <i class="pi pi-bell hidden-icon" id="hidden-icon"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
-                <xnode-notification-panel [data]="allNotifications"
-                    (preparePublishPopup)="showMePublishPopup($event)"></xnode-notification-panel>
+                <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
+                    (onHistoryLog)="hiddenIcon($event)"></xnode-notification-panel>
             </p-overlayPanel>
         </div>
         <img src="./assets/dp.svg" alt="dp" class="mr-2">
