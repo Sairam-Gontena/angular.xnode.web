@@ -93,8 +93,8 @@ export class OverViewComponent {
           this.getMeOverview();
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utils.loadSpinner(false);
         }
-        this.utils.loadSpinner(false);
       }).catch(error => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
