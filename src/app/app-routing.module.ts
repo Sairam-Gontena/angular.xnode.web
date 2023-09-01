@@ -7,12 +7,21 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
+      import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'login',
+    path: 'forgot-password',
     loadChildren: () =>
-      import('./pages/login/login.module').then((m) => m.LoginModule),
+      import('./pages/forgot-password/forgotpassword.module').then((m) => m.ForgotPasswordModule),
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () =>
+      import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
+  },
+  {
+    path: 'verify-otp',
+    loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule)
   },
   {
     path: 'usecases',
@@ -153,6 +162,10 @@ const routes: Routes = [
   {
     path: 'dynamic-form',
     component: SignupDynamicFormComponent,
+  },
+  {
+    path: 'help-centre',
+    loadChildren: () => import('./pages/help-centre/help-centre.module').then((m) => m.HelpCentreModule)
   },
   {
     path: '',

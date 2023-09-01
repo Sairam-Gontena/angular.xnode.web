@@ -1,0 +1,54 @@
+{
+    "Columns": [
+        {
+            "field": "account_type",
+            "header": "Account Type"
+        },
+        {
+            "field": "first_name",
+            "header": "First Name"
+        },
+        {
+            "field": "last_name",
+            "header": "Last Name"
+        },
+        {
+            "field": "role",
+            "header": "Role"
+        },
+        {
+            "field": "email",
+            "header": "Email"
+        },
+        {
+            "field": "phone_number",
+            "header": "Phone Number"
+        },
+        {
+            "field": "interest_level",
+            "header": "Interest Level"
+        },
+        {
+            "field": "notes",
+            "header": "Notes"
+        },
+        {
+            "field": "action",
+            "header": "Action"
+        }
+    ],
+    "Actions": [
+        {
+            "label": "Invite",
+            "backgroundColor": "Success"
+        },
+        {
+            "label": "Hold",
+            "backgroundColor": "Warning"
+        },
+        {
+            "label": "Reject",
+            "backgroundColor": "Danger"
+        }
+    ]
+}

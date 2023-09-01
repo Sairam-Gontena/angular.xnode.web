@@ -1,0 +1,58 @@
+:host ::ng-deep.card {
+    background-color: transparent !important;
+}
+
+:host ::ng-deep.p-button-sm p-button-rounded p-button-secondary:hover {
+    color: '#fff'
+}
+
+:host ::ng-deep.p-button-sm {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    width: 85px;
+}
+
+:host ::ng-deep.p-button.p-button-secondary {
+    background-color: #fff;
+}
+
+:host ::ng-deep.p-button.p-button-secondary:hover {
+    color: #fff;
+}
+
+.user-txt {
+    font-size: 24px;
+    font-family: Inter;
+}
+
+.header {
+    font-size: 24px;
+    font-family: Inter;
+}
+
+:host ::ng-deep.p-dialog {
+    border-width: 1px solid #fff;
+}
+
+:host ::ng-deep.p-dialog-header {
+    border-top-width: 1px;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-header {
+    background-color: #2E2D36;
+    color: #fff;
+    border-color: white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-content {
+    background-color: #2E2D36;
+    color: #fff;
+
+}
+
+:host ::ng-deep.p-dialog {
+    width: '40vw'
+
+}

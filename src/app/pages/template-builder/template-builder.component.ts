@@ -77,14 +77,40 @@ export class TemplateBuilderComponent implements OnInit {
     }
     if (localStorage.getItem('record_id')) {
       this.productId = localStorage.getItem('record_id');
-      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "&targetUrl=" + environment.xnodeAppUrl;
-      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
+      this.makeTrustedUrl();
       this.loading = false;
     } else {
       this.get_ID();
     }
 
   }
+  makeTrustedUrl(): void {
+    let rawUrl = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "&targetUrl=" + environment.xnodeAppUrl;
+    setTimeout(() => {
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);;
+      this.loadIframeUrl();
+    }, 2000);
+  }
+
+  loadIframeUrl(): void {
+    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    iframe.addEventListener('load', () => {
+      const contentWindow = iframe.contentWindow;
+      if (contentWindow) {
+        window.addEventListener('message', (event) => {
+          console.log('event.origin ', event.origin);
+          console.log('environment.designStudioAppUrl', environment.designStudioAppUrl);
+          if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
+            return;
+          }
+          if (event.data === 'product_status') {
+            this.utils.showProductStatusPopup(true);
+          }
+        });
+      }
+    });
+  }
+
 
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked

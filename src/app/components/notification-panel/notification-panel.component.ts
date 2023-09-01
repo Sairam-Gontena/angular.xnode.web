@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class NotificationPanelComponent {
   @Input() data: any;
   @Output() preparePublishPopup = new EventEmitter<any>();
+  @Output() closeNotificationPanel = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -22,8 +23,7 @@ export class NotificationPanelComponent {
     all: true
   };
 
-  constructor(
-    private router: Router) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -54,7 +54,8 @@ export class NotificationPanelComponent {
   }
 
   navigateToActivity() {
-    this.router.navigate(['/activity'])
+    this.closeNotificationPanel.emit(true)
+    this.router.navigate(['/operate/change/history-log'])
   }
 
   filterNotifications(val: any) {
