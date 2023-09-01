@@ -40,10 +40,6 @@
     right: 13px !important;
 }
 
-.notif-icon {
-    cursor: pointer;
-}
-
 a {
     color: #9f9ea5;
     font-weight: bold;
@@ -64,6 +60,9 @@ a:hover {
     padding: 0px !important;
 }
 
+.hidden-icon {
+    font-size: 0px !important;
+}
 
 .small-badge .p-badge {
     font-size: 10px;
@@ -117,21 +116,26 @@ textarea {
     padding-bottom: 6px;
     border: 1px solid #2E2D36;
 }
-:host::ng-deep.custom-dropdown .p-dropdown{
-    width: 100%; /* or any other desired width */
+
+:host::ng-deep.custom-dropdown .p-dropdown {
+    width: 100%;
+    /* or any other desired width */
     color: #ffffff;
     background: #2E2D36;
 }
-:host::ng-deep.browseFiles .p-button{
+
+:host::ng-deep.browseFiles .p-button {
     border-radius: 2rem;
     background-color: #23222B !important;
     color: #2C91FD !important;
     border: solid 1px #2C91FD;
 }
+
 :host::ng-deep.p-dialog .p-dialog-header {
     padding: 1rem;
 }
-  .invalid-feedback {
+
+.invalid-feedback {
     color: red;
 }
 
