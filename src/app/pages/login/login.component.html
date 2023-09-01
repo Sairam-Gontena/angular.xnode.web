@@ -1,83 +1,87 @@
 <div class="grid m-0 bg-color h-full">
     <div class="bg-image bg-no-repeat w-12 h-12">
-        <div class="">
-            <div class="flex justify-content-end m-8">
-                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="">
+        <div class="h-full w-full">
+            <div class="div-logo">
+                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="logo">
             </div>
-            <div class="flex justify-content-center mt-8">
-                <p-card [style]=" { width: '680px' ,height: '660px' }">
-                    <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-8">
-                        <div class="heading-color text-6xl font-bold -ml-2">Login to xnode</div>
-                        <div class="formgrid grid form-container pt-5">
-                            <p-messages [(value)]="messages" [enableService]="false"></p-messages>
-                            <form [formGroup]="loginForm" (ngSubmit)="onClickLogin()">
-                                <div class="formgrid grid">
-                                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                        <div>
-                                            <label htmlFor="email"
-                                                class="font-medium text-xl heading-color">Email/Username</label>
-                                        </div>
-                                        <input pInputText id="email" placeholder="Enter email" formControlName="email"
-                                            autocomplete="username"
-                                            [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
-                                            class="text-base p-2 border-round-xl appearance-none outline-none focus:border-primary w-full mt-1" />
-                                        <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
-                                            <div *ngIf="login['email'].errors?.['required']">Email
-                                                is required</div>
-                                            <div *ngIf="login['email'].errors['email']">Email
-                                                must be a valid email address</div>
-                                        </div>
-                                    </div>
-                                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                        <div>
-                                            <label htmlFor="password"
-                                                class="font-medium text-xl heading-color">Password</label>
-                                        </div>
-                                        <p-password [toggleMask]="true" formControlName="password"
-                                            placeholder="Enter password" [style]="{'width':'100%', 'height': '42px'}"
-                                            class="text-lg text-color border-round-xl mt-1"
-                                            [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"></p-password>
-
-                                        <div *ngIf="submitted && login['password'].errors" class="invalid-feedback">
-                                            <div *ngIf="login['password'].errors['required']">Password
-                                                is required</div>
-                                            <div *ngIf="login['password'].errors['minlength']">Password
-                                                must be at least 6 characters
+            <div class=" main-card">
+                <div class=" sub-card ">
+                    <p-card>
+                        <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                            <div class="stepper-text">Step 1 of 2</div>
+                            <div class="heading-text">Login to xnode</div>
+                            <div class="formgrid grid form-container pt-3">
+                                <p-messages [(value)]="messages" [enableService]="false"></p-messages>
+                                <form [formGroup]="loginForm" (ngSubmit)="onClickLogin()">
+                                    <div class="formgrid grid">
+                                        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                                            <div>
+                                                <label htmlFor="email"
+                                                    class="font-medium text-xl heading-color">Email/Username</label>
+                                            </div>
+                                            <input pInputText id="email" placeholder="Enter email"
+                                                formControlName="email" autocomplete="username"
+                                                [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
+                                                class="text-base p-2 border-round-xl appearance-none outline-none focus:border-primary w-full mt-1" />
+                                            <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
+                                                <div *ngIf="login['email'].errors?.['required']">Email
+                                                    is required</div>
+                                                <div *ngIf="login['email'].errors['email']">Email
+                                                    must be a valid email address</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                        <div class="flex justify-content-between">
-                                            <div class="">
-                                                <p-checkbox formControlName="rememberMe" value="Remember me"
-                                                    [ngClass]="{ 'is-invalid': submitted && login['rememberMe'].errors }"
-                                                    inputId="ny"></p-checkbox>
-                                                <label for="rememberMe" class="ml-2 text-500">Remember me</label>
-                                                <div *ngIf="submitted && login['rememberMe'].errors"
-                                                    class="invalid-feedback">
-                                                    <div *ngIf="login['rememberMe'].errors['required']">Remember me
-                                                        is required</div>
+                                        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                                            <div>
+                                                <label htmlFor="password"
+                                                    class="font-medium text-xl heading-color">Password</label>
+                                            </div>
+                                            <p-password [toggleMask]="true" formControlName="password"
+                                                placeholder="Enter password"
+                                                [style]="{'width':'100%', 'height': '42px'}"
+                                                class="text-lg text-color border-round-xl mt-1"
+                                                [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"></p-password>
+
+                                            <div *ngIf="submitted && login['password'].errors" class="invalid-feedback">
+                                                <div *ngIf="login['password'].errors['required']">Password
+                                                    is required</div>
+                                                <div *ngIf="login['password'].errors['minlength']">Password
+                                                    must be at least 6 characters
                                                 </div>
                                             </div>
-                                            <a class="font-medium text-base no-underline forgot-pwd pointer"
-                                                routerLink="/forgot-password">Forgot
-                                                Password?</a>
+                                        </div>
+                                        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                                            <div class="flex justify-content-between">
+                                                <div class="">
+                                                    <p-checkbox formControlName="rememberMe" value="Remember me"
+                                                        [ngClass]="{ 'is-invalid': submitted && login['rememberMe'].errors }"
+                                                        inputId="ny"></p-checkbox>
+                                                    <label for="rememberMe" class="ml-2 text-500">Remember me</label>
+                                                    <div *ngIf="submitted && login['rememberMe'].errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="login['rememberMe'].errors['required']">Remember me
+                                                            is required</div>
+                                                    </div>
+                                                </div>
+                                                <a class="font-medium text-base no-underline forgot-pwd pointer"
+                                                    routerLink="/forgot-password">Forgot
+                                                    Password?</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
+                                            <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg "
+                                                [disabled]="loginForm.invalid" (click)="onClickLogin()"></p-button>
+                                        </div>
+                                        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                                            <a
+                                                class="flex justify-content-center align-items-center no-underline text-sm font-medium forgot-pwd">Terms
+                                                of service <p class="heading-color mx-2">and</p> privacy policy</a>
                                         </div>
                                     </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
-                                        <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
-                                            [disabled]="loginForm.invalid" (click)="onClickLogin()"></p-button>
-                                    </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-8">
-                                        <a
-                                            class="flex justify-content-center no-underline text-sm font-medium forgot-pwd">Terms
-                                            of service <p class="heading-color mx-2">and</p> privacy policy</a>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </p-card>
+                    </p-card>
+                </div>
             </div>
         </div>
     </div>
