@@ -42,25 +42,20 @@ export class GeneralFeedbackComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-  sendFeedback() {
+  sendFeedback(value: any) {
+    this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
     if (this.generalFeedbackForm.valid) {
       const formValues = this.generalFeedbackForm.value;
       console.log(formValues);
-      // this.dataActionEvent.emit(!this.generalFeedbackDialog);
-      this.dataActionEvent.emit({ thankyou: true })
-
-      // this.generalFeedbackDialog = false;
-      // this.thanksDialog = true;
     } else {
       console.log("error");
 
     }
   }
+  customFeedback(value: any) {
+    this.dataActionEvent.emit({ value: 'feedback' })
 
-  customFeedback() {
-    this.generalFeedbackDialog = false;
-    this.dataActionEvent.emit(true)
   }
   onDeleteImage() {
     this.screenshot = '';
@@ -142,12 +137,10 @@ export class GeneralFeedbackComponent implements OnInit {
   handleKeyDown(event: KeyboardEvent) {
     // Check if the Enter key was pressed
     if (event.key === 'Enter') {
-      this.feedbackReport();
+      this.sendFeedback('thankYou');
     }
   }
-  feedbackReport() {
-    throw new Error('Method not implemented.');
-  }
+
   validateLogoFile(control: AbstractControl) {
     const file = control.value;
     const allowedTypes = ['image/jpeg', 'image/png'];

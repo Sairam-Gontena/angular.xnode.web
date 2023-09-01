@@ -96,66 +96,37 @@ export class AppHeaderComponent implements OnInit {
   toggleDialog() {
     this.showDialog = true;
   }
-  handleDataAndAction(value: any) {
-    console.log(value)
-    if (value === 'reportBug') {
-      this.showDialog = false;
-      this.displayReportDialog = true;
-      this.generalFeedbackDialog = false;
-      this.thanksDialog = false;
-    }
-    // switch (value) {
-    //   case 'feedback':
-    //     this.showDialog = true;
-    //     this.displayReportDialog = false;
-    //     this.generalFeedbackDialog = false;
-    //     this.thanksDialog = false;
-    //     break;
-    //   case 'reportBug':
-    //     this.showDialog = false;
-    //     this.displayReportDialog = true;
-    //     this.generalFeedbackDialog = false;
-    //     this.thanksDialog = false;
-    //     break;
-    //   case 'generalFeedback':
-    //     this.showDialog = false;
-    //     this.displayReportDialog = false;
-    //     this.generalFeedbackDialog = true;
-    //     this.thanksDialog = false;
-    //     break;
-    //   case 'thankYou':
-    //     this.showDialog = false;
-    //     this.displayReportDialog = false;
-    //     this.generalFeedbackDialog = false;
-    //     this.thanksDialog = true;
-    //     break;
-    //   default:
-    //     // Handle unknown action types or provide a default action
-    //     break;
-    // }
-    // this.displayReportDialog = true;
-    this.captureService
-      .getImage(document.body, true)
-      .pipe(
-        tap((img) => {
-          this.screenshot = img;
-        })
-      )
-      .subscribe();
-  }
-  handleDataAndAction2(value: boolean) {
-    this.displayReportDialog = true;
-    this.thanksDialog = false;
+  handleDataAndAction(event: any) {
+    console.log(event.value)
 
-  }
-  backEvent() {
-    this.showDialog = true;
-    this.displayReportDialog = false;
-    this.thanksDialog = false;
-  }
-  handleDataAndAction3(value: boolean) {
-    this.generalFeedbackDialog = true;
-    this.thanksDialog = false;
+    switch (event.value) {
+      case 'feedback':
+        this.showDialog = true;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        break;
+      case 'reportBug':
+        this.showDialog = false;
+        this.displayReportDialog = true;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        break;
+      case 'generalFeedback':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = true;
+        this.thanksDialog = false;
+        break;
+      case 'thankYou':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = true;
+        break;
+      default:
+        break;
+    }
     this.captureService
       .getImage(document.body, true)
       .pipe(
@@ -165,21 +136,6 @@ export class AppHeaderComponent implements OnInit {
       )
       .subscribe();
   }
-  handleDataAndAction4(value: boolean) {
-    // this.displayReportDialog = true;
-    // this.thanksDialog = false;
-  }
-  // handleDataAndAction(actionType: string) {
-  //   console.log(actionType, "222222222222")
-  //   if (actionType === 'reportBug') {
-  //     this.displayReportDialog = true;
-  //     this.thanksDialog = false;
-  //   } else if (actionType === 'generalFeedback') {
-  //     this.generalFeedbackDialog = true;
-  //     this.thanksDialog = false;
-  //   } else {
-  //   }
-  // }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {

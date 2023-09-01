@@ -11,7 +11,7 @@ export class CustomerFeedbackComponent implements OnInit {
 
   @Input() showDialog = false;
   @Input() displayReportDialog = false;
-  @Output() dataActionEvent = new EventEmitter<string>();
+  @Output() dataActionEvent = new EventEmitter<any>();
 
   // displayReportDialog: boolean = false;
   screenshot!: string;
@@ -23,43 +23,13 @@ export class CustomerFeedbackComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  // showCustomerFeedback() {
-  //   this.showDialog = false;
-  //   this.displayReportDialog = true;
-  //   this.captureService
-  //     .getImage(document.body, true)
-  //     .pipe(
-  //       tap((img) => {
-  //         this.screenshot = img;
-  //         console.log('checking')
-  //       })
-  //     )
-  //     .subscribe();
-  // }
-  // showGeneralFeedback() {
-  //   this.showDialog = false;
-  //   this.generalFeedbackDialog = true;
-  //   this.captureService
-  //     .getImage(document.body, true)
-  //     .pipe(
-  //       tap((img) => {
-  //         this.screenshot = img;
-  //       })
-  //     )
-  //     .subscribe();
-  // }
-  handleDataAndAction(value: any) {
-    // this.showDialog = false;
-    this.dataActionEvent.emit(value)
-    // this.displayReportDialog = true;
 
-    console.log(value, "55555555555555555")
+  handleDataAndAction(value: any) {
+    this.dataActionEvent.emit({ value: 'reportBug' })
+
   }
   generalHandleDataAndAction(value: any) {
-    // this.showDialog = false;
-    this.dataActionEvent.emit(value)
-    // this.displayReportDialog = true;
+    this.dataActionEvent.emit({ value: 'generalFeedback' })
 
-    console.log(value, "8888888888")
   }
 }

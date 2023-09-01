@@ -66,25 +66,23 @@ export class ReportBugComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     console.log(this.templates)
   }
-  feedbackReport() {
+  feedbackReport(value: any) {
+    this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
     this.isFormSubmitted = true;
     if (this.feedbackForm.valid) {
       this.isInvalid = false;
       const formValues = this.feedbackForm.value;
       console.log(formValues);
-      // this.dataActionEvent.emit(!this.displayReportDialog);
-      this.dataActionEvent.emit({ thankyou: true })
-
     } else {
       this.isInvalid = true;
       console.log("error");
     }
 
   }
-  customFeedback() {
-    this.displayReportDialog = false;
-    this.dataActionEvent.emit(true)
+  customFeedback(value: any) {
+    this.dataActionEvent.emit({ value: 'feedback' })
+
   }
   onDeleteImage() {
     this.screenshot = '';
@@ -166,7 +164,7 @@ export class ReportBugComponent implements OnInit {
   handleKeyDown(event: KeyboardEvent) {
     // Check if the Enter key was pressed
     if (event.key === 'Enter') {
-      this.feedbackReport();
+      this.feedbackReport('thankYou');
     }
   }
   validateLogoFile(control: AbstractControl) {

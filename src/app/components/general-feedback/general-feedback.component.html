@@ -2,7 +2,7 @@
     [modal]="true" [style]="{ width: '38vw', height: '43vw'}" [draggable]="false" [resizable]="false">
     <ng-template pTemplate="header">
         <div class="flex align-items-center p-3">
-            <i class="pi pi-angle-left mr-3" (click)="customFeedback()"></i>
+            <i class="pi pi-angle-left mr-3" (click)="customFeedback($event)"></i>
             <div>
                 <p class="m-0 font-bold text-2xl heading-color">General Feedback</p>
                 <p class="m-0 text-sm font-medium heading-color">Your feedback will be used to improve xnode</p>
@@ -11,7 +11,7 @@
         </div>
     </ng-template>
     <div class="p-4 mt-4">
-        <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback()">
+        <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="flex justify-content-end">
                     <a class="font-medium text-base no-underline pointer">View feedback history<i
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="grid flex justify-content-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                <label class="text-base font-medium">How would you like to rate your experience</label>
-                <p-rating [(ngModel)]="value" [stars]="1">
+                <label class="text-base font-medium ">How would you like to rate your experience</label>
+                <p-rating [(ngModel)]="value" [stars]="1" class="mt-3">
                     <ng-template pTemplate="cancel">
                         <img src="./assets/star1.svg" width="25px" height="25px" />
                     </ng-template>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngIf="screenshot !== ''">
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <label class="text-sm font-normal">Screenshot</label>
                 <div class="container-img grid m-0">
                     <img [src]="screenshot" width="59%">
@@ -137,7 +137,7 @@
         <div class="mt-3">
             <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
             <p-button label="Send Feedback" styleClass="p-button-rounded p-button-primary"
-                (click)="sendFeedback()"></p-button>
+                (click)="sendFeedback($event)"></p-button>
         </div>
     </ng-template>
 </p-dialog>

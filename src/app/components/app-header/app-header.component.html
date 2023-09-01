@@ -28,8 +28,9 @@
         (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
     <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
         (dataActionEvent)="handleDataAndAction($event)" [templates]="templates"
-        (backEvent)="backEvent"></xnode-report-bug>
-    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [screenshot]="screenshot"
+        (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
+    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog"
+        (customFeedback)="handleDataAndAction($event)"
         (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
     <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
 
