@@ -29,10 +29,10 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   onClickMenuItem(item: any, i: any): void {
-    if (this.currentUser?.role === 'admin' && item.label == 'Home') {
+    if (this.currentUser?.role?.toUpperCase() === 'ADMIN' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
-    } else if (this.currentUser?.role === 'User') {
+    } else if (this.currentUser?.role?.toUpperCase() === 'USER') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }
