@@ -1,9 +1,7 @@
 <xnode-confirmation-popup [Data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
-<p-table [paginator]="true" [rows]="5" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-     [rowsPerPageOptions]="[10, 25, 50]" #dt [rows]="10" [scrollable]="true" scrollHeight="420px" [rowHover]="true"
-     dataKey="id" [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true"
-     scrollDirection="horizontal" [value]="dynamicData" [columns]="cols"
-     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="420px" [rowHover]="true" dataKey="id"
+     [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal"
+     [value]="dynamicData" [columns]="cols">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center">
                <span class="p-input-icon-left" *ngIf="showSearch">
@@ -57,11 +55,5 @@
                     </ng-container>
                </td>
           </tr>
-     </ng-template>
-     <ng-template pTemplate="paginatorleft">
-          <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-     </ng-template>
-     <ng-template pTemplate="paginatorright">
-          <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
      </ng-template>
 </p-table>
