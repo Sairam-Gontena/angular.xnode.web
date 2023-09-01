@@ -39,6 +39,9 @@ export class AppHeaderComponent implements OnInit {
   visible!: boolean;
   screenshot: any;
   showDialog: boolean = false;
+  closeOverlay: boolean = false;
+  eventOverlay: any;
+  opOverlay: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
@@ -111,12 +114,21 @@ export class AppHeaderComponent implements OnInit {
     this.notificationCount = 0;
   }
 
+  overlayToggle(event: any, element: any) {
+    this.eventOverlay = event;
+    this.opOverlay = element;
+    if (this.closeOverlay) {
+      element.hide(event);
+    } else {
+      element.show(event);
+    }
+    this.closeOverlay = false;
+  }
+
   hiddenIcon(event: any) {
     if (event == true) {
-      let hiddenIcon = document.getElementById('hidden-icon') as HTMLElement;
-      setTimeout(() => {
-        hiddenIcon.click();
-      }, 500);
+      this.closeOverlay = true;
+      this.overlayToggle(this.eventOverlay, this.opOverlay);
     }
   }
 

@@ -14,10 +14,9 @@
                 routerLink="/help-centre"></i>
             <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 notif-icon" pBadge
-                value={{notificationCount}} severity="danger" (click)=" op.show($event)"></i>
+                value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 notif-icon"
-                (click)=" op.show($event)"></i>
-            <i class="pi pi-bell hidden-icon" id="hidden-icon"></i>
+                (click)="overlayToggle($event, op)"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (onHistoryLog)="hiddenIcon($event)"></xnode-notification-panel>
