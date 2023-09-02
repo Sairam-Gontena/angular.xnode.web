@@ -38,7 +38,7 @@
                 <label class="text-sm font-normal">Choose priority</label>
                 <p-dropdown formControlName="severityId" [options]="priorities"
                     [ngClass]="{ 'is-invalid': submitted && feedback['severityId'].errors }" optionLabel="name"
-                    class="custom-dropdown"></p-dropdown>
+                    optionValue="code" class="custom-dropdown"></p-dropdown>
                 <div *ngIf="submitted && feedback['severityId'].errors" class="invalid-feedback">
                     <div *ngIf="feedback['severityId'].errors?.['required']">
                         Choose priority is required</div>
