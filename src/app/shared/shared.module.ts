@@ -20,6 +20,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RatingModule } from 'primeng/rating';
 
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 @NgModule({
   declarations: [
   ],
@@ -43,6 +44,7 @@ import { RatingModule } from 'primeng/rating';
     OverlayPanelModule,
     ConfirmDialogModule,
     RatingModule
+    BreadcrumbModule
   ],
   exports: [
     FormsModule,
@@ -65,6 +67,7 @@ import { RatingModule } from 'primeng/rating';
     OverlayPanelModule,
     ConfirmDialogModule,
     RatingModule
+    BreadcrumbModule
   ]
 })
 export class SharedModule { }

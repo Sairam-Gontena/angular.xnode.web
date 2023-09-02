@@ -20,51 +20,57 @@ import { CustomerFeedbackComponent } from '../components/customer-feedback/custo
 import { ThankYouComponent } from '../components/thank-you/thank-you.component';
 import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
 
+import { ActionButtonComponent } from '../components/action-button/action-button.component';
+import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 
 @NgModule({
-    declarations: [
-        AdditionalInfoComponent,
-        AppHeaderComponent,
-        AppSideMenuComponent,
-        BotComponent,
-        ConfigureLayoutComponent,
-        LayoutElementsComponent,
-        OperateFeedbackComponent,
-        OperateLayoutComponent,
-        PageToolsLayoutComponent,
-        StepComponent,
-        DynamicTableComponent,
-        TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent,
-        ConfirmationPopupComponent,
-        ReportBugComponent,
-        CustomerFeedbackComponent,
-        ThankYouComponent,
-        GeneralFeedbackComponent
-    ],
-    imports: [
-        CommonModule,
-        SharedModule
-    ],
-    exports: [
-        AdditionalInfoComponent,
-        AppHeaderComponent,
-        AppSideMenuComponent,
-        BotComponent,
-        ConfigureLayoutComponent,
-        LayoutElementsComponent,
-        OperateFeedbackComponent,
-        OperateLayoutComponent,
-        PageToolsLayoutComponent,
-        StepComponent,
-        DynamicTableComponent,
-        TemplateBuilderPublishHeaderComponent,
-        NotificationPanelComponent,
-        ConfirmationPopupComponent,
-        ReportBugComponent,
-        CustomerFeedbackComponent,
-        ThankYouComponent,
-        GeneralFeedbackComponent
-    ]
+        declarations: [
+                AdditionalInfoComponent,
+                AppHeaderComponent,
+                AppSideMenuComponent,
+                BotComponent,
+                ConfigureLayoutComponent,
+                LayoutElementsComponent,
+                OperateFeedbackComponent,
+                OperateLayoutComponent,
+                PageToolsLayoutComponent,
+                StepComponent,
+                DynamicTableComponent,
+                TemplateBuilderPublishHeaderComponent,
+                NotificationPanelComponent,
+                ConfirmationPopupComponent,
+                ReportBugComponent,
+                CustomerFeedbackComponent,
+                ThankYouComponent,
+                GeneralFeedbackComponent
+        ActionButtonComponent,
+                ProductAlertPopupComponent
+        ],
+        imports: [
+                CommonModule,
+                SharedModule
+        ],
+        exports: [
+                AdditionalInfoComponent,
+                AppHeaderComponent,
+                AppSideMenuComponent,
+                BotComponent,
+                ConfigureLayoutComponent,
+                LayoutElementsComponent,
+                OperateFeedbackComponent,
+                OperateLayoutComponent,
+                PageToolsLayoutComponent,
+                StepComponent,
+                DynamicTableComponent,
+                TemplateBuilderPublishHeaderComponent,
+                NotificationPanelComponent,
+                ConfirmationPopupComponent,
+                ReportBugComponent,
+                CustomerFeedbackComponent,
+                ThankYouComponent,
+                GeneralFeedbackComponent
+        ActionButtonComponent,
+                ProductAlertPopupComponent
+        ]
 })
 export class SharedComponentModule { }

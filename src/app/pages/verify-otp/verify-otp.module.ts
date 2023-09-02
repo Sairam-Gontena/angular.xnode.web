@@ -11,6 +11,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
+import { FieldsetModule } from 'primeng/fieldset';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { PasswordModule } from 'primeng/password';
     MessagesModule,
     CardModule,
     CheckboxModule,
-    NgOtpInputModule
+    NgOtpInputModule,
+    FieldsetModule
   ]
 })
 export class VerifyOtpModule { }

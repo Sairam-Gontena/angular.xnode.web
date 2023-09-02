@@ -45,6 +45,9 @@ export class AppHeaderComponent implements OnInit {
   generalFeedbackDialog: boolean = false;
   currentUser: any;
   templates: any[] = [];
+  closeOverlay: boolean = false;
+  eventOverlay: any;
+  opOverlay: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
@@ -171,6 +174,27 @@ export class AppHeaderComponent implements OnInit {
     this.notificationCount = 0;
   }
 
+  overlayToggle(event?: any, element?: any) {
+    if (event) {
+      this.eventOverlay = event;
+    } if (element) {
+      this.opOverlay = element;
+    }
+    if (this.closeOverlay) {
+      this.opOverlay.hide(this.eventOverlay);
+    } else {
+      this.opOverlay.show(this.eventOverlay);
+    }
+    this.closeOverlay = false;
+  }
+
+  overlayToggleFromNotificationPanel(event: any) {
+    if (event) {
+      this.closeOverlay = true;
+      this.overlayToggle();
+    }
+  }
+
   showMePublishPopup(obj: any): void {
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',
@@ -207,5 +231,17 @@ export class AppHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
+  onClickLogo(): void {
+    this.utilsService.showProductStatusPopup(false);
+    this.router.navigate(['/my-products']);
+  }
 
+  isHelpCentre() {
+    // Temporary
+    if (window.location.hash === "#/x-pilot" || window.location.hash === "#/my-products") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

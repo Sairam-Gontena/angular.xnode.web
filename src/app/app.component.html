@@ -26,3 +26,5 @@
 </div>
 <p-toast></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
+<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
+    (openDockedNavi)="openNavi($event)" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>

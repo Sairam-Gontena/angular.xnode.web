@@ -13,6 +13,10 @@
             "header": "Last Name"
         },
         {
+            "field": "role",
+            "header": "Role"
+        },
+        {
             "field": "email",
             "header": "Email"
         },
@@ -31,6 +35,20 @@
         {
             "field": "action",
             "header": "Action"
+        }
+    ],
+    "Actions": [
+        {
+            "label": "Invite",
+            "backgroundColor": "Success"
+        },
+        {
+            "label": "Hold",
+            "backgroundColor": "Warning"
+        },
+        {
+            "label": "Reject",
+            "backgroundColor": "Danger"
         }
     ]
 }
