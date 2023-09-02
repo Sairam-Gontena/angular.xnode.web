@@ -18,6 +18,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { RatingModule } from 'primeng/rating';
+
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule,
+    RatingModule,
     BreadcrumbModule
   ],
   exports: [
@@ -63,6 +66,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule,
+    RatingModule,
     BreadcrumbModule
   ]
 })
