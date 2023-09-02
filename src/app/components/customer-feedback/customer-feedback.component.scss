@@ -17,3 +17,7 @@
 :host::ng-deep .p-dialog .p-dialog-header {
     border-bottom: 1px solid #ccc;
 }
+
+:host::ng-deep .p-dialog .p-dialog-footer {
+    border-top: 1px solid #ccc;
+}

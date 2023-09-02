@@ -13,8 +13,6 @@ export class CustomerFeedbackComponent implements OnInit {
   @Input() displayReportDialog = false;
   @Output() dataActionEvent = new EventEmitter<any>();
 
-  // displayReportDialog: boolean = false;
-  screenshot!: string;
   generalFeedbackDialog: boolean = false;
 
   constructor(private captureService: NgxCaptureService) {

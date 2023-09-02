@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
@@ -19,6 +19,8 @@ import { UserUtil } from 'src/app/utils/user-util';
 })
 
 export class AppHeaderComponent implements OnInit {
+  @Input() currentPath: any;
+
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -50,11 +52,16 @@ export class AppHeaderComponent implements OnInit {
   opOverlay: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
+    private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
   }
 
   ngOnInit(): void {
+    console.log(this.currentPath)
+    this.route.queryParams.subscribe((params: any) => {
+      console.log(params)
+
+    });
     let data = localStorage.getItem("currentUser")
     if (data) {
       let currentUser = JSON.parse(data);
@@ -101,7 +108,14 @@ export class AppHeaderComponent implements OnInit {
   }
   handleDataAndAction(event: any) {
     console.log(event.value)
-
+    this.captureService
+      .getImage(document.body, true)
+      .pipe(
+        tap((img) => {
+          this.screenshot = img;
+        })
+      )
+      .subscribe();
     switch (event.value) {
       case 'feedback':
         this.showDialog = true;
@@ -130,14 +144,7 @@ export class AppHeaderComponent implements OnInit {
       default:
         break;
     }
-    this.captureService
-      .getImage(document.body, true)
-      .pipe(
-        tap((img) => {
-          this.screenshot = img;
-        })
-      )
-      .subscribe();
+
   }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');

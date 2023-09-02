@@ -43,7 +43,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule,
-    RatingModule
+    RatingModule,
     BreadcrumbModule
   ],
   exports: [
@@ -66,7 +66,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule,
-    RatingModule
+    RatingModule,
     BreadcrumbModule
   ]
 })

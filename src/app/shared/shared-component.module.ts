@@ -42,8 +42,8 @@ import { ProductAlertPopupComponent } from '../components/product-alert-popup/pr
                 ReportBugComponent,
                 CustomerFeedbackComponent,
                 ThankYouComponent,
-                GeneralFeedbackComponent
-        ActionButtonComponent,
+                GeneralFeedbackComponent,
+                ActionButtonComponent,
                 ProductAlertPopupComponent
         ],
         imports: [
@@ -68,8 +68,8 @@ import { ProductAlertPopupComponent } from '../components/product-alert-popup/pr
                 ReportBugComponent,
                 CustomerFeedbackComponent,
                 ThankYouComponent,
-                GeneralFeedbackComponent
-        ActionButtonComponent,
+                GeneralFeedbackComponent,
+                ActionButtonComponent,
                 ProductAlertPopupComponent
         ]
 })

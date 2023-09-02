@@ -52,6 +52,7 @@
                 <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
                     <label class="text-sm font-normal">Product</label>
                     <input type="text" pInputText formControlName="product" placeholder="Finbuddy"
+                        [(ngModel)]="templates[0].name"
                         [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                         <div *ngIf="feedback['product'].errors?.['required']">
@@ -68,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngIf="screenshot !== ''">
                 <label class="text-sm font-normal">Screenshot</label>
                 <div class="container-img grid m-0">
                     <img [src]="screenshot" width="59%">
@@ -94,7 +95,7 @@
                         [class.invalid]="isFormSubmitted && !draganddropSelected">
                         <input type="file" #fileDropRef id="fileDropRef"
                             (change)="fileBrowseHandler($any($event).target.files)"
-                            [ngClass]="{ 'is-invalid': submitted && feedbackForm.get('logoFile')?.errors }" />
+                            [ngClass]="{ 'is-invalid': submitted && generalFeedbackForm.get('logoFile')?.errors }" />
                         <ng-template #elseBlock>
                             <input type="file" #fileDropRef id="fileDropRef"
                                 (change)="fileBrowseHandler($any($event).target.files)" disabled />
@@ -141,4 +142,3 @@
         </div>
     </ng-template>
 </p-dialog>
-<!-- <xnode-thank-you [thanksDialog]="thanksDialog"></xnode-thank-you> -->

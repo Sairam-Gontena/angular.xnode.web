@@ -31,8 +31,8 @@
     <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
         (dataActionEvent)="handleDataAndAction($event)" [templates]="templates"
         (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
-    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog"
-        (customFeedback)="handleDataAndAction($event)"
+    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [templates]="templates"
+        (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
         (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
     <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
 

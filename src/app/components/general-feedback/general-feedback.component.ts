@@ -17,7 +17,8 @@ export class GeneralFeedbackComponent implements OnInit {
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Input() thanksDialog = false;
-  // thanksDialog: boolean = false;
+  @Input() templates: any[] = [];
+
   generalFeedbackForm: FormGroup;
   submitted: boolean = false;
   isFormSubmitted: boolean = false;
@@ -63,7 +64,7 @@ export class GeneralFeedbackComponent implements OnInit {
   files: any[] = [];
   onFileDropped($event: any) {
     this.prepareFilesList($event);
-    this.feedbackForm.patchValue({
+    this.generalFeedbackForm.patchValue({
       logoFile: $event[0]
     });
   }
@@ -73,7 +74,7 @@ export class GeneralFeedbackComponent implements OnInit {
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
-    this.feedbackForm.patchValue({
+    this.generalFeedbackForm.patchValue({
       logoFile: files[0] // Update the value of the logoFile control
     });
   }

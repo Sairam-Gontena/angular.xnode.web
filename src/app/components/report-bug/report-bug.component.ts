@@ -16,7 +16,6 @@ import { tap } from 'rxjs';
 export class ReportBugComponent implements OnInit {
   @Input() displayReportDialog = false;
   @Input() screenshot: any;
-  // @Output() dataActionEvent = new EventEmitter<object>();
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
 
@@ -25,7 +24,6 @@ export class ReportBugComponent implements OnInit {
 
   submitted: boolean = false;
   feedbackForm: FormGroup;
-  // thanksDialog: boolean = false;
   priorities: any[] = [];
   isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
@@ -33,13 +31,12 @@ export class ReportBugComponent implements OnInit {
   isPlaceholderVisible: boolean = false;
   draganddropSelected: boolean = false;
   browserSelected: boolean = true;
+  files: any[] = [];
 
   constructor(private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
 
-    this.constructor.name; // Component name
-    console.log('this', this.constructor.name);
 
     this.feedbackForm = this.fb.group({
       product: ['', Validators.required],
@@ -64,7 +61,6 @@ export class ReportBugComponent implements OnInit {
     ];
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.templates)
   }
   feedbackReport(value: any) {
     this.dataActionEvent.emit({ value: 'thankYou' })
@@ -73,7 +69,6 @@ export class ReportBugComponent implements OnInit {
     if (this.feedbackForm.valid) {
       this.isInvalid = false;
       const formValues = this.feedbackForm.value;
-      console.log(formValues);
     } else {
       this.isInvalid = true;
       console.log("error");
@@ -87,7 +82,6 @@ export class ReportBugComponent implements OnInit {
   onDeleteImage() {
     this.screenshot = '';
   }
-  files: any[] = [];
   onFileDropped($event: any) {
     this.prepareFilesList($event);
     this.feedbackForm.patchValue({
