@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxCaptureService } from 'ngx-capture';
@@ -9,59 +9,79 @@ import { UtilsService } from '../services/utils.service';
 import { tap } from 'rxjs';
 
 @Component({
-  selector: 'xnode-product-feedback',
-  templateUrl: './product-feedback.component.html',
-  styleUrls: ['./product-feedback.component.scss']
+  selector: 'xnode-report-bug',
+  templateUrl: './report-bug.component.html',
+  styleUrls: ['./report-bug.component.scss']
 })
-export class ProductFeedbackComponent implements OnInit {
-  @Input() showDialog = false;
+export class ReportBugComponent implements OnInit {
+  @Input() displayReportDialog = false;
   @Input() screenshot: any;
+  @Output() dataActionEvent = new EventEmitter<any>();
+  @Output() backEvent = new EventEmitter<boolean>();
 
-  products: any[] = [];
+  @Input() thanksDialog = false;
+  @Input() templates: any[] = [];
+
   submitted: boolean = false;
+  feedbackForm: FormGroup;
+  priorities: any[] = [];
   isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
   isInvalid: boolean = false;
   isPlaceholderVisible: boolean = false;
   draganddropSelected: boolean = false;
-  browserSelected!: boolean;
-  feedbackForm: FormGroup;
+  browserSelected: boolean = true;
+  files: any[] = [];
 
   constructor(private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+
+
     this.feedbackForm = this.fb.group({
       product: ['', Validators.required],
-      component: ['', Validators.required],
+      section: ['', Validators.required],
+      priority: ['', Validators.required],
       helpUsImprove: ['', Validators.required],
       logoFile: [null, Validators.required]
+
     });
+
   }
   get feedback() {
+    this.constructor.name
+
     return this.feedbackForm.controls;
   }
 
   ngOnInit(): void {
-    this.products = [
-      { name: 'Select Product', code: 'select Product' },
-      { name: 'Other', code: 'other' },
+    this.priorities = [
+      { name: 'Choose Priority', code: 'choose priority' },
+      { name: 'Urgent', code: 'urgent' },
     ];
   }
-  getFeedback() {
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+  feedbackReport(value: any) {
+    this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
     this.isFormSubmitted = true;
     if (this.feedbackForm.valid) {
       this.isInvalid = false;
       const formValues = this.feedbackForm.value;
-      console.log(formValues);
     } else {
       this.isInvalid = true;
       console.log("error");
-
     }
-  }
 
-  files: any[] = [];
+  }
+  customFeedback(value: any) {
+    this.dataActionEvent.emit({ value: 'feedback' })
+
+  }
+  onDeleteImage() {
+    this.screenshot = '';
+  }
   onFileDropped($event: any) {
     this.prepareFilesList($event);
     this.feedbackForm.patchValue({
@@ -138,7 +158,7 @@ export class ProductFeedbackComponent implements OnInit {
   handleKeyDown(event: KeyboardEvent) {
     // Check if the Enter key was pressed
     if (event.key === 'Enter') {
-      this.getFeedback();
+      this.feedbackReport('thankYou');
     }
   }
   validateLogoFile(control: AbstractControl) {

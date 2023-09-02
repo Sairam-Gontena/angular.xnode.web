@@ -19,7 +19,8 @@
 }
 
 :host ::ng-deep.p-dialog .p-dialog-header,
-:host ::ng-deep.p-dialog .p-dialog-content {
+:host ::ng-deep.p-dialog .p-dialog-content,
+:host ::ng-deep.p-dialog .p-dialog-footer {
     background-color: #23222B !important;
     color: #FFFFFF !important;
 }

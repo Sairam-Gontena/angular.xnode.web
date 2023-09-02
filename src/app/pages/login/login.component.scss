@@ -48,13 +48,6 @@ input {
     border: solid 1px #ffffff;
 }
 
-:host::ng-deep.p-card {
-    background-color: #23222B !important;
-    padding-left: 80px;
-    padding-right: 80px;
-    border-radius: 12px;
-}
-
 .forgot-pwd {
     color: #02ADEE;
 }
@@ -118,9 +111,15 @@ input {
         font-weight: 500;
         line-height: 21.78px;
     }
+
     .label {
         margin-top: 10px;
         color: #DEDEDE
+    }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
     }
 }
 

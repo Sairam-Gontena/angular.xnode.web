@@ -9,6 +9,7 @@ import { PasswordModule } from 'primeng/password';
 import { MessagesModule } from 'primeng/messages';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FieldsetModule } from 'primeng/fieldset';
 @NgModule({
   declarations: [
     LoginComponent
@@ -23,7 +24,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ReactiveFormsModule,
     MessagesModule,
     CardModule,
-    CheckboxModule
+    CheckboxModule,
+    FieldsetModule
   ]
 })
 export class LoginModule { }
