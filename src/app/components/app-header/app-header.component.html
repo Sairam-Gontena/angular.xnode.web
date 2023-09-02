@@ -26,7 +26,16 @@
         <p-splitButton [label]="username" [model]="logoutDropdown"
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
-    <xnode-product-feedback [showDialog]="showDialog" [screenshot]="screenshot"></xnode-product-feedback>
+    <xnode-customer-feedback [showDialog]="showDialog"
+        (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
+    <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
+        (dataActionEvent)="handleDataAndAction($event)" [templates]="templates"
+        (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
+    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [templates]="templates"
+        (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
+        (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
+    <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
+
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
