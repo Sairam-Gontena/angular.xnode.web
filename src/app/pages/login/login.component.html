@@ -17,7 +17,7 @@
                                         <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                                             <div>
                                                 <label htmlFor="email"
-                                                    class="font-medium text-xl heading-color">Email/Username</label>
+                                                    class="font-medium text-xl label">Email/Username</label>
                                             </div>
                                             <input pInputText id="email" placeholder="Enter email"
                                                 formControlName="email" autocomplete="username"
@@ -33,7 +33,7 @@
                                         <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                                             <div>
                                                 <label htmlFor="password"
-                                                    class="font-medium text-xl heading-color">Password</label>
+                                                    class="font-medium text-xl label">Password</label>
                                             </div>
                                             <p-password [toggleMask]="true" formControlName="password"
                                                 placeholder="Enter password"
@@ -68,13 +68,13 @@
                                             </div>
                                         </div>
                                         <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
-                                            <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg "
+                                            <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
                                                 [disabled]="loginForm.invalid" (click)="onClickLogin()"></p-button>
                                         </div>
-                                        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
+                                        <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
                                             <a
                                                 class="flex justify-content-center align-items-center no-underline text-sm font-medium forgot-pwd">Terms
-                                                of service <p class="heading-color mx-2">and</p> privacy policy</a>
+                                                of service <p class="mx-2 text-50 mt-3">and</p> privacy policy</a>
                                         </div>
                                     </div>
                                 </form>
