@@ -104,46 +104,6 @@ textarea {
 .files-list {
     margin-top: 1.5rem;
     width: 500px;
-
-    // .single-file {
-    //     display: flex;
-    //     padding: 0.5rem;
-    //     justify-content: space-between;
-    //     align-items: center;
-    //     border: dashed 1px #979797;
-    //     border-radius: 12px;
-    //     margin-bottom: 1rem;
-
-    //     .delete {
-    //         display: flex;
-    //         margin-left: 0.5rem;
-    //         cursor: pointer;
-    //         align-self: flex-end;
-    //     }
-
-
-    //     display: flex;
-    //     flex-grow: 1;
-
-    //     .name {
-    //         font-size: 14px;
-    //         font-weight: 500;
-    //         color: #DEDEDE;
-    //         margin: 0;
-    //     }
-
-    //     .size {
-    //         font-size: 12px;
-    //         font-weight: 500;
-    //         color: #DEDEDE;
-    //         margin: 0;
-    //         margin-bottom: 0.25rem;
-    //     }
-
-    //     .info {
-    //         width: 100%
-    //     }
-    // }
 }
 
 /* Shake animation */
@@ -191,4 +151,8 @@ textarea {
     100% {
         transform: translate(1px, -2px) rotate(-1deg);
     }
+}
+
+:host::ng-deep .p-dropdown .p-dropdown-label {
+    color: #ffffff;
 }
