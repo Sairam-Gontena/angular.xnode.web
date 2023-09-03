@@ -164,8 +164,8 @@ const routes: Routes = [
     component: SignupDynamicFormComponent,
   },
   {
-    path: 'help-centre',
-    loadChildren: () => import('./pages/help-centre/help-centre.module').then((m) => m.HelpCentreModule)
+    path: 'help-center',
+    loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule)
   },
   {
     path: '',

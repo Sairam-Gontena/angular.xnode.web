@@ -104,7 +104,12 @@ export class AppHeaderComponent implements OnInit {
       });
   }
   toggleDialog() {
+    this.utilsService.showProductStatusPopup(false);
     this.showDialog = true;
+  }
+  onClickHelpCenter() {
+    this.router.navigate(['/help-center']);
+    this.utilsService.showProductStatusPopup(false);
   }
   handleDataAndAction(event: any) {
     console.log(event.value)
@@ -182,6 +187,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   overlayToggle(event?: any, element?: any) {
+    this.utilsService.showProductStatusPopup(false);
     if (event) {
       this.eventOverlay = event;
     } if (element) {
