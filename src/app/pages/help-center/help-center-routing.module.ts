@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HelpCentreComponent } from './help-centre.component';
+import { HelpCenterComponent } from './help-center.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: HelpCentreComponent
+        component: HelpCenterComponent
     },
 ];
 
