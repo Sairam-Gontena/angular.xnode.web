@@ -238,17 +238,10 @@ export class AppHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
+
   onClickLogo(): void {
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
   }
 
-  isHelpCentre() {
-    // Temporary
-    if (window.location.hash === "#/x-pilot" || window.location.hash === "#/my-products") {
-      return false;
-    } else {
-      return true;
-    }
-  }
 }
