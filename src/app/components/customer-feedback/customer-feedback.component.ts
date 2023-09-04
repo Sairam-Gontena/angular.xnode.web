@@ -10,6 +10,7 @@ import { tap } from 'rxjs';
 export class CustomerFeedbackComponent implements OnInit {
 
   public getScreenWidth: any;
+  public dialogWidth: any;
   modalPosition: any;
   @Input() showDialog = false;
   @Input() displayReportDialog = false;
@@ -17,7 +18,16 @@ export class CustomerFeedbackComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
-    this.getScreenWidth < 780 ? this.modalPosition = 'bottom' : this.modalPosition = 'center';
+    if (this.getScreenWidth < 780) {
+      this.modalPosition = 'bottom';
+      this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '75vw';
+    } else if (this.getScreenWidth > 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '40vw';
+    }
   }
 
   generalFeedbackDialog: boolean = false;

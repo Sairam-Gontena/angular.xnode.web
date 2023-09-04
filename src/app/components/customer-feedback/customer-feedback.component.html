@@ -1,6 +1,6 @@
 <p-dialog *ngIf="showDialog" header="Customer Feedback" class="feedback" [(visible)]="showDialog" [modal]="true"
-    [draggable]="false" [breakpoints]="{ '780px': '100vw' }" [style]="{ width: '40vw' }" [resizable]="false"
-    [position]="modalPosition">
+    [draggable]="false" [style]="{ width: dialogWidth }" [resizable]="false" [position]="modalPosition">
+    <!-- [breakpoints]="{ '780px': '100vw' }" -->
     <ng-template pTemplate="header">
         <div class="flex align-items-center p-3">
             <img src="./assets/feedback-popup.svg" alt="dp" class="text-2xl font-bold mx-3 mt-1" width="40px"

@@ -18,6 +18,7 @@ export class ReportBugComponent implements OnInit {
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
   public getScreenWidth: any;
+  public dialogWidth: any;
   modalPosition: any;
   currentUser?: User;
   submitted: boolean = false;
@@ -34,7 +35,16 @@ export class ReportBugComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
-    this.getScreenWidth < 780 ? this.modalPosition = 'bottom' : this.modalPosition = 'center';
+    if (this.getScreenWidth < 780) {
+      this.modalPosition = 'bottom';
+      this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '75vw';
+    } else if (this.getScreenWidth > 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '40vw';
+    }
   }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService, private utils: UtilsService) {
