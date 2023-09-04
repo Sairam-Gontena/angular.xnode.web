@@ -30,10 +30,8 @@ export class CustomerFeedbackComponent implements OnInit {
 
   handleDataAndAction(value: any) {
     this.dataActionEvent.emit({ value: 'reportBug' })
-
   }
   generalHandleDataAndAction(value: any) {
     this.dataActionEvent.emit({ value: 'generalFeedback' })
-
   }
 }
