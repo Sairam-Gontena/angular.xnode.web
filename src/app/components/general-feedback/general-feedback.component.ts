@@ -53,7 +53,6 @@ export class GeneralFeedbackComponent implements OnInit {
       this.dialogHeight = '80vh';
     } else if (this.getScreenWidth > 980) {
       this.dialogWidth = '40vw';
-      this.dialogHeight = '45vh';
     }
   }
 
