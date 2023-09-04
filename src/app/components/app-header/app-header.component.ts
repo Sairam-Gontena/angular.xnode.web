@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -7,7 +7,7 @@ import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
@@ -20,7 +20,6 @@ import { UserUtil } from 'src/app/utils/user-util';
 
 export class AppHeaderComponent implements OnInit {
   @Input() currentPath: any;
-
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -77,15 +76,15 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
+          this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
         }
       },
     ];
     this.initializeWebsocket();
-
-
   }
+
   //get calls 
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser.email)
@@ -97,23 +96,24 @@ export class AppHeaderComponent implements OnInit {
             url: obj.product_url !== undefined ? obj.product_url : ''
           }));
           this.templates = data;
-          console.log(this.templates)
         }
       })
       .catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
+
   toggleDialog() {
     this.utilsService.showProductStatusPopup(false);
     this.showDialog = true;
   }
+
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
   }
+
   handleDataAndAction(event: any) {
-    console.log(event.value)
     this.captureService
       .getImage(document.body, true)
       .pipe(
@@ -163,6 +163,7 @@ export class AppHeaderComponent implements OnInit {
     }
 
   }
+
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
