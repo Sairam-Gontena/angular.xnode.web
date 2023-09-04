@@ -188,6 +188,11 @@ input {
         margin-top: 10px;
         color: #DEDEDE
     }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
+    }
 }
 
 /* Example media query for large screens (e.g., desktops) */
@@ -261,6 +266,11 @@ input {
         line-height: 21.78px;
         font-family: 'Inter';
     }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
+    }
 }
 
 @media (min-width: 2560px) {
@@ -329,5 +339,10 @@ input {
         font-weight: 500;
         line-height: 21.78px;
         font-family: 'Inter';
+    }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
     }
 }
