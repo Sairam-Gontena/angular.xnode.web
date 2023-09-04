@@ -1,5 +1,5 @@
 <p-dialog *ngIf="displayReportDialog" header="Report a bug" class="feedback" [(visible)]="displayReportDialog"
-    [modal]="true" [style]="{ width: '40vw'}" [draggable]="false" [resizable]="false">
+    [modal]="true" [draggable]="false" [resizable]="false" [position]="'center'">
     <ng-template pTemplate="header" class="p-2">
         <div class="flex align-items-center">
             <i class="pi pi-angle-left mr-3" (click)="customFeedback($event)"></i>
