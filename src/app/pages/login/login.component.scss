@@ -63,6 +63,19 @@ input {
 
 
 @media (max-width: 767px) {
+    .div-logo {
+        margin-top: 40px;
+        margin-right: 40px;
+        display: flex;
+        justify-content: center;
+        height: 5%;
+    }
+
+    .logo {
+        height: 16px;
+        width: 84px;
+    }
+
     .main-card {
         display: flex;
         justify-content: center;
@@ -90,19 +103,6 @@ input {
         font-family: 'Inter';
         font-weight: 700;
         line-height: 58.09px;
-    }
-
-    .div-logo {
-        margin-top: 40px;
-        margin-right: 40px;
-        display: flex;
-        justify-content: center;
-        height: 5%;
-    }
-
-    .logo {
-        height: 16px;
-        width: 84px;
     }
 
     .stepper-text {
@@ -205,8 +205,6 @@ input {
 
     .sub-card {
         width: 40%;
-        padding-left: 60px;
-        padding-right: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -282,8 +280,6 @@ input {
 
     .sub-card {
         width: 40%;
-        padding-left: 60px;
-        padding-right: 60px;
         display: flex;
         justify-content: center;
         align-items: center;

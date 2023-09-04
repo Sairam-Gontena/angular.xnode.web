@@ -93,84 +93,359 @@
     margin-right: 14px;
 }
 
-@media (min-width: 641px) and (max-width: 992px) {
-    .verify-card {
-        width: 75vw !important;
-        height: 70vh !important;
+// @media (min-width: 641px) and (max-width: 992px) {
+//     .verify-card {
+//         width: 75vw !important;
+//         height: 70vh !important;
+//     }
+
+//     .verify-div {
+//         padding: 1rem !important;
+//         height: 60vh !important;
+//     }
+
+//     .logo-img {
+//         justify-content: center !important;
+//         margin: 5rem !important;
+//     }
+
+//     .heading-color {
+//         font-size: 2.5rem !important;
+//     }
+
+//     .resend-div {
+//         font-size: 1rem !important;
+//     }
+
+//     .verify-account-div,
+//     .otp-inputs {
+//         margin-top: 6rem !important;
+//     }
+// }
+
+// @media (max-width: 767px) {
+//     .div-logo {
+//         margin-top: 40px;
+//         margin-right: 40px;
+//         display: flex;
+//         justify-content: center;
+//         height: 5%;
+//     }
+
+//     .logo {
+//         height: 16px;
+//         width: 84px;
+//     }
+
+//     .verify-card {
+//         width: 85vw !important;
+//         height: 70vh !important;
+//     }
+
+//     .resend-text {
+//         font-size: 1rem !important;
+//         display: block !important;
+//     }
+
+//     .verify-div {
+//         padding: 0.5rem !important;
+//         height: 70vh !important;
+//     }
+
+//     .heading-color {
+//         font-size: 2rem !important;
+//     }
+
+//     :host ::ng-deep .p-card-body {
+//         padding-left: 1rem !important;
+//         padding-right: 1rem !important;
+//         color: #DEDEDE !important;
+//     }
+
+//     :host ::ng-deep.otp-input {
+//         width: 30px !important;
+//         height: 30px !important;
+//         font-size: 1.25rem !important;
+//     }
+
+//     .verify-main-div {
+//         margin-top: 2rem !important;
+//     }
+
+//     .heading-content {
+//         font-size: 1rem !important;
+//     }
+
+//     .verify-account-div,
+//     .resend-div {
+//         font-size: 1rem !important;
+//         margin-top: 1rem !important;
+//     }
+// }
+
+@media (max-width: 767px) {
+    .div-logo {
+        margin-top: 40px;
+        margin-right: 40px;
+        display: flex;
+        justify-content: center;
+        height: 5%;
     }
 
-    .verify-div {
-        padding: 1rem !important;
-        height: 60vh !important;
+    .logo {
+        height: 16px;
+        width: 84px;
     }
 
-    .logo-img {
-        justify-content: center !important;
-        margin: 5rem !important;
+    .main-card {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 95%;
     }
 
-    .heading-color {
-        font-size: 2.5rem !important;
+    .sub-card {
+        width: 90%;
+        margin-top: 10px
     }
 
-    .resend-div {
-        font-size: 1rem !important;
+    :host ::ng-deep.p-card .p-card-body {
+        background: #23222B;
+        margin-top: 20px
     }
 
-    .verify-account-div,
-    .otp-inputs {
-        margin-top: 6rem !important;
+    .heading-text {
+        font-size: 30px;
+        color: #DEDEDE;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 58.09px;
+    }
+
+    .stepper-text {
+        font-size: 18px;
+        color: #DEDEDE;
+        font-weight: 500;
+        line-height: 21.78px;
     }
 }
 
-@media (max-width: 640px) {
-    .verify-card {
-        width: 85vw !important;
-        height: 70vh !important;
+@media (min-width: 768px) and (max-width: 1024px) {
+    .main-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 95%;
     }
 
-    .resend-text {
-        font-size: 1rem !important;
-        display: block !important;
+    .sub-card {
+        width: 80%;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
-    .verify-div {
-        padding: 0.5rem !important;
-        height: 70vh !important;
+    :host ::ng-deep.p-card .p-card-body {
+        background: #23222B;
+        margin-top: 150px
     }
 
-    .heading-color {
-        font-size: 2rem !important;
+    :host ::ng-deep.p-button {
+        width: 50%;
+        margin-top: 30px
     }
 
-    :host ::ng-deep .p-card-body {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        color: #DEDEDE !important;
+    .heading-text {
+        font-size: 48px;
+        color: #DEDEDE;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 58.09px;
+        margin-top: 20px
     }
 
-    .logo-img {
-        justify-content: center !important;
-        margin: 2rem !important;
+    .div-logo {
+        margin-top: 40px;
+        margin-right: 40px;
+        display: flex;
+        justify-content: center;
+        height: 5%;
+
     }
 
-    :host ::ng-deep.otp-input {
-        width: 30px !important;
-        height: 30px !important;
-        font-size: 1.25rem !important;
+    .logo {
+        height: 22px;
+        width: 118px;
     }
 
-    .verify-main-div {
-        margin-top: 2rem !important;
+    .stepper-text {
+        font-size: 18px;
+        color: #DEDEDE;
+        font-weight: 500;
+        line-height: 21.78px;
+    }
+
+    :host ::ng-deep.p-card .p-card-content {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .label {
+        margin-top: 10px;
+        color: #DEDEDE
+    }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
+    }
+}
+
+/* Example media query for large screens (e.g., desktops) */
+@media (min-width: 1025px)and (max-width: 2559px) {
+    .main-card {
+        display: flex;
+        justify-content: center;
+        height: 70%;
+    }
+
+    .sub-card {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    :host ::ng-deep.p-card {
+        background: #23222B;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 40px;
+        padding-right: 40px;
+        border-radius: 12px;
+    }
+
+    :host ::ng-deep.p-card .p-card-body {
+        background: #23222B;
+        width: 100%;
+    }
+
+    :host ::ng-deep.p-button {
+        width: 50%;
+        margin-top: 40px
     }
 
     .heading-content {
-        font-size: 1rem !important;
+        font-size: 18px;
+        color: #DEDEDE;
+        font-family: 'Inter';
     }
 
-    .verify-account-div,
-    .resend-div {
-        font-size: 1rem !important;
-        margin-top: 1rem !important;
+    .heading-text {
+        font-size: 44px;
+        color: #DEDEDE;
+        font-weight: 700;
+        line-height: 58.09px;
+        margin-top: 20px
+    }
+
+    .div-logo {
+        margin-top: 40px;
+        margin-right: 40px;
+        display: flex;
+        justify-content: flex-end;
+        height: 10%;
+    }
+
+    .logo {
+        height: 21px;
+        width: 110px;
+    }
+
+    .stepper-text {
+        font-size: 18px;
+        color: #DEDEDE;
+        font-weight: 500;
+        line-height: 21.78px;
+        font-family: 'Inter';
+    }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
+    }
+}
+
+@media (min-width: 2560px) {
+    .main-card {
+        display: flex;
+        justify-content: center;
+        height: 90%;
+    }
+
+    .sub-card {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    :host ::ng-deep.p-card {
+        background: #23222B;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    :host ::ng-deep.p-card .p-card-body {
+        background: #23222B;
+        width: 70%;
+    }
+
+    .label {
+        margin-top: 10px;
+        color: #DEDEDE
+    }
+
+    :host ::ng-deep.p-button {
+        width: 50%;
+        margin-top: 30px
+    }
+
+    .heading-text {
+        font-size: 48px;
+        color: #DEDEDE;
+        font-weight: 700;
+        line-height: 58.09px;
+        margin-top: 20px
+    }
+
+    .div-logo {
+        margin-top: 40px;
+        margin-right: 40px;
+        display: flex;
+        justify-content: flex-end;
+        height: 10%;
+    }
+
+    .logo {
+        height: 21px;
+        width: 110px;
+    }
+
+    .stepper-text {
+        font-size: 18px;
+        color: #DEDEDE;
+        font-weight: 500;
+        line-height: 21.78px;
+        font-family: 'Inter';
+    }
+
+    :host::ng-deep.p-card {
+        background-color: #23222B !important;
+        border-radius: 12px;
     }
 }

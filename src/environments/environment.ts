@@ -1,6 +1,7 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8000/',
+    // apiUrl: 'http://localhost:8000/',
+    apiUrl: 'https://beta-navi.azurewebsites.net/',
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
     userUtilsApi: 'https://dev-user-util-api.azurewebsites.net/',
     xnodeAppUrl: 'http://localhost:4200/',

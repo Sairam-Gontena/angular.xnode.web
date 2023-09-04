@@ -11,6 +11,7 @@ import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
+import { AppSideMenuItems } from '../../constants/AppSideMenuItems';
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -50,6 +51,27 @@ export class AppHeaderComponent implements OnInit {
   closeOverlay: boolean = false;
   eventOverlay: any;
   opOverlay: any;
+  sidebarVisible = false;
+  sideMenuItems: any;
+  selectedMenuIndex: any;
+  selectedSubMenuIndex: any;
+  BottomSideMenu = [
+    {
+      label: 'Settings',
+      icon: './assets/settings-icon.svg',
+      path: 'overview'
+    },
+    {
+      label: 'Help',
+      icon: './assets/helpicon.svg',
+      path: 'usecases'
+    },
+    {
+      label: 'Feedback',
+      icon: './assets/Feedback.svg',
+      path: 'usecases'
+    }
+  ]
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
@@ -57,7 +79,8 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.currentPath)
+    this.sideMenuItems = AppSideMenuItems.UserSideMenu;
+    console.log(this.sideMenuItems)
     this.route.queryParams.subscribe((params: any) => {
       console.log(params)
 
@@ -106,6 +129,9 @@ export class AppHeaderComponent implements OnInit {
   toggleDialog() {
     this.utilsService.showProductStatusPopup(false);
     this.showDialog = true;
+  }
+  toggleSidemenu(value: boolean) {
+    this.sidebarVisible = value
   }
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
@@ -248,6 +274,17 @@ export class AppHeaderComponent implements OnInit {
   onClickLogo(): void {
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
+  }
+
+  onClickMenuItem(item: any, i: any): void {
+    this.sidebarVisible = false
+    this.selectedMenuIndex = i;
+    this.router.navigate(['/' + item.path])
+  }
+  onClickSubMenuItem(item: any, i: any): void {
+    this.sidebarVisible = false
+    this.selectedSubMenuIndex = i;
+    this.router.navigate(['/' + item.path])
   }
 
 }

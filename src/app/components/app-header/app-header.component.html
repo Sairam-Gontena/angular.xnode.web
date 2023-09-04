@@ -1,37 +1,67 @@
-<div class="app-header-wrapper flex align-content-center flex-wrap">
-    <div class="w-9 flex gap-5">
-        <div class="flex flex-row">
-            <img src="./assets/logo-x.svg" alt="x-logo">
-            <img src="./assets/logo-node.svg" alt="x-node" (click)="onClickLogo()" class="pointer">
-        </div>
+<div class="flex app-header-wrapper justify-content-between">
+    <div class="logo-div">
+        <img src="./assets/logo-x.svg" alt="x-logo" class="logo">
     </div>
-    <div class="w-3 flex gap-2 justify-content-end align-content-center">
-        <div class="flex justify-content-center align-content-center">
-            <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" (click)="onClickHelpCenter()"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3 pointer" />
-            <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 pointer" pBadge
-                value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
-            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 pointer"
+    <div class="content-div">
+        <i class="pi pi-bars text-lg pointer icon-color menu-icon" (click)="toggleSidemenu(true)"></i>
+        <div class="flex align-items-center">
+            <i class="pi pi-question-circle text-lg pointer mr-3 icon-color" (click)="onClickHelpCenter()"></i>
+            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="pointer mr-3" />
+            <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg pointer" pBadge value={{notificationCount}}
+                severity="danger" (click)="overlayToggle($event, op)"></i>
+            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-3 pointer icon-color "
                 (click)="overlayToggle($event, op)"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"></xnode-notification-panel>
             </p-overlayPanel>
+            <img src="./assets/dp.svg" alt="dp" class="mr-2">
+            <p-splitButton [label]="username" [model]="logoutDropdown"
+                styleClass="p-button-raised logout-split-btn"></p-splitButton>
+            <xnode-customer-feedback [showDialog]="showDialog"
+                (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
+            <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
+                (dataActionEvent)="handleDataAndAction($event)" [templates]="templates"
+                (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
+            <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [templates]="templates"
+                (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
+                (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
+            <xnode-thank-you [thanksDialog]="thanksDialog"
+                (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
         </div>
-        <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <p-splitButton [label]="username" [model]="logoutDropdown"
-            styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
-    <xnode-customer-feedback [showDialog]="showDialog"
-        (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
-    <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
-        (dataActionEvent)="handleDataAndAction($event)" [templates]="templates"
-        (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
-    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [templates]="templates"
-        (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
-        (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
-    <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
-
 </div>
+<p-sidebar [(visible)]="sidebarVisible">
+    <div class="side-menu-container">
+        <div class="flex justify-content-between mt-4 logo-div">
+            <img src="./assets/logo-x.svg" alt="x-logo" class="logo">
+            <i class="pi pi-times text-lg pointer mr-2 icon-color font-medium" (click)="toggleSidemenu(false)"></i>
+        </div>
+        <div class="mt-4 main-content ">
+            <div *ngFor="let item of sideMenuItems;let i = index;" (click)="onClickMenuItem(item,i)"
+                [ngClass]="{'active': i === selectedMenuIndex  }">
+                <div class="side-menu-item   align-items-center"
+                    [ngClass]="selectedMenuIndex == i ? 'side-menu-item-selected' : '' ">
+                    <img [src]="item.icon" alt="item.label">
+                    <div class="ml-3">
+                        {{item.label}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub-content">
+            <div *ngFor="let item of BottomSideMenu;let i = index;" (click)="onClickSubMenuItem(item,i)"
+                [ngClass]="{'active': i === selectedSubMenuIndex  }">
+                <div class="side-menu-item align-items-center"
+                    [ngClass]="selectedSubMenuIndex == i ? 'side-menu-item-selected' : '' ">
+                    <img [src]="item.icon" alt="item.label">
+                    <div class="ml-3">
+                        {{item.label}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-sidebar>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>

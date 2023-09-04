@@ -1,48 +1,47 @@
 <div class="grid m-0 h-full bg-color">
     <div class="bg-image bg-no-repeat w-12 h-12">
-        <div class="">
-            <div class="logo-img flex justify-content-end m-6">
-                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="">
+        <div class="h-full w-full">
+            <div class="div-logo">
+                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="logo">
             </div>
-            <div class="flex justify-content-center mt-6">
-                <p-card class="verify-card">
-                    <div class="verify-div sm:col-12 md:col-12 lg:col-12 xl:col-12 p-5">
-                        <form (ngSubmit)="verifyAccount()">
-                            <div class="flex text-white mb-3">
-                                <p class="m-0 pointer flex" (click)="onClickLogout()"><span>
-                                        <i class="pi pi-arrow-left mr-2 pointer" style="font-size: 1.5rem"></i>
-                                    </span> Logout</p>
-                            </div>
-                            <div class="heading-color text-6xl font-bold ml-2">Verify your identity</div>
-                            <div class="heading-content font-semibold text-500 text-lg ml-2">
-                                For additional security, an email with a required verification
-                                code has been sent to {{maskedEmail}}
-                            </div>
-                            <div class="otp-inputs flex justify-content-center mt-5">
-                                <ng-otp-input (onInputChange)="onOtpChange($event)"
-                                    [config]="{length:6,allowNumbersOnly: true, placeholder:'-'}"
-                                    #ngOtpInput></ng-otp-input>
-                            </div>
-                            <div class="verify-account-div col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                                <p-button label="Verify Account" class="flex justify-content-center "
-                                    styleClass="p-button-rounded  font-medium text-lg"
-                                    (click)="verifyAccount()"></p-button>
-                            </div>
-                            <div *ngIf="resendTimer > 0"
-                                class="resend-div col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                                <div class="text-lg font-medium flex justify-content-center resend-div">Resend
-                                    verification code in <a class="no-underline ml-2">{{ resendTimer }}s</a> </div>
-                            </div>
-                            <div *ngIf="resendTimer === 0"
-                                class="resend-div col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                                <a class="no-underline"
-                                    class="text-lg font-medium flex justify-content-center no-underline pointer"
-                                    (click)="resendVerification()">Resend Code</a>
-                            </div>
-                        </form>
-                    </div>
-                </p-card>
+            <div class="main-card">
+                <div class="sub-card">
+                    <p-card>
+                        <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                            <div class="stepper-text">Step 2 of 2</div>
+                            <div class="heading-text">Verify your identity</div>
+                            <form (ngSubmit)="verifyAccount()">
+                                <div class="heading-content font-semibold text-500 mt-2">
+                                    For additional security, an email with a required verification
+                                    code has been sent to {{maskedEmail}}
+                                </div>
+                                <div class="otp-inputs flex justify-content-center mt-7">
+                                    <ng-otp-input (onInputChange)="onOtpChange($event)"
+                                        [config]="{length:6,allowNumbersOnly: true, placeholder:'-'}"
+                                        #ngOtpInput></ng-otp-input>
+                                </div>
+                                <div class="verify-account-div col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 ">
+                                    <p-button label="Verify Account" class="flex justify-content-center "
+                                        styleClass="p-button-rounded  font-medium text-lg"
+                                        (click)="verifyAccount()"></p-button>
+                                </div>
+                                <div *ngIf="resendTimer > 0"
+                                    class="resend-div col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                                    <div class="text-lg font-medium flex justify-content-center resend-div">Resend
+                                        verification code in <a class="no-underline ml-2">{{ resendTimer }}s</a> </div>
+                                </div>
+                                <div *ngIf="resendTimer === 0"
+                                    class="resend-div col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                                    <a class="no-underline"
+                                        class="text-lg font-medium flex justify-content-center no-underline pointer"
+                                        (click)="resendVerification()">Resend Code</a>
+                                </div>
+                            </form>
+                        </div>
+                    </p-card>
+                </div>
             </div>
+
         </div>
     </div>
 

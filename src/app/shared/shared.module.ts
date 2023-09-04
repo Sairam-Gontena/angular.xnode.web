@@ -19,8 +19,9 @@ import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RatingModule } from 'primeng/rating';
-
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { SidebarModule } from 'primeng/sidebar';
+
 @NgModule({
   declarations: [
   ],
@@ -44,7 +45,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     OverlayPanelModule,
     ConfirmDialogModule,
     RatingModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    SidebarModule
   ],
   exports: [
     FormsModule,
@@ -67,7 +69,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     OverlayPanelModule,
     ConfirmDialogModule,
     RatingModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    SidebarModule
   ]
 })
 export class SharedModule { }
