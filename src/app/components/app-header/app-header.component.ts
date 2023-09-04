@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -7,7 +7,7 @@ import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
@@ -20,7 +20,6 @@ import { UserUtil } from 'src/app/utils/user-util';
 
 export class AppHeaderComponent implements OnInit {
   @Input() currentPath: any;
-
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -50,6 +49,7 @@ export class AppHeaderComponent implements OnInit {
   closeOverlay: boolean = false;
   eventOverlay: any;
   opOverlay: any;
+  showFeedBacks: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
@@ -76,15 +76,15 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
+          this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
         }
       },
     ];
     this.initializeWebsocket();
-
-
   }
+
   //get calls 
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser.email)
@@ -96,18 +96,24 @@ export class AppHeaderComponent implements OnInit {
             url: obj.product_url !== undefined ? obj.product_url : ''
           }));
           this.templates = data;
-          console.log(this.templates)
         }
       })
       .catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
+
   toggleDialog() {
+    this.utilsService.showProductStatusPopup(false);
     this.showDialog = true;
   }
+
+  onClickHelpCenter() {
+    this.router.navigate(['/help-center']);
+    this.utilsService.showProductStatusPopup(false);
+  }
+
   handleDataAndAction(event: any) {
-    console.log(event.value)
     this.captureService
       .getImage(document.body, true)
       .pipe(
@@ -122,30 +128,42 @@ export class AppHeaderComponent implements OnInit {
         this.displayReportDialog = false;
         this.generalFeedbackDialog = false;
         this.thanksDialog = false;
+        this.showFeedBacks = false;
         break;
       case 'reportBug':
         this.showDialog = false;
         this.displayReportDialog = true;
         this.generalFeedbackDialog = false;
         this.thanksDialog = false;
+        this.showFeedBacks = false;
         break;
       case 'generalFeedback':
         this.showDialog = false;
         this.displayReportDialog = false;
         this.generalFeedbackDialog = true;
         this.thanksDialog = false;
+        this.showFeedBacks = false;
         break;
       case 'thankYou':
         this.showDialog = false;
         this.displayReportDialog = false;
         this.generalFeedbackDialog = false;
         this.thanksDialog = true;
+        this.showFeedBacks = false;
+        break;
+      case 'view-existing-feedbacks':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        this.showFeedBacks = true;
         break;
       default:
         break;
     }
 
   }
+
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -182,6 +200,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   overlayToggle(event?: any, element?: any) {
+    this.utilsService.showProductStatusPopup(false);
     if (event) {
       this.eventOverlay = event;
     } if (element) {
@@ -238,17 +257,10 @@ export class AppHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
+
   onClickLogo(): void {
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
   }
 
-  isHelpCentre() {
-    // Temporary
-    if (window.location.hash === "#/x-pilot" || window.location.hash === "#/my-products") {
-      return false;
-    } else {
-      return true;
-    }
-  }
 }

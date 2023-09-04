@@ -1,27 +1,27 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NgxCaptureService } from 'ngx-capture';
-import { ConfirmationService } from 'primeng/api';
-import { ApiService } from 'src/app/api/api.service';
-import { WebSocketService } from 'src/app/web-socket.service';
+import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
-import { tap } from 'rxjs';
+import { CommonApiService } from 'src/app/api/common-api.service';
 
 @Component({
   selector: 'xnode-report-bug',
   templateUrl: './report-bug.component.html',
   styleUrls: ['./report-bug.component.scss']
 })
+
 export class ReportBugComponent implements OnInit {
   @Input() displayReportDialog = false;
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
-
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
-
+  public getScreenWidth: any;
+  public dialogWidth: string = '40vw';
+  modalPosition: any;
+  currentUser?: User;
   submitted: boolean = false;
   feedbackForm: FormGroup;
   priorities: any[] = [];
@@ -32,83 +32,172 @@ export class ReportBugComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = true;
   files: any[] = [];
+  imageUrl: any;
+  uploadedFileData: any;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
-
-
-    this.feedbackForm = this.fb.group({
-      product: ['', Validators.required],
-      section: ['', Validators.required],
-      priority: ['', Validators.required],
-      helpUsImprove: ['', Validators.required],
-      logoFile: [null, Validators.required]
-
-    });
-
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    if (this.getScreenWidth < 780) {
+      this.modalPosition = 'bottom';
+      this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '75vw';
+    } else if (this.getScreenWidth > 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '40vw';
+    }
   }
+
+  constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
+    private utils: UtilsService, private commonApi: CommonApiService) {
+    this.currentUser = UserUtil.getCurrentUser();
+    this.onWindowResize();
+    this.feedbackForm = this.fb.group({
+      product: [localStorage.getItem('app_name'), Validators.required],
+      section: [this.getMeComponent(), Validators.required],
+      severityId: ['', Validators.required],
+      feedbackText: ['', Validators.required],
+      screenshot: [null]
+    });
+  }
+
   get feedback() {
     this.constructor.name
-
     return this.feedbackForm.controls;
   }
 
   ngOnInit(): void {
+    console.log(this.screenshot)
     this.priorities = [
       { name: 'Choose Priority', code: 'choose priority' },
       { name: 'Urgent', code: 'urgent' },
     ];
   }
+
+  getMeComponent() {
+    let comp = '';
+    switch (window.location.hash) {
+      case '#/dashboard':
+        comp = 'Dashboard'
+        break;
+      case '#/overview':
+        comp = 'Overview'
+        break;
+      case '#/usecases':
+        comp = 'Usecase'
+        break;
+      case '#/configuration/workflow/overview':
+        comp = 'Xflows'
+        break;
+      case '#/configuration/data-model/overview':
+        comp = 'Data Models'
+        break;
+      case '#/operate':
+        comp = 'Operate'
+        break;
+      case '#/publish':
+        comp = 'Publish'
+        break;
+      default:
+        break;
+    }
+    return comp;
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
   }
+
   feedbackReport(value: any) {
-    this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
     this.isFormSubmitted = true;
     if (this.feedbackForm.valid) {
       this.isInvalid = false;
-      const formValues = this.feedbackForm.value;
+      this.onFileDropped()
     } else {
       this.isInvalid = true;
       console.log("error");
     }
-
   }
+
+  sendBugReport(): void {
+    const body = {
+      "userId": this.currentUser?.id,
+      "productId": localStorage.getItem('record_id'),
+      "componentId": this.feedbackForm.value.section,
+      "feedbackText": this.feedbackForm.value.feedbackText,
+      "severityId": this.feedbackForm.value.severityId,
+      "feedbackStatusId": "new",
+      "requestTypeId": "bug-report",
+      "internalTicketId": '-',
+      "userFiles": [
+        {
+          "fileId": this.uploadedFileData.id,
+          "userFileType": "doc"
+        }
+      ]
+    }
+    this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
+      if (!res?.data?.detail) {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
+        this.dataActionEvent.emit({ value: 'thankYou' });
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      this.utils.loadSpinner(false);
+    })
+  }
+
   customFeedback(value: any) {
     this.dataActionEvent.emit({ value: 'feedback' })
-
   }
+
   onDeleteImage() {
     this.screenshot = '';
   }
-  onFileDropped($event: any) {
-    this.prepareFilesList($event);
-    this.feedbackForm.patchValue({
-      logoFile: $event[0]
-    });
+
+  onFileDropped($event?: any) {
+    this.utils.loadSpinner(true);
+    if (!$event) {
+      $event = this.screenshot;
+    }
+    const formData = new FormData();
+    formData.append('file', new Blob([$event]));
+    formData.append('containerName', 'user-feedback');
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+      if (res) {
+        this.uploadedFileData = res.data;
+        this.sendBugReport();
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadSpinner(false);
+      }
+    }).catch((err: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
   }
-  /**
-    * handle file from browsing
-    */
+
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
     this.feedbackForm.patchValue({
-      logoFile: files[0] // Update the value of the logoFile control
+      screenshot: files[0] // Update the value of the screenshot control
     });
   }
 
-  /**
-   * Delete file from files list
-   * @param index (File index)
-   */
   deleteFile(index: number) {
     this.files.splice(index, 1);
   }
-  /**
-    * Simulate the upload process
-    */
+
   uploadFilesSimulator(index: number) {
     setTimeout(() => {
       if (index === this.files.length) {
@@ -125,10 +214,7 @@ export class ReportBugComponent implements OnInit {
       }
     }, 1000);
   }
-  /**
-     * Convert Files list to normal array list
-     * @param files (Files List)
-     */
+
   prepareFilesList(files: Array<any>) {
     for (const item of files) {
       item.progress = 0;
@@ -138,11 +224,7 @@ export class ReportBugComponent implements OnInit {
     }
     this.uploadFilesSimulator(0);
   }
-  /**
-     * format bytes
-     * @param bytes (File size in bytes)
-     * @param decimals (Decimals point)
-     */
+
   formatBytes(bytes: any, decimals: any) {
     if (bytes === 0) {
       return '0 Bytes';

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HelpCentreComponent } from './help-centre.component';
-import { HelpCentreRoutingModule } from './help-centre-routing.module';
+import { HelpCentreRoutingModule } from './help-center-routing.module';
 import { ButtonModule } from 'primeng/button';
 import { AccordionModule } from 'primeng/accordion';
+import { HelpCenterComponent } from './help-center.component';
+
 @NgModule({
     declarations: [
-        HelpCentreComponent,
+        HelpCenterComponent
     ],
     imports: [
         CommonModule,

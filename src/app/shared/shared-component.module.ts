@@ -19,8 +19,8 @@ import { ReportBugComponent } from '../components/report-bug/report-bug.componen
 import { CustomerFeedbackComponent } from '../components/customer-feedback/customer-feedback.component';
 import { ThankYouComponent } from '../components/thank-you/thank-you.component';
 import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
-
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
+import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 
 @NgModule({
@@ -44,7 +44,8 @@ import { ProductAlertPopupComponent } from '../components/product-alert-popup/pr
                 ThankYouComponent,
                 GeneralFeedbackComponent,
                 ActionButtonComponent,
-                ProductAlertPopupComponent
+                ProductAlertPopupComponent,
+                ViewExistingFeedbackComponent
         ],
         imports: [
                 CommonModule,
@@ -70,7 +71,8 @@ import { ProductAlertPopupComponent } from '../components/product-alert-popup/pr
                 ThankYouComponent,
                 GeneralFeedbackComponent,
                 ActionButtonComponent,
-                ProductAlertPopupComponent
+                ProductAlertPopupComponent,
+                ViewExistingFeedbackComponent
         ]
 })
 export class SharedComponentModule { }
