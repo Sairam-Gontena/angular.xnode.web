@@ -8,7 +8,8 @@
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class="flex justify-content-center align-content-center">
             <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" (click)="onClickHelpCenter()"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3 pointer" />
+            <img src="./assets/Feedback.svg" (click)="toggleDialog()" (onBeforeHide)="onBeforeHideHandler($event)"
+                class="mr-3 pointer" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 pointer" pBadge
                 value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 pointer"
@@ -22,15 +23,16 @@
         <p-splitButton [label]="username" [model]="logoutDropdown"
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
-    <xnode-customer-feedback [showDialog]="showDialog"
+    <xnode-customer-feedback *ngIf="showDialog" [showDialog]="showDialog"
         (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
-    <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
+    <xnode-report-bug *ngIf="displayReportDialog" [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
         (dataActionEvent)="handleDataAndAction($event)"
         (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
-    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog"
+    <xnode-general-feedback *ngIf="generalFeedbackDialog" [generalFeedbackDialog]="generalFeedbackDialog"
         (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
         (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
-    <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
+    <xnode-thank-you *ngIf="thanksDialog" [thanksDialog]="thanksDialog"
+        (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
 
 </div>
 <p-toast></p-toast>
