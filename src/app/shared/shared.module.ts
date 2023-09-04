@@ -18,6 +18,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { ChipModule } from 'primeng/chip';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { RatingModule } from 'primeng/rating';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { SidebarModule } from 'primeng/sidebar';
@@ -46,7 +50,9 @@ import { SidebarModule } from 'primeng/sidebar';
     ConfirmDialogModule,
     RatingModule,
     BreadcrumbModule,
-    SidebarModule
+    SidebarModule,
+    AvatarModule,
+    AvatarGroupModule,
   ],
   exports: [
     FormsModule,
@@ -68,6 +74,10 @@ import { SidebarModule } from 'primeng/sidebar';
     BadgeModule,
     OverlayPanelModule,
     ConfirmDialogModule,
+    AvatarModule,
+    AvatarGroupModule,
+    ChipModule,
+    SelectButtonModule,
     RatingModule,
     BreadcrumbModule,
     SidebarModule

@@ -72,6 +72,7 @@ export class AppHeaderComponent implements OnInit {
       path: 'usecases'
     }
   ]
+  showFeedBacks: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
@@ -153,24 +154,35 @@ export class AppHeaderComponent implements OnInit {
         this.displayReportDialog = false;
         this.generalFeedbackDialog = false;
         this.thanksDialog = false;
+        this.showFeedBacks = false;
         break;
       case 'reportBug':
         this.showDialog = false;
         this.displayReportDialog = true;
         this.generalFeedbackDialog = false;
         this.thanksDialog = false;
+        this.showFeedBacks = false;
         break;
       case 'generalFeedback':
         this.showDialog = false;
         this.displayReportDialog = false;
         this.generalFeedbackDialog = true;
         this.thanksDialog = false;
+        this.showFeedBacks = false;
         break;
       case 'thankYou':
         this.showDialog = false;
         this.displayReportDialog = false;
         this.generalFeedbackDialog = false;
         this.thanksDialog = true;
+        this.showFeedBacks = false;
+        break;
+      case 'view-existing-feedbacks':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        this.showFeedBacks = true;
         break;
       default:
         break;
