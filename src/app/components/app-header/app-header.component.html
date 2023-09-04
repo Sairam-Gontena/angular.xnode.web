@@ -15,21 +15,20 @@
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"></xnode-notification-panel>
             </p-overlayPanel>
-            <img src="./assets/dp.svg" alt="dp" class="mr-2">
-            <p-splitButton [label]="username" [model]="logoutDropdown"
-                styleClass="p-button-raised logout-split-btn"></p-splitButton>
-            <xnode-customer-feedback [showDialog]="showDialog"
-                (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
-            <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
-                (dataActionEvent)="handleDataAndAction($event)" [templates]="templates"
-                (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
-            <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog" [templates]="templates"
-                (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
-                (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
-            <xnode-thank-you [thanksDialog]="thanksDialog"
-                (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
         </div>
+        <img src="./assets/dp.svg" alt="dp" class="mr-2">
+        <p-splitButton [label]="username" [model]="logoutDropdown"
+            styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
+    <xnode-customer-feedback [showDialog]="showDialog"
+        (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
+    <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
+        (dataActionEvent)="handleDataAndAction($event)"
+        (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
+    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog"
+        (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
+        (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
+    <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
 </div>
 <p-sidebar [(visible)]="sidebarVisible">
     <div class="side-menu-container">

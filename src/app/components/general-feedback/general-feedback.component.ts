@@ -17,7 +17,6 @@ export class GeneralFeedbackComponent implements OnInit {
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Input() thanksDialog = false;
-  @Input() templates: any[] = [];
 
   generalFeedbackForm: FormGroup;
   submitted: boolean = false;
@@ -33,8 +32,8 @@ export class GeneralFeedbackComponent implements OnInit {
     private router: Router, private webSocketService: WebSocketService,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
     this.generalFeedbackForm = this.fb.group({
-      product: ['', Validators.required],
-      section: ['', Validators.required],
+      product: [localStorage.getItem('app_name'), Validators.required],
+      section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
     });
   }
@@ -43,6 +42,36 @@ export class GeneralFeedbackComponent implements OnInit {
   }
   ngOnInit(): void {
   }
+  getMeComponent() {
+    let comp = '';
+    switch (window.location.hash) {
+      case '#/dashboard':
+        comp = 'Dashboard'
+        break;
+      case '#/overview':
+        comp = 'Overview'
+        break;
+      case '#/usecases':
+        comp = 'Usecase'
+        break;
+      case '#/configuration/workflow/overview':
+        comp = 'Xflows'
+        break;
+      case '#/configuration/data-model/overview':
+        comp = 'Data Models'
+        break;
+      case '#/operate':
+        comp = 'Operate'
+        break;
+      case '#/publish':
+        comp = 'Publish'
+        break;
+      default:
+        break;
+    }
+    return comp;
+  }
+
   sendFeedback(value: any) {
     this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;

@@ -44,6 +44,7 @@ export class DynamicTableComponent implements OnInit {
       this.headers = Object.keys(this.dynamicData[0]);
     }
   }
+
   onClickCellEdit() {
     if (this.editable) {
       this.editable = false;
