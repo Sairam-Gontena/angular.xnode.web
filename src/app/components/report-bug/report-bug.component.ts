@@ -103,32 +103,32 @@ export class ReportBugComponent implements OnInit {
   }
 
   sendBugReport(): void {
-    console.log('this.feedbackForm', this.feedbackForm);
-
     const body = {
       "userId": this.currentUser?.id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
       "severityId": this.feedbackForm.value.severityId,
-      "requestTypeId": "REPORT_BUG_1",
+      "feedbackStatusId": "new",
+      "requestTypeId": "bug-report",
+      "internalTicketId": '-',
       "userFiles": [
         {
           "fileId": this.uploadedFileData.id,
+          "userFileType": "doc"
         }
       ]
     }
     this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
       if (!res?.data?.detail) {
-        console.log("res", res)
-
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.dataActionEvent.emit({ value: 'thankYou' });
       } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data?.detail });
-        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
+      this.utils.loadSpinner(false);
     }).catch(err => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
     })
   }
