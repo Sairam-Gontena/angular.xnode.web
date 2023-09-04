@@ -28,13 +28,13 @@ input {
     background: #2E2D36;
     color: #DEDEDE;
     width: 100% !important;
-    border: solid 1px #2E2D36;
+    // border: solid 1px #2E2D36;
     border-radius: 0.75rem !important;
 }
 
 :host ::ng-deep.p-checkbox .p-checkbox-box {
     background: #23222B !important;
-    border: solid 1px #9E9E9E;
+    //border: solid 1px #9E9E9E;
 }
 
 :host ::ng-deep.p-checkbox .p-checkbox-box .p-checkbox-icon {
@@ -46,7 +46,7 @@ input {
 :host ::ng-deep.p-checkbox .p-checkbox-box.p-highlight {
     background: #ffffff !important;
     color: #23222B !important;
-    border: solid 1px #ffffff;
+    // border: solid 1px #ffffff;
 }
 
 :host::ng-deep.p-card {
@@ -75,4 +75,28 @@ input {
 
 :host ::ng-deep .p-card-body {
     color: #23222B;
+}
+
+:host ::ng-deep.p-password-panel {
+    display: none !important;
+}
+
+:host ::ng-deep.p-inputtext {
+    border: none;
+}
+
+
+:host ::ng-deep.p-inputtext:enabled:focus {
+    border: 2px solid #EF018F !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep.p-checkbox-box.p-highlight.p-focus {
+    border: 2px solid #EF018F !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+    border: 2px solid #EF018F !important;
+    box-shadow: none !important;
 }
