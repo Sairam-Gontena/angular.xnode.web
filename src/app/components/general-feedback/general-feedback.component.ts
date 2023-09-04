@@ -17,9 +17,11 @@ export class GeneralFeedbackComponent implements OnInit {
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Input() thanksDialog = false;
-  @Input() templates: any[] = [];
 
   generalFeedbackForm: FormGroup;
+  dialogWidth: any;
+  dialogHeight: any;
+  getScreenWidth: any;
   submitted: boolean = false;
   isFormSubmitted: boolean = false;
   isInvalid: boolean = false;
@@ -32,17 +34,64 @@ export class GeneralFeedbackComponent implements OnInit {
   constructor(private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
-      product: ['', Validators.required],
-      section: ['', Validators.required],
+      product: [localStorage.getItem('app_name'), Validators.required],
+      section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
     });
   }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    if (this.getScreenWidth < 780) {
+      this.dialogWidth = '90vw';
+      this.dialogHeight = '90vh';
+    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+      this.dialogWidth = '75vw';
+      this.dialogHeight = '80vh';
+    } else if (this.getScreenWidth > 980) {
+      this.dialogWidth = '40vw';
+      this.dialogHeight = '45vh';
+    }
+  }
+
   get feedback() {
     return this.generalFeedbackForm.controls;
   }
   ngOnInit(): void {
   }
+  getMeComponent() {
+    let comp = '';
+    switch (window.location.hash) {
+      case '#/dashboard':
+        comp = 'Dashboard'
+        break;
+      case '#/overview':
+        comp = 'Overview'
+        break;
+      case '#/usecases':
+        comp = 'Usecase'
+        break;
+      case '#/configuration/workflow/overview':
+        comp = 'Xflows'
+        break;
+      case '#/configuration/data-model/overview':
+        comp = 'Data Models'
+        break;
+      case '#/operate':
+        comp = 'Operate'
+        break;
+      case '#/publish':
+        comp = 'Publish'
+        break;
+      default:
+        break;
+    }
+    return comp;
+  }
+
   sendFeedback(value: any) {
     this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
