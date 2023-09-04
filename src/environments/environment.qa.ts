@@ -7,8 +7,9 @@ export const environment = {
     xnodeAppUrl: 'https://qa-xnode.azurewebsites.net/',
     naviAppUrl: 'https://qa-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://qa-ui-gen.azurewebsites.net/dashboard/',
-    publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',  //for now we have only dev url
-    workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/', //QA env not configured yet
+    publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
+    workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
+    webSocketUrl: 'https://qa-notify-api.azurewebsites.net',
     webSocketNotifier: 'qa-xnode-notifier',
     branchName: 'qa',
 }
