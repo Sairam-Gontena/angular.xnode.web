@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 
@@ -9,9 +9,16 @@ import { tap } from 'rxjs';
 })
 export class CustomerFeedbackComponent implements OnInit {
 
+  public getScreenWidth: any;
+  modalPosition: any;
   @Input() showDialog = false;
   @Input() displayReportDialog = false;
   @Output() dataActionEvent = new EventEmitter<any>();
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    this.getScreenWidth < 780 ? this.modalPosition = 'bottom' : this.modalPosition = 'center';
+  }
 
   generalFeedbackDialog: boolean = false;
 
@@ -19,7 +26,6 @@ export class CustomerFeedbackComponent implements OnInit {
 
   }
   ngOnInit(): void {
-
   }
 
   handleDataAndAction(value: any) {

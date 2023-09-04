@@ -17,6 +17,8 @@ export class ReportBugComponent implements OnInit {
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
+  public getScreenWidth: any;
+  modalPosition: any;
   currentUser?: User;
   submitted: boolean = false;
   feedbackForm: FormGroup;
@@ -28,6 +30,12 @@ export class ReportBugComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = true;
   files: any[] = [];
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    this.getScreenWidth < 780 ? this.modalPosition = 'bottom' : this.modalPosition = 'center';
+  }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
