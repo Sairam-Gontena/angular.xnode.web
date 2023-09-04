@@ -10,7 +10,7 @@ import { tap } from 'rxjs';
 export class CustomerFeedbackComponent implements OnInit {
 
   public getScreenWidth: any;
-  public dialogWidth: any;
+  public dialogWidth: string = '40vw';
   modalPosition: any;
   @Input() showDialog = false;
   @Input() displayReportDialog = false;

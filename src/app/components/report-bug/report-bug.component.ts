@@ -18,7 +18,7 @@ export class ReportBugComponent implements OnInit {
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
   public getScreenWidth: any;
-  public dialogWidth: any;
+  public dialogWidth: string = '40vw';
   modalPosition: any;
   currentUser?: User;
   submitted: boolean = false;
