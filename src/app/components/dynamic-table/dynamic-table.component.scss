@@ -17,6 +17,12 @@
   color: #fff;
 }
 
+:host::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody>tr>td {
+  background-color: #3A3942;
+  color: #fff;
+  border: none;
+}
+
 
 .tablerow {
   background-color: #302E38;
