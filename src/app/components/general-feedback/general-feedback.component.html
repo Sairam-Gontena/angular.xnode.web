@@ -1,5 +1,5 @@
 <p-dialog *ngIf="generalFeedbackDialog" header="General Feedback" class="feedback" [(visible)]="generalFeedbackDialog"
-    [modal]="true" [style]="{ width: '38vw', height: '43vw'}" [draggable]="false" [resizable]="false">
+    [modal]="true" [style]="{ width:dialogWidth, height: dialogHeight}" [draggable]="false" [resizable]="false">
     <ng-template pTemplate="header">
         <div class="flex align-items-center p-3">
             <i class="pi pi-angle-left mr-3" (click)="customFeedback($event)"></i>
