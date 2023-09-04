@@ -33,7 +33,7 @@ export class CustomerFeedbackComponent implements OnInit {
   generalFeedbackDialog: boolean = false;
 
   constructor(private captureService: NgxCaptureService) {
-
+    this.onWindowResize();
   }
   ngOnInit(): void {
   }

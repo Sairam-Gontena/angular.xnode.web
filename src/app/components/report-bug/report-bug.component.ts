@@ -49,6 +49,7 @@ export class ReportBugComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.onWindowResize();
     this.feedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
