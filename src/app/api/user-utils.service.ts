@@ -21,7 +21,7 @@ export class UserUtilsService {
     };
 
     post(body: any, url: string) {
-        return axios.put(this.authEndPoint + url, body);
+        return axios.post(this.authEndPoint + url, body);
     }
 
     getData(url: string) {

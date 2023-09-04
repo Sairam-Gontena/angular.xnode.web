@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
+import { CommonApiService } from 'src/app/api/common-api.service';
 
 @Component({
   selector: 'xnode-report-bug',
@@ -31,6 +32,8 @@ export class ReportBugComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = true;
   files: any[] = [];
+  imageUrl: any;
+  uploadedFileData: any;
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -47,7 +50,8 @@ export class ReportBugComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService, private utils: UtilsService) {
+  constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
+    private utils: UtilsService, private commonApi: CommonApiService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.feedbackForm = this.fb.group({
@@ -65,6 +69,7 @@ export class ReportBugComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.screenshot)
     this.priorities = [
       { name: 'Choose Priority', code: 'choose priority' },
       { name: 'Urgent', code: 'urgent' },
@@ -109,7 +114,7 @@ export class ReportBugComponent implements OnInit {
     this.isFormSubmitted = true;
     if (this.feedbackForm.valid) {
       this.isInvalid = false;
-      this.sendBugReport();
+      this.onFileDropped()
     } else {
       this.isInvalid = true;
       console.log("error");
@@ -117,24 +122,32 @@ export class ReportBugComponent implements OnInit {
   }
 
   sendBugReport(): void {
-    this.utils.loadSpinner(true);
     const body = {
       "userId": this.currentUser?.id,
       "productId": localStorage.getItem('record_id'),
-      "componentId": this.feedbackForm.value.component,
+      "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
       "severityId": this.feedbackForm.value.severityId,
-      "requestTypeId": "REPORT_BUG_1",
+      "feedbackStatusId": "new",
+      "requestTypeId": "bug-report",
+      "internalTicketId": '-',
+      "userFiles": [
+        {
+          "fileId": this.uploadedFileData.id,
+          "userFileType": "doc"
+        }
+      ]
     }
     this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
-      if (res) {
+      if (!res?.data?.detail) {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.dataActionEvent.emit({ value: 'thankYou' });
       } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
-        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
+      this.utils.loadSpinner(false);
     }).catch(err => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
     })
   }
@@ -147,11 +160,30 @@ export class ReportBugComponent implements OnInit {
     this.screenshot = '';
   }
 
-  onFileDropped($event: any) {
-    this.prepareFilesList($event);
-    this.feedbackForm.patchValue({
-      screenshot: $event[0]
-    });
+  onFileDropped($event?: any) {
+    this.utils.loadSpinner(true);
+    if (!$event) {
+      $event = this.screenshot;
+    }
+    const formData = new FormData();
+    formData.append('file', new Blob([$event]));
+    formData.append('containerName', 'user-feedback');
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+      if (res) {
+        this.uploadedFileData = res.data;
+        this.sendBugReport();
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadSpinner(false);
+      }
+    }).catch((err: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
   }
 
   fileBrowseHandler(files: any) {
