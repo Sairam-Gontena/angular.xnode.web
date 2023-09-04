@@ -1,0 +1,43 @@
+<p-dialog *ngIf="showDialog" header="Customer Feedback" class="feedback" [(visible)]="showDialog" [modal]="true"
+    [style]="{ width: '40vw'}" [draggable]="false" [resizable]="false" [position]="'center'">
+    <ng-template pTemplate="header">
+        <div class="flex align-items-center p-3">
+            <img src="./assets/feedback-popup.svg" alt="dp" class="text-2xl font-bold mx-3 mt-1" width="40px"
+                height="40px">
+            <div>
+                <p class="m-0 font-bold text-2xl heading-color">Customer Feedback</p>
+                <p class="m-0 text-sm font-medium heading-color">Choose any option to share your feedback and view it
+                </p>
+            </div>
+        </div>
+    </ng-template>
+    <div class="p-3 mt-3">
+        <form>
+            <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12  flex flex-wrap gap-4">
+                <div class="flex align-items-center p-3 pointer feedback-type w-full"
+                    (click)="handleDataAndAction($event)">
+                    <img src="./assets/report-bug.svg" alt="dp" class="text-2xl font-bold mr-3 img-bg">
+                    <div>
+                        <a class="font-medium text-xl heading-color no-underline pointer">Report a bug</a>
+                        <p class="text-base font-medium text-500 m-0">Let us know what’s the bug</p>
+                    </div>
+                </div>
+                <div class="flex align-items-center p-3 pointer feedback-type w-full"
+                    (click)="generalHandleDataAndAction($event)">
+                    <img src="./assets/general-feedback.svg" alt="dp" class="text-2xl font-bold mr-3 img-bg">
+                    <div>
+                        <a class="font-medium text-xl heading-color no-underline">General feedback</a>
+                        <p class="text-base font-medium text-500 m-0">A general feedback this page</p>
+                    </div>
+                </div>
+                <div class="flex align-items-center p-3 pointer feedback-type w-full">
+                    <img src="./assets/existing-feedback.svg" alt="dp" class="text-2xl font-bold mr-3 img-bg">
+                    <div>
+                        <a class="font-medium text-xl heading-color no-underline">View existing feedback</a>
+                        <p class="text-base font-medium text-500 m-0">See what you submitted already</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>

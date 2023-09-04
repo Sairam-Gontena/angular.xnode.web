@@ -5,6 +5,11 @@ import { SignupDynamicFormComponent } from './components/form-builder/signup-dyn
 
 const routes: Routes = [
   {
+    path: '',
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginModule),
+  },
+  {
     path: 'forgot-password',
     loadChildren: () =>
       import('./pages/forgot-password/forgotpassword.module').then((m) => m.ForgotPasswordModule),
@@ -13,11 +18,6 @@ const routes: Routes = [
     path: 'reset-password',
     loadChildren: () =>
       import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
-  },
-  {
-    path: '',
-    loadChildren: () =>
-      import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'verify-otp',
@@ -162,6 +162,10 @@ const routes: Routes = [
   {
     path: 'dynamic-form',
     component: SignupDynamicFormComponent,
+  },
+  {
+    path: 'help-center',
+    loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule)
   },
   {
     path: '',

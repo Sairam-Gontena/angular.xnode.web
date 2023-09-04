@@ -62,15 +62,15 @@ export class ResetPasswordComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'success' }); //response.data.message
             this.router.navigate(['/']);
           }
-          this.utilsService.loadSpinner(true);
+          this.utilsService.loadSpinner(false);
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          this.utilsService.loadSpinner(true);
+          this.utilsService.loadSpinner(false);
         }
       })
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-        this.utilsService.loadSpinner(true);
+        this.utilsService.loadSpinner(false);
       });
   }
 

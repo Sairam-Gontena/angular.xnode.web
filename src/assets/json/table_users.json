@@ -13,6 +13,10 @@
             "header": "Last Name"
         },
         {
+            "field": "role",
+            "header": "Role"
+        },
+        {
             "field": "email",
             "header": "Email"
         },
@@ -31,10 +35,6 @@
         {
             "field": "action",
             "header": "Action"
-        },
-        {
-            "field": "role",
-            "header": "Role"
         }
     ],
     "Actions": [

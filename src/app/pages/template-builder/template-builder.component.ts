@@ -3,16 +3,9 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
-import {
-  CompactType,
-  GridsterConfig,
-  GridsterItem,
-  GridType
-} from 'angular-gridster2';
-import { LAYOUT_COLUMNS } from '../../constants/LayoutColumns'
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import { User } from 'src/app/utils/user-util';
+import { User, UserUtil } from 'src/app/utils/user-util';
 import { ApiService } from 'src/app/api/api.service';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -26,65 +19,63 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 
 export class TemplateBuilderComponent implements OnInit {
   @Input() currentView: string = 'desktop';
-  options: GridsterConfig = {};
-  dashboard: Array<GridsterItem> | undefined;
   layoutColumns: any;
   isOpen = true;
   templates: any;
-  emailData: any;
-  productId: any;
+  product_id: any;
   iframeSrc: any;
-  currentUser?: User;
   overview: any;
   id: String = '';
-  loading = true;
   email = '';
   selectedTemplate = localStorage.getItem("app_name");
+  product: any;
+  currentUser?: User;
+
 
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit() {
-    this.templates = [
-      { label: localStorage.getItem("app_name") }
-    ]
-    this.layoutColumns = LAYOUT_COLUMNS;
-    this.dashboard = LAYOUT_COLUMNS.CONTAINER;
-    this.options = {
-      gridType: GridType.ScrollVertical,
-      compactType: CompactType.None,
-      margin: 10,
-      outerMargin: true,
-      outerMarginTop: null,
-      outerMarginRight: null,
-      outerMarginBottom: null,
-      outerMarginLeft: null,
-      useTransformPositioning: true,
-      maxCols: 6,
-      maxRows: 10,
-      resizable: {
-        enabled: true
-      },
-      pushItems: true,
-      draggable: {
-        enabled: true
-      }
-    };
-    this.emailData = localStorage.getItem('currentUser');
-    if (this.emailData) {
-      let JsonData = JSON.parse(this.emailData)
-      this.emailData = JsonData?.email;
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+      this.product_id = JSON.parse(product).id;
     }
-    if (localStorage.getItem('record_id')) {
-      this.productId = localStorage.getItem('record_id');
-      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "&targetUrl=" + environment.xnodeAppUrl;
-      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
-      this.loading = false;
+    if (this.product && !this.product?.has_insights) {
+      this.utils.showProductStatusPopup(true);
+    }
+    if (this.product?.product_id) {
+      this.makeTrustedUrl();
     } else {
       this.get_ID();
     }
 
   }
+  makeTrustedUrl(): void {
+    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product?.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights;
+    setTimeout(() => {
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);;
+      this.loadIframeUrl();
+    }, 2000);
+  }
+
+  loadIframeUrl(): void {
+    const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
+    iframe.addEventListener('load', () => {
+      const contentWindow = iframe.contentWindow;
+      if (contentWindow) {
+        window.addEventListener('message', (event) => {
+          console.log('event.origin ', event.origin);
+          console.log('environment.designStudioAppUrl', environment.designStudioAppUrl);
+          if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
+            return;
+          }
+        });
+      }
+    });
+  }
+
 
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
@@ -92,10 +83,10 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   get_ID() {
-    this.apiService.get('/get_metadata/' + this.emailData)
+    this.apiService.get('/get_metadata/' + this.currentUser?.email)
       .then(response => {
         if (response) {
-          this.productId = response.data.data[0].id;
+          this.product_id = response.data.data[0].id;
           localStorage.setItem("app_name", response.data.data[0].product_name)
           this.loadDesignStudio();
         } else {
@@ -107,11 +98,11 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   loadDesignStudio() {
-    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "&targetUrl=" + environment.xnodeAppUrl;
+    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights;;
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
-  loadSpinner(event: boolean): void {
-    this.loading = event;
+  loadSpinner(event: boolean) {
+    this.utils.loadSpinner(event);
   }
 }

@@ -15,10 +15,13 @@ import { SharedModule } from './shared.module';
 import { DynamicTableComponent } from '../components/dynamic-table/dynamic-table.component';
 import { NotificationPanelComponent } from '../components/notification-panel/notification-panel.component'
 import { ConfirmationPopupComponent } from '../components/confirmation-popup/confirmation-popup.component';
-import { ProductFeedbackComponent } from '../components/product-feedback/product-feedback.component';
+import { ReportBugComponent } from '../components/report-bug/report-bug.component';
+import { CustomerFeedbackComponent } from '../components/customer-feedback/customer-feedback.component';
+import { ThankYouComponent } from '../components/thank-you/thank-you.component';
+import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
 import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
-
+import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 
 @NgModule({
         declarations: [
@@ -36,8 +39,12 @@ import { ViewExistingFeedbackComponent } from '../components/view-existing-feedb
                 TemplateBuilderPublishHeaderComponent,
                 NotificationPanelComponent,
                 ConfirmationPopupComponent,
-                ProductFeedbackComponent,
+                ReportBugComponent,
+                CustomerFeedbackComponent,
+                ThankYouComponent,
+                GeneralFeedbackComponent,
                 ActionButtonComponent,
+                ProductAlertPopupComponent,
                 ViewExistingFeedbackComponent
         ],
         imports: [
@@ -59,8 +66,12 @@ import { ViewExistingFeedbackComponent } from '../components/view-existing-feedb
                 TemplateBuilderPublishHeaderComponent,
                 NotificationPanelComponent,
                 ConfirmationPopupComponent,
-                ProductFeedbackComponent,
+                ReportBugComponent,
+                CustomerFeedbackComponent,
+                ThankYouComponent,
+                GeneralFeedbackComponent,
                 ActionButtonComponent,
+                ProductAlertPopupComponent,
                 ViewExistingFeedbackComponent
         ]
 })

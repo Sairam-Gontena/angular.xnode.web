@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
@@ -19,7 +19,9 @@ export class MyProductsComponent implements OnInit {
   currentUser?: User;
   private subscription: Subscription;
   isLoading: boolean = true;
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
+
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
+    private route: ActivatedRoute, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -33,10 +35,24 @@ export class MyProductsComponent implements OnInit {
     this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
-    // localStorage.getItem('record_id')
-
     this.getMeUserId();
+    this.route.queryParams.subscribe((params: any) => {
+      if (params.product === 'created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar", life: 10000 });
+      }
+    });
+    setTimeout(() => {
+      this.removeParamFromRoute()
+    }, 2000);
+  }
 
+  removeParamFromRoute(): void {
+    this.router.navigate([], {
+      queryParams: {
+        'product': null
+      },
+      queryParamsHandling: 'merge'
+    })
   }
 
   ngOnDestroy() {
@@ -45,6 +61,7 @@ export class MyProductsComponent implements OnInit {
 
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
+    localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
     this.router.navigate(['/dashboard']);
   }

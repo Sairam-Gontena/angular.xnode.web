@@ -22,6 +22,9 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ChipModule } from 'primeng/chip';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { RatingModule } from 'primeng/rating';
+
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 @NgModule({
   declarations: [
   ],
@@ -43,11 +46,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     InputNumberModule,
     BadgeModule,
     OverlayPanelModule,
+    ConfirmDialogModule,
+    RatingModule,
+    BreadcrumbModule,
     AvatarModule,
     AvatarGroupModule,
-    ConfirmDialogModule,
-    ChipModule,
-    SelectButtonModule
   ],
   exports: [
     FormsModule,
@@ -72,7 +75,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     AvatarModule,
     AvatarGroupModule,
     ChipModule,
-    SelectButtonModule
+    SelectButtonModule,
+    RatingModule,
+    BreadcrumbModule
   ]
 })
 export class SharedModule { }

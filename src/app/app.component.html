@@ -4,7 +4,7 @@
             <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen"
                 (valueChange)="openNavi($event)"></xnode-bot>
         </span>
-        <xnode-app-header></xnode-app-header>
+        <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
         <div class="flex">
             <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                 <xnode-app-side-menu></xnode-app-side-menu>
@@ -26,3 +26,5 @@
 </div>
 <p-toast></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
+<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
+    (openDockedNavi)="openNavi($event)" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>

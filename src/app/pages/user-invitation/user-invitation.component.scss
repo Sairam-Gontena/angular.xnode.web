@@ -27,9 +27,38 @@
     background-color: #23222B !important;
     border-color: white;
 }
+
 ::ng-deep .p-button-rounded.mr-2:hover {
     background-color: #23222B !important;
     border-color: white;
+}
+
+::ng-deep .p-breadcrumb {
+    background-color: #23222B !important;
+    color: white;
+    font-family: 'Inter';
+    font-weight: 500px;
+}
+
+::ng-deep .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
+    background-color: #23222B !important;
+    color: white;
+    font-family: 'Inter';
+    font-weight: 500px;
+    border-width: 0px;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #3A3942;
+    color:#fff
+}
+::ng-deep .p-breadcrumb  {
+    border-width: 0px;
+}
+
+::ng-deep .card {
+    border: 0px;
+
 }
 
 .table-div {

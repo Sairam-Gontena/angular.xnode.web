@@ -29,6 +29,7 @@ import { ActivatedRoute } from '@angular/router';
 
 
 export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit {
+  @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
@@ -55,22 +56,25 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   home: MenuItem | undefined;
   xflowData: any;
   entity: any;
-
-  @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   isOpen: boolean = true;
-  templates: any;
   testData: any;
+  product: any;
+  product_id: any;
 
-  constructor(private api: ApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
+  constructor(private api: ApiService, private utilsService: UtilsService) {
 
   }
 
   ngOnInit(): void {
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+      this.product_id = JSON.parse(product).id;
+    }
+    if (this.product && !this.product?.has_insights) {
+      this.utilsService.showProductStatusPopup(true);
+    }
     this.utilsService.loadSpinner(true);
-    this.templates = [
-      { label: localStorage.getItem("app_name") }
-    ];
-
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById("diagramRef");
@@ -81,7 +85,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     }, 0);
 
     setTimeout(() => {
-      if (this.showUsecaseGraph) this.get_Usecases();
+      if (this.showUsecaseGraph) this.getInsights();
     }, 500);
 
     this.initializeBpmn();
@@ -212,7 +216,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
 
-  get_Usecases() {
+  getInsights() {
     let currentUserString = localStorage.getItem('currentUser');
     let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
     this.api.get("/retrive_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
@@ -222,6 +226,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           this.useCases = data?.usecase || [];
           this.graph(this.useCases);
           this.utilsService.loadSpinner(false);
+        } else {
+          this.utilsService.loadSpinner(false);
+          this.utilsService.showProductStatusPopup(true);
         }
       })
       .catch(error => {

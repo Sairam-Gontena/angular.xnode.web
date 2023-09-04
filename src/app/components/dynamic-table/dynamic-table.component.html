@@ -1,5 +1,5 @@
 <xnode-confirmation-popup [Data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
-<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="490px" [rowHover]="true" dataKey="id"
+<p-table #dt [rows]="10" [scrollable]="true" scrollHeight="420px" [rowHover]="true" dataKey="id"
      [globalFilterFields]="headers" styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal"
      [value]="dynamicData" [columns]="cols">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
@@ -24,29 +24,22 @@
      </ng-template>
      <ng-template pTemplate="header" let-columns>
           <tr class="custom-cell">
-               <th style="justify-content: center;align-items: center; min-width: 30px;">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-               </th>
                <th *ngFor="let col of columns" [ngClass]="'tableheader'">
                     {{ col.header }}
                     <p-columnFilter type="text" [field]="col.field" display="menu"></p-columnFilter>
-
                </th>
           </tr>
      </ng-template>
-
      <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
           <tr class="text-white text-xs custom-cell" [ngClass]="i % 2 == 0 ? 'even' : 'odd'"
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
-               <td style="width: 2rem;background-color: #3A3942;border-width: 0px;">
-                    <p-tableCheckbox [value]="true"></p-tableCheckbox>
-               </td>
                <td *ngFor="let col of columns" class="border-transparent">
-                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'">
+                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'"
+                         [ngClass]="col.field === 'email' ? 'email-text-color':''">
                          {{rowData[col.field]}}
                     </div>
-                    <div *ngIf="col.field === 'interest_level'"
-                         [ngClass]="rowData[col.field] === 'High' ? 'Success' : rowData[col.field] === 'Medium' ? 'Warning' : rowData[col.field] === 'Low' ? 'Danger' : null">
+                    <div *ngIf=" col.field==='interest_level'" [ngClass]=" rowData[col.field]==='High' ? 'Success' : rowData[col.field]==='Medium'
+                         ? 'Warning' : rowData[col.field]==='Low' ? 'Danger' : null">
                          {{rowData[col.field]}}
                     </div>
                     <ng-container *ngIf="col.field === 'action'">

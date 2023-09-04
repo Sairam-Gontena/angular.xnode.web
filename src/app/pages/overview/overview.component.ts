@@ -31,12 +31,23 @@ export class OverViewComponent {
   features: any;
   createOn: any;
   overviewData: any;
+  product: any;
+  product_id: any;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+      this.product_id = JSON.parse(product).id;
+    }
+    if (this.product && !this.product?.has_insights) {
+      this.utils.showProductStatusPopup(true);
+      return
+    }
     this.utils.loadSpinner(true)
     this.jsondata = data?.data;
     this.templates = [
@@ -93,8 +104,8 @@ export class OverViewComponent {
           this.getMeOverview();
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utils.loadSpinner(false);
         }
-        this.utils.loadSpinner(false);
       }).catch(error => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });

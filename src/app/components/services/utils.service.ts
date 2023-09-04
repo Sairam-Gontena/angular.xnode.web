@@ -18,6 +18,9 @@ export class UtilsService {
   private loginUser: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
   public getMeLoginUser: Observable<Object> = this.loginUser.asObservable();
 
+  private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -38,6 +41,10 @@ export class UtilsService {
 
   loadLoginUser(obj: any): void {
     this.loginUser.next(obj);
+  }
+
+  showProductStatusPopup(event: any): void {
+    this.productStatus.next(event);
   }
 
 }
