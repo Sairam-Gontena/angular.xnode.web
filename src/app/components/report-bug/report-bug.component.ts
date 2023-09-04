@@ -16,6 +16,10 @@ export class ReportBugComponent implements OnInit {
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
+  @Input() templates: any[] = [];
+  public getScreenWidth: any;
+  public dialogWidth: string = '40vw';
+  modalPosition: any;
   currentUser?: User;
   submitted: boolean = false;
   feedbackForm: FormGroup;
@@ -28,8 +32,24 @@ export class ReportBugComponent implements OnInit {
   browserSelected: boolean = true;
   files: any[] = [];
 
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    if (this.getScreenWidth < 780) {
+      this.modalPosition = 'bottom';
+      this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '75vw';
+    } else if (this.getScreenWidth > 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '40vw';
+    }
+  }
+
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.onWindowResize();
     this.feedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],

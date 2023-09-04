@@ -23,6 +23,7 @@ export class HelpCenterComponent implements OnInit {
     let item = this.json.filter((item: any) => { return item.accordianTitle == accordianTitle });
     this.selectedjson = item[0].objects.filter((subitem: any) => { return subitem.title == obj })
     this.selectedjson = this.selectedjson[0];
+    console.log(this.selectedjson)
     this.selectedMenuIndex = i;
   }
 
