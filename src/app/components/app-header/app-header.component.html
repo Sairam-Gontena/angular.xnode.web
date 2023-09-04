@@ -4,15 +4,11 @@
             <img src="./assets/logo-x.svg" alt="x-logo">
             <img src="./assets/logo-node.svg" alt="x-node" (click)="onClickLogo()" class="pointer">
         </div>
-        <div *ngFor="let item of headerItems" class="header-menu-item">
-            {{item.label}}
-        </div>
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class="flex justify-content-center align-content-center">
-            <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" *ngIf="isHelpCentre()"
-                routerLink="/help-centre"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3" />
+            <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" (click)="onClickHelpCenter()"></i>
+            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3 pointer" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 pointer" pBadge
                 value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 pointer"

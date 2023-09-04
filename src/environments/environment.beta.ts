@@ -2,6 +2,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://beta-navi.azurewebsites.net/',
     authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
+    userUtilsApi: 'https://beta-user-util-api.azurewebsites.net/',
     xnodeAppUrl: 'https://beta-xnode.azurewebsites.net/',
     naviAppUrl: 'https://beta-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://beta-ui-gen.azurewebsites.net/dashboard/',
