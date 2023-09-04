@@ -39,3 +39,29 @@
 .feedback-list {
     border-right: 1px solid #ccc;
 }
+
+
+@media (max-width: 640px) {
+
+    .feedback-header-div,
+    .feedback-div {
+        display: block !important;
+    }
+
+    .feedback-list,
+    .feedback-detail {
+        width: 100vw !important;
+    }
+
+    :host::ng-deep .feedback-header-options .p-component {
+        margin-top: 2rem !important;
+    }
+
+    :host::ng-deep .p-dialog-header {
+        align-items: unset !important;
+    }
+
+    .list-item {
+        padding: 15px 15px !important;
+    }
+}
