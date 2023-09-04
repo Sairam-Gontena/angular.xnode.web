@@ -19,6 +19,9 @@ export class GeneralFeedbackComponent implements OnInit {
   @Input() thanksDialog = false;
 
   generalFeedbackForm: FormGroup;
+  dialogWidth: any;
+  dialogHeight: any;
+  getScreenWidth: any;
   submitted: boolean = false;
   isFormSubmitted: boolean = false;
   isInvalid: boolean = false;
@@ -31,12 +34,29 @@ export class GeneralFeedbackComponent implements OnInit {
   constructor(private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
     });
   }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    if (this.getScreenWidth < 780) {
+      this.dialogWidth = '90vw';
+      this.dialogHeight = '90vh';
+    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+      this.dialogWidth = '75vw';
+      this.dialogHeight = '80vh';
+    } else if (this.getScreenWidth > 980) {
+      this.dialogWidth = '40vw';
+      this.dialogHeight = '45vh';
+    }
+  }
+
   get feedback() {
     return this.generalFeedbackForm.controls;
   }

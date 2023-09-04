@@ -33,7 +33,8 @@
         (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
     <xnode-thank-you *ngIf="thanksDialog" [thanksDialog]="thanksDialog"
         (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
-
+    <xnode-view-existing-feedback *ngIf="showFeedBacks"
+        (dataActionEvent)="handleDataAndAction($event)"></xnode-view-existing-feedback>
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
