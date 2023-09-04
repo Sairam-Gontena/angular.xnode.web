@@ -31,13 +31,24 @@ export class OverViewComponent {
   features: any;
   createOn: any;
   overviewData: any;
+  product: any;
+  product_id: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
-    this.utilService.loadSpinner(true)
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+      this.product_id = JSON.parse(product).id;
+    }
+    if (this.product && !this.product?.has_insights) {
+      this.utils.showProductStatusPopup(true);
+      return
+    }
+    this.utils.loadSpinner(true)
     this.jsondata = data?.data;
     this.templates = [
       { label: localStorage.getItem("app_name") }
@@ -88,11 +99,16 @@ export class OverViewComponent {
   get_ID() {
     this.apiService.get('/get_metadata/' + this.email)
       .then(response => {
-        this.id = response.data.data[0].id;
-        this.getMeOverview();
+        if (response?.status === 200) {
+          this.id = response.data.data[0].id;
+          this.getMeOverview();
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utils.loadSpinner(false);
+        }
       }).catch(error => {
-        this.utilService.loadToaster({ severity: 'error', summary: '', detail: error });
-
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
 
@@ -108,12 +124,14 @@ export class OverViewComponent {
           this.appName = response?.data?.Title ? response?.data?.Title : response?.data?.title;
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
-        this.utilService.loadSpinner(false);
+        this.utils.loadSpinner(false);
       })
       .catch(error => {
-        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utilService.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utils.loadSpinner(false);
       });
 
   }

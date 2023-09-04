@@ -34,6 +34,8 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
               "node_modules/bpmn-js/dist/assets/diagram-js.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -124,6 +126,27 @@
               ],
               "outputHashing": "all"
             },
+            "beta": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "8mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.beta.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -149,6 +172,9 @@
             },
             "demo": {
               "browserTarget": "xnode:build:demo"
+            },
+            "beta": {
+              "browserTarget": "xnode:build:beta"
             },
             "development": {
               "browserTarget": "xnode:build:development"

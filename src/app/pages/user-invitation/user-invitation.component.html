@@ -1,0 +1,38 @@
+<div class="p-4">
+    <div class="surface-900 p-4 main-div">
+        <div class="table-header flex justify-content-between  align-items-start">
+            <div class="card flex justify-content-center">
+                <p-breadcrumb class="max-w-full icon" [model]="items"></p-breadcrumb>
+            </div>
+            <!-- <div class="flex align-items-center">
+                <div class="flex font-medium text-xl active-color font-family">
+                    Home
+                </div>
+                <div class="flex text-white font-medium ">
+                    <i class="pi pi-chevron-right ml-1  text-sm"></i>
+                </div>
+                <div class="flex font-medium text-xl active-color font-family">
+                    Accounts
+                </div>
+                <div class="flex text-white font-medium ">
+                    <i class="pi pi-chevron-right ml-1  text-sm"></i>
+                </div>
+                <div class="flex text-white font-semibold text-xl ml-1 font-family">
+                    Beta Users
+                </div>
+            </div> -->
+            <div class="flex align-items-center">
+                <p-button styleClass="p-button-rounded mr-2">
+                    <span class=" text-sm font-semibold font-family">Invite</span>
+                </p-button>
+                <p-button styleClass="p-button-rounded">
+                    <span class=" text-sm font-semibold font-family">Add Account</span>
+                    <i class="pi pi-plus text-sm ml-1"></i>
+                </p-button>
+            </div>
+        </div>
+        <div class="table-body">
+            <xnode-dynamic-table [inputData]="usersList" [cols]="cols" [Actions]="Actions"> </xnode-dynamic-table>
+        </div>
+    </div>
+</div>

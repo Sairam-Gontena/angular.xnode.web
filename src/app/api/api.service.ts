@@ -7,8 +7,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
-  endPoint = environment.xpilotUrl + "crud";
-  workFlow = environment.workFlowUrl + 'api/json-bpmn';
+  endPoint = environment.apiUrl + "crud";
+  apiPoint = environment.apiUrl;
+  workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
+  authEndPoint = environment.authApiUrl;
   constructor() {
   }
   config = {
@@ -18,18 +20,28 @@ export class ApiService {
   };
   // Temporary
   publishApp(body: any) {
-    return axios.post(environment.publishUrl, body);
+    return axios.post(environment.publishApiUrl, body);
   }
+
   postWorkFlow(body: any) {
     return axios.post(this.workFlow, body, this.config);
   }
+
   get(url: string) {
     return axios.get(this.endPoint + url, {
     });
   }
+
+  getApi(url: string) {
+    return axios.get(this.apiPoint + url, {
+    });
+  }
+
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }
+
+
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);
   }

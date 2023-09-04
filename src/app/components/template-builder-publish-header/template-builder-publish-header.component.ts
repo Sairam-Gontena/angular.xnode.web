@@ -61,7 +61,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     const currentUrl = this.router.url;
-    if (currentUrl === '/design') {
+    if (currentUrl === '/dashboard') {
       this.showDeviceIcons = true;
     }
     this.getAllProducts()
@@ -77,7 +77,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     if (localStorage.getItem('record_id')) {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
-      let iframeSrc = environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
 
     }
@@ -110,7 +110,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
+      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
       this.showConfirmationPopup();
     }
@@ -121,13 +121,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       message: 'Are you sure you want to publish this product?',
       header: 'Confirmation',
       accept: () => {
-        console.log(this.productId)
         this.utilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
           projectName: 'xnode',
           email: this.currentUser?.email,
-          envName: environment.name,
+          envName: environment.branchName,
           productId: this.productId ? this.productId : localStorage.getItem('record_id')
         }
         this.publishProduct(body);
@@ -144,14 +143,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       .then(response => {
         if (response) {
           this.loadSpinnerInParent.emit(false);
-          this.utilsService.loadToaster({ severity: 'success', summary: '', detail: detail });
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
           this.utilsService.loadSpinner(false)
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
         }
       })
       .catch(error => {
-        console.log('error', error);
         this.loadSpinnerInParent.emit(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'API Error', detail: 'An error occurred while publishing the product.' });
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false)
       });
   }

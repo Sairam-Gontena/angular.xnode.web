@@ -1,11 +1,14 @@
 export const environment = {
     production: false,
-    baseUrl: 'https://qa-xnode.azurewebsites.net/',
-    xpilotUrl: 'https://qa-navi.azurewebsites.net/',
-    naviUrl: 'https://qa-navi-web.azurewebsites.net/',
-    designStudioUrl: 'https://qa-ui-gen.azurewebsites.net/dashboard/',
-    publishUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',  //for now we have only dev url
+    apiUrl: 'https://qa-navi.azurewebsites.net/',
+    authApiUrl: 'https://qa-xnode-auth-api.azurewebsites.net/',
+    userUtilsApi: 'https://qa-user-util-api.azurewebsites.net/',
+    commonApiUrl: 'https://qa-cmn-api.azurewebsites.net/',
+    xnodeAppUrl: 'https://qa-xnode.azurewebsites.net/',
+    naviAppUrl: 'https://qa-navi-web.azurewebsites.net/',
+    designStudioAppUrl: 'https://qa-ui-gen.azurewebsites.net/dashboard/',
+    publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',  //for now we have only dev url
+    workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/', //QA env not configured yet
     webSocketNotifier: 'qa-xnode-notifier',
-    name: 'qa',
-    workFlowUrl: 'https://dev-xnode-xflows.azurewebsites.net/' //QA env not configured yet
+    branchName: 'qa',
 }

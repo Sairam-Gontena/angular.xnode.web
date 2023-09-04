@@ -1,0 +1,45 @@
+.help-center-div {
+    background-color: #23222B;
+}
+
+.send-email-div {
+    background-color: #000759 !important;
+}
+
+.search-help {
+    height: 50px !important;
+    width: 45vw !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
+    background-color: transparent !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-content {
+    background-color: transparent !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
+    color: white !important;
+    border-color: transparent !important;
+    flex-direction: row-reverse !important;
+    justify-content: space-between !important;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link:hover {
+    border-color: transparent !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-tab-active .active-sub-item {
+    background-color: #1c3e52 !important;
+}
+
+:host::ng-deep.p-accordion .p-accordion-tab-active .side-menu-item:hover {
+    background-color: #1c3e52 !important;
+    opacity: 0.5 !important;
+}

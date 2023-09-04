@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 export class NotificationPanelComponent {
   @Input() data: any;
   @Output() preparePublishPopup = new EventEmitter<any>();
+  @Output() closeNotificationPanel = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -22,8 +23,7 @@ export class NotificationPanelComponent {
     all: true
   };
 
-  constructor(
-    private router: Router) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -36,13 +36,26 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     let url: any;
-    if (this.currentUser)
-      url = `${environment.designStudioUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
-    window.open(url, "_blank");
+    if (obj.component && obj.component !== '') {
+      if (window.location.hash === '#/' + obj.component) {
+        window.location.reload();
+      } else {
+        this.router.navigate(['/' + obj.component]);
+      }
+    } else {
+      if (this.currentUser)
+        url = `${environment.designStudioAppUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
+      window.open(url, "_blank");
+    }
+  }
+
+  getMeLabel(obj: any) {
+    return obj.component && obj.component !== '' ? 'View Update' : 'Go to Product'
   }
 
   navigateToActivity() {
-    this.router.navigate(['/activity'])
+    this.closeNotificationPanel.emit(true)
+    this.router.navigate(['/operate/change/history-log'])
   }
 
   filterNotifications(val: any) {

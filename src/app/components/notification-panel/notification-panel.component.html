@@ -28,13 +28,13 @@
             (click)="filterNotifications('pinned')">Pinned</div>
     </div>
 </div>
-<div *ngIf="allNotifications.length > 0" class="flex justify-content-between mt-4 text-white ml-3 mr-3">
+<div class="flex justify-content-between mt-4 text-white ml-3 mr-3">
     <div class="flex align-items-center">
         <div class="text-sm font-medium">Filter</div>
         <i class="pi pi-sort-amount-up text-xs ml-2 pointer"></i>
     </div>
     <div class="flex align-items-center pointer" (click)="navigateToActivity()">
-        <div class="text-sm font-medium">See all in activity log</div>
+        <div class="text-sm font-medium">See all in activity logs</div>
         <i class="pi pi-arrow-right text-xs ml-2"></i>
     </div>
 </div>
@@ -73,7 +73,7 @@
                     </div>
                     <div (click)="navigateToProduct(notification)"
                         class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
-                        Go to Product</div>
+                        {{getMeLabel(notification)}}</div>
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
                     <a [href]="notification?.product_url" target="_blank">{{notification?.product_url}}</a>

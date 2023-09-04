@@ -2,7 +2,7 @@
      "subMenuConfig": [
           {
                "id": "1",
-               "path": "/design",
+               "path": "/dashboard",
                "subMenuItems": [
                     {
                          "accordianHeader": "Layout",
@@ -990,8 +990,264 @@
                                    "selectedContainer": "History Log",
                                    "alt": "HistoryLog",
                                    "content": "History Log",
+                                   "hasrouter": "true",
+                                   "routerlink": "/operate/change/history-log"
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Feedback",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/overview-sm.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
                                    "hasrouter": "false",
                                    "routerlink": ""
+                              },
+                              {
+                                   "id": "Define Survey",
+                                   "imgSrc": "./assets/Define-Survey.svg",
+                                   "selectedContainer": "Define Survey",
+                                   "alt": "DefineSurvey",
+                                   "content": "Define Survey",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    }
+               ]
+          },
+          {
+               "id": "5",
+               "path": "/operate/change/history-log",
+               "subMenuItems": [
+                    {
+                         "accordianHeader": "Monitor",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/overview-sm.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Activity Log",
+                                   "imgSrc": "./assets/ActivityLog.svg",
+                                   "selectedContainer": "Activity Log",
+                                   "alt": "ActivityLog",
+                                   "content": "Activity Log",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Alerts",
+                                   "imgSrc": "./assets/Alerts.svg",
+                                   "selectedContainer": "Alerts",
+                                   "alt": "Alerts",
+                                   "content": "Alerts",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Metrics",
+                                   "imgSrc": "./assets/Metrics.svg",
+                                   "selectedContainer": "Metrics",
+                                   "alt": "Metrics",
+                                   "content": "Metrics",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Logs",
+                                   "imgSrc": "./assets/Logs.svg",
+                                   "selectedContainer": "Logs",
+                                   "alt": "Logs",
+                                   "content": "Logs",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Change Analysis",
+                                   "imgSrc": "./assets/ChangeAnalysis.svg",
+                                   "selectedContainer": "Change Analysis",
+                                   "alt": "ChangeAnalysis",
+                                   "content": "Change Analysis",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Service Health",
+                                   "imgSrc": "./assets/medical-report.svg",
+                                   "selectedContainer": "Service Health",
+                                   "alt": "ServiceHealth",
+                                   "content": "Service Health",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Workbooks",
+                                   "imgSrc": "./assets/notebook.svg",
+                                   "selectedContainer": "Workbooks",
+                                   "alt": "Workbooks",
+                                   "content": "Workbooks",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Support",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/overview-sm.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "AI-Powered Chatbots",
+                                   "imgSrc": "./assets/chatbot.svg",
+                                   "selectedContainer": "AI-Powered Chatbots",
+                                   "alt": "AI-PoweredChatbots",
+                                   "content": "AI-Powered Chatbots",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Predictive Analysis",
+                                   "imgSrc": "./assets/prediction.svg",
+                                   "selectedContainer": "Predictive Analysis",
+                                   "alt": "PredictiveAnalysis",
+                                   "content": "Predictive Analysis",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Sentiment Analysis",
+                                   "imgSrc": "./assets/analysis.svg",
+                                   "selectedContainer": "Sentiment Analysis",
+                                   "alt": "SentimentAnalysis",
+                                   "content": "Sentiment Analysis",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Training",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/overview-sm.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Personalized Learning",
+                                   "imgSrc": "./assets/personalized-learn.svg",
+                                   "selectedContainer": "Personalized Learning",
+                                   "alt": "PersonalizedLearning",
+                                   "content": "Personalized Learning",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Automated Content Update",
+                                   "imgSrc": "./assets/automated-content.svg",
+                                   "selectedContainer": "Automated Content Update",
+                                   "alt": "AutomatedContentUpdate",
+                                   "content": "Automated Content Update",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Knowledge Management",
+                                   "imgSrc": "./assets/knowledge-manage.svg",
+                                   "selectedContainer": "Knowledge Management",
+                                   "alt": "KnowledgeManagement",
+                                   "content": "Knowledge Management",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Skill Gap Analysis",
+                                   "imgSrc": "./assets/skill-development.svg",
+                                   "selectedContainer": "Skill Gap Analysis",
+                                   "alt": "SkillGapAnalysis",
+                                   "content": "Skill Gap Analysis",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              }
+                         ]
+                    },
+                    {
+                         "accordianHeader": "Change",
+                         "accordianContent": [
+                              {
+                                   "id": "Overview",
+                                   "imgSrc": "./assets/overview-sm.svg",
+                                   "selectedContainer": "Overview",
+                                   "alt": "Overview",
+                                   "content": "Overview",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Request Form",
+                                   "imgSrc": "./assets/Request-form.svg",
+                                   "selectedContainer": "Request Form",
+                                   "alt": "RequestForm",
+                                   "content": "Request Form",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Request View",
+                                   "imgSrc": "./assets/Request-view.svg",
+                                   "selectedContainer": "Request View",
+                                   "alt": "RequestView",
+                                   "content": "Request View",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Implementation View",
+                                   "imgSrc": "./assets/Implementation-view.svg",
+                                   "selectedContainer": "Implementation View",
+                                   "alt": "ImplementationView",
+                                   "content": "Implementation View",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "Version Control",
+                                   "imgSrc": "./assets/version-control.svg",
+                                   "selectedContainer": "Version Control",
+                                   "alt": "VersionControl",
+                                   "content": "Version Control",
+                                   "hasrouter": "false",
+                                   "routerlink": ""
+                              },
+                              {
+                                   "id": "History Log",
+                                   "imgSrc": "./assets/History-log.svg",
+                                   "selectedContainer": "History Log",
+                                   "alt": "HistoryLog",
+                                   "content": "History Log",
+                                   "hasrouter": "true",
+                                   "routerlink": "/operate/change/history-log"
                               }
                          ]
                     },

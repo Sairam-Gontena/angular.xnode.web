@@ -1,22 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
-import { BpmnDiagramComponent } from './pages/bpmn-diagram/bpmn-diagram.component';
-import { DynamicFormComponent } from './components/form-builder/dynamic-form/dynamic-form.component';
+import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./pages/sign-up/signup.module').then((m) => m.SignUpModule),
-  },
-  {
-    path: 'login',
-    loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'use-cases',
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./pages/forgot-password/forgotpassword.module').then((m) => m.ForgotPasswordModule),
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () =>
+      import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
+  },
+  {
+    path: 'verify-otp',
+    loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule)
+  },
+  {
+    path: 'usecases',
     loadChildren: () =>
       import('./pages/use-cases/use-cases.module').then(
         (m) => m.UseCasesModule
@@ -54,7 +62,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'design',
+    path: 'dashboard',
     loadChildren: () =>
       import('./pages/template-builder/template-builder.module').then(
         (m) => m.TemplateBuilderModule
@@ -130,8 +138,34 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'admin/user-invitation',
+    loadChildren: () =>
+      import('./pages/user-invitation/user-invitation.module').then(
+        (m) => m.UserInvitationModule
+      ),
+  },
+  {
+    path: 'activity',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule)
+  },
+  {
+    path: 'operate/change/history-log',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule)
+  },
+  {
+    path: 'admin/user-approval',
+    loadChildren: () =>
+      import('./pages/user-approval/user-approval.module').then(
+        (m) => m.UserApprovalModule
+      )
+  },
+  {
     path: 'dynamic-form',
-    component: DynamicFormComponent,
+    component: SignupDynamicFormComponent,
+  },
+  {
+    path: 'help-center',
+    loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule)
   },
   {
     path: '',
@@ -145,4 +179,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

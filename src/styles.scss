@@ -7,6 +7,8 @@
 @import 'node_modules/bpmn-js/dist/assets/diagram-js.css';
 @import 'node_modules/bpmn-js/dist/assets/bpmn-js.css';
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;600&display=swap');
+
 @import '~bpmn-js/dist/assets/diagram-js.css';
 @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
 @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
@@ -224,13 +226,6 @@ body {
   border-bottom: 1px solid #000000 !important;
 }
 
-// .btm-actions i,
-// .btm-actions span {
-//   color: #ffffff !important;
-//   text-decoration: none !important;
-//   border: none !important;
-// }
-
 .btm-actions a {
   color: #000000 !important;
   text-decoration: none !important;
@@ -310,4 +305,93 @@ body {
   border-width: 0 0 0 6px;
   background-color: white;
 
+}
+
+.djs-palette-shown.djs-palette-two-column .bjs-breadcrumbs {
+  top: 10px !important;
+}
+
+.business-type .p-dropdown {
+  width: 100% !important;
+}
+
+.signup-password .p-inputtext {
+  width: 100% !important;
+}
+
+.create-account-btn .p-button {
+  width: 100% !important;
+}
+
+@media (max-width: 767px) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
+.p-column-filter-overlay {
+  background-color: #23222B;
+  height: 330px;
+}
+
+.p-column-filter-overlay-menu .p-column-filter-operator {
+  background-color: #23222B;
+  border-bottom: 1px solid #2E2D36;
+
+}
+
+.p-column-filter-overlay-menu .p-column-filter-constraint {
+  background-color: #23222B;
+  border-bottom: 1px solid #2E2D36;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.p-column-filter-overlay-menu .p-column-filter-add-rule {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  color: #fff;
+}
+
+.p-button.p-button-text {
+  color: #fff;
+}
+
+.p-button.p-button-outlined {
+  border: 1px solid white;
+  color: #fff
+}
+
+.p-dropdown {
+  background-color: #2E2D36;
+}
+
+.p-dropdown {
+  background-color: #2E2D36;
+}
+
+.p-inputtext {
+  background-color: #2E2D36;
+}
+
+.p-column-filter-menu-button {
+  background-color: #2E2D36;
 }

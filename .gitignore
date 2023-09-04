@@ -41,3 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 package-lock.json
+
+# vs code
+extensions.json
+launch.json
+settings.json
+tasks.json

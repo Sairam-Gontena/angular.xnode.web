@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
 import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { FormBuilder } from '@angular/forms';
+import { NgxCaptureService } from 'ngx-capture';
+import { tap } from 'rxjs';
+import { UserUtil } from 'src/app/utils/user-util';
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -15,6 +19,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 
 export class AppHeaderComponent implements OnInit {
+  @Input() currentPath: any;
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -32,24 +37,131 @@ export class AppHeaderComponent implements OnInit {
   notifications: any[] = [];
   notificationCount: any = 0;
   product_url: string = "https://dev-navi.azurewebsites.net/";
+  username: string = ''
+  visible!: boolean;
+  screenshot: any;
+  showDialog: boolean = false;
+  thanksDialog: boolean = false;
+  displayReportDialog: boolean = false;
+  generalFeedbackDialog: boolean = false;
+  currentUser: any;
+  templates: any[] = [];
+  closeOverlay: boolean = false;
+  eventOverlay: any;
+  opOverlay: any;
+  showFeedBacks: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService) {
+    private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
   }
 
   ngOnInit(): void {
+    console.log(this.currentPath)
+    this.route.queryParams.subscribe((params: any) => {
+      console.log(params)
+
+    });
+    let data = localStorage.getItem("currentUser")
+    if (data) {
+      let currentUser = JSON.parse(data);
+      this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
+    }
+    this.currentUser = UserUtil.getCurrentUser();
+
+    this.getAllProducts()
+
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {
         label: 'Logout',
         command: () => {
+          this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
         }
       },
     ];
     this.initializeWebsocket();
+  }
+
+  //get calls 
+  getAllProducts(): void {
+    this.apiService.get("/get_metadata/" + this.currentUser.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const data = response.data.data.map((obj: any) => ({
+            name: obj.title,
+            value: obj.id,
+            url: obj.product_url !== undefined ? obj.product_url : ''
+          }));
+          this.templates = data;
+        }
+      })
+      .catch(error => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+      });
+  }
+
+  toggleDialog() {
+    this.utilsService.showProductStatusPopup(false);
+    this.showDialog = true;
+  }
+
+  onClickHelpCenter() {
+    this.router.navigate(['/help-center']);
+    this.utilsService.showProductStatusPopup(false);
+  }
+
+  handleDataAndAction(event: any) {
+    this.captureService
+      .getImage(document.body, true)
+      .pipe(
+        tap((img) => {
+          this.screenshot = img;
+        })
+      )
+      .subscribe();
+    switch (event.value) {
+      case 'feedback':
+        this.showDialog = true;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        this.showFeedBacks = false;
+        break;
+      case 'reportBug':
+        this.showDialog = false;
+        this.displayReportDialog = true;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        this.showFeedBacks = false;
+        break;
+      case 'generalFeedback':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = true;
+        this.thanksDialog = false;
+        this.showFeedBacks = false;
+        break;
+      case 'thankYou':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = true;
+        this.showFeedBacks = false;
+        break;
+      case 'view-existing-feedbacks':
+        this.showDialog = false;
+        this.displayReportDialog = false;
+        this.generalFeedbackDialog = false;
+        this.thanksDialog = false;
+        this.showFeedBacks = true;
+        break;
+      default:
+        break;
+    }
+
   }
 
   initializeWebsocket() {
@@ -59,7 +171,6 @@ export class AppHeaderComponent implements OnInit {
     }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('socket message', data)
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
@@ -67,7 +178,6 @@ export class AppHeaderComponent implements OnInit {
         this.RefreshListService.updateData('refreshproducts');
       }
       if (data.product_status === 'deployed') {
-        console.log("if deployed", data)
         const body = {
           product_id: data.product_id,
           product_url: data.product_url,
@@ -75,7 +185,7 @@ export class AppHeaderComponent implements OnInit {
         this.apiService.patch(body, '/update_product_url')
           .then(response => {
             if (!response) {
-              this.utilsService.loadToaster({ severity: 'error', summary: 'Network Issue' });
+              this.utilsService.loadToaster({ severity: 'error', summary: '                                                                                                                       ' });
             }
           })
           .catch(error => {
@@ -87,6 +197,28 @@ export class AppHeaderComponent implements OnInit {
 
   toggleAccordion() {
     this.notificationCount = 0;
+  }
+
+  overlayToggle(event?: any, element?: any) {
+    this.utilsService.showProductStatusPopup(false);
+    if (event) {
+      this.eventOverlay = event;
+    } if (element) {
+      this.opOverlay = element;
+    }
+    if (this.closeOverlay) {
+      this.opOverlay.hide(this.eventOverlay);
+    } else {
+      this.opOverlay.show(this.eventOverlay);
+    }
+    this.closeOverlay = false;
+  }
+
+  overlayToggleFromNotificationPanel(event: any) {
+    if (event) {
+      this.closeOverlay = true;
+      this.overlayToggle();
+    }
   }
 
   showMePublishPopup(obj: any): void {
@@ -108,7 +240,7 @@ export class AppHeaderComponent implements OnInit {
       repoName: obj.product_name,
       projectName: 'xnode',
       email: this.email,
-      envName: environment.name,
+      envName: environment.branchName,
       productId: obj.product_id
     }
     this.apiService.publishApp(body)
@@ -125,4 +257,10 @@ export class AppHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(false);
       });
   }
+
+  onClickLogo(): void {
+    this.utilsService.showProductStatusPopup(false);
+    this.router.navigate(['/my-products']);
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
@@ -19,7 +19,9 @@ export class MyProductsComponent implements OnInit {
   currentUser?: User;
   private subscription: Subscription;
   isLoading: boolean = true;
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private messageService: MessageService, private utilService: UtilsService) {
+
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
+    private route: ActivatedRoute, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -30,13 +32,27 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utilService.loadSpinner(true);
+    this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
-    // localStorage.getItem('record_id')
-
     this.getMeUserId();
+    this.route.queryParams.subscribe((params: any) => {
+      if (params.product === 'created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar", life: 10000 });
+      }
+    });
+    setTimeout(() => {
+      this.removeParamFromRoute()
+    }, 2000);
+  }
 
+  removeParamFromRoute(): void {
+    this.router.navigate([], {
+      queryParams: {
+        'product': null
+      },
+      queryParamsHandling: 'merge'
+    })
   }
 
   ngOnDestroy() {
@@ -45,8 +61,9 @@ export class MyProductsComponent implements OnInit {
 
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
+    localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
-    this.router.navigate(['/design']);
+    this.router.navigate(['/dashboard']);
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
@@ -62,12 +79,14 @@ export class MyProductsComponent implements OnInit {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
+        } else if (response?.status !== 200) {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
-        this.utilService.loadSpinner(false);
+        this.utils.loadSpinner(false);
       })
       .catch(error => {
-        this.utilService.loadSpinner(false);
-        this.utilService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 
       });
   }
