@@ -107,6 +107,11 @@ export class AppHeaderComponent implements OnInit {
   toggleDialog() {
     this.utilsService.showProductStatusPopup(false);
     this.showDialog = true;
+    this.displayReportDialog = false;
+    this.generalFeedbackDialog = false;
+    this.thanksDialog = false;
+    this.showFeedBacks = false;
+    console.log()
   }
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
@@ -162,6 +167,14 @@ export class AppHeaderComponent implements OnInit {
         break;
     }
 
+  }
+  onCloseDialog(event: any) {
+
+    this.showDialog = false;
+    this.displayReportDialog = false;
+    this.generalFeedbackDialog = false;
+    this.thanksDialog = false;
+    this.showFeedBacks = false;
   }
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');

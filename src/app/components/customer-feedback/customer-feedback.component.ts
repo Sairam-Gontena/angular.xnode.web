@@ -15,6 +15,7 @@ export class CustomerFeedbackComponent implements OnInit {
   @Input() showDialog = false;
   @Input() displayReportDialog = false;
   @Output() dataActionEvent = new EventEmitter<any>();
+  @Output() onCloseDialog = new EventEmitter<boolean>();
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;

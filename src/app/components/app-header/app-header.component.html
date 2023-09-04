@@ -8,8 +8,7 @@
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
         <div class="flex justify-content-center align-content-center">
             <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" (click)="onClickHelpCenter()"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleDialog()" (onBeforeHide)="onBeforeHideHandler($event)"
-                class="mr-3 pointer" />
+            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3 pointer" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 pointer" pBadge
                 value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 pointer"
@@ -24,7 +23,8 @@
             styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
     <xnode-customer-feedback *ngIf="showDialog" [showDialog]="showDialog"
-        (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
+        (dataActionEvent)="handleDataAndAction($event)"
+        (onCloseDialog)="onCloseDialog($event)"></xnode-customer-feedback>
     <xnode-report-bug *ngIf="displayReportDialog" [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
         (dataActionEvent)="handleDataAndAction($event)"
         (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>

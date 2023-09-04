@@ -1,5 +1,6 @@
 <p-dialog *ngIf="showDialog" header="Customer Feedback" class="feedback" [(visible)]="showDialog" [modal]="true"
-    [draggable]="false" [style]="{ width: dialogWidth }" [resizable]="false" [position]="modalPosition">
+    [draggable]="false" [style]="{ width: dialogWidth }" [resizable]="false" [position]="modalPosition"
+    (onHide)="onCloseDialog.emit(true)">
     <!-- [breakpoints]="{ '780px': '100vw' }" -->
     <ng-template pTemplate="header">
         <div class="flex align-items-center p-3">
