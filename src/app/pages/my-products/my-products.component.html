@@ -60,10 +60,8 @@
                         <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
                             (click)="openExternalLink(data.product_url)"
                             *ngIf="data.product_url && data.product_url !== ''"></i>
-
                     </ng-template>
                     <div class="flex">
-
                         <img alt="dp" src="./assets/dp.svg" width="40" />
                         <div class="text-white ml-4">
                             <p class="m-0 font-bold">Created by you</p>
@@ -71,7 +69,6 @@
                             <p class="m-0 text-xs">created on: {{data.created_on
                                 |
                                 date:'medium'}}</p>
-
                         </div>
                     </div>
                 </p-card>

@@ -20,7 +20,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   bpmnSubUrl: boolean = false;
   dashboard: any;
   layoutColumns: any;
-  templates: any;
   loading: boolean = true;
   selectedTemplate = localStorage.getItem("app_name");
   highlightedIndex: string | null = null;
@@ -28,10 +27,13 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   id: String = '';
   currentUser?: User;
   dataModel: any;
+  product: any;
+  product_id: any;
   @Input() erModelInput: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService,
-    private dataService: DataService, private jsPlumbService: JsPlumbService, private utilService: UtilService, private router: Router,
+  constructor(private apiService: ApiService,
+    private dataService: DataService, private jsPlumbService: JsPlumbService,
+    private utilService: UtilService, private router: Router,
     private utilsService: UtilsService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
@@ -41,15 +43,17 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   ngOnInit(): void {
-    this.utilsService.loadSpinner(true);
-    this.templates = [
-      { label: localStorage.getItem("app_name") }
-    ]
-    if (localStorage.getItem('record_id') === null) {
-      this.getMeUserId();
-    } else {
-      this.getMeDataModel();
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+      this.product_id = JSON.parse(product).id;
     }
+    if (this.product && !this.product?.has_insights) {
+      this.utilsService.showProductStatusPopup(true);
+      return
+    }
+    this.utilsService.loadSpinner(true);
+    this.getMeDataModel();
   }
 
   toggleMenu() {
@@ -90,7 +94,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   getMeDataModel() {
     this.dataModel = null;
-    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
