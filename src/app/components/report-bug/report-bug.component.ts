@@ -16,7 +16,6 @@ export class ReportBugComponent implements OnInit {
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
-  @Input() templates: any[] = [];
   currentUser?: User;
   submitted: boolean = false;
   feedbackForm: FormGroup;
