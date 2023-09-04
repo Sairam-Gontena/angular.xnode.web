@@ -30,6 +30,7 @@ export class ReportBugComponent implements OnInit {
   browserSelected: boolean = true;
   files: any[] = [];
   imageUrl: any;
+  uploadedFileData: any;
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
     private utils: UtilsService, private commonApi: CommonApiService) {
@@ -102,30 +103,28 @@ export class ReportBugComponent implements OnInit {
   }
 
   sendBugReport(): void {
-    this.utils.loadSpinner(true);
+    console.log('this.feedbackForm', this.feedbackForm);
+
     const body = {
       "userId": this.currentUser?.id,
       "productId": localStorage.getItem('record_id'),
-      "componentId": this.feedbackForm.value.component,
+      "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
       "severityId": this.feedbackForm.value.severityId,
       "requestTypeId": "REPORT_BUG_1",
-      // "userFiles": [
-      //   {
-      //     "fileId": "string",
-      //     "conversationSourceId": "string",
-      //     "conversationSourceType": "string",
-      //     "userFileType": "string"
-      //   }
-      // ]
+      "userFiles": [
+        {
+          "fileId": this.uploadedFileData.id,
+        }
+      ]
     }
     this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
-      if (res) {
+      if (!res?.data?.detail) {
         console.log("res", res)
 
         this.dataActionEvent.emit({ value: 'thankYou' });
       } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data?.detail });
         this.utils.loadSpinner(false);
       }
     }).catch(err => {
@@ -145,21 +144,19 @@ export class ReportBugComponent implements OnInit {
   onFileDropped($event?: any) {
     this.utils.loadSpinner(true);
     if (!$event) {
-      $event = this.files;
+      $event = this.screenshot;
     }
-
-    const body = {
-      "containerName": "user-feedback",
-      "Property": "file"
-    }
+    const formData = new FormData();
+    formData.append('file', new Blob([$event]));
+    formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
     };
 
-    this.commonApi.post('/file-azure/upload', body, { headers }).then((res: any) => {
+    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
-        console.log("res", res)
-        // this.imageUrl = res;
+        this.uploadedFileData = res.data;
+        this.sendBugReport();
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
         this.utils.loadSpinner(false);
