@@ -65,3 +65,13 @@
 :host::ng-deep .help-search .p-input-icon-left>i {
     top: 45% !important
 }
+
+:host::ng-deep.help-search .reset-search {
+    position: relative !important;
+    top: 18px !important;
+    left: -30px !important;
+}
+
+:host::ng-deep.p-button.p-button-brand {
+    padding: 12px 50px;
+}

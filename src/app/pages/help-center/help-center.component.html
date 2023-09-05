@@ -22,8 +22,10 @@
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
                     <input type="text" class="search-help border-transparent border-round-3xl surface-300 p-4"
-                        pInputText placeholder="      Search help" />
-                </span><i class="pi pi-times"></i>
+                        pInputText [(ngModel)]="searchText" placeholder="      Search help"
+                        (blur)="getSearchInput($event)" />
+                </span><i class="pi pi-times reset-search cursor-pointer" *ngIf="searchText"
+                    (click)="clearSearchText()"></i>
             </div>
             <p-button (click)="showDialog()" label="Demo video"
                 styleClass="p-button-lg p-button-rounded p-button-brand font-medium text-lg demo-video"></p-button>

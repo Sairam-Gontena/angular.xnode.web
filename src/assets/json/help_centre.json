@@ -102,7 +102,7 @@
                         },
                         {
                             "title": "What are the features deployed on the xnode platform?",
-                            "description": "Please refer to Beta features section <a (click)='showJson('App Onboarding','Beta features',2)'>features</a>"
+                            "description": "Please refer to Beta features section features"
                         },
                         {
                             "title": "Can I collaborate with other users on the apps I am building?",

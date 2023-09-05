@@ -11,7 +11,7 @@ export class HelpCenterComponent implements OnInit {
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
-
+  searchText: any;
 
   constructor(public location: Location) {
     this.json = helpcentre.helpcentre;
@@ -37,4 +37,19 @@ export class HelpCenterComponent implements OnInit {
     mailElem.click()
   }
 
+  clearSearchText() {
+    this.searchText = '';
+  }
+
+  getSearchInput(event: any) {
+    // this.json.map((item: any, index: any) => {
+    //   console.log(item)
+    //   let accordianTitle = item.accordianTitle.toUpperCase();
+    //   let searchText = this.searchText.toUpperCase();
+    //   if (accordianTitle.includes(searchText)) {
+    //     console.log(item, index)
+    //     this.showJson(item?.objects?.[0]?.title, accordianTitle, index)
+    //   }
+    // })
+  }
 }

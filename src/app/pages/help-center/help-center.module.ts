@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { AccordionModule } from 'primeng/accordion';
 import { HelpCenterComponent } from './help-center.component';
 import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
 @NgModule({
     declarations: [
         HelpCenterComponent
@@ -14,7 +15,8 @@ import { DialogModule } from 'primeng/dialog';
         ButtonModule,
         HelpCentreRoutingModule,
         AccordionModule,
-        DialogModule
+        DialogModule,
+        FormsModule
     ]
 })
 export class HelpCentreModule { }
