@@ -19,6 +19,9 @@ export class MyProductsComponent implements OnInit {
   currentUser?: User;
   private subscription: Subscription;
   isLoading: boolean = true;
+  activeIndex: number = 0;
+  searchText: any;
+  filteredProducts: any[] = []
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
     private route: ActivatedRoute, private utils: UtilsService) {
@@ -28,7 +31,6 @@ export class MyProductsComponent implements OnInit {
         this.getMeUserId()
       }
     });
-
   }
 
   ngOnInit(): void {
@@ -54,6 +56,11 @@ export class MyProductsComponent implements OnInit {
       queryParamsHandling: 'merge'
     })
   }
+  searchKey(data: string) {
+    this.searchText = data;
+    this.search();
+  }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -72,6 +79,7 @@ export class MyProductsComponent implements OnInit {
     window.open(productUrl, '_blank');
 
   }
+
   //get calls 
   getMeUserId() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
@@ -79,6 +87,7 @@ export class MyProductsComponent implements OnInit {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
+          this.filteredProducts = this.templateCard;
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
@@ -88,6 +97,13 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 
+      });
+  }
+  search() {
+    this.filteredProducts = this.searchText === ""
+      ? this.templateCard
+      : this.templateCard.filter((element) => {
+        return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
   }
 
