@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -7,7 +7,7 @@ import { ApiService } from '../../api/api.service'
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service'
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { FormGroup, FormControl, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
@@ -21,7 +21,6 @@ import { AppSideMenuItems } from '../../constants/AppSideMenuItems';
 
 export class AppHeaderComponent implements OnInit {
   @Input() currentPath: any;
-
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -73,42 +72,44 @@ export class AppHeaderComponent implements OnInit {
     }
   ]
   showFeedBacks: any;
+  selectedPopup: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
+    private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
   }
 
   ngOnInit(): void {
     this.sideMenuItems = AppSideMenuItems.UserSideMenu;
     console.log(this.sideMenuItems)
-    this.route.queryParams.subscribe((params: any) => {
-      console.log(params)
+    this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
+      console.log('res', res);
 
-    });
+      this.selectedPopup = '';
+      if (res)
+        this.selectedPopup = res;
+    })
     let data = localStorage.getItem("currentUser")
     if (data) {
       let currentUser = JSON.parse(data);
       this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
     }
     this.currentUser = UserUtil.getCurrentUser();
-
     this.getAllProducts()
-
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {
         label: 'Logout',
         command: () => {
+          this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
         }
       },
     ];
     this.initializeWebsocket();
-
-
   }
+
   //get calls 
   getAllProducts(): void {
     this.apiService.get("/get_metadata/" + this.currentUser.email)
@@ -120,16 +121,17 @@ export class AppHeaderComponent implements OnInit {
             url: obj.product_url !== undefined ? obj.product_url : ''
           }));
           this.templates = data;
-          console.log(this.templates)
         }
       })
       .catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
-  toggleDialog() {
+
+  toggleFeedbackPopup() {
+    this.capture();
     this.utilsService.showProductStatusPopup(false);
-    this.showDialog = true;
+    this.selectedPopup = 'customer-feedback';
   }
   toggleSidemenu(value: boolean) {
     this.sidebarVisible = value
@@ -138,8 +140,8 @@ export class AppHeaderComponent implements OnInit {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
   }
-  handleDataAndAction(event: any) {
-    console.log(event.value)
+
+  capture(): void {
     this.captureService
       .getImage(document.body, true)
       .pipe(
@@ -148,47 +150,9 @@ export class AppHeaderComponent implements OnInit {
         })
       )
       .subscribe();
-    switch (event.value) {
-      case 'feedback':
-        this.showDialog = true;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = false;
-        this.showFeedBacks = false;
-        break;
-      case 'reportBug':
-        this.showDialog = false;
-        this.displayReportDialog = true;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = false;
-        this.showFeedBacks = false;
-        break;
-      case 'generalFeedback':
-        this.showDialog = false;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = true;
-        this.thanksDialog = false;
-        this.showFeedBacks = false;
-        break;
-      case 'thankYou':
-        this.showDialog = false;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = true;
-        this.showFeedBacks = false;
-        break;
-      case 'view-existing-feedbacks':
-        this.showDialog = false;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = false;
-        this.showFeedBacks = true;
-        break;
-      default:
-        break;
-    }
-
   }
+
+
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {

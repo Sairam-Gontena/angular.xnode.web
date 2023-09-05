@@ -1,10 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NgxCaptureService } from 'ngx-capture';
-import { ConfirmationService } from 'primeng/api';
-import { ApiService } from 'src/app/api/api.service';
-import { WebSocketService } from 'src/app/web-socket.service';
 import { UtilsService } from '../services/utils.service';
 
 @Component({
@@ -12,8 +7,9 @@ import { UtilsService } from '../services/utils.service';
   templateUrl: './general-feedback.component.html',
   styleUrls: ['./general-feedback.component.scss']
 })
+
 export class GeneralFeedbackComponent implements OnInit {
-  @Input() generalFeedbackDialog = false;
+  @Input() visible: any;
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Input() thanksDialog = false;
@@ -31,9 +27,8 @@ export class GeneralFeedbackComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = false;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private webSocketService: WebSocketService,
-    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+  constructor(public utils: UtilsService,
+    private fb: FormBuilder) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
@@ -41,7 +36,6 @@ export class GeneralFeedbackComponent implements OnInit {
       tellUsMore: ['', Validators.required],
     });
   }
-
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
@@ -53,7 +47,6 @@ export class GeneralFeedbackComponent implements OnInit {
       this.dialogHeight = '80vh';
     } else if (this.getScreenWidth > 980) {
       this.dialogWidth = '40vw';
-      this.dialogHeight = '45vh';
     }
   }
 
@@ -103,10 +96,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
     }
   }
-  customFeedback(value: any) {
-    this.dataActionEvent.emit({ value: 'feedback' })
 
-  }
   onDeleteImage() {
     this.screenshot = '';
   }
@@ -117,9 +107,6 @@ export class GeneralFeedbackComponent implements OnInit {
       logoFile: $event[0]
     });
   }
-  /**
-    * handle file from browsing
-    */
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
@@ -218,5 +205,9 @@ export class GeneralFeedbackComponent implements OnInit {
   selectBrowser() {
     this.draganddropSelected = false;
     this.browserSelected = true;
+  }
+
+  closePopup() {
+    this.utils.showFeedbackPopupByType('');
   }
 }
