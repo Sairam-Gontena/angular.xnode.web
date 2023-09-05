@@ -33,6 +33,8 @@ export class OverViewComponent {
   overviewData: any;
   product: any;
   product_id: any;
+  userName: any;
+  productId: any;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -40,6 +42,14 @@ export class OverViewComponent {
 
   ngOnInit(): void {
     const product = localStorage.getItem('product');
+    this.productId = localStorage.getItem('record_id');
+    if (this.currentUser?.email)
+      this.email = this.currentUser?.email;
+    let dataName = localStorage.getItem("currentUser")
+    if (dataName) {
+      let currentUser = JSON.parse(dataName);
+      this.userName = currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1).toLowerCase() + " " + currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1).toLowerCase();
+    }
     if (product) {
       this.product = JSON.parse(product);
       this.product_id = JSON.parse(product).id;
@@ -53,11 +63,8 @@ export class OverViewComponent {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-    if (this.currentUser?.email)
-      this.email = this.currentUser?.email;
     this.get_ID();
   };
-
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
@@ -72,21 +79,17 @@ export class OverViewComponent {
     }
     this.counter++;
   }
-
   prevStep(): void {
     this.stepper.prevStep();
     this.counter--;
   }
-
   setStep(step: any) {
     this.counter = step;
   }
-
   nextStep2() {
     this.stepper.nextStep();
     this.counter2++;
   }
-
   prevStep2() {
     this.stepper.prevStep();
     this.counter2--;
@@ -133,7 +136,6 @@ export class OverViewComponent {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
       });
-
   }
 }
 
