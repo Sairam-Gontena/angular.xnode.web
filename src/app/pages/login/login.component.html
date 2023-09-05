@@ -47,7 +47,7 @@
                                 <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                                     <div class="flex justify-content-between">
                                         <div class="">
-                                            <p-checkbox  formControlName="rememberMe" value="Remember me"
+                                            <p-checkbox formControlName="rememberMe" value="Remember me"
                                                 [ngClass]="{ 'is-invalid': submitted && login['rememberMe'].errors }"
                                                 inputId="ny"></p-checkbox>
                                             <label for="rememberMe" class="ml-2 text-500 checkbox">Remember me</label>
@@ -67,10 +67,13 @@
                                         styleClass="p-button-rounded  font-medium text-lg"
                                         [disabled]="loginForm.invalid"></p-button>
                                 </div>
-                                <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                                    <a
-                                        class="flex justify-content-center align-items-center no-underline text-sm font-medium forgot-pwd">Terms
-                                        of service <p class="mx-2 text-50 mt-3">and</p> privacy policy</a>
+                                <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions " >
+                                    <a href="https://dev.xnode.ai/terms-of-service/" class="no-underline mr-1"
+                                        target="_blank">Terms of service </a><span style="color:#fff" >and</span><a
+                                        href="https://dev.xnode.ai/privacy-policy/" target="_blank"
+                                        class="no-underline ml-1">
+
+                                        privacy policy</a>
                                 </div>
                             </div>
                         </form>

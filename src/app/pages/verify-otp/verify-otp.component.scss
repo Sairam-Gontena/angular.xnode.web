@@ -93,7 +93,7 @@
     }
 
     :host::ng-deep.p-card .p-card-body {
-        background-color: blue !important;
+        background-color: #23222B !important;
         border-radius: 12px;
         width: 90%;
         height: 80%;
@@ -136,6 +136,10 @@
         border-width: 0px;
         padding-top: 10px;
         padding-bottom: 10px;
+    }
+
+    .terms-conditions {
+        font-size: 14px !important;
     }
 }
 
