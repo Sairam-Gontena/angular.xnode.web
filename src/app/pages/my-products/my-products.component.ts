@@ -63,6 +63,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
+    localStorage.setItem('has_insights', data.has_insights);
     this.router.navigate(['/dashboard']);
   }
   onClickgotoxPilot() {
