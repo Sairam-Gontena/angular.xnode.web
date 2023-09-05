@@ -105,6 +105,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   toggleFeedbackPopup() {
+    this.capture();
     this.utilsService.showProductStatusPopup(false);
     this.selectedPopup = 'customer-feedback';
   }
