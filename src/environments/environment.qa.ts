@@ -9,7 +9,7 @@ export const environment = {
     designStudioAppUrl: 'https://qa-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
     workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
-    webSocketUrl: 'https://qa-notify-api.azurewebsites.net',
+    webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'qa-xnode-notifier',
     branchName: 'qa',
 }

@@ -7,11 +7,7 @@ import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
-interface Product {
-  name: string;
-  value: string;
-  url?: string;
-}@Component({
+@Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
   styleUrls: ['./template-builder-publish-header.component.scss'],
@@ -22,16 +18,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string | null;
-
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;
   showDeviceIcons: boolean = false;
   currentUser?: any;
   productOptions: MenuItem[];
-
-  templates: Product[] | undefined;
-  selectedTemplate: Product | undefined;
+  templates: any;
+  selectedTemplate: any;
   url: any;
   productData: any;
   iframeSrc: any;
@@ -64,11 +58,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (currentUrl === '/dashboard') {
       this.showDeviceIcons = true;
     }
-    this.getAllProducts()
-    let name = localStorage.getItem('app_name')
-    let value = localStorage.getItem('record_id')
-    let url = localStorage.getItem('product_url');
-    this.selectedTemplate = { name: name ? name : '', value: value ? value : '', url: url ? url : '' };
+    const metaData = localStorage.getItem('meta_data');
+    const product = localStorage.getItem('product');
+    if (metaData) {
+      this.templates = JSON.parse(metaData);
+      if (product) {
+        this.selectedTemplate = JSON.parse(product).id;
+      }
+    }
 
     this.emailData = localStorage.getItem('currentUser');
     if (this.emailData) {
@@ -160,22 +157,24 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
-          const data = response.data.data.map((obj: any) => ({
-            name: obj.title,
-            value: obj.id,
-            url: obj.product_url !== undefined ? obj.product_url : ''
-          }));
-          this.templates = data;
+          this.templates = response.data.data;
         }
       })
       .catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
+
   selectedProduct(data: any): void {
-    localStorage.setItem('record_id', data.value.value);
-    localStorage.setItem('app_name', data.value.name);
-    localStorage.setItem('product_url', data.value.url ? data.value.url : '');
+    const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
+    if (product) {
+      localStorage.setItem('record_id', product.id);
+      localStorage.setItem('app_name', product.title);
+      localStorage.setItem('product_url', product.url ? product.url : '');
+      localStorage.setItem('product', JSON.stringify(product));
+      this.selectedTemplate = product.id;
+    }
+    this.utilsService.showProductStatusPopup(false);
     this.refreshCurrentRoute()
   }
 

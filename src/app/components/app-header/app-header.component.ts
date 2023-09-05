@@ -50,27 +50,28 @@ export class AppHeaderComponent implements OnInit {
   eventOverlay: any;
   opOverlay: any;
   showFeedBacks: any;
+  selectedPopup: any;
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private route: ActivatedRoute, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
+    private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
   }
 
   ngOnInit(): void {
-    console.log(this.currentPath)
-    this.route.queryParams.subscribe((params: any) => {
-      console.log(params)
+    this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
+      console.log('res', res);
 
-    });
+      this.selectedPopup = '';
+      if (res)
+        this.selectedPopup = res;
+    })
     let data = localStorage.getItem("currentUser")
     if (data) {
       let currentUser = JSON.parse(data);
       this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
     }
     this.currentUser = UserUtil.getCurrentUser();
-
     this.getAllProducts()
-
     this.headerItems = HeaderItems;
     this.logoutDropdown = [
       {
@@ -103,9 +104,10 @@ export class AppHeaderComponent implements OnInit {
       });
   }
 
-  toggleDialog() {
+  toggleFeedbackPopup() {
+    this.capture();
     this.utilsService.showProductStatusPopup(false);
-    this.showDialog = true;
+    this.selectedPopup = 'customer-feedback';
   }
 
   onClickHelpCenter() {
@@ -113,7 +115,7 @@ export class AppHeaderComponent implements OnInit {
     this.utilsService.showProductStatusPopup(false);
   }
 
-  handleDataAndAction(event: any) {
+  capture(): void {
     this.captureService
       .getImage(document.body, true)
       .pipe(
@@ -122,47 +124,8 @@ export class AppHeaderComponent implements OnInit {
         })
       )
       .subscribe();
-    switch (event.value) {
-      case 'feedback':
-        this.showDialog = true;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = false;
-        this.showFeedBacks = false;
-        break;
-      case 'reportBug':
-        this.showDialog = false;
-        this.displayReportDialog = true;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = false;
-        this.showFeedBacks = false;
-        break;
-      case 'generalFeedback':
-        this.showDialog = false;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = true;
-        this.thanksDialog = false;
-        this.showFeedBacks = false;
-        break;
-      case 'thankYou':
-        this.showDialog = false;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = true;
-        this.showFeedBacks = false;
-        break;
-      case 'view-existing-feedbacks':
-        this.showDialog = false;
-        this.displayReportDialog = false;
-        this.generalFeedbackDialog = false;
-        this.thanksDialog = false;
-        this.showFeedBacks = true;
-        break;
-      default:
-        break;
-    }
-
   }
+
 
   initializeWebsocket() {
     let currentUser = localStorage.getItem('currentUser');

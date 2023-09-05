@@ -12,7 +12,7 @@ import { CommonApiService } from 'src/app/api/common-api.service';
 })
 
 export class ReportBugComponent implements OnInit {
-  @Input() displayReportDialog = false;
+  @Input() visible = false;
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
@@ -51,7 +51,7 @@ export class ReportBugComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
-    private utils: UtilsService, private commonApi: CommonApiService) {
+    public utils: UtilsService, private commonApi: CommonApiService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.feedbackForm = this.fb.group({
@@ -69,11 +69,13 @@ export class ReportBugComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.screenshot)
     this.priorities = [
       { name: 'Choose Priority', code: 'choose priority' },
       { name: 'Urgent', code: 'urgent' },
     ];
+    this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
+    console.log('this.feedbackForm', this.feedbackForm);
+
   }
 
   getMeComponent() {
@@ -141,7 +143,7 @@ export class ReportBugComponent implements OnInit {
     this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
-        this.dataActionEvent.emit({ value: 'thankYou' });
+        this.utils.showFeedbackPopupByType('thankyou');
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
@@ -150,10 +152,6 @@ export class ReportBugComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
     })
-  }
-
-  customFeedback(value: any) {
-    this.dataActionEvent.emit({ value: 'feedback' })
   }
 
   onDeleteImage() {
@@ -270,6 +268,10 @@ export class ReportBugComponent implements OnInit {
   selectBrowser() {
     this.draganddropSelected = false;
     this.browserSelected = true;
+  }
+
+  closePopup() {
+    this.utils.showFeedbackPopupByType('');
   }
 
 }

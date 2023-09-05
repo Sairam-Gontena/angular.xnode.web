@@ -1,6 +1,5 @@
-<p-dialog *ngIf="thanksDialog" header="" class="feedback" [(visible)]="thanksDialog" [modal]="true"
-    [style]="{ width: '31vw', height: '51vh'}" [draggable]="false" [resizable]="false" [position]="'center'">
-
+<p-dialog header="" class="feedback" [(visible)]="visible" [style]="{ width: '31vw', height: '51vh'}"
+    [draggable]="false" [resizable]="false" [position]="'center'" (onHide)="closePopup()">
     <div class="p-3 mx-5 mt-3">
         <form>
             <div
