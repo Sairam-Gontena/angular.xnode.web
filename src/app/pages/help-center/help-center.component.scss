@@ -43,3 +43,25 @@
     background-color: #1c3e52 !important;
     opacity: 0.5 !important;
 }
+
+.help-content {
+    height: 80vh !important;
+}
+
+.help-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.help-content::-webkit-scrollbar-track {
+    background-color: #3A3942;
+    border-radius: 100px;
+}
+
+.help-content::-webkit-scrollbar-thumb {
+    background-color: #F5F5F5;
+    border-radius: 100px;
+}
+
+:host::ng-deep .help-search .p-input-icon-left>i {
+    top: 45% !important
+}

@@ -26,6 +26,17 @@
     box-shadow: none;
 }
 
+.p-button.p-button-brand {
+    background: var(--brand-color);
+    border-color: var(--brand-color);
+}
+
+.p-button.p-button-brand:hover {
+    background: var(--brand-color);
+    border-color: var(--brand-color);
+    border: 1px solid var(--brand-color);
+}
+
 .p-button.p-button-secondary,
 .p-buttonset.p-button-secondary>.p-button,
 .p-splitbutton.p-button-secondary>.p-button {
