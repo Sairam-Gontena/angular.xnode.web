@@ -14,6 +14,7 @@ export class UserInvitationComponent {
   usersList: any;
   Actions: any[] = [];
   items: MenuItem[] | undefined;
+  currentUser: any;
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService) {
     this.refreshListService.RefreshAdminUserList().subscribe((data) => {
@@ -33,25 +34,29 @@ export class UserInvitationComponent {
   }
 
   getAllUsers(): void {
-    let url = 'get_users/' + 'dev.xnode@salientminds.com'
-    this.apiService.getData(url)
-      .then((response: any) => {
-        this.utilsService.loadSpinner(false)
-        if (response?.status === 200) {
-          if (response?.data) {
-            this.usersList = response.data;
+    this.currentUser = localStorage.getItem('currentUser');
+    if (this.currentUser) {
+      this.currentUser = JSON.parse(this.currentUser)
+      let url = 'get_users/' + this.currentUser.email
+      this.apiService.getData(url)
+        .then((response: any) => {
+          this.utilsService.loadSpinner(false)
+          if (response?.status === 200) {
+            if (response?.data) {
+              this.usersList = response.data;
+            } else {
+              this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+            }
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-        }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-        this.utilsService.loadSpinner(false)
+        })
+        .catch((error: any) => {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+          this.utilsService.loadSpinner(false)
+        });
+    }
 
-      });
 
   }
 }
