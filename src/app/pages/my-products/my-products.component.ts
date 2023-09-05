@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { UserUtilsService } from 'src/app/api/user-utils.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -21,6 +22,7 @@ export class MyProductsComponent implements OnInit {
   isLoading: boolean = true;
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
+    private userService: UserUtilsService,
     private route: ActivatedRoute, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
@@ -91,4 +93,24 @@ export class MyProductsComponent implements OnInit {
       });
   }
 
+  auditLog() {
+    const body = {
+      "userId": '',
+      "activityTypeId": "NEW_WITH_NAVI",
+      "attemptCount": 0,
+      "attemptSuccess": "SUCCESS"
+    }
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      body.userId = JSON.parse(currentUser).id;
+    }
+    this.userService.post(body, '/user-audit').then((res: any) => {
+      if (!res) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data.details });
+      }
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    });
+
+  }
 }

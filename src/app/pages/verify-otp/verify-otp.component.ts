@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/auth.service';
+import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class VerifyOtpComponent implements OnInit {
   maskedEmail!: string;
   resendTimer: number = 60;
 
-  constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService) {
+  constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService,
+    private userService: UserUtilsService) {
 
   }
 
@@ -80,9 +82,10 @@ export class VerifyOtpComponent implements OnInit {
             this.router.navigate(['/admin/user-invitation']);
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
-            this.getAllProducts(response.data)
+            this.getAllProducts(response.data);
           }
-          localStorage.setItem('currentUser', JSON.stringify(response?.data))
+          this.auditLog(response.data);
+          localStorage.setItem('currentUser', JSON.stringify(response?.data));
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(true);
@@ -115,6 +118,22 @@ export class VerifyOtpComponent implements OnInit {
   onClickLogout(): void {
     localStorage.clear();
     this.router.navigate(['/']);
+  }
+
+  auditLog(user: any) {
+    const body = {
+      "userId": user.id,
+      "activityTypeId": "VERIFY_OTP",
+      "attemptCount": 0,
+      "attemptSuccess": "SUCCESS"
+    }
+    this.userService.post(body, '/user-audit').then((res: any) => {
+      if (!res) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data.details });
+      }
+    }).catch(err => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    });
   }
 
 
