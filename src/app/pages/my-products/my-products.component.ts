@@ -28,7 +28,7 @@ export class MyProductsComponent implements OnInit {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
-        this.getMeUserId()
+        this.getMetaData()
       }
     });
   }
@@ -37,7 +37,7 @@ export class MyProductsComponent implements OnInit {
     this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
-    this.getMeUserId();
+    this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar", life: 10000 });
@@ -70,6 +70,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
+    localStorage.setItem('has_insights', data.has_insights);
     this.router.navigate(['/dashboard']);
   }
   onClickgotoxPilot() {
@@ -81,13 +82,14 @@ export class MyProductsComponent implements OnInit {
   }
 
   //get calls 
-  getMeUserId() {
+  getMetaData() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
+          localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }

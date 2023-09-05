@@ -45,7 +45,7 @@ export class TemplateBuilderComponent implements OnInit {
     if (this.product && !this.product?.has_insights) {
       this.utils.showProductStatusPopup(true);
     }
-    if (this.product?.product_id) {
+    if (this.product_id) {
       this.makeTrustedUrl();
     } else {
       this.get_ID();
@@ -53,7 +53,7 @@ export class TemplateBuilderComponent implements OnInit {
 
   }
   makeTrustedUrl(): void {
-    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product?.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights;
+    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights;
     setTimeout(() => {
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);;
       this.loadIframeUrl();

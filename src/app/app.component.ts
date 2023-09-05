@@ -109,11 +109,15 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
+      if (has_insights) {
+        rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
+      }
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
