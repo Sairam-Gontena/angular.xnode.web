@@ -21,6 +21,9 @@ export class UtilsService {
   private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
+  private popupToShow: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public getMeFeedbackPopupTypeToDisplay: Observable<string> = this.popupToShow.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -45,6 +48,9 @@ export class UtilsService {
 
   showProductStatusPopup(event: any): void {
     this.productStatus.next(event);
+  }
+  showFeedbackPopupByType(event: any): void {
+    this.popupToShow.next(event);
   }
 
 }

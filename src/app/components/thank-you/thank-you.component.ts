@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'xnode-thank-you',
@@ -6,16 +7,20 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./thank-you.component.scss']
 })
 export class ThankYouComponent implements OnInit {
-  // @Input() thanksDialog = false;
-  @Input() thanksDialog: boolean = false;;
+  @Input() visible = false;
   @Output() dataActionEvent = new EventEmitter<any>();
+
+  constructor(public utils: UtilsService) {
+
+  }
 
   ngOnInit(): void {
   }
-  handleDataAndAction(value: any) {
-    this.thanksDialog = false;
-    this.dataActionEvent.emit({ reportBug: true })
 
-    console.log(value, "1111111111111")
+  handleDataAndAction(value: any) {
+    this.dataActionEvent.emit({ reportBug: true })
+  }
+  closePopup() {
+    this.utils.showFeedbackPopupByType('');
   }
 }

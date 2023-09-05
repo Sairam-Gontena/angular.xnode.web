@@ -6,7 +6,7 @@
         </div>
         <div class="flex flex-column justify-content-center text-center">
             <p class="text-3xl font-medium">Hello. How can we help you?</p>
-            <p>if you couldn’t find the topic, mail us at <a
+            <p>if you couldn’t find the topic, mail us at <a class='no-underline'
                     [href]="'mailto:support@xnode.ai?subject=Assistance Needed - '+selectedjson?.title" target="_blank"
                     id="mail">support@xnode.ai</a></p>
             <p-button label="Send Email" (click)="sendEmail()"
@@ -17,12 +17,18 @@
         </div>
     </div>
     <div class="my-6">
-        <div class="flex flex-row justify-content-center">
-            <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input type="text" class="search-help border-transparent border-round-3xl surface-300 p-4" pInputText
-                    placeholder="      Search help" />
-            </span>
+        <div class="flex flex-row justify-content-between help-search">
+            <div class="flex">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text" class="search-help border-transparent border-round-3xl surface-300 p-4"
+                        pInputText [(ngModel)]="searchText" placeholder="      Search help"
+                        (blur)="getSearchInput($event)" />
+                </span><i class="pi pi-times reset-search cursor-pointer" *ngIf="searchText"
+                    (click)="clearSearchText()"></i>
+            </div>
+            <p-button (click)="showDialog()" label="Demo video"
+                styleClass="p-button-lg p-button-rounded p-button-brand font-medium text-lg demo-video"></p-button>
         </div>
     </div>
     <div class="grid">
@@ -30,21 +36,29 @@
             <p-accordion class="text-white border-transparent">
                 <p-accordionTab class="border-transparent" header="{{item.accordianTitle}}" *ngFor="let item of json">
                     <a class="side-menu-item block text-white cursor-pointer no-underline my-1 py-2 px-4 border-round-3xl"
-                        [ngClass]="{'active-sub-item': i === selectedMenuIndex  }"
+                        id="{{subitem?.title}}" [ngClass]="{'active-sub-item': i === selectedMenuIndex  }"
                         (click)="showJson(subitem.title,item.accordianTitle,i)"
                         *ngFor="let subitem of item.objects;let i = index">{{subitem.title}}</a>
                 </p-accordionTab>
             </p-accordion>
         </div>
-        <div class="sm:col-12 md:col-8 lg:col-8 xl:col-8 border-left-1 border-gray-800 text-white px-5">
+        <div
+            class="help-content sm:col-12 md:col-8 lg:col-8 xl:col-8 border-left-1 border-gray-800 text-white px-5 overflow-y-auto">
             <div class="my-2 border-bottom-1 border-gray-800">
                 <p class="text-3xl font-semibold">{{selectedjson.title}}</p>
-                <p class="text-lg font-normal opacity-60">{{selectedjson.description}}</p>
+                <div class="text-lg font-normal opacity-60">{{selectedjson.description}}</div>
             </div>
             <div class="my-2" *ngFor="let data of selectedjson.subobjects">
                 <p class="text-3xl font-semibold">{{data.title}}</p>
-                <p class="text-lg font-normal opacity-60">{{data.description}}</p>
+                <p class="text-lg font-normal opacity-60" [innerHTML]="data.description"></p>
             </div>
         </div>
     </div>
 </div>
+
+<p-dialog header="Demo Video" [(visible)]="visible" [style]="{width: '80vw'}">
+    <video [style]="{width: '75vw'}" controls>
+        <source src="https://xnodestrg.blob.core.windows.net/legal/xnode-beta-short-farm-connect-20230827.mp4"
+            type="video/mp4">
+    </video>
+</p-dialog>
