@@ -1,8 +1,9 @@
-<p-dialog *ngIf="generalFeedbackDialog" header="General Feedback" class="feedback" [(visible)]="generalFeedbackDialog"
-    [modal]="true" [style]="{ width:dialogWidth, height: dialogHeight}" [draggable]="false" [resizable]="false">
+<p-dialog header="General Feedback" class="feedback" [(visible)]="visible"
+    [style]="{ width:dialogWidth, height: dialogHeight}" [draggable]="false" [resizable]="false"
+    (onHide)="closePopup()">
     <ng-template pTemplate="header">
         <div class="flex align-items-center p-3">
-            <i class="pi pi-angle-left mr-3 pointer" (click)="customFeedback($event)"></i>
+            <i class="pi pi-angle-left mr-3 pointer" (click)="utils.showFeedbackPopupByType('report-bug')"></i>
             <div>
                 <p class="m-0 font-bold text-2xl heading-color">General Feedback</p>
                 <p class="m-0 text-sm font-medium heading-color">Your feedback will be used to improve xnode</p>
