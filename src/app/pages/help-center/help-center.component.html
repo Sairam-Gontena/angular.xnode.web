@@ -23,7 +23,7 @@
                     <i class="pi pi-search"></i>
                     <input type="text" class="search-help border-transparent border-round-3xl surface-300 p-4"
                         pInputText [(ngModel)]="searchText" placeholder="      Search help"
-                        (blur)="getSearchInput($event)" />
+                        (blur)="getSearchInput('search')" />
                 </span><i class="pi pi-times reset-search cursor-pointer" *ngIf="searchText"
                     (click)="clearSearchText()"></i>
             </div>
@@ -31,7 +31,7 @@
                 styleClass="p-button-lg p-button-rounded p-button-brand font-medium text-lg demo-video"></p-button>
         </div>
     </div>
-    <div class="grid">
+    <div class="grid" *ngIf="foundObjects.length==0 else elseTemplate">
         <div class="sm:col-12 md:col-4 lg:col-4 xl:col-4">
             <p-accordion class="text-white border-transparent">
                 <p-accordionTab class="border-transparent" header="{{item.accordianTitle}}" *ngFor="let item of json">
@@ -54,6 +54,30 @@
             </div>
         </div>
     </div>
+    <ng-template #elseTemplate>
+        <div class="grid">
+            <div class="sm:col-12 md:col-4 lg:col-4 xl:col-4">
+                <p class="text-3xl text-white font-semibold">{{searchText| uppercase}} Findings</p>
+            </div>
+            <div
+                class="help-content sm:col-12 md:col-8 lg:col-8 xl:col-8 border-left-1 border-gray-800 text-white px-5 overflow-y-auto">
+                <div class="my-2" *ngFor="let founddata of foundObjects">
+                    <span *ngIf="founddata?.subobjects else subTemplate">
+                        <div *ngFor="let foundsubdata of founddata.subobjects">
+                            <p class="text-3xl font-semibold">{{foundsubdata.title}}</p>
+                            <p class="text-lg font-normal opacity-60" [innerHTML]="foundsubdata.description"></p>
+                        </div>
+                    </span>
+                    <ng-template #subTemplate>
+                        <div>
+                            <p class="text-3xl font-semibold">{{founddata.title}}</p>
+                            <p class="text-lg font-normal opacity-60" [innerHTML]="founddata.description"></p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 </div>
 
 <p-dialog header="Demo Video" [(visible)]="visible" [style]="{width: '80vw'}">

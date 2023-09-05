@@ -6,12 +6,14 @@ import { Location } from '@angular/common';
   templateUrl: './help-center.component.html',
   styleUrls: ['./help-center.component.scss']
 })
+
 export class HelpCenterComponent implements OnInit {
   json: any;
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
   searchText: any;
+  foundObjects: any[] = [];
 
   constructor(public location: Location) {
     this.json = helpcentre.helpcentre;
@@ -39,17 +41,22 @@ export class HelpCenterComponent implements OnInit {
 
   clearSearchText() {
     this.searchText = '';
+    this.foundObjects = [];
   }
 
-  getSearchInput(event: any) {
-    // this.json.map((item: any, index: any) => {
-    //   console.log(item)
-    //   let accordianTitle = item.accordianTitle.toUpperCase();
-    //   let searchText = this.searchText.toUpperCase();
-    //   if (accordianTitle.includes(searchText)) {
-    //     console.log(item, index)
-    //     this.showJson(item?.objects?.[0]?.title, accordianTitle, index)
-    //   }
-    // })
+  getSearchInput(key: string, obj = this.json) {
+    let keyword = this.searchText;
+    if (typeof obj === 'object') {
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof obj[key] === 'string' && obj[key].includes(keyword)) {
+            this.foundObjects.push(obj);
+            break;
+          } else if (typeof obj[key] === 'object') {
+            this.getSearchInput(keyword, obj[key]);
+          }
+        }
+      }
+    }
   }
 }
