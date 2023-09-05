@@ -1,13 +1,12 @@
-<p-dialog *ngIf="displayReportDialog" header="Report a bug" class="feedback" [(visible)]="displayReportDialog"
-    [modal]="true" [draggable]="false" [resizable]="false" [style]="{ width: dialogWidth }" [position]="modalPosition">
+<p-dialog header="Report a bug" class="feedback" [(visible)]="visible" [modal]="true" [draggable]="false"
+    [resizable]="false" [style]="{ width: dialogWidth }" [position]="modalPosition" (onHide)="closePopup()">
     <ng-template pTemplate="header" class="p-2">
         <div class="flex align-items-center">
-            <i class="pi pi-angle-left mr-3 pointer" (click)="customFeedback($event)"></i>
+            <i class="pi pi-angle-left mr-3 pointer" (click)="utils.showFeedbackPopupByType('customer-feedback')"></i>
             <div>
                 <p class="m-0 font-bold text-2xl heading-color">Report a bug</p>
                 <p class="m-0 text-sm font-medium heading-color">Your feedback will be used to improve xnode</p>
             </div>
-
         </div>
     </ng-template>
     <div class="p-4 mt-4">
