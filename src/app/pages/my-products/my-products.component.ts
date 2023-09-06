@@ -22,6 +22,8 @@ export class MyProductsComponent implements OnInit {
   activeIndex: number = 0;
   searchText: any;
   filteredProducts: any[] = []
+  email: any;
+  filteredProductsByEmail: any[] = [];
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
     private route: ActivatedRoute, private utils: UtilsService) {
@@ -46,6 +48,7 @@ export class MyProductsComponent implements OnInit {
     setTimeout(() => {
       this.removeParamFromRoute()
     }, 2000);
+    this.filterProductsByUserEmail();
   }
 
   removeParamFromRoute(): void {
@@ -65,6 +68,7 @@ export class MyProductsComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
 
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
@@ -89,6 +93,8 @@ export class MyProductsComponent implements OnInit {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
+          this.filteredProductsByEmail = this.templateCard;
+
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
@@ -108,5 +114,11 @@ export class MyProductsComponent implements OnInit {
         return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
   }
-
+  filterProductsByUserEmail() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.email = JSON.parse(currentUser).email;
+    }
+    this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+  }
 }
