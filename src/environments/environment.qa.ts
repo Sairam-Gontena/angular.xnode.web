@@ -13,4 +13,5 @@ export const environment = {
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'qa-xnode-notifier',
     branchName: 'qa',
+    homeUrl: 'https://dev.xnode.ai/'
 }
