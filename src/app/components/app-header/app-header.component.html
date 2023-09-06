@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
-        <div class="flex justify-content-center align-content-center fixed">
+        <div class="flex justify-content-center align-content-center absolute">
             <i class="pi pi-question-circle mr-3 pointer" (click)="onClickHelpCenter()"></i>
             <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="mr-3 -mt-1 pointer" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell mr-3 mt-1 pointer" pBadge value={{notificationCount}}
