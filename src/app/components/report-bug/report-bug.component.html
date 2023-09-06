@@ -53,22 +53,15 @@
                         Help us improve is required</div>
                 </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngIf="screenshot !== ''">
+            <div class="field " *ngIf="screenshot !== ''">
                 <label class="text-sm font-normal">Screenshot</label>
-                <div class="container-img grid m-0">
-                    <img [src]="screenshot" width="59%">
-                </div>
-                <div class="single-file grid ml-0 mt-0 w-7 h-7 p-2">
-                    <div class="info ml-4">
-                        <h4 class="name">
-                            image.png
-                        </h4>
-                    </div>
-                    <div class="delete ml-8">
+                <div class="image-container border-1">
+                    <img [src]="screenshot" width="100%" class="img">
+                    <div class="img-footer flex justify-content-between align-items-center px-3">
+                        <div class="text-lg">image.png</div>
                         <i class="pi pi-trash" style="font-size: 1.5rem" (click)="onDeleteImage()"></i>
                     </div>
                 </div>
-
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-3" *ngIf="screenshot === ''">
                 <div class="text-sm font-medium">Attach File</div>

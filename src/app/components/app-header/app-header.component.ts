@@ -59,11 +59,10 @@ export class AppHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
-      console.log('res', res);
-
       this.selectedPopup = '';
-      if (res)
+      if (res) {
         this.selectedPopup = res;
+      }
     })
     let data = localStorage.getItem("currentUser")
     if (data) {
