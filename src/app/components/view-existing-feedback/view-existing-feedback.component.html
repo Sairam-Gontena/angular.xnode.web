@@ -24,9 +24,9 @@
                     <i class="pi pi-search"></i>
                 </span>
             </div>
-            <div class="list-item pl-8 pr-8 pt-4 pr-4">
+            <div class="list-item pl-8 pr-8 pt-4 pr-4" *ngFor="let bug of feedbackList">
                 <div class="flex justify-content-between flex-wrap">
-                    <b class="text-base">Finbuddy - Stock Market</b>
+                    <b class="text-base">{{bug.componentId}}</b>
                     <p class="text-sm m-0">ID #305879</p>
                 </div>
                 <p class="text-sm font-normal m-0">

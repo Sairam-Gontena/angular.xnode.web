@@ -33,4 +33,9 @@ export class UserUtilsService {
         return axios.post(this.authEndPoint + url, body, this.config);
     }
 
+    get(url: string) {
+        return axios.get(this.authEndPoint + url, {
+        });
+    }
+
 }
