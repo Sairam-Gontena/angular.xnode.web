@@ -9,6 +9,7 @@ export const environment = {
     designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
     workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
+    webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',
 }

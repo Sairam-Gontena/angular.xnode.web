@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8000/',
+    apiUrl: 'https://dev-navi.azurewebsites.net/',
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
     userUtilsApi: 'https://dev-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://dev-cmn-api.azurewebsites.net/',
@@ -9,6 +9,7 @@ export const environment = {
     designStudioAppUrl: 'http://localhost:4201/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular',
     workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
+    webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',
 }

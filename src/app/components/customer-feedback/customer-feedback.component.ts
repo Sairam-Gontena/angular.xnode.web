@@ -1,21 +1,21 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { NgxCaptureService } from 'ngx-capture';
-import { tap } from 'rxjs';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'xnode-customer-feedback',
   templateUrl: './customer-feedback.component.html',
   styleUrls: ['./customer-feedback.component.scss']
 })
-export class CustomerFeedbackComponent implements OnInit {
 
+export class CustomerFeedbackComponent implements OnInit {
   public getScreenWidth: any;
   public dialogWidth: string = '40vw';
   modalPosition: any;
-  @Input() showDialog = false;
+  @Input() visible = false;
   @Input() displayReportDialog = false;
   @Output() dataActionEvent = new EventEmitter<any>();
   @HostListener('window:resize', ['$event'])
+
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
@@ -32,16 +32,15 @@ export class CustomerFeedbackComponent implements OnInit {
 
   generalFeedbackDialog: boolean = false;
 
-  constructor(private captureService: NgxCaptureService) {
+  constructor(public utils: UtilsService) {
     this.onWindowResize();
   }
+
   ngOnInit(): void {
+
   }
 
-  handleDataAndAction(value: any) {
-    this.dataActionEvent.emit({ value: 'reportBug' })
-  }
-  generalHandleDataAndAction(value: any) {
-    this.dataActionEvent.emit({ value: 'generalFeedback' })
+  closePopup() {
+    this.utils.showFeedbackPopupByType('');
   }
 }
