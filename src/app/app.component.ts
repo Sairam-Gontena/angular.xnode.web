@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
 
+
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
