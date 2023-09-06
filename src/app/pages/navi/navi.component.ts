@@ -23,6 +23,7 @@ export class NaviComponent implements OnInit {
   xnodeAppUrl: string = environment.xnodeAppUrl;
 
   ngOnInit(): void {
+    localStorage.removeItem('has_insights');
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;

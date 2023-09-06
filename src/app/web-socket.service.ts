@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io } from "socket.io-client";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebSocketService {
   private socket: any;
-  private readonly serverUrl: string = 'https://notify-now.azurewebsites.net'; // Replace with your WebSocket server URL
+  private readonly serverUrl: string = environment.webSocketUrl;
 
   constructor() {
     this.socket = io(this.serverUrl);

@@ -6,33 +6,31 @@
         </div>
     </div>
     <div class="w-3 flex gap-2 justify-content-end align-content-center">
-        <div class="flex justify-content-center align-content-center">
-            <i class="pi pi-question-circle text-lg mr-2 mt-1 pointer" (click)="onClickHelpCenter()"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleDialog()" class="mr-3 pointer" />
-            <i *ngIf="notificationCount > 0" class="pi pi-bell text-lg mr-2 mt-1 pointer" pBadge
-                value={{notificationCount}} severity="danger" (click)="overlayToggle($event, op)"></i>
-            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-2 mt-1 pointer"
+        <div class="flex justify-content-center align-content-center fixed">
+            <i class="pi pi-question-circle mr-3 pointer" (click)="onClickHelpCenter()"></i>
+            <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="mr-3 -mt-1 pointer" />
+            <i *ngIf="notificationCount > 0" class="pi pi-bell mr-3 mt-1 pointer" pBadge value={{notificationCount}}
+                severity="danger" (click)="overlayToggle($event, op)"></i>
+            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-3 pointer"
                 (click)="overlayToggle($event, op)"></i>
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"></xnode-notification-panel>
             </p-overlayPanel>
+            <img src="./assets/dp.svg" alt="dp" class="mr-2">
+            <p-splitButton [label]="username" [model]="logoutDropdown"
+                styleClass="p-button-raised logout-split-btn"></p-splitButton>
         </div>
-        <img src="./assets/dp.svg" alt="dp" class="mr-2">
-        <p-splitButton [label]="username" [model]="logoutDropdown"
-            styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
-    <xnode-customer-feedback [showDialog]="showDialog"
-        (dataActionEvent)="handleDataAndAction($event)"></xnode-customer-feedback>
-    <xnode-report-bug [screenshot]="screenshot" [displayReportDialog]="displayReportDialog"
-        (dataActionEvent)="handleDataAndAction($event)"
-        (customFeedback)="handleDataAndAction($event)"></xnode-report-bug>
-    <xnode-general-feedback [generalFeedbackDialog]="generalFeedbackDialog"
-        (customFeedback)="handleDataAndAction($event)" [screenshot]="screenshot"
-        (dataActionEvent)="handleDataAndAction($event)"></xnode-general-feedback>
-    <xnode-thank-you [thanksDialog]="thanksDialog" (dataActionEvent)="handleDataAndAction($event)"></xnode-thank-you>
-    <xnode-view-existing-feedback *ngIf="showFeedBacks"
-        (dataActionEvent)="handleDataAndAction($event)"></xnode-view-existing-feedback>
+    <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
+        [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>
+    <xnode-report-bug [screenshot]="screenshot" *ngIf="selectedPopup==='report-bug'"
+        [visible]="selectedPopup==='report-bug'"></xnode-report-bug>
+    <xnode-general-feedback [visible]="selectedPopup==='general-feedback'" *ngIf="selectedPopup==='general-feedback'"
+        [screenshot]="screenshot"></xnode-general-feedback>
+    <xnode-thank-you *ngIf="selectedPopup==='thankyou'" [visible]="selectedPopup==='thankyou'"></xnode-thank-you>
+    <xnode-view-existing-feedback *ngIf="selectedPopup==='view-existing-feedbacks'"
+        [visible]="selectedPopup==='view-existing-feedbacks'"></xnode-view-existing-feedback>
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
