@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'QA',
     production: false,
     apiUrl: 'https://qa-navi.azurewebsites.net/',
     authApiUrl: 'https://qa-xnode-auth-api.azurewebsites.net/',
