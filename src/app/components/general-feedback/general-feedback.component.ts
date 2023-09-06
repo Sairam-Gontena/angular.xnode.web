@@ -90,7 +90,6 @@ export class GeneralFeedbackComponent implements OnInit {
     this.submitted = true;
     if (this.generalFeedbackForm.valid) {
       const formValues = this.generalFeedbackForm.value;
-      console.log(formValues);
     } else {
       console.log("error");
 

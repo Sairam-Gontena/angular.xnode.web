@@ -26,7 +26,6 @@ export class SignupDynamicFormComponent implements OnInit {
     this.apiService.get('/retrieve_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
         if (response) {
           let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
-          console.log(onboardingFlow);
           let userProfile = onboardingFlow[0].BackendFlow.find((flow:any) =>{
            return flow.TaskId == 'CreateUserProfile';
           })
