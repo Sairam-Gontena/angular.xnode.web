@@ -170,7 +170,7 @@ export class AppComponent implements OnInit {
 
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products") {
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
       this.router.navigate(['/x-pilot'])
     } else {
       this.getUserData();
