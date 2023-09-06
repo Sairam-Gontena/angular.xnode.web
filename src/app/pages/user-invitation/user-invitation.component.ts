@@ -40,7 +40,6 @@ export class UserInvitationComponent {
       let url = 'get_users/' + this.currentUser.user_details.email
       this.apiService.getData(url)
         .then((response: any) => {
-          console.log(response)
           this.utilsService.loadSpinner(false)
           if (response?.status === 200) {
             if (response?.data) {
