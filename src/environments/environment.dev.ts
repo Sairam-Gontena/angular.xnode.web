@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'DEV',
     production: false,
     apiUrl: 'https://dev-navi.azurewebsites.net/',
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',

@@ -30,10 +30,12 @@ export class TemplateBuilderComponent implements OnInit {
   selectedTemplate = localStorage.getItem("app_name");
   product: any;
   currentUser?: User;
+  environment: any;
 
 
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.environment = environment.name;
   }
 
   ngOnInit() {

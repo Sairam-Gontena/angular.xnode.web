@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { UserUtil, User } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-app-side-menu',
@@ -21,11 +22,12 @@ export class AppSideMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const environmentName = environment.name as keyof typeof AppSideMenuItems;
     if (this.currentUser?.role === 'admin') {
-      this.sideMenuItems = AppSideMenuItems.AdminSideMenu;
+      this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
       this.selectedMenuIndex = 0;
     } else {
-      this.sideMenuItems = AppSideMenuItems.UserSideMenu;
+      this.sideMenuItems = AppSideMenuItems[environmentName].UserSideMenu;
     }
   }
 
