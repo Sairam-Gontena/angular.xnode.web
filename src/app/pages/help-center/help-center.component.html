@@ -31,7 +31,6 @@
         </div>
     </div>
     <div class="grid" *ngIf="foundObjects.length==0 else elseTemplate">
-        <!-- <a href="{{envUrl}}privacy-policy/">click me xnode</a> -->
         <div class="sm:col-12 md:col-4 lg:col-4 xl:col-4">
             <p-accordion class="text-white border-transparent">
                 <p-accordionTab class="border-transparent" header="{{item.accordianTitle}}" *ngFor="let item of json">
