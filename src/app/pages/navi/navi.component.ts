@@ -24,6 +24,7 @@ export class NaviComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.removeItem('has_insights');
+    localStorage.getItem('show-upload-panel')
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
@@ -35,6 +36,9 @@ export class NaviComponent implements OnInit {
     this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.xnodeAppUrl;
     if (localStorage.getItem('record_id')) {
       this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
+    }
+    if (localStorage.getItem('show-upload-panel')) {
+      this.targetUrl = this.targetUrl + '&import=true';
     }
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
