@@ -1,12 +1,12 @@
 <div class="app-header-wrapper flex align-content-center flex-wrap">
-    <div class="w-9 flex gap-5">
+    <div class="w-6 flex gap-5">
         <div class="flex flex-row">
             <img src="./assets/logo-x.svg" alt="x-logo">
             <img src="./assets/logo-node.svg" alt="x-node" (click)="onClickLogo()" class="pointer">
         </div>
     </div>
-    <div class="w-3 flex gap-2 justify-content-end align-content-center">
-        <div class="flex justify-content-center align-content-center absolute">
+    <div class="w-6 flex gap-2 justify-content-end align-content-center">
+        <div class="flex justify-content-center align-content-center">
             <i class="pi pi-question-circle mr-3 pointer" (click)="onClickHelpCenter()"></i>
             <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="mr-3 -mt-1 pointer" />
             <i *ngIf="notificationCount > 0" class="pi pi-bell mr-3 mt-1 pointer" pBadge value={{notificationCount}}
