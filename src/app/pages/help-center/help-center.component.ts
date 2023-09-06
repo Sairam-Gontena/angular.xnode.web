@@ -3,6 +3,7 @@ import helpcentre from '../../../assets/json/help_centre.json'
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import * as _ from "lodash";
 @Component({
   selector: 'xnode-help-center',
@@ -16,18 +17,26 @@ export class HelpCenterComponent implements OnInit {
   selectedMenuIndex: any;
   visible: boolean = false;
   searchText: any;
+  envUrl: any;
   private textInputSubject = new Subject<string>();
   foundObjects: any[] = [];
 
   constructor(public location: Location) {
     this.json = helpcentre.helpcentre;
     this.selectedjson = this.json?.[0]?.objects?.[0];
+    this.envUrl = environment.homeUrl;
   }
 
   ngOnInit() {
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.searchText.length > 0 ? this.getSearchInput('', this.json) : this.clearSearchText();
     });
+  }
+
+  getMeHtml(description: any) {
+    let val = description;
+    val = val.replace('{{envUrl}}', this.envUrl)
+    return val;
   }
 
   showJson(obj: any, accordianTitle: any, i: any) {
