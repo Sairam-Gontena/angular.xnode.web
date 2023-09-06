@@ -23,7 +23,7 @@ export class AppSideMenuComponent implements OnInit {
 
   ngOnInit(): void {
     const environmentName = environment.name as keyof typeof AppSideMenuItems;
-    if (this.currentUser?.role === 'admin') {
+    if (this.currentUser?.role === 'Xnode Admin') {
       this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
       this.selectedMenuIndex = 0;
     } else {

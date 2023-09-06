@@ -2,7 +2,7 @@ export const Emails = [
     {
         email: 'admin@xnode.ai',
         password: 'Adminuser123',
-        role: 'admin',
+        role: 'Xnode Admin',
         name: 'Mike Abbott'
     },
     {
