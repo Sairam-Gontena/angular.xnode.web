@@ -23,6 +23,7 @@ export class MyProductsComponent implements OnInit {
   searchText: any;
   filteredProducts: any[] = []
   email: any;
+  filteredProductsByEmail: any[] = [];
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
     private route: ActivatedRoute, private utils: UtilsService) {
@@ -92,6 +93,8 @@ export class MyProductsComponent implements OnInit {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
+          this.filteredProductsByEmail = this.templateCard;
+
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
@@ -116,8 +119,6 @@ export class MyProductsComponent implements OnInit {
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
-
-    this.filteredProducts = this.templateCard.filter((product) => product.email === this.email);
-    // console.log(this.filteredProducts, '7777777777777777777')
+    this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
   }
 }
