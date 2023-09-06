@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'PROD',
     production: false,
     apiUrl: 'https://prod.azurewebsites.net/',
     authApiUrl: 'https://prod-xnode-auth-api.azurewebsites.net/',

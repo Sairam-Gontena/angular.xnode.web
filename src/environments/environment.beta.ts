@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'BETA',
     production: false,
     apiUrl: 'https://beta-navi.azurewebsites.net/',
     authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
