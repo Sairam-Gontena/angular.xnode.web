@@ -70,11 +70,13 @@ export class HelpCenterComponent implements OnInit {
         })
       }
       if (element?.objects) {
-        element?.objects?.[0]?.subobjects.forEach((subelement: any) => {
-          if (subelement.title.includes(keyword) || subelement.description.includes(keyword)) {
-            this.foundObjects = _.uniq(_.concat(this.foundObjects, subelement))
-          }
-        })
+        element?.objects?.forEach((element: any) => {
+          element.subobjects.forEach((subelement: any) => {
+            if (subelement.title.includes(keyword) || subelement.description.includes(keyword) || element.title.toUpperCase().includes(keyword.toUpperCase())) {
+              this.foundObjects = _.uniq(_.concat(this.foundObjects, subelement))
+            }
+          })
+        });
       }
     });
   }
