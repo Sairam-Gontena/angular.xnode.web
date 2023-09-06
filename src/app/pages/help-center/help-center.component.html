@@ -79,7 +79,7 @@
     </ng-template>
 </div>
 
-<p-dialog header="Demo Video" [(visible)]="visible" [style]="{width: '80vw'}">
+<p-dialog header="Demo Video" [modal]="true" [(visible)]="visible" [style]="{width: '80vw' }" class='video-modal'>
     <video [style]="{width: '75vw'}" controls>
         <source src="https://xnodestrg.blob.core.windows.net/legal/xnode-beta-short-farm-connect-20230827.mp4"
             type="video/mp4">
