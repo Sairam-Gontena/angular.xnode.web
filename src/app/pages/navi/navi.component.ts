@@ -48,6 +48,11 @@ export class NaviComponent implements OnInit {
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
           }
+          if (event.data === 'close-event') {
+            window.location.href = this.xnodeAppUrl + '#/my-products';
+            const customEvent = new Event('customEvent');
+            window.dispatchEvent(customEvent);
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
