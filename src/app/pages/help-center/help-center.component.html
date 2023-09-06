@@ -22,8 +22,7 @@
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
                     <input type="text" class="search-help border-transparent border-round-3xl surface-300 p-4"
-                        pInputText [(ngModel)]="searchText" placeholder="      Search help"
-                        (blur)="getSearchInput('search')" />
+                        pInputText [(ngModel)]="searchText" placeholder="      Search help" (input)="onInput()" />
                 </span><i class="pi pi-times reset-search cursor-pointer" *ngIf="searchText"
                     (click)="clearSearchText()"></i>
             </div>

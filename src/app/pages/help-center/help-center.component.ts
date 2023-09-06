@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import helpcentre from '../../../assets/json/help_centre.json'
 import { Location } from '@angular/common';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import * as _ from "lodash";
 @Component({
   selector: 'xnode-help-center',
   templateUrl: './help-center.component.html',
@@ -13,6 +16,7 @@ export class HelpCenterComponent implements OnInit {
   selectedMenuIndex: any;
   visible: boolean = false;
   searchText: any;
+  private textInputSubject = new Subject<string>();
   foundObjects: any[] = [];
 
   constructor(public location: Location) {
@@ -20,7 +24,11 @@ export class HelpCenterComponent implements OnInit {
     this.selectedjson = this.json?.[0]?.objects?.[0];
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
+      this.searchText.length > 0 ? this.getSearchInput('', this.json) : this.clearSearchText();
+    });
+  }
 
   showJson(obj: any, accordianTitle: any, i: any) {
     let item = this.json.filter((item: any) => { return item.accordianTitle == accordianTitle });
@@ -45,18 +53,33 @@ export class HelpCenterComponent implements OnInit {
   }
 
   getSearchInput(key: string, obj = this.json) {
-    let keyword = this.searchText;
-    if (typeof obj === 'object') {
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          if (typeof obj[key] === 'string' && obj[key].includes(keyword)) {
-            this.foundObjects.push(obj);
-            break;
-          } else if (typeof obj[key] === 'object') {
-            this.getSearchInput(keyword, obj[key]);
-          }
-        }
-      }
+    this.textInputSubject.next(this.searchText);
+    if (this.searchText == '') {
+      this.clearSearchText()
     }
+    let keyword = this.searchText;
+    obj.forEach((element: any) => {
+      if (element.accordianTitle.toUpperCase().includes(keyword.toUpperCase())) {
+        element?.objects?.forEach((subelement: any) => {
+          subelement.subobjects.forEach((lastelems: any) => {
+            if (lastelems.title.toUpperCase().includes(keyword.toUpperCase()) || lastelems.description.toUpperCase().includes(keyword.toUpperCase())) {
+              this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
+            }
+            this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
+          })
+        })
+      }
+      if (element?.objects) {
+        element?.objects?.[0]?.subobjects.forEach((subelement: any) => {
+          if (subelement.title.includes(keyword) || subelement.description.includes(keyword)) {
+            this.foundObjects = _.uniq(_.concat(this.foundObjects, subelement))
+          }
+        })
+      }
+    });
+  }
+
+  onInput() {
+    this.textInputSubject.next(this.searchText);
   }
 }
