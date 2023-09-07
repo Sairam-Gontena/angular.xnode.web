@@ -5,6 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
+import { AuditutilsService } from './api/auditutils.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -34,7 +35,8 @@ export class AppComponent implements OnInit {
     private utilsService: UtilsService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
@@ -167,6 +169,15 @@ export class AppComponent implements OnInit {
 
   openNavi(newItem: any) {
     if (window.location.hash === "#/my-products") {
+      let currentUser = localStorage.getItem('currentUser')
+      if (currentUser) {
+        let userid = JSON.parse(currentUser).id
+        this.auditUtil.post(userid, 'Navi-opened', 'docs#/default/UserAuditController_create').then((response: any) => {
+          console.log(response)
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
       this.router.navigate(['/x-pilot'])
     } else {
       this.getUserData();
