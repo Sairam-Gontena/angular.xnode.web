@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ElementRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
@@ -14,11 +14,12 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 })
 
 export class GeneralFeedbackComponent implements OnInit {
+  @ViewChild('fileInput') fileInput?: ElementRef;
   @Input() visible: any;
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Input() thanksDialog = false;
-
+  screenshotName = "Image";
   formGroup!: FormGroup;
   generalFeedbackForm: FormGroup;
   dialogWidth: any;
@@ -36,7 +37,6 @@ export class GeneralFeedbackComponent implements OnInit {
   currentUser?: User;
   rating: number = 3
 
-
   constructor(public utils: UtilsService,
     private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService,) {
     this.onWindowResize();
@@ -49,6 +49,7 @@ export class GeneralFeedbackComponent implements OnInit {
       rating: [this.rating, Validators.required]
     });
   }
+
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
@@ -105,7 +106,6 @@ export class GeneralFeedbackComponent implements OnInit {
     // this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
     if (this.generalFeedbackForm.valid) {
-      const formValues = this.generalFeedbackForm.value;
       this.onFileDropped()
     } else {
       console.log("error");
@@ -122,9 +122,9 @@ export class GeneralFeedbackComponent implements OnInit {
     const body = {
       "userId": this.currentUser?.id,
       "productId": localStorage.getItem('record_id'),
-      "componentId": this.feedbackForm.value.section,
-      "feedbackText": this.feedbackForm.value.feedbackText,
-      "feedbackRatingId": this.feedbackForm.value.rating,
+      "componentId": this.generalFeedbackForm.value.section,
+      "feedbackText": this.generalFeedbackForm.value.feedbackText,
+      "feedbackRatingId": this.generalFeedbackForm.value.rating,
       "feedbackStatusId": "new",
       "userFiles": [
         {
@@ -149,10 +149,6 @@ export class GeneralFeedbackComponent implements OnInit {
   }
 
   onFileDropped($event?: any) {
-    // this.prepareFilesList($event);
-    // this.generalFeedbackForm.patchValue({
-    //   logoFile: $event[0]
-    // });
     this.utils.loadSpinner(true);
     if (!$event) {
       $event = this.screenshot;
@@ -167,7 +163,7 @@ export class GeneralFeedbackComponent implements OnInit {
     this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
         this.uploadedFileData = res.data;
-        this.sendGeneralFeedbackReport()
+        this.sendGeneralFeedbackReport();
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
         this.utils.loadSpinner(false);
@@ -283,5 +279,83 @@ export class GeneralFeedbackComponent implements OnInit {
 
   gotRating(val: any) {
     this.rating = val.value
+  }
+  onFileInput(event: Event) {
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      if (files[0].size > maxSizeInBytes) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+      } else {
+        this.handleFiles(files);
+      }
+    }
+  }
+
+  onUploadIconClick() {
+    if (this.fileInput)
+      this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const fileName = selectedFile.name;
+    if (selectedFile) {
+      this.readFileContent(selectedFile, fileName);
+    }
+  }
+
+  private readFileContent(file: File, fileName: string) {
+    this.screenshotName = fileName;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (e?.target)
+        this.screenshot = e?.target.result;
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  onDragOver(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(true);
+  }
+
+  onDragLeave(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(false);
+  }
+
+  onDrop(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(false);
+    let files;
+    if (event && (event as DragEvent).dataTransfer) {
+      const x = (event as DragEvent).dataTransfer;
+      if (x)
+        files = x.files
+    }
+    if (files && files.length > 0) {
+      this.handleFiles(files);
+    }
+  }
+
+  private handleFiles(files: FileList) {
+    this.readFileContent(files[0], files[0].name);
+  }
+
+
+  private highlightDragDropArea(highlight: boolean) {
+    let container: any;
+    if (this.fileInput)
+      container = this.fileInput.nativeElement.parentElement;
+    if (highlight) {
+      container.classList.add('dragging-over');
+    } else {
+      container.classList.remove('dragging-over');
+    }
   }
 }
