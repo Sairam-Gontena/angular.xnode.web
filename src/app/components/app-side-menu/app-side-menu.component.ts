@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
 export class AppSideMenuComponent implements OnInit {
   sideMenuItems: any;
   selectedMenuIndex: any;
-  currentUser?: User;
+  currentUser?: any;
   href: any;
   constructor(private router: Router, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -23,7 +23,7 @@ export class AppSideMenuComponent implements OnInit {
 
   ngOnInit(): void {
     const environmentName = environment.name as keyof typeof AppSideMenuItems;
-    if (this.currentUser?.role === 'admin') {
+    if (this.currentUser?.xnode_role_data.name === 'Xnode Admin') {
       this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
       this.selectedMenuIndex = 0;
     } else {
@@ -33,10 +33,10 @@ export class AppSideMenuComponent implements OnInit {
 
   onClickMenuItem(item: any, i: any): void {
     this.utils.showProductStatusPopup(false);
-    if (this.currentUser?.role?.toUpperCase() === 'ADMIN' && item.label == 'Home') {
+    if (this.currentUser?.xnode_role_data.name === 'Xnode Admin' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
-    } else if (this.currentUser?.role?.toUpperCase() === 'USER') {
+    } else if (this.currentUser?.xnode_role_data.name === 'Xnode Entity User') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }

@@ -21,8 +21,13 @@ export class NaviComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
   xnodeAppUrl: string = environment.xnodeAppUrl;
+  currentUser: any
 
   ngOnInit(): void {
+    this.currentUser = localStorage.getItem('currentUser');
+    if (this.currentUser) {
+      this.currentUser = JSON.parse(this.currentUser)
+    }
     localStorage.removeItem('has_insights');
     localStorage.getItem('show-upload-panel')
     let userData: any
@@ -33,7 +38,7 @@ export class NaviComponent implements OnInit {
       'flag': 'x-pilot'
     }
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.xnodeAppUrl;
+    this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.xnodeAppUrl + '&user_id=' + this.currentUser.id;
     if (localStorage.getItem('record_id')) {
       this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
     }

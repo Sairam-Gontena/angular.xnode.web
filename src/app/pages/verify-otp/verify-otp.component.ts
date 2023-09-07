@@ -75,7 +75,7 @@ export class VerifyOtpComponent implements OnInit {
     this.apiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && response?.data) {
-          if (response?.data?.role === 'admin') {
+          if (response?.data?.xnode_role_data.name === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
           } else {

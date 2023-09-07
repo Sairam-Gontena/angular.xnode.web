@@ -68,8 +68,6 @@ export class TemplateBuilderComponent implements OnInit {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
         window.addEventListener('message', (event) => {
-          console.log('event.origin ', event.origin);
-          console.log('environment.designStudioAppUrl', environment.designStudioAppUrl);
           if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
             return;
           }
