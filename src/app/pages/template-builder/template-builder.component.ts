@@ -30,10 +30,12 @@ export class TemplateBuilderComponent implements OnInit {
   selectedTemplate = localStorage.getItem("app_name");
   product: any;
   currentUser?: User;
+  environment: any;
 
 
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.environment = environment.name;
   }
 
   ngOnInit() {
@@ -66,8 +68,6 @@ export class TemplateBuilderComponent implements OnInit {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
         window.addEventListener('message', (event) => {
-          console.log('event.origin ', event.origin);
-          console.log('environment.designStudioAppUrl', environment.designStudioAppUrl);
           if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
             return;
           }

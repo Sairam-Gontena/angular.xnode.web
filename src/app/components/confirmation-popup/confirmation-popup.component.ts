@@ -14,7 +14,7 @@ export class ConfirmationPopupComponent {
   @Input() Data: any;
   invitationType: string = '';
   visible: boolean = false;
-  currentUser?: User;
+  currentUser?: any;
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -22,8 +22,13 @@ export class ConfirmationPopupComponent {
 
 
   ngOnChanges(changes: SimpleChanges): void {
+    let data = localStorage.getItem('currentUser')
+    if (data) {
+      let data1 = JSON.parse(data)
+      this.currentUser = data1;
+    }
     if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + this.Data.userData.first_name + ' ' + this.Data.userData.last_name;
+      this.invitationType = this.Data.type + ' ' + this.Data.userData.prospect_info.first_name + ' ' + this.Data.userData.prospect_info.last_name;
       this.showDialog()
     }
   }
@@ -35,11 +40,11 @@ export class ConfirmationPopupComponent {
 
   onSuccess(): void {
     if (this.Data.type === 'Invite') {
-      this.updateUserId(this.Data.userData.id, 'invited')
+      this.updateUserId(this.Data.userData.id, 'Invited')
     } else if (this.Data.type === 'Hold') {
-      this.updateUserId(this.Data.userData.id, 'hold')
+      this.updateUserId(this.Data.userData.id, 'OnHold')
     } else if (this.Data.type === 'Reject') {
-      this.updateUserId(this.Data.userData.id, 'rejected')
+      this.updateUserId(this.Data.userData.id, 'Rejected')
     }
     this.visible = false;
     return
@@ -51,12 +56,13 @@ export class ConfirmationPopupComponent {
 
   updateUserId(id: string, action: string): void {
     this.utilsService.loadSpinner(true)
-    let url = 'auth/beta/update_user/' + this.currentUser?.email;
+    let url = 'auth/prospect/prospect_status_update';
     let body = {
       "id": id,
-      "action": action
+      "action": action,
+      "admin_email": this.currentUser?.user_details.email
     };
-    this.apiService.authPut(body, url)
+    this.apiService.patchAuth(body, url)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data) {

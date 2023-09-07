@@ -74,8 +74,6 @@ export class ReportBugComponent implements OnInit {
       { name: 'Urgent', code: 'urgent' },
     ];
     this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
-    console.log('this.feedbackForm', this.feedbackForm);
-
   }
 
   getMeComponent() {

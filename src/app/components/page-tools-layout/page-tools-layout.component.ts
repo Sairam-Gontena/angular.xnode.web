@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { GridsterItem } from 'angular-gridster2';
 import { Router } from '@angular/router';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
-import subMenuConfig from '../../../assets/json/sidemenu-tools.json';
 import { UtilsService } from '../services/utils.service';
+import { environment } from 'src/environments/environment';
+import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
 
 @Component({
   selector: 'xnode-page-tools-layout',
@@ -20,8 +21,14 @@ export class PageToolsLayoutComponent {
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
   activatedAccIndex = 1;
+
   constructor(private router: Router, private subMenuLayoutUtil: UtilsService) {
-    this.sideMenu = subMenuConfig?.subMenuConfig;
+    if (environment.name === 'BETA') {
+      this.sideMenu = SubMenuConfig.BETA
+    } else {
+      this.sideMenu = SubMenuConfig.DEV
+    }
+
   }
 
   ngOnInit() {

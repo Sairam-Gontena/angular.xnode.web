@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'DEV',
     production: false,
     apiUrl: 'https://dev-navi.azurewebsites.net/',
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
@@ -12,4 +13,5 @@ export const environment = {
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'dev-xnode-notifier',
     branchName: 'dev',
+    homeUrl: 'https://dev.xnode.ai/'
 }

@@ -1,24 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import helpcentre from '../../../assets/json/help_centre.json'
 import { Location } from '@angular/common';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import * as _ from "lodash";
 @Component({
   selector: 'xnode-help-center',
   templateUrl: './help-center.component.html',
   styleUrls: ['./help-center.component.scss']
 })
+
 export class HelpCenterComponent implements OnInit {
   json: any;
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
   searchText: any;
+  envUrl: any;
+  private textInputSubject = new Subject<string>();
+  foundObjects: any[] = [];
 
   constructor(public location: Location) {
     this.json = helpcentre.helpcentre;
     this.selectedjson = this.json?.[0]?.objects?.[0];
+    this.envUrl = environment.homeUrl;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
+      this.searchText.length > 0 ? this.getSearchInput('', this.json) : this.clearSearchText();
+    });
+  }
+
+  getMeHtml(description: any) {
+    let val = description;
+    val = val.replace('{{envUrl}}', this.envUrl)
+    return val;
+  }
 
   showJson(obj: any, accordianTitle: any, i: any) {
     let item = this.json.filter((item: any) => { return item.accordianTitle == accordianTitle });
@@ -39,17 +58,39 @@ export class HelpCenterComponent implements OnInit {
 
   clearSearchText() {
     this.searchText = '';
+    this.foundObjects = [];
   }
 
-  getSearchInput(event: any) {
-    // this.json.map((item: any, index: any) => {
-    //   console.log(item)
-    //   let accordianTitle = item.accordianTitle.toUpperCase();
-    //   let searchText = this.searchText.toUpperCase();
-    //   if (accordianTitle.includes(searchText)) {
-    //     console.log(item, index)
-    //     this.showJson(item?.objects?.[0]?.title, accordianTitle, index)
-    //   }
-    // })
+  getSearchInput(key: string, obj = this.json) {
+    this.textInputSubject.next(this.searchText);
+    if (this.searchText == '') {
+      this.clearSearchText()
+    }
+    let keyword = this.searchText;
+    obj.forEach((element: any) => {
+      if (element.accordianTitle.toUpperCase().includes(keyword.toUpperCase())) {
+        element?.objects?.forEach((subelement: any) => {
+          subelement.subobjects.forEach((lastelems: any) => {
+            if (lastelems.title.toUpperCase().includes(keyword.toUpperCase()) || lastelems.description.toUpperCase().includes(keyword.toUpperCase())) {
+              this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
+            }
+            this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
+          })
+        })
+      }
+      if (element?.objects) {
+        element?.objects?.forEach((element: any) => {
+          element.subobjects.forEach((subelement: any) => {
+            if (subelement.title.includes(keyword) || subelement.description.includes(keyword) || element.title.toUpperCase().includes(keyword.toUpperCase())) {
+              this.foundObjects = _.uniq(_.concat(this.foundObjects, subelement))
+            }
+          })
+        });
+      }
+    });
+  }
+
+  onInput() {
+    this.textInputSubject.next(this.searchText);
   }
 }

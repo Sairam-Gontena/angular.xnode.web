@@ -395,3 +395,9 @@ body {
 .p-column-filter-menu-button {
   background-color: #2E2D36;
 }
+
+.video-modal .p-dialog .p-dialog-header,
+.video-modal .p-dialog .p-dialog-content {
+  background-color: #2E2D36 !important;
+  color: white !important;
+}

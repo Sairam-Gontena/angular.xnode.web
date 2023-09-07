@@ -52,7 +52,7 @@ export class ResetPasswordComponent implements OnInit {
     }
     let body = { ...this.resetPasswordForm.value };
     this.utilsService.loadSpinner(true);
-    this.apiService.patchAuth('', "auth/beta/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
+    this.apiService.patchAuth('', "auth/prospect/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data?.detail) {

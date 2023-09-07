@@ -662,6 +662,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("rx", (d: any) => (d.depth === 1 ? 25 : 25))
       .attr("stroke-width", "2")
       .attr("stroke", "#959595")
+      .attr("cursor", "pointer")
       .text((d: any) => {
         let title = d.data.title.split("-").slice(1);
         if (title[0]) {
@@ -688,6 +689,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .style("font-family", "Inter")
       .style("font-weight", 600)
       .style("fill", "#7a7a7a")
+      .attr("cursor", "pointer")
       .style("font-size", "12px")
       .style("opacity", 0)
       .text((d: any) => {
@@ -723,6 +725,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .style("fill", "#000000")
       .style("font-size", "12px")
       .style("opacity", 0)
+      .attr("cursor", "pointer")
       .text((d: any) => {
         let title = d.data.title.split("-").slice(1);
         if (title[0]) {
