@@ -62,6 +62,9 @@ export class NaviComponent implements OnInit {
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
           }
+          if (event.data === 'file-uploaded') {
+            localStorage.removeItem('show-upload-panel');
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
