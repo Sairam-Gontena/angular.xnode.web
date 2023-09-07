@@ -1,6 +1,11 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ElementRef, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../services/utils.service';
+import { CommonApiService } from 'src/app/api/common-api.service';
+import { User, UserUtil } from 'src/app/utils/user-util';
+import { UserUtilsService } from 'src/app/api/user-utils.service';
+
+
 
 @Component({
   selector: 'xnode-general-feedback',
@@ -9,11 +14,13 @@ import { UtilsService } from '../services/utils.service';
 })
 
 export class GeneralFeedbackComponent implements OnInit {
+  @ViewChild('fileInput') fileInput?: ElementRef;
   @Input() visible: any;
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Input() thanksDialog = false;
-
+  screenshotName = "Image";
+  formGroup!: FormGroup;
   generalFeedbackForm: FormGroup;
   dialogWidth: any;
   dialogHeight: any;
@@ -26,16 +33,23 @@ export class GeneralFeedbackComponent implements OnInit {
   isPlaceholderVisible: boolean = false;
   draganddropSelected: boolean = false;
   browserSelected: boolean = false;
+  uploadedFileData: any;
+  currentUser?: User;
+  rating: number = 3
 
   constructor(public utils: UtilsService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService,) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
+      screenshot: [null],
+      // logoFile: [null, Validators.required],
+      rating: [this.rating, Validators.required]
     });
   }
+
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
@@ -54,6 +68,9 @@ export class GeneralFeedbackComponent implements OnInit {
     return this.generalFeedbackForm.controls;
   }
   ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      value: new FormControl(this.rating)
+    });
   }
   getMeComponent() {
     let comp = '';
@@ -86,10 +103,10 @@ export class GeneralFeedbackComponent implements OnInit {
   }
 
   sendFeedback(value: any) {
-    this.dataActionEvent.emit({ value: 'thankYou' })
+    // this.dataActionEvent.emit({ value: 'thankYou' })
     this.submitted = true;
     if (this.generalFeedbackForm.valid) {
-      const formValues = this.generalFeedbackForm.value;
+      this.onFileDropped()
     } else {
       console.log("error");
 
@@ -100,11 +117,61 @@ export class GeneralFeedbackComponent implements OnInit {
     this.screenshot = '';
   }
   files: any[] = [];
-  onFileDropped($event: any) {
-    this.prepareFilesList($event);
-    this.generalFeedbackForm.patchValue({
-      logoFile: $event[0]
-    });
+
+  sendGeneralFeedbackReport(): void {
+    const body = {
+      "userId": this.currentUser?.id,
+      "productId": localStorage.getItem('record_id'),
+      "componentId": this.generalFeedbackForm.value.section,
+      "feedbackText": this.generalFeedbackForm.value.feedbackText,
+      "feedbackRatingId": this.generalFeedbackForm.value.rating,
+      "feedbackStatusId": "new",
+      "userFiles": [
+        {
+          "fileId": this.uploadedFileData.id,
+          "userFileType": "doc"
+        }
+      ]
+    }
+    console.log(body)
+    this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
+      if (!res?.data?.detail) {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
+        this.utils.showFeedbackPopupByType('thankyou');
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      this.utils.loadSpinner(false);
+    })
+  }
+
+  onFileDropped($event?: any) {
+    this.utils.loadSpinner(true);
+    if (!$event) {
+      $event = this.screenshot;
+    }
+    const formData = new FormData();
+    formData.append('file', new Blob([$event]));
+    formData.append('containerName', 'user-feedback');
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+      if (res) {
+        this.uploadedFileData = res.data;
+        this.sendGeneralFeedbackReport();
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadSpinner(false);
+      }
+    }).catch((err: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
   }
   fileBrowseHandler(files: any) {
     this.files = [];
@@ -208,5 +275,87 @@ export class GeneralFeedbackComponent implements OnInit {
 
   closePopup() {
     this.utils.showFeedbackPopupByType('');
+  }
+
+  gotRating(val: any) {
+    this.rating = val.value
+  }
+  onFileInput(event: Event) {
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      if (files[0].size > maxSizeInBytes) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+      } else {
+        this.handleFiles(files);
+      }
+    }
+  }
+
+  onUploadIconClick() {
+    if (this.fileInput)
+      this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const fileName = selectedFile.name;
+    if (selectedFile) {
+      this.readFileContent(selectedFile, fileName);
+    }
+  }
+
+  private readFileContent(file: File, fileName: string) {
+    this.screenshotName = fileName;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (e?.target)
+        this.screenshot = e?.target.result;
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  onDragOver(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(true);
+  }
+
+  onDragLeave(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(false);
+  }
+
+  onDrop(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(false);
+    let files;
+    if (event && (event as DragEvent).dataTransfer) {
+      const x = (event as DragEvent).dataTransfer;
+      if (x)
+        files = x.files
+    }
+    if (files && files.length > 0) {
+      this.handleFiles(files);
+    }
+  }
+
+  private handleFiles(files: FileList) {
+    this.readFileContent(files[0], files[0].name);
+  }
+
+
+  private highlightDragDropArea(highlight: boolean) {
+    let container: any;
+    if (this.fileInput)
+      container = this.fileInput.nativeElement.parentElement;
+    if (highlight) {
+      container.classList.add('dragging-over');
+    } else {
+      container.classList.remove('dragging-over');
+    }
   }
 }

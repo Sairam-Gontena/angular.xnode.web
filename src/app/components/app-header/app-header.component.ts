@@ -60,8 +60,9 @@ export class AppHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
       this.selectedPopup = '';
-      if (res)
+      if (res) {
         this.selectedPopup = res;
+      }
     })
     let data = localStorage.getItem("currentUser")
 
@@ -105,9 +106,8 @@ export class AppHeaderComponent implements OnInit {
   }
 
   toggleFeedbackPopup() {
+    this.utilsService.loadSpinner(true);
     this.capture();
-    this.utilsService.showProductStatusPopup(false);
-    this.selectedPopup = 'customer-feedback';
   }
 
   onClickHelpCenter() {
@@ -121,6 +121,9 @@ export class AppHeaderComponent implements OnInit {
       .pipe(
         tap((img) => {
           this.screenshot = img;
+          this.utilsService.showProductStatusPopup(false);
+          this.selectedPopup = 'customer-feedback';
+          this.utilsService.loadSpinner(false);
         })
       )
       .subscribe();

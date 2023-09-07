@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
@@ -12,6 +12,7 @@ import { CommonApiService } from 'src/app/api/common-api.service';
 })
 
 export class ReportBugComponent implements OnInit {
+  @ViewChild('fileInput') fileInput?: ElementRef;
   @Input() visible = false;
   @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
@@ -34,6 +35,7 @@ export class ReportBugComponent implements OnInit {
   files: any[] = [];
   imageUrl: any;
   uploadedFileData: any;
+  screenshotName = 'Image';
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -271,5 +273,81 @@ export class ReportBugComponent implements OnInit {
   closePopup() {
     this.utils.showFeedbackPopupByType('');
   }
+  onUploadIconClick() {
+    if (this.fileInput)
+      this.fileInput.nativeElement.click();
+  }
+  onFileInput(event: Event) {
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      if (files[0].size > maxSizeInBytes) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+      } else {
+        this.handleFiles(files);
+      }
+    }
+  }
 
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const fileName = selectedFile.name;
+    if (selectedFile) {
+      this.readFileContent(selectedFile, fileName);
+    }
+  }
+
+  private readFileContent(file: File, fileName: string) {
+    this.screenshotName = fileName;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (e?.target)
+        this.screenshot = e?.target.result;
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  onDragOver(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(true);
+  }
+
+  onDragLeave(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(false);
+  }
+
+  onDrop(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.highlightDragDropArea(false);
+    let files;
+    if (event && (event as DragEvent).dataTransfer) {
+      const x = (event as DragEvent).dataTransfer;
+      if (x)
+        files = x.files
+    }
+    if (files && files.length > 0) {
+      this.handleFiles(files);
+    }
+  }
+
+  private handleFiles(files: FileList) {
+    this.readFileContent(files[0], files[0].name);
+  }
+
+
+  private highlightDragDropArea(highlight: boolean) {
+    let container: any;
+    if (this.fileInput)
+      container = this.fileInput.nativeElement.parentElement;
+    if (highlight) {
+      container.classList.add('dragging-over');
+    } else {
+      container.classList.remove('dragging-over');
+    }
+  }
 }
