@@ -204,7 +204,7 @@ export class AppHeaderComponent implements OnInit {
     this.utilsService.loadSpinner(true)
     const body = {
       repoName: obj.product_name,
-      projectName: 'xnode',
+      projectName: environment.projectName,
       email: this.email,
       envName: environment.branchName,
       productId: obj.product_id
