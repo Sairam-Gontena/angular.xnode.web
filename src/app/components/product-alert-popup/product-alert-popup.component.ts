@@ -16,9 +16,17 @@ export class ProductAlertPopupComponent {
   visible = true;
   consversationList = [];
   currentUser?: User;
+  productStatus?: any;
 
   constructor(private apiService: ApiService, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    const productData = localStorage.getItem('product');
+    if (productData !== null) {
+      this.productStatus = JSON.parse(productData);
+    }
+    console.log("================================")
+    console.log(this.productStatus)
+    console.log("================================")
   }
   continueChat(): void {
     this.openDockedNavi.emit({ cbFlag: true, productContext: localStorage.getItem('record_id') });
