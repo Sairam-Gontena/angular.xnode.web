@@ -43,7 +43,13 @@ export class UserInvitationComponent {
           this.utilsService.loadSpinner(false)
           if (response?.status === 200) {
             if (response?.data) {
-              this.usersList = response.data;
+              console.log(response.data)
+              let data = response.data.map((item: any) => {
+                let obj = { id: item.id, action: item.prospect_status, prospect_status_id: item.prospect_status_id }
+                let prospect_info = item.prospect_info
+                return { ...obj, ...prospect_info }
+              })
+              this.usersList = data;
             } else {
               this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
             }

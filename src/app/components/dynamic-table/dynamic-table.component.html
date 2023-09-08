@@ -36,18 +36,18 @@
                <td *ngFor="let col of columns" class="border-transparent">
                     <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'"
                          [ngClass]="col.field === 'email' ? 'email-text-color':''" style="color:#fff">
-                         {{rowData.prospect_info[col.field]}}
+                         {{rowData[col.field]}}
                     </div>
                     <div *ngIf=" col.field==='interest_level'" [ngClass]=" rowData[col.field]==='High' ? 'Success' : rowData[col.field]==='Medium'
                          ? 'Warning' : rowData[col.field]==='Low' ? 'Danger' : null">
-                         {{rowData.prospect_info[col.field]}}
+                         {{rowData[col.field]}}
                     </div>
                     <ng-container *ngIf="col.field === 'action'">
-                         <div
-                              [ngClass]="rowData.prospect_status === 'Invited' ? 'Success' : rowData.prospect_status[col.field] === 'Hold' ? 'Warning' : rowData.prospect_status[col.field] === 'Reject' ? 'Danger' : null" *ngIf="rowData.prospect_status !== 'Pending Invite'" >
-                              {{rowData.prospect_status}}
+                         <div [ngClass]="rowData[col.field] === 'Invited' ? 'Success' : rowData[col.field] === 'Hold' ? 'Warning' : rowData[col.field] === 'Reject' ? 'Danger' : null"
+                              *ngIf="rowData[col.field] !== 'Pending Invite'">
+                              {{rowData[col.field]}}
                          </div>
-                         <div class="flex" *ngIf="rowData.prospect_status == 'Pending Invite'">
+                         <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
                               <xnode-action-button [Actions]="Actions" [Data]="rowData"
                                    (dataActionEvent)="handleDataAndAction($event)"
                                    class="flex flex-row flex-wrap"></xnode-action-button>

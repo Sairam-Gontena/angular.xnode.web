@@ -3,11 +3,28 @@
 }
 
 .table-header {
-    height: 10%;
+    height: 60px
 }
 
 .table-body {
-    height: 90%;
+    height: calc(100vh - 200px);
+
+}
+
+@media (max-width: 768px) {
+    .table-header {
+        height: auto;
+        /* Allow the header to grow based on content */
+    }
+
+    .table-body {
+        height: auto;
+        /* Allow the body to grow based on content */
+        max-height: 60%;
+        /* Limit the body's height to 80% of the viewport height */
+        overflow-y: auto;
+        /* Add vertical scroll if necessary */
+    }
 }
 
 .header-div {
@@ -34,25 +51,27 @@
 }
 
 ::ng-deep .p-breadcrumb {
-    background-color: #23222B !important;
+    background-color: #212121 !important;
     color: white;
     font-family: 'Inter';
     font-weight: 500px;
+    border-width: 0px !important;
 }
 
 ::ng-deep .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
-    background-color: #23222B !important;
+    background-color: #212121 !important;
     color: white;
     font-family: 'Inter';
     font-weight: 500px;
-    border-width: 0px;
+    border-width: 0px !important;
 }
 
 ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background: #3A3942;
-    color:#fff
+    color: #fff
 }
-::ng-deep .p-breadcrumb  {
+
+::ng-deep .p-breadcrumb {
     border-width: 0px;
 }
 
