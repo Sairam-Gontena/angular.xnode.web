@@ -37,7 +37,7 @@ export class UserInvitationComponent {
     this.currentUser = localStorage.getItem('currentUser');
     if (this.currentUser) {
       this.currentUser = JSON.parse(this.currentUser)
-      let url = 'get_users/' + this.currentUser.user_details.email
+      let url = 'user/' + this.currentUser.user_details.email
       this.apiService.getData(url)
         .then((response: any) => {
           this.utilsService.loadSpinner(false)
