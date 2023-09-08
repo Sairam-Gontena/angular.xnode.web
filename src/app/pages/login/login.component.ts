@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
     this.loginBtn = true;
-    this.apiService.login(body, "auth/beta/login").then((response: any) => {
+    this.apiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });

@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'BETA',
     production: false,
     apiUrl: 'https://beta-navi.azurewebsites.net/',
     authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
@@ -12,4 +13,5 @@ export const environment = {
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'beta-xnode-notifier',
     branchName: 'xnode-beta',
+    homeUrl: 'https://xnode.ai/'
 }

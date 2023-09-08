@@ -43,9 +43,7 @@ export class NotificationPanelComponent {
         this.router.navigate(['/' + obj.component]);
       }
     } else {
-      if (this.currentUser)
-        url = `${environment.designStudioAppUrl}?email=${encodeURIComponent(this.currentUser.email)}&id=${encodeURIComponent(obj.product_id)}`;
-      window.open(url, "_blank");
+      this.router.navigate(['/dashboard']);
     }
   }
 

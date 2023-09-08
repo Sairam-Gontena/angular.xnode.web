@@ -15,6 +15,11 @@
     height: calc(100vh - 50px);
 }
 
+.beta-template-builder-body-wrapper {
+    width: 100%;
+    height: calc(100vh - 50px);
+}
+
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link,

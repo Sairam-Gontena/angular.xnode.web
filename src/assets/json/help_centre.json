@@ -1,380 +1,372 @@
 {
     "helpcentre": [
         {
-            "accordianTitle": "Xnode Beta Formation",
+            "accordianTitle": "About xnode",
             "objects": [
                 {
                     "title": "About xnode",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What is xnode?",
+                            "description": "xnode is a state-of-the-art, generative AI-powered no-code platform. It empowers users to ideate, build, deploy, and maintain applications seamlessly. With xnode, you can gain a comprehensive customer 360 view, enabling you to enhance your Net Promoter Score (NPS) and maximize customer lifetime value. Dive into the future of app development with xnode."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What is xnode mission?",
+                            "description": "xnode's mission is to liberate businesses from the traditional confines of software development. We aim to spark a digital revolution, enabling enterprises of all sizes to transform their innovative ideas into reality swiftly and economically. In a world where technology drives growth, we ensure that every enterprise, small or large, can ride the wave, unhindered by cost, complexity, or lack of technical expertise"
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What is xnode vision?",
+                            "description": "Our vision is to become the democratizing force in the software development space, making every business its own tech innovator. We imagine a future where each enterprise, regardless of its scale, industry, or technical prowess, has the power to mold its digital destiny. By making cutting-edge technologies like AI, blockchain, IoT, and more a standard part of their toolkit, we empower businesses to experiment, innovate, and lead in their respective markets."
                         },
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What is xnode values?",
+                            "description": "<strong>Empowerment</strong> : We believe in the power of business transformation through technology. XNODE is committed to making this transformation accessible to all businesses, setting them on the path of digital leadership.<br/><br/> <strong>Innovation</strong>: Our goal isn't just to keep pace with the rapidly evolving tech landscape but to lead. We constantly explore and integrate emerging technologies, offering businesses a launchpad to their digital future. <br/><br/><strong>Agility</strong> : We understand the speed of business. Our platform is designed to bring ideas to life at the speed of thought, enabling businesses to respond swiftly to changing market dynamics<br/><br/><strong>Resilience</strong>: In our quest to democratize software development, we inspire businesses to experiment fearlessly. With cost no longer a constraint, failure is just an opportunity to learn and improve. <br/><br/><strong>Community</strong> : XNODE is more than a platform—it's a collective of visionaries and innovators. As part of the XNODE community, businesses gain access to shared knowledge, inspiration, and growth opportunities. <br/><br/><strong>Impact</strong> : Our success lies in the success of the businesses we empower. We measure our triumph not in numbers, but in the revolutions we kindle, the markets we disrupt, and the lives we improve through the software created on XNODE."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "accordianTitle": "Xnode Beta Program",
+            "objects": [
+                {
+                    "title": "About xnode beta",
+                    "description": "",
+                    "subobjects": [
+                        {
+                            "title": "What is xnode Beta Program ?",
+                            "description": "The xnode Beta Program offers early access to the xnode.ai platform, enabling users to test and provide feedback to help improve the product before its official MVP launch."
+                        },
+                        {
+                            "title": "What's the goal of the beta program ?",
+                            "description": "The primary goal of the beta phase is to thoroughly test a product with a limited user group to identify and address issues, gather user feedback, and make necessary improvements before releasing it to a wider audience, ultimately ensuring a more polished and reliable final product."
+                        },
+                        {
+                            "title": "What is the timeline of beta program?",
+                            "description": "Beta starts in the week of September 6th and runs a weekly checkin with beta participants to collect feedback up until MVP launch (expected early 2024 Q1)"
+                        },
+                        {
+                            "title": "Is the beta product fully functional ?",
+                            "description": "The beta product are partially functional with the goal of testing and refining features, identifying issues, and gathering user feedback before a full release."
                         }
                     ]
                 },
                 {
-                    "title": "Getting started",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "Getting Started",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to signup for the beta program?",
+                            "description": "To enroll in the xnode.ai beta program, please visit our website at xnode.ai <a href='{{envUrl}}contact-us/' target='_blank' class='no-underline'>https://xnode.ai/contact-us/</a> and fill in the the beta enrollment form. You will need to provide some basic information and agree to our terms and conditions."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to add another user to my account that I have with xnode?",
+                            "description": "To add another user to the same Xnode workspace account, log in, access the workspace, invite the user by providing their email or username, set their permissions, send the invitation, have the user accept it and log in or create an account, enabling collaboration within the shared workspace while managing access and roles as needed."
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to refer someone to beta program?",
+                            "description": "please share this link to submit beta interest - <a href='{{envUrl}}contact-us/' target='_blank' class='no-underline'>https://xnode.ai/contact-us/</a> or email us directly at <a href='mailto:beta@xnode.ai' target='_blank'>beta@xnode.ai</a>"
                         },
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What are the system requirements ?",
+                            "description": "xnode is mobile-friendly and accessible via browser (preferred browser to use to test xnode beta is Chrome) from any device, it provides users with even greater flexibility and convenience for application development. This means that users can work on their projects and collaborate with Navi using smartphones and tablets, enhancing the accessibility and usability of the platform."
+                        },
+                        {
+                            "title": "What happens after I request beta access?",
+                            "description": "After requesting beta access to Xnode, you can expect to receive a confirmation email and, if eligible, an invitation to join the beta program, where you'll receive instructions to access the beta version, actively participate in testing, provide feedback, communicate with the development team, and potentially enjoy perks, ultimately contributing to the refinement of the software before its stable release."
+                        },
+                        {
+                            "title": "How to login to xnode?",
+                            "description": "To log in to xnode, open your web browser, visit the Xnode website, locate the 'Login' or 'Sign In' button on the homepage or login page, enter your login credentials (typically your email or username and password), submit your information, and upon successful authentication, you'll gain access to your xnode account for project management and application development."
+                        },
+                        {
+                            "title": "What are the system requirements ?",
+                            "description": "xnode is mobile-friendly and accessible via browser (preferred browser to use to test xnode beta is Chrome) from any device, it provides users with even greater flexibility and convenience for application development. This means that users can work on their projects and collaborate with Navi using smartphones and tablets, enhancing the accessibility and usability of the platform."
+                        },
+                        {
+                            "title": "How to reset password on xnode?",
+                            "description": "To reset your Xnode password, visit the Xnode website, click on the 'Login' or 'Sign In' button, find and click the 'Forgot Password' or 'Reset Password' link on the login page, enter your email address associated with your Xnode account, submit your request, check your email for a password reset message from Xnode, follow the instructions in the email to create a new password, return to the Xnode login page, and log in using your newly reset password."
+                        },
+                        {
+                            "title": "How to get help?",
+                            "description": "Please reach out to <a href='mailto:beta@xnode.ai' target='_blank' class='no-underline'>beta@xnode.ai</a> or simply click on “Send Email” button to send message via email."
+                        },
+                        {
+                            "title": "What are the benefits of joining beta program ?",
+                            "description": "By joining our beta program, you'll gain exclusive access to the cutting-edge features of xnode.ai. Additionally, you'll have the opportunity to shape the final product by providing valuable feedback."
+                        },
+                        {
+                            "title": "How to create my first application?",
+                            "description": "To create your first application with xnode, log in to your xnode account, access your dashboard, start a new project by choosing a project type and defining project details, engage with Navi, your AI assistant, through interactive conversations to gather requirements and visualize your project, prioritize requirements, explore additional features and receive real-time feedback, customize your application, automate repetitive tasks, handle documentation and deployment, implement security measures, iterate for improvements, and save and access your project from your Xnode dashboard for further development and management."
+                        },
+                        {
+                            "title": "What are the features deployed on the xnode platform?",
+                            "description": "Please refer to Beta features section features"
+                        },
+                        {
+                            "title": "Can I collaborate with other users on the apps I am building?",
+                            "description": "In future iterations, Xnode is expected to offer collaborative features that enable you to collaborate with other users on the apps you are building. These features may include user access control, task assignment, real-time communication tools, version control, and notifications. Collaborative capabilities will enhance your ability to work with others efficiently while ensuring data security and transparency within the platform. Keep an eye out for updates and announcements from Xnode regarding the availability of these collaborative features."
                         }
                     ]
                 },
                 {
                     "title": "Releases",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How often are updates and releases made during the beta phase?",
+                            "description": "During the beta phase of Xnode, updates and releases are typically made every two weeks. This regular release schedule allows for continuous improvements, bug fixes, and the introduction of new features based on user feedback and testing. Users can expect to see regular updates to enhance the platform's functionality and stability throughout the beta testing period."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How can I stay informed about new releases and updates?",
+                            "description": "You can visit help section here to see latest release notes"
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "accordianTitle": "Subscriptions",
-            "objects": [
-                {
-                    "title": "Manage Subscriptions",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
-                    "subobjects": [
-                        {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What are the latest updates released ?",
+                            "description": "View release log below Beta release v1, September 6th , 2023 Beta user onboarding App onboarding using Navi supporting bi-modal conversation input voice and text App onboarding using csv file input App publishing on xnode hosted cloud provider App modifications using Navi App design specification generation for app overview, usecases, data model, workflows"
                         }
                     ]
                 },
                 {
-                    "title": "Change Subscription Plan",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "Feedback",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Can I provide feedback on new releases?",
+                            "description": "Access heart icon in the right corner of the top toolbar. You can submit feedback, report issues, or suggest improvements. Your feedback is valuable in helping us enhance the app's performance and user experience."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What types of feedback is collected?",
+                            "description": "We welcome all types of feedback, including bug reports, feature requests, usability suggestions, and general comments. Whether you encounter a technical issue or have an idea to make the app better, we appreciate your input."
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to report bugs?",
+                            "description": "To report a bug in xnode, access the bug reporting section via the heart icon in the top right corner of the toolbar, select 'Report a Bug' describe the issue with specific details, fill out the bug reporting form including product name, affected section, priority, improvement suggestions, and attach a screenshot if needed, then submit the report. You will receive a confirmation pop-up indicating that your bug report has been received and is being processed."
                         },
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to report general feedback on user experience?",
+                            "description": "To report general feedback on the user experience in xnode, access the feedback section through the heart icon in the top right corner of the toolbar,select 'General feedback' ,rate your experience using a 5-star system, optionally provide more detailed feedback in a form including product name, affected section, improvement suggestions, and attach a screenshot if necessary, then submit your feedback. A confirmation pop-up typically confirms that your feedback has been received."
+                        },
+                        {
+                            "title": "How to view past feedback provided and view xnode responses?",
+                            "description": "To view past feedback provided and view Xnode responses, access the 'View Existing Feedback' section through the heart icon in the top right corner, select 'View Existing Feedback', and you can review a log of your previously reported feedback entries, including their ticket status and responses given by the Xnode team. This feature allows you to conveniently access and reference past feedback interactions."
                         }
                     ]
                 }
             ]
         },
         {
-            "accordianTitle": "Manage your Account",
+            "accordianTitle": "Beta features",
             "objects": [
                 {
-                    "title": "Account settings",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "App Onboarding",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What is app onboarding?",
+                            "description": "App onboarding includes ideation with Navi and generating product dashboard in the Beta phase and eventually be able to generate complete application with workflows and business logic."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "What data sources are supported for onboarding an app?",
+                            "description": "Navi currently supports ideation phase of app onboarding using both text input, speech input and csv file (max size of 2MB)"
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Can xnode connect to my existing apps?",
+                            "description": "Yes, xnode will be enabled to connect to existing apps based on known integrations during the MVP phase. In Beta phase, users will be able to create csv interface to onboard data into xnode and build apps. xnode Platform roadmap has features such as enabling integration with existing apps such as CRM, ERP, workflows, rest apis, databases, file storage systems."
                         },
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "accordianTitle": "Manage your Account",
-            "objects": [
-                {
-                    "title": "Giving Access to team accounts",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
-                    "subobjects": [
-                        {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Can I upload an excel or csv to start the app ideation?",
+                            "description": "You can typically kickstart app ideation in Xnode by importing Excel or CSV data, mapping it to app fields, performing data transformations if needed, and using the imported data as a foundation for designing your app's user interface, interactions, and functionalities."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "accordianTitle": "Billing and plans",
-            "objects": [
-                {
-                    "title": "Bills",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
-                    "subobjects": [
-                        {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Can I upload app specific branding information?",
+                            "description": "You can typically upload app-specific branding information in Xnode by accessing branding options within the platform, which may include uploading a logo, setting color themes, uploading icons and images, defining typography and fonts, customizing the splash screen, previewing changes, applying branding, testing, and finally generating the app with the customized branding, allowing you to create a unique and visually appealing app that aligns with your brand's identity. In the Beta phase, we are going to phase out onboarding of branding information and please reach out to <a href='mailto:support@xnode.ai' target='_blank' class='no-underline'>support@xnode.ai</a> with any questions."
                         }
                     ]
                 },
                 {
-                    "title": "Plans",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "App Publishing",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to preview application?",
+                            "description": "Once user is logged into the xnode app, and accessed the product internal pages, locate Preview button in the top right corner. By clicking on Preview button, user is taken to new browser tab to view application standalone."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "accordianTitle": "Troubleshooting",
-            "objects": [
-                {
-                    "title": "Troubleshooting",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
-                    "subobjects": [
-                        {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "accordianTitle": "Xnode Features",
-            "objects": [
-                {
-                    "title": "Features",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
-                    "subobjects": [
-                        {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "accordianTitle": "Security and policies",
-            "objects": [
-                {
-                    "title": "Security",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
-                    "subobjects": [
-                        {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
-                        {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to publish an app?",
+                            "description": "Once user has logged into the xnode platform and accessed the target product from home page, view Preview or Publish buttons on the top right corner to publish the app"
                         }
                     ]
                 },
                 {
-                    "title": "Policies",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "App Modifications",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Can I modify my app?",
+                            "description": "Yes, click on the Navi icon in the bottom right corner of the app and view past chat. Then start conversing to make further changes. Navi will recognize that you are looking for making updates and start sending notifications indicating progress of updates. Once updates are ready for review from the notification center, you can view the action “View Update” that takes you to the updated dashboard view."
+                        }
+                    ]
+                },
+                {
+                    "title": "Accessing Application",
+                    "description": "",
+                    "subobjects": [
+                        {
+                            "title": "How to access final app outside of xnode that is created within xnode?",
+                            "description": "You will receive an email once application is published with a link and login details"
+                        }
+                    ]
+                },
+                {
+                    "title": "Navi",
+                    "description": "",
+                    "subobjects": [
+                        {
+                            "title": "What is Navi?",
+                            "description": "Navi is an AI powered CoPilot and steering wheel on xnode. Navi assists users in building applications by engaging in interactive conversations, gathering requirements, and performing various tasks related to the technical roles such as design, frontend, backend, testing and support starting with product management and application development."
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How does Navi gather business requirements?",
+                            "description": "Navi uses conversational AI to engage in interactive conversations with stakeholders, extract essential information, and clarify any ambiguities to ensure accurate understanding."
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Can Navi help visualize business processes and workflows?",
+                            "description": "Yes, Navi can analyze the gathered information and create visual representations of business processes, workflows, and user journeys, helping stakeholders visualize the system's functionality and interactions."
                         },
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Does Navi assist in prioritizing requirements?",
+                            "description": "Absolutely. Navi uses data analysis and historical patterns to assist in prioritizing requirements based on their impact, feasibility, and alignment with business goals."
+                        },
+                        {
+                            "title": "Can Navi suggest additional features or enhancements?",
+                            "description": "Yes, Navi has the capability to propose additional features or enhancements based on its understanding of the business domain and emerging market trends."
+                        },
+                        {
+                            "title": "How does Navi provide real-time feedback during requirement discussions?",
+                            "description": "Navi offers real-time feedback as stakeholders provide input, helping to refine and shape the requirements for optimal outcomes."
+                        },
+                        {
+                            "title": "Can Navi adapt to changing requirements and market dynamics?",
+                            "description": "Yes, Navi can adapt by analyzing user feedback and suggesting iterative improvements, ensuring that your application stays aligned with evolving needs."
+                        },
+                        {
+                            "title": "Does Navi integrate with project management and development tools?",
+                            "description": "Absolutely. Navi seamlessly integrates with project management and development tools to translate refined requirements directly into tasks and user stories."
+                        },
+                        {
+                            "title": "Can Navi generate code and system designs?",
+                            "description": "Navi can generate code snippets or entire modules based on specifications and create detailed system designs, including architecture diagrams, data models, and workflows."
+                        },
+                        {
+                            "title": "Is Navi capable of designing databases and user interfaces?",
+                            "description": "Yes, Navi can design databases and generate schema definitions based on data requirements. It can also create user interface mockups and suggest UI/UX enhancements."
+                        },
+                        {
+                            "title": "How does Navi automate tasks for developers?",
+                            "description": "Navi automates repetitive tasks like data validation, form generation, and data transformation, allowing developers to focus on more complex tasks."
+                        },
+                        {
+                            "title": "Can Navi help with system documentation and deployment?",
+                            "description": "Yes, Navi can generate documentation for the system's architecture, code, and features. It also assists in version control, branching, and automating deployment processes."
+                        },
+                        {
+                            "title": "What about security measures? Can Navi assist in implementing security features?",
+                            "description": "Indeed, Navi can help implement security measures such as encryption, authentication, and authorization to enhance the system's robustness against threats."
+                        },
+                        {
+                            "title": "How Navi can help me with ideation?",
+                            "description": "Navi can enhance your ideation process by providing suggestions, clarifying ideas, analyzing trends, guiding brainstorming exercises, facilitating competitive analysis, and assisting with various aspects of idea development, ultimately serving as a valuable AI-driven partner in generating and refining creative concepts and solutions."
+                        },
+                        {
+                            "title": "How to conclude a conversation with Navi?",
+                            "description": "Concluding conversation is a closing event or trigger for Navi to offer actions user can perform such as generating or updating an existing app. Towards this user can say “Done, thank you” or “All set, thank you”, “End the conversation”"
+                        },
+                        {
+                            "title": "How can I generate the final app?",
+                            "description": "To generate the final app with xnode, follow these steps: Create a clear app blueprint, refine and test your design, configure app settings, customize if necessary, preview and prototype, conduct thorough testing, set up data connections if applicable, consider beta testing, generate the app within xnode, review and publish it to the desired platform, monitor its performance, and maintain and update it based on user feedback and development needs."
                         }
                     ]
                 }
             ]
         },
         {
-            "accordianTitle": "Legacy Licensing",
+            "accordianTitle": "Subscription Tiers",
             "objects": [
                 {
-                    "title": "Licensing",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "Subscription Plans",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Free",
+                            "description": "Generate Product POC, Generate Technical Specifications, Product Ideation ,Numner of Apps - 2 , Number of Users - 5"
                         },
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Basic",
+                            "description": "Ability to modift designs manually, Build and deploy product MVP, Generate product pOC, Generate technical specifications, Product Ideation, Number of apps - 5, Number of users - 20."
                         },
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Professional",
+                            "description": "AI enabled customer support, Code quality and QA assurance, Realtime collaboration, Ability to modift designs manually, Build and deploy product MVP, Generate product pOC, Generate technical specifications, Product Ideation, Number of apps - 10, Number of users - 1000"
                         },
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "Business",
+                            "description": "Be able to eject out of xnode, AI assisted development capabilities, AI powered Analytics and BI, Datahub and Governance, User feedback analytics and NPS boost, Business continuity and disaster recovery, Central monitoring of product, Audit and change history, AI enabled customer support, Code quality and QA assurance, Realtime collaboration, Ability to modift designs manually, Build and deploy product MVP, Generate product pOC, Generate technical specifications, Product Ideation, Number of apps - 25, Number of users - 10,000"
+                        },
+                        {
+                            "title": "Enterprise",
+                            "description": "Be able to eject out of xnode, AI assisted development capabilities, AI powered Analytics and BI, Datahub and Governance, User feedback analytics and NPS boost, Business continuity and disaster recovery, Central monitoring of product, Audit and change history, AI enabled customer support, Code quality and QA assurance, Realtime collaboration, Ability to modift designs manually, Build and deploy product MVP, Generate product pOC, Generate technical specifications, Product Ideation, Number of apps - 50+, Number of users - 100,000+"
                         }
                     ]
                 }
             ]
         },
         {
-            "accordianTitle": "Partners",
+            "accordianTitle": "Legal",
             "objects": [
                 {
-                    "title": "Our Partners",
-                    "description": "Find out how to get started with xnode, and system requirements, create a trial or switch to a subscription from xnode license",
+                    "title": "Beta Terms and Conditions",
+                    "description": "",
                     "subobjects": [
                         {
-                            "title": "How can I get started?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
+                            "title": "What are the terms of Beta",
+                            "description": "<p><a href='{{envUrl}}beta-terms-and-conditions/' class='no-underline' target='_blank'>Terms & Conditions</a></p>"
+                        }
+                    ]
+                },
+                {
+                    "title": "Terms of Service",
+                    "description": "",
+                    "subobjects": [
                         {
-                            "title": "How do I use the xnode and Sign in?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
+                            "title": "What are the terms and conditions?",
+                            "description": "<p><a href='{{envUrl}}terms-of-service/' class='no-underline' target='_blank'>Terms of Service</a></p>"
+                        }
+                    ]
+                },
+                {
+                    "title": "Privacy Policy",
+                    "description": "",
+                    "subobjects": [
                         {
-                            "title": "What are the system requirements?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        },
+                            "title": "What is the privacy policy?",
+                            "description": "<p><a href='{{envUrl}}privacy-policy/'  class='no-underline' target='_blank'>Privacy Policy</a></p>"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "accordianTitle": "Demo Videos",
+            "objects": [
+                {
+                    "title": "create an app in xnode",
+                    "description": "",
+                    "subobjects": [
                         {
-                            "title": "On which operating systems can I use xnode?",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+                            "title": "How to create an app in xnode?",
+                            "description": "<a href='https://xnodestrg.blob.core.windows.net/legal/xnode-beta-short-farm-connect-20230827.mp4' class='no-underline' target='_blank'>Click here to view</a> how user has created “FarmConnect” application"
                         }
                     ]
                 }

@@ -1,5 +1,5 @@
 <div class="w-full h-full">
-    <div [ngClass]="{' tmp-page-height': templateCard.length }" class="grid m-0 p-6 ">
+    <div [ngClass]="{' tmp-page-height': templateCard.length }" class="m-0 p-6 ">
         <div class="col-12 mt-5">
             <p class="text-6xl m-0 text-white text-wrap">Hi, Good Morning!</p>
         </div>
@@ -7,7 +7,8 @@
             <div class="flex">
                 <div class="p-input-icon-left search">
                     <i class="pi pi-search"></i>
-                    <input type="text" pInputText placeholder="Search" />
+                    <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()" />
+
                 </div>
             </div>
         </div>
@@ -24,61 +25,115 @@
             </p-button> -->
             <p-button styleClass="p-button-secondary p-button-rounded mr-4">
                 <img alt="bot-btn-icon" src="./assets/import.svg" />
-                <span class="ml-2 ">Import</span>
+                <span class="ml-2" (click)="importNavi()">Import</span>
             </p-button>
         </div>
-        <div class="col-12 flex flex-wrap row-gap-4 text-base font-semibold letter-space-1 mt-4">
-            <div class="flex flex-wrap  align-items-center mr-4">
-                <img alt="all product" src="./assets/all-products.svg" />
-                <p class="m-0 pl-2 text-white">All Products</p>
-            </div>
-            <div class="flex flex-wrap  align-items-center  mr-4">
-                <img alt="all product" src="./assets/recent.svg" />
-                <p class="m-0 pl-2 active">Recently Viewed</p>
-            </div>
-            <div class="flex flex-wrap  align-items-center  mr-4">
-                <img alt="all product" src="./assets/user.svg" />
-                <p class="m-0 pl-2 text-white">Created by you</p>
-            </div>
-            <div class="flex flex-wrap  align-items-center  mr-4">
-                <img alt="all product" src="./assets/favorite.svg" />
-                <p class="m-0 pl-2 text-white">Favorites</p>
-            </div>
-        </div>
-        <div class="col-12 mt-4">
-            <div class="card-grid" *ngIf="templateCard">
-                <p-card header="{{data.title}}" [title]="data.title" [style]="{ width: '314px', height: '348px'}"
-                    class="pointer" (click)="onClickCreateNewTemplate(data)"
-                    *ngFor="let data of templateCard ; let i=index">
-
+        <div class="col-12 flex flex-wrap text-base font-semibold">
+            <p-tabView [(activeIndex)]="activeIndex">
+                <p-tabPanel>
                     <ng-template pTemplate="header">
-                        <img alt="template card" src="./assets/d-card.svg" height="199" />
-                        <div class="overlay-heart">
-                            <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
-                        </div>
-                        <div class="overlay">{{ i + 1 }}</div>
-                        <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
-                            (click)="openExternalLink(data.product_url)"
-                            *ngIf="data.product_url && data.product_url !== ''"></i>
+                        <img alt="all product" src="./assets/all-products.svg" />
+                        <p class="m-0 pl-2 ">All Products</p>
                     </ng-template>
-                    <div class="flex">
-                        <img alt="dp" src="./assets/dp.svg" width="40" />
-                        <div class="text-white ml-4">
-                            <p class="m-0 font-bold">Created by you</p>
-                            <p class="m-0 text-xs">Last viewed 3 minutes ago</p>
-                            <p class="m-0 text-xs">created on: {{data.created_on
-                                |
-                                date:'medium'}}</p>
+                    <div class="col-12 mt-4">
+                        <div class="card-grid" *ngIf="filteredProducts">
+                            <p-card header="{{data.title}}" [title]="data.title"
+                                [style]="{ width: '314px', height: '348px'}" class="pointer"
+                                (click)="onClickCreateNewTemplate(data)"
+                                *ngFor="let data of filteredProducts ; let i = index">
+
+                                <ng-template pTemplate="header">
+                                    <img alt="template card" src="./assets/d-card.svg" height="199" />
+                                    <div class="overlay-heart">
+                                        <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
+                                    </div>
+                                    <div class="overlay">{{ i + 1 }}</div>
+                                    <i class="pi pi-external-link external-link-icon external-link-icon "
+                                        [title]="data.product_url" (click)="openExternalLink(data.product_url)"
+                                        *ngIf="data.product_url && data.product_url !== ''"></i>
+                                </ng-template>
+                                <div class="flex">
+                                    <img alt="dp" src="./assets/dp.svg" width="40" />
+                                    <div class="text-white ml-4">
+                                        <p class="m-0 font-bold">Created by you</p>
+                                        <p class="m-0 text-xs">Last viewed 3 minutes ago</p>
+                                        <p class="m-0 text-xs">created on: {{data.created_on
+                                            |
+                                            date:'medium'}}</p>
+                                    </div>
+                                </div>
+                            </p-card>
+                            <p-card [style]="{ width: '316px', height: '364px'}"
+                                class="flex  align-items-center justify-content-center flex-wrap new-card ">
+                                <div class="flex align-items-center justify-content-center text-white h-full">
+                                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                                </div>
+                            </p-card>
                         </div>
                     </div>
-                </p-card>
-                <p-card [style]="{ width: '316px', height: '364px'}"
-                    class="flex  align-items-center justify-content-center flex-wrap new-card ">
-                    <div class="flex align-items-center justify-content-center text-white h-full">
-                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                </p-tabPanel>
+                <p-tabPanel>
+                    <ng-template pTemplate="header">
+                        <img alt="all product" src="./assets/recent.svg" />
+                        <p class="m-0 pl-2">Recently Viewed</p>
+                    </ng-template>
+                    <div class="col-12 flex  justify-content-center text-3xl mt-4 text-white font-font-medium">
+                        No Recently Viewed Products
                     </div>
-                </p-card>
-            </div>
+                </p-tabPanel>
+                <p-tabPanel>
+                    <ng-template pTemplate="header">
+                        <img alt="all product" src="./assets/user.svg" />
+                        <p class="m-0 pl-2">Created by you</p>
+                    </ng-template>
+                    <div class="col-12 mt-4">
+                        <div class="card-grid" *ngIf="filteredProductsByEmail">
+                            <p-card header="{{data.title}}" [title]="data.title"
+                                [style]="{ width: '314px', height: '348px'}" class="pointer"
+                                (click)="onClickCreateNewTemplate(data)"
+                                *ngFor="let data of filteredProductsByEmail ; let i = index">
+
+                                <ng-template pTemplate="header">
+                                    <img alt="template card" src="./assets/d-card.svg" height="199" />
+                                    <div class="overlay-heart">
+                                        <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
+                                    </div>
+                                    <div class="overlay">{{ i + 1 }}</div>
+                                    <i class="pi pi-external-link external-link-icon external-link-icon "
+                                        [title]="data.product_url" (click)="openExternalLink(data.product_url)"
+                                        *ngIf="data.product_url && data.product_url !== ''"></i>
+                                </ng-template>
+                                <div class="flex">
+                                    <img alt="dp" src="./assets/dp.svg" width="40" />
+                                    <div class="text-white ml-4">
+                                        <p class="m-0 font-bold">Created by you</p>
+                                        <p class="m-0 text-xs">Last viewed 3 minutes ago</p>
+                                        <p class="m-0 text-xs">created on: {{data.created_on
+                                            |
+                                            date:'medium'}}</p>
+                                    </div>
+                                </div>
+                            </p-card>
+                            <p-card [style]="{ width: '316px', height: '364px'}"
+                                class="flex  align-items-center justify-content-center flex-wrap new-card ">
+                                <div class="flex align-items-center justify-content-center text-white h-full">
+                                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                                </div>
+                            </p-card>
+                        </div>
+                    </div>
+                </p-tabPanel>
+                <!-- ==========   Dont removed these lines    ====== -->
+                <!-- <p-tabPanel>
+                    <ng-template pTemplate="header">
+                        <img alt="all product" src="./assets/favorite.svg" />
+                        <p class="m-0 pl-2">Favorites</p>
+                    </ng-template>
+                    <div class="col-12 mt-4 flex justify-content-center text-3xl text-white font-medium">
+                        No Favorite Products
+                    </div>
+                </p-tabPanel> -->
+            </p-tabView>
         </div>
     </div>
 </div>

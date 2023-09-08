@@ -22,7 +22,7 @@ export class LogsComponent implements OnInit {
     if (localItem) {
       let user = JSON.parse(localItem);
       this.utilsService.loadSpinner(true)
-      this.apiService.getApi('notifications/retrieve/' + environment.branchName + '?email=' + user?.email + '&product_id=' + localStorage.getItem('record_id')).then((response: any) => {
+      this.apiService.getApi('notifications/retrieve/' + environment.branchName + '?email=' + user?.email).then((response: any) => {
         this.logsData = response.data;
         this.utilsService.loadSpinner(false)
       }).catch((err: any) => {
