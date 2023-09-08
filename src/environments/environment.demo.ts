@@ -12,6 +12,7 @@ export const environment = {
     workFlowApiUrl: 'https://demo-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'demo-xnode-notifier',
-    branchName: 'xnode-demo',
+    branchName: 'demo',
+    projectName: 'xnode',
     homeUrl: 'https://xnode.ai/'
 }
