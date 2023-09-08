@@ -28,11 +28,11 @@
                     [ngClass]="{'active': selectedIndex === i}">
                     <div (click)="onSelectListItem(report,i)">
                         <div class="flex justify-content-between flex-wrap">
-                            <b class="text-base">Product-{{i +1}}, {{report.componentId}}</b>
+                            <b class="text-base">{{report.productId}}, {{report.componentId}}</b>
                             <p class="text-sm m-0">ID #38374{{i+1}}</p>
                         </div>
                         <p class="text-sm font-normal m-0 pb-2">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry
+                            {{report.feedbackText}}
                         </p>
                         <div class="flex justify-content-between flex-wrap align-items-center">
                             <div class="flex align-items-center">
@@ -64,18 +64,10 @@
                         </div>
                         <!-- <p-button label="Mark as Fixed" styleClass="p-button-outlined p-button-rounded"></p-button> -->
                     </div>
-                    <p class="text-2xl font-medium">Product - {{selectedListItem?.componentId}}</p>
+                    <p class="text-2xl font-medium">{{selectedListItem.productId}} - {{selectedListItem?.componentId}}
+                    </p>
                     <p class="font-light text-base">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                        been
-                        the
-                        industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of
-                        type and
-                        scrambled it to make a type specimen book. It has survived not only five centuries, but also
-                        the
-                        leap
-                        into electronic typesetting, remaining essentially unchanged
+                        {{selectedListItem.feedbackText}}
                     </p>
                     <div class="flex align-items-center">
                         <img src="./assets/attachment.svg" alt="att" class="mr-2">

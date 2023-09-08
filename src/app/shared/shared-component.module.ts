@@ -22,6 +22,7 @@ import { GeneralFeedbackComponent } from '../components/general-feedback/general
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
 import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
+import { LimitReachedPopupComponent } from '../components/limit-reached-popup/limit-reached-popup.component';
 
 @NgModule({
         declarations: [
@@ -45,7 +46,8 @@ import { ProductAlertPopupComponent } from '../components/product-alert-popup/pr
                 GeneralFeedbackComponent,
                 ActionButtonComponent,
                 ProductAlertPopupComponent,
-                ViewExistingFeedbackComponent
+                ViewExistingFeedbackComponent,
+                LimitReachedPopupComponent
         ],
         imports: [
                 CommonModule,
@@ -72,7 +74,8 @@ import { ProductAlertPopupComponent } from '../components/product-alert-popup/pr
                 GeneralFeedbackComponent,
                 ActionButtonComponent,
                 ProductAlertPopupComponent,
-                ViewExistingFeedbackComponent
+                ViewExistingFeedbackComponent,
+                LimitReachedPopupComponent
         ]
 })
 export class SharedComponentModule { }
