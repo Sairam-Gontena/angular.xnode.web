@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ApiService {
+export class AuthApiService {
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
 
@@ -51,7 +50,13 @@ export class ApiService {
 
   //Temp
   get(url: string) {
-    return axios.get(environment.apiUrl + "crud" + url, {
+    return axios.get(this.authEndPoint + url, {
     });
   }
+
+  put(url: string) {
+    return axios.get(this.authEndPoint + "crud" + url, {
+    });
+  }
+
 }

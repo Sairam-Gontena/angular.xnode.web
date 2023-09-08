@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
@@ -16,7 +16,7 @@ export class ConfirmationPopupComponent {
   visible: boolean = false;
   currentUser?: any;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
+  constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -62,12 +62,32 @@ export class ConfirmationPopupComponent {
       "action": action,
       "admin_email": this.currentUser?.user_details.email
     };
-    this.apiService.patchAuth(body, url)
+    this.authApiService.patchAuth(body, url)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          if (response?.data) {
+            this.updateProductTier();
+          } else {
+            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          }
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
+  updateProductTier(): void {
+    let url = '/auth/prospect/product_tier_manage/' + this.currentUser?.user_details.email;
+    this.authApiService.put(url)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data) {
             this.refreshListService.toggleAdminUserListRefresh();
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been invited successfully' });
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }

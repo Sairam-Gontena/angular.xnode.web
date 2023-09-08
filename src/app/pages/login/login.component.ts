@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   messages: any = [
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService,
+  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
     private utilsService: UtilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
     this.loginBtn = true;
-    this.apiService.login(body, "auth/prospect/login").then((response: any) => {
+    this.authApiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });

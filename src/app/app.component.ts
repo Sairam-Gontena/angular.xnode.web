@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   toastObj: any;
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
-
+  currentUser: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -65,6 +65,12 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = event;
     });
     this.currentPath = window.location.hash;
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser)
+    } else {
+      this.router.navigate(['/'])
+    }
   }
 
 

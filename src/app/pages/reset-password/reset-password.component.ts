@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ConfirmPasswordValidator } from '../sign-up/confirm-password.validator';
 
@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage!: string;
   messages: any = [];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
     this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
@@ -52,7 +52,7 @@ export class ResetPasswordComponent implements OnInit {
     }
     let body = { ...this.resetPasswordForm.value };
     this.utilsService.loadSpinner(true);
-    this.apiService.patchAuth('', "auth/prospect/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
+    this.authApiService.patchAuth('', "auth/prospect/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data?.detail) {
