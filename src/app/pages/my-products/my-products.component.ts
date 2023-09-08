@@ -39,6 +39,8 @@ export class MyProductsComponent implements OnInit {
     this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
+    localStorage.removeItem('show-upload-panel');
+
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -84,7 +86,10 @@ export class MyProductsComponent implements OnInit {
     window.open(productUrl, '_blank');
 
   }
-
+  importNavi() {
+    this.router.navigate(['/x-pilot'])
+    localStorage.setItem('show-upload-panel', 'true');
+  }
   //get calls 
   getMetaData() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
