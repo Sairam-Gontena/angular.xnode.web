@@ -22,6 +22,8 @@ export class MyProductsComponent implements OnInit {
   activeIndex: number = 0;
   searchText: any;
   filteredProducts: any[] = []
+  email: any;
+  filteredProductsByEmail: any[] = [];
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
     private route: ActivatedRoute, private utils: UtilsService) {
@@ -37,6 +39,8 @@ export class MyProductsComponent implements OnInit {
     this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
+    localStorage.removeItem('show-upload-panel');
+
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -46,6 +50,7 @@ export class MyProductsComponent implements OnInit {
     setTimeout(() => {
       this.removeParamFromRoute()
     }, 2000);
+    this.filterProductsByUserEmail();
   }
 
   removeParamFromRoute(): void {
@@ -66,6 +71,7 @@ export class MyProductsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
@@ -80,7 +86,10 @@ export class MyProductsComponent implements OnInit {
     window.open(productUrl, '_blank');
 
   }
-
+  importNavi() {
+    this.router.navigate(['/x-pilot'])
+    localStorage.setItem('show-upload-panel', 'true');
+  }
   //get calls 
   getMetaData() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
@@ -89,6 +98,8 @@ export class MyProductsComponent implements OnInit {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
+          this.filteredProductsByEmail = this.templateCard;
+
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
@@ -108,5 +119,11 @@ export class MyProductsComponent implements OnInit {
         return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
   }
-
+  filterProductsByUserEmail() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.email = JSON.parse(currentUser).email;
+    }
+    this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+  }
 }

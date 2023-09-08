@@ -48,7 +48,7 @@ export class OverViewComponent {
     let dataName = localStorage.getItem("currentUser")
     if (dataName) {
       let currentUser = JSON.parse(dataName);
-      this.userName = currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1).toLowerCase() + " " + currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1).toLowerCase();
+      this.userName = currentUser?.xnode_user_data?.first_name.toUpperCase() + " " + + currentUser.xnode_user_data.last_name.toUpperCase();
     }
     if (product) {
       this.product = JSON.parse(product);
@@ -65,6 +65,7 @@ export class OverViewComponent {
     ]
     this.get_ID();
   };
+
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
@@ -73,6 +74,7 @@ export class OverViewComponent {
     }
     this.iconClicked.emit(icon);
   }
+
   nextStep(): void {
     if (this.currentStep < 3) {
       this.currentStep++;
