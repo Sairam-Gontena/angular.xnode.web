@@ -1,5 +1,5 @@
 .main-div {
-    height: calc(100vh - 80px);
+    height: calc(100vh - 42px)
 }
 
 .table-header {
@@ -9,22 +9,6 @@
 .table-body {
     height: calc(100vh - 200px);
 
-}
-
-@media (max-width: 768px) {
-    .table-header {
-        height: auto;
-        /* Allow the header to grow based on content */
-    }
-
-    .table-body {
-        height: auto;
-        /* Allow the body to grow based on content */
-        max-height: 60%;
-        /* Limit the body's height to 80% of the viewport height */
-        overflow-y: auto;
-        /* Add vertical scroll if necessary */
-    }
 }
 
 .header-div {
@@ -82,4 +66,23 @@
 
 .table-div {
     height: 530px;
+}
+
+
+.template-builder-wrapper {
+    width: 100%;
+    display: flex;
+    height: calc(100vh - 42px);
+}
+
+.template-builder-body-wrapper {
+    // width: calc(100% - 300px);
+    height: calc(100vh - 42px);
+    overflow-y: hidden;
+    background-color: lightblue;
+}
+
+.another-template-builder-body-wrapper {
+    width: calc(100% - 50px);
+    height: calc(100vh - 50px);
 }

@@ -65,7 +65,7 @@
                                 <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-3">
                                     <p-button label="Login" class="flex justify-content-center pointer"
                                         styleClass="p-button-rounded  font-medium text-lg"
-                                        [disabled]="loginForm.invalid"></p-button>
+                                        [disabled]="loginForm.invalid" (click)="onClickLogin()" ></p-button>
                                 </div>
                                 <div
                                     class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
