@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import helpcentre from '../../../assets/json/help_centre.json'
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
+import plans from '../../../assets/json/subscripitionplans.json'
 import { debounceTime } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import * as _ from "lodash";
@@ -11,18 +12,23 @@ import * as _ from "lodash";
   styleUrls: ['./help-center.component.scss']
 })
 
+
+
 export class HelpCenterComponent implements OnInit {
   json: any;
+  tableData: any;
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
+  windowFind: boolean = true;
   searchText: any;
   envUrl: any;
   private textInputSubject = new Subject<string>();
   foundObjects: any[] = [];
 
-  constructor(public location: Location) {
+  constructor(public location: Location, private renderer: Renderer2, private el: ElementRef) {
     this.json = helpcentre.helpcentre;
+    this.tableData = plans.plans;
     this.selectedjson = this.json?.[0]?.objects?.[0];
     this.envUrl = environment.homeUrl;
   }
@@ -31,12 +37,29 @@ export class HelpCenterComponent implements OnInit {
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.searchText.length > 0 ? this.getSearchInput('', this.json) : this.clearSearchText();
     });
+    // setTimeout(() => {
+    //   const anchor = document.getElementById('show_dialog');
+    //   console.log(anchor)
+    //   if (anchor) {
+    //     anchor.addEventListener('click', () => {
+    //       console.log('click hit')
+    //       this.showDialog();
+    //     });
+    //   }
+    // }, 5000);
   }
 
   getMeHtml(description: any) {
     let val = description;
-    val = val.replace('{{envUrl}}', this.envUrl)
+    val = val.replace('showDialog', this.envUrl)
     return val;
+  }
+
+  selectJson(event: any, title: any, accordianTitle: any) {
+    let className = event?.target?.classList?.[0];
+    if (className == 'p-accordion-header-link') {
+      this.showJson(title, accordianTitle, 0);
+    }
   }
 
   showJson(obj: any, accordianTitle: any, i: any) {
@@ -88,6 +111,17 @@ export class HelpCenterComponent implements OnInit {
         });
       }
     });
+    this.windowFind = true;
+    this.windowFindFunction(keyword)
+  }
+
+  windowFindFunction(keyword: any) {
+    if (this.windowFind) {
+      setTimeout(() => {
+        window.find(keyword)
+      }, 1500);
+    }
+    this.windowFind = false;
   }
 
   onInput() {
