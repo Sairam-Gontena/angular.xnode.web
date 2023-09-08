@@ -76,3 +76,7 @@
 :host::ng-deep.p-button.p-button-brand {
     padding: 12px 50px;
 }
+
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}

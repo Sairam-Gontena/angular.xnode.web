@@ -2,6 +2,10 @@
     color: #DEDEDE;
 }
 
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
 .container {
     border-radius: 15px;
     padding: 1.5rem;

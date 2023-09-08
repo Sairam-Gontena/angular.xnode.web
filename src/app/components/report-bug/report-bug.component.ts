@@ -130,7 +130,7 @@ export class ReportBugComponent implements OnInit {
       "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
       "severityId": this.feedbackForm.value.severityId,
-      "feedbackStatusId": "new",
+      "feedbackStatusId": "Open",
       "requestTypeId": "bug-report",
       "internalTicketId": '-',
       "userFiles": [
