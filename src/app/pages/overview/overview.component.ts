@@ -48,7 +48,6 @@ export class OverViewComponent {
     let dataName = localStorage.getItem("currentUser")
     if (dataName) {
       let currentUser = JSON.parse(dataName);
-
       this.username = currentUser?.xnode_user_data?.first_name.toUpperCase() + " " + currentUser.xnode_user_data.last_name.toUpperCase();
     }
     if (product) {

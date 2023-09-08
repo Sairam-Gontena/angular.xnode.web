@@ -94,11 +94,36 @@ export class AppComponent implements OnInit {
 
 
   loadIframeUrl(): void {
+
+
+    window.addEventListener('message', (event) => {
+      if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+        return;
+      }
+      if (event.data === 'triggerCustomEvent') {
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+      }
+      if (event.data === 'close-docked-navi') {
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+      }
+      if (event.data === 'expand-navi') {
+        this.isNaviExpanded = true;
+      }
+      if (event.data === 'contract-navi') {
+        this.isNaviExpanded = false;
+      }
+    });
+
+
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
+      console.log("got triggered")
       if (contentWindow) {
         window.addEventListener('message', (event) => {
+          console.log("got triggered =====")
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }
