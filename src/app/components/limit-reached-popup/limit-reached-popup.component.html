@@ -1,0 +1,15 @@
+<p-dialog header=" Limit Reached" [(visible)]="visible" [style]="{width: '30vw'}">
+    <p>Limit Reached: You've exceeded the number of apps you can create with your current xnode plan.</p>
+    <p>
+        Don't worry, we've notified our support team about this, and an email has been sent to xnode support on your
+        behalf. They'll be in touch shortly to assist further.
+    </p>
+    <p>
+        If you need immediate assistance, please reach out to us directly at [support email/phone number]. Thank you
+        for your understanding.
+    </p>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"
+            (click)="this.closePopup.emit()"></p-button>
+    </ng-template>
+</p-dialog>

@@ -5,6 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
+import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
+    private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService) {
@@ -67,10 +69,27 @@ export class AppComponent implements OnInit {
     this.currentPath = window.location.hash;
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
-      this.currentUser = JSON.parse(currentUser)
+      this.currentUser = JSON.parse(currentUser);
+      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
     } else {
       this.router.navigate(['/'])
     }
+
+  }
+
+  getMeTotalOnboardedApps(user: any): void {
+    this.apiService.get("/total_apps_onboarded/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadSpinner(true);
+      });
   }
 
 

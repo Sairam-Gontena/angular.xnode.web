@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
@@ -10,7 +10,7 @@ import { User, UserUtil } from 'src/app/utils/user-util';
   styleUrls: ['./confirmation-popup.component.scss']
 })
 
-export class ConfirmationPopupComponent {
+export class ConfirmationPopupComponent implements OnInit {
   @Input() Data: any;
   invitationType: string = '';
   visible: boolean = false;
@@ -20,6 +20,12 @@ export class ConfirmationPopupComponent {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
+  ngOnInit(): void {
+    if (this.Data) {
+      this.invitationType = this.Data.type + ' ' + this.Data.userData.first_name + ' ' + this.Data.userData.last_name;
+      this.showDialog()
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     let data = localStorage.getItem('currentUser')
@@ -27,10 +33,7 @@ export class ConfirmationPopupComponent {
       let data1 = JSON.parse(data)
       this.currentUser = data1;
     }
-    if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + this.Data.userData.prospect_info.first_name + ' ' + this.Data.userData.prospect_info.last_name;
-      this.showDialog()
-    }
+
   }
 
 
@@ -82,7 +85,7 @@ export class ConfirmationPopupComponent {
   }
 
   updateProductTier(): void {
-    let url = '/auth/prospect/product_tier_manage/' + this.currentUser?.user_details.email;
+    let url = 'auth/prospect/product_tier_manage/' + this.Data.userData.email;
     this.authApiService.put(url)
       .then((response: any) => {
         if (response?.status === 200) {

@@ -18,6 +18,8 @@ export class VerifyOtpComponent implements OnInit {
   email: any;
   maskedEmail!: string;
   resendTimer: number = 60;
+  total_apps_onboarded: any;
+  restriction_max_value: any;
 
   constructor(private router: Router, private apiService: ApiService,
     private utilsService: UtilsService, private authApiService: AuthApiService) {
@@ -106,7 +108,7 @@ export class VerifyOtpComponent implements OnInit {
             this.router.navigate(['/x-pilot']);
           }
           this.utilsService.loadSpinner(true);
-          this.getMeTotalOnboardedApps(user);
+          this.getMeCreateAppLimit(user);
         }
       })
       .catch((error: any) => {
@@ -120,27 +122,13 @@ export class VerifyOtpComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("/total_apps_onboarded/" + user?.email)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          this.getMeCreateAppLimit(user);
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-        }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
-        this.utilsService.loadSpinner(true);
-      });
-  }
-
-
   getMeCreateAppLimit(user: any): void {
     this.authApiService.get("/user/get_create_app_limit/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
 
+          this.restriction_max_value = response.data[0].restriction_max_value;
+          localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }

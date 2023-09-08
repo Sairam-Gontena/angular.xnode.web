@@ -24,7 +24,7 @@ export class MyProductsComponent implements OnInit {
   filteredProducts: any[] = []
   email: any;
   filteredProductsByEmail: any[] = [];
-
+  showLimitReachedPopup: any;
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
     private route: ActivatedRoute, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -51,6 +51,22 @@ export class MyProductsComponent implements OnInit {
       this.removeParamFromRoute()
     }, 2000);
     this.filterProductsByUserEmail();
+    // this.getMeTotalOnboardedApps();
+  }
+
+  getMeTotalOnboardedApps(user: any): void {
+    this.apiService.get("/total_apps_onboarded/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utils.loadSpinner(true);
+      });
   }
 
   removeParamFromRoute(): void {
@@ -87,6 +103,12 @@ export class MyProductsComponent implements OnInit {
 
   }
   importNavi() {
+    const restriction_max_value = localStorage.getItem('total_apps_onboarded');
+    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) <= JSON.parse(restriction_max_value))) {
+      this.showLimitReachedPopup = true;
+      return
+    }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
   }
@@ -125,5 +147,15 @@ export class MyProductsComponent implements OnInit {
       this.email = JSON.parse(currentUser).email;
     }
     this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+  }
+
+  onClickNewWithNavi(): void {
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
+    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) === JSON.parse(restriction_max_value))) {
+      this.showLimitReachedPopup = true;
+      return
+    }
+    this.router.navigate(['/x-pilot']);
   }
 }

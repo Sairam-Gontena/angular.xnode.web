@@ -55,7 +55,7 @@ export class AuthApiService {
   }
 
   put(url: string) {
-    return axios.get(this.authEndPoint + "crud" + url, {
+    return axios.put(this.authEndPoint + url, {
     });
   }
 
