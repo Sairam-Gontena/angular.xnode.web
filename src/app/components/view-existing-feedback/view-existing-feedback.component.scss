@@ -12,6 +12,10 @@
     cursor: pointer;
 }
 
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
 .active {
     background: #535354;
 }
