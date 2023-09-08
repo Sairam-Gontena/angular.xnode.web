@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { UserUtil, User } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-app-side-menu',
@@ -14,27 +15,28 @@ import { UtilsService } from '../services/utils.service';
 export class AppSideMenuComponent implements OnInit {
   sideMenuItems: any;
   selectedMenuIndex: any;
-  currentUser?: User;
+  currentUser?: any;
   href: any;
   constructor(private router: Router, private utils: UtilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
-    if (this.currentUser?.role === 'admin') {
-      this.sideMenuItems = AppSideMenuItems.AdminSideMenu;
+    const environmentName = environment.name as keyof typeof AppSideMenuItems;
+    if (this.currentUser?.xnode_role_data.name === 'Xnode Admin') {
+      this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
       this.selectedMenuIndex = 0;
     } else {
-      this.sideMenuItems = AppSideMenuItems.UserSideMenu;
+      this.sideMenuItems = AppSideMenuItems[environmentName].UserSideMenu;
     }
   }
 
   onClickMenuItem(item: any, i: any): void {
     this.utils.showProductStatusPopup(false);
-    if (this.currentUser?.role?.toUpperCase() === 'ADMIN' && item.label == 'Home') {
+    if (this.currentUser?.xnode_role_data.name === 'Xnode Admin' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
-    } else if (this.currentUser?.role?.toUpperCase() === 'USER') {
+    } else if (this.currentUser?.xnode_role_data.name === 'Xnode Entity User') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }

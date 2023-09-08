@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
 
+
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
@@ -111,11 +112,15 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
         '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
+      if (has_insights) {
+        rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
+      }
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
@@ -168,17 +173,17 @@ export class AppComponent implements OnInit {
 
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products") {
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
         let userid = JSON.parse(currentUser).id
-        this.auditUtil.post(userid, 'Navi-opened', 'docs#/default/UserAuditController_create').then((response: any) => {
+        this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
           console.log(response)
         }).catch((err) => {
           console.log(err)
         })
       }
-      this.router.navigate(['/x-pilot'])
+      this.router.navigate(['/x-pilot']);
     } else {
       this.getUserData();
       this.isSideWindowOpen = newItem.cbFlag;

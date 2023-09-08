@@ -40,7 +40,6 @@ export class AccountTypeComponent implements OnInit{
  
   onSubmit(form:any){
     if (form.valid) {
-      console.log(form.value);
       let route = `sign-up?account=${form.value.accountFor}&businesstype=${form.value.businessType.value}`;
       this.router.navigateByUrl(route);
     } else {

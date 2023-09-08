@@ -23,8 +23,10 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ChipModule } from 'primeng/chip';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { RatingModule } from 'primeng/rating';
-
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { TabViewModule } from 'primeng/tabview';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+
 @NgModule({
   declarations: [
   ],
@@ -51,6 +53,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     BreadcrumbModule,
     AvatarModule,
     AvatarGroupModule,
+    TabViewModule,
+    InputTextareaModule
   ],
   exports: [
     FormsModule,
@@ -77,7 +81,9 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     ChipModule,
     SelectButtonModule,
     RatingModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    TabViewModule,
+    InputTextareaModule
   ]
 })
 export class SharedModule { }

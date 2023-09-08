@@ -36,9 +36,11 @@ export class DynamicTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTableData(this.inputData);
+
   }
 
   private loadTableData(data: any): void {
+  
     this.dynamicData = data;
     if (this.dynamicData) {
       this.headers = Object.keys(this.dynamicData[0]);
@@ -64,7 +66,6 @@ export class DynamicTableComponent implements OnInit {
     return Object.values(values).every(value => value === false);
   }
   handleDataAndAction(data: any) {
-    console.log(data)
     this.showConfirmationPopover = true;
     this.userDetails = data;
   }

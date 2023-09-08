@@ -14,6 +14,7 @@ export class UserInvitationComponent {
   usersList: any;
   Actions: any[] = [];
   items: MenuItem[] | undefined;
+  currentUser: any;
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService) {
     this.refreshListService.RefreshAdminUserList().subscribe((data) => {
@@ -33,25 +34,34 @@ export class UserInvitationComponent {
   }
 
   getAllUsers(): void {
-    let url = 'get_users/' + 'dev.xnode@salientminds.com'
-    this.apiService.getData(url)
-      .then((response: any) => {
-        this.utilsService.loadSpinner(false)
-        if (response?.status === 200) {
-          if (response?.data) {
-            this.usersList = response.data;
+    this.currentUser = localStorage.getItem('currentUser');
+    if (this.currentUser) {
+      this.currentUser = JSON.parse(this.currentUser)
+      let url = 'user/' + this.currentUser.user_details.email
+      this.apiService.getData(url)
+        .then((response: any) => {
+          this.utilsService.loadSpinner(false)
+          if (response?.status === 200) {
+            if (response?.data) {
+              let data = response.data.map((item: any) => {
+                let obj = { id: item.id, action: item.prospect_status, prospect_status_id: item.prospect_status_id }
+                let prospect_info = item.prospect_info
+                return { ...obj, ...prospect_info }
+              })
+              this.usersList = data;
+            } else {
+              this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+            }
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-        }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-        this.utilsService.loadSpinner(false)
+        })
+        .catch((error: any) => {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+          this.utilsService.loadSpinner(false)
+        });
+    }
 
-      });
 
   }
 }

@@ -1,4 +1,5 @@
 export const environment = {
+    name: 'QA',
     production: false,
     apiUrl: 'https://qa-navi.azurewebsites.net/',
     authApiUrl: 'https://qa-xnode-auth-api.azurewebsites.net/',
@@ -12,4 +13,5 @@ export const environment = {
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'qa-xnode-notifier',
     branchName: 'qa',
+    homeUrl: 'https://dev.xnode.ai/'
 }

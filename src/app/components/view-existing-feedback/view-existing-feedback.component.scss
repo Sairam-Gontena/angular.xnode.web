@@ -1,8 +1,19 @@
 .list-item {
+    background: #29282b;
+    color: #DEDEDE;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.list-item:hover {
     background: #535354;
     color: #DEDEDE;
     padding: 10px;
     cursor: pointer;
+}
+
+.active {
+    background: #535354;
 }
 
 :host::ng-deep .p-dialog .p-dialog-header {
@@ -10,13 +21,14 @@
 }
 
 :host::ng-deep .p-dropdown,
-:host::ng-deep .p-inputtext,
 :host::ng-deep .p-dialog .p-dialog-content,
 :host::ng-deep .p-dialog .p-dialog-header,
-:host::ng-deep .p-dialog .p-dialog-footer {
-    background: #23222B;
+:host::ng-deep .p-dialog .p-dialog-footer,
+.search {
+    background: #23222B !important;
     color: #fff;
 }
+
 
 :host::ng-deep .p-inputtext {
     border: 0 !important
@@ -64,4 +76,20 @@
     .list-item {
         padding: 15px 15px !important;
     }
+}
+
+:host::ng-deep .p-selectbutton .p-button.p-highlight {
+    background: #02ADEE;
+    border-color: #02ADEE;
+    padding: 16px 10px;
+}
+
+:host::ng-deep .p-buttonset .p-button:last-of-type,
+:host::ng-deep .p-buttonset .p-button:first-of-type {
+    padding: 16px 10px;
+}
+
+.report-list-height {
+    height: calc(100vh - 245px);
+    overflow-y: auto;
 }
