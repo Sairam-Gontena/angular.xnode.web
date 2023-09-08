@@ -121,7 +121,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
-          projectName: 'xnode',
+          projectName: environment.projectName,
           email: this.currentUser?.email,
           envName: environment.branchName,
           productId: this.productId ? this.productId : localStorage.getItem('record_id')
