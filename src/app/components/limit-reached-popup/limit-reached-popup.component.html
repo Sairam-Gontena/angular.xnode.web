@@ -1,4 +1,4 @@
-<p-dialog header=" Limit Reached" [(visible)]="visible" [style]="{width: '30vw'}">
+<p-dialog header=" Limit Reached" [(visible)]="visible" [style]="{width: '30vw'}" (onHide)="this.closePopup.emit()">
     <p>Limit Reached: You've exceeded the number of apps you can create with your current xnode plan.</p>
     <p>
         Don't worry, we've notified our support team about this, and an email has been sent to xnode support on your
