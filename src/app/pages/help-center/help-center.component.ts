@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
 import helpcentre from '../../../assets/json/help_centre.json'
 import { Location } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -37,16 +37,6 @@ export class HelpCenterComponent implements OnInit {
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.searchText.length > 0 ? this.getSearchInput('', this.json) : this.clearSearchText();
     });
-    // setTimeout(() => {
-    //   const anchor = document.getElementById('show_dialog');
-    //   console.log(anchor)
-    //   if (anchor) {
-    //     anchor.addEventListener('click', () => {
-    //       console.log('click hit')
-    //       this.showDialog();
-    //     });
-    //   }
-    // }, 5000);
   }
 
   getMeHtml(description: any) {
@@ -66,6 +56,16 @@ export class HelpCenterComponent implements OnInit {
     let item = this.json.filter((item: any) => { return item.accordianTitle == accordianTitle });
     this.selectedjson = item[0].objects.filter((subitem: any) => { return subitem.title == obj })
     this.selectedjson = this.selectedjson[0];
+    if (this.selectedjson.title === 'create an app in xnode') {
+      setTimeout(() => {
+        const videoElemet = this.el.nativeElement.querySelector('.cursor-pointer.no-underline.demo-video');
+        if (videoElemet) {
+          this.renderer.listen(videoElemet, 'click', () => {
+            this.showDialog();
+          });
+        }
+      });
+    }
     this.selectedMenuIndex = i;
   }
 
