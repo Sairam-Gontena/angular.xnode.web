@@ -350,7 +350,7 @@
                     "subobjects": [
                         {
                             "title": "How to create an app in xnode?",
-                            "description": "<a href='https://xnodestrg.blob.core.windows.net/legal/xnode-beta-short-farm-connect-20230827.mp4' class='cursor-pointer no-underline show_dialog' id='show_dialog' target='_blank'>Click here to view</a> how user has created “FarmConnect” application"
+                            "description": "<a class='cursor-pointer no-underline demo-video' >Click here to view</a> how the user has created “FarmConnect” application"
                         }
                     ]
                 }
