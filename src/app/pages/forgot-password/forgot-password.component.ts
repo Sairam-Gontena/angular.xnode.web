@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+
 @Component({
   selector: 'xnode-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -14,7 +15,9 @@ export class ForgotPasswordComponent implements OnInit {
   confirmPasswordValidator: boolean = false;
   errorMessage!: string;
   messages: any = [];
-  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService, private utilsService: UtilsService) {
+
+  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
+    private utilsService: UtilsService) {
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -30,7 +33,8 @@ export class ForgotPasswordComponent implements OnInit {
     return this.forgotPasswordForm.controls;
   }
 
-  onClick() {
+  onClickSubmit() {
+    this.utilsService.loadSpinner(true);
     this.submitted = true;
     if (this.forgotPasswordForm.invalid) {
       return;
@@ -46,13 +50,11 @@ export class ForgotPasswordComponent implements OnInit {
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
       }
+      this.utilsService.loadSpinner(false);
     }).catch((error: any) => {
+      this.utilsService.loadSpinner(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
     });
-  }
-
-  onClickSignup() {
-    this.router.navigate(['/'])
   }
 
   backToLogin() {
