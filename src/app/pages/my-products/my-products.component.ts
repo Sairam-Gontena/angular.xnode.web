@@ -7,6 +7,7 @@ import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuditutilsService } from '../../api/auditutils.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -28,7 +29,7 @@ export class MyProductsComponent implements OnInit {
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
     private userService: UserUtilsService,
-    private route: ActivatedRoute, private utils: UtilsService) {
+    private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -80,9 +81,21 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     this.router.navigate(['/dashboard']);
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'PRODUCT_OPENED', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'NEW_PRODUCT_CREATE', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
@@ -91,6 +104,12 @@ export class MyProductsComponent implements OnInit {
   importNavi() {
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'CSV_IMPORT', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
   //get calls 
   getMetaData() {
@@ -127,5 +146,15 @@ export class MyProductsComponent implements OnInit {
       this.email = JSON.parse(currentUser).email;
     }
     this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+  }
+
+  openNavi() {
+    this.router.navigate(['/x-pilot'])
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 }

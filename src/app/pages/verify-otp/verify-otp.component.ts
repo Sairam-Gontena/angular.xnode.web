@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/auth.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from '../../api/auditutils.service';
 
 @Component({
   selector: 'xnode-verify-otp',
@@ -20,7 +21,7 @@ export class VerifyOtpComponent implements OnInit {
   resendTimer: number = 60;
 
   constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService,
-    private userService: UserUtilsService) {
+    private userService: UserUtilsService, private auditUtil: AuditutilsService) {
 
   }
 
@@ -84,7 +85,12 @@ export class VerifyOtpComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
           }
-          this.auditLog(response.data);
+          let userid = this.currentUser?.id
+          this.auditUtil.post(userid, 'VERIFY_OTP', 'user-audit').then((response: any) => {
+            console.log(response)
+          }).catch((err) => {
+            console.log(err)
+          })
           localStorage.setItem('currentUser', JSON.stringify(response?.data));
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
@@ -120,22 +126,20 @@ export class VerifyOtpComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  auditLog(user: any) {
-    const body = {
-      "userId": user.id,
-      "activityTypeId": "VERIFY_OTP",
-      "attemptCount": 0,
-      "attemptSuccess": "SUCCESS"
-    }
-    this.userService.post(body, '/user-audit').then((res: any) => {
-      if (!res) {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data.details });
-      }
-    }).catch(err => {
-      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    });
-  }
-
-
+  // auditLog(user: any) {
+  //   const body = {
+  //     "userId": user.id,
+  //     "activityTypeId": "VERIFY_OTP",
+  //     "attemptCount": 0,
+  //     "attemptSuccess": "SUCCESS"
+  //   }
+  //   this.userService.post(body, '/user-audit').then((res: any) => {
+  //     if (!res) {
+  //       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data.details });
+  //     }
+  //   }).catch(err => {
+  //     this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+  //   });
+  // }
 }
 

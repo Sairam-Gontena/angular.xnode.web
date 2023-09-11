@@ -5,7 +5,7 @@ import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
-
+import { User } from 'src/app/utils/user-util';
 @Component({
   selector: 'xnode-page-tools-layout',
   templateUrl: './page-tools-layout.component.html',
@@ -21,6 +21,7 @@ export class PageToolsLayoutComponent {
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
   activatedAccIndex = 1;
+  currentUser?: User;
 
   constructor(private router: Router, private subMenuLayoutUtil: UtilsService) {
     if (environment.name === 'BETA') {
@@ -60,7 +61,6 @@ export class PageToolsLayoutComponent {
   onClickSubMenuItem(subMenuItem: any) {
     if (subMenuItem.routerlink !== '') {
       this.router.navigate([subMenuItem.routerlink])
-
     }
   }
   onClickAccordian(item: any, index: number) {
@@ -108,6 +108,7 @@ export class PageToolsLayoutComponent {
   selectedSubMenu(id: any) {
     this.sideMenuItem?.subMenuItems?.forEach((item: any) => {
       item?.accordianContent?.forEach((innerItem: any) => {
+
         let contentElem = document.getElementById(item.accordianHeader + innerItem.id) as HTMLElement;
         if (contentElem) {
           contentElem.style.background = '#24232c';
@@ -116,6 +117,12 @@ export class PageToolsLayoutComponent {
     });
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
+      let userid = this.currentUser?.id;
+      console.log(this.currentUser)
+      // this.auditUtil.post(userid, id, 'user-audit').then((response: any) => {
+      // }).catch((err) => {
+      //   console.log(err)
+      // })
       idElem.style.background = '#302e38';
     }
   }

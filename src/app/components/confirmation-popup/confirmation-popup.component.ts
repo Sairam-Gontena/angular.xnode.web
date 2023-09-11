@@ -3,6 +3,8 @@ import { ApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from '../../api/auditutils.service';
+
 
 @Component({
   selector: 'xnode-confirmation-popup',
@@ -16,7 +18,7 @@ export class ConfirmationPopupComponent {
   visible: boolean = false;
   currentUser?: any;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
+  constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -68,6 +70,12 @@ export class ConfirmationPopupComponent {
           if (response?.data) {
             this.refreshListService.toggleAdminUserListRefresh();
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been invited successfully' });
+            let userid = this.currentUser?.id
+            this.auditUtil.post(userid, action, 'user-audit').then((response: any) => {
+              console.log(response)
+            }).catch((err) => {
+              console.log(err)
+            })
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }

@@ -11,6 +11,8 @@ import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from '../../api/auditutils.service';
+
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -54,7 +56,7 @@ export class AppHeaderComponent implements OnInit {
 
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
-    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService, private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
@@ -78,6 +80,12 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
+          let userid = this.currentUser?.id
+          this.auditUtil.post(userid, 'LOGGED_OUT', 'user-audit').then((response: any) => {
+            console.log(response)
+          }).catch((err) => {
+            console.log(err)
+          })
           this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
@@ -108,11 +116,23 @@ export class AppHeaderComponent implements OnInit {
   toggleFeedbackPopup() {
     this.utilsService.loadSpinner(true);
     this.capture();
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'FEEDBACK', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'HELP_CENTER', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   capture(): void {
@@ -178,6 +198,12 @@ export class AppHeaderComponent implements OnInit {
       this.opOverlay.show(this.eventOverlay);
     }
     this.closeOverlay = false;
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'NOTIFICATIONS', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   overlayToggleFromNotificationPanel(event: any) {

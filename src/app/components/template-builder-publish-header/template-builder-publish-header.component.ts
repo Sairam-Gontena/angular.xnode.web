@@ -7,6 +7,8 @@ import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
+import { AuditutilsService } from '../../api/auditutils.service';
+
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -34,7 +36,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
     private sanitizer: DomSanitizer,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private auditUtil: AuditutilsService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -111,6 +114,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     } else {
       this.showConfirmationPopup();
     }
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, this.selectedOption, 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   showConfirmationPopup(): void {
@@ -175,7 +184,13 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.selectedTemplate = product.id;
     }
     this.utilsService.showProductStatusPopup(false);
-    this.refreshCurrentRoute()
+    this.refreshCurrentRoute();
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, "TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
 

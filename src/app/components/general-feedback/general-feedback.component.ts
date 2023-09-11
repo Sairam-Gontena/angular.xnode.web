@@ -4,6 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuditutilsService } from '../../api/auditutils.service';
 
 
 
@@ -38,7 +39,7 @@ export class GeneralFeedbackComponent implements OnInit {
   rating: number = 3
 
   constructor(public utils: UtilsService,
-    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService,) {
+    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
@@ -133,11 +134,16 @@ export class GeneralFeedbackComponent implements OnInit {
         }
       ]
     }
-    console.log(body)
     this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
+        let userid = this.currentUser?.id;
+        this.auditUtil.post(userid, 'GENERAL_FEEDBACK', 'user-audit').then((response: any) => {
+          console.log(response);
+        }).catch((err) => {
+          console.log(err)
+        })
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
