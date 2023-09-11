@@ -20,7 +20,7 @@ export class HelpCenterComponent implements OnInit {
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
-  windowFind: boolean = true;
+  subscriptionPlans = ['Free', 'Enterprise', 'Business', 'Professional', 'Basic'];
   searchText: any;
   envUrl: any;
   private textInputSubject = new Subject<string>();
@@ -104,24 +104,13 @@ export class HelpCenterComponent implements OnInit {
       if (element?.objects) {
         element?.objects?.forEach((element: any) => {
           element.subobjects.forEach((subelement: any) => {
-            if (subelement.title.includes(keyword) || subelement.description.includes(keyword) || element.title.toUpperCase().includes(keyword.toUpperCase())) {
+            if (subelement.title.toUpperCase().includes(keyword.toUpperCase()) || subelement.description.includes(keyword) || element.title.toUpperCase().includes(keyword.toUpperCase())) {
               this.foundObjects = _.uniq(_.concat(this.foundObjects, subelement))
             }
           })
         });
       }
     });
-    this.windowFind = true;
-    this.windowFindFunction(keyword)
-  }
-
-  windowFindFunction(keyword: any) {
-    if (this.windowFind) {
-      setTimeout(() => {
-        window.find(keyword)
-      }, 1500);
-    }
-    this.windowFind = false;
   }
 
   onInput() {

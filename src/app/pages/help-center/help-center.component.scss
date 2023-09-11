@@ -80,3 +80,7 @@
 :host ::ng-deep.p-dialog {
     border: 1px solid #595959 !important;
 }
+
+:host ::ng-deep.accordion-help-menu .p-accordion-tab .p-accordion-header .p-accordion-header-link .p-accordion-header-text {
+    pointer-events: none !important;
+}
