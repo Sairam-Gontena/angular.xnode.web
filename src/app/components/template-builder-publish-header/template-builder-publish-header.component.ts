@@ -152,7 +152,13 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         if (response) {
           this.loadSpinnerInParent.emit(false);
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
-          this.utilsService.loadSpinner(false)
+          this.utilsService.loadSpinner(false);
+          let userid = this.currentUser?.id
+          this.auditUtil.post(userid, "PUBLISH_APP", 'user-audit').then((response: any) => {
+            console.log(response)
+          }).catch((err) => {
+            console.log(err)
+          })
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
         }
