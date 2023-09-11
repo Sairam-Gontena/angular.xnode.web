@@ -14,7 +14,8 @@
         <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="flex justify-content-end align-items-center">
-                    <a class="font-medium text-base no-underline pointer">View feedback history</a>
+                    <a class="font-medium text-base no-underline pointer"
+                        (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View feedback history</a>
                     <i class="pi pi-arrow-right"></i>
                 </div>
             </div>
