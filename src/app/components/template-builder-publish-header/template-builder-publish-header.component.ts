@@ -7,6 +7,7 @@ import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
+import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -36,7 +37,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
     private sanitizer: DomSanitizer,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private notifyApi: NotifyApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -123,6 +125,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         if (total_apps_onboarded) {
           if (res.data.total_apps_published >= total_apps_onboarded) {
             this.showLimitReachedPopup = true;
+            this.sendEmailNotificationToTheUser();
           } else {
             this.showConfirmationPopup();
           }
@@ -133,6 +136,28 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       }
     }).catch((err: any) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+      if (res && res?.data?.detail) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
 

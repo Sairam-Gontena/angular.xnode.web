@@ -4,6 +4,7 @@ import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from '../services/utils.service';
+import { NotifyApiService } from 'src/app/api/notify.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -28,7 +29,7 @@ export class NotificationPanelComponent {
   };
 
   constructor(private router: Router, private apiService: ApiService,
-    private utils: UtilsService) {
+    private utils: UtilsService, private notifyApi: NotifyApiService) {
   }
 
   ngOnInit(): void {
@@ -105,6 +106,7 @@ export class NotificationPanelComponent {
         if (total_apps_onboarded) {
           if (res.data.total_apps_published >= total_apps_onboarded) {
             this.showMeLimitInfoPopup.emit(true);
+            this.sendEmailNotificationToTheUser();
           } else {
             this.publishApp(obj);
           }
@@ -115,6 +117,28 @@ export class NotificationPanelComponent {
       }
     }).catch((err: any) => {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+      if (res && res?.data?.detail) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
+      }
+    }).catch((err: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
 

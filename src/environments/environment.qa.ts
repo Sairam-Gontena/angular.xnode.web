@@ -3,6 +3,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://qa-navi.azurewebsites.net/',
     authApiUrl: 'https://qa-xnode-auth-api.azurewebsites.net/',
+    notifyApiUrl: 'https://qa-notify-api.azurewebsites.net/',
     userUtilsApi: 'https://qa-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://qa-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'https://qa-xnode.azurewebsites.net/',

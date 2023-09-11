@@ -3,6 +3,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://dev-navi.azurewebsites.net/',
     authApiUrl: 'https://dev-xnode-auth-api.azurewebsites.net/',
+    notifyApiUrl: 'https://dev-notify-api.azurewebsites.net/',
     userUtilsApi: 'https://dev-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://dev-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'http://localhost:4200/',
