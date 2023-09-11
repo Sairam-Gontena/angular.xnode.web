@@ -58,19 +58,19 @@
                     <div *ngIf="i==0">
                         <p-table #dt [value]="tableData" class="border-round-lg">
                             <ng-template pTemplate='header'>
-                                <tr [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Feature</th>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Product Feature |
+                                <tr class="dark-table-cell text-white">
+                                    <th class="dark-table-cell text-white">Feature</th>
+                                    <th class="dark-table-cell text-white">Product Feature |
                                         Customer Tier</th>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Free</th>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Basic</th>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Professional</th>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Business</th>
-                                    <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Enterprise</th>
+                                    <th class="dark-table-cell text-white">Free</th>
+                                    <th class="dark-table-cell text-white">Basic</th>
+                                    <th class="dark-table-cell text-white">Professional</th>
+                                    <th class="dark-table-cell text-white">Business</th>
+                                    <th class="dark-table-cell text-white">Enterprise</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate='body' let-data let-rowIndex="rowIndex">
-                                <tr [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>
+                                <tr class="dark-table-cell text-white">
                                     <td> {{rowIndex + 1}} </td>
                                     <td>{{data.ProductFeature}}</td>
                                     <td>{{data.Free}}</td>
@@ -119,19 +119,19 @@
                         <div *ngIf="i==0">
                             <p-table #dt [value]="tableData" class="border-round-lg">
                                 <ng-template pTemplate='header'>
-                                    <tr [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Feature</th>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Product Feature |
+                                    <tr>
+                                        <th class="dark-table-cell text-white">Feature</th>
+                                        <th class="dark-table-cell text-white">Product Feature |
                                             Customer Tier</th>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Free</th>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Basic</th>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Professional</th>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Business</th>
-                                        <th [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>Enterprise</th>
+                                        <th class="dark-table-cell text-white">Free</th>
+                                        <th class="dark-table-cell text-white">Basic</th>
+                                        <th class="dark-table-cell text-white">Professional</th>
+                                        <th class="dark-table-cell text-white">Business</th>
+                                        <th class="dark-table-cell text-white">Enterprise</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate='body' let-data let-rowIndex="rowIndex">
-                                    <tr [ngStyle]='{backgroundColor:"#23222b", color:"white"}'>
+                                    <tr class="dark-table-cell text-white">
                                         <td> {{rowIndex + 1}} </td>
                                         <td>{{data.ProductFeature}}</td>
                                         <td>{{data.Free}}</td>
