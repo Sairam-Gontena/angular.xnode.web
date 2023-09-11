@@ -35,7 +35,14 @@ export class GeneralFeedbackComponent implements OnInit {
   browserSelected: boolean = false;
   uploadedFileData: any;
   currentUser?: User;
-  rating: number = 3
+  rating: any;
+  isHovered: boolean = false;
+  selectedRating: string | null = null;
+  imageOpacity: number = 0.5;
+  imageOpacityOne: number = 0.5;
+  imageOpacityTwo: number = 0.5;
+  imageOpacityThree: number = 0.5;
+  imageOpacityFour: number = 0.5;
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService,) {
@@ -277,10 +284,48 @@ export class GeneralFeedbackComponent implements OnInit {
     this.utils.showFeedbackPopupByType('');
   }
 
-  gotRating(val: any) {
-    this.rating = val.value
+  // gotRating(val: any) {
+  //   this.rating = val.value
+  //   console.log(this.rating)
+  // }
+  gotRating(rating: string, event: Event) {
+    // 'rating' now holds the value passed from the template
+    // 'event' contains information about the click event
+    console.log('Rating:', rating);
+    this.rating = rating;
     console.log(this.rating)
   }
+  onMouseOver(rating: string) {
+    if (!this.selectedRating) {
+      this.isHovered = true;
+    }
+  }
+
+  onMouseOut() {
+    this.isHovered = false;
+  }
+
+  onStarClick(rating: string) {
+    switch (rating) {
+      case 'ONE':
+        this.imageOpacityOne = this.imageOpacityOne === 0.5 ? 1.5 : 0.5;
+        break;
+      case 'TWO':
+        this.imageOpacityTwo = this.imageOpacityTwo === 0.5 ? 1.5 : 0.5;
+        break;
+      case 'THREE':
+        this.imageOpacityThree = this.imageOpacityThree === 0.5 ? 1.5 : 0.5;
+        break;
+      case 'FOUR':
+        this.imageOpacityFour = this.imageOpacityFour === 0.5 ? 1.5 : 0.5;
+        break;
+      default:
+        break;
+    }
+    this.selectedRating = rating;
+    console.log(this.selectedRating)
+  }
+
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
     const files = (event.target as HTMLInputElement).files;

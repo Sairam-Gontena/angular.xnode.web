@@ -14,8 +14,7 @@
         <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="flex justify-content-end align-items-center">
-                    <a class="font-medium text-base no-underline pointer"
-                        (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View feedback history</a>
+                    <a class="font-medium text-base no-underline pointer">View feedback history</a>
                     <i class="pi pi-arrow-right"></i>
                 </div>
             </div>
@@ -23,21 +22,18 @@
                 class="grid flex justify-content-center align-items-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <label class="text-base font-medium ">How would you like to rate your experience</label>
                 <form [formGroup]="formGroup">
-                    <p-rating formControlName="value" [stars]="5" (onRate)="gotRating($event)">
-                        <ng-template pTemplate="cancel">
-                            <img src="./assets/star1.svg" width="60px" height="60px" />
-                        </ng-template>
-                        <ng-template pTemplate="onicon">
-                            <img src="./assets/star1.svg" width="60px" height="60px" />
-                            <img src="./assets/star2.svg" width="60px" height="60px" />
-                            <img src="./assets/star3.svg" width="60px" height="60px" />
-                            <img src="./assets/star4.svg" width="60px" height="60px" />
-                            <img src="./assets/star5.svg" width="60px" height="60px" />
-                        </ng-template>
-                        <ng-template pTemplate="officon">
-                            <img src="./assets/star1.svg" width="60px" height="60px" />
-                        </ng-template>
-                    </p-rating>
+                    <div class="flex flex-wrap justify-content-center pointer gap-3">
+                        <img src="./assets/star1.svg" width="60px" height="60px" (click)="onStarClick('ONE')"
+                            [style.opacity]="imageOpacityOne" />
+                        <img src="./assets/star2.svg" width="60px" height="60px" (click)="onStarClick('TWO')"
+                            [style.opacity]="imageOpacityTwo" />
+                        <img src="./assets/star3.svg" width="60px" height="60px" (click)="onStarClick('THREE')"
+                            [style.opacity]="imageOpacityThree" />
+                        <img src="./assets/star4.svg" width="60px" height="60px" (click)="onStarClick('FOUR')"
+                            [style.opacity]="imageOpacityFour" />
+                        <img src="./assets/star5-normal.svg" width="60px" height="60px" (click)="onStarClick('FIVE')"
+                            [src]="selectedRating === 'FIVE' ? './assets/star5.svg' : './assets/star5-normal.svg'" />
+                    </div>
                 </form>
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
