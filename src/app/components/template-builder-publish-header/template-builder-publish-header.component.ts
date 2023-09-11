@@ -121,9 +121,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   getMeTotalAppsPublishedCount(): void {
     this.apiService.get('/total_apps_published/' + this.currentUser?.xnode_user_data?.account_id).then((res: any) => {
       if (res && res.status === 200) {
-        const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-        if (total_apps_onboarded) {
-          if (res.data.total_apps_published >= total_apps_onboarded) {
+        const restriction_max_value = localStorage.getItem('restriction_max_value');
+        if (restriction_max_value) {
+          if (res.data.total_apps_published >= restriction_max_value) {
             this.showLimitReachedPopup = true;
             this.sendEmailNotificationToTheUser();
           } else {
