@@ -170,16 +170,6 @@ export class MyProductsComponent implements OnInit {
     this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
   }
 
-<<<<<<< HEAD
-  openNavi() {
-    this.router.navigate(['/x-pilot'])
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
-      console.log(response)
-    }).catch((err) => {
-      console.log(err)
-    })
-=======
   onClickNewWithNavi(): void {
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
@@ -188,6 +178,11 @@ export class MyProductsComponent implements OnInit {
       return
     }
     this.router.navigate(['/x-pilot']);
->>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
+      console.log(response)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 }

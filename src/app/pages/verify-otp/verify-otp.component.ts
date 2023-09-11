@@ -1,13 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-<<<<<<< HEAD
-import { ApiService } from 'src/app/api/auth.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
-=======
-import { AuthApiService } from 'src/app/api/auth.service';
 import { ApiService } from 'src/app/api/api.service';
-
->>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
+import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from '../../api/auditutils.service';
 
@@ -27,13 +22,8 @@ export class VerifyOtpComponent implements OnInit {
   total_apps_onboarded: any;
   restriction_max_value: any;
 
-<<<<<<< HEAD
   constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService,
-    private userService: UserUtilsService, private auditUtil: AuditutilsService) {
-=======
-  constructor(private router: Router, private apiService: ApiService,
-    private utilsService: UtilsService, private authApiService: AuthApiService) {
->>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
+    private userService: UserUtilsService, private auditUtil: AuditutilsService, private authApiService: AuthApiService) {
 
   }
 
@@ -138,8 +128,6 @@ export class VerifyOtpComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['/']);
   }
-
-<<<<<<< HEAD
   // auditLog(user: any) {
   //   const body = {
   //     "userId": user.id,
@@ -155,7 +143,6 @@ export class VerifyOtpComponent implements OnInit {
   //     this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
   //   });
   // }
-=======
   getMeCreateAppLimit(user: any): void {
     this.authApiService.get("/user/get_create_app_limit/" + user?.email)
       .then((response: any) => {
@@ -172,10 +159,5 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadSpinner(true);
       });
   }
-
-
-
-
->>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
 }
 
