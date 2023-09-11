@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
+import { AuditutilsService } from '../../api/auditutils.service';
+import { UtilsService } from '../services/utils.service';
+
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -23,7 +26,7 @@ export class NotificationPanelComponent {
     all: true
   };
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private auditUtil: AuditutilsService, public utils: UtilsService,) {
   }
 
   ngOnInit(): void {
@@ -45,6 +48,15 @@ export class NotificationPanelComponent {
     } else {
       this.router.navigate(['/dashboard']);
     }
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'JUMP_TO_PRODUCT_FROM_NOTIFICATION', 'user-audit').then((response: any) => {
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
+    }).catch((err) => {
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
+    })
   }
 
   getMeLabel(obj: any) {
@@ -93,5 +105,14 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
+    let userid = this.currentUser?.id
+    this.auditUtil.post(userid, 'PUBLISH_APP_FROM_NOTIFICATION', 'user-audit').then((response: any) => {
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
+    }).catch((err) => {
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
+    })
   }
 }

@@ -99,18 +99,24 @@ export class MyProductsComponent implements OnInit {
     this.router.navigate(['/dashboard']);
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, 'PRODUCT_OPENED', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, 'NEW_PRODUCT_CREATE', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
   openExternalLink(productUrl: string) {
@@ -128,9 +134,12 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('show-upload-panel', 'true');
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, 'CSV_IMPORT', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
   //get calls 
@@ -178,11 +187,15 @@ export class MyProductsComponent implements OnInit {
       return
     }
     this.router.navigate(['/x-pilot']);
+    console.log("======")
     let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
-      console.log(response)
+    this.auditUtil.post(userid, 'NEW_WITH_NAVI', 'user-audit').then((response: any) => {
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 }

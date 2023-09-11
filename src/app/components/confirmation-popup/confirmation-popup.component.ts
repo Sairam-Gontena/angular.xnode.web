@@ -77,9 +77,12 @@ export class ConfirmationPopupComponent implements OnInit {
           }
           let userid = this.currentUser?.id
           this.auditUtil.post(userid, action, 'user-audit').then((response: any) => {
-            console.log(response)
+            if (response?.status === 200) {
+            } else {
+              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+            }
           }).catch((err) => {
-            console.log(err)
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
           })
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });

@@ -118,9 +118,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, this.selectedOption, 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 
@@ -155,9 +158,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           this.utilsService.loadSpinner(false);
           let userid = this.currentUser?.id
           this.auditUtil.post(userid, "PUBLISH_APP", 'user-audit').then((response: any) => {
-            console.log(response)
+            if (response?.status === 200) {
+            } else {
+              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+            }
           }).catch((err) => {
-            console.log(err)
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
           })
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
@@ -196,9 +202,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.refreshCurrentRoute();
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, "TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 

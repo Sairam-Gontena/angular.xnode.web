@@ -8,6 +8,7 @@ import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { AuditutilsService } from '../../api/auditutils.service';
 
+
 @Component({
   selector: 'xnode-app-side-menu',
   templateUrl: './app-side-menu.component.html',
@@ -43,9 +44,12 @@ export class AppSideMenuComponent implements OnInit {
     }
     let userid = this.currentUser?.id;
     this.auditUtil.post(userid, item.path, 'user-audit').then((response: any) => {
-      console.log(response);
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 }

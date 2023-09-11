@@ -228,9 +228,12 @@ export class AppComponent implements OnInit {
       if (currentUser) {
         let userid = JSON.parse(currentUser).id
         this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
-          console.log(response)
+          if (response?.status === 200) {
+          } else {
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+          }
         }).catch((err) => {
-          console.log(err)
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
         })
       }
       this.router.navigate(['/x-pilot']);

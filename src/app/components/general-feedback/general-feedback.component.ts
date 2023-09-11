@@ -134,15 +134,19 @@ export class GeneralFeedbackComponent implements OnInit {
         }
       ]
     }
+    console.log(body)
     this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
         let userid = this.currentUser?.id;
         this.auditUtil.post(userid, 'GENERAL_FEEDBACK', 'user-audit').then((response: any) => {
-          console.log(response);
+          if (response?.status === 200) {
+          } else {
+            this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+          }
         }).catch((err) => {
-          console.log(err)
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
         })
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });

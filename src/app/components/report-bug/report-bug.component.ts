@@ -125,9 +125,12 @@ export class ReportBugComponent implements OnInit {
     }
     let userid = this.currentUser?.id;
     this.auditUtil.post(userid, 'BUG_REPORT', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 

@@ -6,6 +6,8 @@ import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
 import { User } from 'src/app/utils/user-util';
+import { AuditutilsService } from '../../api/auditutils.service';
+
 @Component({
   selector: 'xnode-page-tools-layout',
   templateUrl: './page-tools-layout.component.html',
@@ -23,13 +25,12 @@ export class PageToolsLayoutComponent {
   activatedAccIndex = 1;
   currentUser?: User;
 
-  constructor(private router: Router, private subMenuLayoutUtil: UtilsService) {
+  constructor(private router: Router, private subMenuLayoutUtil: UtilsService, private auditUtil: AuditutilsService, public utils: UtilsService,) {
     if (environment.name === 'BETA') {
       this.sideMenu = SubMenuConfig.BETA
     } else {
       this.sideMenu = SubMenuConfig.DEV
     }
-
   }
 
   ngOnInit() {
@@ -118,11 +119,14 @@ export class PageToolsLayoutComponent {
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
       let userid = this.currentUser?.id;
-      console.log(this.currentUser)
-      // this.auditUtil.post(userid, id, 'user-audit').then((response: any) => {
-      // }).catch((err) => {
-      //   console.log(err)
-      // })
+      this.auditUtil.post(userid, id, 'user-audit').then((response: any) => {
+        if (response?.status === 200) {
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      }).catch((err) => {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
+      })
       idElem.style.background = '#302e38';
     }
   }

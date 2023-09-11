@@ -82,9 +82,12 @@ export class AppHeaderComponent implements OnInit {
         command: () => {
           let userid = this.currentUser?.id
           this.auditUtil.post(userid, 'LOGGED_OUT', 'user-audit').then((response: any) => {
-            console.log(response)
+            if (response?.status === 200) {
+            } else {
+              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+            }
           }).catch((err) => {
-            console.log(err)
+            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
           })
           this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
@@ -118,9 +121,12 @@ export class AppHeaderComponent implements OnInit {
     this.capture();
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, 'FEEDBACK', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 
@@ -129,9 +135,12 @@ export class AppHeaderComponent implements OnInit {
     this.utilsService.showProductStatusPopup(false);
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, 'HELP_CENTER', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 
@@ -200,9 +209,12 @@ export class AppHeaderComponent implements OnInit {
     this.closeOverlay = false;
     let userid = this.currentUser?.id
     this.auditUtil.post(userid, 'NOTIFICATIONS', 'user-audit').then((response: any) => {
-      console.log(response)
+      if (response?.status === 200) {
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
     }).catch((err) => {
-      console.log(err)
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
     })
   }
 
