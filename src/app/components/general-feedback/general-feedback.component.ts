@@ -279,6 +279,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
   gotRating(val: any) {
     this.rating = val.value
+    console.log(this.rating)
   }
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
