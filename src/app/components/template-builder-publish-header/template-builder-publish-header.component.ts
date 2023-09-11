@@ -31,6 +31,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   iframeSrc: any;
   emailData: any;
   product_url: any;
+  showLimitReachedPopup: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
@@ -111,8 +112,28 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
-      this.showConfirmationPopup();
+      this.getMeTotalAppsPublishedCount();
     }
+  }
+
+  getMeTotalAppsPublishedCount(): void {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.xnode_user_data?.account_id).then((res: any) => {
+      if (res && res.status === 200) {
+        const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+        if (total_apps_onboarded) {
+          if (res.data.total_apps_published >= total_apps_onboarded) {
+            this.showLimitReachedPopup = true;
+          } else {
+            this.showConfirmationPopup();
+          }
+        }
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
+
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
   }
 
   showConfirmationPopup(): void {

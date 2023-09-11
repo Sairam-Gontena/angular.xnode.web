@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
+import { ApiService } from 'src/app/api/api.service';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -11,11 +13,13 @@ import { environment } from 'src/environments/environment';
 export class NotificationPanelComponent {
   @Input() data: any;
   @Output() preparePublishPopup = new EventEmitter<any>();
+  @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
-  currentUser?: User;
+  currentUser?: any;
+  account_id: any;
   filterTypes: any = {
     recent: false,
     important: false,
@@ -23,7 +27,8 @@ export class NotificationPanelComponent {
     all: true
   };
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private apiService: ApiService,
+    private utils: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -90,8 +95,33 @@ export class NotificationPanelComponent {
   }
 
   onClickPublish(obj: any): void {
+    this.getMeTotalAppsPublishedCount(obj);
+  }
+
+  getMeTotalAppsPublishedCount(obj: any): void {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.xnode_user_data?.account_id).then((res: any) => {
+      if (res && res.status === 200) {
+        const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+        if (total_apps_onboarded) {
+          if (res.data.total_apps_published >= total_apps_onboarded) {
+            this.showMeLimitInfoPopup.emit(true);
+          } else {
+            this.publishApp(obj);
+          }
+        }
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
+
+      }
+    }).catch((err: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
+  }
+
+  publishApp(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
   }
 }
+

@@ -51,7 +51,7 @@ export class AppHeaderComponent implements OnInit {
   opOverlay: any;
   showFeedBacks: any;
   selectedPopup: any;
-
+  showLimitReachedPopup: boolean = false;
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
@@ -227,6 +227,10 @@ export class AppHeaderComponent implements OnInit {
   onClickLogo(): void {
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
+  }
+
+  showMeLimitInfoPopup(event: any): void {
+    this.showLimitReachedPopup = event;
   }
 
 }
