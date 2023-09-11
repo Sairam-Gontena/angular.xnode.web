@@ -24,13 +24,13 @@
                 <form [formGroup]="formGroup">
                     <div class="flex flex-wrap justify-content-center pointer gap-3">
                         <img src="./assets/star1.svg" width="60px" height="60px" (click)="onStarClick('ONE')"
-                            [style.opacity]="imageOpacityOne" />
+                            [src]="selectedRating === 'ONE' ? './assets/star1-normal.svg' : './assets/star1.svg'" />
                         <img src="./assets/star2.svg" width="60px" height="60px" (click)="onStarClick('TWO')"
-                            [style.opacity]="imageOpacityTwo" />
+                            [src]="selectedRating === 'TWO' ? './assets/star2-normal.svg' : './assets/star2.svg'" />
                         <img src="./assets/star3.svg" width="60px" height="60px" (click)="onStarClick('THREE')"
-                            [style.opacity]="imageOpacityThree" />
+                            [src]="selectedRating === 'THREE' ? './assets/star3-normal.svg' : './assets/star3.svg'" />
                         <img src="./assets/star4.svg" width="60px" height="60px" (click)="onStarClick('FOUR')"
-                            [style.opacity]="imageOpacityFour" />
+                            [src]="selectedRating === 'FOUR' ? './assets/star4-normal.svg' : './assets/star4.svg'" />
                         <img src="./assets/star5-normal.svg" width="60px" height="60px" (click)="onStarClick('FIVE')"
                             [src]="selectedRating === 'FIVE' ? './assets/star5.svg' : './assets/star5-normal.svg'" />
                     </div>
