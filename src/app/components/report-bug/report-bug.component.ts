@@ -72,8 +72,9 @@ export class ReportBugComponent implements OnInit {
 
   ngOnInit(): void {
     this.priorities = [
-      { name: 'Choose Priority', code: 'choose priority' },
-      { name: 'Urgent', code: 'urgent' },
+      { name: 'Low', code: 'Low' },
+      { name: 'Medium', code: 'Medium' },
+      { name: 'High', code: 'High' }
     ];
     this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
   }

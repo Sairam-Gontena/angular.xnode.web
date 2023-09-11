@@ -50,7 +50,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
   }
 
   getMeReportedBugList(): void {
-    this.userUtilService.get('/user-bug-report').then((res: any) => {
+    this.userUtilService.get('user-bug-report').then((res: any) => {
       if (res) {
         this.reportList = res.data;
         if (res?.data.length) {

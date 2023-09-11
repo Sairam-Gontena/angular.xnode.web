@@ -34,7 +34,7 @@ export class GeneralFeedbackComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = false;
   uploadedFileData: any;
-  currentUser?: User;
+  currentUser?: any;
   rating: number = 3
 
   constructor(public utils: UtilsService,
@@ -71,6 +71,9 @@ export class GeneralFeedbackComponent implements OnInit {
     this.formGroup = new FormGroup({
       value: new FormControl(this.rating)
     });
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser)
+      this.currentUser = JSON.parse(currentUser)
   }
   getMeComponent() {
     let comp = '';
@@ -123,7 +126,7 @@ export class GeneralFeedbackComponent implements OnInit {
       "userId": this.currentUser?.id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.generalFeedbackForm.value.section,
-      "feedbackText": this.generalFeedbackForm.value.feedbackText,
+      "feedbackText": this.generalFeedbackForm.value.tellUsMore,
       "feedbackRatingId": this.generalFeedbackForm.value.rating,
       "feedbackStatusId": "new",
       "userFiles": [
@@ -279,6 +282,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
   gotRating(val: any) {
     this.rating = val.value
+    console.log(this.rating)
   }
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
