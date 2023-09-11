@@ -1,8 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+<<<<<<< HEAD
 import { ApiService } from 'src/app/api/auth.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
+=======
+import { AuthApiService } from 'src/app/api/auth.service';
+import { ApiService } from 'src/app/api/api.service';
+
+>>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from '../../api/auditutils.service';
 
@@ -19,9 +24,16 @@ export class VerifyOtpComponent implements OnInit {
   email: any;
   maskedEmail!: string;
   resendTimer: number = 60;
+  total_apps_onboarded: any;
+  restriction_max_value: any;
 
+<<<<<<< HEAD
   constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService,
     private userService: UserUtilsService, private auditUtil: AuditutilsService) {
+=======
+  constructor(private router: Router, private apiService: ApiService,
+    private utilsService: UtilsService, private authApiService: AuthApiService) {
+>>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
 
   }
 
@@ -58,7 +70,7 @@ export class VerifyOtpComponent implements OnInit {
     this.otp = '';
     this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
-    this.apiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
+    this.authApiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
       .then((response: any) => {
         if (response?.status === 200) {
           this.startResendTimer();
@@ -75,7 +87,7 @@ export class VerifyOtpComponent implements OnInit {
   }
   verifyAccount() {
     this.utilsService.loadSpinner(true);
-    this.apiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
+    this.authApiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && response?.data) {
           if (response?.data?.xnode_role_data.name === 'Xnode Admin') {
@@ -113,6 +125,7 @@ export class VerifyOtpComponent implements OnInit {
             this.router.navigate(['/x-pilot']);
           }
           this.utilsService.loadSpinner(true);
+          this.getMeCreateAppLimit(user);
         }
       })
       .catch((error: any) => {
@@ -126,6 +139,7 @@ export class VerifyOtpComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+<<<<<<< HEAD
   // auditLog(user: any) {
   //   const body = {
   //     "userId": user.id,
@@ -141,5 +155,27 @@ export class VerifyOtpComponent implements OnInit {
   //     this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
   //   });
   // }
+=======
+  getMeCreateAppLimit(user: any): void {
+    this.authApiService.get("/user/get_create_app_limit/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+
+          this.restriction_max_value = response.data[0].restriction_max_value;
+          localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadSpinner(true);
+      });
+  }
+
+
+
+
+>>>>>>> b8bd8a7de4c9542d5333b51c0b634f32657765cc
 }
 

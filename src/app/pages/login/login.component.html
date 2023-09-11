@@ -46,23 +46,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                        <div class="flex justify-content-between">
-                                            <div class="">
-                                                <p-checkbox formControlName="rememberMe" value="Remember me"
-                                                    [ngClass]="{ 'is-invalid': submitted && login['rememberMe'].errors }"
-                                                    inputId="ny"></p-checkbox>
-                                                <label for="rememberMe" class="ml-2 text-500">Remember me</label>
-                                                <div *ngIf="submitted && login['rememberMe'].errors"
-                                                    class="invalid-feedback">
-                                                    <div *ngIf="login['rememberMe'].errors['required']">Remember me
-                                                        is required</div>
-                                                </div>
-                                            </div>
-                                            <a class="font-medium text-base no-underline forgot-pwd pointer"
-                                                routerLink="/forgot-password">Forgot
-                                                Password?</a>
-                                        </div>
+                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 text-right">
+                                        <a class="font-medium text-base no-underline forgot-pwd pointer"
+                                            routerLink="/forgot-password">Forgot
+                                            Password?</a>
                                     </div>
                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
                                         <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
@@ -73,7 +60,7 @@
                                     </div>
                                     <div
                                         class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
-                                        <a href="https://dev.xnode.ai/terms-of-service/" class="no-underline mr-1"
+                                        <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1"
                                             target="_blank">Terms of service </a><span style="color:#fff">and</span><a
                                             href="https://dev.xnode.ai/privacy-policy/" target="_blank"
                                             class="no-underline ml-1">privacy policy</a>

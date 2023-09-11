@@ -32,6 +32,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   productData: any;
   iframeSrc: any;
   emailData: any;
+  product_url: any;
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
@@ -67,6 +68,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.templates = JSON.parse(metaData);
       if (product) {
         this.selectedTemplate = JSON.parse(product).id;
+        this.product_url = JSON.parse(product).product_url;
       }
     }
 
@@ -130,7 +132,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
-          projectName: 'xnode',
+          projectName: environment.projectName,
           email: this.currentUser?.email,
           envName: environment.branchName,
           productId: this.productId ? this.productId : localStorage.getItem('record_id')
@@ -179,9 +181,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (product) {
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);
-      localStorage.setItem('product_url', product.url ? product.url : '');
+      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
       this.selectedTemplate = product.id;
+      this.product_url = product.product_url;
     }
     this.utilsService.showProductStatusPopup(false);
     this.refreshCurrentRoute();

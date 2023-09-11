@@ -55,7 +55,7 @@ export class TemplateBuilderComponent implements OnInit {
 
   }
   makeTrustedUrl(): void {
-    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights;
+    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true';
     setTimeout(() => {
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);;
       this.loadIframeUrl();
@@ -98,7 +98,7 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   loadDesignStudio() {
-    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights;;
+    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true';
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 

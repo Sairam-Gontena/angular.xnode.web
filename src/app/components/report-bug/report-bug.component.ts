@@ -73,8 +73,9 @@ export class ReportBugComponent implements OnInit {
 
   ngOnInit(): void {
     this.priorities = [
-      { name: 'Choose Priority', code: 'choose priority' },
-      { name: 'Urgent', code: 'urgent' },
+      { name: 'Low', code: 'low' },
+      { name: 'Medium', code: 'medium' },
+      { name: 'High', code: 'high' }
     ];
     this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
   }
@@ -137,7 +138,7 @@ export class ReportBugComponent implements OnInit {
       "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
       "severityId": this.feedbackForm.value.severityId,
-      "feedbackStatusId": "new",
+      "feedbackStatusId": "Open",
       "requestTypeId": "bug-report",
       "internalTicketId": '-',
       "userFiles": [

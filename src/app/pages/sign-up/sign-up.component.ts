@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Emails } from 'src/app/utils/login-util';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
 import {
   SocialAuthService,
-  GoogleLoginProvider,
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { CreateAccountPopupComponent } from '../create-account-popup/create-account-popup.component';
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -35,7 +32,7 @@ export class SignUpComponent implements OnInit {
     scope: "r_liteprofile%20r_emailaddress%20w_member_social" // To read basic user profile data and email
   };
 
-  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private apiService: ApiService, private utilService: UtilsService) {
+  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private authApiService: AuthApiService, private utilService: UtilsService) {
     this.route.queryParams.subscribe((params: any) => {
       this.accountType = params.account;
       this.businessType = params.businesstype;
@@ -63,7 +60,7 @@ export class SignUpComponent implements OnInit {
     this.signUpForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
-    this.socialAuthService.authState.subscribe((user) => {
+    this.socialAuthService.authState.subscribe((user: any) => {
       if (user) {
         this.socialUser = user;
         this.isLoggedin = user != null;
@@ -100,7 +97,7 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
-    this.apiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
+    this.authApiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
       if (response?.data?.detail) {
         this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail, life: 3000 });
         return

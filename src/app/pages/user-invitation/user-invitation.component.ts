@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import TableData from '../../../assets/json/table_users.json'
 import { RefreshListService } from '../../RefreshList.service'
@@ -16,7 +16,7 @@ export class UserInvitationComponent {
   items: MenuItem[] | undefined;
   currentUser: any;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService) {
+  constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService) {
     this.refreshListService.RefreshAdminUserList().subscribe((data) => {
       if (data) {
         this.getAllUsers()
@@ -38,7 +38,7 @@ export class UserInvitationComponent {
     if (this.currentUser) {
       this.currentUser = JSON.parse(this.currentUser)
       let url = 'user/' + this.currentUser.user_details.email
-      this.apiService.getData(url)
+      this.authApiService.getData(url)
         .then((response: any) => {
           this.utilsService.loadSpinner(false)
           if (response?.status === 200) {

@@ -32,6 +32,10 @@ input {
     border-radius: 0.75rem !important;
 }
 
+:host ::ng-deep .p-card-content {
+    padding-top: 0;
+}
+
 :host ::ng-deep.p-checkbox .p-checkbox-box {
     background: #23222B !important;
     border: solid 1px #9E9E9E;

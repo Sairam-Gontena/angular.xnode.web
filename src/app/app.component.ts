@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AuditutilsService } from './api/auditutils.service';
+import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -28,12 +29,13 @@ export class AppComponent implements OnInit {
   toastObj: any;
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
-
+  currentUser: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
+    private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
@@ -67,15 +69,63 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = event;
     });
     this.currentPath = window.location.hash;
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
+    } else {
+      this.router.navigate(['/'])
+    }
+
+  }
+
+  getMeTotalOnboardedApps(user: any): void {
+    this.apiService.get("/total_apps_onboarded/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadSpinner(true);
+      });
   }
 
 
   loadIframeUrl(): void {
+
+
+    window.addEventListener('message', (event) => {
+      if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+        return;
+      }
+      if (event.data === 'triggerCustomEvent') {
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+      }
+      if (event.data === 'close-docked-navi') {
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+      }
+      if (event.data === 'expand-navi') {
+        this.isNaviExpanded = true;
+      }
+      if (event.data === 'contract-navi') {
+        this.isNaviExpanded = false;
+      }
+    });
+
+
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
+      console.log("got triggered")
       if (contentWindow) {
         window.addEventListener('message', (event) => {
+          console.log("got triggered =====")
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }

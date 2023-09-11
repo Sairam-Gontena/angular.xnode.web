@@ -1,0 +1,166 @@
+{
+    "plans": [
+        {
+            "Feature": "17",
+            "ProductFeature": "Be able to eject out of xnode",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "16",
+            "ProductFeature": "AI assisted development capabilities",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "15",
+            "ProductFeature": "AI powered Analytics and BI",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "14",
+            "ProductFeature": "Datahub and Governance",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "13",
+            "ProductFeature": "User feedback analytics and NPS boost",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "12",
+            "ProductFeature": "Business continuity and Disaster recovery",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "11",
+            "ProductFeature": "Central monitoring of product ",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "10",
+            "ProductFeature": "Audit and change history",
+            "Free": "",
+            "Basic": "",
+            "Professional": "",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "9",
+            "ProductFeature": "AI enabled customer support",
+            "Free": "",
+            "Basic": "",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "8",
+            "ProductFeature": "Code quality and QA assurance",
+            "Free": "",
+            "Basic": "",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "7",
+            "ProductFeature": "Realtime collaboration",
+            "Free": "",
+            "Basic": "",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "6",
+            "ProductFeature": "Ability to modify designs manually",
+            "Free": "",
+            "Basic": "YES",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "5",
+            "ProductFeature": "Build & Deploy Product MVP",
+            "Free": "",
+            "Basic": "YES",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "4",
+            "ProductFeature": "Generate Product POC",
+            "Free": "YES",
+            "Basic": "YES",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "3",
+            "ProductFeature": "Generate Technical Specification",
+            "Free": "YES",
+            "Basic": "YES",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "2",
+            "ProductFeature": "Product Ideation",
+            "Free": "YES",
+            "Basic": "YES",
+            "Professional": "YES",
+            "Business": "YES",
+            "Enterprise": "YES"
+        },
+        {
+            "Feature": "1",
+            "ProductFeature": "Number of apps",
+            "Free": "2",
+            "Basic": "5",
+            "Professional": "10",
+            "Business": "25",
+            "Enterprise": "50+"
+        },
+        {
+            "Feature": "0",
+            "ProductFeature": "Number of users",
+            "Free": "5",
+            "Basic": "20",
+            "Professional": "1000",
+            "Business": "10,000",
+            "Enterprise": "100,000+"
+        }
+    ]
+}
