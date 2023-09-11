@@ -616,17 +616,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 3.5);
 
     nodeC.append("rect")
-      .attr("width", (d: any) => { return d.data.title.length * 15; })
+      .attr("width", (d: any) => { return d.data.title.length * 10; })
       .attr("height", "40")
       .attr("fill", "#FFFFFA")
       .attr('y', '-1.5em')
-      .attr('x', (d: any) => { return -7.5 * d.data.title.length; })
+      .attr('x', (d: any) => { return -5.5 * d.data.title.length; })
       .attr("rx", 25)
       .style("stroke", '#959595')
       .style("stroke-width", 2)
 
     nodeC.append("text")
-      .attr('x', (d: any) => { return d.data.title.length })
+      .attr('x', (d: any) => { return d.data.title.length * 0.5 })
       .attr('y', '15')
       .attr('dy', '-0.8em')
       .attr("dx", (d: any) => { return -d.data.title.length * 1.5 })
@@ -654,7 +654,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 3.5);
 
     nodeL.append("rect")
-      .attr("width", (d: any) => (d.depth === 1 ? 160 : 130))
+      .attr("width", (d: any) => (d.depth === 1 ? 150 : 120))
       .attr("height", (d: any) => (d.depth === 1 ? 50 : 40))
       .attr("fill", "#FFFFFA")
       .attr("x", (d: any) => (d.depth === 1 ? -60 : -50))
@@ -765,7 +765,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 2.5);
 
     nodeR.append("rect")
-      .attr("width", (d: any) => (d.depth === 1 ? 160 : 130))
+      .attr("width", (d: any) => (d.depth === 1 ? 150 : 120))
       .attr("height", (d: any) => (d.depth === 1 ? 50 : 40))
       .attr("fill", "#FFFFFA")
       .attr("x", -60)
