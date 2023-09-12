@@ -16,7 +16,7 @@
                             <div class="heading-color text-6xl font-bold ml-2">Verify your identity</div>
                             <div class="font-semibold text-500 text-lg ml-2">
                                 For additional security, an email with a required verification
-                                code has been sent to {{maskedEmail}}
+                                code has been sent to {{userEmail}}
                             </div>
                             <div class="flex justify-content-center mt-5">
                                 <ng-otp-input (onInputChange)="onOtpChange($event)"
@@ -38,12 +38,12 @@
                                     (click)="resendVerification()">Resend Code</a>
                             </div>
                             <div
-                            class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
-                            <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1"
-                                target="_blank">Terms of service </a><span style="color:#fff">and</span><a
-                                href="https://dev.xnode.ai/privacy-policy/" target="_blank"
-                                class="no-underline ml-1">privacy policy</a>
-                        </div>
+                                class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
+                                <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1"
+                                    target="_blank">Terms of service </a><span style="color:#fff">and</span><a
+                                    href="https://dev.xnode.ai/privacy-policy/" target="_blank"
+                                    class="no-underline ml-1">privacy policy</a>
+                            </div>
                         </form>
                     </div>
                 </p-card>

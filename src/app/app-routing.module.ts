@@ -20,7 +20,7 @@ const routes: Routes = [
       import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
   },
   {
-    path: 'verify-otp',
+    path: 'verify-otp/:email',
     loadChildren: () => import('./pages/verify-otp/verify-otp.module').then((m) => m.VerifyOtpModule)
   },
   {
