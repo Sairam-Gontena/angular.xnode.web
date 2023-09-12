@@ -2,8 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
-import { ApiService } from 'src/app/api/api.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 import { UtilsService } from '../services/utils.service';
+
+import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 
 @Component({
@@ -28,8 +30,8 @@ export class NotificationPanelComponent {
     all: true
   };
 
-  constructor(private router: Router, private apiService: ApiService,
-    private utils: UtilsService, private notifyApi: NotifyApiService) {
+  constructor(private router: Router, private apiService: ApiService, private auditUtil: AuditutilsService, public utils: UtilsService, private notifyApi: NotifyApiService) {
+
   }
 
   ngOnInit(): void {
@@ -48,8 +50,10 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + obj.component]);
       }
+      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
+      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
   }
 
@@ -146,6 +150,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
+    this.auditUtil.post('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
   }
 }
 

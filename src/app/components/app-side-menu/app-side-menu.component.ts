@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { UserUtil, User } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
+import { AuditutilsService } from '../../api/auditUtils.service';
+
 
 @Component({
   selector: 'xnode-app-side-menu',
@@ -17,7 +19,7 @@ export class AppSideMenuComponent implements OnInit {
   selectedMenuIndex: any;
   currentUser?: any;
   href: any;
-  constructor(private router: Router, private utils: UtilsService) {
+  constructor(private router: Router, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -40,6 +42,6 @@ export class AppSideMenuComponent implements OnInit {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }
-
+    this.auditUtil.post(item.path, 1, 'SUCCESS', 'user-audit');
   }
 }

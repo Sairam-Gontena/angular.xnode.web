@@ -3,6 +3,8 @@ import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from '../../api/auditUtils.service';
+
 
 @Component({
   selector: 'xnode-confirmation-popup',
@@ -16,7 +18,7 @@ export class ConfirmationPopupComponent implements OnInit {
   visible: boolean = false;
   currentUser?: any;
 
-  constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
+  constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -73,7 +75,10 @@ export class ConfirmationPopupComponent implements OnInit {
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
+          let userid = this.currentUser?.id
+          this.auditUtil.post(action, 1, 'SUCCESS', 'user-audit');
         } else {
+          this.auditUtil.post(action, 1, 'FAILURE', 'user-audit');
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
         this.utilsService.loadSpinner(false);
@@ -81,6 +86,7 @@ export class ConfirmationPopupComponent implements OnInit {
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
+        this.auditUtil.post(action, 1, 'FAILURE', 'user-audit');
       });
   }
 
@@ -91,6 +97,7 @@ export class ConfirmationPopupComponent implements OnInit {
         if (response?.status === 200) {
           if (response?.data) {
             this.refreshListService.toggleAdminUserListRefresh();
+            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been invited successfully' });
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
