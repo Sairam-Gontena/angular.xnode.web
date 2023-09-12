@@ -7,9 +7,9 @@ import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
-import { AuditutilsService } from '../../api/auditUtils.service';
-
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { NotifyApiService } from 'src/app/api/notify.service';
+
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',

@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-import { AuditutilsService } from './api/auditUtils.service';
+import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',

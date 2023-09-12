@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { AuditutilsService } from '../../api/auditUtils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 @Component({
   selector: 'xnode-verify-otp',
@@ -79,29 +79,27 @@ export class VerifyOtpComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.authApiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
-        console.log('response', response);
-
         if (response?.status === 200 && response?.data) {
+          localStorage.setItem('currentUser', JSON.stringify(response?.data));
           if (response?.data?.role_id === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
-            this.auditUtil.post('VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
-            this.auditUtil.post('VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           }
-          localStorage.setItem('currentUser', JSON.stringify(response?.data));
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(true);
-          this.auditUtil.post('VERIFY_OTP', 1, 'FAILURE', 'user-audit');
+          this.auditUtil.post('VERIFY_OTP_' + response.data.detail, 1, 'FAILURE', 'user-audit');
         }
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
-        this.auditUtil.post('VERIFY_OTP', 1, 'FAILURE', 'user-audit');
+        this.auditUtil.post('VERIFY_OTP_' + error?.response?.data?.detail, 1, 'FAILURE', 'user-audit');
       });
   }
   //get calls 
@@ -127,22 +125,9 @@ export class VerifyOtpComponent implements OnInit {
   onClickLogout(): void {
     localStorage.clear();
     this.router.navigate(['/']);
+    this.auditUtil.post('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
   }
-  // auditLog(user: any) {
-  //   const body = {
-  //     "userId": user.id,
-  //     "activityTypeId": "VERIFY_OTP",
-  //     "attemptCount": 0,
-  //     "attemptSuccess": "SUCCESS"
-  //   }
-  //   this.userService.post(body, '/user-audit').then((res: any) => {
-  //     if (!res) {
-  //       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data.details });
-  //     }
-  //   }).catch(err => {
-  //     this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-  //   });
-  // }
+
   getMeCreateAppLimit(user: any): void {
     this.authApiService.get("/user/get_create_app_limit/" + user?.email)
       .then((response: any) => {

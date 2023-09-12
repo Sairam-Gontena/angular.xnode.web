@@ -2,9 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
-import { AuditutilsService } from '../../api/auditUtils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { UtilsService } from '../services/utils.service';
-
 import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 
@@ -64,6 +63,10 @@ export class NotificationPanelComponent {
   navigateToActivity() {
     this.closeNotificationPanel.emit(true)
     this.router.navigate(['/operate/change/history-log'])
+  }
+
+  onClickProductUrl() {
+    this.auditUtil.post('PRODUCT_URL_CLICKED_FROM_NOTIFICATION_PANEL', 1, 'FAILURE', 'user-audit');
   }
 
   filterNotifications(val: any) {
