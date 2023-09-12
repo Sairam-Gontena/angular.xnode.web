@@ -12,18 +12,23 @@ export class AuditutilsService {
   constructor(private utilsService: UtilsService,) { }
 
   ngOnInit() {
-    this.currentUser = localStorage.getItem('currentUser');
+
+
   }
 
   post(activity: any, attemptcount: number, attemptstatus: string, url: string) {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser)
+    }
     const body = {
-      "userId": this.currentUser?.id,
+      "userId": this.currentUser?.user_id,
       "activityTypeId": activity,
       "attemptCount": attemptcount,
       "attemptSuccess": attemptstatus
     }
     axios.post(this.endPoint + url, body).then(response => {
-      if (response?.status !== 200 && response?.data) {
+      if (response.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail })
       }
     }).catch((error) => {
