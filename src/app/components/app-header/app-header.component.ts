@@ -42,7 +42,7 @@ export class AppHeaderComponent implements OnInit {
   product_url: string = "https://dev-navi.azurewebsites.net/";
   username: string = ''
   visible!: boolean;
-  screenshot: any;
+  screenshot: any = [];
   showDialog: boolean = false;
   thanksDialog: boolean = false;
   displayReportDialog: boolean = false;
@@ -127,7 +127,8 @@ export class AppHeaderComponent implements OnInit {
       .getImage(document.body, true)
       .pipe(
         tap((img) => {
-          this.screenshot = img;
+          // this.screenshot = img;
+          this.screenshot.push(img)
           this.utilsService.showProductStatusPopup(false);
           this.selectedPopup = 'customer-feedback';
           this.utilsService.loadSpinner(false);
