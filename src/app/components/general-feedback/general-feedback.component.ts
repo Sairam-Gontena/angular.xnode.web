@@ -38,6 +38,7 @@ export class GeneralFeedbackComponent implements OnInit {
   rating: any;
   isHovered: boolean = false;
   selectedRating: string | null = null;
+  onHoveredIcon: string | null = null;
 
 
   constructor(public utils: UtilsService,
@@ -285,6 +286,9 @@ export class GeneralFeedbackComponent implements OnInit {
   onStarClick(rating: string) {
     this.selectedRating = rating;
     this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
+  }
+  onHoverStar(rating: string) {
+    this.onHoveredIcon = rating;
   }
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
