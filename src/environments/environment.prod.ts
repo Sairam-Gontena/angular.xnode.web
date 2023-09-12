@@ -3,6 +3,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://prod.azurewebsites.net/',
     authApiUrl: 'https://prod-xnode-auth-api.azurewebsites.net/',
+    notifyApiUrl: 'https://prod-notify-api.azurewebsites.net/',
     userUtilsApi: 'https://prod-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://prod-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'https://prod-xnode.azurewebsites.net/',

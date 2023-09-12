@@ -74,6 +74,9 @@ export class GeneralFeedbackComponent implements OnInit {
     this.formGroup = new FormGroup({
       value: new FormControl(this.rating)
     });
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser)
+      this.currentUser = JSON.parse(currentUser)
   }
   getMeComponent() {
     let comp = '';
@@ -126,7 +129,7 @@ export class GeneralFeedbackComponent implements OnInit {
       "userId": this.currentUser?.id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.generalFeedbackForm.value.section,
-      "feedbackText": this.generalFeedbackForm.value.feedbackText,
+      "feedbackText": this.generalFeedbackForm.value.tellUsMore,
       "feedbackRatingId": this.generalFeedbackForm.value.rating,
       "feedbackStatusId": "new",
       "userFiles": [

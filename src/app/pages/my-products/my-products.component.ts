@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -16,7 +17,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class MyProductsComponent implements OnInit {
   id: String = '';
   templateCard: any[] = [];
-  currentUser?: User;
+  currentUser?: any;
   private subscription: Subscription;
   isLoading: boolean = true;
   activeIndex: number = 0;
@@ -25,8 +26,9 @@ export class MyProductsComponent implements OnInit {
   email: any;
   filteredProductsByEmail: any[] = [];
   showLimitReachedPopup: any;
+
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
-    private route: ActivatedRoute, private utils: UtilsService) {
+    private route: ActivatedRoute, private utils: UtilsService, private notifyApi: NotifyApiService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -105,8 +107,9 @@ export class MyProductsComponent implements OnInit {
   importNavi() {
     const restriction_max_value = localStorage.getItem('total_apps_onboarded');
     const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) <= JSON.parse(restriction_max_value))) {
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
       this.showLimitReachedPopup = true;
+      this.sendEmailNotificationToTheUser()
       return
     }
     this.router.navigate(['/x-pilot'])
@@ -152,10 +155,31 @@ export class MyProductsComponent implements OnInit {
   onClickNewWithNavi(): void {
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) === JSON.parse(restriction_max_value))) {
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
       this.showLimitReachedPopup = true;
+      this.sendEmailNotificationToTheUser();
       return
     }
     this.router.navigate(['/x-pilot']);
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+
+    }).catch((err: any) => {
+
+    })
   }
 }
