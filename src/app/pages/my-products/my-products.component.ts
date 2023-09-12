@@ -174,7 +174,7 @@ export class MyProductsComponent implements OnInit {
         "dev.xnode@salientminds.com"
       ],
       "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
     this.notifyApi.post(body, 'email/notify').then((res: any) => {
 
