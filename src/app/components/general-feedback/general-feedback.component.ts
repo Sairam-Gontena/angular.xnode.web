@@ -32,7 +32,7 @@ export class GeneralFeedbackComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = false;
   uploadedFileData: any;
-  currentUser?: User;
+  currentUser?: any;
   rating: any;
   isHovered: boolean = false;
   selectedRating: string | null = null;
@@ -125,7 +125,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
   sendGeneralFeedbackReport(): void {
     const body = {
-      "userId": this.currentUser?.id,
+      "userId": this.currentUser?.user_id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
@@ -169,7 +169,7 @@ export class GeneralFeedbackComponent implements OnInit {
       'Content-Type': 'application/json',
     };
 
-    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
         this.uploadedFileData = res.data;
         this.sendGeneralFeedbackReport();
