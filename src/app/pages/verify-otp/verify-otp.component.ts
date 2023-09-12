@@ -95,6 +95,7 @@ export class VerifyOtpComponent implements OnInit {
           this.utilsService.loadSpinner(true);
           this.auditUtil.post('VERIFY_OTP_' + response.data.detail, 1, 'FAILURE', 'user-audit');
         }
+        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
