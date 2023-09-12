@@ -32,7 +32,7 @@ export class GeneralFeedbackComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = false;
   uploadedFileData: any;
-  currentUser?: User;
+  currentUser?: any;
   rating: any;
   isHovered: boolean = false;
   selectedRating: string | null = null;
