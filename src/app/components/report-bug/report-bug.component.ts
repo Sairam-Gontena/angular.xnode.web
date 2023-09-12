@@ -4,6 +4,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-report-bug',
@@ -53,7 +54,7 @@ export class ReportBugComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
-    public utils: UtilsService, private commonApi: CommonApiService) {
+    public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.feedbackForm = this.fb.group({
@@ -122,6 +123,7 @@ export class ReportBugComponent implements OnInit {
       this.isInvalid = true;
       console.log("error");
     }
+    this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   sendBugReport(): void {

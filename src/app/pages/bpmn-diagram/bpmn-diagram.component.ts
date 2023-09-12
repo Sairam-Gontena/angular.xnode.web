@@ -19,7 +19,7 @@ import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
-// import { UtilsService } from '../../components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -61,7 +61,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   product: any;
   product_id: any;
 
-  constructor(private api: ApiService, private utilsService: UtilsService) {
+  constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService,) {
 
   }
 
@@ -175,15 +175,18 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
         this.loadXFlows(xflowJson);
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
+        this.auditUtil.post('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
+        this.auditUtil.post('BPMN_FLOWS', 1, 'FAILURE', 'user-audit');
       }
     }).catch(error => {
       this.loadXFlows(workflow);
       this.jsonWorkflow = JSON.stringify(workflow, null, 2);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.post('BPMN_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
     });
     this.getOverview();
   }
@@ -193,11 +196,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
+        this.auditUtil.post('BPMN_ONBOARDING_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
+        this.auditUtil.post('BPMN_ONBOARDING_FLOWS', 1, 'FAILURE', 'user-audit');
       }
     }).catch((error) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.post('BPMN_ONBOARDING_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
+
     });
   }
 
