@@ -14,7 +14,7 @@ import { CommonApiService } from 'src/app/api/common-api.service';
 export class ReportBugComponent implements OnInit {
   @ViewChild('fileInput') fileInput?: ElementRef;
   @Input() visible = false;
-  @Input() screenshot: any;
+  @Input() screenshot: any[] = []; // @Input() screenshot: any; original
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
@@ -35,7 +35,7 @@ export class ReportBugComponent implements OnInit {
   files: any[] = [];
   imageUrl: any;
   uploadedFileData: any;
-  screenshotName = 'Image';
+  screenshotName: any[] = []; //   screenshotName = 'Image'; original
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -156,12 +156,12 @@ export class ReportBugComponent implements OnInit {
   }
 
   onDeleteImage() {
-    this.screenshot = '';
+    // this.screenshot = ''; will come back again
   }
 
   onFileDropped($event?: any) {
     this.utils.loadSpinner(true);
-    if (!$event) {
+    if (!$event) {    //   dont delete this  will come back again
       $event = this.screenshot;
     }
     const formData = new FormData();
@@ -292,6 +292,7 @@ export class ReportBugComponent implements OnInit {
 
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
+    console.log(selectedFile) //here file
     const fileName = selectedFile.name;
     if (selectedFile) {
       this.readFileContent(selectedFile, fileName);
@@ -299,14 +300,29 @@ export class ReportBugComponent implements OnInit {
   }
 
   private readFileContent(file: File, fileName: string) {
-    this.screenshotName = fileName;
+    // this.screenshotName = fileName;  org start
+    // reader.readAsDataURL(file);
+    // reader.onload = (e) => {
+    //   if (e?.target)
+    //     this.screenshot = e?.target.result;
+    // };
+    // reader.readAsArrayBuffer(file);   org ends
+    console.log(fileName)
+    const localScreenshot = [...this.screenshot];
+    this.screenshotName.push(fileName)
     const reader = new FileReader();
-    reader.readAsDataURL(file);
     reader.onload = (e) => {
-      if (e?.target)
-        this.screenshot = e?.target.result;
-    };
-    reader.readAsArrayBuffer(file);
+      if (e?.target) {
+        localScreenshot.push(e?.target.result);
+        this.screenshot = localScreenshot;
+        // this.screenshot.push(e?.target.result);
+        // this.screenshot = e?.target.result;  //here push
+      }
+    }
+    reader.readAsDataURL(file);
+    console.log(this.screenshot)
+    console.log(this.screenshotName)
+    // reader.readAsArrayBuffer(file); //getting issue need to ask dlp once 
   }
 
   onDragOver(event: Event) {
@@ -343,6 +359,7 @@ export class ReportBugComponent implements OnInit {
 
   private highlightDragDropArea(highlight: boolean) {
     let container: any;
+    console.log(this.fileInput)
     if (this.fileInput)
       container = this.fileInput.nativeElement.parentElement;
     if (highlight) {
