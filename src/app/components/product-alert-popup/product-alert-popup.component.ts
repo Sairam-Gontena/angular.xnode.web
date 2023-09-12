@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from '../services/utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-product-alert-popup',
@@ -17,12 +18,13 @@ export class ProductAlertPopupComponent {
   consversationList = [];
   currentUser?: User;
 
-  constructor(private apiService: ApiService, private utils: UtilsService) {
+  constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
     this.currentUser = UserUtil.getCurrentUser();
   }
   continueChat(): void {
     this.openDockedNavi.emit({ cbFlag: true, productContext: localStorage.getItem('record_id') });
     this.closePopup.emit(true);
+    this.auditUtil.post('CONTINUE_WITH_NAVI_FROM_PRODUCT_POPUP', 1, 'SUCCESS', 'user-audit');
   }
 
   getPreviousCoversation(): void {
@@ -31,13 +33,18 @@ export class ProductAlertPopupComponent {
       if (res.status === 200 && res.data) {
         this.consversationList = res.data?.conversation_history;
         this.persistConversaiton();
+        this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'SUCCESS', 'user-audit');
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+        this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'FAILURE', 'user-audit');
+
       }
       this.utils.loadSpinner(false);
     }).catch((err: any) => {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'FAILURE', 'user-audit');
+
     })
   }
 
