@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { UserUtil, User } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
-import { AuditutilsService } from '../../api/auditUtils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 
 @Component({

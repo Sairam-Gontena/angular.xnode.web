@@ -4,7 +4,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
-import { AuditutilsService } from '../../api/auditUtils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-report-bug',

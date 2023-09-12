@@ -11,7 +11,8 @@ import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
-import { AuditutilsService } from '../../api/auditUtils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+
 
 @Component({
   selector: 'xnode-app-header',
