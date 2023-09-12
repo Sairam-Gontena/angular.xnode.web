@@ -9,6 +9,7 @@
 .search-help {
     height: 50px !important;
     width: 45vw !important;
+    padding-left: 40px !important;
 }
 
 :host::ng-deep.p-accordion .p-accordion-header .p-accordion-header-link {
@@ -74,4 +75,16 @@
 
 :host::ng-deep.p-button.p-button-brand {
     padding: 12px 50px;
+}
+
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
+:host ::ng-deep.accordion-help-menu .p-accordion-tab .p-accordion-header .p-accordion-header-link .p-accordion-header-text {
+    pointer-events: none !important;
+}
+
+.dark-table-cell {
+    background-color: #23222b !important
 }

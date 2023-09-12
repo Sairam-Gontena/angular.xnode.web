@@ -8,40 +8,52 @@
                 <p class="m-0 font-bold text-2xl heading-color">General Feedback</p>
                 <p class="m-0 text-sm font-medium heading-color">Your feedback will be used to improve xnode</p>
             </div>
-
         </div>
     </ng-template>
     <div class="p-4">
         <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="flex justify-content-end align-items-center">
-                    <a class="font-medium text-base no-underline pointer">View feedback history</a>
-                    <i class="pi pi-arrow-right"></i>
+                    <a class="font-medium text-base no-underline pointer feedback-history">View feedback history
+                        <i class="pi pi-arrow-right"></i> </a>
                 </div>
             </div>
             <div
                 class="grid flex justify-content-center align-items-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                <label class="text-base font-medium ">How would you like to rate your experience</label>
-                <p-rating formControlName="value" [stars]="1">
-                    <ng-template pTemplate="cancel">
-                        <img src="./assets/star1.svg" width="25px" height="25px" />
-                    </ng-template>
-                    <ng-template pTemplate="onicon">
-                        <img src="./assets/star5.svg" width="25px" height="25px" />
-                    </ng-template>
-                    <ng-template pTemplate="officon">
-                        <div class="flex flex-wrap justify-content-center gap-3">
-                            <img src="./assets/star1.svg" width="60px" height="60px" />
-                            <img src="./assets/star2.svg" width="60px" height="60px" />
-                            <img src="./assets/star3.svg" width="60px" height="60px" />
-                            <img src="./assets/star4.svg" width="60px" height="60px" />
-                            <img src="./assets/star5.svg" width="60px" height="60px" />
-                        </div>
-                    </ng-template>
-                </p-rating>
+                <label class="text-base font-medium">How would you like to rate your experience</label>
+                <div class="flex flex-wrap justify-content-center  pointer gap-3 pt-4">
+                    <div class="star-width ">
+                        <img src="./assets/star1.svg" (mouseover)="onHoverStar('ONE')" (mouseout)="onHoverStar('')"
+                            (click)="onStarClick('ONE')" class="star-image" width="60px" height="60px"
+                            [src]="selectedRating === 'ONE' || onHoveredIcon === 'ONE' ? './assets/star1-hover.svg' : './assets/star1.svg'" />
+                    </div>
+                    <div class="star-width ">
+                        <img src="./assets/star2.svg" (click)="onStarClick('TWO')" (mouseover)="onHoverStar('TWO')"
+                            (mouseout)="onHoverStar('')" class="star-image" width="60px" height="60px"
+                            [src]="selectedRating === 'TWO' || onHoveredIcon === 'TWO' ? './assets/star2-hover.svg' : './assets/star2.svg'" />
+                    </div>
+                    <div class="star-width">
+                        <img src="./assets/star3.svg" (click)="onStarClick('THREE')" class="star-image"
+                            [src]="selectedRating === 'THREE' || onHoveredIcon === 'THREE' ? './assets/star3-hover.svg' : './assets/star3.svg'"
+                            (mouseover)="onHoverStar('THREE')" (mouseout)="onHoverStar('')" width="60px"
+                            height="60px" />
+                    </div>
+                    <div class="star-width">
+                        <img src="./assets/star4.svg" (click)="onStarClick('FOUR')" class="star-image"
+                            [src]="selectedRating === 'FOUR' || onHoveredIcon === 'FOUR' ? './assets/star4-hover.svg' : './assets/star4.svg'"
+                            (mouseover)="onHoverStar('FOUR')" (mouseout)="onHoverStar('')" width="60px" height="60px" />
+                    </div>
+                    <div class="star-width">
+                        <img src="./assets/star5-hover.svg" (click)="onStarClick('FIVE')"
+                            (mouseover)="onHoverStar('FIVE')" (mouseout)="onHoverStar('')" class="star-image"
+                            width="60px" height="60px"
+                            [src]="selectedRating === 'FIVE' || onHoveredIcon === 'FIVE' ? './assets/star5.svg' : './assets/star5-hover.svg'" />
+                    </div>
+
+                </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
-                <label class="text-sm font-normal">Tell us more (optional)</label>
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-2">
+                <label class="text-sm font-hover">Tell us more (optional)</label>
                 <textarea rows="3" cols="30" pInputTextarea formControlName="tellUsMore"
                     [ngClass]="{ 'is-invalid': submitted && feedback['tellUsMore'].errors }" class="col-12"
                     placeholder="Describe more about your experience"></textarea>
@@ -52,8 +64,8 @@
             </div>
             <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
-                    <label class="text-sm font-normal">Product</label>
-                    <input type="text" pInputText formControlName="product" placeholder="Finbuddy"
+                    <label class="text-sm font-hover">Product</label>
+                    <input type="text" pInputText formControlName="product" placeholder=""
                         [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                         <div *ngIf="feedback['product'].errors?.['required']">
@@ -61,7 +73,7 @@
                     </div>
                 </div>
                 <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
-                    <label class="text-sm font-normal">Section</label>
+                    <label class="text-sm font-hover">Section</label>
                     <input type="text" pInputText formControlName="section" placeholder="e.g., Dashboard"
                         [ngClass]="{ 'is-invalid': submitted && feedback['section'].errors }" class="col-12" />
                     <div *ngIf="submitted && feedback['section'].errors" class="invalid-feedback">
@@ -70,66 +82,22 @@
                     </div>
                 </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12" *ngIf="screenshot !== ''">
-                <label class="text-sm font-normal">Screenshot</label>
-                <div class="container-img grid m-0">
-                    <img [src]="screenshot" width="59%">
-                </div>
-                <div class="single-file grid ml-0 mt-0 w-7 h-7 p-2">
-                    <div class="info ml-4">
-                        <h4 class="name">
-                            image.png
-                        </h4>
-                    </div>
-                    <div class="delete ml-8">
-                        <i class="pi pi-trash" style="font-size: 1.5rem" (click)="onDeleteImage()"></i>
+            <div class="field">
+                <label class="text-sm font-hover">Screenshot</label>
+                <div class="image-container border-1" *ngIf="screenshot !==''">
+                    <img [src]="screenshot" width="100%" class="img">
+                    <div class="img-footer flex justify-content-between align-items-center px-3">
+                        <div class="text-base">{{screenshotName}}</div>
+                        <i class="pi pi-trash pointer" (click)="onDeleteImage()"></i>
                     </div>
                 </div>
-
-            </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-3" *ngIf="screenshot === ''">
-                <div class="text-sm font-medium">Attach File</div>
-                <div class="container grid m-0 mt-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 " appDnd
-                    (fileDropped)="onFileDropped($event)">
-                    <div class="field col-5 align-items-center" (click)="selectDraganddrop()"
-                        [class.selected]=" draganddropSelected"
-                        [class.invalid]="isFormSubmitted && !draganddropSelected">
-                        <input type="file" #fileDropRef id="fileDropRef"
-                            (change)="fileBrowseHandler($any($event).target.files)"
-                            [ngClass]="{ 'is-invalid': submitted && generalFeedbackForm.get('logoFile')?.errors }" />
-                        <ng-template #elseBlock>
-                            <input type="file" #fileDropRef id="fileDropRef"
-                                (change)="fileBrowseHandler($any($event).target.files)" disabled />
-                        </ng-template>
-                        <img src="./assets/sky.svg" width="64px">
-                        <h3 class="font-semibold text-sm">Drag and Drop </h3>
-                    </div>
-                    <div class="field col-2">
-                        <h3 class="mt-4 font-semibold text-sm">(OR)</h3>
-                    </div>
-                    <div class="field col-5 mt-4" (click)="selectBrowser()" [class.selected]="browserSelected"
-                        [class.invalid]="isFormSubmitted && !browserSelected">
-                        <p-button label="Browse Files" for="fileDropRef" class="font-normal text-sm browseFiles"
-                            styleClass=""></p-button>
-                    </div>
-                    <div class="font-semibold text-sm text-500">
-                        Supported file types JPG, PNG (upload file size limit 2MB)
-                    </div>
-
-                </div>
-                <div class="files-list mt-2">
-                    <div class="single-file grid ml-0 mt-0 w-7 h-7 p-2" *ngFor="let file of files; let i = index">
-                        <div class="info">
-                            <h4 class="name">
-                                {{ file?.name }}
-                            </h4>
-                        </div>
-                        <div class="delete ml-4" (click)="deleteFile(i)">
-                            <i class="pi pi-trash" style="font-size: 1.5rem"></i>
-                        </div>
-                    </div>
-                    <div *ngIf="isFormSubmitted && !draganddropSelected && !browserSelected" class="error-message">
-                        <p class="text-red-500 text-sm">Please upload logo</p>
+                <div class="image-container border-1 flex align-items-center justify-content-center"
+                    *ngIf="screenshot ===''" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                    (drop)="onDrop($event)">
+                    <div (click)="onUploadIconClick()">
+                        <p>Upload or drag</p>
+                        <input type="file" (change)="onFileInput($event)" accept=".png, .jpeg" style="display: none;"
+                            id="file" #fileInput (change)="onFileSelected($event)">
                     </div>
                 </div>
             </div>
@@ -137,7 +105,8 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"></p-button>
+            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"
+                (click)="closePopup()"></p-button>
             <p-button label="Send Feedback" styleClass="p-button-rounded p-button-primary"
                 (click)="sendFeedback($event)"></p-button>
         </div>

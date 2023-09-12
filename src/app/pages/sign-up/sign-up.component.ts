@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Emails } from 'src/app/utils/login-util';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
 import {
   SocialAuthService,
-  GoogleLoginProvider,
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { CreateAccountPopupComponent } from '../create-account-popup/create-account-popup.component';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 @Component({
   selector: 'xnode-sign-up',
   templateUrl: './sign-up.component.html',
@@ -35,7 +33,7 @@ export class SignUpComponent implements OnInit {
     scope: "r_liteprofile%20r_emailaddress%20w_member_social" // To read basic user profile data and email
   };
 
-  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private apiService: ApiService, private utilService: UtilsService) {
+  constructor(private formBuilder: FormBuilder, public router: Router, private socialAuthService: SocialAuthService, private route: ActivatedRoute, private authApiService: AuthApiService, private utilService: UtilsService, private auditUtil: AuditutilsService,) {
     this.route.queryParams.subscribe((params: any) => {
       this.accountType = params.account;
       this.businessType = params.businesstype;
@@ -63,7 +61,7 @@ export class SignUpComponent implements OnInit {
     this.signUpForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
-    this.socialAuthService.authState.subscribe((user) => {
+    this.socialAuthService.authState.subscribe((user: any) => {
       if (user) {
         this.socialUser = user;
         this.isLoggedin = user != null;
@@ -74,6 +72,7 @@ export class SignUpComponent implements OnInit {
   }
 
   loginWithGoogle(user: any): void {
+    this.auditUtil.post('SIGNUP_WITH_GOOGLE', 1, 'SUCCESS', 'user-audit');
   }
 
 
@@ -83,6 +82,7 @@ export class SignUpComponent implements OnInit {
     const scope = 'r_liteprofile r_emailaddress';
     const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
     window.location.href = authUrl;
+    this.auditUtil.post('SIGNUP_WITH_LINDEDIN', 1, 'SUCCESS', 'user-audit');
   }
 
   get signUp() { return this.signUpForm.controls; }
@@ -100,17 +100,20 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
-    this.apiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
+    this.authApiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
       if (response?.data?.detail) {
         this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail, life: 3000 });
+        this.auditUtil.post('SIGNUP_' + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         return
       }
       if (response.data.message == "success") {
         this.visible = true;
         this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Congratulations, your account has been successfully created", life: 3000 });
+        this.auditUtil.post('USER_SIGNUP', 1, 'SUCCESS', 'user-audit');
       }
     }).catch((error: any) => {
       this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.post('USER_SIGNUP_' + error, 1, 'FAILURE', 'user-audit');
     });
   }
 

@@ -1,7 +1,9 @@
 export const environment = {
+    name: 'DEMO',
     production: false,
     apiUrl: 'https://demo-navi.azurewebsites.net/',
     authApiUrl: 'https://demo-xnode-auth-api.azurewebsites.net/',
+    notifyApiUrl: 'https://demo-notify-api.azurewebsites.net/',
     userUtilsApi: 'https://demo-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://demo-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'https://demo-xnode.azurewebsites.net/',
@@ -11,5 +13,7 @@ export const environment = {
     workFlowApiUrl: 'https://demo-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'demo-xnode-notifier',
-    branchName: 'xnode-demo',
+    branchName: 'demo',
+    projectName: 'xnode',
+    homeUrl: 'https://xnode.ai/'
 }

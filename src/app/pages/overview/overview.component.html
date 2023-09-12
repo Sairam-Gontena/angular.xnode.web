@@ -1,6 +1,6 @@
 <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-<div class="overview-body">
-    <div class="grid ml-4 mr-4 bg">
+<div class="overview-body mt-0">
+    <div class="grid">
         <div class="lg:col-7 md:col-12">
             <div class="flex mt-6">
                 <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="ml-6 w-1 h-1">
@@ -17,17 +17,17 @@
                         Stakeholders</h6>
                     <div class="mt-4">
                         <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
-                        <span class="text-white font-medium text-xl ml-3">{{userName}}</span>
+                        <span class="text-white font-medium text-xl ml-3">{{username}}</span>
                     </div>
                     <div class="mt-4 para-text">
                         <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
                         <span class=" ml-3">{{email}}</span>
                     </div>
                     <!-- This field should not be removed -->
-                    <!-- <div class="mt-4 para-text">
+                    <div class="mt-4 para-text" *ngIf="currentUser?.phone && currentUser?.phone !==''">
                         <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-4">
-                        <span class=" ml-3">+1 408 409 7788</span>
-                    </div> -->
+                        <span class=" ml-3">{{currentUser?.phone}}</span>
+                    </div>
                 </div>
                 <div class="flex flex-column card-container ">
                     <div class="flex  w-21rem h-9rem  font-bold text-white  m-2 stake-holder align-items-center ">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="features === ''">
+            <div *ngIf="features?.length">
                 <h6 class="text-white ml-7 mt-4">Key Features</h6>
                 <div class="mt-3 ml-7">
                     <div class="mt-3 mr-3 feature-key" *ngFor="let feature of features">
@@ -63,9 +63,9 @@
             </div>
         </div>
         <div class="lg:col-5 md:col-12" *ngIf="jsondata?.length">
-            <div class="card-container mt-6  stake-holder text-white stepper-card ">
-                <div class="w-26rem p-1 mt-3 ml-5">
-                    <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">{{userName}}!</span> You
+            <div class="card-container mt-6  stake-holder text-white stepper-card ml-7">
+                <div class="w-26rem  p-1 mt-3 ml-5">
+                    <p class="text-xl font-normal nelson-name">Hey <span class="font-bold">{{username}}!</span> You
                         are on the verge of using the app.</p>
                     <p class="text-lg font-medium mb-4">Please see the status
                         below</p>

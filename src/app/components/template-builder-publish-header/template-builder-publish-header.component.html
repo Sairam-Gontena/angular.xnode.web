@@ -3,9 +3,9 @@
         <p-dropdown [options]="templates" [(ngModel)]="selectedTemplate" optionLabel="title" optionValue="id"
             class="app-dropdown" (onChange)="selectedProduct($event)">
         </p-dropdown>
-        <div *ngIf="selectedTemplate && selectedTemplate.url">
-            <i class="pi pi-external-link app-external-link-icon p-4 text-white" [title]="selectedTemplate.url"
-                (click)="openExternalLink(selectedTemplate.url)" *ngIf="selectedTemplate.url !== ''"></i>
+        <div *ngIf="product_url &&  product_url !==''">
+            <i class="pi pi-external-link app-external-link-icon p-4 text-white pointer" [title]="product_url"
+                (click)="openExternalLink(product_url)" *ngIf="product_url !== ''"></i>
         </div>
     </div>
     <div class="flex align-items-center justify-content-center gap-3  pointer" *ngIf="showDeviceIcons">
@@ -23,3 +23,5 @@
         <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
     </div>
 </div>
+<xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
+    (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>

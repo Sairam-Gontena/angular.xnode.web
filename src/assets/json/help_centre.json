@@ -331,7 +331,7 @@
                     "subobjects": [
                         {
                             "title": "What are the terms of Beta",
-                            "description": "<p><a href='https://dev.xnode.ai/beta-terms-and-conditions/' class='no-underline' target='_blank'>Terms & Conditions</a></p>"
+                            "description": "<p><a href='https://xnode.ai/terms-and-conditions/' class='no-underline' target='_blank'>Terms & Conditions</a></p>"
                         }
                     ]
                 },
@@ -341,7 +341,7 @@
                     "subobjects": [
                         {
                             "title": "What are the terms and conditions?",
-                            "description": "<p><a href='https://dev.xnode.ai/terms-of-service/' class='no-underline' target='_blank'>Terms of Service</a></p>"
+                            "description": "<p><a href='https://xnode.ai/beta-terms-of-service/' class='no-underline' target='_blank'>Terms of Service</a></p>"
                         }
                     ]
                 },
@@ -351,7 +351,7 @@
                     "subobjects": [
                         {
                             "title": "What is the privacy policy?",
-                            "description": "<p><a href='https://dev.xnode.ai/privacy-policy/'  class='no-underline' target='_blank'>Privacy Policy</a></p>"
+                            "description": "<p><a href='https://xnode.ai/privacy-policy/'  class='no-underline' target='_blank'>Privacy Policy</a></p>"
                         }
                     ]
                 }
@@ -366,7 +366,7 @@
                     "subobjects": [
                         {
                             "title": "How to create an app in xnode?",
-                            "description": "<a href='https://xnodestrg.blob.core.windows.net/legal/xnode-beta-short-farm-connect-20230827.mp4' class='no-underline' target='_blank'>Click here to view</a> how user has created “FarmConnect” application"
+                            "description": "<a class='cursor-pointer no-underline demo-video' >Click here to view</a> how the user has created “FarmConnect” application"
                         }
                     ]
                 }

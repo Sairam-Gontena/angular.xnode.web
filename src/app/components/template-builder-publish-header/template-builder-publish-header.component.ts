@@ -7,6 +7,9 @@ import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { NotifyApiService } from 'src/app/api/notify.service';
+
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -30,11 +33,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   productData: any;
   iframeSrc: any;
   emailData: any;
+  product_url: any;
+  showLimitReachedPopup: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
     private sanitizer: DomSanitizer,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private auditUtil: AuditutilsService,
+    private notifyApi: NotifyApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -64,6 +71,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.templates = JSON.parse(metaData);
       if (product) {
         this.selectedTemplate = JSON.parse(product).id;
+        this.product_url = JSON.parse(product).product_url;
       }
     }
 
@@ -109,8 +117,52 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
-      this.showConfirmationPopup();
+      this.getMeTotalAppsPublishedCount();
     }
+    this.auditUtil.post(this.selectedOption, 1, 'SUCCESS', 'user-audit');
+  }
+
+  getMeTotalAppsPublishedCount(): void {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+      if (res && res.status === 200) {
+        const restriction_max_value = localStorage.getItem('restriction_max_value');
+        if (restriction_max_value) {
+          if (res.data.total_apps_published >= restriction_max_value) {
+            this.showLimitReachedPopup = true;
+            this.sendEmailNotificationToTheUser();
+          } else {
+            this.showConfirmationPopup();
+          }
+        }
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
+
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+      if (res && res?.data?.detail) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 
   showConfirmationPopup(): void {
@@ -121,7 +173,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.utilsService.loadSpinner(true)
         const body = {
           repoName: localStorage.getItem('app_name'),
-          projectName: 'xnode',
+          projectName: environment.projectName,
           email: this.currentUser?.email,
           envName: environment.branchName,
           productId: this.productId ? this.productId : localStorage.getItem('record_id')
@@ -141,8 +193,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         if (response) {
           this.loadSpinnerInParent.emit(false);
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
-          this.utilsService.loadSpinner(false)
+          this.utilsService.loadSpinner(false);
+          this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
         } else {
+          this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
         }
       })
@@ -150,6 +204,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.loadSpinnerInParent.emit(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false)
+        this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+
       });
   }
   //get calls 
@@ -170,14 +226,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (product) {
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);
-      localStorage.setItem('product_url', product.url ? product.url : '');
+      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
       this.selectedTemplate = product.id;
+      this.product_url = product.product_url;
     }
     this.utilsService.showProductStatusPopup(false);
-    this.refreshCurrentRoute()
+    this.refreshCurrentRoute();
+    this.auditUtil.post("TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
-
-
 }
 

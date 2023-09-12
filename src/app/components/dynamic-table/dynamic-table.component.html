@@ -1,7 +1,7 @@
 <xnode-confirmation-popup [Data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
 <p-table #dt [rows]="10" [scrollable]="true" [rowHover]="true" dataKey="id" [globalFilterFields]="headers"
-     styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal" [value]="dynamicData"
-     [columns]="cols" scrollHeight="500px" >
+     styleClass="p-datatable-sm" [autoLayout]="true" scrollDirection="horizontal" [value]="dynamicData" [columns]="cols"
+     scrollHeight="500px">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center">
                <span class="p-input-icon-left" *ngIf="showSearch">
@@ -35,7 +35,7 @@
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
                <td *ngFor="let col of columns" class="border-transparent">
                     <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'"
-                         [ngClass]="col.field === 'email' ? 'email-text-color':''">
+                         [ngClass]="col.field === 'email' ? 'email-text-color':''" style="color:#fff">
                          {{rowData[col.field]}}
                     </div>
                     <div *ngIf=" col.field==='interest_level'" [ngClass]=" rowData[col.field]==='High' ? 'Success' : rowData[col.field]==='Medium'
@@ -43,11 +43,11 @@
                          {{rowData[col.field]}}
                     </div>
                     <ng-container *ngIf="col.field === 'action'">
-                         <div
-                              [ngClass]="rowData[col.field] === 'invited' ? 'Success' : rowData[col.field] === 'hold' ? 'Warning' : rowData[col.field] === 'reject' ? 'Danger' : null">
+                         <div [ngClass]="rowData[col.field] === 'Invited' ? 'Success' : rowData[col.field] === 'Hold' ? 'Warning' : rowData[col.field] === 'Reject' ? 'Danger' : null"
+                              *ngIf="rowData[col.field] !== 'Pending Invite'">
                               {{rowData[col.field]}}
                          </div>
-                         <div class="flex" *ngIf="rowData[col.field] == null">
+                         <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
                               <xnode-action-button [Actions]="Actions" [Data]="rowData"
                                    (dataActionEvent)="handleDataAndAction($event)"
                                    class="flex flex-row flex-wrap"></xnode-action-button>

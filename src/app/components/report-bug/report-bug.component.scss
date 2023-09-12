@@ -22,15 +22,37 @@
     }
 }
 
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
 .single-file {
     background: #4B4B4B;
 }
 
+.image-container {
+    height: 180px;
+    width: 220px;
+    border-radius: 10px;
+    border-color: #4B4B4B;
+}
+
+.img {
+    height: 70%;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.img-footer {
+    background-color: #4B4B4B;
+    height: 30%;
+    width: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 .container-img {
-    border-radius: 15px;
-    text-align: center;
-    position: relative;
-    height: 60%;
     display: flex;
 
     input {
@@ -81,7 +103,7 @@ textarea {
 }
 
 :host::ng-deep .p-dialog .p-dialog-header {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #4B4B4B;
 }
 
 .invalid-feedback {
@@ -93,7 +115,7 @@ textarea {
 }
 
 :host::ng-deep .p-dialog .p-dialog-footer {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #4B4B4B;
 }
 
 .fileover {
@@ -155,4 +177,8 @@ textarea {
 
 :host::ng-deep .p-dropdown .p-dropdown-label {
     color: #ffffff;
+}
+
+.feedback-history {
+    color: #02ADEE;
 }
