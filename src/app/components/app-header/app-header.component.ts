@@ -68,7 +68,7 @@ export class AppHeaderComponent implements OnInit {
 
     if (data) {
       let currentUser = JSON.parse(data);
-      this.username = currentUser.xnode_user_data.first_name.toUpperCase() + ' ' + currentUser.xnode_user_data.last_name.toUpperCase();
+      this.username = currentUser.first_name.toUpperCase() + ' ' + currentUser.last_name.toUpperCase();
 
     }
     this.currentUser = UserUtil.getCurrentUser();

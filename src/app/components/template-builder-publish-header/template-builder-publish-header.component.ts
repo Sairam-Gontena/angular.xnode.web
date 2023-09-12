@@ -119,7 +119,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   getMeTotalAppsPublishedCount(): void {
-    this.apiService.get('/total_apps_published/' + this.currentUser?.xnode_user_data?.account_id).then((res: any) => {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
       if (res && res.status === 200) {
         const restriction_max_value = localStorage.getItem('restriction_max_value');
         if (restriction_max_value) {
@@ -150,7 +150,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         "dev.xnode@salientminds.com"
       ],
       "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
     this.notifyApi.post(body, 'email/notify').then((res: any) => {
       if (res && res?.data?.detail) {
