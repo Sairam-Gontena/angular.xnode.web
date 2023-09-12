@@ -79,9 +79,7 @@ export class VerifyOtpComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.authApiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
-        console.log('response', response);
-
-        if (response?.status === 200 && response?.data) {
+        if (response?.status === 200) {
           if (response?.data?.role_id === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
@@ -97,6 +95,7 @@ export class VerifyOtpComponent implements OnInit {
           this.utilsService.loadSpinner(true);
           this.auditUtil.post('VERIFY_OTP', 1, 'FAILURE', 'user-audit');
         }
+        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
