@@ -5,6 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
+import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',
@@ -37,7 +38,8 @@ export class AppComponent implements OnInit {
     private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
@@ -222,7 +224,12 @@ export class AppComponent implements OnInit {
 
   openNavi(newItem: any) {
     if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
-      this.router.navigate(['/x-pilot'])
+      let currentUser = localStorage.getItem('currentUser')
+      if (currentUser) {
+        let userid = JSON.parse(currentUser).id
+        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
+      }
+      this.router.navigate(['/x-pilot']);
     } else {
       this.getUserData();
       this.isSideWindowOpen = newItem.cbFlag;

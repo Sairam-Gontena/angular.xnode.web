@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 @Component({
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
@@ -36,7 +37,7 @@ export class OverViewComponent {
   username: any;
   productId: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -129,14 +130,17 @@ export class OverViewComponent {
           this.appName = response?.data?.Title ? response?.data?.Title : response?.data?.title;
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
+          this.auditUtil.post("RETRIEVE_OVERVIEW", 1, 'SUCCESS', 'user-audit');
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.auditUtil.post("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utils.loadSpinner(false);
       })
       .catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
+        this.auditUtil.post("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');
       });
   }
 }
