@@ -6,7 +6,7 @@ import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
 import { User } from 'src/app/utils/user-util';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 @Component({
   selector: 'xnode-page-tools-layout',
@@ -118,15 +118,7 @@ export class PageToolsLayoutComponent {
     });
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
-      let userid = this.currentUser?.id;
-      this.auditUtil.post(userid, id, 'user-audit').then((response: any) => {
-        if (response?.status === 200) {
-        } else {
-          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-        }
-      }).catch((err) => {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-      })
+      this.auditUtil.post(id, 1, 'SUCCESS', 'user-audit');
       idElem.style.background = '#302e38';
     }
   }

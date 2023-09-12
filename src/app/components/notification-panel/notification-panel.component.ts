@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserUtil, User } from '../../utils/user-util';
 import { environment } from 'src/environments/environment';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 import { UtilsService } from '../services/utils.service';
 
 
@@ -45,18 +45,11 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + obj.component]);
       }
+      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
+      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'JUMP_TO_PRODUCT_FROM_NOTIFICATION', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
   }
 
   getMeLabel(obj: any) {
@@ -105,14 +98,6 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'PUBLISH_APP_FROM_NOTIFICATION', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
   }
 }

@@ -7,7 +7,7 @@ import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -97,27 +97,11 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     this.router.navigate(['/dashboard']);
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'PRODUCT_OPENED', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'NEW_PRODUCT_CREATE', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
@@ -132,15 +116,7 @@ export class MyProductsComponent implements OnInit {
     }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'CSV_IMPORT', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
   }
   //get calls 
   getMetaData() {
@@ -187,15 +163,6 @@ export class MyProductsComponent implements OnInit {
       return
     }
     this.router.navigate(['/x-pilot']);
-    console.log("======")
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'NEW_WITH_NAVI', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
 }

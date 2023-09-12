@@ -4,7 +4,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 @Component({
   selector: 'xnode-report-bug',
@@ -123,15 +123,7 @@ export class ReportBugComponent implements OnInit {
       this.isInvalid = true;
       console.log("error");
     }
-    let userid = this.currentUser?.id;
-    this.auditUtil.post(userid, 'BUG_REPORT', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   sendBugReport(): void {

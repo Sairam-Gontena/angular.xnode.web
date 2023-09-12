@@ -11,7 +11,7 @@ import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 @Component({
   selector: 'xnode-app-header',
@@ -71,7 +71,6 @@ export class AppHeaderComponent implements OnInit {
     if (data) {
       let currentUser = JSON.parse(data);
       this.username = currentUser.xnode_user_data.first_name.toUpperCase() + ' ' + currentUser.xnode_user_data.last_name.toUpperCase();
-
     }
     this.currentUser = UserUtil.getCurrentUser();
     this.getAllProducts()
@@ -80,15 +79,7 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
-          let userid = this.currentUser?.id
-          this.auditUtil.post(userid, 'LOGGED_OUT', 'user-audit').then((response: any) => {
-            if (response?.status === 200) {
-            } else {
-              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-            }
-          }).catch((err) => {
-            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-          })
+          this.auditUtil.post('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
           this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
@@ -119,29 +110,14 @@ export class AppHeaderComponent implements OnInit {
   toggleFeedbackPopup() {
     this.utilsService.loadSpinner(true);
     this.capture();
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'FEEDBACK', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('FEEDBACK', 1, 'SUCCESS', 'user-audit');
   }
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'HELP_CENTER', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
+
   }
 
   capture(): void {
@@ -207,15 +183,7 @@ export class AppHeaderComponent implements OnInit {
       this.opOverlay.show(this.eventOverlay);
     }
     this.closeOverlay = false;
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, 'NOTIFICATIONS', 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post('NOTIFICATIONS', 1, 'SUCCESS', 'user-audit');
   }
 
   overlayToggleFromNotificationPanel(event: any) {

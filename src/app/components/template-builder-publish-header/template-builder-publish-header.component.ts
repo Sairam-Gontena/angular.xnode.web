@@ -7,7 +7,7 @@ import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -116,15 +116,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     } else {
       this.showConfirmationPopup();
     }
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, this.selectedOption, 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post(this.selectedOption, 1, 'SUCCESS', 'user-audit');
   }
 
   showConfirmationPopup(): void {
@@ -156,16 +148,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           this.loadSpinnerInParent.emit(false);
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
           this.utilsService.loadSpinner(false);
-          let userid = this.currentUser?.id
-          this.auditUtil.post(userid, "PUBLISH_APP", 'user-audit').then((response: any) => {
-            if (response?.status === 200) {
-            } else {
-              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-            }
-          }).catch((err) => {
-            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-          })
+          this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
         } else {
+          this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
         }
       })
@@ -173,6 +158,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.loadSpinnerInParent.emit(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false)
+        this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+
       });
   }
   //get calls 
@@ -200,17 +187,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     this.utilsService.showProductStatusPopup(false);
     this.refreshCurrentRoute();
-    let userid = this.currentUser?.id
-    this.auditUtil.post(userid, "TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post("TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
-
-
 }
 

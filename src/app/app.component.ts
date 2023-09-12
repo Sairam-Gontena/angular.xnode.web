@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-import { AuditutilsService } from './api/auditutils.service';
+import { AuditutilsService } from './api/auditUtils.service';
 import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',
@@ -227,14 +227,7 @@ export class AppComponent implements OnInit {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
         let userid = JSON.parse(currentUser).id
-        this.auditUtil.post(userid, 'NAVI_OPENED', 'user-audit').then((response: any) => {
-          if (response?.status === 200) {
-          } else {
-            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-          }
-        }).catch((err) => {
-          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-        })
+        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
       }
       this.router.navigate(['/x-pilot']);
     } else {

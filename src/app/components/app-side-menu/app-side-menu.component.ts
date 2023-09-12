@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { UserUtil, User } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 
 @Component({
@@ -42,14 +42,6 @@ export class AppSideMenuComponent implements OnInit {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }
-    let userid = this.currentUser?.id;
-    this.auditUtil.post(userid, item.path, 'user-audit').then((response: any) => {
-      if (response?.status === 200) {
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-      }
-    }).catch((err) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-    })
+    this.auditUtil.post(item.path, 1, 'SUCCESS', 'user-audit');
   }
 }

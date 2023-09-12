@@ -3,7 +3,7 @@ import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 
 @Component({
@@ -76,15 +76,9 @@ export class ConfirmationPopupComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
           let userid = this.currentUser?.id
-          this.auditUtil.post(userid, action, 'user-audit').then((response: any) => {
-            if (response?.status === 200) {
-            } else {
-              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-            }
-          }).catch((err) => {
-            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-          })
+          this.auditUtil.post(action, 1, 'SUCCESS', 'user-audit');
         } else {
+          this.auditUtil.post(action, 1, 'FAILURE', 'user-audit');
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
         this.utilsService.loadSpinner(false);
@@ -92,6 +86,7 @@ export class ConfirmationPopupComponent implements OnInit {
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
+        this.auditUtil.post(action, 1, 'FAILURE', 'user-audit');
       });
   }
 

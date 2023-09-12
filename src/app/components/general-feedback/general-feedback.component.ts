@@ -4,7 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 
 
@@ -139,22 +139,18 @@ export class GeneralFeedbackComponent implements OnInit {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
-        let userid = this.currentUser?.id;
-        this.auditUtil.post(userid, 'GENERAL_FEEDBACK', 'user-audit').then((response: any) => {
-          if (response?.status === 200) {
-          } else {
-            this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-          }
-        }).catch((err) => {
-          this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
-        })
+        this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
+
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+        this.auditUtil.post("GENERAL_FEEDBACK", 1, 'FAILURE', 'user-audit');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
+      this.auditUtil.post("GENERAL_FEEDBACK", 1, 'FAILURE', 'user-audit');
+
     })
   }
 

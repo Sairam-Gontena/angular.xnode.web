@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { AuditutilsService } from '../../api/auditutils.service';
+import { AuditutilsService } from '../../api/auditUtils.service';
 
 @Component({
   selector: 'xnode-verify-otp',
@@ -83,28 +83,23 @@ export class VerifyOtpComponent implements OnInit {
           if (response?.data?.xnode_role_data.name === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
+            this.auditUtil.post('VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
+            this.auditUtil.post('VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           }
-          let userid = this.currentUser?.id
-          this.auditUtil.post(userid, 'VERIFY_OTP', 'user-audit').then((response: any) => {
-            if (response?.status === 200) {
-            } else {
-              this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
-            }
-          }).catch((err) => {
-            this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
-          })
           localStorage.setItem('currentUser', JSON.stringify(response?.data));
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(true);
+          this.auditUtil.post('VERIFY_OTP', 1, 'FAILURE', 'user-audit');
         }
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
+        this.auditUtil.post('VERIFY_OTP', 1, 'FAILURE', 'user-audit');
       });
   }
   //get calls 
