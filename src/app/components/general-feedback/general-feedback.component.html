@@ -14,30 +14,46 @@
         <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="flex justify-content-end align-items-center">
-                    <a class="font-medium text-base no-underline pointer"
-                        (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View feedback history</a>
-                    <i class="pi pi-arrow-right"></i>
+                    <a class="font-medium text-base no-underline pointer feedback-history">View feedback history
+                        <i class="pi pi-arrow-right"></i> </a>
                 </div>
             </div>
             <div
                 class="grid flex justify-content-center align-items-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                <label class="text-base font-medium ">How would you like to rate your experience</label>
-                <form [formGroup]="formGroup">
-                    <p-rating formControlName="value" [stars]="5" (onRate)="gotRating($event)">
-                        <ng-template pTemplate="cancel">
-                            <img src="./assets/star1.svg" width="60px" height="60px" />
-                        </ng-template>
-                        <ng-template pTemplate="onicon">
-                            <img src="./assets/star5.svg" width="60px" height="60px" />
-                        </ng-template>
-                        <ng-template pTemplate="officon">
-                            <img src="./assets/star1.svg" width="60px" height="60px" />
-                        </ng-template>
-                    </p-rating>
-                </form>
+                <label class="text-base font-medium">How would you like to rate your experience</label>
+                <div class="flex flex-wrap justify-content-center  pointer gap-3 pt-4">
+                    <div class="star-width ">
+                        <img src="./assets/star1.svg" (mouseover)="onHoverStar('ONE')" (mouseout)="onHoverStar('')"
+                            (click)="onStarClick('ONE')" class="star-image" width="60px" height="60px"
+                            [src]="selectedRating === 'ONE' || onHoveredIcon === 'ONE' ? './assets/star1-hover.svg' : './assets/star1.svg'" />
+                    </div>
+                    <div class="star-width ">
+                        <img src="./assets/star2.svg" (click)="onStarClick('TWO')" (mouseover)="onHoverStar('TWO')"
+                            (mouseout)="onHoverStar('')" class="star-image" width="60px" height="60px"
+                            [src]="selectedRating === 'TWO' || onHoveredIcon === 'TWO' ? './assets/star2-hover.svg' : './assets/star2.svg'" />
+                    </div>
+                    <div class="star-width">
+                        <img src="./assets/star3.svg" (click)="onStarClick('THREE')" class="star-image"
+                            [src]="selectedRating === 'THREE' || onHoveredIcon === 'THREE' ? './assets/star3-hover.svg' : './assets/star3.svg'"
+                            (mouseover)="onHoverStar('THREE')" (mouseout)="onHoverStar('')" width="60px"
+                            height="60px" />
+                    </div>
+                    <div class="star-width">
+                        <img src="./assets/star4.svg" (click)="onStarClick('FOUR')" class="star-image"
+                            [src]="selectedRating === 'FOUR' || onHoveredIcon === 'FOUR' ? './assets/star4-hover.svg' : './assets/star4.svg'"
+                            (mouseover)="onHoverStar('FOUR')" (mouseout)="onHoverStar('')" width="60px" height="60px" />
+                    </div>
+                    <div class="star-width">
+                        <img src="./assets/star5-hover.svg" (click)="onStarClick('FIVE')"
+                            (mouseover)="onHoverStar('FIVE')" (mouseout)="onHoverStar('')" class="star-image"
+                            width="60px" height="60px"
+                            [src]="selectedRating === 'FIVE' || onHoveredIcon === 'FIVE' ? './assets/star5.svg' : './assets/star5-hover.svg'" />
+                    </div>
+
+                </div>
             </div>
-            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
-                <label class="text-sm font-normal">Tell us more (optional)</label>
+            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-2">
+                <label class="text-sm font-hover">Tell us more (optional)</label>
                 <textarea rows="3" cols="30" pInputTextarea formControlName="tellUsMore"
                     [ngClass]="{ 'is-invalid': submitted && feedback['tellUsMore'].errors }" class="col-12"
                     placeholder="Describe more about your experience"></textarea>
@@ -48,7 +64,7 @@
             </div>
             <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
-                    <label class="text-sm font-normal">Product</label>
+                    <label class="text-sm font-hover">Product</label>
                     <input type="text" pInputText formControlName="product" placeholder=""
                         [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
@@ -57,7 +73,7 @@
                     </div>
                 </div>
                 <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
-                    <label class="text-sm font-normal">Section</label>
+                    <label class="text-sm font-hover">Section</label>
                     <input type="text" pInputText formControlName="section" placeholder="e.g., Dashboard"
                         [ngClass]="{ 'is-invalid': submitted && feedback['section'].errors }" class="col-12" />
                     <div *ngIf="submitted && feedback['section'].errors" class="invalid-feedback">
@@ -67,7 +83,7 @@
                 </div>
             </div>
             <div class="field">
-                <label class="text-sm font-normal">Screenshot</label>
+                <label class="text-sm font-hover">Screenshot</label>
                 <div class="image-container border-1" *ngIf="screenshot !==''">
                     <img [src]="screenshot" width="100%" class="img">
                     <div class="img-footer flex justify-content-between align-items-center px-3">

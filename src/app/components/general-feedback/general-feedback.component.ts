@@ -32,8 +32,12 @@ export class GeneralFeedbackComponent implements OnInit {
   draganddropSelected: boolean = false;
   browserSelected: boolean = false;
   uploadedFileData: any;
-  currentUser?: any;
-  rating: number = 3
+  currentUser?: User;
+  rating: any;
+  isHovered: boolean = false;
+  selectedRating: string | null = null;
+  onHoveredIcon: string | null = null;
+
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
@@ -43,8 +47,8 @@ export class GeneralFeedbackComponent implements OnInit {
       section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
       screenshot: [null],
+      selectedRating: ['', Validators.required]
       // logoFile: [null, Validators.required],
-      rating: [this.rating, Validators.required]
     });
   }
 
@@ -281,10 +285,12 @@ export class GeneralFeedbackComponent implements OnInit {
   closePopup() {
     this.utils.showFeedbackPopupByType('');
   }
-
-  gotRating(val: any) {
-    this.rating = val.value
-    console.log(this.rating)
+  onStarClick(rating: string) {
+    this.selectedRating = rating;
+    this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
+  }
+  onHoverStar(rating: string) {
+    this.onHoveredIcon = rating;
   }
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
