@@ -23,7 +23,7 @@ export class ReportBugComponent implements OnInit {
   public getScreenWidth: any;
   public dialogWidth: string = '40vw';
   modalPosition: any;
-  currentUser?: User;
+  currentUser?: any;
   submitted: boolean = false;
   feedbackForm: FormGroup;
   priorities: any[] = [];
@@ -128,7 +128,7 @@ export class ReportBugComponent implements OnInit {
 
   sendBugReport(): void {
     const body = {
-      "userId": this.currentUser?.id,
+      "userId": this.currentUser?.user_id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
@@ -173,7 +173,7 @@ export class ReportBugComponent implements OnInit {
       'Content-Type': 'application/json',
     };
 
-    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
         this.uploadedFileData = res.data;
         this.sendBugReport();

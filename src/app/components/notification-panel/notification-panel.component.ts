@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserUtil, User } from '../../utils/user-util';
-import { environment } from 'src/environments/environment';
+import { UserUtil } from '../../utils/user-util';
 import { AuditutilsService } from '../../api/auditUtils.service';
 import { UtilsService } from '../services/utils.service';
 
