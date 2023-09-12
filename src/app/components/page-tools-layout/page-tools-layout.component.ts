@@ -6,7 +6,8 @@ import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
 import { User } from 'src/app/utils/user-util';
-import { AuditutilsService } from '../../api/auditUtils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+
 
 @Component({
   selector: 'xnode-page-tools-layout',
