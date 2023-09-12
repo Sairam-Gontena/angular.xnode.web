@@ -11,6 +11,9 @@ import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+
+
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -54,7 +57,7 @@ export class AppHeaderComponent implements OnInit {
   showLimitReachedPopup: boolean = false;
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
-    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService, private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
@@ -68,7 +71,7 @@ export class AppHeaderComponent implements OnInit {
 
     if (data) {
       let currentUser = JSON.parse(data);
-      this.username = currentUser.xnode_user_data.first_name.toUpperCase() + ' ' + currentUser.xnode_user_data.last_name.toUpperCase();
+      this.username = currentUser.first_name.toUpperCase() + ' ' + currentUser.last_name.toUpperCase();
 
     }
     this.currentUser = UserUtil.getCurrentUser();
@@ -78,6 +81,7 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
+          this.auditUtil.post('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
           this.utilsService.showProductStatusPopup(false);
           localStorage.clear();
           this.router.navigate(['/']);
@@ -108,11 +112,14 @@ export class AppHeaderComponent implements OnInit {
   toggleFeedbackPopup() {
     this.utilsService.loadSpinner(true);
     this.capture();
+    this.auditUtil.post('FEEDBACK', 1, 'SUCCESS', 'user-audit');
   }
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
+    this.auditUtil.post('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
+
   }
 
   capture(): void {
@@ -178,6 +185,7 @@ export class AppHeaderComponent implements OnInit {
       this.opOverlay.show(this.eventOverlay);
     }
     this.closeOverlay = false;
+    this.auditUtil.post('NOTIFICATIONS', 1, 'SUCCESS', 'user-audit');
   }
 
   overlayToggleFromNotificationPanel(event: any) {

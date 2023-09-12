@@ -5,6 +5,9 @@ import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
+import { User } from 'src/app/utils/user-util';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+
 
 @Component({
   selector: 'xnode-page-tools-layout',
@@ -21,14 +24,14 @@ export class PageToolsLayoutComponent {
   selectedContainer: string = 'CONTAINER';
   iframeUrl: string = "http://localhost:54809/";
   activatedAccIndex = 1;
+  currentUser?: User;
 
-  constructor(private router: Router, private subMenuLayoutUtil: UtilsService) {
+  constructor(private router: Router, private subMenuLayoutUtil: UtilsService, private auditUtil: AuditutilsService, public utils: UtilsService,) {
     if (environment.name === 'BETA') {
       this.sideMenu = SubMenuConfig.BETA
     } else {
       this.sideMenu = SubMenuConfig.DEV
     }
-
   }
 
   ngOnInit() {
@@ -60,7 +63,6 @@ export class PageToolsLayoutComponent {
   onClickSubMenuItem(subMenuItem: any) {
     if (subMenuItem.routerlink !== '') {
       this.router.navigate([subMenuItem.routerlink])
-
     }
   }
   onClickAccordian(item: any, index: number) {
@@ -108,6 +110,7 @@ export class PageToolsLayoutComponent {
   selectedSubMenu(id: any) {
     this.sideMenuItem?.subMenuItems?.forEach((item: any) => {
       item?.accordianContent?.forEach((innerItem: any) => {
+
         let contentElem = document.getElementById(item.accordianHeader + innerItem.id) as HTMLElement;
         if (contentElem) {
           contentElem.style.background = '#24232c';
@@ -116,6 +119,7 @@ export class PageToolsLayoutComponent {
     });
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
+      this.auditUtil.post(id, 1, 'SUCCESS', 'user-audit');
       idElem.style.background = '#302e38';
     }
   }
