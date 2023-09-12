@@ -48,8 +48,8 @@ export class GeneralFeedbackComponent implements OnInit {
       section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
       screenshot: [null],
+      selectedRating: ['', Validators.required]
       // logoFile: [null, Validators.required],
-      rating: [this.rating, Validators.required]
     });
   }
 
@@ -281,8 +281,8 @@ export class GeneralFeedbackComponent implements OnInit {
   }
   onStarClick(rating: string) {
     this.selectedRating = rating;
+    this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
   }
-
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
     const files = (event.target as HTMLInputElement).files;
