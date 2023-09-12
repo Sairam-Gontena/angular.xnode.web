@@ -5,6 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
+import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',
@@ -37,7 +38,8 @@ export class AppComponent implements OnInit {
     private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
@@ -210,19 +212,19 @@ export class AppComponent implements OnInit {
   }
 
   isUserExists() {
-    // Temporary
-    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
-      || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
-      || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/logs" || window.location.hash === "#/my-products?product=created" || window.location.hash === '#/operate/change/history-log' || window.location.hash === '#/help-center';
+    const currentUser = localStorage.getItem('currentUser')
+    return currentUser
   }
 
 
 
   openNavi(newItem: any) {
     if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
-      this.router.navigate(['/x-pilot'])
+      let currentUser = localStorage.getItem('currentUser')
+      if (currentUser) {
+        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
+      }
+      this.router.navigate(['/x-pilot']);
     } else {
       this.getUserData();
       this.isSideWindowOpen = newItem.cbFlag;
@@ -259,7 +261,6 @@ export class AppComponent implements OnInit {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
       || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
-
   }
 
 }

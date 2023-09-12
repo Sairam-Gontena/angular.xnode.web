@@ -2,10 +2,8 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output, ElementRe
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
-import { User, UserUtil } from 'src/app/utils/user-util';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
-
-
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-general-feedback',
@@ -35,18 +33,22 @@ export class GeneralFeedbackComponent implements OnInit {
   browserSelected: boolean = false;
   uploadedFileData: any;
   currentUser?: any;
-  rating: number = 3
+  rating: any;
+  isHovered: boolean = false;
+  selectedRating: string | null = null;
+  onHoveredIcon: string | null = null;
+
 
   constructor(public utils: UtilsService,
-    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService,) {
+    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
       screenshot: [null],
+      selectedRating: ['', Validators.required]
       // logoFile: [null, Validators.required],
-      rating: [this.rating, Validators.required]
     });
   }
 
@@ -123,7 +125,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
   sendGeneralFeedbackReport(): void {
     const body = {
-      "userId": this.currentUser?.id,
+      "userId": this.currentUser?.user_id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
@@ -141,13 +143,17 @@ export class GeneralFeedbackComponent implements OnInit {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
+        this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+        this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
+      this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
+
     })
   }
 
@@ -163,7 +169,7 @@ export class GeneralFeedbackComponent implements OnInit {
       'Content-Type': 'application/json',
     };
 
-    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
         this.uploadedFileData = res.data;
         this.sendGeneralFeedbackReport();
@@ -279,10 +285,12 @@ export class GeneralFeedbackComponent implements OnInit {
   closePopup() {
     this.utils.showFeedbackPopupByType('');
   }
-
-  gotRating(val: any) {
-    this.rating = val.value
-    console.log(this.rating)
+  onStarClick(rating: string) {
+    this.selectedRating = rating;
+    this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
+  }
+  onHoverStar(rating: string) {
+    this.onHoveredIcon = rating;
   }
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes

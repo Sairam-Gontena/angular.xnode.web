@@ -4,6 +4,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-report-bug',
@@ -22,7 +23,7 @@ export class ReportBugComponent implements OnInit {
   public getScreenWidth: any;
   public dialogWidth: string = '40vw';
   modalPosition: any;
-  currentUser?: User;
+  currentUser?: any;
   submitted: boolean = false;
   feedbackForm: FormGroup;
   priorities: any[] = [];
@@ -53,7 +54,7 @@ export class ReportBugComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
-    public utils: UtilsService, private commonApi: CommonApiService) {
+    public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.feedbackForm = this.fb.group({
@@ -122,11 +123,12 @@ export class ReportBugComponent implements OnInit {
       this.isInvalid = true;
       console.log("error");
     }
+    this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   sendBugReport(): void {
     const body = {
-      "userId": this.currentUser?.id,
+      "userId": this.currentUser?.user_id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
@@ -171,7 +173,7 @@ export class ReportBugComponent implements OnInit {
       'Content-Type': 'application/json',
     };
 
-    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
         this.uploadedFileData = res.data;
         this.sendBugReport();

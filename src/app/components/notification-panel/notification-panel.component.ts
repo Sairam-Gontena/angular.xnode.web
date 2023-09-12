@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserUtil, User } from '../../utils/user-util';
-import { environment } from 'src/environments/environment';
-import { ApiService } from 'src/app/api/api.service';
+import { UserUtil } from '../../utils/user-util';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { UtilsService } from '../services/utils.service';
+import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 
 @Component({
@@ -28,8 +28,8 @@ export class NotificationPanelComponent {
     all: true
   };
 
-  constructor(private router: Router, private apiService: ApiService,
-    private utils: UtilsService, private notifyApi: NotifyApiService) {
+  constructor(private router: Router, private apiService: ApiService, private auditUtil: AuditutilsService, public utils: UtilsService, private notifyApi: NotifyApiService) {
+
   }
 
   ngOnInit(): void {
@@ -48,8 +48,10 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + obj.component]);
       }
+      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
+      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
   }
 
@@ -60,6 +62,10 @@ export class NotificationPanelComponent {
   navigateToActivity() {
     this.closeNotificationPanel.emit(true)
     this.router.navigate(['/operate/change/history-log'])
+  }
+
+  onClickProductUrl() {
+    this.auditUtil.post('PRODUCT_URL_CLICKED_FROM_NOTIFICATION_PANEL', 1, 'FAILURE', 'user-audit');
   }
 
   filterNotifications(val: any) {
@@ -100,7 +106,7 @@ export class NotificationPanelComponent {
   }
 
   getMeTotalAppsPublishedCount(obj: any): void {
-    this.apiService.get('/total_apps_published/' + this.currentUser?.xnode_user_data?.account_id).then((res: any) => {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
       if (res && res.status === 200) {
         const restriction_max_value = localStorage.getItem('restriction_max_value');
         if (restriction_max_value) {
@@ -131,7 +137,7 @@ export class NotificationPanelComponent {
         "dev.xnode@salientminds.com"
       ],
       "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
     this.notifyApi.post(body, 'email/notify').then((res: any) => {
       if (res && res?.data?.detail) {
@@ -146,6 +152,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
+    this.auditUtil.post('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
   }
 }
 
