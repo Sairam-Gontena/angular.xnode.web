@@ -23,3 +23,5 @@
         <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
     </div>
 </div>
+<xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
+    (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>

@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
 import { AuditutilsService } from '../../api/auditUtils.service';
 
+import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-template-builder-publish-header',
   templateUrl: './template-builder-publish-header.component.html',
@@ -33,12 +34,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   iframeSrc: any;
   emailData: any;
   product_url: any;
+  showLimitReachedPopup: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
     private sanitizer: DomSanitizer,
     private utilsService: UtilsService,
-    private auditUtil: AuditutilsService
+    private auditUtil: AuditutilsService,
+    private notifyApi: NotifyApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -114,9 +117,52 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (this.selectedOption == 'Preview') {
       window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
     } else {
-      this.showConfirmationPopup();
+      this.getMeTotalAppsPublishedCount();
     }
     this.auditUtil.post(this.selectedOption, 1, 'SUCCESS', 'user-audit');
+  }
+
+  getMeTotalAppsPublishedCount(): void {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+      if (res && res.status === 200) {
+        const restriction_max_value = localStorage.getItem('restriction_max_value');
+        if (restriction_max_value) {
+          if (res.data.total_apps_published >= restriction_max_value) {
+            this.showLimitReachedPopup = true;
+            this.sendEmailNotificationToTheUser();
+          } else {
+            this.showConfirmationPopup();
+          }
+        }
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
+
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+      if (res && res?.data?.detail) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 
   showConfirmationPopup(): void {

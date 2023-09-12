@@ -25,7 +25,7 @@ export class AppSideMenuComponent implements OnInit {
 
   ngOnInit(): void {
     const environmentName = environment.name as keyof typeof AppSideMenuItems;
-    if (this.currentUser?.xnode_role_data.name === 'Xnode Admin') {
+    if (this.currentUser?.role_id === 'Xnode Admin') {
       this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
       this.selectedMenuIndex = 0;
     } else {
@@ -35,10 +35,10 @@ export class AppSideMenuComponent implements OnInit {
 
   onClickMenuItem(item: any, i: any): void {
     this.utils.showProductStatusPopup(false);
-    if (this.currentUser?.xnode_role_data.name === 'Xnode Admin' && item.label == 'Home') {
+    if (this.currentUser?.role_id === 'Xnode Admin' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
-    } else if (this.currentUser?.xnode_role_data.name === 'Xnode Entity User') {
+    } else if (this.currentUser?.role_id === 'Xnode Entity User') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }

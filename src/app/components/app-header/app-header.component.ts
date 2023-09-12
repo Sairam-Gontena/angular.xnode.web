@@ -53,7 +53,7 @@ export class AppHeaderComponent implements OnInit {
   opOverlay: any;
   showFeedBacks: any;
   selectedPopup: any;
-
+  showLimitReachedPopup: boolean = false;
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService, private auditUtil: AuditutilsService) {
@@ -70,7 +70,8 @@ export class AppHeaderComponent implements OnInit {
 
     if (data) {
       let currentUser = JSON.parse(data);
-      this.username = currentUser.xnode_user_data.first_name.toUpperCase() + ' ' + currentUser.xnode_user_data.last_name.toUpperCase();
+      this.username = currentUser.first_name.toUpperCase() + ' ' + currentUser.last_name.toUpperCase();
+
     }
     this.currentUser = UserUtil.getCurrentUser();
     this.getAllProducts()
@@ -233,6 +234,10 @@ export class AppHeaderComponent implements OnInit {
   onClickLogo(): void {
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
+  }
+
+  showMeLimitInfoPopup(event: any): void {
+    this.showLimitReachedPopup = event;
   }
 
 }
