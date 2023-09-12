@@ -18,8 +18,10 @@
                         (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View bug
                         history <i class="pi pi-arrow-right"></i> </a>
                 </label>
-                <input type="text" pInputText formControlName="product"
-                    [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
+                <p-dropdown dataKey="selectedProduct" formControlName="product" [options]="products"
+                    placeholder="Choose Product" [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }"
+                    optionLabel="title" optionValue="id" class="custom-dropdown" (onChange)="onProductChange($event)" >
+                </p-dropdown>
                 <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                     <div *ngIf="feedback['product'].errors?.['required']">
                         Product is required</div>

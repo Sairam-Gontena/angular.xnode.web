@@ -128,7 +128,6 @@ export class MyProductsComponent implements OnInit {
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
-
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });

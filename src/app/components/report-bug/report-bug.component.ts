@@ -27,6 +27,9 @@ export class ReportBugComponent implements OnInit {
   submitted: boolean = false;
   feedbackForm: FormGroup;
   priorities: any[] = [];
+  products: any[] = [];
+  selectedProduct: any;
+  selectedProductId: any;
   isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
   isInvalid: boolean = false;
@@ -37,8 +40,8 @@ export class ReportBugComponent implements OnInit {
   imageUrl: any;
   uploadedFileData: any;
   screenshotName = 'Image';
-
   @HostListener('window:resize', ['$event'])
+
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
@@ -72,6 +75,15 @@ export class ReportBugComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let meta_data = localStorage.getItem('meta_data')
+    if (meta_data) {
+      this.products = JSON.parse(meta_data);
+      let product = localStorage.getItem('product');
+      if (product) {
+        this.selectedProduct = JSON.parse(product);
+        this.selectedProductId = this.selectedProduct.id;
+      }
+    }
     this.priorities = [
       { name: 'Low', code: 'Low' },
       { name: 'Medium', code: 'Medium' },
@@ -129,7 +141,7 @@ export class ReportBugComponent implements OnInit {
   sendBugReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": localStorage.getItem('record_id'),
+      "productId": this.selectedProductId,
       "componentId": this.feedbackForm.value.section,
       "feedbackText": this.feedbackForm.value.feedbackText,
       "severityId": this.feedbackForm.value.severityId,
@@ -352,5 +364,9 @@ export class ReportBugComponent implements OnInit {
     } else {
       container.classList.remove('dragging-over');
     }
+  }
+
+  onProductChange(event: any) {
+    this.selectedProductId = event.value;
   }
 }
