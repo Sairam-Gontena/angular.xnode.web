@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 @Component({
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
@@ -24,7 +25,7 @@ export class OverViewComponent {
   counter2: any = 1;
   jsondata: any;
   childData: any;
-  currentUser?: User;
+  currentUser?: any;
   overview: any;
   id: String = '';
   email = '';
@@ -33,10 +34,10 @@ export class OverViewComponent {
   overviewData: any;
   product: any;
   product_id: any;
-  userName: any;
+  username: any;
   productId: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService) {
+  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
@@ -48,7 +49,7 @@ export class OverViewComponent {
     let dataName = localStorage.getItem("currentUser")
     if (dataName) {
       let currentUser = JSON.parse(dataName);
-      this.userName = currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1).toLowerCase() + " " + currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1).toLowerCase();
+      this.username = currentUser?.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
     }
     if (product) {
       this.product = JSON.parse(product);
@@ -65,6 +66,7 @@ export class OverViewComponent {
     ]
     this.get_ID();
   };
+
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
       this.highlightedIndex = null;
@@ -73,6 +75,7 @@ export class OverViewComponent {
     }
     this.iconClicked.emit(icon);
   }
+
   nextStep(): void {
     if (this.currentStep < 3) {
       this.currentStep++;
@@ -127,14 +130,17 @@ export class OverViewComponent {
           this.appName = response?.data?.Title ? response?.data?.Title : response?.data?.title;
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
+          this.auditUtil.post("RETRIEVE_OVERVIEW", 1, 'SUCCESS', 'user-audit');
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.auditUtil.post("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utils.loadSpinner(false);
       })
       .catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
+        this.auditUtil.post("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');
       });
   }
 }

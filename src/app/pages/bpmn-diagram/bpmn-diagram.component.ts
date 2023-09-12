@@ -19,7 +19,7 @@ import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
-// import { UtilsService } from '../../components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -61,7 +61,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   product: any;
   product_id: any;
 
-  constructor(private api: ApiService, private utilsService: UtilsService) {
+  constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService,) {
 
   }
 
@@ -166,22 +166,27 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       if (response) {
         let appName = localStorage.getItem('app_name')
         let xflowJson = {
-          'Flows': response.data.Flows.filter((f: any) => f.Name.toLowerCase() === flow.toLowerCase()),
+          'Flows': response.data.Flows.filter((f: any) => {
+            return (f.Name.toLowerCase() == flow.toLowerCase() || (f.Name.toLowerCase() + ' use case') == flow.toLowerCase())
+          }),
           'Product': appName
         };
         this.xflowData = response.data;
 
         this.loadXFlows(xflowJson);
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
+        this.auditUtil.post('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
+        this.auditUtil.post('BPMN_FLOWS', 1, 'FAILURE', 'user-audit');
       }
     }).catch(error => {
       this.loadXFlows(workflow);
       this.jsonWorkflow = JSON.stringify(workflow, null, 2);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.post('BPMN_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
     });
     this.getOverview();
   }
@@ -191,11 +196,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
+        this.auditUtil.post('BPMN_ONBOARDING_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
+        this.auditUtil.post('BPMN_ONBOARDING_FLOWS', 1, 'FAILURE', 'user-audit');
       }
     }).catch((error) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.post('BPMN_ONBOARDING_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
+
     });
   }
 
@@ -616,17 +625,17 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 3.5);
 
     nodeC.append("rect")
-      .attr("width", (d: any) => { return d.data.title.length * 15; })
+      .attr("width", (d: any) => { return d.data.title.length * 10; })
       .attr("height", "40")
       .attr("fill", "#FFFFFA")
       .attr('y', '-1.5em')
-      .attr('x', (d: any) => { return -7.5 * d.data.title.length; })
+      .attr('x', (d: any) => { return -5.5 * d.data.title.length; })
       .attr("rx", 25)
       .style("stroke", '#959595')
       .style("stroke-width", 2)
 
     nodeC.append("text")
-      .attr('x', (d: any) => { return d.data.title.length })
+      .attr('x', (d: any) => { return d.data.title.length * 0.5 })
       .attr('y', '15')
       .attr('dy', '-0.8em')
       .attr("dx", (d: any) => { return -d.data.title.length * 1.5 })
@@ -654,7 +663,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 3.5);
 
     nodeL.append("rect")
-      .attr("width", (d: any) => (d.depth === 1 ? 160 : 130))
+      .attr("width", (d: any) => (d.depth === 1 ? 150 : 120))
       .attr("height", (d: any) => (d.depth === 1 ? 50 : 40))
       .attr("fill", "#FFFFFA")
       .attr("x", (d: any) => (d.depth === 1 ? -60 : -50))
@@ -662,6 +671,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("rx", (d: any) => (d.depth === 1 ? 25 : 25))
       .attr("stroke-width", "2")
       .attr("stroke", "#959595")
+      .attr("cursor", "pointer")
       .text((d: any) => {
         let title = d.data.title.split("-").slice(1);
         if (title[0]) {
@@ -688,6 +698,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .style("font-family", "Inter")
       .style("font-weight", 600)
       .style("fill", "#7a7a7a")
+      .attr("cursor", "pointer")
       .style("font-size", "12px")
       .style("opacity", 0)
       .text((d: any) => {
@@ -723,6 +734,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .style("fill", "#000000")
       .style("font-size", "12px")
       .style("opacity", 0)
+      .attr("cursor", "pointer")
       .text((d: any) => {
         let title = d.data.title.split("-").slice(1);
         if (title[0]) {
@@ -762,7 +774,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       .attr("r", 2.5);
 
     nodeR.append("rect")
-      .attr("width", (d: any) => (d.depth === 1 ? 160 : 130))
+      .attr("width", (d: any) => (d.depth === 1 ? 150 : 120))
       .attr("height", (d: any) => (d.depth === 1 ? 50 : 40))
       .attr("fill", "#FFFFFA")
       .attr("x", -60)

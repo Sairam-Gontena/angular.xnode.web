@@ -5,6 +5,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
+import { AuditutilsService } from './api/auditutils.service';
+import { ApiService } from './api/api.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -27,14 +29,17 @@ export class AppComponent implements OnInit {
   toastObj: any;
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
+  currentUser: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
+    private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
@@ -64,15 +69,63 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = event;
     });
     this.currentPath = window.location.hash;
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
+    } else {
+      this.router.navigate(['/'])
+    }
+
+  }
+
+  getMeTotalOnboardedApps(user: any): void {
+    this.apiService.get("/total_apps_onboarded/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadSpinner(true);
+      });
   }
 
 
   loadIframeUrl(): void {
+
+
+    window.addEventListener('message', (event) => {
+      if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+        return;
+      }
+      if (event.data === 'triggerCustomEvent') {
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+      }
+      if (event.data === 'close-docked-navi') {
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+      }
+      if (event.data === 'expand-navi') {
+        this.isNaviExpanded = true;
+      }
+      if (event.data === 'contract-navi') {
+        this.isNaviExpanded = false;
+      }
+    });
+
+
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
+      console.log("got triggered")
       if (contentWindow) {
         window.addEventListener('message', (event) => {
+          console.log("got triggered =====")
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }
@@ -159,19 +212,19 @@ export class AppComponent implements OnInit {
   }
 
   isUserExists() {
-    // Temporary
-    return window.location.hash === "#/x-pilot" || window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate"
-      || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview"
-      || window.location.hash === "#/my-products" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/logs" || window.location.hash === "#/my-products?product=created" || window.location.hash === '#/operate/change/history-log' || window.location.hash === '#/help-center';
+    const currentUser = localStorage.getItem('currentUser')
+    return currentUser
   }
 
 
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products") {
-      this.router.navigate(['/x-pilot'])
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
+      let currentUser = localStorage.getItem('currentUser')
+      if (currentUser) {
+        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
+      }
+      this.router.navigate(['/x-pilot']);
     } else {
       this.getUserData();
       this.isSideWindowOpen = newItem.cbFlag;
@@ -208,7 +261,6 @@ export class AppComponent implements OnInit {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
       || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
-
   }
 
 }

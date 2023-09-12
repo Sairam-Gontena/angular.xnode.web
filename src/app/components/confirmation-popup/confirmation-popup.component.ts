@@ -1,8 +1,10 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
-import { ApiService } from 'src/app/api/auth.service';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
-import { User, UserUtil } from 'src/app/utils/user-util';
+import { UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+
 
 @Component({
   selector: 'xnode-confirmation-popup',
@@ -10,22 +12,30 @@ import { User, UserUtil } from 'src/app/utils/user-util';
   styleUrls: ['./confirmation-popup.component.scss']
 })
 
-export class ConfirmationPopupComponent {
+export class ConfirmationPopupComponent implements OnInit {
   @Input() Data: any;
   invitationType: string = '';
   visible: boolean = false;
-  currentUser?: User;
+  currentUser?: any;
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService, private refreshListService: RefreshListService,) {
+  constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
-
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit(): void {
     if (this.Data) {
       this.invitationType = this.Data.type + ' ' + this.Data.userData.first_name + ' ' + this.Data.userData.last_name;
       this.showDialog()
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    let data = localStorage.getItem('currentUser')
+    if (data) {
+      let data1 = JSON.parse(data)
+      this.currentUser = data1;
+    }
+
   }
 
 
@@ -35,11 +45,11 @@ export class ConfirmationPopupComponent {
 
   onSuccess(): void {
     if (this.Data.type === 'Invite') {
-      this.updateUserId(this.Data.userData.id, 'invited')
+      this.updateUserId(this.Data.userData.id, 'Invited')
     } else if (this.Data.type === 'Hold') {
-      this.updateUserId(this.Data.userData.id, 'hold')
+      this.updateUserId(this.Data.userData.id, 'OnHold')
     } else if (this.Data.type === 'Reject') {
-      this.updateUserId(this.Data.userData.id, 'rejected')
+      this.updateUserId(this.Data.userData.id, 'Rejected')
     }
     this.visible = false;
     return
@@ -51,12 +61,38 @@ export class ConfirmationPopupComponent {
 
   updateUserId(id: string, action: string): void {
     this.utilsService.loadSpinner(true)
-    let url = 'auth/beta/update_user/' + this.currentUser?.email;
+    let url = 'auth/prospect/prospect_status_update';
     let body = {
       "id": id,
-      "action": action
+      "action": action,
+      "admin_email": this.currentUser?.user_details.email
     };
-    this.apiService.authPut(body, url)
+    this.authApiService.patchAuth(body, url)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          if (response?.data) {
+            this.updateProductTier();
+          } else {
+            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          }
+          let userid = this.currentUser?.id
+          this.auditUtil.post(action, 1, 'SUCCESS', 'user-audit');
+        } else {
+          this.auditUtil.post(action + '_' + response.data.detail, 1, 'FAILURE', 'user-audit');
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadSpinner(false);
+        this.auditUtil.post(action + '_' + error, 1, 'FAILURE', 'user-audit');
+      });
+  }
+
+  updateProductTier(): void {
+    let url = 'auth/prospect/product_tier_manage/' + this.Data.userData.email;
+    this.authApiService.put(url)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data) {

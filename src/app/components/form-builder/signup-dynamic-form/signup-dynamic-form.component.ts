@@ -13,9 +13,9 @@ import { FormComponent } from '../form-component';
 export class SignupDynamicFormComponent implements OnInit {
 
   currentUser: User | undefined;
-  inputControls:FormComponent[] =[]
+  inputControls: FormComponent[] = []
 
-  constructor(private apiService: ApiService, private utilsService: UtilsService, private builderService:BuilderService){
+  constructor(private apiService: ApiService, private utilsService: UtilsService, private builderService: BuilderService) {
   }
 
   ngOnInit(): void {
@@ -24,27 +24,26 @@ export class SignupDynamicFormComponent implements OnInit {
 
   fetchOnboardingFlow() {
     this.apiService.get('/retrieve_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
-        if (response) {
-          let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
-          console.log(onboardingFlow);
-          let userProfile = onboardingFlow[0].BackendFlow.find((flow:any) =>{
-           return flow.TaskId == 'CreateUserProfile';
+      if (response) {
+        let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
+        let userProfile = onboardingFlow[0].BackendFlow.find((flow: any) => {
+          return flow.TaskId == 'CreateUserProfile';
+        })
+        if (!userProfile) {
+          userProfile = onboardingFlow.UserFlow.find((flow: any) => {
+            return flow.TaskId == 'CreateUserProfile';
           })
-          if(!userProfile) {
-            userProfile = onboardingFlow.UserFlow.find((flow:any) =>{
-              return flow.TaskId == 'CreateUserProfile';
-             })
-          }
-          if(userProfile) {
-            this.fetchDataModel(userProfile.Entity)
-          }
         }
-      }).catch((error) => {
-        console.log('error', error);
-      });
+        if (userProfile) {
+          this.fetchDataModel(userProfile.Entity)
+        }
+      }
+    }).catch((error) => {
+      console.log('error', error);
+    });
   }
 
-  fetchDataModel(entityName:string) {
+  fetchDataModel(entityName: string) {
     this.apiService.get("/retrive_insights/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {

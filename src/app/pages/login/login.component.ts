@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/api/auth.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   messages: any = [
   ];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService,
+  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
     private utilsService: UtilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.loginForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -40,17 +41,16 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.utilsService.loadSpinner(true);
-    localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
     this.loginBtn = true;
-    this.apiService.login(body, "auth/beta/login").then((response: any) => {
+    this.authApiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
         this.loginBtn = false;
-        this.router.navigate(['/verify-otp']);
+        this.router.navigate(['/verify-otp', body.email]);
       } else {
         this.loginBtn = false;
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });

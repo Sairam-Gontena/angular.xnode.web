@@ -1,8 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
-import { RefreshListService } from '../../RefreshList.service';
-import { ApiService } from 'src/app/api/auth.service';
-import { UtilsService } from 'src/app/components/services/utils.service';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 interface Column {
   field: string;
   header: string;
@@ -36,9 +32,11 @@ export class DynamicTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTableData(this.inputData);
+
   }
 
   private loadTableData(data: any): void {
+
     this.dynamicData = data;
     if (this.dynamicData) {
       this.headers = Object.keys(this.dynamicData[0]);

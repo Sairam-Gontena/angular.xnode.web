@@ -11,6 +11,9 @@ import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+
+
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -51,24 +54,25 @@ export class AppHeaderComponent implements OnInit {
   opOverlay: any;
   showFeedBacks: any;
   selectedPopup: any;
-
+  showLimitReachedPopup: boolean = false;
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
-    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService) {
+    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService, private auditUtil: AuditutilsService) {
   }
 
   ngOnInit(): void {
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
-      console.log('res', res);
-
       this.selectedPopup = '';
-      if (res)
+      if (res) {
         this.selectedPopup = res;
+      }
     })
     let data = localStorage.getItem("currentUser")
+
     if (data) {
       let currentUser = JSON.parse(data);
-      this.username = currentUser.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
+      this.username = currentUser.first_name.toUpperCase() + ' ' + currentUser.last_name.toUpperCase();
+
     }
     this.currentUser = UserUtil.getCurrentUser();
     this.getAllProducts()
@@ -77,9 +81,12 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
+          this.auditUtil.post('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
           this.utilsService.showProductStatusPopup(false);
-          localStorage.clear();
-          this.router.navigate(['/']);
+          setTimeout(() => {
+            localStorage.clear();
+            this.router.navigate(['/']);
+          }, 1000);
         }
       },
     ];
@@ -105,14 +112,16 @@ export class AppHeaderComponent implements OnInit {
   }
 
   toggleFeedbackPopup() {
+    this.utilsService.loadSpinner(true);
     this.capture();
-    this.utilsService.showProductStatusPopup(false);
-    this.selectedPopup = 'customer-feedback';
+    this.auditUtil.post('FEEDBACK', 1, 'SUCCESS', 'user-audit');
   }
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
+    this.auditUtil.post('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
+
   }
 
   capture(): void {
@@ -121,6 +130,9 @@ export class AppHeaderComponent implements OnInit {
       .pipe(
         tap((img) => {
           this.screenshot = img;
+          this.utilsService.showProductStatusPopup(false);
+          this.selectedPopup = 'customer-feedback';
+          this.utilsService.loadSpinner(false);
         })
       )
       .subscribe();
@@ -143,7 +155,7 @@ export class AppHeaderComponent implements OnInit {
       if (data.product_status === 'deployed') {
         const body = {
           product_id: data.product_id,
-          product_url: data.product_url,
+          product_url: data.product_url + '/login?product_id=' + data.product_id,
         }
         this.apiService.patch(body, '/update_product_url')
           .then(response => {
@@ -175,6 +187,7 @@ export class AppHeaderComponent implements OnInit {
       this.opOverlay.show(this.eventOverlay);
     }
     this.closeOverlay = false;
+    this.auditUtil.post('NOTIFICATIONS', 1, 'SUCCESS', 'user-audit');
   }
 
   overlayToggleFromNotificationPanel(event: any) {
@@ -201,7 +214,7 @@ export class AppHeaderComponent implements OnInit {
     this.utilsService.loadSpinner(true)
     const body = {
       repoName: obj.product_name,
-      projectName: 'xnode',
+      projectName: environment.projectName,
       email: this.email,
       envName: environment.branchName,
       productId: obj.product_id
@@ -224,6 +237,10 @@ export class AppHeaderComponent implements OnInit {
   onClickLogo(): void {
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
+  }
+
+  showMeLimitInfoPopup(event: any): void {
+    this.showLimitReachedPopup = event;
   }
 
 }

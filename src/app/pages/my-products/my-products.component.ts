@@ -6,6 +6,9 @@ import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -16,15 +19,17 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class MyProductsComponent implements OnInit {
   id: String = '';
   templateCard: any[] = [];
-  currentUser?: User;
+  currentUser?: any;
   private subscription: Subscription;
   isLoading: boolean = true;
   activeIndex: number = 0;
   searchText: any;
   filteredProducts: any[] = []
+  email: any;
+  filteredProductsByEmail: any[] = [];
+  showLimitReachedPopup: any;
 
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
-    private route: ActivatedRoute, private utils: UtilsService) {
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -37,6 +42,8 @@ export class MyProductsComponent implements OnInit {
     this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
+    localStorage.removeItem('show-upload-panel');
+
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -46,6 +53,23 @@ export class MyProductsComponent implements OnInit {
     setTimeout(() => {
       this.removeParamFromRoute()
     }, 2000);
+    this.filterProductsByUserEmail();
+    // this.getMeTotalOnboardedApps();
+  }
+
+  getMeTotalOnboardedApps(user: any): void {
+    this.apiService.get("/total_apps_onboarded/" + user?.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utils.loadSpinner(true);
+      });
   }
 
   removeParamFromRoute(): void {
@@ -66,21 +90,35 @@ export class MyProductsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     this.router.navigate(['/dashboard']);
+    this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
+    this.auditUtil.post('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
 
   }
-
+  importNavi() {
+    const restriction_max_value = localStorage.getItem('total_apps_onboarded');
+    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
+      this.showLimitReachedPopup = true;
+      this.sendEmailNotificationToTheUser()
+      return
+    }
+    this.router.navigate(['/x-pilot'])
+    localStorage.setItem('show-upload-panel', 'true');
+    this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
+  }
   //get calls 
   getMetaData() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
@@ -89,6 +127,8 @@ export class MyProductsComponent implements OnInit {
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
+          this.filteredProductsByEmail = this.templateCard;
+
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
@@ -108,5 +148,43 @@ export class MyProductsComponent implements OnInit {
         return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
   }
+  filterProductsByUserEmail() {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.email = JSON.parse(currentUser).email;
+    }
+    this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+  }
 
+  onClickNewWithNavi(): void {
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
+    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
+      this.showLimitReachedPopup = true;
+      this.sendEmailNotificationToTheUser();
+      return
+    }
+    this.router.navigate(['/x-pilot']);
+    this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+
+    }).catch((err: any) => {
+
+    })
+  }
 }
