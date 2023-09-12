@@ -6,6 +6,8 @@ import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-my-products',
@@ -27,8 +29,7 @@ export class MyProductsComponent implements OnInit {
   filteredProductsByEmail: any[] = [];
   showLimitReachedPopup: any;
 
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService,
-    private route: ActivatedRoute, private utils: UtilsService, private notifyApi: NotifyApiService) {
+  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -96,9 +97,11 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     this.router.navigate(['/dashboard']);
+    this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
+    this.auditUtil.post('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
@@ -114,6 +117,7 @@ export class MyProductsComponent implements OnInit {
     }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
+    this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
   }
   //get calls 
   getMetaData() {
@@ -161,6 +165,7 @@ export class MyProductsComponent implements OnInit {
       return
     }
     this.router.navigate(['/x-pilot']);
+    this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
   sendEmailNotificationToTheUser(): void {
     const body = {
@@ -174,7 +179,7 @@ export class MyProductsComponent implements OnInit {
         "dev.xnode@salientminds.com"
       ],
       "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.xnode_user_data?.first_name + " " + this.currentUser?.xnode_user_data?.last_name }
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
     this.notifyApi.post(body, 'email/notify').then((res: any) => {
 

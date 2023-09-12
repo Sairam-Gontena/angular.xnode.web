@@ -2,10 +2,8 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output, ElementRe
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
-import { User, UserUtil } from 'src/app/utils/user-util';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
-
-
+import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
   selector: 'xnode-general-feedback',
@@ -38,7 +36,7 @@ export class GeneralFeedbackComponent implements OnInit {
   rating: number = 3
 
   constructor(public utils: UtilsService,
-    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService,) {
+    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
@@ -141,13 +139,17 @@ export class GeneralFeedbackComponent implements OnInit {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
+        this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+        this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
+      this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
+
     })
   }
 
