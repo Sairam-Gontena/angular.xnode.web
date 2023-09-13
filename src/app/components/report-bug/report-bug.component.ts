@@ -25,7 +25,7 @@ export class ReportBugComponent implements OnInit {
   modalPosition: any;
   currentUser?: any;
   submitted: boolean = false;
-  feedbackForm: FormGroup;
+  bugReportForm: FormGroup;
   priorities: any[] = [];
   products: any[] = [];
   selectedProduct: any;
@@ -60,7 +60,7 @@ export class ReportBugComponent implements OnInit {
     public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
-    this.feedbackForm = this.fb.group({
+    this.bugReportForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
       severityId: ['', Validators.required],
@@ -71,7 +71,7 @@ export class ReportBugComponent implements OnInit {
 
   get feedback() {
     this.constructor.name
-    return this.feedbackForm.controls;
+    return this.bugReportForm.controls;
   }
 
   ngOnInit(): void {
@@ -80,8 +80,7 @@ export class ReportBugComponent implements OnInit {
       this.products = JSON.parse(meta_data);
       let product = localStorage.getItem('product');
       if (product) {
-        this.selectedProduct = JSON.parse(product);
-        this.selectedProductId = this.selectedProduct.id;
+        this.bugReportForm.patchValue({ 'product': JSON.parse(product).id });
       }
     }
     this.priorities = [
@@ -89,7 +88,7 @@ export class ReportBugComponent implements OnInit {
       { name: 'Medium', code: 'Medium' },
       { name: 'High', code: 'High' }
     ];
-    this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
+    this.bugReportForm.patchValue({ 'section': this.getMeComponent() });
   }
 
   getMeComponent() {
@@ -128,7 +127,7 @@ export class ReportBugComponent implements OnInit {
   feedbackReport(value: any) {
     this.submitted = true;
     this.isFormSubmitted = true;
-    if (this.feedbackForm.valid) {
+    if (this.bugReportForm.valid) {
       this.isInvalid = false;
       this.onFileDropped()
     } else {
@@ -141,10 +140,10 @@ export class ReportBugComponent implements OnInit {
   sendBugReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": this.selectedProductId,
-      "componentId": this.feedbackForm.value.section,
-      "feedbackText": this.feedbackForm.value.feedbackText,
-      "severityId": this.feedbackForm.value.severityId,
+      "productId": this.bugReportForm.value.product,
+      "componentId": this.bugReportForm.value.section,
+      "feedbackText": this.bugReportForm.value.feedbackText,
+      "severityId": this.bugReportForm.value.severityId,
       "feedbackStatusId": "Open",
       "requestTypeId": "bug-report",
       "internalTicketId": '-',
@@ -202,7 +201,7 @@ export class ReportBugComponent implements OnInit {
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
-    this.feedbackForm.patchValue({
+    this.bugReportForm.patchValue({
       screenshot: files[0] // Update the value of the screenshot control
     });
   }
@@ -366,7 +365,7 @@ export class ReportBugComponent implements OnInit {
     }
   }
 
-  onProductChange(event: any) {
-    this.selectedProductId = event.value;
-  }
+  // onProductChange(event: any) {
+  //   this.selectedProductId = event.value;
+  // }
 }

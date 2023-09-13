@@ -37,7 +37,7 @@ export class GeneralFeedbackComponent implements OnInit {
   isHovered: boolean = false;
   selectedRating: string | null = null;
   onHoveredIcon: string | null = null;
-
+  products: any[] = [];
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
@@ -70,6 +70,14 @@ export class GeneralFeedbackComponent implements OnInit {
     return this.generalFeedbackForm.controls;
   }
   ngOnInit(): void {
+    let meta_data = localStorage.getItem('meta_data')
+    if (meta_data) {
+      this.products = JSON.parse(meta_data);
+      let product = localStorage.getItem('product');
+      if (product) {
+        this.generalFeedbackForm.patchValue({ 'product': JSON.parse(product).id });
+      }
+    }
     this.formGroup = new FormGroup({
       value: new FormControl(this.rating)
     });
@@ -114,7 +122,6 @@ export class GeneralFeedbackComponent implements OnInit {
       this.onFileDropped()
     } else {
       console.log("error");
-
     }
   }
 
@@ -126,10 +133,10 @@ export class GeneralFeedbackComponent implements OnInit {
   sendGeneralFeedbackReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": localStorage.getItem('record_id'),
+      "productId": this.generalFeedbackForm.value.id,
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
-      "feedbackRatingId": this.generalFeedbackForm.value.rating,
+      "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
       "feedbackStatusId": "new",
       "userFiles": [
         {
@@ -138,7 +145,6 @@ export class GeneralFeedbackComponent implements OnInit {
         }
       ]
     }
-    console.log(body)
     this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
@@ -153,7 +159,6 @@ export class GeneralFeedbackComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
       this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
-
     })
   }
 
@@ -288,6 +293,7 @@ export class GeneralFeedbackComponent implements OnInit {
   onStarClick(rating: string) {
     this.selectedRating = rating;
     this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
+    console.log(this.generalFeedbackForm)
   }
   onHoverStar(rating: string) {
     this.onHoveredIcon = rating;

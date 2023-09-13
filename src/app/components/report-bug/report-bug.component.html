@@ -10,7 +10,7 @@
         </div>
     </ng-template>
     <div class="p-4 mt-4">
-        <form [formGroup]="feedbackForm" (ngSubmit)="feedbackReport($event)">
+        <form [formGroup]="bugReportForm" (ngSubmit)="feedbackReport($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <label class="flex justify-content-between flex-wrap">
                     <div class="text-sm font-normal">Product</div>
@@ -18,9 +18,9 @@
                         (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View bug
                         history <i class="pi pi-arrow-right"></i> </a>
                 </label>
-                <p-dropdown dataKey="selectedProduct" formControlName="product" [options]="products"
-                    placeholder="Choose Product" [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }"
-                    optionLabel="title" optionValue="id" class="custom-dropdown" (onChange)="onProductChange($event)" >
+                <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
+                    optionValue="id" class="custom-dropdown">
                 </p-dropdown>
                 <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                     <div *ngIf="feedback['product'].errors?.['required']">

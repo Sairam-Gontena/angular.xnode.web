@@ -43,6 +43,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
+    localStorage.removeItem('product');
 
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
