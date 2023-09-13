@@ -24,6 +24,10 @@ export class UtilsService {
   private popupToShow: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public getMeFeedbackPopupTypeToDisplay: Observable<string> = this.popupToShow.asObservable();
 
+  private limitReachedPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public handleLimitReachedPopup: Observable<boolean> = this.limitReachedPopup.asObservable();
+
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -49,8 +53,13 @@ export class UtilsService {
   showProductStatusPopup(event: any): void {
     this.productStatus.next(event);
   }
+
   showFeedbackPopupByType(event: any): void {
     this.popupToShow.next(event);
+  }
+
+  showLimitReachedPopup(event: any): void {
+    this.limitReachedPopup.next(event);
   }
 
 }
