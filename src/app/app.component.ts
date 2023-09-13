@@ -82,7 +82,9 @@ export class AppComponent implements OnInit {
       this.currentUser = JSON.parse(currentUser);
       this.getMeTotalOnboardedApps(JSON.parse(currentUser));
     } else {
-      this.router.navigate(['/'])
+      if (!window.location.hash.includes('#/reset-password?email')) {
+        this.router.navigate(['/'])
+      }
     }
 
   }
@@ -218,7 +220,7 @@ export class AppComponent implements OnInit {
   }
 
   isUserExists() {
-    const currentUser = localStorage.getItem('currentUser')
+    const currentUser = localStorage.getItem('currentUser');
     return currentUser
   }
 
