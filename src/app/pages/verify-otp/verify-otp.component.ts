@@ -84,7 +84,6 @@ export class VerifyOtpComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
             this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
-            localStorage.setItem('currentUser', JSON.stringify(response?.data));
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
