@@ -28,6 +28,9 @@ export class MyProductsComponent implements OnInit {
   email: any;
   filteredProductsByEmail: any[] = [];
   showLimitReachedPopup: any;
+  tabAllProducts = false;
+  tabRecent = false;
+  tabCreated = false;
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
     this.currentUser = UserUtil.getCurrentUser();
