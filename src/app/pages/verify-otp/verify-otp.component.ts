@@ -70,13 +70,14 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
   }
+  
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
           localStorage.setItem('currentUser', JSON.stringify(response?.data));
-          if (response?.data?.role_id === 'Xnode Admin') {
+          if (response?.data?.role_name === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
             this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
@@ -84,6 +85,7 @@ export class VerifyOtpComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
             this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            localStorage.setItem('currentUser', JSON.stringify(response?.data));
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
