@@ -38,6 +38,7 @@ export class GeneralFeedbackComponent implements OnInit {
   selectedRating: string | null = null;
   onHoveredIcon: string | null = null;
   products: any[] = [];
+  uploadedFile: any;
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
@@ -133,7 +134,7 @@ export class GeneralFeedbackComponent implements OnInit {
   sendGeneralFeedbackReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": this.generalFeedbackForm.value.id,
+      "productId": this.generalFeedbackForm.value.product,
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
       "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
@@ -168,7 +169,7 @@ export class GeneralFeedbackComponent implements OnInit {
       $event = this.screenshot;
     }
     const formData = new FormData();
-    formData.append('file', new Blob([$event]));
+    formData.append('file', this.uploadedFile);
     formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
@@ -306,6 +307,7 @@ export class GeneralFeedbackComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
       } else {
         this.handleFiles(files);
+        this.uploadedFile = files[0];
       }
     }
   }
@@ -320,11 +322,13 @@ export class GeneralFeedbackComponent implements OnInit {
     const fileName = selectedFile.name;
     if (selectedFile) {
       this.readFileContent(selectedFile, fileName);
+      this.uploadedFile = selectedFile;
     }
   }
 
   private readFileContent(file: File, fileName: string) {
     this.screenshotName = fileName;
+    this.uploadedFile = file;
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
@@ -358,6 +362,7 @@ export class GeneralFeedbackComponent implements OnInit {
     }
     if (files && files.length > 0) {
       this.handleFiles(files);
+      this.uploadedFile = files[0];
     }
   }
 
