@@ -124,7 +124,7 @@ export class ReportBugComponent implements OnInit {
       this.isInvalid = true;
       console.log("error");
     }
-    this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
+    // this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   sendBugReport(): void {
@@ -161,32 +161,37 @@ export class ReportBugComponent implements OnInit {
   onDeleteImage(i: any) {
     _.pullAt(this.screenshot, i);
     _.pullAt(this.screenshotName, i);
+    _.pullAt(this.images, i);
   }
 
   onFileDropped($event?: any) {
     this.utils.loadSpinner(true);
     if (!$event) {
+      console.log('no eveent')
       $event = this.screenshot;
     }
+    console.log(this.screenshot)
+    console.log($event)
     const formData = new FormData();
-    formData.append('file', new Blob([$event]));
+    formData.append('file', new Blob($event));
     formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
     };
-
-    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
-      if (res) {
-        this.uploadedFileData = res.data;
-        this.sendBugReport();
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
-        this.utils.loadSpinner(false);
-      }
-    }).catch((err: any) => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-      this.utils.loadSpinner(false);
-    })
+    console.log('formData', formData)
+    console.log('blob event', new Blob([$event]))
+    // this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+    //   if (res) {
+    //     this.uploadedFileData = res.data;
+    //     this.sendBugReport();
+    //   } else {
+    //     this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+    //     this.utils.loadSpinner(false);
+    //   }
+    // }).catch((err: any) => {
+    //   this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+    //   this.utils.loadSpinner(false);
+    // })
   }
 
   fileBrowseHandler(files: any) {
