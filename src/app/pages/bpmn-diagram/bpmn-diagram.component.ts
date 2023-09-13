@@ -167,7 +167,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         let appName = localStorage.getItem('app_name')
         let xflowJson = {
           'Flows': response.data.Flows.filter((f: any) => {
-            return (f.Name.toLowerCase() == flow.toLowerCase() || (f.Name.toLowerCase() + ' use case') == flow.toLowerCase())
+            return (flow.toLowerCase().indexOf(f.Name.toLowerCase()) != -1)
           }),
           'Product': appName
         };
