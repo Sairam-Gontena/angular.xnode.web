@@ -124,7 +124,7 @@ export class ReportBugComponent implements OnInit {
       this.isInvalid = true;
       console.log("error");
     }
-    // this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   sendBugReport(): void {
@@ -180,18 +180,18 @@ export class ReportBugComponent implements OnInit {
     };
     console.log('formData', formData)
     console.log('blob event', new Blob([$event]))
-    // this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
-    //   if (res) {
-    //     this.uploadedFileData = res.data;
-    //     this.sendBugReport();
-    //   } else {
-    //     this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
-    //     this.utils.loadSpinner(false);
-    //   }
-    // }).catch((err: any) => {
-    //   this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-    //   this.utils.loadSpinner(false);
-    // })
+    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
+      if (res) {
+        this.uploadedFileData = res.data;
+        this.sendBugReport();
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadSpinner(false);
+      }
+    }).catch((err: any) => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
   }
 
   fileBrowseHandler(files: any) {
