@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
@@ -15,20 +15,22 @@ export class ForgotPasswordComponent implements OnInit {
   confirmPasswordValidator: boolean = false;
   errorMessage!: string;
   messages: any = [];
+  email: any;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService, private route: ActivatedRoute) {
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
   }
 
   ngOnInit(): void {
+    this.email = this.route.snapshot.params['email'];
+    this.forgotPasswordForm.get('email')?.setValue(this.email);
     this.forgotPasswordForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
   }
-
   get forgot() {
     return this.forgotPasswordForm.controls;
   }

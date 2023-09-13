@@ -32,8 +32,12 @@
             <p-tabView [(activeIndex)]="activeIndex">
                 <p-tabPanel>
                     <ng-template pTemplate="header">
-                        <img alt="all product" src="./assets/all-products.svg" class="hover-image" />
-                        <p class="m-0 pl-2 ">All Products</p>
+                        <div class="flex flex-wrap" (mouseenter)="tabAllProducts = true"
+                            (mouseleave)="tabAllProducts = false">
+                            <img src="./assets/all-products.svg"
+                                [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
+                            <p class="m-0 pl-2">All Products</p>
+                        </div>
                     </ng-template>
                     <div class="col-12 mt-4">
                         <div class="card-grid" *ngIf="filteredProducts">
@@ -74,17 +78,23 @@
                 </p-tabPanel>
                 <p-tabPanel>
                     <ng-template pTemplate="header">
-                        <img alt="all product" src="./assets/recent.svg" />
-                        <p class="m-0 pl-2">Recently Viewed</p>
+                        <div class="flex flex-wrap" (mouseenter)="tabRecent = true" (mouseleave)="tabRecent = false">
+                            <img src="./assets/recent.svg"
+                                [src]="tabRecent || activeIndex === 1  ? './assets/recent-hover.svg' : './assets/recent.svg'" />
+                            <p class="m-0 pl-2">Recently Viewed</p>
+                        </div>
                     </ng-template>
-                    <div class="col-12 flex  justify-content-center text-3xl mt-4 text-white font-font-medium">
+                    <div class="col-12 flex justify-content-center text-3xl mt-4 text-white font-font-medium">
                         No Recently Viewed Products
                     </div>
                 </p-tabPanel>
                 <p-tabPanel>
                     <ng-template pTemplate="header">
-                        <img alt="all product" src="./assets/user.svg" />
-                        <p class="m-0 pl-2">Created by you</p>
+                        <div class="flex flex-wrap" (mouseenter)="tabCreated = true" (mouseleave)="tabCreated = false">
+                            <img src="./assets/user.svg"
+                                [src]="tabCreated || activeIndex === 2 ? './assets/user-hover.svg' : './assets/user.svg'" />
+                            <p class="m-0 pl-2">Created by you</p>
+                        </div>
                     </ng-template>
                     <div class="col-12 mt-4">
                         <div class="card-grid" *ngIf="filteredProductsByEmail">
