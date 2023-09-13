@@ -129,7 +129,7 @@ export class GeneralFeedbackComponent implements OnInit {
       "productId": localStorage.getItem('record_id'),
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
-      "feedbackRatingId": this.generalFeedbackForm.value.rating,
+      "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
       "feedbackStatusId": "new",
       "userFiles": [
         {
