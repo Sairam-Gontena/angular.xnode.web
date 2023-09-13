@@ -83,6 +83,7 @@ export class AppHeaderComponent implements OnInit {
         command: () => {
           this.auditUtil.post('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
           this.utilsService.showProductStatusPopup(false);
+          this.utilsService.showLimitReachedPopup(false);
           setTimeout(() => {
             localStorage.clear();
             this.router.navigate(['/']);
@@ -115,13 +116,15 @@ export class AppHeaderComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.capture();
     this.auditUtil.post('FEEDBACK', 1, 'SUCCESS', 'user-audit');
+    this.utilsService.showProductStatusPopup(false);
+    this.utilsService.showLimitReachedPopup(false);
   }
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
+    this.utilsService.showLimitReachedPopup(false);
     this.auditUtil.post('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
-
   }
 
   capture(): void {
@@ -176,6 +179,7 @@ export class AppHeaderComponent implements OnInit {
 
   overlayToggle(event?: any, element?: any) {
     this.utilsService.showProductStatusPopup(false);
+    this.utilsService.showLimitReachedPopup(false);
     if (event) {
       this.eventOverlay = event;
     } if (element) {

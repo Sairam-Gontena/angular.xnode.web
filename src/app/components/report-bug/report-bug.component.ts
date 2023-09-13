@@ -25,8 +25,11 @@ export class ReportBugComponent implements OnInit {
   modalPosition: any;
   currentUser?: any;
   submitted: boolean = false;
-  feedbackForm: FormGroup;
+  bugReportForm: FormGroup;
   priorities: any[] = [];
+  products: any[] = [];
+  selectedProduct: any;
+  selectedProductId: any;
   isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
   isInvalid: boolean = false;
@@ -37,8 +40,8 @@ export class ReportBugComponent implements OnInit {
   imageUrl: any;
   uploadedFileData: any;
   screenshotName = 'Image';
-
   @HostListener('window:resize', ['$event'])
+
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
@@ -57,7 +60,7 @@ export class ReportBugComponent implements OnInit {
     public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
-    this.feedbackForm = this.fb.group({
+    this.bugReportForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
       severityId: ['', Validators.required],
@@ -68,16 +71,24 @@ export class ReportBugComponent implements OnInit {
 
   get feedback() {
     this.constructor.name
-    return this.feedbackForm.controls;
+    return this.bugReportForm.controls;
   }
 
   ngOnInit(): void {
+    let meta_data = localStorage.getItem('meta_data')
+    if (meta_data) {
+      this.products = JSON.parse(meta_data);
+      let product = localStorage.getItem('product');
+      if (product) {
+        this.bugReportForm.patchValue({ 'product': JSON.parse(product).id });
+      }
+    }
     this.priorities = [
       { name: 'Low', code: 'Low' },
       { name: 'Medium', code: 'Medium' },
       { name: 'High', code: 'High' }
     ];
-    this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
+    this.bugReportForm.patchValue({ 'section': this.getMeComponent() });
   }
 
   getMeComponent() {
@@ -116,7 +127,7 @@ export class ReportBugComponent implements OnInit {
   feedbackReport(value: any) {
     this.submitted = true;
     this.isFormSubmitted = true;
-    if (this.feedbackForm.valid) {
+    if (this.bugReportForm.valid) {
       this.isInvalid = false;
       this.onFileDropped()
     } else {
@@ -129,10 +140,10 @@ export class ReportBugComponent implements OnInit {
   sendBugReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": localStorage.getItem('record_id'),
-      "componentId": this.feedbackForm.value.section,
-      "feedbackText": this.feedbackForm.value.feedbackText,
-      "severityId": this.feedbackForm.value.severityId,
+      "productId": this.bugReportForm.value.product,
+      "componentId": this.bugReportForm.value.section,
+      "feedbackText": this.bugReportForm.value.feedbackText,
+      "severityId": this.bugReportForm.value.severityId,
       "feedbackStatusId": "Open",
       "requestTypeId": "bug-report",
       "internalTicketId": '-',
@@ -190,7 +201,7 @@ export class ReportBugComponent implements OnInit {
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
-    this.feedbackForm.patchValue({
+    this.bugReportForm.patchValue({
       screenshot: files[0] // Update the value of the screenshot control
     });
   }
@@ -353,4 +364,8 @@ export class ReportBugComponent implements OnInit {
       container.classList.remove('dragging-over');
     }
   }
+
+  // onProductChange(event: any) {
+  //   this.selectedProductId = event.value;
+  // }
 }

@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
+import { NotifyApiService } from './api/notify.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentPath = window.location.hash;
   currentUser: any;
+  showLimitReachedPopup?: boolean;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -39,7 +41,8 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
-    private auditUtil: AuditutilsService) {
+    private auditUtil: AuditutilsService,
+    private notifyApi: NotifyApiService) {
   }
 
   ngOnInit(): void {
@@ -68,13 +71,20 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductStatus.subscribe((event: any) => {
       this.showProductStatusPopup = event;
     });
+    this.utilsService.handleLimitReachedPopup.subscribe((event: any) => {
+      this.showLimitReachedPopup = event;
+      if (event)
+        this.sendEmailNotificationToTheUser();
+    });
     this.currentPath = window.location.hash;
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
       this.getMeTotalOnboardedApps(JSON.parse(currentUser));
     } else {
-      this.router.navigate(['/'])
+      if (!window.location.hash.includes('#/reset-password?email')) {
+        this.router.navigate(['/'])
+      }
     }
 
   }
@@ -96,8 +106,6 @@ export class AppComponent implements OnInit {
 
 
   loadIframeUrl(): void {
-
-
     window.addEventListener('message', (event) => {
       if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
         return;
@@ -212,13 +220,17 @@ export class AppComponent implements OnInit {
   }
 
   isUserExists() {
-    const currentUser = localStorage.getItem('currentUser')
+    const currentUser = localStorage.getItem('currentUser');
     return currentUser
   }
 
-
-
   openNavi(newItem: any) {
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
+    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
+      this.utilsService.showLimitReachedPopup(true);
+      return
+    }
     if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
@@ -261,6 +273,28 @@ export class AppComponent implements OnInit {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
       || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
       || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
+  }
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+      if (res?.data?.detail) {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err?.response?.data?.detail });
+    })
   }
 
 }

@@ -28,6 +28,9 @@ export class MyProductsComponent implements OnInit {
   email: any;
   filteredProductsByEmail: any[] = [];
   showLimitReachedPopup: any;
+  tabAllProducts = false;
+  tabRecent = false;
+  tabCreated = false;
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -43,6 +46,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
+    localStorage.removeItem('product');
 
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
@@ -108,11 +112,10 @@ export class MyProductsComponent implements OnInit {
 
   }
   importNavi() {
-    const restriction_max_value = localStorage.getItem('total_apps_onboarded');
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
     const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
     if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.showLimitReachedPopup = true;
-      this.sendEmailNotificationToTheUser()
+      this.utils.showLimitReachedPopup(true);
       return
     }
     this.router.navigate(['/x-pilot'])
@@ -128,7 +131,6 @@ export class MyProductsComponent implements OnInit {
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
-
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
@@ -160,31 +162,10 @@ export class MyProductsComponent implements OnInit {
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
     if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.showLimitReachedPopup = true;
-      this.sendEmailNotificationToTheUser();
+      this.utils.showLimitReachedPopup(true);
       return
     }
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
-  }
-  sendEmailNotificationToTheUser(): void {
-    const body = {
-      "to": [
-        this.currentUser?.email
-      ],
-      "cc": [
-        "beta@xnode.ai"
-      ],
-      "bcc": [
-        "dev.xnode@salientminds.com"
-      ],
-      "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
-    }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
-
-    }).catch((err: any) => {
-
-    })
   }
 }
