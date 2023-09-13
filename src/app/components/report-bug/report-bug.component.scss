@@ -178,6 +178,9 @@ textarea {
 :host::ng-deep .p-dropdown .p-dropdown-label {
     color: #ffffff;
 }
+:host::ng-deep .p-dropdown{
+width: 100%;
+}
 
 .feedback-history {
     color: #02ADEE;
