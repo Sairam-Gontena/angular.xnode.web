@@ -70,16 +70,17 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
   }
+  
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
-        if (response?.status === 200 && response?.data) {
-          if (response?.data?.role_id === 'Xnode Admin') {
+        if (response?.status === 200 && !response?.data?.detail) {
+          localStorage.setItem('currentUser', JSON.stringify(response?.data));
+          if (response?.data?.role_name === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
             this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
-            localStorage.setItem('currentUser', JSON.stringify(response?.data));
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
@@ -89,7 +90,6 @@ export class VerifyOtpComponent implements OnInit {
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(true);
-          this.auditUtil.post('VERIFY_OTP_' + response.data.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utilsService.loadSpinner(false);
       })
@@ -129,7 +129,6 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.get("/user/get_create_app_limit/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
-
           this.restriction_max_value = response.data[0].restriction_max_value;
           localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
         } else {

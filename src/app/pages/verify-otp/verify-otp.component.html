@@ -27,6 +27,9 @@
                                 <p-button label="Verify Account" class="flex justify-content-center "
                                     styleClass="p-button-rounded  font-medium text-lg"
                                     (click)="verifyAccount()"></p-button>
+                                <fieldset class="submit-fieldset">
+                                    <button type="submit" style="display: none;"></button>
+                                </fieldset>
                             </div>
                             <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
                                 <div class="text-lg font-medium flex justify-content-center heading-color">Resend
