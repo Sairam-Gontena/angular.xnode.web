@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
@@ -14,25 +14,20 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 export class VerifyOtpComponent implements OnInit {
   @ViewChild('ngOtpInput') ngOtpInputRef: any;
   otp: any;
-  loginResponse: any;
   currentUser: any;
   email: any;
-  maskedEmail!: string;
+  userEmail!: string;
   resendTimer: number = 60;
   total_apps_onboarded: any;
   restriction_max_value: any;
 
-  constructor(private router: Router, private apiService: ApiService, private utilsService: UtilsService,
+  constructor(private router: Router, private route: ActivatedRoute, private apiService: ApiService, private utilsService: UtilsService,
     private userService: UserUtilsService, private auditUtil: AuditutilsService, private authApiService: AuthApiService) {
 
   }
 
   ngOnInit(): void {
-    const loginResponseString = localStorage.getItem('currentUser');
-    if (loginResponseString) {
-      this.loginResponse = JSON.parse(loginResponseString);
-    }
-    this.maskedEmail = this.maskEmail(this.loginResponse.email);
+    this.userEmail = this.maskEmail(this.route.snapshot.params['email']);
     this.startResendTimer();
   }
 
@@ -60,7 +55,7 @@ export class VerifyOtpComponent implements OnInit {
     this.otp = '';
     this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
-    this.authApiService.login({ email: this.loginResponse.email }, "mfa/resendverfication")
+    this.authApiService.login({ email: this.route.snapshot.params['email'] }, "mfa/resendverfication")
       .then((response: any) => {
         if (response?.status === 200) {
           this.startResendTimer();
@@ -77,23 +72,23 @@ export class VerifyOtpComponent implements OnInit {
   }
   verifyAccount() {
     this.utilsService.loadSpinner(true);
-    this.authApiService.login({ email: this.loginResponse.email, otp: this.otp }, "mfa/verifyOTP")
+    this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
-        if (response?.status === 200 && response?.data) {
-          localStorage.setItem('currentUser', JSON.stringify(response?.data));
+        if (response?.status === 200 && !response?.data?.detail) {
           if (response?.data?.role_id === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
             this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            localStorage.setItem('currentUser', JSON.stringify(response?.data));
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
             this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            localStorage.setItem('currentUser', JSON.stringify(response?.data));
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(true);
-          this.auditUtil.post('VERIFY_OTP_' + response.data.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utilsService.loadSpinner(false);
       })

@@ -83,8 +83,10 @@ export class AppHeaderComponent implements OnInit {
         command: () => {
           this.auditUtil.post('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
           this.utilsService.showProductStatusPopup(false);
-          localStorage.clear();
-          this.router.navigate(['/']);
+          setTimeout(() => {
+            localStorage.clear();
+            this.router.navigate(['/']);
+          }, 1000);
         }
       },
     ];

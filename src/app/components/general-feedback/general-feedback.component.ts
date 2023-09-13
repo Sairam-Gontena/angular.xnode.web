@@ -33,7 +33,11 @@ export class GeneralFeedbackComponent implements OnInit {
   browserSelected: boolean = false;
   uploadedFileData: any;
   currentUser?: any;
-  rating: number = 3
+  rating: any;
+  isHovered: boolean = false;
+  selectedRating: string | null = null;
+  onHoveredIcon: string | null = null;
+
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
@@ -43,8 +47,8 @@ export class GeneralFeedbackComponent implements OnInit {
       section: [this.getMeComponent(), Validators.required],
       tellUsMore: ['', Validators.required],
       screenshot: [null],
+      selectedRating: ['', Validators.required]
       // logoFile: [null, Validators.required],
-      rating: [this.rating, Validators.required]
     });
   }
 
@@ -121,7 +125,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
   sendGeneralFeedbackReport(): void {
     const body = {
-      "userId": this.currentUser?.id,
+      "userId": this.currentUser?.user_id,
       "productId": localStorage.getItem('record_id'),
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
@@ -165,7 +169,7 @@ export class GeneralFeedbackComponent implements OnInit {
       'Content-Type': 'application/json',
     };
 
-    this.commonApi.post('/file-azure/upload', formData, { headers }).then((res: any) => {
+    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
         this.uploadedFileData = res.data;
         this.sendGeneralFeedbackReport();
@@ -281,10 +285,12 @@ export class GeneralFeedbackComponent implements OnInit {
   closePopup() {
     this.utils.showFeedbackPopupByType('');
   }
-
-  gotRating(val: any) {
-    this.rating = val.value
-    console.log(this.rating)
+  onStarClick(rating: string) {
+    this.selectedRating = rating;
+    this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
+  }
+  onHoverStar(rating: string) {
+    this.onHoveredIcon = rating;
   }
   onFileInput(event: Event) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes

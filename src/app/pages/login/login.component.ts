@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.utilsService.loadSpinner(true);
-    localStorage.setItem('currentUser', JSON.stringify(this.loginForm.value));
     let body = { ...this.loginForm.value };
     delete body.rememberMe;
     this.loginBtn = true;
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
         this.loginBtn = false;
-        this.router.navigate(['/verify-otp']);
+        this.router.navigate(['/verify-otp', body.email]);
       } else {
         this.loginBtn = false;
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
