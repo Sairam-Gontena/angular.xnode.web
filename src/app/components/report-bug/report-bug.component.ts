@@ -20,6 +20,7 @@ export class ReportBugComponent implements OnInit {
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
+  uploadedFile: any;
   public getScreenWidth: any;
   public dialogWidth: string = '40vw';
   modalPosition: any;
@@ -178,7 +179,7 @@ export class ReportBugComponent implements OnInit {
       $event = this.screenshot;
     }
     const formData = new FormData();
-    formData.append('file', new Blob([$event]));
+    formData.append('file', this.uploadedFile);
     formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
@@ -314,6 +315,7 @@ export class ReportBugComponent implements OnInit {
   private readFileContent(file: File, fileName: string) {
     this.screenshotName = fileName;
     const reader = new FileReader();
+    this.uploadedFile = file;
     reader.readAsDataURL(file);
     reader.onload = (e) => {
       if (e?.target)
@@ -346,6 +348,7 @@ export class ReportBugComponent implements OnInit {
     }
     if (files && files.length > 0) {
       this.handleFiles(files);
+      this.uploadedFile = files[0];
     }
   }
 
