@@ -65,7 +65,7 @@ export class ConfirmationPopupComponent implements OnInit {
     let body = {
       "id": id,
       "action": action,
-      "admin_email": this.currentUser?.user_details.email
+      "admin_email": this.currentUser?.email
     };
     this.authApiService.patchAuth(body, url)
       .then((response: any) => {
@@ -75,7 +75,6 @@ export class ConfirmationPopupComponent implements OnInit {
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
-          let userid = this.currentUser?.id
           this.auditUtil.post(action, 1, 'SUCCESS', 'user-audit');
         } else {
           this.auditUtil.post(action + '_' + response.data.detail, 1, 'FAILURE', 'user-audit');

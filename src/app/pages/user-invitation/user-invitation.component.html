@@ -1,6 +1,6 @@
-<div class="main-div grid p-4">
-    <div class="col-12 surface-900">
-        <div class="flex justify-content-between  align-items-start pl-2 pr-2 pt-4 ">
+<div class="main-div p-4 surface-900">
+    <div class="col-12">
+        <div class="flex justify-content-between  align-items-start pl-2 pr-2">
             <p-breadcrumb class="max-w-full icon" [model]="items"></p-breadcrumb>
             <div class="flex align-items-center">
                 <p-button styleClass="p-button-rounded mr-2">
@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 surface-900 pl-4 pr-4 pb-2">
-        <xnode-dynamic-table [inputData]="usersList" [cols]="cols" [Actions]="Actions"  > </xnode-dynamic-table>
+    <div class="col-12 pl-4 pr-4 pb-2">
+        <xnode-dynamic-table [inputData]="usersList" [cols]="cols" [Actions]="Actions"> </xnode-dynamic-table>
     </div>
 </div>
