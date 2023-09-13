@@ -158,3 +158,16 @@
     height: calc(100vh - 30px);
     overflow: auto;
 }
+
+.hover-image {
+    transition: transform 0.2s;
+    /* Add a smooth transition effect */
+}
+
+.hover-image:hover {
+    transform: scale(1.1);
+    color: blue;
+    /* Optionally, you can add a scale effect on hover */
+    // background: url('./assets/all-products-hover.svg');
+    /* Change the image source on hover */
+}
