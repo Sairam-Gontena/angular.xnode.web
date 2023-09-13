@@ -28,6 +28,9 @@ export class MyProductsComponent implements OnInit {
   email: any;
   filteredProductsByEmail: any[] = [];
   showLimitReachedPopup: any;
+  tabAllProducts = false;
+  tabRecent = false;
+  tabCreated = false;
 
   constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -43,6 +46,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
+    localStorage.removeItem('product');
 
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
@@ -127,7 +131,6 @@ export class MyProductsComponent implements OnInit {
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
-
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
