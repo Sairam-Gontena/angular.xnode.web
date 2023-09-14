@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
-import { UserUtil, User } from '../../utils/user-util';
+import { UserUtil } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
-import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -115,6 +113,12 @@ export class MyProductsComponent implements OnInit {
   }
 
   importNavi() {
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
+    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
+    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
+      this.utils.showLimitReachedPopup(true);
+      return
+    }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
     this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
