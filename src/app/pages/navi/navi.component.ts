@@ -25,6 +25,7 @@ export class NaviComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = localStorage.getItem('currentUser');
+    const restriction_max_value = localStorage.getItem('restriction_max_value')
     if (this.currentUser) {
       this.currentUser = JSON.parse(this.currentUser)
     }
@@ -45,6 +46,9 @@ export class NaviComponent implements OnInit {
     if (localStorage.getItem('show-upload-panel')) {
       this.targetUrl = this.targetUrl + '&import=true';
     }
+    if (restriction_max_value) {
+      this.targetUrl = this.targetUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
+    }
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
@@ -64,6 +68,9 @@ export class NaviComponent implements OnInit {
           }
           if (event.data === 'file-uploaded') {
             localStorage.removeItem('show-upload-panel');
+          }
+          if (event.data === 'app-limit-exceeded') {
+            this.utils.showLimitReachedPopup(true);
           }
         });
         contentWindow.postMessage(data, this.targetUrl);
