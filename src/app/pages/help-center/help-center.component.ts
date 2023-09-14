@@ -94,6 +94,7 @@ export class HelpCenterComponent implements OnInit {
     let json = localStorage.getItem('helpJson')
     if (json) {
       this.json = JSON.parse(json);
+      this.selectedjson = this.json?.[0]?.objects?.[0];
     }
     this.filter = true;
   }
