@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-er-modeller',
   templateUrl: './er-modeller.component.html',
@@ -34,7 +35,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   constructor(private apiService: ApiService,
     private dataService: DataService, private jsPlumbService: JsPlumbService,
     private utilService: UtilService, private router: Router,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService, private auditUtil: AuditutilsService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
     this.router.events.subscribe((data: any) => {
@@ -78,15 +79,24 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.id = response.data.data[0].id;
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
         } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utilsService.loadSpinner(false);
-      })
-      .catch(error => {
+      }).catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false)
       });
@@ -97,11 +107,21 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utilsService.showProductStatusPopup(true);
         }
