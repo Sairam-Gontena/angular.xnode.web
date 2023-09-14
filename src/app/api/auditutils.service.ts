@@ -16,7 +16,7 @@ export class AuditutilsService {
 
   }
 
-  post(activity: any, attemptcount: number, attemptstatus: string, url: string) {
+  post(activity: any, attemptcount: number, attemptstatus: string, url: string, activityInfo?: any) {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser)
@@ -24,6 +24,7 @@ export class AuditutilsService {
     const body = {
       "userId": this.currentUser?.user_id,
       "activityTypeId": activity,
+      "activityInfo": activityInfo,
       "attemptCount": attemptcount,
       "attemptSuccess": attemptstatus
     }

@@ -127,6 +127,11 @@ export class MyProductsComponent implements OnInit {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL,
+          }
+          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
