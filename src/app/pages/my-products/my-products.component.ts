@@ -32,7 +32,12 @@ export class MyProductsComponent implements OnInit {
   tabRecent = false;
   tabCreated = false;
 
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
+  constructor(private RefreshListService: RefreshListService,
+    public router: Router,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private utils: UtilsService,
+    private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -47,7 +52,6 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
     localStorage.removeItem('product');
-
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -58,7 +62,6 @@ export class MyProductsComponent implements OnInit {
       this.removeParamFromRoute()
     }, 2000);
     this.filterProductsByUserEmail();
-    // this.getMeTotalOnboardedApps();
   }
 
   getMeTotalOnboardedApps(user: any): void {
@@ -89,11 +92,9 @@ export class MyProductsComponent implements OnInit {
     this.search();
   }
 
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
 
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
@@ -103,26 +104,22 @@ export class MyProductsComponent implements OnInit {
     this.router.navigate(['/dashboard']);
     this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
+
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
+
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
-
   }
+
   importNavi() {
-    const restriction_max_value = localStorage.getItem('restriction_max_value');
-    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.utils.showLimitReachedPopup(true);
-      return
-    }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
     this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
   }
-  //get calls 
+
   getMetaData() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
@@ -143,6 +140,7 @@ export class MyProductsComponent implements OnInit {
 
       });
   }
+
   search() {
     this.filteredProducts = this.searchText === ""
       ? this.templateCard
@@ -150,6 +148,7 @@ export class MyProductsComponent implements OnInit {
         return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
   }
+
   filterProductsByUserEmail() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -159,12 +158,6 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickNewWithNavi(): void {
-    const restriction_max_value = localStorage.getItem('restriction_max_value');
-    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.utils.showLimitReachedPopup(true);
-      return
-    }
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
