@@ -46,6 +46,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
+    } else {
+      if (!window.location.hash.includes('#/reset-password?email')) {
+        this.router.navigate(['/'])
+      }
+    }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
@@ -73,20 +82,15 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.handleLimitReachedPopup.subscribe((event: any) => {
       this.showLimitReachedPopup = event;
-      if (event)
+      if (event) {
+        let currentUser = localStorage.getItem('currentUser')
+        if (currentUser) {
+          this.currentUser = JSON.parse(currentUser);
+        }
         this.sendEmailNotificationToTheUser();
+      }
     });
     this.currentPath = window.location.hash;
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
-    } else {
-      if (!window.location.hash.includes('#/reset-password?email')) {
-        this.router.navigate(['/'])
-      }
-    }
-
   }
 
   getMeTotalOnboardedApps(user: any): void {
@@ -225,12 +229,6 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem: any) {
-    const restriction_max_value = localStorage.getItem('restriction_max_value');
-    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.utilsService.showLimitReachedPopup(true);
-      return
-    }
     if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
