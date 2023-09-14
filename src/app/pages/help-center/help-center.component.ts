@@ -16,13 +16,10 @@ import * as _ from "lodash";
 
 export class HelpCenterComponent implements OnInit {
   json: any = helpcentre.helpcentre;
-  jsonCopy: any = helpcentre.helpcentre;
-  iteration: number = 1;
   tableData: any;
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
-  subscriptionPlans = ['Free', 'Enterprise', 'Business', 'Professional', 'Basic'];
   searchText: any;
   executeFilteredSelectedJson: boolean = false;
   filter: boolean = true;
@@ -94,7 +91,6 @@ export class HelpCenterComponent implements OnInit {
     this.searchText = '';
     this.foundObjects = [];
     this.filteredAccordion = [];
-    this.iteration = 1;
     let json = localStorage.getItem('helpJson')
     if (json) {
       this.json = JSON.parse(json);
@@ -158,9 +154,9 @@ export class HelpCenterComponent implements OnInit {
       });
     })
     setTimeout(() => {
+      if (i < 2) { this.filterAccordion(accordion, keyword); }
+      i++;
     }, 250);
-    if (i < 2) { this.filterAccordion(accordion, keyword); }
-    i++;
   }
 
   onInput() {
