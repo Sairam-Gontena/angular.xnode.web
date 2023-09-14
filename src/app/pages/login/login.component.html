@@ -14,11 +14,10 @@
                                 <div class="formgrid grid">
                                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                                         <div>
-                                            <label htmlFor="email"
-                                                class="font-medium text-xl heading-color">Email/Username</label>
+                                            <label class="font-medium text-xl heading-color">Email/Username</label>
                                         </div>
-                                        <input pInputText id="email" placeholder="Enter email" formControlName="email"
-                                            autocomplete="username"
+                                        <input type="text" pInputText formControlName="email" placeholder="Enter email"
+                                            formControlName="email"
                                             [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
                                             class="text-base p-2 border-round-xl w-full mt-1" />
                                         <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
