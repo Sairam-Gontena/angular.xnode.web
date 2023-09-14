@@ -106,9 +106,19 @@ export class OverViewComponent {
     this.apiService.get('/get_metadata/' + this.email)
       .then(response => {
         if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.id = response.data.data[0].id;
           this.getMeOverview();
         } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.loadSpinner(false);
         }
@@ -123,7 +133,7 @@ export class OverViewComponent {
   }
   getMeOverview() {
     this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + this.getMeProductId())
-      .then(response => {
+      .then((response: any) => {
         if (response?.status === 200) {
           this.overview = response.data;
           this.features = response.data?.Features;
@@ -131,13 +141,22 @@ export class OverViewComponent {
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
           this.auditUtil.post("RETRIEVE_OVERVIEW", 1, 'SUCCESS', 'user-audit');
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body);
         } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.auditUtil.post("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utils.loadSpinner(false);
-      })
-      .catch(error => {
+      }).catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
         this.auditUtil.post("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');

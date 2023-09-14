@@ -157,9 +157,21 @@ export class ReportBugComponent implements OnInit {
     }
     this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
       if (!res?.data?.detail) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('USER_BUG_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
       } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('USER_BUG_REPORT', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -187,9 +199,21 @@ export class ReportBugComponent implements OnInit {
 
     this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': formData
+        }
+        this.auditUtil.post('FILE_AZURE_UPLOAD', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.uploadedFileData = res.data;
         this.sendBugReport();
       } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': formData
+        }
+        this.auditUtil.post('FILE_AZURE_UPLOAD', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
         this.utils.loadSpinner(false);
       }

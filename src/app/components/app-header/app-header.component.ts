@@ -99,6 +99,11 @@ export class AppHeaderComponent implements OnInit {
     this.apiService.get("/get_metadata/" + this.currentUser.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
             value: obj.id,
@@ -106,8 +111,7 @@ export class AppHeaderComponent implements OnInit {
           }));
           this.templates = data;
         }
-      })
-      .catch(error => {
+      }).catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }

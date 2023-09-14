@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { FormGroup } from '@angular/forms';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-view-existing-feedback',
   templateUrl: './view-existing-feedback.component.html',
@@ -20,7 +21,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
   currentUser: any;
   showMessageBox: boolean = false;
 
-  constructor(public utils: UtilsService, private userUtilService: UserUtilsService) {
+  constructor(public utils: UtilsService, private userUtilService: UserUtilsService, private auditUtil: AuditutilsService) {
     this.onWindowResize();
   }
 
@@ -56,7 +57,17 @@ export class ViewExistingFeedbackComponent implements OnInit {
         if (res?.data.length) {
           this.selectedListItem = res.data[0]
         }
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('USER_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
       } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('USER_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -73,7 +84,17 @@ export class ViewExistingFeedbackComponent implements OnInit {
         if (res?.data.length) {
           this.selectedListItem = res.data[0];
         }
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('USER_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
       } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('USER_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
