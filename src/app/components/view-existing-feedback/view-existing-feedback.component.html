@@ -28,7 +28,7 @@
                     [ngClass]="{'active': selectedIndex === i}">
                     <div (click)="onSelectListItem(report,i)">
                         <div class="flex justify-content-between flex-wrap">
-                            <b class="text-base">{{report.productName}} - {{report.componentId}}</b>
+                            <b class="text-base">{{getMeTitle(report)}}</b>
                         </div>
                         <p class="text-sm font-normal m-0 pb-2">
                             {{report.feedbackText}}
@@ -57,8 +57,7 @@
             <div class="grid m-0">
                 <div class="col-12 pl-4 pr-4">
                     <div class="flex justify-content-between flex-wrap">
-                        <p class="text-2xl font-medium m-0">{{selectedListItem.productName}} -
-                            {{selectedListItem?.componentId}}
+                        <p class="text-2xl font-medium m-0">{{getMeTitle(selectedListItem)}}
                         </p>
                         <div class="flex align-items-center">
                             <p-chip [label]="selectedListItem?.feedbackStatusId" class="ml-3"></p-chip>
