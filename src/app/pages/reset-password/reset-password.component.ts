@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ConfirmPasswordValidator } from '../sign-up/confirm-password.validator';
-
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-reset-password',
   templateUrl: './reset-password.component.html',
@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage!: string;
   messages: any = [];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService, private utilsService: UtilsService, private route: ActivatedRoute, private auditUtil: AuditutilsService) {
     this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
@@ -55,6 +55,12 @@ export class ResetPasswordComponent implements OnInit {
     this.authApiService.patchAuth('', "auth/prospect/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
       .then((response: any) => {
         if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'POST',
+            'url': response?.request?.responseURL,
+            'payload': {}
+          }
+          this.auditUtil.post('PROSPECT_RESET_PASSWORD', 1, 'SUCCESS', 'user-audit', user_audit_body);
           if (response?.data?.detail) {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           } else {
@@ -64,11 +70,16 @@ export class ResetPasswordComponent implements OnInit {
           }
           this.utilsService.loadSpinner(false);
         } else {
+          let user_audit_body = {
+            'method': 'POST',
+            'url': response?.request?.responseURL,
+            'payload': {}
+          }
+          this.auditUtil.post('PROSPECT_RESET_PASSWORD', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(false);
         }
-      })
-      .catch((error: any) => {
+      }).catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
       });

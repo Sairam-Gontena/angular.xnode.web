@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-login',
   templateUrl: './login.component.html',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   ];
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService, private auditUtil: AuditutilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -48,20 +49,31 @@ export class LoginComponent implements OnInit {
     this.loginBtn = true;
     this.authApiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('PROSPECT_LOGIN', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
         this.loginBtn = false;
         this.router.navigate(['/verify-otp', body.email]);
       } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('PROSPECT_LOGIN', 1, 'FAILED', 'user-audit', user_audit_body);
         this.loginBtn = false;
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
         this.utilsService.loadSpinner(false);
       }
-    })
-      .catch((error: any) => {
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      });
+    }).catch((error: any) => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+    });
   }
 }
