@@ -93,6 +93,7 @@ textarea {
     /* or any other desired width */
     color: #ffffff;
     background: #2E2D36;
+    border: 1px solid #2E2D36;
 }
 
 :host::ng-deep.browseFiles .p-button:hover {
@@ -187,9 +188,17 @@ textarea {
     color: #02ADEE;
 }
 
+:host ::ng-deep.p-inputtext:enabled:hover {
+    border: 1px solid #2E2D36;
+}
+
 :host ::ng-deep {
     .p-dropdown .p-dropdown-label {
-        color: #fff;
+        color: #ffffff !important;
         font-weight: 600;
     }
+}
+
+:host ::ng-deep.p-dropdown:not(.p-disabled):hover {
+    border: 1px solid #2E2D36;
 }

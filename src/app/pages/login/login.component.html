@@ -20,7 +20,7 @@
                                         <input pInputText id="email" placeholder="Enter email" formControlName="email"
                                             autocomplete="username"
                                             [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
-                                            class="text-base p-2 border-round-xl appearance-none outline-none focus:border-primary w-full mt-1" />
+                                            class="text-base p-2 border-round-xl w-full mt-1" />
                                         <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
                                             <div *ngIf="login['email'].errors?.['required']">Email
                                                 is required</div>
