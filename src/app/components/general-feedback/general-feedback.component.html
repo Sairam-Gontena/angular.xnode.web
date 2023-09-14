@@ -21,7 +21,8 @@
             <div
                 class="grid flex justify-content-center align-items-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <label class="text-base font-medium">How would you like to rate your experience</label>
-                <input type="hidden" formControlName="selectedRating" />
+                <input type="hidden" formControlName="selectedRating"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['selectedRating'].errors }" />
                 <div class="flex flex-wrap justify-content-center  pointer gap-3 pt-4">
                     <div class="star-width ">
                         <img src="./assets/star1.svg" (mouseover)="onHoverStar('ONE')" (mouseout)="onHoverStar('')"
@@ -50,6 +51,11 @@
                             width="60px" height="60px"
                             [src]="selectedRating === 'FIVE' || onHoveredIcon === 'FIVE' ? './assets/star5.svg' : './assets/star5-hover.svg'" />
                     </div>
+                </div>
+                <div *ngIf="submitted && feedback['selectedRating'].errors"
+                    class="invalid-feedback flex justify-content-center">
+                    <div *ngIf="feedback['selectedRating'].errors?.['required']">
+                        Rating is required</div>
                 </div>
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-2">
