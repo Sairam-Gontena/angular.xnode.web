@@ -35,6 +35,14 @@ export class ViewExistingFeedbackComponent implements OnInit {
     this.getMeReportedBugList();
   }
 
+  getMeTitle(report: any) {
+    if (report.productName && report.componentId) {
+      return report.productName + "-" + report.componentId
+    } else {
+      return report.componentId
+    }
+  }
+
   onSelectListItem(report: any, index: Number) {
     this.selectedListItem = report;
     this.selectedIndex = index;

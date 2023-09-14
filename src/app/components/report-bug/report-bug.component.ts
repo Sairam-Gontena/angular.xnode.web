@@ -5,6 +5,7 @@ import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { FileService } from 'src/app/file.service';
 
 @Component({
   selector: 'xnode-report-bug',
@@ -58,7 +59,8 @@ export class ReportBugComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
-    public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService) {
+    public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService,
+    private fileService: FileService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.bugReportForm = this.fb.group({
@@ -76,6 +78,19 @@ export class ReportBugComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.convertBase64ToFile();
+    this.prepareFormData();
+    this.screenshotName = this.getMeComponent();
+  }
+
+  convertBase64ToFile(): void {
+    const base64Data = this.screenshot.split(',')[1];
+    this.fileService.base64ToFile(base64Data, this.getMeComponent()).subscribe((file) => {
+      this.uploadedFile = file;
+    });
+  }
+
+  prepareFormData(): void {
     let meta_data = localStorage.getItem('meta_data')
     if (meta_data) {
       this.products = JSON.parse(meta_data);
@@ -116,6 +131,9 @@ export class ReportBugComponent implements OnInit {
       case '#/publish':
         comp = 'Publish'
         break;
+      case '#/my-products':
+        comp = 'My Product'
+        break;
       default:
         break;
     }
@@ -151,7 +169,7 @@ export class ReportBugComponent implements OnInit {
       "userFiles": [
         {
           "fileId": this.uploadedFileData.id,
-          "userFileType": "doc"
+          "userFileType": "bug-report"
         }
       ]
     }

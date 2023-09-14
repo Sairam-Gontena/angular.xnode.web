@@ -66,6 +66,10 @@
     }
 }
 
+:host::ng-deep .p-dropdown .p-dropdown-label {
+    color: #ffffff;
+}
+
 .p-inputtext,
 textarea {
     color: #ffffff;

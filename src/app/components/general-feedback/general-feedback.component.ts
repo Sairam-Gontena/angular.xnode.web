@@ -4,6 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { FileService } from 'src/app/file.service';
 
 @Component({
   selector: 'xnode-general-feedback',
@@ -41,7 +42,11 @@ export class GeneralFeedbackComponent implements OnInit {
   uploadedFile: any;
 
   constructor(public utils: UtilsService,
-    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
+    private fb: FormBuilder,
+    private commonApi: CommonApiService,
+    private userUtilsApi: UserUtilsService,
+    private auditUtil: AuditutilsService,
+    private fileService: FileService) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
@@ -49,11 +54,11 @@ export class GeneralFeedbackComponent implements OnInit {
       tellUsMore: ['', Validators.required],
       screenshot: [null],
       selectedRating: ['', Validators.required]
-      // logoFile: [null, Validators.required],
     });
   }
 
   @HostListener('window:resize', ['$event'])
+
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
@@ -71,6 +76,22 @@ export class GeneralFeedbackComponent implements OnInit {
     return this.generalFeedbackForm.controls;
   }
   ngOnInit(): void {
+    this.convertBase64ToFile();
+    this.prepareFormData();
+    this.screenshotName = this.getMeComponent();
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser)
+      this.currentUser = JSON.parse(currentUser)
+  }
+
+  convertBase64ToFile(): void {
+    const base64Data = this.screenshot.split(',')[1];
+    this.fileService.base64ToFile(base64Data, this.getMeComponent()).subscribe((file: any) => {
+      this.uploadedFile = file;
+    });
+  }
+
+  prepareFormData(): void {
     let meta_data = localStorage.getItem('meta_data')
     if (meta_data) {
       this.products = JSON.parse(meta_data);
@@ -82,10 +103,8 @@ export class GeneralFeedbackComponent implements OnInit {
     this.formGroup = new FormGroup({
       value: new FormControl(this.rating)
     });
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser)
-      this.currentUser = JSON.parse(currentUser)
   }
+
   getMeComponent() {
     let comp = '';
     switch (window.location.hash) {
@@ -109,6 +128,9 @@ export class GeneralFeedbackComponent implements OnInit {
         break;
       case '#/publish':
         comp = 'Publish'
+        break;
+      case '#/my-products':
+        comp = 'My Product'
         break;
       default:
         break;
@@ -138,11 +160,11 @@ export class GeneralFeedbackComponent implements OnInit {
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
       "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
-      "feedbackStatusId": "new",
+      "feedbackStatusId": "Open",
       "userFiles": [
         {
           "fileId": this.uploadedFileData.id,
-          "userFileType": "doc"
+          "userFileType": "user-feedback"
         }
       ]
     }
