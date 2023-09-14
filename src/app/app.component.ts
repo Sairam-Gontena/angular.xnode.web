@@ -46,6 +46,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
+    } else {
+      if (!window.location.hash.includes('#/reset-password?email')) {
+        this.router.navigate(['/'])
+      }
+    }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
@@ -77,16 +86,6 @@ export class AppComponent implements OnInit {
         this.sendEmailNotificationToTheUser();
     });
     this.currentPath = window.location.hash;
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-      this.getMeTotalOnboardedApps(JSON.parse(currentUser));
-    } else {
-      if (!window.location.hash.includes('#/reset-password?email')) {
-        this.router.navigate(['/'])
-      }
-    }
-
   }
 
   getMeTotalOnboardedApps(user: any): void {

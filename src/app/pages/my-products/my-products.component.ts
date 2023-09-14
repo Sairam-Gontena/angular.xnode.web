@@ -7,6 +7,7 @@ import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { AuthApiService } from 'src/app/api/auth.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -35,6 +36,7 @@ export class MyProductsComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private utils: UtilsService,
+    private authApiService: AuthApiService,
     private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
@@ -159,10 +161,25 @@ export class MyProductsComponent implements OnInit {
       this.email = JSON.parse(currentUser).email;
     }
     this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+    this.getMeCreateAppLimit();
   }
 
   onClickNewWithNavi(): void {
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
+  }
+  getMeCreateAppLimit(): void {
+    this.authApiService.get("/user/get_create_app_limit/" + this.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utils.loadSpinner(true);
+      });
   }
 }
