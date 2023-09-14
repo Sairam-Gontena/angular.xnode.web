@@ -15,21 +15,21 @@ import * as _ from "lodash";
 
 
 export class HelpCenterComponent implements OnInit {
-  json: any;
+  json: any = helpcentre.helpcentre;
   tableData: any;
   selectedjson: any;
   selectedMenuIndex: any;
   visible: boolean = false;
-  subscriptionPlans = ['Free', 'Enterprise', 'Business', 'Professional', 'Basic'];
   searchText: any;
   executeFilteredSelectedJson: boolean = false;
+  filter: boolean = true;
   envUrl: any;
   private textInputSubject = new Subject<string>();
   foundObjects: any[] = [];
   filteredAccordion: any;
+  accordion: any;
 
   constructor(public location: Location, private renderer: Renderer2, private el: ElementRef) {
-    this.json = helpcentre.helpcentre;
     this.tableData = plans.plans;
     this.selectedjson = this.json?.[0]?.objects?.[0];
     this.envUrl = environment.homeUrl;
@@ -44,6 +44,7 @@ export class HelpCenterComponent implements OnInit {
         this.clearSearchText();
       }
     });
+    localStorage.setItem('helpJson', JSON.stringify(this.json))
   }
 
   getMeHtml(description: any) {
@@ -89,6 +90,13 @@ export class HelpCenterComponent implements OnInit {
   clearSearchText() {
     this.searchText = '';
     this.foundObjects = [];
+    this.filteredAccordion = [];
+    let json = localStorage.getItem('helpJson')
+    if (json) {
+      this.json = JSON.parse(json);
+      this.selectedjson = this.json?.[0]?.objects?.[0];
+    }
+    this.filter = true;
   }
 
   getSearchInput(key: string, obj = this.json) {
@@ -96,35 +104,60 @@ export class HelpCenterComponent implements OnInit {
     if (this.searchText == '') {
       this.clearSearchText()
     }
-    this.filteredAccordion = [];
-    let keyword = this.searchText;
-    obj.forEach((element: any) => {
-      if (element.accordianTitle.toUpperCase().includes(keyword.toUpperCase())) {
-        element?.objects?.forEach((subelement: any) => {
-          subelement.subobjects.forEach((lastelems: any) => {
-            if (lastelems.title.toUpperCase().includes(keyword.toUpperCase()) || lastelems.description.toUpperCase().includes(keyword.toUpperCase())) {
+    if (this.filter) {
+      this.filteredAccordion = [];
+      let keyword = this.searchText;
+      obj.forEach((element: any) => {
+        if (element.accordianTitle.toUpperCase().includes(keyword.toUpperCase())) {
+          element?.objects?.forEach((subelement: any) => {
+            subelement.subobjects.forEach((lastelems: any) => {
+              if (lastelems.title.toUpperCase().includes(keyword.toUpperCase()) || lastelems.description.toUpperCase().includes(keyword.toUpperCase())) {
+                this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
+                this.filteredAccordion = _.uniq(_.concat(this.filteredAccordion, element))
+              }
               this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
-              this.filteredAccordion = _.uniq(_.concat(this.filteredAccordion, element))
-            }
-            this.foundObjects = _.uniq(_.concat(this.foundObjects, lastelems))
+            })
           })
-        })
-      }
-      if (element?.objects) {
-        element?.objects?.forEach((subelement: any) => {
-          subelement.subobjects.forEach((sublastelement: any) => {
-            if (sublastelement.title.toUpperCase().includes(keyword.toUpperCase()) || sublastelement.description.includes(keyword) || subelement.title.toUpperCase().includes(keyword.toUpperCase())) {
-              this.foundObjects = _.uniq(_.concat(this.foundObjects, sublastelement))
-              this.filteredAccordion = _.uniq(_.concat(this.filteredAccordion, element))
-            }
-          })
-        });
-      }
-      this.filteredAccordion = _.compact(this.filteredAccordion);
-    });
+        }
+        if (element?.objects) {
+          element?.objects?.forEach((subelement: any) => {
+            subelement.subobjects.forEach((sublastelement: any) => {
+              if (sublastelement.title.toUpperCase().includes(keyword.toUpperCase()) || sublastelement.description.includes(keyword) || subelement.title.toUpperCase().includes(keyword.toUpperCase())) {
+                this.foundObjects = _.uniq(_.concat(this.foundObjects, sublastelement))
+                this.filteredAccordion = _.uniq(_.concat(this.filteredAccordion, element))
+              }
+            })
+          });
+        }
+        this.filteredAccordion = _.compact(this.filteredAccordion);
+      });
+      let accordion = this.filteredAccordion;
+      this.filterAccordion(accordion, keyword)
+      this.filter = false;
+    }
     if (this.executeFilteredSelectedJson == false) {
       this.selectedjson = this.filteredAccordion?.[0]?.objects?.[0];
     }
+  }
+
+  filterAccordion(accordion: any, keyword: any) {
+    let i = 1
+    accordion.map((element: any, elemIndex: any) => {
+      element?.objects?.map((subelement: any, subIndex: any) => {
+        if (subelement.subobjects.length == 0) {
+          _.pullAt(element?.objects, subIndex)
+        }
+        subelement.subobjects.map((sublastelement: any, index: any) => {
+          if (sublastelement.title.toLowerCase().includes(keyword.toLowerCase()) == false && sublastelement.description.toLowerCase().includes(keyword.toLowerCase()) == false) {
+            _.pullAt(subelement.subobjects, index)
+          }
+        })
+      });
+    })
+    setTimeout(() => {
+      if (i < 2) { this.filterAccordion(accordion, keyword); }
+      i++;
+    }, 250);
   }
 
   onInput() {
