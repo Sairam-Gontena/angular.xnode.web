@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { FormGroup } from '@angular/forms';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'xnode-view-existing-feedback',
   templateUrl: './view-existing-feedback.component.html',
@@ -19,9 +20,20 @@ export class ViewExistingFeedbackComponent implements OnInit {
   selectedIndex: any = 0;
   currentUser: any;
   showMessageBox: boolean = false;
+  conversationForm = {
+    message: ''
+  }
 
   constructor(public utils: UtilsService, private userUtilService: UserUtilsService) {
     this.onWindowResize();
+
+  }
+
+  onSubmit() {
+    // let payload = {
+    //   "user":
+    // }
+    console.log(this.conversationForm.message)
   }
 
   ngOnInit(): void {
