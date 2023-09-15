@@ -70,7 +70,7 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
   }
-  
+
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
@@ -139,6 +139,9 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(true);
       });
+  }
+  backToLogin() {
+    this.router.navigate(['/'])
   }
 }
 

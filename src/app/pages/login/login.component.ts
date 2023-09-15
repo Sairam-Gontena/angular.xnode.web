@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: new FormControl<string | null>(null)
     });
   }
 
@@ -43,7 +42,6 @@ export class LoginComponent implements OnInit {
     }
     this.utilsService.loadSpinner(true);
     let body = { ...this.loginForm.value };
-    delete body.rememberMe;
     this.loginBtn = true;
     this.authApiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
