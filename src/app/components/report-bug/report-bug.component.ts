@@ -43,8 +43,7 @@ export class ReportBugComponent implements OnInit {
   imageUrl: any;
   images: any = [];
   uploadedFileData: any;
-  screenshotName = 'Image';
-  // screenshotName: any[] = ['Image'];  arun
+  screenshotName = 'Image'; // screenshotName: any[] = ['Image'];  arun
 
   @HostListener('window:resize', ['$event'])
 
