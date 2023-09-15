@@ -138,5 +138,8 @@ export class VerifyOtpComponent implements OnInit {
         this.utilsService.loadSpinner(true);
       });
   }
+  backToLogin() {
+    this.router.navigate(['/'])
+  }
 }
 
