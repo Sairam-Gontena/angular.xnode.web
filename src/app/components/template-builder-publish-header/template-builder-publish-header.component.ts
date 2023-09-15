@@ -191,7 +191,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         'url': err?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
@@ -272,7 +272,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }

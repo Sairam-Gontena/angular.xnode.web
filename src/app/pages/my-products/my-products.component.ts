@@ -154,6 +154,11 @@ export class MyProductsComponent implements OnInit {
           this.filteredProductsByEmail = this.templateCard;
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL,
+          }
+          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
@@ -163,7 +168,7 @@ export class MyProductsComponent implements OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL,
         }
-        this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
+        this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 

@@ -232,7 +232,7 @@ export class GeneralFeedbackComponent implements OnInit {
         let user_audit_body = {
           'method': 'POST',
           'url': res?.request?.responseURL,
-          'payload': formData
+          'payload': 'files'
         }
         this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.uploadedFileData = res.data;

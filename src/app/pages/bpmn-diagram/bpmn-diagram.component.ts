@@ -496,12 +496,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   loadXFlows(xFlowJson: any): void {
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
+      let xFlowJsonCopy = xFlowJson;
+      xFlowJsonCopy.Flows = 'xflows data'
       if (response) {
         this.xml = response?.data;
         let user_audit_body = {
           'method': 'POST',
           'url': response?.request?.responseURL,
-          'payload': xFlowJson
+          'payload': xFlowJsonCopy
         }
         this.auditUtil.post('LOAD_XFLOWS_JSON_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
         const layoutedDiagramXML = await layoutProcess(this.xml);
@@ -510,17 +512,19 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         let user_audit_body = {
           'method': 'POST',
           'url': response?.request?.responseURL,
-          'payload': xFlowJson
+          'payload': xFlowJsonCopy
         }
         this.auditUtil.post('LOAD_XFLOWS_JSON_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
       }
       this.utilsService.loadSpinner(false);
     }).catch(error => {
+      let xFlowJsonCopy = xFlowJson;
+      xFlowJsonCopy.Flows = 'xflows data'
       let user_audit_body = {
         'method': 'POST',
         'url': error?.request?.responseURL,
-        'payload': xFlowJson
+        'payload': xFlowJsonCopy
       }
       this.auditUtil.post('LOAD_XFLOWS_JSON_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });

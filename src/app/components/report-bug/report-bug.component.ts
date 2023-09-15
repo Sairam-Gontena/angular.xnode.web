@@ -238,7 +238,7 @@ export class ReportBugComponent implements OnInit {
         let user_audit_body = {
           'method': 'POST',
           'url': res?.request?.responseURL,
-          'payload': formData
+          'payload': 'file'
         }
         this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.uploadedFileData = res.data;
