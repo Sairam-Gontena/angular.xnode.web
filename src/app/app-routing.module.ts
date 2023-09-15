@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
+      import('./pages/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'forgot-password/:email',
