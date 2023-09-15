@@ -47,7 +47,7 @@ export class UserInvitationComponent {
           if (response?.status === 200) {
             if (response?.data) {
               let data = response.data.map((item: any) => {
-                let obj = { id: item.id, action: item.prospect_status, prospect_status_id: item.prospect_status_id }
+                let obj = { id: item.id, action: item.prospect_status, prospect_status_id: item.prospect_status_id, created_on: item.created_on, modified_on: item.modified_on }
                 let prospect_info = item.prospect_info
                 return { ...obj, ...prospect_info }
               })

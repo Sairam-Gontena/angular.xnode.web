@@ -21,6 +21,14 @@
             "header": "Phone Number"
         },
         {
+            "field": "created_on",
+            "header": "Created On"
+        },
+        {
+            "field": "modified_on",
+            "header": "Modified On"
+        },
+        {
             "field": "action",
             "header": "Action"
         }
