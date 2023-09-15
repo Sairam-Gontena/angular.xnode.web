@@ -64,13 +64,12 @@ export class VerifyOtpComponent implements OnInit {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
         this.utilsService.loadSpinner(false);
-      })
-      .catch((error: any) => {
+      }).catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
   }
-  
+
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
@@ -134,8 +133,7 @@ export class VerifyOtpComponent implements OnInit {
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
-      })
-      .catch((error: any) => {
+      }).catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(true);
       });
