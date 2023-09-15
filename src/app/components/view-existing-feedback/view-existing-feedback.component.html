@@ -1,5 +1,5 @@
 <p-dialog header="Header" [(visible)]="visible" [style]="{ width: dialogWidth }" [position]="'center'"
-    (onHide)="closePopup()" [maximizable]="true">
+    (onHide)="closePopup()" [maximizable]="true" [draggable]="false">
     <ng-template pTemplate="header">
         <div class="feedback-header-div flex align-items-center">
             <div class="flex align-items-center">
@@ -24,28 +24,28 @@
                 </span>  -->
             </div>
             <div class="report-list-height">
-                <div class="list-item pl-8 pr-8 pt-4 pr-4" *ngFor="let report of reportList;let i= index"
+                <div class="list-item pl-4 pr-4 pt-4 pr-4" *ngFor="let report of reportList;let i= index"
                     [ngClass]="{'active': selectedIndex === i}">
                     <div (click)="onSelectListItem(report,i)">
                         <div class="flex justify-content-between flex-wrap">
-                            <b class="text-base">{{report.productName}} - {{report.componentId}}</b>
+                            <b class="text-base">{{getMeTitle(report)}}</b>
                         </div>
                         <p class="text-sm font-normal m-0 pb-2">
                             {{report.feedbackText}}
                         </p>
-                        <div class="flex justify-content-between flex-wrap align-items-center">
-                            <div class="flex align-items-center">
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center pr-2">
                                 <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                                     shape="circle"></p-avatar>
                                 <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
                                     {{currentUser?.last_name}}</p>
                             </div>
-                            <div class="text-sm font-normal border-left-1 border-right-1 pl-4 pr-4">
-                                7:30 pm on 29 August 2023
+                            <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
+                                {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
                             </div>
-                            <p class="m-0 text-sm font-normal">
-                                Status <span>
-                                    Open
+                            <p class="m-0 text-sm font-normal pl-2">
+                                Status <span class="open">
+                                    {{report?.feedbackStatusId}}
                                 </span>
                             </p>
                         </div>
@@ -57,11 +57,10 @@
             <div class="grid m-0">
                 <div class="col-12 pl-4 pr-4">
                     <div class="flex justify-content-between flex-wrap">
-                        <p class="text-2xl font-medium m-0">{{selectedListItem.productName}} -
-                            {{selectedListItem?.componentId}}
+                        <p class="text-2xl font-medium m-0">{{getMeTitle(selectedListItem)}}
                         </p>
                         <div class="flex align-items-center">
-                            <p-chip label="Open" class="ml-3"></p-chip>
+                            <p-chip [label]="selectedListItem?.feedbackStatusId" class="ml-3"></p-chip>
                         </div>
                         <!-- <p-button label="Mark as Fixed" styleClass="p-button-outlined p-button-rounded"></p-button> -->
                     </div>
@@ -69,11 +68,13 @@
                     <p class="font-light text-base">
                         {{selectedListItem.feedbackText}}
                     </p>
-                    <div class="flex align-items-center">
-                        <img src="./assets/attachment.svg" alt="att" class="mr-2">
-                        <p class="m-0">1 Attachment</p>
+                    <div *ngFor="let file of selectedListItem?.userFiles">
+                        <div class="flex align-items-center" *ngIf="file?.filePath">
+                            <img src="./assets/attachment.svg" alt="att" class="mr-2">
+                            <p class="m-0">1 Attachment</p>
+                        </div>
+                        <img [src]="file.filePath" alt="att img" width="140">
                     </div>
-                    <img src="./assets/att-file.svg" alt="att img">
                     <!-- <div class="flex align-items-center mt-4">
                         <p class="m-0 mr-2 text-sm">Tags: </p>
                         <p-chip label="Action" class="mr-2 ml-2"></p-chip>
@@ -86,7 +87,7 @@
                                 shape="circle"></p-avatar>
                             <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
                                 {{currentUser?.last_name}}<span class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                    7:30 pm on 29 August 2023
+                                    {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
                                 </span></p>
                         </div>
                     </div>

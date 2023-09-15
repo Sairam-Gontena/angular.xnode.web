@@ -6,7 +6,7 @@
 }
 
 .list-item:hover {
-    background: #535354;
+    background: #434344;
     color: #DEDEDE;
     padding: 10px;
     cursor: pointer;
@@ -96,4 +96,17 @@
 .report-list-height {
     height: calc(100vh - 245px);
     overflow-y: auto;
+}
+
+:host::ng-deep .p-chip {
+    background: #E1CF6B;
+    color: #665910;
+}
+
+.open {
+    color: #E1CF6B;
+}
+
+.w-140 {
+    width: 140px;
 }

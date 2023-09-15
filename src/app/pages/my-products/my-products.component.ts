@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
-import { UserUtil, User } from '../../utils/user-util';
+import { UserUtil } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service'
 import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
-import { NotifyApiService } from 'src/app/api/notify.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -28,8 +27,17 @@ export class MyProductsComponent implements OnInit {
   email: any;
   filteredProductsByEmail: any[] = [];
   showLimitReachedPopup: any;
+  tabAllProducts = false;
+  tabRecent = false;
+  tabCreated = false;
 
-  constructor(private RefreshListService: RefreshListService, public router: Router, private apiService: ApiService, private userService: UserUtilsService, private route: ActivatedRoute, private utils: UtilsService, private auditUtil: AuditutilsService, private notifyApi: NotifyApiService) {
+  constructor(private RefreshListService: RefreshListService,
+    public router: Router,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private utils: UtilsService,
+    private authApiService: AuthApiService,
+    private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -43,7 +51,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('record_id');
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
-
+    localStorage.removeItem('product');
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -54,7 +62,6 @@ export class MyProductsComponent implements OnInit {
       this.removeParamFromRoute()
     }, 2000);
     this.filterProductsByUserEmail();
-    // this.getMeTotalOnboardedApps();
   }
 
   getMeTotalOnboardedApps(user: any): void {
@@ -85,11 +92,9 @@ export class MyProductsComponent implements OnInit {
     this.search();
   }
 
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
 
   onClickCreateNewTemplate(data: any): void {
     localStorage.setItem('record_id', data.id);
@@ -99,27 +104,28 @@ export class MyProductsComponent implements OnInit {
     this.router.navigate(['/dashboard']);
     this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
+
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
+
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
-
   }
+
   importNavi() {
-    const restriction_max_value = localStorage.getItem('total_apps_onboarded');
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
     const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
     if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.showLimitReachedPopup = true;
-      this.sendEmailNotificationToTheUser()
+      this.utils.showLimitReachedPopup(true);
       return
     }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
     this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
   }
-  //get calls 
+
   getMetaData() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
       .then(response => {
@@ -128,7 +134,6 @@ export class MyProductsComponent implements OnInit {
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
-
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
@@ -141,6 +146,7 @@ export class MyProductsComponent implements OnInit {
 
       });
   }
+
   search() {
     this.filteredProducts = this.searchText === ""
       ? this.templateCard
@@ -148,43 +154,32 @@ export class MyProductsComponent implements OnInit {
         return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
   }
+
   filterProductsByUserEmail() {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
     }
     this.filteredProductsByEmail = this.templateCard.filter((product) => product.email === this.email);
+    this.getMeCreateAppLimit();
   }
 
   onClickNewWithNavi(): void {
-    const restriction_max_value = localStorage.getItem('restriction_max_value');
-    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.showLimitReachedPopup = true;
-      this.sendEmailNotificationToTheUser();
-      return
-    }
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
-  sendEmailNotificationToTheUser(): void {
-    const body = {
-      "to": [
-        this.currentUser?.email
-      ],
-      "cc": [
-        "beta@xnode.ai"
-      ],
-      "bcc": [
-        "dev.xnode@salientminds.com"
-      ],
-      "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
-    }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
-
-    }).catch((err: any) => {
-
-    })
+  getMeCreateAppLimit(): void {
+    this.authApiService.get("/user/get_create_app_limit/" + this.email)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+        }
+      })
+      .catch((error: any) => {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utils.loadSpinner(true);
+      });
   }
 }

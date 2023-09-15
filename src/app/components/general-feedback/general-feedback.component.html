@@ -14,13 +14,16 @@
         <form [formGroup]="generalFeedbackForm" (ngSubmit)="sendFeedback($event)">
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="flex justify-content-end align-items-center">
-                    <a class="font-medium text-base no-underline pointer feedback-history">View feedback history
+                    <a class="font-medium text-base no-underline pointer feedback-history"
+                        (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View feedback history
                         <i class="pi pi-arrow-right"></i> </a>
                 </div>
             </div>
             <div
                 class="grid flex justify-content-center align-items-center col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <label class="text-base font-medium">How would you like to rate your experience</label>
+                <input type="hidden" formControlName="selectedRating"
+                    [ngClass]="{ 'is-invalid': submitted && feedback['selectedRating'].errors }" />
                 <div class="flex flex-wrap justify-content-center  pointer gap-3 pt-4">
                     <div class="star-width ">
                         <img src="./assets/star1.svg" (mouseover)="onHoverStar('ONE')" (mouseout)="onHoverStar('')"
@@ -49,7 +52,11 @@
                             width="60px" height="60px"
                             [src]="selectedRating === 'FIVE' || onHoveredIcon === 'FIVE' ? './assets/star5.svg' : './assets/star5-hover.svg'" />
                     </div>
-
+                </div>
+                <div *ngIf="submitted && feedback['selectedRating'].errors"
+                    class="invalid-feedback flex justify-content-center">
+                    <div *ngIf="feedback['selectedRating'].errors?.['required']">
+                        Rating is required</div>
                 </div>
             </div>
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-2">
@@ -65,8 +72,10 @@
             <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                 <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
                     <label class="text-sm font-hover">Product</label>
-                    <input type="text" pInputText formControlName="product" placeholder=""
-                        [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" class="col-12" />
+                    <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
+                        [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
+                        optionValue="id" class="custom-dropdown">
+                    </p-dropdown>
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                         <div *ngIf="feedback['product'].errors?.['required']">
                             Product is required</div>

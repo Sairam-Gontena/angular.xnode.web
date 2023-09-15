@@ -6,6 +6,8 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import * as _ from "lodash";
+import { FileService } from 'src/app/file.service';
+
 @Component({
   selector: 'xnode-report-bug',
   templateUrl: './report-bug.component.html',
@@ -15,18 +17,22 @@ import * as _ from "lodash";
 export class ReportBugComponent implements OnInit {
   @ViewChild('fileInput') fileInput?: ElementRef;
   @Input() visible = false;
-  @Input() screenshot: any[] = []; // @Input() screenshot: any; original
+  @Input() screenshot: any; //  @Input() screenshot: any[] = []; arun
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
+  uploadedFile: any;
   public getScreenWidth: any;
   public dialogWidth: string = '40vw';
   modalPosition: any;
   currentUser?: any;
   submitted: boolean = false;
-  feedbackForm: FormGroup;
+  bugReportForm: FormGroup;
   priorities: any[] = [];
+  products: any[] = [];
+  selectedProduct: any;
+  selectedProductId: any;
   isFormSubmitted: boolean = false;
   brandguidelinesForm: any;
   isInvalid: boolean = false;
@@ -37,9 +43,11 @@ export class ReportBugComponent implements OnInit {
   imageUrl: any;
   images: any = [];
   uploadedFileData: any;
-  screenshotName: any[] = ['Image']; //   screenshotName = 'Image'; original
+  screenshotName = 'Image';
+  // screenshotName: any[] = ['Image'];  arun
 
   @HostListener('window:resize', ['$event'])
+
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
@@ -55,10 +63,11 @@ export class ReportBugComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
-    public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService) {
+    public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService,
+    private fileService: FileService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
-    this.feedbackForm = this.fb.group({
+    this.bugReportForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
       severityId: ['', Validators.required],
@@ -69,16 +78,37 @@ export class ReportBugComponent implements OnInit {
 
   get feedback() {
     this.constructor.name
-    return this.feedbackForm.controls;
+    return this.bugReportForm.controls;
   }
 
   ngOnInit(): void {
+    this.convertBase64ToFile();
+    this.prepareFormData();
+    this.screenshotName = this.getMeComponent();
+  }
+
+  convertBase64ToFile(): void {
+    const base64Data = this.screenshot.split(',')[1];
+    this.fileService.base64ToFile(base64Data, this.getMeComponent()).subscribe((file) => {
+      this.uploadedFile = file;
+    });
+  }
+
+  prepareFormData(): void {
+    let meta_data = localStorage.getItem('meta_data')
+    if (meta_data) {
+      this.products = JSON.parse(meta_data);
+      let product = localStorage.getItem('product');
+      if (product) {
+        this.bugReportForm.patchValue({ 'product': JSON.parse(product).id });
+      }
+    }
     this.priorities = [
       { name: 'Low', code: 'Low' },
       { name: 'Medium', code: 'Medium' },
       { name: 'High', code: 'High' }
     ];
-    this.feedbackForm.patchValue({ 'section': this.getMeComponent() });
+    this.bugReportForm.patchValue({ 'section': this.getMeComponent() });
   }
 
   getMeComponent() {
@@ -105,6 +135,9 @@ export class ReportBugComponent implements OnInit {
       case '#/publish':
         comp = 'Publish'
         break;
+      case '#/my-products':
+        comp = 'My Product'
+        break;
       default:
         break;
     }
@@ -117,7 +150,7 @@ export class ReportBugComponent implements OnInit {
   feedbackReport(value: any) {
     this.submitted = true;
     this.isFormSubmitted = true;
-    if (this.feedbackForm.valid) {
+    if (this.bugReportForm.valid) {
       this.isInvalid = false;
       this.onFileDropped()
     } else {
@@ -130,17 +163,17 @@ export class ReportBugComponent implements OnInit {
   sendBugReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": localStorage.getItem('record_id'),
-      "componentId": this.feedbackForm.value.section,
-      "feedbackText": this.feedbackForm.value.feedbackText,
-      "severityId": this.feedbackForm.value.severityId,
+      "productId": this.bugReportForm.value.product,
+      "componentId": this.bugReportForm.value.section,
+      "feedbackText": this.bugReportForm.value.feedbackText,
+      "severityId": this.bugReportForm.value.severityId,
       "feedbackStatusId": "Open",
       "requestTypeId": "bug-report",
       "internalTicketId": '-',
       "userFiles": [
         {
           "fileId": this.uploadedFileData.id,
-          "userFileType": "doc"
+          "userFileType": "bug-report"
         }
       ]
     }
@@ -173,7 +206,7 @@ export class ReportBugComponent implements OnInit {
     console.log(this.screenshot)
     console.log($event)
     const formData = new FormData();
-    formData.append('file', new Blob($event));
+    formData.append('file', new Blob([$event])); // formData.append('file', this.uploadedFile);
     formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
@@ -197,7 +230,7 @@ export class ReportBugComponent implements OnInit {
   fileBrowseHandler(files: any) {
     this.files = [];
     this.prepareFilesList(files);
-    this.feedbackForm.patchValue({
+    this.bugReportForm.patchValue({
       screenshot: files[0] // Update the value of the screenshot control
     });
   }
@@ -308,16 +341,10 @@ export class ReportBugComponent implements OnInit {
   }
 
   private readFileContent(file: any, fileName: any) {
-    // this.screenshotName = fileName;  org start
-    // reader.readAsDataURL(file);
-    // reader.onload = (e) => {
-    //   if (e?.target)
-    //     this.screenshot = e?.target.result;
-    // };
-    // reader.readAsArrayBuffer(file);   org ends
-    this.screenshotName = _.uniq(_.concat(this.screenshotName, fileName))
+    this.screenshotName = fileName;
+    // this.screenshotName = _.uniq(_.concat(this.screenshotName, fileName)) arun
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = (e) => { //arun
       if (e?.target) {
         this.images.push(e?.target.result);
         // this.screenshot = e?.target.result;  //here push
@@ -352,6 +379,7 @@ export class ReportBugComponent implements OnInit {
     }
     if (files && files.length > 0) {
       this.handleFiles(files);
+      this.uploadedFile = files[0];
     }
   }
 
@@ -375,4 +403,8 @@ export class ReportBugComponent implements OnInit {
       container.classList.remove('dragging-over');
     }
   }
+
+  // onProductChange(event: any) {
+  //   this.selectedProductId = event.value;
+  // }
 }

@@ -14,13 +14,12 @@
                                 <div class="formgrid grid">
                                     <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
                                         <div>
-                                            <label htmlFor="email"
-                                                class="font-medium text-xl heading-color">Email/Username</label>
+                                            <label class="font-medium text-xl heading-color">Email/Username</label>
                                         </div>
-                                        <input pInputText id="email" placeholder="Enter email" formControlName="email"
-                                            autocomplete="username"
-                                            [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
-                                            class="text-base p-2 border-round-xl appearance-none outline-none focus:border-primary w-full mt-1" />
+
+                                        <input type="text" pInputText class="p-inputtext p-2" placeholder="Enter email"
+                                            formControlName="email"
+                                            [ngClass]="{ 'is-invalid': submitted && login['email'].errors }">
                                         <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
                                             <div *ngIf="login['email'].errors?.['required']">Email
                                                 is required</div>
@@ -48,7 +47,7 @@
                                     </div>
                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 text-right">
                                         <a class="font-medium text-base no-underline forgot-pwd pointer"
-                                            routerLink="/forgot-password">Forgot
+                                            (click)="forgotPassword()">Forgot
                                             Password?</a>
                                     </div>
                                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
@@ -62,7 +61,7 @@
                                         class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
                                         <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1"
                                             target="_blank">Terms of service </a><span style="color:#fff">and</span><a
-                                            href="https://dev.xnode.ai/privacy-policy/" target="_blank"
+                                            href="https://xnode.ai/privacy-policy/" target="_blank"
                                             class="no-underline ml-1">privacy policy</a>
                                     </div>
                                 </div>

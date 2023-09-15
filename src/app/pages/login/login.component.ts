@@ -34,7 +34,9 @@ export class LoginComponent implements OnInit {
   }
 
   get login() { return this.loginForm.controls; }
-
+  forgotPassword() {
+    this.router.navigate(['/forgot-password', this.loginForm.value.email]);
+  }
   onClickLogin() {
     this.submitted = true;
     if (this.loginForm.invalid) {

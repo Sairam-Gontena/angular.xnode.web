@@ -4,6 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { FileService } from 'src/app/file.service';
 
 @Component({
   selector: 'xnode-general-feedback',
@@ -37,10 +38,15 @@ export class GeneralFeedbackComponent implements OnInit {
   isHovered: boolean = false;
   selectedRating: string | null = null;
   onHoveredIcon: string | null = null;
-
+  products: any[] = [];
+  uploadedFile: any;
 
   constructor(public utils: UtilsService,
-    private fb: FormBuilder, private commonApi: CommonApiService, private userUtilsApi: UserUtilsService, private auditUtil: AuditutilsService) {
+    private fb: FormBuilder,
+    private commonApi: CommonApiService,
+    private userUtilsApi: UserUtilsService,
+    private auditUtil: AuditutilsService,
+    private fileService: FileService) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
@@ -48,11 +54,11 @@ export class GeneralFeedbackComponent implements OnInit {
       tellUsMore: ['', Validators.required],
       screenshot: [null],
       selectedRating: ['', Validators.required]
-      // logoFile: [null, Validators.required],
     });
   }
 
   @HostListener('window:resize', ['$event'])
+
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
@@ -70,13 +76,35 @@ export class GeneralFeedbackComponent implements OnInit {
     return this.generalFeedbackForm.controls;
   }
   ngOnInit(): void {
-    this.formGroup = new FormGroup({
-      value: new FormControl(this.rating)
-    });
+    this.convertBase64ToFile();
+    this.prepareFormData();
+    this.screenshotName = this.getMeComponent();
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser)
       this.currentUser = JSON.parse(currentUser)
   }
+
+  convertBase64ToFile(): void {
+    const base64Data = this.screenshot.split(',')[1];
+    this.fileService.base64ToFile(base64Data, this.getMeComponent()).subscribe((file: any) => {
+      this.uploadedFile = file;
+    });
+  }
+
+  prepareFormData(): void {
+    let meta_data = localStorage.getItem('meta_data')
+    if (meta_data) {
+      this.products = JSON.parse(meta_data);
+      let product = localStorage.getItem('product');
+      if (product) {
+        this.generalFeedbackForm.patchValue({ 'product': JSON.parse(product).id });
+      }
+    }
+    this.formGroup = new FormGroup({
+      value: new FormControl(this.rating)
+    });
+  }
+
   getMeComponent() {
     let comp = '';
     switch (window.location.hash) {
@@ -101,6 +129,9 @@ export class GeneralFeedbackComponent implements OnInit {
       case '#/publish':
         comp = 'Publish'
         break;
+      case '#/my-products':
+        comp = 'My Product'
+        break;
       default:
         break;
     }
@@ -114,7 +145,6 @@ export class GeneralFeedbackComponent implements OnInit {
       this.onFileDropped()
     } else {
       console.log("error");
-
     }
   }
 
@@ -126,19 +156,18 @@ export class GeneralFeedbackComponent implements OnInit {
   sendGeneralFeedbackReport(): void {
     const body = {
       "userId": this.currentUser?.user_id,
-      "productId": localStorage.getItem('record_id'),
+      "productId": this.generalFeedbackForm.value.product,
       "componentId": this.generalFeedbackForm.value.section,
       "feedbackText": this.generalFeedbackForm.value.tellUsMore,
       "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
-      "feedbackStatusId": "new",
+      "feedbackStatusId": "Open",
       "userFiles": [
         {
           "fileId": this.uploadedFileData.id,
-          "userFileType": "doc"
+          "userFileType": "user-feedback"
         }
       ]
     }
-    console.log(body)
     this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
       if (!res?.data?.detail) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
@@ -153,7 +182,6 @@ export class GeneralFeedbackComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
       this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
-
     })
   }
 
@@ -163,7 +191,7 @@ export class GeneralFeedbackComponent implements OnInit {
       $event = this.screenshot;
     }
     const formData = new FormData();
-    formData.append('file', new Blob([$event]));
+    formData.append('file', this.uploadedFile);
     formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
@@ -288,6 +316,7 @@ export class GeneralFeedbackComponent implements OnInit {
   onStarClick(rating: string) {
     this.selectedRating = rating;
     this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
+    console.log(this.generalFeedbackForm)
   }
   onHoverStar(rating: string) {
     this.onHoveredIcon = rating;
@@ -300,6 +329,7 @@ export class GeneralFeedbackComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
       } else {
         this.handleFiles(files);
+        this.uploadedFile = files[0];
       }
     }
   }
@@ -314,11 +344,13 @@ export class GeneralFeedbackComponent implements OnInit {
     const fileName = selectedFile.name;
     if (selectedFile) {
       this.readFileContent(selectedFile, fileName);
+      this.uploadedFile = selectedFile;
     }
   }
 
   private readFileContent(file: File, fileName: string) {
     this.screenshotName = fileName;
+    this.uploadedFile = file;
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (e) => {
@@ -352,6 +384,7 @@ export class GeneralFeedbackComponent implements OnInit {
     }
     if (files && files.length > 0) {
       this.handleFiles(files);
+      this.uploadedFile = files[0];
     }
   }
 
