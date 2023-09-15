@@ -1,76 +1,69 @@
-<div class="grid m-0 bg-color h-full">
-    <div class="bg-image bg-no-repeat w-12 h-12">
-        <div class="">
-            <div class="flex justify-content-end m-8">
-                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="">
-            </div>
-            <div class="flex justify-content-center mt-8">
-                <p-card [style]=" { width: '680px' ,height: '660px' }">
-                    <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-8">
-                        <div class="heading-color text-6xl font-bold -ml-2">Login to xnode</div>
-                        <div class="formgrid grid form-container pt-5">
-                            <p-messages [(value)]="messages" [enableService]="false"></p-messages>
-                            <form [formGroup]="loginForm" (ngSubmit)="onClickLogin()">
-                                <div class="formgrid grid">
-                                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                        <div>
-                                            <label htmlFor="email"
-                                                class="font-medium text-xl heading-color">Email/Username</label>
-                                        </div>
-                                        <input pInputText id="email" placeholder="Enter email" formControlName="email"
-                                            autocomplete="username"
-                                            [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
-                                            class="text-base p-2 border-round-xl appearance-none outline-none focus:border-primary w-full mt-1" />
-                                        <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
-                                            <div *ngIf="login['email'].errors?.['required']">Email
-                                                is required</div>
-                                            <div *ngIf="login['email'].errors['email']">Email
-                                                must be a valid email address</div>
-                                        </div>
-                                    </div>
-                                    <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                                        <div>
-                                            <label htmlFor="password"
-                                                class="font-medium text-xl heading-color">Password</label>
-                                        </div>
-                                        <p-password [toggleMask]="true" formControlName="password"
-                                            placeholder="Enter password" [style]="{'width':'100%', 'height': '42px'}"
-                                            class="text-lg text-color border-round-xl mt-1"
-                                            [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"></p-password>
+<div class="bg-image bg-no-repeat h-full">
+    <div class="logo">
+        <img src=" ./assets/xnode-logo.svg" alt="x-logo">
+    </div>
+    <div class="login-div">
+        <p-card styleClass="login-card">
+            <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-0">
+                <div class="login-title font-bold">Login to xnode</div>
+                <div class="pt-5">
+                    <p-messages [(value)]="messages" [enableService]="false"></p-messages>
+                    <form [formGroup]="loginForm" (ngSubmit)="onClickLogin()">
+                        <div class="formgrid grid">
+                            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                                <div>
+                                    <label htmlFor="email" class="font-medium text-xl">Email/Username</label>
+                                </div>
+                                <input pInputText id="email" placeholder="Enter email" formControlName="email"
+                                    autocomplete="username"
+                                    [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
+                                    class="text-base p-2 border-round-xl appearance-none outline-none focus:border-primary w-full mt-1" />
+                                <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
+                                    <div *ngIf="login['email'].errors?.['required']">Email
+                                        is required</div>
+                                    <div *ngIf="login['email'].errors['email']">Email
+                                        must be a valid email address</div>
+                                </div>
+                            </div>
+                            <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+                                <div>
+                                    <label htmlFor="password" class="font-medium text-xl">Password</label>
+                                </div>
+                                <p-password [toggleMask]="true" formControlName="password" placeholder="Enter password"
+                                    [style]="{'width':'100%', 'height': '42px'}"
+                                    class="text-lg text-color border-round-xl mt-1"
+                                    [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"></p-password>
 
-                                        <div *ngIf="submitted && login['password'].errors" class="invalid-feedback">
-                                            <div *ngIf="login['password'].errors['required']">Password
-                                                is required</div>
-                                            <div *ngIf="login['password'].errors['minlength']">Password
-                                                must be at least 6 characters
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 text-right">
-                                        <a class="font-medium text-base no-underline forgot-pwd pointer"
-                                            (click)="forgotPassword()">Forgot
-                                            Password?</a>
-                                    </div>
-                                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
-                                        <p-button label="Login" styleClass="p-button-rounded  font-medium text-lg"
-                                            [disabled]="loginForm.invalid" (click)="onClickLogin()"></p-button>
-                                        <fieldset class="submit-fieldset">
-                                            <button type="submit" style="display: none;"></button>
-                                        </fieldset>
-                                    </div>
-                                    <div
-                                        class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
-                                        <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1"
-                                            target="_blank">Terms of service </a><span style="color:#fff">and</span><a
-                                            href="https://xnode.ai/privacy-policy/" target="_blank"
-                                            class="no-underline ml-1">privacy policy</a>
+                                <div *ngIf="submitted && login['password'].errors" class="invalid-feedback">
+                                    <div *ngIf="login['password'].errors['required']">Password
+                                        is required</div>
+                                    <div *ngIf="login['password'].errors['minlength']">Password
+                                        must be at least 6 characters
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 text-right">
+                                <a class="font-medium text-base no-underline forgot-pwd pointer"
+                                    (click)="forgotPassword()">Forgot
+                                    Password?</a>
+                            </div>
+                            <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 text-center">
+                                <p-button label="Login" styleClass="p-button-rounded p-button font-medium text-lg"
+                                    (click)="onClickLogin()"></p-button>
+                            </div>
+                            <div
+                                class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center">
+                                <p class="terms-conditions ">
+                                    <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1 terms"
+                                        target="_blank">Terms of service </a>and<a
+                                        href="https://xnode.ai/privacy-policy/" target="_blank"
+                                        class="no-underline ml-2 policy">privacy policy</a>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </p-card>
+                    </form>
+                </div>
             </div>
-        </div>
+        </p-card>
     </div>
 </div>
