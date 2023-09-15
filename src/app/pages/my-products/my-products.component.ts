@@ -192,7 +192,7 @@ export class MyProductsComponent implements OnInit {
     this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
   getMeCreateAppLimit(): void {
-    this.authApiService.get("/user/get_create_app_limits/" + this.email)
+    this.authApiService.get("/user/get_create_app_limit/" + this.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
