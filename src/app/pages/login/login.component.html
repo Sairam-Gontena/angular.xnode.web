@@ -16,10 +16,10 @@
                                         <div>
                                             <label class="font-medium text-xl heading-color">Email/Username</label>
                                         </div>
-                                        <input type="text" pInputText formControlName="email" placeholder="Enter email"
+
+                                        <input type="text" pInputText class="p-inputtext p-2" placeholder="Enter email"
                                             formControlName="email"
-                                            [ngClass]="{ 'is-invalid': submitted && login['email'].errors }"
-                                            class="text-base p-2 border-round-xl w-full mt-1" />
+                                            [ngClass]="{ 'is-invalid': submitted && login['email'].errors }">
                                         <div *ngIf="submitted && login['email'].errors" class="invalid-feedback">
                                             <div *ngIf="login['email'].errors?.['required']">Email
                                                 is required</div>
