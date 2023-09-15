@@ -1,19 +1,22 @@
-<div class="main-div p-4 surface-900">
-    <div class="col-12">
-        <div class="flex justify-content-between  align-items-start pl-2 pr-2">
-            <p-breadcrumb class="max-w-full icon" [model]="items"></p-breadcrumb>
-            <div class="flex align-items-center">
-                <p-button styleClass="p-button-rounded mr-2">
-                    <span class=" text-sm font-semibold font-family">Invite</span>
-                </p-button>
-                <p-button styleClass="p-button-rounded">
-                    <span class=" text-sm font-semibold font-family">Add Account</span>
-                    <i class="pi pi-plus text-sm ml-1"></i>
-                </p-button>
+<div class="col-12 main-div p-4 ">
+    <div class="col-12 surface-900 inner-div pt-2">
+        <div class="col-12">
+            <div class="flex justify-content-between  align-items-start">
+                <p-breadcrumb class="max-w-full icon" [model]="items"></p-breadcrumb>
+                <div class="flex align-items-center">
+                    <p-button styleClass="p-button-rounded mr-2">
+                        <span class=" text-sm font-semibold font-family">Invite</span>
+                    </p-button>
+                    <p-button styleClass="p-button-rounded">
+                        <span class=" text-sm font-semibold font-family">Add Account</span>
+                        <i class="pi pi-plus text-sm ml-1"></i>
+                    </p-button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 pl-4 pr-4 pb-2">
-        <xnode-dynamic-table [inputData]="usersList" [cols]="cols" [Actions]="Actions"> </xnode-dynamic-table>
+        <div class="col-12 surface-900 content-div pt-2 overflow-auto">
+            <xnode-dynamic-table [inputData]="usersList" [cols]="cols" [Actions]="Actions"> </xnode-dynamic-table>
+        </div>
+
     </div>
 </div>
