@@ -43,12 +43,6 @@ export class ForgotPasswordComponent implements OnInit {
     }
     this.authApiService.postAuth('', 'mfa/forgotpassword?email=' + this.forgotPasswordForm.get('email')?.value).then((response: any) => {
       if (response?.status === 200) {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': response?.request?.responseURL,
-          'payload': {}
-        }
-        this.auditUtil.post('MFA_FORGOT_PASSWORD', 1, 'SUCCESS', 'user-audit', user_audit_body);
         if (response?.data?.detail) {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         } else {
@@ -56,12 +50,6 @@ export class ForgotPasswordComponent implements OnInit {
           this.router.navigate(['/']);
         }
       } else {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': response?.request?.responseURL,
-          'payload': {}
-        }
-        this.auditUtil.post('MFA_FORGOT_PASSWORD', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
       }
       this.utilsService.loadSpinner(false);

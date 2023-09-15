@@ -90,7 +90,7 @@ export class TemplateBuilderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.product_id = response.data.data[0].id;
           localStorage.setItem("app_name", response.data.data[0].product_name)
           this.loadDesignStudio();
@@ -99,7 +99,7 @@ export class TemplateBuilderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utils.loadToaster({ severity: 'error', summary: '', detail: 'Network error' });
         }
       }).catch(error => {

@@ -110,7 +110,7 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.id = response.data.data[0].id;
           this.getMeOverview();
         } else {
@@ -118,7 +118,7 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.loadSpinner(false);
         }
@@ -145,13 +145,13 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body);
         } else {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.auditUtil.post("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         }

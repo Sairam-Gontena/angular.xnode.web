@@ -134,7 +134,7 @@ export class MyProductsComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL,
           }
-          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.id = response.data.data[0].id;
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;

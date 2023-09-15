@@ -69,13 +69,13 @@ export class ViewExistingFeedbackComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('USER_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('USER_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -96,13 +96,13 @@ export class ViewExistingFeedbackComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('USER_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('USER_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);

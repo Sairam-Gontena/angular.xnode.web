@@ -180,7 +180,7 @@ export class ReportBugComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('USER_BUG_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
       } else {
@@ -189,7 +189,7 @@ export class ReportBugComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('USER_BUG_REPORT', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -222,7 +222,7 @@ export class ReportBugComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': formData
         }
-        this.auditUtil.post('FILE_AZURE_UPLOAD', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.uploadedFileData = res.data;
         this.sendBugReport();
       } else {
@@ -231,7 +231,7 @@ export class ReportBugComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': formData
         }
-        this.auditUtil.post('FILE_AZURE_UPLOAD', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
         this.utils.loadSpinner(false);
       }

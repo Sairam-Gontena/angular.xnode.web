@@ -49,24 +49,12 @@ export class LoginComponent implements OnInit {
     this.loginBtn = true;
     this.authApiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': response?.request?.responseURL,
-          'payload': body
-        }
-        this.auditUtil.post('PROSPECT_LOGIN', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
         this.loginBtn = false;
         this.router.navigate(['/verify-otp', body.email]);
       } else {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': response?.request?.responseURL,
-          'payload': body
-        }
-        this.auditUtil.post('PROSPECT_LOGIN', 1, 'FAILED', 'user-audit', user_audit_body);
         this.loginBtn = false;
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
         this.utilsService.loadSpinner(false);

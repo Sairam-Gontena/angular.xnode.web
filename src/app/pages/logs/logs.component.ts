@@ -28,7 +28,7 @@ export class LogsComponent implements OnInit {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('NOTIFICATIONS_RETRIEVE', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('NOTIFICATIONS_RETRIEVE_LOGS', 1, 'SUCCESS', 'user-audit', user_audit_body);
         this.logsData = response.data;
         this.utilsService.loadSpinner(false)
       }).catch((err: any) => {

@@ -58,21 +58,9 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.login({ email: this.route.snapshot.params['email'] }, "mfa/resendverfication")
       .then((response: any) => {
         if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': response?.request?.responseURL,
-            'payload': { email: this.route.snapshot.params['email'] }
-          }
-          this.auditUtil.post('VERIFY_OTP', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.startResendTimer();
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response?.data?.Message });
         } else {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': response?.request?.responseURL,
-            'payload': { email: this.route.snapshot.params['email'] }
-          }
-          this.auditUtil.post('VERIFY_OTP', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
         this.utilsService.loadSpinner(false);
@@ -87,12 +75,6 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': response?.request?.responseURL,
-            'payload': { email: this.route.snapshot.params['email'], otp: this.otp }
-          }
-          this.auditUtil.post('VERIFY_OTP', 1, 'SUCCESS', 'user-audit', user_audit_body);
           localStorage.setItem('currentUser', JSON.stringify(response?.data));
           if (response?.data?.role_name === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
@@ -105,12 +87,6 @@ export class VerifyOtpComponent implements OnInit {
             localStorage.setItem('currentUser', JSON.stringify(response?.data));
           }
         } else {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': response?.request?.responseURL,
-            'payload': { email: this.route.snapshot.params['email'], otp: this.otp }
-          }
-          this.auditUtil.post('VERIFY_OTP', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(true);
         }
@@ -127,11 +103,6 @@ export class VerifyOtpComponent implements OnInit {
     this.apiService.get("/get_metadata/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
           if (response?.data?.data.length > 0) {
             this.router.navigate(['/my-products']);
           } else {
@@ -157,19 +128,9 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.get("/user/get_create_app_limit/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.post('GET_CREATE_APP_LIMIT', 1, 'SUCCESS', 'user-audit', user_audit_body);
           this.restriction_max_value = response.data[0].restriction_max_value;
           localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
         } else {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.post('GET_CREATE_APP_LIMIT', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
       }).catch((error: any) => {

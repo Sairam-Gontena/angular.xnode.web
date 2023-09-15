@@ -103,7 +103,7 @@ export class AppHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
             value: obj.id,

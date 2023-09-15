@@ -55,12 +55,6 @@ export class ResetPasswordComponent implements OnInit {
     this.authApiService.patchAuth('', "auth/prospect/resetpassword/" + this.paramEmail + '?password=' + this.resetPasswordForm.get('password')?.value)
       .then((response: any) => {
         if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': response?.request?.responseURL,
-            'payload': {}
-          }
-          this.auditUtil.post('PROSPECT_RESET_PASSWORD', 1, 'SUCCESS', 'user-audit', user_audit_body);
           if (response?.data?.detail) {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           } else {
@@ -70,12 +64,6 @@ export class ResetPasswordComponent implements OnInit {
           }
           this.utilsService.loadSpinner(false);
         } else {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': response?.request?.responseURL,
-            'payload': {}
-          }
-          this.auditUtil.post('PROSPECT_RESET_PASSWORD', 1, 'FAILED', 'user-audit', user_audit_body);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(false);
         }

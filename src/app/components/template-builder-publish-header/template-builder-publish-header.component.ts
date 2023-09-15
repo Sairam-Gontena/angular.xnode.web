@@ -138,14 +138,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('TOTAL_APPS_PUBLISHED', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('TOTAL_APPS_PUBLISHED', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body);
       }
     }).catch((err: any) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
@@ -173,7 +173,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('EMAIL_NOTIFY', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body);
       }
     }).catch((err: any) => {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
@@ -233,7 +233,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body);
         }
       }).catch(error => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
