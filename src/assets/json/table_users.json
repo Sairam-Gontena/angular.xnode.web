@@ -13,24 +13,12 @@
             "header": "Last Name"
         },
         {
-            "field": "role",
-            "header": "Role"
-        },
-        {
             "field": "email",
             "header": "Email"
         },
         {
-            "field": "phone_number",
+            "field": "phone",
             "header": "Phone Number"
-        },
-        {
-            "field": "interest_level",
-            "header": "Interest Level"
-        },
-        {
-            "field": "notes",
-            "header": "Notes"
         },
         {
             "field": "action",
