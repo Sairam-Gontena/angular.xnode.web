@@ -82,8 +82,13 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.handleLimitReachedPopup.subscribe((event: any) => {
       this.showLimitReachedPopup = event;
-      if (event)
+      if (event) {
+        let currentUser = localStorage.getItem('currentUser')
+        if (currentUser) {
+          this.currentUser = JSON.parse(currentUser);
+        }
         this.sendEmailNotificationToTheUser();
+      }
     });
     this.currentPath = window.location.hash;
   }

@@ -24,7 +24,7 @@
                 <label class="text-base font-medium">How would you like to rate your experience</label>
                 <input type="hidden" formControlName="selectedRating"
                     [ngClass]="{ 'is-invalid': submitted && feedback['selectedRating'].errors }" />
-                <div class="flex flex-wrap justify-content-center pointer gap-3 pt-4">
+                <div class="flex flex-wrap justify-content-center  pointer gap-3 pt-4">
                     <div class="star-width ">
                         <img src="./assets/star1.svg" (mouseover)="onHoverStar('ONE')" (mouseout)="onHoverStar('')"
                             (click)="onStarClick('ONE')" class="star-image" width="60px" height="60px"
