@@ -55,9 +55,19 @@ export class AppHeaderComponent implements OnInit {
   showFeedBacks: any;
   selectedPopup: any;
   showLimitReachedPopup: boolean = false;
+  productId: any;
   constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
     private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
     private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService, private auditUtil: AuditutilsService) {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.email = JSON.parse(currentUser).email;
+    }
+    let product = localStorage.getItem('product')
+    if (product) {
+      let productObj = JSON.parse(product)
+      this.productId = productObj?.id;
+    }
   }
 
   ngOnInit(): void {
@@ -103,7 +113,7 @@ export class AppHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
             value: obj.id,
@@ -112,6 +122,11 @@ export class AppHeaderComponent implements OnInit {
           this.templates = data;
         }
       }).catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
@@ -147,10 +162,6 @@ export class AppHeaderComponent implements OnInit {
 
 
   initializeWebsocket() {
-    let currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.email = JSON.parse(currentUser).email;
-    }
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
       this.allNotifications.unshift(data);
@@ -227,19 +238,35 @@ export class AppHeaderComponent implements OnInit {
       envName: environment.branchName,
       productId: obj.product_id
     }
-    this.apiService.publishApp(body)
-      .then(response => {
-        if (response) {
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Your app publishing process started. You will get the notifications', life: 3000 });
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+    this.apiService.publishApp(body).then((response: any) => {
+      if (response) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
         }
-        this.utilsService.loadSpinner(false);
-      })
-      .catch(error => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
-        this.utilsService.loadSpinner(false);
-      });
+        this.auditUtil.post('PUBLISH_APP_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Your app publishing process started. You will get the notifications', life: 3000 });
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('PUBLISH_APP_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(error => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': error?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('PUBLISH_APP_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
+      this.utilsService.loadSpinner(false);
+    });
   }
 
   onClickLogo(): void {

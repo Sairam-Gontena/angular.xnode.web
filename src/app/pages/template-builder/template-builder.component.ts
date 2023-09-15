@@ -26,7 +26,7 @@ export class TemplateBuilderComponent implements OnInit {
   iframeSrc: any;
   overview: any;
   id: String = '';
-  email = '';
+  email: any;
   selectedTemplate = localStorage.getItem("app_name");
   product: any;
   currentUser?: User;
@@ -35,6 +35,7 @@ export class TemplateBuilderComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.email = this.currentUser?.email
     this.environment = environment.name;
   }
 
@@ -90,7 +91,7 @@ export class TemplateBuilderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           this.product_id = response.data.data[0].id;
           localStorage.setItem("app_name", response.data.data[0].product_name)
           this.loadDesignStudio();
@@ -99,10 +100,15 @@ export class TemplateBuilderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
           this.utils.loadToaster({ severity: 'error', summary: '', detail: 'Network error' });
         }
       }).catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
       });
   }

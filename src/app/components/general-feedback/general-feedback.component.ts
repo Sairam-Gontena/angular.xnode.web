@@ -40,6 +40,8 @@ export class GeneralFeedbackComponent implements OnInit {
   onHoveredIcon: string | null = null;
   products: any[] = [];
   uploadedFile: any;
+  email: any;
+  productId: any;
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder,
@@ -55,6 +57,16 @@ export class GeneralFeedbackComponent implements OnInit {
       screenshot: [null],
       selectedRating: ['', Validators.required]
     });
+    let user = localStorage.getItem('currentUser')
+    if (user) {
+      let userObj = JSON.parse(user)
+      this.email = userObj?.email;
+    }
+    let product = localStorage.getItem('product')
+    if (product) {
+      let productObj = JSON.parse(product)
+      this.productId = productObj?.id;
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -175,7 +187,7 @@ export class GeneralFeedbackComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
         this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
@@ -185,12 +197,18 @@ export class GeneralFeedbackComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
         this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': err?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
       this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
@@ -216,7 +234,7 @@ export class GeneralFeedbackComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': formData
         }
-        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.uploadedFileData = res.data;
         this.sendGeneralFeedbackReport();
       } else {
@@ -225,11 +243,17 @@ export class GeneralFeedbackComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': formData
         }
-        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body);
+        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
         this.utils.loadSpinner(false);
       }
     }).catch((err: any) => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': err?.request?.responseURL,
+        'payload': formData
+      }
+      this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
       this.utils.loadSpinner(false);
     })

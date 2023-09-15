@@ -12,6 +12,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 })
 export class UseCasesComponent implements OnInit {
   useCases: any = [];
+  email: any;
   id: String = '';
   currentUser?: User;
   loading: boolean = true;
@@ -21,6 +22,7 @@ export class UseCasesComponent implements OnInit {
 
   constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.email = this.currentUser?.email;
   }
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class UseCasesComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
         } else {
@@ -58,13 +60,18 @@ export class UseCasesComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.showProductStatusPopup(true);
         }
         this.utils.loadSpinner(false);
       })
       .catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
       });

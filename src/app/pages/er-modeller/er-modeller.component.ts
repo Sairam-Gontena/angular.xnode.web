@@ -83,7 +83,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
           this.id = response.data.data[0].id;
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
@@ -92,11 +92,16 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utilsService.loadSpinner(false);
       }).catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false)
       });
@@ -111,7 +116,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.jsPlumbService.init();
@@ -121,13 +126,18 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utilsService.showProductStatusPopup(true);
         }
         this.utilsService.loadSpinner(false);
       })
       .catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false);
       });

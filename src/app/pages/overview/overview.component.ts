@@ -110,7 +110,7 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
           this.id = response.data.data[0].id;
           this.getMeOverview();
         } else {
@@ -118,11 +118,16 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.loadSpinner(false);
         }
       }).catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       });
@@ -145,18 +150,23 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         } else {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body);
+          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.auditUtil.post("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utils.loadSpinner(false);
       }).catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
         this.auditUtil.post("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');

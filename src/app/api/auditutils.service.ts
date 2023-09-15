@@ -16,7 +16,7 @@ export class AuditutilsService {
 
   }
 
-  post(activity: any, attemptcount: number, attemptstatus: string, url: string, activityInfo?: any) {
+  post(activity: any, attemptcount: number, attemptstatus: string, url: string, activityInfo?: any, useremail?: any, productid?: any) {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser)
@@ -26,7 +26,9 @@ export class AuditutilsService {
       "activityTypeId": activity,
       "activityInfo": activityInfo,
       "attemptCount": attemptcount,
-      "attemptSuccess": attemptstatus
+      "attemptSuccess": attemptstatus,
+      "userEmail": useremail,
+      "productId": productid
     }
     axios.post(this.endPoint + url, body).then(response => {
       if (response.data?.detail) {
