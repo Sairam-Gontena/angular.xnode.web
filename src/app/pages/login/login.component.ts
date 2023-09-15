@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-login',
   templateUrl: './login.component.html',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   ];
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService, private auditUtil: AuditutilsService) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -58,10 +59,9 @@ export class LoginComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
         this.utilsService.loadSpinner(false);
       }
-    })
-      .catch((error: any) => {
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      });
+    }).catch((error: any) => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+    });
   }
 }
