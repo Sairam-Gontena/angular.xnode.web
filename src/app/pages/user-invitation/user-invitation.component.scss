@@ -34,7 +34,7 @@
 }
 
 ::ng-deep .p-breadcrumb {
-    background-color: #23222B !important;
+    background-color: transparent !important;
     color: white;
     font-family: 'Inter';
     font-weight: 500px;
@@ -50,9 +50,10 @@
 
 ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
     background: #3A3942;
-    color:#fff
+    color: #fff
 }
-::ng-deep .p-breadcrumb  {
+
+::ng-deep .p-breadcrumb {
     border-width: 0px;
 }
 

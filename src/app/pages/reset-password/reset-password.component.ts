@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ConfirmPasswordValidator } from '../sign-up/confirm-password.validator';
-
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-reset-password',
   templateUrl: './reset-password.component.html',
@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
   errorMessage!: string;
   messages: any = [];
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService, private utilsService: UtilsService, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService, private utilsService: UtilsService, private route: ActivatedRoute, private auditUtil: AuditutilsService) {
     this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
@@ -67,8 +67,7 @@ export class ResetPasswordComponent implements OnInit {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           this.utilsService.loadSpinner(false);
         }
-      })
-      .catch((error: any) => {
+      }).catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
       });

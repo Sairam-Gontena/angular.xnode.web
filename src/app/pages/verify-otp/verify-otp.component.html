@@ -5,9 +5,9 @@
     <div class="login-div">
         <p-card styleClass="login-card">
             <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-0">
-                <p class="m-0 pointer flex login-back" (click)="onClickLogout()"><span>
-                        <i class="pi pi-arrow-left mr-2"></i>
-                    </span> Logout</p>
+                <div class="m-0 flex login-back"><span class="pointer" (click)="onClickLogout()">
+                        <i class="pi pi-arrow-left mr-2"></i>Logout
+                    </span> </div>
                 <div class="login-title font-bold mt-2">Verify your identity</div>
                 <div class="mt-2 mb-4 text-500 forgot-content">
                     For additional security, an email with a required verification
@@ -19,9 +19,8 @@
                             [config]="{length:6,allowNumbersOnly: true, placeholder:'-'}" #ngOtpInput></ng-otp-input>
                     </div>
                     <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-5">
-                        <p-button label="Verify Account" class="flex justify-content-center "
-                            styleClass="p-button-rounded p-button font-medium text-lg"
-                            (click)="verifyAccount()"></p-button>
+                        <p-button label="Verify Account" class="flex justify-content-center " type="submit"
+                            styleClass="p-button-rounded p-button font-medium text-lg"></p-button>
                     </div>
                     <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
                         <div class="font-medium flex justify-content-center heading-color resend-text">Resend
