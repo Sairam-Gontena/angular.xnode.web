@@ -9,11 +9,11 @@
     align-items: flex-end;
 }
 
-:host ::ng-deep .p-button {
-    padding-top: 14px;
-    padding-bottom: 14px;
-    // width: 100%;
-}
+// :host ::ng-deep .p-button {
+//     padding-top: 14px;
+//     padding-bottom: 14px;
+//     // width: 100%;
+// }
 
 .invalid-feedback {
     color: red;
@@ -55,6 +55,11 @@ input {
 
 :host::ng-deep.p-card {
     background-color: #23222B !important;
+}
+
+:host::ng-deep.custom-button {
+    width: 225px;
+    height: 65px;
 }
 
 .forgot-pwd {

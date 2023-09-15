@@ -25,6 +25,10 @@
     color: #FFFFFF !important;
 }
 
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
 :host ::ng-deep .logout-split-btn .p-button {
     border: none;
     background: #24232C !important;
