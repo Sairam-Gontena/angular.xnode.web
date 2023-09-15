@@ -8,9 +8,9 @@
     color: #ffffff;
 }
 
-:host ::ng-deep .p-inputtext:enabled:focus {
-    box-shadow: none;
-}
+// :host ::ng-deep .p-inputtext:enabled:focus {
+//      box-shadow: none;
+// }
 
 :host ::ng-deep .p-inputtext ::placeholder {
     color: rgba(255, 255, 255, 0.5);

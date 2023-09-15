@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { FormGroup } from '@angular/forms';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-view-existing-feedback',
   templateUrl: './view-existing-feedback.component.html',
@@ -19,9 +20,20 @@ export class ViewExistingFeedbackComponent implements OnInit {
   selectedIndex: any = 0;
   currentUser: any;
   showMessageBox: boolean = false;
-
-  constructor(public utils: UtilsService, private userUtilService: UserUtilsService) {
+  email: any;
+  productId: any;
+  constructor(public utils: UtilsService, private userUtilService: UserUtilsService, private auditUtil: AuditutilsService) {
     this.onWindowResize();
+    let user = localStorage.getItem('currentUser')
+    if (user) {
+      let userObj = JSON.parse(user)
+      this.email = userObj?.email;
+    }
+    let product = localStorage.getItem('product')
+    if (product) {
+      let productObj = JSON.parse(product)
+      this.productId = productObj?.id;
+    }
   }
 
   ngOnInit(): void {
@@ -64,11 +76,26 @@ export class ViewExistingFeedbackComponent implements OnInit {
         if (res?.data.length) {
           this.selectedListItem = res.data[0]
         }
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
     }).catch((err: any) => {
+      let user_audit_body = {
+        'method': 'GET',
+        'url': err?.request?.responseURL
+      }
+      this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
@@ -81,11 +108,26 @@ export class ViewExistingFeedbackComponent implements OnInit {
         if (res?.data.length) {
           this.selectedListItem = res.data[0];
         }
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
     }).catch((err: any) => {
+      let user_audit_body = {
+        'method': 'GET',
+        'url': err?.request?.responseURL
+      }
+      this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })

@@ -65,18 +65,31 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("/total_apps_onboarded/" + user?.email)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
-        } else {
-          this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+    this.apiService.get("/total_apps_onboarded/" + user?.email).then((response: any) => {
+      if (response?.status === 200) {
+        localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+        let user_audit_body = {
+          'method': 'GET',
+          'url': response?.request?.responseURL,
         }
-      })
-      .catch((error: any) => {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-        this.utils.loadSpinner(true);
-      });
+        this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
+      } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': response?.request?.responseURL,
+        }
+        this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+      }
+    }).catch((error: any) => {
+      let user_audit_body = {
+        'method': 'GET',
+        'url': error?.request?.responseURL,
+      }
+      this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+      this.utils.loadSpinner(true);
+    });
   }
 
   removeParamFromRoute(): void {
@@ -131,16 +144,31 @@ export class MyProductsComponent implements OnInit {
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL,
+          }
+          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
           this.templateCard = response.data.data;
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL,
+          }
+          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
       })
       .catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL,
+        }
+        this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 
@@ -173,11 +201,25 @@ export class MyProductsComponent implements OnInit {
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL,
+          }
+          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
         } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL,
+          }
+          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
-      })
-      .catch((error: any) => {
+      }).catch((error: any) => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL,
+        }
+        this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utils.loadSpinner(true);
       });
