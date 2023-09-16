@@ -205,6 +205,7 @@ export class FeedbackListComponent {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
+      this.getMeConversations();
     }).catch((err: any) => {
       let user_audit_body = {
         'method': 'GET',

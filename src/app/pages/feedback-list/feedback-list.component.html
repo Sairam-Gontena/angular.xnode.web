@@ -2,6 +2,8 @@
     <div class="col-12 p-0">
         <div class="flex justify-content-between flex-wrap">
             <h3>Feedback List</h3>
+            <p-selectButton [options]="areaTypes" [(ngModel)]="selectedArea" optionLabel="label" optionValue="value"
+                class="feedback-header-options ml-4" (onChange)="onChangeArea($event)"></p-selectButton>
             <i class="pi pi-times pointer" (click)="onClickClose()"></i>
         </div>
     </div>
