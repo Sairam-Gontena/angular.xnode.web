@@ -168,6 +168,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule)
   },
   {
+    path: 'feedback-list',
+    loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',

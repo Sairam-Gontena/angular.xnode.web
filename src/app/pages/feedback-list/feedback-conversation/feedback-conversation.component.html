@@ -1,0 +1,32 @@
+<div class="flex">
+    <p-avatar [label]="getMeUserAvatar()" styleClass="mr-2"
+        [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"></p-avatar>
+    <div class="w-full">
+        <p class="m-0 font-sm font-medium">{{conversation?.userName}}
+            <span class="text-10 font-normal pl-2">
+                {{conversation.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
+            </span>
+        </p>
+        <p class="m-0">{{conversation.message}}</p>
+        <p-button label="Reply" styleClass="p-button-text p-button-rounded"
+            (click)="onClickReply(conversation)"></p-button>
+        <p-button [label]="getMeLabel()" icon="pi pi-chevron-down" styleClass="p-button-text p-button-rounded"
+            (click)="onClickSeeReplys()" *ngIf="conversation.responses && conversation.responses.length > 0"></p-button>
+        <ng-container *ngIf="conversation.responses && conversation.responses.length > 0&& conversation.showReply">
+            <div class="nested-replies">
+                <div class="m-0 pt-2 pb-2 pl-4 pr-4" *ngFor="let reply of conversation.responses; let j=index;">
+                    <xnode-feedback-conversation [conversation]="reply" [index]="j"></xnode-feedback-conversation>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="conversation.showReplyinput">
+            <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"></textarea>
+            <div class="text-right">
+                <p-button label="Cancel" styleClass="p-button-text p-button-rounded"
+                    (click)="this.conversation.showReplyinput = false"></p-button>
+                <p-button label="Send" styleClass="p-button-text p-button-rounded" (click)="onClickSend()"></p-button>
+            </div>
+        </ng-container>
+    </div>
+
+</div>

@@ -134,10 +134,8 @@ export class AppComponent implements OnInit {
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
-      console.log("got triggered")
       if (contentWindow) {
         window.addEventListener('message', (event) => {
-          console.log("got triggered =====")
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }
