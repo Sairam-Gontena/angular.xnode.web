@@ -109,6 +109,15 @@ export class FeedbackListComponent {
     this.getMeConversations();
   }
 
+  getMeUserAvatar(report: any) {
+    var words = report.userName.split(" "); // Split the string into an array of words
+    if (words.length >= 2) {
+      var firstLetterOfFirstWord = words[0][0].toUpperCase(); // Get the first letter of the first word
+      var firstLetterOfSecondWord = words[1][0].toUpperCase(); // Get the first letter of the second word
+      return firstLetterOfFirstWord + firstLetterOfSecondWord
+    }
+  }
+
   getMeConversations(): void {
     this.utils.loadSpinner(true);
     this.userUtilService.getData('user-conversation/' + this.selectedListItem.id).then((res: any) => {
