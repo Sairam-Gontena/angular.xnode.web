@@ -8,6 +8,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
+import { AuthApiService } from './api/auth.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
     private auditUtil: AuditutilsService,
+    public auth: AuthApiService,
     private notifyApi: NotifyApiService) {
   }
 
@@ -292,5 +294,4 @@ export class AppComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err?.response?.data?.detail });
     })
   }
-
 }

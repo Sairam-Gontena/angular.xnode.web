@@ -85,17 +85,21 @@ label {
     .logo {
         display: flex;
         justify-content: center;
-        margin: 40px;
-        height: 16px;
+        padding: 40px;
     }
 
     .login-title {
         font-size: 38px;
     }
 
+    .h-16 {
+        height: 16px;
+    }
+
     .login-div {
         padding-left: 20px;
         padding-right: 20px;
+        height: calc(100vh - 95px);
     }
 
     :host::ng-deep .p-card-body {
@@ -111,7 +115,7 @@ label {
     .logo {
         display: flex;
         justify-content: center;
-        margin: 40px;
+        padding: 40px;
         height: 20px;
     }
 
@@ -133,13 +137,14 @@ label {
     .logo {
         display: flex;
         justify-content: end;
-        margin: 40px;
+        padding: 40px;
     }
 
     .login-div {
         display: flex;
         justify-content: center;
-        margin-top: 80px;
+        margin-top: 40px;
+        height: calc(100vh - 150px);
     }
 
     :host ::ng-deep .p-card {

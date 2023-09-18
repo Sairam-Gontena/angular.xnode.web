@@ -9,8 +9,14 @@ import { environment } from 'src/environments/environment';
 export class AuthApiService {
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
+  userLoggedIn = false;
+  otpVerifyInprogress = false;
+  restInprogress = false;
 
   constructor() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser)
+      this.userLoggedIn = true
   }
 
   config = {
@@ -57,6 +63,22 @@ export class AuthApiService {
   put(url: string) {
     return axios.put(this.authEndPoint + url, {
     });
+  }
+
+  setUser(event: boolean): void {
+    this.userLoggedIn = event;
+  }
+
+  isOtpVerifiedInprogress(event: boolean) {
+    this.otpVerifyInprogress = event;
+  }
+
+  isResetPasswordInproggress(event: boolean) {
+    this.restInprogress = event;
+  }
+
+  isUserLoggedIn() {
+    return this.userLoggedIn;
   }
 
 }
