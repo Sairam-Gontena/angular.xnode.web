@@ -1,15 +1,18 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { UtilsService } from '../services/utils.service';
+import { Component, HostListener, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
-import { NgForm } from '@angular/forms';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
+import { Location } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
-  selector: 'xnode-view-existing-feedback',
-  templateUrl: './view-existing-feedback.component.html',
-  styleUrls: ['./view-existing-feedback.component.scss']
+  selector: 'xnode-feedback-list',
+  templateUrl: './feedback-list.component.html',
+  styleUrls: ['./feedback-list.component.scss']
 })
-export class ViewExistingFeedbackComponent implements OnInit {
+
+export class FeedbackListComponent {
   @Input() visible: any;
   public getScreenWidth: any;
   public dialogWidth: string = '80vw';
@@ -32,7 +35,13 @@ export class ViewExistingFeedbackComponent implements OnInit {
   selectedItemConversation: any;
   message: any;
 
-  constructor(public utils: UtilsService, private userUtilService: UserUtilsService, private auditUtil: AuditutilsService) {
+  constructor(
+    public utils: UtilsService,
+    private userUtilService: UserUtilsService,
+    private auditUtil: AuditutilsService,
+    private location: Location,
+    private cdr: ChangeDetectorRef
+  ) {
     this.onWindowResize();
     let user = localStorage.getItem('currentUser')
     if (user) {
@@ -44,6 +53,10 @@ export class ViewExistingFeedbackComponent implements OnInit {
       let productObj = JSON.parse(product)
       this.productId = productObj?.id;
     }
+    this.utils.getMeUpdatedList.subscribe((event: any) => {
+      if (event)
+        this.getMeConversations();
+    })
   }
 
 
@@ -55,6 +68,10 @@ export class ViewExistingFeedbackComponent implements OnInit {
     this.selectedArea = 'USER_BUG_REPORT';
     this.utils.loadSpinner(true);
     this.getMeReportedBugList();
+  }
+
+  onClickClose() {
+    this.location.back();
   }
 
   onClickSend() {
@@ -93,6 +110,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
   }
 
   getMeConversations(): void {
+    this.utils.loadSpinner(true);
     this.userUtilService.getData('user-conversation/' + this.selectedListItem.id).then((res: any) => {
       if (res.status == 200) {
         let user_audit_body = {
@@ -110,15 +128,17 @@ export class ViewExistingFeedbackComponent implements OnInit {
         }
         this.auditUtil.post('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       }
+      this.utils.loadSpinner(false);
     }).catch((err: any) => {
-      console.log(err)
       let user_audit_body = {
         'method': 'GET',
         'url': err?.request?.responseURL,
       }
       this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.utils.loadSpinner(false);
     })
   }
+
   onChangeArea(event: any) {
     this.utils.loadSpinner(true);
     this.selectedArea = event.value;
@@ -185,6 +205,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
+      this.getMeConversations();
     }).catch((err: any) => {
       let user_audit_body = {
         'method': 'GET',
@@ -211,10 +232,6 @@ export class ViewExistingFeedbackComponent implements OnInit {
 
   closePopup() {
     this.utils.showFeedbackPopupByType('');
-  }
-
-  onClickReply() {
-    this.showMessageBox = true;
   }
 
 }

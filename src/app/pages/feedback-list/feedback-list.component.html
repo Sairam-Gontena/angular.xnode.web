@@ -1,8 +1,12 @@
 <div class="feedback-div grid m-0">
-    <div class="col-12">
-
+    <div class="col-12 p-0">
+        <div class="flex justify-content-between flex-wrap">
+            <h3>Feedback List</h3>
+            <p-selectButton [options]="areaTypes" [(ngModel)]="selectedArea" optionLabel="label" optionValue="value"
+                class="feedback-header-options ml-4" (onChange)="onChangeArea($event)"></p-selectButton>
+            <i class="pi pi-times pointer" (click)="onClickClose()"></i>
+        </div>
     </div>
-
     <div class="col-5 p-0 feedback-list">
         <div class="report-list-height">
             <div class="list-item pl-4 pr-4 pt-4 pr-4" *ngFor="let report of reportList;let i= index"
@@ -44,7 +48,6 @@
                         <div class="flex align-items-center">
                             <p-chip [label]="selectedListItem?.feedbackStatusId" class="ml-3"></p-chip>
                         </div>
-                        <!-- <p-button label="Mark as Fixed" styleClass="p-button-outlined p-button-rounded"></p-button> -->
                     </div>
 
                     <p class="font-light text-base">
@@ -70,23 +73,10 @@
                 </div>
             </div>
             <ng-container *ngIf="selectedItemConversation?.length > 0">
-                <div class="grid m-0 border-bottom-1 pt-2 pb-2 pl-4 pr-4" *ngFor="let conv of selectedItemConversation">
-                    <div class="col-md-12">
-                        <div class="flex justify-content-between flex-wrap align-items-center w-full">
-                            <p class="m-0">{{conv.message}}</p>
-                            <p-button type="submit" label="Reply"
-                                styleClass="p-button-outlined p-button-rounded text-right"
-                                (click)="onClickReply()"></p-button>
-                        </div>
-                    </div>
-                    <div class="flex align-items-center">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            shape="circle"></p-avatar>
-                        <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
-                            {{currentUser?.last_name}}<span class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                {{conv.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
-                            </span></p>
-                    </div>
+                <div class="m-0 pt-2 pb-2 pl-4 pr-4" *ngFor="let conv of selectedItemConversation; let i=index;">
+                    <xnode-feedback-conversation [conversation]="conv" [index]="i"
+                        conversationSourceId="conversationSourceId"
+                        [conversationSourceType]="selectedArea"></xnode-feedback-conversation>
                 </div>
             </ng-container>
             <div class="grid m-0 pl-4 pr-4 pt-2 pb-2" *ngIf="selectedItemConversation?.length === 0 || showMessageBox">

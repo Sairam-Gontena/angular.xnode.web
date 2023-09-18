@@ -219,6 +219,10 @@ const routes: Routes = [
 
   },
   {
+    path: 'feedback-list',
+    loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',
