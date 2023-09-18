@@ -12,6 +12,7 @@ import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { AuthApiService } from 'src/app/api/auth.service';
 
 
 @Component({
@@ -56,9 +57,16 @@ export class AppHeaderComponent implements OnInit {
   selectedPopup: any;
   showLimitReachedPopup: boolean = false;
   productId: any;
-  constructor(private RefreshListService: RefreshListService, private apiService: ApiService, private utilsService: UtilsService,
-    private router: Router, private webSocketService: WebSocketService, private cdr: ChangeDetectorRef,
-    private confirmationService: ConfirmationService, private fb: FormBuilder, private captureService: NgxCaptureService, private auditUtil: AuditutilsService) {
+  constructor(
+    private RefreshListService: RefreshListService,
+    private apiService: ApiService,
+    private utilsService: UtilsService,
+    private router: Router,
+    private webSocketService: WebSocketService,
+    private confirmationService: ConfirmationService,
+    private captureService: NgxCaptureService,
+    private auth: AuthApiService,
+    private auditUtil: AuditutilsService) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -96,6 +104,7 @@ export class AppHeaderComponent implements OnInit {
           this.utilsService.showLimitReachedPopup(false);
           setTimeout(() => {
             localStorage.clear();
+            this.auth.setUser(false);
             this.router.navigate(['/']);
           }, 1000);
         }

@@ -22,9 +22,7 @@ export class VerifyOtpComponent implements OnInit {
   restriction_max_value: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private apiService: ApiService, private utilsService: UtilsService,
-    private userService: UserUtilsService, private auditUtil: AuditutilsService, private authApiService: AuthApiService) {
-
-  }
+    private auditUtil: AuditutilsService, private authApiService: AuthApiService) { }
 
   ngOnInit(): void {
     this.userEmail = this.maskEmail(this.route.snapshot.params['email']);
@@ -51,6 +49,7 @@ export class VerifyOtpComponent implements OnInit {
   }
 
   resendVerification() {
+    this.authApiService.isOtpVerifiedInprogress(true);
     this.resendTimer = 60;
     this.otp = '';
     this.ngOtpInputRef.setValue('');
@@ -75,7 +74,9 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
+          this.authApiService.setUser(true);
           localStorage.setItem('currentUser', JSON.stringify(response?.data));
+          this.authApiService.isOtpVerifiedInprogress(false);
           if (response?.data?.role_name === 'Xnode Admin') {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
@@ -84,7 +85,6 @@ export class VerifyOtpComponent implements OnInit {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
             this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
-            localStorage.setItem('currentUser', JSON.stringify(response?.data));
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });

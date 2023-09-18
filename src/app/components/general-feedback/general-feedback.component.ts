@@ -364,7 +364,6 @@ export class GeneralFeedbackComponent implements OnInit {
   onStarClick(rating: string) {
     this.selectedRating = rating;
     this.generalFeedbackForm.get('selectedRating')?.setValue(rating);
-    console.log(this.generalFeedbackForm)
   }
   onHoverStar(rating: string) {
     this.onHoveredIcon = rating;
