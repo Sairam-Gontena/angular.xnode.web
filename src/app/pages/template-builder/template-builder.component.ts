@@ -71,7 +71,14 @@ export class TemplateBuilderComponent implements OnInit {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
         window.addEventListener('message', (event) => {
+
+          console.log('check me data event out', event)
           if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
+            if (event.data) {
+              console.log('check me data event', event)
+              let data = event.data;
+              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+            }
             return;
           }
         });
