@@ -6,6 +6,7 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { FileService } from 'src/app/file.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-report-bug',
@@ -64,7 +65,7 @@ export class ReportBugComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
     public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService,
-    private fileService: FileService) {
+    private fileService: FileService, private router: Router) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.bugReportForm = this.fb.group({
@@ -351,6 +352,11 @@ export class ReportBugComponent implements OnInit {
   selectBrowser() {
     this.draganddropSelected = false;
     this.browserSelected = true;
+  }
+
+  routeToFeedbackList() {
+    this.closePopup();
+    this.router.navigate(['/feedback-list'])
   }
 
   closePopup() {
