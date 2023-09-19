@@ -35,6 +35,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   emailData: any;
   product_url: any;
   email: any;
+  userId: any;
   showLimitReachedPopup: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router,
@@ -62,6 +63,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
+      this.userId = JSON.parse(currentUser).user_id;
     }
   }
 
@@ -87,7 +89,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     if (localStorage.getItem('record_id')) {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
-      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
 
     }

@@ -31,11 +31,13 @@ export class TemplateBuilderComponent implements OnInit {
   product: any;
   currentUser?: User;
   environment: any;
+  userId: any;
 
 
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
     this.email = this.currentUser?.email
+    this.userId = this.currentUser?.user_id;
     this.environment = environment.name;
   }
 
@@ -56,7 +58,7 @@ export class TemplateBuilderComponent implements OnInit {
 
   }
   makeTrustedUrl(): void {
-    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true';
+    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId;
     setTimeout(() => {
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);;
       this.loadIframeUrl();
@@ -114,7 +116,7 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   loadDesignStudio() {
-    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true';
+    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId;
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
