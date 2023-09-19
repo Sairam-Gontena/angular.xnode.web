@@ -45,6 +45,8 @@ export class ReportBugComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   email: any;
   productId: any;
+  priorityResponse: any;
+  bugSeverityData: any;
 
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
@@ -92,6 +94,7 @@ export class ReportBugComponent implements OnInit {
   ngOnInit(): void {
     this.convertBase64ToFile();
     this.prepareFormData();
+    this.prioritiesData();
     this.screenshotName = this.getMeComponent();
   }
 
@@ -101,7 +104,19 @@ export class ReportBugComponent implements OnInit {
       this.uploadedFile = file;
     });
   }
-
+  prioritiesData() {
+    const body = {
+      "lookupType": "BUG_SEVERITY"
+    }
+    this.commonApi.get('lookup-code', body).then((res: any) => {
+      this.priorityResponse = res.data;
+      this.bugSeverityData = this.priorityResponse.filter((item: any) => item.lookupType === 'BUG_SEVERITY');
+      this.priorities = this.bugSeverityData.map((item: any) => ({
+        lookupCode: item.lookupCode,
+        lookupText: item.lookupText,
+      }));
+    });
+  }
   prepareFormData(): void {
     let meta_data = localStorage.getItem('meta_data')
     if (meta_data) {
@@ -111,11 +126,6 @@ export class ReportBugComponent implements OnInit {
         this.bugReportForm.patchValue({ 'product': JSON.parse(product).id });
       }
     }
-    this.priorities = [
-      { name: 'Low', code: 'Low' },
-      { name: 'Medium', code: 'Medium' },
-      { name: 'High', code: 'High' }
-    ];
     this.bugReportForm.patchValue({ 'section': this.getMeComponent() });
   }
 
