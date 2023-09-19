@@ -174,12 +174,17 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
+    let user = localStorage.getItem('currentUser');
+    let id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
+      if (user) {
+        id = JSON.parse(user).user_id;
+      }
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
-        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent();
+        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id;
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
       }
