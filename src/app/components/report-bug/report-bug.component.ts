@@ -101,7 +101,6 @@ export class ReportBugComponent implements OnInit {
     const base64Data = this.screenshot.split(',')[1];
     this.images.push(this.screenshot)
     this.fileService.base64ToFile(base64Data, this.getMeComponent()).subscribe((file) => {
-      // this.uploadedFile = file;
       this.uploadedFile.push(file);
     });
   }
@@ -238,7 +237,6 @@ export class ReportBugComponent implements OnInit {
     const headers = {
       'Content-Type': 'application/json',
     };
-    console.log('final file', this.uploadedFile)
     this.uploadedFile.forEach((file: any) => {
       const formData = new FormData();
       formData.append('file', file);
@@ -390,10 +388,8 @@ export class ReportBugComponent implements OnInit {
   }
 
   private readFileContent(file: File, fileName: string) {
-    // this.screenshotName = fileName;
     this.screenshotName.push(fileName);
     const reader = new FileReader();
-    // this.uploadedFile = file;
     this.uploadedFile.push(file)
     reader.readAsDataURL(file);
     reader.onload = (e) => {
