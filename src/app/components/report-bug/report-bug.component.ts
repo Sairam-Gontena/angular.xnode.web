@@ -5,8 +5,8 @@ import { User, UserUtil } from 'src/app/utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
-import * as _ from "lodash";
 import { FileService } from 'src/app/file.service';
+import * as _ from "lodash";
 
 @Component({
   selector: 'xnode-report-bug',
@@ -17,12 +17,12 @@ import { FileService } from 'src/app/file.service';
 export class ReportBugComponent implements OnInit {
   @ViewChild('fileInput') fileInput?: ElementRef;
   @Input() visible = false;
-  @Input() screenshot: any; //  @Input() screenshot: any[] = []; arun
+  @Input() screenshot: any;
   @Output() dataActionEvent = new EventEmitter<any>();
   @Output() backEvent = new EventEmitter<boolean>();
   @Input() thanksDialog = false;
   @Input() templates: any[] = [];
-  uploadedFile: any;
+  uploadedFile: any = [];
   public getScreenWidth: any;
   public dialogWidth: string = '40vw';
   modalPosition: any;
@@ -43,8 +43,7 @@ export class ReportBugComponent implements OnInit {
   imageUrl: any;
   images: any = [];
   uploadedFileData: any;
-  screenshotName = 'Image'; // screenshotName: any[] = ['Image'];  arun
-
+  screenshotName: any[] = ['Image'] //= 'Image';
   @HostListener('window:resize', ['$event'])
   email: any;
   productId: any;
@@ -95,13 +94,15 @@ export class ReportBugComponent implements OnInit {
   ngOnInit(): void {
     this.convertBase64ToFile();
     this.prepareFormData();
-    this.screenshotName = this.getMeComponent();
+    // this.screenshotName.push(this.getMeComponent());
   }
 
   convertBase64ToFile(): void {
     const base64Data = this.screenshot.split(',')[1];
+    this.images.push(this.screenshot)
     this.fileService.base64ToFile(base64Data, this.getMeComponent()).subscribe((file) => {
-      this.uploadedFile = file;
+      // this.uploadedFile = file;
+      this.uploadedFile.push(file);
     });
   }
 
@@ -221,7 +222,7 @@ export class ReportBugComponent implements OnInit {
   }
 
   onDeleteImage(i: any) {
-    _.pullAt(this.screenshot, i);
+    _.pullAt(this.uploadedFile, i);
     _.pullAt(this.screenshotName, i);
     _.pullAt(this.images, i);
   }
@@ -229,49 +230,50 @@ export class ReportBugComponent implements OnInit {
   onFileDropped($event?: any) {
     this.utils.loadSpinner(true);
     if (!$event) {
-      console.log('no eveent')
       $event = this.screenshot;
     }
-    console.log(this.screenshot)
-    console.log($event)
-    const formData = new FormData();
-    formData.append('file', new Blob([$event])); // formData.append('file', this.uploadedFile);
-    formData.append('containerName', 'user-feedback');
+    // const formData = new FormData();
+    // formData.append('file', this.uploadedFile);
+    // formData.append('containerName', 'user-feedback');
     const headers = {
       'Content-Type': 'application/json',
     };
-    console.log('formData', formData)
-    console.log('blob event', new Blob([$event]))
-    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
-      if (res) {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': res?.request?.responseURL,
-          'payload': 'file'
+    console.log('final file', this.uploadedFile)
+    this.uploadedFile.forEach((file: any) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('containerName', 'user-feedback');
+      this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
+        if (res) {
+          let user_audit_body = {
+            'method': 'POST',
+            'url': res?.request?.responseURL,
+            'payload': 'file'
+          }
+          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.uploadedFileData = res.data;
+          this.sendBugReport();
+        } else {
+          let user_audit_body = {
+            'method': 'POST',
+            'url': res?.request?.responseURL,
+            'payload': formData
+          }
+          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+          this.utils.loadSpinner(false);
         }
-        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-        this.uploadedFileData = res.data;
-        this.sendBugReport();
-      } else {
+      }).catch((err: any) => {
         let user_audit_body = {
           'method': 'POST',
-          'url': res?.request?.responseURL,
+          'url': err?.request?.responseURL,
           'payload': formData
         }
         this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
         this.utils.loadSpinner(false);
-      }
-    }).catch((err: any) => {
-      let user_audit_body = {
-        'method': 'POST',
-        'url': err?.request?.responseURL,
-        'payload': formData
-      }
-      this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-      this.utils.loadSpinner(false);
-    })
+      })
+    });
   }
 
   fileBrowseHandler(files: any) {
@@ -387,19 +389,23 @@ export class ReportBugComponent implements OnInit {
     }
   }
 
-  private readFileContent(file: any, fileName: any) {
-    this.screenshotName = fileName;
-    // this.screenshotName = _.uniq(_.concat(this.screenshotName, fileName)) arun
+  private readFileContent(file: File, fileName: string) {
+    // this.screenshotName = fileName;
+    this.screenshotName.push(fileName);
     const reader = new FileReader();
-    reader.onload = (e) => { //arun
-      if (e?.target) {
-        this.images.push(e?.target.result);
-        // this.screenshot = e?.target.result;  //here push
-      }
-      this.screenshot = _.uniq(_.concat(this.screenshot, this.images))
-    }
-
+    // this.uploadedFile = file;
+    this.uploadedFile.push(file)
     reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      if (e?.target) {
+        this.screenshot = e?.target.result;
+        this.images.push(e?.target?.result)
+      }
+      this.uploadedFile = _.uniq(this.uploadedFile)
+      this.images = _.uniq(this.images)
+      this.screenshotName = _.uniq(this.screenshotName)
+    };
+    reader.readAsArrayBuffer(file);
   }
 
   onDragOver(event: Event) {
@@ -430,13 +436,8 @@ export class ReportBugComponent implements OnInit {
     }
   }
 
-  private handleFiles(files: any) {
-    // this.readFileContent(files[0], files[0].name);
-    Object.values(files).forEach((value) => {
-      if (value instanceof File) {
-        this.readFileContent(value, value.name);
-      }
-    });
+  private handleFiles(files: FileList) {
+    this.readFileContent(files[0], files[0].name);
   }
 
 

@@ -160,8 +160,7 @@ export class AppHeaderComponent implements OnInit {
       .getImage(document.body, true)
       .pipe(
         tap((img) => {
-          // this.screenshot = img;
-          this.screenshot.push(img)
+          this.screenshot = img;
           this.utilsService.showProductStatusPopup(false);
           this.selectedPopup = 'customer-feedback';
           this.utilsService.loadSpinner(false);
