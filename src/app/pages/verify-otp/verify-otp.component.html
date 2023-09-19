@@ -1,57 +1,46 @@
-<div class="grid m-0 h-full bg-color">
-    <div class="bg-image bg-no-repeat w-12 h-12">
-        <div class="">
-            <div class="flex justify-content-end m-8">
-                <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="">
-            </div>
-            <div class="flex justify-content-center mt-8">
-                <p-card [style]=" { width: '780px' ,height: 'auto' }">
-                    <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-5">
-                        <form (ngSubmit)="verifyAccount()">
-                            <div class="flex text-white mb-3">
-                                <p class="m-0 pointer flex" (click)="onClickLogout()"><span>
-                                        <i class="pi pi-arrow-left mr-2 pointer" style="font-size: 1.5rem"></i>
-                                    </span> Logout</p>
-                            </div>
-                            <div class="heading-color text-6xl font-bold ml-2">Verify your identity</div>
-                            <div class="font-semibold text-500 text-lg ml-2">
-                                For additional security, an email with a required verification
-                                code has been sent to {{userEmail}}
-                            </div>
-                            <div class="flex justify-content-center mt-5">
-                                <ng-otp-input (onInputChange)="onOtpChange($event)"
-                                    [config]="{length:6,allowNumbersOnly: true, placeholder:'-'}"
-                                    #ngOtpInput></ng-otp-input>
-                            </div>
-                            <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-6">
-                                <p-button label="Verify Account" class="flex justify-content-center "
-                                    styleClass="p-button-rounded  font-medium text-lg"
-                                    (click)="verifyAccount()"></p-button>
-                                <fieldset class="submit-fieldset">
-                                    <button type="submit" style="display: none;"></button>
-                                </fieldset>
-                            </div>
-                            <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                                <div class="text-lg font-medium flex justify-content-center heading-color">Resend
-                                    verification code in <a class="no-underline ml-2">{{ resendTimer }}s</a> </div>
-                            </div>
-                            <div *ngIf="resendTimer === 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                                <a class="no-underline"
-                                    class="text-lg font-medium flex justify-content-center no-underline pointer"
-                                    (click)="resendVerification()">Resend Code</a>
-                            </div>
-                            <div
-                                class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center terms-conditions ">
-                                <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1"
-                                    target="_blank">Terms of service </a><span style="color:#fff">and</span><a
-                                    href="https://xnode.ai/privacy-policy/" target="_blank"
-                                    class="no-underline ml-1">privacy policy</a>
-                            </div>
-                        </form>
-                    </div>
-                </p-card>
-            </div>
-        </div>
+<div class="bg-image bg-no-repeat h-full">
+    <div class="logo">
+        <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="h-16">
     </div>
-
+    <div class="login-div">
+        <p-card styleClass="login-card">
+            <div class="sm:col-12 md:col-12 lg:col-12 xl:col-12 p-0">
+                <div class="m-0 flex login-back"><span class="pointer" (click)="onClickLogout()">
+                        <i class="pi pi-arrow-left mr-2"></i>Logout
+                    </span> </div>
+                <div class="login-title font-bold mt-2">Verify your identity</div>
+                <div class="mt-2 mb-4 text-500 forgot-content">
+                    For additional security, an email with a required verification
+                    code has been sent to {{userEmail}}
+                </div>
+                <form (ngSubmit)="verifyAccount()">
+                    <div class="flex justify-content-center mt-5">
+                        <ng-otp-input (onInputChange)="onOtpChange($event)"
+                            [config]="{length:6,allowNumbersOnly: true, placeholder:'-'}" #ngOtpInput></ng-otp-input>
+                    </div>
+                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-5">
+                        <p-button label="Verify Account" class="flex justify-content-center " type="submit"
+                            styleClass="p-button-rounded p-button font-medium text-lg"></p-button>
+                    </div>
+                    <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                        <div class="font-medium flex justify-content-center heading-color resend-text">Resend
+                            verification code in <a class="no-underline ml-1">{{ resendTimer }}s</a> </div>
+                    </div>
+                    <div *ngIf="resendTimer === 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
+                        <a class="no-underline"
+                            class="text-lg font-medium flex justify-content-center no-underline pointer"
+                            (click)="resendVerification()">Resend Code</a>
+                    </div>
+                </form>
+            </div>
+            <div
+                class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4 flex align-items-center justify-content-center">
+                <p class="terms-conditions mb-0">
+                    <a href="https://xnode.ai/terms-and-conditions/" class="no-underline mr-1 terms"
+                        target="_blank">Terms of service </a>and<a href="https://xnode.ai/privacy-policy/"
+                        target="_blank" class="no-underline ml-2 policy">privacy policy</a>
+                </p>
+            </div>
+        </p-card>
+    </div>
 </div>

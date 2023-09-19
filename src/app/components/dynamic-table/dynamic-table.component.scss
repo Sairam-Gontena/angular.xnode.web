@@ -149,6 +149,10 @@
   border-width: 0px;
 }
 
+:host ::ng-deep .p-inputtext:enabled:focus {
+  box-shadow: none;
+}
+
 :host ::ng-deep.p-inputtext:focus-visible {
   border-color: green !important;
   border-width: 0px !important;
