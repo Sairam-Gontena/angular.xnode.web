@@ -1,11 +1,100 @@
-:host ::ng-deep .search .p-inputtext {
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #4F4E55;
-    border: 0;
-    width: 670px;
-    color: #ffffff;
+@media (max-width: 767px) {
+    :host ::ng-deep .p-button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    :host ::ng-deep .p-tabview {
+        width: 100% !important;
+    }
+
+    :host ::ng-deep .p-button.p-button-secondary {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    :host ::ng-deep .p-inputtext {
+        background-color: #4F4E55;
+        width: 95%;
+        border-width: 0;
+        border-radius: 50px;
+        height: 40px;
+        margin-left: 5px;
+    }
+
+    .txt-heading {
+        font-size: 36px;
+        margin-top: 20px;
+        font-family: 'Inter';
+        font-weight: 500;
+        line-height: 43.57px;
+    }
+
+    .body-container {
+        padding-left: 20px;
+    }
+}
+
+
+/* Tablets (768px to 991px width) */
+@media (min-width: 768px) and (max-width: 991px) {
+    :host ::ng-deep .p-button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    :host ::ng-deep .p-button.p-button-secondary {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    :host ::ng-deep .p-inputtext {
+        background-color: #4F4E55;
+        width: 60%;
+        border-width: 0;
+        border-radius: 50px;
+        height: 40px;
+        margin-left: 5px
+    }
+
+    .txt-heading {
+        font-size: 48px;
+    }
+
+    .body-container {
+        padding-left: 40px;
+        padding-top: 40px;
+    }
+}
+
+@media (min-width: 992px) {
+    :host ::ng-deep .p-button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    :host ::ng-deep .p-button.p-button-secondary {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    :host ::ng-deep .p-inputtext {
+        background-color: #4F4E55;
+        width: 30%;
+        border-width: 0;
+        border-radius: 50px;
+        height: 40px;
+        margin-left: 5px
+    }
+
+    .txt-heading {
+        font-size: 36px;
+    }
+
+    .body-container {
+        padding-left: 40px;
+        padding-top: 40px;
+    }
 }
 
 // :host ::ng-deep .p-inputtext:enabled:focus {
@@ -149,8 +238,7 @@
 
 @media screen and (max-width: 600px) {
     .search .p-inputtext {
-        width: 260px;
-
+        width: 95%;
     }
 }
 
