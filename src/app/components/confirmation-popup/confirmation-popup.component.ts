@@ -69,7 +69,7 @@ export class ConfirmationPopupComponent implements OnInit {
     };
     this.authApiService.patchAuth(body, url)
       .then((response: any) => {
-        if (response?.status === 200) {
+        if (response?.status === 200 && !response?.data?.detail) {
           if (response?.data) {
             this.updateProductTier();
           } else {
