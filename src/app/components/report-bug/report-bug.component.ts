@@ -106,11 +106,7 @@ export class ReportBugComponent implements OnInit {
   }
   prioritiesData() {
     this.commonApi.get('lookup-code?lookupType=BUG_SEVERITY').then((res: any) => {
-      this.priorityResponse = res.data;
-      this.priorities = this.priorityResponse.map((item: any) => ({
-        lookupCode: item.lookupCode,
-        lookupText: item.lookupText,
-      }));
+      this.priorities = res.data;
     });
   }
   prepareFormData(): void {
