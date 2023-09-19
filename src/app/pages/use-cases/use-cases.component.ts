@@ -3,7 +3,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
-
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-use-cases',
   templateUrl: './use-cases.component.html',
@@ -12,6 +12,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class UseCasesComponent implements OnInit {
   useCases: any = [];
+  email: any;
   id: String = '';
   currentUser?: User;
   loading: boolean = true;
@@ -19,8 +20,9 @@ export class UseCasesComponent implements OnInit {
   product: any;
   product_id: any;
 
-  constructor(private apiService: ApiService, private utils: UtilsService) {
+  constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.email = this.currentUser?.email;
   }
 
   ngOnInit(): void {
@@ -46,15 +48,30 @@ export class UseCasesComponent implements OnInit {
     this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
         } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.showProductStatusPopup(true);
         }
         this.utils.loadSpinner(false);
       })
       .catch(error => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
       });

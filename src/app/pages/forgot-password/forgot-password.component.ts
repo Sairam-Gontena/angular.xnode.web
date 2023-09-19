@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -18,7 +18,7 @@ export class ForgotPasswordComponent implements OnInit {
   email: any;
 
   constructor(private formBuilder: FormBuilder, private router: Router, private authApiService: AuthApiService,
-    private utilsService: UtilsService, private route: ActivatedRoute) {
+    private utilsService: UtilsService, private route: ActivatedRoute, private auditUtil: AuditutilsService) {
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
