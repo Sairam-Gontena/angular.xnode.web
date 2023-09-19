@@ -56,12 +56,15 @@
                     <p class="font-light text-base">
                         {{selectedListItem.feedbackText}}
                     </p>
-                    <div *ngFor="let file of selectedListItem?.userFiles">
-                        <div class="flex align-items-center" *ngIf="file?.filePath">
-                            <img src="./assets/attachment.svg" alt="att" class="mr-2">
-                            <p class="m-0">1 Attachment</p>
+                    <div class="grid">
+                        <div class="sm:col-4 md:col-4 lg:col-4 xl:col-4"
+                            *ngFor="let file of selectedListItem?.userFiles">
+                            <div class="flex align-items-center" *ngIf="file?.filePath">
+                                <img src="./assets/attachment.svg" alt="att" class="mr-2">
+                                <p class="m-0">{{file?.fileName}}</p>
+                            </div>
+                            <img [src]="file.filePath" alt="att img" width="140">
                         </div>
-                        <img [src]="file.filePath" alt="att img" width="140">
                     </div>
                     <div class="flex justify-content-between flex-wrap align-items-center mt-4">
                         <div class="flex align-items-center">

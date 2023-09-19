@@ -106,6 +106,7 @@ export class FeedbackListComponent {
     this.message = '';
     this.selectedIndex = index;
     this.conversationSourceId = this.selectedListItem?.id
+    // console.log(this.selectedListItem)
     this.getMeConversations();
   }
 
