@@ -24,9 +24,7 @@ const routes: Routes = [
   {
     path: 'reset-password',
     loadChildren: () =>
-      import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule),
-    canActivate: [authGuard]
-
+      import('./pages/reset-password/resetpassword.module').then((m) => m.ResetPasswordModule)
   },
   {
     path: 'verify-otp/:email',
