@@ -113,6 +113,7 @@ export class AppComponent implements OnInit {
 
   loadIframeUrl(): void {
     window.addEventListener('message', (event) => {
+      console.log(event)
       if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
         return;
       }
