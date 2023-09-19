@@ -47,15 +47,18 @@ export class ReportBugComponent implements OnInit {
   productId: any;
   priorityResponse: any;
   bugSeverityData: any;
+  dialogHeight: any;
 
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
-      this.modalPosition = 'bottom';
-      this.dialogWidth = '100vw';
+      this.modalPosition = 'center';
+      this.dialogWidth = '85vw';
+      this.dialogHeight = '90vh';
     } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
       this.modalPosition = 'center'
       this.dialogWidth = '75vw';
+      this.dialogHeight = '80vh';
     } else if (this.getScreenWidth > 980) {
       this.modalPosition = 'center'
       this.dialogWidth = '40vw';

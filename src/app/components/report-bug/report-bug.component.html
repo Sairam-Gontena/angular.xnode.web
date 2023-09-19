@@ -1,5 +1,6 @@
 <p-dialog header="Report a bug" class="feedback" [(visible)]="visible" [modal]="true" [draggable]="false"
-    [resizable]="false" [style]="{ width: dialogWidth }" [position]="modalPosition" (onHide)="closePopup()">
+    [resizable]="false" [style]="{ width: dialogWidth , height: dialogHeight}" [position]="modalPosition"
+    (onHide)="closePopup()">
     <ng-template pTemplate="header" class="p-2">
         <div class="flex align-items-center">
             <i class="pi pi-angle-left mr-3 pointer" (click)="utils.showFeedbackPopupByType('customer-feedback')"></i>

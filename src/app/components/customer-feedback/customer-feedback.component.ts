@@ -20,8 +20,8 @@ export class CustomerFeedbackComponent implements OnInit {
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
-      this.modalPosition = 'bottom';
-      this.dialogWidth = '100vw';
+      this.modalPosition = 'center';
+      this.dialogWidth = '80vw';
     } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
       this.modalPosition = 'center'
       this.dialogWidth = '75vw';
