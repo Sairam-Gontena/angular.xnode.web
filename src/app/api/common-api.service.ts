@@ -12,7 +12,7 @@ export class CommonApiService {
     post(url: string, body: unknown, headers: any) {
         return axios.post(this.endPoint + url, body, { headers })
     }
-    get(url: string, body: unknown) {
+    get(url: string) {
         return axios.get(this.endPoint + url)
     }
 }
