@@ -1,5 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-customer-feedback',
@@ -32,7 +33,8 @@ export class CustomerFeedbackComponent implements OnInit {
 
   generalFeedbackDialog: boolean = false;
 
-  constructor(public utils: UtilsService) {
+  constructor(public utils: UtilsService,
+    public router: Router) {
     this.onWindowResize();
   }
 
@@ -41,6 +43,10 @@ export class CustomerFeedbackComponent implements OnInit {
   }
 
   closePopup() {
+    this.utils.showFeedbackPopupByType('');
+  }
+  onClickViewExistingFeedback(): void {
+    this.router.navigate(['/feedback-list']);
     this.utils.showFeedbackPopupByType('');
   }
 }

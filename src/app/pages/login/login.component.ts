@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
 
   get login() { return this.loginForm.controls; }
   forgotPassword() {
+    this.authApiService.isResetPasswordInproggress(true);
     this.router.navigate(['/forgot-password', this.loginForm.value.email]);
   }
   onClickLogin() {
@@ -46,9 +47,9 @@ export class LoginComponent implements OnInit {
     this.loginBtn = true;
     this.authApiService.login(body, "auth/prospect/login").then((response: any) => {
       if (response?.status === 200 && !response?.data?.detail) {
-        this.utilsService.loadLoginUser(body);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response.data?.Message });
         this.utilsService.loadSpinner(false);
+        this.authApiService.isOtpVerifiedInprogress(true);
         this.loginBtn = false;
         this.router.navigate(['/verify-otp', body.email]);
       } else {
