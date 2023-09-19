@@ -27,6 +27,9 @@ export class UtilsService {
   private limitReachedPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public handleLimitReachedPopup: Observable<boolean> = this.limitReachedPopup.asObservable();
 
+  private reload: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeUpdatedList: Observable<boolean> = this.reload.asObservable();
+
 
   constructor() { }
 
@@ -60,6 +63,9 @@ export class UtilsService {
 
   showLimitReachedPopup(event: any): void {
     this.limitReachedPopup.next(event);
+  }
+  reloadList(event: any): void {
+    this.reload.next(event);
   }
 
 }
