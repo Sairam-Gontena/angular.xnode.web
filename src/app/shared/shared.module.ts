@@ -26,6 +26,7 @@ import { RatingModule } from 'primeng/rating';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     AvatarModule,
     AvatarGroupModule,
     TabViewModule,
-    InputTextareaModule
+    InputTextareaModule,
+    SidebarModule
   ],
   exports: [
     FormsModule,
@@ -83,7 +85,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     RatingModule,
     BreadcrumbModule,
     TabViewModule,
-    InputTextareaModule
+    InputTextareaModule,
+    SidebarModule
   ]
 })
 export class SharedModule { }

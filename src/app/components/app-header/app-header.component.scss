@@ -31,10 +31,6 @@
     padding: 0;
 }
 
-// :host ::ng-deep.p-button:enabled:hover {
-//     border: none;
-// }
-
 :host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
     top: 23px !important;
     left: unset !important;
@@ -67,13 +63,9 @@ a:hover {
 
 .small-badge .p-badge {
     font-size: 10px;
-    /* Adjust the font size as per your requirement */
     width: 16px;
-    /* Adjust the width of the badge */
     height: 16px;
-    /* Adjust the height of the badge */
     line-height: 16px;
-    /* Center the content vertically in the badge */
 }
 
 .container {
@@ -142,4 +134,30 @@ textarea {
 
 .error-message {
     color: red;
+}
+
+.mobile {
+    display: none;
+}
+
+.h-16 {
+    height: 16px;
+}
+
+@media (max-width: 768px) {
+    .desktop {
+        display: none !important;
+    }
+
+    .mobile {
+        display: block !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {}
+
+@media (min-width: 1024px) {
+    .desktop {
+        display: none;
+    }
 }

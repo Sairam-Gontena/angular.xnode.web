@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
   currentPath = window.location.hash;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  sidebarVisible = true;
 
   constructor(
     private domSanitizer: DomSanitizer,

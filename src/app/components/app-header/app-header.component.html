@@ -1,4 +1,4 @@
-<div class="app-header-wrapper flex align-content-center flex-wrap">
+<div class="app-header-wrapper flex align-content-center flex-wrap desktop">
     <div class="w-6 flex gap-5">
         <div class="flex flex-row">
             <img src="./assets/logo-x.svg" alt="x-logo">
@@ -23,17 +23,31 @@
                 styleClass="p-button-raised logout-split-btn"></p-splitButton>
         </div>
     </div>
-    <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
-        [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>
-    <xnode-report-bug [screenshot]="screenshot" *ngIf="selectedPopup==='report-bug'"
-        [visible]="selectedPopup==='report-bug'"></xnode-report-bug>
-    <xnode-general-feedback [visible]="selectedPopup==='general-feedback'" *ngIf="selectedPopup==='general-feedback'"
-        [screenshot]="screenshot"></xnode-general-feedback>
-    <xnode-thank-you *ngIf="selectedPopup==='thankyou'" [visible]="selectedPopup==='thankyou'"></xnode-thank-you>
-    <xnode-view-existing-feedback *ngIf="selectedPopup==='view-existing-feedbacks'"
-        [visible]="selectedPopup==='view-existing-feedbacks'"></xnode-view-existing-feedback>
 </div>
+<div class="w-full mobile p-4">
+    <div class="flex justify-content-between flex-wrap">
+        <i class="pi pi-bars text-white"></i>
+        <img src=" ./assets/xnode-logo.svg" alt="x-logo" class="h-16">
+
+        <div class="flex align-items-center justify-content-center">
+            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-3 pointer text-white"
+                (click)="overlayToggle($event, op)"></i>
+            <img src="./assets/dp.svg" alt="dp" class="mr-2">
+
+        </div>
+    </div>
+</div>
+
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
+<xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
+    [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>
+<xnode-report-bug [screenshot]="screenshot" *ngIf="selectedPopup==='report-bug'"
+    [visible]="selectedPopup==='report-bug'"></xnode-report-bug>
+<xnode-general-feedback [visible]="selectedPopup==='general-feedback'" *ngIf="selectedPopup==='general-feedback'"
+    [screenshot]="screenshot"></xnode-general-feedback>
+<xnode-thank-you *ngIf="selectedPopup==='thankyou'" [visible]="selectedPopup==='thankyou'"></xnode-thank-you>
+<xnode-view-existing-feedback *ngIf="selectedPopup==='view-existing-feedbacks'"
+    [visible]="selectedPopup==='view-existing-feedbacks'"></xnode-view-existing-feedback>
