@@ -63,9 +63,7 @@
                     <div class="image-container border-1">
                         <img [src]="images[i]" width="100%" class="img">
                         <div class="img-footer flex justify-content-between align-items-center px-3">
-                            <div class="text-base"> {{ screenshotName[i].length > 12 ? screenshotName[i].substring(0,
-                                12) + '...' :
-                                screenshotName[i] }}</div>
+                            <div class="text-base  ellipsis-text"> {{ screenshotName[i] }}</div>
                             <i class="pi pi-trash pointer" (click)="onDeleteImage(i)"></i>
                         </div>
                     </div>

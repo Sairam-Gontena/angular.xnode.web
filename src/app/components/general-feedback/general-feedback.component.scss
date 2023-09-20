@@ -252,3 +252,10 @@ textarea:enabled:hover {
 .feedback-history {
     color: #02ADEE;
 }
+
+.ellipsis-text {
+    white-space: nowrap;
+    width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

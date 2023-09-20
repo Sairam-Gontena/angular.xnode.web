@@ -173,7 +173,6 @@ export class GeneralFeedbackComponent implements OnInit {
   files: any[] = [];
 
   sendGeneralFeedbackReport(): void {
-    console.log(this.feedbackReportFiles)
     const body = {
       "userId": this.currentUser?.user_id,
       "productId": this.generalFeedbackForm.value.product,
