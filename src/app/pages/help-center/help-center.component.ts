@@ -149,7 +149,11 @@ export class HelpCenterComponent implements OnInit {
         }
         subelement.subobjects.map((sublastelement: any, index: any) => {
           if (sublastelement.title.toLowerCase().includes(keyword.toLowerCase()) == false && sublastelement.description.toLowerCase().includes(keyword.toLowerCase()) == false) {
-            _.pullAt(subelement.subobjects, index)
+            if (subelement.title.toLowerCase().includes(keyword.toLowerCase())) {
+              return
+            } else {
+              _.pullAt(subelement.subobjects, index)
+            }
           }
         })
       });
