@@ -150,8 +150,20 @@ textarea {
         color: #ffffff !important;
         font-weight: 600;
     }
+
+    .p-dialog-bottom .p-dialog {
+        margin: 0;
+    }
 }
 
 :host ::ng-deep.p-dropdown:not(.p-disabled):hover {
     border: 1px solid #2E2D36;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+    .p-dialog-bottom .p-dialog {
+        margin: 0;
+    }
 }

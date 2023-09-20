@@ -42,6 +42,7 @@ export class GeneralFeedbackComponent implements OnInit {
   uploadedFile: any;
   email: any;
   productId: any;
+  modalPosition: any;
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder,
@@ -70,20 +71,20 @@ export class GeneralFeedbackComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
-    if (this.getScreenWidth < 780) {
-      this.dialogWidth = '90vw';
-      this.dialogHeight = '90vh';
-    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
-      this.dialogWidth = '75vw';
+    if (this.getScreenWidth < 766) {
+      this.modalPosition = 'bottom';
+      this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 767 && this.getScreenWidth < 980) {
+      this.modalPosition = 'center'
+      this.dialogWidth = '84vw';
       this.dialogHeight = '80vh';
     } else if (this.getScreenWidth > 980) {
+      this.modalPosition = 'center'
       this.dialogWidth = '40vw';
     }
   }
-
   get feedback() {
     return this.generalFeedbackForm.controls;
   }

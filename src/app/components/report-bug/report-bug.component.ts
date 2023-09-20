@@ -23,7 +23,7 @@ export class ReportBugComponent implements OnInit {
   @Input() templates: any[] = [];
   uploadedFile: any;
   public getScreenWidth: any;
-  public dialogWidth: string = '40vw';
+  // public dialogWidth: string = '40vw';
   modalPosition: any;
   currentUser?: any;
   submitted: boolean = false;
@@ -48,17 +48,17 @@ export class ReportBugComponent implements OnInit {
   priorityResponse: any;
   bugSeverityData: any;
   dialogHeight: any;
+  dialogWidth: any;
 
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
-    if (this.getScreenWidth < 780) {
-      this.modalPosition = 'center';
-      this.dialogWidth = '85vw';
-      this.dialogHeight = '90vh';
-    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+    if (this.getScreenWidth < 767) {
+      this.modalPosition = 'bottom';
+      this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 767 && this.getScreenWidth < 980) {
       this.modalPosition = 'center'
-      this.dialogWidth = '75vw';
-      this.dialogHeight = '80vh';
+      this.dialogWidth = '84vw';
+      this.dialogHeight = '90vh';
     } else if (this.getScreenWidth > 980) {
       this.modalPosition = 'center'
       this.dialogWidth = '40vw';

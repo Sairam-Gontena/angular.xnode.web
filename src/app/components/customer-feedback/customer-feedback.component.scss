@@ -36,13 +36,21 @@
     border-top: 1px solid #4B4B4B;
 }
 
-@media (max-width: 640px) {
-    :host::ng-deep .p-dialog .p-dialog-header {
-        padding: 0px !important;
+:host::ng-deep.p-dialog-bottom .p-dialog {
+    margin: 0;
+}
+
+@media only screen and (max-width: 767px) {
+    .feedback.p-dialog.p-dialog-bottom {
+        margin: 0 !important;
     }
 
-    .customer-feedback-list,
-    .feedback-type {
-        padding: 5px !important;
-    }
+    // :host::ng-deep .p-dialog .p-dialog-header {
+    //     padding: 0px !important;
+    // }
+
+    // .customer-feedback-list,
+    // .feedback-type {
+    //     padding: 5px !important;
+    // }
 }
