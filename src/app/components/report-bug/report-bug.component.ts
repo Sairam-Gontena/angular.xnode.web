@@ -186,16 +186,25 @@ export class ReportBugComponent implements OnInit {
     //   })
     // });
 
-    for (const element of this.uploadedFileData) {
-      this.bugReportFiles.push({
-        'fileId': element?.id,
-        'userFileType': "bug-report"
-      })
-    }
-
-
-    console.log(this.uploadedFileData)
-    console.log(this.bugReportFiles)
+    // for (const element of this.uploadedFileData) {
+    //   this.bugReportFiles.push({
+    //     'fileId': element?.id,
+    //     'userFileType': "bug-report"
+    //   })
+    // }
+    // this.uploadedFileData.map((element: any) => {
+    //   this.bugReportFiles.push({
+    //     'fileId': element?.id,
+    //     'userFileType': "bug-report"
+    //   })
+    // })
+    const keysToKeep = ['id'];
+    this.bugReportFiles = _.map(this.uploadedFileData, (obj) => _.pick(obj, keysToKeep));
+    this.bugReportFiles = _.map(this.uploadedFileData, (obj) => _.assign({}, obj, { 'userFileType': "bug-report" }));
+    setTimeout(() => {
+      console.log(this.uploadedFileData)
+      console.log(this.bugReportFiles)
+    }, 500);
     const body = {
       "userId": this.currentUser?.user_id,
       "productId": this.bugReportForm.value.product,

@@ -172,12 +172,21 @@ export class GeneralFeedbackComponent implements OnInit {
 
   sendGeneralFeedbackReport(): void {
     console.log('uploaddata', this.uploadedFileData)
-    for (const element of this.uploadedFileData) {
-      this.feedbackReportFiles.push({
-        'fileId': element?.id,
-        'userFileType': "bug-report"
-      })
-    }
+    // for (const element of this.uploadedFileData) {
+    //   this.feedbackReportFiles.push({
+    //     'fileId': element?.id,
+    //     'userFileType': "bug-report"
+    //   })
+    // }
+    const keysToKeep = ['id'];
+    this.feedbackReportFiles = _.map(this.uploadedFileData, (obj) => _.pick(obj, keysToKeep));
+    this.feedbackReportFiles = _.map(this.uploadedFileData, (obj) => _.assign({}, obj, { 'userFileType': "bug-report" }));
+    // this.uploadedFileData.map((element: any) => {
+    //   this.feedbackReportFiles.push({
+    //     'fileId': element?.id,
+    //     'userFileType': "bug-report"
+    //   })
+    // })
     console.log(this.uploadedFileData)
     console.log(this.feedbackReportFiles)
     const body = {
