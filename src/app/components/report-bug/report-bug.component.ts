@@ -253,13 +253,13 @@ export class ReportBugComponent implements OnInit {
     if (!$event) {
       $event = this.screenshot;
     }
-    const headers = {
-      'Content-Type': 'application/json',
-    };
     this.uploadedFile.forEach((file: any, key: any) => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
+      const headers = {
+        'Content-Type': 'application/json',
+      };
       let lastIndex: boolean = false;
       key + 1 == this.uploadedFile.length ? lastIndex = true : lastIndex = false;
       if (lastIndex) console.log('key', this.uploadedFile[key + 1])

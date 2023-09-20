@@ -91,22 +91,28 @@
                     </div>
                 </div>
             </div>
-            <div class="field">
-                <label class="text-sm font-hover">Screenshot</label>
-                <div class="image-container border-1" *ngIf="screenshot !==''">
-                    <img [src]="screenshot" width="100%" class="img">
-                    <div class="img-footer flex justify-content-between align-items-center px-3">
-                        <div class="text-base">{{screenshotName}}</div>
-                        <i class="pi pi-trash pointer" (click)="onDeleteImage()"></i>
+            <label class="text-sm font-hover">Screenshot</label>
+
+            <div class="field grid">
+                <div class="sm:col-6 md:col-6 lg:col-6 xl:col-6" *ngFor="let img of uploadedFile;let i = index">
+                    <div class="image-container border-1">
+                        <!-- *ngIf="screenshot !==''"  [src]="screenshot" -->
+                        <img [src]="images[i]" width="100%" class="img">
+                        <div class="img-footer flex justify-content-between align-items-center px-3">
+                            <div class="text-base">{{screenshotName[i]}}</div>
+                            <i class="pi pi-trash pointer" (click)="onDeleteImage(i)"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="image-container border-1 flex align-items-center justify-content-center"
-                    *ngIf="screenshot ===''" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
-                    (drop)="onDrop($event)">
-                    <div (click)="onUploadIconClick()">
-                        <p>Upload or drag</p>
-                        <input type="file" (change)="onFileInput($event)" accept=".png, .jpeg" style="display: none;"
-                            id="file" #fileInput (change)="onFileSelected($event)">
+                <div class="sm:col-6 md:col-6 lg:col-6 xl:col-6">
+                    <div class="image-container border-1 flex align-items-center justify-content-center"
+                        (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+                        <!-- *ngIf="screenshot ===''" -->
+                        <div (click)="onUploadIconClick()">
+                            <p>Upload or drag</p>
+                            <input type="file" (change)="onFileInput($event)" accept=".png, .jpeg"
+                                style="display: none;" id="file" #fileInput (change)="onFileSelected($event)">
+                        </div>
                     </div>
                 </div>
             </div>
