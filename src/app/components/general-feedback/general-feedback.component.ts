@@ -6,6 +6,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { FileService } from 'src/app/file.service';
 import * as _ from "lodash";
+import { Router } from '@angular/router';
 @Component({
   selector: 'xnode-general-feedback',
   templateUrl: './general-feedback.component.html',
@@ -50,7 +51,8 @@ export class GeneralFeedbackComponent implements OnInit {
     private commonApi: CommonApiService,
     private userUtilsApi: UserUtilsService,
     private auditUtil: AuditutilsService,
-    private fileService: FileService) {
+    private fileService: FileService,
+    private router: Router) {
     this.onWindowResize();
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
@@ -171,23 +173,6 @@ export class GeneralFeedbackComponent implements OnInit {
   files: any[] = [];
 
   sendGeneralFeedbackReport(): void {
-    console.log('uploaddata', this.uploadedFileData)
-    // for (const element of this.uploadedFileData) {
-    //   this.feedbackReportFiles.push({
-    //     'fileId': element?.id,
-    //     'userFileType': "bug-report"
-    //   })
-    // }
-    const keysToKeep = ['id'];
-    this.feedbackReportFiles = _.map(this.uploadedFileData, (obj) => _.pick(obj, keysToKeep));
-    this.feedbackReportFiles = _.map(this.uploadedFileData, (obj) => _.assign({}, obj, { 'userFileType': "bug-report" }));
-    // this.uploadedFileData.map((element: any) => {
-    //   this.feedbackReportFiles.push({
-    //     'fileId': element?.id,
-    //     'userFileType': "bug-report"
-    //   })
-    // })
-    console.log(this.uploadedFileData)
     console.log(this.feedbackReportFiles)
     const body = {
       "userId": this.currentUser?.user_id,
@@ -198,41 +183,46 @@ export class GeneralFeedbackComponent implements OnInit {
       "feedbackStatusId": "Open",
       "userFiles": this.feedbackReportFiles
     }
-    // this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
-    //   if (!res?.data?.detail) {
-    //     let user_audit_body = {
-    //       'method': 'POST',
-    //       'url': res?.request?.responseURL,
-    //       'payload': body
-    //     }
-    //     this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-    //     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
-    //     this.utils.showFeedbackPopupByType('thankyou');
-    //     this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
-    //   } else {
-    //     let user_audit_body = {
-    //       'method': 'POST',
-    //       'url': res?.request?.responseURL,
-    //       'payload': body
-    //     }
-    //     this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-    //     this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
-    //     this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
-    //   }
-    //   this.utils.loadSpinner(false);
-    //   this.feedbackReportFiles = []
-    // }).catch(err => {
-    //   let user_audit_body = {
-    //     'method': 'POST',
-    //     'url': err?.request?.responseURL,
-    //     'payload': body
-    //   }
-    //   this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-    //   this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    //   this.utils.loadSpinner(false);
-    //   this.feedbackReportFiles = []
-    //   this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
-    // })
+    this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
+      if (!res?.data?.detail) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
+        this.utils.showFeedbackPopupByType('thankyou');
+        this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+        this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
+      }
+      this.utils.loadSpinner(false);
+      this.feedbackReportFiles = []
+    }).catch(err => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': err?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      this.utils.loadSpinner(false);
+      this.feedbackReportFiles = []
+      this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
+    })
+  }
+
+  routeToFeedbackList() {
+    this.closePopup();
+    this.router.navigate(['/feedback-list'])
   }
 
   onFileDropped($event?: any) {
@@ -261,7 +251,11 @@ export class GeneralFeedbackComponent implements OnInit {
   fileUploadCall(formData: any, headers: any, lastIndex: boolean) {
     this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
       if (res) {
-        this.uploadedFileData.push(res.data);
+        let data = {
+          "fileId": res.data.id,
+          "userFileType": "feedback-report"
+        }
+        this.feedbackReportFiles.push(data)
         if (lastIndex) {
           this.sendGeneralFeedbackReport();
         }
