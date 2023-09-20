@@ -9,6 +9,10 @@
     border-bottom: 1px solid #ccc;
 }
 
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
 :host::ng-deep .p-dropdown,
 :host::ng-deep .p-inputtext,
 :host::ng-deep .p-dialog .p-dialog-content,

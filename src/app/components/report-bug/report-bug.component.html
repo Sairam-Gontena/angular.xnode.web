@@ -15,7 +15,7 @@
                 <label class="flex justify-content-between flex-wrap">
                     <div class="text-sm font-normal">Product</div>
                     <a class="font-medium text-base no-underline pointer feedback-history"
-                        (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View bug
+                        (click)="routeToFeedbackList()">View bug
                         history <i class="pi pi-arrow-right"></i> </a>
                 </label>
                 <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
