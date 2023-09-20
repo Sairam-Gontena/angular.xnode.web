@@ -263,7 +263,7 @@ export class GeneralFeedbackComponent implements OnInit {
         let user_audit_body = {
           'method': 'POST',
           'url': res?.request?.responseURL,
-          'payload': formData
+          'payload': 'files'
         }
         this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
@@ -273,7 +273,7 @@ export class GeneralFeedbackComponent implements OnInit {
       let user_audit_body = {
         'method': 'POST',
         'url': err?.request?.responseURL,
-        'payload': formData
+        'payload': 'files'
       }
       this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
