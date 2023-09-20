@@ -61,7 +61,7 @@
                             *ngFor="let file of selectedListItem?.userFiles">
                             <div class="flex align-items-center" *ngIf="file?.filePath">
                                 <img src="./assets/attachment.svg" alt="att" class="mr-2">
-                                <p class="m-0">{{file?.fileName}}</p>
+                                <p class="text-sm m-0 ellipsis-text">{{file?.fileName}}</p>
                             </div>
                             <img [src]="file.filePath" alt="att img" width="140">
                         </div>
