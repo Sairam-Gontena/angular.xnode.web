@@ -15,7 +15,7 @@
                 <label class="flex justify-content-between flex-wrap">
                     <div class="text-sm font-normal">Product</div>
                     <a class="font-medium text-base no-underline pointer feedback-history"
-                        (click)="utils.showFeedbackPopupByType('view-existing-feedbacks')">View bug
+                        (click)="routeToFeedbackList()">View bug
                         history <i class="pi pi-arrow-right"></i> </a>
                 </label>
                 <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
@@ -39,8 +39,8 @@
             <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 -mt-2">
                 <label class="text-sm font-normal">Choose priority</label>
                 <p-dropdown formControlName="severityId" [options]="priorities" placeholder="Choose priority"
-                    [ngClass]="{ 'is-invalid': submitted && feedback['severityId'].errors }" optionLabel="name"
-                    optionValue="code" class="custom-dropdown"></p-dropdown>
+                    [ngClass]="{ 'is-invalid': submitted && feedback['severityId'].errors }" optionLabel="lookupText"
+                    optionValue="lookupCode" class="custom-dropdown"></p-dropdown>
                 <div *ngIf="submitted && feedback['severityId'].errors" class="invalid-feedback">
                     <div *ngIf="feedback['severityId'].errors?.['required']">
                         Choose priority is required</div>
