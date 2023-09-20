@@ -6,6 +6,7 @@ import { UtilsService } from '../services/utils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { FileService } from 'src/app/file.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-report-bug',
@@ -45,6 +46,8 @@ export class ReportBugComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   email: any;
   productId: any;
+  priorityResponse: any;
+  bugSeverityData: any;
 
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
@@ -62,7 +65,7 @@ export class ReportBugComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private userUtilsApi: UserUtilsService,
     public utils: UtilsService, private commonApi: CommonApiService, private auditUtil: AuditutilsService,
-    private fileService: FileService) {
+    private fileService: FileService, private router: Router) {
     this.currentUser = UserUtil.getCurrentUser();
     this.onWindowResize();
     this.bugReportForm = this.fb.group({
@@ -92,6 +95,7 @@ export class ReportBugComponent implements OnInit {
   ngOnInit(): void {
     this.convertBase64ToFile();
     this.prepareFormData();
+    this.prioritiesData();
     this.screenshotName = this.getMeComponent();
   }
 
@@ -101,7 +105,11 @@ export class ReportBugComponent implements OnInit {
       this.uploadedFile = file;
     });
   }
-
+  prioritiesData() {
+    this.commonApi.get('lookup-code?lookupType=BUG_SEVERITY').then((res: any) => {
+      this.priorities = res.data;
+    });
+  }
   prepareFormData(): void {
     let meta_data = localStorage.getItem('meta_data')
     if (meta_data) {
@@ -111,11 +119,6 @@ export class ReportBugComponent implements OnInit {
         this.bugReportForm.patchValue({ 'product': JSON.parse(product).id });
       }
     }
-    this.priorities = [
-      { name: 'Low', code: 'Low' },
-      { name: 'Medium', code: 'Medium' },
-      { name: 'High', code: 'High' }
-    ];
     this.bugReportForm.patchValue({ 'section': this.getMeComponent() });
   }
 
@@ -349,6 +352,11 @@ export class ReportBugComponent implements OnInit {
   selectBrowser() {
     this.draganddropSelected = false;
     this.browserSelected = true;
+  }
+
+  routeToFeedbackList() {
+    this.closePopup();
+    this.router.navigate(['/feedback-list'])
   }
 
   closePopup() {
