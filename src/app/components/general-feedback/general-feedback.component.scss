@@ -32,7 +32,6 @@
 
 .image-container {
     height: 180px;
-    width: 220px;
     border-radius: 8px;
     border-color: #4B4B4B;
 }
@@ -252,4 +251,11 @@ textarea:enabled:hover {
 
 .feedback-history {
     color: #02ADEE;
+}
+
+.ellipsis-text {
+    white-space: nowrap;
+    width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

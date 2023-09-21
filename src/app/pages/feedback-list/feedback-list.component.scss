@@ -124,3 +124,14 @@
 :host::ng-deep .p-inputtext {
     color: #dedede;
 }
+
+.ellipsis-text {
+    white-space: nowrap;
+    width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.att-image {
+    height: 110px;
+}
