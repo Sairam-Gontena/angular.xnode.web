@@ -31,6 +31,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.resetPasswordForm.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });

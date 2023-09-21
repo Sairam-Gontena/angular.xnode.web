@@ -30,11 +30,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   templates: any;
   selectedTemplate: any;
   url: any;
-  productData: any;
+  product: any;
   iframeSrc: any;
   emailData: any;
   product_url: any;
   email: any;
+  userId: any;
   showLimitReachedPopup: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router,
@@ -62,6 +63,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
+      this.userId = JSON.parse(currentUser).user_id;
     }
   }
 
@@ -72,6 +74,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     const metaData = localStorage.getItem('meta_data');
     const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+    }
     if (metaData) {
       this.templates = JSON.parse(metaData);
       if (product) {
@@ -85,9 +90,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       let JsonData = JSON.parse(this.emailData)
       this.emailData = JsonData?.email;
     }
+
     if (localStorage.getItem('record_id')) {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
-      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "";
+      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
 
     }
@@ -120,7 +126,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "", "_blank");
+      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + this.product?.has_insights, "_blank");
     } else {
       this.getMeTotalAppsPublishedCount();
     }

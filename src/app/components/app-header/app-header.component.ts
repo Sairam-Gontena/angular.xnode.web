@@ -43,7 +43,7 @@ export class AppHeaderComponent implements OnInit {
   product_url: string = "https://dev-navi.azurewebsites.net/";
   username: string = ''
   visible!: boolean;
-  screenshot: any;
+  screenshot: any = [];
   showDialog: boolean = false;
   thanksDialog: boolean = false;
   displayReportDialog: boolean = false;
