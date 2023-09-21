@@ -7,96 +7,104 @@
             <i class="pi pi-times pointer" (click)="onClickClose()"></i>
         </div>
     </div>
-    <div class="col-5 p-0 feedback-list">
-        <div class="report-list-height">
-            <div class="list-item pl-4 pr-4 pt-4 pr-4" *ngFor="let report of reportList;let i= index"
-                [ngClass]="{'active': selectedIndex === i}">
-                <div (click)="onSelectListItem(report,i)">
-                    <div class="flex justify-content-between flex-wrap">
-                        <b class="text-base">{{getMeTitle(report)}}</b>
-                    </div>
-                    <p class="text-sm font-normal m-0 pb-2">
-                        {{report.feedbackText}}
-                    </p>
-                    <div class="flex align-items-center">
-                        <div class="flex align-items-center pr-2">
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                                shape="circle" *ngIf="!report?.userName"></p-avatar>
-                            <p-avatar [label]="getMeUserAvatar(report)" styleClass="mr-2"
-                                [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"
-                                *ngIf="report?.userName"></p-avatar>
-                            <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
-                                {{currentUser?.last_name}}</p>
+    <div class="grid col-12" *ngIf="reportList?.length">
+        <div class="col-5 p-0 feedback-list">
+            <div class="report-list-height">
+                <div class="list-item pl-4 pr-4 pt-4 pr-4" *ngFor="let report of reportList;let i= index"
+                    [ngClass]="{'active': selectedIndex === i}">
+                    <div (click)="onSelectListItem(report,i)">
+                        <div class="flex justify-content-between flex-wrap">
+                            <b class="text-base">{{getMeTitle(report)}}</b>
                         </div>
-                        <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
-                            {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
-                        </div>
-                        <p class="m-0 text-sm font-normal pl-2">
-                            Status <span class="open">
-                                {{report?.feedbackStatusId}}
-                            </span>
+                        <p class="text-sm font-normal m-0 pb-2">
+                            {{report.feedbackText}}
                         </p>
+                        <div class="flex align-items-center">
+                            <div class="flex align-items-center pr-2">
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                    shape="circle" *ngIf="!report?.userName"></p-avatar>
+                                <p-avatar [label]="getMeUserAvatar(report)" styleClass="mr-2"
+                                    [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"
+                                    *ngIf="report?.userName"></p-avatar>
+                                <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
+                                    {{currentUser?.last_name}}</p>
+                            </div>
+                            <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
+                                {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
+                            </div>
+                            <p class="m-0 text-sm font-normal pl-2">
+                                Status <span class="open">
+                                    {{report?.feedbackStatusId}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7 feedback-detail" *ngIf="reportList?.length">
+            <div class="report-list-height">
+                <div class="grid m-0">
+                    <div class="col-12 pl-4 pr-4  border-bottom-1">
+                        <div class="flex justify-content-between flex-wrap">
+                            <p class="text-2xl font-medium m-0">{{getMeTitle(selectedListItem)}}
+                            </p>
+                            <div class="flex align-items-center">
+                                <p-chip [label]="selectedListItem?.feedbackStatusId" class="ml-3"></p-chip>
+                            </div>
+                        </div>
+
+                        <p class="font-light text-base">
+                            {{selectedListItem.feedbackText}}
+                        </p>
+                        <div *ngFor="let file of selectedListItem?.userFiles">
+                            <div class="flex align-items-center" *ngIf="file?.filePath">
+                                <img src="./assets/attachment.svg" alt="att" class="mr-2">
+                                <p class="m-0">1 Attachment</p>
+                            </div>
+                            <img [src]="file.filePath" alt="att img" width="140">
+                        </div>
+                        <div class="flex justify-content-between flex-wrap align-items-center mt-4">
+                            <div class="flex align-items-center">
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                    shape="circle"></p-avatar>
+                                <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
+                                    {{currentUser?.last_name}}<span class="text-sm font-normal border-left-1 ml-4 pl-4">
+                                        {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
+                                    </span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="selectedItemConversation?.length > 0">
+                    <div class="m-0 pt-2 pb-2 pl-4 pr-4" *ngFor="let conv of selectedItemConversation; let i=index;">
+                        <xnode-feedback-conversation [conversation]="conv" [index]="i"
+                            conversationSourceId="conversationSourceId"
+                            [conversationSourceType]="selectedArea"></xnode-feedback-conversation>
+                    </div>
+                </ng-container>
+                <div class="grid m-0 pl-4 pr-4 pt-2 pb-2"
+                    *ngIf="selectedItemConversation?.length === 0 || showMessageBox">
+                    <div class=" col-md-12">
+                        <div class="flex justify-content-between flex-wrap">
+                            <div class="flex align-items-center">
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                    shape="circle"></p-avatar>
+                                <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
+                                    {{currentUser?.last_name}}</p>
+                            </div>
+                            <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
+                                (click)="onClickSend()"></p-button>
+                        </div>
+                        <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"></textarea>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-7 feedback-detail" *ngIf="reportList?.length">
-        <div class="report-list-height">
-            <div class="grid m-0">
-                <div class="col-12 pl-4 pr-4  border-bottom-1">
-                    <div class="flex justify-content-between flex-wrap">
-                        <p class="text-2xl font-medium m-0">{{getMeTitle(selectedListItem)}}
-                        </p>
-                        <div class="flex align-items-center">
-                            <p-chip [label]="selectedListItem?.feedbackStatusId" class="ml-3"></p-chip>
-                        </div>
-                    </div>
-
-                    <p class="font-light text-base">
-                        {{selectedListItem.feedbackText}}
-                    </p>
-                    <div *ngFor="let file of selectedListItem?.userFiles">
-                        <div class="flex align-items-center" *ngIf="file?.filePath">
-                            <img src="./assets/attachment.svg" alt="att" class="mr-2">
-                            <p class="m-0">1 Attachment</p>
-                        </div>
-                        <img [src]="file.filePath" alt="att img" width="140">
-                    </div>
-                    <div class="flex justify-content-between flex-wrap align-items-center mt-4">
-                        <div class="flex align-items-center">
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                                shape="circle"></p-avatar>
-                            <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
-                                {{currentUser?.last_name}}<span class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                    {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
-                                </span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <ng-container *ngIf="selectedItemConversation?.length > 0">
-                <div class="m-0 pt-2 pb-2 pl-4 pr-4" *ngFor="let conv of selectedItemConversation; let i=index;">
-                    <xnode-feedback-conversation [conversation]="conv" [index]="i"
-                        conversationSourceId="conversationSourceId"
-                        [conversationSourceType]="selectedArea"></xnode-feedback-conversation>
-                </div>
-            </ng-container>
-            <div class="grid m-0 pl-4 pr-4 pt-2 pb-2" *ngIf="selectedItemConversation?.length === 0 || showMessageBox">
-                <div class=" col-md-12">
-                    <div class="flex justify-content-between flex-wrap">
-                        <div class="flex align-items-center">
-                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                                shape="circle"></p-avatar>
-                            <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
-                                {{currentUser?.last_name}}</p>
-                        </div>
-                        <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
-                            (click)="onClickSend()"></p-button>
-                    </div>
-                    <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"></textarea>
-                </div>
-            </div>
+    <div *ngIf="reportList?.length == 0" class="col-12 p-8 report-list-height">
+        <div class="flex justify-content-center flex-wrap">
+            <h3 class="flex align-items-center justify-content-center">No Feedback List </h3>
         </div>
     </div>
 </div>
