@@ -96,7 +96,8 @@
                             <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
                                 (click)="onClickSend()"></p-button>
                         </div>
-                        <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"></textarea>
+                        <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"
+                            (keyup.enter)="onClickSend()"></textarea>
                     </div>
                 </div>
             </div>
