@@ -14,9 +14,10 @@ import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
+import { SideMenuDrawerComponent } from './components/side-menu-drawer/side-menu-drawer.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SideMenuDrawerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

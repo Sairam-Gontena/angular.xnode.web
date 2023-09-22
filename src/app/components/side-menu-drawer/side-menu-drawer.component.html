@@ -1,0 +1,48 @@
+<p-sidebar [(visible)]="sidebarVisible" (onHide)="this.hideSideMenuDrawer.emit()">
+    <ng-template pTemplate="header"><img src=" ./assets/xnode-logo.svg" alt="x-logo" class="h-16"
+            (click)="onClickLog()"></ng-template>
+    <ng-template pTemplate="content">
+        <div *ngIf="product_id">
+            <div *ngFor="let item of sideMenuItems;let i = index;" (click)="onClickMenuItem(item, i)">
+                <div class="flex align-content-center flex-wrap pl-6 pt-3 pr-6 pb-3 side-menu-item">
+                    <div class="w-40">
+                        <img [src]="item.icon" alt="item.label">
+                    </div>
+                    <div class="label-font">
+                        {{item.label}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer" class="pb-8">
+        <div class="flex align-content-center flex-wrap pl-6 pt-3 pr-6 pb-3 side-menu-item">
+            <div class="w-40">
+                <i class="pi pi-question-circle ml-1" (click)="onClickHelpCenter()"></i>
+            </div>
+            <div class="label-font">
+                Help
+            </div>
+        </div>
+        <div class="flex align-content-center flex-wrap pl-6 pt-3 pr-6 pb-3 side-menu-item" (click)="onClickFeedback()">
+            <div class="w-40">
+                <img src="./assets/Feedback.svg" />
+            </div>
+            <div class="label-font">
+                Feedback
+            </div>
+        </div>
+
+        <div class="flex align-content-center flex-wrap pl-6 pt-3 pr-6 pb-3 side-menu-item pointer"
+            (click)="onClickLogout()">
+            <div class="w-40">
+                <i class="pi pi-sign-out ml-1"></i>
+            </div>
+            <div class="label-font">
+                Logout
+            </div>
+        </div>
+
+
+    </ng-template>
+</p-sidebar>

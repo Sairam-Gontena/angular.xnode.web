@@ -30,6 +30,9 @@ export class UtilsService {
   private reload: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeUpdatedList: Observable<boolean> = this.reload.asObservable();
 
+  private product: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeSelectedProduct: Observable<any> = this.product.asObservable();
+
 
   constructor() { }
 
@@ -66,6 +69,10 @@ export class UtilsService {
   }
   reloadList(event: any): void {
     this.reload.next(event);
+  }
+
+  saveSelectedProduct(event: any): void {
+    this.product.next(event);
   }
 
 }

@@ -110,6 +110,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickCreateNewTemplate(data: any): void {
+    this.utils.saveSelectedProduct(data);
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
@@ -214,6 +215,8 @@ export class MyProductsComponent implements OnInit {
           this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
+        this.utils.loadSpinner(false);
+
       }).catch((error: any) => {
         let user_audit_body = {
           'method': 'GET',

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -24,6 +24,7 @@ import { AuthApiService } from 'src/app/api/auth.service';
 
 export class AppHeaderComponent implements OnInit {
   @Input() currentPath: any;
+  @Output() showSideMenuDrawer = new EventEmitter<any>();
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -57,6 +58,7 @@ export class AppHeaderComponent implements OnInit {
   selectedPopup: any;
   showLimitReachedPopup: boolean = false;
   productId: any;
+
   constructor(
     private RefreshListService: RefreshListService,
     private apiService: ApiService,
@@ -86,11 +88,9 @@ export class AppHeaderComponent implements OnInit {
       }
     })
     let data = localStorage.getItem("currentUser")
-
     if (data) {
       let currentUser = JSON.parse(data);
       this.username = currentUser.first_name.toUpperCase() + ' ' + currentUser.last_name.toUpperCase();
-
     }
     this.currentUser = UserUtil.getCurrentUser();
     this.getAllProducts()
@@ -111,6 +111,10 @@ export class AppHeaderComponent implements OnInit {
       },
     ];
     this.initializeWebsocket();
+  }
+
+  onClickBurger(): void {
+    this.showSideMenuDrawer.emit();
   }
 
   //get calls 

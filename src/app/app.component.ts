@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   currentPath = window.location.hash;
   currentUser: any;
   showLimitReachedPopup?: boolean;
-  sidebarVisible = true;
+  sidebarVisible = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -52,6 +52,13 @@ export class AppComponent implements OnInit {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
+      console.log(this.currentUser);
+      if (this.currentUser.role_name === 'Xnode Entity User') {
+        this.router.navigate(['/my-products'])
+      } else {
+        this.router.navigate(['/admin/user-invitation']);
+      }
+
       this.getMeTotalOnboardedApps(JSON.parse(currentUser));
     } else {
       if (!window.location.hash.includes('#/reset-password?email')) {
