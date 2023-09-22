@@ -31,18 +31,6 @@
                             {{report.feedbackText|titlecase}}
                         </p>
                         <div class="flex align-items-center my-2">
-                            <div class="flex align-items-center pr-2">
-                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                                    shape="circle" *ngIf="!report?.userName"></p-avatar>
-                                <p-avatar [label]="getMeUserAvatar(report)" styleClass="mr-2"
-                                    [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"
-                                    *ngIf="report?.userName"></p-avatar>
-                                <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                                    {{currentUser?.last_name|titlecase}}</p>
-                            </div>
-                            <p class="text-sm font-normal m-0 pb-2">
-                                {{report.feedbackText}}
-                            </p>
                             <div class="flex align-items-center">
                                 <div class="flex align-items-center pr-2">
                                     <p-avatar
@@ -51,8 +39,8 @@
                                     <p-avatar [label]="getMeUserAvatar(report)" styleClass="mr-2"
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"
                                         *ngIf="report?.userName"></p-avatar>
-                                    <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
-                                        {{currentUser?.last_name}}</p>
+                                    <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
+                                        {{currentUser?.last_name|titlecase}}</p>
                                 </div>
                                 <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
                                     {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
