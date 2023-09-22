@@ -89,3 +89,8 @@
     width: calc(100% - 50px);
     height: calc(100vh - 42px);
 }
+
+.publish-body {
+    height: calc(100vh - 153px) !important;
+    overflow: auto;
+}
