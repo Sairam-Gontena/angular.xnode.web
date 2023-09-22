@@ -1,8 +1,8 @@
 <div class="flex">
-    <p-avatar [label]="getMeUserAvatar()" styleClass="mr-2"
+    <p-avatar class="mt-2" [label]="getMeUserAvatar()" styleClass="mr-2"
         [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"></p-avatar>
     <div class="w-full">
-        <p class="m-0 font-sm font-medium">{{conversation?.userName}}
+        <p class="m-0 font-sm font-medium">{{conversation?.userName| titlecase }}
             <span class="text-10 font-normal pl-2">
                 {{conversation.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
             </span>
