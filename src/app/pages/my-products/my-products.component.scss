@@ -24,7 +24,6 @@
 
     .txt-heading {
         font-size: 36px;
-        // margin-top: 20px;
         font-family: 'Inter';
         font-weight: 500;
         line-height: 43.57px;
@@ -35,7 +34,8 @@
     }
 
     :host ::ng-deep .p-card {
-        height: 250px !important;
+        height: 210px !important;
+        position: relative;
     }
 
     :host ::ng-deep .p-card-header {
@@ -66,22 +66,25 @@
     }
 
     .overlay-heart {
-        position: relative;
+        position: absolute;
+        top: 0px;
+        right: 0px;
         color: #EF018F;
-        bottom: 110px;
         padding: 10px;
-        text-align: right;
-        z-index: 1;
     }
 
     .overlay {
-        position: relative;
-        bottom: 110px;
+        position: absolute;
         color: #4E4D55;
         font-size: 30px;
         font-weight: 700;
         padding: 12px;
-        text-align: right;
+        right: 0%;
+        top: 20%
+    }
+
+    :host ::ng-deep .p-card .p-card-content {
+        padding: 0px;
     }
 
 }
@@ -120,6 +123,15 @@
         height: 150px;
     }
 
+    :host ::ng-deep .p-card {
+        height: 280px !important;
+        position: relative;
+    }
+
+    :host ::ng-deep .p-card .p-card-content {
+        padding: 0px;
+    }
+
     .heading-text {
         font-size: 12px;
     }
@@ -129,22 +141,21 @@
     }
 
     .overlay-heart {
-        position: relative;
+        position: absolute;
+        top: 0px;
+        right: 0px;
         color: #EF018F;
-        bottom: 150px;
         padding: 10px;
-        text-align: right;
-        z-index: 1;
     }
 
     .overlay {
-        position: relative;
-        bottom: 110px;
+        position: absolute;
         color: #4E4D55;
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 700;
         padding: 12px;
-        text-align: right;
+        right: 0%;
+        top: 30%
     }
 }
 
@@ -181,7 +192,12 @@
     }
 
     :host ::ng-deep .p-card {
-        height: 310px !important;
+        height: 260px !important;
+        position: relative;
+    }
+
+    :host ::ng-deep .p-card .p-card-content {
+        padding: 0px;
     }
 
     .heading-text {
@@ -193,22 +209,21 @@
     }
 
     .overlay-heart {
-        position: relative;
+        position: absolute;
+        top: 0px;
+        right: 0px;
         color: #EF018F;
-        bottom: 140px;
         padding: 10px;
-        text-align: right;
-        z-index: 1;
     }
 
     .overlay {
-        position: relative;
-        bottom: 110px;
+        position: absolute;
         color: #4E4D55;
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 700;
         padding: 12px;
-        text-align: right;
+        right: 0%;
+        top: 25%
     }
 }
 
