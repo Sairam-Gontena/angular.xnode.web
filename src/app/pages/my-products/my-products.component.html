@@ -1,11 +1,11 @@
 <div class="lg:p-5 p-3 overflow-auto body-container">
-    <div class="text-white txt-heading lg:mt-3 lg:ml-3 md:ml-3 md:mt-3">Hi, Good Morning!</div>
+    <div class="text-white txt-heading lg:mt-3 lg:ml-3 md:ml-3 md:mt-3 ml-2 mt-3">Hi, Good Morning!</div>
     <div class="flex sm:col-8 md:col-7 lg:col-4 p-input-icon-left mt-3 lg:mt-6">
         <i class="pi pi-search text-white sm:ml-3  md:ml-3"></i>
         <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
             class="text-white" />
     </div>
-    <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3 lg:mt-4">
+    <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3  lg:mt-4">
         <p-button styleClass="p-button-rounded mr-4">
             <span class="ml-2 mr-2" (click)="onClickNewWithNavi()">New with NAVI Ai</span>
         </p-button>
@@ -24,7 +24,7 @@
                     <p class="m-0 pl-2 tabview-header-txt">All Products</p>
                 </div>
             </ng-template>
-            <div class="col-12">
+            <div class="col-12 pt-2">
                 <div class="grid" *ngIf="filteredProducts">
                     <p-card class="col-6 md:col-4 lg:col-2 pointer" header="{{data.title}}" [title]="data.title"
                         *ngFor="let data of filteredProducts ; let i = index" [style]="{  height: '328px'}"
