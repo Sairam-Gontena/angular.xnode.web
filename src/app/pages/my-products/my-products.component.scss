@@ -87,6 +87,10 @@
         padding: 0px;
     }
 
+    :host ::ng-deep .new-template .p-card .p-card-body {
+        padding: 4.5rem;
+    }
+
 }
 
 
