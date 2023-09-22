@@ -61,7 +61,7 @@
     padding-top: 6px;
     padding-bottom: 6px;
     border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
 }
 
 .p-confirm-dialog-reject:hover {
