@@ -30,11 +30,14 @@
                         *ngFor="let data of filteredProducts ; let i = index" [style]="{  height: '328px'}"
                         (click)="onClickCreateNewTemplate(data)">
                         <ng-template pTemplate="header">
-                            <img alt="Card" src="./assets/d-card.svg" />
-                            <div class="overlay-heart">
-                                <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
+                            <div class="relative" >
+                                <div class="overlay-heart">
+                                    <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
+                                </div>
+                                <div class="overlay">{{ i + 1 }}</div>
                             </div>
-                            <div class="overlay">{{ i + 1 }}</div>
+                            <img alt="Card" src="./assets/d-card.svg" />
+
                             <i class="pi pi-external-link external-link-icon external-link-icon "
                                 [title]="data.product_url" (click)="openExternalLink(data.product_url)"
                                 *ngIf="data.product_url && data.product_url !== ''"></i>
