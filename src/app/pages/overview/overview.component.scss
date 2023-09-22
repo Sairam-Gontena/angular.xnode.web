@@ -105,7 +105,8 @@
 
 .overview-body {
     height: calc(100vh - 130px);
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     background-color: #23222B;
     margin: 25px;
 }
