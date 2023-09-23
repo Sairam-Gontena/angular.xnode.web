@@ -72,11 +72,13 @@ export class TemplateBuilderComponent implements OnInit {
         window.addEventListener('message', (event) => {
           if (event.data) {
             let data = event.data;
-            this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+            if (!data?.type)
+              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
           }
           if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
             return;
           }
+
         });
       }
     });
