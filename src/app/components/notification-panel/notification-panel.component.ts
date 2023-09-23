@@ -191,5 +191,9 @@ export class NotificationPanelComponent {
     this.preparePublishPopup.emit(obj)
     this.auditUtil.post('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
   }
+
+  onClickLaunchProduct(url: any): void {
+    window.open(url, '_blank')
+  }
 }
 
