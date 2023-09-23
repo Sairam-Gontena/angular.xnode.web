@@ -126,7 +126,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   onSelectOption(): void {
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + this.product?.has_insights, "_blank");
+      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + true, "_blank");
     } else {
       this.getMeTotalAppsPublishedCount();
     }

@@ -67,6 +67,10 @@ img.highlighted {
 }
 
 :host ::ng-deep .p-splitbutton {
-    position: unset !important;
     height: 2rem;
+}
+
+:host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
+    left: unset !important;
+    right: 1px !important;
 }

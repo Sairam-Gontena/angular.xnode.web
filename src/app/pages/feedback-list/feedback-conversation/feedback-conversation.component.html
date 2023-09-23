@@ -1,8 +1,8 @@
 <div class="flex">
-    <p-avatar [label]="getMeUserAvatar()" styleClass="mr-2"
+    <p-avatar class="mt-2" [label]="getMeUserAvatar()" styleClass="mr-2"
         [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"></p-avatar>
     <div class="w-full">
-        <p class="m-0 font-sm font-medium">{{conversation?.userName}}
+        <p class="m-0 font-sm font-medium">{{conversation?.userName| titlecase }}
             <span class="text-10 font-normal pl-2">
                 {{conversation.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
             </span>
@@ -20,7 +20,8 @@
             </div>
         </ng-container>
         <ng-container *ngIf="conversation.showReplyinput">
-            <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"></textarea>
+            <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"
+                (keyup.enter)="onClickSend()"></textarea>
             <div class="text-right">
                 <p-button label="Cancel" styleClass="p-button-text p-button-rounded"
                     (click)="this.conversation.showReplyinput = false"></p-button>
