@@ -49,6 +49,36 @@ export class NotificationPanelComponent {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
+  getMeComponent(comp: any) {
+    let path = '';
+    switch (comp) {
+      case 'dashboard':
+        comp = 'dashboard'
+        break;
+      case 'overview':
+        comp = 'overview'
+        break;
+      case 'usecases':
+        comp = 'usecase'
+        break;
+      case 'xflows':
+        comp = 'configuration/workflow/overview'
+        break;
+      case 'data_model':
+        comp = 'configuration/data-model/overview'
+        break;
+      case 'operate':
+        comp = 'operate'
+        break;
+      case 'publish':
+        comp = 'publish'
+        break;
+      default:
+        break;
+    }
+    return path;
+  }
+
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
@@ -56,8 +86,9 @@ export class NotificationPanelComponent {
       if (window.location.hash === '#/' + obj.component) {
         window.location.reload();
       } else {
-        this.router.navigate(['/' + obj.component]);
+        this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
+      
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
