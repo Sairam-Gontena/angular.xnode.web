@@ -3,7 +3,8 @@
         <div class="text-white text-2xl font-semibold">Notifications</div>
         <div class="flex align-items-center">
             <img src="./assets/mute-notification.svg" alt="bell" class="w-0.3rem h-0.3rem mr-2">
-            <i class="pi pi-ellipsis-h text-lg  "></i>
+            <i class="pi pi-ellipsis-h text-lg "></i>
+            <i class="pi pi-times ml-2 pointer" (click)="this.closeNotificationPanel.emit(true)"></i>
         </div>
     </div>
 </div>
@@ -76,7 +77,8 @@
                         {{getMeLabel(notification)}}</div>
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
-                    <a [href]="notification?.product_url" target="_blank" (click)="onClickProductUrl()" >{{notification?.product_url}}</a>
+                    <a [href]="notification?.product_url" target="_blank"
+                        (click)="onClickProductUrl()">{{notification?.product_url}}</a>
                 </div>
             </div>
         </div>
