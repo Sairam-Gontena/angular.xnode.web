@@ -128,3 +128,8 @@ img.highlighted {
      background-color: #F5F5F5;
      border-radius: 100px;
 }
+
+:host ::ng-deep .p-tabview-panels {
+     height: calc(100vh - 258px);
+     overflow: auto;
+}
