@@ -52,7 +52,6 @@ export class NotificationPanelComponent {
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    let url: any;
     if (obj.component && obj.component !== '') {
       if (window.location.hash === '#/' + obj.component) {
         window.location.reload();
@@ -64,6 +63,7 @@ export class NotificationPanelComponent {
       this.router.navigate(['/dashboard']);
       this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
+    this.closeNotificationPanel.emit(true);
   }
 
   getMeLabel(obj: any) {

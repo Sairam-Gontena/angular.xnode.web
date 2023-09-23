@@ -32,7 +32,7 @@ export class TemplateBuilderComponent implements OnInit {
   currentUser?: User;
   environment: any;
   userId: any;
-
+  rawUrl: any;
 
   constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -51,18 +51,17 @@ export class TemplateBuilderComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
     }
     if (this.product_id) {
+      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId;
       this.makeTrustedUrl();
     } else {
-      this.get_ID();
+      this.product_id = localStorage.getItem('record_id');
+      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.userId;
+      this.makeTrustedUrl();
     }
-
   }
   makeTrustedUrl(): void {
-    let rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId;
-    setTimeout(() => {
-      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);;
-      this.loadIframeUrl();
-    }, 2000);
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);;
+    this.loadIframeUrl();
   }
 
   loadIframeUrl(): void {
@@ -87,41 +86,6 @@ export class TemplateBuilderComponent implements OnInit {
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
     this.currentView = icon;
-  }
-
-  get_ID() {
-    this.apiService.get('/get_metadata/' + this.currentUser?.email)
-      .then((response: any) => {
-        if (response) {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
-          this.product_id = response.data.data[0].id;
-          localStorage.setItem("app_name", response.data.data[0].product_name)
-          this.loadDesignStudio();
-        } else {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
-          this.utils.loadToaster({ severity: 'error', summary: '', detail: 'Network error' });
-        }
-      }).catch(error => {
-        let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.auditUtil.post('GET_ID_GET_METADATA_TEMPLATE_BUILDER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
-      });
-  }
-
-  loadDesignStudio() {
-    let iframeSrc = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId;
-    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
   }
 
   loadSpinner(event: boolean) {
