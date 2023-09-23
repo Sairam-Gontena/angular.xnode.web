@@ -34,7 +34,7 @@
                               </div>
                               <div class="col-auto">
                                    <div class="row">{{taskHeader?.label}}</div>
-                                   <div class="row"><strong>{{taskHeader?.task}}</strong></div>
+                                   <div class="row"><strong class="p-0">{{taskHeader?.task}}</strong></div>
                               </div>
                          </div>
                     </div>
@@ -126,7 +126,7 @@
 
                          <!-- JSON Tab -->
                          <p-tabPanel header="JSON">
-                              <textarea rows="5" cols="55" pInputTextarea [(ngModel)]="jsonWorkflow"></textarea>
+                              <pre>{{ jsonWorkflowToShow | json }}</pre>
                          </p-tabPanel>
 
                          <!-- Comments Tab -->
