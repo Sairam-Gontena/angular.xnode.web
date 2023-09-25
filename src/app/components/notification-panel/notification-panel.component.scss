@@ -1,13 +1,3 @@
-:host ::ng-deep.p-button {
-    border: none;
-    background: #24232C !important;
-    padding: 0;
-}
-
-:host ::ng-deep.p-button:enabled:hover {
-    border: none;
-}
-
 :host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
     top: 23px !important;
     left: unset !important;

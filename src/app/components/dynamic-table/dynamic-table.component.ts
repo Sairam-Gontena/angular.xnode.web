@@ -15,6 +15,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() inputData: any;
   @Input() cols: any[] = [];
   @Input() Actions: any[] = [];
+  @Input() DeleteAction: any[] = [];
   headers: any;
   editable: boolean = true;
   showSearch: boolean = true;
@@ -83,5 +84,4 @@ export class DynamicTableComponent implements OnInit {
     });
 
   }
-
 }

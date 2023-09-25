@@ -34,6 +34,7 @@ export class FeedbackListComponent {
   parentConversationId: any;
   selectedItemConversation: any;
   message: any;
+  modalPosition: any;
 
   constructor(
     public utils: UtilsService,
@@ -57,6 +58,7 @@ export class FeedbackListComponent {
       if (event)
         this.getMeConversations();
     })
+    this.modalPosition = 'center'
   }
 
 
@@ -94,19 +96,22 @@ export class FeedbackListComponent {
   }
 
   getMeTitle(report: any) {
-    if (report.productName && report.componentId) {
-      return report.productName + "-" + report.componentId
+    if (report?.productName && report?.componentId) {
+      return report?.productName + "-" + report?.componentId
     } else {
-      return report.componentId
+      return report?.componentId
     }
   }
 
-  onSelectListItem(report: any, index: Number) {
+  onSelectListItem(report: any, index: Number, onInit?: boolean) {
     this.selectedListItem = report;
     this.message = '';
     this.selectedIndex = index;
     this.conversationSourceId = this.selectedListItem?.id
     this.getMeConversations();
+    if (onInit == false && this.getScreenWidth < 980) {
+      this.visible = true;
+    }
   }
 
   getMeUserAvatar(report: any) {
@@ -166,7 +171,7 @@ export class FeedbackListComponent {
         this.reportList = res.data;
         if (res?.data.length) {
           this.selectedListItem = res.data[0];
-          this.onSelectListItem(this.selectedListItem, 0)
+          this.onSelectListItem(this.selectedListItem, 0, true)
         }
         let user_audit_body = {
           'method': 'GET',
@@ -231,16 +236,17 @@ export class FeedbackListComponent {
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     if (this.getScreenWidth < 780) {
-      this.dialogWidth = '100vw';
+      this.dialogWidth = '85vw';
     } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
-      this.dialogWidth = '80vw';
+      this.dialogWidth = '75vw';
     } else if (this.getScreenWidth > 980) {
-      this.dialogWidth = '80vw';
+      this.dialogWidth = '75vw';
     }
   }
 
   closePopup() {
     this.utils.showFeedbackPopupByType('');
+    this.visible = false;
   }
 
 }

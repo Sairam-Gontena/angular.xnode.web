@@ -6,8 +6,7 @@
           <div class="flex justify-content-between align-items-center">
                <span class="p-input-icon-left" *ngIf="showSearch">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Search by User Name, Lead No ..."
-                         (input)="onInputChange($event)" />
+                    <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
                </span>
                <div class="flex-wrap">
                     <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="showDelete">
@@ -34,23 +33,32 @@
           <tr class="text-white text-xs custom-cell" [ngClass]="i % 2 == 0 ? 'even' : 'odd'"
                [ngStyle]="{ 'background-color': i % 2 == 0 ? '#302E38'  : '#3A3942'}">
                <td *ngFor="let col of columns" class="border-transparent">
-                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action'"
+                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action' && col.type !== 'datetime'"
                          [ngClass]="col.field === 'email' ? 'email-text-color':''" style="color:#fff">
-                         {{rowData[col.field]}}
+                         {{rowData[col.field] }}
+                    </div>
+                    <div *ngIf="col.field !== 'interest_level' && col.field !== 'action' && col.type === 'datetime'"
+                         [ngClass]="col.field === 'email' ? 'email-text-color':''" style="color:#fff">
+                         {{ rowData[col.field] | date: 'MM-dd-yyyy, HH:mm:ss' }}
                     </div>
                     <div *ngIf=" col.field==='interest_level'" [ngClass]=" rowData[col.field]==='High' ? 'Success' : rowData[col.field]==='Medium'
                          ? 'Warning' : rowData[col.field]==='Low' ? 'Danger' : null">
                          {{rowData[col.field]}}
                     </div>
-                    <ng-container *ngIf="col.field === 'action'">
-                         <div [ngClass]="rowData[col.field] === 'Invited' ? 'Success' : rowData[col.field] === 'Hold' ? 'Warning' : rowData[col.field] === 'Reject' ? 'Danger' : null"
-                              *ngIf="rowData[col.field] !== 'Pending Invite'">
-                              {{rowData[col.field]}}
-                         </div>
-                         <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
-                              <xnode-action-button [Actions]="Actions" [Data]="rowData"
-                                   (dataActionEvent)="handleDataAndAction($event)"
-                                   class="flex flex-row flex-wrap"></xnode-action-button>
+                    <ng-container *ngIf="col.field === 'action'" class="flex">
+                         <div class="flex align-items-center">
+                              <div class="mr-2"
+                                   [ngClass]="rowData[col.field] === 'Invited' ? 'Success' : rowData[col.field] === 'Hold' ? 'Warning' : rowData[col.field] === 'Reject' ? 'Danger' : null"
+                                   *ngIf="rowData[col.field] !== 'Pending Invite'">
+                                   {{rowData[col.field]}}
+                              </div>
+                              <div class="flex"
+                                   *ngIf="rowData[col.field] == 'Pending Invite' || rowData[col.field] == 'Invited'">
+                                   <xnode-action-button
+                                        [Actions]="rowData[col.field] == 'Invited'? DeleteAction : Actions"
+                                        [Data]="rowData" (dataActionEvent)="handleDataAndAction($event)"
+                                        class="flex flex-row flex-wrap"></xnode-action-button>
+                              </div>
                          </div>
                     </ng-container>
                </td>

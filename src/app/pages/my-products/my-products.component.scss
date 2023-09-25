@@ -81,6 +81,10 @@
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
     }
+
+    .empty-card {
+        height: 200px;
+    }
 }
 
 
@@ -145,6 +149,10 @@
         padding: 12px;
         right: 0%;
         top: 30%
+    }
+
+    .empty-card {
+        height: 300px;
     }
 }
 
@@ -213,6 +221,10 @@
         padding: 12px;
         right: 0%;
         top: 25%
+    }
+
+    .empty-card {
+        height: 300px;
     }
 }
 
@@ -375,8 +387,4 @@
 .new-template {
     background-color: #4E4D55;
     border-radius: 10px;
-}
-
-.empty-card {
-    height: 300px;
 }
