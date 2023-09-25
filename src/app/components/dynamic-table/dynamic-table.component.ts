@@ -84,5 +84,4 @@ export class DynamicTableComponent implements OnInit {
     });
 
   }
-
 }
