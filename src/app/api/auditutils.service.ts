@@ -12,8 +12,6 @@ export class AuditutilsService {
   constructor(private utilsService: UtilsService,) { }
 
   ngOnInit() {
-
-
   }
 
   post(activity: any, attemptcount: number, attemptstatus: string, url: string, activityInfo?: any, useremail?: any, productid?: any) {
