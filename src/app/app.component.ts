@@ -64,8 +64,21 @@ export class AppComponent implements OnInit {
         localStorage.clear();
       }
     }
-
+    this.redirectToPreviousUrl();
   }
+  redirectToPreviousUrl(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        localStorage.setItem('previousUrl', event.url);
+      }
+    });
+    const previousUrl = localStorage.getItem('previousUrl');
+    if (previousUrl) {
+      localStorage.removeItem('previousUrl');
+      this.router.navigateByUrl(previousUrl);
+    }
+  }
+
   preparingData() {
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
