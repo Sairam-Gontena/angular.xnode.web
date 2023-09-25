@@ -24,38 +24,35 @@
                     <p class="m-0 pl-2 tabview-header-txt">All Products</p>
                 </div>
             </ng-template>
-            <div class="col-12 pt-2">
-                <div class="grid" *ngIf="filteredProducts">
-                    <p-card class="col-6 md:col-4 lg:col-2 pointer" header="{{data.title}}" [title]="data.title"
-                        *ngFor="let data of filteredProducts ; let i = index" [style]="{  height: '258px'}"
-                        (click)="onClickCreateNewTemplate(data)">
-                        <ng-template pTemplate="header">
-                            <img alt="Card" src="./assets/d-card.svg" />
-                            <div class="overlay-heart">
-                                <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
-                            </div>
-                            <div class="overlay">{{ i + 1 }}</div>
-                            <i class="pi pi-external-link external-link-icon external-link-icon "
-                                [title]="data.product_url" (click)="openExternalLink(data.product_url)"
-                                *ngIf="data.product_url && data.product_url !== ''"></i>
-                        </ng-template>
-                        <div class="flex">
-                            <img alt="dp" src="./assets/dp.svg" width="40" />
-                            <div class="text-white ml-4">
-                                <p class="m-0 font-bold heading-text">Created by you</p>
-                                <p class="m-0 normal-text">Last viewed 3 minutes ago</p>
-                                <p class="m-0 normal-text">created on: {{data.created_on
-                                    |
-                                    date:'medium'}}</p>
-                            </div>
+            <div class="grid" *ngIf="filteredProducts">
+                <p-card class="col-6 md:col-4 lg:col-2 xl:col-2 pointer" header="{{data.title}}" [title]="data.title"
+                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickCreateNewTemplate(data)">
+                    <ng-template pTemplate="header" *ngIf="i < filteredProducts.length">
+                        <img alt="Card" src="./assets/d-card.svg" />
+                        <div class="overlay-heart">
+                            <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
                         </div>
-                    </p-card>
-                    <p-card class="col-6 md:col-4 lg:col-2 justify-content-center align-items-center new-template"
-                        [style]="{  height: '318px'}">
-                        <i class="pi pi-plus text-white text-4xl pointer"
-                            (click)="onClickgotoxPilot()"></i>
-                    </p-card>
-                    
+                        <div class="overlay">{{ i + 1 }}</div>
+                        <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
+                            (click)="openExternalLink(data.product_url)"
+                            *ngIf="data.product_url && data.product_url !== ''"></i>
+                    </ng-template>
+                    <div class="flex" *ngIf="i < filteredProducts.length ">
+                        <img alt="dp" src="./assets/dp.svg" width="40" />
+                        <div class="text-white ml-4">
+                            <p class="m-0 font-bold heading-text">Created by you</p>
+                            <p class="m-0 normal-text">Last viewed 3 minutes ago</p>
+                            <p class="m-0 normal-text">created on: {{data.created_on
+                                |
+                                date:'medium'}}</p>
+                        </div>
+                    </div>
+                </p-card>
+                <div
+                    [ngClass]="filteredProductsByEmail.length == 0 ? 'empty-card col-6 md:col-4 lg:col-2 xl:col-2 justify-content-center align-items-center relative˝' : 'col-6 md:col-4 lg:col-2 xl:col-2 justify-content-center align-items-center relative'">
+                    <div class="flex w-full h-full justify-content-center align-items-center new-template border">
+                        <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    </div>
                 </div>
             </div>
         </p-tabPanel>
@@ -81,9 +78,9 @@
                     <p class="m-0 pl-2 tabview-header-txt">Created by you</p>
                 </div>
             </ng-template>
-            <div class="grid p-2" *ngIf="filteredProductsByEmail">
-                <p-card class="col-6 md:col-4 lg:col-2 pointer" header="{{data.title}}" [title]="data.title"
-                    *ngFor="let data of filteredProductsByEmail ; let i = index" [style]="{  height: '328px'}"
+            <div class="grid" *ngIf="filteredProductsByEmail">
+                <p-card class="col-6 md:col-4 lg:col-2 xl:col-2 pointer" header="{{data.title}}" [title]="data.title"
+                    *ngFor="let data of filteredProductsByEmail ; let i = index"
                     (click)="onClickCreateNewTemplate(data)">
                     <ng-template pTemplate="header">
                         <img alt="Card" src="./assets/d-card.svg" />
@@ -106,11 +103,12 @@
                         </div>
                     </div>
                 </p-card>
-                <p-card class="col-6 md:col-4 lg:col-2 justify-content-center align-items-center card-body"
-                    [style]="{  height: '328px'}">
-                    <i class="pi pi-plus text-white text-4xl pointer align-items-center"
-                        (click)="onClickgotoxPilot()"></i>
-                </p-card>
+                <div
+                    [ngClass]="filteredProductsByEmail.length == 0 ? 'empty-card col-6 md:col-4 lg:col-2 xl:col-2 justify-content-center align-items-center relative˝' : 'col-6 md:col-4 lg:col-2 xl:col-2 justify-content-center align-items-center relative'">
+                    <div class="flex w-full h-full justify-content-center align-items-center new-template border">
+                        <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    </div>
+                </div>
             </div>
         </p-tabPanel>
     </p-tabView>

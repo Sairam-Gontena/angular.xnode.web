@@ -34,12 +34,7 @@
     }
 
     :host ::ng-deep .p-card {
-        height: 210px !important;
         position: relative;
-    }
-
-    :host ::ng-deep .p-card-header {
-        height: 100px;
     }
 
     .tab-view-img {
@@ -86,11 +81,6 @@
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
     }
-
-    :host ::ng-deep .new-template .p-card .p-card-body {
-        padding: 4.5rem;
-    }
-
 }
 
 
@@ -123,12 +113,7 @@
         font-size: 14px;
     }
 
-    :host ::ng-deep .p-card-header {
-        height: 150px;
-    }
-
     :host ::ng-deep .p-card {
-        height: 280px !important;
         position: relative;
     }
 
@@ -137,11 +122,11 @@
     }
 
     .heading-text {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .normal-text {
-        font-size: 9px;
+        font-size: 12px;
     }
 
     .overlay-heart {
@@ -312,10 +297,6 @@
     }
 }
 
-:host ::ng-deep .p-tabview {
-    // width: 100vw !important;
-}
-
 :host ::ng-deep .p-tabview .p-tabview-nav {
     background: #3A3942 !important;
     color: #ffffff !important;
@@ -371,4 +352,31 @@
 
 ::placeholder {
     color: #fff;
+}
+
+.new-layer {
+    position: relative;
+}
+
+.new-layer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.centered-content {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.new-template {
+    background-color: #4E4D55;
+    border-radius: 10px;
+}
+
+.empty-card {
+    height: 300px;
 }
