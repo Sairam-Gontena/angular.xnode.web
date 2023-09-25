@@ -72,7 +72,7 @@ export class TemplateBuilderComponent implements OnInit {
         window.addEventListener('message', (event) => {
           if (event.data) {
             let data = event.data;
-            if (!data?.type)
+            if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
               this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
           }
           if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
