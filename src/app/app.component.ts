@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
   iframeUrl: SafeResourceUrl = '';
   toastObj: any;
   targetUrl: string = environment.naviAppUrl;
-  currentPath = window.location.hash;
   currentUser: any;
   showLimitReachedPopup?: boolean;
 
@@ -52,21 +51,22 @@ export class AppComponent implements OnInit {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
       this.getMeTotalOnboardedApps(JSON.parse(currentUser));
+      if (this.currentUser.role_name === 'Xnode Admin') {
+        this.router.navigate(['/admin/user-invitation']);
+      } else {
+        this.router.navigate(['/my-products']);
+      }
+      this.preparingData();
+      this.handleBotIcon();
     } else {
       if (!window.location.hash.includes('#/reset-password?email')) {
         this.router.navigate(['/'])
+        localStorage.clear();
       }
     }
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.handleRouterChange();
-        if (event.url === '/x-pilot') {
-          this.isBotIconVisible = false
-        } else {
-          this.isBotIconVisible = true;
-        }
-      }
-    });
+
+  }
+  preparingData() {
     this.utilsService.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         if (event) {
@@ -92,9 +92,19 @@ export class AppComponent implements OnInit {
         this.sendEmailNotificationToTheUser();
       }
     });
-    this.currentPath = window.location.hash;
   }
-
+  handleBotIcon() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.handleRouterChange();
+        if (event.url === '/x-pilot') {
+          this.isBotIconVisible = false
+        } else {
+          this.isBotIconVisible = true;
+        }
+      }
+    });
+  }
   getMeTotalOnboardedApps(user: any): void {
     this.apiService.get("/total_apps_onboarded/" + user?.email)
       .then((response: any) => {
