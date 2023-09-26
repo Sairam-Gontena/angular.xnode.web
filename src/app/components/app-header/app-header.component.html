@@ -18,7 +18,10 @@
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
                     (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
             </p-overlayPanel>
-            <img src="./assets/dp.svg" alt="dp" class="mr-2">
+            <!-- <img src="./assets/dp.svg" alt="dp" class="mr-2"> -->
+            <div class="mr-2 dp font-bold">
+                {{ dpName }}
+            </div>
             <p-splitButton [label]="username" [model]="logoutDropdown"
                 styleClass="p-button-raised logout-split-btn"></p-splitButton>
         </div>

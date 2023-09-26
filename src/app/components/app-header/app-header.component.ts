@@ -57,6 +57,9 @@ export class AppHeaderComponent implements OnInit {
   selectedPopup: any;
   showLimitReachedPopup: boolean = false;
   productId: any;
+  dpName: any;
+
+
   constructor(
     private RefreshListService: RefreshListService,
     private apiService: ApiService,
@@ -91,6 +94,9 @@ export class AppHeaderComponent implements OnInit {
       let currentUser = JSON.parse(data);
       this.username = currentUser.first_name.toUpperCase() + ' ' + currentUser.last_name.toUpperCase();
 
+      if (currentUser.first_name && currentUser.last_name) {
+        this.dpName = currentUser.first_name.charAt(0).toUpperCase() + currentUser.last_name.charAt(0).toUpperCase();
+      }
     }
     this.currentUser = UserUtil.getCurrentUser();
     this.getAllProducts()

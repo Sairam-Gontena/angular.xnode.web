@@ -147,3 +147,14 @@ textarea {
 .error-message {
     color: red;
 }
+
+.user-dp,
+.dp {
+    // width: 28px;
+    // height: 28px;
+    border-radius: 50%;
+    background-color: lightgray;
+    // font-size: 14px;
+    border: 2px solid #ccc;
+    color: black !important;
+}
