@@ -1,4 +1,4 @@
-@import "bootstrap/scss/bootstrap";
+// @import "bootstrap/scss/bootstrap";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "primeicons/primeicons.css";
 @import './theme.scss';
@@ -301,10 +301,15 @@ body {
 }
 
 .p-toast .p-toast-message .p-toast-message-content {
-  padding: 1rem;
+  padding: 1rem !important;
   border-width: 0 0 0 6px;
   background-color: white;
 
+}
+
+.p-toast .p-toast-message .p-toast-icon-close {
+  width: 10rem;
+  height: 2rem;
 }
 
 .djs-palette-shown.djs-palette-two-column .bjs-breadcrumbs {

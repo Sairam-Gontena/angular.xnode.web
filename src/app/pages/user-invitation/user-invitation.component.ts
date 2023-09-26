@@ -18,6 +18,10 @@ export class UserInvitationComponent {
   Actions: any[] = [];
   items: MenuItem[] | undefined;
   currentUser: any;
+  DeleteAction: any[] = [{
+    "label": "Delete",
+    "backgroundColor": "Danger"
+  }];
 
   constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService,) {
     this.refreshListService.RefreshAdminUserList().subscribe((data) => {

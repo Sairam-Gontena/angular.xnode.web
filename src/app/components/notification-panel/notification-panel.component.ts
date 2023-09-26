@@ -49,21 +49,52 @@ export class NotificationPanelComponent {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
+  getMeComponent(comp: any) {
+    let path = '';
+    switch (comp) {
+      case 'dashboard':
+        comp = 'dashboard'
+        break;
+      case 'overview':
+        comp = 'overview'
+        break;
+      case 'usecases':
+        comp = 'usecase'
+        break;
+      case 'xflows':
+        comp = 'configuration/workflow/overview'
+        break;
+      case 'data_model':
+        comp = 'configuration/data-model/overview'
+        break;
+      case 'operate':
+        comp = 'operate'
+        break;
+      case 'publish':
+        comp = 'publish'
+        break;
+      default:
+        break;
+    }
+    return path;
+  }
+
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
-    let url: any;
     if (obj.component && obj.component !== '') {
       if (window.location.hash === '#/' + obj.component) {
         window.location.reload();
       } else {
-        this.router.navigate(['/' + obj.component]);
+        this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
+      
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
       this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
+    this.closeNotificationPanel.emit(true);
   }
 
   getMeLabel(obj: any) {
@@ -190,6 +221,10 @@ export class NotificationPanelComponent {
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
     this.auditUtil.post('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
+  }
+
+  onClickLaunchProduct(url: any): void {
+    window.open(url, '_blank')
   }
 }
 

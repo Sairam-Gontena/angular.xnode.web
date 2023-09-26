@@ -6,6 +6,7 @@ import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 
+
 @Component({
   selector: 'xnode-confirmation-popup',
   templateUrl: './confirmation-popup.component.html',
@@ -23,10 +24,7 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + this.Data.userData.first_name + ' ' + this.Data.userData.last_name;
-      this.showDialog()
-    }
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -35,7 +33,11 @@ export class ConfirmationPopupComponent implements OnInit {
       let data1 = JSON.parse(data)
       this.currentUser = data1;
     }
-
+    const userData = changes['Data'].currentValue.userData;
+    if (this.Data) {
+      this.invitationType = this.Data.type + ' ' + userData.first_name + ' ' + userData.last_name;
+    }
+    this.showDialog();
   }
 
 
@@ -50,13 +52,13 @@ export class ConfirmationPopupComponent implements OnInit {
       this.updateUserId(this.Data.userData.id, 'OnHold')
     } else if (this.Data.type === 'Reject') {
       this.updateUserId(this.Data.userData.id, 'Rejected')
+    } else if (this.Data.type === 'Delete') {
+      this.deleteUserByEmail(this.Data.userData.email)
     }
     this.visible = false;
-    return
   }
   onReject(): void {
     this.visible = false;
-    return
   }
 
   updateUserId(id: string, action: string): void {
@@ -86,6 +88,27 @@ export class ConfirmationPopupComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
         this.auditUtil.post(action + '_' + error, 1, 'FAILURE', 'user-audit');
+      });
+  }
+  deleteUserByEmail(email: string): void {
+    this.utilsService.loadSpinner(true)
+    let url = '/user/delete_user/' + email;
+    this.authApiService.delete(url)
+      .then((response: any) => {
+        if (response?.status === 200 && !response?.data?.detail) {
+          this.refreshListService.toggleAdminUserListRefresh();
+          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been deleted successfully' });
+          this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT', 1, 'SUCCESS', 'user-audit');
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT_' + response.data.detail, 1, 'FAILURE', 'user-audit');
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadSpinner(false);
+        this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT' + '_' + error, 1, 'FAILURE', 'user-audit');
       });
   }
 

@@ -115,7 +115,11 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
-    this.router.navigate(['/dashboard']);
+    if (!data.has_insights) {
+      this.router.navigate(['/x-pilot']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
     this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
 

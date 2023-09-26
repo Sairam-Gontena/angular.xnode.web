@@ -65,6 +65,10 @@ export class AuthApiService {
     });
   }
 
+  delete(url: string) {
+    return axios.delete(this.authEndPoint + url);
+  }
+
   setUser(event: boolean): void {
     this.userLoggedIn = event;
   }

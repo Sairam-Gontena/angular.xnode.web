@@ -61,3 +61,7 @@
     height: 1024px;
     background-color: #f2f2f2;
 }
+
+.dashboard-body {
+    height: calc(100vh - 176px) !important;
+}

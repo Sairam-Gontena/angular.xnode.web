@@ -77,7 +77,8 @@
 
 .full-screen-navi {
   position: absolute;
-  width: calc(100vw - 80px);
+  z-index: 10;
+  width: 100vw;
   right: 0;
   height: calc(100vh - 48px);
   transition: all 0.5s ease-in-out;

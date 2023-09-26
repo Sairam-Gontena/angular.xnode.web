@@ -44,7 +44,7 @@ export class AppHeaderComponent implements OnInit {
   product_url: string = "https://dev-navi.azurewebsites.net/";
   username: string = ''
   visible!: boolean;
-  screenshot: any;
+  screenshot: any = [];
   showDialog: boolean = false;
   thanksDialog: boolean = false;
   displayReportDialog: boolean = false;
@@ -183,7 +183,7 @@ export class AppHeaderComponent implements OnInit {
       if (data.product_status === 'completed') {
         this.RefreshListService.updateData('refreshproducts');
       }
-      if (data.product_status === 'deployed') {
+      if (data.product_status === 'deployed' && !data.product_url.includes('/login?')) {
         const body = {
           product_id: data.product_id,
           product_url: data.product_url + '/login?product_id=' + data.product_id,

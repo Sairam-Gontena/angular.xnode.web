@@ -42,6 +42,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   serviceTask: any;
   sP: boolean = false;
   task: boolean = false;
+  jsonWorkflowToShow: any;
   graphRedirection: boolean = false;
   taskHeader: any;
   generalInfo: any;
@@ -184,6 +185,8 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         this.xflowData = response.data;
         this.loadXFlows(xflowJson);
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
+        this.jsonWorkflowToShow = JSON.parse(this.jsonWorkflow);
+
         this.auditUtil.post('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {

@@ -22,11 +22,13 @@
         },
         {
             "field": "created_on",
-            "header": "Created On"
+            "header": "Created On",
+            "type": "datetime"
         },
         {
             "field": "modified_on",
-            "header": "Modified On"
+            "header": "Modified On",
+            "type": "datetime"
         },
         {
             "field": "action",

@@ -19,6 +19,7 @@ export class AppSideMenuComponent implements OnInit {
   selectedMenuIndex: any;
   currentUser?: any;
   href: any;
+  currentPath: any;
   constructor(private router: Router, private utils: UtilsService, private auditUtil: AuditutilsService) {
     this.currentUser = UserUtil.getCurrentUser();
   }
@@ -31,8 +32,20 @@ export class AppSideMenuComponent implements OnInit {
     } else {
       this.sideMenuItems = AppSideMenuItems[environmentName].UserSideMenu;
     }
+    this.activateMenuItem();
   }
-
+  activateMenuItem() {
+    this.router.events.subscribe(val => {
+      if (val instanceof NavigationEnd) {
+        this.currentPath = val.url;
+        this.sideMenuItems.map((item: any, index: any) => {
+          if ('/' + item.path === this.currentPath) {
+            this.selectedMenuIndex = index;
+          }
+        })
+      }
+    });
+  }
   onClickMenuItem(item: any, i: any): void {
     this.utils.showProductStatusPopup(false);
     if (this.currentUser?.role_name === 'Xnode Admin' && item.label == 'Home') {
