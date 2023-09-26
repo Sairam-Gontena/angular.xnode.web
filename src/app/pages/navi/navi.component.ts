@@ -56,20 +56,20 @@ export class NaviComponent implements OnInit {
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }
-          if (event.data === 'triggerCustomEvent') {
+          if (event.data.message === 'triggerCustomEvent') {
             window.location.href = this.xnodeAppUrl + '#/my-products?product=created';
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
           }
-          if (event.data === 'close-event') {
+          if (event.data.message === 'close-event') {
             window.location.href = this.xnodeAppUrl + '#/my-products';
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
           }
-          if (event.data === 'file-uploaded') {
+          if (event.data.message === 'file-uploaded') {
             localStorage.removeItem('show-upload-panel');
           }
-          if (event.data === 'app-limit-exceeded') {
+          if (event.data.message === 'app-limit-exceeded') {
             this.utils.showLimitReachedPopup(true);
           }
         });

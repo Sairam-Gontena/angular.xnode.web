@@ -139,18 +139,18 @@ export class AppComponent implements OnInit {
       if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
         return;
       }
-      if (event.data === 'triggerCustomEvent') {
+      if (event.data.message === 'triggerCustomEvent') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
       }
-      if (event.data === 'close-docked-navi') {
+      if (event.data.message === 'close-docked-navi') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
       }
-      if (event.data === 'expand-navi') {
+      if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
       }
-      if (event.data === 'contract-navi') {
+      if (event.data.message === 'contract-navi') {
         this.isNaviExpanded = false;
       }
     });
@@ -164,18 +164,18 @@ export class AppComponent implements OnInit {
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }
-          if (event.data === 'triggerCustomEvent') {
+          if (event.data.message === 'triggerCustomEvent') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
-          if (event.data === 'close-docked-navi') {
+          if (event.data.message === 'close-docked-navi') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
-          if (event.data === 'expand-navi') {
+          if (event.data.message === 'expand-navi') {
             this.isNaviExpanded = true;
           }
-          if (event.data === 'contract-navi') {
+          if (event.data.message === 'contract-navi') {
             this.isNaviExpanded = false;
           }
         });
