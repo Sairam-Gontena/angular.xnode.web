@@ -18,10 +18,12 @@
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
                     (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
             </p-overlayPanel>
-            <!-- <img src="./assets/dp.svg" alt="dp" class="mr-2"> -->
-            <div class="mr-2 user-dp font-bold">
-                {{ dpName }}
-            </div>
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2"
+                shape="circle" *ngIf="!username" [style]="{ width:'20px',height:'20px' }"></p-avatar>
+            <p-avatar [label]="dpName" *ngIf="username" styleClass="mr-2"
+                [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'20px',height:'20px' }"
+                shape="circle"></p-avatar>
+
             <p-splitButton [label]="username" [model]="logoutDropdown"
                 styleClass="p-button-raised logout-split-btn"></p-splitButton>
         </div>

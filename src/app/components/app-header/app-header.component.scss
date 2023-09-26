@@ -148,13 +148,6 @@ textarea {
     color: red;
 }
 
-.user-dp,
-.dp {
-    // width: 28px;
-    // height: 28px;
-    border-radius: 50%;
-    background-color: lightgray;
-    // font-size: 14px;
-    border: 2px solid #ccc;
-    color: black !important;
+:host::ng-deep.p-avatar .p-avatar-text {
+    font-size: 0.75rem;
 }
