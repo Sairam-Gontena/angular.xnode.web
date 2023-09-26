@@ -60,30 +60,35 @@
         font-weight: 700;
     }
 
-    .overlay-heart {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        color: #EF018F;
-        padding: 10px;
-    }
-
-    .overlay {
-        position: absolute;
-        color: #4E4D55;
-        font-size: 30px;
-        font-weight: 700;
-        padding: 12px;
-        right: 0%;
-        top: 20%
-    }
-
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
     }
 
     .empty-card {
         height: 200px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 21.78px;
+    }
+
+    .card-subheading-txt {
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 600;
+        line-height: 14.52px;
+        margin-top: 5px;
+    }
+
+    .card-normal-txt {
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 400;
+        line-height: 14.52px;
     }
 }
 
@@ -133,26 +138,33 @@
         font-size: 12px;
     }
 
-    .overlay-heart {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        color: #EF018F;
-        padding: 10px;
-    }
-
-    .overlay {
-        position: absolute;
-        color: #4E4D55;
-        font-size: 30px;
-        font-weight: 700;
-        padding: 12px;
-        right: 0%;
-        top: 30%
-    }
-
     .empty-card {
         height: 300px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 32px;
+    }
+
+    .card-subheading-txt {
+        font-size: 14px;
+        font-family: 'Inter';
+        font-weight: 600;
+        line-height: 16.94px;
+        margin-top: 5px;
+    }
+
+    .card-normal-txt {
+        font-size: 14px;
+        font-family: 'Inter';
+        font-weight: 400;
+        line-height: 16.94px;
+        margin-top: 5px;
+
     }
 }
 
@@ -205,26 +217,33 @@
         font-size: 10px;
     }
 
-    .overlay-heart {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        color: #EF018F;
-        padding: 10px;
-    }
-
-    .overlay {
-        position: absolute;
-        color: #4E4D55;
-        font-size: 30px;
-        font-weight: 700;
-        padding: 12px;
-        right: 0%;
-        top: 25%
-    }
-
     .empty-card {
         height: 300px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 32px;
+    }
+
+    .card-subheading-txt {
+        font-size: 16px;
+        font-family: 'Inter';
+        font-weight: 600;
+        line-height: 19.36px;
+        margin-top: 5px;
+    }
+
+    .card-normal-txt {
+        font-size: 16px;
+        font-family: 'Inter';
+        font-weight: 400;
+        line-height: 19.36px;
+        margin-top: 5px;
+
     }
 }
 
@@ -240,24 +259,9 @@
     background: #4E4D55;
 }
 
-// :host ::ng-deep .p-card-content {
-//     height: 100%;
-// }
-
-// :host ::ng-deep .new-card .p-card .p-card-body {
-//     height: 100% !important;
-
-// }
-
-// :host ::ng-deep .p-card {
-//     border-radius: 20px;
-//     background: #4E4D55;
-// }
 :host ::ng-deep .p-card .p-card-body {
     padding: 0.75rem;
 }
-
-
 
 :host ::ng-deep .p-card .p-card-title {
     white-space: nowrap;
@@ -387,4 +391,32 @@
 .new-template {
     background-color: #4E4D55;
     border-radius: 10px;
+}
+
+.overlay-heart {
+    color: #EF018F;
+    padding: 10px;
+}
+
+.overlay {
+    color: #4E4D55;
+    font-size: 30px;
+    font-weight: 700;
+    font-family: 'Inter';
+    padding: 10px;
+}
+
+.card-color {
+    background-color: #4E4D55;
+}
+
+.body-card {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.empty-card1 {
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px
 }
