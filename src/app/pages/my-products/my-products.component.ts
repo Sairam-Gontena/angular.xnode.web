@@ -115,6 +115,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     if (!data.has_insights) {
+      this.utils.showProductStatusPopup(true);
       this.router.navigate(['/x-pilot']);
     } else {
       this.router.navigate(['/dashboard']);
