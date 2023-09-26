@@ -147,3 +147,7 @@ textarea {
 .error-message {
     color: red;
 }
+
+:host::ng-deep.p-avatar .p-avatar-text {
+    font-size: 0.75rem;
+}
