@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
+
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
@@ -30,6 +31,8 @@ export class MyProductsComponent implements OnInit {
   tabAllProducts = false;
   tabRecent = false;
   tabCreated = false;
+  timeAgo: any;
+
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -37,7 +40,8 @@ export class MyProductsComponent implements OnInit {
     private route: ActivatedRoute,
     private utils: UtilsService,
     private authApiService: AuthApiService,
-    private auditUtil: AuditutilsService) {
+    private auditUtil: AuditutilsService,
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -62,6 +66,7 @@ export class MyProductsComponent implements OnInit {
       this.removeParamFromRoute()
     }, 2000);
     this.filterProductsByUserEmail();
+
   }
 
   getMeTotalOnboardedApps(user: any): void {
@@ -154,7 +159,11 @@ export class MyProductsComponent implements OnInit {
             'url': response?.request?.responseURL,
           }
           this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
-          this.templateCard = response.data.data;
+          this.templateCard = response.data.data.map((dataItem: any) => {
+            dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
+            return dataItem;
+          });
+
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
@@ -201,6 +210,7 @@ export class MyProductsComponent implements OnInit {
     this.router.navigate(['/x-pilot']);
     this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
+
   getMeCreateAppLimit(): void {
     this.authApiService.get("/user/get_create_app_limit/" + this.email)
       .then((response: any) => {
@@ -228,5 +238,9 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utils.loadSpinner(true);
       });
+  }
+
+  shortTitle(title: string) {
+    return title.length > 15 ? title.substring(0, 10) + ' ...' : title;
   }
 }

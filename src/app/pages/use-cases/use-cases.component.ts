@@ -35,10 +35,13 @@ export class UseCasesComponent implements OnInit {
     if (product) {
       this.product = JSON.parse(product);
       this.product_id = JSON.parse(product).id;
-    }
-    if (this.product && !this.product?.has_insights) {
-      this.utils.showProductStatusPopup(true);
-      return
+      if (!this.product?.has_insights) {
+        this.utils.showProductStatusPopup(true);
+        return
+      }
+    } else {
+      let pro_id = localStorage.getItem('record_id');
+      this.product_id = pro_id;
     }
     this.getUsecases();
     this.utils.loadSpinner(true);

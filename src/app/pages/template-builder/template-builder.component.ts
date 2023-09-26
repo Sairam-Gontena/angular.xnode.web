@@ -70,15 +70,14 @@ export class TemplateBuilderComponent implements OnInit {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
         window.addEventListener('message', (event) => {
-          if (event.data) {
-            let data = event.data;
-            if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
-              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
-          }
           if (event.origin + '/dashboard/' !== environment.designStudioAppUrl) {
             return;
           }
-
+          if (event.data.message == 'retrive_dashboard_generic_screen') {
+            let data = event.data.data;
+            if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
+              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+          }
         });
       }
     });
