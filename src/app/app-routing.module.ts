@@ -221,6 +221,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
   },
   {
+    path: 'specifications',
+    loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',
