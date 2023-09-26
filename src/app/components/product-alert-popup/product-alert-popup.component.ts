@@ -22,9 +22,7 @@ export class ProductAlertPopupComponent {
     this.currentUser = UserUtil.getCurrentUser();
   }
   continueChat(): void {
-    this.openDockedNavi.emit({ cbFlag: true, productContext: localStorage.getItem('record_id') });
     this.closePopup.emit(true);
-    this.auditUtil.post('CONTINUE_WITH_NAVI_FROM_PRODUCT_POPUP', 1, 'SUCCESS', 'user-audit');
   }
 
   getPreviousCoversation(): void {
