@@ -41,7 +41,9 @@
                         <img alt="dp" src="./assets/dp.svg" width="40" />
                         <div class="text-white ml-4">
                             <p class="m-0 font-bold heading-text">Created by you</p>
-                            <p class="m-0 normal-text">Last viewed 3 minutes ago</p>
+                            <p class="m-0 normal-text">Last viewed
+                                {{ data.timeAgo }} ago
+                            </p>
                             <p class="m-0 normal-text">created on: {{data.created_on
                                 |
                                 date:'medium'}}</p>
