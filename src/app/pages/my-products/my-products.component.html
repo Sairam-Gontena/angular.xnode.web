@@ -31,12 +31,12 @@
                         <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
                         <img alt="Card" src="./assets/d-card.svg" class="w-full" />
-                        <i class="pi pi-external-link external-link-icon external-link-icon " [title]="data.product_url"
+                    </div>
+                    <div class=" flex justify-content-between align-items-center card-color card-title p-2">
+                        {{shortTitle(data.title)}}
+                        <i class="pi pi-external-link " [title]="data.product_url"
                             (click)="openExternalLink(data.product_url)"
                             *ngIf="data.product_url && data.product_url !== ''"></i>
-                    </div>
-                    <div class="card-color card-title p-2">
-                        {{shortTitle(data.title)}}
                     </div>
                     <div class="card-color p-2 pb-4 flex align-items-start body-card">
                         <img alt="dp" src="./assets/dp.svg" width="40" />
