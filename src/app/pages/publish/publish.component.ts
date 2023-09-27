@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import TableData from '../../../assets/json/table_columns.json';
 @Component({
   selector: 'xnode-publish',
   templateUrl: './publish.component.html',
@@ -9,6 +10,10 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 
 })
 export class PublishComponent {
+  cols: any[] = [];
+  publish_overview: any;
+  tableInfo: any;
+
   dashboard: any;
   layoutColumns: any;
   templates: any;
@@ -23,6 +28,6 @@ export class PublishComponent {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
+    this.tableInfo = TableData.publish_overview.Table_Info;
   }
-
 }
