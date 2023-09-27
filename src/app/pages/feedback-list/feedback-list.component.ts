@@ -110,22 +110,25 @@ export class FeedbackListComponent {
     this.reportItem = report;
     this.message = '';
     this.selectedIndex = index;
-    this.conversationSourceId = this.selectedListItem?.id
+    this.conversationSourceId = report?.id
     this.getMeConversations();
     if (onInit == false && this.getScreenWidth < 980) {
       this.visible = true;
     }
   }
 
-  getMeUserAvatar(report: any) {
-    if (report) {
-      var words = report?.userName?.split(" "); // Split the string into an array of words
-      if (words?.length >= 2) {
+  getMeUserAvatar(report?: any) {
+    let words : any;
+    if(report){
+      words = report?.userName?.split(" "); 
+    }else{
+      words = [currentUser?.first_name,currentUser?.last_name];
+    }
+      if (username?.length >= 2) {
         var firstLetterOfFirstWord = words[0][0].toUpperCase(); // Get the first letter of the first word
         var firstLetterOfSecondWord = words[1][0].toUpperCase(); // Get the first letter of the second word
         return firstLetterOfFirstWord + firstLetterOfSecondWord
       }
-    }
   }
 
   getMeConversations(): void {

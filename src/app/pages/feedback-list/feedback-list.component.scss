@@ -130,14 +130,12 @@
 :host::ng-deep .p-selectbutton .p-button.p-highlight {
     background: #02ADEE;
     border-color: #02ADEE;
-    border-radius: 12px;
     padding: 16px 10px;
 }
 
 :host::ng-deep .p-buttonset .p-button:last-of-type,
 :host::ng-deep .p-buttonset .p-button:first-of-type {
     padding: 16px 10px;
-    border-radius: 12px;
 }
 
 .report-list-height {
