@@ -52,8 +52,7 @@
                                    *ngIf="rowData[col.field] !== 'Pending Invite'">
                                    {{rowData[col.field]}}
                               </div>
-                              <div class="flex"
-                                   *ngIf="rowData[col.field] == 'Pending Invite' || rowData[col.field] == 'Invited'">
+                              <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
                                    <xnode-action-button
                                         [Actions]="rowData[col.field] == 'Invited'? DeleteAction : Actions"
                                         [Data]="rowData" (dataActionEvent)="handleDataAndAction($event)"
