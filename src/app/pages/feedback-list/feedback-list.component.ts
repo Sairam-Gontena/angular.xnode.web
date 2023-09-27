@@ -4,7 +4,6 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Location } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'xnode-feedback-list',
@@ -35,13 +34,13 @@ export class FeedbackListComponent {
   selectedItemConversation: any;
   message: any;
   modalPosition: any;
+  reportItem: any;
 
   constructor(
     public utils: UtilsService,
     private userUtilService: UserUtilsService,
     private auditUtil: AuditutilsService,
-    private location: Location,
-    private cdr: ChangeDetectorRef
+    private location: Location
   ) {
     this.onWindowResize();
     let user = localStorage.getItem('currentUser')
@@ -108,6 +107,7 @@ export class FeedbackListComponent {
 
   onSelectListItem(report: any, index: Number, onInit?: boolean) {
     this.selectedListItem = report;
+    this.reportItem = report;
     this.message = '';
     this.selectedIndex = index;
     this.conversationSourceId = this.selectedListItem?.id

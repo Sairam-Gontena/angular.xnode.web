@@ -1,9 +1,9 @@
-* {
-    border-color: #535354 !important;
-}
-
 .image-names {
     background-color: #4B4B4B;
+}
+
+.feedback-header {
+    border-color: #535354 !important;
 }
 
 .list-item {
@@ -11,6 +11,7 @@
     color: #DEDEDE;
     padding: 10px;
     cursor: pointer;
+    border-color: #535354 !important;
 }
 
 .list-item:hover {
@@ -45,6 +46,15 @@
 
 .active {
     background: #535354;
+}
+
+.list-item .border-bottom-1,
+.selected-item {
+    border-color: #535354 !important;
+}
+
+.active .list-details {
+    border-color: #DEDEDE !important;
 }
 
 :host::ng-deep .p-dialog .p-dialog-header {
@@ -119,12 +129,14 @@
 :host::ng-deep .p-selectbutton .p-button.p-highlight {
     background: #02ADEE;
     border-color: #02ADEE;
+    border-radius: 12px;
     padding: 16px 10px;
 }
 
 :host::ng-deep .p-buttonset .p-button:last-of-type,
 :host::ng-deep .p-buttonset .p-button:first-of-type {
     padding: 16px 10px;
+    border-radius: 12px;
 }
 
 .report-list-height {
