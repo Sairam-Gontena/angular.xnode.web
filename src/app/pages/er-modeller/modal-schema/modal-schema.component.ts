@@ -1,27 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
-// service
 import { DataService } from '../service/data.service';
-
-// class
-import { Schema } from '../class/schema';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'modal',
-  templateUrl: './modal-schema.component.html'
+  templateUrl: './modal-schema.component.html',
+  styleUrls: ['./modal-schema.component.scss'],
 })
 
 export class ModalSchemaComponent implements OnDestroy {
-
   public parent_model: any;
   public use_laravel_auth: any;
-
   public mode: string | any; // create or edit
   public schema: any;
-
+  visible: boolean = true;
   public fakerTypes: any[] = [
     'randomDigit()',
     'randomDigitNot(5)',
@@ -103,7 +96,7 @@ export class ModalSchemaComponent implements OnDestroy {
   ];
 
   modalRef?: BsModalRef;
-  constructor(public modalService: BsModalService,private dataService: DataService) { }
+  constructor(public modalService: BsModalService, private dataService: DataService) { }
 
   ngOnDestroy() {
     this.dataService.flg_repaint = true;

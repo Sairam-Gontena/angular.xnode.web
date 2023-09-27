@@ -1,53 +1,52 @@
-<p-dialog header="Header" [(visible)]="isVisible"  [modal]="true" [style]="{width: '50vw'}">
+<p-dialog header="Header" [(visible)]="isVisible" [modal]="true" [style]="{width: '50vw'}">
   <ng-template pTemplate="header">
     <h3>{{mode == 'create' ? "Create Property" : "Edit Property"}}</h3>
     <form [formGroup]="formGroup" (ngSubmit)="create()">
-      <input type="hidden"
-             name="is_pivot"
-             formControlName="is_pivot">
+      <input type="hidden" name="is_pivot" formControlName="is_pivot">
 
-<div class="card flex justify-content-center">
-<span class="p-float-label">
-  <input pInputText id="name" formControlName="name" />
-  <label htmlFor="name">Name</label>
-</span>
-</div>
+      <div class="card flex justify-content-center">
+        <span class="p-float-label">
+          <input pInputText id="name" formControlName="name" />
+          <label htmlFor="name">Name</label>
+        </span>
+      </div>
 
-<div class="card flex justify-content-center">
-  <span class="p-float-label">
-    <input pInputText id="display_name" formControlName="displayName" />
-    <label htmlFor="display_name">Display name</label>
-  </span>
-  </div>
+      <div class="card flex justify-content-center">
+        <span class="p-float-label">
+          <input pInputText id="display_name" formControlName="displayName" />
+          <label htmlFor="display_name">Display name</label>
+        </span>
+      </div>
 
-  <div class="card flex justify-content-center">
-    <span class="p-float-label">
-      <input pInputText id="comment" formControlName="comment" />
-      <label htmlFor="comment">Comment</label>
-    </span>
-    </div>
+      <div class="card flex justify-content-center">
+        <span class="p-float-label">
+          <input pInputText id="comment" formControlName="comment" />
+          <label htmlFor="comment">Comment</label>
+        </span>
+      </div>
 
-    <div class="card flex justify-content-center">
-      <label htmlFor="use_soft_delete">use soft delete</label>
+      <div class="card flex justify-content-center">
+        <label htmlFor="use_soft_delete">use soft delete</label>
         <p-checkbox [binary]="true" inputId="binary"></p-checkbox>
       </div>
       <div class="card flex justify-content-center">
         <span class="p-float-label">
-          <p-dropdown id="schema_id_for_relation" placeholder="Select a schema"  formControlName="schema_id_for_relation" [options]="model.schemas" optionLabel="name"></p-dropdown>
+          <p-dropdown id="schema_id_for_relation" placeholder="Select a schema" formControlName="schema_id_for_relation"
+            [options]="model.schemas" optionLabel="name"></p-dropdown>
           <label htmlFor="schema_id_for_relation">Relation schema</label>
         </span>
-        </div>
+      </div>
 
       <div class="card flex justify-content-center">
         <span class="p-float-label">
-          <input pInputText id="module" formControlName="module"  />
+          <input pInputText id="module" formControlName="module" />
           <label htmlFor="module">Module name</label>
         </span>
-        </div>
+      </div>
     </form>
-</ng-template>
-<ng-template pTemplate="footer">
+  </ng-template>
+  <ng-template pTemplate="footer">
     <button type="button" pButton icon="pi pi-times" label="Cancel" (click)="cancel()"></button>
     <button type="button" pButton icon="pi pi-check" label="Create" (click)="create()"></button>
-</ng-template>
+  </ng-template>
 </p-dialog>

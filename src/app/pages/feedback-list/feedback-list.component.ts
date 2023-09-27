@@ -77,6 +77,7 @@ export class FeedbackListComponent {
   }
 
   onClickSend() {
+    this.utils.loadSpinner(true);
     let payload = {
       "userId": this.user?.user_id,
       "conversationSourceType": this.selectedArea,
@@ -90,8 +91,10 @@ export class FeedbackListComponent {
         this.message = '';
         this.showMessageBox = false;
       }
+      this.utils.loadSpinner(false);
     }).catch((err: any) => {
       this.utils.loadToaster({ severity: 'error', summary: '', detail: err });
+      this.utils.loadSpinner(false);
     })
   }
 
