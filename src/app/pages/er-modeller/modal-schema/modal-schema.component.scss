@@ -1,0 +1,77 @@
+.heading-color {
+    color: #DEDEDE;
+}
+
+.circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    background-color: #2E2D36;
+    border-color: 1px solid #535354;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.img-bg {
+    background-color: #2E2D36;
+    padding: 16p;
+    border-radius: 32px;
+}
+
+.feedback-type:hover {
+    background: #2E2D36;
+}
+
+:host::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #4B4B4B;
+}
+
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
+:host::ng-deep .p-dialog .p-dialog-footer {
+    border-top: 1px solid #4B4B4B;
+    padding: 20px !important;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-header,
+:host ::ng-deep.p-dialog .p-dialog-content,
+:host ::ng-deep.p-dialog .p-dialog-footer {
+    background-color: #23222B !important;
+    color: #FFFFFF !important;
+}
+
+@media (max-width: 640px) {
+    :host::ng-deep .p-dialog .p-dialog-header {
+        padding: 0px !important;
+    }
+
+    .customer-feedback-list,
+    .feedback-type {
+        padding: 5px !important;
+    }
+}
+
+:host ::ng-deep {
+    .p-inputtext {
+        color: #dfdfdf;
+    }
+}
+
+:host ::ng-deep .ng-select.ng-select-single .ng-select-container {
+    height: 45px;
+}
+
+:host ::ng-deep .ng-select.ng-select-single .ng-select-container,
+select {
+    padding: 12px 10px;
+    border-radius: 4px;
+    background: #2E2D36;
+    color: #dfdfdf;
+    border: 1px solid #dfdfdf;
+    font-size: 14px;
+
+}
