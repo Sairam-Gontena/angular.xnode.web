@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import TableData from '../../../assets/json/table_logs.json'
+import TableData from '../../../assets/json/table_columns.json';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
@@ -13,6 +13,7 @@ export class LogsComponent implements OnInit {
   logsData: any;
   isOpen = true;
   cols: any;
+  tableInfo: any;
   email: any;
   productId: any;
 
@@ -25,7 +26,8 @@ export class LogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cols = TableData.Columns;
+    this.cols = TableData.notification_list.Columns;
+    this.tableInfo = TableData.notification_list.Table_Info;
     let localItem = localStorage.getItem('currentUser')
     if (localItem) {
       let user = JSON.parse(localItem);

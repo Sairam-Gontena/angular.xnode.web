@@ -16,11 +16,10 @@ export class DynamicTableComponent implements OnInit {
   @Input() cols: any[] = [];
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
+  @Input() tableInfo: any
   headers: any;
   editable: boolean = true;
-  showSearch: boolean = true;
   showDelete: boolean = true;
-  showExport: boolean = true;
   showHeaderMenu: boolean = true;
   userDetails: any;
   tableData: any;
@@ -33,7 +32,6 @@ export class DynamicTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTableData(this.inputData);
-
   }
 
   private loadTableData(data: any): void {
