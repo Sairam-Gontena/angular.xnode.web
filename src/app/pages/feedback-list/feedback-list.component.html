@@ -1,5 +1,5 @@
 <div class="feedback-div grid m-0 p-0">
-    <div class="feedback-header col-12 p-3 border-bottom-2 border-100">
+    <div class="feedback-header col-12 py-2 px-5 border-bottom-2 border-100">
         <div class="flex justify-content-between flex-wrap">
             <div class="flex">
                 <div class="flex flex-column justify-content-center">
@@ -46,8 +46,8 @@
                                     <p-avatar [label]="getMeUserAvatar(report)" styleClass="mr-2"
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }" shape="circle"
                                         *ngIf="report?.userName"></p-avatar>
-                                    <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                                        {{currentUser?.last_name|titlecase}}</p>
+                                    <p class="m-0 pl-2 font-sm font-medium">{{report?.userName|titlecase}}
+                                    </p>
                                 </div>
                                 <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
                                     {{selectedListItem.modifiedOn | date:'medium'}}
@@ -89,8 +89,8 @@
                                 <div class="flex align-items-center">
                                     <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                                    <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                                        {{currentUser?.last_name|titlecase}}<span
+                                    <p class="m-0 pl-2 font-sm font-medium">
+                                        {{selectedListItem?.userName|titlecase}}<span
                                             class="text-sm font-normal border-left-1 ml-4 pl-4">
                                             {{selectedListItem.modifiedOn | date:'medium'}}
                                             <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
@@ -114,8 +114,8 @@
                                 <div class="flex align-items-center">
                                     <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                                    <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                                        {{currentUser?.last_name|titlecase}}</p>
+                                    <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}
+                                    </p>
                                 </div>
                                 <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
                                     (click)="onClickSend()"></p-button>
@@ -165,8 +165,7 @@
                             <div class="flex align-items-center abc">
                                 <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
                                     [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                                <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                                    {{currentUser?.last_name|titlecase}}<span
+                                <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                         class="text-sm font-normal border-left-1 ml-4 pl-4">
                                         {{selectedListItem.modifiedOn | date:'medium'}}
                                         <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
@@ -189,8 +188,7 @@
                             <div class="flex align-items-center">
                                 <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
                                     [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                                <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                                    {{currentUser?.last_name|titlecase}}</p>
+                                <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}</p>
                             </div>
                             <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
                                 (click)="onClickSend()"></p-button>
@@ -256,8 +254,7 @@
                     <div class="flex align-items-center">
                         <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                        <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
-                            {{currentUser?.last_name|titlecase}}<span
+                        <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                 class="text-sm font-normal border-left-1 ml-4 pl-4">
                                 {{selectedListItem?.modifiedOn | date:'medium'}}
                                 <!-- {{selectedListItem?.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
