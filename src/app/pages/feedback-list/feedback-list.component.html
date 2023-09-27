@@ -50,10 +50,11 @@
                                         {{currentUser?.last_name|titlecase}}</p>
                                 </div>
                                 <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
-                                    {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
+                                    {{selectedListItem.modifiedOn | date:'medium'}}
+                                    <!-- {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                                 </div>
                                 <p class="m-0 text-sm font-normal pl-2">
-                                    Status <span class="open">
+                                    Status <span class="text-sm open">
                                         {{report?.feedbackStatusId}}
                                     </span>
                                 </p>
@@ -91,7 +92,8 @@
                                     <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
                                         {{currentUser?.last_name|titlecase}}<span
                                             class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                            {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
+                                            {{selectedListItem.modifiedOn | date:'medium'}}
+                                            <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                                         </span></p>
                                 </div>
                             </div>
@@ -166,7 +168,8 @@
                                 <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
                                     {{currentUser?.last_name|titlecase}}<span
                                         class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                        {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
+                                        {{selectedListItem.modifiedOn | date:'medium'}}
+                                        <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                                     </span></p>
                             </div>
                         </div>
@@ -256,7 +259,8 @@
                         <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
                             {{currentUser?.last_name|titlecase}}<span
                                 class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                {{selectedListItem?.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}}
+                                {{selectedListItem?.modifiedOn | date:'medium'}}
+                                <!-- {{selectedListItem?.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                             </span></p>
                     </div>
                 </div>
