@@ -4,16 +4,16 @@
      [columns]="cols">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center">
-               <span class="p-input-icon-left" *ngIf="showSearch">
+               <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
                </span>
                <div class="flex-wrap">
-                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="showDelete">
+                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="tableInfo?.delete_action">
                          <img src="../../assets/delete.svg" alt="circle-ci-image" class="text-sm ml-1">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
                     </p-button>
-                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="showExport">
+                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="tableInfo?.export_action">
                          <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Export</span>
                          <i class="pi pi-chevron-down ml-2"></i>
@@ -25,7 +25,7 @@
           <tr class="custom-cell">
                <th *ngFor="let col of columns" [ngClass]="'tableheader'">
                     {{ col.header }}
-                    <p-columnFilter type="text" [field]="col.field" display="menu"></p-columnFilter>
+                    <p-columnFilter type="text" [field]="col.field" display="menu" *ngIf="col.filter"></p-columnFilter>
                </th>
           </tr>
      </ng-template>
@@ -52,8 +52,7 @@
                                    *ngIf="rowData[col.field] !== 'Pending Invite'">
                                    {{rowData[col.field]}}
                               </div>
-                              <div class="flex"
-                                   *ngIf="rowData[col.field] == 'Pending Invite' || rowData[col.field] == 'Invited'">
+                              <div class="flex" *ngIf="rowData[col.field] == 'Pending Invite'">
                                    <xnode-action-button
                                         [Actions]="rowData[col.field] == 'Invited'? DeleteAction : Actions"
                                         [Data]="rowData" (dataActionEvent)="handleDataAndAction($event)"
