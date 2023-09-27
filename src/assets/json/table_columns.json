@@ -1,0 +1,136 @@
+{
+    "user_management": {
+        "Table_Info": {
+            "name": "User Management",
+            "delete_action": false,
+            "search_input": true,
+            "export_action": true
+        },
+        "Columns": [
+            {
+                "field": "account_type",
+                "header": "Account Type",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "first_name",
+                "header": "First Name",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "last_name",
+                "header": "Last Name",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "email",
+                "header": "Email",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "phone",
+                "header": "Phone Number",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "created_on",
+                "header": "Created On",
+                "type": "datetime",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "modified_on",
+                "header": "Modified On",
+                "type": "datetime",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "action",
+                "header": "Action",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            }
+        ],
+        "Actions": [
+            {
+                "label": "Invite",
+                "backgroundColor": "Success"
+            }
+        ]
+    },
+    "notification_list": {
+        "Table_Info": {
+            "name": "Notification list",
+            "delete_action": false,
+            "search_input": true,
+            "export_action": true
+        },
+        "Columns": [
+            {
+                "field": "title",
+                "header": "Project",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "product_name",
+                "header": "Product Name",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "description",
+                "header": "Description",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "start_time",
+                "header": "Start Time",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "end_time",
+                "header": "End Time",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            },
+            {
+                "field": "status",
+                "header": "Status",
+                "width": 100,
+                "filter": true,
+                "sortable": true
+            }
+        ]
+    },
+    "publish_overview": {
+        "Table_Info": {
+            "name": "Publish Overview",
+            "delete_action": false,
+            "search_input": true,
+            "export_action": true
+        }
+    }
+}
