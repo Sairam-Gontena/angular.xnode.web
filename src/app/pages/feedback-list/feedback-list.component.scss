@@ -139,7 +139,7 @@
 }
 
 .report-list-height {
-    height: calc(100vh - 110px);
+    height: calc(100vh - 160px);
     overflow-y: auto;
 }
 
@@ -236,4 +236,9 @@
     .userfile-divs {
         width: 45% !important;
     }
+}
+
+.img-div {
+    border-radius: 10px;
+    border-color: #4B4B4B;
 }

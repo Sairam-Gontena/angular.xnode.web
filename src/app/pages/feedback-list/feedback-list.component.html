@@ -152,9 +152,9 @@
                         <div class="grid">
                             <div class="sm:col-4 md:col-4 lg:col-4 xl:col-4 my-2"
                                 *ngFor="let file of selectedListItem?.userFiles">
-                                <div class="w-8">
+                                <div class="img-div border-1 w-8">
                                     <img [src]="file.filePath" class="att-image border-round-lg w-full" alt="att img">
-                                    <div class="flex align-items-center image-names py-2 px-2 mb-3 border-round-sm"
+                                    <div class="flex align-items-center image-names py-2 px-2 border-round-sm"
                                         *ngIf="file?.filePath">
                                         <p class="text-sm m-0 ellipsis-text">{{file?.fileName}}</p>
                                     </div>
@@ -162,7 +162,7 @@
                             </div>
                         </div>
                         <div class="flex justify-content-between flex-wrap align-items-center mt-4 mb-2">
-                            <div class="flex align-items-center abc">
+                            <div class="flex align-items-center">
                                 <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
                                     [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                                 <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
@@ -193,7 +193,7 @@
                             <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
                                 (click)="onClickSend()"></p-button>
                         </div>
-                        <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"
+                        <textarea rows="5" cols="30" pInputTextarea class="w-full mt-2" [(ngModel)]="message"
                             (keydown.enter)="onClickSend()"></textarea>
                     </div>
                 </div>
@@ -241,9 +241,9 @@
                 <div class="grid">
                     <div class="sm:col-4 md:col-4 lg:col-4 xl:col-4 my-2 mx-1 userfile-divs"
                         *ngFor="let file of selectedListItem?.userFiles">
-                        <div class="w-8">
+                        <div class="img-div border-1 w-8">
                             <img [src]="file.filePath" class="att-image border-round-lg w-full" alt="att img">
-                            <div class="flex align-items-center image-names py-2 px-2 mb-3 border-round-sm"
+                            <div class="flex align-items-center image-names py-2 px-2 border-round-sm"
                                 *ngIf="file?.filePath">
                                 <p class="text-sm m-0 ellipsis-text">{{file?.fileName}}</p>
                             </div>
