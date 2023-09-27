@@ -39,14 +39,6 @@
         {
             "label": "Invite",
             "backgroundColor": "Success"
-        },
-        {
-            "label": "Hold",
-            "backgroundColor": "Warning"
-        },
-        {
-            "label": "Reject",
-            "backgroundColor": "Danger"
         }
     ]
 }
