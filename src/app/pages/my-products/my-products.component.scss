@@ -1,48 +1,269 @@
-:host ::ng-deep .search .p-inputtext {
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #4F4E55;
-    border: 0;
-    width: 670px;
-    color: #ffffff;
+@media (max-width: 767px) {
+    :host ::ng-deep .p-button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    :host ::ng-deep .p-tabview {
+        width: 100% !important;
+    }
+
+    :host ::ng-deep .p-button.p-button-secondary {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    :host ::ng-deep .p-inputtext {
+        background-color: #4F4E55;
+        width: 100%;
+        border-width: 0;
+        border-radius: 50px;
+        height: 40px;
+        margin-left: 5px;
+    }
+
+    .txt-heading {
+        font-size: 36px;
+        font-family: 'Inter';
+        font-weight: 500;
+        line-height: 43.57px;
+    }
+
+    .tabview-header-txt {
+        font-size: 10px;
+    }
+
+    :host ::ng-deep .p-card {
+        position: relative;
+    }
+
+    .tab-view-img {
+        height: 18px;
+        width: 18px;
+    }
+
+    .header-text {
+        font-size: 12px
+    }
+
+    .heading-text {
+        font-size: 10px;
+    }
+
+    .normal-text {
+        font-size: 8px;
+    }
+
+    :host ::ng-deep .p-card .p-card-title {
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 700;
+    }
+
+    :host ::ng-deep .p-card .p-card-content {
+        padding: 0px;
+    }
+
+    .empty-card {
+        height: 200px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 21.78px;
+    }
+
+    .card-subheading-txt {
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 600;
+        line-height: 14.52px;
+        margin-top: 5px;
+    }
+
+    .card-normal-txt {
+        font-size: 12px;
+        font-family: 'Inter';
+        font-weight: 400;
+        line-height: 14.52px;
+    }
 }
 
-// :host ::ng-deep .p-inputtext:enabled:focus {
-//      box-shadow: none;
-// }
+
+/* Tablets (768px to 991px width) */
+@media (min-width: 768px) and (max-width: 991px) {
+    :host ::ng-deep .p-button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    :host ::ng-deep .p-button.p-button-secondary {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    :host ::ng-deep .p-inputtext {
+        background-color: #4F4E55;
+        width: 100%;
+        border-width: 0;
+        border-radius: 50px;
+        height: 40px;
+        margin-left: 5px
+    }
+
+    .txt-heading {
+        font-size: 48px;
+    }
+
+    .tabview-header-txt {
+        font-size: 14px;
+    }
+
+    :host ::ng-deep .p-card {
+        position: relative;
+    }
+
+    :host ::ng-deep .p-card .p-card-content {
+        padding: 0px;
+    }
+
+    .heading-text {
+        font-size: 14px;
+    }
+
+    .normal-text {
+        font-size: 12px;
+    }
+
+    .empty-card {
+        height: 300px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 32px;
+    }
+
+    .card-subheading-txt {
+        font-size: 14px;
+        font-family: 'Inter';
+        font-weight: 600;
+        line-height: 16.94px;
+        margin-top: 5px;
+    }
+
+    .card-normal-txt {
+        font-size: 14px;
+        font-family: 'Inter';
+        font-weight: 400;
+        line-height: 16.94px;
+        margin-top: 5px;
+
+    }
+}
+
+@media (min-width: 992px) {
+    :host ::ng-deep .p-button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    :host ::ng-deep .p-button.p-button-secondary {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    :host ::ng-deep .p-inputtext {
+        background-color: #4F4E55;
+        width: 100%;
+        border-width: 0;
+        border-radius: 50px;
+        height: 40px;
+        margin-left: 5px
+    }
+
+    .txt-heading {
+        font-size: 36px;
+    }
+
+    .tabview-header-txt {
+        font-size: 14px;
+    }
+
+    :host ::ng-deep .p-card-header {
+        height: 125px;
+    }
+
+    :host ::ng-deep .p-card {
+        height: 260px !important;
+        position: relative;
+    }
+
+    :host ::ng-deep .p-card .p-card-content {
+        padding: 0px;
+    }
+
+    .heading-text {
+        font-size: 12px;
+    }
+
+    .normal-text {
+        font-size: 10px;
+    }
+
+    .empty-card {
+        height: 300px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-family: 'Inter';
+        font-weight: 700;
+        line-height: 32px;
+    }
+
+    .card-subheading-txt {
+        font-size: 16px;
+        font-family: 'Inter';
+        font-weight: 600;
+        line-height: 19.36px;
+        margin-top: 5px;
+    }
+
+    .card-normal-txt {
+        font-size: 16px;
+        font-family: 'Inter';
+        font-weight: 400;
+        line-height: 19.36px;
+        margin-top: 5px;
+
+    }
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    box-shadow: none;
+}
 
 :host ::ng-deep .p-inputtext ::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-:host ::ng-deep .p-card-body {
-    background: #4E4D55;
-    border-radius: 20px;
-    padding-top: 16px;
-    padding-bottom: 16px;
-}
-
-:host ::ng-deep .p-card-content {
-    height: 100%;
-}
-
-:host ::ng-deep .new-card .p-card .p-card-body {
-    height: 100% !important;
-
-}
-
 :host ::ng-deep .p-card {
-    border-radius: 20px;
     background: #4E4D55;
 }
 
-:host ::ng-deep .p-card-header {
-    height: 199px;
+:host ::ng-deep .p-card .p-card-body {
+    padding: 0.75rem;
 }
 
 :host ::ng-deep .p-card .p-card-title {
-    max-width: 235px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -92,33 +313,6 @@
     }
 }
 
-.overlay {
-    position: relative;
-    bottom: 122px;
-    color: #4E4D55;
-    font-size: 40px;
-    font-weight: 700;
-    padding: 12px;
-    text-align: right;
-}
-
-.overlay-heart {
-    position: relative;
-    color: #EF018F;
-    bottom: 188px;
-    padding: 15px;
-    text-align: right;
-    z-index: 1;
-}
-
-:host ::ng-deep .p-card .p-card-content {
-    padding: 0.25rem 0;
-}
-
-:host ::ng-deep .p-tabview {
-    width: 100vw !important;
-}
-
 :host ::ng-deep .p-tabview .p-tabview-nav {
     background: #3A3942 !important;
     color: #ffffff !important;
@@ -145,16 +339,84 @@
 :host ::ng-deep .p-tabview .p-tabview-panels {
     background: #3A3942 !important;
     color: #ffffff !important;
+    padding: 0px !important;
 }
 
 @media screen and (max-width: 600px) {
     .search .p-inputtext {
-        width: 260px;
-
+        width: 95%;
     }
 }
 
 .tmp-page-height {
     height: calc(100vh - 40px);
     overflow: auto;
+}
+
+.text-xxs {
+    font-size: 8px;
+}
+
+.card-body {
+    height: 328px;
+}
+
+.body-container {
+    height: 100%;
+    width: 100%;
+}
+
+::placeholder {
+    color: #fff;
+}
+
+.new-layer {
+    position: relative;
+}
+
+.new-layer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.centered-content {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.new-template {
+    background-color: #4E4D55;
+    border-radius: 10px;
+}
+
+.overlay-heart {
+    color: #EF018F;
+    padding: 10px;
+}
+
+.overlay {
+    color: #4E4D55;
+    font-size: 30px;
+    font-weight: 700;
+    font-family: 'Inter';
+    padding: 10px;
+}
+
+.card-color {
+    background-color: #4E4D55;
+}
+
+.body-card {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.empty-card1 {
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px
 }

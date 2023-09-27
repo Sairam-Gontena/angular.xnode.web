@@ -30,6 +30,11 @@ export const AppSideMenuItems =
                 path: 'overview'
             },
             {
+                label: 'Spec',
+                icon: './assets/overview.svg',
+                path: 'specifications'
+            },
+            {
                 label: 'Usecase',
                 icon: './assets/overview.svg',
                 path: 'usecases'

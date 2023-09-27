@@ -139,18 +139,18 @@ export class AppComponent implements OnInit {
       if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
         return;
       }
-      if (event.data === 'triggerCustomEvent') {
+      if (event.data.message === 'triggerCustomEvent') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
       }
-      if (event.data === 'close-docked-navi') {
+      if (event.data.message === 'close-docked-navi') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
       }
-      if (event.data === 'expand-navi') {
+      if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
       }
-      if (event.data === 'contract-navi') {
+      if (event.data.message === 'contract-navi') {
         this.isNaviExpanded = false;
       }
     });
@@ -164,18 +164,18 @@ export class AppComponent implements OnInit {
           if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
             return;
           }
-          if (event.data === 'triggerCustomEvent') {
+          if (event.data.message === 'triggerCustomEvent') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
-          if (event.data === 'close-docked-navi') {
+          if (event.data.message === 'close-docked-navi') {
             this.isSideWindowOpen = false;
             this.isNaviExpanded = false;
           }
-          if (event.data === 'expand-navi') {
+          if (event.data.message === 'expand-navi') {
             this.isNaviExpanded = true;
           }
-          if (event.data === 'contract-navi') {
+          if (event.data.message === 'contract-navi') {
             this.isNaviExpanded = false;
           }
         });
@@ -297,9 +297,10 @@ export class AppComponent implements OnInit {
 
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
+      || window.location.hash === "#/specifications" || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
       || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
   }
+
   sendEmailNotificationToTheUser(): void {
     const body = {
       "to": [
