@@ -6,9 +6,8 @@
             class="text-white" />
     </div>
     <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3  lg:mt-4">
-        <p-button styleClass="p-button-rounded mr-4">
-            <span class="ml-2 mr-2" (click)="onClickNewWithNavi()">New with NAVI Ai</span>
-        </p-button>
+        <p-button label="New with Navi AI" styleClass="p-button-rounded mr-2 navi-btn"
+            (click)="onClickNewWithNavi()"></p-button>
         <p-button styleClass="p-button-secondary p-button-rounded mr-4">
             <img alt="bot-btn-icon" src="./assets/import.svg" />
             <span class="import-btn ml-2" (click)="importNavi()">Import</span>
@@ -94,7 +93,7 @@
                         {{shortTitle(data.title)}}
                         <i class="pi pi-external-link " [title]="data.product_url"
                             (click)="openExternalLink(data.product_url)"
-                            *ngIf="data.product_url && data.product_url !== ''" ></i>
+                            *ngIf="data.product_url && data.product_url !== ''"></i>
                     </div>
                     <div class="card-color p-3 pb-4 flex align-items-start body-card">
                         <img alt="dp" src="./assets/dp.svg" width="40" />
