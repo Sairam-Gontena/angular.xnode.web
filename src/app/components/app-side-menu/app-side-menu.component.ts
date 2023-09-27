@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AppSideMenuItems } from '../../constants/AppSideMenuItems';
 import { Router } from '@angular/router';
-import { ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Location } from '@angular/common';
-import { UserUtil, User } from '../../utils/user-util';
+import { NavigationEnd } from '@angular/router';
+import { UserUtil } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { AuditutilsService } from 'src/app/api/auditutils.service'

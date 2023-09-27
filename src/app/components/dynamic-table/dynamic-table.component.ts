@@ -18,24 +18,24 @@ export class DynamicTableComponent implements OnInit {
   @Input() cols: any[] = [];
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
+  @Input() tableInfo: any
   headers: any;
   editable: boolean = true;
-  showSearch: boolean = true;
   showDelete: boolean = true;
-  showExport: boolean = true;
   showHeaderMenu: boolean = true;
   userDetails: any;
   tableData: any;
   showConfirmationPopover: boolean = false;
+  exportFileName: any
 
   ngOnChanges(changes: SimpleChanges): void {
     this.dynamicData = this.inputData;
     this.tableData = this.inputData;
+    this.exportFileName = this.tableInfo.name + new Date().getTime()
   }
 
   ngOnInit(): void {
     this.loadTableData(this.inputData);
-
   }
 
   private loadTableData(data: any): void {
@@ -92,7 +92,7 @@ export class DynamicTableComponent implements OnInit {
       const worksheet = xlsx.utils.json_to_sheet(this.dynamicData);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'products');
+      this.saveAsExcelFile(excelBuffer, this.tableInfo.name);
     });
   }
 
@@ -102,6 +102,6 @@ export class DynamicTableComponent implements OnInit {
     const data: Blob = new Blob([buffer], {
       type: EXCEL_TYPE
     });
-    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    FileSaver.saveAs(data, this.exportFileName);
   }
 }
