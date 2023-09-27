@@ -1,1 +1,28 @@
-<p>specifications-content works!</p>
+<div class="flex justify-content-center mb-3">
+    <div class="sctions-grid">
+        <h3 class="m-0">1. Introduction</h3>
+        <div class="flex">
+            date and time
+        </div>
+        <div class="flex">
+            Created By
+        </div>
+        <div>
+            BG Image
+        </div>
+    </div>
+</div>
+<div class="flex justify-content-center  mb-3">
+    <div [ngClass]="!showMoreContent ? 'sctions-grid' : 'sctions-grid-full'">
+        <h3 class="m-0 pb-4">1.1 Purpose</h3>
+        <p-button (click)="onClickSeeMore()" label="See More" class="see-more-button"
+            styleClass="p-button-rounded p-button-outlined " class=""></p-button>
+        <div class="flex content">
+            The purpose of this document is to provide a comprehensive specification for the FinBuddy application,
+            detailing its intended functionality, key features, and underlying technical considerations. This document
+            serves as a guide for the development, testing, and deployment of the application, ensuring alignment
+            between stakeholders and clarity on product expectations.
+        </div>
+
+    </div>
+</div>

@@ -1,19 +1,23 @@
 <div class="spec-menu">
     <div class="flex justify-content-center">
-        search
+        <span class="p-input-icon-left w-full">
+            <i class="pi pi-search"></i>
+            <input type="text" pInputText placeholder="Search" class="w-full" />
+        </span>
     </div>
     <div>
-        accardians
-        <p-accordion [activeIndex]="0">
-            <p-accordionTab header="Header I">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.
-                </p>
+        <p class="title">General</p>
+        <p-accordion>
+            <p-accordionTab header="Instructions">
+                <div class="p-2 pointer">
+                    Test
+                </div>
+                <div class="p-2 pointer">
+                    Test1
+                </div>
+                <div class="p-2 pointer">
+                    Test2
+                </div>
             </p-accordionTab>
             <p-accordionTab header="Header II">
                 <p>

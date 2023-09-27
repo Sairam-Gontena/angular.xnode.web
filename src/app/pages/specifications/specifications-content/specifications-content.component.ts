@@ -5,6 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './specifications-content.component.html',
   styleUrls: ['./specifications-content.component.scss']
 })
-export class SpecificationsContentComponent {
 
+export class SpecificationsContentComponent {
+  showMoreContent?: boolean = false;
+  onClickSeeMore(): void {
+    this.showMoreContent = !this.showMoreContent;
+  }
 }
