@@ -87,16 +87,6 @@ export class DynamicTableComponent implements OnInit {
 
   }
 
-  // exportPdf() {
-  //   import('jspdf').then((jsPDF) => {
-  //     import('jspdf-autotable').then((x) => {
-  //       const doc = new jsPDF.default('p', 'px', 'a4');
-  //       (doc as any).autoTable(this.cols, this.dynamicData);
-  //       doc.save('table data.pdf');
-  //     });
-  //   });
-  // }
-
   exportExcelData() {
     import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.dynamicData);
