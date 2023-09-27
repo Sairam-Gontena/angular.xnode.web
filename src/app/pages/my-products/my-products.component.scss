@@ -1,9 +1,4 @@
 @media (max-width: 767px) {
-    :host ::ng-deep .p-button {
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-
     :host ::ng-deep .p-tabview {
         width: 100% !important;
     }
@@ -169,11 +164,6 @@
 }
 
 @media (min-width: 992px) {
-    :host ::ng-deep .p-button {
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-
     :host ::ng-deep .p-button.p-button-secondary {
         padding-left: 10px;
         padding-right: 10px;
@@ -419,4 +409,18 @@
     border-radius: 10px;
     margin-top: 10px;
     margin-bottom: 10px
+}
+
+:host ::ng-deep .navi-btn.p-button {
+    background: var(--primary-color);
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid var(--primary-color);
+}
+
+.p-button:enabled:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 }

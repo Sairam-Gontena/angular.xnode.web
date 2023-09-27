@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import TableData from '../../../assets/json/table_users.json'
+import TableData from '../../../assets/json/table_columns.json';
 import { RefreshListService } from '../../RefreshList.service'
 import { MenuItem } from 'primeng/api';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
@@ -15,6 +15,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 export class UserInvitationComponent {
   cols: any[] = [];
   usersList: any;
+  tableInfo: any;
   Actions: any[] = [];
   items: MenuItem[] | undefined;
   currentUser: any;
@@ -34,8 +35,9 @@ export class UserInvitationComponent {
   ngOnInit(): void {
     this.utilsService.loadSpinner(true)
     this.getAllUsers()
-    this.cols = TableData.Columns;
-    this.Actions = TableData.Actions;
+    this.cols = TableData.user_management.Columns;
+    this.Actions = TableData.user_management.Actions;
+    this.tableInfo = TableData.user_management.Table_Info;
     this.items = [{ label: 'Home' }, { label: 'Accounts' }, { label: 'Beta Users' }];
 
   }
