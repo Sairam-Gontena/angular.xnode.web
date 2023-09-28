@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
@@ -9,17 +9,18 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 
 export class SpecificationsContentComponent {
   @Input() specData: any;
+  @ViewChild('contentContainer') contentContainer!: ElementRef;
 
   showMoreContent?: boolean = false;
   selectedSpecItem: any;
   specItemList: any = [];
   selectedSpecItemListTitles: any = [];
   selectedSectionIndex: any;
+  specItemIndex: any;
 
   constructor(private utils: UtilsService) {
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
-        console.log('event', event);
         event.forEach((element: any) => {
           if (this.specItemList.length === 0) {
             this.specItemList = element.section;
@@ -27,24 +28,17 @@ export class SpecificationsContentComponent {
             this.specItemList = this.specItemList.concat(element.section)
           }
         });
-        // this.selectedSpecItem = event;
-        // if (this.selectedSpecItemListTitles.length === 0) {
-        //   this.selectedSpecItemListTitles.push(event?.title);
-        //   this.specItemList = event.section;
-        // } else {
-        //   if (this.selectedSpecItemListTitles.filter((title: any) => { return title === event.title }).length === 0) {
-        //     this.selectedSpecItemListTitles.push(event?.title);
-        //     this.specItemList = this.specItemList.concat(event.section);
-
-        //   }
-        // }
       }
-      console.log('specItemList', this.specItemList);
-      // console.log('selectedSpecItemListTitles', this.selectedSpecItemListTitles);
-      // console.log('selectedSpecItem', this.selectedSpecItem);
-
-
-
+    })
+    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
+      if (event) {
+        this.specItemIndex = event;
+      }
+    })
+    this.utils.getMeSectionIndex.subscribe((event: any) => {
+      if (event) {
+        this.scrollToItem(event.title)
+      }
     })
   }
 
@@ -60,7 +54,12 @@ export class SpecificationsContentComponent {
         obj.collapsed = true
       }
     })
-    console.log(' this.specItemList', this.specItemList);
+  }
 
+  scrollToItem(itemId: string) {
+    const element = document.getElementById(itemId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

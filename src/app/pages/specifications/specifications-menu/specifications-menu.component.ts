@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { SPEC_DATA } from '../mock'
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
@@ -9,7 +9,6 @@ import { ApiService } from 'src/app/api/api.service';
 })
 
 export class SpecificationsMenuComponent implements OnInit {
-
   @Input() specData?: any;;
   selectedSpec: any;
   selectedSection: any;
@@ -22,27 +21,24 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.utils.loadSpinner(true);
-    // this.getMeSpecList();
+    this.utils.passSelectedSpecIndex(0);
   }
 
-  onOpenAccordian(event: any, i: any) {
-    console.log('iiiiiiii', i);
-
-    this.selectedSpec = event;
-    this.activeIndex = i
-    // this.utils.passSelectedSpecItem(event);
+  onOpenAccordian(event: any) {
+    this.activeIndex = event.i
+    this.utils.passSelectedSpecIndex(event.i);
   }
 
-  onClickSection(event: any) {
+  onClickSection(event: any, i: any) {
     this.selectedSection = event;
+    this.utils.passSelectedSectionIndex(event);
+
   }
 
   getMeSpecList(): void {
     this.apiService.getApi("specs/retrieve/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
       .then(response => {
         if (response?.status === 200 && !response.data.detail) {
-          console.log('response.data', response.data);
           const list = response.data;
           list.forEach((obj: any) => {
             if (obj?.title) {
