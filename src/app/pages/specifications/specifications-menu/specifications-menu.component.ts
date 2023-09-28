@@ -13,7 +13,7 @@ export class SpecificationsMenuComponent implements OnInit {
   selectedSpec: any;
   selectedSection: any;
   activeIndex: any = 0;
-
+  menuList: any;
   constructor(
     private utils: UtilsService,
     private apiService: ApiService
@@ -22,6 +22,13 @@ export class SpecificationsMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.utils.passSelectedSpecIndex(0);
+    let list = this.specData;
+    list.forEach((element: any) => {
+      if (element.section) {
+        element.section.splice(0, 1);
+      }
+    });
+    this.menuList = [...list]
   }
 
   onOpenAccordian(event: any) {
