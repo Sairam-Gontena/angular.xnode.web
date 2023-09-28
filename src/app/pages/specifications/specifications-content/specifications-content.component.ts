@@ -68,7 +68,7 @@ export class SpecificationsContentComponent implements OnInit {
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
       if (obj.title === item.title) {
-        obj.collapsed = true
+        obj.collapsed = true;
       }
     })
   }
