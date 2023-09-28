@@ -34,6 +34,12 @@ export class UtilsService {
   private specItem: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
   public getMeSpecItem: Observable<Object> = this.specItem.asObservable();
 
+  private specItemIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeSpecItemIndex: Observable<any> = this.specItemIndex.asObservable();
+
+  private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -74,6 +80,17 @@ export class UtilsService {
   passSelectedSpecItem(event: any): void {
     this.specItem.next(event);
   }
+
+  passSelectedSpecIndex(event: any): void {
+    this.specItemIndex.next(event);
+  }
+
+  passSelectedSectionIndex(event: any): void {
+    this.sectionIndex.next(event);
+  }
+
+
+
 
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);

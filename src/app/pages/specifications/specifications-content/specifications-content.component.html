@@ -1,6 +1,6 @@
 <div class="spec-body">
-    <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i as idex;">
-        <div class="intro-grid" *ngIf="!item.content">
+    <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
+        <div class="intro-grid" *ngIf="!item.content" [id]="item.title">
             <h3 class=" m-0">{{item.title}}</h3>
             <div class="flex align-items-center mt-3 spec-status">
                 <p class="m-0">Published on {{item.created_on | date: 'MMM d, y'}}</p>
@@ -12,10 +12,10 @@
             <div class="flex mt-3 author">
                 By Dilip Chandra
             </div>
-            <img src="./assets/spec-intro-banner.svg" alt="banner" class="mt-3 w-full">
+            <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
         </div>
-        <div [ngClass]="!item?.collapsed  ? 'sctions-grid relative' : 'sctions-grid-full relative'"
-            *ngIf="item.content">
+        <div [ngClass]="!item?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'" *ngIf="item.content"
+            [id]="item.title" #contentContainer>
             <h3 class="m-0 pb-2">{{item.title}}</h3>
             <p-button (click)="onClickSeeMore(item,i)" label="See More" *ngIf="!item?.collapsed"
                 styleClass="p-button-rounded p-button-outlined see-more-button"

@@ -4,7 +4,6 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Location } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'xnode-feedback-list',
@@ -35,13 +34,13 @@ export class FeedbackListComponent {
   selectedItemConversation: any;
   message: any;
   modalPosition: any;
+  reportItem: any;
 
   constructor(
     public utils: UtilsService,
     private userUtilService: UserUtilsService,
     private auditUtil: AuditutilsService,
-    private location: Location,
-    private cdr: ChangeDetectorRef
+    private location: Location
   ) {
     this.onWindowResize();
     let user = localStorage.getItem('currentUser')
@@ -108,18 +107,24 @@ export class FeedbackListComponent {
 
   onSelectListItem(report: any, index: Number, onInit?: boolean) {
     this.selectedListItem = report;
+    this.reportItem = report;
     this.message = '';
     this.selectedIndex = index;
-    this.conversationSourceId = this.selectedListItem?.id
+    this.conversationSourceId = report?.id
     this.getMeConversations();
     if (onInit == false && this.getScreenWidth < 980) {
       this.visible = true;
     }
   }
 
-  getMeUserAvatar(report: any) {
-    var words = report.userName.split(" "); // Split the string into an array of words
-    if (words.length >= 2) {
+  getMeUserAvatar(report?: any) {
+    let words: any;
+    if (report) {
+      words = report?.userName?.split(" ");
+    } else {
+      words = [this.currentUser?.first_name, this.currentUser?.last_name];
+    }
+    if (words?.length >= 2) {
       var firstLetterOfFirstWord = words[0][0].toUpperCase(); // Get the first letter of the first word
       var firstLetterOfSecondWord = words[1][0].toUpperCase(); // Get the first letter of the second word
       return firstLetterOfFirstWord + firstLetterOfSecondWord
@@ -172,6 +177,7 @@ export class FeedbackListComponent {
       if (res) {
         this.conversationSourceId = res?.data?.[0]?.id;
         this.reportList = res.data;
+        this.reportItem = res.data[0];
         if (res?.data.length) {
           this.selectedListItem = res.data[0];
           this.onSelectListItem(this.selectedListItem, 0, true)
@@ -203,8 +209,9 @@ export class FeedbackListComponent {
 
   getMeGeneralFeedbackList(): void {
     this.userUtilService.get('/user-feedback').then((res: any) => {
+      this.reportList = res.data;
+      this.reportItem = res.data[0];
       if (res) {
-        this.reportList = res.data;
         if (res?.data.length) {
           this.selectedListItem = res.data[0];
         }
