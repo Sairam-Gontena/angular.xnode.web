@@ -1,13 +1,18 @@
-<p-dialog header="Product Status" [(visible)]="showProductStatusPopup" [style]="{width: '30vw'}"
+<p-dialog header="{{dialogHeader}}" [(visible)]="showProductStatusPopup" [style]="{width: '30vw'}"
     [breakpoints]="{ '1450px': '35vw' }">
-    <div class="p-4">
+    <div class="p-4" *ngIf="data?.content; else elseBlock">
+        Are you sure, you want to {{data?.content}} this app?
+    </div>
+    <ng-template class="p-4" #elseBlock>
         It appears that app has not been onboarded completely, would you like to generate the application based on the
         information you have shared earlier?
-    </div>
+    </ng-template>
     <ng-template pTemplate="footer">
         <p-button (click)="continueChat()" label="Continue Chat"
             styleClass="p-button-rounded p-button-outlined "></p-button>
-        <p-button (click)="getPreviousCoversation()" label="Generate Application"
+        <!-- <p-button (click)="getPreviousCoversation()" label="Generate Application"
+            styleClass="p-button-rounded p-button-info generate-app"></p-button> -->
+        <p-button (click)="actionButton()" label="{{buttonLabel}}"
             styleClass="p-button-rounded p-button-info generate-app"></p-button>
     </ng-template>
 </p-dialog>
