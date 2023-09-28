@@ -1,35 +1,46 @@
 <div class="spec-body">
     <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
         <div class="intro-grid" *ngIf="!item.content" [id]="item.title">
-            <h3 class=" m-0">{{item.title}}</h3>
-            <div class="flex align-items-center mt-3 spec-status">
-                <p class="m-0">Published on {{item.created_on | date: 'MMM d, y'}}</p>
+            <div class="text-4xl font-semibold">{{(i+1) + '. ' + item.title}}</div>
+            <div class="flex align-items-center spec-status">
+                <p class="text-sm font-medium">Published on {{item.created_on | date: 'MMM d, y'}}</p>
                 <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                <p class="m-0 pr-3">Updated on {{item.modified_on | date: 'MMM d, y'}}</p>
+                <p class="text-sm font-medium">Updated on {{item.modified_on | date: 'MMM d, y'}}</p>
                 <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                <!-- <p class="m-0">3 mins read</p> --> 
+                <p class="text-sm font-medium">3 mins read</p>
             </div>
-            <div class="flex mt-3 author">
-                By Dilip Chandra
+            <div class="flex mt-2">
+                <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">#FinBuddy
+                </div>
+                <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">#Product
+                </div>
+                <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">#Overview
+                </div>
+            </div>
+            <div class="flex mt-3 author align-items-center">
+                <i class="pi pi-circle-fill text-3xl mr-3"></i>
+                <div class="text-lg">
+                    by Dilip Chandra
+                </div>
             </div>
             <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
         </div>
         <div [ngClass]="!item?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'" *ngIf="item.content"
             [id]="item.title" #contentContainer>
-            <h3 class="m-0 pb-2">{{item.title}}</h3>
+            <h3 class="m-0 pb-2 text-2xl font-bold ">{{'1.'+ i + ' '+ item.title}}</h3>
             <p-button (click)="onClickSeeMore(item,i)" label="See More" *ngIf="!item?.collapsed"
                 styleClass="p-button-rounded p-button-outlined see-more-button"
                 class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
             <div class="w-full" *ngIf="isArray(item); else notArray">
                 <ul *ngFor="let subItem of item.content">
                     <li>
-                        <p class="m-0 pb-2"><span class="sub-title">{{subItem.title}} </span>
-                            : <span class="sub-content">{{subItem.content}}</span></p>
+                        <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
+                            : <span class="sub-content font-normal text-base">{{subItem.content}}</span></p>
                     </li>
                 </ul>
             </div>
             <ng-template #notArray>
-                <div class="flex content">
+                <div class="flex content text-base font-normal">
                     {{item.content}}
                 </div>
             </ng-template>
