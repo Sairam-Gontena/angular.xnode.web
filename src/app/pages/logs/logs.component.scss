@@ -1,5 +1,4 @@
 .template-builder-wrapper {
-    width: 100%;
     display: flex;
     height: calc(100vh - 42px);
 }
@@ -12,7 +11,7 @@
 
 .another-template-builder-body-wrapper {
     width: calc(100% - 50px);
-    height: calc(100vh - 50px);
+    height: calc(100vh - 42px);
 }
 
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
@@ -55,4 +54,9 @@
     width: 768px;
     height: 1024px;
     background-color: #f2f2f2;
+}
+
+.container {
+    height: calc(100vh - 150px);
+    background-color: #23222B;
 }

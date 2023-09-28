@@ -5,9 +5,10 @@
   <div class="template-builder-body-wrapper overflow-hidden"
     [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
     <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-    <div class="grid m-0">
-      <div class="col-12">
-        <xnode-dynamic-table [inputData]="logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
+    <div class="p-3 mr-4 ml-4 container ">
+      <div class="h-full overflow-auto">
+        <xnode-dynamic-table class="mt-2" [inputData]="logsData" [cols]="cols"
+          [tableInfo]="tableInfo"></xnode-dynamic-table>
       </div>
     </div>
   </div>
