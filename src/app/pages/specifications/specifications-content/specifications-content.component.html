@@ -23,19 +23,12 @@
                 styleClass="p-button-rounded p-button-outlined see-more-button"
                 class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
             <div class="w-full" *ngIf="isArray(item); else notArray">
-                <div class=" mb-3" *ngFor="let subItem of item.content">
-                    <div class="mt-3">
-                        <h3 class="m-0 pb-2">{{subItem.title}}</h3>
-                        <div class="flex content" *ngIf="isArray(subItem); else notArray">
-                            {{subItem.content}}
-                        </div>
-                        <ng-template #notArray>
-                            <div class="flex content">
-                                {{subItem.content}}
-                            </div>
-                        </ng-template>
-                    </div>
-                </div>
+                <ul *ngFor="let subItem of item.content">
+                    <li>
+                        <p class="m-0 pb-2"><span class="sub-title">{{subItem.title}} </span>
+                            : <span class="sub-content">{{subItem.content}}</span></p>
+                    </li>
+                </ul>
             </div>
             <ng-template #notArray>
                 <div class="flex content">
