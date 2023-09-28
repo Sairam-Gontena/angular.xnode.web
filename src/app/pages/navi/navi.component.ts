@@ -73,7 +73,10 @@ export class NaviComponent implements OnInit {
             this.utils.showLimitReachedPopup(true);
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
-            window.location.href = this.xnodeAppUrl + '#/my-products';
+            const itemId = event.data.id;
+            localStorage.setItem('record_id', itemId)
+            const newUrl = this.xnodeAppUrl + '#/dashboard';
+            window.location.href = newUrl;
           }
         });
         contentWindow.postMessage(data, this.targetUrl);
