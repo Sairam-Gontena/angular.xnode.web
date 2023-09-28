@@ -153,6 +153,48 @@ export class ReportBugComponent implements OnInit {
       case '#/my-products':
         comp = 'My Product'
         break;
+      case '#/configuration/api-integration':
+        comp = 'API Integration'
+        break;
+      case '#/acitvity':
+        comp = 'Activity'
+        break;
+      case '#/operate':
+        comp = 'Operate'
+        break;
+      case '#/workspace':
+        comp = 'Workspace'
+        break;
+      case '#/brand-guideline':
+        comp = 'Brand Guideline'
+        break;
+      case '#/about-your-self':
+        comp = 'About your self'
+        break;
+      case '#/x-pilot':
+        comp = 'Xpilot'
+        break;
+      case '#/admin/user-invitation':
+        comp = 'User Invitation'
+        break;
+      case '#/operate/change/history-log':
+        comp = 'History Log'
+        break;
+      case '#/admin/user-approval':
+        comp = 'User Approval'
+        break;
+      case '#/dynamic-form':
+        comp = 'Dynamic Form'
+        break;
+      case '#/help-center':
+        comp = 'Help Center'
+        break;
+      case '#/feedback-list':
+        comp = 'Feedback List'
+        break;
+      case '#/specifications':
+        comp = 'Specifications'
+        break;
       default:
         break;
     }
