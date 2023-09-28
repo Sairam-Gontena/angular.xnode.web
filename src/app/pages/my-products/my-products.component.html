@@ -38,11 +38,16 @@
                             *ngIf="data.product_url && data.product_url !== ''"></i>
                     </div>
                     <div class="card-color p-3 pb-4 flex align-items-start body-card">
-                        <img alt="dp" src="./assets/dp.svg" width="40" />
-                        <div class="text-white ml-4">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                            styleClass="mr-2" shape="circle" *ngIf="!currentUser"
+                            [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                        <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
+                            [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
+                            shape="circle"></p-avatar>
+                        <div class="text-white ml-2">
                             <p class="m-0 card-subheading-txt">Created by you</p>
-                            <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p>
-                            <p class="m-0 card-normal-txt mt-1">created on: {{data.created_on
+                            <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
+                            <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
                                 |
                                 date:'medium'}}</p>
                         </div>
@@ -96,11 +101,16 @@
                             *ngIf="data.product_url && data.product_url !== ''"></i>
                     </div>
                     <div class="card-color p-3 pb-4 flex align-items-start body-card">
-                        <img alt="dp" src="./assets/dp.svg" width="40" />
-                        <div class="text-white ml-4">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                            styleClass="mr-2" shape="circle" *ngIf="!currentUser"
+                            [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                        <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
+                            [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
+                            shape="circle"></p-avatar>
+                        <div class="text-white ml-2">
                             <p class="m-0 card-subheading-txt">Created by you</p>
-                            <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p>
-                            <p class="m-0 card-normal-txt mt-1">created on: {{data.created_on
+                            <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
+                            <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
                                 |
                                 date:'medium'}}</p>
                         </div>
