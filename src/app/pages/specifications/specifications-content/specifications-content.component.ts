@@ -62,4 +62,8 @@ export class SpecificationsContentComponent {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  getMeBanner(event: any) {
+    return './assets/' + event.title.toLowerCase().replace(/ /g, '') + '.svg';
+  }
 }
