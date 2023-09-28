@@ -72,6 +72,12 @@ export class NaviComponent implements OnInit {
           if (event.data.message === 'app-limit-exceeded') {
             this.utils.showLimitReachedPopup(true);
           }
+          if (event.data.message === 'triggerRouteToMyProducts') {
+            const itemId = event.data.id;
+            localStorage.setItem('record_id', itemId)
+            const newUrl = this.xnodeAppUrl + '#/dashboard';
+            window.location.href = newUrl;
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
