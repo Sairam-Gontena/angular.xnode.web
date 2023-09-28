@@ -45,6 +45,7 @@ export class GeneralFeedbackComponent implements OnInit {
   productId: any;
   images: any = [];
   feedbackReportFiles: any = [];
+  modalPosition: any;
 
   constructor(public utils: UtilsService,
     private fb: FormBuilder,
@@ -77,12 +78,13 @@ export class GeneralFeedbackComponent implements OnInit {
 
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
-    if (this.getScreenWidth < 780) {
-      this.dialogWidth = '90vw';
-      this.dialogHeight = '90vh';
-    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+    if (this.getScreenWidth < 760) {
+      // this.dialogWidth = '100vw';
+      // this.dialogHeight = '90vh';
+      this.modalPosition = 'bottom';
+    } else if (this.getScreenWidth > 760 && this.getScreenWidth < 980) {
       this.dialogWidth = '75vw';
-      this.dialogHeight = '80vh';
+      this.modalPosition = 'center';
     } else if (this.getScreenWidth > 980) {
       this.dialogWidth = '40vw';
     }

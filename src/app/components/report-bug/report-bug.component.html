@@ -58,8 +58,8 @@
             </div>
 
             <label class="text-sm font-normal">Screenshot</label>
-            <div class="field grid">
-                <div class="sm:col-6 md:col-6 lg:col-6 xl:col-6" *ngFor="let img of uploadedFile;let i = index">
+            <div class="field grid column-gap-2">
+                <div class="sm:col-12 md:col-6 lg:col-6 xl:col-6" *ngFor="let img of uploadedFile;let i = index">
                     <div class="image-container border-1">
                         <img [src]="images[i]" width="100%" class="img">
                         <div class="img-footer flex justify-content-between align-items-center px-3">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="sm:col-6 md:col-6 lg:col-6 xl:col-6">
+                <div class="sm:col-12 md:col-6 lg:col-6 xl:col-6">
                     <div class="image-container border-1 flex align-items-center justify-content-center"
                         (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
                         <div (click)="onUploadIconClick()">

@@ -36,6 +36,10 @@
     border-top: 1px solid #4B4B4B;
 }
 
+:host ::ng-deep .p-dialog-bottom .p-dialog {
+    margin: 0px !important;
+}
+
 @media (max-width: 640px) {
     :host::ng-deep .p-dialog .p-dialog-header {
         padding: 0px !important;

@@ -226,3 +226,7 @@
         width: 45% !important;
     }
 }
+
+:host ::ng-deep .p-dialog-bottom .p-dialog {
+    margin: 0px !important;
+}

@@ -223,3 +223,7 @@ textarea {
     border-color: var(--primary-color);
     border: 1px solid var(--primary-color);
 }
+
+:host ::ng-deep .p-dialog-bottom .p-dialog {
+    margin: 0px !important;
+}

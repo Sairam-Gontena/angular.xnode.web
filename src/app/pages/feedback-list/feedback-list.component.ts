@@ -15,7 +15,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class FeedbackListComponent {
   @Input() visible: any;
   public getScreenWidth: any;
-  public dialogWidth: string = '80vw';
+  dialogWidth: any;
   areaTypes: any[] = [{ label: 'Reported Bug', value: 'USER_BUG_REPORT' }, { label: 'General Feedback', value: 'USER_FEEDBACK' }];
   selectedArea: any;
   formGroup!: FormGroup;
@@ -58,7 +58,7 @@ export class FeedbackListComponent {
       if (event)
         this.getMeConversations();
     })
-    this.modalPosition = 'center'
+    // this.modalPosition = 'center'
   }
 
 
@@ -238,11 +238,14 @@ export class FeedbackListComponent {
 
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
-    if (this.getScreenWidth < 780) {
-      this.dialogWidth = '85vw';
-    } else if (this.getScreenWidth > 780 && this.getScreenWidth < 980) {
+    if (this.getScreenWidth < 760) {
+      this.modalPosition = 'bottom';
+      // this.dialogWidth = '100vw';
+    } else if (this.getScreenWidth > 760 && this.getScreenWidth < 980) {
+      this.modalPosition = 'center'
       this.dialogWidth = '75vw';
     } else if (this.getScreenWidth > 980) {
+      this.modalPosition = 'center'
       this.dialogWidth = '75vw';
     }
   }
