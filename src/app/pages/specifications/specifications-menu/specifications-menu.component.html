@@ -10,7 +10,7 @@
         <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
         <p-accordion [activeIndex]="activeIndex">
             <p-accordionTab [header]=" (i + 1) + '. '+ shortTitle(item.title)"
-                *ngFor="let item of specData; let i = index;" [ngClass]="{'active-header-text':i === activeIndex}">
+                *ngFor="let item of menuList; let i = index;" [ngClass]="{'active-header-text':i === activeIndex}">
                 <div class="p-2 pointer section text-base font-family-inter font-medium ml-4 mt-2 "
                     *ngFor="let section of item?.section let ind = index; " (click)="onClickSection(section,i)">
                     {{(i + 1) + '.'+ (ind + 1) +' '+ section.title}}
