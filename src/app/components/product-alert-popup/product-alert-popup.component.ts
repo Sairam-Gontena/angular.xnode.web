@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from '../services/utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
-import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-product-alert-popup',
@@ -21,12 +22,20 @@ export class ProductAlertPopupComponent implements OnInit {
   dialogHeader: string = 'Product Status';
   buttonLabel: string = '';
   product_id: any;
+  email: any;
+  userId: any;
+  proTitle: any;
 
   constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
+    let currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.email = JSON.parse(currentUser).email;
+      this.userId = JSON.parse(currentUser).user_id;
+    }
     if (this.data.content) {
       this.dialogHeader = 'Confirm ' + this.data.content
       switch (this.data.content) {
@@ -60,15 +69,15 @@ export class ProductAlertPopupComponent implements OnInit {
 
   actionButton() {
     switch (this.buttonLabel) {
-      case "App Generation": {
+      case "Generate app": {
         this.persistConversaiton();
         break;
       }
-      case "App Publishing": {
-        this.buttonLabel = 'Publish app';
+      case "Publish app": {
+        this.getProduct();
         break;
       }
-      case "Spec Generation": {
+      case "Generate Spec": {
         console.log('spec generation clicked TBD')
         break;
       }
@@ -77,6 +86,80 @@ export class ProductAlertPopupComponent implements OnInit {
         break;
       }
     }
+  }
+
+  getProduct(): void {
+    this.apiService.get('/get_entire_data/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
+      if (res) {
+        this.proTitle = res?.data?.conversation_details?.title;
+        console.log('res check me', res)
+        this.publishProduct();
+        this.closePopup.emit(true);
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('PRODUCT_ALERT_POPUP_PUBLISH_PRODUCT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+      } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('PRODUCT_ALERT_POPUP_PUBLISH_PRODUCT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
+      }
+    }).catch((err: any) => {
+      console.log(err)
+      let user_audit_body = {
+        'method': 'GET',
+        'url': err?.request?.responseURL
+      }
+      this.auditUtil.post('PRODUCT_ALERT_POPUP_PUBLISH_PRODUCT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
+    })
+  }
+
+  publishProduct() {
+    const body = {
+      repoName: this.proTitle,
+      projectName: environment.projectName,
+      email: this.currentUser?.email,
+      envName: environment.branchName,
+      productId: this.product_id
+    }
+    let detail = "Your app publishing process started. You will get the notifications";
+    this.apiService.publishApp(body).then((response: any) => {
+      if (response) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
+        this.utils.loadSpinner(false);
+        this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
+      }
+    }).catch(error => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': error?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.utils.loadSpinner(false)
+      this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+    });
   }
 
   getPreviousCoversation(): void {
@@ -89,7 +172,6 @@ export class ProductAlertPopupComponent implements OnInit {
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
         this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'FAILURE', 'user-audit');
-
       }
       this.utils.loadSpinner(false);
     }).catch((err: any) => {
