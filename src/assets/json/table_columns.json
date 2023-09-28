@@ -10,35 +10,35 @@
             {
                 "field": "account_type",
                 "header": "Account Type",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "first_name",
                 "header": "First Name",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "last_name",
                 "header": "Last Name",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "email",
                 "header": "Email",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "phone",
                 "header": "Phone Number",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
@@ -46,7 +46,7 @@
                 "field": "created_on",
                 "header": "Created On",
                 "type": "datetime",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
@@ -54,14 +54,14 @@
                 "field": "modified_on",
                 "header": "Modified On",
                 "type": "datetime",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "action",
                 "header": "Action",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             }
@@ -84,42 +84,42 @@
             {
                 "field": "title",
                 "header": "Project",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "product_name",
                 "header": "Product Name",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "description",
                 "header": "Description",
-                "width": 100,
+                "width": 250,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "start_time",
                 "header": "Start Time",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "end_time",
                 "header": "End Time",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             },
             {
                 "field": "status",
                 "header": "Status",
-                "width": 100,
+                "width": 50,
                 "filter": true,
                 "sortable": true
             }
