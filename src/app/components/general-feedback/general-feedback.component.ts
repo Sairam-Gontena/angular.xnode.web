@@ -57,7 +57,7 @@ export class GeneralFeedbackComponent implements OnInit {
     this.generalFeedbackForm = this.fb.group({
       product: [localStorage.getItem('app_name'), Validators.required],
       section: [this.getMeComponent(), Validators.required],
-      tellUsMore: ['', Validators.required],
+      tellUsMore: [''],
       screenshot: [null],
       selectedRating: ['', Validators.required]
     });
