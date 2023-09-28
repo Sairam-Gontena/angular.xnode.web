@@ -35,6 +35,7 @@ export class DynamicTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.cols)
     this.loadTableData(this.inputData);
   }
 

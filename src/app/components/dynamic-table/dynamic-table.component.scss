@@ -13,16 +13,33 @@
 :host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
   background-color: #3A3942;
   border-color: #595959;
-  min-width: 280px;
   color: #fff;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
 }
 
-:host::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody>tr>td {
+:host ::ng-deep.p-datatable .p-datatable-tbody>tr>td {
+  border-bottom-width: 0px;
+}
+
+:host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
+  // border-bottom-width: 0px;
+}
+
+:host ::ng-deep.p-datatable .p-datatable-tbody>tr>td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+}
+
+:host::ng-deep .p-datatable.p-datatable-gridlines:has(.p-datatable-thead):has(.p-datatable-tbody) .p-datatable-tbody>tr>td {
+  color: #fff;
+  border-color: #595959;
+  padding-left: 10px;
   background-color: #3A3942;
-  color: #fff;
-  border: none;
+  border-bottom-width: 0px;
 }
-
 
 .tablerow {
   background-color: #302E38;
@@ -174,4 +191,10 @@
 .normal-text {
   color: '#fff';
   line-height: 20px;
+}
+
+.empty-row {
+  background-color: transparent;
+  width: 100%;
+  border-width: 0px;
 }
