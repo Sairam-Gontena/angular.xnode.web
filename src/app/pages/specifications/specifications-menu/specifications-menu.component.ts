@@ -62,4 +62,9 @@ export class SpecificationsMenuComponent implements OnInit {
       });
   }
 
+  shortTitle(title: string) {
+    let shortTitle = title.length > 20 ? title.substring(0, 23) + '...' : title
+    return shortTitle
+  }
+
 }

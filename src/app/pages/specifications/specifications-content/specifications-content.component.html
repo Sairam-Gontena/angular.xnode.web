@@ -7,17 +7,15 @@
                 <i class="pi pi-circle-fill pl-3 pr-3"></i>
                 <p class="m-0 pr-3">Updated on {{item.modified_on | date: 'MMM d, y'}}</p>
                 <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                <!-- <p class="m-0">3 mins read</p> -->
+                <!-- <p class="m-0">3 mins read</p> --> 
             </div>
             <div class="flex mt-3 author">
                 By Dilip Chandra
             </div>
             <img src="./assets/spec-intro-banner.svg" alt="banner" class="mt-3 w-full">
-
         </div>
         <div [ngClass]="!item?.collapsed  ? 'sctions-grid relative' : 'sctions-grid-full relative'"
             *ngIf="item.content">
-
             <h3 class="m-0 pb-2">{{item.title}}</h3>
             <p-button (click)="onClickSeeMore(item,i)" label="See More" *ngIf="!item?.collapsed"
                 styleClass="p-button-rounded p-button-outlined see-more-button"

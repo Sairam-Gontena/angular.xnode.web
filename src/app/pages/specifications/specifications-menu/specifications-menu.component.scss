@@ -24,13 +24,60 @@
     background: #24232C !important;
 }
 
+:host ::ng-deep .p-accordion .p-accordion-header-text {
+    font-size: 18px;
+    font-family: 'Inter';
+    font-weight: 400;
+    line-height: 21.78px;
+    color: #DEDEDE
+}
+
+// :host ::ng-deep .p-accordion .p-accordion-header-text {
+//     font-size: 18px;
+//     font-family: 'Inter';
+//     font-weight: 400;
+//     line-height: 21.78px;
+//     color: #02ADEE
+// }
+
+.active-header-text {
+    color: #02ADEE
+        /* Replace with the desired active color */
+}
+
 .title {
-    font-size: 16px;
     color: #dfdfdf;
 }
 
 .section:hover {
-    background: #dfdfdf;
+    background: #DEDEDE;
     color: #0e0e0e;
     border-radius: 6px;
+}
+
+.section {
+    color: #949292;
+}
+
+::placeholder {
+    color: #DEDEDE;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    border-width: 0px;
+    box-shadow: none;
+}
+
+:host ::ng-deep .p-inputtext {
+    border-width: 0px;
+    color: #DEDEDE;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
+    height: 16px;
+    width: 16px;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header {
+    margin-top: 20px
 }

@@ -1,17 +1,19 @@
 <div class="spec-menu">
     <div class="flex justify-content-center">
         <span class="p-input-icon-left w-full">
-            <i class="pi pi-search"></i>
-            <input type="text" pInputText placeholder="Search" class="w-full" />
+            <i class="pi pi-search text-white"></i>
+            <input type="text" pInputText placeholder="Search for docs, Keywords, etc"
+                class="w-full border-round-3xl font-family-inter text-sm font-normal" />
         </span>
     </div>
     <div>
-        <p class="title">General</p>
+        <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
         <p-accordion [activeIndex]="activeIndex">
-            <p-accordionTab [header]="item.title" *ngFor="let item of specData; let i = index;">
-                <div class="p-2 pointer section" *ngFor="let section of item?.section"
-                    (click)="onClickSection(section)">
-                    {{section.title}}
+            <p-accordionTab [header]=" (i + 1) + '. '+ shortTitle(item.title)"
+                *ngFor="let item of specData; let i = index;" [class.active-header-text]="i === activeIndex">
+                <div class="p-2 pointer section text-base font-family-inter font-medium ml-4 mt-2 "
+                    *ngFor="let section of item?.section let ind = index; " (click)="onClickSection(section)">
+                    {{(i + 1) + '.'+ (ind + 1) +' '+ section.title}}
                 </div>
             </p-accordionTab>
         </p-accordion>
