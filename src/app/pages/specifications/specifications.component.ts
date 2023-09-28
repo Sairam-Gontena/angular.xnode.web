@@ -35,7 +35,7 @@ export class SpecificationsComponent implements OnInit {
 
   getMeSpecList(): void {
     this.utils.loadSpinner(true);
-    this.apiService.getApi("specs/retrieve/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
+    this.apiService.getApi("specs/retrieve/" + '0a398791-1dc2-4fd6-b78b-b73928844e37')
       .then(response => {
         if (response?.status === 200 && !response.data.detail) {
           const list = response.data;
