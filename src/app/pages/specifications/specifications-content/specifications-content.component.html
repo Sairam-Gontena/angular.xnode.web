@@ -1,28 +1,51 @@
-<div class="flex justify-content-center mb-3">
-    <div class="sctions-grid">
-        <h3 class="m-0">1. Introduction</h3>
-        <div class="flex">
-            date and time
-        </div>
-        <div class="flex">
-            Created By
-        </div>
-        <div>
-            BG Image
-        </div>
-    </div>
-</div>
-<div class="flex justify-content-center  mb-3">
-    <div [ngClass]="!showMoreContent ? 'sctions-grid' : 'sctions-grid-full'">
-        <h3 class="m-0 pb-4">1.1 Purpose</h3>
-        <p-button (click)="onClickSeeMore()" label="See More" class="see-more-button"
-            styleClass="p-button-rounded p-button-outlined " class=""></p-button>
-        <div class="flex content">
-            The purpose of this document is to provide a comprehensive specification for the FinBuddy application,
-            detailing its intended functionality, key features, and underlying technical considerations. This document
-            serves as a guide for the development, testing, and deployment of the application, ensuring alignment
-            between stakeholders and clarity on product expectations.
-        </div>
+<div class="spec-body">
+    <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i as idex;">
+        <div class="intro-grid" *ngIf="!item.content">
+            <h3 class=" m-0">{{item.title}}</h3>
+            <div class="flex align-items-center mt-3 spec-status">
+                <p class="m-0">Published on {{item.created_on | date: 'MMM d, y'}}</p>
+                <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                <p class="m-0 pr-3">Updated on {{item.modified_on | date: 'MMM d, y'}}</p>
+                <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                <!-- <p class="m-0">3 mins read</p> -->
+            </div>
+            <div class="flex mt-3 author">
+                By Dilip Chandra
+            </div>
+            <img src="./assets/spec-intro-banner.svg" alt="banner" class="mt-3 w-full">
 
+        </div>
+        <div [ngClass]="!item?.collapsed  ? 'sctions-grid relative' : 'sctions-grid-full relative'"
+            *ngIf="item.content">
+
+            <h3 class="m-0 pb-2">{{item.title}}</h3>
+            <p-button (click)="onClickSeeMore(item,i)" label="See More" *ngIf="!item?.collapsed"
+                styleClass="p-button-rounded p-button-outlined see-more-button"
+                class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
+            <div class="w-full" *ngIf="isArray(item); else notArray">
+                <div class=" mb-3" *ngFor="let subItem of item.content">
+                    <div class="mt-3">
+                        <h3 class="m-0 pb-2">{{subItem.title}}</h3>
+                        <div class="flex content" *ngIf="isArray(subItem); else notArray">
+                            {{subItem.content}}
+                        </div>
+                        <ng-template #notArray>
+                            <div class="flex content">
+                                {{subItem.content}}
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <ng-template #notArray>
+                <div class="flex content">
+                    {{item.content}}
+                </div>
+            </ng-template>
+            <div class="gradientback" *ngIf="!item?.collapsed">
+
+            </div>
+        </div>
     </div>
+
 </div>

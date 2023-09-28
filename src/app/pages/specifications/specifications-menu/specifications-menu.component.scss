@@ -3,6 +3,8 @@
     width: 375px;
     background: #24232C;
     padding: 20px;
+    height: calc(100vh - 40px);
+    overflow: auto;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
@@ -25,4 +27,10 @@
 .title {
     font-size: 16px;
     color: #dfdfdf;
+}
+
+.section:hover {
+    background: #dfdfdf;
+    color: #0e0e0e;
+    border-radius: 6px;
 }

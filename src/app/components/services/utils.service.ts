@@ -31,6 +31,9 @@ export class UtilsService {
   public getMeUpdatedList: Observable<boolean> = this.reload.asObservable();
 
 
+  private specItem: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
+  public getMeSpecItem: Observable<Object> = this.specItem.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -67,6 +70,11 @@ export class UtilsService {
   reloadList(event: any): void {
     this.reload.next(event);
   }
+
+  passSelectedSpecItem(event: any): void {
+    this.specItem.next(event);
+  }
+
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);
     const now = new Date();
