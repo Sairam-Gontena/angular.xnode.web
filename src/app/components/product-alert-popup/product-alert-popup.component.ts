@@ -92,7 +92,6 @@ export class ProductAlertPopupComponent implements OnInit {
     this.apiService.get('/get_entire_data/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
       if (res) {
         this.proTitle = res?.data?.conversation_details?.title;
-        console.log('res check me', res)
         this.publishProduct();
         this.closePopup.emit(true);
         let user_audit_body = {
