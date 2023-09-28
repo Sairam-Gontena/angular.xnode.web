@@ -59,8 +59,13 @@ export class FeedbackConversationComponent {
   }
   onClickSend() {
     this.utils.loadSpinner(true);
+    let user = localStorage.getItem('currentUser'); //user_id
+    let userId;
+    if (user) {
+      userId = JSON.parse(user).user_id
+    }
     let payload = {
-      "userId": this.selectedConv.userId,
+      "userId": userId,
       "conversationSourceType": this.selectedConv.conversationSourceType,
       "conversationSourceId": this.selectedConv.conversationSourceId,
       "message": this.message,
