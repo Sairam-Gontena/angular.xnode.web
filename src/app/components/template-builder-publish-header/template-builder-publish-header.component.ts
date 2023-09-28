@@ -167,6 +167,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
     })
   }
+
   sendEmailNotificationToTheUser(): void {
     const body = {
       "to": [

@@ -6,6 +6,7 @@ export interface User {
   id?: number;
   role?: string;
   user_id?: string;
+  account_id?: string;
 }
 
 export class UserUtil {

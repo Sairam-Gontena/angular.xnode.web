@@ -4,7 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { environment } from 'src/environments/environment';
-
+import { NotifyApiService } from 'src/app/api/notify.service';
 @Component({
   selector: 'xnode-product-alert-popup',
   templateUrl: './product-alert-popup.component.html',
@@ -19,18 +19,27 @@ export class ProductAlertPopupComponent implements OnInit {
   visible = true;
   consversationList = [];
   currentUser?: User;
-  dialogHeader: string = 'Product Status';
-  buttonLabel: string = '';
+  dialogHeader: string = 'Confirm App Generation';
+  buttonLabel: string = 'Generate app';
   product_id: any;
   email: any;
   userId: any;
+  content: any;
   proTitle: any;
+  product: any;
+  xnodeAppUrl: string = environment.xnodeAppUrl;
+  showLimitReachedPopup: boolean = false;
 
-  constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
-    this.currentUser = UserUtil.getCurrentUser();
+  constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService,
+    private notifyApi: NotifyApiService) {
   }
 
   ngOnInit(): void {
+    this.currentUser = UserUtil.getCurrentUser();
+    this.product = localStorage.getItem('product');
+    if (this.product && !this.product?.has_insights) {
+      this.utils.showProductStatusPopup(true);
+    }
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -41,18 +50,21 @@ export class ProductAlertPopupComponent implements OnInit {
       switch (this.data.content) {
         case "App Generation": {
           this.buttonLabel = 'Generate app';
+          this.content = 'generate';
           break;
         }
         case "App Publishing": {
           this.buttonLabel = 'Publish app';
+          this.content = 'publish';
           break;
         }
         case "Spec Generation": {
           this.buttonLabel = 'Generate Spec'
+          this.content = 'generate spec for';
           break;
         }
         default: {
-          this.buttonLabel = 'Generate Application';
+          this.buttonLabel = 'Generate app';
           break;
         }
       }
@@ -78,7 +90,6 @@ export class ProductAlertPopupComponent implements OnInit {
         break;
       }
       case "Generate Spec": {
-        console.log('spec generation clicked TBD')
         break;
       }
       case "Generate Application": {
@@ -92,7 +103,7 @@ export class ProductAlertPopupComponent implements OnInit {
     this.apiService.get('/get_entire_data/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
       if (res) {
         this.proTitle = res?.data?.conversation_details?.title;
-        this.publishProduct();
+        this.getMeTotalAppsPublishedCount();
         this.closePopup.emit(true);
         let user_audit_body = {
           'method': 'GET',
@@ -190,11 +201,85 @@ export class ProductAlertPopupComponent implements OnInit {
     this.apiService.post(persistconversation, '/persist_conversation').then((response: any) => {
       if (response) {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar" });
+        if (this.buttonLabel == 'Generate app') {
+          const customEvent = new Event('customEvent');
+          window.dispatchEvent(customEvent);
+        }
         this.closePopup.emit(true);
       } else
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.detail });
     }).catch((err: any) => {
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+    })
+  }
+
+  getMeTotalAppsPublishedCount(): void {
+    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+      if (res && res.status === 200) {
+        const restriction_max_value = localStorage.getItem('restriction_max_value');
+        if (restriction_max_value) {
+          if (res.data.total_apps_published >= restriction_max_value) {
+            this.showLimitReachedPopup = true;
+            this.sendEmailNotificationToTheUser();
+          } else {
+            this.publishProduct();
+          }
+        }
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
+        let user_audit_body = {
+          'method': 'GET',
+          'url': res?.request?.responseURL
+        }
+        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      }
+    }).catch((err: any) => {
+      let user_audit_body = {
+        'method': 'GET',
+        'url': err?.request?.responseURL
+      }
+      this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
+    })
+  }
+
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      "to": [
+        this.currentUser?.email
+      ],
+      "cc": [
+        "beta@xnode.ai"
+      ],
+      "bcc": [
+        "dev.xnode@salientminds.com"
+      ],
+      "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
+      "params": { "username": this.currentUser?.firstName + " " + this.currentUser?.lastName }
+    }
+    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+      if (res && res?.data?.detail) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+      }
+    }).catch((err: any) => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': err?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
 }
