@@ -1,8 +1,7 @@
-<div class="flex">
-    <xnode-specifications-menu></xnode-specifications-menu>
+<div class="flex" *ngIf="specData?.length">
+    <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
     <div class="spec-content">
         <xnode-specifications-header></xnode-specifications-header>
-        <xnode-specifications-content></xnode-specifications-content>
+        <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
     </div>
-
 </div>

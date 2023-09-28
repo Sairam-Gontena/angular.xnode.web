@@ -80,6 +80,12 @@ export class NaviComponent implements OnInit {
             this.content = event.data.data;
             this.showProductStatusPopup = true;
           }
+          if (event.data.message === 'triggerRouteToMyProducts') {
+            const itemId = event.data.id;
+            localStorage.setItem('record_id', itemId)
+            const newUrl = this.xnodeAppUrl + '#/dashboard';
+            window.location.href = newUrl;
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
