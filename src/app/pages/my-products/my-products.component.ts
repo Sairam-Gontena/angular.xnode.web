@@ -32,6 +32,7 @@ export class MyProductsComponent implements OnInit {
   tabRecent = false;
   tabCreated = false;
   timeAgo: any;
+  isTitleHovered: any;
   userImage: any;
 
 

@@ -24,11 +24,10 @@
                     </div>
                     <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
                         <div class="font-medium flex justify-content-center heading-color resend-text">Resend
-                            verification code in <a class="no-underline ml-1">{{ resendTimer }}s</a> </div>
+                            verification code in <a class="no-underline ml-1 policy">{{ resendTimer }}s</a> </div>
                     </div>
                     <div *ngIf="resendTimer === 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
-                        <a class="no-underline"
-                            class="text-lg font-medium flex justify-content-center no-underline pointer"
+                        <a class="text-lg font-medium flex justify-content-center no-underline policy pointer"
                             (click)="resendVerification()">Resend Code</a>
                     </div>
                 </form>
