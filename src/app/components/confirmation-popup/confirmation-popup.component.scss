@@ -2,23 +2,16 @@
     background-color: transparent !important;
 }
 
-:host ::ng-deep.p-button-sm p-button-rounded p-button-secondary:hover {
-    color: '#fff'
-}
+// :host ::ng-deep.p-button-sm .p-button-rounded .p-button-secondary:hover {
+//     background: #2563eb;
+//     color: #ffffff;
+//     border-color: #2563eb;
+// }
 
-:host ::ng-deep.p-button-sm {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    width: 85px;
-}
+// :host ::ng-deep.p-button.p-button-secondary {
+//     background-color: #fff;
+// }
 
-:host ::ng-deep.p-button.p-button-secondary {
-    background-color: #fff;
-}
-
-:host ::ng-deep.p-button.p-button-secondary:hover {
-    color: #fff;
-}
 
 .user-txt {
     font-size: 24px;
@@ -58,16 +51,35 @@
     width: '40vw'
 }
 
-:host ::ng-deep .btn-primary.p-button {
-    background: var(--primary-color);
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border: 1px solid var(--primary-color);
+// :host ::ng-deep .btn-primary.p-button {
+//     // background: var(--primary-color);
+//     font-size: 12px;
+//     padding-top: 6px;
+//     padding-bottom: 6px;
+//     // border: 1px solid var(--primary-color);
+// }
+
+:host ::ng-deep.p-button-sm {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    width: 85px !important;
 }
 
-.p-button:enabled:hover {
+:host ::ng-deep.btn-primary.p-button:enabled:hover {
+    background: #2563eb !important;
+    color: #DEDEDE;
+    border-color: #2563eb !important;
+}
+
+:host ::ng-deep.p-button.p-button-secondary:hover {
+    background: #ffffff !important;
+    border-color: #ffffff;
+}
+
+:host ::ng-deep.p-button:enabled:hover {
     background: var(--primary-color);
     border-color: var(--primary-color);
     border: 1px solid var(--primary-color);
+    border-width: none !important;
+
 }

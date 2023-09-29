@@ -32,6 +32,7 @@ export class MyProductsComponent implements OnInit {
   tabRecent = false;
   tabCreated = false;
   timeAgo: any;
+  isTitleHovered: any;
   userImage: any;
 
 
@@ -245,7 +246,4 @@ export class MyProductsComponent implements OnInit {
       });
   }
 
-  shortTitle(title: string) {
-    return title.length > 15 ? title.substring(0, 10) + ' ...' : title;
-  }
 }
