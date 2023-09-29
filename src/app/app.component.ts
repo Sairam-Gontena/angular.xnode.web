@@ -9,6 +9,8 @@ import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
+import { debounce } from "rxjs/operators";
+import { interval } from "rxjs";
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -95,7 +97,7 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductStatus.subscribe((event: any) => {
       this.showProductStatusPopup = event;
     });
-    this.utilsService.handleLimitReachedPopup.subscribe((event: any) => {
+    this.utilsService.handleLimitReachedPopup.pipe(debounce(() => interval(1000))).subscribe((event: any) => {
       this.showLimitReachedPopup = event;
       if (event) {
         let currentUser = localStorage.getItem('currentUser')
