@@ -45,7 +45,8 @@ export class SpecificationsContentComponent implements OnInit {
             || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
           ) {
             obj.contentType = 'list'
-          } else if (obj.title === 'Data Management Persistence' || obj.title === 'Workflows') {
+          } else if (obj.title === 'Data Management Persistence' || obj.title === 'Workflows' || obj.title === 'Data Quality Checks' || obj.title === 'Data Dictionary'
+            || obj.title === 'User Interfaces') {
             obj.contentType = 'data-model'
             this.makeTrustDataModelUrl()
           } else if (obj.title === 'Data Dictionary') {
