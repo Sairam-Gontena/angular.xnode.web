@@ -4,6 +4,7 @@ import { ElementRef } from 'jsplumb';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 @Component({
   selector: 'xnode-navi',
@@ -16,12 +17,15 @@ export class NaviComponent implements OnInit {
   constructor(
     private router: Router,
     private utils: UtilsService,
-    private domSanitizer: DomSanitizer,) {
+    private domSanitizer: DomSanitizer,
+    private auditUtil: AuditutilsService,) {
   }
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
   xnodeAppUrl: string = environment.xnodeAppUrl;
   currentUser: any
+  showProductStatusPopup: boolean = false;
+  content: any;
 
   ngOnInit(): void {
     this.currentUser = localStorage.getItem('currentUser');
@@ -71,6 +75,16 @@ export class NaviComponent implements OnInit {
           }
           if (event.data.message === 'app-limit-exceeded') {
             this.utils.showLimitReachedPopup(true);
+          }
+          if (event.data.message === 'triggerProductPopup') {
+            this.content = event.data.data;
+            this.showProductStatusPopup = true;
+          }
+          if (event.data.message === 'triggerRouteToMyProducts') {
+            const itemId = event.data.id;
+            localStorage.setItem('record_id', itemId)
+            const newUrl = this.xnodeAppUrl + '#/dashboard';
+            window.location.href = newUrl;
           }
         });
         contentWindow.postMessage(data, this.targetUrl);

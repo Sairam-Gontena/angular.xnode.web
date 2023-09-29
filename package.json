@@ -49,6 +49,7 @@
     "chart.js": "^4.3.0",
     "d3": "^7.8.5",
     "d3-context-menu": "^2.1.0",
+    "file-saver": "^2.0.5",
     "jsplumb": "^2.15.6",
     "lodash": "^4.17.21",
     "ng": "^0.0.0",
@@ -64,6 +65,7 @@
     "rxjs": "~7.8.1",
     "socket.io-client": "^4.7.1",
     "tslib": "^2.5.0",
+    "xlsx": "^0.18.5",
     "zone.js": "^0.13.0"
   },
   "devDependencies": {
@@ -71,6 +73,7 @@
     "@angular/cli": "^16.0.1",
     "@angular/compiler-cli": "^16.0.1",
     "@schematics/angular": "^16.2.0",
+    "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~4.3.1",
     "babel-loader": "^9.1.2",
     "jasmine-core": "~5.0.0",

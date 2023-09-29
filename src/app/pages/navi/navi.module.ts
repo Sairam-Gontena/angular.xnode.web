@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NaviRoutingModule } from './navi-routing.module';
 import { NaviComponent } from './navi.component';
+import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { NaviComponent } from './navi.component';
   imports: [
     CommonModule,
     NaviRoutingModule,
-    SharedModule
+    SharedModule,
+    SharedComponentModule
   ]
 })
 export class NaviModule { }

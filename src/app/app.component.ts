@@ -153,6 +153,9 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'contract-navi') {
         this.isNaviExpanded = false;
       }
+      if (event.data.message === 'triggerProductPopup') {
+        this.showProductStatusPopup = true;
+      }
     });
 
 

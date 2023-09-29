@@ -33,6 +33,7 @@ export class MyProductsComponent implements OnInit {
   tabCreated = false;
   timeAgo: any;
   isTitleHovered: any;
+  userImage: any;
 
 
   constructor(private RefreshListService: RefreshListService,
@@ -44,6 +45,10 @@ export class MyProductsComponent implements OnInit {
     private auditUtil: AuditutilsService,
   ) {
     this.currentUser = UserUtil.getCurrentUser();
+
+    if (this.currentUser.first_name && this.currentUser.last_name) {
+      this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
+    }
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
         this.getMetaData()
