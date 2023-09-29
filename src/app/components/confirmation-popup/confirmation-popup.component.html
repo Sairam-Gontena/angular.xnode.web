@@ -1,13 +1,16 @@
 <p-dialog [(visible)]="visible" [modal]="true">
-    <p class="header font-bold">
-        {{Data?.type + ' User'}}
-    </p>
+    <ng-template pTemplate="header">
+        <p class="header font-bold flex justify-content-center">
+            {{Data?.type + ' User'}}
+        </p>
+    </ng-template>
+
     <div class="flex font-medium">
         <span>
             Are you sure you want to {{invitationType}}
         </span>
     </div>
-    <div class="flex justify-content-end  pt-3">
+    <div class="flex justify-content-end mt-6">
         <p-button label="Cancel" styleClass="p-button-sm p-button-rounded p-button-secondary" class="mr-3"
             (click)="onReject()"></p-button>
         <p-button [label]="Data?.type" styleClass="p-button-sm p-button-rounded btn-primary"
