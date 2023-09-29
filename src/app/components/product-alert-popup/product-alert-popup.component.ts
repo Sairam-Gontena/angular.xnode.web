@@ -32,20 +32,17 @@ export class ProductAlertPopupComponent implements OnInit {
 
   constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService) {
+    this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
-    this.currentUser = UserUtil.getCurrentUser();
     this.product = localStorage.getItem('product');
-    if (this.product && !this.product?.has_insights) {
-      this.utils.showProductStatusPopup(true);
-    }
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
       this.userId = JSON.parse(currentUser).user_id;
     }
-    if (this.data.content) {
+    if (this.data?.content) {
       this.dialogHeader = 'Confirm ' + this.data.content
       switch (this.data.content) {
         case "App Generation": {
