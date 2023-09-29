@@ -58,8 +58,6 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'paragraph'
           }
         })
-        console.log('this.specItemList', this.specItemList);
-
       }
     })
     this.utils.getMeSpecItemIndex.subscribe((event: any) => {
@@ -75,16 +73,14 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const product = localStorage.getItem('product');
+    const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     let user_id = JSON.parse(userData).id;
-    let product_id: any;
-    if (product) {
-      product_id = JSON.parse(product).id;
+    if (record_id) {
+      this.targetUrl = environment.designStudioAppUrl + "?email=" + email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
-    this.targetUrl = environment.designStudioAppUrl + "?email=" + email + "&id=" + product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     this.makeTrustedUrl();
   }
 
