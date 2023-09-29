@@ -45,6 +45,7 @@ export class NotificationPanelComponent {
 
   ngOnInit(): void {
     this.allNotifications = this.data
+    console.log('at on init', this.allNotifications)
     this.notifications = this.allNotifications;
     this.currentUser = UserUtil.getCurrentUser();
   }
@@ -88,7 +89,20 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
-      
+
+      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
+    } else {
+      this.router.navigate(['/dashboard']);
+      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
+    }
+    this.closeNotificationPanel.emit(true);
+  }
+
+  gotoSpec(obj: any) {
+    localStorage.setItem('spec_record_id', obj.product_id)
+    localStorage.setItem('record_id', obj.product_id)
+    if (obj.component && obj.component !== '') {
+      this.router.navigate(['/specifications']);
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
@@ -119,6 +133,7 @@ export class NotificationPanelComponent {
         all: true
       };
       this.notifications = this.allNotifications;
+      console.log('at in if filter', this.allNotifications)
     } else {
       this.filterTypes = {
         recent: false,
@@ -128,6 +143,7 @@ export class NotificationPanelComponent {
         [val]: true
       };
       this.notifications = this.allNotifications.filter((x) => x[val]);
+      console.log('at in else filter', this.allNotifications)
     }
 
   }
@@ -135,12 +151,14 @@ export class NotificationPanelComponent {
   toggleNotificationRead(val: any, id: number) {
     const index = this.allNotifications.findIndex(item => item.id === id);
     this.allNotifications[index].read = val === 'read';
+    console.log('at read toggle', this.allNotifications)
   }
 
 
   toggleNotificationPinned(val: any, id: number) {
     const index = this.allNotifications.findIndex(item => item.id === id);
     this.allNotifications[index].pinned = val === 'pinned';
+    console.log('at pinned toggle', this.allNotifications)
   }
 
   onClickPublish(obj: any): void {
