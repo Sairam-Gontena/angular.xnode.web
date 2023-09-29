@@ -35,9 +35,7 @@ export class DataModalCommonComponent implements AfterViewChecked, OnInit {
     private utilsService: UtilsService, private auditUtil: AuditutilsService) {
     this.data = this.dataService.data;
     this.currentUser = UserUtil.getCurrentUser();
-    this.router.events.subscribe((data: any) => {
-      this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
-    });
+
   }
 
   ngOnInit(): void {
@@ -56,24 +54,12 @@ export class DataModalCommonComponent implements AfterViewChecked, OnInit {
     this.utilsService.loadSpinner(true);
     this.getMeDataModel();
   }
-
-  toggleMenu() {
-    this.isOpen = !this.isOpen;
-  }
-
   ngAfterViewChecked(): void {
     if (this.dataService.flg_repaint) {
       this.dataService.flg_repaint = false;
       this.jsPlumbService.repaintEverything();
     }
   }
-
-  getLayout(layout: any): void {
-    if (layout)
-      this.dashboard = this.layoutColumns[layout];
-  }
-
-
   //get calls 
   getMeUserId() {
     this.apiService.get("/get_metadata/" + this.currentUser?.email)
