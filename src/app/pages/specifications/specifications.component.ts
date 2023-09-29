@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { local } from 'd3';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
