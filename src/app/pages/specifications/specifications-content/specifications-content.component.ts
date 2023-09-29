@@ -13,6 +13,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   iframeSrc: SafeResourceUrl = '';
+  dataModelIframeSrc: SafeResourceUrl = '';
   showMoreContent?: boolean = false;
   selectedSpecItem: any;
   specItemList: any = [];
@@ -31,6 +32,33 @@ export class SpecificationsContentComponent implements OnInit {
             this.specItemList = this.specItemList.concat(element.section)
           }
         });
+        this.specItemList.forEach((obj: any) => {
+          if (obj.title === 'User Personas' || obj.title === 'Error Handling'
+            || obj.title === 'Stakeholder Approvals' || obj.title === 'Version Control' || obj.title === 'Glossary'
+            || obj.title === 'Historical Data Load') {
+            obj.contentType = 'table'
+          } else if (obj.title === 'User Interface Design') {
+            obj.contentType = 'iframe'
+          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Business Rules' || obj.title === 'Usecases' || obj.title === 'Functional Dependencies'
+            || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
+            || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
+            || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
+          ) {
+            obj.contentType = 'list'
+          } else if (obj.title === 'Data Management Persistence' || obj.title === 'Workflows') {
+            obj.contentType = 'data-model'
+            this.makeTrustDataModelUrl()
+          } else if (obj.title === 'Data Dictionary') {
+            obj.contentType = 'data-dictionary'
+          }
+          else if (obj.title === 'Interface Requirements') {
+            obj.contentType = 'header-list'
+          } else {
+            obj.contentType = 'paragraph'
+          }
+        })
+        console.log('this.specItemList', this.specItemList);
+
       }
     })
     this.utils.getMeSpecItemIndex.subscribe((event: any) => {
@@ -85,6 +113,14 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   makeTrustedUrl(): void {
-    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);;
+    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
+  }
+  makeTrustDataModelUrl(): void {
+    this.dataModelIframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://dev-xnode.azurewebsites.net/#/configuration/data-model/overview')
+  }
+
+  setColumnsToTheTable(data: any) {
+    const cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
+    return cols
   }
 }
