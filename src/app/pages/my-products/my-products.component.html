@@ -47,7 +47,10 @@
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar>
                         <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">Created by you</p>
+                            <!-- <p class="m-0 card-subheading-txt">Created by you</p> -->
+                            <p class="m-0 card-subheading-txt" *ngIf="isCreatedByYou">Created by you</p>
+                            <p class="m-0 card-subheading-txt" *ngIf="!isCreatedByYou">Created by {{ apiUsername }}
+                            </p>
                             <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
                             <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
                                 |
@@ -112,7 +115,10 @@
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar>
                         <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">Created by you</p>
+                            <!-- <p class="m-0 card-subheading-txt">Created by you</p> -->
+                            <p class="m-0 card-subheading-txt" *ngIf="isCreatedByYou">Created by you</p>
+                            <p class="m-0 card-subheading-txt" *ngIf="!isCreatedByYou">Created by ({{ apiUsername }})
+                            </p>
                             <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
                             <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
                                 |

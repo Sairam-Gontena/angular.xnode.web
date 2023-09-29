@@ -34,6 +34,9 @@ export class MyProductsComponent implements OnInit {
   timeAgo: any;
   isTitleHovered: any;
   userImage: any;
+  isCreatedByYou: boolean = false;
+  apiUsername: any;
+  userName: any;
 
 
   constructor(private RefreshListService: RefreshListService,
@@ -46,8 +49,10 @@ export class MyProductsComponent implements OnInit {
   ) {
     this.currentUser = UserUtil.getCurrentUser();
 
+
     if (this.currentUser.first_name && this.currentUser.last_name) {
       this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
+      this.userName = this.currentUser.first_name + this.currentUser.last_name;
     }
     this.subscription = this.RefreshListService.headerData$.subscribe((data) => {
       if (data === 'refreshproducts') {
@@ -169,7 +174,16 @@ export class MyProductsComponent implements OnInit {
             dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
             return dataItem;
           });
-
+          this.templateCard.forEach(product => {
+            const apiUsername = product.created_by
+              ? JSON.parse(product.created_by).username
+              : '';
+            if (this.userName === apiUsername) {
+              product.isCreatedByYou = true;
+            } else {
+              product.apiUsername = apiUsername;
+            }
+          });
           this.filteredProducts = this.templateCard;
           this.filteredProductsByEmail = this.templateCard;
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
