@@ -13,7 +13,7 @@ export class SpecificationsMenuComponent implements OnInit {
   selectedSection: any;
   activeIndex: any = 0;
   menuList: any;
-  selectedSecIndex: any = 0;
+  selectedSecIndex: any;
 
   constructor(
     private utils: UtilsService,

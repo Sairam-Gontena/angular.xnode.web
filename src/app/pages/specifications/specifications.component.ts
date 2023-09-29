@@ -29,6 +29,7 @@ export class SpecificationsComponent implements OnInit {
     spec_record_id == record_id ? this.specId = spec_record_id : this.specId = '';
     this.specId ? this.getMeSpecList() : this.noSpec = true;
     let user = localStorage.getItem('currentUser');
+    this.getMeSpecList();
     if (user)
       this.currentUser = JSON.parse(user)
   }
@@ -40,7 +41,7 @@ export class SpecificationsComponent implements OnInit {
 
   getMeSpecList(): void {
     this.utils.loadSpinner(true);
-    this.apiService.getApi("specs/retrieve/" + this.specId)
+    this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200 && !response.data.detail) {
           const list = response.data;
