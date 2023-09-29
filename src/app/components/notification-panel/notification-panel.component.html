@@ -58,6 +58,9 @@
             </div>
             <div class="ml-2">
                 <div class="text-sm font-medium">{{notification?.title?.toUpperCase().replaceAll('_',' ')}}</div>
+                <div class="text-sm font-medium" *ngIf="notification?.component == 'Product Specifications'">
+                    {{notification?.component?.toUpperCase() }}
+                </div>
                 <div class="text-500 mt-2 text-sm font-normal">{{notification?.description}}</div>
                 <div class="flex mt-2" *ngIf="notification?.type === 'request'">
                     <div class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
@@ -75,6 +78,13 @@
                     <div (click)="navigateToProduct(notification)"
                         class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
                         {{getMeLabel(notification)}}</div>
+                </div>
+                <div class="flex mt-2" *ngIf="notification?.spec_status ==='Completed'">
+                    <div (click)="gotoSpec(notification)"
+                        class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
+                        (click)="gotoSpec(notification)">
+                        View Specification
+                    </div>
                 </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
                     <p-button label="Launch Product" styleClass="p-button-rounded p-button-primary launch-product"

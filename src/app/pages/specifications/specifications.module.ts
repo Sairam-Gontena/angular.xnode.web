@@ -14,12 +14,12 @@ import { SpecificationsContentComponent } from 'src/app/pages/specifications/spe
     SpecificationsComponent,
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
-    SpecificationsContentComponent
+    SpecificationsContentComponent,
   ],
   imports: [
     CommonModule,
     SpecificationsRoutingModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class SpecificationsModule { }

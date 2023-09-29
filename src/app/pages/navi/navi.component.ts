@@ -94,6 +94,10 @@ export class NaviComponent implements OnInit {
     this.utils.loadSpinner(false);
   }
 
+  closePopup() {
+    this.showProductStatusPopup = false
+  }
+
   makeTrustedUrl(): void {
     this.safeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }

@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { SPEC_DATA } from '../mock'
+import { Component, OnInit, Input } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 @Component({
@@ -14,6 +13,8 @@ export class SpecificationsMenuComponent implements OnInit {
   selectedSection: any;
   activeIndex: any = 0;
   menuList: any;
+  selectedSecIndex: any = 0;
+
   constructor(
     private utils: UtilsService,
     private apiService: ApiService
@@ -32,12 +33,14 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   onOpenAccordian(event: any) {
-    this.activeIndex = event.i
-    this.utils.passSelectedSpecIndex(event.i);
+    this.activeIndex = event.index;
+    this.selectedSecIndex = null;
+    this.utils.passSelectedSpecIndex(event.index);
   }
 
   onClickSection(event: any, i: any) {
     this.selectedSection = event;
+    this.selectedSecIndex = i;
     this.utils.passSelectedSectionIndex(event);
 
   }
