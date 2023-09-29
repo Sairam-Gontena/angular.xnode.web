@@ -37,6 +37,10 @@ export class ApiService {
     });
   }
 
+  postApi(body: any, url: string) {
+    return axios.post(this.apiPoint + url, body, this.config);
+  }
+
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }

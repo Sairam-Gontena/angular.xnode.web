@@ -12,6 +12,8 @@ export class SpecificationsComponent implements OnInit {
   specData?: any;;
   selectedSpec: any;
   selectedSection: any;
+  specId: any
+  noSpec: boolean = false;
 
 
   constructor(
@@ -22,7 +24,10 @@ export class SpecificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMeSpecList();
+    let spec_record_id = localStorage.getItem('spec_record_id')
+    let record_id = localStorage.getItem('record_id')
+    spec_record_id == record_id ? this.specId = spec_record_id : this.specId = '';
+    this.specId ? this.getMeSpecList() : this.noSpec = true;
     let user = localStorage.getItem('currentUser');
     if (user)
       this.currentUser = JSON.parse(user)
@@ -35,7 +40,7 @@ export class SpecificationsComponent implements OnInit {
 
   getMeSpecList(): void {
     this.utils.loadSpinner(true);
-    this.apiService.getApi("specs/retrieve/" + '0a398791-1dc2-4fd6-b78b-b73928844e37')
+    this.apiService.getApi("specs/retrieve/" + this.specId)
       .then(response => {
         if (response?.status === 200 && !response.data.detail) {
           const list = response.data;

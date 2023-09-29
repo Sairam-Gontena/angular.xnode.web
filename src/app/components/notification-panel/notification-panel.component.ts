@@ -88,7 +88,20 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
-      
+
+      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
+    } else {
+      this.router.navigate(['/dashboard']);
+      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
+    }
+    this.closeNotificationPanel.emit(true);
+  }
+
+  gotoSpec(obj: any) {
+    localStorage.setItem('spec_record_id', obj.product_id)
+    localStorage.setItem('record_id', obj.product_id)
+    if (obj.component && obj.component !== '') {
+      this.router.navigate(['/specifications']);
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);

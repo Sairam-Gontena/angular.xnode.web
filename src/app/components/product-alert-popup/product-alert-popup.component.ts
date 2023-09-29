@@ -90,6 +90,7 @@ export class ProductAlertPopupComponent implements OnInit {
         break;
       }
       case "Generate Spec": {
+        this.generateSpec();
         break;
       }
       case "Generate Application": {
@@ -145,7 +146,7 @@ export class ProductAlertPopupComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.post('PUBLISH_APP_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.utils.loadSpinner(false);
         this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
@@ -155,7 +156,7 @@ export class ProductAlertPopupComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.post('PUBLISH_APP_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
@@ -165,10 +166,52 @@ export class ProductAlertPopupComponent implements OnInit {
         'url': error?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.auditUtil.post('PUBLISH_APP_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utils.loadSpinner(false)
       this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+    });
+  }
+
+  generateSpec() {
+    const body = {
+      email: this.currentUser?.email,
+      conversation_history: this.consversationList,
+      product_id: this.product_id
+    }
+    let detail = "Generating spec for this app process is started.";
+    this.closePopup.emit(true);
+    this.apiService.postApi(body, 'specs/generate').then((response: any) => {
+      if (response) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
+        this.utils.loadSpinner(false);
+        this.auditUtil.post("GENERATE_SPEC", 1, 'SUCCESS', 'user-audit');
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
+      }
+    }).catch(error => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': error?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.utils.loadSpinner(false)
+      this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
     });
   }
 
