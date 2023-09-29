@@ -90,7 +90,6 @@ export class ProductAlertPopupComponent implements OnInit {
         break;
       }
       case "Generate Spec": {
-        console.log('generate spec')
         this.generateSpec();
         break;
       }

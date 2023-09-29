@@ -181,7 +181,6 @@ export class AppHeaderComponent implements OnInit {
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
-      console.log(this.allNotifications)
       this.notificationCount = this.notifications.length
       if (data.product_status === 'completed') {
         this.RefreshListService.updateData('refreshproducts');

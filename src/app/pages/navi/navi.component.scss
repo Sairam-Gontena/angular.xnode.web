@@ -6,3 +6,12 @@
 .bot-height {
     height: calc(100vh - 200px);
 }
+
+.xnode-product-alert-popup {
+    display: none !important;
+}
+
+/* Show the popup when the showProductStatusPopup flag is true */
+.xnode-product-alert-popup.show {
+    display: block !important;
+}

@@ -1,4 +1,5 @@
 <iframe id="myIframe" [src]="safeUrl" allow="microphone" Cross-Origin-Opener-Policy="*" class="w-full h-full">
 </iframe>
-<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
-    [data]="content" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
+<xnode-product-alert-popup class="xnode-product-alert-popup" [ngClass]="{'show': showProductStatusPopup}"
+    (closePopup)="closePopup()" [data]="content"
+    [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
