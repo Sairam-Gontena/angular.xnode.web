@@ -32,6 +32,7 @@ export class MyProductsComponent implements OnInit {
   tabRecent = false;
   tabCreated = false;
   timeAgo: any;
+  isTitleHovered: any;
 
 
   constructor(private RefreshListService: RefreshListService,
@@ -239,8 +240,15 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(true);
       });
   }
-
-  shortTitle(title: string) {
-    return title.length > 15 ? title.substring(0, 10) + ' ...' : title;
+  onHoverTitle(i: any) {
+    this.isTitleHovered = i;
   }
+  shortTitle(title: string, i: number) {
+    if (this.isTitleHovered === i) {
+      return title;
+    } else {
+      return title.length > 15 ? title.substring(0, 10) + ' ...' : title;
+    }
+  }
+
 }
