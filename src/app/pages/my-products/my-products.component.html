@@ -31,9 +31,10 @@
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
                         <img alt="Card" src="./assets/d-card.svg" class="w-full" />
                     </div>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3"
-                        (mouseenter)="onHoverTitle(i)" (mouseleave)="onHoverTitle('')">
-                        {{ isTitleHovered === i ? data.title : shortTitle(data.title, i) }}
+                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                        <div class="title-container" [title]="data.title">
+                            {{ data.title }}
+                        </div>
                         <i class="pi pi-external-link " [title]="data.product_url"
                             (click)="openExternalLink(data.product_url)"
                             *ngIf="data.product_url && data.product_url !== ''"></i>
@@ -95,9 +96,10 @@
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
                         <img alt="Card" src="./assets/d-card.svg" class="w-full" />
                     </div>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3"
-                        (mouseenter)="onHoverTitle(i)" (mouseleave)="onHoverTitle('')">
-                        {{ isTitleHovered === i ? data.title : shortTitle(data.title, i) }}
+                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                        <div class="title-container" [title]="data.title">
+                            {{ data.title }}
+                        </div>
                         <i class="pi pi-external-link " [title]="data.product_url"
                             (click)="openExternalLink(data.product_url)"
                             *ngIf="data.product_url && data.product_url !== ''"></i>

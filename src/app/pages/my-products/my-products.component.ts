@@ -245,15 +245,5 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(true);
       });
   }
-  onHoverTitle(i: any) {
-    this.isTitleHovered = i;
-  }
-  shortTitle(title: string, i: number) {
-    if (this.isTitleHovered === i) {
-      return title;
-    } else {
-      return title.length > 15 ? title.substring(0, 10) + ' ...' : title;
-    }
-  }
 
 }
