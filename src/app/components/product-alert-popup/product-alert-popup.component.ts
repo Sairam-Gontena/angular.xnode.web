@@ -36,40 +36,51 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.getMeproductAlertPopup.subscribe((event: any) => {
+      setTimeout(() => {
+        this.data = this.data;
+        this.dataPopulate();
+      },);
+      this.showProductStatusPopup = event;
+    });
     this.product = localStorage.getItem('product');
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
       this.userId = JSON.parse(currentUser).user_id;
     }
-    if (this.data?.content) {
-      this.dialogHeader = 'Confirm ' + this.data.content
-      switch (this.data.content) {
-        case "App Generation": {
-          this.buttonLabel = 'Generate app';
-          this.content = 'generate';
-          break;
-        }
-        case "App Publishing": {
-          this.buttonLabel = 'Publish app';
-          this.content = 'publish';
-          break;
-        }
-        case "Spec Generation": {
-          this.buttonLabel = 'Generate Spec'
-          this.content = 'generate spec for';
-          break;
-        }
-        default: {
-          this.buttonLabel = 'Generate app';
-          break;
-        }
-      }
-      this.product_id = this.data?.product_id;
-      this.consversationList = JSON.parse(this.data.conversation);
+    if (this.data) {
+      this.dataPopulate();
     } else {
       this.product_id = localStorage.getItem('record_id');
     }
+  }
+
+  dataPopulate() {
+    this.dialogHeader = 'Confirm ' + this.data?.content
+    switch (this.data?.content) {
+      case "App Generation": {
+        this.buttonLabel = 'Generate app';
+        this.content = 'generate';
+        break;
+      }
+      case "App Publishing": {
+        this.buttonLabel = 'Publish app';
+        this.content = 'publish';
+        break;
+      }
+      case "Spec Generation": {
+        this.buttonLabel = 'Generate Spec'
+        this.content = 'generate spec for';
+        break;
+      }
+      default: {
+        this.buttonLabel = 'Generate app';
+        break;
+      }
+    }
+    this.product_id = this.data?.product_id;
+    this.consversationList = JSON.parse(this.data?.conversation);
   }
 
   continueChat(): void {
