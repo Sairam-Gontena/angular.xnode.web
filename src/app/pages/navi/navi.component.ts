@@ -17,8 +17,7 @@ export class NaviComponent implements OnInit {
   constructor(
     private router: Router,
     private utils: UtilsService,
-    private domSanitizer: DomSanitizer,
-    private auditUtil: AuditutilsService,) {
+    private domSanitizer: DomSanitizer) {
   }
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
@@ -79,6 +78,7 @@ export class NaviComponent implements OnInit {
           if (event.data.message === 'triggerProductPopup') {
             this.content = event.data.data;
             this.showProductStatusPopup = true;
+            this.utils.toggleProductAlertPopup(true);
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
             const itemId = event.data.id;

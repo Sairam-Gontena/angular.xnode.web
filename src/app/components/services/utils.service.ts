@@ -21,6 +21,9 @@ export class UtilsService {
   private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
+  private productAlertPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeproductAlertPopup: Observable<boolean> = this.productAlertPopup.asObservable();
+
   private popupToShow: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public getMeFeedbackPopupTypeToDisplay: Observable<string> = this.popupToShow.asObservable();
 
@@ -64,6 +67,10 @@ export class UtilsService {
 
   showProductStatusPopup(event: any): void {
     this.productStatus.next(event);
+  }
+
+  toggleProductAlertPopup(event: any): void {
+    this.productAlertPopup.next(event);
   }
 
   showFeedbackPopupByType(event: any): void {
