@@ -57,8 +57,8 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   dataPopulate() {
-    this.dialogHeader = 'Confirm ' + this.data.content
-    switch (this.data.content) {
+    this.dialogHeader = 'Confirm ' + this.data?.content
+    switch (this.data?.content) {
       case "App Generation": {
         this.buttonLabel = 'Generate app';
         this.content = 'generate';
@@ -80,7 +80,7 @@ export class ProductAlertPopupComponent implements OnInit {
       }
     }
     this.product_id = this.data?.product_id;
-    this.consversationList = JSON.parse(this.data.conversation);
+    this.consversationList = JSON.parse(this.data?.conversation);
   }
 
   continueChat(): void {

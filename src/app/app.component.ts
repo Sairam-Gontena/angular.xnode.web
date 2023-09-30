@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  content: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -156,7 +157,9 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
       if (event.data.message === 'triggerProductPopup') {
+        this.content = event.data.data;
         this.showProductStatusPopup = true;
+        this.utilsService.toggleProductAlertPopup(true);
       }
     });
 
