@@ -3,6 +3,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 
+
+declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
   templateUrl: './specifications-content.component.html',
@@ -23,6 +25,7 @@ export class SpecificationsContentComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
 
   constructor(private utils: UtilsService, private domSanitizer: DomSanitizer,) {
+    this.fetchOpenAPISpec()
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         event.forEach((element: any) => {
@@ -54,6 +57,8 @@ export class SpecificationsContentComponent implements OnInit {
           }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
+          } else if(obj.title === 'OpenAPI Spec'){
+            obj.contentType = 'OpenAPI'
           } else {
             obj.contentType = 'paragraph'
           }
@@ -71,6 +76,10 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
   }
+
+  ngAfterViewInit() {
+   this.fetchOpenAPISpec()
+}
 
   ngOnInit(): void {
     const record_id = localStorage.getItem('record_id');
@@ -120,4 +129,26 @@ export class SpecificationsContentComponent implements OnInit {
     const cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
     return cols
   }
+
+  async fetchOpenAPISpec(){
+    const record_id = localStorage.getItem('record_id');
+    let userData: any
+    userData = localStorage.getItem('currentUser');
+    let email = JSON.parse(userData).email;
+  const ui = SwaggerUIBundle({
+    domNode: document.getElementById('openapi-ui-spec'),
+    layout: 'BaseLayout',
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIBundle.SwaggerUIStandalonePreset
+    ],
+    url: environment.apiUrl+'/openapi-spec/'+email+'/'+record_id,
+    docExpansion: 'none',
+    operationsSorter: 'alpha'
+  });
 }
+
+
+  }
+
+
