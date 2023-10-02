@@ -25,7 +25,6 @@ export class SpecificationsContentComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
 
   constructor(private utils: UtilsService, private domSanitizer: DomSanitizer,) {
-    this.fetchOpenAPISpec()
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         event.forEach((element: any) => {
@@ -142,7 +141,7 @@ export class SpecificationsContentComponent implements OnInit {
       SwaggerUIBundle.presets.apis,
       SwaggerUIBundle.SwaggerUIStandalonePreset
     ],
-    url: environment.apiUrl+'/openapi-spec/'+email+'/'+record_id,
+    url: environment.uigenApiUrl+'openapi-spec/'+email+'/'+record_id,
     docExpansion: 'none',
     operationsSorter: 'alpha'
   });
