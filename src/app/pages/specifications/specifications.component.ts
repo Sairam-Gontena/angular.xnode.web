@@ -47,6 +47,9 @@ export class SpecificationsComponent implements OnInit {
           const list = response.data;
           list.forEach((obj: any, index: any) => {
             if (obj?.title && obj?.section) {
+              if(obj?.title == 'Technical Specifications') {
+                obj.section.push({ title: 'OpenAPI Spec', content:[],parentIndex:4.10,contentType:'OpenAPI', created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
+              }
               obj.section.unshift({ title: obj.title, created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
               obj.section.forEach((element: any, sIndex: any) => {
                 element.parentIndex = (index + 1).toString() + "." + (sIndex).toString()
