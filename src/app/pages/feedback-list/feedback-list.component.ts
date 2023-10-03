@@ -83,7 +83,7 @@ export class FeedbackListComponent {
       "conversationSourceId": this.conversationSourceId,
       "message": this.message,
       "parentConversationId": this.selectedItemConversation.length === 0 ? null : this.selectedItemConversation[0].id,
-      "conversationSourceUserId": this.conversationSourceId
+      "conversationSourceUserId": this.selectedListItem.userId
     }
     this.userUtilService.post(payload, 'user-conversation').then((res: any) => {
       if (res && res?.data) {
@@ -132,7 +132,6 @@ export class FeedbackListComponent {
     }
   }
   getMeMyAvatar(currentUser?: any) {
-    console.log(currentUser.first_name)
     return currentUser.first_name.charAt(0).toUpperCase() + currentUser.last_name.charAt(0).toUpperCase()
   }
 
