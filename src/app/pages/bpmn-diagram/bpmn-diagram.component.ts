@@ -178,11 +178,12 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         let appName = localStorage.getItem('app_name')
         let xflowJson = {
           'Flows': response.data.Flows.filter((f: any) => {
-            return (flow.toLowerCase().indexOf(f.Name.toLowerCase()) != -1)
+            const selectedFlow = flow.toLowerCase();
+            const flowFromJson = (f.Name || f.workflow_name || '').toLowerCase();
+            return (selectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(selectedFlow) != -1)
           }),
           'Product': appName
         };
-        console.log('response', response);
 
         this.xflowData = response.data;
         this.loadXFlows(xflowJson);

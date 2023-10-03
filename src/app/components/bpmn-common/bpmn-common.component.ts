@@ -175,7 +175,9 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
         let appName = localStorage.getItem('app_name')
         let xflowJson = {
           'Flows': response.data.Flows.filter((f: any) => {
-            return (flow.toLowerCase().indexOf(f.Name.toLowerCase()) != -1)
+            const selectedFlow = flow.toLowerCase();
+            const flowFromJson = (f.Name || f.workflow_name || '').toLowerCase();
+            return (selectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(selectedFlow) != -1)
           }),
           'Product': appName
         };
@@ -520,7 +522,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
       this.utilsService.loadSpinner(false);
     }).catch((error: any) => {
       let xFlowJsonCopy = xFlowJson;
-      xFlowJsonCopy.Flows = 'xflows data'
+      // xFlowJsonCopy.Flows = 'xflows data'
       let user_audit_body = {
         'method': 'POST',
         'url': error?.request?.responseURL,
