@@ -89,8 +89,8 @@
             <div *ngIf="item.contentType ==='x-flows'" class="h-vh">
                 <xnode-bpmn-common></xnode-bpmn-common>
             </div>
-            <div *ngIf="item.contentType ==='json'" class="h-vh">
-                <xnode-bpmn-common></xnode-bpmn-common>
+            <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
+                <pre>{{ item.content | json }}</pre>
             </div>
             <div *ngIf="item.contentType ==='data-dictionary'">
                 <h4 class="m-0 pb-3">{{item.title}}</h4>

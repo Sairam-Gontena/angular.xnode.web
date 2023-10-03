@@ -60,7 +60,8 @@ export class SpecificationsContentComponent implements OnInit {
           } else if (obj.title === 'Workflows') {
             obj.contentType = 'x-flows';
           }
-          else if (obj.title === 'Data Dictionary') {
+          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
+            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures') {
             obj.contentType = 'json'
           }
           else if (obj.title === 'Interface Requirements') {
