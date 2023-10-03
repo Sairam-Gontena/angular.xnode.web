@@ -150,7 +150,7 @@ export class SpecificationsContentComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset
       ],
-      url: environment.uigenApiUrl + 'openapi-spec/' + email + '/' + record_id,
+      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id,
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });
