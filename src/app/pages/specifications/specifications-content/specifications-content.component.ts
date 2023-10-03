@@ -61,7 +61,7 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'x-flows';
           }
           else if (obj.title === 'Data Dictionary') {
-            obj.contentType = 'data-dictionary'
+            obj.contentType = 'json'
           }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
