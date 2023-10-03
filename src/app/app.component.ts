@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  content: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -156,7 +157,9 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
       if (event.data.message === 'triggerProductPopup') {
+        this.content = event.data.data;
         this.showProductStatusPopup = true;
+        this.utilsService.toggleProductAlertPopup(true);
       }
     });
 
@@ -302,7 +305,7 @@ export class AppComponent implements OnInit {
 
   showSideMenu() {
     return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/specifications" || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
+      || window.location.hash === "#/specification" || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
       || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
   }
 

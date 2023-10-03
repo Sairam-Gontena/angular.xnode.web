@@ -10,6 +10,7 @@ export const environment = {
     naviAppUrl: 'https://dev-navi-web.azurewebsites.net/',
     designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://dev-frontend-builder.azurewebsites.net/ui/angular/',
+    uigenApiUrl: 'https://dev-frontend-builder.azurewebsites.net/',
     workFlowApiUrl: 'https://dev-xnode-xflows.azurewebsites.net/',
     webSocketUrl: 'https://notify-now.azurewebsites.net',
     webSocketNotifier: 'dev-xnode-notifier',

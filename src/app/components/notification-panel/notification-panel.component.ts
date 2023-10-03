@@ -53,25 +53,25 @@ export class NotificationPanelComponent {
     let path = '';
     switch (comp) {
       case 'dashboard':
-        comp = 'dashboard'
+        path = 'dashboard'
         break;
       case 'overview':
-        comp = 'overview'
+        path = 'overview'
         break;
       case 'usecases':
-        comp = 'usecase'
+        path = 'usecase'
         break;
       case 'xflows':
-        comp = 'configuration/workflow/overview'
+        path = 'configuration/workflow/overview'
         break;
       case 'data_model':
-        comp = 'configuration/data-model/overview'
+        path = 'configuration/data-model/overview'
         break;
       case 'operate':
-        comp = 'operate'
+        path = 'operate'
         break;
       case 'publish':
-        comp = 'publish'
+        path = 'publish'
         break;
       default:
         break;
@@ -101,7 +101,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('spec_record_id', obj.product_id)
     localStorage.setItem('record_id', obj.product_id)
     if (obj.component && obj.component !== '') {
-      this.router.navigate(['/specifications']);
+      this.router.navigate(['/specification']);
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);

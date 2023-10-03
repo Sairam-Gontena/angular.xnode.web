@@ -221,7 +221,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
   },
   {
-    path: 'specifications',
+    path: 'specification',
     loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
   },
   {

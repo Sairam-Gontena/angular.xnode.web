@@ -26,6 +26,11 @@ import { RatingModule } from 'primeng/rating';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { PanelModule } from 'primeng/panel';
+import { SidebarModule } from 'primeng/sidebar';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { DataService } from '../pages/er-modeller/service/data.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +59,11 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     AvatarModule,
     AvatarGroupModule,
     TabViewModule,
-    InputTextareaModule
+    InputTextareaModule,
+    PanelModule,
+    SidebarModule,
+    FieldsetModule,
+    ModalModule.forRoot(),
   ],
   exports: [
     FormsModule,
@@ -83,7 +92,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     RatingModule,
     BreadcrumbModule,
     TabViewModule,
-    InputTextareaModule
+    InputTextareaModule,
+    PanelModule,
+    SidebarModule,
+    FieldsetModule,
+  ],
+  providers: [
+    DataService
   ]
 })
 export class SharedModule { }

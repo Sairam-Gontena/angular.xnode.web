@@ -36,40 +36,50 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.getMeproductAlertPopup.subscribe((event: any) => {
+      setTimeout(() => {
+        this.dataPopulate();
+      },);
+      this.showProductStatusPopup = event;
+    });
     this.product = localStorage.getItem('product');
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
       this.userId = JSON.parse(currentUser).user_id;
     }
-    if (this.data?.content) {
-      this.dialogHeader = 'Confirm ' + this.data.content
-      switch (this.data.content) {
-        case "App Generation": {
-          this.buttonLabel = 'Generate app';
-          this.content = 'generate';
-          break;
-        }
-        case "App Publishing": {
-          this.buttonLabel = 'Publish app';
-          this.content = 'publish';
-          break;
-        }
-        case "Spec Generation": {
-          this.buttonLabel = 'Generate Spec'
-          this.content = 'generate spec for';
-          break;
-        }
-        default: {
-          this.buttonLabel = 'Generate app';
-          break;
-        }
-      }
-      this.product_id = this.data?.product_id;
-      this.consversationList = JSON.parse(this.data.conversation);
+    if (this.data) {
+      this.dataPopulate();
     } else {
       this.product_id = localStorage.getItem('record_id');
     }
+  }
+
+  dataPopulate() {
+    this.dialogHeader = 'Confirm ' + this.data?.content
+    switch (this.data?.content) {
+      case "App Generation": {
+        this.buttonLabel = 'Generate app';
+        this.content = 'generate';
+        break;
+      }
+      case "App Publishing": {
+        this.buttonLabel = 'Publish app';
+        this.content = 'publish';
+        break;
+      }
+      case "Spec Generation": {
+        this.buttonLabel = 'Generate Spec'
+        this.content = 'generate spec for';
+        break;
+      }
+      default: {
+        this.buttonLabel = 'Generate app';
+        break;
+      }
+    }
+    this.product_id = this.data?.product_id;
+    this.consversationList = JSON.parse(this.data?.conversation);
   }
 
   continueChat(): void {
@@ -80,14 +90,17 @@ export class ProductAlertPopupComponent implements OnInit {
     switch (this.buttonLabel) {
       case "Generate app": {
         this.persistConversaiton();
+        this.utils.loadSpinner(true);
         break;
       }
       case "Publish app": {
         this.getProduct();
+        this.utils.loadSpinner(true);
         break;
       }
       case "Generate Spec": {
         this.generateSpec();
+        this.utils.loadSpinner(true);
         break;
       }
       case "Generate Application": {
@@ -113,6 +126,7 @@ export class ProductAlertPopupComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
+        this.utils.loadSpinner(false);
         this.auditUtil.post('PRODUCT_ALERT_POPUP_PUBLISH_PRODUCT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
@@ -123,6 +137,7 @@ export class ProductAlertPopupComponent implements OnInit {
         'url': err?.request?.responseURL
       }
       this.auditUtil.post('PRODUCT_ALERT_POPUP_PUBLISH_PRODUCT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
     })
   }
@@ -144,8 +159,8 @@ export class ProductAlertPopupComponent implements OnInit {
           'payload': body
         }
         this.auditUtil.post('PUBLISH_APP_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
@@ -155,6 +170,7 @@ export class ProductAlertPopupComponent implements OnInit {
         }
         this.auditUtil.post('PUBLISH_APP_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
     }).catch(error => {
@@ -164,8 +180,8 @@ export class ProductAlertPopupComponent implements OnInit {
         'payload': body
       }
       this.auditUtil.post('PUBLISH_APP_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utils.loadSpinner(false)
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
     });
   }
@@ -186,8 +202,8 @@ export class ProductAlertPopupComponent implements OnInit {
           'payload': body
         }
         this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.auditUtil.post("GENERATE_SPEC", 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
@@ -197,6 +213,7 @@ export class ProductAlertPopupComponent implements OnInit {
         }
         this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
     }).catch(error => {
@@ -206,8 +223,8 @@ export class ProductAlertPopupComponent implements OnInit {
         'payload': body
       }
       this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utils.loadSpinner(false)
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
     });
   }
@@ -220,15 +237,15 @@ export class ProductAlertPopupComponent implements OnInit {
         this.persistConversaiton();
         this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'SUCCESS', 'user-audit');
       } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+        this.utils.loadSpinner(false);
         this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'FAILURE', 'user-audit');
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
       }
       this.utils.loadSpinner(false);
     }).catch((err: any) => {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
       this.auditUtil.post('GENERATE_APP_FROM_PRODUCT_POPUP', 1, 'FAILURE', 'user-audit');
-
     })
   }
 
@@ -240,15 +257,19 @@ export class ProductAlertPopupComponent implements OnInit {
     }
     this.apiService.post(persistconversation, '/persist_conversation').then((response: any) => {
       if (response) {
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar" });
         if (this.buttonLabel == 'Generate app') {
           const customEvent = new Event('customEvent');
           window.dispatchEvent(customEvent);
         }
         this.closePopup.emit(true);
-      } else
+      } else {
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.detail });
+      }
     }).catch((err: any) => {
+      this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
     })
   }
@@ -271,6 +292,7 @@ export class ProductAlertPopupComponent implements OnInit {
         }
         this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
       } else {
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
         let user_audit_body = {
           'method': 'GET',
@@ -284,6 +306,7 @@ export class ProductAlertPopupComponent implements OnInit {
         'url': err?.request?.responseURL
       }
       this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
     })
   }
@@ -311,6 +334,7 @@ export class ProductAlertPopupComponent implements OnInit {
           'payload': body
         }
         this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.utils.loadSpinner(false);
       }
     }).catch((err: any) => {
       let user_audit_body = {
@@ -319,6 +343,7 @@ export class ProductAlertPopupComponent implements OnInit {
         'payload': body
       }
       this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }

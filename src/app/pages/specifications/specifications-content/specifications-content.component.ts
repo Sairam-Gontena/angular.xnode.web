@@ -2,7 +2,10 @@ import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
+import { DataService } from '../../er-modeller/service/data.service';
 
+
+declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
   templateUrl: './specifications-content.component.html',
@@ -21,8 +24,14 @@ export class SpecificationsContentComponent implements OnInit {
   selectedSectionIndex: any;
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
+  dataModel: any;
 
-  constructor(private utils: UtilsService, private domSanitizer: DomSanitizer,) {
+  constructor(private utils: UtilsService,
+    private domSanitizer: DomSanitizer,
+    private dataService: DataService,) {
+    this.dataModel = this.dataService.data;
+    console.log('  this.dataModel', this.dataModel);
+
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         event.forEach((element: any) => {
@@ -45,15 +54,20 @@ export class SpecificationsContentComponent implements OnInit {
             || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
           ) {
             obj.contentType = 'list'
-          } else if (obj.title === 'Data Management Persistence' || obj.title === 'Workflows' || obj.title === 'Data Quality Checks' || obj.title === 'Data Dictionary'
-            || obj.title === 'User Interfaces') {
-            obj.contentType = 'data-model'
+          } else if (obj.title === 'Data Management Persistence') {
+            obj.contentType = 'data-model';
             this.makeTrustDataModelUrl()
-          } else if (obj.title === 'Data Dictionary') {
-            obj.contentType = 'data-dictionary'
+          } else if (obj.title === 'Workflows') {
+            obj.contentType = 'x-flows';
+          }
+          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
+            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures') {
+            obj.contentType = 'json'
           }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
+          } else if (obj.title === 'OpenAPI Spec') {
+            obj.contentType = 'OpenAPI'
           } else {
             obj.contentType = 'paragraph'
           }
@@ -70,6 +84,10 @@ export class SpecificationsContentComponent implements OnInit {
         this.scrollToItem(event.title)
       }
     })
+  }
+
+  ngAfterViewInit() {
+    this.fetchOpenAPISpec()
   }
 
   ngOnInit(): void {
@@ -120,4 +138,26 @@ export class SpecificationsContentComponent implements OnInit {
     const cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
     return cols
   }
+
+  async fetchOpenAPISpec() {
+    const record_id = localStorage.getItem('record_id');
+    let userData: any
+    userData = localStorage.getItem('currentUser');
+    let email = JSON.parse(userData).email;
+    const ui = SwaggerUIBundle({
+      domNode: document.getElementById('openapi-ui-spec'),
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+      ],
+      url: environment.uigenApiUrl + 'openapi-spec/' + email + '/' + record_id,
+      docExpansion: 'none',
+      operationsSorter: 'alpha'
+    });
+  }
+
+
 }
+
+

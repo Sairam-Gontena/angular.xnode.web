@@ -59,6 +59,7 @@ export class MyProductsComponent implements OnInit {
   ngOnInit(): void {
     this.utils.loadSpinner(true);
     localStorage.removeItem('record_id');
+    localStorage.removeItem('has_insights');
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
     localStorage.removeItem('product');
