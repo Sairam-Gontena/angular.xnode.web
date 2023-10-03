@@ -81,7 +81,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById("diagramRef");
-      if (bpmnWindow) bpmnWindow.style.display = 'None';
+      if (bpmnWindow) bpmnWindow.style.display = 'none';
       this.graphRedirection = false;
       var graphWindow = document.getElementById("sc");
       if (graphWindow) graphWindow.style.display = '';
@@ -99,7 +99,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
   switchWindow() {
     var bpmnWindow = document.getElementById("diagramRef");
-    if (bpmnWindow) bpmnWindow.style.display = 'None';
+    if (bpmnWindow) bpmnWindow.style.display = 'none';
     this.graphRedirection = false;
     var graphWindow = document.getElementById("sc");
     if (graphWindow) graphWindow.style.display = '';
@@ -587,7 +587,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
           this.utilsService.loadSpinner(true);
           this.showUsecaseGraph = false;
           var bpmnWindow = document.getElementById("diagramRef");
-          if (bpmnWindow) bpmnWindow.style.display = '';
+          if (bpmnWindow) bpmnWindow.style.display = 'none';
           this.graphRedirection = true;
           var graphWindow = document.getElementById("sc");
           if (graphWindow) graphWindow.style.display = 'None';

@@ -28,6 +28,9 @@ import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { SidebarModule } from 'primeng/sidebar';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { DataService } from '../pages/er-modeller/service/data.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,9 @@ import { SidebarModule } from 'primeng/sidebar';
     TabViewModule,
     InputTextareaModule,
     PanelModule,
-    SidebarModule
+    SidebarModule,
+    FieldsetModule,
+    ModalModule.forRoot(),
   ],
   exports: [
     FormsModule,
@@ -89,7 +94,11 @@ import { SidebarModule } from 'primeng/sidebar';
     TabViewModule,
     InputTextareaModule,
     PanelModule,
-    SidebarModule
+    SidebarModule,
+    FieldsetModule,
+  ],
+  providers: [
+    DataService
   ]
 })
 export class SharedModule { }
