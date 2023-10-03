@@ -7,6 +7,7 @@ import { SpecificationsMenuComponent } from './specifications-menu/specification
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SpecificationsHeaderComponent } from './specifications-header/specifications-header.component';
 import { SpecificationsContentComponent } from 'src/app/pages/specifications/specifications-content/specifications-content.component';
+import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { SpecificationsContentComponent } from 'src/app/pages/specifications/spe
     CommonModule,
     SpecificationsRoutingModule,
     SharedModule,
+    SharedComponentModule
   ]
 })
 export class SpecificationsModule { }

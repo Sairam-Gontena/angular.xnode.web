@@ -38,7 +38,6 @@ export class ProductAlertPopupComponent implements OnInit {
   ngOnInit(): void {
     this.utils.getMeproductAlertPopup.subscribe((event: any) => {
       setTimeout(() => {
-        this.data = this.data;
         this.dataPopulate();
       },);
       this.showProductStatusPopup = event;

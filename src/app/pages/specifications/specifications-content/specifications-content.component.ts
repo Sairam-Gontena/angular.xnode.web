@@ -47,11 +47,14 @@ export class SpecificationsContentComponent implements OnInit {
             || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
           ) {
             obj.contentType = 'list'
-          } else if (obj.title === 'Data Management Persistence' || obj.title === 'Workflows' || obj.title === 'Data Quality Checks' || obj.title === 'Data Dictionary'
+          } else if (obj.title === 'Data Management Persistence' || obj.title === 'Data Quality Checks' || obj.title === 'Data Dictionary'
             || obj.title === 'User Interfaces') {
-            obj.contentType = 'data-model'
+            obj.contentType = 'data-model';
             this.makeTrustDataModelUrl()
-          } else if (obj.title === 'Data Dictionary') {
+          } else if (obj.title === 'Workflows') {
+            obj.contentType = 'x-flows';
+          }
+          else if (obj.title === 'Data Dictionary') {
             obj.contentType = 'data-dictionary'
           }
           else if (obj.title === 'Interface Requirements') {
