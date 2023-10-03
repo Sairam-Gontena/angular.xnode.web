@@ -23,6 +23,7 @@ import { ActionButtonComponent } from '../components/action-button/action-button
 import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 import { LimitReachedPopupComponent } from '../components/limit-reached-popup/limit-reached-popup.component';
+import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.component';
 
 @NgModule({
         declarations: [
@@ -47,7 +48,8 @@ import { LimitReachedPopupComponent } from '../components/limit-reached-popup/li
                 ActionButtonComponent,
                 ProductAlertPopupComponent,
                 ViewExistingFeedbackComponent,
-                LimitReachedPopupComponent
+                LimitReachedPopupComponent,
+                BpmnCommonComponent
         ],
         imports: [
                 CommonModule,
@@ -75,7 +77,8 @@ import { LimitReachedPopupComponent } from '../components/limit-reached-popup/li
                 ActionButtonComponent,
                 ProductAlertPopupComponent,
                 ViewExistingFeedbackComponent,
-                LimitReachedPopupComponent
+                LimitReachedPopupComponent,
+                BpmnCommonComponent
         ]
 })
 export class SharedComponentModule { }

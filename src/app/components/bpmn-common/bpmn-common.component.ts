@@ -1,16 +1,16 @@
 
-import { AfterContentInit, Component, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterContentInit, Component, Input, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule
 } from 'bpmn-js-properties-panel';
 import camundaCloudBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
 import * as camundaModdleDescriptors from 'camunda-bpmn-moddle/resources/camunda.json';
-import * as palette_tools_class from './custom-palette-provider.json';
+import * as palette_tools_class from '../../pages/bpmn-diagram/custom-palette-provider.json';
 import BpmnPalletteModule from 'bpmn-js/lib/features/palette';
-import * as custom from './custom.json';
+import * as custom from '../../pages/bpmn-diagram/custom.json';
 import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json'
 import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
@@ -18,17 +18,14 @@ import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
-import { ActivatedRoute } from '@angular/router';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 @Component({
-  selector: 'xnode-bpmn-diagram',
-  templateUrl: './bpmn-diagram.component.html',
-  styleUrls: ['./bpmn-diagram.component.scss']
+  selector: 'xnode-bpmn-common',
+  templateUrl: './bpmn-common.component.html',
+  styleUrls: ['./bpmn-common.component.scss']
 })
-
-
-export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit {
+export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   bpmnJS: any;
   pallete_classes: any;
@@ -182,8 +179,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           }),
           'Product': appName
         };
-        console.log('response', response);
-
         this.xflowData = response.data;
         this.loadXFlows(xflowJson);
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
@@ -500,11 +495,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   loadXFlows(xFlowJson: any): void {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
-      console.log('ressssssss', response);
-
       let xFlowJsonCopy = xFlowJson;
       xFlowJsonCopy.Flows = 'xflows data'
       if (response) {
@@ -527,9 +518,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
       }
       this.utilsService.loadSpinner(false);
-    }).catch(error => {
-      console.log('errt', error);
-
+    }).catch((error: any) => {
       let xFlowJsonCopy = xFlowJson;
       xFlowJsonCopy.Flows = 'xflows data'
       let user_audit_body = {
@@ -602,8 +591,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           this.graphRedirection = true;
           var graphWindow = document.getElementById("sc");
           if (graphWindow) graphWindow.style.display = 'None';
-          console.log('>>><>><>><');
-
           this.getFlow(flow);
           this.centerAndFitViewport(this.bpmnJS)
         }
