@@ -32,7 +32,7 @@ export const AppSideMenuItems =
             {
                 label: 'Spec',
                 icon: './assets/overview.svg',
-                path: 'specifications'
+                path: 'specification'
             },
             {
                 label: 'Usecase',
@@ -193,7 +193,7 @@ export const AppSideMenuItems =
             {
                 label: 'Spec',
                 icon: './assets/overview.svg',
-                path: 'specifications'
+                path: 'specification'
             },
             {
                 label: 'Usecase',

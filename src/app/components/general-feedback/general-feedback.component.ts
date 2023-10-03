@@ -188,8 +188,8 @@ export class GeneralFeedbackComponent implements OnInit {
       case '#/feedback-list':
         comp = 'Feedback List'
         break;
-      case '#/specifications':
-        comp = 'Specifications'
+      case '#/specification':
+        comp = 'Specification'
         break;
       default:
         break;

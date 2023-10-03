@@ -101,7 +101,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('spec_record_id', obj.product_id)
     localStorage.setItem('record_id', obj.product_id)
     if (obj.component && obj.component !== '') {
-      this.router.navigate(['/specifications']);
+      this.router.navigate(['/specification']);
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
