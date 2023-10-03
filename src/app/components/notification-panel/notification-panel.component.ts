@@ -99,7 +99,8 @@ export class NotificationPanelComponent {
 
   gotoSpec(obj: any) {
     localStorage.setItem('spec_record_id', obj.product_id)
-    localStorage.setItem('record_id', obj.product_id)
+    localStorage.setItem('record_id', obj.product_id);
+    localStorage.setItem('app_name', obj?.product_name);
     if (obj.component && obj.component !== '') {
       this.router.navigate(['/specification']);
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');

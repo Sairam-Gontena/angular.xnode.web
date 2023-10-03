@@ -3,8 +3,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../../er-modeller/service/data.service';
-
-
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -15,6 +13,7 @@ declare const SwaggerUIBundle: any;
 export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
+  app_name: any;
   iframeSrc: SafeResourceUrl = '';
   dataModelIframeSrc: SafeResourceUrl = '';
   showMoreContent?: boolean = false;
@@ -30,8 +29,6 @@ export class SpecificationsContentComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private dataService: DataService,) {
     this.dataModel = this.dataService.data;
-    console.log('  this.dataModel', this.dataModel);
-
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         event.forEach((element: any) => {
@@ -48,7 +45,7 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'table'
           } else if (obj.title === 'User Interface Design') {
             obj.contentType = 'iframe'
-          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Business Rules' || obj.title === 'Usecases' || obj.title === 'Functional Dependencies'
+          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Business Rules' || obj.title === 'Usecases'
             || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
             || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
             || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
@@ -61,7 +58,8 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'x-flows';
           }
           else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
-            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures') {
+            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
+            || obj.title === 'Business Rules') {
             obj.contentType = 'json'
           }
           else if (obj.title === 'Interface Requirements') {
@@ -92,6 +90,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   ngOnInit(): void {
     const record_id = localStorage.getItem('record_id');
+    this.app_name = localStorage.getItem('app_name');
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
