@@ -45,7 +45,7 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'table'
           } else if (obj.title === 'User Interface Design') {
             obj.contentType = 'iframe'
-          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Business Rules' || obj.title === 'Usecases' || obj.title === 'Functional Dependencies'
+          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Business Rules' || obj.title === 'Usecases'
             || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
             || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
             || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
@@ -58,7 +58,8 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'x-flows';
           }
           else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
-            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures') {
+            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
+            || obj.title === 'Business Rules') {
             obj.contentType = 'json'
           }
           else if (obj.title === 'Interface Requirements') {
