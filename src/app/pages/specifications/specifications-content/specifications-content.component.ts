@@ -45,7 +45,7 @@ export class SpecificationsContentComponent implements OnInit {
             obj.contentType = 'table'
           } else if (obj.title === 'User Interface Design') {
             obj.contentType = 'iframe'
-          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Business Rules' || obj.title === 'Usecases'
+          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Usecases'
             || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
             || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
             || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
