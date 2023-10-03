@@ -25,6 +25,10 @@
     height: 80vh;
 }
 
+:host ::ng-deep.bjs-breadcrumbs li:last-of-type a {
+    color: #030303 !important;
+}
+
 .paragraph-text {
     color: rgba(255, 255, 255, 0.6);
 }
