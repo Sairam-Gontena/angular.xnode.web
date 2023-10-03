@@ -24,7 +24,14 @@ import { ViewExistingFeedbackComponent } from '../components/view-existing-feedb
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 import { LimitReachedPopupComponent } from '../components/limit-reached-popup/limit-reached-popup.component';
 import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.component';
-
+import { DataModelCommonComponent } from '../components/data-model-common/data-model-common.component';
+import { ModalModelComponent } from '../pages/er-modeller/modal-model/modal-model.component';
+import { ModalDataComponent } from '../pages/er-modeller/modal-data/modal-data.component';
+import { ModalSchemaComponent } from '../pages/er-modeller/modal-schema/modal-schema.component';
+import { ModelComponent } from '../pages/er-modeller/model/model.component';
+import { ModalRelationComponent } from '../pages/er-modeller/modal-relation/modal-relation.component';
+import { SchemaComponent } from '../pages/er-modeller/schema/schema.component';
+import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -49,7 +56,15 @@ import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.compo
                 ProductAlertPopupComponent,
                 ViewExistingFeedbackComponent,
                 LimitReachedPopupComponent,
-                BpmnCommonComponent
+                BpmnCommonComponent,
+                DataModelCommonComponent,
+                ModalModelComponent,
+                ModalDataComponent,
+                ModalSchemaComponent,
+                ModelComponent,
+                ModalRelationComponent,
+                SchemaComponent,
+                BpmnDiagramComponent
         ],
         imports: [
                 CommonModule,
@@ -78,7 +93,15 @@ import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.compo
                 ProductAlertPopupComponent,
                 ViewExistingFeedbackComponent,
                 LimitReachedPopupComponent,
-                BpmnCommonComponent
+                BpmnCommonComponent,
+                DataModelCommonComponent,
+                ModalModelComponent,
+                ModalDataComponent,
+                ModalSchemaComponent,
+                ModelComponent,
+                ModalRelationComponent,
+                SchemaComponent,
+                BpmnDiagramComponent
         ]
 })
 export class SharedComponentModule { }

@@ -84,9 +84,7 @@
                 </ul>
             </div>
             <div *ngIf="item.contentType ==='data-model'" class="h-vh">
-                <!-- <iframe id="data-model-frame" [src]="dataModelIframeSrc" class="h-full w-full pl-1 pr-1"
-                    title="Template Builder">
-                </iframe> -->
+                <xnode-data-model-common></xnode-data-model-common>
             </div>
             <div *ngIf="item.contentType ==='x-flows'" class="h-vh">
                 <xnode-bpmn-common></xnode-bpmn-common>
@@ -101,9 +99,9 @@
                 </ul>
             </div>
             <div *ngIf="item.contentType ==='OpenAPI'">
-              <h4 class="m-0 pb-3">Swagger API</h4>
-              <div id="openapi-ui-spec" class="openapi-spec"></div>
-          </div>
+                <h4 class="m-0 pb-3">Swagger API</h4>
+                <div id="openapi-ui-spec" class="openapi-spec"></div>
+            </div>
 
             <div class="gradientback" *ngIf="!item?.collapsed">
 
