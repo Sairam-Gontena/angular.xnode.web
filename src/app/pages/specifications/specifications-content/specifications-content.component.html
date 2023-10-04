@@ -10,7 +10,8 @@
                 <p class="text-sm font-medium">3 mins read</p>
             </div>
             <div class="flex mt-2">
-                <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">#{{app_name}}
+                <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">
+                    #{{app_name}}
                 </div>
             </div>
             <div class="flex mt-3 author align-items-center">
@@ -86,7 +87,80 @@
                 <xnode-bpmn-common></xnode-bpmn-common>
             </div>
             <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
-                <pre>{{ item.content | json }}</pre>
+                <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
+                    <div class="flex justify-content-end my-2 mr-2">
+                        <p-inputSwitch [(ngModel)]="checked"></p-inputSwitch>
+                    </div>
+                    <div *ngIf="checked; else elsejson">
+                        <p-table [columns]="setColumnsToTheTable(item?.content[0]?.content[0]?.columns)"
+                            [value]="item?.content[0]?.content">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns">
+                                        {{ col.header }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr>
+                                    <td *ngFor="let col of columns">
+                                        {{col.value}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <ng-template #elsejson>
+                        <pre>{{ item.content | json }}</pre>
+                    </ng-template>
+                </div>
+                <ng-template #elsejsonBlock>
+                    <span *ngIf="item?.title=='Data Quality Checks'">
+                        <div *ngFor="let subitem of dataQualityData">
+                            <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
+                                [value]="subitem.content">
+                                <ng-template pTemplate="caption">
+                                    <h4>{{ subitem.title | camelToTitle }}</h4>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns">
+                                            {{ rowData[col.field] }}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </span>
+                    <p-table *ngIf="item.title == 'User Interfaces'" [value]="bodyData">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th *ngFor="let header of userInterfaceheaders">{{ header }}</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData>
+                            <tr>
+                                <td *ngFor="let header of userInterfaceheaders">{{ rowData[header] }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <p-table *ngIf="item.title == 'Business Rules' || item.title=='Functional Dependencies'"
+                        [columns]="setColumnsToTheTable(item?.content)" [value]="item?.content">
+                        <ng-template pTemplate="body" let-content>
+                            <tr>
+                                <td>{{ content }}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <!-- <pre>{{ item.content | json }}</pre> -->
+                </ng-template>
             </div>
             <div *ngIf="item.contentType ==='data-dictionary'">
                 <h4 class="m-0 pb-3">{{item.title}}</h4>

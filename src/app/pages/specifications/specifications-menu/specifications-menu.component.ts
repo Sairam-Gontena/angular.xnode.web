@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'xnode-specifications-menu',
   templateUrl: './specifications-menu.component.html',
@@ -8,12 +10,15 @@ import { ApiService } from 'src/app/api/api.service';
 })
 
 export class SpecificationsMenuComponent implements OnInit {
-  @Input() specData?: any;;
+  @Input() specData?: any;
+  @Output() text: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   selectedSection: any;
   activeIndex: any = 0;
   menuList: any;
   selectedSecIndex: any;
+  searchText: any;
+  private textInputSubject = new Subject<string>();
 
   constructor(
     private utils: UtilsService,
@@ -30,6 +35,13 @@ export class SpecificationsMenuComponent implements OnInit {
       }
     });
     this.menuList = [...list]
+    this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
+      if (this.searchText.length > 0) {
+        this.text.emit(this.searchText);
+      } else {
+        this.text.emit('');
+      }
+    });
   }
 
   onOpenAccordian(event: any) {
@@ -39,6 +51,8 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   onClickSection(event: any, i: any) {
+    console.log(event)
+    console.log(i)
     this.selectedSection = event;
     this.selectedSecIndex = i;
     this.utils.passSelectedSectionIndex(event);
@@ -69,8 +83,16 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   shortTitle(title: string) {
-    let shortTitle = title.length > 20 ? title.substring(0, 23) + '...' : title
+    let shortTitle = title?.length > 20 ? title.substring(0, 23) + '...' : title
     return shortTitle
+  }
+
+  // ngOnChanges() {
+  //   this.ngOnInit();
+  // }
+
+  onInput() {
+    this.textInputSubject.next(this.searchText);
   }
 
 }

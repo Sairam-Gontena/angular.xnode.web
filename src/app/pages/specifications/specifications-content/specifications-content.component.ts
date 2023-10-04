@@ -24,6 +24,10 @@ export class SpecificationsContentComponent implements OnInit {
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
+  checked: boolean = true;
+  bodyData: any[] = [];
+  dataQualityData: any[] = [];
+  userInterfaceheaders: string[] = [];
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -61,6 +65,13 @@ export class SpecificationsContentComponent implements OnInit {
             || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
             || obj.title === 'Business Rules') {
             obj.contentType = 'json'
+            if (obj.title === 'User Interfaces') {
+              this.userInterfaceheaders = Object.keys(obj.content[0]);
+              obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+            }
+            if (obj.title === 'Data Quality Checks') {
+              obj.content.map((item: any) => this.dataQualityData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+            }
           }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
@@ -134,6 +145,9 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   setColumnsToTheTable(data: any) {
+    Object.entries(data.map((item: any) => {
+      if (typeof (item) == 'string') { return }
+    }))
     const cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
     return cols
   }
@@ -154,6 +168,10 @@ export class SpecificationsContentComponent implements OnInit {
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });
+  }
+
+  ngOnChanges() {
+    // this.ngOnInit();
   }
 
 

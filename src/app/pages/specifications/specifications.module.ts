@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { SpecificationsRoutingModule } from './specifications-routing.module';
 import { SpecificationsComponent } from './specifications.component';
 import { SpecificationsMenuComponent } from './specifications-menu/specifications-menu.component';
@@ -8,7 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SpecificationsHeaderComponent } from './specifications-header/specifications-header.component';
 import { SpecificationsContentComponent } from 'src/app/pages/specifications/specifications-content/specifications-content.component';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
-
+import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
 
 @NgModule({
   declarations: [
@@ -16,9 +16,11 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
+    CamelToTitlePipe
   ],
   imports: [
     CommonModule,
+    InputSwitchModule,
     SpecificationsRoutingModule,
     SharedModule,
     SharedComponentModule

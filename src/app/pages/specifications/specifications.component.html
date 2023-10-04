@@ -1,5 +1,5 @@
 <div class="flex" *ngIf="specData?.length">
-    <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
+    <xnode-specifications-menu [specData]="specData" (text)="searchText($event)"></xnode-specifications-menu>
     <div class="spec-content">
         <xnode-specifications-header></xnode-specifications-header>
         <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
