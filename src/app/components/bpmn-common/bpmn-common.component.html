@@ -1,4 +1,8 @@
-<div class="grid bpmn-div">
+<div class="surface-900 grid bpmn-div">
+    <div class="col-12 flex justify-content-end">
+        <img src="./assets/spec-minimize.svg" alt="container" *ngIf="!isExpanded" (click)="expandDataFlows(true)">
+        <img src="./assets/spec-maximize.svg" alt="container" *ngIf="isExpanded" (click)="expandDataFlows(false)">
+    </div>
     <div class="col-12">
         <div id="diagramRef" class="diagram-container">
         </div>

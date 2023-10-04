@@ -24,6 +24,8 @@ export class SpecificationsContentComponent implements OnInit {
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
+  dataToExpand: any
+  specExpanded: boolean = false;
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -154,6 +156,15 @@ export class SpecificationsContentComponent implements OnInit {
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });
+  }
+
+  expandComponent(val: any): void {
+    this.dataToExpand = val;
+    if (val.dataModel || val.xflows || val.swagger) {
+      this.specExpanded = true
+    } else {
+      this.specExpanded = false
+    }
   }
 
 

@@ -1,5 +1,5 @@
 
-import { AfterContentInit, Component, Input, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterContentInit, Component, Input, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import {
   BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule
 } from 'bpmn-js-properties-panel';
@@ -27,6 +27,9 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 })
 export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
+  @Output() dataFlowEmitter = new EventEmitter<any>();
+  @Input() dataToExpand: any;
+
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
@@ -59,6 +62,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   product: any;
   product_id: any;
   email: any;
+  isExpanded: boolean = false;
 
   constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService,) {
     let user = localStorage.getItem('currentUser')
@@ -95,6 +99,12 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
     this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
 
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.dataToExpand.dataModel) {
+      this.isExpanded = true;
+    }
   }
 
   switchWindow() {
@@ -953,4 +963,10 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
     return svg.node();
   }
+
+  expandDataFlows(val: any): void {
+    this.dataFlowEmitter.emit({ xflows: val });
+    this.isExpanded = val;
+  }
+
 }
