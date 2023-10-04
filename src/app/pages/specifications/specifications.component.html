@@ -1,6 +1,7 @@
 <div class="flex" *ngIf="specData?.length">
     <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
-    <div class="spec-content">
+    <div class=""
+        [ngClass]="{'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
         <xnode-specifications-header></xnode-specifications-header>
         <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
     </div>

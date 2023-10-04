@@ -1,3 +1,15 @@
-.spec-content {
+.spec-content-sideMenu {
     width: calc(100vw - 455px);
+}
+
+.spec-content {
+    width: calc(100vw - 180px);
+}
+
+.spec-content-navi {
+    width: calc(100vw - 640px);
+}
+
+.spec-content-sideMenu-navi {
+    width: calc(100vw - 910px);
 }

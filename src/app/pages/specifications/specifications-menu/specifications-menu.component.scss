@@ -5,6 +5,17 @@
     padding: 20px;
     height: calc(100vh - 40px);
     overflow: auto;
+    transition: width 0.5s ease;
+}
+
+.hide-spec-menu {
+    height: 100vh;
+    width: 100px;
+    background: #24232C;
+    padding: 20px;
+    height: calc(100vh - 40px);
+    overflow: auto;
+    transition: width 0.5s ease;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
@@ -77,4 +88,11 @@
 
 :host ::ng-deep .p-accordion .p-accordion-header {
     margin-top: 20px
+}
+
+:host ::ng-deep .p-button {
+    font-size: 2rem;
+    background: #4F4E55;
+    border: 1px solid #24232C !important;
+    cursor: pointer;
 }

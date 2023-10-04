@@ -14,6 +14,7 @@ export class SpecificationsMenuComponent implements OnInit {
   activeIndex: any = 0;
   menuList: any;
   selectedSecIndex: any;
+  isOpen = true;
 
   constructor(
     private utils: UtilsService,
@@ -22,6 +23,9 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.openSpecSubMenu.subscribe((data: any) => {
+      this.isOpen = data;
+    })
     this.utils.passSelectedSpecIndex(0);
     let list = this.specData;
     list.forEach((element: any) => {
@@ -71,6 +75,15 @@ export class SpecificationsMenuComponent implements OnInit {
   shortTitle(title: string) {
     let shortTitle = title.length > 20 ? title.substring(0, 23) + '...' : title
     return shortTitle
+  }
+
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.utils.EnableSpecSubMenu()
+    } else {
+      this.utils.disableSpecSubMenu();
+    }
   }
 
 }
