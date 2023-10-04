@@ -7,7 +7,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export class UtilsService {
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private specSubMenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private dockedNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public openSubmenu: Observable<boolean> = this.showLayoutSubmenu.asObservable();
+  public openSpecSubMenu: Observable<boolean> = this.specSubMenu.asObservable();
+  public openDockedNavi: Observable<boolean> = this.dockedNavi.asObservable();
 
   private showSpinner: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public startSpinner: Observable<boolean> = this.showSpinner.asObservable();
@@ -48,9 +52,21 @@ export class UtilsService {
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
   }
+  disableSpecSubMenu() {
+    this.specSubMenu.next(false);
+  }
+  disableDockedNavi() {
+    this.dockedNavi.next(false);
+  }
 
   EnablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(true);
+  }
+  EnableSpecSubMenu() {
+    this.specSubMenu.next(true);
+  }
+  EnableDockedNavi() {
+    this.dockedNavi.next(true);
   }
 
   loadSpinner(event: boolean): void {
