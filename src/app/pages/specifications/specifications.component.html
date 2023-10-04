@@ -1,7 +1,7 @@
 <div class="flex" *ngIf="specData?.length">
     <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
     <div class="spec-content">
-        <xnode-specifications-header></xnode-specifications-header>
+        <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"></xnode-specifications-header>
         <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
@@ -18,7 +19,8 @@ export class SpecificationsComponent implements OnInit {
 
   constructor(
     private utils: UtilsService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private router: Router
   ) {
 
   }
@@ -43,8 +45,8 @@ export class SpecificationsComponent implements OnInit {
           const list = response.data;
           list.forEach((obj: any, index: any) => {
             if (obj?.title && obj?.section) {
-              if(obj?.title == 'Technical Specifications') {
-                obj.section.push({ title: 'OpenAPI Spec', content:[],parentIndex:4.10,contentType:'OpenAPI', created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
+              if (obj?.title == 'Technical Specifications') {
+                obj.section.push({ title: 'OpenAPI Spec', content: [], parentIndex: 4.10, contentType: 'OpenAPI', created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
               }
               obj.section.unshift({ title: obj.title, created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
               obj.section.forEach((element: any, sIndex: any) => {
@@ -68,4 +70,11 @@ export class SpecificationsComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
   }
+  refreshCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
+
 }
