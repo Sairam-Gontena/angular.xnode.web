@@ -292,6 +292,7 @@ export class AppComponent implements OnInit {
 
   submenuFunc() {
     this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
+    this.subMenuLayoutUtil.EnableDockedNavi();
     if (this.isSideWindowOpen) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';

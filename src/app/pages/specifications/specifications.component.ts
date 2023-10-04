@@ -19,6 +19,8 @@ export class SpecificationsComponent implements OnInit {
   showSpecGenaretePopup: any;
   filteredSpecData: any;
   foundObjects: any[] = [];
+  isNaviOpened = false
+  isSideMenuOpened = true
 
   constructor(
     private utils: UtilsService,
@@ -29,6 +31,15 @@ export class SpecificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.openSpecSubMenu.subscribe((data: any) => {
+      this.isSideMenuOpened = data;
+    })
+    this.utils.openDockedNavi.subscribe((data: any) => {
+      this.isNaviOpened = data;
+      if (data) {
+        this.utils.disableSpecSubMenu();
+      }
+    })
     let user = localStorage.getItem('currentUser');
     this.getMeSpecList();
     if (user)
