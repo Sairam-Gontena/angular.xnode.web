@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
@@ -24,6 +24,8 @@ export class SpecificationsContentComponent implements OnInit {
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
+  dataToExpand: any
+  specExpanded: boolean = false;
   checked: boolean = false;
   bodyData: any[] = [];
   dataQualityData: any[] = [];
@@ -182,8 +184,16 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  ngOnChanges() {
-    // this.ngOnInit();
+  expandComponent(val: any): void {
+    this.dataToExpand = val;
+    if (val.dataModel || val.xflows || val.swagger) {
+      this.specExpanded = true
+    } else {
+      this.specExpanded = false;
+      setTimeout(() => {
+        this.fetchOpenAPISpec()
+      }, 100)
+    }
   }
 
 
