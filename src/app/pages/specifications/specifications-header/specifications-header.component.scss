@@ -5,3 +5,29 @@
 .text-color {
     color: #949292 !important
 }
+
+:host ::ng-deep .app-dropdown .p-dropdown {
+    border-radius: 25px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 0;
+    width: 100%;
+    color: #ffffff !important;
+    background: #4F4E55;
+}
+
+:host ::ng-deep .app-dropdown .p-inputtext {
+    background: #4F4E55 !important;
+    color: #ffffff !important;
+    padding: 10px !important;
+}
+
+:host ::ng-deep .app-dropdown .p-dropdown-label {
+    font-size: 12px;
+    border-radius: 30px;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label,
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+    color: #ffffff;
+}

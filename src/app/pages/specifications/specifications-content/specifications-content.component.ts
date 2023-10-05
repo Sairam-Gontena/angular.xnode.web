@@ -26,6 +26,10 @@ export class SpecificationsContentComponent implements OnInit {
   dataModel: any;
   dataToExpand: any
   specExpanded: boolean = false;
+  checked: boolean = false;
+  bodyData: any[] = [];
+  dataQualityData: any[] = [];
+  userInterfaceheaders: string[] = [];
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -63,6 +67,13 @@ export class SpecificationsContentComponent implements OnInit {
             || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
             || obj.title === 'Business Rules') {
             obj.contentType = 'json'
+            if (obj.title === 'User Interfaces') {
+              this.userInterfaceheaders = Object.keys(obj.content[0]);
+              obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+            }
+            if (obj.title === 'Data Quality Checks') {
+              obj.content.map((item: any) => this.dataQualityData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+            }
           }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
@@ -84,6 +95,18 @@ export class SpecificationsContentComponent implements OnInit {
         this.scrollToItem(event.title)
       }
     })
+  }
+
+  checkedToggle(bool: boolean) {
+    this.checked = bool;
+  }
+
+  isObject(value: any): boolean {
+    return typeof value === 'object';
+  }
+
+  returnValues(obj: any) {
+    return Object.values(obj)
   }
 
   ngAfterViewInit() {
@@ -136,12 +159,14 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   setColumnsToTheTable(data: any) {
+    Object.entries(data.map((item: any) => {
+      if (typeof (item) == 'string') { return }
+    }))
     const cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
     return cols
   }
 
   async fetchOpenAPISpec() {
-    console.log("called here for swagger")
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');

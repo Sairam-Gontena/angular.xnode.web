@@ -110,16 +110,160 @@
                         <img src="./assets/spec-minimize.svg" alt="container"
                             (click)="expandComponent({'swagger':true})" class="expnad-icon pointer">
                     </div>
-
-                    <!-- <div class="flex col-12 justify-content-between align-items-center ">
-                        <h4 class="m-0 pb-3">Swagger API</h4>
-                        <h4 class="m-0 pb-3" (click)="expandComponent({'swagger':true})">Expand</h4>
-                    </div> -->
                     <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                 </div>
-
+                <div *ngIf="item.contentType==='iframe'" class=" h-vh">
+                    <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
+                    </iframe>
+                </div>
+                <div *ngIf="item.contentType ==='table'">
+                    <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{ col.header }}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr>
+                                <td *ngFor="let col of columns">
+                                    {{ rowData[col.field] }}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <div *ngIf="item.contentType ==='list'">
+                    <ul *ngFor="let subItem of item.content">
+                        <li>
+                            <p class="m-0 pb-1"> <span class="sub-content font-normal text-base">{{subItem}}</span></p>
+                        </li>
+                    </ul>
+                </div>
+                <div *ngIf="item.contentType ==='header-list'">
+                    <ul *ngFor="let subItem of item.content">
+                        <li>
+                            <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
+                                : <span class="sub-content font-normal text-base">{{subItem.content.Description}}</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div *ngIf="item.contentType ==='data-model'" class="h-vh">
+                    <xnode-data-model-common></xnode-data-model-common>
+                </div>
+                <div *ngIf="item.contentType ==='x-flows'" class="h-vh">
+                    <xnode-bpmn-common></xnode-bpmn-common>
+                </div>
+                <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
+                    <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
+                        <div class="flex justify-content-end my-2 mr-2">
+                            <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle(false)"></i>
+                            <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="checkedToggle(true)"></i>
+                        </div>
+                        <div *ngIf="checked; else elsejson">
+                            <p-table [columns]="setColumnsToTheTable(item?.content[0]?.content[0]?.columns)"
+                                [value]="item?.content[0]?.content[0]?.columns">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header| camelToTitle }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns">
+                                            <span
+                                                *ngIf="isObject(rowData[col.field]);else field">{{returnValues(rowData[col.field])}}</span>
+                                            <ng-template #field>
+                                                {{ rowData[col.field] }}
+                                            </ng-template>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <ng-template #elsejson>
+                            <pre>{{ item.content | json }}</pre>
+                        </ng-template>
+                    </div>
+                    <ng-template #elsejsonBlock>
+                        <div *ngIf="checked; else jsonBlock">
+                            <div class="flex justify-content-end my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle(false)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle(true)"></i>
+                            </div>
+                            <span *ngIf="item?.title=='Data Quality Checks'">
+                                <div *ngFor="let subitem of dataQualityData">
+                                    <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
+                                        [value]="subitem.content">
+                                        <ng-template pTemplate="caption">
+                                            <h4>{{ subitem.title | camelToTitle }}</h4>
+                                        </ng-template>
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let col of columns">
+                                                    {{ col.header | camelToTitle }}
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                            <tr>
+                                                <td *ngFor="let col of columns">
+                                                    {{ rowData[col.field] }}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </span>
+                            <p-table *ngIf="item.title == 'User Interfaces'" [value]="bodyData">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th *ngFor="let header of userInterfaceheaders">{{ header| camelToTitle }}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData>
+                                    <tr>
+                                        <td *ngFor="let header of userInterfaceheaders">{{ rowData[header] }}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <p-table *ngIf="item.title == 'Business Rules' || item.title=='Functional Dependencies'"
+                                [columns]="setColumnsToTheTable(item?.content)" [value]="item?.content">
+                                <ng-template pTemplate="body" let-content>
+                                    <tr>
+                                        <td>{{ content }}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <ng-template #jsonBlock>
+                            <div class="flex justify-content-end my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle(false)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle(true)"></i>
+                            </div>
+                            <pre>{{ item.content | json }}</pre>
+                        </ng-template>
+                    </ng-template>
+                </div>
+                <div *ngIf="item.contentType ==='data-dictionary'">
+                    <h4 class="m-0 pb-3">{{item.title}}</h4>
+                    <ul *ngFor="let subItem of item.content">
+                        <li>
+                            <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
+                                : <span class="sub-content font-normal text-base">{{subItem.content.Description}}</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
                 <div class="gradientback" *ngIf="!item?.collapsed">
-
                 </div>
             </div>
         </div>
