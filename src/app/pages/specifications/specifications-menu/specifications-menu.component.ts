@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'xnode-specifications-menu',
   templateUrl: './specifications-menu.component.html',
@@ -8,12 +10,16 @@ import { ApiService } from 'src/app/api/api.service';
 })
 
 export class SpecificationsMenuComponent implements OnInit {
-  @Input() specData?: any;;
+  @Input() specData?: any;
+  @Output() text: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   selectedSection: any;
   activeIndex: any = 0;
   menuList: any;
   selectedSecIndex: any;
+  searchText: any;
+  private textInputSubject = new Subject<string>();
+  isOpen = true;
 
   constructor(
     private utils: UtilsService,
@@ -22,6 +28,9 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.openSpecSubMenu.subscribe((data: any) => {
+      this.isOpen = data;
+    })
     this.utils.passSelectedSpecIndex(0);
     let list = this.specData;
     list.forEach((element: any) => {
@@ -30,6 +39,13 @@ export class SpecificationsMenuComponent implements OnInit {
       }
     });
     this.menuList = [...list]
+    this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
+      if (this.searchText.length > 0) {
+        this.text.emit(this.searchText);
+      } else {
+        this.text.emit('');
+      }
+    });
   }
 
   onOpenAccordian(event: any) {
@@ -69,8 +85,25 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   shortTitle(title: string) {
-    let shortTitle = title.length > 20 ? title.substring(0, 23) + '...' : title
+    let shortTitle = title?.length > 20 ? title.substring(0, 23) + '...' : title
     return shortTitle
+  }
+
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.utils.EnableSpecSubMenu()
+    } else {
+      this.utils.disableSpecSubMenu();
+    }
+  }
+
+  // ngOnChanges() {
+  //   this.ngOnInit();
+  // }
+
+  onInput() {
+    this.textInputSubject.next(this.searchText);
   }
 
 }

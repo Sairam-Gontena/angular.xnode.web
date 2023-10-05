@@ -1,15 +1,15 @@
 <div class="flex" *ngIf="specData?.length">
     <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
-    <div class="spec-content">
-        <xnode-specifications-header></xnode-specifications-header>
+    <div class=""
+        [ngClass]="{'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
+        <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"></xnode-specifications-header>
         <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
     </div>
-</div>
-<!-- <div class="flex flex-column justify-content-center h-full w-full" *ngIf="noSpec">
+    <!-- <div class="flex flex-column justify-content-center h-full w-full" *ngIf="noSpec">
     <div class="flex justify-content-center w-full spec-content text-white">
         No spec is generated
     </div>
 </div> -->
 
-<xnode-product-alert-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
-    [data]="productStatusPopupContent" [showProductStatusPopup]="showSpecGenaretePopup"></xnode-product-alert-popup>
+    <xnode-product-alert-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+        [data]="productStatusPopupContent" [showProductStatusPopup]="showSpecGenaretePopup"></xnode-product-alert-popup>

@@ -149,6 +149,7 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'close-docked-navi') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
+        this.utilsService.disableDockedNavi()
       }
       if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
@@ -253,6 +254,9 @@ export class AppComponent implements OnInit {
       case '/publish':
         comp = 'publish'
         break;
+      case '/specification':
+        comp = 'specification'
+        break;
       default:
         break;
     }
@@ -292,6 +296,7 @@ export class AppComponent implements OnInit {
 
   submenuFunc() {
     this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
+    this.subMenuLayoutUtil.EnableDockedNavi();
     if (this.isSideWindowOpen) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';
