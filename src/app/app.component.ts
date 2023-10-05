@@ -149,6 +149,7 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'close-docked-navi') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
+        this.utilsService.disableDockedNavi()
       }
       if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
@@ -252,6 +253,9 @@ export class AppComponent implements OnInit {
         break;
       case '/publish':
         comp = 'publish'
+        break;
+      case '/specification':
+        comp = 'specification'
         break;
       default:
         break;
