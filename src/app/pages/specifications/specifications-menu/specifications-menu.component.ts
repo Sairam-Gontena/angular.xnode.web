@@ -55,8 +55,6 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   onClickSection(event: any, i: any) {
-    console.log(event)
-    console.log(i)
     this.selectedSection = event;
     this.selectedSecIndex = i;
     this.utils.passSelectedSectionIndex(event);
