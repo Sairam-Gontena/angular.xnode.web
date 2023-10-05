@@ -73,7 +73,6 @@ export class SpecificationsContentComponent implements OnInit {
             }
             if (obj.title === 'Data Quality Checks') {
               obj.content.map((item: any) => {
-                console.log(item)
                 if (item.content[0]) {
                   this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
                 } else {
