@@ -9,6 +9,7 @@ import { SpecificationsHeaderComponent } from './specifications-header/specifica
 import { SpecificationsContentComponent } from 'src/app/pages/specifications/specifications-content/specifications-content.component';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
+import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
-    CamelToTitlePipe
+    CamelToTitlePipe,
+    ObjectToArrayPipe
   ],
   imports: [
     CommonModule,
