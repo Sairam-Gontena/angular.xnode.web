@@ -1,11 +1,13 @@
-<div class="surface-900  er-body overflow-auto">
+<div class="surface-900 overflow-auto"
+    [ngClass]="{'spec-er-body':currentUrl == '/specification','er-body':currentUrl != '/specification'}">
     <span *ngIf="bpmnSubUrl; else elseBlock">
         <xnode-bpmn-diagram></xnode-bpmn-diagram>
     </span>
     <ng-template #elseBlock>
-        <div class="flex align-items-center justify-content-between p-4">
+        <div class="flex align-items-center justify-content-between p-4" *ngIf="currentUrl == '/specification'">
             <h6 class="text-4xl text-white  font-bold m-0">Data Model</h6>
-            <img src="./assets/spec-minimize.svg" class="expnad-icon pointer" alt="container" *ngIf="!isExpanded" (click)="expandDataFlows(true)">
+            <img src="./assets/spec-minimize.svg" class="expnad-icon pointer" alt="container" *ngIf="!isExpanded"
+                (click)="expandDataFlows(true)">
             <i class="pi pi-times text-white text-xl pointer" *ngIf="isExpanded" (click)="expandDataFlows(false)"></i>
         </div>
         <div class=" flex flex-wrap justify-center ml-4">
