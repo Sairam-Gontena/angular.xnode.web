@@ -72,7 +72,13 @@ export class SpecificationsContentComponent implements OnInit {
               obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
             }
             if (obj.title === 'Data Quality Checks') {
-              obj.content.map((item: any) => this.dataQualityData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+              obj.content.map((item: any) => {
+                if (item.content[0]) {
+                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
+                } else {
+                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
+                }
+              });
             }
           }
           else if (obj.title === 'Interface Requirements') {
@@ -162,8 +168,14 @@ export class SpecificationsContentComponent implements OnInit {
     Object.entries(data.map((item: any) => {
       if (typeof (item) == 'string') { return }
     }))
-    const cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
-    return cols
+    let cols;
+    if (data[0]) {
+      cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
+      return cols
+    } else {
+      cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+      return cols
+    }
   }
 
   async fetchOpenAPISpec() {
