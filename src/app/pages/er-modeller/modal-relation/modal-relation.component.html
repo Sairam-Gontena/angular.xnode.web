@@ -1,4 +1,4 @@
-<div class="modal-header">
+<!-- <div class="modal-header">
   <h5 class="modal-title">New Relation <span *ngIf="source_model && target_model">({{source_model.name}} ->
       {{target_model.name}})</span></h5>
   <button type="button" class="btn-close" (click)="modalService.hide()" aria-label="Close"></button>
@@ -29,4 +29,33 @@
 <div class="modal-footer">
   <button type="button" class="btn btn-primary" (click)="create()">Create</button>
   <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modalService.hide()">Close</button>
-</div>
+</div> -->
+<p-dialog header="Header" [(visible)]="visible" [style]="{ width: '50vw' }">
+  <ng-template pTemplate="header">
+    <h5 class="modal-title">New Relation <span *ngIf="source_model && target_model">({{source_model.name}} ->
+        {{target_model.name}})</span></h5>
+  </ng-template>
+  <form>
+    <div class="row">
+      <div class="col-sm-4 text-right">Type</div>
+      <div class="col-sm-8">
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="type" id="type1" value="one-to-many"
+              [(ngModel)]="relation_type"> one-to-many
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="type" id="type2" value="many-to-many"
+              [(ngModel)]="relation_type"> many-to-many
+          </label>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button type="button" class="btn btn-primary" (click)="create()">Create</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="visible = false">Close</button>
+  </ng-template>
+</p-dialog>
