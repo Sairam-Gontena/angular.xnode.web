@@ -1,0 +1,23 @@
+<div class="content overflow-hidden" [ngClass]="{'bg-white':dataToExpand.swagger}">
+    <xnode-data-model-common *ngIf="dataToExpand.dataModel" (dataFlowEmitter)="expandComponent($event)"
+        [dataToExpand]="dataToExpand"></xnode-data-model-common>
+    <xnode-bpmn-common *ngIf="dataToExpand.xflows" (dataFlowEmitter)="expandComponent($event)"
+        [dataToExpand]="dataToExpand"></xnode-bpmn-common>
+    <div *ngIf="dataToExpand.swagger">
+        <div class="flex col-12 justify-content-between align-items-center p-4">
+            <h4 class="m-0 pb-3">Swagger API</h4>
+            <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.swagger" (click)="expandComponent(false)"></i>
+        </div>
+        <div id="openapi-ui-spec" class="openapi-spec"></div>
+    </div>
+    <div *ngIf="dataToExpand.dashboard" class="h-full bg-white">
+        <div class="h-full relative">
+            <div class="absolute right-0 mr-2 mt-2">
+                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dashboard"
+                    (click)="expandComponent(false)"></i>
+            </div>
+            <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
+            </iframe>
+        </div>
+    </div>
+</div>
