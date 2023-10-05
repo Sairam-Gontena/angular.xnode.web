@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { UtilsService } from 'src/app/components/services/utils.service';
+
 @Component({
   selector: 'xnode-specifications-header',
   templateUrl: './specifications-header.component.html',
@@ -15,11 +17,14 @@ export class SpecificationsHeaderComponent implements OnInit {
   utilsService: any;
   auditUtil: any;
   product: any;
+  isSideMenuOpened: any
 
-
-  constructor(private router: Router,) {
+  constructor(private router: Router, private utils: UtilsService) {
   }
   ngOnInit(): void {
+    this.utils.openSpecSubMenu.subscribe((data: any) => {
+      this.isSideMenuOpened = data;
+    })
     let user = localStorage.getItem('currentUser');
     if (user) {
       this.currentUser = JSON.parse(user)
@@ -55,5 +60,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
     this.refreshCurrentRoute.emit();
     this.auditUtil.post("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
+  }
+  toggleSideMenu() {
+    this.utils.EnableSpecSubMenu()
   }
 }

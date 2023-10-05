@@ -1,14 +1,11 @@
 <div [ngClass]="{'spec-menu': isOpen, 'hide-spec-menu': !isOpen}">
-    <div class="flex justify-content-end">
-        <img src="../assets/spec-chevron-right.svg" class="flex mt-2 ml-4 text-white" alt="Logo" *ngIf="!isOpen"
-            (click)="toggleMenu()">
-    </div>
     <div *ngIf="isOpen">
         <div class="flex justify-content-center">
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search text-white"></i>
                 <input type="text" pInputText placeholder="Search for docs, Keywords, etc"
                     class="w-full border-round-3xl font-family-inter text-sm font-normal" />
+                <!-- [(ngModel)]="searchText" (input)="onInput()" dont delete-->
             </span>
             <img src="../assets/spec-chevron-left.svg" class="flex ml-4 text-white" alt="Logo" *ngIf="isOpen"
                 (click)="toggleMenu()">

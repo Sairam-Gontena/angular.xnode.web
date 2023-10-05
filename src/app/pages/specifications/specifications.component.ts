@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import * as _ from "lodash";
 
 @Component({
   selector: 'xnode-specifications',
@@ -10,19 +11,23 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class SpecificationsComponent implements OnInit {
   currentUser: any;
-  specData?: any;;
+  specData?: any;
+  specDataCopy: any;
   selectedSpec: any;
   selectedSection: any;
   specId: any
   productStatusPopupContent: any;
   showSpecGenaretePopup: any;
+  filteredSpecData: any;
+  foundObjects: any[] = [];
   isNaviOpened = false
   isSideMenuOpened = true
 
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
 
   }
@@ -42,6 +47,105 @@ export class SpecificationsComponent implements OnInit {
     if (user)
       this.currentUser = JSON.parse(user)
   }
+
+  searchText(text: any) {
+    console.log(text)
+    if (text == '') {
+      this.clearSearchText()
+    }
+    let filteredData: any = [];
+    let keyword = text;
+    this.specData.forEach((element: any, index: any) => {
+      element.section.forEach((subElement: any) => {
+        if (typeof (subElement.content) == 'string') {
+          if (subElement.title.toUpperCase().includes(keyword.toUpperCase()) || subElement.content.toUpperCase().includes(keyword.toUpperCase())) {
+            this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+            this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+          }
+        } if (typeof (subElement.content) == 'object') {
+          subElement.content.forEach((objElem: any) => {
+            if (typeof (objElem) == 'string') {
+              if (objElem?.toUpperCase().includes(keyword.toUpperCase())) {
+                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+              }
+            }
+            if (objElem?.title || objElem?.content) {
+              if (typeof (objElem?.content) == 'object') {
+                if (objElem?.content?.Description) {
+                  if (objElem?.content?.Description.toUpperCase().includes(keyword.toUpperCase())) {
+                    this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                    this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+                  }
+                }
+                if (objElem?.content?.length > 0) {
+                  objElem?.content.forEach((item: any) => {
+                    if (item?.tableName) {
+                      if (item?.tableName.toUpperCase().includes(keyword.toUpperCase()) || item?.tableDescription.toUpperCase().includes(keyword.toUpperCase())) {
+                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+                      }
+                    } else if (item?.columnName) {
+                      if (item?.columnName.toUpperCase().includes(keyword.toUpperCase()) || item?.description.toUpperCase().includes(keyword.toUpperCase())) {
+                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+                      }
+                    } else if (item?.checkName) {
+                      if (item?.checkName.toUpperCase().includes(keyword.toUpperCase()) || item?.description.toUpperCase().includes(keyword.toUpperCase())) {
+                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+                      }
+                    } else if (item?.content) {
+                      if (item?.content.toUpperCase().includes(keyword.toUpperCase()) || item?.title.toUpperCase().includes(keyword.toUpperCase())) {
+                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+                      }
+                    } else {
+                      if (item?.toUpperCase().includes(keyword.toUpperCase())) {
+                        this.foundObjects = _.uniq(_.concat(this.foundObjects, objElem))
+                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, objElem))
+                      }
+                    }
+                  })
+                }
+              } else {
+                if (objElem?.title?.toUpperCase().includes(keyword.toUpperCase()) || objElem?.content?.toUpperCase().includes(keyword.toUpperCase())) {
+                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+                }
+              }
+            }
+            if (objElem?.Backstory || objElem?.Needs || objElem?.Quote) {
+              if (objElem?.Backstory.toUpperCase().includes(keyword.toUpperCase()) || objElem?.Needs.toUpperCase().includes(keyword.toUpperCase()) || objElem?.Quote.toUpperCase().includes(keyword.toUpperCase())) {
+                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
+              }
+            }
+            if (objElem?.Definition || objElem?.Term)
+              if (objElem?.Definition.toUpperCase().includes(keyword.toUpperCase()) || objElem?.Term.toUpperCase().includes(keyword.toUpperCase())) {
+                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
+                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement)) //element
+              }
+          })
+        }
+      });
+      if (index === this.specData.length - 1) {
+        this.populatefilteredSpecData(this.filteredSpecData)
+      }
+    });
+  }
+
+  populatefilteredSpecData(data: any) {
+    this.filteredSpecData = _.compact(data);
+    this.specData = this.filteredSpecData
+    console.log('final', this.filteredSpecData)
+    this.changeDetectorRef.detectChanges();
+  }
+
+  clearSearchText() {
+    this.specData = this.specDataCopy;
+  }
+
   getMeUserAvatar() {
     var firstLetterOfFirstWord = this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
     var firstLetterOfSecondWord = this.currentUser.last_name[1][0].toUpperCase(); // Get the first letter of the second word
@@ -67,10 +171,9 @@ export class SpecificationsComponent implements OnInit {
           })
           this.specData = list;
           this.specData.pop();
+          this.specDataCopy = this.specData;
           this.utils.passSelectedSpecItem(list);
         } else {
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
           this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data.detail });
           this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
           this.showSpecGenaretePopup = true;
