@@ -24,7 +24,7 @@ export class SpecificationsContentComponent implements OnInit {
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
-  checked: boolean = true;
+  checked: boolean = false;
   bodyData: any[] = [];
   dataQualityData: any[] = [];
   userInterfaceheaders: string[] = [];
@@ -93,6 +93,18 @@ export class SpecificationsContentComponent implements OnInit {
         this.scrollToItem(event.title)
       }
     })
+  }
+
+  checkedToggle(bool: boolean) {
+    this.checked = bool;
+  }
+
+  isObject(value: any): boolean {
+    return typeof value === 'object';
+  }
+
+  returnValues(obj: any) {
+    return Object.values(obj)
   }
 
   ngAfterViewInit() {
