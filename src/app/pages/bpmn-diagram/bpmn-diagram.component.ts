@@ -18,8 +18,9 @@ import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
-import { ActivatedRoute } from '@angular/router';
-import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
+
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -62,8 +63,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   product: any;
   product_id: any;
   email: any;
+  currentUrl: string = '';
+  showBpmn: boolean = false;
 
-  constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService,) {
+  constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService, private router: Router) {
     let user = localStorage.getItem('currentUser')
     if (user) {
       let userObj = JSON.parse(user)
@@ -72,6 +75,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   ngOnInit(): void {
+    this.router.url == '/configuration/workflow/overview' ? this.showBpmn = false : this.showBpmn = true
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);

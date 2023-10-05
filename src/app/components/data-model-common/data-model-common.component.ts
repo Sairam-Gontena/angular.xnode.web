@@ -36,6 +36,7 @@ export class DataModelCommonComponent {
   product: any;
   product_id: any;
   isExpanded: boolean = false;
+  currentUrl: string = '';
 
 
   constructor(private apiService: ApiService,
@@ -50,6 +51,7 @@ export class DataModelCommonComponent {
   }
 
   ngOnInit(): void {
+    this.currentUrl = this.router.url;
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
