@@ -13,3 +13,16 @@
 .spec-content-sideMenu-navi {
     width: calc(100vw - 880px);
 }
+
+.comments-collapsed {
+    width: calc(100% - 750px);
+}
+
+.comments-panel {
+    width: 374px;
+    background: #24232C;
+}
+
+.comments-panel-hidden {
+    display: none;
+}

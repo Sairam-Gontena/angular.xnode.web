@@ -22,6 +22,7 @@ export class SpecificationsComponent implements OnInit {
   foundObjects: any[] = [];
   isNaviOpened = false
   isSideMenuOpened = true
+  isCommnetsPanelCollapsed?: boolean;
 
   constructor(
     private utils: UtilsService,
@@ -29,7 +30,9 @@ export class SpecificationsComponent implements OnInit {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-
+    this.utils.isCommentPanelToggled.subscribe((event: any) => {
+      this.isCommnetsPanelCollapsed = event;
+    })
   }
 
   ngOnInit(): void {
