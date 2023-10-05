@@ -63,13 +63,13 @@
                         </div>
                     </ng-template>
                 </div>
-                <div *ngIf="item.contentType==='iframe'" class=" h-vh">
+                <div *ngIf="item.contentType==='iframe'" class="h-auto">
                     <div class="flex justify-content-between align-items-center">
                         <h1>Dashboard</h1>
                         <img src="./assets/spec-minimize.svg" alt="container"
                             (click)="expandComponent({'dashboard':true})" class="expnad-icon pointer">
                     </div>
-                    <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
+                    <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full pl-1 pr-1" title="Template Builder">
                     </iframe>
                 </div>
                 <div *ngIf="item.contentType ==='table'">
@@ -124,10 +124,10 @@
                         </li>
                     </ul>
                 </div>
-                <div *ngIf="item.contentType ==='data-model'" class="h-vh">
+                <div *ngIf="item.contentType ==='data-model'" class="h-auto">
                     <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"></xnode-data-model-common>
                 </div>
-                <div *ngIf="item.contentType ==='x-flows'" class="h-vh p-2">
+                <div *ngIf="item.contentType ==='x-flows'" class="h-auto">
                     <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)"></xnode-bpmn-common>
                 </div>
                 <!-- <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
@@ -150,10 +150,6 @@
                             (click)="expandComponent({'swagger':true})" class="expnad-icon pointer">
                     </div>
                     <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
-                </div>
-                <div *ngIf="item.contentType==='iframe'" class=" h-vh">
-                    <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
-                    </iframe>
                 </div>
                 <div *ngIf="item.contentType ==='table'">
                     <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
@@ -188,12 +184,6 @@
                             </p>
                         </li>
                     </ul>
-                </div>
-                <div *ngIf="item.contentType ==='data-model'" class="h-vh">
-                    <xnode-data-model-common></xnode-data-model-common>
-                </div>
-                <div *ngIf="item.contentType ==='x-flows'" class="h-vh">
-                    <xnode-bpmn-common></xnode-bpmn-common>
                 </div>
                 <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
                     <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
