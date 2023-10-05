@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
@@ -141,6 +141,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   async fetchOpenAPISpec() {
+    console.log("called here for swagger")
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
@@ -163,7 +164,10 @@ export class SpecificationsContentComponent implements OnInit {
     if (val.dataModel || val.xflows || val.swagger) {
       this.specExpanded = true
     } else {
-      this.specExpanded = false
+      this.specExpanded = false;
+      setTimeout(() => {
+        this.fetchOpenAPISpec()
+      }, 100)
     }
   }
 

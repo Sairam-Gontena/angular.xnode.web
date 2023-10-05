@@ -19,6 +19,7 @@ import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-bpmn-common',
@@ -63,13 +64,15 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   product_id: any;
   email: any;
   isExpanded: boolean = false;
+  showBpmn: boolean = false;
 
-  constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService,) {
+  constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService, private router: Router) {
     let user = localStorage.getItem('currentUser')
     if (user) {
       let userObj = JSON.parse(user)
       this.email = userObj?.email;
     }
+    this.router.url == '/specification' ? this.showBpmn = false : this.showBpmn = true
   }
 
   ngOnInit(): void {
@@ -102,7 +105,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand.dataModel) {
+    if (this.dataToExpand.xflows) {
       this.isExpanded = true;
     }
   }

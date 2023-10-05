@@ -88,7 +88,7 @@
                 <div *ngIf="item.contentType ==='data-model'" class="h-vh">
                     <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"></xnode-data-model-common>
                 </div>
-                <div *ngIf="item.contentType ==='x-flows'" class="h-vh">
+                <div *ngIf="item.contentType ==='x-flows'" class="h-vh p-2">
                     <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)"></xnode-bpmn-common>
                 </div>
                 <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
@@ -105,13 +105,17 @@
                     </ul>
                 </div>
                 <div *ngIf="item.contentType ==='OpenAPI'">
-                    <h4 class="m-0 pb-3" (click)="expandComponent({'swagger':true})">Expand</h4>
+                    <div class="flex col-12 justify-content-between align-items-center">
+                        <h4 class="m-0 ">Swagger API</h4>
+                        <img src="./assets/spec-minimize.svg" alt="container"
+                            (click)="expandComponent({'swagger':true})" class="expnad-icon pointer">
+                    </div>
 
                     <!-- <div class="flex col-12 justify-content-between align-items-center ">
                         <h4 class="m-0 pb-3">Swagger API</h4>
                         <h4 class="m-0 pb-3" (click)="expandComponent({'swagger':true})">Expand</h4>
                     </div> -->
-                    <div id="openapi-ui-spec" class="openapi-spec"></div>
+                    <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                 </div>
 
                 <div class="gradientback" *ngIf="!item?.collapsed">
