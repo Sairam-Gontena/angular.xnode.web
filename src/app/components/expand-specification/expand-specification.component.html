@@ -3,7 +3,7 @@
         [dataToExpand]="dataToExpand"></xnode-data-model-common>
     <xnode-bpmn-common *ngIf="dataToExpand.xflows" (dataFlowEmitter)="expandComponent($event)"
         [dataToExpand]="dataToExpand"></xnode-bpmn-common>
-    <div *ngIf="dataToExpand.swagger">
+    <div *ngIf="dataToExpand.swagger" class="swagger-h overflow-auto">
         <div class="flex col-12 justify-content-between align-items-center p-4">
             <h4 class="m-0 pb-3">Swagger API</h4>
             <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.swagger" (click)="expandComponent(false)"></i>
