@@ -1,19 +1,26 @@
-<div class="flex justify-content-between flex-wrap p-4 border-bottom-1 border-white-alpha-40 header-items">
-    <div class="flex ">
-        <p class="flex justify-content-center align-items-center m-0 pointer text-base font-family-inter font-normal ">
-            <span class="pr-2"> <img src="../assets/request.svg" class="" alt="Logo">
-            </span>Change Request
-        </p>
-        <p
-            class="m-0 pl-4 flex justify-content-center align-items-center pointer text-base font-family-inter font-normal">
-            <span class="pr-2"><img src="../assets/integration.svg" class="" alt="Logo"></span>Integration
-        </p>
+<div style="position: relative;">
+    <div class="" style="position: absolute;left: -35px;top:20px">
+        <img src="../assets/spec-chevron-right.svg" class="flex mt-2 ml-4 text-white" alt="Logo"
+            *ngIf="!isSideMenuOpened" (click)="toggleSideMenu()" />
     </div>
-    <div class="flex align-items-center ">
-        <!-- <p class="pr-3 text-color text-white">Edited just now</p> -->
-        <img src="../assets/fav.svg " class="pr-3 pointer" alt="Logo">
-        <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo">
-        <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
-        <img src="../assets/menu-dots.svg" class="pr-3 pointer" alt="Logo">
-        <p-button label="Share" styleClass="p-button-rounded bg-primary border-none"></p-button>
+    <div class="flex justify-content-between flex-wrap p-4 border-bottom-1 border-white-alpha-40 header-items">
+        <div class="flex">
+            <p
+                class="flex justify-content-center align-items-center m-0 pointer text-base font-family-inter font-normal ">
+                <span class="pr-2"> <img src="../assets/request.svg" class="" alt="Logo">
+                </span>Change Request
+            </p>
+            <p
+                class="m-0 pl-4 flex justify-content-center align-items-center pointer text-base font-family-inter font-normal">
+                <span class="pr-2"><img src="../assets/integration.svg" class="" alt="Logo"></span>Integration
+            </p>
+        </div>
+        <div class="flex align-items-center ">
+            <!-- <p class="pr-3 text-color text-white">Edited just now</p> -->
+            <img src="../assets/fav.svg " class="pr-3 pointer" alt="Logo">
+            <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo">
+            <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
+            <img src="../assets/menu-dots.svg" class="pr-3 pointer" alt="Logo">
+            <p-button label="Share" styleClass="p-button-rounded bg-primary border-none"></p-button>
+        </div>
     </div>
