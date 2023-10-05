@@ -82,6 +82,7 @@ export class NotificationPanelComponent {
   navigateToProduct(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
+    this.utils.saveProductId(obj.product_id)
     if (obj.component && obj.component !== '') {
       if (window.location.hash === '#/' + obj.component) {
         window.location.reload();

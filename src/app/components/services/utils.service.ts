@@ -47,6 +47,9 @@ export class UtilsService {
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
+  private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeProductId: Observable<any> = this.productId.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -110,6 +113,10 @@ export class UtilsService {
 
   passSelectedSectionIndex(event: any): void {
     this.sectionIndex.next(event);
+  }
+
+  saveProductId(event: any): void {
+    this.productId.next(event);
   }
 
 
