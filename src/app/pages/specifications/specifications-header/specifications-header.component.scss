@@ -31,3 +31,21 @@
 :host ::ng-deep .p-dropdown .p-dropdown-trigger {
     color: #ffffff;
 }
+
+
+:host ::ng-deep.ellipsis-btn .p-button,
+:host ::ng-deep.ellipsis-btn .p-button:hover {
+    background-color: transparent;
+    border: none
+}
+
+
+:host ::ng-deep.p-overlaypanel {
+    background-color: rgb(36, 35, 44) !important;
+    color: #ffffff !important;
+
+}
+
+:host::ng-deep.p-overlaypanel .p-overlaypanel-content {
+    padding: 0px !important;
+}

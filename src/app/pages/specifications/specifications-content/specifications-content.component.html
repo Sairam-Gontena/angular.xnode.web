@@ -48,6 +48,11 @@
                     </ng-template>
                 </div>
                 <div *ngIf="item.contentType==='iframe'" class=" h-vh">
+                    <div class="flex justify-content-between align-items-center">
+                        <h1>Dashboard</h1>
+                        <img src="./assets/spec-minimize.svg" alt="container"
+                            (click)="expandComponent({'dashboard':true})" class="expnad-icon pointer">
+                    </div>
                     <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
                     </iframe>
                 </div>
