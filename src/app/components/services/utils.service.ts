@@ -43,6 +43,9 @@ export class UtilsService {
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
+  private expandSpecSection: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public isSpecCollapsed: Observable<any> = this.expandSpecSection.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -95,6 +98,13 @@ export class UtilsService {
   passSelectedSectionIndex(event: any): void {
     this.sectionIndex.next(event);
   }
+
+  collapseSpecSection(event: any): void {
+    this.expandSpecSection.next(event);
+  }
+
+
+
 
 
 

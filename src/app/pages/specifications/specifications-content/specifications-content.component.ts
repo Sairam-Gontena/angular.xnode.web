@@ -24,7 +24,7 @@ export class SpecificationsContentComponent implements OnInit {
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
-  dataToExpand: any
+  sectionToExpand: any
   specExpanded: boolean = false;
 
   constructor(private utils: UtilsService,
@@ -159,14 +159,9 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   expandComponent(val: any): void {
-    this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger) {
-      this.specExpanded = true
-    } else {
-      this.specExpanded = false
-    }
+    console.log('val', val);
+    this.sectionToExpand = val;
   }
-
 
 }
 

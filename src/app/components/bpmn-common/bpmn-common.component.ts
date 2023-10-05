@@ -98,13 +98,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     this.initializeBpmn();
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
     this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand.dataModel) {
-      this.isExpanded = true;
-    }
   }
 
   switchWindow() {
@@ -964,8 +957,8 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     return svg.node();
   }
 
-  expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ xflows: val });
+  expandDataFlows(val?: any): void {
+    this.dataFlowEmitter.emit(val);
     this.isExpanded = val;
   }
 

@@ -66,12 +66,6 @@ export class DataModelCommonComponent {
     this.getMeDataModel();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand.dataModel) {
-      this.isExpanded = true;
-    }
-  }
-
   toggleMenu() {
     this.isOpen = !this.isOpen;
   }
@@ -158,8 +152,8 @@ export class DataModelCommonComponent {
       });
   }
 
-  expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ dataModel: val });
+  expandDataFlows(val?: any): void {
+    this.dataFlowEmitter.emit(val);
     this.isExpanded = val;
   }
 

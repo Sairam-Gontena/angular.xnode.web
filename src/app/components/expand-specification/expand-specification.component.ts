@@ -9,20 +9,16 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./expand-specification.component.scss']
 })
 export class ExpandSpecificationComponent {
-  @Input() dataToExpand: any;
+  @Input() sectionToExpand: any;
   @Output() dataFlowEmitter = new EventEmitter<any>();
 
-  ngOnInit() {
-    console.log("inside expand component");
-    console.log(this.dataToExpand)
-  }
+  ngOnInit() {  }
 
   ngAfterViewInit() {
     this.fetchOpenAPISpec()
   }
 
   expandComponent(val: any): void {
-    console.log("inside the expanded ", val)
     this.dataFlowEmitter.emit(val);
   }
 
