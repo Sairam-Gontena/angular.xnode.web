@@ -45,6 +45,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
+    this.utilsService.getMeProductId.subscribe((event: any) => {
+      if (event)
+        this.selectedTemplate = event;
+    })
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
