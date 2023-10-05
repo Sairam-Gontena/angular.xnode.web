@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
@@ -25,6 +26,7 @@ export class SpecificationsComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
+    private router: Router,
     private changeDetectorRef: ChangeDetectorRef
   ) {
 
@@ -182,4 +184,11 @@ export class SpecificationsComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
   }
+  refreshCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
+
 }
