@@ -34,7 +34,7 @@ export class SpecificationsMenuComponent implements OnInit {
     this.utils.passSelectedSpecIndex(0);
     let list = this.specData;
     list.forEach((element: any) => {
-      if (element.section) {
+      if (element.section && typeof element.section !== 'string') {
         element.section.splice(0, 1);
       }
     });
