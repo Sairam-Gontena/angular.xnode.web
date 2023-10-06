@@ -40,7 +40,7 @@ export class SpecificationsContentComponent implements OnInit {
         event.forEach((element: any) => {
           if (this.specItemList.length === 0) {
             this.specItemList = element.section;
-          } else {
+          } else if (element?.section && typeof element.section !== 'string') {
             this.specItemList = this.specItemList.concat(element.section)
           }
         });
@@ -145,6 +145,18 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
   }
+  onClickSeeLess(item: any, i: any): void {
+    this.selectedSectionIndex = i;
+    this.showMoreContent = false;
+    this.specItemList.forEach((obj: any) => {
+      if (obj.title === item.title) {
+        obj.collapsed = false;
+      }
+    })
+    setTimeout(() => {
+      this.utils.passSelectedSectionIndex(item);
+    }, 100)
+  }
 
   scrollToItem(itemId: string) {
     const element = document.getElementById(itemId);
@@ -179,6 +191,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   async fetchOpenAPISpec() {
+    console.log("called here 2")
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
@@ -203,6 +216,7 @@ export class SpecificationsContentComponent implements OnInit {
     } else {
       this.specExpanded = false;
       setTimeout(() => {
+        console.log("called here 1")
         this.fetchOpenAPISpec()
       }, 100)
     }
