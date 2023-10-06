@@ -35,8 +35,24 @@ export class SpecificationsContentComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private dataService: DataService,) {
     this.dataModel = this.dataService.data;
-    this.utils.getMeSpecItem.subscribe((event: any) => {
+    this.getSpecItem();
+    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
       if (event) {
+        this.specItemIndex = event;
+      }
+    })
+    this.utils.getMeSectionIndex.subscribe((event: any) => {
+      if (event) {
+        this.scrollToItem(event.title)
+      }
+    })
+  }
+
+  getSpecItem() {
+    this.utils.getMeSpecItem.subscribe((event: any) => {
+      console.log('event', event)
+      if (event) {
+        console.log('hola arun', event)
         event.forEach((element: any) => {
           if (this.specItemList.length === 0) {
             this.specItemList = element.section;
@@ -91,16 +107,6 @@ export class SpecificationsContentComponent implements OnInit {
         })
       }
     })
-    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
-      if (event) {
-        this.specItemIndex = event;
-      }
-    })
-    this.utils.getMeSectionIndex.subscribe((event: any) => {
-      if (event) {
-        this.scrollToItem(event.title)
-      }
-    })
   }
 
   checkedToggle(bool: boolean) {
@@ -132,6 +138,11 @@ export class SpecificationsContentComponent implements OnInit {
     this.makeTrustedUrl();
   }
 
+  // ngOnChanges() {
+  //   console.log('on change')
+  //   this.getSpecItem()
+  // }
+
   isArray(item: any) {
     return Array.isArray(item?.content);
   }
@@ -160,6 +171,7 @@ export class SpecificationsContentComponent implements OnInit {
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   makeTrustDataModelUrl(): void {
     this.dataModelIframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://dev-xnode.azurewebsites.net/#/configuration/data-model/overview')
   }

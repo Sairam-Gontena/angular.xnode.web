@@ -1,5 +1,5 @@
 <div class="flex" *ngIf="specData?.length">
-    <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
+    <xnode-specifications-menu (text)="searchText($event)" [specData]="specData"></xnode-specifications-menu>
     <div class=""
         [ngClass]="{'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
         <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"></xnode-specifications-header>
