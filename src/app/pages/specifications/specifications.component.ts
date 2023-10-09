@@ -168,7 +168,7 @@ export class SpecificationsComponent implements OnInit {
               });
             }
           })
-          this.specData = list.filter((item: any) => item?.section && typeof (item.section) != 'string');
+          this.specData = list;
           this.specData.pop();
           this.specDataCopy = this.specData;
           this.utils.passSelectedSpecItem(list);

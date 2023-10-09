@@ -18,8 +18,7 @@ export class ExpandSpecificationComponent {
   iframeSrc: SafeResourceUrl = '';
   targetUrl: string = environment.naviAppUrl;
 
-  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService,) {
-
+  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
   }
 
 

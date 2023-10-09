@@ -40,7 +40,7 @@ export class SpecificationsContentComponent implements OnInit {
         event.forEach((element: any) => {
           if (this.specItemList.length === 0) {
             this.specItemList = element.section;
-          } else if (element?.section && typeof element.section !== 'string') {
+          } else {
             this.specItemList = this.specItemList.concat(element.section)
           }
         });
@@ -91,6 +91,7 @@ export class SpecificationsContentComponent implements OnInit {
         })
       }
     })
+
     this.utils.getMeSpecItemIndex.subscribe((event: any) => {
       if (event) {
         this.specItemIndex = event;
@@ -98,7 +99,15 @@ export class SpecificationsContentComponent implements OnInit {
     })
     this.utils.getMeSectionIndex.subscribe((event: any) => {
       if (event) {
-        this.scrollToItem(event.title)
+        if (this.specExpanded) {
+          this.specExpanded = false;
+          setTimeout(() => {
+            this.scrollToItem(event.title)
+            this.fetchOpenAPISpec()
+          }, 500)
+        } else {
+          this.scrollToItem(event.title)
+        }
       }
     })
   }
@@ -191,7 +200,6 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   async fetchOpenAPISpec() {
-    console.log("called here 2")
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
