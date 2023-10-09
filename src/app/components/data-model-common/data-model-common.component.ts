@@ -20,6 +20,7 @@ import { MessageService } from 'primeng/api';
 export class DataModelCommonComponent {
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
+  @Input() item: any;
   @Output() dataFlowEmitter = new EventEmitter<any>();
 
   data: Data | any;
@@ -69,7 +70,7 @@ export class DataModelCommonComponent {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand.dataModel) {
+    if (this.dataToExpand?.dataModel) {
       this.isExpanded = true;
     }
   }
@@ -161,7 +162,7 @@ export class DataModelCommonComponent {
   }
 
   expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ dataModel: val });
+    this.dataFlowEmitter.emit({ dataModel: val, item: this.item });
     this.isExpanded = val;
   }
 

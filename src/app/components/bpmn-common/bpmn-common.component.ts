@@ -30,6 +30,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   @Input() dataToExpand: any;
+  @Input() item: any;
 
   bpmnJS: any;
   pallete_classes: any;
@@ -105,7 +106,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand.xflows) {
+    if (this.dataToExpand?.xflows) {
       this.isExpanded = true;
     }
   }
@@ -968,7 +969,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   }
 
   expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ xflows: val });
+    this.dataFlowEmitter.emit({ xflows: val, item: this.item });
     this.isExpanded = val;
   }
 
