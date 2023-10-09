@@ -158,7 +158,7 @@ export class SpecificationsComponent implements OnInit {
         if (response?.status === 200 && !response.data.detail) {
           const list = response.data;
           list.forEach((obj: any, index: any) => {
-            if (obj?.title && obj?.section) {
+            if (obj?.title && obj?.section && typeof (obj?.section) != 'string') {
               if (obj?.title == 'Technical Specifications') {
                 obj.section.push({ title: 'OpenAPI Spec', content: [], parentIndex: 4.10, contentType: 'OpenAPI', created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
               }

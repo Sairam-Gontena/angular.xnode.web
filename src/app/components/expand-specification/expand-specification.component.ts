@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UtilsService } from 'src/app/components/services/utils.service';
+
 
 declare const SwaggerUIBundle: any;
 
@@ -16,9 +18,9 @@ export class ExpandSpecificationComponent {
   iframeSrc: SafeResourceUrl = '';
   targetUrl: string = environment.naviAppUrl;
 
-  constructor(private domSanitizer: DomSanitizer,) {
-
+  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
   }
+
 
   ngOnInit() {
     const record_id = localStorage.getItem('record_id');
@@ -37,7 +39,9 @@ export class ExpandSpecificationComponent {
   }
 
   expandComponent(val: any): void {
-    console.log("inside the expanded ", val)
+    setTimeout(() => {
+      this.utils.passSelectedSectionIndex(this.dataToExpand.item);
+    }, 500)
     this.dataFlowEmitter.emit(val);
   }
 
