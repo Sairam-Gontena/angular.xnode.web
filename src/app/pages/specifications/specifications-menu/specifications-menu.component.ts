@@ -58,9 +58,9 @@ export class SpecificationsMenuComponent implements OnInit {
     this.selectedSection = event;
     this.selectedSecIndex = i;
     this.utils.passSelectedSectionIndex(event);
-
   }
 
+  // not using this function
   getMeSpecList(): void {
     this.apiService.getApi("specs/retrieve/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
       .then(response => {
@@ -97,11 +97,6 @@ export class SpecificationsMenuComponent implements OnInit {
       this.utils.disableSpecSubMenu();
     }
   }
-
-  // ngOnChanges() {
-  //   this.ngOnInit();
-  // }
-
   onInput() {
     this.textInputSubject.next(this.searchText);
   }
