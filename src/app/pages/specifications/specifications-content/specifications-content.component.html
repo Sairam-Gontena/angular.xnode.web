@@ -33,7 +33,7 @@
                     class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
                 <p-button (click)="onClickSeeLess(item,i)" label="See Less" *ngIf="item?.collapsed"
                     styleClass="p-button-rounded p-button-outlined see-more-button"
-                    class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
+                    class="absolute bottom-0 right-0 mr-2 mb-2 mt-4"></p-button>
                 <div class="w-full" *ngIf="item.contentType ==='paragraph'">
                     <div *ngIf=" isArray(item); else notArray">
                         <ul *ngFor="let subItem of item.content">
@@ -196,6 +196,11 @@
                             <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="checkedToggle(true)"></i>
                         </div>
                         <div *ngIf="checked; else elsejson">
+                            <div class="flex flex-row col-12 justify-content-between ">
+                                <div></div>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item})" class="expnad-icon pointer">
+                            </div>
                             <p-table *ngFor="let table of item?.content[0]?.content"
                                 [columns]="setColumnsToTheTable(table.columns)"
                                 [value]="setColumnsToTheTable(table.columns)">
@@ -236,6 +241,11 @@
                             </div>
                             <span *ngIf="item?.title=='Data Quality Checks'">
                                 <div *ngFor="let subitem of dataQualityData">
+                                    <div class="flex flex-row col-12 justify-content-between ">
+                                        <div></div>
+                                        <img src="./assets/spec-minimize.svg" alt="container"
+                                            (click)="expandComponent({'table':true,item})" class="expnad-icon pointer">
+                                    </div>
                                     <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
                                         [value]="subitem.content">
                                         <ng-template pTemplate="caption">

@@ -23,6 +23,7 @@ export class ExpandSpecificationComponent {
 
 
   ngOnInit() {
+    console.log(this.dataToExpand)
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
@@ -65,5 +66,19 @@ export class ExpandSpecificationComponent {
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
+  }
+
+  setColumnsToTheTable(data: any) {
+    Object.entries(data.map((item: any) => {
+      if (typeof (item) == 'string') { return }
+    }))
+    let cols;
+    if (data[0]) {
+      cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
+      return cols
+    } else {
+      cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+      return cols
+    }
   }
 }
