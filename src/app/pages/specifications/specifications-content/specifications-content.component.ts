@@ -218,8 +218,6 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   expandComponent(val: any): void {
-    console.log("============")
-    console.log(val)
     this.dataToExpand = val;
     if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table) {
       this.specExpanded = true
@@ -231,8 +229,6 @@ export class SpecificationsContentComponent implements OnInit {
       }, 100)
     }
   }
-
-
 }
 
 

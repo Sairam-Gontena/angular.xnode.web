@@ -76,6 +76,11 @@
                     </iframe>
                 </div>
                 <div *ngIf="item.contentType ==='table'">
+                    <div class="flex justify-content-between align-items-center">
+                        <div></div>
+                        <img src="./assets/spec-minimize.svg" alt="container"
+                            (click)="expandComponent({'table':true,item})" class="expnad-icon pointer">
+                    </div>
                     <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
@@ -199,7 +204,8 @@
                             <div class="flex flex-row col-12 justify-content-between ">
                                 <div></div>
                                 <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="expandComponent({'table':true,item})" class="expnad-icon pointer">
+                                    (click)="expandComponent({'table':true,item:item.content[0]})"
+                                    class="expnad-icon pointer">
                             </div>
                             <p-table *ngFor="let table of item?.content[0]?.content"
                                 [columns]="setColumnsToTheTable(table.columns)"
@@ -244,7 +250,8 @@
                                     <div class="flex flex-row col-12 justify-content-between ">
                                         <div></div>
                                         <img src="./assets/spec-minimize.svg" alt="container"
-                                            (click)="expandComponent({'table':true,item})" class="expnad-icon pointer">
+                                            (click)="expandComponent({'table':true,item:item.content[0]})"
+                                            class="expnad-icon pointer">
                                     </div>
                                     <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
                                         [value]="subitem.content">

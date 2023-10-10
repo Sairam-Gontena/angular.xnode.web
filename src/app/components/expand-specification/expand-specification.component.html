@@ -23,8 +23,7 @@
     <div *ngIf="dataToExpand.table" class="h-full bg-white">
         <div class="h-full">
             <div class="flex flex-row col-12 justify-content-end">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.table"
-                    (click)="expandComponent(false)"></i>
+                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.table" (click)="expandComponent(false)"></i>
             </div>
             <p-table [columns]="setColumnsToTheTable(dataToExpand.item.content)" [value]="dataToExpand.item.content">
                 <ng-template pTemplate="header" let-columns>
@@ -36,8 +35,13 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr>
-                        <td *ngFor="let col of columns">
-                            {{ rowData[col.field] }}
+                        <td *ngFor="let col of columns; let i = index ">
+                            <div *ngIf="isArray(rowData[col.field])">
+                                <div *ngFor="let data of rowData[col.field]">
+                                    {{data.columnName}}
+                                </div>
+                            </div>
+                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field] }}</div>
                         </td>
                     </tr>
                 </ng-template>

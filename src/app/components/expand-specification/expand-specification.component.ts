@@ -81,4 +81,8 @@ export class ExpandSpecificationComponent {
       return cols
     }
   }
+  isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+
 }
