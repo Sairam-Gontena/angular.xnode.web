@@ -1,7 +1,12 @@
 <p-dialog header="{{dialogHeader}}" [(visible)]="showProductStatusPopup" [style]="{width: '30vw'}"
     [breakpoints]="{ '1450px': '35vw' }">
     <div class="p-4" *ngIf="data?.content; else elseBlock">
-        Are you sure, you want to {{content}} this app?
+        <div *ngIf=" this.buttonLabel !== 'Cancel'">
+            Are you sure, you want to {{content}} this app?
+        </div>
+        <div class="p-4" *ngIf="this.buttonLabel === 'Cancel'">
+            {{content}}
+        </div>
     </div>
     <ng-template #elseBlock>
         <div class="p-4">
