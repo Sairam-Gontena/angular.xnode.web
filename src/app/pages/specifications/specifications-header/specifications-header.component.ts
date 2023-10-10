@@ -17,7 +17,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   utilsService: any;
   auditUtil: any;
   product: any;
-  isSideMenuOpened: any
+  isSideMenuOpened: any;
+  productId: any
 
   constructor(private router: Router, private utils: UtilsService) {
   }
@@ -31,11 +32,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
     const metaData = localStorage.getItem('meta_data');
     const product = localStorage.getItem('product');
+    this.productId = localStorage.getItem('record_id')
     if (product) {
       this.product = JSON.parse(product);
+
     }
     if (metaData) {
       this.templates = JSON.parse(metaData);
+      setTimeout(() => {
+        this.selectedTemplate = this.productId;
+      }, 100)
       if (product) {
         this.selectedTemplate = JSON.parse(product).id;
         this.product_url = JSON.parse(product).product_url;
@@ -43,6 +49,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
 
   }
+
   getMeUserAvatar() {
     var firstLetterOfFirstWord = this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
     var firstLetterOfSecondWord = this.currentUser.last_name[0][0].toUpperCase(); // Get the first letter of the second word
