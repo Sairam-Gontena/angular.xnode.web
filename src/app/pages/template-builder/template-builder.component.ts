@@ -51,11 +51,11 @@ export class TemplateBuilderComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
     }
     if (this.product_id) {
-      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId;
+      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
       this.makeTrustedUrl();
     } else {
       this.product_id = localStorage.getItem('record_id');
-      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.userId;
+      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
       this.makeTrustedUrl();
     }
   }
