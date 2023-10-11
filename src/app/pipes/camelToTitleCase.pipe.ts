@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class CamelToTitlePipe implements PipeTransform {
     transform(value: string): string {
-        if (!value) return value;
+        if (typeof value !== 'string' || !value) return value;
         return value
             .replace(/([a-z])([A-Z])/g, '$1 $2')
             .replace(/\b\w/g, (char) => char.toUpperCase());

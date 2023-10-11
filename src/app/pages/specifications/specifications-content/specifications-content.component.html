@@ -44,7 +44,23 @@
                             <li>
                                 <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}}
                                     </span>
-                                    : <span class="sub-content font-normal text-base">{{subItem.content}}</span></p>
+                                    : <span class="sub-content font-normal text-base"
+                                        *ngIf="isObject(subItem.content); else contentBlock">
+                                        <span *ngFor="let element of subItem.content">
+                                            <span class="sub-content font-normal text-base"
+                                                *ngFor="let pair of element | objectToArray">
+                            <li>
+                                <span class="sub-content font-normal text-base">
+                                    {{ pair.key }} : {{ pair.value }}
+                                </span>
+                            </li>
+                            </span>
+                            </span>
+                            </span>
+                            <ng-template #contentBlock>
+                                <span class="sub-content font-normal text-base">{{subItem.content}}</span>
+                            </ng-template>
+                            </p>
                             </li>
                         </ul>
                     </div>
@@ -54,13 +70,13 @@
                         </div>
                     </ng-template>
                 </div>
-                <div *ngIf="item.contentType==='iframe'" class=" h-vh">
+                <div *ngIf="item.contentType==='iframe'" class="h-auto">
                     <div class="flex justify-content-between align-items-center">
                         <h1>Dashboard</h1>
                         <img src="./assets/spec-minimize.svg" alt="container"
                             (click)="expandComponent({'dashboard':true})" class="expnad-icon pointer">
                     </div>
-                    <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
+                    <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full pl-1 pr-1" title="Template Builder">
                     </iframe>
                 </div>
                 <div *ngIf="item.contentType ==='table'">
@@ -82,11 +98,29 @@
                     </p-table>
                 </div>
                 <div *ngIf="item.contentType ==='list'">
-                    <ul *ngFor="let subItem of item.content">
-                        <li>
-                            <p class="m-0 pb-1"> <span class="sub-content font-normal text-base">{{subItem}}</span></p>
-                        </li>
-                    </ul>
+                    <span class="sub-content font-normal text-base" *ngIf="isObject(item.content); else contentBlock">
+                        <span *ngFor="let element of item.content">
+                            <span class="sub-content font-normal text-base"
+                                *ngFor="let pair of element | objectToArray">
+                                <li *ngIf="isObject(element) else elementblock">
+                                    <span class="sub-content font-normal text-base">
+                                        {{ pair.key }} : {{ pair.value }}
+                                    </span>
+                                </li>
+                                <ng-template #elementblock>
+                                    <span class="sub-content font-normal text-base">{{element}}</span>
+                                </ng-template>
+                            </span>
+                        </span>
+                    </span>
+                    <ng-template #contentBlock>
+                        <ul *ngFor="let subItem of item.content">
+                            <li>
+                                <p class="m-0 pb-1"> <span class="sub-content font-normal text-base">{{subItem}}</span>
+                                </p>
+                            </li>
+                        </ul>
+                    </ng-template>
                 </div>
                 <div *ngIf="item.contentType ==='header-list'">
                     <ul *ngFor="let subItem of item.content">
@@ -97,15 +131,15 @@
                         </li>
                     </ul>
                 </div>
-                <div *ngIf="item.contentType ==='data-model'" class="h-vh">
+                <div *ngIf="item.contentType ==='data-model'" class="h-auto">
                     <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"></xnode-data-model-common>
                 </div>
-                <div *ngIf="item.contentType ==='x-flows'" class="h-vh p-2">
+                <div *ngIf="item.contentType ==='x-flows'" class="h-auto">
                     <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)"></xnode-bpmn-common>
                 </div>
-                <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
+                <!-- <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
                     <pre>{{ item.content | json }}</pre>
-                </div>
+                </div> -->
                 <div *ngIf="item.contentType ==='data-dictionary'">
                     <h4 class="m-0 pb-3">{{item.title}}</h4>
                     <ul *ngFor="let subItem of item.content">
@@ -124,10 +158,6 @@
                     </div>
                     <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                 </div>
-                <div *ngIf="item.contentType==='iframe'" class=" h-vh">
-                    <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
-                    </iframe>
-                </div>
                 <div *ngIf="item.contentType ==='table'">
                     <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
                         <ng-template pTemplate="header" let-columns>
@@ -162,12 +192,6 @@
                         </li>
                     </ul>
                 </div>
-                <div *ngIf="item.contentType ==='data-model'" class="h-vh">
-                    <xnode-data-model-common></xnode-data-model-common>
-                </div>
-                <div *ngIf="item.contentType ==='x-flows'" class="h-vh">
-                    <xnode-bpmn-common></xnode-bpmn-common>
-                </div>
                 <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
                     <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
                         <div class="flex justify-content-end my-2 mr-2">
@@ -175,22 +199,26 @@
                             <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="checkedToggle(true)"></i>
                         </div>
                         <div *ngIf="checked; else elsejson">
-                            <p-table [columns]="setColumnsToTheTable(item?.content[0]?.content[0]?.columns)"
-                                [value]="item?.content[0]?.content[0]?.columns">
+                            <p-table *ngFor="let table of item?.content[0]?.content"
+                                [columns]="setColumnsToTheTable(table.columns)"
+                                [value]="setColumnsToTheTable(table.columns)">
+                                <ng-template pTemplate="caption">
+                                    <h4>{{ table.tableName | camelToTitle }}</h4>
+                                </ng-template>
                                 <ng-template pTemplate="header" let-columns>
                                     <tr>
                                         <th *ngFor="let col of columns">
-                                            {{ col.header| camelToTitle }}
+                                            {{ col.header | camelToTitle }}
                                         </th>
                                     </tr>
                                 </ng-template>
-                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <ng-template pTemplate="body" let-columns="columns">
                                     <tr>
                                         <td *ngFor="let col of columns">
                                             <span
-                                                *ngIf="isObject(rowData[col.field]);else field">{{returnValues(rowData[col.field])}}</span>
+                                                *ngIf="isObject(col.value);else field">{{returnValues(col.value)}}</span>
                                             <ng-template #field>
-                                                {{ rowData[col.field] }}
+                                                {{ col.value }}
                                             </ng-template>
                                         </td>
                                     </tr>
@@ -214,19 +242,19 @@
                                     <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
                                         [value]="subitem.content">
                                         <ng-template pTemplate="caption">
-                                            <h4>{{ subitem.title | camelToTitle }}</h4>
+                                            <h4>{{ subitem?.header | camelToTitle }}</h4>
                                         </ng-template>
                                         <ng-template pTemplate="header" let-columns>
                                             <tr>
-                                                <th *ngFor="let col of columns">
-                                                    {{ col.header | camelToTitle }}
+                                                <th *ngFor="let col of subitem.title">
+                                                    {{ col }}
                                                 </th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-rowData let-columns="columns">
                                             <tr>
-                                                <td *ngFor="let col of columns">
-                                                    {{ rowData[col.field] }}
+                                                <td *ngFor="let col of subitem.content">
+                                                    {{ rowData }}
                                                 </td>
                                             </tr>
                                         </ng-template>

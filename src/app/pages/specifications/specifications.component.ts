@@ -52,7 +52,6 @@ export class SpecificationsComponent implements OnInit {
   }
 
   searchText(text: any) {
-    console.log(text)
     if (text == '') {
       this.clearSearchText()
     }

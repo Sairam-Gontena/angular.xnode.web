@@ -80,6 +80,11 @@
 }
 
 .er-body {
+    height: calc(100vh - 150px);
+    overflow: auto;
+}
+
+.spec-er-body {
     height: calc(100vh - 119px);
     overflow: auto;
 }

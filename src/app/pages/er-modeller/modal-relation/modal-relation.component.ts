@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 // ngx-bootstrap
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { DialogService } from 'primeng/dynamicdialog';
 
 // service
 import { DataService } from '../service/data.service';
@@ -23,11 +24,11 @@ export class ModalRelationComponent {
   public target_model: Model | null | undefined;
 
   public relation_type: string;
-
+  public visible: boolean = true;
   modalRef?: BsModalRef;
   constructor(
-    public modalService: BsModalService,
-    public dataService: DataService
+    private dialogService: DialogService,
+    public dataService: DataService,
   ) {
     this.relation_type = 'one-to-many';
   }
@@ -40,6 +41,6 @@ export class ModalRelationComponent {
       // @ts-ignore
       this.dataService.addManyToManyRelation(this.source_model, this.target_model);
     }
-    this.modalService.hide();
+    // this.dialogService.hide();
   }
 }

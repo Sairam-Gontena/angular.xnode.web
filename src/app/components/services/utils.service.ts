@@ -53,6 +53,8 @@ export class UtilsService {
 
   private selectedSection: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSelectedSection: Observable<any> = this.selectedSection.asObservable();
+  private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeProductId: Observable<any> = this.productId.asObservable();
 
   constructor() { }
 
@@ -122,6 +124,10 @@ export class UtilsService {
   openCommentPanel(event: any): void {
     this.showCommentPanel.next(event);
   }
+  saveProductId(event: any): void {
+    this.productId.next(event);
+  }
+
 
   saveSelectedSection(event: any): void {
     this.selectedSection.next(event);
