@@ -465,7 +465,6 @@ export class ReportBugComponent implements OnInit {
       this.images = _.uniq(this.images)
       this.screenshotName = _.uniq(this.screenshotName)
     };
-    reader.readAsArrayBuffer(file);
   }
 
   onDragOver(event: Event) {
