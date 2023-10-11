@@ -231,6 +231,14 @@ export class SpecificationsContentComponent implements OnInit {
       }, 100)
     }
   }
+
+  onClickComment(item: any) {
+    console.log('item', item);
+    this.utils.saveSelectedSection(item);
+    this.utils.openCommentPanel(true);
+  }
+
+
 }
 
 
