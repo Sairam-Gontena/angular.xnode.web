@@ -40,7 +40,7 @@
                     class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
                 <p-button (click)="onClickSeeLess(item,i)" label="See Less" *ngIf="item?.collapsed"
                     styleClass="p-button-rounded p-button-outlined see-more-button"
-                    class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
+                    class="absolute bottom-0 right-0 mr-2 mb-2 mt-4"></p-button>
                 <div class="w-full" *ngIf="item.contentType ==='paragraph'">
                     <div *ngIf=" isArray(item); else notArray">
                         <ul *ngFor="let subItem of item.content">
@@ -83,6 +83,12 @@
                     </iframe>
                 </div>
                 <div *ngIf="item.contentType ==='table'">
+                    <div class="flex justify-content-between align-items-center">
+                        <div></div>
+                        <img src="./assets/spec-minimize.svg" alt="container"
+                            (click)="expandComponent({'table':true,item:{item:item.content,title:item.title}})"
+                            class="expnad-icon pointer">
+                    </div>
                     <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
@@ -199,12 +205,41 @@
                 </div>
                 <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
                     <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
-                        <div class="flex justify-content-end my-2 mr-2">
+                        <div class="flex justify-content-end align-items-center my-2 mr-2">
                             <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle(false)"></i>
                             <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="checkedToggle(true)"></i>
+                            <img src="./assets/spec-minimize.svg" alt="container"
+                                (click)="expandComponent({'table':true,item:{item:item?.content[0]?.content,title:item.title}})"
+                                class="expnad-icon pointer" *ngIf="checked" class="ml-3" style="width: 25px;">
                         </div>
                         <div *ngIf="checked; else elsejson">
-                            <p-table *ngFor="let table of item?.content[0]?.content"
+                            <div class="flex flex-row col-12 justify-content-between ">
+                                <div></div>
+
+                            </div>
+                            <p-table [columns]="setColumnsToTheTable(item?.content[0]?.content)"
+                                [value]="item?.content[0]?.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName | json}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <!-- <p-table *ngFor="let table of item?.content[0]?.content"
                                 [columns]="setColumnsToTheTable(table.columns)"
                                 [value]="setColumnsToTheTable(table.columns)">
                                 <ng-template pTemplate="caption">
@@ -228,7 +263,7 @@
                                         </td>
                                     </tr>
                                 </ng-template>
-                            </p-table>
+                            </p-table> -->
                         </div>
                         <ng-template #elsejson>
                             <pre>{{ item.content | json }}</pre>
@@ -236,14 +271,21 @@
                     </div>
                     <ng-template #elsejsonBlock>
                         <div *ngIf="checked; else jsonBlock">
-                            <div class="flex justify-content-end my-2 mr-2">
+                            <div class="flex justify-content-end my-2 mr-2 align-items-center">
                                 <i class="pi pi-code pointer mr-2" pTooltip="Json view"
                                     (click)="checkedToggle(false)"></i>
                                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                                     (click)="checkedToggle(true)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{item:item?.content,title:item.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked" class="ml-3" style="width: 25px;">
                             </div>
                             <span *ngIf="item?.title=='Data Quality Checks'">
                                 <div *ngFor="let subitem of dataQualityData">
+                                    <div class="flex flex-row col-12 justify-content-between ">
+                                        <div></div>
+
+                                    </div>
                                     <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
                                         [value]="subitem.content">
                                         <ng-template pTemplate="caption">
