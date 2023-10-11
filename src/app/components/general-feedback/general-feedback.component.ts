@@ -468,11 +468,14 @@ export class GeneralFeedbackComponent implements OnInit {
   }
 
   private readFileContent(file: File, fileName: string) {
-    this.screenshotName.push(fileName);
+    this.screenshotName.push(fileName); // this.screenshotName = fileName;
     const reader = new FileReader();
+    // this.uploadedFile = file;
     this.uploadedFile.push(file)
     reader.readAsDataURL(file);
     reader.onload = (e) => {
+      // if (e?.target)
+      //   this.screenshot = e?.target.result;
       if (e?.target) {
         this.screenshot = e?.target.result;
         this.images.push(e?.target?.result)
@@ -481,6 +484,7 @@ export class GeneralFeedbackComponent implements OnInit {
       this.images = _.uniq(this.images)
       this.screenshotName = _.uniq(this.screenshotName)
     };
+    reader.readAsArrayBuffer(file);
   }
 
   onDragOver(event: Event) {
