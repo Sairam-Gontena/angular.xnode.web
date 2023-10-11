@@ -142,7 +142,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   isArray(item: any) {
-    return Array.isArray(item?.content);
+    console.log("############################### ", typeof item)
+    return typeof item?.content == 'object' ? true : false
   }
 
   onClickSeeMore(item: any, i: any): void {
@@ -218,6 +219,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   expandComponent(val: any): void {
+    console.log("============@@@@@@@@ ", val)
     this.dataToExpand = val;
     if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table) {
       this.specExpanded = true

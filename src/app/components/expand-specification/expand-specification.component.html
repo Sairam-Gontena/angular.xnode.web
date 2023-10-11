@@ -25,7 +25,7 @@
             <div class="flex flex-row col-12 justify-content-end">
                 <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.table" (click)="expandComponent(false)"></i>
             </div>
-            <p-table [columns]="setColumnsToTheTable(dataToExpand.item.content)" [value]="dataToExpand.item.content">
+            <p-table [columns]="setColumnsToTheTable(dataToExpand.item.item)" [value]="dataToExpand.item.item">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th *ngFor="let col of columns">

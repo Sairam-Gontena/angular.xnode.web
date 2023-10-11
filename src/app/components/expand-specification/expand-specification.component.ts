@@ -23,6 +23,7 @@ export class ExpandSpecificationComponent {
 
 
   ngOnInit() {
+    console.log("inside expand spec")
     console.log(this.dataToExpand)
     const record_id = localStorage.getItem('record_id');
     let userData: any
