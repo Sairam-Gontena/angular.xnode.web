@@ -103,4 +103,8 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.getConversationHistory();
     }
   }
+
+  openComments() {
+    this.utils.openCommentPanel(true);
+  }
 }

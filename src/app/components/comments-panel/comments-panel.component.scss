@@ -1,0 +1,38 @@
+.no-comments {
+    height: calc(100vh - 280px);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dedede;
+}
+
+.comments-grid {
+    height: calc(100vh - 280px);
+    overflow: auto;
+    color: #dedede;
+}
+
+
+.title {
+    font-size: 24px;
+}
+
+.sub-title {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+:host ::ng-deep .p-inputtextarea {
+    width: 100% !important;
+    color: #dedede;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+
+.comment-send-icon {
+    bottom: 5px;
+    right: 5px;
+}

@@ -68,6 +68,11 @@ export class AppComponent implements OnInit {
       }
     }
     this.redirectToPreviousUrl();
+    this.utilsService.isCommentPanelToggled.subscribe((event: any) => {
+      this.isSideWindowOpen = false;
+      this.isNaviExpanded = false;
+      this.utilsService.disableDockedNavi();
+    })
   }
   redirectToPreviousUrl(): void {
     this.router.events.subscribe(event => {

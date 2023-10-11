@@ -47,6 +47,12 @@ export class UtilsService {
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
+  private showCommentPanel: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public isCommentPanelToggled: Observable<any> = this.showCommentPanel.asObservable();
+
+
+  private selectedSection: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeSelectedSection: Observable<any> = this.selectedSection.asObservable();
   private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeProductId: Observable<any> = this.productId.asObservable();
 
@@ -115,12 +121,17 @@ export class UtilsService {
     this.sectionIndex.next(event);
   }
 
+  openCommentPanel(event: any): void {
+    this.showCommentPanel.next(event);
+  }
   saveProductId(event: any): void {
     this.productId.next(event);
   }
 
 
-
+  saveSelectedSection(event: any): void {
+    this.selectedSection.next(event);
+  }
 
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);

@@ -58,7 +58,7 @@
                     "subobjects": [
                         {
                             "title": "How to signup for the beta program?",
-                            "description": "To enroll in the xnode.ai beta program, please visit our website at xnode.ai <a href='https://xnode.ai/contact-us/' target='_blank' class='no-underline'>https://xnode.ai/contact-us/</a> and fill in the the beta enrollment form. You will need to provide some basic information and agree to our terms and conditions."
+                            "description": "To enroll in the xnode.ai beta program, please visit our website at xnode.ai <a href='https://xnode.ai/contact-us/' target='_blank' class='no-underline help-text '>https://xnode.ai/contact-us/</a> and fill in the the beta enrollment form. You will need to provide some basic information and agree to our terms and conditions."
                         },
                         {
                             "title": "How to add another user to my account that I have with xnode?",
@@ -66,7 +66,7 @@
                         },
                         {
                             "title": "How to refer someone to beta program?",
-                            "description": "please share this link to submit beta interest - <a href='https://xnode.ai/contact-us/' target='_blank' class='no-underline'>https://xnode.ai/contact-us/</a> or email us directly at <a href='mailto:beta@xnode.ai' target='_blank'>beta@xnode.ai</a>"
+                            "description": "please share this link to submit beta interest - <a href='https://xnode.ai/contact-us/' target='_blank' class='no-underline help-text'>https://xnode.ai/contact-us/</a> or email us directly at <a href='mailto:beta@xnode.ai' target='_blank' class='no-underline help-text '>beta@xnode.ai</a>"
                         },
                         {
                             "title": "What are the system requirements ?",
@@ -90,7 +90,7 @@
                         },
                         {
                             "title": "How to get help?",
-                            "description": "Please reach out to <a href='mailto:beta@xnode.ai' target='_blank' class='no-underline'>beta@xnode.ai</a> or simply click on “Send Email” button to send message via email."
+                            "description": "Please reach out to <a href='mailto:beta@xnode.ai' target='_blank' class='no-underline help-text'>beta@xnode.ai</a> or simply click on “Send Email” button to send message via email."
                         },
                         {
                             "title": "What are the benefits of joining beta program ?",
@@ -181,7 +181,7 @@
                         },
                         {
                             "title": "Can I upload app specific branding information?",
-                            "description": "You can typically upload app-specific branding information in Xnode by accessing branding options within the platform, which may include uploading a logo, setting color themes, uploading icons and images, defining typography and fonts, customizing the splash screen, previewing changes, applying branding, testing, and finally generating the app with the customized branding, allowing you to create a unique and visually appealing app that aligns with your brand's identity. In the Beta phase, we are going to phase out onboarding of branding information and please reach out to <a href='mailto:support@xnode.ai' target='_blank' class='no-underline'>support@xnode.ai</a> with any questions."
+                            "description": "You can typically upload app-specific branding information in Xnode by accessing branding options within the platform, which may include uploading a logo, setting color themes, uploading icons and images, defining typography and fonts, customizing the splash screen, previewing changes, applying branding, testing, and finally generating the app with the customized branding, allowing you to create a unique and visually appealing app that aligns with your brand's identity. In the Beta phase, we are going to phase out onboarding of branding information and please reach out to <a href='mailto:support@xnode.ai' target='_blank' class='no-underline help-text'>support@xnode.ai</a> with any questions."
                         }
                     ]
                 },
@@ -331,7 +331,7 @@
                     "subobjects": [
                         {
                             "title": "What are the terms of Beta",
-                            "description": "<p><a href='https://xnode.ai/terms-and-conditions/' class='no-underline' target='_blank'>Terms & Conditions</a></p>"
+                            "description": "<p><a href='https://xnode.ai/terms-and-conditions/' class='no-underline help-text' target='_blank'>Terms & Conditions</a></p>"
                         }
                     ]
                 },
@@ -341,7 +341,7 @@
                     "subobjects": [
                         {
                             "title": "What are the terms and conditions?",
-                            "description": "<p><a href='https://xnode.ai/beta-terms-of-service/' class='no-underline' target='_blank'>Terms of Service</a></p>"
+                            "description": "<p><a href='https://xnode.ai/beta-terms-of-service/' class='no-underline help-text' target='_blank'>Terms of Service</a></p>"
                         }
                     ]
                 },
@@ -351,7 +351,7 @@
                     "subobjects": [
                         {
                             "title": "What is the privacy policy?",
-                            "description": "<p><a href='https://xnode.ai/privacy-policy/'  class='no-underline' target='_blank'>Privacy Policy</a></p>"
+                            "description": "<p><a href='https://xnode.ai/privacy-policy/'  class='no-underline help-text' target='_blank'>Privacy Policy</a></p>"
                         }
                     ]
                 }
@@ -366,7 +366,7 @@
                     "subobjects": [
                         {
                             "title": "How to create an app in xnode?",
-                            "description": "<a class='cursor-pointer no-underline demo-video' >Click here to view</a> how the user has created “FarmConnect” application"
+                            "description": "<a class='cursor-pointer no-underline help-text demo-video' >Click here to view</a> how the user has created “FarmConnect” application"
                         }
                     ]
                 }
