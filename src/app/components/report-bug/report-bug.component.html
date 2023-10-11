@@ -73,7 +73,7 @@
                         (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
                         <div (click)="onUploadIconClick()">
                             <p>Upload or drag</p>
-                            <input type="file" (change)="onFileInput($event)" accept=".png, .jpeg, .jpg"
+                            <input type="file" (change)="onFileInput($event)" accept=".png, .jpeg"
                                 style="display: none;" id="file" #fileInput (change)="onFileSelected($event)">
                         </div>
                     </div>

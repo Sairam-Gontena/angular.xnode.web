@@ -214,121 +214,120 @@ export class GeneralFeedbackComponent implements OnInit {
   }
   files: any[] = [];
 
-  sendGeneralFeedbackReport(): void {
-    setTimeout(() => {
-      const body = {
-        "userId": this.currentUser?.user_id,
-        "productId": this.generalFeedbackForm.value.product,
-        "componentId": this.generalFeedbackForm.value.section,
-        "feedbackText": this.generalFeedbackForm.value.tellUsMore,
-        "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
-        "feedbackStatusId": "Open",
-        "userFiles": this.feedbackReportFiles
-      }
-      this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
-        if (!res?.data?.detail) {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': res?.request?.responseURL,
-            'payload': body
-          }
-          this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-          this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
-          this.utils.showFeedbackPopupByType('thankyou');
-          this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
-        } else {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': res?.request?.responseURL,
-            'payload': body
-          }
-          this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
-          this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
-        }
-        this.utils.loadSpinner(false);
-        this.feedbackReportFiles = []
-      }).catch(err => {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': err?.request?.responseURL,
-          'payload': body
-        }
-        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-        this.utils.loadSpinner(false);
-        this.feedbackReportFiles = []
-        this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
-      })
-    }, 1000)
-
-  }
-
-  routeToFeedbackList() {
-    this.closePopup();
-    this.router.navigate(['/feedback-list'])
-  }
-
-  onFileDropped($event?: any) {
+  async onFileDropped($event?: any) {
     this.utils.loadSpinner(true);
     if (!$event) {
       $event = this.screenshot;
     }
-    this.uploadedFile.forEach((file: any, key: any) => {
+    const promises = this.uploadedFile.map(async (file: any, key: any) => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
       const headers = {
         'Content-Type': 'application/json',
       };
-      let bool;
-      if (key + 1 != this.uploadedFile.length) {
-        bool = false;
-        this.fileUploadCall(formData, headers, bool)
-      } else {
-        bool = true;
-        this.fileUploadCall(formData, headers, bool)
+      return this.fileUploadCall(formData, headers);
+    });
+    const responses = await Promise.all(promises);
+    responses.forEach((response) => {
+      if (response?.fileId) {
+        this.feedbackReportFiles.push(response);
       }
     });
+    this.sendGeneralFeedbackReport();
   }
 
-  fileUploadCall(formData: any, headers: any, lastIndex: boolean) {
-    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
-      if (res) {
-        let data = {
-          "fileId": res.data.id,
-          "userFileType": "feedback-report"
+  fileUploadCall(formData: any, headers: any) {
+    let data: any;
+    return new Promise((resolve, reject) => {
+      this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
+        if (res) {
+          data = {
+            "fileId": res.data.id,
+            "userFileType": "feedback-report"
+          }
+          let user_audit_body = {
+            'method': 'POST',
+            'url': res?.request?.responseURL,
+            'payload': 'files'
+          }
+          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          if (data?.fileId) {
+            resolve(data)
+          }
+        } else {
+          let user_audit_body = {
+            'method': 'POST',
+            'url': res?.request?.responseURL,
+            'payload': 'files'
+          }
+          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+          this.utils.loadSpinner(false);
         }
-        this.feedbackReportFiles.push(data)
-        if (lastIndex) {
-          this.sendGeneralFeedbackReport();
-        }
+      }).catch((err: any) => {
         let user_audit_body = {
           'method': 'POST',
-          'url': res?.request?.responseURL,
-          'payload': 'files'
-        }
-        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-      } else {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': res?.request?.responseURL,
+          'url': err?.request?.responseURL,
           'payload': 'files'
         }
         this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
         this.utils.loadSpinner(false);
+      })
+    });
+  }
+
+  sendGeneralFeedbackReport(): void {
+    const body = {
+      "userId": this.currentUser?.user_id,
+      "productId": this.generalFeedbackForm.value.product,
+      "componentId": this.generalFeedbackForm.value.section,
+      "feedbackText": this.generalFeedbackForm.value.tellUsMore,
+      "feedbackRatingId": this.generalFeedbackForm.value.selectedRating,
+      "feedbackStatusId": "Open",
+      "userFiles": this.feedbackReportFiles
+    }
+    this.userUtilsApi.post(body, 'user-feedback').then((res: any) => {
+      if (!res?.data?.detail) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
+        this.utils.showFeedbackPopupByType('thankyou');
+        this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
+        this.auditUtil.post("GENERAL_FEEDBACK_" + res?.data?.detail, 1, 'FAILURE', 'user-audit');
       }
-    }).catch((err: any) => {
+      this.utils.loadSpinner(false);
+      this.feedbackReportFiles = []
+    }).catch(err => {
       let user_audit_body = {
         'method': 'POST',
         'url': err?.request?.responseURL,
-        'payload': 'files'
+        'payload': body
       }
-      this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_GENERAL_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
+      this.feedbackReportFiles = []
+      this.auditUtil.post("GENERAL_FEEDBACK_" + err, 1, 'FAILURE', 'user-audit');
     })
+  }
+
+  routeToFeedbackList() {
+    this.closePopup();
+    this.router.navigate(['/feedback-list'])
   }
 
   fileBrowseHandler(files: any) {

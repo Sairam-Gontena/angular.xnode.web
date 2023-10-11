@@ -217,122 +217,120 @@ export class ReportBugComponent implements OnInit {
     this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
-  sendBugReport(): void {
-    setTimeout(() => {
-
-      const body = {
-        "userId": this.currentUser?.user_id,
-        "productId": this.bugReportForm.value.product,
-        "componentId": this.bugReportForm.value.section,
-        "feedbackText": this.bugReportForm.value.feedbackText,
-        "severityId": this.bugReportForm.value.severityId,
-        "feedbackStatusId": "Open",
-        "requestTypeId": "bug-report",
-        "internalTicketId": '-',
-        "userFiles": this.bugReportFiles
-      }
-      this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
-        if (!res?.data?.detail) {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': res?.request?.responseURL,
-            'payload': body
-          }
-          this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-          this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
-          this.utils.showFeedbackPopupByType('thankyou');
-        } else {
-          let user_audit_body = {
-            'method': 'POST',
-            'url': res?.request?.responseURL,
-            'payload': body
-          }
-          this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
-        }
-        this.bugReportFiles = []
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': err?.request?.responseURL,
-          'payload': body
-        }
-        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-        this.utils.loadSpinner(false);
-        this.bugReportFiles = []
-      })
-
-    }, 1000)
-  }
-
-  onDeleteImage(i: any) {
-    _.pullAt(this.uploadedFile, i);
-    _.pullAt(this.screenshotName, i);
-    _.pullAt(this.images, i);
-  }
-
-  onFileDropped($event?: any) {
+  async onFileDropped($event?: any) {
     this.utils.loadSpinner(true);
     if (!$event) {
       $event = this.screenshot;
     }
-    this.uploadedFile.forEach((file: any, key: any) => {
+    const promises = this.uploadedFile.map(async (file: any, key: any) => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
       const headers = {
         'Content-Type': 'application/json',
       };
-      let bool;
-      if (key + 1 != this.uploadedFile.length) {
-        bool = false;
-        this.fileUploadCall(formData, headers, bool)
-      } else {
-        bool = true;
-        this.fileUploadCall(formData, headers, bool)
+      return this.fileUploadCall(formData, headers);
+    });
+    const responses = await Promise.all(promises);
+    responses.forEach((response) => {
+      if (response?.fileId) {
+        this.bugReportFiles.push(response);
       }
     });
+    this.sendBugReport();
   }
 
-  fileUploadCall(formData: any, headers: any, lastIndex: boolean) {
-    this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
-      if (res) {
-        let data = {
-          "fileId": res.data.id,
-          "userFileType": "bug-report"
+  fileUploadCall(formData: any, headers: any) {
+    let data: any;
+    return new Promise((resolve, reject) => {
+      this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
+        if (res) {
+          data = {
+            "fileId": res.data.id,
+            "userFileType": "bug-report"
+          }
+          let user_audit_body = {
+            'method': 'POST',
+            'url': res?.request?.responseURL,
+            'payload': 'file'
+          }
+          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          if (data?.fileId) {
+            resolve(data)
+          }
+        } else {
+          let user_audit_body = {
+            'method': 'POST',
+            'url': res?.request?.responseURL,
+            'payload': formData
+          }
+          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+          this.utils.loadSpinner(false);
         }
-        this.bugReportFiles.push(data)
-        if (lastIndex == true) {
-          this.sendBugReport();
-        }
+      }).catch((err: any) => {
         let user_audit_body = {
           'method': 'POST',
-          'url': res?.request?.responseURL,
-          'payload': 'file'
-        }
-        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-      } else {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': res?.request?.responseURL,
+          'url': err?.request?.responseURL,
           'payload': formData
         }
         this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
         this.utils.loadSpinner(false);
+      })
+    });
+  }
+
+  sendBugReport(): void {
+    const body = {
+      "userId": this.currentUser?.user_id,
+      "productId": this.bugReportForm.value.product,
+      "componentId": this.bugReportForm.value.section,
+      "feedbackText": this.bugReportForm.value.feedbackText,
+      "severityId": this.bugReportForm.value.severityId,
+      "feedbackStatusId": "Open",
+      "requestTypeId": "bug-report",
+      "internalTicketId": '-',
+      "userFiles": this.bugReportFiles
+    }
+    this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
+      if (!res?.data?.detail) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
+        this.utils.showFeedbackPopupByType('thankyou');
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': res?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
-    }).catch((err: any) => {
+      this.bugReportFiles = []
+      this.utils.loadSpinner(false);
+    }).catch(err => {
       let user_audit_body = {
         'method': 'POST',
         'url': err?.request?.responseURL,
-        'payload': formData
+        'payload': body
       }
-      this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
+      this.bugReportFiles = []
     })
+  }
+
+  onDeleteImage(i: any) {
+    _.pullAt(this.uploadedFile, i);
+    _.pullAt(this.screenshotName, i);
+    _.pullAt(this.images, i);
   }
 
   fileBrowseHandler(files: any) {
