@@ -2,11 +2,11 @@
     <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
         <div
-            [ngClass]="{'comments-collapsed': isCommnetsPanelCollapsed ,'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
+            [ngClass]="{'comments-opened': isCommnetsPanelOpened, 'side-menu-comments-opened': isCommnetsPanelOpened && isSideMenuOpened ,'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
             <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"></xnode-specifications-header>
             <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
         </div>
-        <div [ngClass]="isCommnetsPanelCollapsed ? 'comments-panel' : 'comments-panel-hidden'">
+        <div [ngClass]="isCommnetsPanelOpened ? 'comments-panel' : 'comments-panel-hidden'">
             <xnode-comments-panel></xnode-comments-panel>
         </div>
     </div>

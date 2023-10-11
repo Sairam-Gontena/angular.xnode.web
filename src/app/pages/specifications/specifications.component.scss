@@ -41,3 +41,19 @@
         width: calc(100vw - 880px);
     }
 }
+
+
+.comments-opened {
+  width: calc(100vw - 570px);
+}
+
+.side-menu-comments-opened {
+  width: calc(100vw - 950px);
+}
+
+comments-panel{
+    display:block;
+}
+.comments-panel-hidden {
+    display: none;
+}
