@@ -14,9 +14,12 @@ import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
+import { DiffViewerComponent } from './components/diff-viewer/diff-viewer.component';
+import { DiffCompComponent } from './components/diff-comp/diff-comp.component';
+import { DiffListComponent } from './components/diff-list/diff-list.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DiffViewerComponent, DiffCompComponent, DiffListComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
