@@ -91,6 +91,7 @@ export class SpecificationsContentComponent implements OnInit {
         })
       }
     })
+
     this.utils.getMeSpecItemIndex.subscribe((event: any) => {
       if (event) {
         this.specItemIndex = event;
@@ -98,7 +99,15 @@ export class SpecificationsContentComponent implements OnInit {
     })
     this.utils.getMeSectionIndex.subscribe((event: any) => {
       if (event) {
-        this.scrollToItem(event.title)
+        if (this.specExpanded) {
+          this.specExpanded = false;
+          setTimeout(() => {
+            this.scrollToItem(event.title)
+            this.fetchOpenAPISpec()
+          }, 500)
+        } else {
+          this.scrollToItem(event.title)
+        }
       }
     })
   }
@@ -144,6 +153,18 @@ export class SpecificationsContentComponent implements OnInit {
         obj.collapsed = true;
       }
     })
+  }
+  onClickSeeLess(item: any, i: any): void {
+    this.selectedSectionIndex = i;
+    this.showMoreContent = false;
+    this.specItemList.forEach((obj: any) => {
+      if (obj.title === item.title) {
+        obj.collapsed = false;
+      }
+    })
+    setTimeout(() => {
+      this.utils.passSelectedSectionIndex(item);
+    }, 100)
   }
 
   scrollToItem(itemId: string) {
@@ -203,6 +224,7 @@ export class SpecificationsContentComponent implements OnInit {
     } else {
       this.specExpanded = false;
       setTimeout(() => {
+        console.log("called here 1")
         this.fetchOpenAPISpec()
       }, 100)
     }

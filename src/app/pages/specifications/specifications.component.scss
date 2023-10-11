@@ -6,23 +6,38 @@
     width: calc(100vw - 80px);
 }
 
-.spec-content-navi {
-    width: calc(100vw - 540px);
+@media (min-width:1024px) {
+    .spec-content-navi {
+        width: calc(100vw - 300px);
+    }
 }
 
-.spec-content-sideMenu-navi {
-    width: calc(100vw - 880px);
+@media (min-width:1440px) {
+    .spec-content-navi {
+        width: calc(100vw - 460px);
+    }
 }
 
-.comments-collapsed {
-    width: calc(100% - 750px);
+@media (min-width:1680px) {
+    .spec-content-navi {
+        width: calc(100vw - 540px);
+    }
 }
 
-.comments-panel {
-    width: 374px;
-    background: #24232C;
+@media (min-width:1024px) {
+    .spec-content-sideMenu-navi {
+        width: calc(100vw - 720px);
+    }
 }
 
-.comments-panel-hidden {
-    display: none;
+@media (min-width:1440px) {
+    .spec-content-sideMenu-navi {
+        width: calc(100vw - 800px);
+    }
+}
+
+@media (min-width:1680px) {
+    .spec-content-sideMenu-navi {
+        width: calc(100vw - 880px);
+    }
 }

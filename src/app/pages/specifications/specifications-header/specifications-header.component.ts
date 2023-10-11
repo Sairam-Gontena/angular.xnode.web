@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
@@ -17,9 +18,12 @@ export class SpecificationsHeaderComponent implements OnInit {
   utilsService: any;
   auditUtil: any;
   product: any;
-  isSideMenuOpened: any
+  isSideMenuOpened: any;
+  productId: any
+  showProductStatusPopup = false;
+  data: any;
 
-  constructor(private router: Router, private utils: UtilsService) {
+  constructor(private router: Router, private utils: UtilsService, private apiService: ApiService) {
   }
   ngOnInit(): void {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -31,11 +35,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
     const metaData = localStorage.getItem('meta_data');
     const product = localStorage.getItem('product');
+    this.productId = localStorage.getItem('record_id')
     if (product) {
       this.product = JSON.parse(product);
+
     }
     if (metaData) {
       this.templates = JSON.parse(metaData);
+      setTimeout(() => {
+        this.selectedTemplate = this.productId;
+      }, 100)
       if (product) {
         this.selectedTemplate = JSON.parse(product).id;
         this.product_url = JSON.parse(product).product_url;
@@ -43,6 +52,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
 
   }
+
   getMeUserAvatar() {
     var firstLetterOfFirstWord = this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
     var firstLetterOfSecondWord = this.currentUser.last_name[0][0].toUpperCase(); // Get the first letter of the second word
@@ -63,5 +73,34 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   toggleSideMenu() {
     this.utils.EnableSpecSubMenu()
+  }
+  getConversationHistory() {
+    this.apiService.get('/get_conversation/' + this.currentUser.email + '/' + this.product.id).then((res: any) => {
+      if (res.status === 200 && res.data) {
+        this.getPopupInfo(res.data?.conversation_history);
+        this.utils.loadSpinner(false);
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err: any) => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+    })
+  }
+  getPopupInfo(conversation_history: any) {
+    this.data = {
+      content: 'Spec Generation',
+      product_id: this.product.id,
+      conversation: JSON.stringify(conversation_history)
+    }
+    this.showProductStatusPopup = true;
+    this.utils.toggleProductAlertPopup(true);
+
+  }
+  openPopup(content: any) {
+    if (this.product?.id) {
+      this.getConversationHistory();
+    }
   }
 }

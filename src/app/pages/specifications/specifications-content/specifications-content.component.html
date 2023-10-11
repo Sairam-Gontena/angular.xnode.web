@@ -38,6 +38,9 @@
                 <p-button (click)="onClickSeeMore(item,i)" label="See More" *ngIf="!item?.collapsed"
                     styleClass="p-button-rounded p-button-outlined see-more-button"
                     class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
+                <p-button (click)="onClickSeeLess(item,i)" label="See Less" *ngIf="item?.collapsed"
+                    styleClass="p-button-rounded p-button-outlined see-more-button"
+                    class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
                 <div class="w-full" *ngIf="item.contentType ==='paragraph'">
                     <div *ngIf=" isArray(item); else notArray">
                         <ul *ngFor="let subItem of item.content">
@@ -74,7 +77,7 @@
                     <div class="flex justify-content-between align-items-center">
                         <h1>Dashboard</h1>
                         <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="expandComponent({'dashboard':true})" class="expnad-icon pointer">
+                            (click)="expandComponent({'dashboard':true,item})" class="expnad-icon pointer">
                     </div>
                     <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full pl-1 pr-1" title="Template Builder">
                     </iframe>
@@ -132,10 +135,11 @@
                     </ul>
                 </div>
                 <div *ngIf="item.contentType ==='data-model'" class="h-auto">
-                    <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"></xnode-data-model-common>
+                    <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"
+                        [item]="item"></xnode-data-model-common>
                 </div>
                 <div *ngIf="item.contentType ==='x-flows'" class="h-auto">
-                    <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)"></xnode-bpmn-common>
+                    <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)" [item]="item"></xnode-bpmn-common>
                 </div>
                 <!-- <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
                     <pre>{{ item.content | json }}</pre>
@@ -154,11 +158,12 @@
                     <div class="flex col-12 justify-content-between align-items-center">
                         <h4 class="m-0 ">Swagger API</h4>
                         <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="expandComponent({'swagger':true})" class="expnad-icon pointer">
+                            (click)="expandComponent({'swagger':true,item})" class="expnad-icon pointer">
                     </div>
                     <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                 </div>
-                <div *ngIf="item.contentType ==='table'">
+                <!-- donn't remove this for future purpose -->
+                <!-- <div *ngIf="item.contentType ==='table'">
                     <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
@@ -175,7 +180,7 @@
                             </tr>
                         </ng-template>
                     </p-table>
-                </div>
+                </div> -->
                 <div *ngIf="item.contentType ==='list'">
                     <ul *ngFor="let subItem of item.content">
                         <li>
@@ -275,9 +280,16 @@
                             </p-table>
                             <p-table *ngIf="item.title == 'Business Rules' || item.title=='Functional Dependencies'"
                                 [columns]="setColumnsToTheTable(item?.content)" [value]="item?.content">
+                                <ng-template pTemplate="header" let-content>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Content</th>
+                                    </tr>
+                                </ng-template>
                                 <ng-template pTemplate="body" let-content>
                                     <tr>
-                                        <td>{{ content }}</td>
+                                        <td>{{ content.title }}</td>
+                                        <td>{{ content.content }}</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
