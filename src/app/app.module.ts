@@ -17,9 +17,11 @@ import { NgxCaptureModule } from 'ngx-capture';
 import { DiffViewerComponent } from './components/diff-viewer/diff-viewer.component';
 import { DiffCompComponent } from './components/diff-comp/diff-comp.component';
 import { DiffListComponent } from './components/diff-list/diff-list.component';
+import { InlineDiffComponent } from 'ngx-diff';
+import { DiffGeneratorComponent } from './components/diff-generator/diff-generator.component';
 
 @NgModule({
-  declarations: [AppComponent, DiffViewerComponent, DiffCompComponent, DiffListComponent],
+  declarations: [AppComponent, DiffViewerComponent, DiffCompComponent, DiffListComponent, DiffGeneratorComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -34,6 +36,7 @@ import { DiffListComponent } from './components/diff-list/diff-list.component';
     FormBuilderModule,
     NgxSpinnerModule,
     NgxCaptureModule,
+    InlineDiffComponent
   ],
   providers: [RefreshListService],
   bootstrap: [AppComponent],
