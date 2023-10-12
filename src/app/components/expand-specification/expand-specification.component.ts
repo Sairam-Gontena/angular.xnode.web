@@ -23,8 +23,6 @@ export class ExpandSpecificationComponent {
 
 
   ngOnInit() {
-    console.log("inside expand spec")
-    console.log(this.dataToExpand)
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
@@ -41,7 +39,6 @@ export class ExpandSpecificationComponent {
   }
 
   expandComponent(val: any): void {
-    console.log(this.dataToExpand)
     setTimeout(() => {
       this.utils.passSelectedSectionIndex(this.dataToExpand.item);
     }, 500)
@@ -85,6 +82,9 @@ export class ExpandSpecificationComponent {
   }
   isArray(value: any): boolean {
     return Array.isArray(value);
+  }
+  isObject(value: any): boolean {
+    return typeof value == 'object' ? true : false
   }
 
 }
