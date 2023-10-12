@@ -42,7 +42,7 @@
                     styleClass="p-button-rounded p-button-outlined see-more-button"
                     class="absolute bottom-0 right-0 mr-2 mb-2 mt-4"></p-button>
                 <div class="w-full" *ngIf="item.contentType ==='paragraph'">
-                    <div *ngIf=" isArray(item); else notArray">
+                    <div *ngIf=" isArray(item.content); else notArray">
                         <ul *ngFor="let subItem of item.content">
                             <li>
                                 <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}}
@@ -61,7 +61,7 @@
                             </span>
                             </span>
                             <ng-template #contentBlock>
-                                <span class="sub-content font-normal text-base">{{subItem.content}}</span>
+                                <span class="sub-content font-normal text-base">{{subItem.content }}</span>
                             </ng-template>
                             </p>
                             </li>
@@ -69,7 +69,7 @@
                     </div>
                     <ng-template #notArray>
                         <div class="flex content text-base font-normal">
-                            {{item.content}}
+                            {{item.content | json}}
                         </div>
                     </ng-template>
                 </div>
@@ -278,7 +278,17 @@
                                     (click)="checkedToggle(true)"></i>
                                 <img src="./assets/spec-minimize.svg" alt="container"
                                     (click)="expandComponent({'dataQualityData':true,item:{title:item.title,item:dataQualityData}})"
-                                    class="expnad-icon pointer" *ngIf="checked" class="ml-3" style="width: 25px;">
+                                    class="expnad-icon pointer" *ngIf="checked && item?.title=='Data Quality Checks'"
+                                    class="ml-3" style="width: 25px;">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'userInterfaces':true,item:{title:item.title,item:item.content}})"
+                                    class="expnad-icon pointer" *ngIf="checked && item?.title=='User Interfaces'"
+                                    class="ml-3" style="width: 25px;">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{title:item.title,item:item.content}})"
+                                    class="expnad-icon pointer"
+                                    *ngIf="checked && item?.title!='Data Quality Checks' && item?.title != 'User Interfaces'"
+                                    class="ml-3" style="width: 25px;">
                             </div>
                             <span *ngIf="item?.title=='Data Quality Checks'">
                                 <div *ngFor="let subitem of dataQualityData">
