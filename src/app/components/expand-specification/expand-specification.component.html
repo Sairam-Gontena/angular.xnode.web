@@ -20,7 +20,7 @@
             </iframe>
         </div>
     </div>
-    <div *ngIf="dataToExpand.table" class="h-full bg-white">
+    <div *ngIf="dataToExpand.table" class="h-full bg-white overflow-auto">
         <div class="h-full">
             <div class="flex flex-row col-12 justify-content-end">
                 <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.table" (click)="expandComponent(false)"></i>
