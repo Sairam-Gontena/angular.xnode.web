@@ -62,8 +62,8 @@
                             </span>
                             </span>
                             <!-- observed as duplicate data -->
-                            <!-- <span class="sub-content font-normal text-base"
-                                *ngIf="!isObject(subItem.content); else contentBlock">
+                            <span class="sub-content font-normal text-base"
+                                *ngIf="!isObject(subItem.content) && item.title == 'User Roles' ; else contentBlock">
                                 <span *ngFor="let element of subItem.content">
                                     <span class="sub-content font-normal text-base"
                                         *ngFor="let pair of element | objectToArray">
@@ -76,8 +76,8 @@
                                 </span>
                             </span>
                             <ng-template #contentBlock>
-                                <span class="sub-content font-normal text-base">{{subItem.content | json}}</span>
-                            </ng-template> -->
+                                <span class="sub-content font-normal text-base">{{subItem.content }}</span>
+                            </ng-template>
                             </p>
                             </li>
                         </ul>
