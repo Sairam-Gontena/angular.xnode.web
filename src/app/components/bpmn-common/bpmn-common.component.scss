@@ -1,5 +1,5 @@
 .diagram-container {
-    height: 100%;
+    height: calc(100vh - 250px);
     width: 100%;
     background-color: whitesmoke;
     border-width: 0;
@@ -138,8 +138,15 @@ img.highlighted {
     overflow: auto;
 }
 
+:host ::ng-deep .p-button.p-button-text {
+    padding: 0px;
+}
+
 
 .bpmn-div {
-    margin: 10px;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 102px);
+}
+
+.expand-icon {
+    width: 30px;
 }

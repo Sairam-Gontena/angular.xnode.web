@@ -127,14 +127,14 @@
                               <p-tabPanel header="Comments"> </p-tabPanel>
                          </p-tabView>
                     </p-sidebar>
-                    <div id="sc" class="scrollable-container w-full h-full overflow-auto">
+                    <div id="sc" class="scrollable-container w-full h-full overflow-auto surface-900">
                          <div class="col-12" id="graph">
                          </div>
                     </div>
                </div>
           </div>
           <div class="container bpmn-component m-4">
-               <div id="diagramRef" class="diagram-container">
+               <div id="diagramRef" class="diagram-container" *ngIf="showBpmn">
                </div>
                <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
                     styleClass="w-30rem" [modal]="false">
@@ -254,6 +254,5 @@
                     <div class="col-12" id="graph">
                     </div>
                </div>
-
           </div>
      </div>

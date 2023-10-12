@@ -5,6 +5,14 @@
     padding: 20px;
     height: calc(100vh - 40px);
     overflow: auto;
+    transition: width 0.5s ease;
+}
+
+.hide-spec-menu {
+    width: 0px;
+    background: #24232C;
+    height: calc(100vh - 40px);
+    transition: width 0.5s ease;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
@@ -41,14 +49,14 @@
 }
 
 .section:hover {
-    background: #DEDEDE;
-    color: #0e0e0e;
+    background: #464748;
+    color: #dedede;
     border-radius: 6px;
 }
 
 .active-section {
-    background: #DEDEDE !important;
-    color: #0e0e0e;
+    background-color: #464748 !important;
+    color: #dedede !important;
     border-radius: 6px;
 }
 
@@ -77,4 +85,11 @@
 
 :host ::ng-deep .p-accordion .p-accordion-header {
     margin-top: 20px
+}
+
+:host ::ng-deep .p-button {
+    font-size: 2rem;
+    background: #4F4E55;
+    border: 1px solid #24232C !important;
+    cursor: pointer;
 }

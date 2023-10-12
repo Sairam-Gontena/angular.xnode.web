@@ -80,10 +80,19 @@
 }
 
 .er-body {
-    height: calc(100vh - 176px);
+    height: calc(100vh - 150px);
+    overflow: auto;
+}
+
+.spec-er-body {
+    height: calc(100vh - 119px);
     overflow: auto;
 }
 
 img.highlighted {
     background-color: #02ADEE !important;
+}
+
+.expnad-icon {
+    width: 30px;
 }

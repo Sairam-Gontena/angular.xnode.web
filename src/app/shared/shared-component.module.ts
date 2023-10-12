@@ -32,6 +32,8 @@ import { ModelComponent } from '../pages/er-modeller/model/model.component';
 import { ModalRelationComponent } from '../pages/er-modeller/modal-relation/modal-relation.component';
 import { SchemaComponent } from '../pages/er-modeller/schema/schema.component';
 import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.component';
+import { ExpandSpecificationComponent } from '../components/expand-specification/expand-specification.component';
+import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -64,7 +66,9 @@ import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.compone
                 ModelComponent,
                 ModalRelationComponent,
                 SchemaComponent,
-                BpmnDiagramComponent
+                BpmnDiagramComponent,
+                ExpandSpecificationComponent,
+                CommentsPanelComponent
         ],
         imports: [
                 CommonModule,
@@ -101,7 +105,9 @@ import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.compone
                 ModelComponent,
                 ModalRelationComponent,
                 SchemaComponent,
-                BpmnDiagramComponent
+                BpmnDiagramComponent,
+                ExpandSpecificationComponent,
+                CommentsPanelComponent
         ]
 })
 export class SharedComponentModule { }
