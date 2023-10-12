@@ -41,6 +41,7 @@ export class ExpandSpecificationComponent {
   }
 
   expandComponent(val: any): void {
+    console.log(this.dataToExpand)
     setTimeout(() => {
       this.utils.passSelectedSectionIndex(this.dataToExpand.item);
     }, 500)

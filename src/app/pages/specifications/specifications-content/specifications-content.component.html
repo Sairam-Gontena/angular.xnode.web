@@ -231,7 +231,7 @@
                                         <td *ngFor="let col of columns; let i = index ">
                                             <div *ngIf="isArray(rowData[col.field])">
                                                 <div *ngFor="let data of rowData[col.field]">
-                                                    {{data.columnName | json}}
+                                                    {{data.columnName}}
                                                 </div>
                                             </div>
                                             <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
@@ -277,14 +277,13 @@
                                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                                     (click)="checkedToggle(true)"></i>
                                 <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="expandComponent({'table':true,item:{item:item?.content,title:item.title}})"
+                                    (click)="expandComponent({'dataQualityData':true,item:{title:item.title,item:dataQualityData}})"
                                     class="expnad-icon pointer" *ngIf="checked" class="ml-3" style="width: 25px;">
                             </div>
                             <span *ngIf="item?.title=='Data Quality Checks'">
                                 <div *ngFor="let subitem of dataQualityData">
                                     <div class="flex flex-row col-12 justify-content-between ">
                                         <div></div>
-
                                     </div>
                                     <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
                                         [value]="subitem.content">
