@@ -15,7 +15,9 @@
     </div>
   </div>
   <div *ngSwitchCase="'bullet'" [class]="getClass()">
-    <p> Bullet {{contentObj.title }} : {{contentObj.content }}  </p>
+    <p> Bullet {{contentObj.title }} :
+      <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content" [onDiff] = "onDiff"></xnode-diff-generator>
+   </p>
   </div>
   <div *ngSwitchCase="'section2'">
     <div [ngSwitch]="getType(contentObj.content)">
@@ -27,7 +29,7 @@
         <div *ngFor="let item of contentObj.content">
           <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
         </div>
-        <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj.content" [targetList]="contentObj.content"></xnode-diff-list>
+        <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content" [targetList]="contentObj.content"></xnode-diff-list>
       </div>
     </div>
   </div>

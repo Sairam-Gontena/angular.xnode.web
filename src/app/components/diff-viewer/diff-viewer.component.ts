@@ -6,7 +6,7 @@ import * as DiffGen from '../../utils/diff-generator';
   styleUrls: ['./diff-viewer.component.scss'],
 })
 export class DiffViewerComponent {
-  onDiff: boolean = true;
+  onDiff: boolean = false;
   content: any = {
     created_on: '2023-10-03 13:50:16',
     modified_on: '2023-10-03 13:50:16',
