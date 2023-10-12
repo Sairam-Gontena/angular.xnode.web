@@ -7,8 +7,8 @@ import { authGuard } from './auth.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./pages/login/login.module').then((m) => m.LoginModule),
+    redirectTo: '/login',
+    pathMatch: 'full'
   },
   {
     path: 'login',
