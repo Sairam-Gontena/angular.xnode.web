@@ -20,7 +20,7 @@
             </iframe>
         </div>
     </div>
-    <div *ngIf="dataToExpand.table" class="h-full bg-white">
+    <div *ngIf="dataToExpand.table" class="h-full bg-white overflow-auto">
         <div class="h-full">
             <div class="flex flex-row col-12 justify-content-end">
                 <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.table" (click)="expandComponent(false)"></i>
@@ -38,10 +38,71 @@
                         <td *ngFor="let col of columns; let i = index ">
                             <div *ngIf="isArray(rowData[col.field])">
                                 <div *ngFor="let data of rowData[col.field]">
-                                    {{data.columnName}}
+                                    {{data.columnName ? data.columnName : data}}
                                 </div>
                             </div>
                             <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field] }}</div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div *ngIf="dataToExpand.dataQualityData" class="h-full bg-white ">
+        <div class="h-full overflow-auto relative">
+            <div class="flex flex-row col-12 justify-content-end absolute z-1">
+                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dataQualityData"
+                    (click)="expandComponent(false)"></i>
+            </div>
+            <div *ngFor="let subitem of dataToExpand.item.item">
+                <div class="flex flex-row col-12 justify-content-between ">
+                    <div></div>
+                </div>
+                <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2" [value]="subitem.content">
+                    <ng-template pTemplate="caption">
+                        <h4>{{ subitem?.header }}</h4>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of subitem.title">
+                                {{ col }}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <td *ngFor="let col of subitem.content">
+                                {{ rowData }}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="dataToExpand.userInterfaces" class="h-full bg-white">
+        <div class="h-full">
+            <div class="flex flex-row col-12 justify-content-end">
+                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.userInterfaces"
+                    (click)="expandComponent(false)"></i>
+            </div>
+            <p-table [columns]="setColumnsToTheTable(dataToExpand.item.item)" [value]="dataToExpand.item.item">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns">
+                            {{ col.header }}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns; let i = index ">
+                            <div *ngIf="isObject(rowData[col.field])">
+                                <div *ngFor="let item of rowData[col.field] | keyvalue">
+                                    {{ item.key }} : {{ item.value }},
+                                </div>
+                            </div>
+                            <div *ngIf="!isObject(rowData[col.field])">{{ rowData[col.field] }}</div>
                         </td>
                     </tr>
                 </ng-template>

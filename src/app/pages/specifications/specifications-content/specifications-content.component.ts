@@ -142,8 +142,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   isArray(item: any) {
-    console.log("############################### ", typeof item)
-    return typeof item?.content == 'object' ? true : false
+    return Array.isArray(item);
+
   }
 
   onClickSeeMore(item: any, i: any): void {
@@ -219,21 +219,18 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   expandComponent(val: any): void {
-    console.log("============@@@@@@@@ ", val)
     this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table) {
+    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces) {
       this.specExpanded = true
     } else {
       this.specExpanded = false;
       setTimeout(() => {
-        console.log("called here 1")
         this.fetchOpenAPISpec()
       }, 100)
     }
   }
 
   onClickComment(item: any) {
-    console.log('item', item);
     this.utils.saveSelectedSection(item);
     this.utils.openCommentPanel(true);
   }
