@@ -66,6 +66,9 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/'])
         localStorage.clear();
       }
+      this.utilsService.getMeToastObject.subscribe((event: any) => {
+        this.messageService.add(event);
+      });
     }
     this.redirectToPreviousUrl();
     this.utilsService.isCommentPanelToggled.subscribe((event: any) => {
