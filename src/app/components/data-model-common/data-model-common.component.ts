@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Data } from '../../pages/er-modeller/class/data';
 import { Router } from '@angular/router';
 import { DataService } from '../../pages/er-modeller/service/data.service';
@@ -18,6 +18,11 @@ import { MessageService } from 'primeng/api';
 
 })
 export class DataModelCommonComponent {
+  @Input() erModelInput: any;
+  @Input() dataToExpand: any;
+  @Input() item: any;
+  @Output() dataFlowEmitter = new EventEmitter<any>();
+
   data: Data | any;
   bpmnSubUrl: boolean = false;
   dashboard: any;
@@ -31,7 +36,9 @@ export class DataModelCommonComponent {
   dataModel: any;
   product: any;
   product_id: any;
-  @Input() erModelInput: any;
+  isExpanded: boolean = false;
+  currentUrl: string = '';
+
 
   constructor(private apiService: ApiService,
     private dataService: DataService, private jsPlumbService: JsPlumbService,
@@ -45,6 +52,7 @@ export class DataModelCommonComponent {
   }
 
   ngOnInit(): void {
+    this.currentUrl = this.router.url;
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
@@ -59,6 +67,12 @@ export class DataModelCommonComponent {
     }
     this.utilsService.loadSpinner(true);
     this.getMeDataModel();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.dataToExpand?.dataModel) {
+      this.isExpanded = true;
+    }
   }
 
   toggleMenu() {
@@ -146,4 +160,10 @@ export class DataModelCommonComponent {
         this.utilsService.loadSpinner(false);
       });
   }
+
+  expandDataFlows(val: any): void {
+    this.dataFlowEmitter.emit({ dataModel: val, item: this.item });
+    this.isExpanded = val;
+  }
+
 }

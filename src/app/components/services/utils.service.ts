@@ -7,7 +7,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export class UtilsService {
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private specSubMenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private dockedNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public openSubmenu: Observable<boolean> = this.showLayoutSubmenu.asObservable();
+  public openSpecSubMenu: Observable<boolean> = this.specSubMenu.asObservable();
+  public openDockedNavi: Observable<boolean> = this.dockedNavi.asObservable();
 
   private showSpinner: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public startSpinner: Observable<boolean> = this.showSpinner.asObservable();
@@ -43,14 +47,35 @@ export class UtilsService {
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
+  private showCommentPanel: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public isCommentPanelToggled: Observable<any> = this.showCommentPanel.asObservable();
+
+
+  private selectedSection: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeSelectedSection: Observable<any> = this.selectedSection.asObservable();
+  private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeProductId: Observable<any> = this.productId.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
   }
+  disableSpecSubMenu() {
+    this.specSubMenu.next(false);
+  }
+  disableDockedNavi() {
+    this.dockedNavi.next(false);
+  }
 
   EnablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(true);
+  }
+  EnableSpecSubMenu() {
+    this.specSubMenu.next(true);
+  }
+  EnableDockedNavi() {
+    this.dockedNavi.next(true);
   }
 
   loadSpinner(event: boolean): void {
@@ -96,8 +121,17 @@ export class UtilsService {
     this.sectionIndex.next(event);
   }
 
+  openCommentPanel(event: any): void {
+    this.showCommentPanel.next(event);
+  }
+  saveProductId(event: any): void {
+    this.productId.next(event);
+  }
 
 
+  saveSelectedSection(event: any): void {
+    this.selectedSection.next(event);
+  }
 
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);

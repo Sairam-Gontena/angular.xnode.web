@@ -74,7 +74,8 @@ export class ProductAlertPopupComponent implements OnInit {
         break;
       }
       default: {
-        this.buttonLabel = 'Generate app';
+        this.buttonLabel = 'Cancel';
+        this.content = 'App not created yet';
         break;
       }
     }
@@ -105,6 +106,10 @@ export class ProductAlertPopupComponent implements OnInit {
       }
       case "Generate Application": {
         this.getPreviousCoversation();
+        break;
+      }
+      case "Cancel": {
+        this.closePopup.emit(true);
         break;
       }
     }

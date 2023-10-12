@@ -45,6 +45,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
+    this.utilsService.getMeProductId.subscribe((event: any) => {
+      if (event)
+        this.selectedTemplate = event;
+    })
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -79,6 +83,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     }
     if (metaData) {
       this.templates = JSON.parse(metaData);
+      setTimeout(() => {
+        this.selectedTemplate = this.productId;
+      }, 100)
       if (product) {
         this.selectedTemplate = JSON.parse(product).id;
         this.product_url = JSON.parse(product).product_url;
@@ -98,6 +105,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
     }
   };
+
   openExternalLink(productUrl: string | undefined) {
     window.open(productUrl, '_blank');
   }

@@ -82,7 +82,8 @@ export class NaviComponent implements OnInit {
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
             const itemId = event.data.id;
-            localStorage.setItem('record_id', itemId)
+            localStorage.setItem('record_id', itemId);
+            this.utils.saveProductId(itemId);
             const newUrl = this.xnodeAppUrl + '#/dashboard';
             window.location.href = newUrl;
           }
