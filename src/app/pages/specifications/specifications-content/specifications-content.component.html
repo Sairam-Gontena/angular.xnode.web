@@ -40,7 +40,7 @@
                     class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
                 <p-button (click)="onClickSeeLess(item,i)" label="See Less" *ngIf="item?.collapsed"
                     styleClass="p-button-rounded p-button-outlined see-more-button"
-                    class="absolute bottom-0 right-0 mr-2 mb-2 mt-4"></p-button>
+                    class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
                 <div class="w-full" *ngIf="item.contentType ==='paragraph'">
                     <div *ngIf=" isArray(item.content); else notArray">
                         <ul *ngFor="let subItem of item.content">
@@ -387,6 +387,8 @@
                     </ul>
                 </div>
                 <div class="gradientback" *ngIf="!item?.collapsed">
+                </div>
+                <div class="collapse" *ngIf="item?.collapsed">
                 </div>
             </div>
         </div>
