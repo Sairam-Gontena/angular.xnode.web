@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
     })
   }
   redirectToPreviousUrl(): void {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         localStorage.setItem('previousUrl', event.url);
       }
@@ -118,7 +118,7 @@ export class AppComponent implements OnInit {
     });
   }
   handleBotIcon() {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.handleRouterChange();
         if (event.url === '/x-pilot') {

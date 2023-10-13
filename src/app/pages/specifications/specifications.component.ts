@@ -141,7 +141,6 @@ export class SpecificationsComponent implements OnInit {
   populatefilteredSpecData(data: any) {
     this.filteredSpecData = _.compact(data);
     this.specData = this.filteredSpecData
-    console.log('final', this.filteredSpecData)
     this.changeDetectorRef.detectChanges();
   }
 
