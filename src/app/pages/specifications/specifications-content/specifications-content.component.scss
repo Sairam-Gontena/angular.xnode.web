@@ -9,8 +9,8 @@
 }
 
 .openapi-spec {
-  background: #fff;
-  overflow: hidden;
+    background: #fff;
+    overflow: hidden;
 }
 
 .banner-grid {
@@ -88,6 +88,11 @@
 
 }
 
+.collapse {
+    height: 30px;
+    width: 100%;
+}
+
 .spec-status {
     color: #7E7E7E;
     font-size: 14px;
@@ -108,6 +113,7 @@
 .h-vh {
     height: 100vh;
 }
-.expnad-icon{
+
+.expnad-icon {
     width: 25px;
 }
