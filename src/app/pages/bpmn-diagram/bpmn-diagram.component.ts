@@ -184,11 +184,11 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           'Flows': response.data.Flows.filter((f: any) => {
             const selectedFlow = flow.toLowerCase();
             const flowFromJson = (f.Name || f.workflow_name || '').toLowerCase();
-            return (selectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(selectedFlow) != -1)
+            const trimmedSelectedFlow = selectedFlow.replace(/\s/g, "");
+            return (selectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(selectedFlow) != -1) || (trimmedSelectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(trimmedSelectedFlow) != -1)
           }),
           'Product': appName
         };
-
         this.xflowData = response.data;
         this.loadXFlows(xflowJson);
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
@@ -505,11 +505,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   loadXFlows(xFlowJson: any): void {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
     this.api.postWorkFlow(xFlowJson).then(async (response: any) => {
-      console.log('ressssssss', response);
-
       let xFlowJsonCopy = xFlowJson;
       xFlowJsonCopy.Flows = 'xflows data'
       if (response) {
@@ -533,8 +529,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       }
       this.utilsService.loadSpinner(false);
     }).catch(error => {
-      console.log('errt', error);
-
+      console.log('err', error);
       let xFlowJsonCopy = xFlowJson;
       xFlowJsonCopy.Flows = 'xflows data'
       let user_audit_body = {
@@ -607,8 +602,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
           this.graphRedirection = true;
           var graphWindow = document.getElementById("sc");
           if (graphWindow) graphWindow.style.display = 'None';
-          console.log('>>><>><>><');
-
           this.getFlow(flow);
           this.centerAndFitViewport(this.bpmnJS)
         }
