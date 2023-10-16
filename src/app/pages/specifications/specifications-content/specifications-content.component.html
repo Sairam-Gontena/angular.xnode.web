@@ -207,12 +207,20 @@
                         </ng-template>
                     </p-table>
                 </div> -->
-                <div *ngIf="item.contentType ==='list' && item.title !== 'Feature Descriptions'">
+                <div
+                    *ngIf="item.contentType ==='list' && item.title !== 'Feature Descriptions' && item.title !== 'Usecases' ">
                     <ul *ngFor="let subItem of item.content">
                         <li>
                             <p class="m-0 pb-1"> <span class="sub-content font-normal text-base">{{subItem}}</span></p>
                         </li>
                     </ul>
+                </div>
+                <div *ngIf="item.title == 'Usecases' ">
+                    <div class="flex col-12 justify-content-end align-items-center">
+                        <img src="./assets/spec-minimize.svg" alt="container"
+                            (click)="expandComponent({'usecases':true,item})" class="expnad-icon pointer">
+                    </div>
+                    <xnode-common-usecases></xnode-common-usecases>
                 </div>
                 <div *ngIf="item.contentType ==='header-list'">
                     <ul *ngFor="let subItem of item.content">

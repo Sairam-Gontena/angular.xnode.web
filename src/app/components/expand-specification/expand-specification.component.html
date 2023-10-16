@@ -51,7 +51,8 @@
     <div *ngIf="dataToExpand.dataQuilityChecksTable" class="h-full bg-white overflow-auto">
         <div class="h-full">
             <div class="flex flex-row col-12 justify-content-end">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dataQuilityChecksTable" (click)="expandComponent(false)"></i>
+                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dataQuilityChecksTable"
+                    (click)="expandComponent(false)"></i>
             </div>
             <div *ngFor="let subItem of dataToExpand.item.item.content" class="p-3">
                 <h4 class="m-0 pt-3 pb-2">{{subItem.title}}</h4>
@@ -139,5 +140,12 @@
                 </ng-template>
             </p-table>
         </div>
+    </div>
+    <div *ngIf="dataToExpand.usecases" class="h-full surface-900">
+        <div class="flex flex-row col-12 justify-content-end">
+            <i class="pi pi-times text-xl pointer text-white " *ngIf="dataToExpand.usecases"
+                (click)="expandComponent(false)"></i>
+        </div>
+        <xnode-common-usecases></xnode-common-usecases>
     </div>
 </div>
