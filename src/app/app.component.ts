@@ -70,13 +70,15 @@ export class AppComponent implements OnInit {
         this.messageService.add(event);
       });
     }
-    this.redirectToPreviousUrl();
+    if (!window.location.hash.includes('#/reset-password?email'))
+      this.redirectToPreviousUrl();
     this.utilsService.isCommentPanelToggled.subscribe((event: any) => {
       this.isSideWindowOpen = false;
       this.isNaviExpanded = false;
       this.utilsService.disableDockedNavi();
     })
   }
+
   redirectToPreviousUrl(): void {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
