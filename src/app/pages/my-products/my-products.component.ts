@@ -168,6 +168,10 @@ export class MyProductsComponent implements OnInit {
           this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
           this.templateCard = response.data.data.map((dataItem: any) => {
             dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
+            if (this.currentUser.user_id === dataItem?.user_id)
+              dataItem.created_by = 'Created by you';
+            else
+              dataItem.created_by = 'Created by ' + dataItem?.username;
             return dataItem;
           });
 
@@ -192,8 +196,15 @@ export class MyProductsComponent implements OnInit {
         this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-
       });
+  }
+
+  onClickcreatedByYou(): void {
+    this.filteredProducts = this.filteredProducts.filter(obj => { return obj?.user_id === this.currentUser.user_id });
+  }
+
+  onClickAllProducts(): void {
+    this.filteredProducts = [...this.templateCard];
   }
 
   search() {
