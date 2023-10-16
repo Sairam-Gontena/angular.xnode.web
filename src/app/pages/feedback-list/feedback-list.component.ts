@@ -218,6 +218,7 @@ export class FeedbackListComponent {
       if (res) {
         if (res?.data.length) {
           this.selectedListItem = res.data[0];
+          this.conversationSourceId = res?.data?.[0]?.id;
         }
         let user_audit_body = {
           'method': 'GET',
