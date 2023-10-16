@@ -4,13 +4,15 @@ import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { Router, NavigationEnd } from '@angular/router';
+
 
 @Component({
-  selector: 'xnode-usecase-component',
-  templateUrl: './usecase-component.component.html',
-  styleUrls: ['./usecase-component.component.scss']
+  selector: 'xnode-common-usecases',
+  templateUrl: './common-usecases.component.html',
+  styleUrls: ['./common-usecases.component.scss']
 })
-export class UsecaseComponentComponent {
+export class CommonUsecasesComponent {
   useCases: any = [];
   email: any;
   id: String = '';
@@ -19,10 +21,16 @@ export class UsecaseComponentComponent {
   highlightedIndex: any;
   product: any;
   product_id: any;
+  isInsideUseCases: boolean = false;
 
-  constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService) {
+  constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService, private router: Router,) {
     this.currentUser = UserUtil.getCurrentUser();
     this.email = this.currentUser?.email;
+    if (this.router.url === '/usecases') {
+      this.isInsideUseCases = true
+    } else {
+      this.isInsideUseCases = false
+    }
   }
 
   ngOnInit(): void {

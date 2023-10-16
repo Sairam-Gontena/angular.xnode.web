@@ -1,4 +1,4 @@
-<div class="relative use-case-body">
+<div class="relative use-case-body" [ngClass]="{'ml-4 mr-4' : isInsideUseCases}">
     <div *ngIf="useCases?.length > 0" class="surface-900 pt-3 pb-3 h-full overflow-auto">
         <div *ngFor="let usecase of useCases">
             <div class="flex justify-content-center flex-wrap card-container">

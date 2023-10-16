@@ -34,7 +34,7 @@ import { SchemaComponent } from '../pages/er-modeller/schema/schema.component';
 import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.component';
 import { ExpandSpecificationComponent } from '../components/expand-specification/expand-specification.component';
 import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
-import { UsecaseComponentComponent } from '../components/usecase-component/usecase-component.component';
+import { CommonUsecasesComponent } from '../components/common-usecases/common-usecases.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -70,7 +70,7 @@ import { UsecaseComponentComponent } from '../components/usecase-component/useca
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
                 CommentsPanelComponent,
-                UsecaseComponentComponent
+                CommonUsecasesComponent
         ],
         imports: [
                 CommonModule,
@@ -110,7 +110,7 @@ import { UsecaseComponentComponent } from '../components/usecase-component/useca
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
                 CommentsPanelComponent,
-                UsecaseComponentComponent
+                CommonUsecasesComponent
         ]
 })
 export class SharedComponentModule { }
