@@ -226,13 +226,16 @@
                 <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
                     <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
                         <div class="flex justify-content-end align-items-center my-2 mr-2">
-                            <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle(false)"></i>
-                            <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="checkedToggle(true)"></i>
+                            <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                (click)="this.selectedSectionIndex =i; checkedToggle(false)"></i>
+                            <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                (click)="this.selectedSectionIndex =i;checkedToggle(true)"></i>
                             <img src="./assets/spec-minimize.svg" alt="container"
-                                (click)="expandComponent({'table':true,item:{item:item?.content[0]?.content,title:item.title}})"
-                                class="expnad-icon pointer" *ngIf="checked" class="ml-3" style="width: 25px;">
+                                (click)="this.selectedSectionIndex =i;expandComponent({'table':true,item:{item:item?.content[0]?.content,title:item.title}})"
+                                class="expnad-icon pointer" *ngIf="checked && selectedSectionIndex ===i" class="ml-3"
+                                style="width: 25px;">
                         </div>
-                        <div *ngIf="checked; else elsejson">
+                        <div *ngIf="checked && selectedSectionIndex === i; else elsejson">
                             <div class="flex flex-row col-12 justify-content-between ">
                                 <div></div>
 
@@ -290,25 +293,25 @@
                         </ng-template>
                     </div>
                     <ng-template #elsejsonBlock>
-                        <div *ngIf="checked; else jsonBlock">
+                        <div *ngIf="checked && selectedSectionIndex === i; else jsonBlock">
                             <div class="flex justify-content-end my-2 mr-2 align-items-center">
                                 <i class="pi pi-code pointer mr-2" pTooltip="Json view"
-                                    (click)="checkedToggle(false)"></i>
+                                    (click)="this.selectedSectionIndex =i;checkedToggle(false)"></i>
                                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
-                                    (click)="checkedToggle(true)"></i>
+                                    (click)="this.selectedSectionIndex =i;checkedToggle(true)"></i>
                                 <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="expandComponent({'dataQualityData':true,item:{title:item.title,item:dataQualityData}})"
-                                    class="expnad-icon pointer" *ngIf="checked && item?.title=='Data Quality Checks'"
-                                    class="ml-3" style="width: 25px;">
+                                    (click)="this.selectedSectionIndex =i;expandComponent({'dataQualityData':true,item:{title:item.title,item:dataQualityData}})"
+                                    class="expnad-icon pointer ml-3"
+                                    *ngIf="checked && item?.title=='Data Quality Checks'" style="width: 25px;">
                                 <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="expandComponent({'userInterfaces':true,item:{title:item.title,item:item.content}})"
-                                    class="expnad-icon pointer" *ngIf="checked && item?.title=='User Interfaces'"
-                                    class="ml-3" style="width: 25px;">
+                                    (click)="this.selectedSectionIndex =i;expandComponent({'userInterfaces':true,item:{title:item.title,item:item.content}})"
+                                    class="expnad-icon pointer ml-3" *ngIf="checked && item?.title=='User Interfaces'"
+                                    style="width: 25px;">
                                 <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="expandComponent({'table':true,item:{title:item.title,item:item.content}})"
-                                    class="expnad-icon pointer"
+                                    (click)="this.selectedSectionIndex =i;expandComponent({'table':true,item:{title:item.title,item:item.content}})"
+                                    class="expnad-icon pointer ml-3"
                                     *ngIf="checked && item?.title!='Data Quality Checks' && item?.title != 'User Interfaces'"
-                                    class="ml-3" style="width: 25px;">
+                                    style="width: 25px;">
                             </div>
                             <span *ngIf="item?.title=='Data Quality Checks'">
                                 <div *ngFor="let subitem of dataQualityData">
@@ -368,9 +371,9 @@
                         <ng-template #jsonBlock>
                             <div class="flex justify-content-end my-2 mr-2">
                                 <i class="pi pi-code pointer mr-2" pTooltip="Json view"
-                                    (click)="checkedToggle(false)"></i>
+                                    (click)="this.selectedSectionIndex = i; checkedToggle(false)"></i>
                                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
-                                    (click)="checkedToggle(true)"></i>
+                                    (click)="this.selectedSectionIndex = i;checkedToggle(true)"></i>
                             </div>
                             <pre>{{ item.content | json }}</pre>
                         </ng-template>
@@ -385,6 +388,73 @@
                             </p>
                         </li>
                     </ul>
+                </div>
+                <div *ngIf="item.contentType ==='data-quility-checks'">
+                    <div class="flex justify-content-end align-items-center my-2 mr-2">
+                        <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                            (click)="this.selectedSectionIndex =i;checkedToggle(false)"></i>
+                        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                            (click)="this.selectedSectionIndex = i;checkedToggle(true)"></i>
+                        <img src="./assets/spec-minimize.svg" alt="container"
+                            (click)="this.selectedSectionIndex =i;expandComponent({'dataQuilityChecksTable':true,item:{item:item,title:item.title}})"
+                            class="expnad-icon pointer ml-3" *ngIf="checked && selectedSectionIndex === i"
+                            style="width: 25px;">
+                    </div>
+                    <div *ngIf="checked && selectedSectionIndex === i; else elsejson">
+                        <div *ngFor="let subItem of item.content">
+                            <h4 class="m-0 pt-3 pb-2">{{subItem.title}}</h4>
+                            <p-table [columns]="setColumnsToTheTable(subItem?.content)" [value]="subItem?.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <!-- <p-table *ngFor="let table of item?.content[0]?.content"
+                            [columns]="setColumnsToTheTable(table.columns)"
+                            [value]="setColumnsToTheTable(table.columns)">
+                            <ng-template pTemplate="caption">
+                                <h4>{{ table.tableName | camelToTitle }}</h4>
+                            </ng-template>
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns">
+                                        {{ col.header | camelToTitle }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-columns="columns">
+                                <tr>
+                                    <td *ngFor="let col of columns">
+                                        <span
+                                            *ngIf="isObject(col.value);else field">{{returnValues(col.value)}}</span>
+                                        <ng-template #field>
+                                            {{ col.value }}
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table> -->
+                    </div>
+                    <ng-template #elsejson>
+                        <pre>{{ item.content | json }}</pre>
+                    </ng-template>
+
                 </div>
                 <div class="gradientback" *ngIf="!item?.collapsed">
                 </div>
