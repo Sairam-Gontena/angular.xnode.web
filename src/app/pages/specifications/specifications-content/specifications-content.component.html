@@ -84,7 +84,7 @@
                     </div>
                     <ng-template #notArray>
                         <div class="flex content text-base font-normal">
-                            {{item.content | json}}
+                            {{item.content}}
                         </div>
                     </ng-template>
                 </div>
@@ -456,9 +456,26 @@
                     </ng-template>
 
                 </div>
-                <div class="gradientback" *ngIf="!item?.collapsed">
-                </div>
-                <div class="collapse" *ngIf="item?.collapsed">
+                <div *ngIf="item.contentType ==='qa-test-cases'">
+                    <div *ngFor="let subItem of item.content">
+                        <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
+                            <p class="m-0 pb-2"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
+                                : <span class="sub-content font-normal text-base">{{subItem.content}}</span>
+                            </p>
+                        </div>
+                        <ng-template #sampleTestCases>
+                            <h4 class="mb-2">{{subItem.title}}</h4>
+                            <div *ngFor="let testCase of subItem.content; let lastItem = last">
+                                <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
+                                    <span class="sub-title text-base font-medium">{{key}}</span> :
+                                    <span class="sub-content font-normal text-base">{{testCase[key]}}</span>
+                                </p>
+                                <ng-container *ngIf="!lastItem">
+                                    <hr class="mt-2 mb-2">
+                                </ng-container>
+                            </div>
+                        </ng-template>
+                    </div>
                 </div>
             </div>
         </div>

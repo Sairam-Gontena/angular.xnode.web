@@ -75,6 +75,9 @@ export class SpecificationsContentComponent implements OnInit {
           else if (obj.title === 'Data Quality Checks') {
             obj.contentType = 'data-quility-checks';
           }
+          else if (obj.title === 'QA Test Cases') {
+            obj.contentType = 'qa-test-cases';
+          }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
           } else if (obj.title === 'OpenAPI Spec') {
@@ -91,6 +94,7 @@ export class SpecificationsContentComponent implements OnInit {
         this.specItemIndex = event;
       }
     })
+
     this.utils.getMeSectionIndex.subscribe((event: any) => {
       if (event) {
         if (this.specExpanded) {
@@ -227,6 +231,10 @@ export class SpecificationsContentComponent implements OnInit {
   onClickComment(item: any) {
     this.utils.saveSelectedSection(item);
     this.utils.openCommentPanel(true);
+  }
+
+  getTestCaseKeys(testCase: any): string[] {
+    return Object.keys(testCase);
   }
 
 
