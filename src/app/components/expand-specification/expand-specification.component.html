@@ -48,6 +48,38 @@
             </p-table>
         </div>
     </div>
+    <div *ngIf="dataToExpand.dataQuilityChecksTable" class="h-full bg-white overflow-auto">
+        <div class="h-full">
+            <div class="flex flex-row col-12 justify-content-end">
+                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dataQuilityChecksTable"
+                    (click)="expandComponent(false)"></i>
+            </div>
+            <div *ngFor="let subItem of dataToExpand.item.item.content" class="p-3">
+                <h4 class="m-0 pt-3 pb-2">{{subItem.title}}</h4>
+                <p-table [columns]="setColumnsToTheTable(subItem?.content)" [value]="subItem?.content">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{ col.header }}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <td *ngFor="let col of columns; let i = index ">
+                                <div *ngIf="isArray(rowData[col.field])">
+                                    <div *ngFor="let data of rowData[col.field]">
+                                        {{data.columnName}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
     <div *ngIf="dataToExpand.dataQualityData" class="h-full bg-white ">
         <div class="h-full overflow-auto relative">
             <div class="flex flex-row col-12 justify-content-end absolute z-1">
@@ -108,5 +140,12 @@
                 </ng-template>
             </p-table>
         </div>
+    </div>
+    <div *ngIf="dataToExpand.usecases" class="h-full surface-900">
+        <div class="flex flex-row col-12 justify-content-end">
+            <i class="pi pi-times text-xl pointer text-white " *ngIf="dataToExpand.usecases"
+                (click)="expandComponent(false)"></i>
+        </div>
+        <xnode-common-usecases></xnode-common-usecases>
     </div>
 </div>
