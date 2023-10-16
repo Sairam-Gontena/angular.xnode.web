@@ -220,7 +220,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   expandComponent(val: any): void {
     this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces) {
+    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces || val.usecases) {
       this.specExpanded = true
     } else {
       this.specExpanded = false;

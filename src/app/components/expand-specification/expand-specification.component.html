@@ -109,4 +109,10 @@
             </p-table>
         </div>
     </div>
+    <div *ngIf="dataToExpand.usecases" class="h-full surface-900">
+        <div class="flex flex-row col-12 justify-content-end">
+            <i class="pi pi-times text-xl pointer text-white " *ngIf="dataToExpand.usecases" (click)="expandComponent(false)"></i>
+        </div>
+        <xnode-usecase-component></xnode-usecase-component>
+    </div>
 </div>
