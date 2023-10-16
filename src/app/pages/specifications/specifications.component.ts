@@ -20,6 +20,8 @@ export class SpecificationsComponent implements OnInit {
   showSpecGenaretePopup: any;
   filteredSpecData: any;
   foundObjects: any[] = [];
+  wantedIndexes: any[] = [];
+  removableIndexes: any[] = [];
   isNaviOpened = false
   isSideMenuOpened = true
 
@@ -137,89 +139,49 @@ export class SpecificationsComponent implements OnInit {
         this.populatefilteredSpecData(this.filteredSpecData)
       }
     });
-    // this.specData.forEach((element: any, index: any, arr: any) => {
-    //   element.section.forEach((subelement: any, subindex: any, subarr: any) => {
-    //     let lastIndex = false;
-    //     index == arr.length - 1 && subindex == subarr.length - 1 ? lastIndex = true : lastIndex = false;
-    //     this.checkKeyword(keyword, subelement, index, subindex, lastIndex)
-    //   })
-    // });
-  }
-
-  checkKeyword(keyword: any, subelement: any, index: any, subindex: any, lastIndex: boolean) {
-    let objArr: any = [];
-    if (typeof (subelement.content) == 'string') {
-      if (Object.values(subelement).includes(keyword) == false) {
-        _.pull(this.specData[index].section, this.specData[index].section[subindex])
-      }
-    }
-    if (typeof (subelement.content) == 'object') {
-      subelement.content.forEach((item: any, itemIndex: any) => {
-        if (typeof (item) == 'object') {
-          console.log('item', item)
-          // item?.content.forEach((subitem: any) => {
-          //   console.log('subitem val', Object.values(subitem))
-          // })
-        } else {
-          if (Object.values(item).includes(keyword) == false) {
-            objArr.push(itemIndex)
-          }
-        }
-        if (Object.values(item).includes(keyword) == true) {
-          console.log('true', item)
-        }
-        if (itemIndex == subelement.content.length - 1) {
-          _.pullAt(this.specData[index]?.section[subindex]?.content, objArr);
-        }
-      });
-    }
-    if (lastIndex)
-      this.deleteUnwantedData(this.specData);
-  }
-
-  deleteUnwantedData(data: any) {
-    this.specData = data;
-    console.log('data', this.specData)
-    this.specData.forEach((element: any, index: any, item: any) => {
-      let objArr: any = [];
-      element.section.forEach((subelement: any, subindex: any, arr: any) => {
-        if (subelement?.content?.length == 0) {
-          objArr.push(subindex)
-        }
-        if (subindex == arr.length - 1) {
-          _.pullAt(this.specData[index]?.section, objArr);
-          // if (this.specData[index]?.section.length == 0)
-          //   _.pullAt(this.specData, index);
-          // console.log(item, this.specData, element.section, arr)
-          // if (item.length - 1 == this.specData.length) {
-          //   this.populatefilteredSpecData(this.specData)
-          // }
-        }
-      });
-    });
   }
 
   populatefilteredSpecData(list: any) {
-    console.log('main data', this.specDataCopy)
-    console.log('final specData', this.specData)
+    let deleteIndexes: any[] = [];
     this.filteredSpecData = _.compact(list);
     this.specData.forEach((item: any, index: any) => {
+      deleteIndexes = [];
       item?.section.forEach((subitem: any, subindex: any) => {
-        _.some(this.filteredSpecData, (elem: any, subelem: any) => {
+        _.some(this.filteredSpecData, (elem: any, subelemIndex: any) => {
           if (_.isEqual(elem.title, subitem.title)) {
-            this.specData[index]?.section.forEach((pullItem: any, pullIndex: any) => {
-              if (pullIndex != subindex) {
-                console.log(pullItem)
-                // _.pullAt(this.specData[index]?.section, pullIndex);
-              }
-            });
+            deleteIndexes.push(subindex);
           }
         });
       });
+      if (deleteIndexes.length > 0) {
+        this.wantedIndexes.push(index)
+        this.deleteSpecData(index, deleteIndexes)
+      } else {
+        this.removableIndexes.push(index)
+      }
     });
+    _.pullAt(this.specData, this.removableIndexes);
     console.log('filtered data', this.filteredSpecData)
+    console.log(this.removableIndexes)
+    console.log(this.wantedIndexes);
     console.log('final specData', this.specData)
     // this.utils.passSelectedSpecItem(list);
+  }
+
+  deleteSpecData(index: any, indexes: any) {
+    let itemArr: any[] = [];
+    // this.specData.forEach((elem: any, elemindex:any) =>{
+    //   if(index == elemindex){
+    //     elem.section.forEach((item: any, itemindex: any) => {
+    //       itemArr.push(itemindex)
+    //     });
+    //   }
+    // });
+    this.specData[index]?.section.forEach((item: any, itemindex: any) => {
+      itemArr.push(itemindex)
+    });
+    let wantedArr = _.difference(itemArr, indexes);
+    _.pullAt(this.specData[index]?.section, wantedArr);
   }
 
   clearSearchText() {
