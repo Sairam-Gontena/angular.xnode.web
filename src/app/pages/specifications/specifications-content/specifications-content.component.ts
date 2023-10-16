@@ -63,23 +63,17 @@ export class SpecificationsContentComponent implements OnInit {
           } else if (obj.title === 'Workflows') {
             obj.contentType = 'x-flows';
           }
-          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
+          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces'
             || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
             || obj.title === 'Business Rules') {
-            obj.contentType = 'json'
+            obj.contentType = 'json';
             if (obj.title === 'User Interfaces') {
               this.userInterfaceheaders = Object.keys(obj.content[0]);
               obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
             }
-            if (obj.title === 'Data Quality Checks') {
-              obj.content.map((item: any) => {
-                if (item.content[0]) {
-                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
-                } else {
-                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
-                }
-              });
-            }
+          }
+          else if (obj.title === 'Data Quality Checks') {
+            obj.contentType = 'data-quility-checks';
           }
           else if (obj.title === 'Interface Requirements') {
             obj.contentType = 'header-list'
@@ -220,7 +214,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   expandComponent(val: any): void {
     this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces) {
+    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces || val.dataQuilityChecksTable) {
       this.specExpanded = true
     } else {
       this.specExpanded = false;
