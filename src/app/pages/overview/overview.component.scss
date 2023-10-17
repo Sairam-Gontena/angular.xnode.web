@@ -2,16 +2,31 @@
     color: rgba(255, 255, 255, 0.5);
     font-weight: 400rem !important;
     font-size: 1rem;
+    margin-left: 3rem;
 }
 
 .stake-holder {
     background-color: none;
     border: 1px solid #535353;
+    width: 21rem;
 }
 
 .finbuddy-text {
     width: auto;
     color: #FFFFFF;
+    margin-left: 3rem;
+}
+
+.finbuddy-image {
+    margin-left: 3rem;
+}
+
+.card-gap {
+    margin-left: 5rem !important;
+}
+
+.card-container {
+    margin-left: 3rem;
 }
 
 :host ::ng-deep.p-button {
@@ -28,6 +43,12 @@
 
 .stepper-card {
     width: 566px;
+    margin-left: 4rem;
+}
+
+.stepper-content {
+    width: 26rem;
+    margin-left: 2rem;
 }
 
 @media screen and (max-width: 780px) {
@@ -37,15 +58,14 @@
 }
 
 @media screen and (max-width: 780px) {
-    .nelson-name {
+    .stepper-text {
         width: 10rem !important;
     }
 }
 
 @media (max-width: 780px) {
-    :host ::ng-deep.p-button {
+    :host::ng-deep.p-button {
         margin: 10px;
-
     }
 }
 
@@ -59,7 +79,7 @@
 
 @media (max-width: 780px) {
 
-    .nelson-name {
+    .stepper-text {
         width: 370px !important;
 
     }
@@ -92,6 +112,53 @@
     width: 15px;
     margin-top: 2px;
 }
+
+@media screen and (max-width: 320px) {
+    .overview-body {
+        margin: 10px !important;
+    }
+
+    .finbuddy-text {
+        width: auto !important;
+        margin-left: 0.5rem;
+    }
+
+    .para-text {
+        margin-left: 1rem;
+    }
+
+    .card-container {
+        margin-left: 0.5rem;
+    }
+
+    .card-gap {
+        margin-left: 0 !important;
+    }
+
+    .stake-holder {
+        width: 280px;
+    }
+
+    .stepper-card {
+        width: auto;
+        margin-left: 0.5rem;
+    }
+
+    .stepper-content {
+        width: auto;
+        margin-left: 0.5rem;
+    }
+
+    .stepper-text {
+        width: 230px !important;
+
+    }
+
+    .finbuddy-image {
+        margin-left: 0.5rem;
+    }
+}
+
 
 .feature-value {
     align-items: center;
