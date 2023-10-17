@@ -3,6 +3,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import * as _ from "lodash";
+
 @Component({
   selector: 'xnode-specifications-menu',
   templateUrl: './specifications-menu.component.html',
@@ -25,6 +27,19 @@ export class SpecificationsMenuComponent implements OnInit {
     private utils: UtilsService,
     private apiService: ApiService
   ) {
+    this.utils.getMeSpecItem.subscribe((resp: any) => {
+      setTimeout(() => {
+        let data = resp;
+        for (const key in data) {
+          if (data[key] && data[key].search === true) {
+            delete data[key];
+            break;
+          }
+        }
+        this.menuList = data.filter((item: any) => item !== null);
+        console.log('menu menulist', this.menuList)
+      },);
+    })
   }
 
   ngOnInit(): void {
@@ -32,13 +47,7 @@ export class SpecificationsMenuComponent implements OnInit {
       this.isOpen = data;
     })
     this.utils.passSelectedSpecIndex(0);
-    let list = this.specData;
-    list.forEach((element: any) => {
-      if (element.section) {
-        element.section.splice(0, 1);
-      }
-    });
-    this.menuList = [...list]
+    this.populateMenuList();
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
         this.text.emit(this.searchText);
@@ -46,6 +55,16 @@ export class SpecificationsMenuComponent implements OnInit {
         this.text.emit('');
       }
     });
+  }
+
+  populateMenuList() {
+    let list = this.specData;
+    list.forEach((element: any) => {
+      if (element.section) {
+        element.section.splice(0, 1);
+      }
+    });
+    this.menuList = [...list]
   }
 
   onOpenAccordian(event: any) {
@@ -97,10 +116,6 @@ export class SpecificationsMenuComponent implements OnInit {
       this.utils.disableSpecSubMenu();
     }
   }
-
-  // ngOnChanges() {
-  //   this.ngOnInit();
-  // }
 
   onInput() {
     this.textInputSubject.next(this.searchText);

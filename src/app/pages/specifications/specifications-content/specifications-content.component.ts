@@ -3,6 +3,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../../er-modeller/service/data.service';
+import * as _ from "lodash";
+
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -50,61 +52,77 @@ export class SpecificationsContentComponent implements OnInit {
 
   getSpecItem() {
     this.utils.getMeSpecItem.subscribe((event: any) => {
-      console.log('event', event)
       if (event) {
-        console.log('hola arun', event)
-        event.forEach((element: any) => {
-          if (this.specItemList.length === 0) {
-            this.specItemList = element.section;
-          } else {
-            this.specItemList = this.specItemList.concat(element.section)
+        let hasSearchTrue = false;
+        for (const key in event) {
+          if (event[key] && event[key].search === true) {
+            hasSearchTrue = true;
+            delete event[key];
+            break;
           }
-        });
-        this.specItemList.forEach((obj: any) => {
-          if (obj.title === 'User Personas' || obj.title === 'Error Handling'
-            || obj.title === 'Stakeholder Approvals' || obj.title === 'Version Control' || obj.title === 'Glossary'
-            || obj.title === 'Historical Data Load') {
-            obj.contentType = 'table'
-          } else if (obj.title === 'User Interface Design') {
-            obj.contentType = 'iframe'
-          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Usecases'
-            || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
-            || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
-            || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
-          ) {
-            obj.contentType = 'list'
-          } else if (obj.title === 'Data Management Persistence') {
-            obj.contentType = 'data-model';
-            this.makeTrustDataModelUrl()
-          } else if (obj.title === 'Workflows') {
-            obj.contentType = 'x-flows';
-          }
-          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
-            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
-            || obj.title === 'Business Rules') {
-            obj.contentType = 'json'
-            if (obj.title === 'User Interfaces') {
-              this.userInterfaceheaders = Object.keys(obj.content[0]);
-              obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+        }
+        this.specItemList = [];
+        if (hasSearchTrue) {
+          event.forEach((element: any) => {
+            this.specItemList.push(element.section);
+            this.specItemList = _.flattenDeep(this.specItemList)
+          })
+          console.log('content - specItemList', this.specItemList)
+        } else {
+          event.forEach((element: any) => {
+            if (this.specItemList.length === 0) {
+              this.specItemList = element.section;
+            } else {
+              this.specItemList = this.specItemList.concat(element.section)
             }
-            if (obj.title === 'Data Quality Checks') {
-              obj.content.map((item: any) => {
-                if (item.content[0]) {
-                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
-                } else {
-                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
-                }
-              });
+          });
+          this.specItemList.forEach((obj: any) => {
+            if (obj.title === 'User Personas' || obj.title === 'Error Handling'
+              || obj.title === 'Stakeholder Approvals' || obj.title === 'Version Control' || obj.title === 'Glossary'
+              || obj.title === 'Historical Data Load') {
+              obj.contentType = 'table'
+            } else if (obj.title === 'User Interface Design') {
+              obj.contentType = 'iframe'
+            } else if (obj.title === 'Feature Descriptions' || obj.title === 'Usecases'
+              || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
+              || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
+              || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
+            ) {
+              obj.contentType = 'list'
+            } else if (obj.title === 'Data Management Persistence') {
+              obj.contentType = 'data-model';
+              this.makeTrustDataModelUrl()
+            } else if (obj.title === 'Workflows') {
+              obj.contentType = 'x-flows';
             }
-          }
-          else if (obj.title === 'Interface Requirements') {
-            obj.contentType = 'header-list'
-          } else if (obj.title === 'OpenAPI Spec') {
-            obj.contentType = 'OpenAPI'
-          } else {
-            obj.contentType = 'paragraph'
-          }
-        })
+            else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
+              || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
+              || obj.title === 'Business Rules') {
+              obj.contentType = 'json'
+              if (obj.title === 'User Interfaces') {
+                this.userInterfaceheaders = Object.keys(obj.content[0]);
+                obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+              }
+              if (obj.title === 'Data Quality Checks') {
+                obj.content.map((item: any) => {
+                  if (item.content[0]) {
+                    this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
+                  } else {
+                    this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
+                  }
+                });
+              }
+            }
+            else if (obj.title === 'Interface Requirements') {
+              obj.contentType = 'header-list'
+            } else if (obj.title === 'OpenAPI Spec') {
+              obj.contentType = 'OpenAPI'
+            } else {
+              obj.contentType = 'paragraph'
+            }
+          })
+          console.log('content - specItemList', this.specItemList)
+        }
       }
     })
   }
@@ -137,11 +155,6 @@ export class SpecificationsContentComponent implements OnInit {
     }
     this.makeTrustedUrl();
   }
-
-  // ngOnChanges() {
-  //   console.log('on change')
-  //   this.getSpecItem()
-  // }
 
   isArray(item: any) {
     return Array.isArray(item?.content);

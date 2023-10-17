@@ -6,7 +6,6 @@
                 <input type="text" pInputText placeholder="Search for docs, Keywords, etc"
                     class="w-full border-round-3xl font-family-inter text-sm font-normal" [(ngModel)]="searchText"
                     (input)="onInput()" />
-                <!-- dont delete-->
             </span>
             <img src="../assets/spec-chevron-left.svg" class="flex ml-4 text-white" alt="Logo" *ngIf="isOpen"
                 (click)="toggleMenu()">
@@ -14,7 +13,7 @@
         <div>
             <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
             <p-accordion [activeIndex]="activeIndex" (onOpen)="onOpenAccordian($event)">
-                <p-accordionTab [header]=" (i + 1) + '. '+ shortTitle(item.title)"
+                <p-accordionTab [header]=" (i + 1) + '. '+ shortTitle(item?.title)"
                     *ngFor="let item of menuList; let i = index;" [ngClass]="{'active-header-text':i === activeIndex}">
                     <div class="p-2 pointer section text-base font-family-inter font-medium ml-4 mt-2 "
                         [ngClass]="{'active-section': i===activeIndex&& ind === selectedSecIndex}"

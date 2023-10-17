@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -12,7 +12,7 @@ import * as _ from "lodash";
 export class SpecificationsComponent implements OnInit {
   currentUser: any;
   specData?: any;
-  specDataCopy: any;
+  private specDataCopy: any = [];
   selectedSpec: any;
   selectedSection: any;
   specId: any
@@ -28,8 +28,7 @@ export class SpecificationsComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
-    private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private router: Router
   ) {
 
   }
@@ -52,8 +51,10 @@ export class SpecificationsComponent implements OnInit {
 
   searchText(keyword: any) {
     if (keyword == '') {
-      this.clearSearchText()
+      this.clearSearchText();
+      return
     }
+    this.filteredSpecData = [];
     this.specData.forEach((element: any, index: any) => {
       element.section.forEach((subElement: any) => {
         if (typeof (subElement.content) == 'string') {
@@ -161,31 +162,19 @@ export class SpecificationsComponent implements OnInit {
       }
     });
     _.pullAt(this.specData, this.removableIndexes);
-    console.log('filtered data', this.filteredSpecData)
-    console.log(this.removableIndexes)
-    console.log(this.wantedIndexes);
-    console.log('final specData', this.specData)
-    // this.utils.passSelectedSpecItem(list);
+    let speclist = this.specData;
+    speclist.push({ 'search': true })
+    this.utils.passSelectedSpecItem(speclist);
+    console.log('specData', this.specData)
   }
 
   deleteSpecData(index: any, indexes: any) {
     let itemArr: any[] = [];
-    // this.specData.forEach((elem: any, elemindex:any) =>{
-    //   if(index == elemindex){
-    //     elem.section.forEach((item: any, itemindex: any) => {
-    //       itemArr.push(itemindex)
-    //     });
-    //   }
-    // });
     this.specData[index]?.section.forEach((item: any, itemindex: any) => {
       itemArr.push(itemindex)
     });
     let wantedArr = _.difference(itemArr, indexes);
     _.pullAt(this.specData[index]?.section, wantedArr);
-  }
-
-  clearSearchText() {
-    this.specData = this.specDataCopy;
   }
 
   getMeUserAvatar() {
@@ -199,6 +188,7 @@ export class SpecificationsComponent implements OnInit {
     this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200 && !response.data.detail) {
+          this.specData = [];
           const list = response.data;
           list.forEach((obj: any, index: any) => {
             if (obj?.title && obj?.section) {
@@ -213,7 +203,10 @@ export class SpecificationsComponent implements OnInit {
           })
           this.specData = list;
           this.specData.pop();
-          this.specDataCopy = this.specData;
+          // console.log('in list', list)
+          // // this.specDataCopy = _.cloneDeep(list);
+          // this.specDataCopy = JSON.parse(JSON.stringify(list))
+          // console.log(this.specDataCopy)
           this.utils.passSelectedSpecItem(list);
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data.detail });
@@ -221,11 +214,19 @@ export class SpecificationsComponent implements OnInit {
           this.showSpecGenaretePopup = true;
         }
         this.utils.loadSpinner(false);
-
       }).catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
   }
+
+  clearSearchText() {
+    this.getMeSpecList()
+    // console.log('this.specDataCopy before', this.specDataCopy)
+    // this.specData = this.specDataCopy;
+    // console.log('this.specDataCopy after', this.specDataCopy)
+    // this.utils.passSelectedSpecItem(this.specData);
+  }
+
   refreshCurrentRoute(): void {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
