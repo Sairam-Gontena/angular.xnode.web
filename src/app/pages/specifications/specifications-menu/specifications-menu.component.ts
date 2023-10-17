@@ -15,9 +15,9 @@ export class SpecificationsMenuComponent implements OnInit {
   @Input() specData?: any;
   @Output() text: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
+  menuList: any;
   selectedSection: any;
   activeIndex: any = 0;
-  menuList: any;
   selectedSecIndex: any;
   searchText: any;
   private textInputSubject = new Subject<string>();
@@ -70,7 +70,6 @@ export class SpecificationsMenuComponent implements OnInit {
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
-    this.utils.passSelectedSpecIndex(event.index);
   }
 
   onClickSection(event: any, i: any) {

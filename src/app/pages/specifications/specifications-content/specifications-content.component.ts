@@ -22,8 +22,7 @@ export class SpecificationsContentComponent implements OnInit {
   selectedSpecItem: any;
   specItemList: any = [];
   selectedSpecItemListTitles: any = [];
-  selectedSectionIndex: any;
-  specItemIndex: any;
+  selectedContent: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
   dataToExpand: any
@@ -37,10 +36,9 @@ export class SpecificationsContentComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private dataService: DataService,) {
     this.dataModel = this.dataService.data;
-    this.getSpecItem();
-    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
+    this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
-        this.specItemIndex = event;
+        this.specItemList = event;
       }
     })
     this.utils.getMeSectionIndex.subscribe((event: any) => {
@@ -126,11 +124,11 @@ export class SpecificationsContentComponent implements OnInit {
         }
       }
     });
-    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
-      if (event) {
-        this.specItemIndex = event;
-      }
-    })
+    // this.utils.getMeSpecItemIndex.subscribe((event: any) => {
+    //   if (event) {
+    //     this.specItemIndex = event;
+    //   }
+    // })
     this.utils.getMeSectionIndex.subscribe((event: any) => {
       if (event) {
         if (this.specExpanded) {
@@ -146,8 +144,17 @@ export class SpecificationsContentComponent implements OnInit {
     })
   }
 
-  checkedToggle(bool: boolean) {
-    this.checked = bool;
+  checkedToggle(type: any, item: any, content: any) {
+    this.specItemList.forEach((obj: any) => {
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id && type === 'table')
+            conObj.showTable = true;
+          else
+            conObj.showTable = false;
+        })
+      }
+    })
   }
 
   isObject(value: any): boolean {
@@ -180,21 +187,27 @@ export class SpecificationsContentComponent implements OnInit {
 
   }
 
-  onClickSeeMore(item: any, i: any): void {
-    this.selectedSectionIndex = i;
+  onClickSeeMore(item: any, content: any): void {
+    this.selectedContent = content;
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
-      if (obj.title === item.title) {
-        obj.collapsed = true;
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id)
+            conObj.collapsed = true;
+        })
       }
     })
   }
-  onClickSeeLess(item: any, i: any): void {
-    this.selectedSectionIndex = i;
+  onClickSeeLess(item: any, content: any): void {
+    this.selectedContent = content;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
-      if (obj.title === item.title) {
-        obj.collapsed = false;
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id)
+            conObj.collapsed = false;
+        })
       }
     })
     setTimeout(() => {
@@ -222,17 +235,9 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   setColumnsToTheTable(data: any) {
-    Object.entries(data.map((item: any) => {
-      if (typeof (item) == 'string') { return }
-    }))
     let cols;
-    if (data[0]) {
-      cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
-      return cols
-    } else {
-      cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
-      return cols
-    }
+    cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+    return cols
   }
 
   async fetchOpenAPISpec() {
