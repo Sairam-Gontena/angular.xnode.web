@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
         } else {
           this.spinner.hide();
         }
-      }, 0);
+      }, 100);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);

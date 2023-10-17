@@ -296,7 +296,7 @@ export class GeneralFeedbackComponent implements OnInit {
           'payload': body
         }
         this.auditUtil.post('USER_FEEDBACK_SEND_GENERAL_FEEDBACK_REPORT', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'General feedback bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
         this.auditUtil.post("GENERAL_FEEDBACK", 1, 'SUCCESS', 'user-audit');
       } else {
