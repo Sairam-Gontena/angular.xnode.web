@@ -30,7 +30,8 @@ export class NotificationPanelComponent {
   email: any;
   productId: any;
 
-  constructor(private router: Router, private apiService: ApiService, private auditUtil: AuditutilsService, public utils: UtilsService, private notifyApi: NotifyApiService) {
+  constructor(private router: Router, private apiService: ApiService,
+    private auditUtil: AuditutilsService, public utils: UtilsService, private notifyApi: NotifyApiService) {
     let user = localStorage.getItem('currentUser')
     if (user) {
       let userObj = JSON.parse(user)
@@ -92,12 +93,29 @@ export class NotificationPanelComponent {
 
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
-      this.router.navigate(['/dashboard']);
-      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
+      this.utils.loadSpinner(true);
+      this.getMeMetaData();
     }
     this.closeNotificationPanel.emit(true);
   }
+  getMeMetaData() {
+    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          localStorage.setItem('meta_data', JSON.stringify(response.data.data))
+          this.router.navigate(['/dashboard']);
+          this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
+        } else if (response?.status !== 200) {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch(error => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
 
+      });
+  }
   gotoSpec(obj: any) {
     localStorage.setItem('spec_record_id', obj.product_id)
     localStorage.setItem('record_id', obj.product_id);
@@ -114,6 +132,7 @@ export class NotificationPanelComponent {
 
   getMeLabel(obj: any) {
     return obj.component && obj.component !== '' ? 'View Update' : 'Go to Product'
+
   }
 
   navigateToActivity() {
