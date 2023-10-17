@@ -37,55 +37,56 @@ export class SpecificationsContentComponent implements OnInit {
     this.dataModel = this.dataService.data;
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
-        event.forEach((element: any) => {
-          if (this.specItemList.length === 0) {
-            this.specItemList = element.section;
-          } else {
-            this.specItemList = this.specItemList.concat(element.section)
-          }
-        });
-        this.specItemList.forEach((obj: any) => {
-          if (obj.title === 'User Personas' || obj.title === 'Error Handling'
-            || obj.title === 'Stakeholder Approvals' || obj.title === 'Version Control' || obj.title === 'Glossary'
-            || obj.title === 'Historical Data Load') {
-            obj.contentType = 'table'
-          } else if (obj.title === 'User Interface Design') {
-            obj.contentType = 'iframe'
-          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Usecases'
-            || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
-            || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
-            || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
-          ) {
-            obj.contentType = 'list'
-          } else if (obj.title === 'Data Management Persistence') {
-            obj.contentType = 'data-model';
-            this.makeTrustDataModelUrl()
-          } else if (obj.title === 'Workflows') {
-            obj.contentType = 'x-flows';
-          }
-          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces'
-            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
-            || obj.title === 'Business Rules') {
-            obj.contentType = 'json';
-            if (obj.title === 'User Interfaces') {
-              this.userInterfaceheaders = Object.keys(obj.content[0]);
-              obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
-            }
-          }
-          else if (obj.title === 'Data Quality Checks') {
-            obj.contentType = 'data-quility-checks';
-          }
-          else if (obj.title === 'QA Test Cases') {
-            obj.contentType = 'qa-test-cases';
-          }
-          else if (obj.title === 'Interface Requirements') {
-            obj.contentType = 'header-list'
-          } else if (obj.title === 'OpenAPI Spec') {
-            obj.contentType = 'OpenAPI'
-          } else {
-            obj.contentType = 'paragraph'
-          }
-        })
+        this.specItemList = event;
+        // event.forEach((element: any) => {
+        //   if (this.specItemList.length === 0) {
+        //     this.specItemList = element.content;
+        //   } else {
+        //     this.specItemList = this.specItemList.concat(element.content)
+        //   }
+        // });
+        // this.specItemList.forEach((obj: any) => {
+        //   if (obj.title === 'User Personas' || obj.title === 'Error Handling'
+        //     || obj.title === 'Stakeholder Approvals' || obj.title === 'Version Control' || obj.title === 'Glossary'
+        //     || obj.title === 'Historical Data Load') {
+        //     obj.contentType = 'table'
+        //   } else if (obj.title === 'User Interface Design') {
+        //     obj.contentType = 'iframe'
+        //   } else if (obj.title === 'Feature Descriptions' || obj.title === 'Usecases'
+        //     || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
+        //     || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
+        //     || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
+        //   ) {
+        //     obj.contentType = 'list'
+        //   } else if (obj.title === 'Data Management Persistence') {
+        //     obj.contentType = 'data-model';
+        //     this.makeTrustDataModelUrl()
+        //   } else if (obj.title === 'Workflows') {
+        //     obj.contentType = 'x-flows';
+        //   }
+        //   else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces'
+        //     || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
+        //     || obj.title === 'Business Rules') {
+        //     obj.contentType = 'json';
+        //     if (obj.title === 'User Interfaces') {
+        //       this.userInterfaceheaders = Object.keys(obj.content[0]);
+        //       obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
+        //     }
+        //   }
+        //   else if (obj.title === 'Data Quality Checks') {
+        //     obj.contentType = 'data-quility-checks';
+        //   }
+        //   else if (obj.title === 'QA Test Cases') {
+        //     obj.contentType = 'qa-test-cases';
+        //   }
+        //   else if (obj.title === 'Interface Requirements') {
+        //     obj.contentType = 'header-list'
+        //   } else if (obj.title === 'OpenAPI Spec') {
+        //     obj.contentType = 'OpenAPI'
+        //   } else {
+        //     obj.contentType = 'paragraph'
+        //   }
+        // })
       }
     })
 
@@ -144,21 +145,27 @@ export class SpecificationsContentComponent implements OnInit {
 
   }
 
-  onClickSeeMore(item: any, i: any): void {
-    this.selectedSectionIndex = i;
+  onClickSeeMore(item: any, content: any): void {
+    // this.selectedSectionIndex = i;
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
-      if (obj.title === item.title) {
-        obj.collapsed = true;
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id)
+            conObj.collapsed = true;
+        })
       }
     })
   }
-  onClickSeeLess(item: any, i: any): void {
-    this.selectedSectionIndex = i;
+  onClickSeeLess(item: any, content: any): void {
+    // this.selectedSectionIndex = i;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
-      if (obj.title === item.title) {
-        obj.collapsed = false;
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id)
+            conObj.collapsed = false;
+        })
       }
     })
     setTimeout(() => {
