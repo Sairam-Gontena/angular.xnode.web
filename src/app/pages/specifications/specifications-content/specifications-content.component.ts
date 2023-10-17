@@ -98,20 +98,22 @@ export class SpecificationsContentComponent implements OnInit {
             else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
               || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
               || obj.title === 'Business Rules') {
-              obj.contentType = 'json'
+              obj.contentType = 'json';
               if (obj.title === 'User Interfaces') {
                 this.userInterfaceheaders = Object.keys(obj.content[0]);
                 obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
               }
-              if (obj.title === 'Data Quality Checks') {
-                obj.content.map((item: any) => {
-                  if (item.content[0]) {
-                    this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
-                  } else {
-                    this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
-                  }
-                });
-              }
+            } else if (obj.title === 'Data Quality Checks') {
+              obj.contentType = 'data-quility-checks';
+              // obj.content.map((item: any) => {
+              //   if (item.content[0]) {
+              //     this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
+              //   } else {
+              //     this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
+              //   }
+              // });
+            } else if (obj.title === 'QA Test Cases') {
+              obj.contentType = 'qa-test-cases';
             }
             else if (obj.title === 'Interface Requirements') {
               obj.contentType = 'header-list'
@@ -121,7 +123,23 @@ export class SpecificationsContentComponent implements OnInit {
               obj.contentType = 'paragraph'
             }
           })
-          console.log('content - specItemList', this.specItemList)
+        }
+      })
+    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
+      if (event) {
+        this.specItemIndex = event;
+      }
+    })
+    this.utils.getMeSectionIndex.subscribe((event: any) => {
+      if (event) {
+        if (this.specExpanded) {
+          this.specExpanded = false;
+          setTimeout(() => {
+            this.scrollToItem(event.title)
+            this.fetchOpenAPISpec()
+          }, 500)
+        } else {
+          this.scrollToItem(event.title)
         }
       }
     })
@@ -157,7 +175,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   isArray(item: any) {
-    return Array.isArray(item?.content);
+    return Array.isArray(item);
+
   }
 
   onClickSeeMore(item: any, i: any): void {
@@ -168,6 +187,18 @@ export class SpecificationsContentComponent implements OnInit {
         obj.collapsed = true;
       }
     })
+  }
+  onClickSeeLess(item: any, i: any): void {
+    this.selectedSectionIndex = i;
+    this.showMoreContent = false;
+    this.specItemList.forEach((obj: any) => {
+      if (obj.title === item.title) {
+        obj.collapsed = false;
+      }
+    })
+    setTimeout(() => {
+      this.utils.passSelectedSectionIndex(item);
+    }, 100)
   }
 
   scrollToItem(itemId: string) {
@@ -223,7 +254,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   expandComponent(val: any): void {
     this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger || val.dashboard) {
+    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces || val.usecases || val.dataQuilityChecksTable) {
       this.specExpanded = true
     } else {
       this.specExpanded = false;
@@ -231,6 +262,15 @@ export class SpecificationsContentComponent implements OnInit {
         this.fetchOpenAPISpec()
       }, 100)
     }
+  }
+
+  onClickComment(item: any) {
+    this.utils.saveSelectedSection(item);
+    this.utils.openCommentPanel(true);
+  }
+
+  getTestCaseKeys(testCase: any): string[] {
+    return Object.keys(testCase);
   }
 
 

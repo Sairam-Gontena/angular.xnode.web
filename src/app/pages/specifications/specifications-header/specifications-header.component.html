@@ -23,15 +23,19 @@
         <div class="flex align-items-center ">
             <!-- <p class="pr-3 text-color text-white">Edited just now</p> -->
             <img src="../assets/fav.svg " class="pr-3 pointer" alt="Logo">
-            <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo">
+            <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments" (click)="openComments()">
             <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
             <!-- <img src="../assets/menu-dots.svg" class="pr-3 pointer" alt="Logo"> -->
             <p-button (click)="op.toggle($event)" class="ellipsis-btn -ml-3" icon="pi pi-ellipsis-v"></p-button>
             <p-overlayPanel class="overlay-class" #op>
                 <div class="confirm-overlay p-2 cursor-pointer border-round-md ">Change Request</div>
                 <div class="confirm-overlay p-2 cursor-pointer border-round-md ">Integration</div>
-
+                <div class="confirm-overlay p-2 cursor-pointer border-round-md" (keyup)="openPopup('Spec Generation')"
+                    (keydown)="op.hide()" (keypress)="openPopup('Spec Generation')"
+                    (click)="openPopup('Spec Generation');op.hide()">Generate Spec</div>
             </p-overlayPanel>
             <p-button label="Share" styleClass="p-button-rounded bg-primary border-none"></p-button>
         </div>
     </div>
+    <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
+        [data]="data" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>

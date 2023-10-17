@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UtilsService } from 'src/app/components/services/utils.service';
+
 
 declare const SwaggerUIBundle: any;
 
@@ -16,9 +18,9 @@ export class ExpandSpecificationComponent {
   iframeSrc: SafeResourceUrl = '';
   targetUrl: string = environment.naviAppUrl;
 
-  constructor(private domSanitizer: DomSanitizer,) {
-
+  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
   }
+
 
   ngOnInit() {
     const record_id = localStorage.getItem('record_id');
@@ -37,7 +39,9 @@ export class ExpandSpecificationComponent {
   }
 
   expandComponent(val: any): void {
-    console.log("inside the expanded ", val)
+    setTimeout(() => {
+      this.utils.passSelectedSectionIndex(this.dataToExpand.item);
+    }, 500)
     this.dataFlowEmitter.emit(val);
   }
 
@@ -62,4 +66,25 @@ export class ExpandSpecificationComponent {
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
+  setColumnsToTheTable(data: any) {
+    Object.entries(data.map((item: any) => {
+      if (typeof (item) == 'string') { return }
+    }))
+    let cols;
+    if (data[0]) {
+      cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
+      return cols
+    } else {
+      cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+      return cols
+    }
+  }
+  isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+  isObject(value: any): boolean {
+    return typeof value == 'object' ? true : false
+  }
+
 }

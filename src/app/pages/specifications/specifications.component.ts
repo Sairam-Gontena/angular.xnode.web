@@ -24,13 +24,16 @@ export class SpecificationsComponent implements OnInit {
   removableIndexes: any[] = [];
   isNaviOpened = false
   isSideMenuOpened = true
+  isCommnetsPanelOpened?: boolean = false;
 
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
     private router: Router
   ) {
-
+    this.utils.isCommentPanelToggled.subscribe((event: any) => {
+      this.isCommnetsPanelOpened = event;
+    })
   }
 
   ngOnInit(): void {
@@ -39,6 +42,7 @@ export class SpecificationsComponent implements OnInit {
     })
     this.utils.openDockedNavi.subscribe((data: any) => {
       this.isNaviOpened = data;
+      this.isCommnetsPanelOpened = false;
       if (data) {
         this.utils.disableSpecSubMenu();
       }
@@ -191,7 +195,7 @@ export class SpecificationsComponent implements OnInit {
           this.specData = [];
           const list = response.data;
           list.forEach((obj: any, index: any) => {
-            if (obj?.title && obj?.section) {
+            if (obj?.title && obj?.section && typeof (obj?.section) != 'string') {
               if (obj?.title == 'Technical Specifications') {
                 obj.section.push({ title: 'OpenAPI Spec', content: [], parentIndex: 4.10, contentType: 'OpenAPI', created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
               }

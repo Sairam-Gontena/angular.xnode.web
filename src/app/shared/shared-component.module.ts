@@ -33,6 +33,8 @@ import { ModalRelationComponent } from '../pages/er-modeller/modal-relation/moda
 import { SchemaComponent } from '../pages/er-modeller/schema/schema.component';
 import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.component';
 import { ExpandSpecificationComponent } from '../components/expand-specification/expand-specification.component';
+import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
+import { CommonUsecasesComponent } from '../components/common-usecases/common-usecases.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -66,7 +68,9 @@ import { ExpandSpecificationComponent } from '../components/expand-specification
                 ModalRelationComponent,
                 SchemaComponent,
                 BpmnDiagramComponent,
-                ExpandSpecificationComponent
+                ExpandSpecificationComponent,
+                CommentsPanelComponent,
+                CommonUsecasesComponent
         ],
         imports: [
                 CommonModule,
@@ -104,7 +108,9 @@ import { ExpandSpecificationComponent } from '../components/expand-specification
                 ModalRelationComponent,
                 SchemaComponent,
                 BpmnDiagramComponent,
-                ExpandSpecificationComponent
+                ExpandSpecificationComponent,
+                CommentsPanelComponent,
+                CommonUsecasesComponent
         ]
 })
 export class SharedComponentModule { }
