@@ -124,7 +124,8 @@ export class SpecificationsContentComponent implements OnInit {
             }
           })
         }
-      })
+      }
+    });
     this.utils.getMeSpecItemIndex.subscribe((event: any) => {
       if (event) {
         this.specItemIndex = event;
