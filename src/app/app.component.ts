@@ -50,7 +50,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinner.show();
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
