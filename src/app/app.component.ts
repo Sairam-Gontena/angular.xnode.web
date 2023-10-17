@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
@@ -100,7 +101,7 @@ export class AppComponent implements OnInit {
         } else {
           this.spinner.hide();
         }
-      }, 0);
+      }, 100);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
