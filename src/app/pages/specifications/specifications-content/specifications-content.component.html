@@ -3,491 +3,568 @@
         (dataFlowEmitter)="expandComponent($event)"></xnode-expand-specification>
     <div *ngIf="!specExpanded">
         <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
-            <div class="intro-grid" *ngIf="!item.content" [id]="item.title">
-                <div class="text-4xl font-semibold">{{item.parentIndex + ' ' + item.title}}</div>
-                <div class="flex align-items-center spec-status">
-                    <p class="text-sm font-medium">Published on {{item.created_on | date: 'MMM d, y'}}</p>
-                    <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                    <p class="text-sm font-medium">Updated on {{item.modified_on | date: 'MMM d, y'}}</p>
-                    <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                    <p class="text-sm font-medium">3 mins read</p>
-                </div>
-                <div class="flex mt-2">
-                    <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">
-                        #{{app_name}}
+            <div class="w-8">
+                <div class="intro-grid" [id]="item.title">
+                    <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item.title}}</div>
+                    <div class="flex align-items-center spec-status">
+                        <p class="text-sm font-medium">Published on {{item?.content[0]?.created_on | date: 'MMM d, y'}}
+                        </p>
+                        <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                        <p class="text-sm font-medium">Updated on {{item?.content[0]?.modified_on | date: 'MMM d, y'}}
+                        </p>
+                        <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                        <p class="text-sm font-medium">3 mins read</p>
                     </div>
-                </div>
-                <div class="flex mt-3 author align-items-center">
-                    <i class="pi pi-circle-fill text-3xl mr-3"></i>
-                    <div class="text-lg">
-                        By {{item.modified_by}}
-                    </div>
-                </div>
-                <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
-            </div>
-            <div [ngClass]="!item?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'"
-                *ngIf="item.content" [id]="item.title" #contentContainer>
-                <div class="flex justify-content-between flex-wrap">
-                    <div class="flex align-items-center justify-content-center">
-                        <h3 class="m-0 pb-2 text-2xl font-bold ">{{item.parentIndex+ ' '+ item.title}}</h3>
-                    </div>
-                    <div class="flex align-items-center justify-content-center">
-                        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="onClickComment(item)">
-                    </div>
-                </div>
-                <p-button (click)="onClickSeeMore(item,i)" label="See More" *ngIf="!item?.collapsed"
-                    styleClass="p-button-rounded p-button-outlined see-more-button"
-                    class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
-                <p-button (click)="onClickSeeLess(item,i)" label="See Less" *ngIf="item?.collapsed"
-                    styleClass="p-button-rounded p-button-outlined see-more-button"
-                    class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
-                <div class="w-full" *ngIf="item.contentType ==='paragraph'">
-                    <div *ngIf=" isArray(item.content); else notArray">
-                        <ul *ngFor="let subItem of item.content">
-                            <li>
-                                <p class="m-0 pb-1">
-                                    <span class="sub-title text-base font-medium">{{subItem.title}}
-                                    </span>
-                                    :
-                                    <span class="sub-content font-normal text-base" *ngIf="isObject(subItem.content)">
-                                        <span *ngFor="let element of subItem.content" class="mt-2">
-                                            <span class="sub-content font-normal text-base"
-                                                *ngFor="let pair of element | objectToArray">
-                            <li class="mt-3">
-                                <span class="sub-content font-normal text-base">
-                                    {{ pair.key }} : {{ pair.value }}
-                                </span>
-                            </li>
-                            </span>
-                            </span>
-                            </span>
-                            <!-- observed as duplicate data -->
-                            <span class="sub-content font-normal text-base"
-                                *ngIf="!isObject(subItem.content) && item.title == 'User Roles' ; else contentBlock">
-                                <span *ngFor="let element of subItem.content">
-                                    <span class="sub-content font-normal text-base"
-                                        *ngFor="let pair of element | objectToArray">
-                                        <li>
-                                            <span class="sub-content font-normal text-base">
-                                                {{subItem.content }}
-                                            </span>
-                                        </li>
-                                    </span>
-                                </span>
-                            </span>
-                            <ng-template #contentBlock>
-                                <span class="sub-content font-normal text-base">{{subItem.content }}</span>
-                            </ng-template>
-                            </p>
-                            </li>
-                        </ul>
-                    </div>
-                    <ng-template #notArray>
-                        <div class="flex content text-base font-normal">
-                            {{item.content}}
+                    <div class="flex mt-2">
+                        <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-sm font-medium tag-text-color">
+                            #{{app_name}}
                         </div>
-                    </ng-template>
-                </div>
-                <div *ngIf="item.contentType==='iframe'" class="h-auto">
-                    <div class="flex justify-content-between align-items-center">
-                        <h1>Dashboard</h1>
-                        <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="expandComponent({'dashboard':true,item})" class="expnad-icon pointer">
                     </div>
-                    <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
-                    </iframe>
-                </div>
-                <div *ngIf="item.contentType ==='table'">
-                    <div class="flex justify-content-between align-items-center">
-                        <div></div>
-                        <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="expandComponent({'table':true,item:{item:item.content,title:item.title}})"
-                            class="expnad-icon pointer">
+                    <div class="flex mt-3 author align-items-center">
+                        <i class="pi pi-circle-fill text-3xl mr-3"></i>
+                        <div class="text-lg">
+                            By {{item?.content[0]?.modified_by}}
+                        </div>
                     </div>
-                    <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
-                        <ng-template pTemplate="header" let-columns>
-                            <tr>
-                                <th *ngFor="let col of columns">
-                                    {{ col.header }}
-                                </th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-rowData let-columns="columns">
-                            <tr>
-                                <td *ngFor="let col of columns">
-                                    {{ rowData[col.field] }}
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
+                    <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                 </div>
-                <div *ngIf="item.contentType ==='list'">
-                    <span class="sub-content font-normal text-base" *ngIf="isObject(item.content); else contentBlock">
-                        <span *ngFor="let element of item.content">
-                            <ul>
-                                <span class="sub-content font-normal text-base"
-                                    *ngFor="let pair of element | objectToArray">
-                                    <li *ngIf="isObject(element) else elementblock">
-                                        <span class="text-white font-normal text-base">
-                                            {{ pair.key }} :
+                <div *ngFor="let content of item.content;let cIndex = index; " class="mt-2">
+                    <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'"
+                        [id]="content.title" #contentContainer [ngSwitch]="content.title">
+                        <div class="flex justify-content-between flex-wrap">
+                            <div class="flex align-items-center justify-content-center">
+                                <h3 class="m-0 pb-2 text-2xl font-bold ">{{(i+1) + '.' + (cIndex+1) +' '+
+                                    content.title}}</h3>
+                            </div>
+                            <div class="flex align-items-center justify-content-center">
+                                <img src="../assets/comment.svg" class="pointer" alt="comment"
+                                    (click)="onClickComment(item)">
+                            </div>
+                        </div>
+                        <p-button (click)="onClickSeeMore(item,content)" label="See More" *ngIf="!content?.collapsed"
+                            styleClass="p-button-rounded p-button-outlined see-more-button"
+                            class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
+                        <p-button (click)="onClickSeeLess(item,content)" label="See Less" *ngIf="content?.collapsed"
+                            styleClass="p-button-rounded p-button-outlined see-more-button"
+                            class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
+
+                        <div *ngSwitchCase="'Usecases'">
+                            <div class="flex col-12 justify-content-end align-items-center">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'usecases':true,content})" class="expnad-icon pointer">
+                            </div>
+                            <xnode-common-usecases></xnode-common-usecases>
+                        </div>
+                        <div *ngSwitchCase="'User Interface Design'">
+                            <div class="flex justify-content-between align-items-center">
+                                <h1>Dashboard</h1>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'dashboard':true,content})" class="expnad-icon pointer">
+                            </div>
+                            <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                            </iframe>
+                        </div>
+                        <div *ngSwitchCase="'Data Management Persistence'">
+                            <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"
+                                [item]="content"></xnode-data-model-common>
+                        </div>
+                        <div *ngSwitchCase="'Workflows'">
+                            <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)"
+                                [item]="content"></xnode-bpmn-common>
+                        </div>
+                        <div *ngSwitchCase="'Data Dictionary'">
+                            <div class="flex justify-content-end align-items-center my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle('json', item, content)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle('table', item, content)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="this.selectedContent =i;expandComponent({'table':true,item:{item:content,title:content.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===i" class="ml-3"
+                                    style="width: 25px;">
+                            </div>
+                            <div *ngIf="content.showTable; else elsejson">
+                                <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{ col.header }}
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                        <tr>
+                                            <td *ngFor="let col of columns; let i = index ">
+                                                <div *ngIf="isArray(rowData[col.field])">
+                                                    <div *ngFor="let data of rowData[col.field]">
+                                                        {{data.columnName}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <ng-template #elsejson>
+                                <pre>{{ content.content | json }}</pre>
+                            </ng-template>
+                        </div>
+                        <div *ngSwitchCase="'Data Dictionary'">
+                            <div class="flex justify-content-end align-items-center my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle('json', item, content)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle('table', item, content)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="this.selectedContent =i;expandComponent({'table':true,item:{item:content,title:content.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===i" class="ml-3"
+                                    style="width: 25px;">
+                            </div>
+                            <div *ngIf="content.showTable; else elsejson">
+                                <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{ col.header }}
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                        <tr>
+                                            <td *ngFor="let col of columns; let i = index ">
+                                                <div *ngIf="isArray(rowData[col.field])">
+                                                    <div *ngFor="let data of rowData[col.field]">
+                                                        {{data.columnName}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <ng-template #elsejson>
+                                <pre>{{ content.content | json }}</pre>
+                            </ng-template>
+                        </div>
+                        <div *ngSwitchCase="'Business Rules'">
+                            <div class="flex justify-content-end align-items-center my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle('json', item, content)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle('table', item, content)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="this.selectedContent =i;expandComponent({'table':true,item:{item:content,title:content.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===i" class="ml-3"
+                                    style="width: 25px;">
+                            </div>
+                            <div *ngIf="content.showTable; else elsejson">
+                                <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{ col.header }}
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                        <tr>
+                                            <td *ngFor="let col of columns; let i = index ">
+                                                <div *ngIf="isArray(rowData[col.field])">
+                                                    <div *ngFor="let data of rowData[col.field]">
+                                                        {{data.columnName}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <ng-template #elsejson>
+                                <pre>{{ content.content | json }}</pre>
+                            </ng-template>
+                        </div>
+                        <div *ngSwitchCase="'Functional Dependencies'">
+                            <div class="flex justify-content-end align-items-center my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle('json', item, content)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle('table', item, content)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="this.selectedContent =i;expandComponent({'table':true,item:{item:content,title:content.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===i" class="ml-3"
+                                    style="width: 25px;">
+                            </div>
+                            <div *ngIf="content.showTable; else elsejson">
+                                <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{ col.header }}
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                        <tr>
+                                            <td *ngFor="let col of columns; let i = index ">
+                                                <div *ngIf="isArray(rowData[col.field])">
+                                                    <div *ngFor="let data of rowData[col.field]">
+                                                        {{data.columnName}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <ng-template #elsejson>
+                                <pre>{{ content.content | json }}</pre>
+                            </ng-template>
+                        </div>
+                        <div *ngSwitchCase="'User Interfaces'">
+                            <div class="flex justify-content-end align-items-center my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle('json', item, content)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle('table', item, content)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="this.selectedContent =i;expandComponent({'table':true,item:{item:content,title:content.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===i" class="ml-3"
+                                    style="width: 25px;">
+                            </div>
+                            <div *ngIf="content.showTable; else elsejson">
+                                <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{ col.header }}
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                        <tr>
+                                            <td *ngFor="let col of columns; let i = index ">
+                                                <div *ngIf="isArray(rowData[col.field])">
+                                                    <div *ngFor="let data of rowData[col.field]">
+                                                        {{data.columnName}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <ng-template #elsejson>
+                                <pre>{{ content.content | json }}</pre>
+                            </ng-template>
+                        </div>
+                        <div *ngSwitchCase="'Annexures'">
+                            <div class="flex justify-content-end align-items-center my-2 mr-2">
+                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                                    (click)="checkedToggle('json', item, content)"></i>
+                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                                    (click)="checkedToggle('table', item, content)"></i>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="this.selectedContent =i;expandComponent({'table':true,item:{item:content,title:content.title}})"
+                                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===i" class="ml-3"
+                                    style="width: 25px;">
+                            </div>
+                            <div *ngIf="content.showTable; else elsejson">
+                                <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                    <ng-template pTemplate="header" let-columns>
+                                        <tr>
+                                            <th *ngFor="let col of columns">
+                                                {{ col.header }}
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                        <tr>
+                                            <td *ngFor="let col of columns; let i = index ">
+                                                <div *ngIf="isArray(rowData[col.field])">
+                                                    <div *ngFor="let data of rowData[col.field]">
+                                                        {{data.columnName}}
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                            <ng-template #elsejson>
+                                <pre>{{ content.content | json }}</pre>
+                            </ng-template>
+                        </div>
+                        <div *ngSwitchCase="'Historical Data Load'">
+                            <div class="flex justify-content-end mb-2">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{item:content.content,title:content.title}})"
+                                    class="expnad-icon pointer">
+                            </div>
+                            <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <div class="w-full" *ngSwitchCase="'Glossary'">
+                            <div class="flex justify-content-end mb-2">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{item:content.content,title:content.title}})"
+                                    class="expnad-icon pointer">
+                            </div>
+                            <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <div *ngSwitchCase="'Version Control'">
+                            <div class="flex justify-content-end mb-2">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{item:content.content,title:content.title}})"
+                                    class="expnad-icon pointer">
+                            </div>
+                            <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <div *ngSwitchCase="'Error Handling'">
+                            <div class="flex justify-content-end mb-2">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{item:content.content,title:content.title}})"
+                                    class="expnad-icon pointer">
+                            </div>
+                            <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <div *ngSwitchCase="'Stakeholder Approvals'">
+                            <div class="flex justify-content-end mb-2">
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'table':true,item:{item:content.content,title:content.title}})"
+                                    class="expnad-icon pointer">
+                            </div>
+                            <p-table [columns]="setColumnsToTheTable(content.content[0])" [value]="content.content">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{ col.header }}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                    <tr>
+                                        <td *ngFor="let col of columns; let i = index ">
+                                            <div *ngIf="isArray(rowData[col.field])">
+                                                <div *ngFor="let data of rowData[col.field]">
+                                                    {{data.columnName}}
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                        <div *ngSwitchCase="'Reporting Requirements'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Usability'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Reliability'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Availability'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Scalability'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Maintainability'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Portability'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+                        <div *ngSwitchCase="'Integration Points'">
+                            <ul *ngFor="let content of content.content">
+                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                            </ul>
+                        </div>
+
+                        <div *ngSwitchCase="'QA Test Cases'">
+                            <div *ngFor="let subItem of content.content">
+                                <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
+                                    <p class="m-0 pb-2"><span class="sub-title text-base font-medium">{{subItem.title}}
                                         </span>
+                                        : <span class="sub-content font-normal text-base">{{subItem.content}}</span>
+                                    </p>
+                                </div>
+                                <ng-template #sampleTestCases>
+                                    <h4 class="mb-2">{{subItem.title}}</h4>
+                                    <div *ngFor="let testCase of subItem.content; let lastItem = last">
+                                        <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
+                                            <span class="sub-title text-base font-medium">{{key}}</span> :
+                                            <span class="sub-content font-normal text-base">{{testCase[key]}}</span>
+                                        </p>
+                                        <ng-container *ngIf="!lastItem">
+                                            <hr class="mt-2 mb-2">
+                                        </ng-container>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'OpenAPI Spec'">
+                            <div class="flex col-12 justify-content-between align-items-center">
+                                <h4 class="m-0 ">Swagger API</h4>
+                                <img src="./assets/spec-minimize.svg" alt="container"
+                                    (click)="expandComponent({'swagger':true,content})" class="expnad-icon pointer">
+                            </div>
+                            <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
+                        </div>
+                        <div class="w-full" *ngSwitchDefault>
+                            <div *ngIf=" isArray(content.content); else notArray">
+                                <ul *ngFor="let subItem of content.content">
+                                    <li>
+                                        <p class="m-0 pb-1">
+                                            <span class="sub-title text-base font-medium">{{subItem.title}}
+                                            </span>
+                                            :
+                                            <span class="sub-content font-normal text-base"
+                                                *ngIf="isObject(subItem.content)">
+                                                <span *ngFor="let element of subItem.content" class="mt-2">
+                                                    <span class="sub-content font-normal text-base"
+                                                        *ngFor="let pair of element | objectToArray">
+                                    <li class="mt-3">
                                         <span class="sub-content font-normal text-base">
-                                            {{ pair.value }}
+                                            {{ pair.key }} : {{ pair.value }}
                                         </span>
                                     </li>
-                                    <ng-template #elementblock>
-                                        <span class="sub-content font-normal text-base">{{element}}</span>
+                                    </span>
+                                    </span>
+                                    </span>
+                                    <!-- observed as duplicate data -->
+                                    <span class="sub-content font-normal text-base"
+                                        *ngIf="!isObject(subItem.content) && item.title == 'User Roles' ; else contentBlock">
+                                        <span *ngFor="let element of subItem.content">
+                                            <span class="sub-content font-normal text-base"
+                                                *ngFor="let pair of element | objectToArray">
+                                                <li>
+                                                    <span class="sub-content font-normal text-base">
+                                                        {{subItem.content }}
+                                                    </span>
+                                                </li>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <ng-template #contentBlock>
+                                        <span class="sub-content font-normal text-base">{{subItem.content }}</span>
                                     </ng-template>
-                                </span>
-                            </ul>
-                        </span>
-                    </span>
-                    <ng-template #contentBlock>
-                        <ul *ngFor="let subItem of item.content">
-                            <li>
-                                <p class="m-0 pb-1"> <span class="sub-content font-normal text-base">{{subItem}}</span>
-                                </p>
-                            </li>
-                        </ul>
-                    </ng-template>
-                </div>
-                <div *ngIf="item.contentType ==='header-list'">
-                    <ul *ngFor="let subItem of item.content">
-                        <li>
-                            <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
-                                : <span class="sub-content font-normal text-base">{{subItem.content.Description}}</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="item.contentType ==='data-model'" class="h-auto">
-                    <xnode-data-model-common (dataFlowEmitter)="expandComponent($event)"
-                        [item]="item"></xnode-data-model-common>
-                </div>
-                <div *ngIf="item.contentType ==='x-flows'" class="h-auto">
-                    <xnode-bpmn-common (dataFlowEmitter)="expandComponent($event)" [item]="item"></xnode-bpmn-common>
-                </div>
-                <!-- <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
-                    <pre>{{ item.content | json }}</pre>
-                </div> -->
-                <div *ngIf="item.contentType ==='data-dictionary'">
-                    <h4 class="m-0 pb-3">{{item.title}}</h4>
-                    <ul *ngFor="let subItem of item.content">
-                        <li>
-                            <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
-                                : <span class="sub-content font-normal text-base">{{subItem.content.Description}}</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="item.contentType ==='OpenAPI'">
-                    <div class="flex col-12 justify-content-between align-items-center">
-                        <h4 class="m-0 ">Swagger API</h4>
-                        <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="expandComponent({'swagger':true,item})" class="expnad-icon pointer">
-                    </div>
-                    <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
-                </div>
-                <!-- donn't remove this for future purpose -->
-                <!-- <div *ngIf="item.contentType ==='table'">
-                    <p-table [columns]="setColumnsToTheTable(item.content)" [value]="item.content">
-                        <ng-template pTemplate="header" let-columns>
-                            <tr>
-                                <th *ngFor="let col of columns">
-                                    {{ col.header }}
-                                </th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-rowData let-columns="columns">
-                            <tr>
-                                <td *ngFor="let col of columns">
-                                    {{ rowData[col.field] }}
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </div> -->
-                <div
-                    *ngIf="item.contentType ==='list' && item.title !== 'Feature Descriptions' && item.title !== 'Usecases' ">
-                    <ul *ngFor="let subItem of item.content">
-                        <li>
-                            <p class="m-0 pb-1"> <span class="sub-content font-normal text-base">{{subItem}}</span></p>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="item.title == 'Usecases' ">
-                    <div class="flex col-12 justify-content-end align-items-center">
-                        <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="expandComponent({'usecases':true,item})" class="expnad-icon pointer">
-                    </div>
-                    <xnode-common-usecases></xnode-common-usecases>
-                </div>
-                <div *ngIf="item.contentType ==='header-list'">
-                    <ul *ngFor="let subItem of item.content">
-                        <li>
-                            <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
-                                : <span class="sub-content font-normal text-base">{{subItem.content.Description}}</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="item.contentType ==='json'" class="h-auto overflow-auto">
-                    <div *ngIf="item?.content[0]?.title ==='tables'; else elsejsonBlock">
-                        <div class="flex justify-content-end align-items-center my-2 mr-2">
-                            <i class="pi pi-code pointer mr-2" pTooltip="Json view"
-                                (click)="this.selectedSectionIndex =i; checkedToggle(false)"></i>
-                            <i class="pi pi-table pointer ml-2" pTooltip="Table view"
-                                (click)="this.selectedSectionIndex =i;checkedToggle(true)"></i>
-                            <img src="./assets/spec-minimize.svg" alt="container"
-                                (click)="this.selectedSectionIndex =i;expandComponent({'table':true,item:{item:item?.content[0]?.content,title:item.title}})"
-                                class="expnad-icon pointer" *ngIf="checked && selectedSectionIndex ===i" class="ml-3"
-                                style="width: 25px;">
-                        </div>
-                        <div *ngIf="checked && selectedSectionIndex === i; else elsejson">
-                            <div class="flex flex-row col-12 justify-content-between ">
-                                <div></div>
-
+                                    </p>
+                                    </li>
+                                </ul>
                             </div>
-                            <p-table [columns]="setColumnsToTheTable(item?.content[0]?.content)"
-                                [value]="item?.content[0]?.content">
-                                <ng-template pTemplate="header" let-columns>
-                                    <tr>
-                                        <th *ngFor="let col of columns">
-                                            {{ col.header }}
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-rowData let-columns="columns">
-                                    <tr>
-                                        <td *ngFor="let col of columns; let i = index ">
-                                            <div *ngIf="isArray(rowData[col.field])">
-                                                <div *ngFor="let data of rowData[col.field]">
-                                                    {{data.columnName}}
-                                                </div>
-                                            </div>
-                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                            <!-- <p-table *ngFor="let table of item?.content[0]?.content"
-                                [columns]="setColumnsToTheTable(table.columns)"
-                                [value]="setColumnsToTheTable(table.columns)">
-                                <ng-template pTemplate="caption">
-                                    <h4>{{ table.tableName | camelToTitle }}</h4>
-                                </ng-template>
-                                <ng-template pTemplate="header" let-columns>
-                                    <tr>
-                                        <th *ngFor="let col of columns">
-                                            {{ col.header | camelToTitle }}
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-columns="columns">
-                                    <tr>
-                                        <td *ngFor="let col of columns">
-                                            <span
-                                                *ngIf="isObject(col.value);else field">{{returnValues(col.value)}}</span>
-                                            <ng-template #field>
-                                                {{ col.value }}
-                                            </ng-template>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table> -->
-                        </div>
-                        <ng-template #elsejson>
-                            <pre>{{ item.content | json }}</pre>
-                        </ng-template>
-                    </div>
-                    <ng-template #elsejsonBlock>
-                        <div *ngIf="checked && selectedSectionIndex === i; else jsonBlock">
-                            <div class="flex justify-content-end my-2 mr-2 align-items-center">
-                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
-                                    (click)="this.selectedSectionIndex =i;checkedToggle(false)"></i>
-                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
-                                    (click)="this.selectedSectionIndex =i;checkedToggle(true)"></i>
-                                <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="this.selectedSectionIndex =i;expandComponent({'dataQualityData':true,item:{title:item.title,item:dataQualityData}})"
-                                    class="expnad-icon pointer ml-3"
-                                    *ngIf="checked && item?.title=='Data Quality Checks'" style="width: 25px;">
-                                <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="this.selectedSectionIndex =i;expandComponent({'userInterfaces':true,item:{title:item.title,item:item.content}})"
-                                    class="expnad-icon pointer ml-3" *ngIf="checked && item?.title=='User Interfaces'"
-                                    style="width: 25px;">
-                                <img src="./assets/spec-minimize.svg" alt="container"
-                                    (click)="this.selectedSectionIndex =i;expandComponent({'table':true,item:{title:item.title,item:item.content}})"
-                                    class="expnad-icon pointer ml-3"
-                                    *ngIf="checked && item?.title!='Data Quality Checks' && item?.title != 'User Interfaces'"
-                                    style="width: 25px;">
-                            </div>
-                            <span *ngIf="item?.title=='Data Quality Checks'">
-                                <div *ngFor="let subitem of dataQualityData">
-                                    <div class="flex flex-row col-12 justify-content-between ">
-                                        <div></div>
-                                    </div>
-                                    <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2"
-                                        [value]="subitem.content">
-                                        <ng-template pTemplate="caption">
-                                            <h4>{{ subitem?.header | camelToTitle }}</h4>
-                                        </ng-template>
-                                        <ng-template pTemplate="header" let-columns>
-                                            <tr>
-                                                <th *ngFor="let col of subitem.title">
-                                                    {{ col }}
-                                                </th>
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-rowData let-columns="columns">
-                                            <tr>
-                                                <td *ngFor="let col of subitem.content">
-                                                    {{ rowData }}
-                                                </td>
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
+                            <ng-template #notArray>
+                                <div class="flex content text-base font-normal">
+                                    {{content.content}}
                                 </div>
-                            </span>
-                            <p-table *ngIf="item.title == 'User Interfaces'" [value]="bodyData">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th *ngFor="let header of userInterfaceheaders">{{ header| camelToTitle }}</th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-rowData>
-                                    <tr>
-                                        <td *ngFor="let header of userInterfaceheaders">{{ rowData[header] }}</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                            <p-table *ngIf="item.title == 'Business Rules' || item.title=='Functional Dependencies'"
-                                [columns]="setColumnsToTheTable(item?.content)" [value]="item?.content">
-                                <ng-template pTemplate="header" let-content>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-content>
-                                    <tr>
-                                        <td>{{ content.title }}</td>
-                                        <td>{{ content.content }}</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
+                            </ng-template>
                         </div>
-                        <ng-template #jsonBlock>
-                            <div class="flex justify-content-end my-2 mr-2">
-                                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
-                                    (click)="this.selectedSectionIndex = i; checkedToggle(false)"></i>
-                                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
-                                    (click)="this.selectedSectionIndex = i;checkedToggle(true)"></i>
-                            </div>
-                            <pre>{{ item.content | json }}</pre>
-                        </ng-template>
-                    </ng-template>
-                </div>
-                <div *ngIf="item.contentType ==='data-dictionary'">
-                    <h4 class="m-0 pb-3">{{item.title}}</h4>
-                    <ul *ngFor="let subItem of item.content">
-                        <li>
-                            <p class="m-0 pb-1"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
-                                : <span class="sub-content font-normal text-base">{{subItem.content.Description}}</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="item.contentType ==='data-quility-checks'">
-                    <div class="flex justify-content-end align-items-center my-2 mr-2">
-                        <i class="pi pi-code pointer mr-2" pTooltip="Json view"
-                            (click)="this.selectedSectionIndex =i;checkedToggle(false)"></i>
-                        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
-                            (click)="this.selectedSectionIndex = i;checkedToggle(true)"></i>
-                        <img src="./assets/spec-minimize.svg" alt="container"
-                            (click)="this.selectedSectionIndex =i;expandComponent({'dataQuilityChecksTable':true,item:{item:item,title:item.title}})"
-                            class="expnad-icon pointer ml-3" *ngIf="checked && selectedSectionIndex === i"
-                            style="width: 25px;">
-                    </div>
-                    <div *ngIf="checked && selectedSectionIndex === i; else elsejson">
-                        <div *ngFor="let subItem of item.content">
-                            <h4 class="m-0 pt-3 pb-2">{{subItem.title}}</h4>
-                            <p-table [columns]="setColumnsToTheTable(subItem?.content)" [value]="subItem?.content">
-                                <ng-template pTemplate="header" let-columns>
-                                    <tr>
-                                        <th *ngFor="let col of columns">
-                                            {{ col.header }}
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-rowData let-columns="columns">
-                                    <tr>
-                                        <td *ngFor="let col of columns; let i = index ">
-                                            <div *ngIf="isArray(rowData[col.field])">
-                                                <div *ngFor="let data of rowData[col.field]">
-                                                    {{data.columnName}}
-                                                </div>
-                                            </div>
-                                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
+                        <div class="gradientback" *ngIf="!content?.collapsed">
                         </div>
-                        <!-- <p-table *ngFor="let table of item?.content[0]?.content"
-                            [columns]="setColumnsToTheTable(table.columns)"
-                            [value]="setColumnsToTheTable(table.columns)">
-                            <ng-template pTemplate="caption">
-                                <h4>{{ table.tableName | camelToTitle }}</h4>
-                            </ng-template>
-                            <ng-template pTemplate="header" let-columns>
-                                <tr>
-                                    <th *ngFor="let col of columns">
-                                        {{ col.header | camelToTitle }}
-                                    </th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-columns="columns">
-                                <tr>
-                                    <td *ngFor="let col of columns">
-                                        <span
-                                            *ngIf="isObject(col.value);else field">{{returnValues(col.value)}}</span>
-                                        <ng-template #field>
-                                            {{ col.value }}
-                                        </ng-template>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table> -->
+                        <div class="collapse" *ngIf="content?.collapsed">
+                        </div>
                     </div>
-                    <ng-template #elsejson>
-                        <pre>{{ item.content | json }}</pre>
-                    </ng-template>
 
-                </div>
-                <div *ngIf="item.contentType ==='qa-test-cases'">
-                    <div *ngFor="let subItem of item.content">
-                        <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
-                            <p class="m-0 pb-2"><span class="sub-title text-base font-medium">{{subItem.title}} </span>
-                                : <span class="sub-content font-normal text-base">{{subItem.content}}</span>
-                            </p>
-                        </div>
-                        <ng-template #sampleTestCases>
-                            <h4 class="mb-2">{{subItem.title}}</h4>
-                            <div *ngFor="let testCase of subItem.content; let lastItem = last">
-                                <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
-                                    <span class="sub-title text-base font-medium">{{key}}</span> :
-                                    <span class="sub-content font-normal text-base">{{testCase[key]}}</span>
-                                </p>
-                                <ng-container *ngIf="!lastItem">
-                                    <hr class="mt-2 mb-2">
-                                </ng-container>
-                            </div>
-                        </ng-template>
-                    </div>
-                </div>
-                <div class="gradientback" *ngIf="!item?.collapsed">
-                </div>
-                <div class="collapse" *ngIf="item?.collapsed">
                 </div>
             </div>
         </div>
