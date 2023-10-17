@@ -76,6 +76,20 @@ export class MyProductsComponent implements OnInit {
 
   }
 
+  getMeMyAvatar(userAvatar?: any) {
+    let parts = userAvatar.split(' ');
+    const initials = parts.map((part: any) => {
+      if (part == 'Created' || part == 'by') {
+        return;
+      } else if (part == 'you') {
+        return this.currentUser?.first_name.charAt(0).toUpperCase() + this.currentUser?.last_name.charAt(0).toUpperCase()
+      } else {
+        return part[0].toUpperCase()
+      }
+    }).join('');
+    return initials;
+  }
+
   getMeTotalOnboardedApps(user: any): void {
     this.apiService.get("/total_apps_onboarded/" + user?.email).then((response: any) => {
       if (response?.status === 200) {
