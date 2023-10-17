@@ -20,7 +20,7 @@ export class SpecificationsContentComponent implements OnInit {
   selectedSpecItem: any;
   specItemList: any = [];
   selectedSpecItemListTitles: any = [];
-  selectedSectionIndex: any;
+  selectedContent: any;
   specItemIndex: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
@@ -111,8 +111,18 @@ export class SpecificationsContentComponent implements OnInit {
     })
   }
 
-  checkedToggle(bool: boolean) {
-    this.checked = bool;
+  checkedToggle(type: any, item: any, content: any) {
+
+    this.specItemList.forEach((obj: any) => {
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id && type === 'table')
+            conObj.showTable = true;
+          else
+            conObj.showTable = false;
+        })
+      }
+    })
   }
 
   isObject(value: any): boolean {
@@ -146,7 +156,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   onClickSeeMore(item: any, content: any): void {
-    // this.selectedSectionIndex = i;
+    this.selectedContent = content;
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
       if (obj.id === item.id) {
@@ -158,7 +168,7 @@ export class SpecificationsContentComponent implements OnInit {
     })
   }
   onClickSeeLess(item: any, content: any): void {
-    // this.selectedSectionIndex = i;
+    this.selectedContent = content;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
       if (obj.id === item.id) {
@@ -192,17 +202,9 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   setColumnsToTheTable(data: any) {
-    Object.entries(data.map((item: any) => {
-      if (typeof (item) == 'string') { return }
-    }))
     let cols;
-    if (data[0]) {
-      cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
-      return cols
-    } else {
-      cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
-      return cols
-    }
+    cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+    return cols
   }
 
   async fetchOpenAPISpec() {
