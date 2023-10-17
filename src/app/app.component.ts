@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
         } else {
           this.spinner.hide();
         }
-      }, 0);
+      }, 100);
     });
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
@@ -160,6 +160,7 @@ export class AppComponent implements OnInit {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
         this.utilsService.disableDockedNavi()
+        this.refreshCurrentRoute();
       }
       if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
@@ -171,6 +172,9 @@ export class AppComponent implements OnInit {
         this.content = event.data.data;
         this.showProductStatusPopup = true;
         this.utilsService.toggleProductAlertPopup(true);
+      }
+      if (event.data.message === 'change-app') {
+        this.utilsService.saveProductId(event.data.id);
       }
     });
 
@@ -199,6 +203,14 @@ export class AppComponent implements OnInit {
           }
         });
       }
+    });
+  }
+
+  refreshCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      localStorage.setItem('trigger', 'graph');
+      this.router.navigate([currentUrl]);
     });
   }
 
