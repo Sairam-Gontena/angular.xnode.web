@@ -10,6 +10,8 @@ import { SpecificationsContentComponent } from 'src/app/pages/specifications/spe
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
 import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
+import { DataDictionaryComponent } from './data-dictionary/data-dictionary.component';
+import { UserPersonaComponent } from './user-persona/user-persona.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
+    DataDictionaryComponent,
+    UserPersonaComponent,
     CamelToTitlePipe,
     ObjectToArrayPipe
   ],

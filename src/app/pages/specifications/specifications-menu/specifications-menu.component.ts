@@ -15,7 +15,6 @@ export class SpecificationsMenuComponent implements OnInit {
   selectedSpec: any;
   selectedSection: any;
   activeIndex: any = 0;
-  menuList: any;
   selectedSecIndex: any;
   searchText: any;
   private textInputSubject = new Subject<string>();
@@ -31,14 +30,6 @@ export class SpecificationsMenuComponent implements OnInit {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isOpen = data;
     })
-    this.utils.passSelectedSpecIndex(0);
-    let list = this.specData;
-    list.forEach((element: any) => {
-      if (element.section) {
-        element.section.splice(0, 1);
-      }
-    });
-    this.menuList = [...list]
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
         this.text.emit(this.searchText);
@@ -51,7 +42,6 @@ export class SpecificationsMenuComponent implements OnInit {
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
-    this.utils.passSelectedSpecIndex(event.index);
   }
 
   onClickSection(event: any, i: any) {

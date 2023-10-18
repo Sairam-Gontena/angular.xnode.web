@@ -46,8 +46,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private notifyApi: NotifyApiService
   ) {
     this.utilsService.getMeProductId.subscribe((event: any) => {
-      if (event)
+      if (event) {
         this.selectedTemplate = event;
+        this.storeProductData(event)
+      }
     })
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -105,6 +107,18 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
     }
   };
+
+  storeProductData(id: string) {
+    const product = this.templates?.filter((obj: any) => { return obj.id === id })[0];
+    if (product) {
+      localStorage.setItem('record_id', product.id);
+      localStorage.setItem('app_name', product.title);
+      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
+      localStorage.setItem('product', JSON.stringify(product));
+      this.selectedTemplate = product.id;
+      this.product_url = product.product_url;
+    }
+  }
 
   openExternalLink(productUrl: string | undefined) {
     window.open(productUrl, '_blank');
