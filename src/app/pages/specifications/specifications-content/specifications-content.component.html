@@ -266,6 +266,11 @@
                                 </ng-template>
                             </p-table>
                         </div>
+                        <div *ngSwitchCase="'User Personas'">
+                            <div *ngFor="let persona of content.content" class="pb-3">
+                                <xnode-user-persona [content]="persona"></xnode-user-persona>
+                            </div>
+                        </div>
                         <div class="w-full" *ngSwitchCase="'Glossary'">
                             <div class="flex justify-content-end mb-2">
                                 <img src="./assets/spec-minimize.svg" alt="container"
@@ -453,7 +458,7 @@
                             <div *ngIf=" isArray(content.content); else notArray">
                                 <ul *ngFor="let subItem of content.content">
                                     <li>
-                                        <p class="m-0 pb-1">
+                                        <p class="m-0 pb-1 line-height-3">
                                             <span class="sub-title text-base font-medium">{{subItem.title}}
                                             </span>
                                             :
@@ -462,7 +467,7 @@
                                                 <span *ngFor="let element of subItem.content" class="mt-2">
                                                     <span class="sub-content font-normal text-base"
                                                         *ngFor="let pair of element | objectToArray">
-                                    <li class="mt-3">
+                                    <li class="mt-3 line-height-3">
                                         <span class="sub-content font-normal text-base">
                                             {{ pair.key }} : {{ pair.value }}
                                         </span>
