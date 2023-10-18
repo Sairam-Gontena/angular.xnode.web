@@ -87,6 +87,11 @@ export class NaviComponent implements OnInit {
             const newUrl = this.xnodeAppUrl + '#/dashboard';
             window.location.href = newUrl;
           }
+          if (event.data.message === 'help-center') {
+            //   this.router.navigate(['/help-center']);
+            window.location.href = this.xnodeAppUrl + '#/help-center';
+
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
