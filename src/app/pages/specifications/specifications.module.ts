@@ -12,6 +12,7 @@ import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
 import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { DataDictionaryComponent } from './data-dictionary/data-dictionary.component';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
+import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { UserPersonaComponent } from './user-persona/user-persona.component';
     SpecificationsContentComponent,
     DataDictionaryComponent,
     UserPersonaComponent,
+    SpecGenPopupComponent,
     CamelToTitlePipe,
     ObjectToArrayPipe
   ],

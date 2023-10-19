@@ -43,6 +43,10 @@ export class TemplateBuilderComponent implements OnInit {
 
   ngOnInit() {
     const product = localStorage.getItem('product');
+    let productDetails;
+    if (product) {
+      productDetails = JSON.parse(product)
+    }
     if (product) {
       this.product = JSON.parse(product);
       this.product_id = JSON.parse(product).id;
@@ -51,7 +55,8 @@ export class TemplateBuilderComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
     }
     if (this.product_id) {
-      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
+      let productEmail = this.currentUser?.email == productDetails?.email ? this.currentUser?.email : productDetails?.email;
+      this.rawUrl = environment.designStudioAppUrl + "?email=" + productEmail + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
       this.makeTrustedUrl();
     } else {
       this.product_id = localStorage.getItem('record_id');
@@ -60,7 +65,7 @@ export class TemplateBuilderComponent implements OnInit {
     }
   }
   makeTrustedUrl(): void {
-    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);;
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);
     this.loadIframeUrl();
   }
 

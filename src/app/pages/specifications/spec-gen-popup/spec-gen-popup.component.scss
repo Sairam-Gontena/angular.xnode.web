@@ -1,0 +1,47 @@
+:host::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #ccc;
+}
+
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
+:host::ng-deep .p-dropdown,
+:host::ng-deep .p-inputtext,
+:host::ng-deep .p-dialog .p-dialog-content,
+:host::ng-deep .p-dialog .p-dialog-header,
+:host::ng-deep .p-dialog .p-dialog-footer {
+    background: #23222B;
+    color: #fff;
+}
+
+:host::ng-deep .p-inputtext {
+    border: 0 !important
+}
+
+:host::ng-deep .p-dropdown .p-dropdown-label.p-placeholder,
+:host::ng-deep .p-input-icon-right>.p-inputtext {
+    padding: 2px 5px;
+}
+
+:host::ng-deep .p-dialog .p-dialog-content {
+    padding: 20px 40px;
+}
+
+:host::ng-deep .p-chip .p-chip-text {
+    margin: 0;
+    font-size: 14px;
+}
+
+.feedback-list {
+    border-right: 1px solid #ccc;
+}
+
+:host::ng-deep.cancel-button .p-button {
+    color: #ffffff;
+    background: #2E2D36;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #2E2D36;
+}

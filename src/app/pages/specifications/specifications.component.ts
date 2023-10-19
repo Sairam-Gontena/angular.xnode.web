@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -20,15 +21,20 @@ export class SpecificationsComponent implements OnInit {
   showSpecGenaretePopup: any;
   filteredSpecData: any;
   foundObjects: any[] = [];
-  isNaviOpened = false
-  isSideMenuOpened = true
+  isNaviOpened = false;
+  product: any;
+  isSideMenuOpened = true;
   isCommnetsPanelOpened?: boolean = false;
+  isTheCurrentUserOwner: boolean = false;
+  isTheSpecGenerated?: boolean;
+  consversationList: any;
 
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private auditUtil: AuditutilsService
   ) {
     this.utils.isCommentPanelToggled.subscribe((event: any) => {
       this.isCommnetsPanelOpened = event;
@@ -46,10 +52,13 @@ export class SpecificationsComponent implements OnInit {
         this.utils.disableSpecSubMenu();
       }
     })
-    let user = localStorage.getItem('currentUser');
     this.getMeSpecList();
+    let user = localStorage.getItem('currentUser');
     if (user)
-      this.currentUser = JSON.parse(user)
+      this.currentUser = JSON.parse(user);
+    let product = localStorage.getItem('product');
+    if (product)
+      this.product = JSON.parse(product);
   }
 
   searchText(text: any) {
@@ -158,32 +167,22 @@ export class SpecificationsComponent implements OnInit {
     this.utils.loadSpinner(true);
     this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
       .then(response => {
-        if (response?.status === 200 && !response.data.detail) {
-          const list = response.data.content;
-          console.log('list', list);
-
-          list.forEach((obj: any, index: any) => {
-            if (obj?.title && obj?.content && typeof (obj?.content) != 'object') {
-              // if (obj?.title == 'Technical Specifications') {
-              //   obj.section.push({ title: 'OpenAPI Spec', content: [], parentIndex: 4.10, contentType: 'OpenAPI', created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
-              // }
-              // obj.section.unshift({ title: obj.title, created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
-              obj.content.forEach((element: any, sIndex: any) => {
-                element.parentIndex = (index + 1).toString() + "." + (sIndex).toString()
-              });
-            }
-          })
-          this.specData = list;
-          // this.specData.pop();
-          // this.specDataCopy = this.specData;
-          this.utils.passSelectedSpecItem(list);
+        if (response.data && Array.isArray(response.data?.content)) {
+          this.isTheSpecGenerated = true;
+          this.handleData(response);
         } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data.detail });
-          this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
-          this.showSpecGenaretePopup = true;
+          this.isTheSpecGenerated = false;
+          if (this.currentUser.email === this.product.email) {
+            this.showSpecGenaretePopup = true;
+            this.isTheCurrentUserOwner = true;
+            this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
+          } else {
+            this.showSpecGenaretePopup = true;
+            this.isTheCurrentUserOwner = false;
+            this.productStatusPopupContent = 'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
+          }
+          this.utils.loadSpinner(false);
         }
-        this.utils.loadSpinner(false);
-
       }).catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
@@ -192,6 +191,99 @@ export class SpecificationsComponent implements OnInit {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([currentUrl]);
+    });
+  }
+
+  handleData(response: any): void {
+    if (response?.status === 200 && !response.data.detail) {
+      const list = response.data.content;
+      list.forEach((obj: any, index: any) => {
+        if (obj?.title && obj?.content && typeof (obj?.content) != 'object') {
+          obj.content.forEach((element: any, sIndex: any) => {
+            element.parentIndex = (index + 1).toString() + "." + (sIndex).toString()
+          });
+        }
+      })
+      this.specData = list;
+      this.utils.passSelectedSpecItem(list);
+    } else {
+      this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
+      this.showSpecGenaretePopup = true;
+    }
+    this.utils.loadSpinner(false);
+  }
+
+  checkUserEmail(): void {
+    if (this.currentUser.email === this.product.email) {
+      this.showSpecGenaretePopup = true;
+      this.isTheCurrentUserOwner = true;
+    } else {
+      this.showSpecGenaretePopup = true;
+      this.isTheCurrentUserOwner = false;
+      this.productStatusPopupContent = 'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
+    }
+  }
+
+  generateSpec(): void {
+    this.getPreviousCoversation();
+  }
+
+  getPreviousCoversation(): void {
+    this.utils.loadSpinner(true);
+    this.apiService.get('/get_conversation/' + this.product.email + '/' + this.product.id).then((res: any) => {
+      if (res.status === 200 && res.data) {
+        this.consversationList = res.data?.conversation_history;
+        this.generate();
+      } else {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+      }
+    }).catch((err: any) => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+    })
+  }
+
+  generate() {
+    const body = {
+      email: this?.product.email,
+      conversation_history: this.consversationList,
+      product_id: this.product.id
+    }
+    let detail = "Generating spec for this app process is started.";
+    this.showSpecGenaretePopup = false;
+    this.apiService.postApi(body, 'specs/generate').then((response: any) => {
+      if (response) {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
+        this.auditUtil.post("GENERATE_SPEC", 1, 'SUCCESS', 'user-audit');
+      } else {
+        let user_audit_body = {
+          'method': 'POST',
+          'url': response?.request?.responseURL,
+          'payload': body
+        }
+        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
+        this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
+      }
+    }).catch(error => {
+      let user_audit_body = {
+        'method': 'POST',
+        'url': error?.request?.responseURL,
+        'payload': body
+      }
+      this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
+      this.utils.loadSpinner(false)
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
     });
   }
 
