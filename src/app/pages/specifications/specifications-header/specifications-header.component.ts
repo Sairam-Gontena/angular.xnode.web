@@ -10,7 +10,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
-
+  @Output() generateSpec = new EventEmitter<any>();
   currentUser: any;
   templates: any;
   selectedTemplate: any;
@@ -100,7 +100,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   openPopup(content: any) {
     if (this.product?.id) {
-      this.getConversationHistory();
+      this.generateSpec.emit()
     }
   }
 
