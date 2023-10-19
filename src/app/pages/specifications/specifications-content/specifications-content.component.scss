@@ -69,8 +69,11 @@ pre {
     overflow: auto;
 }
 
-.gradientback {
+:host ::ng-deep .p-datatable>.p-datatable-wrapper {
+    border-radius: 6px;
+}
 
+.gradientback {
     position: absolute;
     bottom: 0px;
     left: 0px;
