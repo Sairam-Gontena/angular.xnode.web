@@ -22,6 +22,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   productId: any
   showProductStatusPopup = false;
   data: any;
+  productDetails: any
 
   constructor(private router: Router, private utils: UtilsService, private apiService: ApiService) {
   }
@@ -38,7 +39,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.productId = localStorage.getItem('record_id')
     if (product) {
       this.product = JSON.parse(product);
-
+      this.productDetails = JSON.parse(product);
     }
     if (metaData) {
       this.templates = JSON.parse(metaData);
@@ -75,7 +76,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.EnableSpecSubMenu()
   }
   getConversationHistory() {
-    this.apiService.get('/get_conversation/' + this.currentUser.email + '/' + this.product.id).then((res: any) => {
+    let productEmail = this.productDetails.email == this.currentUser.email ? this.currentUser.email : this.productDetails.email
+    this.apiService.get('/get_conversation/' + productEmail + '/' + this.product.id).then((res: any) => {
       if (res.status === 200 && res.data) {
         this.getPopupInfo(res.data?.conversation_history);
         this.utils.loadSpinner(false);

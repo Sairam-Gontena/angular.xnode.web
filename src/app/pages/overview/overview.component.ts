@@ -36,6 +36,7 @@ export class OverViewComponent {
   product_id: any;
   username: any;
   productId: any;
+  productDetails: any;
 
   constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -43,13 +44,21 @@ export class OverViewComponent {
 
   ngOnInit(): void {
     const product = localStorage.getItem('product');
+    if (product) {
+      this.productDetails = JSON.parse(product);
+    }
     this.productId = localStorage.getItem('record_id');
     if (this.currentUser?.email)
       this.email = this.currentUser?.email;
     let dataName = localStorage.getItem("currentUser")
+    let productUserName = this.productDetails.email == this.email ? localStorage.getItem("currentUser") : this.productDetails.username;
     if (dataName) {
-      let currentUser = JSON.parse(dataName);
-      this.username = currentUser?.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
+      if (this.productDetails.email == this.email) {
+        let currentUser = JSON.parse(dataName);
+        this.username = currentUser?.first_name.toUpperCase() + " " + currentUser.last_name.toUpperCase();
+      } else {
+        this.username = productUserName;
+      }
     }
     if (product) {
       this.product = JSON.parse(product);
@@ -103,7 +112,8 @@ export class OverViewComponent {
   }
 
   get_ID() {
-    this.apiService.get('/get_metadata/' + this.email)
+    let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
+    this.apiService.get('/get_metadata/' + productEmail)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -137,7 +147,8 @@ export class OverViewComponent {
     return !localStorage.getItem('record_id') ? this.id : localStorage.getItem('record_id');
   }
   getMeOverview() {
-    this.apiService.get("/retrive_overview/" + this.currentUser?.email + "/" + this.getMeProductId())
+    let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
+    this.apiService.get("/retrive_overview/" + productEmail + "/" + this.getMeProductId())
       .then((response: any) => {
         if (response?.status === 200) {
           this.overview = response.data;
