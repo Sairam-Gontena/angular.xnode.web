@@ -11,6 +11,7 @@
             <xnode-comments-panel></xnode-comments-panel>
         </div>
     </div>
-    <xnode-product-alert-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
-        [data]="productStatusPopupContent" [showProductStatusPopup]="showSpecGenaretePopup"></xnode-product-alert-popup>
 </div>
+
+<xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+    [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"></xnode-spec-gen-popup>
