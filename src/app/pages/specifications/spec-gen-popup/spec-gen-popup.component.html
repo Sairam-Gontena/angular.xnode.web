@@ -1,0 +1,12 @@
+<p-dialog header="Generate Spec" [(visible)]="showSpecGenaretePopup" [style]="{width: '30vw'}"
+    [breakpoints]="{ '1450px': '35vw' }">
+    <div class="p-4 line-height-4">
+        {{content}}
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button *ngIf="isTheCurrentUserOwner" (click)="generate()" label="Generate"
+            styleClass="p-button-rounded p-button-outlined "></p-button>
+        <p-button (click)="this.closePopup.emit()" label="Cancel"
+            styleClass="p-button-rounded p-button-outlined"></p-button>
+    </ng-template>
+</p-dialog>
