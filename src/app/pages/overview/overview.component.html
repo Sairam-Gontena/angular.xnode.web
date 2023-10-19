@@ -17,16 +17,16 @@
                         Stakeholders</h6>
                     <div class="mt-4">
                         <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
-                        <span class="text-white font-medium text-xl ml-3">{{username}}</span>
+                        <span class="text-white font-medium text-xl ml-3">{{overview?.username}}</span>
                     </div>
                     <div class="mt-4 para-text">
                         <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
-                        <span class=" ml-3">{{email}}</span>
+                        <span class=" ml-3">{{overview?.email}}</span>
                     </div>
                     <!-- This field should not be removed -->
                     <div class="mt-4 para-text" *ngIf="currentUser?.phone && currentUser?.phone !==''">
                         <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-4">
-                        <span class=" ml-3">{{currentUser?.phone}}</span>
+                        <span class=" ml-3">{{overview?.phone}}</span>
                     </div>
                 </div>
                 <div class="flex flex-column card-container ">
