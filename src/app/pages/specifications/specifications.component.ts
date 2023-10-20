@@ -198,10 +198,12 @@ export class SpecificationsComponent implements OnInit {
     if (response?.status === 200 && !response.data.detail) {
       const list = response.data.content;
       list.forEach((obj: any, index: any) => {
-        if (obj?.title && obj?.content && typeof (obj?.content) != 'object') {
-          obj.content.forEach((element: any, sIndex: any) => {
-            element.parentIndex = (index + 1).toString() + "." + (sIndex).toString()
-          });
+        if (obj?.title == 'Technical Specifications') {
+          if (!Array.isArray(obj.content)) {
+            obj.content = [];
+          }
+          obj.content.push({ title: 'OpenAPI Spec', content: [], id: "open-api-spec" })
+
         }
       })
       this.specData = list;

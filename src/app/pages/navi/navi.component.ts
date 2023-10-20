@@ -66,6 +66,8 @@ export class NaviComponent implements OnInit {
     }
     if (this.productDetails?.email !== this.currentUser?.email) {
       this.targetUrl = this.targetUrl + '&product_user_email=' + this.productEmail;
+    } else {
+      this.targetUrl = this.targetUrl + '&product_user_email=' + email;
     }
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
@@ -80,6 +82,7 @@ export class NaviComponent implements OnInit {
             window.dispatchEvent(customEvent);
           }
           if (event.data.message === 'close-event') {
+            this.utils.showLimitReachedPopup(false)
             window.location.href = this.xnodeAppUrl + '#/my-products';
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
