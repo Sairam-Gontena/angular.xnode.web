@@ -10,7 +10,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
-
+  @Output() generateSpec = new EventEmitter<any>();
   currentUser: any;
   templates: any;
   selectedTemplate: any;
@@ -22,6 +22,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   productId: any
   showProductStatusPopup = false;
   data: any;
+  productDetails: any;
+  userHasPermissionToEditProduct = true;
 
   constructor(private router: Router, private utils: UtilsService, private apiService: ApiService) {
   }
@@ -38,7 +40,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.productId = localStorage.getItem('record_id')
     if (product) {
       this.product = JSON.parse(product);
-
+      this.productDetails = JSON.parse(product);
     }
     if (metaData) {
       this.templates = JSON.parse(metaData);
@@ -50,6 +52,9 @@ export class SpecificationsHeaderComponent implements OnInit {
         this.product_url = JSON.parse(product).product_url;
       }
     }
+    this.utils.hasProductEditPermission.subscribe((result: boolean) => {
+      this.userHasPermissionToEditProduct = result
+    })
 
   }
 
@@ -60,6 +65,11 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   selectedProduct(data: any): void {
     const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
+    if (this.currentUser?.email == product.email) {
+      this.utils.hasProductPermission(true)
+    } else {
+      this.utils.hasProductPermission(false)
+    }
     if (product) {
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);
@@ -75,7 +85,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.EnableSpecSubMenu()
   }
   getConversationHistory() {
-    this.apiService.get('/get_conversation/' + this.currentUser.email + '/' + this.product.id).then((res: any) => {
+    let productEmail = this.productDetails.email == this.currentUser.email ? this.currentUser.email : this.productDetails.email
+    this.apiService.get('/get_conversation/' + productEmail + '/' + this.product.id).then((res: any) => {
       if (res.status === 200 && res.data) {
         this.getPopupInfo(res.data?.conversation_history);
         this.utils.loadSpinner(false);
@@ -100,7 +111,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   openPopup(content: any) {
     if (this.product?.id) {
-      this.getConversationHistory();
+      this.generateSpec.emit()
     }
   }
 

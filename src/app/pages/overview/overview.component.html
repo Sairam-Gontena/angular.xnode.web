@@ -15,18 +15,18 @@
                 <div class=" w-21rem h-19rem font-bold text-white  m-2 stake-holder ml-6">
                     <h6 class="text-xl font-medium mt-4 ml-3 p-2">Primary
                         Stakeholders</h6>
-                    <div class="mt-4">
+                    <div class="mt-4" *ngIf="overview?.username">
                         <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
-                        <span class="text-white font-medium text-xl ml-3">{{username}}</span>
+                        <span class="text-white font-medium text-xl ml-3">{{overview?.username}}</span>
                     </div>
-                    <div class="mt-4 para-text">
+                    <div class="mt-4 para-text" *ngIf="overview?.email">
                         <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
-                        <span class=" ml-3">{{email}}</span>
+                        <span class=" ml-3">{{overview?.email}}</span>
                     </div>
                     <!-- This field should not be removed -->
-                    <div class="mt-4 para-text" *ngIf="currentUser?.phone && currentUser?.phone !==''">
+                    <div class="mt-4 para-text" *ngIf="overview?.phone_number && overview?.phone_number !==''">
                         <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-4">
-                        <span class=" ml-3">{{currentUser?.phone}}</span>
+                        <span class=" ml-3">{{overview?.phone_number}}</span>
                     </div>
                 </div>
                 <div class="flex flex-column card-container ">

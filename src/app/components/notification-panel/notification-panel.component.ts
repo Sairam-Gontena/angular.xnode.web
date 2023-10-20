@@ -122,6 +122,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('app_name', obj?.product_name);
     if (obj.component && obj.component !== '') {
       this.router.navigate(['/specification']);
+      window.location.reload();
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
@@ -262,6 +263,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToFeedbackList(val: any) {
+    this.closeNotificationPanel.emit(true)
     if (val.title === 'USER_BUG_REPORT') {
       this.router.navigate(['/feedback-list'], { queryParams: { id: val.conversationID, type: 'user-bug-report' } });
     } else if (val.title === 'USER_FEEDBACK') {

@@ -64,8 +64,16 @@
     font-weight: 500;
 }
 
-.gradientback {
+pre {
+    width: 100%;
+    overflow: auto;
+}
 
+:host ::ng-deep .p-datatable>.p-datatable-wrapper {
+    border-radius: 6px;
+}
+
+.gradientback {
     position: absolute;
     bottom: 0px;
     left: 0px;

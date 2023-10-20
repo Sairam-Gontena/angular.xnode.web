@@ -2,6 +2,7 @@ import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
+import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
 import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
@@ -32,7 +33,7 @@ export class SpecificationsContentComponent implements OnInit {
   userInterfaceheaders: string[] = [];
   isCommentPanelOpened: boolean = false;
   isOpenSmallCommentBox: boolean = false;
-  smallCommentContent: string= '';
+  smallCommentContent: string = '';
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -50,16 +51,16 @@ export class SpecificationsContentComponent implements OnInit {
         if (this.specExpanded) {
           this.specExpanded = false;
           setTimeout(() => {
-            this.scrollToItem(event.title)
+            this.scrollToItem(event.id)
             this.fetchOpenAPISpec()
           }, 500)
         } else {
-          this.scrollToItem(event.title)
+          this.scrollToItem(event.id)
         }
       }
     })
 
-    this.utils.isCommentPanelToggled.subscribe((event:any) =>{
+    this.utils.isCommentPanelToggled.subscribe((event: any) => {
       this.isCommentPanelOpened = event;
     });
   }
@@ -143,19 +144,29 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getMeBanner(event: any) {
-    return './assets/' + event.title.toLowerCase().replace(/ /g, '') + '.svg';
+    return './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg';
   }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   makeTrustDataModelUrl(): void {
     this.dataModelIframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://dev-xnode.azurewebsites.net/#/configuration/data-model/overview')
   }
 
+  toTitleCase(str: any): void {
+    let words = str.split(' ');
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
+      words[i] = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+    return words.join(' ');
+  }
+
   setColumnsToTheTable(data: any) {
     let cols;
-    cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+    cols = Object.entries(data).map(([field, value]) => ({ field, header: this.toTitleCase(field), value }));
     return cols
   }
 
@@ -198,13 +209,13 @@ export class SpecificationsContentComponent implements OnInit {
     return Object.keys(testCase);
   }
 
-  openSmallCommentBox(content: any){
-    if(content && content.id){
+  openSmallCommentBox(content: any) {
+    if (content && content.id) {
       this.isOpenSmallCommentBox = true;
     }
   }
 
-  closeSmallCommentBix(){
+  closeSmallCommentBix() {
     this.isOpenSmallCommentBox = false;
 
   }
