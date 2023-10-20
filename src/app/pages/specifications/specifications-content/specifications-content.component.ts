@@ -221,21 +221,24 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   sendComment(content: any) {
-    let body: any = {
-      productId: localStorage.getItem('record_id'),
-      contentId: content.id,
-      comments: [{
-        user_id: 'jayadeep.k@salientminds.com',
-        comment: 'test'
-      }]
-    };
-    this.apiService.patchApi(body, 'specs/update/comments')
-      .then(response => {
-        console.log("succcess")
-      })
-      .catch(error => {
-        console.log("succcess")
-      });
+    let user_id = localStorage.getItem('product_email') ||  (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
+    if(this.smallCommentContent && this.smallCommentContent.length){
+      let body: any = {
+        product_id: localStorage.getItem('record_id'),
+        content_id: content.id,
+        comments: [{
+          user_id:  user_id,
+          message: this.smallCommentContent
+        }]
+      };
+      this.apiService.patchApi(body, 'specs/update-comments')
+        .then(response => {
+          this.isOpenSmallCommentBox = false;
+        })
+        .catch(error => {
+          this.isOpenSmallCommentBox = false;
+        });
+    }
   }
 }
 
