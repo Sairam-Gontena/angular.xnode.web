@@ -4,13 +4,14 @@
     <div *ngIf="!specExpanded">
         <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
             <div class="w-8">
-                <div class="intro-grid" [id]="item.title">
-                    <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item.title}}</div>
+                <div class="intro-grid" [id]="item?.title">
+                    <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
                     <div class="flex align-items-center spec-status">
-                        <p class="text-sm font-medium">Published on {{item?.content[0]?.created_on | date: 'MMM d, y'}}
+                        <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d,
+                            y'}}
                         </p>
                         <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                        <p class="text-sm font-medium">Updated on {{item?.content[0]?.modified_on | date: 'MMM d, y'}}
+                        <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date: 'MMM d, y'}}
                         </p>
                         <i class="pi pi-circle-fill pl-3 pr-3"></i>
                         <p class="text-sm font-medium">3 mins read</p>
@@ -21,13 +22,14 @@
                         </div>
                     </div>
                     <div class="flex mt-3 author align-items-center">
-                        <p class="spec-status text-sm font-medium m-0"> By {{item?.content[0]?.modified_by}}
+                        <p class="spec-status text-sm font-medium m-0"> By {{item?.content?.[0]?.modified_by}}
                     </div>
                     <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                 </div>
-                <div *ngFor="let content of item.content;let cIndex = index; " class="mt-2">
-                    <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'" [class.comment-area]="(content?.collapsed && isCommentPanelOpened)"
-                        id={{content?.id}} #contentContainer [ngSwitch]="content.title">
+                <div *ngFor="let content of item?.content;let cIndex = index; " class="mt-2">
+                    <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'"
+                        [class.comment-area]="(content?.collapsed && isCommentPanelOpened)" id={{content?.id}}
+                        #contentContainer [ngSwitch]="content.title">
                         <div class="flex justify-content-between flex-wrap">
                             <div class="flex align-items-center justify-content-center">
                                 <h3 class="m-0 pb-2 text-2xl font-bold ">{{(i+1) + '.' + (cIndex+1) +' '+
@@ -454,7 +456,8 @@
                             </div>
                             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                         </div>
-                        <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened" style="position: fixed;left: 0;top: 10px;">
+                        <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened"
+                            style="position: fixed;left: 0;top: 10px;">
                             <input [(ngModel)]="smallCommentContent" placeholder="comment" />
                             <button (click)="sendComment(content)">Send</button>
                             <button (click)="closeSmallCommentBix()">Close</button>
@@ -482,7 +485,7 @@
                                     </span>
                                     <!-- observed as duplicate data -->
                                     <span class="sub-content font-normal text-base"
-                                        *ngIf="!isObject(subItem.content) && item.title == 'User Roles' ; else contentBlock">
+                                        *ngIf="!isObject(subItem.content) && item?.title == 'User Roles' ; else contentBlock">
                                         <span *ngFor="let element of subItem.content">
                                             <span class="sub-content font-normal text-base"
                                                 *ngFor="let pair of element | objectToArray">
@@ -518,4 +521,3 @@
         </div>
     </div>
 </div>
-

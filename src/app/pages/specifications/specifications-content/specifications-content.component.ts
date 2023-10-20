@@ -48,23 +48,18 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.getMeSectionIndex.subscribe((event: any) => {
       if (event) {
         this.scrollToItem(event.title)
+        console.log(event, 'in content comp')
       }
     })
   }
 
   getSpecItem() {
     this.utils.getMeSpecItem.subscribe((event: any) => {
+      console.log('spec content', event)
       if (event) {
-        let hasSearchTrue = false;
-        for (const key in event) {
-          if (event[key] && event[key].search === true) {
-            hasSearchTrue = true;
-            delete event[key];
-            break;
-          }
-        }
+        let hasSearchTrue = localStorage.getItem('searchSpec')
         this.specItemList = [];
-        if (hasSearchTrue) {
+        if (hasSearchTrue === 'true') {
           event.forEach((element: any) => {
             this.specItemList.push(element.section);
             this.specItemList = _.flattenDeep(this.specItemList)
@@ -127,6 +122,7 @@ export class SpecificationsContentComponent implements OnInit {
           })
         }
       }
+      console.log('spec item list', this.specItemList)
     });
     // this.utils.getMeSpecItemIndex.subscribe((event: any) => {
     //   if (event) {
@@ -224,6 +220,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   scrollToItem(itemId: string) {
+    console.log('item Id', itemId)
     const element = document.getElementById(itemId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -231,7 +228,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getMeBanner(event: any) {
-    return './assets/' + event.title.toLowerCase().replace(/ /g, '') + '.svg';
+    return './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg';
   }
 
   makeTrustedUrl(): void {

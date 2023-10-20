@@ -69,88 +69,37 @@ export class SpecificationsComponent implements OnInit {
       return
     }
     this.filteredSpecData = [];
-    this.specData.forEach((element: any, index: any) => {
-      element.section.forEach((subElement: any) => {
-        if (typeof (subElement.content) == 'string') {
-          if (subElement.title.toUpperCase().includes(keyword.toUpperCase()) || subElement.content.toUpperCase().includes(keyword.toUpperCase())) {
-            this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-            this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-          }
-        } if (typeof (subElement.content) == 'object') {
-          subElement.content.forEach((objElem: any) => {
-            if (typeof (objElem) == 'string') {
-              if (objElem?.toUpperCase().includes(keyword.toUpperCase())) {
-                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-              }
-            }
-            if (objElem?.title || objElem?.content) {
-              if (typeof (objElem?.content) == 'object') {
-                if (objElem?.content?.Description) {
-                  if (objElem?.content?.Description.toUpperCase().includes(keyword.toUpperCase())) {
-                    this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                    this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-                  }
-                }
-                if (objElem?.content?.length > 0) {
-                  objElem?.content.forEach((item: any) => {
-                    if (item?.tableName) {
-                      if (item?.tableName.toUpperCase().includes(keyword.toUpperCase()) || item?.tableDescription.toUpperCase().includes(keyword.toUpperCase())) {
-                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-                      }
-                    } else if (item?.columnName) {
-                      if (item?.columnName.toUpperCase().includes(keyword.toUpperCase()) || item?.description.toUpperCase().includes(keyword.toUpperCase())) {
-                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-                      }
-                    } else if (item?.checkName) {
-                      if (item?.checkName.toUpperCase().includes(keyword.toUpperCase()) || item?.description.toUpperCase().includes(keyword.toUpperCase())) {
-                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-                      }
-                    } else if (item?.content) {
-                      if (item?.content.toUpperCase().includes(keyword.toUpperCase()) || item?.title.toUpperCase().includes(keyword.toUpperCase())) {
-                        this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                        this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-                      }
-                    } else {
-                      if (typeof (item) == 'object') {
-                        if (Object.values(item).includes(keyword)) {
-                          this.foundObjects = _.uniq(_.concat(this.foundObjects, objElem))
-                          this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, objElem))
-                        }
-                      } else {
-                        if (item.toUpperCase().includes(keyword.toUpperCase())) {
-                          this.foundObjects = _.uniq(_.concat(this.foundObjects, objElem))
-                          this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, objElem))
-                        }
-                      }
-                    }
-                  })
-                }
-              } else {
-                if (objElem?.title?.toUpperCase().includes(keyword.toUpperCase()) || objElem?.content?.toUpperCase().includes(keyword.toUpperCase())) {
-                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-                }
-              }
-            }
-            if (objElem?.Backstory || objElem?.Needs || objElem?.Quote) {
-              if (objElem?.Backstory.toUpperCase().includes(keyword.toUpperCase()) || objElem?.Needs.toUpperCase().includes(keyword.toUpperCase()) || objElem?.Quote.toUpperCase().includes(keyword.toUpperCase())) {
-                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement))
-              }
-            }
-            if (objElem?.Definition || objElem?.Term)
-              if (objElem?.Definition.toUpperCase().includes(keyword.toUpperCase()) || objElem?.Term.toUpperCase().includes(keyword.toUpperCase())) {
-                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElement))
-                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElement)) //element
-              }
-          })
+    this.specData = this.specDataCopy;
+    console.log('specData at searchText', this.specData, this.specDataCopy)
+    this.specData.forEach((elem: any, index: any) => {
+      if (typeof (elem?.content) == 'string') {
+        if (elem?.title.toUpperCase().includes(keyword.toUpperCase()) || elem?.content.toUpperCase().includes(keyword.toUpperCase())) {
+          this.foundObjects = _.uniq(_.concat(this.foundObjects, elem))
+          this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, elem))
         }
-      });
+      }
+      if (typeof (elem?.content) == 'object' && elem?.content.length > 0) {
+        elem?.content.forEach((subElem: any) => {
+          if (typeof (subElem?.content) == 'string') {
+            if (subElem?.title.toUpperCase().includes(keyword.toUpperCase()) || subElem?.content.toUpperCase().includes(keyword.toUpperCase())) {
+              this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
+              this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+            }
+          }
+          if (typeof (subElem?.content) == 'object') {
+            subElem?.content.forEach((subChild: any) => {
+              if (typeof (subChild?.content) == 'string') {
+                if (subChild?.title.toUpperCase().includes(keyword.toUpperCase()) || subChild?.content.toUpperCase().includes(keyword.toUpperCase())) {
+                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
+                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+                }
+              }
+            });
+          }
+        });
+      }
       if (index === this.specData.length - 1) {
+        console.log('filteredSpecData', this.filteredSpecData)
         this.populatefilteredSpecData(this.filteredSpecData)
       }
     });
@@ -159,15 +108,17 @@ export class SpecificationsComponent implements OnInit {
   populatefilteredSpecData(list: any) {
     let deleteIndexes: any[] = [];
     this.filteredSpecData = _.compact(list);
+    console.log('specData at populatefilteredSpecData', this.specData)
     this.specData.forEach((item: any, index: any) => {
       deleteIndexes = [];
-      item?.section.forEach((subitem: any, subindex: any) => {
-        _.some(this.filteredSpecData, (elem: any, subelemIndex: any) => {
-          if (_.isEqual(elem.title, subitem.title)) {
-            deleteIndexes.push(subindex);
-          }
+      if (typeof (item?.content) == 'object' && item?.content.length > 0)
+        item?.content.forEach((subitem: any, subindex: any) => {
+          _.some(this.filteredSpecData, (filterdataelem: any, subelemIndex: any) => {
+            if (_.isEqual(filterdataelem.title, subitem.title)) {
+              deleteIndexes.push(subindex);
+            }
+          });
         });
-      });
       if (deleteIndexes.length > 0) {
         this.wantedIndexes.push(index)
         this.deleteSpecData(index, deleteIndexes)
@@ -177,18 +128,19 @@ export class SpecificationsComponent implements OnInit {
     });
     _.pullAt(this.specData, this.removableIndexes);
     let speclist = this.specData;
-    speclist.push({ 'search': true })
+    console.log('--------------------', this.specData)
+    localStorage.setItem('searchSpec', 'true')
     this.utils.passSelectedSpecItem(speclist);
     console.log('specData', this.specData)
   }
 
   deleteSpecData(index: any, indexes: any) {
     let itemArr: any[] = [];
-    this.specData[index]?.section.forEach((item: any, itemindex: any) => {
+    this.specData[index]?.content.forEach((item: any, itemindex: any) => {
       itemArr.push(itemindex)
     });
     let wantedArr = _.difference(itemArr, indexes);
-    _.pullAt(this.specData[index]?.section, wantedArr);
+    _.pullAt(this.specData[index]?.content, wantedArr);
   }
 
   getMeUserAvatar() {
@@ -247,6 +199,7 @@ export class SpecificationsComponent implements OnInit {
           });
         }
       })
+      this.specDataCopy = _.cloneDeep(list);
       this.specData = list;
       this.utils.passSelectedSpecItem(list);
     } else {
