@@ -25,8 +25,9 @@ export class BotComponent implements OnInit {
 
 
   onClickContinue(): void {
+    let productEmail = localStorage.getItem('product_email')
     let productContext = localStorage.getItem('record_id');
-    this.valueChange.emit({ 'productContext': productContext, 'cbFlag': true });
+    this.valueChange.emit({ 'productContext': productContext, 'cbFlag': true, 'productEmail': productEmail });
   }
   ngOnInit(): void {
     this.botContainer = this.elementRef.nativeElement.querySelector('#botContainer');

@@ -4,7 +4,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../../er-modeller/service/data.service';
 import * as _ from "lodash";
-
+import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -31,10 +31,14 @@ export class SpecificationsContentComponent implements OnInit {
   bodyData: any[] = [];
   dataQualityData: any[] = [];
   userInterfaceheaders: string[] = [];
+  isCommentPanelOpened: boolean = false;
+  isOpenSmallCommentBox: boolean = false;
+  smallCommentContent: string = '';
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
-    private dataService: DataService,) {
+    private dataService: DataService,
+    private apiService: ApiService) {
     this.dataModel = this.dataService.data;
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
@@ -142,6 +146,10 @@ export class SpecificationsContentComponent implements OnInit {
         }
       }
     })
+
+    this.utils.isCommentPanelToggled.subscribe((event: any) => {
+      this.isCommentPanelOpened = event;
+    });
   }
 
   checkedToggle(type: any, item: any, content: any) {
@@ -279,7 +287,35 @@ export class SpecificationsContentComponent implements OnInit {
     return Object.keys(testCase);
   }
 
+  openSmallCommentBox(content: any) {
+    if (content && content.id) {
+      this.isOpenSmallCommentBox = true;
+    }
+  }
 
+  closeSmallCommentBix() {
+    this.isOpenSmallCommentBox = false;
+
+  }
+
+  sendComment(content: any) {
+    console.log(this.smallCommentContent);
+    let body: any = {
+      productId: localStorage.getItem('record_id'),
+      contentId: content.id,
+      comments: [{
+        user_id: 'jayadeep.k@salientminds.com',
+        comment: 'test'
+      }]
+    };
+    this.apiService.patchApi(body, 'specs/update/comments')
+      .then(response => {
+        console.log("succcess")
+      })
+      .catch(error => {
+        console.log("succcess")
+      });
+  }
 }
 
 

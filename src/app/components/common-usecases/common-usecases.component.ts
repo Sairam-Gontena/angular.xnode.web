@@ -22,6 +22,7 @@ export class CommonUsecasesComponent {
   product: any;
   product_id: any;
   isInsideUseCases: boolean = false;
+  productDetails: any
 
   constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService, private router: Router,) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -42,6 +43,7 @@ export class CommonUsecasesComponent {
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
+      this.productDetails = JSON.parse(product);
       this.product_id = JSON.parse(product).id;
       if (!this.product?.has_insights) {
         this.utils.showProductStatusPopup(true);
@@ -56,7 +58,8 @@ export class CommonUsecasesComponent {
   }
 
   getUsecases() {
-    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + this.product_id)
+    let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
+    this.apiService.get("/retrive_insights/" + productEmail + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {

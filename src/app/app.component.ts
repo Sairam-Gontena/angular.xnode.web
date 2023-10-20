@@ -227,7 +227,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  makeTrustedUrl(): void {
+  makeTrustedUrl(productEmail: string): void {
     let user = localStorage.getItem('currentUser');
     let id;
     const has_insights = localStorage.getItem('has_insights');
@@ -238,7 +238,7 @@ export class AppComponent implements OnInit {
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
-        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id;
+        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id + '&product_user_email=' + productEmail
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
       }
@@ -301,7 +301,7 @@ export class AppComponent implements OnInit {
       this.getUserData();
       this.isSideWindowOpen = newItem.cbFlag;
       this.productContext = newItem.productContext;
-      this.makeTrustedUrl();
+      this.makeTrustedUrl(newItem.productEmail);
     }
   }
 

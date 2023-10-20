@@ -1,5 +1,5 @@
 <!-- <xnode-template-builder-publish-header></xnode-template-builder-publish-header> -->
-<div class="flex" *ngIf="specData?.length">
+<div class="flex" *ngIf="specData?.length;else showHeader">
     <xnode-specifications-menu (text)="searchText($event)" [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
         <div
@@ -11,6 +11,13 @@
             <xnode-comments-panel></xnode-comments-panel>
         </div>
     </div>
-    <xnode-product-alert-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
-        [data]="productStatusPopupContent" [showProductStatusPopup]="showSpecGenaretePopup"></xnode-product-alert-popup>
 </div>
+
+<ng-template #showHeader>
+    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+        (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+</ng-template>
+
+<xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+    [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
+    [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generateSpec()"></xnode-spec-gen-popup>

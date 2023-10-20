@@ -52,6 +52,8 @@ export class UtilsService {
   public getMeSelectedSection: Observable<any> = this.selectedSection.asObservable();
   private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeProductId: Observable<any> = this.productId.asObservable();
+  private productEditPermission: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public hasProductEditPermission: Observable<any> = this.productEditPermission.asObservable();
 
   constructor() { }
 
@@ -119,6 +121,9 @@ export class UtilsService {
   }
   saveProductId(event: any): void {
     this.productId.next(event);
+  }
+  hasProductPermission(event: any): void {
+    this.productEditPermission.next(event);
   }
 
 

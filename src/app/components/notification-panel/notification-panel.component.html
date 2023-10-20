@@ -87,6 +87,12 @@
                         View Specification
                     </div>
                 </div>
+                <div class="flex mt-2" *ngIf="notification?.conversationID && notification.title">
+                    <div (click)="navigateToFeedbackList(notification)"
+                        class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+                        View Report
+                    </div>
+                </div>
                 <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
                     <p-button label="Launch Product" styleClass="p-button-rounded p-button-primary launch-product"
                         (click)="onClickLaunchProduct(notification?.product_url)"></p-button>
@@ -123,9 +129,4 @@
 </div>
 <div class="mt-5 d-flex justify-content-center" *ngIf="allNotifications.length === 0">
     <h5>No New Notifications Found</h5>
-
-</div>
-<div>
-    <p (click)="navigateToProduct({product_id:'ccc3e9ea-9582-473f-850d-2b5b2d831d11'})">Go to Product
-    </p>
 </div>

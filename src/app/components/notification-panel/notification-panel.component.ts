@@ -260,5 +260,13 @@ export class NotificationPanelComponent {
   onClickLaunchProduct(url: any): void {
     window.open(url, '_blank')
   }
+
+  navigateToFeedbackList(val: any) {
+    if (val.title === 'USER_BUG_REPORT') {
+      this.router.navigate(['/feedback-list'], { queryParams: { id: val.conversationID, type: 'user-bug-report' } });
+    } else if (val.title === 'USER_FEEDBACK') {
+      this.router.navigate(['/feedback-list'], { queryParams: { id: val.conversationID, type: 'user-feedback' } });
+    }
+  }
 }
 

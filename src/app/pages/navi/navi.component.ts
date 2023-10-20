@@ -25,12 +25,24 @@ export class NaviComponent implements OnInit {
   currentUser: any
   showProductStatusPopup: boolean = false;
   content: any;
+  productDetails: any;
+  productEmail: any;
 
   ngOnInit(): void {
     this.currentUser = localStorage.getItem('currentUser');
+    let product = localStorage.getItem('product');
+    if (product) {
+      this.productDetails = JSON.parse(product);
+    }
+
     const restriction_max_value = localStorage.getItem('restriction_max_value')
     if (this.currentUser) {
       this.currentUser = JSON.parse(this.currentUser)
+    }
+    if (this.productDetails?.email == this.currentUser?.email) {
+      this.productEmail = this.currentUser?.email;
+    } else {
+      this.productEmail = this.productDetails?.email;
     }
     localStorage.removeItem('has_insights');
     localStorage.getItem('show-upload-panel')
@@ -51,6 +63,9 @@ export class NaviComponent implements OnInit {
     }
     if (restriction_max_value) {
       this.targetUrl = this.targetUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
+    }
+    if (this.productDetails?.email !== this.currentUser?.email) {
+      this.targetUrl = this.targetUrl + '&product_user_email=' + this.productEmail;
     }
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
@@ -86,6 +101,9 @@ export class NaviComponent implements OnInit {
             this.utils.saveProductId(itemId);
             const newUrl = this.xnodeAppUrl + '#/dashboard';
             window.location.href = newUrl;
+          }
+          if (event.data.message === 'help-center') {
+            window.location.href = this.xnodeAppUrl + '#/help-center';
           }
         });
         contentWindow.postMessage(data, this.targetUrl);
