@@ -58,14 +58,27 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         command: () => {
           this.onChangeOption('Preview');
         }
-      },
-      {
-        label: 'Publish',
-        command: () => {
-          this.onChangeOption('Publish');
-        }
-      },
+      }
     ];
+    this.utilsService.hasProductEditPermission.subscribe((result) => {
+      if (result) {
+        this.productOptions = [
+          {
+            label: 'Preview',
+            command: () => {
+              this.onChangeOption('Preview');
+            }
+          },
+          {
+            label: 'Publish',
+            command: () => {
+              this.onChangeOption('Publish');
+            }
+          },
+        ];
+      }
+    })
+
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -147,8 +160,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
+    let email = this.currentUser?.email == localStorage.getItem('product_email') ? this.currentUser?.email : localStorage.getItem('product_email')
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + true, "_blank");
+      window.open(environment.designStudioAppUrl + "?email=" + email + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + true, "_blank");
     } else {
       this.getMeTotalAppsPublishedCount();
     }
@@ -308,6 +322,11 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   selectedProduct(data: any): void {
     const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
+    if (this.currentUser?.email == product.email) {
+      this.utilsService.hasProductPermission(true)
+    } else {
+      this.utilsService.hasProductPermission(false)
+    }
     if (product) {
       localStorage.setItem('product_email', product.email)
       localStorage.setItem('record_id', product.id);

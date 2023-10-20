@@ -14,7 +14,8 @@
             <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
                 (click)="openComments()">
             <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
-            <p-button (click)="op.toggle($event)" class="ellipsis-btn -ml-3" icon="pi pi-ellipsis-v"></p-button>
+            <p-button (click)="op.toggle($event)" class="ellipsis-btn -ml-3" icon="pi pi-ellipsis-v"
+                *ngIf="userHasPermissionToEditProduct"></p-button>
             <p-overlayPanel class="overlay-class" #op>
                 <div class="confirm-overlay p-2 cursor-pointer border-round-md ">Change Request</div>
                 <div class="confirm-overlay p-2 cursor-pointer border-round-md ">Integration</div>
