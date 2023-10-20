@@ -176,6 +176,11 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'change-app') {
         this.utilsService.saveProductId(event.data.id);
         localStorage.setItem('product_email', event.data.product_user_email)
+        if (this.currentUser?.email == event.data.product_user_email) {
+          this.utilsService.hasProductPermission(true)
+        } else {
+          this.utilsService.hasProductPermission(false)
+        }
       }
     });
 
