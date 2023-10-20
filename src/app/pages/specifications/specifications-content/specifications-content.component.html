@@ -455,6 +455,9 @@
                             </div>
                             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                         </div>
+                        <div *ngSwitchCase="'User Roles'">
+                            <xnode-user-roles [content]="content.content"></xnode-user-roles>
+                        </div>
                         <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened"
                             style="position: fixed;left: 0;top: 10px;">
                             <input [(ngModel)]="smallCommentContent" placeholder="comment" />
@@ -481,20 +484,6 @@
                                     </li>
                                     </span>
                                     </span>
-                                    </span>
-                                    <!-- observed as duplicate data -->
-                                    <span class="sub-content font-normal text-base"
-                                        *ngIf="!isObject(subItem.content) && item.title == 'User Roles' ; else contentBlock">
-                                        <span *ngFor="let element of subItem.content">
-                                            <span class="sub-content font-normal text-base"
-                                                *ngFor="let pair of element | objectToArray">
-                                                <li>
-                                                    <span class="sub-content font-normal text-base">
-                                                        {{subItem.content }}
-                                                    </span>
-                                                </li>
-                                            </span>
-                                        </span>
                                     </span>
                                     <ng-template #contentBlock>
                                         <span class="sub-content font-normal text-base">{{subItem.content }}</span>
