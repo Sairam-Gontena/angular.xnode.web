@@ -26,8 +26,9 @@
                     <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                 </div>
                 <div *ngFor="let content of item.content;let cIndex = index; " class="mt-2">
-                    <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'" [class.comment-area]="(content?.collapsed && isCommentPanelOpened)"
-                        id={{content?.id}} #contentContainer [ngSwitch]="content.title">
+                    <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'"
+                        [class.comment-area]="(content?.collapsed && isCommentPanelOpened)" id={{content?.id}}
+                        #contentContainer [ngSwitch]="content.title">
                         <div class="flex justify-content-between flex-wrap">
                             <div class="flex align-items-center justify-content-center">
                                 <h3 class="m-0 pb-2 text-2xl font-bold ">{{(i+1) + '.' + (cIndex+1) +' '+
@@ -454,7 +455,8 @@
                             </div>
                             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                         </div>
-                        <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened" style="position: fixed;left: 0;top: 10px;">
+                        <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened"
+                            style="position: fixed;left: 0;top: 10px;">
                             <input [(ngModel)]="smallCommentContent" placeholder="comment" />
                             <button (click)="sendComment(content)">Send</button>
                             <button (click)="closeSmallCommentBix()">Close</button>
@@ -518,4 +520,3 @@
         </div>
     </div>
 </div>
-

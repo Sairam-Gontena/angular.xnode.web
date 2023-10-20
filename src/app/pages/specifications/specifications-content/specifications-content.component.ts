@@ -32,7 +32,7 @@ export class SpecificationsContentComponent implements OnInit {
   userInterfaceheaders: string[] = [];
   isCommentPanelOpened: boolean = false;
   isOpenSmallCommentBox: boolean = false;
-  smallCommentContent: string= '';
+  smallCommentContent: string = '';
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -50,16 +50,16 @@ export class SpecificationsContentComponent implements OnInit {
         if (this.specExpanded) {
           this.specExpanded = false;
           setTimeout(() => {
-            this.scrollToItem(event.title)
+            this.scrollToItem(event.id)
             this.fetchOpenAPISpec()
           }, 500)
         } else {
-          this.scrollToItem(event.title)
+          this.scrollToItem(event.id)
         }
       }
     })
 
-    this.utils.isCommentPanelToggled.subscribe((event:any) =>{
+    this.utils.isCommentPanelToggled.subscribe((event: any) => {
       this.isCommentPanelOpened = event;
     });
   }
@@ -198,13 +198,13 @@ export class SpecificationsContentComponent implements OnInit {
     return Object.keys(testCase);
   }
 
-  openSmallCommentBox(content: any){
-    if(content && content.id){
+  openSmallCommentBox(content: any) {
+    if (content && content.id) {
       this.isOpenSmallCommentBox = true;
     }
   }
 
-  closeSmallCommentBix(){
+  closeSmallCommentBix() {
     this.isOpenSmallCommentBox = false;
 
   }
