@@ -66,6 +66,8 @@ export class NaviComponent implements OnInit {
     }
     if (this.productDetails?.email !== this.currentUser?.email) {
       this.targetUrl = this.targetUrl + '&product_user_email=' + this.productEmail;
+    } else {
+      this.targetUrl = this.targetUrl + '&product_user_email=' + email;
     }
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;

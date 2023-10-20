@@ -309,6 +309,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   selectedProduct(data: any): void {
     const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
     if (product) {
+      localStorage.setItem('product_email', product.email)
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
