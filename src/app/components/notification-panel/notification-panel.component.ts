@@ -263,6 +263,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToFeedbackList(val: any) {
+    this.closeNotificationPanel.emit(true)
     if (val.title === 'USER_BUG_REPORT') {
       this.router.navigate(['/feedback-list'], { queryParams: { id: val.conversationID, type: 'user-bug-report' } });
     } else if (val.title === 'USER_FEEDBACK') {
