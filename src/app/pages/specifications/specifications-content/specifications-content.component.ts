@@ -2,8 +2,8 @@ import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
-import { DataService } from '../../er-modeller/service/data.service';
 import * as _ from "lodash";
+import { DataService } from '../../er-modeller/service/data.service';
 import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
 @Component({
