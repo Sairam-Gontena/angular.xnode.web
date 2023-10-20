@@ -2,6 +2,7 @@ import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
+import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
 import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
@@ -143,12 +144,13 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getMeBanner(event: any) {
-    return './assets/' + event.title.toLowerCase().replace(/ /g, '') + '.svg';
+    return './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg';
   }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   makeTrustDataModelUrl(): void {
     this.dataModelIframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://dev-xnode.azurewebsites.net/#/configuration/data-model/overview')
   }
@@ -219,7 +221,6 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   sendComment(content: any) {
-    console.log(this.smallCommentContent);
     let body: any = {
       productId: localStorage.getItem('record_id'),
       contentId: content.id,
