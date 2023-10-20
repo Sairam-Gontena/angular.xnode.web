@@ -4,7 +4,7 @@
     <div *ngIf="!specExpanded">
         <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
             <div class="w-8">
-                <div class="intro-grid" [id]="item?.title">
+                <div class="intro-grid" [id]="item.title">
                     <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
                     <div class="flex align-items-center spec-status">
                         <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d,

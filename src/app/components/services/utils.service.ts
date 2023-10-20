@@ -113,7 +113,6 @@ export class UtilsService {
   }
 
   passSelectedSectionIndex(event: any): void {
-    console.log(event)
     this.sectionIndex.next(event);
   }
 

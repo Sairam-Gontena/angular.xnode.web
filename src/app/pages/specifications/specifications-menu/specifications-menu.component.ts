@@ -29,15 +29,7 @@ export class SpecificationsMenuComponent implements OnInit {
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
-        let data = resp;
-        // for (const key in data) {
-        //   if (data[key] && data[key].search === true) {
-        //     delete data[key];
-        //     break;
-        //   }
-        // }
-        this.menuList = data.filter((item: any) => item !== null);
-        console.log('menu menulist', this.menuList)
+        this.menuList = resp.filter((item: any) => item !== null);
       },);
     })
   }
@@ -46,7 +38,6 @@ export class SpecificationsMenuComponent implements OnInit {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isOpen = data;
     })
-    // this.utils.passSelectedSpecIndex(0);
     this.populateMenuList();
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
