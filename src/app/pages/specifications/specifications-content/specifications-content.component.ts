@@ -155,9 +155,18 @@ export class SpecificationsContentComponent implements OnInit {
     this.dataModelIframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://dev-xnode.azurewebsites.net/#/configuration/data-model/overview')
   }
 
+  toTitleCase(str: any): void {
+    let words = str.split(' ');
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
+      words[i] = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+    return words.join(' ');
+  }
+
   setColumnsToTheTable(data: any) {
     let cols;
-    cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
+    cols = Object.entries(data).map(([field, value]) => ({ field, header: this.toTitleCase(field), value }));
     return cols
   }
 

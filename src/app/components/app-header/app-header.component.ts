@@ -285,6 +285,7 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onClickLogo(): void {
+    this.utilsService.showLimitReachedPopup(false)
     this.utilsService.showProductStatusPopup(false);
     this.router.navigate(['/my-products']);
   }

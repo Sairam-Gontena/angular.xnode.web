@@ -22,7 +22,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   productId: any
   showProductStatusPopup = false;
   data: any;
-  productDetails: any
+  productDetails: any;
+  userHasPermissionToEditProduct = true;
 
   constructor(private router: Router, private utils: UtilsService, private apiService: ApiService) {
   }
@@ -51,6 +52,9 @@ export class SpecificationsHeaderComponent implements OnInit {
         this.product_url = JSON.parse(product).product_url;
       }
     }
+    this.utils.hasProductEditPermission.subscribe((result: boolean) => {
+      this.userHasPermissionToEditProduct = result
+    })
 
   }
 
@@ -61,6 +65,11 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   selectedProduct(data: any): void {
     const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
+    if (this.currentUser?.email == product.email) {
+      this.utils.hasProductPermission(true)
+    } else {
+      this.utils.hasProductPermission(false)
+    }
     if (product) {
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'xnode-limit-reached-popup',
@@ -9,4 +9,12 @@ export class LimitReachedPopupComponent {
   @Input() visible: any;
   @Output() closePopup = new EventEmitter<boolean>();
 
+  @HostListener('document:click', ['$event'])
+  public closeDialogOnClick(event: any): void {
+    if (this.visible) {
+      if (!event.target.closest('p-dialog')) {
+        this.closePopup.emit(true);
+      }
+    }
+  }
 }

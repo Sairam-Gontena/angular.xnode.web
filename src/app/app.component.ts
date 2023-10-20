@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -47,6 +47,13 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService) {
+    router.events.forEach((event) => {
+      if (event instanceof NavigationStart) {
+        if (event.navigationTrigger === 'popstate') {
+          this.showLimitReachedPopup = false
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -175,6 +182,12 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'change-app') {
         this.utilsService.saveProductId(event.data.id);
+        localStorage.setItem('product_email', event.data.product_user_email)
+        if (this.currentUser?.email == event.data.product_user_email) {
+          this.utilsService.hasProductPermission(true)
+        } else {
+          this.utilsService.hasProductPermission(false)
+        }
       }
     });
 
