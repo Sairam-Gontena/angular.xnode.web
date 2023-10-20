@@ -134,11 +134,11 @@ export class SpecificationsContentComponent implements OnInit {
         if (this.specExpanded) {
           this.specExpanded = false;
           setTimeout(() => {
-            this.scrollToItem(event.title)
+            this.scrollToItem(event.id)
             this.fetchOpenAPISpec()
           }, 500)
         } else {
-          this.scrollToItem(event.title)
+          this.scrollToItem(event.id)
         }
       }
     })
