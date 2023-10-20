@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -13,7 +13,8 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 export class SpecificationsComponent implements OnInit {
   currentUser: any;
   specData?: any;
-  private specDataCopy: any = [];
+  specDataCopy?: any;
+  private specDataBool: boolean = true;
   selectedSpec: any;
   selectedSection: any;
   specId: any
@@ -35,7 +36,6 @@ export class SpecificationsComponent implements OnInit {
     private utils: UtilsService,
     private apiService: ApiService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef,
     private auditUtil: AuditutilsService
   ) {
     this.utils.isCommentPanelToggled.subscribe((event: any) => {
@@ -69,8 +69,13 @@ export class SpecificationsComponent implements OnInit {
       return
     }
     this.filteredSpecData = [];
-    this.specData = this.specDataCopy;
-    console.log('specData at searchText', this.specData, this.specDataCopy)
+    this.specData = [];
+    this.foundObjects = [];
+    let specLocalStorage = localStorage.getItem('specData')
+    if (specLocalStorage) {
+      let parseData = JSON.parse(specLocalStorage);
+      this.specData = parseData;
+    }
     this.specData.forEach((elem: any, index: any) => {
       if (typeof (elem?.content) == 'string') {
         if (elem?.title.toUpperCase().includes(keyword.toUpperCase()) || elem?.content.toUpperCase().includes(keyword.toUpperCase())) {
@@ -94,12 +99,17 @@ export class SpecificationsComponent implements OnInit {
                   this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
                 }
               }
+              if (typeof (subChild) == 'string') {
+                if (subChild?.toUpperCase().includes(keyword.toUpperCase())) {
+                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
+                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+                }
+              }
             });
           }
         });
       }
       if (index === this.specData.length - 1) {
-        console.log('filteredSpecData', this.filteredSpecData)
         this.populatefilteredSpecData(this.filteredSpecData)
       }
     });
@@ -107,8 +117,9 @@ export class SpecificationsComponent implements OnInit {
 
   populatefilteredSpecData(list: any) {
     let deleteIndexes: any[] = [];
+    this.wantedIndexes = [];
+    this.removableIndexes = [];
     this.filteredSpecData = _.compact(list);
-    console.log('specData at populatefilteredSpecData', this.specData)
     this.specData.forEach((item: any, index: any) => {
       deleteIndexes = [];
       if (typeof (item?.content) == 'object' && item?.content.length > 0)
@@ -128,10 +139,7 @@ export class SpecificationsComponent implements OnInit {
     });
     _.pullAt(this.specData, this.removableIndexes);
     let speclist = this.specData;
-    console.log('--------------------', this.specData)
-    localStorage.setItem('searchSpec', 'true')
     this.utils.passSelectedSpecItem(speclist);
-    console.log('specData', this.specData)
   }
 
   deleteSpecData(index: any, indexes: any) {
@@ -175,11 +183,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   clearSearchText() {
-    this.getMeSpecList()
-    // console.log('this.specDataCopy before', this.specDataCopy)
-    // this.specData = this.specDataCopy;
-    // console.log('this.specDataCopy after', this.specDataCopy)
-    // this.utils.passSelectedSpecItem(this.specData);
+    this.getMeSpecList();
   }
 
   refreshCurrentRoute(): void {
@@ -199,8 +203,12 @@ export class SpecificationsComponent implements OnInit {
           });
         }
       })
-      this.specDataCopy = _.cloneDeep(list);
       this.specData = list;
+      if (this.specDataBool) {
+        let stringList = JSON.stringify([...list])
+        localStorage.setItem('specData', stringList)
+      }
+      this.specDataBool = false;
       this.utils.passSelectedSpecItem(list);
     } else {
       this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
@@ -281,6 +289,10 @@ export class SpecificationsComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
     });
+  }
+
+  ngOnDestroy(): void {
+    localStorage.removeItem('specData')
   }
 
 }
