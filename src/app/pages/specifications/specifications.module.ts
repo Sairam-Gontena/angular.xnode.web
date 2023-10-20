@@ -13,6 +13,7 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { DataDictionaryComponent } from './data-dictionary/data-dictionary.component';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
+import { UserRolesComponent } from './user-roles/user-roles.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component
     DataDictionaryComponent,
     UserPersonaComponent,
     SpecGenPopupComponent,
+    UserRolesComponent,
     CamelToTitlePipe,
     ObjectToArrayPipe
   ],
