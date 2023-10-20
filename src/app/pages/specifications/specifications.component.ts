@@ -223,6 +223,8 @@ export class SpecificationsComponent implements OnInit {
     if (this.currentUser.email === this.product.email) {
       this.showSpecGenaretePopup = true;
       this.isTheCurrentUserOwner = true;
+      this.productStatusPopupContent = ' Do you want to regenerate Spec for this product?';
+
     } else {
       this.showSpecGenaretePopup = true;
       this.isTheCurrentUserOwner = false;

@@ -1,10 +1,10 @@
-<!-- <xnode-template-builder-publish-header></xnode-template-builder-publish-header> -->
 <div class="flex" *ngIf="specData?.length;else showHeader">
     <xnode-specifications-menu (text)="searchText($event)" [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
         <div
             [ngClass]="{'comments-opened': isCommnetsPanelOpened, 'side-menu-comments-opened': isCommnetsPanelOpened && isSideMenuOpened ,'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
-            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"></xnode-specifications-header>
+            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+                (generateSpec)="checkUserEmail()"></xnode-specifications-header>
             <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
         </div>
         <div [ngClass]="isCommnetsPanelOpened ? 'comments-panel' : 'comments-panel-hidden'">
