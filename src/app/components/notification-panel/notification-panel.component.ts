@@ -122,6 +122,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('app_name', obj?.product_name);
     if (obj.component && obj.component !== '') {
       this.router.navigate(['/specification']);
+      window.location.reload();
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);

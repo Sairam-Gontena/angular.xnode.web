@@ -199,7 +199,11 @@ export class SpecificationsComponent implements OnInit {
       const list = response.data.content;
       list.forEach((obj: any, index: any) => {
         if (obj?.title == 'Technical Specifications') {
+          if (!Array.isArray(obj.content)) {
+            obj.content = [];
+          }
           obj.content.push({ title: 'OpenAPI Spec', content: [], id: "open-api-spec" })
+
         }
       })
       this.specData = list;
