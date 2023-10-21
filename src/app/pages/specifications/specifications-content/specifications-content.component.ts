@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
 import { ApiService } from 'src/app/api/api.service';
+import { SidePanel } from 'src/models/side-panel.enum';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -60,8 +61,8 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
 
-    this.utils.isCommentPanelToggled.subscribe((event: any) => {
-      this.isCommentPanelOpened = event;
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      this.isCommentPanelOpened = pnl === SidePanel.Comments;
     });
   }
 
@@ -202,7 +203,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   onClickComment(item: any) {
     this.utils.saveSelectedSection(item);
-    this.utils.openCommentPanel(true);
+    this.utils.openOrClosePanel(SidePanel.Comments);
   }
 
   getTestCaseKeys(testCase: any): string[] {

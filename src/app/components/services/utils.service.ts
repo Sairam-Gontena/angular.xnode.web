@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SidePanel } from 'src/models/side-panel.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -44,9 +45,8 @@ export class UtilsService {
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
-  private showCommentPanel: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public isCommentPanelToggled: Observable<any> = this.showCommentPanel.asObservable();
-
+  private currentSidePanel: BehaviorSubject<SidePanel> = new BehaviorSubject<SidePanel>(SidePanel.None);
+  public sidePanelChanged: Observable<SidePanel> = this.currentSidePanel.asObservable();
 
   private selectedSection: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSelectedSection: Observable<any> = this.selectedSection.asObservable();
@@ -116,8 +116,9 @@ export class UtilsService {
     this.sectionIndex.next(event);
   }
 
-  openCommentPanel(event: any): void {
-    this.showCommentPanel.next(event);
+  
+  openOrClosePanel(pnl:SidePanel): void{
+    this.currentSidePanel.next(pnl);
   }
   saveProductId(event: any): void {
     this.productId.next(event);
