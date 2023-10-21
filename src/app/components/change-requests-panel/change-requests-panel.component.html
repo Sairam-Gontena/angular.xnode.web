@@ -1,0 +1,19 @@
+<div class="flex justify-content-between flex-wrap text-white p-5 border-bottom-1 border-white-alpha-40">
+  <div class="flex align-items-center justify-content-center">Change Requests</div>
+  <div class="flex align-items-center justify-content-end">
+    <i class="pi pi-times pointer" (click)="onClickClose()"></i>
+  </div>
+</div>
+<div class="grid border-left-3 border-white border-round-md  mt-2 ml-2" style="background-color: #2D3E65;">
+  <div class="col">
+    <div class="changerequest-title">
+      Create a new change request
+    </div>
+    <div class="text-white text-sm">
+      Create a new change request and attach your tasks
+    </div>
+  </div>
+  <div class="col">
+    <p-button label="Create new change" styleClass="p-button-rounded p-button-outlined" [rounded]="true"></p-button>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
+import { SidePanel } from 'src/models/side-panel.enum';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -37,7 +38,7 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   onClickClose() {
-    this.utils.openCommentPanel(false);
+    this.utils.openOrClosePanel(SidePanel.None);
     this.utils.saveSelectedSection(null);
   }
 

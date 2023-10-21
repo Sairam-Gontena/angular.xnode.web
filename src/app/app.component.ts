@@ -11,6 +11,7 @@ import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
 import { debounce } from "rxjs/operators";
 import { interval } from "rxjs";
+import { SidePanel } from 'src/models/side-panel.enum';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -79,7 +80,7 @@ export class AppComponent implements OnInit {
     }
     if (!window.location.hash.includes('#/reset-password?email'))
       this.redirectToPreviousUrl();
-    this.utilsService.isCommentPanelToggled.subscribe((event: any) => {
+    this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isSideWindowOpen = false;
       this.isNaviExpanded = false;
       this.utilsService.disableDockedNavi();
