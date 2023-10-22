@@ -21,21 +21,21 @@
         </div>
     </div>
     <div class="col-8 content-bg">
-        <h1>{{content.name ? content.name : content.title}}</h1>
+        <h3 class="mt-0">{{content.name ? content.name : content.title}}</h3>
         <div>
-            <h3 class="mb-0">About</h3>
-            <p class="text-sm">{{content.content[0]?.Backstory}}
+            <h4 class="mb-0">About</h4>
+            <p class="text-sm mt-2">{{content.content[0]?.Backstory}}
             </p>
         </div>
         <div class="grid">
             <div class="col-6">
-                <h3 class="mb-0">Needs</h3>
-                <p class="text-sm">{{content.content[0]?.Needs}}
+                <h4 class="mb-0">Needs</h4>
+                <p class="text-sm mt-2">{{content.content[0]?.Needs}}
                 </p>
             </div>
             <div class="col-6">
-                <h3 class="mb-0">Goals</h3>
-                <p class="text-sm">{{content.content[0]?.Quote}}
+                <h4 class="mb-0">Goals</h4>
+                <p class="text-sm mt-2">{{content.content[0]?.Quote}}
                 </p>
             </div>
         </div>
