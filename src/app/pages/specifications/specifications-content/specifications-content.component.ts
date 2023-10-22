@@ -53,7 +53,7 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       if (event) {
         this.selectedSpecItem = event;
-        this.scrollToItem();
+        this.closeFullScreenView();
       }
     })
 
@@ -203,7 +203,8 @@ export class SpecificationsContentComponent implements OnInit {
   closeFullScreenView(): void {
     this.specExpanded = false;
     setTimeout(() => {
-      this.scrollToItem()
+      this.scrollToItem();
+      this.fetchOpenAPISpec();
     }, 1000);
   }
 
