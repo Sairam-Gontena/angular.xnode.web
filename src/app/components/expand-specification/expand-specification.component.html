@@ -1,151 +1,52 @@
 <div class="content overflow-hidden" [ngClass]="{'bg-white':dataToExpand.swagger}">
-    <xnode-data-model-common *ngIf="dataToExpand.dataModel" (dataFlowEmitter)="expandComponent($event)"
-        [dataToExpand]="dataToExpand"></xnode-data-model-common>
-    <xnode-bpmn-common *ngIf="dataToExpand.xflows" (dataFlowEmitter)="expandComponent($event)"
-        [dataToExpand]="dataToExpand"></xnode-bpmn-common>
-    <div *ngIf="dataToExpand.swagger" class="swagger-h overflow-auto">
+    <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Management Persistence'"
+        (dataFlowEmitter)="closeFullScreenView.emit()" [dataToExpand]="dataToExpand"
+        [specExpanded]="specExpanded"></xnode-data-model-common>
+    <xnode-bpmn-common *ngIf="dataToExpand.title ==='Workflows'" (dataFlowEmitter)="closeFullScreenView.emit()"
+        [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
+    <div *ngIf="dataToExpand.title ==='OpenAPI Spec'" class="swagger-h overflow-auto">
         <div class="flex col-12 justify-content-between align-items-center p-4">
             <h4 class="m-0 pb-3">Swagger API</h4>
-            <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.swagger" (click)="expandComponent(false)"></i>
+            <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
         </div>
         <div id="openapi-ui-spec" class="openapi-spec"></div>
     </div>
-    <div *ngIf="dataToExpand.dashboard" class="h-full bg-white">
+    <div *ngIf="dataToExpand.title ==='User Interface Design'" class="h-full bg-white">
         <div class="h-full relative">
             <div class="absolute right-0 mr-2 mt-2">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dashboard"
-                    (click)="expandComponent(false)"></i>
+                <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
             </div>
             <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
             </iframe>
         </div>
     </div>
-    <div *ngIf="dataToExpand.table" class="h-full bg-white overflow-auto">
+    <div *ngIf="dataToExpand.title === 'Error Handling' || dataToExpand.title === 'Glossary' ||
+    dataToExpand.title === 'Historical Data Load' || dataToExpand.title === 'Version Control' ||
+    dataToExpand.title ==='Stakeholder Approvals'" class="h-full bg-white overflow-auto">
         <div class="h-full">
             <div class="flex flex-row col-12 justify-content-end">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.table" (click)="expandComponent(false)"></i>
+                <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
             </div>
-            <p-table [columns]="setColumnsToTheTable(dataToExpand.item.item)" [value]="dataToExpand.item.item">
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th *ngFor="let col of columns">
-                            {{ col.header }}
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-columns="columns">
-                    <tr>
-                        <td *ngFor="let col of columns; let i = index ">
-                            <div *ngIf="isArray(rowData[col.field])">
-                                <div *ngFor="let data of rowData[col.field]">
-                                    {{data.columnName ? data.columnName : data}}
-                                </div>
-                            </div>
-                            <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field] }}</div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+            <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
         </div>
     </div>
-    <div *ngIf="dataToExpand.dataQuilityChecksTable" class="h-full bg-white overflow-auto">
-        <div class="h-full">
-            <div class="flex flex-row col-12 justify-content-end">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dataQuilityChecksTable"
-                    (click)="expandComponent(false)"></i>
-            </div>
-            <div *ngFor="let subItem of dataToExpand.item.item.content" class="p-3">
-                <h4 class="m-0 pt-3 pb-2">{{subItem.title}}</h4>
-                <p-table [columns]="setColumnsToTheTable(subItem?.content)" [value]="subItem?.content">
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr>
-                            <td *ngFor="let col of columns; let i = index ">
-                                <div *ngIf="isArray(rowData[col.field])">
-                                    <div *ngFor="let data of rowData[col.field]">
-                                        {{data.columnName}}
-                                    </div>
-                                </div>
-                                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field]}}</div>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="dataToExpand.dataQualityData" class="h-full bg-white ">
-        <div class="h-full overflow-auto relative">
-            <div class="flex flex-row col-12 justify-content-end absolute z-1">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.dataQualityData"
-                    (click)="expandComponent(false)"></i>
-            </div>
-            <div *ngFor="let subitem of dataToExpand.item.item">
-                <div class="flex flex-row col-12 justify-content-between ">
-                    <div></div>
-                </div>
-                <p-table [columns]="setColumnsToTheTable(subitem.content)" class="my-2" [value]="subitem.content">
-                    <ng-template pTemplate="caption">
-                        <h4>{{ subitem?.header }}</h4>
-                    </ng-template>
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th *ngFor="let col of subitem.title">
-                                {{ col }}
-                            </th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr>
-                            <td *ngFor="let col of subitem.content">
-                                {{ rowData }}
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="dataToExpand.userInterfaces" class="h-full bg-white">
-        <div class="h-full">
-            <div class="flex flex-row col-12 justify-content-end">
-                <i class="pi pi-times text-xl pointer" *ngIf="dataToExpand.userInterfaces"
-                    (click)="expandComponent(false)"></i>
-            </div>
-            <p-table [columns]="setColumnsToTheTable(dataToExpand.item.item)" [value]="dataToExpand.item.item">
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th *ngFor="let col of columns">
-                            {{ col.header }}
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-columns="columns">
-                    <tr>
-                        <td *ngFor="let col of columns; let i = index ">
-                            <div *ngIf="isObject(rowData[col.field])">
-                                <div *ngFor="let item of rowData[col.field] | keyvalue">
-                                    {{ item.key }} : {{ item.value }},
-                                </div>
-                            </div>
-                            <div *ngIf="!isObject(rowData[col.field])">{{ rowData[col.field] }}</div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-    </div>
-    <div *ngIf="dataToExpand.usecases" class="h-full surface-900">
+    <div *ngIf="dataToExpand.title === 'Usecases'" class="h-full surface-900">
         <div class="flex flex-row col-12 justify-content-end">
-            <i class="pi pi-times text-xl pointer text-white " *ngIf="dataToExpand.usecases"
-                (click)="expandComponent(false)"></i>
+            <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
         </div>
         <xnode-common-usecases></xnode-common-usecases>
+    </div>
+    <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="surface-900 p-4">
+        <div class="flex flex-row justify-content-end pb-4">
+            <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
+        </div>
+        <div class="p-4 bg-white data-dictionary">
+            <xnode-data-dictionary *ngIf="dataToExpand.showTable; else elsejson"
+                [content]="dataToExpand.content"></xnode-data-dictionary>
+            <ng-template #elsejson>
+                <pre>{{ dataToExpand.content | json }}</pre>
+            </ng-template>
+        </div>
+
     </div>
 </div>

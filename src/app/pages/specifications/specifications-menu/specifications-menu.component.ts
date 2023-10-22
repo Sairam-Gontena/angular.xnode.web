@@ -66,13 +66,13 @@ export class SpecificationsMenuComponent implements OnInit {
   onClickSection(event: any, i: any) {
     this.selectedSection = event;
     this.selectedSecIndex = i;
-    this.utils.passSelectedSectionIndex(event);
+    this.utils.saveSelectedSection(event);
   }
 
   // not using this function
   getMeSpecList(): void {
     this.apiService.getApi("specs/retrieve/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
-      .then(response => {
+      .then((response: any) => {
         if (response?.status === 200 && !response.data.detail) {
           const list = response.data;
           list.forEach((obj: any) => {

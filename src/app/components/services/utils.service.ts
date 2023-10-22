@@ -112,12 +112,7 @@ export class UtilsService {
     this.specItem.next(event);
   }
 
-  passSelectedSectionIndex(event: any): void {
-    this.sectionIndex.next(event);
-  }
-
-  
-  openOrClosePanel(pnl:SidePanel): void{
+  openOrClosePanel(pnl: SidePanel): void {
     this.currentSidePanel.next(pnl);
   }
   saveProductId(event: any): void {
@@ -126,7 +121,6 @@ export class UtilsService {
   hasProductPermission(event: any): void {
     this.productEditPermission.next(event);
   }
-
 
   saveSelectedSection(event: any): void {
     this.selectedSection.next(event);
