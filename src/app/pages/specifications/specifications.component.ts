@@ -164,12 +164,13 @@ export class SpecificationsComponent implements OnInit {
     this.utils.loadSpinner(true);
     this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
       .then(response => {
+        debugger;
         if (response.data && Array.isArray(response.data?.content)) {
           this.isTheSpecGenerated = true;
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
-          if (this.currentUser.email === this.product.email) {
+          if (this.currentUser.email === this.product?.email) {
             this.showSpecGenaretePopup = true;
             this.isTheCurrentUserOwner = true;
             this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
@@ -181,6 +182,7 @@ export class SpecificationsComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       }).catch(error => {
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
   }

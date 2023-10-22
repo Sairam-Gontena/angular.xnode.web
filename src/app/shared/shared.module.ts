@@ -31,6 +31,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DataService } from '../pages/er-modeller/service/data.service';
+import { DataViewModule } from "primeng/dataview";
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { DataService } from '../pages/er-modeller/service/data.service';
     PanelModule,
     SidebarModule,
     FieldsetModule,
+    DataViewModule,
     ModalModule.forRoot(),
   ],
   exports: [
