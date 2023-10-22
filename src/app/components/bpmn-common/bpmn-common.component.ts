@@ -29,6 +29,7 @@ import { Router } from '@angular/router';
 export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   @Output() dataFlowEmitter = new EventEmitter<any>();
+  @Input() specExpanded?: boolean;
   @Input() dataToExpand: any;
   @Input() item: any;
 
@@ -64,7 +65,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   product: any;
   product_id: any;
   email: any;
-  isExpanded: boolean = false;
   showBpmn: boolean = false;
 
   constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService, private router: Router) {
@@ -102,13 +102,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     this.initializeBpmn();
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
     this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand?.xflows) {
-      this.isExpanded = true;
-    }
   }
 
   switchWindow() {
@@ -968,9 +961,8 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     return svg.node();
   }
 
-  expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ xflows: val, item: this.item });
-    this.isExpanded = val;
+  expandDataFlows(): void {
+    this.dataFlowEmitter.emit(this.dataToExpand);
   }
 
 }

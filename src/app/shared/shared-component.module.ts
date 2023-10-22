@@ -36,6 +36,8 @@ import { ExpandSpecificationComponent } from '../components/expand-specification
 import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
 import { CommonUsecasesComponent } from '../components/common-usecases/common-usecases.component';
 import { ChangeRequestsPanelComponent } from '../components/change-requests-panel/change-requests-panel.component';
+import { DataDictionaryComponent } from '../pages/specifications/data-dictionary/data-dictionary.component';
+import { CommonSpecTableComponent } from '../common-spec-table/common-spec-table.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -72,7 +74,9 @@ import { ChangeRequestsPanelComponent } from '../components/change-requests-pane
                 ExpandSpecificationComponent,
                 CommentsPanelComponent,
                 CommonUsecasesComponent,
-                ChangeRequestsPanelComponent
+                ChangeRequestsPanelComponent,
+                DataDictionaryComponent,
+                CommonSpecTableComponent
         ],
         imports: [
                 CommonModule,
@@ -113,7 +117,9 @@ import { ChangeRequestsPanelComponent } from '../components/change-requests-pane
                 ExpandSpecificationComponent,
                 CommentsPanelComponent,
                 CommonUsecasesComponent,
-                ChangeRequestsPanelComponent
+                ChangeRequestsPanelComponent,
+                DataDictionaryComponent,
+                CommonSpecTableComponent
         ]
 })
 export class SharedComponentModule { }
