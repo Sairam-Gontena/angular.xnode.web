@@ -20,7 +20,8 @@ export const SECTION_VIEW_CONFIG = {
         'Product Functions',
         'UserClasses Characteristics',
         'Data Model',
-        'Relationships'
+        'Relationships',
+        'User Classes Characteristics'
     ],
     listViewSections: [
        'Reporting Requirements',
@@ -31,6 +32,6 @@ export const SECTION_VIEW_CONFIG = {
        'Maintainability',
        'Portability',
        'Integration Points',
-       
+
     ]
 }
