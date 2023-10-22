@@ -35,6 +35,9 @@ import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.compone
 import { ExpandSpecificationComponent } from '../components/expand-specification/expand-specification.component';
 import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
 import { CommonUsecasesComponent } from '../components/common-usecases/common-usecases.component';
+import { ChangeRequestsPanelComponent } from '../components/change-requests-panel/change-requests-panel.component';
+import { DataDictionaryComponent } from '../pages/specifications/data-dictionary/data-dictionary.component';
+import { CommonSpecTableComponent } from '../common-spec-table/common-spec-table.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -70,7 +73,10 @@ import { CommonUsecasesComponent } from '../components/common-usecases/common-us
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
                 CommentsPanelComponent,
-                CommonUsecasesComponent
+                CommonUsecasesComponent,
+                ChangeRequestsPanelComponent,
+                DataDictionaryComponent,
+                CommonSpecTableComponent
         ],
         imports: [
                 CommonModule,
@@ -110,7 +116,10 @@ import { CommonUsecasesComponent } from '../components/common-usecases/common-us
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
                 CommentsPanelComponent,
-                CommonUsecasesComponent
+                CommonUsecasesComponent,
+                ChangeRequestsPanelComponent,
+                DataDictionaryComponent,
+                CommonSpecTableComponent
         ]
 })
 export class SharedComponentModule { }

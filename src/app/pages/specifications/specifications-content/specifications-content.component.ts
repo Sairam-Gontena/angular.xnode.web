@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
 import { ApiService } from 'src/app/api/api.service';
+import { SidePanel } from 'src/models/side-panel.enum';
+import { SECTION_VIEW_CONFIG } from '../section-view-config';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -15,6 +17,8 @@ declare const SwaggerUIBundle: any;
 export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   app_name: any;
   iframeSrc: SafeResourceUrl = '';
   dataModelIframeSrc: SafeResourceUrl = '';
@@ -34,6 +38,7 @@ export class SpecificationsContentComponent implements OnInit {
   isCommentPanelOpened: boolean = false;
   isOpenSmallCommentBox: boolean = false;
   smallCommentContent: string = '';
+  product: any;
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -45,23 +50,15 @@ export class SpecificationsContentComponent implements OnInit {
         this.specItemList = event;
       }
     })
-
-    this.utils.getMeSectionIndex.subscribe((event: any) => {
+    this.utils.getMeSelectedSection.subscribe((event: any) => {
       if (event) {
-        if (this.specExpanded) {
-          this.specExpanded = false;
-          setTimeout(() => {
-            this.scrollToItem(event.id)
-            this.fetchOpenAPISpec()
-          }, 500)
-        } else {
-          this.scrollToItem(event.id)
-        }
+        this.selectedSpecItem = event;
+        this.closeFullScreenView();
       }
     })
 
-    this.utils.isCommentPanelToggled.subscribe((event: any) => {
-      this.isCommentPanelOpened = event;
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      this.isCommentPanelOpened = pnl === SidePanel.Comments;
     });
   }
 
@@ -92,20 +89,24 @@ export class SpecificationsContentComponent implements OnInit {
 
   ngOnInit(): void {
     const record_id = localStorage.getItem('record_id');
+    const product = localStorage.getItem('product');
     this.app_name = localStorage.getItem('app_name');
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     let user_id = JSON.parse(userData).id;
-    if (record_id) {
-      this.targetUrl = environment.designStudioAppUrl + "?email=" + email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
+    if (product) {
+      this.product = JSON.parse(product)
     }
+    if (record_id) {
+      this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
+    }
+
     this.makeTrustedUrl();
   }
 
   isArray(item: any) {
     return Array.isArray(item);
-
   }
 
   onClickSeeMore(item: any, content: any): void {
@@ -120,6 +121,7 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
   }
+
   onClickSeeLess(item: any, content: any): void {
     this.selectedContent = content;
     this.showMoreContent = false;
@@ -132,12 +134,12 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
     setTimeout(() => {
-      this.utils.passSelectedSectionIndex(item);
+      this.utils.saveSelectedSection(item);
     }, 100)
   }
 
-  scrollToItem(itemId: string) {
-    const element = document.getElementById(itemId);
+  scrollToItem() {
+    const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -189,20 +191,26 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   expandComponent(val: any): void {
-    this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces || val.usecases || val.dataQuilityChecksTable) {
-      this.specExpanded = true
+    if (val) {
+      this.selectedSpecItem = val;
+      this.utils.saveSelectedSection(val);
+      this.specExpanded = true;
     } else {
       this.specExpanded = false;
-      setTimeout(() => {
-        this.fetchOpenAPISpec()
-      }, 100)
     }
+  }
+
+  closeFullScreenView(): void {
+    this.specExpanded = false;
+    setTimeout(() => {
+      this.scrollToItem();
+      this.fetchOpenAPISpec();
+    }, 1000);
   }
 
   onClickComment(item: any) {
     this.utils.saveSelectedSection(item);
-    this.utils.openCommentPanel(true);
+    this.utils.openOrClosePanel(SidePanel.Comments);
   }
 
   getTestCaseKeys(testCase: any): string[] {
@@ -221,21 +229,31 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   sendComment(content: any) {
-    let body: any = {
-      productId: localStorage.getItem('record_id'),
-      contentId: content.id,
-      comments: [{
-        user_id: 'jayadeep.k@salientminds.com',
-        comment: 'test'
-      }]
-    };
-    this.apiService.patchApi(body, 'specs/update/comments')
-      .then(response => {
-        console.log("succcess")
-      })
-      .catch(error => {
-        console.log("succcess")
-      });
+    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
+    if (this.smallCommentContent && this.smallCommentContent.length) {
+      let body: any = {
+        product_id: localStorage.getItem('record_id'),
+        content_id: content.id,
+        comments: [{
+          user_id: user_id,
+          message: this.smallCommentContent
+        }]
+      };
+      this.apiService.patchApi(body, 'specs/update-comments')
+        .then((response: any) => {
+          this.isOpenSmallCommentBox = false;
+        })
+        .catch((error: any) => {
+          this.isOpenSmallCommentBox = false;
+        });
+    }
+  }
+
+  checkParaViewSections(title: string) {
+    return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;
+  }
+  checkListViewSections(title: string) {
+    return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
   }
 }
 

@@ -21,6 +21,7 @@ export class DataModelCommonComponent {
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
   @Input() item: any;
+  @Input() specExpanded?: boolean;
   @Output() dataFlowEmitter = new EventEmitter<any>();
 
   data: Data | any;
@@ -36,7 +37,6 @@ export class DataModelCommonComponent {
   dataModel: any;
   product: any;
   product_id: any;
-  isExpanded: boolean = false;
   currentUrl: string = '';
   productDetails: any
 
@@ -68,12 +68,6 @@ export class DataModelCommonComponent {
     }
     this.utilsService.loadSpinner(true);
     this.getMeDataModel();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand?.dataModel) {
-      this.isExpanded = true;
-    }
   }
 
   toggleMenu() {
@@ -165,9 +159,8 @@ export class DataModelCommonComponent {
       });
   }
 
-  expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ dataModel: val, item: this.item });
-    this.isExpanded = val;
+  expandDataFlows(): void {
+    this.dataFlowEmitter.emit(this.dataToExpand);
   }
 
 }

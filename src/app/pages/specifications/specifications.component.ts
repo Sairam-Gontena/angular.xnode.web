@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { SidePanel } from 'src/models/side-panel.enum';
 
 @Component({
   selector: 'xnode-specifications',
@@ -28,6 +29,7 @@ export class SpecificationsComponent implements OnInit {
   isSideMenuOpened = true
   product: any;
   isCommnetsPanelOpened?: boolean = false;
+  isCRsPanelOpened: boolean = false;
   isTheCurrentUserOwner: boolean = false;
   isTheSpecGenerated?: boolean;
   consversationList: any;
@@ -38,8 +40,9 @@ export class SpecificationsComponent implements OnInit {
     private router: Router,
     private auditUtil: AuditutilsService
   ) {
-    this.utils.isCommentPanelToggled.subscribe((event: any) => {
-      this.isCommnetsPanelOpened = event;
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
+      this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
     })
   }
 

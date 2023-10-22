@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { SidePanel } from 'src/models/side-panel.enum';
 
 @Component({
   selector: 'xnode-specifications-header',
@@ -116,6 +117,10 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    this.utils.openCommentPanel(true);
+    this.utils.openOrClosePanel(SidePanel.Comments);
   }
+  openCRs() {
+    this.utils.openOrClosePanel(SidePanel.ChangeRequests);
+  }
+  
 }

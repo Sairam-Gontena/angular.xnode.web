@@ -10,7 +10,6 @@ import { SpecificationsContentComponent } from 'src/app/pages/specifications/spe
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
 import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
-import { DataDictionaryComponent } from './data-dictionary/data-dictionary.component';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
@@ -21,7 +20,6 @@ import { UserRolesComponent } from './user-roles/user-roles.component';
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
-    DataDictionaryComponent,
     UserPersonaComponent,
     SpecGenPopupComponent,
     UserRolesComponent,
