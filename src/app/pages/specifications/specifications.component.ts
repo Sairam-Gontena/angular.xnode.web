@@ -20,7 +20,7 @@ export class SpecificationsComponent implements OnInit {
   selectedSection: any;
   specId: any
   productStatusPopupContent: any;
-  showSpecGenaretePopup: any;
+  showSpecGenaretePopup: boolean = false;
   filteredSpecData: any;
   foundObjects: any[] = [];
   wantedIndexes: any[] = [];
