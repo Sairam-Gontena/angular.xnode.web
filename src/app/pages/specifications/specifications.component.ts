@@ -166,7 +166,6 @@ export class SpecificationsComponent implements OnInit {
     this.utils.loadSpinner(true);
     this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
       .then(response => {
-        debugger;
         if (response.data && Array.isArray(response.data?.content)) {
           this.isTheSpecGenerated = true;
           this.handleData(response);
@@ -190,7 +189,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   clearSearchText() {
-    this.getMeSpecList();
+    this.specData = this.specDataCopy;
   }
 
   refreshCurrentRoute(): void {
@@ -212,6 +211,7 @@ export class SpecificationsComponent implements OnInit {
 
         }
       })
+      this.specDataCopy = list;
       this.specData = list;
       if (this.specDataBool) {
         let stringList = JSON.stringify([...list])

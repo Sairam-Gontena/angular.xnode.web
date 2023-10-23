@@ -102,7 +102,6 @@ export class ChangeRequestsPanelComponent implements OnInit {
     this.utils.saveSelectedSection(null);
   }
   sortRequests(): void {
-    debugger;
     this.isAscending = !this.isAscending;
     this.changeRequests = this.changeRequests.sort((a, b) =>
       this.isAscending
