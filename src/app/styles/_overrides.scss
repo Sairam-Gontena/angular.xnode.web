@@ -53,14 +53,14 @@
     padding-top: 6px;
     padding-bottom: 6px;
     border-radius: 2rem;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color) !important;
+    border: 1px solid #2C91FD;
+    color: #2C91FD !important;
 }
 
 .p-confirm-dialog-reject:hover {
     background: var(--secondary-color) !important;
-    color: var(--primary-color) !important;
-    border: 1px solid var(--primary-color) !important;
+    color: #2C91FD !important;
+    border: 1px solid #2C91FD !important;
 }
 
 .p-confirm-dialog-accept {
