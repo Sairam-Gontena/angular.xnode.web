@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
@@ -44,6 +44,7 @@ export class SpecificationsComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
       this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
     })
+
   }
 
   ngOnInit(): void {
@@ -57,6 +58,7 @@ export class SpecificationsComponent implements OnInit {
         this.utils.disableSpecSubMenu();
       }
     })
+    this.utils.disableDockedNavi();
     this.getMeSpecList();
     let user = localStorage.getItem('currentUser');
     if (user)
@@ -164,7 +166,6 @@ export class SpecificationsComponent implements OnInit {
     this.utils.loadSpinner(true);
     this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
       .then(response => {
-        debugger;
         if (response.data && Array.isArray(response.data?.content)) {
           this.isTheSpecGenerated = true;
           this.handleData(response);
@@ -188,7 +189,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   clearSearchText() {
-    this.getMeSpecList();
+    this.specData = this.specDataCopy;
   }
 
   refreshCurrentRoute(): void {
@@ -210,6 +211,7 @@ export class SpecificationsComponent implements OnInit {
 
         }
       })
+      this.specDataCopy = list;
       this.specData = list;
       if (this.specDataBool) {
         let stringList = JSON.stringify([...list])
