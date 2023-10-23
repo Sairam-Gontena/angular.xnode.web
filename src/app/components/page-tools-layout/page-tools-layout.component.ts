@@ -6,7 +6,7 @@ import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
 import { User } from 'src/app/utils/user-util';
-import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 
 @Component({
@@ -48,6 +48,11 @@ export class PageToolsLayoutComponent {
 
   toggleMenu() {
     this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.utils.EnablePageToolsLayoutSubMenu()
+    } else {
+      this.utils.disablePageToolsLayoutSubMenu()
+    }
   }
 
   loadSubMenu() {
