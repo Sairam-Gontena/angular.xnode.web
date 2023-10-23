@@ -14,8 +14,9 @@ export class ProductAlertPopupComponent implements OnInit {
   @Input() showProductStatusPopup: any;
   @Output() closePopup = new EventEmitter<boolean>();
   @Output() openDockedNavi = new EventEmitter<Object>();
-  @Input() data: any;
+  @Input() contentdata: any;
 
+  data: any;
   visible = true;
   consversationList = [];
   currentUser?: User;
@@ -36,6 +37,8 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.data = { ...this.contentdata }
+    console.log('this.contentdata', this.contentdata)
     this.utils.getMeproductAlertPopup.subscribe((event: any) => {
       setTimeout(() => {
         this.dataPopulate();
@@ -56,7 +59,10 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   dataPopulate() {
-    this.dialogHeader = 'Confirm ' + this.data?.content
+    this.data = { ...this.contentdata }
+    console.log(this.data)
+    if (this.data?.content)
+      this.dialogHeader = 'Confirm ' + this.data?.content
     switch (this.data?.content) {
       case "App Generation": {
         this.buttonLabel = 'Generate app';

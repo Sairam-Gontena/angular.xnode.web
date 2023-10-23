@@ -114,6 +114,7 @@ export class AppComponent implements OnInit {
       this.messageService.add(event);
     });
     this.utilsService.getMeProductStatus.subscribe((event: any) => {
+      console.log('hitting me?', event)
       this.showProductStatusPopup = event;
     });
     this.utilsService.handleLimitReachedPopup.pipe(debounce(() => interval(1000))).subscribe((event: any) => {
