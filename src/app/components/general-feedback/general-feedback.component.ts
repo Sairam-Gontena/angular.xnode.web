@@ -327,7 +327,7 @@ export class GeneralFeedbackComponent implements OnInit {
 
   routeToFeedbackList() {
     this.closePopup();
-    this.router.navigate(['/feedback-list'])
+    this.router.navigate(['/feedback-list'], { queryParams: { type: 'user-feedback' } })
   }
 
   fileBrowseHandler(files: any) {

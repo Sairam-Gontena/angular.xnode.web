@@ -87,6 +87,10 @@ export class SpecificationsContentComponent implements OnInit {
     this.fetchOpenAPISpec()
   }
 
+  ngOnChanges() {
+    this.specItemList = this.specData
+  }
+
   ngOnInit(): void {
     const record_id = localStorage.getItem('record_id');
     const product = localStorage.getItem('product');

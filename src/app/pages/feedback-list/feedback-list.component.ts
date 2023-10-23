@@ -47,8 +47,9 @@ export class FeedbackListComponent {
     private route: ActivatedRoute
   ) {
     let queryParams = this.route.snapshot.queryParams;
-    if (queryParams['type']?.length > 0 && queryParams['id']?.length > 0) {
-      this.deepLinkId = queryParams['id'];
+    if (queryParams['type']?.length > 0) {
+      if (queryParams['id']?.length > 0)
+        this.deepLinkId = queryParams['id'];
       if (queryParams['type'] == 'user-feedback') {
         this.deepLinkType = 'USER_FEEDBACK'
       } else if (queryParams['type'] == 'user-bug-report') {
