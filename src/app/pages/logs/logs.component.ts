@@ -11,11 +11,12 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 })
 export class LogsComponent implements OnInit {
   logsData: any;
-  isOpen = true;
   cols: any;
   tableInfo: any;
   email: any;
   productId: any;
+  isSideMenuOpen: boolean = true
+  isDockedNaviOpened: boolean = false;
 
   constructor(private apiService: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService) {
     let product = localStorage.getItem('product')
@@ -50,7 +51,14 @@ export class LogsComponent implements OnInit {
         this.utilsService.loadSpinner(false)
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
       })
+      this.utilsService.openSubmenu.subscribe((data: any) => {
+        this.isSideMenuOpen = data;
+      })
     }
+    this.utilsService.openDockedNavi.subscribe((info) => {
+      this.isDockedNaviOpened = info
+    })
   }
+
 
 }

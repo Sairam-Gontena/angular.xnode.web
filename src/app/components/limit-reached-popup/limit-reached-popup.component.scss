@@ -46,11 +46,12 @@
 
 :host::ng-deep.cancel-button .p-button {
     color: #ffffff;
-    background: #2E2D36;
+    // background: #2E2D36;
+    background: #23222B;
     font-size: 12px;
     padding-top: 6px;
     padding-bottom: 6px;
-    border: 1px solid #2E2D36;
+    border: 1px solid #ffffff;
 }
 
 .limit-reached {
