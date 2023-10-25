@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
-import { ApiService } from 'src/app/api/api.service';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -34,7 +34,7 @@ export class CommentsPanelComponent implements OnInit {
     return this._contentData;
   }
 
-  constructor(private utils: UtilsService, private apiService: ApiService) {
+  constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     })
@@ -52,7 +52,7 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   getLatestComments(){
-    this.apiService.getApi('specs/get-comments/'+this.contentData.id).then((response:any)=>{
+    this.commentsService.getComments(this.contentData).then((response:any)=>{
       if(response && response.data && response.data.comments && response.data.comments.length){
         this.commentList = response.data.comments;
       }else{
