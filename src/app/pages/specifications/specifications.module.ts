@@ -13,7 +13,6 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
-
 @NgModule({
   declarations: [
     SpecificationsComponent,

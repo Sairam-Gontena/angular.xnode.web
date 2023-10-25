@@ -15,6 +15,7 @@ export class SpecificationsComponent implements OnInit {
   currentUser: any;
   specData?: any;
   specDataCopy?: any;
+  keyword: any;
   private specDataBool: boolean = true;
   selectedSpec: any;
   selectedSection: any;
@@ -43,8 +44,7 @@ export class SpecificationsComponent implements OnInit {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
       this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
-    })
-
+    });
   }
 
   ngOnInit(): void {
@@ -73,6 +73,7 @@ export class SpecificationsComponent implements OnInit {
       this.clearSearchText();
       return
     }
+    this.keyword = keyword;
     this.filteredSpecData = [];
     this.specData = [];
     this.foundObjects = [];
@@ -190,6 +191,7 @@ export class SpecificationsComponent implements OnInit {
 
   clearSearchText() {
     this.specData = this.specDataCopy;
+    this.keyword = '';
   }
 
   refreshCurrentRoute(): void {
