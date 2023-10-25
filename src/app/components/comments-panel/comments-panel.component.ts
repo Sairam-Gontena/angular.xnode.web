@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { CommentsService } from 'src/app/api/comments.service';
+import { Comment } from 'src/models/comment';
+import { SpecContent } from 'src/models/spec-content';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -10,7 +13,7 @@ import { SidePanel } from 'src/models/side-panel.enum';
 export class CommentsPanelComponent implements OnInit {
   userImage?: any;
   username?: any;
-  commentList: any = [];
+  commentList: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
@@ -20,7 +23,20 @@ export class CommentsPanelComponent implements OnInit {
   currentUser: any;
   selectedSection: any;
 
-  constructor(private utils: UtilsService) {
+  private _contentData: any;
+  @Input()
+  set contentData(contentData: SpecContent) {
+    this._contentData = contentData;
+    if(this._contentData){
+      this.getLatestComments();
+    }
+  }
+
+  get contentData(): any {
+    return this._contentData;
+  }
+
+  constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     })
@@ -34,7 +50,20 @@ export class CommentsPanelComponent implements OnInit {
       if (this.currentUser.first_name && this.currentUser.last_name) {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
-    }
+    }  
+  }
+
+  getLatestComments(){
+    this.commentsService.getComments(this.contentData).then((response:any)=>{
+      if(response && response.data && response.data.comments && response.data.comments.length){
+        this.commentList = response.data.comments;
+      }else{
+        this.commentList = [];
+      }
+    }).catch(err=>{
+      console.log(err);
+      this.commentList = [];
+    });
   }
 
   onClickClose() {
