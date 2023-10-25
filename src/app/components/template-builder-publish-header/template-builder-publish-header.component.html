@@ -1,8 +1,6 @@
 <div class="flex justify-content-between flex-wrap publish-header pl-4 pr-4">
     <div class="flex align-items-center justify-content-center">
-        <p-dropdown [options]="templates" [(ngModel)]="selectedTemplate" optionLabel="title" optionValue="id"
-            class="app-dropdown" (onChange)="selectedProduct($event)">
-        </p-dropdown>
+        <xnode-product-dropdown></xnode-product-dropdown>
         <div *ngIf="product_url &&  product_url !==''">
             <i class="pi pi-external-link app-external-link-icon p-4 text-white pointer" [title]="product_url"
                 (click)="openExternalLink(product_url)" *ngIf="product_url !== ''"></i>

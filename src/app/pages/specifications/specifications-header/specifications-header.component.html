@@ -5,19 +5,17 @@
     </div>
     <div class="flex justify-content-between flex-wrap p-4 border-bottom-1 border-white-alpha-40 header-items">
         <div class="flex">
-            <p-dropdown [options]="templates" [(ngModel)]="selectedTemplate" optionLabel="title" optionValue="id"
-                class="app-dropdown" (onChange)="selectedProduct($event)">
-            </p-dropdown>
+            <xnode-product-dropdown></xnode-product-dropdown>
         </div>
         <div class="flex align-items-center ">
             <img src="../assets/fav.svg " class="pr-3 pointer" alt="Logo">
             <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
                 (click)="openComments()">
             <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
-            <p-button (click)="op.toggle($event)" class="ellipsis-btn -ml-3" icon="pi pi-ellipsis-v"
-                ></p-button>
+            <p-button (click)="op.toggle($event)" class="ellipsis-btn -ml-3" icon="pi pi-ellipsis-v"></p-button>
             <p-overlayPanel class="overlay-class" #op>
-                <div class="confirm-overlay p-2 cursor-pointer border-round-md " (click)="openCRs()" >Change Requests</div>
+                <div class="confirm-overlay p-2 cursor-pointer border-round-md " (click)="openCRs()">Change Requests
+                </div>
                 <div class="confirm-overlay p-2 cursor-pointer border-round-md ">Integration</div>
                 <div class="confirm-overlay p-2 cursor-pointer border-round-md" (keyup)="openPopup('Spec Generation')"
                     (keydown)="op.hide()" (keypress)="openPopup('Spec Generation')"

@@ -21,6 +21,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string | null;
+
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;
@@ -45,12 +46,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
-    this.utilsService.getMeProductId.subscribe((event: any) => {
-      if (event) {
-        this.selectedTemplate = event;
-        this.storeProductData(event)
-      }
-    })
+    // this.utilsService.getMeProductId.subscribe((event: any) => {
+    //   if (event) {
+    //     this.selectedTemplate = event;
+    //     this.storeProductData(event)
+    //   }
+    // })
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -320,25 +321,5 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       });
   }
 
-  selectedProduct(data: any): void {
-    const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
-    if (this.currentUser?.email == product.email) {
-      this.utilsService.hasProductPermission(true)
-    } else {
-      this.utilsService.hasProductPermission(false)
-    }
-    if (product) {
-      localStorage.setItem('product_email', product.email)
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
-      localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
-      this.product_url = product.product_url;
-    }
-    this.utilsService.showProductStatusPopup(false);
-    this.refreshCurrentRoute();
-    this.auditUtil.post("TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
-  }
 }
 
