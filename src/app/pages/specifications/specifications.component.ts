@@ -33,6 +33,7 @@ export class SpecificationsComponent implements OnInit {
   isTheCurrentUserOwner: boolean = false;
   isTheSpecGenerated?: boolean;
   consversationList: any;
+  contentData:  any;
 
   constructor(
     private utils: UtilsService,
@@ -304,6 +305,10 @@ export class SpecificationsComponent implements OnInit {
 
   ngOnDestroy(): void {
     localStorage.removeItem('specData')
+  }
+
+  _openAndGetComments(event:any){
+    this.contentData = {...event};
   }
 
 }

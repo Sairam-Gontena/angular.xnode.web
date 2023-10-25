@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -20,7 +21,20 @@ export class CommentsPanelComponent implements OnInit {
   currentUser: any;
   selectedSection: any;
 
-  constructor(private utils: UtilsService) {
+  private _contentData: any;
+  @Input()
+  set contentData(contentData) {
+    this._contentData = contentData;
+    if(this._contentData){
+      this.getLatestComments();
+    }
+  }
+
+  get contentData(): any {
+    return this._contentData;
+  }
+
+  constructor(private utils: UtilsService, private apiService: ApiService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     })
@@ -34,7 +48,20 @@ export class CommentsPanelComponent implements OnInit {
       if (this.currentUser.first_name && this.currentUser.last_name) {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
-    }
+    }  
+  }
+
+  getLatestComments(){
+    this.apiService.getApi('specs/get-comments/'+this.contentData.id).then((response:any)=>{
+      if(response && response.data && response.data.comments && response.data.comments.length){
+        this.commentList = response.data.comments;
+      }else{
+        this.commentList = [];
+      }
+    }).catch(err=>{
+      console.log(err);
+      this.commentList = [];
+    });
   }
 
   onClickClose() {
