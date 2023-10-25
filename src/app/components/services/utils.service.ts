@@ -90,7 +90,6 @@ export class UtilsService {
   }
 
   showProductStatusPopup(event: any): void {
-    console.log(this.productStatus)
     this.productStatus.next(event);
   }
 

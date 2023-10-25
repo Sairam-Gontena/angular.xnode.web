@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  productAlertPopup: boolean = false;
   content: any;
 
   constructor(
@@ -114,7 +115,6 @@ export class AppComponent implements OnInit {
       this.messageService.add(event);
     });
     this.utilsService.getMeProductStatus.subscribe((event: any) => {
-      console.log('hitting me?', event)
       this.showProductStatusPopup = event;
     });
     this.utilsService.handleLimitReachedPopup.pipe(debounce(() => interval(1000))).subscribe((event: any) => {
@@ -179,6 +179,7 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
+        this.content.length > 0 ? this.productAlertPopup = true : this.productAlertPopup = false;
         this.showProductStatusPopup = true;
         this.utilsService.toggleProductAlertPopup(true);
       }
