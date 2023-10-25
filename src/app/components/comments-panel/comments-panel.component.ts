@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
+import { Comment } from 'src/models/comment';
+import { SpecContent } from 'src/models/spec-content';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -11,7 +13,7 @@ import { CommentsService } from 'src/app/api/comments.service';
 export class CommentsPanelComponent implements OnInit {
   userImage?: any;
   username?: any;
-  commentList: any = [];
+  commentList: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
@@ -23,7 +25,7 @@ export class CommentsPanelComponent implements OnInit {
 
   private _contentData: any;
   @Input()
-  set contentData(contentData) {
+  set contentData(contentData: SpecContent) {
     this._contentData = contentData;
     if(this._contentData){
       this.getLatestComments();
