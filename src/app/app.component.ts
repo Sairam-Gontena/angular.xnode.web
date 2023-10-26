@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  productAlertPopup: boolean = false;
   content: any;
 
   constructor(
@@ -178,6 +179,7 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
+        this.content.length > 0 ? this.productAlertPopup = true : this.productAlertPopup = false;
         this.showProductStatusPopup = true;
         this.utilsService.toggleProductAlertPopup(true);
       }
@@ -262,6 +264,7 @@ export class AppComponent implements OnInit {
       }, 2000);
     } else {
       alert("Invalid record id")
+      this.isSideWindowOpen = false;
     }
 
   }
@@ -292,6 +295,9 @@ export class AppComponent implements OnInit {
         break;
       case '/specification':
         comp = 'specification'
+        break;
+      case '/operate/change/history-log':
+        comp = 'history-log'
         break;
       default:
         break;

@@ -118,8 +118,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
       let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
-
     }
+
+    this.checkProductOptions()
   };
 
   storeProductData(id: string) {
@@ -320,6 +321,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
+
+  checkProductOptions() {
+    if (this.currentUser?.email == this.product.email) {
+      this.utilsService.hasProductPermission(true)
+    } else {
+      this.utilsService.hasProductPermission(false)
+    }
+  }
+
 
 }
 

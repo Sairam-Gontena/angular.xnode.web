@@ -13,7 +13,7 @@
             and click the comment button on the left.</p>
     </div>
 </div>
-<div class='comments-grid' *ngIf="commentList &&commentList.length >0">
+<div class='comments-grid' *ngIf="commentList && commentList.length >0">
     <div class="w-full" *ngFor="let cmt of commentList">
         <div class="flex p-3 align-items-center">
             <p-avatar [label]=" userImage" *ngIf="username" styleClass="mr-2"
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="mt-2 text-sm">
-            {{cmt.comment}}
+            {{cmt.message}}
         </div>
     </div>
 </div>
