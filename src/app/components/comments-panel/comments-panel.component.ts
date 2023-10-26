@@ -78,13 +78,9 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   onClickSend() {
-    console.log('this.comment', this.comment);
-
     this.commentObj.comment = this.comment;
     this.commentObj.role = 'user';
     this.commentObj.user_id = this.currentUser.id;
-    console.log('this.commentObj', this.commentObj);
-
     this.commentList.push(this.commentObj);
   }
 }

@@ -1,0 +1,14 @@
+<div class="p-inputgroup w-full md:w-30rem add-comment-panel">
+    <span class="p-inputgroup-addon">
+        <p-avatar [label]="utils.setUsernameOrDP()"
+            [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
+            shape="circle"></p-avatar> </span>
+    <input type="text" pInputText placeholder="Comments" [(ngModel)]="comment" />
+    <span class="p-inputgroup-addon">
+        <img src="../assets/attach.svg" class="pointer" alt="attach">
+    </span>
+    <span class="p-inputgroup-addon pointer">@</span>
+    <span class="p-inputgroup-addon">
+        <img src="../assets/comment-send.svg" class="pointer" alt="comment send" (click)="onClickSend()">
+    </span>
+</div>

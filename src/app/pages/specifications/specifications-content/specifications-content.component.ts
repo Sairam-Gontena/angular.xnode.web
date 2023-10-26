@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, SimpleChanges, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
@@ -42,10 +42,14 @@ export class SpecificationsContentComponent implements OnInit {
   isOpenSmallCommentBox: boolean = false;
   smallCommentContent: string = '';
   product: any;
+  isContentSelected = false;
+
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
+    private renderer: Renderer2,
+    private el: ElementRef,
     private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
     this.utils.getMeSpecItem.subscribe((event: any) => {
@@ -235,48 +239,71 @@ export class SpecificationsContentComponent implements OnInit {
     this.isOpenSmallCommentBox = false;
   }
 
-  sendComment(content: any) {
+  sendComment(comment: any) {
     let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    if (this.smallCommentContent && this.smallCommentContent.length) {
-      this.isOpenSmallCommentBox = false;
-      this.commentsService.getComments(content)
-        .then((commentsReponse: any) => {
-          let body: any = {
-            product_id: localStorage.getItem('record_id'),
-            content_id: content.id,
-          };
-
-          if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-            body.comments = [
-              ...commentsReponse['data']['comments'],
-              ...[{
-                user_id: user_id,
-                message: this.smallCommentContent
-              }]
-            ]
-          } else {
-            body.comments = [{
+    this.isOpenSmallCommentBox = false;
+    this.commentsService.getComments(this.selectedSpecItem)
+      .then((commentsReponse: any) => {
+        let body: any = {
+          product_id: localStorage.getItem('record_id'),
+          content_id: this.selectedSpecItem.id,
+        };
+        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
+          this.isOpenSmallCommentBox = false;
+          body.comments = [
+            ...commentsReponse['data']['comments'],
+            ...[{
               user_id: user_id,
-              message: this.smallCommentContent
+              message: comment
             }]
-          }
+          ]
+        } else {
+          body.comments = [{
+            user_id: user_id,
+            message: comment
+          }]
+        }
 
 
-          this.commentsService.updateComments(body)
-            .then((response: any) => {
-              
-              this.smallCommentContent = "";
-              this.getCommentsAfterUpdate.emit(content);
-            })
-            .catch((error: any) => {
-              this.smallCommentContent = "";
-            });
-        })
-        .catch(res => {
-          console.log("comments get failed");
-        })
+        this.commentsService.updateComments(body)
+          .then((response: any) => {
+
+            this.smallCommentContent = "";
+            this.getCommentsAfterUpdate.emit(comment);
+          })
+          .catch((error: any) => {
+            this.smallCommentContent = "";
+          });
+      })
+      .catch(res => {
+        console.log("comments get failed");
+      })
+    // }
+  }
+
+  checkSelection(item: any, obj: any) {
+    this.selectedSpecItem = obj;
+    const selection = window.getSelection();
+    if (selection?.toString() !== '') {
+      const selectedElement = selection?.anchorNode?.parentElement;
+      const selectedContent = selection?.toString();
+      this.specItemList.forEach((element: any) => {
+        if (item.id === element.id)
+          element.content.forEach((subEle: any) => {
+            if (obj.id === subEle.id) {
+              subEle.showCommentOverlay = true;
+              this.isOpenSmallCommentBox = true;
+            } else {
+              subEle.showCommentOverlay = false;
+            }
+          });
+      });
+    } else {
+      console.log('Content is not selected.');
     }
   }
+
+
 
   checkParaViewSections(title: string) {
     return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;

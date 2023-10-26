@@ -1,0 +1,14 @@
+:host ::ng-deep .p-inputgroup-addon {
+    background: #24232c !important;
+    border-left: 0;
+}
+
+:host::ng-deep .p-inputgroup-addon:first-child {
+    background: #24232c !important;
+    border-left: 1px solid #ced4da !important;
+}
+
+.add-comment-panel {
+    position: absolute;
+    top: -50px;
+}

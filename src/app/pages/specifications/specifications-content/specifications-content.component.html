@@ -28,8 +28,7 @@
                 </div>
                 <div *ngFor="let content of item.content;let cIndex = index; " class="mt-2">
                     <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'"
-                        [class.comment-area]="(content?.collapsed && isCommentPanelOpened)" id={{content?.id}}
-                        #contentContainer>
+                        id={{content?.id}} #contentContainer>
                         <div class="flex justify-content-between flex-wrap">
                             <div class="flex align-items-center justify-content-center">
                                 <h3 class="m-0 pb-2 text-2xl font-bold ">{{(i+1) + '.' + (cIndex+1) +' '+
@@ -194,7 +193,7 @@
                             </div>
                             <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
                         </div>
-                        
+
                         <div *ngIf="checkListViewSections(content.title)">
                             <ul *ngFor="let content of content.content">
                                 <li class="sub-content font-normal text-sm">{{content}}</li>
@@ -234,9 +233,8 @@
                         <div *ngIf="content.title ==='User Roles'">
                             <xnode-user-roles [content]="content.content"></xnode-user-roles>
                         </div>
-                        <div class="w-full" *ngIf="checkParaViewSections(content.title)"
-                            (click)="openSmallCommentBox(content)">
-                            <div *ngIf=" isArray(content.content); else notArray">
+                        <div class="w-full relative" (mouseup)="checkSelection(item,content)">
+                            <div *ngIf=" isArray(content.content); else notArray" [id]="content.id">
                                 <ul *ngFor="let subItem of content.content">
                                     <li>
                                         <p class="m-0 pb-1 line-height-3">
@@ -249,17 +247,14 @@
                                 </ul>
                             </div>
                             <ng-template #notArray>
-                                <div class="flex content text-base font-normal">
+                                <div class="flex content text-base font-normal" [id]="content.id">
                                     {{content?.content}}
                                 </div>
                             </ng-template>
+                            <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
+                                (sendComment)="sendComment($event)"></xnode-add-comment-overlay-panel>
                         </div>
-                        <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened"
-                            class="small-comment-box">
-                            <input [(ngModel)]="smallCommentContent" placeholder="comment" />
-                            <button (click)="sendComment(content)">Send</button>
-                            <button (click)="closeSmallCommentBix()">Close</button>
-                        </div>
+
                         <div class="gradientback" *ngIf="!content?.collapsed">
                         </div>
                         <div class="collapse" *ngIf="content?.collapsed">

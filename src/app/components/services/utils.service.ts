@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { User } from 'src/models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UtilsService {
+  currentUser?: User;
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private specSubMenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private dockedNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -145,5 +147,23 @@ export class UtilsService {
     } else {
       return `${seconds}seconds`;
     }
+  }
+
+  setUsernameOrDP() {
+    let data = localStorage.getItem("currentUser");
+    let userDp: string = '';
+    if (data) {
+      this.currentUser = JSON.parse(data);
+      if (this.currentUser?.image) {
+        userDp = this.currentUser?.image;
+      } else if (this.currentUser?.first_name && this.currentUser?.last_name) {
+        userDp = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
+      } else {
+        userDp = ''
+      }
+    } else {
+      userDp = ''
+    }
+    return userDp;
   }
 }

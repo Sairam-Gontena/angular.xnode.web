@@ -125,10 +125,11 @@ pre {
 .expnad-icon {
     width: 25px;
 }
-.comment-area > .w-full {
-    cursor: url("../../../../assets/comment-spec.svg"), auto;
-}
-.small-comment-box{
+
+// .comment-area > .w-full {
+//     cursor: url("../../../../assets/comment-spec.svg"), auto;
+// }
+.small-comment-box {
     position: fixed;
     left: 45%;
     bottom: 20%;

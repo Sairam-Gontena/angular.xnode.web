@@ -13,7 +13,7 @@
                 (getCommentsAfterUpdate)="_openAndGetComments($event)">
             </xnode-specifications-content>
         </div>
-        <div [ngClass]="isCommnetsPanelOpened ? 'flex w-full' : 'hidden'">
+        <div [ngClass]="isCommnetsPanelOpened ? 'flex w-full spec-bg' : 'hidden spec-bg'">
             <xnode-comments-panel class="w-full" [contentData]="contentData"></xnode-comments-panel>
         </div>
         <div [ngClass]="isCRsPanelOpened ? 'flex w-full' : 'hidden'">
