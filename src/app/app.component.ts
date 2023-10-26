@@ -262,6 +262,7 @@ export class AppComponent implements OnInit {
       }, 2000);
     } else {
       alert("Invalid record id")
+      this.isSideWindowOpen = false;
     }
 
   }
@@ -292,6 +293,9 @@ export class AppComponent implements OnInit {
         break;
       case '/specification':
         comp = 'specification'
+        break;
+      case '/operate/change/history-log':
+        comp = 'history-log'
         break;
       default:
         break;

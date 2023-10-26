@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { SpecContent } from 'src/models/spec-content';
 
 @Component({
   selector: 'xnode-specifications',
@@ -20,7 +21,7 @@ export class SpecificationsComponent implements OnInit {
   selectedSection: any;
   specId: any
   productStatusPopupContent: any;
-  showSpecGenaretePopup: any;
+  showSpecGenaretePopup: boolean = false;
   filteredSpecData: any;
   foundObjects: any[] = [];
   wantedIndexes: any[] = [];
@@ -33,6 +34,7 @@ export class SpecificationsComponent implements OnInit {
   isTheCurrentUserOwner: boolean = false;
   isTheSpecGenerated?: boolean;
   consversationList: any;
+  contentData: any;
 
   constructor(
     private utils: UtilsService,
@@ -44,6 +46,7 @@ export class SpecificationsComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
       this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
     })
+
   }
 
   ngOnInit(): void {
@@ -57,6 +60,7 @@ export class SpecificationsComponent implements OnInit {
         this.utils.disableSpecSubMenu();
       }
     })
+    this.utils.disableDockedNavi();
     this.getMeSpecList();
     let user = localStorage.getItem('currentUser');
     if (user)
@@ -169,7 +173,7 @@ export class SpecificationsComponent implements OnInit {
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
-          if (this.currentUser.email === this.product.email) {
+          if (this.currentUser.email === this.product?.email) {
             this.showSpecGenaretePopup = true;
             this.isTheCurrentUserOwner = true;
             this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
@@ -181,12 +185,13 @@ export class SpecificationsComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       }).catch(error => {
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
   }
 
   clearSearchText() {
-    this.getMeSpecList();
+    this.specData = this.specDataCopy;
   }
 
   refreshCurrentRoute(): void {
@@ -208,6 +213,7 @@ export class SpecificationsComponent implements OnInit {
 
         }
       })
+      this.specDataCopy = list;
       this.specData = list;
       if (this.specDataBool) {
         let stringList = JSON.stringify([...list])
@@ -300,6 +306,10 @@ export class SpecificationsComponent implements OnInit {
 
   ngOnDestroy(): void {
     localStorage.removeItem('specData')
+  }
+
+  _openAndGetComments(contendata: SpecContent){
+    this.contentData = {...contendata};
   }
 
 }

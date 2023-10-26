@@ -128,3 +128,13 @@ pre {
 .comment-area > .w-full {
     cursor: url("../../../../assets/comment-spec.svg"), auto;
 }
+.small-comment-box{
+    position: fixed;
+    left: 45%;
+    bottom: 20%;
+    border: 2px solid #fff;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    z-index: 20;
+}
