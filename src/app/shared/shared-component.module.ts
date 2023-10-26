@@ -38,6 +38,7 @@ import { CommonUsecasesComponent } from '../components/common-usecases/common-us
 import { ChangeRequestsPanelComponent } from '../components/change-requests-panel/change-requests-panel.component';
 import { DataDictionaryComponent } from '../pages/specifications/data-dictionary/data-dictionary.component';
 import { CommonSpecTableComponent } from '../common-spec-table/common-spec-table.component';
+import { HighlightPipe } from '../pipes/highlight.pipe';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -76,7 +77,8 @@ import { CommonSpecTableComponent } from '../common-spec-table/common-spec-table
                 CommonUsecasesComponent,
                 ChangeRequestsPanelComponent,
                 DataDictionaryComponent,
-                CommonSpecTableComponent
+                CommonSpecTableComponent,
+                HighlightPipe
         ],
         imports: [
                 CommonModule,

@@ -52,7 +52,7 @@
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-usecases></xnode-common-usecases>
+                            <xnode-common-usecases [searchTerm]="searchTerm"></xnode-common-usecases>
                         </div>
                         <div *ngIf="content.title ==='User Interface Design'">
                             <div class="flex justify-content-between align-items-center">
