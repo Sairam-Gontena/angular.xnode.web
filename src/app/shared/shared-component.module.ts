@@ -39,6 +39,7 @@ import { ChangeRequestsPanelComponent } from '../components/change-requests-pane
 import { DataDictionaryComponent } from '../pages/specifications/data-dictionary/data-dictionary.component';
 import { CommonSpecTableComponent } from '../common-spec-table/common-spec-table.component';
 import { SharedPipesModule } from '../pipes/sharedPipes.module';
+import { ProductDropdownComponent } from '../components/product-dropdown/product-dropdown.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -77,7 +78,8 @@ import { SharedPipesModule } from '../pipes/sharedPipes.module';
                 CommonUsecasesComponent,
                 ChangeRequestsPanelComponent,
                 DataDictionaryComponent,
-                CommonSpecTableComponent
+                CommonSpecTableComponent,
+                ProductDropdownComponent
         ],
         imports: [
                 CommonModule,
@@ -122,7 +124,8 @@ import { SharedPipesModule } from '../pipes/sharedPipes.module';
                 ChangeRequestsPanelComponent,
                 DataDictionaryComponent,
                 CommonSpecTableComponent,
-                SharedPipesModule
+                SharedPipesModule,
+                ProductDropdownComponent
         ]
 })
 export class SharedComponentModule { }

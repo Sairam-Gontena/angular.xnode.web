@@ -30,7 +30,7 @@
 <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
 <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
-    [data]="content" (openDockedNavi)="openNavi($event)"
+    [contentdata]="content" (openDockedNavi)="openNavi($event)"
     [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
