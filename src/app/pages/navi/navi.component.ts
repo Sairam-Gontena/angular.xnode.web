@@ -23,7 +23,8 @@ export class NaviComponent implements OnInit {
   safeUrl: SafeResourceUrl = '';
   xnodeAppUrl: string = environment.xnodeAppUrl;
   currentUser: any
-  showProductStatusPopup: boolean = false;
+  showProductStatusPopup = false;
+  productAlertPopup = false;
   content: any;
   productDetails: any;
   productEmail: any;
@@ -34,7 +35,6 @@ export class NaviComponent implements OnInit {
     if (product) {
       this.productDetails = JSON.parse(product);
     }
-
     const restriction_max_value = localStorage.getItem('restriction_max_value')
     if (this.currentUser) {
       this.currentUser = JSON.parse(this.currentUser)
@@ -94,9 +94,10 @@ export class NaviComponent implements OnInit {
             this.utils.showLimitReachedPopup(true);
           }
           if (event.data.message === 'triggerProductPopup') {
-            this.content = event.data.data;
-            this.showProductStatusPopup = true;
+            this.content = event?.data?.data;
             this.utils.toggleProductAlertPopup(true);
+            this.toggleProductPopup();
+            event.stopImmediatePropagation()
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
             const itemId = event.data.id;
@@ -114,6 +115,11 @@ export class NaviComponent implements OnInit {
     });
     this.makeTrustedUrl();
     this.utils.loadSpinner(false);
+  }
+
+  toggleProductPopup() {
+    this.showProductStatusPopup = !this.showProductStatusPopup;
+    this.content?.content ? this.productAlertPopup = true : this.productAlertPopup = false;
   }
 
   closePopup() {

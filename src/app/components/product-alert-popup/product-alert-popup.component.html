@@ -1,6 +1,6 @@
 <p-dialog header="{{dialogHeader}}" [(visible)]="showProductStatusPopup" [style]="{width: '30vw'}"
-    [breakpoints]="{ '1450px': '35vw' }">
-    <div *ngIf="data?.content; else elseBlock">
+    [breakpoints]="{ '1450px': '35vw' }" (onHide)="continueChat()">
+    <div *ngIf="contentdata?.content; else elseBlock">
         <div class="p-4" *ngIf=" this.buttonLabel !== 'Cancel'">
             Are you sure, you want to {{content}} this app?
         </div>
