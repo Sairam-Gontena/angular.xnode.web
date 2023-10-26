@@ -10,11 +10,12 @@
         <tr>
             <td *ngFor="let col of columns; let i = index ">
                 <div *ngIf="isArray(rowData[col.field])">
-                    <div *ngFor="let data of rowData[col.field]">
-                        {{data.columnName ? data.columnName : data}}
+                    <div *ngFor="let data of rowData[col.field]"
+                        [innerHTML]="data.columnName ? data.columnName : data | highlight: searchTerm">
                     </div>
                 </div>
-                <div *ngIf="!isArray(rowData[col.field])">{{ rowData[col.field] }}</div>
+                <div *ngIf="!isArray(rowData[col.field])" [innerHTML]="rowData[col.field] | highlight: searchTerm ">
+                </div>
             </td>
         </tr>
     </ng-template>

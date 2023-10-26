@@ -49,25 +49,22 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData>
                 <tr>
-                    <td>{{ rowData.columnName }}</td>
-                    <td>{{ rowData.columnType.type }}</td>
-                    <td>{{ rowData.columnType.displayFormat }}</td>
+                    <td [innerHTML]="rowData.columnName | highlight: searchTerm "></td>
+                    <td [innerHTML]="rowData.columnType.type | highlight: searchTerm"></td>
+                    <td [innerHTML]="rowData.columnType.displayFormat | highlight: searchTerm"></td>
                     <td>
                         <div>
-                            <p class="pt-0">
-                                Required: {{ rowData.validators.required }}
+                            <p class="pt-0"
+                                [innerHTML]="'Required: ' + (rowData.validators.required | highlight: searchTerm)"></p>
+                            <p class="pt-0" [innerHTML]="'Min: ' + (rowData.validators.min | highlight: searchTerm)">
                             </p>
-                            <p class="pt-0">
-                                Min: {{ rowData.validators.min }}
-                            </p>
-                            <p class="pt-0">
-                                Max: {{ rowData.validators.max }}
+                            <p class="pt-0" [innerHTML]="'Max: ' + (rowData.validators.max | highlight: searchTerm)">
                             </p>
                         </div>
                     </td>
-                    <td>{{ rowData.description }}</td>
-                    <td>{{ rowData.sensitiveData }}</td>
-                    <td>{{ rowData.reference }}</td>
+                    <td [innerHTML]="rowData.description | highlight: searchTerm"></td>
+                    <td [innerHTML]="rowData.sensitiveData | highlight: searchTerm"></td>
+                    <td [innerHTML]="rowData.reference | highlight: searchTerm"></td>
                 </tr>
             </ng-template>
         </p-table>

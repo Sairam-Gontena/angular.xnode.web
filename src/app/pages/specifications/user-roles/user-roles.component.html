@@ -2,10 +2,11 @@
     <h4 class="mb-0 pb-2">{{item.title}}</h4>
     <div *ngFor="let subItem of item.content" class="pl-4">
         <p class="m-0 pb-1 line-height-3">
-            <span class="sub-title text-base font-medium">{{subItem.title}}
+            <span class="sub-title text-base font-medium" [innerHTML]="subItem.title| highlight: searchTerm">
             </span>
             :
-            <span class="sub-content font-normal text-base">{{subItem.content }}</span>
+            <span class="sub-content font-normal text-base"
+                [innerHTML]="subItem.content | highlight: searchTerm"></span>
         </p>
     </div>
 </div>
