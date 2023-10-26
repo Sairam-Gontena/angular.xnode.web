@@ -7,6 +7,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 })
 export class LimitReachedPopupComponent {
   @Input() visible: any;
+  @Input() limitReachedContent: boolean = false;
   @Output() closePopup = new EventEmitter<boolean>();
 
   @HostListener('document:click', ['$event'])

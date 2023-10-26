@@ -58,6 +58,7 @@ export class AppHeaderComponent implements OnInit {
   showLimitReachedPopup: boolean = false;
   productId: any;
   userImage: any;
+  limitReachedContent: boolean = false;
 
 
   constructor(
@@ -292,6 +293,8 @@ export class AppHeaderComponent implements OnInit {
 
   showMeLimitInfoPopup(event: any): void {
     this.showLimitReachedPopup = event;
+    this.limitReachedContent = true;
+
   }
 
 }

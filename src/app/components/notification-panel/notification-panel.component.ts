@@ -16,6 +16,8 @@ export class NotificationPanelComponent {
   @Output() preparePublishPopup = new EventEmitter<any>();
   @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
+  @Input() limitReachedContent: boolean = false;
+
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -179,7 +181,9 @@ export class NotificationPanelComponent {
   }
 
   onClickPublish(obj: any): void {
+    this.limitReachedContent = true;
     this.getMeTotalAppsPublishedCount(obj);
+    console.log(obj)
   }
 
   getMeTotalAppsPublishedCount(obj: any): void {
