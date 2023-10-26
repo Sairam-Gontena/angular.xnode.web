@@ -16,7 +16,6 @@ export class ProductAlertPopupComponent implements OnInit {
   @Output() openDockedNavi = new EventEmitter<Object>();
   @Input() contentdata: any;
 
-  data: any;
   visible = true;
   consversationList = [];
   currentUser?: User;
@@ -37,14 +36,13 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.data = this.contentdata;
     this.product = localStorage.getItem('product');
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
       this.userId = JSON.parse(currentUser).user_id;
     }
-    if (this.data || this.data != 'undefined') {
+    if (this.contentdata || this.contentdata != 'undefined') {
       this.dataPopulate();
     } else {
       this.product_id = localStorage.getItem('record_id');
@@ -59,11 +57,10 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   dataPopulate() {
-    this.data = this.contentdata;
-    if (this.data || this.data != 'undefined') {
-      if (this.data?.content)
-        this.dialogHeader = 'Confirm ' + this.data?.content
-      switch (this.data?.content) {
+    if (this.contentdata || this.contentdata != 'undefined') {
+      if (this.contentdata?.content)
+        this.dialogHeader = 'Confirm ' + this.contentdata?.content
+      switch (this.contentdata?.content) {
         case "App Generation": {
           this.buttonLabel = 'Generate app';
           this.content = 'generate';
@@ -85,8 +82,8 @@ export class ProductAlertPopupComponent implements OnInit {
           break;
         }
       }
-      this.product_id = this.data?.product_id;
-      this.consversationList = JSON.parse(this.data?.conversation);
+      this.product_id = this.contentdata?.product_id;
+      this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
   }
 
