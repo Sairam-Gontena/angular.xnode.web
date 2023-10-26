@@ -88,7 +88,7 @@ export class VerifyOtpComponent implements OnInit {
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          this.utilsService.loadSpinner(true);
+          this.utilsService.loadSpinner(false);
         }
       })
       .catch((error: any) => {

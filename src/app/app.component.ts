@@ -248,6 +248,8 @@ export class AppComponent implements OnInit {
     let id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
+      this.subMenuLayoutUtil.EnableDockedNavi();
+      this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
       }
@@ -337,8 +339,6 @@ export class AppComponent implements OnInit {
   }
 
   submenuFunc() {
-    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
-    this.subMenuLayoutUtil.EnableDockedNavi();
     if (this.isSideWindowOpen) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';
