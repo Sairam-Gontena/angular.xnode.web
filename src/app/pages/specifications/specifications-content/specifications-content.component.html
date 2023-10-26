@@ -37,7 +37,7 @@
                             </div>
                             <div class="flex align-items-center justify-content-center">
                                 <img src="../assets/comment.svg" class="pointer" alt="comment"
-                                    (click)="onClickComment(item)">
+                                    (click)="onClickComment(item, content)">
                             </div>
                         </div>
                         <p-button (click)="onClickSeeMore(item,content)" label="See More" *ngIf="!content?.collapsed"
@@ -255,7 +255,7 @@
                             </ng-template>
                         </div>
                         <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened"
-                            style="position: fixed;left: 0;top: 10px;">
+                            class="small-comment-box">
                             <input [(ngModel)]="smallCommentContent" placeholder="comment" />
                             <button (click)="sendComment(content)">Send</button>
                             <button (click)="closeSmallCommentBix()">Close</button>

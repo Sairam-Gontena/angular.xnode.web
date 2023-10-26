@@ -3,14 +3,15 @@ import { AuditInfo } from "./audit-info";
 import { FileInfoMin } from "./file-info-min";
 
 export interface Comment extends AuditInfo {
-    Id: string;
-    ContentId?: string; // for CR Comment it can be null
-    ProductId?: string; // for CR Comment it can be null
-    Message: string;
-    CrId?: string; // when this comment relates to CR
-    LinkedCommentIds: string[]; // Replies to this comment
-    Attachments: FileInfoMin[];
-    UserMentions: UserMin[];
-    ItemType: string; // Comment / CR Comment
-    Status: string; // for CR comments to confirm if resolved
+    id: string;
+    content_id?: string; // for CR Comment it can be null
+    product_id?: string; // for CR Comment it can be null
+    user_id: string;
+    message: string;
+    crId?: string; // when this comment relates to CR
+    linkedCommentIds: string[]; // Replies to this comment
+    attachments: FileInfoMin[];
+    userMentions: UserMin[];
+    itemType: string; // Comment / CR Comment
+    status: string; // for CR comments to confirm if resolved
 }

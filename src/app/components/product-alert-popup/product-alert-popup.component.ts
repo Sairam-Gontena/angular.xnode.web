@@ -14,7 +14,7 @@ export class ProductAlertPopupComponent implements OnInit {
   @Input() showProductStatusPopup: any;
   @Output() closePopup = new EventEmitter<boolean>();
   @Output() openDockedNavi = new EventEmitter<Object>();
-  @Input() data: any;
+  @Input() contentdata: any;
 
   visible = true;
   consversationList = [];
@@ -36,51 +36,55 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utils.getMeproductAlertPopup.subscribe((event: any) => {
-      setTimeout(() => {
-        this.dataPopulate();
-      },);
-      this.showProductStatusPopup = event;
-    });
     this.product = localStorage.getItem('product');
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
       this.userId = JSON.parse(currentUser).user_id;
     }
-    if (this.data) {
+    if (this.contentdata || this.contentdata != 'undefined') {
       this.dataPopulate();
     } else {
       this.product_id = localStorage.getItem('record_id');
+      this.showProductStatusPopup = true;
     }
+    this.utils.getMeproductAlertPopup.subscribe((event: any) => {
+      setTimeout(() => {
+        this.dataPopulate();
+        this.showProductStatusPopup = event;
+      },);
+    });
   }
 
   dataPopulate() {
-    this.dialogHeader = 'Confirm ' + this.data?.content
-    switch (this.data?.content) {
-      case "App Generation": {
-        this.buttonLabel = 'Generate app';
-        this.content = 'generate';
-        break;
+    if (this.contentdata || this.contentdata != 'undefined') {
+      if (this.contentdata?.content)
+        this.dialogHeader = 'Confirm ' + this.contentdata?.content
+      switch (this.contentdata?.content) {
+        case "App Generation": {
+          this.buttonLabel = 'Generate app';
+          this.content = 'generate';
+          break;
+        }
+        case "App Publishing": {
+          this.buttonLabel = 'Publish app';
+          this.content = 'publish';
+          break;
+        }
+        case "Spec Generation": {
+          this.buttonLabel = 'Generate Spec'
+          this.content = 'generate spec for';
+          break;
+        }
+        default: {
+          this.buttonLabel = 'Cancel';
+          this.content = 'App not created yet';
+          break;
+        }
       }
-      case "App Publishing": {
-        this.buttonLabel = 'Publish app';
-        this.content = 'publish';
-        break;
-      }
-      case "Spec Generation": {
-        this.buttonLabel = 'Generate Spec'
-        this.content = 'generate spec for';
-        break;
-      }
-      default: {
-        this.buttonLabel = 'Cancel';
-        this.content = 'App not created yet';
-        break;
-      }
+      this.product_id = this.contentdata?.product_id;
+      this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
-    this.product_id = this.data?.product_id;
-    this.consversationList = JSON.parse(this.data?.conversation);
   }
 
   continueChat(): void {
