@@ -1,12 +1,12 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
-import { ApiService } from 'src/app/api/api.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
+import { CommentsService } from 'src/app/api/comments.service';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -18,6 +18,9 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @Input() keyword: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
+  @Output() openAndGetComments = new EventEmitter<any>();
+  @Output() getCommentsAfterUpdate = new EventEmitter<any>();
+
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   app_name: any;
@@ -45,7 +48,7 @@ export class SpecificationsContentComponent implements OnInit {
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
-    private apiService: ApiService) {
+    private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
@@ -215,9 +218,10 @@ export class SpecificationsContentComponent implements OnInit {
     }, 1000);
   }
 
-  onClickComment(item: any) {
+  onClickComment(item: any, content: any) {
     this.utils.saveSelectedSection(item);
     this.utils.openOrClosePanel(SidePanel.Comments);
+    this.openAndGetComments.emit(content)
   }
 
   getTestCaseKeys(testCase: any): string[] {
@@ -232,27 +236,48 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeSmallCommentBix() {
     this.isOpenSmallCommentBox = false;
-
   }
 
   sendComment(content: any) {
     let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
     if (this.smallCommentContent && this.smallCommentContent.length) {
-      let body: any = {
-        product_id: localStorage.getItem('record_id'),
-        content_id: content.id,
-        comments: [{
-          user_id: user_id,
-          message: this.smallCommentContent
-        }]
-      };
-      this.apiService.patchApi(body, 'specs/update-comments')
-        .then((response: any) => {
-          this.isOpenSmallCommentBox = false;
+      this.isOpenSmallCommentBox = false;
+      this.commentsService.getComments(content)
+        .then((commentsReponse: any) => {
+          let body: any = {
+            product_id: localStorage.getItem('record_id'),
+            content_id: content.id,
+          };
+
+          if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
+            body.comments = [
+              ...commentsReponse['data']['comments'],
+              ...[{
+                user_id: user_id,
+                message: this.smallCommentContent
+              }]
+            ]
+          } else {
+            body.comments = [{
+              user_id: user_id,
+              message: this.smallCommentContent
+            }]
+          }
+
+
+          this.commentsService.updateComments(body)
+            .then((response: any) => {
+              
+              this.smallCommentContent = "";
+              this.getCommentsAfterUpdate.emit(content);
+            })
+            .catch((error: any) => {
+              this.smallCommentContent = "";
+            });
         })
-        .catch((error: any) => {
-          this.isOpenSmallCommentBox = false;
-        });
+        .catch(res => {
+          console.log("comments get failed");
+        })
     }
   }
 

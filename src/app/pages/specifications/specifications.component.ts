@@ -5,6 +5,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { SpecContent } from 'src/models/spec-content';
 
 @Component({
   selector: 'xnode-specifications',
@@ -34,6 +35,7 @@ export class SpecificationsComponent implements OnInit {
   isTheCurrentUserOwner: boolean = false;
   isTheSpecGenerated?: boolean;
   consversationList: any;
+  contentData: any;
 
   constructor(
     private utils: UtilsService,
@@ -306,6 +308,10 @@ export class SpecificationsComponent implements OnInit {
 
   ngOnDestroy(): void {
     localStorage.removeItem('specData')
+  }
+
+  _openAndGetComments(contendata: SpecContent){
+    this.contentData = {...contendata};
   }
 
 }

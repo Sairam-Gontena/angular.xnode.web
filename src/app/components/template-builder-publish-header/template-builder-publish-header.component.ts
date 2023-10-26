@@ -117,8 +117,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
       let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
-
     }
+
+    this.checkProductOptions()
   };
 
   storeProductData(id: string) {
@@ -320,13 +321,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       });
   }
 
-  selectedProduct(data: any): void {
-    const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
-    if (this.currentUser?.email == product.email) {
+  checkProductOptions() {
+    if (this.currentUser?.email == this.product.email) {
       this.utilsService.hasProductPermission(true)
     } else {
       this.utilsService.hasProductPermission(false)
     }
+  }
+
+  selectedProduct(data: any): void {
+    const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
+    this.checkProductOptions()
     if (product) {
       localStorage.setItem('product_email', product.email)
       localStorage.setItem('record_id', product.id);
