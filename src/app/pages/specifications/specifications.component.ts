@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
@@ -44,7 +44,11 @@ export class SpecificationsComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
       this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
     })
-
+    this.utils.isInSameSpecPage.subscribe((res) => {
+      if (res) {
+        this.getMeSpecList();
+      }
+    })
   }
 
   ngOnInit(): void {
