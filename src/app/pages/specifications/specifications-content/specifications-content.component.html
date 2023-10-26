@@ -228,7 +228,7 @@
                                             <span class="sub-title text-base font-medium" [innerHTML]="key| highlight:
                                             searchTerm"></span> :
                                             <span class="sub-content font-normal text-base"
-                                                [innerHTML]="testCase[key]| highlight: searchTerm"></span>
+                                                [innerHTML]="testCase[key] | highlight: searchTerm"></span>
                                         </p>
                                         <ng-container *ngIf="!lastItem">
                                             <hr class="mt-2 mb-2">

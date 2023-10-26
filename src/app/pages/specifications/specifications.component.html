@@ -1,6 +1,8 @@
 <div class="flex" *ngIf="specData?.length;else showHeader">
-    <xnode-specifications-menu (text)="searchText($event)" [specData]="specData"></xnode-specifications-menu>
+    <xnode-specifications-menu (text)="searchText($event)" [keyword]="keyword"
+        [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
+        <!-- *ngIf="noResults==false; else noresultsDiv"  don't delete -->
         <div [ngClass]="{'comments-opened': (isCommnetsPanelOpened || isCRsPanelOpened), 
             'side-menu-comments-opened': (isCommnetsPanelOpened || isCRsPanelOpened) && isSideMenuOpened ,
             'spec-content-sideMenu': isSideMenuOpened, 
@@ -21,6 +23,7 @@
             <xnode-change-requests-panel></xnode-change-requests-panel>
         </div>
     </div>
+    <!-- <ng-template #noresultsDiv></ng-template> don't delete -->
 </div>
 
 <ng-template #showHeader>

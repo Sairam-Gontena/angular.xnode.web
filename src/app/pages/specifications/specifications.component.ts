@@ -36,6 +36,7 @@ export class SpecificationsComponent implements OnInit {
   isTheSpecGenerated?: boolean;
   consversationList: any;
   contentData: any;
+  noResults: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -123,7 +124,13 @@ export class SpecificationsComponent implements OnInit {
         });
       }
       if (index === this.specData.length - 1) {
-        this.populatefilteredSpecData(this.filteredSpecData)
+        console.log('filteredSpecData', this.filteredSpecData)
+        if (this.filteredSpecData.length > 0) {
+          this.noResults = false;
+          this.populatefilteredSpecData(this.filteredSpecData)
+        } else {
+          this.filteredSpecData.length == 0 ? this.noResults = true : this.noResults = false;
+        }
       }
     });
   }

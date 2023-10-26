@@ -142,6 +142,7 @@ pre {
 }
 
 :host ::ng-deep .yellow {
-    background: yellow !important;
+    background: #8C7604 !important;
     height: 30px !important;
+    border-radius: 2px !important;
 }

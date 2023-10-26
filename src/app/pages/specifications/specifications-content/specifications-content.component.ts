@@ -20,7 +20,6 @@ export class SpecificationsContentComponent implements OnInit {
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
-  @ViewChild('contentDiv') contentDiv!: ElementRef;
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   app_name: any;
