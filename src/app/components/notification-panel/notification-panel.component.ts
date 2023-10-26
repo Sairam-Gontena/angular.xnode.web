@@ -139,6 +139,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToActivity() {
+    this.utils.disableDockedNavi()
     this.closeNotificationPanel.emit(true)
     this.router.navigate(['/operate/change/history-log'])
   }
