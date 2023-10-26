@@ -95,3 +95,22 @@ img.highlighted {
     left: unset !important;
     right: 1px !important;
 }
+
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+}
+
+:host::ng-deep .p-dialog .p-dialog-header {
+    border-bottom: 1px solid #ccc;
+}
+
+:host::ng-deep .p-dialog .p-dialog-content,
+:host::ng-deep .p-dialog .p-dialog-header,
+:host::ng-deep .p-dialog .p-dialog-footer {
+    background: #23222B;
+    color: #fff;
+}
+
+:host::ng-deep .p-dialog-content {
+    padding: 1.5rem;
+}
