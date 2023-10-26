@@ -13,6 +13,7 @@ import * as _ from "lodash";
 
 export class SpecificationsMenuComponent implements OnInit {
   @Input() specData?: any;
+  @Input() keyword?: any;
   @Output() text: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   menuList: any;
@@ -111,4 +112,16 @@ export class SpecificationsMenuComponent implements OnInit {
     this.textInputSubject.next(this.searchText);
   }
 
+  containKeyword(keyword: any) {
+    if (keyword.includes(this.keyword)) {
+      return true;
+    } else {
+      return
+    }
+  }
+
+  ngOnChanges() {
+    this.keyword = this.keyword;
+    this.containKeyword(this.keyword)
+  }
 }

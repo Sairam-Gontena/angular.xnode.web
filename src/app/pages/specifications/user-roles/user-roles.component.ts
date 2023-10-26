@@ -7,4 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class UserRolesComponent {
   @Input() content: any;
+  @Input() searchTerm: any;
+
 }

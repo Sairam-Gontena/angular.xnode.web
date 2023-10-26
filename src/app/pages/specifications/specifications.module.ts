@@ -14,7 +14,7 @@ import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
 import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add-comment-overlay-panel.component';
-
+import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -34,6 +34,7 @@ import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add
     SpecificationsRoutingModule,
     SharedModule,
     SharedComponentModule
-  ]
+  ],
+  providers: [HighlightPipe]
 })
 export class SpecificationsModule { }

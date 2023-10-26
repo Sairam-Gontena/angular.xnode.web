@@ -1,5 +1,6 @@
 <div class="flex" *ngIf="specData?.length;else showHeader">
-    <xnode-specifications-menu (text)="searchText($event)" [specData]="specData"></xnode-specifications-menu>
+    <xnode-specifications-menu (text)="searchText($event)" [keyword]="keyword"
+        [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
         <div [ngClass]="{'comments-opened': (isCommnetsPanelOpened || isCRsPanelOpened), 
             'side-menu-comments-opened': (isCommnetsPanelOpened || isCRsPanelOpened) && isSideMenuOpened ,
@@ -9,17 +10,19 @@
             'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
             <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
                 (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-            <xnode-specifications-content [specData]="specData" (openAndGetComments)="_openAndGetComments($event)"
+            <xnode-specifications-content [specData]="specData" [keyword]="keyword"
+                (openAndGetComments)="_openAndGetComments($event)"
                 (getCommentsAfterUpdate)="_openAndGetComments($event)">
             </xnode-specifications-content>
         </div>
         <div [ngClass]="isCommnetsPanelOpened ? 'flex w-full spec-bg' : 'hidden spec-bg'">
             <xnode-comments-panel class="w-full" [contentData]="contentData"></xnode-comments-panel>
         </div>
-        <div [ngClass]="isCRsPanelOpened ? 'flex w-full' : 'hidden'">
+        <div [ngClass]="isCRsPanelOpened ? 'block' : 'hidden'">
             <xnode-change-requests-panel></xnode-change-requests-panel>
         </div>
     </div>
+    <!-- <ng-template #noresultsDiv></ng-template> don't delete -->
 </div>
 
 <ng-template #showHeader>
