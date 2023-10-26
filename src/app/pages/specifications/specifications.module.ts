@@ -24,8 +24,7 @@ import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
     SpecGenPopupComponent,
     UserRolesComponent,
     CamelToTitlePipe,
-    ObjectToArrayPipe,
-    HighlightPipe
+    ObjectToArrayPipe
   ],
   imports: [
     CommonModule,
@@ -33,6 +32,7 @@ import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
     SpecificationsRoutingModule,
     SharedModule,
     SharedComponentModule
-  ]
+  ],
+  providers: [HighlightPipe]
 })
 export class SpecificationsModule { }
