@@ -12,3 +12,8 @@
     position: absolute;
     top: -50px;
 }
+
+:host ::ng-deep.p-inputtext {
+    background-color: #302E38 !important;
+    color: #fff
+}
