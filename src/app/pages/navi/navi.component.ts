@@ -94,7 +94,7 @@ export class NaviComponent implements OnInit {
             this.utils.showLimitReachedPopup(true);
           }
           if (event.data.message === 'triggerProductPopup') {
-            this.content = { ...event?.data?.data };
+            this.content = event?.data?.data;
             this.utils.toggleProductAlertPopup(true);
             this.toggleProductPopup();
             event.stopImmediatePropagation()
