@@ -1,4 +1,16 @@
 import { Component, Input } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
+
+
+@Pipe({ name: 'highlight' })
+export class HighlightPipe implements PipeTransform {
+  transform(list: any, searchText: string): any {
+    if (!list) { return []; }
+    if (!searchText) { return list; }
+    const value = list.replace(searchText, `<span class='yellow' style='background-color:yellow'>${searchText}</span>`);
+    return value;
+  }
+}
 
 @Component({
   selector: 'xnode-common-spec-table',
@@ -7,6 +19,9 @@ import { Component, Input } from '@angular/core';
 })
 export class CommonSpecTableComponent {
   @Input() content: any;
+  @Input() searchTerm: any;
+
+  constructor(private HighlightPipe: HighlightPipe) { }
 
   setColumnsToTheTable(data: any) {
     let cols;

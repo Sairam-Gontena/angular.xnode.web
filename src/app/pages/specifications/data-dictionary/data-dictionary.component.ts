@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DataDictionaryComponent implements OnInit {
   @Input() content: any;
-
+  @Input() searchTerm: any;
   ngOnInit(): void {
   }
 

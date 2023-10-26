@@ -13,12 +13,15 @@
         <div>
             <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
             <p-accordion [activeIndex]="activeIndex" (onOpen)="onOpenAccordian($event)">
-                <p-accordionTab [header]=" (i + 1) + '. '+ shortTitle(item?.title)"
+                <p-accordionTab [header]="(i + 1) + '. '+ shortTitle(item?.title) | highlight: keyword"
                     *ngFor="let item of specData; let i = index;" [ngClass]="{'active-header-text':i === activeIndex}">
                     <div class="p-2 pointer section text-base font-family-inter font-medium pl-5 pt-3 pb-3 mt-1 "
-                        [ngClass]="{'active-section': i === activeIndex && ind === selectedSecIndex}"
-                        *ngFor="let content of item?.content let ind = index; " (click)="onClickSection(content,ind)">
-                        {{(i + 1) + '.'+ (ind + 1) +' '+ shortTitle(content.title)}}
+                        [ngClass]="{
+                            'yellow':shortTitle(content?.title)?.includes(keyword)===true,
+                            'active-section': i === activeIndex && ind === selectedSecIndex
+                        }" *ngFor="let content of item?.content let ind = index; "
+                        (click)="onClickSection(content,ind)"
+                        [innerHTML]="(i + 1) + '.' + (ind + 1) + ' ' + shortTitle(content.title) | highlight: keyword">
                     </div>
                 </p-accordionTab>
             </p-accordion>

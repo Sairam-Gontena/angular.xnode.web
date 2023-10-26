@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
@@ -13,6 +13,7 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./common-usecases.component.scss']
 })
 export class CommonUsecasesComponent {
+  @Input() searchTerm: any;
   useCases: any = [];
   email: any;
   id: String = '';
