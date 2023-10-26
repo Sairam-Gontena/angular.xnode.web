@@ -21,7 +21,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   product: any;
   isSideMenuOpened: any;
   productId: any
-  showProductStatusPopup = false;
+  showProductStatusPopup: boolean = false;
   data: any;
   productDetails: any;
   userHasPermissionToEditProduct = true;
@@ -122,5 +122,5 @@ export class SpecificationsHeaderComponent implements OnInit {
   openCRs() {
     this.utils.openOrClosePanel(SidePanel.ChangeRequests);
   }
-  
+
 }
