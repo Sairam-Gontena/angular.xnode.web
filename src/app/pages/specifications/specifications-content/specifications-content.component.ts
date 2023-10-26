@@ -20,7 +20,9 @@ export class SpecificationsContentComponent implements OnInit {
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
-
+  // @ViewChild('contentDiv', { static: true })
+  // contentDiv!: ElementRef;
+  @ViewChild('contentDiv') contentDiv!: ElementRef;
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   app_name: any;
@@ -95,6 +97,12 @@ export class SpecificationsContentComponent implements OnInit {
   ngOnChanges() {
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
+    // const div = this.contentDiv.nativeElement;
+    // const innerHtml: string = div.innerHTML;
+    // const wordToFind = this.keyword;
+    // console.log('innerHtml', innerHtml)
+    // const modifiedHtml = innerHtml.replace(new RegExp(`\\b${wordToFind}\\b`, 'gi'), '<span class="highlight">$&</span>');
+    // div.innerHTML = modifiedHtml;
   }
 
   ngOnInit(): void {
@@ -267,7 +275,7 @@ export class SpecificationsContentComponent implements OnInit {
 
           this.commentsService.updateComments(body)
             .then((response: any) => {
-              
+
               this.smallCommentContent = "";
               this.getCommentsAfterUpdate.emit(content);
             })

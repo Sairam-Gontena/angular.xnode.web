@@ -13,6 +13,7 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
+import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -23,7 +24,8 @@ import { UserRolesComponent } from './user-roles/user-roles.component';
     SpecGenPopupComponent,
     UserRolesComponent,
     CamelToTitlePipe,
-    ObjectToArrayPipe
+    ObjectToArrayPipe,
+    HighlightPipe
   ],
   imports: [
     CommonModule,
