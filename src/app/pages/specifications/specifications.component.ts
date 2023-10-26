@@ -124,7 +124,6 @@ export class SpecificationsComponent implements OnInit {
         });
       }
       if (index === this.specData.length - 1) {
-        console.log('filteredSpecData', this.filteredSpecData)
         if (this.filteredSpecData.length > 0) {
           this.noResults = false;
           this.populatefilteredSpecData(this.filteredSpecData)
