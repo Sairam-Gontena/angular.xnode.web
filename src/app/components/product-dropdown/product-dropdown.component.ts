@@ -12,18 +12,15 @@ import { UserUtil } from 'src/app/utils/user-util';
 })
 export class ProductDropdownComponent {
   selectedTemplate: any;
-  templateSelectionChange: any;
   product: any;
-  templates: any;
+  products: any;
   productId: any;
   product_url: any;
   currentUser: any;
   email: any;
-  productDetails: any;
 
   constructor(
     private utilsService: UtilsService,
-    private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private router: Router,
   ) { }
@@ -33,10 +30,9 @@ export class ProductDropdownComponent {
     this.productId = localStorage.getItem('record_id')
     if (product) {
       this.product = JSON.parse(product);
-      this.productDetails = JSON.parse(product);
     }
     if (metaData) {
-      this.templates = JSON.parse(metaData);
+      this.products = JSON.parse(metaData);
       setTimeout(() => {
         this.selectedTemplate = this.productId;
       }, 100)
@@ -48,7 +44,7 @@ export class ProductDropdownComponent {
 
   }
   storeProductData(id: string) {
-    const product = this.templates?.filter((obj: any) => { return obj.id === id })[0];
+    const product = this.products?.filter((obj: any) => { return obj.id === id })[0];
     if (product) {
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);
@@ -66,7 +62,7 @@ export class ProductDropdownComponent {
     });
   }
   selectedProduct(data: any): void {
-    const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
+    const product = this.products?.filter((obj: any) => { return obj.id === data.value })[0];
     if (this.currentUser?.email == product.email) {
       this.utilsService.hasProductPermission(true)
     } else {
