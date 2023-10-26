@@ -36,7 +36,7 @@
                 shape="circle"></p-avatar>
         </div>
         <div class="flex align-items-center justify-content-center w-90 relative">
-            <textarea type="text" rows="3" styleClaass="w-full" pInputTextarea [(ngModel)]="comment"
+            <textarea type="text" rows="3" styleClass="w-full" pInputTextarea [(ngModel)]="comment"
                 (keyup.enter)="onClickEnter($event)"></textarea>
             <img src="../assets/comment-send.svg" class="pointer absolute comment-send-icon" alt="comment send"
                 (click)="onClickSend()">
