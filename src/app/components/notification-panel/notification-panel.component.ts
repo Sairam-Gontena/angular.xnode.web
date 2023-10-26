@@ -16,6 +16,8 @@ export class NotificationPanelComponent {
   @Output() preparePublishPopup = new EventEmitter<any>();
   @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
+  @Input() limitReachedContent: boolean = false;
+
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -121,8 +123,8 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj?.product_name);
     if (obj.component && obj.component !== '') {
+      this.utils.toggleSpecPage(true)
       this.router.navigate(['/specification']);
-      window.location.reload();
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
@@ -137,6 +139,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToActivity() {
+    this.utils.disableDockedNavi()
     this.closeNotificationPanel.emit(true)
     this.router.navigate(['/operate/change/history-log'])
   }
@@ -179,7 +182,9 @@ export class NotificationPanelComponent {
   }
 
   onClickPublish(obj: any): void {
+    this.limitReachedContent = true;
     this.getMeTotalAppsPublishedCount(obj);
+    console.log(obj)
   }
 
   getMeTotalAppsPublishedCount(obj: any): void {

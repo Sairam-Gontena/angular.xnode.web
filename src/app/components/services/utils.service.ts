@@ -54,6 +54,8 @@ export class UtilsService {
   public getMeProductId: Observable<any> = this.productId.asObservable();
   private productEditPermission: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public hasProductEditPermission: Observable<any> = this.productEditPermission.asObservable();
+  private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
 
   constructor() { }
 
@@ -124,6 +126,9 @@ export class UtilsService {
 
   saveSelectedSection(event: any): void {
     this.selectedSection.next(event);
+  }
+  toggleSpecPage(event: any): void {
+    this.isInSpec.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {

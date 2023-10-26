@@ -125,10 +125,12 @@ pre {
 .expnad-icon {
     width: 25px;
 }
-.comment-area > .w-full {
+
+.comment-area>.w-full {
     cursor: url("../../../../assets/comment-spec.svg"), auto;
 }
-.small-comment-box{
+
+.small-comment-box {
     position: fixed;
     left: 45%;
     bottom: 20%;
@@ -137,4 +139,11 @@ pre {
     background: #fff;
     border-radius: 4px;
     z-index: 20;
+}
+
+:host ::ng-deep .yellow {
+    background: #8C7604 !important;
+    height: 30px !important;
+    color: white !important;
+    border-radius: 2px !important;
 }

@@ -16,15 +16,16 @@ declare const SwaggerUIBundle: any;
 
 export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
+  @Input() keyword: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
-
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   app_name: any;
   iframeSrc: SafeResourceUrl = '';
   dataModelIframeSrc: SafeResourceUrl = '';
+  searchTerm: any;
   showMoreContent?: boolean = false;
   selectedSpecItem: any;
   specItemList: any = [];
@@ -91,7 +92,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.specItemList = this.specData
+    this.specItemList = this.specData;
+    this.searchTerm = this.keyword;
   }
 
   ngOnInit(): void {
@@ -264,7 +266,7 @@ export class SpecificationsContentComponent implements OnInit {
 
           this.commentsService.updateComments(body)
             .then((response: any) => {
-              
+
               this.smallCommentContent = "";
               this.getCommentsAfterUpdate.emit(content);
             })

@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  productAlertPopup: boolean = false;
   content: any;
 
   constructor(
@@ -178,6 +179,7 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
+        this.content.length > 0 ? this.productAlertPopup = true : this.productAlertPopup = false;
         this.showProductStatusPopup = true;
         this.utilsService.toggleProductAlertPopup(true);
       }
@@ -246,6 +248,8 @@ export class AppComponent implements OnInit {
     let id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
+      this.subMenuLayoutUtil.EnableDockedNavi();
+      this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
       }
@@ -335,8 +339,6 @@ export class AppComponent implements OnInit {
   }
 
   submenuFunc() {
-    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
-    this.subMenuLayoutUtil.EnableDockedNavi();
     if (this.isSideWindowOpen) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';

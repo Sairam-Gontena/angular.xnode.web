@@ -32,8 +32,8 @@
                         #contentContainer>
                         <div class="flex justify-content-between flex-wrap">
                             <div class="flex align-items-center justify-content-center">
-                                <h3 class="m-0 pb-2 text-2xl font-bold ">{{(i+1) + '.' + (cIndex+1) +' '+
-                                    content.title}}</h3>
+                                <h3 class="m-0 pb-2 text-2xl font-bold" [innerHTML]="(i+1) + '.' + (cIndex+1) +' '+
+                                content.title | highlight: searchTerm "></h3>
                             </div>
                             <div class="flex align-items-center justify-content-center">
                                 <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -52,7 +52,7 @@
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-usecases></xnode-common-usecases>
+                            <xnode-common-usecases [searchTerm]="searchTerm"></xnode-common-usecases>
                         </div>
                         <div *ngIf="content.title ==='User Interface Design'">
                             <div class="flex justify-content-between align-items-center">
@@ -80,10 +80,10 @@
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer ml-3" style="width: 25px;">
                             </div>
-                            <xnode-data-dictionary *ngIf="content.showTable; else elsejson"
+                            <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
                                 [content]="content.content"></xnode-data-dictionary>
                             <ng-template #elsejson>
-                                <pre>{{ content.content | json }}</pre>
+                                <pre [innerHTML]="content.content | json | highlight: searchTerm "></pre>
                             </ng-template>
                         </div>
                         <div *ngIf="content.title ==='Business Rules'">
@@ -97,10 +97,11 @@
                                     style="width: 25px;">
                             </div>
                             <div *ngIf="content.showTable; else elsejson">
-                                <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                                <xnode-common-spec-table [searchTerm]="searchTerm"
+                                    [content]="content.content"></xnode-common-spec-table>
                             </div>
                             <ng-template #elsejson>
-                                <pre>{{ content.content | json }}</pre>
+                                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
                             </ng-template>
                         </div>
                         <div *ngIf="content.title ==='Functional Dependencies'">
@@ -114,10 +115,11 @@
                                     style="width: 25px;">
                             </div>
                             <div *ngIf="content.showTable; else elsejson">
-                                <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                                <xnode-common-spec-table [searchTerm]="searchTerm"
+                                    [content]="content.content"></xnode-common-spec-table>
                             </div>
                             <ng-template #elsejson>
-                                <pre>{{ content.content | json }}</pre>
+                                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
                             </ng-template>
                         </div>
                         <div *ngIf="content.title ==='User Interfaces'">
@@ -131,10 +133,11 @@
                                     style="width: 25px;">
                             </div>
                             <div *ngIf="content.showTable; else elsejson">
-                                <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                                <xnode-common-spec-table [searchTerm]="searchTerm"
+                                    [content]="content.content"></xnode-common-spec-table>
                             </div>
                             <ng-template #elsejson>
-                                <pre>{{ content.content | json }}</pre>
+                                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
                             </ng-template>
                         </div>
                         <div *ngIf="content.title ==='Annexures'">
@@ -148,10 +151,11 @@
                                     style="width: 25px;">
                             </div>
                             <div *ngIf="content.showTable; else elsejson">
-                                <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                                <xnode-common-spec-table [searchTerm]="searchTerm"
+                                    [content]="content.content"></xnode-common-spec-table>
                             </div>
                             <ng-template #elsejson>
-                                <pre>{{ content.content | json }}</pre>
+                                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
                             </ng-template>
                         </div>
                         <div *ngIf="content.title ==='Historical Data Load'">
@@ -159,11 +163,12 @@
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                            <xnode-common-spec-table [searchTerm]="searchTerm"
+                                [content]="content.content"></xnode-common-spec-table>
                         </div>
                         <div *ngIf="content.title ==='User Personas'">
                             <div *ngFor="let persona of content.content" class="pb-3">
-                                <xnode-user-persona [content]="persona"></xnode-user-persona>
+                                <xnode-user-persona [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
                             </div>
                         </div>
                         <div class="w-full" *ngIf="content.title ==='Glossary'">
@@ -171,50 +176,59 @@
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                            <xnode-common-spec-table [searchTerm]="searchTerm"
+                                [content]="content.content"></xnode-common-spec-table>
                         </div>
                         <div *ngIf="content.title ==='Version Control'">
                             <div class="flex justify-content-end mb-2">
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                            <xnode-common-spec-table [searchTerm]="searchTerm"
+                                [content]="content.content"></xnode-common-spec-table>
                         </div>
                         <div *ngIf="content.title ==='Error Handling'">
                             <div class="flex justify-content-end mb-2">
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                            <xnode-common-spec-table [searchTerm]="searchTerm"
+                                [content]="content.content"></xnode-common-spec-table>
                         </div>
                         <div *ngIf="content.title ==='Stakeholder Approvals'">
                             <div class="flex justify-content-end mb-2">
                                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
                                     class="expnad-icon pointer">
                             </div>
-                            <xnode-common-spec-table [content]="content.content"></xnode-common-spec-table>
+                            <xnode-common-spec-table [searchTerm]="searchTerm"
+                                [content]="content.content"></xnode-common-spec-table>
                         </div>
-                        
+
                         <div *ngIf="checkListViewSections(content.title)">
                             <ul *ngFor="let content of content.content">
-                                <li class="sub-content font-normal text-sm">{{content}}</li>
+                                <li class="sub-content font-normal text-sm"
+                                    [innerHTML]="content| highlight: searchTerm"></li>
                             </ul>
                         </div>
 
                         <div *ngIf="content.title ==='QA Test Cases'">
                             <div *ngFor="let subItem of content.content">
                                 <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
-                                    <p class="m-0 pb-2"><span class="sub-title text-base font-medium">{{subItem.title}}
+                                    <p class="m-0 pb-2"><span class="sub-title text-base font-medium"
+                                            [innerHTML]="subItem.title|  highlight: searchTerm">
                                         </span>
-                                        : <span class="sub-content font-normal text-base">{{subItem.content}}</span>
+                                        : <span class="sub-content font-normal text-base"
+                                            [innerHTML]="subItem.content| highlight: searchTerm"></span>
                                     </p>
                                 </div>
                                 <ng-template #sampleTestCases>
-                                    <h4 class="mb-2">{{subItem.title}}</h4>
+                                    <h4 class="mb-2" [innerHTML]="subItem.title| highlight: searchTerm"></h4>
                                     <div *ngFor="let testCase of subItem.content; let lastItem = last">
                                         <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
-                                            <span class="sub-title text-base font-medium">{{key}}</span> :
-                                            <span class="sub-content font-normal text-base">{{testCase[key]}}</span>
+                                            <span class="sub-title text-base font-medium" [innerHTML]="key| highlight:
+                                            searchTerm"></span> :
+                                            <span class="sub-content font-normal text-base"
+                                                [innerHTML]="testCase[key] | highlight: searchTerm"></span>
                                         </p>
                                         <ng-container *ngIf="!lastItem">
                                             <hr class="mt-2 mb-2">
@@ -232,7 +246,7 @@
                             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
                         </div>
                         <div *ngIf="content.title ==='User Roles'">
-                            <xnode-user-roles [content]="content.content"></xnode-user-roles>
+                            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"></xnode-user-roles>
                         </div>
                         <div class="w-full" *ngIf="checkParaViewSections(content.title)"
                             (click)="openSmallCommentBox(content)">
@@ -240,18 +254,18 @@
                                 <ul *ngFor="let subItem of content.content">
                                     <li>
                                         <p class="m-0 pb-1 line-height-3">
-                                            <span class="sub-title text-base font-medium">{{subItem?.title}}
-                                            </span>
+                                            <span class="sub-title text-base font-medium"
+                                                [innerHTML]="subItem?.title| highlight: searchTerm"></span>
                                             :
-                                            <span class="sub-content font-normal text-base">{{subItem?.content }}</span>
+                                            <span class="sub-content font-normal text-base"
+                                                [innerHTML]="subItem?.content | highlight: searchTerm"></span>
                                         </p>
                                     </li>
                                 </ul>
                             </div>
                             <ng-template #notArray>
-                                <div class="flex content text-base font-normal">
-                                    {{content?.content}}
-                                </div>
+                                <div class="content text-base font-normal"
+                                    [innerHTML]="content?.content | highlight: searchTerm"></div>
                             </ng-template>
                         </div>
                         <div *ngIf="isOpenSmallCommentBox && content?.collapsed && isCommentPanelOpened"
@@ -265,7 +279,6 @@
                         <div class="collapse" *ngIf="content?.collapsed">
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

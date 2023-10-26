@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
@@ -16,6 +16,7 @@ export class SpecificationsComponent implements OnInit {
   currentUser: any;
   specData?: any;
   specDataCopy?: any;
+  keyword: any;
   private specDataBool: boolean = true;
   selectedSpec: any;
   selectedSection: any;
@@ -35,6 +36,7 @@ export class SpecificationsComponent implements OnInit {
   isTheSpecGenerated?: boolean;
   consversationList: any;
   contentData: any;
+  noResults: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -46,7 +48,11 @@ export class SpecificationsComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
       this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
     })
-
+    this.utils.isInSameSpecPage.subscribe((res) => {
+      if (res) {
+        this.getMeSpecList();
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -75,6 +81,7 @@ export class SpecificationsComponent implements OnInit {
       this.clearSearchText();
       return
     }
+    this.keyword = keyword;
     this.filteredSpecData = [];
     this.specData = [];
     this.foundObjects = [];
@@ -117,7 +124,12 @@ export class SpecificationsComponent implements OnInit {
         });
       }
       if (index === this.specData.length - 1) {
-        this.populatefilteredSpecData(this.filteredSpecData)
+        if (this.filteredSpecData.length > 0) {
+          this.noResults = false;
+          this.populatefilteredSpecData(this.filteredSpecData)
+        } else {
+          this.filteredSpecData.length == 0 ? this.noResults = true : this.noResults = false;
+        }
       }
     });
   }
@@ -192,6 +204,7 @@ export class SpecificationsComponent implements OnInit {
 
   clearSearchText() {
     this.specData = this.specDataCopy;
+    this.keyword = '';
   }
 
   refreshCurrentRoute(): void {
@@ -308,8 +321,8 @@ export class SpecificationsComponent implements OnInit {
     localStorage.removeItem('specData')
   }
 
-  _openAndGetComments(contendata: SpecContent){
-    this.contentData = {...contendata};
+  _openAndGetComments(contendata: SpecContent) {
+    this.contentData = { ...contendata };
   }
 
 }

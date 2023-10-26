@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class UserPersonaComponent implements OnInit {
   @Input() content: any
+  @Input() searchTerm: any
 
   ngOnInit(): void {
   }
