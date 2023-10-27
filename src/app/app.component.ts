@@ -56,6 +56,13 @@ export class AppComponent implements OnInit {
         }
       }
     });
+    this.utilsService.startSpinner.subscribe((event: boolean) => {
+      if (event) {
+        this.spinner.show();
+      } else {
+        this.spinner.hide();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -102,15 +109,7 @@ export class AppComponent implements OnInit {
   }
 
   preparingData() {
-    this.utilsService.startSpinner.subscribe((event: boolean) => {
-      setTimeout(() => {
-        if (event) {
-          this.spinner.show();
-        } else {
-          this.spinner.hide();
-        }
-      }, 100);
-    });
+
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
