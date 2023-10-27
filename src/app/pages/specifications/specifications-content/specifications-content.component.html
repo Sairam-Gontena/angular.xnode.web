@@ -1,7 +1,7 @@
 <div class="spec-body">
-    <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
+    <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
         (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
-    <div *ngIf="!specExpanded">
+    <div *ngIf="!specExpanded && noResults==false">
         <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
             <div class="w-8">
                 <div class="intro-grid" [id]="item.title">
@@ -281,6 +281,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="h-screen w-full flex justify-content-center" *ngIf="noResults==true">
+        <div class="flex flex-column justify-content-center">
+            <div></div>
+            <div class="text-center">
+                <img src="../../../assets/no-search.svg" />
+                <p class="font-bold text-white text-2xl">No search results found for <b>“Messaging”</b></p>
+            </div>
+            <div></div>
         </div>
     </div>
 </div>
