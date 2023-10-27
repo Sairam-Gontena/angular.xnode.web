@@ -2,7 +2,6 @@
     <xnode-specifications-menu (text)="searchText($event)" [keyword]="keyword"
         [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
-        <!-- *ngIf="noResults==false; else noresultsDiv"  don't delete -->
         <div [ngClass]="{'comments-opened': (isCommnetsPanelOpened || isCRsPanelOpened), 
             'side-menu-comments-opened': (isCommnetsPanelOpened || isCRsPanelOpened) && isSideMenuOpened ,
             'spec-content-sideMenu': isSideMenuOpened, 
@@ -11,7 +10,7 @@
             'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
             <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
                 (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-            <xnode-specifications-content [specData]="specData" [keyword]="keyword"
+            <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword"
                 (openAndGetComments)="_openAndGetComments($event)"
                 (getCommentsAfterUpdate)="_openAndGetComments($event)">
             </xnode-specifications-content>
@@ -23,7 +22,6 @@
             <xnode-change-requests-panel></xnode-change-requests-panel>
         </div>
     </div>
-    <!-- <ng-template #noresultsDiv></ng-template> don't delete -->
 </div>
 
 <ng-template #showHeader>

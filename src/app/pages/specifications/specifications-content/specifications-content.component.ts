@@ -17,6 +17,7 @@ declare const SwaggerUIBundle: any;
 export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @Input() keyword: any;
+  @Input() noResults: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
@@ -92,6 +93,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnChanges() {
+    this.noResults = this.noResults;
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
   }

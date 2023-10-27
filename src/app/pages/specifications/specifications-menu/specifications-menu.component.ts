@@ -108,20 +108,26 @@ export class SpecificationsMenuComponent implements OnInit {
     }
   }
 
+  clearInput() {
+    this.text.emit('');
+    this.searchText = '';
+  }
+
   onInput() {
     this.textInputSubject.next(this.searchText);
   }
 
-  containKeyword(keyword: any) {
-    if (keyword.includes(this.keyword)) {
-      return true;
-    } else {
-      return
-    }
-  }
+  // containKeyword(keyword: any) {
+  //   if (keyword.includes(this.keyword)) {
+  //     return true;
+  //   } else {
+  //     return
+  //   }
+  // }
 
   ngOnChanges() {
     this.keyword = this.keyword;
-    this.containKeyword(this.keyword)
+    this.specData = this.specData;
+    // this.containKeyword(this.keyword)
   }
 }
