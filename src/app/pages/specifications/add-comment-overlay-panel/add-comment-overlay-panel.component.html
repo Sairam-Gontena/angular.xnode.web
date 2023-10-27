@@ -4,7 +4,8 @@
             [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
             shape="circle"></p-avatar>
     </span>
-    <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment"></textarea>
+    <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment"
+        [mention]="users"></textarea>
     <div class="flex align-items-center gap-2 pl-2 pr-2 add-ons-bg">
         <img src="../assets/attach.svg" class="pointer" alt="attach">
         <div class="pointer">

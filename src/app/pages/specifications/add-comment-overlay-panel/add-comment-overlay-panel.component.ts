@@ -8,6 +8,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() sendComment = new EventEmitter<string>();
   comment: string = '';
+  users: string[] = ["Noah", "Liam", "Mason"];
+
   constructor(public utils: UtilsService) {
 
   }
