@@ -93,7 +93,6 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.noResults = this.noResults;
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
   }

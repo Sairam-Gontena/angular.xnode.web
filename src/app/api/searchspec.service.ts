@@ -23,64 +23,86 @@ export class SearchspecService {
     this.wantedIndexes = [];
     this.removableIndexes = [];
 
+    return new Observable(observer => {
+      this.filterSpecbyKeyword(data, keyword)
+        .subscribe(() => {
 
-    this.filterSpecbyKeyword(data, keyword);
+          let returnData = {
+            'specData': this.specData,
+            'foundObjects': this.foundObjects,
+            'filteredSpecData': this.filteredSpecData,
+            'noResults': this.noResults,
+            'wantedIndexes': this.wantedIndexes,
+            'removableIndexes': this.removableIndexes
+          };
 
-    let returnData = {
-      'specData': this.specData,
-      'foundObjects': this.foundObjects,
-      'filteredSpecData': this.filteredSpecData,
-      'noResults': this.noResults,
-      'wantedIndexes': this.wantedIndexes,
-      'removableIndexes': this.removableIndexes
-    }
-    return of(returnData);
+          observer.next(returnData);
+          observer.complete();
+        });
+
+    });
+
+    // this.filterSpecbyKeyword(data, keyword);
+    // let returnData = {
+    //   'specData': this.specData,
+    //   'foundObjects': this.foundObjects,
+    //   'filteredSpecData': this.filteredSpecData,
+    //   'noResults': this.noResults,
+    //   'wantedIndexes': this.wantedIndexes,
+    //   'removableIndexes': this.removableIndexes
+    // }
+    // return of(returnData);
   }
 
 
-  filterSpecbyKeyword(data: any, keyword: any) {
-    this.specData = data;
-    this.specData.forEach((elem: any, index: any) => {
-      if (typeof (elem?.content) == 'string') {
-        if (elem?.title.toUpperCase().includes(keyword.toUpperCase()) || elem?.content.toUpperCase().includes(keyword.toUpperCase())) {
-          this.foundObjects = _.uniq(_.concat(this.foundObjects, elem))
-          this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, elem))
+  filterSpecbyKeyword(data: any, keyword: any): Observable<any> {
+    return new Observable(observer => {
+      this.specData = data;
+      this.specData.forEach((elem: any, index: any) => {
+        if (typeof (elem?.content) == 'string') {
+          if (elem?.title.toUpperCase().includes(keyword.toUpperCase()) || elem?.content.toUpperCase().includes(keyword.toUpperCase())) {
+            this.foundObjects = _.uniq(_.concat(this.foundObjects, elem))
+            this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, elem))
+          }
         }
-      }
-      if (typeof (elem?.content) == 'object' && elem?.content.length > 0) {
-        elem?.content.forEach((subElem: any) => {
-          if (typeof (subElem?.content) == 'string') {
-            if (subElem?.title.toUpperCase().includes(keyword.toUpperCase()) || subElem?.content.toUpperCase().includes(keyword.toUpperCase())) {
-              this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
-              this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+        if (typeof (elem?.content) == 'object' && elem?.content.length > 0) {
+          elem?.content.forEach((subElem: any) => {
+            if (typeof (subElem?.content) == 'string') {
+              if (subElem?.title.toUpperCase().includes(keyword.toUpperCase()) || subElem?.content.toUpperCase().includes(keyword.toUpperCase())) {
+                this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
+                this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+              }
             }
-          }
-          if (typeof (subElem?.content) == 'object') {
-            subElem?.content.forEach((subChild: any) => {
-              if (typeof (subChild?.content) == 'string') {
-                if (subChild?.title.toUpperCase().includes(keyword.toUpperCase()) || subChild?.content.toUpperCase().includes(keyword.toUpperCase())) {
-                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
-                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+            if (typeof (subElem?.content) == 'object') {
+              subElem?.content.forEach((subChild: any) => {
+                if (typeof (subChild?.content) == 'string') {
+                  if (subChild?.title.toUpperCase().includes(keyword.toUpperCase()) || subChild?.content.toUpperCase().includes(keyword.toUpperCase())) {
+                    this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
+                    this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+                  }
                 }
-              }
-              if (typeof (subChild) == 'string') {
-                if (subChild?.toUpperCase().includes(keyword.toUpperCase())) {
-                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
-                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+                if (typeof (subChild) == 'string') {
+                  if (subChild?.toUpperCase().includes(keyword.toUpperCase())) {
+                    this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
+                    this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
+                  }
                 }
-              }
-            });
-          }
-        });
-      }
-      if (index === this.specData.length - 1) {
-        if (this.filteredSpecData.length > 0) {
-          this.populatefilteredSpecData(this.filteredSpecData)
-          this.noResults = false;
-        } else {
-          this.noResults = true;
+              });
+            }
+          });
         }
-      }
+        if (index === this.specData.length - 1) {
+          if (this.filteredSpecData.length > 0) {
+            this.populatefilteredSpecData(this.filteredSpecData)
+            this.noResults = false;
+          } else {
+            this.noResults = true;
+          }
+
+        }
+      });
+      observer.next();
+      observer.complete();
     });
   }
 

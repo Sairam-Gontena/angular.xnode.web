@@ -14,7 +14,7 @@ import * as _ from "lodash";
 export class SpecificationsMenuComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword?: any;
-  @Output() text: EventEmitter<any> = new EventEmitter();
+  @Output() searchtext: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   menuList: any;
   selectedSection: any;
@@ -43,10 +43,10 @@ export class SpecificationsMenuComponent implements OnInit {
     this.populateMenuList();
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
-        this.text.emit(this.searchText);
+        this.searchtext.emit(this.searchText);
         this.multiAccordion = true;
       } else {
-        this.text.emit('');
+        this.searchtext.emit('');
         this.multiAccordion = false;
       }
     });
@@ -111,7 +111,7 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   clearInput() {
-    this.text.emit('');
+    this.searchtext.emit('');
     this.searchText = '';
     this.multiAccordion = false;
     this.activeIndex = [0];

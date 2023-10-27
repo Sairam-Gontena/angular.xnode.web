@@ -63,7 +63,7 @@
                             <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
                             </iframe>
                         </div>
-                        <div *ngIf="content.title ==='Data Management Persistence'" >
+                        <div *ngIf="content.title ==='Data Management Persistence'">
                             <xnode-data-model-common (dataFlowEmitter)="expandComponent(content)"
                                 [item]="content"></xnode-data-model-common>
                         </div>
@@ -286,7 +286,7 @@
     <div class="h-screen w-full flex justify-content-center" *ngIf="noResults==true">
         <div class="flex flex-column justify-content-center">
             <div></div>
-            <div>
+            <div class="text-center">
                 <img src="../../../assets/no-search.svg" />
                 <p class="font-bold text-white text-2xl">No search results found for <b>“Messaging”</b></p>
             </div>
