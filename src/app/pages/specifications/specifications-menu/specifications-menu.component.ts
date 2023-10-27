@@ -14,13 +14,14 @@ import * as _ from "lodash";
 export class SpecificationsMenuComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword?: any;
-  @Output() text: EventEmitter<any> = new EventEmitter();
+  @Output() searchtext: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   menuList: any;
   selectedSection: any;
-  activeIndex: any = 0;
+  activeIndex: any = [0];
   selectedSecIndex: any;
   searchText: any;
+  multiAccordion: boolean = false;
   private textInputSubject = new Subject<string>();
   isOpen = true;
 
@@ -42,9 +43,11 @@ export class SpecificationsMenuComponent implements OnInit {
     this.populateMenuList();
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
-        this.text.emit(this.searchText);
+        this.searchtext.emit(this.searchText);
+        this.multiAccordion = true;
       } else {
-        this.text.emit('');
+        this.searchtext.emit('');
+        this.multiAccordion = false;
       }
     });
   }
@@ -88,7 +91,6 @@ export class SpecificationsMenuComponent implements OnInit {
           this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data.detail });
         }
         this.utils.loadSpinner(false);
-
       }).catch(error => {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
@@ -108,20 +110,28 @@ export class SpecificationsMenuComponent implements OnInit {
     }
   }
 
+  clearInput() {
+    this.searchtext.emit('');
+    this.searchText = '';
+    this.multiAccordion = false;
+    this.activeIndex = [0];
+  }
+
   onInput() {
     this.textInputSubject.next(this.searchText);
   }
 
-  containKeyword(keyword: any) {
-    if (keyword.includes(this.keyword)) {
-      return true;
-    } else {
-      return
-    }
-  }
-
   ngOnChanges() {
     this.keyword = this.keyword;
-    this.containKeyword(this.keyword)
+    this.specData = this.specData;
+    this.openAccordions();
+  }
+
+  openAccordions() {
+    this.specData.forEach((element: any, index: any) => {
+      this.activeIndex.push(index)
+    });
+    if (this.searchText?.length > 0)
+      this.multiAccordion = true;
   }
 }
