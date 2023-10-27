@@ -15,6 +15,8 @@ import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component
 import { UserRolesComponent } from './user-roles/user-roles.component';
 import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add-comment-overlay-panel.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
+import { ListViewComponent } from './list-view/list-view.component';
+import { ParaViewComponent } from './para-view/para-view.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -25,6 +27,8 @@ import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
     SpecGenPopupComponent,
     UserRolesComponent,
     AddCommentOverlayPanelComponent,
+    ListViewComponent,
+    ParaViewComponent,
     CamelToTitlePipe,
     ObjectToArrayPipe
   ],
