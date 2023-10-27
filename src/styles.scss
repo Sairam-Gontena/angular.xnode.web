@@ -433,3 +433,13 @@ body {
 .help-text {
   color: #02ADEE !important;
 }
+
+.p-overlaypanel .p-overlaypanel-content {
+  padding: 10px !important;
+  background-color: rgb(36, 35, 44);
+  color: #ffffff;
+}
+
+.p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
+  background-color: #495057;
+}
