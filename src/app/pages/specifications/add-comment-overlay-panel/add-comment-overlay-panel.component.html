@@ -2,13 +2,14 @@
     <span class="p-inputgroup-addon">
         <p-avatar [label]="utils.setUsernameOrDP()"
             [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
-            shape="circle"></p-avatar> </span>
-    <input type="text" pInputText placeholder="Comments" [(ngModel)]="comment" />
-    <span class="p-inputgroup-addon">
+            shape="circle"></p-avatar>
+    </span>
+    <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment"></textarea>
+    <div class="flex align-items-center gap-2 pl-2 pr-2 add-ons-bg">
         <img src="../assets/attach.svg" class="pointer" alt="attach">
-    </span>
-    <span class="p-inputgroup-addon pointer">@</span>
-    <span class="p-inputgroup-addon">
-        <img src="../assets/comment-send.svg" class="pointer" alt="comment send" (click)="onClickSend()">
-    </span>
+        <div class="pointer">
+            @
+        </div>
+        <img src="../assets/send-blue.svg" class="pointer" alt="comment send" (click)="onClickSend()">
+    </div>
 </div>
