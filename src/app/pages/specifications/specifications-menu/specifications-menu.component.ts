@@ -131,7 +131,7 @@ export class SpecificationsMenuComponent implements OnInit {
     this.specData.forEach((element: any, index: any) => {
       this.activeIndex.push(index)
     });
-    if (this.searchText.length > 0)
+    if (this.searchText?.length > 0)
       this.multiAccordion = true;
   }
 }
