@@ -1,16 +1,23 @@
-<div class="p-inputgroup w-full md:w-30rem add-comment-panel">
-    <span class="p-inputgroup-addon">
-        <p-avatar [label]="utils.setUsernameOrDP()"
-            [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
-            shape="circle"></p-avatar>
-    </span>
-    <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment"
-        [mention]="users"></textarea>
-    <div class="flex align-items-center gap-2 pl-2 pr-2 add-ons-bg">
-        <img src="../assets/attach.svg" class="pointer" alt="attach">
-        <div class="pointer">
-            @
+<div class="add-comment-panel">
+    <div class="p-inputgroup w-full md:w-30rem ">
+        <span class="p-inputgroup-addon">
+            <p-avatar [label]="utils.setUsernameOrDP()"
+                [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
+                shape="circle"></p-avatar>
+        </span>
+        <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment" [mention]="users"
+            (input)="onChangeComment()"></textarea>
+        <div class="flex align-items-center gap-2 pl-2 pr-2 add-ons-bg">
+            <img src="../assets/attach.svg" class="pointer" alt="attach">
+            <div class="pointer">
+                @
+            </div>
+            <img src="../assets/send-blue.svg" [ngClass]="{'disabled': comment.length < 5}" class="pointer"
+                alt="comment send" (click)="onClickSend()">
         </div>
-        <img src="../assets/send-blue.svg" class="pointer" alt="comment send" (click)="onClickSend()">
+    </div>
+    <div class="flex align-items-center add-comments-footer" *ngIf="assinedUsers.length > 0">
+        <p-checkbox name=" assign" [value]="true" [(ngModel)]="assignAsaTask" inputId="ny"></p-checkbox>
+        <label class="text-sm font-normal">Assign as a Task</label>
     </div>
 </div>
