@@ -24,34 +24,19 @@ export class SearchspecService {
     this.removableIndexes = [];
 
     return new Observable(observer => {
-      this.filterSpecbyKeyword(data, keyword)
-        .subscribe(() => {
-
-          let returnData = {
-            'specData': this.specData,
-            'foundObjects': this.foundObjects,
-            'filteredSpecData': this.filteredSpecData,
-            'noResults': this.noResults,
-            'wantedIndexes': this.wantedIndexes,
-            'removableIndexes': this.removableIndexes
-          };
-
-          observer.next(returnData);
-          observer.complete();
-        });
-
+      this.filterSpecbyKeyword(data, keyword).subscribe(() => {
+        let returnData = {
+          'specData': this.specData,
+          'foundObjects': this.foundObjects,
+          'filteredSpecData': this.filteredSpecData,
+          'noResults': this.noResults,
+          'wantedIndexes': this.wantedIndexes,
+          'removableIndexes': this.removableIndexes
+        };
+        observer.next(returnData);
+        observer.complete();
+      });
     });
-
-    // this.filterSpecbyKeyword(data, keyword);
-    // let returnData = {
-    //   'specData': this.specData,
-    //   'foundObjects': this.foundObjects,
-    //   'filteredSpecData': this.filteredSpecData,
-    //   'noResults': this.noResults,
-    //   'wantedIndexes': this.wantedIndexes,
-    //   'removableIndexes': this.removableIndexes
-    // }
-    // return of(returnData);
   }
 
 
