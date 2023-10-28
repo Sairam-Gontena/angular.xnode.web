@@ -29,11 +29,13 @@
                 <div *ngFor="let content of item.content;let cIndex = index; " class="mt-2">
                     <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'"
                         id={{content?.id}} #contentContainer>
-                        <div class="flex justify-content-between flex-wrap">
+                        <div class="flex justify-content-between flex-wrap relative">
                             <div class="flex align-items-center justify-content-center">
                                 <h3 class="m-0 pb-2 text-2xl font-bold" [innerHTML]="(i+1) + '.' + (cIndex+1) +' '+
                                 content.title | highlight: searchTerm "></h3>
                             </div>
+                            <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
+                                (sendComment)="sendComment($event)"></xnode-add-comment-overlay-panel>
                             <div class="flex align-items-center justify-content-center">
                                 <img src="../assets/comment.svg" class="pointer" alt="comment"
                                     (click)="onClickComment(item, content)">
@@ -247,27 +249,13 @@
                         <div *ngIf="content.title ==='User Roles'">
                             <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"></xnode-user-roles>
                         </div>
-                        <div class="w-full relative" (mouseup)="checkSelection(item,content)">
-                            <div *ngIf=" isArray(content.content); else notArray" [id]="content.id">
-                                <ul *ngFor="let subItem of content.content">
-                                    <li>
-                                        <p class="m-0 pb-1 line-height-3">
-                                            <span class="sub-title text-base font-medium"
-                                                [innerHTML]="subItem?.title| highlight: searchTerm"></span>
-                                            :
-                                            <span class="sub-content font-normal text-base"
-                                                [innerHTML]="subItem?.content | highlight: searchTerm"></span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <ng-template #notArray>
-                                <div class="content text-base font-normal"
-                                    [innerHTML]="content?.content | highlight: searchTerm" [id]="content.id"></div>
-                            </ng-template>
-                            <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
-                                (sendComment)="sendComment($event)"></xnode-add-comment-overlay-panel>
+                        <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
+                            <xnode-list-view [content]="content.content" [searchTerm]="searchTerm"></xnode-list-view>
+
                         </div>
+                        <ng-template #notArray>
+                            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm"></xnode-para-view>
+                        </ng-template>
 
                         <div class="gradientback" *ngIf="!content?.collapsed">
                         </div>

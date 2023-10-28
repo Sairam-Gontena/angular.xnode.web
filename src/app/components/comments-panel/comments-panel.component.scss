@@ -40,3 +40,17 @@
 .spec-comments-header {
     padding: 31.5px;
 }
+
+:host ::ng-deep .p-dropdown {
+    border: 0 !important;
+    color: #EFEEEE !important;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-label {
+    padding: 5px;
+}
+
+.filter-grid {
+    background: #2E2D36;
+    color: #EFEEEE;
+}

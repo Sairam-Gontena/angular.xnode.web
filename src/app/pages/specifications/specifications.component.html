@@ -16,7 +16,8 @@
             </xnode-specifications-content>
         </div>
         <div [ngClass]="isCommnetsPanelOpened ? 'flex w-full spec-bg' : 'hidden spec-bg'">
-            <xnode-comments-panel class="w-full" [contentData]="contentData"></xnode-comments-panel>
+            <xnode-comments-panel class="w-full" [contentData]="contentData"
+                [specData]="specData"></xnode-comments-panel>
         </div>
         <div [ngClass]="isCRsPanelOpened ? 'block' : 'hidden'">
             <xnode-change-requests-panel></xnode-change-requests-panel>

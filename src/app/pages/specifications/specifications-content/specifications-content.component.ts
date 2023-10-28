@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit, SimpleChanges, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
@@ -222,9 +222,20 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   onClickComment(item: any, content: any) {
-    this.utils.saveSelectedSection(item);
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    this.openAndGetComments.emit(content)
+    console.log('content', content);
+    console.log('item', item);
+    this.utils.saveSelectedSection(content);
+    this.specItemList.forEach((element: any) => {
+      if (item.id === element.id)
+        element.content.forEach((subEle: any) => {
+          if (content.id === subEle.id) {
+            subEle.showCommentOverlay = true;
+            this.isOpenSmallCommentBox = true;
+          } else {
+            subEle.showCommentOverlay = false;
+          }
+        });
+    });
   }
 
   getTestCaseKeys(testCase: any): string[] {
@@ -242,6 +253,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   sendComment(comment: any) {
+    this.utils.openOrClosePanel(SidePanel.Comments);
+
     let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
     this.isOpenSmallCommentBox = false;
     this.commentsService.getComments(this.selectedSpecItem)
@@ -269,6 +282,7 @@ export class SpecificationsContentComponent implements OnInit {
           .then((response: any) => {
             this.smallCommentContent = "";
             this.getCommentsAfterUpdate.emit(comment);
+            this.utils.openOrClosePanel(SidePanel.Comments);
           })
           .catch((error: any) => {
             this.smallCommentContent = "";
