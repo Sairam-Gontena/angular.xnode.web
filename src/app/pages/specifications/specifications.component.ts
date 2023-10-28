@@ -117,7 +117,7 @@ export class SpecificationsComponent implements OnInit {
 
   getMeSpecList(): void {
     this.utils.loadSpinner(true);
-    this.apiService.getApi("specs/retrieve/" + localStorage.getItem('record_id'))
+    this.apiService.getApi("specs/get/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response.data && Array.isArray(response.data?.content)) {
           this.isTheSpecGenerated = true;
@@ -199,7 +199,7 @@ export class SpecificationsComponent implements OnInit {
 
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
-    this.apiService.get('/get_conversation/' + this.product.email + '/' + this.product.id).then((res: any) => {
+    this.apiService.get('navi/get_conversation/' + this.product.email + '/' + this.product.id).then((res: any) => {
       if (res.status === 200 && res.data) {
         this.consversationList = res.data?.conversation_history;
         this.generate();

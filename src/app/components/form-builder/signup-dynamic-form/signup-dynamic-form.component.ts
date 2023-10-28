@@ -24,7 +24,7 @@ export class SignupDynamicFormComponent implements OnInit {
   }
 
   fetchOnboardingFlow() {
-    this.apiService.get('/retrieve_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
+    this.apiService.get('navi/get_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
@@ -50,7 +50,7 @@ export class SignupDynamicFormComponent implements OnInit {
   }
 
   fetchDataModel(entityName: string) {
-    this.apiService.get("/retrive_insights/" + localStorage.getItem('record_id'))
+    this.apiService.get("navi/get_insights/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {

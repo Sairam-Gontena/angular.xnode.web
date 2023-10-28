@@ -87,7 +87,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   getConversationHistory() {
     let productEmail = this.productDetails.email == this.currentUser.email ? this.currentUser.email : this.productDetails.email
-    this.apiService.get('/get_conversation/' + productEmail + '/' + this.product.id).then((res: any) => {
+    this.apiService.get('navi/get_conversation/' + productEmail + '/' + this.product.id).then((res: any) => {
       if (res.status === 200 && res.data) {
         this.getPopupInfo(res.data?.conversation_history);
         this.utils.loadSpinner(false);
