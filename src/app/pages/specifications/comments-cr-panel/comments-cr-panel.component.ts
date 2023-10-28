@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UtilsService } from '../services/utils.service';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { SpecContent } from 'src/models/spec-content';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { COMMENTS } from 'src/app/pages/specifications/mock';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
-  selector: 'xnode-comments-panel',
-  templateUrl: './comments-panel.component.html',
-  styleUrls: ['./comments-panel.component.scss']
+  selector: 'xnode-comments-cr-panel',
+  templateUrl: './comments-cr-panel.component.html',
+  styleUrls: ['./comments-cr-panel.component.scss']
 })
-export class CommentsPanelComponent implements OnInit {
+export class CommentsCrPanelComponent implements OnInit {
   @Input() specData?: Array<[]>
   userImage?: any = "DC";
   username?: any;

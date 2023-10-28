@@ -17,18 +17,26 @@ import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
 import { ListViewComponent } from './list-view/list-view.component';
 import { ParaViewComponent } from './para-view/para-view.component';
+import { CommentsCrPanelComponent } from './comments-cr-panel/comments-cr-panel.component';
+import { CommentsTabsComponent } from './comments-tabs/comments-tabs.component';
+import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
+import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
+    CommentsCrPanelComponent,
     UserPersonaComponent,
     SpecGenPopupComponent,
     UserRolesComponent,
     AddCommentOverlayPanelComponent,
     ListViewComponent,
     ParaViewComponent,
+    CommentsTabsComponent,
+    CrTabsComponent,
+    NoCommentsComponent,
     CamelToTitlePipe,
     ObjectToArrayPipe
   ],

@@ -45,6 +45,7 @@ export class SpecificationsContentComponent implements OnInit {
   smallCommentContent: string = '';
   product: any;
   isContentSelected = false;
+  isCommnetsPanelOpened: boolean = false;
 
 
   constructor(private utils: UtilsService,
@@ -67,7 +68,11 @@ export class SpecificationsContentComponent implements OnInit {
     })
 
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isCommentPanelOpened = pnl === SidePanel.Comments;
+      console.log('pnl', pnl, SidePanel.Comments);
+
+      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
+      console.log('isCommnetsPanelOpened', this.isCommnetsPanelOpened);
+
     });
   }
 

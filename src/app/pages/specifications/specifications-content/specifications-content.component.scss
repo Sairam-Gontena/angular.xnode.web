@@ -48,9 +48,16 @@
     right: 45% !important;
 }
 
-.spec-body {
+.spec-body-full {
     height: calc(100vh - 120px);
     overflow: auto;
+    width: 100%;
+}
+
+.spec-body-collapsed {
+    height: calc(100vh - 120px);
+    overflow: auto;
+    width: calc(100% - 514px);
 }
 
 .sub-content {
@@ -145,4 +152,11 @@ pre {
     height: 30px !important;
     color: white !important;
     border-radius: 2px !important;
+}
+
+.commnets-panel-grid {
+    width: 514px;
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    border-left: 1px solid rgba(255, 255, 255, 0.4) !important;
 }
