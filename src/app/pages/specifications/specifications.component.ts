@@ -6,6 +6,7 @@ import * as _ from "lodash";
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
+import { SearchspecService } from 'src/app/api/searchspec.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -42,7 +43,8 @@ export class SpecificationsComponent implements OnInit {
     private utils: UtilsService,
     private apiService: ApiService,
     private router: Router,
-    private auditUtil: AuditutilsService
+    private auditUtil: AuditutilsService,
+    private searchSpec: SearchspecService
   ) {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
@@ -77,97 +79,34 @@ export class SpecificationsComponent implements OnInit {
   }
 
   searchText(keyword: any) {
-    if (keyword == '') {
+    if (keyword === '') {
       this.clearSearchText();
+      this.noResults = false;
       return
-    }
-    this.keyword = keyword;
-    this.filteredSpecData = [];
-    this.specData = [];
-    this.foundObjects = [];
-    let specLocalStorage = localStorage.getItem('specData')
-    if (specLocalStorage) {
-      let parseData = JSON.parse(specLocalStorage);
-      this.specData = parseData;
-    }
-    this.specData.forEach((elem: any, index: any) => {
-      if (typeof (elem?.content) == 'string') {
-        if (elem?.title.toUpperCase().includes(keyword.toUpperCase()) || elem?.content.toUpperCase().includes(keyword.toUpperCase())) {
-          this.foundObjects = _.uniq(_.concat(this.foundObjects, elem))
-          this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, elem))
+    } else {
+      this.keyword = keyword;
+      this.specData = [];
+      this.foundObjects = [];
+      this.filteredSpecData = [];
+      this.wantedIndexes = [];
+      this.removableIndexes = [];
+      let specLocalStorage = localStorage.getItem('specData')
+      if (specLocalStorage) {
+        let parseData = JSON.parse(specLocalStorage);
+        this.specData = parseData;
+      }
+      this.searchSpec.searchSpec(this.specData, keyword).subscribe((returnData: any) => {
+        if (returnData) {
+          this.specData = returnData.specData;
+          this.foundObjects = returnData.foundObjects;
+          this.noResults = returnData.noResults;
+          this.filteredSpecData = returnData.filteredSpecData;
+          this.wantedIndexes = returnData.wantedIndexes;
+          this.removableIndexes = returnData.removableIndexes;
+          this.utils.passSelectedSpecItem(this.specData)
         }
-      }
-      if (typeof (elem?.content) == 'object' && elem?.content.length > 0) {
-        elem?.content.forEach((subElem: any) => {
-          if (typeof (subElem?.content) == 'string') {
-            if (subElem?.title.toUpperCase().includes(keyword.toUpperCase()) || subElem?.content.toUpperCase().includes(keyword.toUpperCase())) {
-              this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
-              this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
-            }
-          }
-          if (typeof (subElem?.content) == 'object') {
-            subElem?.content.forEach((subChild: any) => {
-              if (typeof (subChild?.content) == 'string') {
-                if (subChild?.title.toUpperCase().includes(keyword.toUpperCase()) || subChild?.content.toUpperCase().includes(keyword.toUpperCase())) {
-                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
-                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
-                }
-              }
-              if (typeof (subChild) == 'string') {
-                if (subChild?.toUpperCase().includes(keyword.toUpperCase())) {
-                  this.foundObjects = _.uniq(_.concat(this.foundObjects, subElem))
-                  this.filteredSpecData = _.uniq(_.concat(this.filteredSpecData, subElem))
-                }
-              }
-            });
-          }
-        });
-      }
-      if (index === this.specData.length - 1) {
-        if (this.filteredSpecData.length > 0) {
-          this.noResults = false;
-          this.populatefilteredSpecData(this.filteredSpecData)
-        } else {
-          this.filteredSpecData.length == 0 ? this.noResults = true : this.noResults = false;
-        }
-      }
-    });
-  }
-
-  populatefilteredSpecData(list: any) {
-    let deleteIndexes: any[] = [];
-    this.wantedIndexes = [];
-    this.removableIndexes = [];
-    this.filteredSpecData = _.compact(list);
-    this.specData.forEach((item: any, index: any) => {
-      deleteIndexes = [];
-      if (typeof (item?.content) == 'object' && item?.content.length > 0)
-        item?.content.forEach((subitem: any, subindex: any) => {
-          _.some(this.filteredSpecData, (filterdataelem: any, subelemIndex: any) => {
-            if (_.isEqual(filterdataelem.title, subitem.title)) {
-              deleteIndexes.push(subindex);
-            }
-          });
-        });
-      if (deleteIndexes.length > 0) {
-        this.wantedIndexes.push(index)
-        this.deleteSpecData(index, deleteIndexes)
-      } else {
-        this.removableIndexes.push(index)
-      }
-    });
-    _.pullAt(this.specData, this.removableIndexes);
-    let speclist = this.specData;
-    this.utils.passSelectedSpecItem(speclist);
-  }
-
-  deleteSpecData(index: any, indexes: any) {
-    let itemArr: any[] = [];
-    this.specData[index]?.content.forEach((item: any, itemindex: any) => {
-      itemArr.push(itemindex)
-    });
-    let wantedArr = _.difference(itemArr, indexes);
-    _.pullAt(this.specData[index]?.content, wantedArr);
+      });
+    }
   }
 
   getMeUserAvatar() {

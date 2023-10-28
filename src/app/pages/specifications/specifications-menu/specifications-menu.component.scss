@@ -100,3 +100,8 @@
     color: white !important;
     border-radius: 2px !important;
 }
+
+:host::ng-deep .reset-search {
+    position: absolute !important;
+    right: 10px !important;
+}
