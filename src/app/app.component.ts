@@ -140,7 +140,7 @@ export class AppComponent implements OnInit {
     });
   }
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("/total_apps_onboarded/" + user?.email)
+    this.apiService.get("navi/total_apps_onboarded/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);

@@ -75,7 +75,7 @@ export class SpecificationsMenuComponent implements OnInit {
 
   // not using this function
   getMeSpecList(): void {
-    this.apiService.getApi("specs/retrieve/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
+    this.apiService.getApi("specs/get/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
       .then((response: any) => {
         if (response?.status === 200 && !response.data.detail) {
           const list = response.data;

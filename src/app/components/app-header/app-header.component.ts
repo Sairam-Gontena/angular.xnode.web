@@ -122,7 +122,7 @@ export class AppHeaderComponent implements OnInit {
 
   //get calls 
   getAllProducts(): void {
-    this.apiService.get("/get_metadata/" + this.currentUser.email)
+    this.apiService.get("navi/get_metadata/" + this.currentUser.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           let user_audit_body = {
@@ -191,7 +191,7 @@ export class AppHeaderComponent implements OnInit {
           product_id: data.product_id,
           product_url: data.product_url + '/login?product_id=' + data.product_id,
         }
-        this.apiService.patch(body, '/update_product_url')
+        this.apiService.patch(body, 'navi/update_product_url')
           .then(response => {
             if (!response) {
               this.utilsService.loadToaster({ severity: 'error', summary: '                                                                                                                       ' });

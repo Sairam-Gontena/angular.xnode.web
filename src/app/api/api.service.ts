@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
-  endPoint = environment.apiUrl + "crud";
+  endPoint = environment.apiUrl;
   apiPoint = environment.apiUrl;
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
