@@ -48,8 +48,6 @@ export class CommentsCrPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('this._contentData', this._contentData);
-    console.log('spec', this.specData);
     let data = localStorage.getItem("currentUser")
     if (data) {
       this.currentUser = JSON.parse(data);
@@ -76,25 +74,18 @@ export class CommentsCrPanelComponent implements OnInit {
     });
     this.commentList = COMMENTS;
     this.getMeTheContent();
-
-
   }
-
 
   getMeTheContent(): void {
     this.commentList.forEach((obj: Comment) => {
       this.specData?.forEach((specObj: any) => {
         specObj?.content?.forEach((sec: any) => {
           if (obj.content_id === sec.id) {
-            console.log('>>>>>>>>>>>>>>>>>>>>>>');
-
             obj.content = sec;
           }
         })
       })
     });
-    console.log('this.commentList', this.commentList);
-
   }
 
   onClickClose() {

@@ -68,11 +68,7 @@ export class SpecificationsContentComponent implements OnInit {
     })
 
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      console.log('pnl', pnl, SidePanel.Comments);
-
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
-      console.log('isCommnetsPanelOpened', this.isCommnetsPanelOpened);
-
     });
   }
 
@@ -228,9 +224,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   onClickComment(item: any, content: any) {
-    console.log('content', content);
-    console.log('item', item);
-    this.utils.saveSelectedSection(content);
+    // this.utils.saveSelectedSection(content);
     this.specItemList.forEach((element: any) => {
       if (item.id === element.id)
         element.content.forEach((subEle: any) => {

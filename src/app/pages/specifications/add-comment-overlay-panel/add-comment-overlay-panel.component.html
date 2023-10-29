@@ -1,13 +1,10 @@
-<div class="add-comment-panel">
+<div class="add-comment-panel flex align-items-start">
+    <p-avatar [label]="utils.setUsernameOrDP()" class="pl-3 pr-3 pt-3"
+        [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff' }" shape="circle"></p-avatar>
     <div class="p-inputgroup w-full md:w-30rem ">
-        <span class="p-inputgroup-addon">
-            <p-avatar [label]="utils.setUsernameOrDP()"
-                [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
-                shape="circle"></p-avatar>
-        </span>
         <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment" [mention]="users"
             (input)="onChangeComment()"></textarea>
-        <div class="flex align-items-center gap-2 pl-2 pr-2 add-ons-bg">
+        <div class="flex align-items-end gap-2 pl-2 pr-2 pb-4 add-ons-bg">
             <img src="../assets/attach.svg" class="pointer" alt="attach">
             <div class="pointer">
                 @
