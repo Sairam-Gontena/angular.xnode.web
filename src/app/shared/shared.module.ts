@@ -32,6 +32,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DataService } from '../pages/er-modeller/service/data.service';
 import { DataViewModule } from "primeng/dataview";
+import { MentionModule } from 'angular-mentions';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { DataViewModule } from "primeng/dataview";
     SidebarModule,
     FieldsetModule,
     DataViewModule,
+    MentionModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -98,6 +100,7 @@ import { DataViewModule } from "primeng/dataview";
     PanelModule,
     SidebarModule,
     FieldsetModule,
+    MentionModule
   ],
   providers: [
     DataService

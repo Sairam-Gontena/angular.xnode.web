@@ -139,4 +139,49 @@ export const SPEC_DATA =
             "modified_by": "sohail.shroff@salientminds.com"
         },
 
-    ]
+    ];
+
+export const COMMENTS = [
+    {
+        CreatedBy: {
+            Id: '123',
+            DisplayName: 'Test',
+            Email: 'test'
+        },
+        CreatedOn: new Date(),
+        "id": "1a2b3c4d",
+        "content_id": "cf508de6-99b9-4a2a-974b-a508d49a0ac7",
+        "product_id": "5678efgh",
+        "user_id": "user123",
+        "message": "This is a sample comment.",
+        "crId": "cr5678",
+        "linkedCommentIds": ["comment456", "comment789"],
+        "attachments": [
+            {
+                "Id": "file123",
+                "Name": "attachment1.jpg",
+                "FilePath": "image/jpeg"
+            },
+            {
+                "Id": "file456",
+                "Name": "attachment2.pdf",
+                "FilePath": "application/pdf"
+            }
+        ],
+        "userMentions": [
+            {
+                "Id": "user456",
+                "DisplayName": "mentionUser1",
+                Email: 'tets'
+            },
+            {
+                "Id": "user789",
+                "DisplayName": "mentionUser2",
+                Email: 'tets'
+
+            }
+        ],
+        "itemType": "Comment",
+        "status": "Resolved"
+    }
+]
