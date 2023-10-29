@@ -1,11 +1,9 @@
 .sctions-grid {
     background: #24232C;
-    // width: 60%;
     padding: 30px;
     color: #dfdfdf;
     max-height: 200px;
     overflow: hidden;
-
 }
 
 .openapi-spec {
@@ -23,14 +21,12 @@
 
 .intro-grid {
     background: #24232C;
-    // width: 60%;
     padding: 30px;
     color: #dfdfdf;
 }
 
 .sctions-grid-full {
     background: #24232C;
-    // width: 60%;
     padding: 30px;
     color: #dfdfdf;
     max-height: none;
@@ -48,9 +44,16 @@
     right: 45% !important;
 }
 
-.spec-body {
+.spec-body-full {
     height: calc(100vh - 120px);
     overflow: auto;
+    width: 100%;
+}
+
+.spec-body-collapsed {
+    height: calc(100vh - 120px);
+    overflow: auto;
+    width: calc(100% - 514px);
 }
 
 .sub-content {
@@ -126,10 +129,6 @@ pre {
     width: 25px;
 }
 
-.comment-area>.w-full {
-    cursor: url("../../../../assets/comment-spec.svg"), auto;
-}
-
 .small-comment-box {
     position: fixed;
     left: 45%;
@@ -146,4 +145,16 @@ pre {
     height: 30px !important;
     color: white !important;
     border-radius: 2px !important;
+}
+
+.commnets-panel-grid {
+    width: 514px;
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    border-left: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+:host ::ng-deep .p-overlaypanel .p-overlaypanel-content {
+    background: #302E38 !important;
+    border-radius: 6px !important;
 }

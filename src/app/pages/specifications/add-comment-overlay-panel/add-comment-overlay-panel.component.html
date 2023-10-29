@@ -1,0 +1,20 @@
+<div class="add-comment-panel flex align-items-start">
+    <p-avatar [label]="utils.setUsernameOrDP()" class="pl-3 pr-3 pt-3"
+        [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff' }" shape="circle"></p-avatar>
+    <div class="p-inputgroup w-full md:w-30rem ">
+        <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment" [mention]="users"
+            (input)="onChangeComment()"></textarea>
+        <div class="flex align-items-end gap-2 pl-2 pr-2 pb-4 add-ons-bg">
+            <img src="../assets/attach.svg" class="pointer" alt="attach">
+            <div class="pointer">
+                @
+            </div>
+            <img src="../assets/send-blue.svg" [ngClass]="{'disabled': comment.length < 5}" class="pointer"
+                alt="comment send" (click)="onClickSend()">
+        </div>
+    </div>
+    <div class="flex align-items-center add-comments-footer" *ngIf="assinedUsers.length > 0">
+        <p-checkbox name=" assign" [value]="true" [(ngModel)]="assignAsaTask" inputId="ny"></p-checkbox>
+        <label class="text-sm font-normal">Assign as a Task</label>
+    </div>
+</div>

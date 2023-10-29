@@ -1,0 +1,11 @@
+<p-tabView>
+    <p-tabPanel header="Conversation">
+        <xnode-no-comments *ngIf="commentList?.length === 0;else elseComments"></xnode-no-comments>
+        <ng-template #elseComments>
+            <xnode-comments-panel [commentList]="commentList"></xnode-comments-panel>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Tasks">
+        <p>Tasks</p>
+    </p-tabPanel>
+</p-tabView>

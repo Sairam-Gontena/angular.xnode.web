@@ -1,0 +1,57 @@
+:host ::ng-deep .p-inputgroup-addon {
+    background: #302E38;
+    border-left: 0;
+}
+
+:host::ng-deep .p-inputgroup-addon:first-child {
+    border: none;
+}
+
+.add-comment-panel {
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    z-index: 2;
+    background-color: #302E38;
+}
+
+:host ::ng-deep.p-inputtext {
+    background-color: #302E38;
+    color: #fff;
+    border: 0;
+    box-shadow: none;
+    font-weight: normal;
+}
+
+.add-ons-bg {
+    border-radius: 6px;
+}
+
+.add-comments-footer {
+    padding: 12px;
+    border-top: 1px solid #ced4da;
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+    border: 1px solid #ced4da;
+    background: none;
+    width: 16px;
+    height: 16px;
+    color: #495057;
+    border-radius: 4px;
+}
+
+:host ::ng-deep .p-checkbox {
+    padding-top: 3px;
+}
+
+:host ::ng-deep .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+    box-shadow: none;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
