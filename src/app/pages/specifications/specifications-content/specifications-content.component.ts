@@ -1,12 +1,14 @@
 import { Component, Input, ViewChild, OnInit, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { CommentsService } from 'src/app/api/comments.service';
+import { AuthApiService } from 'src/app/api/auth.service';
+import { User } from 'src/models/user';
+import { UtilsService } from 'src/app/components/services/utils.service';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
@@ -46,13 +48,12 @@ export class SpecificationsContentComponent implements OnInit {
   product: any;
   isContentSelected = false;
   isCommnetsPanelOpened: boolean = false;
-
+  usersList: Array<User> = []
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
-    private renderer: Renderer2,
-    private el: ElementRef,
+    private authApiService: AuthApiService,
     private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
     this.utils.getMeSpecItem.subscribe((event: any) => {
@@ -116,8 +117,25 @@ export class SpecificationsContentComponent implements OnInit {
     if (record_id) {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
-
     this.makeTrustedUrl();
+    this.getMeUserList();
+  }
+
+  getMeUserList(): void {
+    this.utils.loadSpinner(true);
+    this.authApiService.getData('user/dev.xnode@salientminds.com')
+      .then((response: any) => {
+        if (response?.status === 200 && response?.data) {
+          this.usersList = response.data;
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utils.loadSpinner(false)
+      });
   }
 
   isArray(item: any) {

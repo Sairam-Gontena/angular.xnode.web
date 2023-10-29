@@ -1,3 +1,15 @@
+interface Prospect_Info {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    account_type: string;
+    industry: string;
+    business_name: string;
+    user_message: string;
+    is_test_user: boolean;
+}
+
 export interface User {
     user_id: string;
     first_name: string;
@@ -15,4 +27,6 @@ export interface User {
     role_name: string;
     phone: string;
     image?: string;
+    fullName?: string;
+    prospect_info?: Prospect_Info;
 }

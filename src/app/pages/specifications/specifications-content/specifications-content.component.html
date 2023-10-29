@@ -37,7 +37,7 @@
                                     <h3 class="m-0 pb-2 text-2xl font-bold" [innerHTML]="(i+1) + '.' + (cIndex+1) +' '+
                                 content.title | highlight: searchTerm "></h3>
                                 </div>
-                                <xnode-add-comment-overlay-panel
+                                <xnode-add-comment-overlay-panel [usersList]="usersList"
                                     *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
                                     (sendComment)="sendComment($event)"></xnode-add-comment-overlay-panel>
                                 <div class="flex align-items-center justify-content-center">
