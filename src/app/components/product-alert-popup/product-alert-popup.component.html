@@ -17,9 +17,9 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <p-button (click)="continueChat()" label="Continue Chat"
-            styleClass="p-button-rounded p-button-outlined continue-chat"></p-button>
+            styleClass="p-button-outlined continue-chat" [rounded]="true"></p-button>
         <p-button (click)="actionButton()" label="{{buttonLabel}}"
-            styleClass="p-button-rounded generate-app"></p-button>
+            styleClass="generate-app" [rounded]="true"></p-button>
     </ng-template>
 </p-dialog>
 

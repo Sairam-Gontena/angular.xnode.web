@@ -5,10 +5,10 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"
+            <p-button label="Cancel"  [rounded]="true" class="cancel-button"
                 (click)="this.closePopup.emit()"></p-button>
             <p-button *ngIf="isTheCurrentUserOwner" (click)="generate()" label="Generate"
-                styleClass="p-button-rounded generate-btn"></p-button>
+                styleClass="generate-btn"  [rounded]="true"></p-button>
         </div>
 
     </ng-template>

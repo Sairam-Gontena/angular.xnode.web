@@ -47,10 +47,10 @@
                             </div>
                             <p-button (click)="onClickSeeMore(item,content)" label="See More"
                                 *ngIf="!content?.collapsed"
-                                styleClass="p-button-rounded p-button-outlined see-more-button"
+                                styleClass="p-button-outlined see-more-button"  [rounded]="true"
                                 class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
                             <p-button (click)="onClickSeeLess(item,content)" label="See Less" *ngIf="content?.collapsed"
-                                styleClass="p-button-rounded p-button-outlined see-more-button"
+                                styleClass="p-button-outlined see-more-button"  [rounded]="true"
                                 class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
 
                             <div *ngIf="content.title ==='Usecases'">

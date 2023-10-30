@@ -83,9 +83,9 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"
+            <p-button label="Cancel" [rounded]="true" class="cancel-button"
                 (click)="closePopup()"></p-button>
-            <p-button label="Report" styleClass="p-button-rounded p-button-primary report-btn"
+            <p-button label="Report" styleClass="p-button-primary report-btn" [rounded]="true"
                 (click)="feedbackReport($event)"></p-button>
         </div>
     </ng-template>

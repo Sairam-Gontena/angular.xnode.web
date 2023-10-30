@@ -118,9 +118,9 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"
+            <p-button label="Cancel"  [rounded]="true" class="cancel-button"
                 (click)="closePopup()"></p-button>
-            <p-button label="Send Feedback" styleClass="p-button-rounded p-button-primary send-feedback-btn"
+            <p-button label="Send Feedback" styleClass="p-button-primary send-feedback-btn"  [rounded]="true"
                 (click)="sendFeedback($event)"></p-button>
         </div>
     </ng-template>

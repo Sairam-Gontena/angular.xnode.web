@@ -24,12 +24,12 @@
             <div class="hidden-sm hidden-xs md:col:12 lg:col-3"></div>
             <div class="account-type-form sm:col-12 md:col:12 lg:col-6 bg-white w-29rem">
                 <form [formGroup]="accountTypeForm" (ngSubmit)="onSubmit(accountTypeForm)">
-                <p class="step-para-opacity text-lg font-medium">Step 1 of 2</p> 
+                <p class="step-para-opacity text-lg font-medium">Step 1 of 2</p>
                 <p class="page-header text-6xl font-semibold">Create Account</p>
                 <div class="grid pl-3 p-l-xs-2">
                     <p class="step-para p-size-18 font-medium text-lg">Already a member?</p>
                     <a class="text-blue-700 pl-2 text-lg cursor-pointer" routerLink="/login">Login</a>
-                </div> 
+                </div>
                 <p class="step-para text-xl p-size-18 font-medium">How would you like to use xnode?</p>
                 <div class="border-div border-200 border-round-xl flex flex-row justify-content-between mb-3 px-4">
                     <img src="../../../assets/clarity_building-solid.svg" alt="building"/>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="m-xs-3 my-xs-4 my-6">
-                    <p-button [disabled]="accountTypeForm.invalid" styleClass="p-button-lg p-button-rounded w-full" class="w-full text-2xl font-medium" type="submit" label="Next"></p-button>
+                    <p-button [disabled]="accountTypeForm.invalid" styleClass="p-button-lg w-full" [rounded]="true" class="w-full text-2xl font-medium" type="submit" label="Next"></p-button>
                 </div>
                 </form>
                 <div class="m-md-3 my-xs-4 text-center mt-6">
