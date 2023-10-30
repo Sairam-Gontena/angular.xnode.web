@@ -3,7 +3,7 @@
      <div class="" [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
           <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
           <p-button label="Back to Graph" icon="pi pi-arrow-left"
-               styleClass="p-button-sm  p-button-text p-button-rounded" *ngIf="graphRedirection"
+               styleClass="p-button-sm back-to-graph p-button-text"  [rounded]="true" *ngIf="graphRedirection"
                (click)="switchWindow()" class="ml-4"></p-button>
 
           <div class="grid bpmn-div">

@@ -37,11 +37,13 @@
     line-height: 26px;
 }
 
-:host ::ng-deep.see-more-button .p-button {
-    display: block;
-    margin: 0 auto;
-    position: absolute !important;
-    right: 45% !important;
+:host ::ng-deep .see-more-button {
+    color: #ffffff;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
 }
 
 .spec-body-full {

@@ -71,7 +71,7 @@
                         <div class="flex justify-content-between flex-wrap align-items-center w-full">
                             <p class="m-0">{{conv.message}}</p>
                             <p-button type="submit" label="Reply"
-                                styleClass="p-button-outlined p-button-rounded text-right"
+                                styleClass="p-button-outlined text-right"  [rounded]="true"
                                 (click)="onClickReply()"></p-button>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                             <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name}}
                                 {{currentUser?.last_name}}</p>
                         </div>
-                        <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
+                        <p-button label="Send" styleClass="p-button-outlined" [rounded]="true"
                             (click)="onClickSend()"></p-button>
                     </div>
                     <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"></textarea>

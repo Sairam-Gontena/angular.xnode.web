@@ -14,12 +14,12 @@
     </div>
   </div>
   <div class="col">
-    <p-button label="Create new change" styleClass="p-button-rounded p-button-outlined"></p-button>
+    <p-button label="Create new change" styleClass="p-button-outlined"  [rounded]="true"></p-button>
   </div>
 </div>
 <div>
   <div class="flex justify-content-end mt-3" (click)="sortRequests()">
-    <div><i [ngClass]="{'pi-arrow-up': isAscending, 
+    <div><i [ngClass]="{'pi-arrow-up': isAscending,
       'pi-arrow-down': !isAscending,
       'pi text-white text-sm': true}" class="pi pi-arrow-up text-white text-sm"></i></div>
     <div><span class="text-white ml-2 mr-2" >Date</span></div>

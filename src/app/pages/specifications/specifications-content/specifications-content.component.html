@@ -8,12 +8,10 @@
                     <div class="intro-grid" [id]="item.title">
                         <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
                         <div class="flex align-items-center spec-status">
-                            <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d,
-                                y'}}
+                            <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d, y'}}
                             </p>
                             <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date: 'MMM d,
-                                y'}}
+                            <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date: 'MMM d,y'}}
                             </p>
                             <i class="pi pi-circle-fill pl-3 pr-3"></i>
                             <p class="text-sm font-medium">3 mins read</p>
@@ -34,8 +32,7 @@
                             id={{content?.id}} #contentContainer>
                             <div class="flex justify-content-between flex-wrap relative">
                                 <div class="flex align-items-center justify-content-center">
-                                    <h3 class="m-0 pb-2 text-2xl font-bold" [innerHTML]="(i+1) + '.' + (cIndex+1) +' '+
-                                content.title | highlight: searchTerm "></h3>
+                                    <h3 class="m-0 pb-2 text-2xl font-bold" [innerHTML]="(i+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
                                 </div>
                                 <xnode-add-comment-overlay-panel
                                     *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
@@ -47,10 +44,10 @@
                             </div>
                             <p-button (click)="onClickSeeMore(item,content)" label="See More"
                                 *ngIf="!content?.collapsed"
-                                styleClass="p-button-rounded p-button-outlined see-more-button"
+                                styleClass="p-button-outlined see-more-button"  [rounded]="true"
                                 class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
                             <p-button (click)="onClickSeeLess(item,content)" label="See Less" *ngIf="content?.collapsed"
-                                styleClass="p-button-rounded p-button-outlined see-more-button"
+                                styleClass="p-button-outlined see-more-button"  [rounded]="true"
                                 class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
 
                             <div *ngIf="content.title ==='Usecases'">

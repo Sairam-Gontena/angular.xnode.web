@@ -3,7 +3,7 @@
         [ngClass]="{'justify-content-between':graphRedirection,'justify-content-end':!graphRedirection}">
         <img src="./assets/spec-minimize.svg" class="expand-icon pointer" alt="container" *ngIf="!specExpanded"
             (click)="expandDataFlows()">
-        <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm  p-button-text p-button-rounded"
+        <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm back-to-graph p-button-text"
             *ngIf="graphRedirection" (click)="switchWindow()"></p-button>
         <i class="pi pi-times text-white text-xl pointer" *ngIf="specExpanded" (click)="expandDataFlows()"></i>
     </div>

@@ -5,6 +5,15 @@
      border-width: 0;
 }
 
+:host ::ng-deep .back-to-graph{
+  color: #ffffff;
+  background: unset;
+  font-size: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: none;
+}
+
 .bpmn-component {
      display: flex;
      height: 100vh;
