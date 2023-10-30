@@ -52,7 +52,7 @@
     border: 1px solid var(--primary-color);
 }
 
-:host::ng-deep.continue-chat .p-button {
+:host::ng-deep.continue-chat {
     color: #ffffff;
     background: #23222B;
     font-size: 12px;
