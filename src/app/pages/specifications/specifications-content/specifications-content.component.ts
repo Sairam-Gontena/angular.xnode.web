@@ -154,6 +154,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   scrollToItem() {
+    console.log('this.selectedSpecItem', this.selectedSpecItem);
+
     const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -205,7 +207,7 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  expandComponent(val: any): void {
+  _expandComponent(val: any): void {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
@@ -217,10 +219,8 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    setTimeout(() => {
-      this.scrollToItem();
-      this.fetchOpenAPISpec();
-    }, 1000);
+    this.scrollToItem();
+    this.fetchOpenAPISpec();
   }
 
   _onClickComment(event: any) {

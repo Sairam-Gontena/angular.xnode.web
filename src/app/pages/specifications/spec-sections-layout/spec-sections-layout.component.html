@@ -20,9 +20,9 @@
             *ngIf="content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
             class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
 
-        <div *ngIf="content.title ==='Usecases'">
+        <div *ngIf="content.title ==='Usecases' || content.title === 'Use Cases'">
             <div class="flex col-12 justify-content-end align-items-center">
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     *ngIf="!readOnly" class="expnad-icon pointer">
             </div>
             <xnode-common-usecases [searchTerm]="searchTerm"></xnode-common-usecases>
@@ -30,18 +30,18 @@
         <div *ngIf="content.title ==='User Interface Design'">
             <div class="flex justify-content-between align-items-center">
                 <h1>Dashboard</h1>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
             </iframe>
         </div>
         <div *ngIf="content.title ==='Data Management Persistence'">
-            <xnode-data-model-common (dataFlowEmitter)="expandComponent(content)"
+            <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
                 [item]="content"></xnode-data-model-common>
         </div>
         <div *ngIf="content.title ==='Workflows'">
-            <xnode-bpmn-common (dataFlowEmitter)="expandComponent(content)" [item]="content"></xnode-bpmn-common>
+            <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [item]="content"></xnode-bpmn-common>
         </div>
         <div *ngIf="content.title ==='Data Dictionary'">
             <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
@@ -49,7 +49,7 @@
                     (click)="checkedToggle('json', specItem, content)"></i>
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer ml-3" style="width: 25px;">
             </div>
             <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
@@ -64,7 +64,7 @@
                     (click)="checkedToggle('json', specItem, content)"></i>
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="checked && selectedContent ===sectionIndex" class="ml-3"
                     style="width: 25px;">
             </div>
@@ -82,7 +82,7 @@
                     (click)="checkedToggle('json', specItem, content)"></i>
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="checked && selectedContent === sectionIndex" class="ml-3"
                     style="width: 25px;">
             </div>
@@ -100,7 +100,7 @@
                     (click)="checkedToggle('json', specItem, content)"></i>
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="checked && selectedContent === sectionIndex" class="ml-3"
                     style="width: 25px;">
             </div>
@@ -118,7 +118,7 @@
                     (click)="checkedToggle('json', specItem, content)"></i>
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="checked && selectedContent ===sectionIndex" class="ml-3"
                     style="width: 25px;">
             </div>
@@ -132,7 +132,7 @@
         </div>
         <div *ngIf="content.title ==='Historical Data Load'">
             <div class="flex justify-content-end mb-2">
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
@@ -144,28 +144,28 @@
         </div>
         <div class="w-full" *ngIf="content.title ==='Glossary'">
             <div class="flex justify-content-end mb-2">
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='Version Control'">
             <div class="flex justify-content-end mb-2">
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='Error Handling'">
             <div class="flex justify-content-end mb-2">
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='Stakeholder Approvals'">
             <div class="flex justify-content-end mb-2">
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
@@ -206,7 +206,7 @@
         <div *ngIf="content.title ==='OpenAPI Spec'">
             <div class="flex col-12 justify-content-between align-items-center">
                 <h4 class="m-0 ">Swagger API</h4>
-                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent(content)"
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>

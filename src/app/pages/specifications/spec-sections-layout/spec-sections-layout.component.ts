@@ -21,6 +21,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
   @Output() onClickComment = new EventEmitter<any>();
+  @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
   paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
@@ -39,7 +40,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('content', this.content);
+
 
   }
 
@@ -81,16 +82,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
       .catch(res => {
         console.log("comments get failed");
       })
-  }
-
-  expandComponent(val: any): void {
-    if (val) {
-      this.selectedSpecItem = val;
-      this.utils.saveSelectedSection(val);
-      this.specExpanded = true;
-    } else {
-      this.specExpanded = false;
-    }
   }
 
   checkedToggle(type: any, item: any, content: any) {
