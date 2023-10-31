@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { UtilsService } from '../services/utils.service';
+import { UtilsService } from '../../../components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
+import { COMMENTS } from 'src/app/pages/specifications/mock';
+import { AuditInfo } from 'src/models/audit-info';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -12,7 +14,7 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 })
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
-  @Input() commentList: Array<Comment> = [];
+  @Input() commentList: Array<Comment> = COMMENTS;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -24,7 +26,7 @@ export class CommentsPanelComponent implements OnInit {
   };
   comment: any;
   currentUser: any;
-  selectedSection: any
+  selectedSection: any;
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
@@ -41,6 +43,14 @@ export class CommentsPanelComponent implements OnInit {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
     }
+  }
+
+  setAvatar(userObj: AuditInfo): string {
+    let avatar: string = '';
+    if (userObj.ModifiedBy?.DisplayName) {
+      avatar = userObj.ModifiedBy?.DisplayName.charAt(0).toUpperCase()
+    }
+    return avatar;
   }
 
   onClickClose() {
