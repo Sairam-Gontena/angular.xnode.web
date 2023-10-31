@@ -51,7 +51,7 @@
     width: '40vw'
 }
 
-:host ::ng-deep .btn-primary{
+:host ::ng-deep .btn-primary.confirm-success{
     background: #EF018F;
     font-size: 12px;
     padding-top: 6px;
