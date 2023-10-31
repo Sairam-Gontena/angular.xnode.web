@@ -51,7 +51,10 @@ export class OverViewComponent {
     if (this.currentUser?.email)
       this.email = this.currentUser?.email;
     let dataName = localStorage.getItem("currentUser")
-    let productUserName = this.productDetails.email == this.email ? localStorage.getItem("currentUser") : this.productDetails.username;
+    console.log(this.currentUser)
+    console.log(this.productDetails)
+    console.log(this.email)
+    let productUserName = this.productDetails?.email == this.email ? localStorage.getItem("currentUser") : this.productDetails?.username;
     if (dataName) {
       if (this.productDetails.email == this.email) {
         let currentUser = JSON.parse(dataName);
