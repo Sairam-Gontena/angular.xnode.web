@@ -7,7 +7,7 @@
     <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
     <div class="ml-4 mr-4 p-3 "
       [ngClass]="{'logs-content-menu':isSideMenuOpen,'logs-content':!isSideMenuOpen,'logs-content-navi':isDockedNaviOpened,'logs-content-navi-menu':isDockedNaviOpened && isSideMenuOpen}">
-      <div class="h-full overflow-auto ">
+      <div class="h-full  w-full overflow-auto ">
         <xnode-dynamic-table [inputData]="logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
       </div>
     </div>

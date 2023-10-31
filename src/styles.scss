@@ -443,3 +443,8 @@ body {
 .p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
   background-color: #495057;
 }
+
+.p-overlaypanel .p-overlaypanel-content {
+  padding: 0px !important;
+  border-width: 0px;
+}
