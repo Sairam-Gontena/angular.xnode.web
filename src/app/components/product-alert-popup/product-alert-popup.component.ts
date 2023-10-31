@@ -12,6 +12,7 @@ import { NotifyApiService } from 'src/app/api/notify.service';
 })
 export class ProductAlertPopupComponent implements OnInit {
   @Input() showProductStatusPopup: any;
+  @Input() from:any;
   @Output() closePopup = new EventEmitter<boolean>();
   @Output() openDockedNavi = new EventEmitter<Object>();
   @Input() contentdata: any;
@@ -83,7 +84,8 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      this.consversationList = JSON.parse(this.contentdata?.conversation);
+      if(this.contentdata?.conversation)
+        this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
   }
 

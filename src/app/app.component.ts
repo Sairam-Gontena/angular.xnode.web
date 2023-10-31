@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   showLimitReachedPopup?: boolean;
   productAlertPopup: boolean = false;
   content: any;
+  contentFromNavi: boolean = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -53,6 +54,17 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationStart) {
         if (event.navigationTrigger === 'popstate') {
           this.showLimitReachedPopup = false
+        }
+        if(event.url=="/x-pilot"){
+          let product = localStorage.getItem('product')
+          if(product){
+            let productObj = JSON.parse(product);
+            if(productObj?.has_insights==false){
+              this.utilsService.showProductStatusPopup(true);
+              // this.contentFromNavi = true;
+              console.log('in app', productObj?.has_insights, this.showProductStatusPopup, this.contentFromNavi)
+            }
+          }
         }
       }
     });
@@ -178,6 +190,7 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
+        // this.toggleProductPopup();
         this.content.length > 0 ? this.productAlertPopup = true : this.productAlertPopup = false;
         this.showProductStatusPopup = true;
         this.utilsService.toggleProductAlertPopup(true);
@@ -227,6 +240,15 @@ export class AppComponent implements OnInit {
       localStorage.setItem('trigger', 'graph');
       this.router.navigate([currentUrl]);
     });
+  }
+
+  toggleProductPopup() {
+    this.showProductStatusPopup = !this.showProductStatusPopup;
+    this.content?.content ? this.contentFromNavi = true : this.contentFromNavi = false;
+}
+
+  closePopup(){
+    this.showProductStatusPopup = false
   }
 
   handleRouterChange() {

@@ -24,7 +24,7 @@ export class NaviComponent implements OnInit {
   xnodeAppUrl: string = environment.xnodeAppUrl;
   currentUser: any
   showProductStatusPopup = false;
-  productAlertPopup = false;
+  contentFromNavi = false;
   content: any;
   productDetails: any;
   productEmail: any;
@@ -95,8 +95,10 @@ export class NaviComponent implements OnInit {
           }
           if (event.data.message === 'triggerProductPopup') {
             this.content = event?.data?.data;
+            console.log('content data ', this.content)
             this.utils.toggleProductAlertPopup(true);
             this.toggleProductPopup();
+            console.log('checking true ', this.showProductStatusPopup, this.contentFromNavi)
             event.stopImmediatePropagation()
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
@@ -118,8 +120,8 @@ export class NaviComponent implements OnInit {
   }
 
   toggleProductPopup() {
-    this.showProductStatusPopup = !this.showProductStatusPopup;
-    this.content?.content ? this.productAlertPopup = true : this.productAlertPopup = false;
+      this.showProductStatusPopup = !this.showProductStatusPopup;
+      this.content?.content ? this.contentFromNavi = true : this.contentFromNavi = false;
   }
 
   closePopup() {
