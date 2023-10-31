@@ -1,0 +1,12 @@
+:host ::ng-deep .p-dropdown-panel .p-dropdown-header {
+    background-color: rgb(36, 35, 44) !important;   
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper {
+    background-color: rgb(36, 35, 44) !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background-color: rgb(36, 35, 44) !important;
+    color: white !important;
+}
