@@ -264,7 +264,7 @@ export class ProductAlertPopupComponent implements OnInit {
       "conversation_history": this.consversationList,
       "product_id": this.product_id
     }
-    this.apiService.post(persistconversation, 'navi/persist_conversation').then((response: any) => {
+    this.apiService.post(persistconversation, 'bot/persist_conversation').then((response: any) => {
       if (response) {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar" });
