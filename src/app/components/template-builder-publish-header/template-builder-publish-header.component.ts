@@ -323,7 +323,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   checkProductOptions() {
-    console.log('========',this.product,this.currentUser)
     if (this.currentUser?.email == this.product?.email) {
       this.utilsService.hasProductPermission(true)
     } else {
