@@ -11,6 +11,8 @@ export class ApiService {
   apiPoint = environment.apiUrl;
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
+  commentsEndPoint = environment.commentsApiUrl;
+
   constructor() {
   }
   config = {
@@ -52,5 +54,14 @@ export class ApiService {
 
   patchApi(body: any, url: string) {
     return axios.patch(this.apiPoint + url, body, this.config);
+  }
+
+  getComments(url: string) {
+    return axios.get(this.commentsEndPoint + url, {
+    });
+  }
+
+  postComments(body: any, url: string) {
+    return axios.patch(this.commentsEndPoint + url, body, this.config);
   }
 }

@@ -31,7 +31,8 @@
                     </div>
                     <xnode-spec-sections-layout [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i"
                         [specItem]="item" (onClickSeeMore)="_onClickSeeMore($event)"
-                        (onClickSeeLess)="_onClickSeeLess($event)" (onClickComment)="_onClickComment($event)"
+                        (onClickSeeLess)="_onClickSeeLess($event)"
+                        (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                         (expandComponent)="_expandComponent($event)" [readOnly]="false"
                         [isOpenSmallCommentBox]="isOpenSmallCommentBox"></xnode-spec-sections-layout>
                 </div>

@@ -223,7 +223,7 @@ export class SpecificationsContentComponent implements OnInit {
     this.fetchOpenAPISpec();
   }
 
-  _onClickComment(event: any) {
+  _showAddCommnetOverlay(event: any) {
     this.specItemList.forEach((element: any) => {
       if (event.item.id === element.id)
         element.content.forEach((subEle: any) => {

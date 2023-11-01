@@ -4,6 +4,7 @@ import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
+import { User } from 'src/models/user';
 
 @Component({
   selector: 'xnode-spec-sections-layout',
@@ -20,7 +21,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
-  @Output() onClickComment = new EventEmitter<any>();
+  @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
   paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
@@ -32,19 +33,50 @@ export class SpecSectionsLayoutComponent implements OnInit {
   showMoreContent: any;
   specExpanded: any;
   checked: boolean = false;
-
+  currentUser: any;
+  product: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService) {
-
   }
 
   ngOnInit(): void {
-
-
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+    }
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+    }
+  }
+  onClickAddComment(obj: any): void {
+    this.selectedContent = obj.content;
+    this.utils.saveSelectedSection(obj.content);
+    this.showAddCommnetOverlay.emit(obj)
   }
 
   sendComment(comment: any) {
+    console.log('comment', comment);
+    console.log('content', this.selectedContent);
+    this.utils.loadSpinner(true);
+    const body = {
+      contentId: this.selectedContent.id,
+      productId: this.product.id,
+      userId: this.currentUser.user_id,
+      message: comment,
+      itemType: 'Comment',
+    }
+    this.commentsService.addComments(body)
+      .then((commentsReponse: any) => {
+        console.log('commentsReponse', commentsReponse);
+        this.utils.loadSpinner(false);
+      }).catch(err => {
+        console.log('err', err);
+        this.utils.loadSpinner(false);
+      })
+    return
+
     this.utils.openOrClosePanel(SidePanel.Comments);
     let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
     this.isOpenSmallCommentBox = false;

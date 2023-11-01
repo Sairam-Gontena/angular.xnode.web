@@ -55,13 +55,14 @@ export class CommentsCrPanelComponent implements OnInit {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
     }
-    this.getMeTheContent();
-
+    this.getLatestComments();
   }
 
   getLatestComments() {
-    this.commentsService.getComments(this.contentData).then((response: any) => {
+    console.log('?>>>>>>>>>>>>>>>>>>>>>');
+    this.commentsService.getComments().then((response: any) => {
       if (response && response.data && response.data.comments && response.data.comments.length) {
+        console.log('response', response);
         this.commentList = response.data;
         this.getMeTheContent();
       } else {
@@ -71,7 +72,6 @@ export class CommentsCrPanelComponent implements OnInit {
       console.log(err);
       this.commentList = [];
     });
-    this.getMeTheContent();
   }
 
   getMeTheContent(): void {

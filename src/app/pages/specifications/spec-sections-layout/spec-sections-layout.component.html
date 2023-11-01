@@ -10,7 +10,7 @@
                 (sendComment)="sendComment($event)" [position]="'absolute'"
                 placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
             <img src="../assets/comment.svg" class="pointer" alt="comment"
-                (click)="onClickComment.emit({item:specItem, content:content})" *ngIf="!readOnly">
+                (click)="onClickAddComment({item:specItem, content:content})" *ngIf="!readOnly">
         </div>
         <p-button (click)="onClickSeeMore.emit({item:specItem,content:content})" label="See More"
             *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
@@ -215,7 +215,6 @@
         </div>
         <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
             <xnode-list-view [content]="content.content" [searchTerm]="searchTerm"></xnode-list-view>
-
         </div>
         <ng-template #notArray>
             <xnode-para-view [content]="content.content" [searchTerm]="searchTerm"></xnode-para-view>
