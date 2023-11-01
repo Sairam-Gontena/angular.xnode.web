@@ -28,9 +28,6 @@ export class UtilsService {
   private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
-  // private productAlertPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  // public getMeproductAlertPopup: Observable<boolean> = this.productAlertPopup.asObservable();
-
   private productAlertPopup: BehaviorSubject<Object> = new BehaviorSubject<Object>({popup:false, data:{}});
   public getMeproductAlertPopup: Observable<Object> = this.productAlertPopup.asObservable();
 
