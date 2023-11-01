@@ -1,5 +1,5 @@
 <div>
     <p-dropdown [options]="products" [(ngModel)]="selectedTemplate" optionLabel="title" optionValue="id"
-        class="app-dropdown" (onChange)="selectedProduct($event)">
+        class="app-dropdown" (onChange)="selectedProduct($event)" [filter]="true" filterBy="title"  >
     </p-dropdown>
 </div>
