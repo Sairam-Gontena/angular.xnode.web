@@ -9,8 +9,17 @@
 
 .add-comment-panel {
     right: 25px;
-    border-radius: 6px;
-    background-color: #302E38;
+    border-color: #02ADEE;
+    background-color: #202123;
+}
+
+.add-comment-panel-header {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.add-comment-panel-body {
+    background-color: #2E2D36;
 }
 
 :host ::ng-deep.p-inputtext {
@@ -26,8 +35,7 @@
 }
 
 .add-comments-footer {
-    padding: 12px;
-    border-top: 1px solid #ced4da;
+    border-top: 1px solid #535354;
 }
 
 :host ::ng-deep .p-checkbox .p-checkbox-box {

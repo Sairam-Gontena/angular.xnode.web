@@ -103,6 +103,11 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.openDockedNavi.subscribe((data: any) => {
+      if (data) {
+        this.isCommnetsPanelOpened = false;
+      }
+    })
     const record_id = localStorage.getItem('record_id');
     const product = localStorage.getItem('product');
     this.app_name = localStorage.getItem('app_name');
@@ -154,8 +159,6 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   scrollToItem() {
-    console.log('this.selectedSpecItem', this.selectedSpecItem);
-
     const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });

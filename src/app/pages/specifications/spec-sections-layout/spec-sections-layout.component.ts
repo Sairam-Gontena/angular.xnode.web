@@ -59,13 +59,11 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
-    this.utils.saveSelectedSection(obj.content);
+    // this.utils.saveSelectedSection(obj.content);
     this.showAddCommnetOverlay.emit(obj)
   }
 
   sendComment(comment: any) {
-    console.log('comment', comment);
-    console.log('content', this.selectedContent);
     this.utils.loadSpinner(true);
     const body = {
       contentId: this.selectedContent.id,
@@ -76,7 +74,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
     }
     this.commentsService.addComments(body)
       .then((commentsReponse: any) => {
-        console.log('commentsReponse', commentsReponse);
         this.utils.loadSpinner(false);
       }).catch(err => {
         console.log('err', err);

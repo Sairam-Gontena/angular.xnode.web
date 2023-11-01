@@ -59,10 +59,8 @@ export class CommentsCrPanelComponent implements OnInit {
   }
 
   getLatestComments() {
-    console.log('?>>>>>>>>>>>>>>>>>>>>>');
     this.commentsService.getComments().then((response: any) => {
       if (response && response.data && response.data.comments && response.data.comments.length) {
-        console.log('response', response);
         this.commentList = response.data;
         this.getMeTheContent();
       } else {

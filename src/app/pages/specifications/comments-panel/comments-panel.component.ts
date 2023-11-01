@@ -31,8 +31,6 @@ export class CommentsPanelComponent implements OnInit {
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
-      console.log('event>>>>>>>>>>>>>>>>>>>>>>>>>>', event);
-
       this.selectedSection = event;
     })
   }
