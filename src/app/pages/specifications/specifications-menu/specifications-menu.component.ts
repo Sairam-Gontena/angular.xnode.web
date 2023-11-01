@@ -73,29 +73,6 @@ export class SpecificationsMenuComponent implements OnInit {
     this.utils.saveSelectedSection(event);
   }
 
-  // not using this function
-  getMeSpecList(): void {
-    this.apiService.getApi("specs/get/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
-      .then((response: any) => {
-        if (response?.status === 200 && !response.data.detail) {
-          const list = response.data;
-          list.forEach((obj: any) => {
-            if (obj?.title) {
-              obj.section.unshift({ title: obj.title, created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
-            }
-          })
-
-          this.specData = response.data;
-          this.specData.pop();
-        } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data.detail });
-        }
-        this.utils.loadSpinner(false);
-      }).catch(error => {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-      });
-  }
-
   shortTitle(title: string) {
     let shortTitle = title?.length > 20 ? title.substring(0, 23) + '...' : title
     return shortTitle

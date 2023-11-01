@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
@@ -17,6 +17,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() sectionIndex!: number;
   @Input() specItem: any;
   @Input() readOnly!: boolean;
+  @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
@@ -37,7 +38,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
   product: any;
 
   constructor(private utils: UtilsService,
-    private commentsService: CommentsService) {
+    private commentsService: CommentsService,
+    private domSanitizer: DomSanitizer,) {
   }
 
   ngOnInit(): void {
@@ -49,6 +51,11 @@ export class SpecSectionsLayoutComponent implements OnInit {
     if (product) {
       this.product = JSON.parse(product);
     }
+    this.makeTrustedUrl();
+  }
+
+  makeTrustedUrl(): void {
+    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;

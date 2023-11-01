@@ -136,7 +136,7 @@
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
-        <div *ngIf="content.title ==='User Personas'">
+        <div *ngIf="content.title ==='User Personas' && isArray(content.content)">
             <div *ngFor="let persona of content.content" class="pb-3">
                 <xnode-user-persona [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
             </div>
@@ -170,13 +170,13 @@
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
 
-        <div *ngIf="checkListViewSections(content.title)">
+        <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
             <ul *ngFor="let content of content.content">
                 <li class="sub-content font-normal text-sm" [innerHTML]="content| highlight: searchTerm"></li>
             </ul>
         </div>
 
-        <div *ngIf="content.title ==='QA Test Cases'">
+        <div *ngIf="content.title ==='QA Test Cases' && isArray(content.content)">
             <div *ngFor="let subItem of content.content">
                 <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
                     <p class="m-0 pb-2"><span class="sub-title text-base font-medium"
@@ -187,17 +187,19 @@
                     </p>
                 </div>
                 <ng-template #sampleTestCases>
-                    <h4 class="mb-2" [innerHTML]="subItem.title| highlight: searchTerm"></h4>
-                    <div *ngFor="let testCase of subItem.content; let lastItem = last">
-                        <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
-                            <span class="sub-title text-base font-medium" [innerHTML]="key| highlight:
-                        searchTerm"></span> :
-                            <span class="sub-content font-normal text-base"
-                                [innerHTML]="testCase[key] | highlight: searchTerm"></span>
-                        </p>
-                        <ng-container *ngIf="!lastItem">
-                            <hr class="mt-2 mb-2">
-                        </ng-container>
+                    <div *ngIf="isArray(subItem.content)">
+                        <h4 class="mb-2" [innerHTML]="subItem.title| highlight: searchTerm"></h4>
+                        <div *ngFor="let testCase of subItem.content; let lastItem = last">
+                            <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
+                                <span class="sub-title text-base font-medium" [innerHTML]="key| highlight:
+                            searchTerm"></span> :
+                                <span class="sub-content font-normal text-base"
+                                    [innerHTML]="testCase[key] | highlight: searchTerm"></span>
+                            </p>
+                            <ng-container *ngIf="!lastItem">
+                                <hr class="mt-2 mb-2">
+                            </ng-container>
+                        </div>
                     </div>
                 </ng-template>
             </div>
