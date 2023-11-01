@@ -12,7 +12,6 @@ import { NotifyApiService } from 'src/app/api/notify.service';
 })
 export class ProductAlertPopupComponent implements OnInit {
   @Input() showProductStatusPopup: any;
-  @Input() from:any;
   @Output() closePopup = new EventEmitter<boolean>();
   @Output() openDockedNavi = new EventEmitter<Object>();
   @Input() contentdata: any;
@@ -51,8 +50,9 @@ export class ProductAlertPopupComponent implements OnInit {
     }
     this.utils.getMeproductAlertPopup.subscribe((event: any) => {
       setTimeout(() => {
+        this.contentdata = event?.data;
         this.dataPopulate();
-        this.showProductStatusPopup = event;
+        this.showProductStatusPopup = event?.popup;
       },);
     });
   }

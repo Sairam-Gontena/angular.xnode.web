@@ -96,10 +96,13 @@ export class NaviComponent implements OnInit {
           }
           if (event.data.message === 'triggerProductPopup') {
             this.content = event?.data?.data;
-            console.log('content data ', this.content)
-            this.utils.toggleProductAlertPopup(true);
-            this.toggleProductPopup();
-            console.log('checking true ', this.showProductStatusPopup, this.contentFromNavi)
+            let data = {
+              'popup':true,
+              'data':this.content
+            }
+            this.showProductStatusPopup = true;
+            this.utils.toggleProductAlertPopup(data);
+            // this.toggleProductPopup();
             event.stopImmediatePropagation()
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
