@@ -30,7 +30,7 @@
             <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
         </div>
     </div>
-    <div *ngIf="dataToExpand.title === 'Usecases'" class="h-full surface-900">
+    <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="h-full surface-900">
         <div class="flex flex-row col-12 justify-content-end">
             <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
         </div>

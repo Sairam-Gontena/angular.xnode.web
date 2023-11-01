@@ -1,4 +1,4 @@
-<div class="p-0 border-1  border-round-md add-comment-panel ">
+<div class="p-0 border-1  border-round-md add-comment-panel">
     <div class=" p-0 flex add-comment-panel-header">
         <p-avatar [label]="utils.setUsernameOrDP()"
             [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff' }" shape="circle"
@@ -7,7 +7,7 @@
             <div class="w-30rem border-round-md">
                 <div class="col-12 p-0 flex add-comment-panel-body border-round-md ">
                     <div class="col-9 p-0 align-items-center flex">
-                        <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" placeholder="Add a Comment"
+                        <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" [placeholder]="placeHolder"
                             [mention]="users" (input)="onChangeComment()" class="col-12"
                             style="min-height: 80px;"></textarea>
                     </div>

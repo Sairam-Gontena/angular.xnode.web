@@ -1,0 +1,232 @@
+<div *ngFor="let content of content;let cIndex = index; " class="mt-2">
+    <div [ngClass]="!content?.collapsed ? 'sctions-grid relative' : 'sctions-grid-full relative'" id={{content?.id}}
+        #contentContainer>
+        <div class="flex justify-content-between flex-wrap relative">
+            <div class="flex align-items-center justify-content-center">
+                <h3 class="m-0 pb-2 text-2xl font-bold"
+                    [innerHTML]="(sectionIndex+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
+            </div>
+            <p-overlayPanel #op>
+                <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
+                    (sendComment)="sendComment($event)" [position]="'absolute'"
+                    placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+            </p-overlayPanel>
+            <img src="../assets/comment.svg" class="pointer" alt="comment"
+                (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly">
+        </div>
+        <p-button (click)="onClickSeeMore.emit({item:specItem,content:content})" label="See More"
+            *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
+            class="absolute bottom-0 right-0 mr-2 mb-2 z-1"></p-button>
+        <p-button (click)="onClickSeeLess.emit({item:specItem,content:content})" label="See Less"
+            *ngIf="content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
+            class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
+
+        <div *ngIf="content.title ==='Usecases' || content.title === 'Use Cases'">
+            <div class="flex col-12 justify-content-end align-items-center">
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    *ngIf="!readOnly" class="expnad-icon pointer">
+            </div>
+            <xnode-common-usecases [searchTerm]="searchTerm"></xnode-common-usecases>
+        </div>
+        <div *ngIf="content.title ==='User Interface Design'">
+            <div class="flex justify-content-between align-items-center">
+                <h1>Dashboard</h1>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+            </iframe>
+        </div>
+        <div *ngIf="content.title ==='Data Management Persistence'">
+            <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
+                [item]="content"></xnode-data-model-common>
+        </div>
+        <div *ngIf="content.title ==='Workflows'">
+            <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [item]="content"></xnode-bpmn-common>
+        </div>
+        <div *ngIf="content.title ==='Data Dictionary'">
+            <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
+                <i class="pi pi-code pointer mr-2" pTooltip="JSON view"
+                    (click)="checkedToggle('json', specItem, content)"></i>
+                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                    (click)="checkedToggle('table', specItem, content)"></i>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer ml-3" style="width: 25px;">
+            </div>
+            <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
+                [content]="content.content"></xnode-data-dictionary>
+            <ng-template #elsejson>
+                <pre [innerHTML]="content.content | json | highlight: searchTerm "></pre>
+            </ng-template>
+        </div>
+        <div *ngIf="content.title ==='Business Rules'">
+            <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
+                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                    (click)="checkedToggle('json', specItem, content)"></i>
+                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                    (click)="checkedToggle('table', specItem, content)"></i>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===sectionIndex" class="ml-3"
+                    style="width: 25px;">
+            </div>
+            <div *ngIf="content.showTable; else elsejson">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
+            <ng-template #elsejson>
+                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+            </ng-template>
+        </div>
+        <div *ngIf="content.title ==='Functional Dependencies'">
+            <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
+                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                    (click)="checkedToggle('json', specItem, content)"></i>
+                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                    (click)="checkedToggle('table', specItem, content)"></i>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="checked && selectedContent === sectionIndex" class="ml-3"
+                    style="width: 25px;">
+            </div>
+            <div *ngIf="content.showTable; else elsejson">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
+            <ng-template #elsejson>
+                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+            </ng-template>
+        </div>
+        <div *ngIf="content.title ==='User Interfaces'">
+            <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
+                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                    (click)="checkedToggle('json', specItem, content)"></i>
+                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                    (click)="checkedToggle('table', specItem, content)"></i>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="checked && selectedContent === sectionIndex" class="ml-3"
+                    style="width: 25px;">
+            </div>
+            <div *ngIf="content.showTable; else elsejson">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
+            <ng-template #elsejson>
+                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+            </ng-template>
+        </div>
+        <div *ngIf="content.title ==='Annexures'">
+            <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
+                <i class="pi pi-code pointer mr-2" pTooltip="Json view"
+                    (click)="checkedToggle('json', specItem, content)"></i>
+                <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+                    (click)="checkedToggle('table', specItem, content)"></i>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="checked && selectedContent ===sectionIndex" class="ml-3"
+                    style="width: 25px;">
+            </div>
+            <div *ngIf="content.showTable; else elsejson">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
+            <ng-template #elsejson>
+                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+            </ng-template>
+        </div>
+        <div *ngIf="content.title ==='Historical Data Load'">
+            <div class="flex justify-content-end mb-2">
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+        </div>
+        <div *ngIf="content.title ==='User Personas' && isArray(content.content)">
+            <div *ngFor="let persona of content.content" class="pb-3">
+                <xnode-user-persona [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
+            </div>
+        </div>
+        <div class="w-full" *ngIf="content.title ==='Glossary'">
+            <div class="flex justify-content-end mb-2">
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+        </div>
+        <div *ngIf="content.title ==='Version Control'">
+            <div class="flex justify-content-end mb-2">
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+        </div>
+        <div *ngIf="content.title ==='Error Handling'">
+            <div class="flex justify-content-end mb-2">
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+        </div>
+        <div *ngIf="content.title ==='Stakeholder Approvals'">
+            <div class="flex justify-content-end mb-2">
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+        </div>
+
+        <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
+            <ul *ngFor="let content of content.content">
+                <li class="sub-content font-normal text-sm" [innerHTML]="content| highlight: searchTerm"></li>
+            </ul>
+        </div>
+
+        <div *ngIf="content.title ==='QA Test Cases' && isArray(content.content)">
+            <div *ngFor="let subItem of content.content">
+                <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
+                    <p class="m-0 pb-2"><span class="sub-title text-base font-medium"
+                            [innerHTML]="subItem.title|  highlight: searchTerm">
+                        </span>
+                        : <span class="sub-content font-normal text-base"
+                            [innerHTML]="subItem.content| highlight: searchTerm"></span>
+                    </p>
+                </div>
+                <ng-template #sampleTestCases>
+                    <div *ngIf="isArray(subItem.content)">
+                        <h4 class="mb-2" [innerHTML]="subItem.title| highlight: searchTerm"></h4>
+                        <div *ngFor="let testCase of subItem.content; let lastItem = last">
+                            <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
+                                <span class="sub-title text-base font-medium" [innerHTML]="key| highlight:
+                            searchTerm"></span> :
+                                <span class="sub-content font-normal text-base"
+                                    [innerHTML]="testCase[key] | highlight: searchTerm"></span>
+                            </p>
+                            <ng-container *ngIf="!lastItem">
+                                <hr class="mt-2 mb-2">
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div *ngIf="content.title ==='OpenAPI Spec'">
+            <div class="flex col-12 justify-content-between align-items-center">
+                <h4 class="m-0 ">Swagger API</h4>
+                <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+                    class="expnad-icon pointer" *ngIf="!readOnly">
+            </div>
+            <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
+        </div>
+        <div *ngIf="content.title ==='User Roles'">
+            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"></xnode-user-roles>
+        </div>
+        <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
+            <xnode-list-view [content]="content.content" [searchTerm]="searchTerm"></xnode-list-view>
+        </div>
+        <ng-template #notArray>
+            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm"></xnode-para-view>
+        </ng-template>
+
+        <div class="gradientback" *ngIf="!content?.collapsed">
+        </div>
+        <div class="collapse" *ngIf="content?.collapsed">
+        </div>
+    </div>
+</div>

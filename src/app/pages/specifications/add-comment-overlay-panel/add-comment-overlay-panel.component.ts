@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
@@ -7,6 +7,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() sendComment = new EventEmitter<string>();
+  @Input() position?: string;
+  @Input() placeHolder?: string;
   comment: string = '';
   users: string[] = ["Noah", "Liam", "Mason"];
   assinedUsers: string[] = [];
