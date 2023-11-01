@@ -4,7 +4,6 @@ import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { SpecContent } from 'src/models/spec-content';
 import { DropdownOptions } from 'src/models/dropdownOptions';
-import { COMMENTS } from 'src/app/pages/specifications/mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
@@ -18,7 +17,7 @@ export class CommentsCrPanelComponent implements OnInit {
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
   selectedFilter: string = 'All Comments';
-  commentList: Array<Comment> = COMMENTS;
+  commentList: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
@@ -63,7 +62,7 @@ export class CommentsCrPanelComponent implements OnInit {
   getLatestComments() {
     this.commentsService.getComments(this.contentData).then((response: any) => {
       if (response && response.data && response.data.comments && response.data.comments.length) {
-        this.commentList = COMMENTS;
+        this.commentList = response.data;
         this.getMeTheContent();
       } else {
         this.commentList = [];
@@ -72,7 +71,6 @@ export class CommentsCrPanelComponent implements OnInit {
       console.log(err);
       this.commentList = [];
     });
-    this.commentList = COMMENTS;
     this.getMeTheContent();
   }
 

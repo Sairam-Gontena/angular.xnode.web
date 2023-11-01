@@ -4,7 +4,6 @@ import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
-import { COMMENTS } from 'src/app/pages/specifications/mock';
 import { AuditInfo } from 'src/models/audit-info';
 
 @Component({
@@ -14,7 +13,7 @@ import { AuditInfo } from 'src/models/audit-info';
 })
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
-  @Input() commentList: Array<Comment> = COMMENTS;
+  @Input() commentList: Array<Comment> = [];
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
