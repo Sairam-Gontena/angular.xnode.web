@@ -7,11 +7,10 @@
                     [innerHTML]="(sectionIndex+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
             </div>
             <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
-                (sendComment)="sendComment($event)"></xnode-add-comment-overlay-panel>
-            <div class="flex align-items-center justify-content-center" *ngIf="!readOnly">
-                <img src="../assets/comment.svg" class="pointer" alt="comment"
-                    (click)="onClickComment.emit({item:specItem, content:content})">
-            </div>
+                (sendComment)="sendComment($event)" [position]="'absolute'"
+                placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+            <img src="../assets/comment.svg" class="pointer" alt="comment"
+                (click)="onClickComment.emit({item:specItem, content:content})" *ngIf="!readOnly">
         </div>
         <p-button (click)="onClickSeeMore.emit({item:specItem,content:content})" label="See More"
             *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"

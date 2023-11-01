@@ -300,7 +300,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
     });
   }
-  //get calls 
+  //get calls
   getAllProducts(): void {
     this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
       .then(response => {
@@ -323,7 +323,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   checkProductOptions() {
-    if (this.currentUser?.email == this.product.email) {
+    if (this.currentUser?.email == this.product?.email) {
       this.utilsService.hasProductPermission(true)
     } else {
       this.utilsService.hasProductPermission(false)

@@ -27,6 +27,8 @@ export class CommentsPanelComponent implements OnInit {
   comment: any;
   currentUser: any;
   selectedSection: any;
+  selectedComment: any;
+  showCommentInput: boolean = false;
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
@@ -69,5 +71,10 @@ export class CommentsPanelComponent implements OnInit {
     this.commentObj.role = 'user';
     this.commentObj.user_id = this.currentUser.id;
     this.commentList.push(this.commentObj);
+  }
+
+  onClickReply(cmt: any): void {
+    this.selectedComment = cmt;
+    this.showCommentInput = true;
   }
 }
