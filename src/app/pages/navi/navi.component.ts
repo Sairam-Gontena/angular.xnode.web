@@ -102,7 +102,6 @@ export class NaviComponent implements OnInit {
             }
             this.showProductStatusPopup = true;
             this.utils.toggleProductAlertPopup(data);
-            // this.toggleProductPopup();
             event.stopImmediatePropagation()
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
@@ -129,11 +128,6 @@ export class NaviComponent implements OnInit {
     });
     this.makeTrustedUrl();
     this.utils.loadSpinner(false);
-  }
-
-  toggleProductPopup() {
-      this.showProductStatusPopup = !this.showProductStatusPopup;
-      this.content?.content ? this.contentFromNavi = true : this.contentFromNavi = false;
   }
 
   closePopup() {
