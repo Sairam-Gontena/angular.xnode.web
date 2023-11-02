@@ -11,7 +11,7 @@ import { UserUtil } from 'src/app/utils/user-util';
   styleUrls: ['./product-dropdown.component.scss']
 })
 export class ProductDropdownComponent {
-  selectedTemplate: any;
+  selectedProduct: any;
   product: any;
   products: any;
   productId: any;
@@ -34,10 +34,10 @@ export class ProductDropdownComponent {
     if (metaData) {
       this.products = JSON.parse(metaData);
       setTimeout(() => {
-        this.selectedTemplate = this.productId;
+        this.selectedProduct = this.productId;
       }, 100)
       if (product) {
-        this.selectedTemplate = JSON.parse(product).id;
+        this.selectedProduct = JSON.parse(product).id;
         this.product_url = JSON.parse(product).product_url;
       }
     }
@@ -50,7 +50,7 @@ export class ProductDropdownComponent {
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
+      this.selectedProduct = product.id;
       this.product_url = product.product_url;
     }
   }
@@ -61,7 +61,7 @@ export class ProductDropdownComponent {
       this.router.navigate([currentUrl]);
     });
   }
-  selectedProduct(data: any): void {
+  selectedProducts(data: any): void {
     const product = this.products?.filter((obj: any) => { return obj.id === data.value })[0];
     if (this.currentUser?.email == product.email) {
       this.utilsService.hasProductPermission(true)
@@ -73,7 +73,7 @@ export class ProductDropdownComponent {
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
+      this.selectedProduct = product.id;
       this.product_url = product.product_url;
     }
     this.refreshCurrentRoute();
