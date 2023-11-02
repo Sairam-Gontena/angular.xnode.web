@@ -57,9 +57,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
-    // this.utils.saveSelectedSection(obj.content);
     this.showAddCommnetOverlay.emit(obj)
   }
 
@@ -74,6 +74,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
     }
     this.commentsService.addComments(body)
       .then((commentsReponse: any) => {
+        console.log('commentsReponse', commentsReponse);
+        this.utils.commentAdded(true);
         this.utils.loadSpinner(false);
       }).catch(err => {
         console.log('err', err);
