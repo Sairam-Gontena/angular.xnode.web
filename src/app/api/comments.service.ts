@@ -21,4 +21,9 @@ export class CommentsService {
   addComments(body: any) {
     return this.apiService.postComments(body, 'comment')
   }
+
+  deletComment(id: any) {
+    return this.apiService.deleteComment('comment/' + id)
+  }
 }
+

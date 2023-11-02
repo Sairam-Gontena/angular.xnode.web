@@ -32,6 +32,7 @@ export class CommentsPanelComponent implements OnInit {
   openEditComment: boolean = false;
   selectedIndex?: number;
   enableDeletePrompt: boolean = false;
+  action?: string;
 
   usersData: any;
   users: any = [];
@@ -101,14 +102,32 @@ export class CommentsPanelComponent implements OnInit {
   onClickReply(cmt: any): void {
     this.selectedComment = cmt;
     this.showCommentInput = true;
+    this.action = 'REPLY';
   }
-  editComment(index: number): void {
-    this.selectedIndex = index
+
+  editComment(cmt: number): void {
+    this.selectedComment = cmt;
+    this.showCommentInput = true;
+    this.action = 'EDIT';
   }
+
   deleteCurrentComment(comment: string): void {
+    this.selectedComment = comment;
     this.enableDeletePrompt = true
   }
+
   handleConfirmationPrompt(event: boolean): void {
-    this.enableDeletePrompt = event
+    this.utils.loadSpinner(true);
+    this.enableDeletePrompt = event;
+    this.commentsService.deletComment(this.selectedComment.id).then(res => {
+      if (res) {
+        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
+        this.utils.commentAdded(true)
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
   }
 }

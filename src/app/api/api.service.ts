@@ -68,4 +68,8 @@ export class ApiService {
   postComments(body: any, url: string) {
     return axios.post(this.commentsEndPoint + url, body, this.config);
   }
+
+  deleteComment(url: string) {
+    return axios.delete(this.commentsEndPoint + url, this.config);
+  }
 }

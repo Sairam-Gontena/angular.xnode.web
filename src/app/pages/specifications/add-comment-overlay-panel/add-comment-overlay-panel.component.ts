@@ -15,8 +15,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() placeHolder?: string;
   @Input() selectedContent: any;
   @Input() width?: string;
-  @Input() users: any
-  comment: string = '';
+  @Input() users: any;
+  @Input() comment: string = ''
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
