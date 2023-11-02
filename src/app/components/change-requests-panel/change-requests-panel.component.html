@@ -4,7 +4,7 @@
     <i class="pi pi-times pointer" (click)="onClickClose()"></i>
   </div>
 </div>
-<div class="grid border-left-3 border-white border-round-md  mt-2 ml-2" style="background-color: #2D3E65;">
+<div class="grid border-left-3 border-white  mt-2 ml-2" style="background-color: #2D3E65;">
   <div class="col">
     <div class="changerequest-title">
       Create a new change request
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="col">
-    <p-button label="Create new change" styleClass="p-button-outlined"  [rounded]="true"></p-button>
+    <p-button label="Create new change" styleClass="p-button-outlined" [rounded]="true"></p-button>
   </div>
 </div>
 <div>
@@ -22,7 +22,7 @@
     <div><i [ngClass]="{'pi-arrow-up': isAscending,
       'pi-arrow-down': !isAscending,
       'pi text-white text-sm': true}" class="pi pi-arrow-up text-white text-sm"></i></div>
-    <div><span class="text-white ml-2 mr-2" >Date</span></div>
+    <div><span class="text-white ml-2 mr-2">Date</span></div>
   </div>
   <div class="border-1 border-white-alpha-40 w-full mt-3" *ngFor="let changeRequest of changeRequests">
     <div class="flex justify-content-between p-2">

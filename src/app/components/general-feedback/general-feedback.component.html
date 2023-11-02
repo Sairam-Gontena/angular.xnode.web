@@ -74,8 +74,20 @@
                     <label class="text-sm font-hover">Product</label>
                     <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
                         [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
-                        optionValue="id" class="custom-dropdown">
+                        optionValue="id" class="custom-dropdown" [filter]="true" filterBy="title"
+                        filterPlaceholder="Search product">
+                        <ng-template let-item pTemplate="item">
+                            <div [ngClass]="{ 'selected-item': item.id === generalFeedbackForm.get('product')?.value }">
+                                {{item.title }}
+                                <i *ngIf="item.id === generalFeedbackForm.get('product')?.value"
+                                    class="pi pi-check check-mark"></i>
+                            </div>
+                        </ng-template>
                     </p-dropdown>
+                    <!-- <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
+                        [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
+                        optionValue="id" class="custom-dropdown">
+                    </p-dropdown> -->
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                         <div *ngIf="feedback['product'].errors?.['required']">
                             Product is required</div>
@@ -118,9 +130,8 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel"  [rounded]="true" class="cancel-button"
-                (click)="closePopup()"></p-button>
-            <p-button label="Send Feedback" styleClass="p-button-primary send-feedback-btn"  [rounded]="true"
+            <p-button label="Cancel" [rounded]="true" class="cancel-button" (click)="closePopup()"></p-button>
+            <p-button label="Send Feedback" styleClass="p-button-primary send-feedback-btn" [rounded]="true"
                 (click)="sendFeedback($event)"></p-button>
         </div>
     </ng-template>
