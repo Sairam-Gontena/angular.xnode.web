@@ -92,7 +92,6 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
-
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.utils.loadSpinner(true);
@@ -115,7 +114,6 @@ export class NotificationPanelComponent {
       .catch(error => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-
       });
   }
   gotoSpec(obj: any) {
