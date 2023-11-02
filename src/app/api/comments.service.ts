@@ -22,6 +22,6 @@ export class CommentsService {
   }
 
   addComments(body: any) {
-    return this.apiService.postComments(body, '/comment')
+    return this.apiService.postComments(body, 'comment')
   }
 }
