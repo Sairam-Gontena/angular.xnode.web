@@ -149,7 +149,6 @@ export class AppComponent implements OnInit {
   handleBotIcon() {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        this.handleRouterChange();
         if (event.url === '/x-pilot') {
           this.isBotIconVisible = false
         } else {
@@ -252,10 +251,6 @@ export class AppComponent implements OnInit {
 
   closePopup(){
     this.showProductStatusPopup = false
-  }
-
-  handleRouterChange() {
-    this.isSideWindowOpen = false;
   }
 
   getUserData() {
