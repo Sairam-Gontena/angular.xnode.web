@@ -64,23 +64,23 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   sendComment(comment: any) {
-    this.utils.loadSpinner(true);
-    const body = {
-      contentId: this.selectedContent.id,
-      productId: this.product.id,
-      userId: this.currentUser.user_id,
-      message: comment,
-      itemType: 'Comment',
-    }
-    this.commentsService.addComments(body)
-      .then((commentsReponse: any) => {
-        console.log('commentsReponse', commentsReponse);
-        this.utils.commentAdded(true);
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        console.log('err', err);
-        this.utils.loadSpinner(false);
-      })
+    // this.utils.loadSpinner(true);
+    // const body = {
+    //   contentId: this.selectedContent.id,
+    //   productId: this.product.id,
+    //   userId: this.currentUser.user_id,
+    //   message: comment,
+    //   itemType: 'Comment',
+    // }
+    // this.commentsService.addComments(body)
+    //   .then((commentsReponse: any) => {
+    //     console.log('commentsReponse', commentsReponse);
+    //     this.utils.commentAdded(true);
+    //     this.utils.loadSpinner(false);
+    //   }).catch(err => {
+    //     console.log('err', err);
+    //     this.utils.loadSpinner(false);
+    //   })
     return
 
     this.utils.openOrClosePanel(SidePanel.Comments);
