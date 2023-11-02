@@ -9,12 +9,9 @@ export class CommentsService {
 
   constructor(private apiService: ApiService) { }
 
-  getComments(content?: any) {
+  getComments(params?: any) {
     let url = '/comment';
-    if (content) {
-      url = '/comment' + content.id
-    }
-    return this.apiService.getComments(url)
+    return this.apiService.getComments(url, params)
   }
 
   updateComments(body: any) {
@@ -24,4 +21,9 @@ export class CommentsService {
   addComments(body: any) {
     return this.apiService.postComments(body, 'comment')
   }
+
+  deletComment(id: any) {
+    return this.apiService.deleteComment('comment/' + id)
+  }
 }
+

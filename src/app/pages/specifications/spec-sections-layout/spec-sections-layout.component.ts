@@ -20,6 +20,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() readOnly!: boolean;
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
+  @Input() commentList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
@@ -78,7 +79,24 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
+  getCommentListBasedOnContentId(contentId: string) {
+    this.utils.loadSpinner(true);
+    this.commentsService.getComments({ contentId: contentId }).then((response: any) => {
+      if (response && response.data) {
+        this.utils.saveCommentList(response.data)
+        this.commentList = response.data;
+      }
+      this.utils.loadSpinner(true);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(true);
+    });
+  }
+
   onClickAddComment(obj: any): void {
+    // this.getCommentListBasedOnContentId(obj.content.id)
+    // return
+
     this.selectedContent = obj.content;
     this.showAddCommnetOverlay.emit(obj)
   }

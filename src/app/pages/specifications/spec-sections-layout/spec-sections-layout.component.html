@@ -8,8 +8,8 @@
             </div>
             <p-overlayPanel #op>
                 <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
-                    (closeOverlay)="op.toggle(false)" [users]="users" [position]="'absolute'" [selectedContent]="selectedContent"
-                    placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                    [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
+                    [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
             <img src="../assets/comment.svg" class="pointer" alt="comment"
                 (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly">

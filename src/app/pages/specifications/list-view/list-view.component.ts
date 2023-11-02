@@ -9,5 +9,18 @@ import { Section } from 'src/models/section';
 export class ListViewComponent {
   @Input() content!: Array<Section>;
   @Input() searchTerm!: string;
+  onTextSelected(event: MouseEvent) {
+    const selectedText = this.getSelectedText();
+    if (selectedText) {
+      console.log('Selected Text: ' + selectedText);
+      // You can now do something with the selected text.
+    }
+  }
 
+  private getSelectedText() {
+    const text = window.getSelection()?.toString();
+    return text ? text.trim() : null;
+  }
 }
+
+

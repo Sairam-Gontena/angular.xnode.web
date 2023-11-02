@@ -62,6 +62,8 @@ export class UtilsService {
   private isCommentAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public checkCommentsAdded: Observable<any> = this.isCommentAdded.asObservable();
 
+  private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public getMeUpdatedCommentList: Observable<any> = this.saveComments.asObservable();
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -138,6 +140,10 @@ export class UtilsService {
 
   commentAdded(event: any): void {
     this.isCommentAdded.next(event);
+  }
+
+  saveCommentList(event: any) {
+    this.saveComments.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {

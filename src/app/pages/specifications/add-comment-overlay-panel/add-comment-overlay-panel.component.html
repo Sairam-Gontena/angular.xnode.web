@@ -3,12 +3,12 @@
         <p-avatar [label]="utils.setUsernameOrDP()"
             [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff' }" shape="circle"
             class="pt-4 pl-4 pr-2"></p-avatar>
-        <div class="p-3">
-            <div class="w-30rem border-round-md">
+        <div class="p-3 w-full">
+            <div [class]="width+ ' border-round-md'">
                 <div class="col-12 p-0 flex add-comment-panel-body border-round-md ">
                     <div class="col-9 p-0 align-items-center flex">
-                        <textarea pInputTextarea  [(ngModel)]="comment" [autoResize]="true" [placeholder]="placeHolder"
-                            [mention]="users"  (input)="onChangeComment()" class="col-12"
+                        <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" [placeholder]="placeHolder"
+                            [mention]="users" (input)="onChangeComment()" class="col-12"
                             style="min-height: 80px;"></textarea>
                     </div>
                     <div class="col-3 flex align-items-end justify-content-between ">
