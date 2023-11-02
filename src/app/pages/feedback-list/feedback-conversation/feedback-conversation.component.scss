@@ -5,6 +5,25 @@
     cursor: pointer;
 }
 
+:host ::ng-deep.p-button.reply, .p-button.cancel, .p-button.send{
+  background-color:transparent!important;
+  border-color:transparent!important;
+}
+
+:host ::ng-deep.p-button.cancel{
+  background-color:transparent!important;
+  border-color:transparent!important;
+}
+
+:host ::ng-deep.p-button.reply-count{
+  background-color:transparent!important;
+  border-color:transparent!important;
+}
+
+:host ::ng-deep.p-button.send{
+  background-color:transparent!important;
+  border-color:transparent!important;
+}
 .list-item:hover {
     background: #434344;
     color: #DEDEDE;
