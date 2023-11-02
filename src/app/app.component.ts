@@ -70,6 +70,9 @@ export class AppComponent implements OnInit {
             }
           }
         }
+        if(event.url=="/my-products"){
+          this.isSideWindowOpen = false;
+        }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
