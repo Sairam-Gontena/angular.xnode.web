@@ -129,7 +129,7 @@
                                 <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name + ' '+
                                     currentUser?.last_name |titlecase}}</p>
                             </div>
-                            <p-button label="Send" styleClass="p-button-outlined"  [rounded]="true"
+                            <p-button label="Send" styleClass="p-button-outlined send"  [rounded]="true"
                                 (click)="onClickSend()"></p-button>
                         </div>
                         <textarea rows="5" cols="30" pInputTextarea class="w-full mt-2" [(ngModel)]="message"
@@ -218,7 +218,7 @@
                         <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
                             {{currentUser?.last_name|titlecase}}</p>
                     </div>
-                    <p-button label="Send" styleClass="p-button-outlined"  [rounded]="true"
+                    <p-button label="Send" styleClass="p-button-outlined send"  [rounded]="true"
                         (click)="onClickSend()"></p-button>
                 </div>
                 <textarea rows="5" (keydown.enter)="onClickSend()" cols="30" pInputTextarea class="w-full"
