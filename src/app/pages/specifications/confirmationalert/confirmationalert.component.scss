@@ -1,0 +1,48 @@
+
+
+
+.user-txt {
+    font-size: 24px;
+    font-family: Inter;
+}
+
+.header {
+    font-size: 24px;
+    font-family: Inter;
+}
+
+:host ::ng-deep.p-dialog-header {
+    border-top-width: 1px;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-header {
+    background-color: #2E2D36;
+    color: #fff;
+    border-color: white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-content {
+    background-color: #2E2D36;
+    color: #fff;
+
+}
+
+// :host ::ng-deep.p-dialog {
+//     width: '40vw'
+// }
+
+:host ::ng-deep .btn-primary.confirm-success{
+    background: #EF018F;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #EF018F;
+}
+
+:host ::ng-deep.p-button-sm {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    width: 85px !important;
+}

@@ -28,6 +28,10 @@ export class CommentsPanelComponent implements OnInit {
   selectedSection: any;
   selectedComment: any;
   showCommentInput: boolean = false;
+  openEditComment: boolean = false;
+  selectedIndex?: number;
+  enableDeletePrompt: boolean = false;
+
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
@@ -75,5 +79,14 @@ export class CommentsPanelComponent implements OnInit {
   onClickReply(cmt: any): void {
     this.selectedComment = cmt;
     this.showCommentInput = true;
+  }
+  editComment(index: number): void {
+    this.selectedIndex = index
+  }
+  deleteCurrentComment(comment: string): void {
+    this.enableDeletePrompt = true
+  }
+  handleConfirmationPrompt(event: boolean): void {
+    this.enableDeletePrompt = event
   }
 }
