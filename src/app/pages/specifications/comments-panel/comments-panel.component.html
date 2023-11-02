@@ -5,7 +5,15 @@
         <div class="col-6">
             <div class="flex align-items-center filter-grid ">
                 <p class="m-0 pl-2">Filters:</p>
-                <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown>
+                <!-- <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown> -->
+                <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label">
+                    <ng-template let-item pTemplate="item">
+                        <ng-container [ngClass]="{'selected-item': selectedFilter === item.label}">
+                            {{ item.label }}
+                            <i *ngIf="selectedFilter === item.label" class="pi pi-check check-mark"></i>
+                        </ng-container>
+                    </ng-template>
+                </p-dropdown>
             </div>
         </div>
         <div class="col-6">
@@ -39,8 +47,8 @@
                             <p-button [outlined]="true" (click)="op.toggle($event)">
                                 <img src="./assets/3-dots.svg" alt="3 dots" class="pointer" />
                             </p-button>
-                            <p-overlayPanel #op class="p-2">
-                                <div class="pl-2 pb-2 ">
+                            <p-overlayPanel #op class="dots-overlay">
+                                <div class="">
                                     <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
                                         (click)="editComment(i)" (keydown)="op.hide()">
                                         <img src="../../../../assets//edit.png" class="confirm-overlay-icon" />
@@ -82,8 +90,8 @@
                     <div class="w-full text-end">
                         <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;"></i>
                     </div>
-                    <xnode-add-comment-overlay-panel [position]=""
-                        placeHolder="Reply"></xnode-add-comment-overlay-panel>
+                    <xnode-add-comment-overlay-panel [position]="" placeHolder="Reply"
+                        [users]="users"></xnode-add-comment-overlay-panel>
                 </div>
             </div>
         </div>

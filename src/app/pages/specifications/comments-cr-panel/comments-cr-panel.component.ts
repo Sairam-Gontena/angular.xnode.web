@@ -44,6 +44,10 @@ export class CommentsCrPanelComponent implements OnInit {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     })
+    this.utils.checkCommentsAdded.subscribe((event: any) => {
+      if (event)
+        this.getLatestComments();
+    })
   }
 
   ngOnInit(): void {
@@ -60,7 +64,7 @@ export class CommentsCrPanelComponent implements OnInit {
 
   getLatestComments() {
     this.commentsService.getComments().then((response: any) => {
-      if (response && response.data && response.data.comments && response.data.comments.length) {
+      if (response && response.data) {
         this.commentList = response.data;
         this.getMeTheContent();
       }

@@ -34,6 +34,11 @@ export class ApiService {
     });
   }
 
+  getAuthApi(url: string) {
+    return axios.get(this.authEndPoint + url, {
+    });
+  }
+
   getApi(url: string) {
     return axios.get(this.apiPoint + url, {
     });

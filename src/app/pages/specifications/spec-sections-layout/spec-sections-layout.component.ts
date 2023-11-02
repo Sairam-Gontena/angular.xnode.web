@@ -4,6 +4,7 @@ import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
+import { ApiService } from 'src/app/api/api.service';
 import { User } from 'src/models/user';
 
 @Component({
@@ -35,11 +36,14 @@ export class SpecSectionsLayoutComponent implements OnInit {
   specExpanded: any;
   checked: boolean = false;
   currentUser: any;
+  usersData:any;
+  users:any = [];
   product: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
-    private domSanitizer: DomSanitizer,) {
+    private domSanitizer: DomSanitizer,
+    private apiservice:ApiService) {
   }
 
   ngOnInit(): void {
@@ -47,6 +51,22 @@ export class SpecSectionsLayoutComponent implements OnInit {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
+    this.apiservice.getAuthApi('user/get_all_users?account_id='+this.currentUser?.account_id).then((resp:any)=>{
+      this.utils.loadSpinner(true);
+      if (resp?.status === 200) {
+        this.usersData = resp.data;
+        this.usersData.map((element:any) => {
+            let name:string = element?.first_name;
+            this.users.push(name)
+        });
+      }else{
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((error) => {
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+      console.error(error);
+    })
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
@@ -57,28 +77,30 @@ export class SpecSectionsLayoutComponent implements OnInit {
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
-    // this.utils.saveSelectedSection(obj.content);
     this.showAddCommnetOverlay.emit(obj)
   }
 
   sendComment(comment: any) {
-    this.utils.loadSpinner(true);
-    const body = {
-      contentId: this.selectedContent.id,
-      productId: this.product.id,
-      userId: this.currentUser.user_id,
-      message: comment,
-      itemType: 'Comment',
-    }
-    this.commentsService.addComments(body)
-      .then((commentsReponse: any) => {
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        console.log('err', err);
-        this.utils.loadSpinner(false);
-      })
+    // this.utils.loadSpinner(true);
+    // const body = {
+    //   contentId: this.selectedContent.id,
+    //   productId: this.product.id,
+    //   userId: this.currentUser.user_id,
+    //   message: comment,
+    //   itemType: 'Comment',
+    // }
+    // this.commentsService.addComments(body)
+    //   .then((commentsReponse: any) => {
+    //     console.log('commentsReponse', commentsReponse);
+    //     this.utils.commentAdded(true);
+    //     this.utils.loadSpinner(false);
+    //   }).catch(err => {
+    //     console.log('err', err);
+    //     this.utils.loadSpinner(false);
+    //   })
     return
 
     this.utils.openOrClosePanel(SidePanel.Comments);
