@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { ApiService } from 'src/app/api/api.service';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -11,27 +12,27 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() position?: string;
   @Input() placeHolder?: string;
   @Input() selectedContent: any;
+  @Input() users: any
   comment: string = '';
-  users: string[] = ["Noah", "Liam", "Mason"];
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
   product: any;
 
   constructor(public utils: UtilsService,
-    private commentsService: CommentsService,) {
-
+    private commentsService: CommentsService) {
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        this.currentUser = JSON.parse(currentUser);
+      }
+      const product = localStorage.getItem('product');
+      if (product) {
+        this.product = JSON.parse(product);
+      }
   }
 
   ngOnInit(): void {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-    }
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
+
   }
 
   onClickSend(): void {
