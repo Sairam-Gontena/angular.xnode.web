@@ -29,11 +29,16 @@ export class CommentsPanelComponent implements OnInit {
   selectedSection: any;
   selectedComment: any;
   showCommentInput: boolean = false;
-  usersData:any;
-  users:any = [];
+  openEditComment: boolean = false;
+  selectedIndex?: number;
+  enableDeletePrompt: boolean = false;
+
+  usersData: any;
+  users: any = [];
+  originalBackgroundColor: string = 'blue';
 
   constructor(private utils: UtilsService, private commentsService: CommentsService,
-    private apiservice:ApiService) {
+    private apiservice: ApiService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     });
@@ -45,15 +50,15 @@ export class CommentsPanelComponent implements OnInit {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
     }
-    this.apiservice.getAuthApi('user/get_all_users?account_id='+this.currentUser?.account_id).then((resp:any)=>{
+    this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
       this.utils.loadSpinner(true);
       if (resp?.status === 200) {
         this.usersData = resp.data;
-        this.usersData.map((element:any) => {
-            let name:string = element?.first_name;
-            this.users.push(name)
+        this.usersData.map((element: any) => {
+          let name: string = element?.first_name;
+          this.users.push(name)
         });
-      }else{
+      } else {
         this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -96,5 +101,14 @@ export class CommentsPanelComponent implements OnInit {
   onClickReply(cmt: any): void {
     this.selectedComment = cmt;
     this.showCommentInput = true;
+  }
+  editComment(index: number): void {
+    this.selectedIndex = index
+  }
+  deleteCurrentComment(comment: string): void {
+    this.enableDeletePrompt = true
+  }
+  handleConfirmationPrompt(event: boolean): void {
+    this.enableDeletePrompt = event
   }
 }

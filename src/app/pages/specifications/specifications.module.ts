@@ -23,6 +23,7 @@ import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
 import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
 import { SpecSectionsLayoutComponent } from './spec-sections-layout/spec-sections-layout.component';
 import { CommentsPanelComponent } from './comments-panel/comments-panel.component';
+import { ConfirmationalertComponent } from './confirmationalert/confirmationalert.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -42,7 +43,8 @@ import { CommentsPanelComponent } from './comments-panel/comments-panel.componen
     NoCommentsComponent,
     SpecSectionsLayoutComponent,
     CamelToTitlePipe,
-    ObjectToArrayPipe
+    ObjectToArrayPipe,
+    ConfirmationalertComponent,
   ],
   imports: [
     CommonModule,
