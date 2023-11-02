@@ -72,10 +72,10 @@ export class CommentsPanelComponent implements OnInit {
 
   }
 
-  setAvatar(userObj: AuditInfo): string {
+  setAvatar(userObj: any): string {
     let avatar: string = '';
-    if (userObj.ModifiedBy?.DisplayName) {
-      avatar = userObj.ModifiedBy?.DisplayName.charAt(0).toUpperCase()
+    if (userObj.modified_by) {
+      avatar = userObj.modified_by.charAt(0).toUpperCase()
     }
     return avatar;
   }
