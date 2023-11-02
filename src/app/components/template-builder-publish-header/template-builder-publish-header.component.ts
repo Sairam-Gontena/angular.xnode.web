@@ -286,6 +286,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
+      this.loadSpinnerInParent.emit(false);
+      this.utilsService.loadSpinner(false);
     }).catch(error => {
       let user_audit_body = {
         'method': 'POST',
