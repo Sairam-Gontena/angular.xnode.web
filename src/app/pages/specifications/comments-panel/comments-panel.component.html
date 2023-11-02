@@ -3,7 +3,15 @@
         <div class="col-6">
             <div class="flex align-items-center filter-grid ">
                 <p class="m-0 pl-2">Filters:</p>
-                <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown>
+                <!-- <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown> -->
+                <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label">
+                    <ng-template let-item pTemplate="item">
+                        <ng-container [ngClass]="{'selected-item': selectedFilter === item.label}">
+                            {{ item.label }}
+                            <i *ngIf="selectedFilter === item.label" class="pi pi-check check-mark"></i>
+                        </ng-container>
+                    </ng-template>
+                </p-dropdown>
             </div>
         </div>
         <div class="col-6">
