@@ -103,6 +103,11 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.openDockedNavi.subscribe((data: any) => {
+      if (data) {
+        this.isCommnetsPanelOpened = false;
+      }
+    })
     const record_id = localStorage.getItem('record_id');
     const product = localStorage.getItem('product');
     this.app_name = localStorage.getItem('app_name');
@@ -124,32 +129,32 @@ export class SpecificationsContentComponent implements OnInit {
     return Array.isArray(item);
   }
 
-  onClickSeeMore(item: any, content: any): void {
-    this.selectedContent = content;
+  _onClickSeeMore(event: any): void {
+    this.selectedContent = event.content;
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
-      if (obj.id === item.id) {
+      if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id)
+          if (conObj.id === event.content.id)
             conObj.collapsed = true;
         })
       }
     })
   }
 
-  onClickSeeLess(item: any, content: any): void {
-    this.selectedContent = content;
+  _onClickSeeLess(event: any): void {
+    this.selectedContent = event.content;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
-      if (obj.id === item.id) {
+      if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id)
+          if (conObj.id === event.content.id)
             conObj.collapsed = false;
         })
       }
     })
     setTimeout(() => {
-      this.utils.saveSelectedSection(item);
+      this.utils.saveSelectedSection(event.item);
     }, 100)
   }
 
@@ -205,7 +210,7 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  expandComponent(val: any): void {
+  _expandComponent(val: any): void {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
@@ -217,18 +222,15 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    setTimeout(() => {
-      this.scrollToItem();
-      this.fetchOpenAPISpec();
-    }, 1000);
+    this.scrollToItem();
+    this.fetchOpenAPISpec();
   }
 
-  onClickComment(item: any, content: any) {
-    // this.utils.saveSelectedSection(content);
+  _showAddCommnetOverlay(event: any) {
     this.specItemList.forEach((element: any) => {
-      if (item.id === element.id)
+      if (event.item.id === element.id)
         element.content.forEach((subEle: any) => {
-          if (content.id === subEle.id) {
+          if (event.content.id === subEle.id) {
             subEle.showCommentOverlay = true;
             this.isOpenSmallCommentBox = true;
           } else {
@@ -254,7 +256,6 @@ export class SpecificationsContentComponent implements OnInit {
 
   sendComment(comment: any) {
     this.utils.openOrClosePanel(SidePanel.Comments);
-
     let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
     this.isOpenSmallCommentBox = false;
     this.commentsService.getComments(this.selectedSpecItem)

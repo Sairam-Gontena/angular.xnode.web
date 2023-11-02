@@ -9,11 +9,19 @@ export class CommentsService {
 
   constructor(private apiService: ApiService) { }
 
-  getComments(content:any) {
-    return this.apiService.getApi('specs/get-comments/' + content.id)
+  getComments(content?: any) {
+    let url = '/comment';
+    if (content) {
+      url = '/comment' + content.id
+    }
+    return this.apiService.getComments(url)
   }
 
-  updateComments(body:any) {
+  updateComments(body: any) {
     return this.apiService.patchApi(body, 'specs/update-comments/')
+  }
+
+  addComments(body: any) {
+    return this.apiService.postComments(body, 'comment')
   }
 }

@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { UtilsService } from '../services/utils.service';
+import { UtilsService } from '../../../components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
+import { AuditInfo } from 'src/models/audit-info';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -12,7 +13,7 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 })
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
-  @Input() commentList: Array<Comment> = [];
+  @Input() commentList: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -24,7 +25,9 @@ export class CommentsPanelComponent implements OnInit {
   };
   comment: any;
   currentUser: any;
-  selectedSection: any
+  selectedSection: any;
+  selectedComment: any;
+  showCommentInput: boolean = false;
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
@@ -43,6 +46,14 @@ export class CommentsPanelComponent implements OnInit {
     }
   }
 
+  setAvatar(userObj: AuditInfo): string {
+    let avatar: string = '';
+    if (userObj.ModifiedBy?.DisplayName) {
+      avatar = userObj.ModifiedBy?.DisplayName.charAt(0).toUpperCase()
+    }
+    return avatar;
+  }
+
   onClickClose() {
     this.utils.openOrClosePanel(SidePanel.None);
     this.utils.saveSelectedSection(null);
@@ -59,5 +70,10 @@ export class CommentsPanelComponent implements OnInit {
     this.commentObj.role = 'user';
     this.commentObj.user_id = this.currentUser.id;
     this.commentList.push(this.commentObj);
+  }
+
+  onClickReply(cmt: any): void {
+    this.selectedComment = cmt;
+    this.showCommentInput = true;
   }
 }

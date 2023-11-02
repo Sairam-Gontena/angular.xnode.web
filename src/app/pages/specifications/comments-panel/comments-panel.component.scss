@@ -8,7 +8,7 @@
 }
 
 .comments-grid {
-    height: calc(100vh - 280px);
+    height: calc(100vh - 320px);
     overflow: auto;
     color: #dedede;
 }
@@ -101,4 +101,41 @@
 
 .check-mark {
     margin-left: 5rem;
+    font-size: 14px;
+    border-radius: 4px;
+    width: max-content;
+}
+
+:host ::ng-deep .filter-grid {
+    .p-inputtext {
+        padding-left: 5px;
+        font-size: 14px;
+    }
+}
+
+:host ::ng-deep .search-grid .p-inputtext {
+    border: 0;
+    padding: 0 5px;
+    color: #EFEEEE;
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+}
+
+:host ::ng-deep .search-grid .p-button {
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    border: 0;
+}
+
+.comment-btns {
+    background: #343541;
+}
+
+:host ::ng-deep .p-button.p-button-outlined {
+    border: 0;
+    border-radius: 4px;
+}
+
+.text-end {
+    text-align: end;
 }

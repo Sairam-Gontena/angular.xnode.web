@@ -21,12 +21,15 @@ import { CommentsCrPanelComponent } from './comments-cr-panel/comments-cr-panel.
 import { CommentsTabsComponent } from './comments-tabs/comments-tabs.component';
 import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
 import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
+import { SpecSectionsLayoutComponent } from './spec-sections-layout/spec-sections-layout.component';
+import { CommentsPanelComponent } from './comments-panel/comments-panel.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
+    CommentsPanelComponent,
     CommentsCrPanelComponent,
     UserPersonaComponent,
     SpecGenPopupComponent,
@@ -37,6 +40,7 @@ import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
     CommentsTabsComponent,
     CrTabsComponent,
     NoCommentsComponent,
+    SpecSectionsLayoutComponent,
     CamelToTitlePipe,
     ObjectToArrayPipe
   ],

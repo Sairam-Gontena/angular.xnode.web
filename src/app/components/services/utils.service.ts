@@ -28,8 +28,8 @@ export class UtilsService {
   private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
-  private productAlertPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public getMeproductAlertPopup: Observable<boolean> = this.productAlertPopup.asObservable();
+  private productAlertPopup: BehaviorSubject<Object> = new BehaviorSubject<Object>({ popup: false, data: {} });
+  public getMeproductAlertPopup: Observable<Object> = this.productAlertPopup.asObservable();
 
   private popupToShow: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public getMeFeedbackPopupTypeToDisplay: Observable<string> = this.popupToShow.asObservable();
@@ -58,6 +58,9 @@ export class UtilsService {
   public hasProductEditPermission: Observable<any> = this.productEditPermission.asObservable();
   private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
+
+  private isCommentAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public checkCommentsAdded: Observable<any> = this.isCommentAdded.asObservable();
 
   constructor() { }
 
@@ -131,6 +134,10 @@ export class UtilsService {
   }
   toggleSpecPage(event: any): void {
     this.isInSpec.next(event);
+  }
+
+  commentAdded(event: any): void {
+    this.isCommentAdded.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {

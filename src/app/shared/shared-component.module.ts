@@ -33,7 +33,6 @@ import { ModalRelationComponent } from '../pages/er-modeller/modal-relation/moda
 import { SchemaComponent } from '../pages/er-modeller/schema/schema.component';
 import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.component';
 import { ExpandSpecificationComponent } from '../components/expand-specification/expand-specification.component';
-import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
 import { CommonUsecasesComponent } from '../components/common-usecases/common-usecases.component';
 import { ChangeRequestsPanelComponent } from '../components/change-requests-panel/change-requests-panel.component';
 import { DataDictionaryComponent } from '../pages/specifications/data-dictionary/data-dictionary.component';
@@ -74,7 +73,6 @@ import { ProductDropdownComponent } from '../components/product-dropdown/product
                 SchemaComponent,
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
-                CommentsPanelComponent,
                 CommonUsecasesComponent,
                 ChangeRequestsPanelComponent,
                 DataDictionaryComponent,
@@ -119,7 +117,6 @@ import { ProductDropdownComponent } from '../components/product-dropdown/product
                 SchemaComponent,
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
-                CommentsPanelComponent,
                 CommonUsecasesComponent,
                 ChangeRequestsPanelComponent,
                 DataDictionaryComponent,
