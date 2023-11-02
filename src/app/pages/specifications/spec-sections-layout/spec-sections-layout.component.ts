@@ -57,28 +57,30 @@ export class SpecSectionsLayoutComponent implements OnInit {
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
-    // this.utils.saveSelectedSection(obj.content);
     this.showAddCommnetOverlay.emit(obj)
   }
 
   sendComment(comment: any) {
-    this.utils.loadSpinner(true);
-    const body = {
-      contentId: this.selectedContent.id,
-      productId: this.product.id,
-      userId: this.currentUser.user_id,
-      message: comment,
-      itemType: 'Comment',
-    }
-    this.commentsService.addComments(body)
-      .then((commentsReponse: any) => {
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        console.log('err', err);
-        this.utils.loadSpinner(false);
-      })
+    // this.utils.loadSpinner(true);
+    // const body = {
+    //   contentId: this.selectedContent.id,
+    //   productId: this.product.id,
+    //   userId: this.currentUser.user_id,
+    //   message: comment,
+    //   itemType: 'Comment',
+    // }
+    // this.commentsService.addComments(body)
+    //   .then((commentsReponse: any) => {
+    //     console.log('commentsReponse', commentsReponse);
+    //     this.utils.commentAdded(true);
+    //     this.utils.loadSpinner(false);
+    //   }).catch(err => {
+    //     console.log('err', err);
+    //     this.utils.loadSpinner(false);
+    //   })
     return
 
     this.utils.openOrClosePanel(SidePanel.Comments);
