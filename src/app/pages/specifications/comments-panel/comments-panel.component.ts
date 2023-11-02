@@ -13,7 +13,7 @@ import { AuditInfo } from 'src/models/audit-info';
 })
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
-  @Input() commentList: Array<Comment> = [];
+  @Input() commentList: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
