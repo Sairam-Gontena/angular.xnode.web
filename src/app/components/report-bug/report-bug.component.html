@@ -24,7 +24,8 @@
                 </p-dropdown> -->
                 <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
                     [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
-                    optionValue="id" class="custom-dropdown">
+                    optionValue="id" class="custom-dropdown" [filter]="true" filterBy="title"
+                    filterPlaceholder="Search product">
                     <ng-template let-item pTemplate="item">
                         <div [ngClass]="{ 'selected-item': item.id === bugReportForm.get('product')?.value }">
                             {{item.title }}
