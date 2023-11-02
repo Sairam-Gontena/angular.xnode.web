@@ -2,7 +2,15 @@
     <div class="flex justify-content-between flex-wrap">
         <div class="flex align-items-center justify-content-center filter-grid ">
             <p class="m-0 pr-2 pl-2">Filters:</p>
-            <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown>
+            <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label">
+                <ng-template let-item pTemplate="item">
+                    <ng-container [ngClass]="{'selected-item': selectedFilter === item.label}">
+                        {{ item.label }}
+                        <i *ngIf="selectedFilter === item.label" class="pi pi-check check-mark"></i>
+                    </ng-container>
+                </ng-template>
+            </p-dropdown>
+            <!-- <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown> -->
         </div>
         <div class="flex align-items-center justify-content-center">
         </div>

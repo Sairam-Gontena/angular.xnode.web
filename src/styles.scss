@@ -434,14 +434,16 @@ body {
   color: #02ADEE !important;
 }
 
-.p-overlaypanel .p-overlaypanel-content {
+.p-overlaypanel,
+.p-overlaypanel-content {
   padding: 10px !important;
-  background-color: rgb(36, 35, 44);
+  background-color: #2E2D36 !important;
   color: #ffffff;
+  border: 1px solid #535354;
 }
 
 .p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
-  background-color: #495057;
+  // background-color: #495057;
 }
 
 .p-overlaypanel .p-overlaypanel-content {

@@ -91,10 +91,10 @@ img.highlighted {
     border: 1px solid var(--primary-color);
 }
 
-:host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
-    left: unset !important;
-    right: 1px !important;
-}
+// :host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
+//     left: unset !important;
+//     right: 1px !important;
+// }
 
 :host ::ng-deep.p-dialog {
     border: 1px solid #595959 !important;
@@ -113,4 +113,29 @@ img.highlighted {
 
 :host::ng-deep .p-dialog-content {
     padding: 1.5rem;
+}
+
+:host ::ng-deep .p-tieredmenu .p-menuitem>.p-menuitem-content .p-menuitem-link {
+    background: #2E2D36;
+    border: 1px solid #535354;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    color: #ffffff !important;
+    padding: 0.75rem 1.25rem;
+}
+
+:host ::ng-deep .p-tieredmenu .p-tieredmenu-overlay {
+    // top: 23px !important;
+    left: unset !important;
+    right: 1px !important;
+    background: #2E2D36 !important;
+    border: 1px solid #535354;
+
+}
+
+:host::ng-deep .p-tieredmenu .p-menuitem>.p-menuitem-content .p-menuitem-link .p-menuitem-text {
+    color: #ffffff !important;
+}
+
+:host::ng-deep .p-tieredmenu {
+    padding: 0;
 }
