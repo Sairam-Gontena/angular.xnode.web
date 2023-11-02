@@ -137,10 +137,10 @@ export class SpecificationsContentComponent implements OnInit {
         this.utils.saveCommentList(response.data)
         this.commentList = response.data;
       }
-      this.utils.loadSpinner(true);
+      this.utils.loadSpinner(false);
     }).catch(err => {
       console.log(err);
-      this.utils.loadSpinner(true);
+      this.utils.loadSpinner(false);
     });
   }
 
