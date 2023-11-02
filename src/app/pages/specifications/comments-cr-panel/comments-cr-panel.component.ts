@@ -17,7 +17,7 @@ export class CommentsCrPanelComponent implements OnInit {
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
   selectedFilter: string = 'All Comments';
-  commentList: Array<Comment> = [];
+  @Input() commentList: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
@@ -27,26 +27,22 @@ export class CommentsCrPanelComponent implements OnInit {
   currentUser: any;
   selectedSection: any;
 
-  private _contentData: any;
-  @Input()
-  set contentData(contentData: SpecContent) {
-    this._contentData = contentData;
-    if (this._contentData) {
-      this.getLatestComments();
-    }
-  }
+  // private _contentData: any;
+  // @Input()
+  // set contentData(contentData: SpecContent) {
+  //   this._contentData = contentData;
+  //   if (this._contentData) {
+  //     this.getLatestComments();
+  //   }
+  // }
 
-  get contentData(): any {
-    return this._contentData;
-  }
+  // get contentData(): any {
+  //   return this._contentData;
+  // }
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
-    })
-    this.utils.checkCommentsAdded.subscribe((event: any) => {
-      if (event)
-        this.getLatestComments();
     })
   }
 
@@ -59,30 +55,31 @@ export class CommentsCrPanelComponent implements OnInit {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
     }
-    this.getLatestComments();
+    this.getMeTheContent();
   }
 
-  getLatestComments() {
-    this.commentsService.getComments().then((response: any) => {
-      if (response && response.data) {
-        this.commentList = response.data;
-        this.getMeTheContent();
-      }
-    }).catch(err => {
-      console.log(err);
-    });
-  }
+  // getLatestComments() {
+  //   this.commentsService.getComments().then((response: any) => {
+  //     if (response && response.data) {
+  //       this.commentList = response.data;
+  //       // this.getMeTheContent();
+  //     }
+  //   }).catch(err => {
+  //     console.log(err);
+  //   });
+  // }
 
   getMeTheContent(): void {
-    this.commentList.forEach((obj: Comment) => {
-      this.specData?.forEach((specObj: any) => {
-        specObj?.content?.forEach((sec: any) => {
-          if (obj.content_id === sec.id) {
-            obj.content = sec;
-          }
+    if (this.commentList?.length)
+      this.commentList.forEach((obj: Comment) => {
+        this.specData?.forEach((specObj: any) => {
+          specObj?.content?.forEach((sec: any) => {
+            if (obj.content_id === sec.id) {
+              obj.content = sec;
+            }
+          })
         })
-      })
-    });
+      });
   }
 
   onClickClose() {

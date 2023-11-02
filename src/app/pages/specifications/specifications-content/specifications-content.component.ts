@@ -46,7 +46,7 @@ export class SpecificationsContentComponent implements OnInit {
   product: any;
   isContentSelected = false;
   isCommnetsPanelOpened: boolean = false;
-
+  commentList: any;
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
@@ -70,6 +70,10 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
+    this.utils.checkCommentsAdded.subscribe((event: any) => {
+      if (event)
+        this.getLatestComments();
+    })
   }
 
   checkedToggle(type: any, item: any, content: any) {
@@ -123,6 +127,21 @@ export class SpecificationsContentComponent implements OnInit {
     }
 
     this.makeTrustedUrl();
+    this.getLatestComments();
+  }
+
+  getLatestComments() {
+    this.utils.loadSpinner(true);
+    this.commentsService.getComments().then((response: any) => {
+      if (response && response.data) {
+        this.utils.saveCommentList(response.data)
+        this.commentList = response.data;
+      }
+      this.utils.loadSpinner(true);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(true);
+    });
   }
 
   isArray(item: any) {

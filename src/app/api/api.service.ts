@@ -56,9 +56,8 @@ export class ApiService {
     return axios.patch(this.apiPoint + url, body, this.config);
   }
 
-  getComments(url: string) {
-    return axios.get(this.commentsEndPoint + url, {
-    });
+  getComments(url: string, params?: any) {
+    return axios.get(this.commentsEndPoint + url, { params: params });
   }
 
   postComments(body: any, url: string) {
