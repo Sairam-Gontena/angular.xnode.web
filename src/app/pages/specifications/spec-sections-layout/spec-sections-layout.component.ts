@@ -56,7 +56,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
       if (resp?.status === 200) {
         this.usersData = resp.data;
         this.usersData.map((element:any) => {
-            let name:string = element?.first_name + element?.last_name;
+            let name:string = element?.first_name;
             this.users.push(name)
         });
       }else{

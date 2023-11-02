@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
+import * as _ from "lodash";
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -18,13 +19,27 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   assignAsaTask: boolean = false;
   currentUser: any;
   product: any;
+  usersData:any;
 
   constructor(public utils: UtilsService,
-    private commentsService: CommentsService) {
+    private commentsService: CommentsService,
+    private api:ApiService) {
       const currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
         this.currentUser = JSON.parse(currentUser);
       }
+      this.api.getAuthApi('user/get_all_users?account_id='+this.currentUser?.account_id).then((resp:any)=>{
+        this.utils.loadSpinner(true);
+        if (resp?.status === 200) {
+          this.usersData = resp.data;
+        }else{
+          this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
+        }
+        this.utils.loadSpinner(false);
+      }).catch((error) => {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+        console.error(error);
+      })
       const product = localStorage.getItem('product');
       if (product) {
         this.product = JSON.parse(product);
@@ -37,15 +52,34 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   onClickSend(): void {
     this.utils.loadSpinner(true);
+    const mentionedUsers = this.comment.split(/[@ ]/);
+    let users: { userId: any; displayName: any; email: any; }[]=[];
+    this.usersData.forEach((elem:any) => {
+      mentionedUsers.some((user:any)=>{
+        let nameArray: any;
+        if (elem?.first_name.includes(" ")) {
+          nameArray = elem?.first_name.split(" ");
+        }
+        if(user.toLowerCase()==elem?.first_name.toLowerCase() || nameArray?.some((name:any)=> name === user)){
+          let data = {
+            "userId": elem?.user_id,
+            "displayName":elem?.first_name+elem?.last_name,
+            "email": elem?.email
+          }
+          users.push(data)
+        }
+      })
+    });
+    const uniqueData = _.uniqWith(users, (a, b) => a.userId === b.userId);
     const body = {
       contentId: this.selectedContent.id,
       productId: this.product.id,
       userId: this.currentUser.user_id,
       message: this.comment,
       itemType: 'Comment',
+      userMentions: uniqueData
     }
-    this.commentsService.addComments(body)
-      .then((commentsReponse: any) => {
+    this.commentsService.addComments(body).then((commentsReponse: any) => {
         this.utils.commentAdded(true);
         this.comment = '';
         this.utils.loadSpinner(false);
