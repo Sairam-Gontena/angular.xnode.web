@@ -144,18 +144,17 @@ textarea {
 }
 
 :host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-    background-color: #2E2D36 !important;
+    background-color: #42404B !important;
     color: white !important;
 }
 
 :host ::ng-deep .p-dropdown-item {
-    border-bottom: 1px solid #535354;
     color: #ffffff !important;
 }
 
 :host ::ng-deep .p-dropdown-item:hover {
-    border-bottom: 1px solid #535354;
-    color: #2E2D36 !important;
+    background: #393843 !important;
+    color: #ffffff !important;
 }
 
 :host ::ng-deep .p-dropdown-panel .p-dropdown-items {
