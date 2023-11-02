@@ -63,12 +63,9 @@ export class CommentsCrPanelComponent implements OnInit {
       if (response && response.data && response.data.comments && response.data.comments.length) {
         this.commentList = response.data;
         this.getMeTheContent();
-      } else {
-        this.commentList = [];
       }
     }).catch(err => {
       console.log(err);
-      this.commentList = [];
     });
   }
 
