@@ -123,7 +123,7 @@ export class DataModelCommonComponent {
   }
 
   getMeDataModel() {
-    let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email
+    let productEmail = this.productDetails ? this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email : this.currentUser?.email
     this.dataModel = null;
     this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product_id)
       .then(response => {
