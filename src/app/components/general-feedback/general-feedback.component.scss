@@ -229,7 +229,7 @@ textarea:enabled:hover {
 }
 
 :host ::ng-deep .p-dropdown-panel {
-    border: 2px solid #535354;
+    border: 1px solid #535354;
     background-color: #2E2D36 !important;
     color: #ffffff !important;
 }
@@ -265,6 +265,24 @@ textarea:enabled:hover {
 :host ::ng-deep .p-dropdown-filter-container {
     border: 1px solid transparent !important;
     background: transparent;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    background-color: #2E2D36 !important;
+    border: none;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter .p-inputtext:enabled:focus {
+    box-shadow: none !important;
+    border-color: none;
+    background-color: #2E2D36 !important;
+    color: white !important;
+}
+
+:host::ng-deep .p-dropdown-panel .p-dropdown-header {
+    padding: 0;
 }
 
 .selected-item {
