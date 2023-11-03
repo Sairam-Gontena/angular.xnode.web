@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
@@ -22,7 +22,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   currentUser: any;
   product: any;
   usersData: any;
-
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private api: ApiService) {
@@ -47,11 +46,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.product = JSON.parse(product);
     }
   }
-
   ngOnInit(): void {
 
   }
-
   onClickSend(): void {
     this.utils.loadSpinner(true);
     const mentionedUsers = this.comment.split(/[@ ]/);
