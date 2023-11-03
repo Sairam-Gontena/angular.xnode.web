@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -27,6 +27,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
+  @ViewChild('op') op: any;
   paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
@@ -93,12 +94,29 @@ export class SpecSectionsLayoutComponent implements OnInit {
     });
   }
 
-  onClickAddComment(obj: any): void {
+  onClickAddComment(obj: any, selectedContent?:any, text?:any): void {
     // this.getCommentListBasedOnContentId(obj.content.id)
     // return
-
-    this.selectedContent = obj.content;
+    if(selectedContent){
+      obj.text = text;
+    }else{
+      this.selectedContent = obj.content;
+    }
     this.showAddCommnetOverlay.emit(obj)
+  }
+
+  select(event:any, object:any, id:any){
+    var text;
+    if (window.getSelection) {
+        text = window.getSelection()?.toString();
+    } else if ((document as any).selection && (document as any).selection.type != 'Control') {
+      text = (document as any).selection.createRange().text;
+    }
+    if(text.length>0){
+      this.onClickAddComment(object,true,text)
+    }else{
+      this.op.toggle(false)
+    }
   }
 
   sendComment(comment: any) {
