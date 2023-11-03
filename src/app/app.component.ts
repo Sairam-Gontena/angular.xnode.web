@@ -123,6 +123,10 @@ export class AppComponent implements OnInit {
     })
   }
 
+  botOnClick(){
+    this.isNaviExpanded=false;
+  }
+
   redirectToPreviousUrl(): void {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
