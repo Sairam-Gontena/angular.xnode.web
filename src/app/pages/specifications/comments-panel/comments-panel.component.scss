@@ -48,7 +48,7 @@
 
 :host ::ng-deep .p-dropdown .p-dropdown-label {
     // padding: 5px;
-    // border: 2px solid #535354;
+    // border: 1px solid #535354;
     background-color: #2E2D36 !important;
     color: #ffffff !important;
 }
@@ -59,9 +59,10 @@
 }
 
 :host ::ng-deep .p-dropdown {
-    border: 2px solid #535354;
+    border: 1px solid #535354;
     background-color: #2E2D36 !important;
     color: #ffffff !important;
+    box-shadow: none !important;
 }
 
 :host ::ng-deep .p-dropdown .p-dropdown-items-wrapper {
@@ -112,6 +113,7 @@
 }
 
 :host ::ng-deep .search-grid .p-inputtext {
+    box-shadow: none !important;
     border: 0;
     padding: 0 5px;
     color: #EFEEEE;
