@@ -24,7 +24,7 @@ export class NaviComponent implements OnInit {
   xnodeAppUrl: string = environment.xnodeAppUrl;
   currentUser: any
   showProductStatusPopup = false;
-  productAlertPopup = false;
+  contentFromNavi  = false;
   content: any;
   productDetails: any;
   productEmail: any;
@@ -95,8 +95,14 @@ export class NaviComponent implements OnInit {
           }
           if (event.data.message === 'triggerProductPopup') {
             this.content = event?.data?.data;
-            this.utils.toggleProductAlertPopup(true);
-            this.toggleProductPopup();
+            let data = {
+              'popup':true,
+              'data':this.content
+            }
+            this.showProductStatusPopup = true;
+            this.utils.toggleProductAlertPopup(data);
+            // this.utils.toggleProductAlertPopup(true);
+            // this.toggleProductPopup();
             event.stopImmediatePropagation()
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
@@ -117,10 +123,10 @@ export class NaviComponent implements OnInit {
     this.utils.loadSpinner(false);
   }
 
-  toggleProductPopup() {
-    this.showProductStatusPopup = !this.showProductStatusPopup;
-    this.content?.content ? this.productAlertPopup = true : this.productAlertPopup = false;
-  }
+  // toggleProductPopup() {
+  //   this.showProductStatusPopup = !this.showProductStatusPopup;
+  //   this.content?.content ? this.productAlertPopup = true : this.productAlertPopup = false;
+  // }
 
   closePopup() {
     this.showProductStatusPopup = false

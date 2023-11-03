@@ -50,8 +50,9 @@ export class ProductAlertPopupComponent implements OnInit {
     }
     this.utils.getMeproductAlertPopup.subscribe((event: any) => {
       setTimeout(() => {
+        this.contentdata = event?.data;
         this.dataPopulate();
-        this.showProductStatusPopup = event;
+        this.showProductStatusPopup = event?.popup
       },);
     });
   }
@@ -83,7 +84,8 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      this.consversationList = JSON.parse(this.contentdata?.conversation);
+      if(this.contentdata?.conversation)
+        this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
   }
 
