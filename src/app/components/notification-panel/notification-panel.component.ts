@@ -83,6 +83,17 @@ export class NotificationPanelComponent {
   }
 
   navigateToProduct(obj: any): void {
+    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const product = response.data.data?.filter((item: any) => { return item.id === obj.product_id })[0];
+          localStorage.setItem('product', JSON.stringify(product));
+          this.prepareNavigation(obj);
+        }
+      })
+  }
+
+  prepareNavigation(obj: any): void {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.utils.saveProductId(obj.product_id)
@@ -98,6 +109,15 @@ export class NotificationPanelComponent {
       this.getMeMetaData();
     }
     this.closeNotificationPanel.emit(true);
+  }
+
+  getMeListOfProducts(): void {
+    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
+      .then(response => {
+        if (response?.status === 200 && response.data.data?.length) {
+          localStorage.setItem('meta_data', JSON.stringify(response.data.data))
+        }
+      })
   }
   getMeMetaData() {
     this.apiService.get("navi/get_metadata/" + this.currentUser?.email)

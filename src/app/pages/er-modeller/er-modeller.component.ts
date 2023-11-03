@@ -81,7 +81,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   //get calls 
   getMeUserId() {
-    let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email
+    let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email;
 
     this.apiService.get("navi/get_metadata/" + productEmail)
       .then(response => {
@@ -115,7 +115,12 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   getMeDataModel() {
-    let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email
+    let productEmail;
+    if (this.productDetails) {
+      productEmail = this.productDetails?.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email;
+    } else {
+      productEmail = this.currentUser?.email
+    }
     this.dataModel = null;
     this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product_id)
       .then(response => {
