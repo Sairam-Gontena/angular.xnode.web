@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit ,Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
@@ -14,6 +14,11 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class CommonUsecasesComponent {
   @Input() searchTerm: any;
+
+  @Input() obj:any;
+  selectedText:any;
+  @Output() childEvent= new EventEmitter();
+
   useCases: any = [];
   email: any;
   id: String = '';
@@ -24,6 +29,8 @@ export class CommonUsecasesComponent {
   product_id: any;
   isInsideUseCases: boolean = false;
   productDetails: any
+
+
 
   constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService, private router: Router,) {
     this.currentUser = UserUtil.getCurrentUser();
@@ -90,5 +97,26 @@ export class CommonUsecasesComponent {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
       });
+  }
+
+  selectText(event:any){
+    var text;
+    if (window.getSelection) {
+        text = window.getSelection()?.toString();
+    } else if ((document as any).selection && (document as any).selection.type != 'Control') {
+      text = (document as any).selection.createRange().text;
+    }
+    if(text.length>0){
+      this.selectedText = text;
+      this.obj.selectedText = text;
+      this.obj.screenX = event.screenX;
+      this.obj.screenY = event.screenY;
+      this.childEvent.emit(this.obj)
+    }else{
+      this.selectedText = '';
+      this.obj.selectedText = '';
+      console.log('in else',this.obj)
+      this.childEvent.emit(this.obj)
+    }
   }
 }

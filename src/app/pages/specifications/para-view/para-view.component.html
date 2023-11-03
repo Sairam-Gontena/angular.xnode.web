@@ -1,2 +1,2 @@
-<div class="content text-base font-normal" [innerHTML]="content | highlight: searchTerm" [id]="content.id">
+<div class="content text-base font-normal" (click)="selectText($event)" [innerHTML]="content | highlight: searchTerm" [id]="content.id">
 </div>

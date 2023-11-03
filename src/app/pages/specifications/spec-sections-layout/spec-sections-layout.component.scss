@@ -1,3 +1,13 @@
+:root {
+  --poverlay-top: 0px;
+  --poverlay-left: 0px;
+}
+
+:host ::ng-deep .p-overlaypanel, .p-overlaypanel-content{
+   top: var(--poverlay-top);
+  left: var(--poverlay-left);
+}
+
 .sctions-grid {
     background: #24232C;
     padding: 30px;

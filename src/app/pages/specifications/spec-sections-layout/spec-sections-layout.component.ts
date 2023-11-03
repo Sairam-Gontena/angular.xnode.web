@@ -6,6 +6,7 @@ import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { ApiService } from 'src/app/api/api.service';
 import { User } from 'src/models/user';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'xnode-spec-sections-layout',
@@ -27,7 +28,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
-  @ViewChild('op') op: any;
+  @ViewChild('op')overlayPanel: OverlayPanel | any;
+  position:any
+
   paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
@@ -41,6 +44,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   usersData:any;
   users:any = [];
   product: any;
+  selectedText:string='';
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -94,18 +98,57 @@ export class SpecSectionsLayoutComponent implements OnInit {
     });
   }
 
-  onClickAddComment(obj: any, selectedContent?:any, text?:any): void {
-    // this.getCommentListBasedOnContentId(obj.content.id)
-    // return
-    if(selectedContent){
-      obj.text = text;
+  receiveMsg(event:any){
+
+    console.log('at first',event)
+    if(event?.selectedText.length>0){
+      let obj = {
+        'item':event.item,
+        'content':event.content
+      }
+      this.toggleOverlayPanel(true, obj);
+      setTimeout(() => {
+        let elem = document.getElementsByClassName('p-overlaypanel')[0]
+        if(elem){
+          const yAxis =event.screenY - 100;
+          (elem as HTMLElement)['style'].zIndex  = '1002';
+          (elem as HTMLElement)['style'].transformOrigin  = 'center top';
+          (elem as HTMLElement)['style'].transform ='translateY(0px)';
+          (elem as HTMLElement)['style'].opacity= '2';
+          (elem as HTMLElement)['style'].top = yAxis + 'px';
+          (elem as HTMLElement)['style'].left =  event.screenX + 'px';
+        }
+      }, 1000);
     }else{
-      this.selectedContent = obj.content;
+      this.toggleOverlayPanel(false);
     }
-    this.showAddCommnetOverlay.emit(obj)
+      // console.log(event)
+      // console.log(this.isOpenSmallCommentBox)
+      // console.log(this.content)
   }
 
-  select(event:any, object:any, id:any){
+  toggleOverlayPanel(value:boolean,obj?:any){
+    if(value){
+      this.isOpenSmallCommentBox = true;
+      this.content.showCommentOverlay = true;
+      this.onClickAddComment(obj);
+      this.overlayPanel.toggle(true);
+    }else{
+      this.isOpenSmallCommentBox = false;
+      this.content.showCommentOverlay = false;
+      this.overlayPanel.toggle(false)
+    }
+  }
+
+  onClickAddComment(obj: any): void {
+      console.log(obj)
+      console.log(this.content,this.isOpenSmallCommentBox)
+      this.isOpenSmallCommentBox=true;
+      this.selectedContent = obj.content;
+      this.showAddCommnetOverlay.emit(obj)
+  }
+
+  selectText(event:any, object:any, id:any){
     var text;
     if (window.getSelection) {
         text = window.getSelection()?.toString();
@@ -113,9 +156,13 @@ export class SpecSectionsLayoutComponent implements OnInit {
       text = (document as any).selection.createRange().text;
     }
     if(text.length>0){
-      this.onClickAddComment(object,true,text)
+      this.selectedText = text;
+      this.isOpenSmallCommentBox = true
+      this.onClickAddComment(object)
     }else{
-      this.op.toggle(false)
+      this.selectedText = '';
+      this.isOpenSmallCommentBox = false
+      this.overlayPanel.toggle(false)
     }
   }
 

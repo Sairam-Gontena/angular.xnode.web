@@ -1,5 +1,5 @@
 <div class="relative use-case-body" [ngClass]="{'ml-4 mr-4' : isInsideUseCases}">
-    <div *ngIf="useCases?.length > 0" class="surface-900 pt-3 pb-3 h-full overflow-auto">
+    <div *ngIf="useCases?.length > 0" class="surface-900 pt-3 pb-3 h-full overflow-auto"  (click)="selectText($event)">
         <div *ngFor="let usecase of useCases;let i = index">
             <div class="flex justify-content-center flex-wrap card-container">
                 <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">

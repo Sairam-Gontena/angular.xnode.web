@@ -75,7 +75,8 @@ export class CommentsCrPanelComponent implements OnInit {
         this.specData?.forEach((specObj: any) => {
           specObj?.content?.forEach((sec: any) => {
             if (obj.content_id === sec.id) {
-              obj.content = sec;
+              console.log(obj)
+              // obj.content = sec;
             }
           })
         })

@@ -6,8 +6,9 @@
               <h3 class="m-0 pb-2 text-2xl font-bold"
                   [innerHTML]="(sectionIndex+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
           </div>
-          <p-overlayPanel #op>
-              <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
+          <p-overlayPanel #op [showTransitionOptions]="'1s linear'" >
+            <!-- content.showCommentOverlay &&  -->
+              <xnode-add-comment-overlay-panel *ngIf="isOpenSmallCommentBox"
                   [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                   [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
@@ -26,7 +27,7 @@
               <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                   *ngIf="!readOnly" class="expnad-icon pointer">
           </div>
-          <xnode-common-usecases (click)="select($event,{item:specItem, content:content}, content?.id);op.toggle($event)" [searchTerm]="searchTerm"></xnode-common-usecases>
+          <xnode-common-usecases [obj]="{item:specItem, content:content}" (childEvent)="receiveMsg($event)" [searchTerm]="searchTerm"></xnode-common-usecases>
       </div>
       <div *ngIf="content.title ==='User Interface Design'">
           <div class="flex justify-content-between align-items-center">
@@ -53,7 +54,7 @@
               <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                   class="expnad-icon pointer ml-3" style="width: 25px;">
           </div>
-          <xnode-data-dictionary (click)="select($event,{item:specItem, content:content}, content?.id);op.toggle($event)" [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
+          <xnode-data-dictionary [obj]="{item:specItem, content:content}" (childEvent)="receiveMsg($event)"  [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
               [content]="content.content"></xnode-data-dictionary>
           <ng-template #elsejson>
               <pre [innerHTML]="content.content | json | highlight: searchTerm "></pre>
@@ -140,7 +141,8 @@
       </div>
       <div *ngIf="content.title ==='User Personas' && isArray(content.content)">
           <div *ngFor="let persona of content.content" class="pb-3">
-              <xnode-user-persona (click)="select($event,{item:specItem, content:content}, content?.id);op.toggle($event)" [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
+              <xnode-user-persona [obj]="{item:specItem, content:content}" (childEvent)="receiveMsg($event)" [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
+              <!-- (click)="selectText($event,{item:specItem, content:content}, content?.id);op.toggle($event)" -->
           </div>
       </div>
       <div class="w-full" *ngIf="content.title ==='Glossary'">
@@ -215,13 +217,13 @@
           <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
       </div>
       <div *ngIf="content.title ==='User Roles'">
-          <xnode-user-roles (click)="select($event,{item:specItem, content:content}, content?.id);op.toggle($event)" [searchTerm]="searchTerm" [content]="content.content"></xnode-user-roles>
+          <xnode-user-roles [obj]="{item:specItem, content:content}" [content]="content.content"  [searchTerm]="searchTerm"   (childEvent)="receiveMsg($event)"></xnode-user-roles>
       </div>
       <div class="w-full" *ngIf="isArray(content.content); else notArray" [id]="content.id">
-          <xnode-list-view (click)="select($event,{item:specItem, content:content}, content?.id);op.toggle($event)" [content]="content.content" [searchTerm]="searchTerm"></xnode-list-view>
+          <xnode-list-view [obj]="{item:specItem, content:content}" [content]="content.content" [searchTerm]="searchTerm"  (childEvent)="receiveMsg($event)"></xnode-list-view>
       </div>
       <ng-template #notArray>
-          <xnode-para-view (click)="select($event,{item:specItem, content:content}, content?.id);op.toggle($event)" [content]="content.content" [searchTerm]="searchTerm"></xnode-para-view>
+          <xnode-para-view [obj]="{item:specItem, content:content}" [content]="content.content" [searchTerm]="searchTerm" (childEvent)="receiveMsg($event)"></xnode-para-view>
       </ng-template>
 
       <div class="gradientback" *ngIf="!content?.collapsed">

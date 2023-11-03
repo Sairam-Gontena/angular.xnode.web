@@ -1,4 +1,4 @@
-<div *ngFor="let table of content[0].tables">
+<div *ngFor="let table of content[0].tables" (click)="selectText($event)">
     <div class="flex align-items-center mb-2">
         <label class=" font-normal text-sm">Table/Entity Name : </label>
         <p class=" m-0 sub-content ml-2">{{table.tableName}}</p>

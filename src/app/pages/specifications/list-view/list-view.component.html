@@ -1,6 +1,7 @@
-<ul *ngFor="let subItem of content">
+<ul *ngFor="let subItem of content" >
     <li>
-        <p class="m-0 pb-1 line-height-3" (mouseup)="onTextSelected($event)">
+        <p class="m-0 pb-1 line-height-3" (click)="selectText($event)">
+          <!-- (mouseup)="onTextSelected($event)"  -->
             <span class="sub-title text-base font-medium" [innerHTML]="subItem?.title| highlight: searchTerm"></span>
             :
             <span class="sub-content font-normal text-base"
