@@ -439,16 +439,17 @@ body {
 .p-overlaypanel-content {
   // padding: 10px !important;
   background-color: #2E2D36 !important;
-  color: #ffffff;
+  color: white;
   border: 1px solid #535354;
+  border-radius: 6px;
 }
 
 .p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
-  background-color: #ffffff;
-  color: #2E2D36 !important
+  background-color: #393843;
+  color: #ffffff !important
 }
 
 .p-overlaypanel .p-overlaypanel-content {
-  padding: 0px !important;
+  // padding: 0px !important;
   border-width: 0px;
 }
