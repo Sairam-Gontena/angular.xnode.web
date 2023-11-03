@@ -83,6 +83,11 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
+    this.utilsService.getMeIfProductChanges.subscribe((event:boolean)=>{
+      if(event){
+        this.isSideWindowOpen = false;
+      }
+    })
   }
 
   ngOnInit(): void {
