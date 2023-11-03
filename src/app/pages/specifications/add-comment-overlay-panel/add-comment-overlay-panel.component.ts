@@ -30,18 +30,18 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
-    this.api.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
-      this.utils.loadSpinner(true);
-      if (resp?.status === 200) {
-        this.usersData = resp.data;
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
-      }
-      this.utils.loadSpinner(false);
-    }).catch((error) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-      console.error(error);
-    })
+    // this.api.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
+    //   this.utils.loadSpinner(true);
+    //   if (resp?.status === 200) {
+    //     this.usersData = resp.data;
+    //   } else {
+    //     this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
+    //   }
+    //   this.utils.loadSpinner(false);
+    // }).catch((error) => {
+    //   this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+    //   console.error(error);
+    // })
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
