@@ -60,7 +60,7 @@ export class CommonUsecasesComponent {
 
   getUsecases() {
     let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
-    this.apiService.get("/retrive_insights/" + productEmail + "/" + this.product_id)
+    this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {

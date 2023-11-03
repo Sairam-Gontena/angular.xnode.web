@@ -99,7 +99,7 @@ export class VerifyOtpComponent implements OnInit {
   }
   //get calls 
   getAllProducts(user: any): void {
-    this.apiService.get("/get_metadata/" + user?.email)
+    this.apiService.get("navi/get_metadata/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           this.authApiService.setUser(true);

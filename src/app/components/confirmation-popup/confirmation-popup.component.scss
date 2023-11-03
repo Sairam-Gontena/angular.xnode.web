@@ -51,13 +51,13 @@
     width: '40vw'
 }
 
-// :host ::ng-deep .btn-primary.p-button {
-//     // background: var(--primary-color);
-//     font-size: 12px;
-//     padding-top: 6px;
-//     padding-bottom: 6px;
-//     // border: 1px solid var(--primary-color);
-// }
+:host ::ng-deep .btn-primary.confirm-success{
+    background: #EF018F;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #EF018F;
+}
 
 :host ::ng-deep.p-button-sm {
     padding-top: 6px !important;
@@ -82,4 +82,8 @@
     border: 1px solid var(--primary-color);
     border-width: none !important;
 
+}
+:host ::ng-deep .invite .btn-primary:enabled:hover {
+  background: #EF018F!important;
+  border: 1px solid #EF018F!important;
 }

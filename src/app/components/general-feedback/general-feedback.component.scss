@@ -65,9 +65,9 @@
     }
 }
 
-:host::ng-deep .p-dropdown .p-dropdown-label {
-    color: #ffffff;
-}
+// :host::ng-deep .p-dropdown .p-dropdown-label {
+//     color: #ffffff;
+// }
 
 .p-inputtext,
 textarea {
@@ -95,7 +95,7 @@ textarea {
 :host::ng-deep.custom-dropdown .p-dropdown {
     width: 100%;
     /* or any other desired width */
-    color: #ffffff;
+    // color: #ffffff;
     background: #2E2D36;
     border: 1px solid #2E2D36;
 
@@ -190,7 +190,7 @@ textarea {
 :host ::ng-deep {
     .p-dropdown .p-dropdown-label {
         color: #ffffff !important;
-        font-weight: 600;
+        // font-weight: 600;
     }
 }
 
@@ -226,4 +226,69 @@ textarea:enabled:hover {
     background: var(--primary-color);
     border-color: var(--primary-color);
     border: 1px solid var(--primary-color);
+}
+
+:host ::ng-deep .p-dropdown-panel {
+    border: 1px solid #535354;
+    background-color: #2E2D36 !important;
+    color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-header {
+    background-color: #2E2D36 !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper {
+    background-color: #2E2D36 !important;
+    max-height: 180px !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background-color: #42404B !important;
+    color: white !important;
+}
+
+:host ::ng-deep .p-dropdown-item {
+    color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-item:hover {
+    color: #ffffff !important;
+    background: #393843 !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
+
+}
+
+:host ::ng-deep .p-dropdown-filter-container {
+    border: 1px solid transparent !important;
+    background: transparent;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    background-color: #2E2D36 !important;
+    border: none;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter .p-inputtext:enabled:focus {
+    box-shadow: none !important;
+    border-color: none;
+    background-color: #2E2D36 !important;
+    color: white !important;
+}
+
+:host::ng-deep .p-dropdown-panel .p-dropdown-header {
+    padding: 0;
+}
+
+.selected-item {
+    font-weight: bold;
+}
+
+.check-mark {
+    margin-left: 5rem;
 }

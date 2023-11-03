@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { User } from 'src/models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UtilsService {
+  currentUser?: User;
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private specSubMenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private dockedNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -26,8 +28,8 @@ export class UtilsService {
   private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
-  private productAlertPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public getMeproductAlertPopup: Observable<boolean> = this.productAlertPopup.asObservable();
+  private productAlertPopup: BehaviorSubject<Object> = new BehaviorSubject<Object>({ popup: false, data: {} });
+  public getMeproductAlertPopup: Observable<Object> = this.productAlertPopup.asObservable();
 
   private popupToShow: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public getMeFeedbackPopupTypeToDisplay: Observable<string> = this.popupToShow.asObservable();
@@ -57,6 +59,11 @@ export class UtilsService {
   private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
 
+  private isCommentAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public checkCommentsAdded: Observable<any> = this.isCommentAdded.asObservable();
+
+  private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public getMeUpdatedCommentList: Observable<any> = this.saveComments.asObservable();
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -131,6 +138,14 @@ export class UtilsService {
     this.isInSpec.next(event);
   }
 
+  commentAdded(event: any): void {
+    this.isCommentAdded.next(event);
+  }
+
+  saveCommentList(event: any) {
+    this.saveComments.next(event);
+  }
+
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);
     const now = new Date();
@@ -150,5 +165,23 @@ export class UtilsService {
     } else {
       return `${seconds}seconds`;
     }
+  }
+
+  setUsernameOrDP() {
+    let data = localStorage.getItem("currentUser");
+    let userDp: string = '';
+    if (data) {
+      this.currentUser = JSON.parse(data);
+      if (this.currentUser?.image) {
+        userDp = this.currentUser?.image;
+      } else if (this.currentUser?.first_name && this.currentUser?.last_name) {
+        userDp = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
+      } else {
+        userDp = ''
+      }
+    } else {
+      userDp = ''
+    }
+    return userDp;
   }
 }

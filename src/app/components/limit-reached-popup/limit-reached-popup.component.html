@@ -16,7 +16,7 @@
         for your understanding.
     </p>
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" styleClass="p-button-rounded" class="cancel-button"
+        <p-button label="Cancel" [rounded]="true" class="cancel-button"
             (click)="this.closePopup.emit()"></p-button>
     </ng-template>
 </p-dialog>

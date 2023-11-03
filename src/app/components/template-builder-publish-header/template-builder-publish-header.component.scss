@@ -64,6 +64,25 @@ img.highlighted {
     padding: 10px !important;
 }
 
+:host ::ng-deep .app-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    background-color: #2E2D36 !important;
+    border: none;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .app-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter .p-inputtext:enabled:focus {
+    box-shadow: none !important;
+    border-color: none;
+    background-color: #2E2D36 !important;
+    color: white !important;
+}
+
+:host ::ng-deep .app-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {
+    right: 0.75rem;
+    color: #6c757d;
+}
+
 :host ::ng-deep .app-dropdown .p-dropdown-label {
     font-size: 12px;
     border-radius: 30px;
@@ -91,10 +110,10 @@ img.highlighted {
     border: 1px solid var(--primary-color);
 }
 
-:host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
-    left: unset !important;
-    right: 1px !important;
-}
+// :host ::ng-deep.p-tieredmenu.p-tieredmenu-overlay {
+//     left: unset !important;
+//     right: 1px !important;
+// }
 
 :host ::ng-deep.p-dialog {
     border: 1px solid #595959 !important;
@@ -113,4 +132,41 @@ img.highlighted {
 
 :host::ng-deep .p-dialog-content {
     padding: 1.5rem;
+}
+
+:host ::ng-deep .p-tieredmenu .p-menuitem>.p-menuitem-content .p-menuitem-link {
+    background: #2E2D36 !important;
+    // border: 1px solid #535354;
+    color: #ffffff !important;
+    padding: 0.75rem 1.25rem;
+}
+
+:host ::ng-deep .p-tieredmenu .p-menuitem>.p-menuitem-content .p-menuitem-link:hover {
+    background: #393843 !important;
+    color: #ffffff !important;
+}
+
+:host ::ng-deep .p-tieredmenu .p-tieredmenu-overlay {
+    left: unset !important;
+    right: 1px !important;
+    background: #2E2D36 !important;
+    border: 1px solid #535354;
+}
+
+:host::ng-deep .p-tieredmenu .p-menuitem>.p-menuitem-content .p-menuitem-link .p-menuitem-text {
+    color: #ffffff !important;
+}
+
+:host::ng-deep .p-dropdown-panel .p-dropdown-header {
+    padding: 0;
+    border-radius: 6px !important;
+}
+
+:host::ng-deep .p-tieredmenu {
+    border-radius: 6px !important;
+    background: #2E2D36;
+    color: #ffffff;
+    border: 1px solid #535354;
+    width: 100%;
+    padding: 0.15rem 0;
 }

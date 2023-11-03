@@ -51,7 +51,7 @@ export class OverViewComponent {
     if (this.currentUser?.email)
       this.email = this.currentUser?.email;
     let dataName = localStorage.getItem("currentUser")
-    let productUserName = this.productDetails.email == this.email ? localStorage.getItem("currentUser") : this.productDetails.username;
+    let productUserName = this.productDetails?.email == this.email ? localStorage.getItem("currentUser") : this.productDetails?.username;
     if (dataName) {
       if (this.productDetails.email == this.email) {
         let currentUser = JSON.parse(dataName);
@@ -113,7 +113,7 @@ export class OverViewComponent {
 
   get_ID() {
     let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
-    this.apiService.get('/get_metadata/' + productEmail)
+    this.apiService.get('navi/get_metadata/' + productEmail)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -148,7 +148,7 @@ export class OverViewComponent {
   }
   getMeOverview() {
     let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
-    this.apiService.get("/retrive_overview/" + productEmail + "/" + this.getMeProductId())
+    this.apiService.get("navi/get_overview/" + productEmail + "/" + this.getMeProductId())
       .then((response: any) => {
         if (response?.status === 200) {
           this.overview = response.data;

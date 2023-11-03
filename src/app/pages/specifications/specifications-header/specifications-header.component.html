@@ -14,14 +14,14 @@
             <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
             <p-button (click)="op.toggle($event)" class="ellipsis-btn -ml-3" icon="pi pi-ellipsis-v"></p-button>
             <p-overlayPanel class="overlay-class" #op>
-                <div class="confirm-overlay p-2 cursor-pointer border-round-md " (click)="openCRs()">Change Requests
+                <div class="confirm-overlay p-2 cursor-pointer " (click)="openCRs()">Change Requests
                 </div>
-                <div class="confirm-overlay p-2 cursor-pointer border-round-md ">Integration</div>
-                <div class="confirm-overlay p-2 cursor-pointer border-round-md" (keyup)="openPopup('Spec Generation')"
+                <div class="confirm-overlay p-2 cursor-pointer">Integration</div>
+                <div class="confirm-overlay p-2 cursor-pointer" (keyup)="openPopup('Spec Generation')"
                     (keydown)="op.hide()" (keypress)="openPopup('Spec Generation')"
                     (click)="openPopup('Spec Generation');op.hide()">Generate Spec</div>
             </p-overlayPanel>
-            <p-button label="Share" styleClass="p-button-rounded bg-primary border-none"></p-button>
+            <p-button label="Share" styleClass="bg-primary border-none" [rounded]="true"></p-button>
         </div>
     </div>
     <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"

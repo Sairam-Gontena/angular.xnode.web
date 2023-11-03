@@ -50,8 +50,9 @@ export class ProductAlertPopupComponent implements OnInit {
     }
     this.utils.getMeproductAlertPopup.subscribe((event: any) => {
       setTimeout(() => {
+        this.contentdata = event?.data;
         this.dataPopulate();
-        this.showProductStatusPopup = event;
+        this.showProductStatusPopup = event?.popup;
       },);
     });
   }
@@ -83,7 +84,8 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      this.consversationList = JSON.parse(this.contentdata?.conversation);
+      if(this.contentdata?.conversation)
+        this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
   }
 
@@ -120,7 +122,7 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   getProduct(): void {
-    this.apiService.get('/get_entire_data/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
+    this.apiService.get('navi/get_entire_data/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
       if (res) {
         this.proTitle = res?.data?.conversation_details?.title;
         this.getMeTotalAppsPublishedCount();
@@ -240,7 +242,7 @@ export class ProductAlertPopupComponent implements OnInit {
 
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
-    this.apiService.get('/get_conversation/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
+    this.apiService.get('navi/get_conversation/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
       if (res.status === 200 && res.data) {
         this.consversationList = res.data?.conversation_history;
         this.persistConversaiton();
@@ -264,7 +266,7 @@ export class ProductAlertPopupComponent implements OnInit {
       "conversation_history": this.consversationList,
       "product_id": this.product_id
     }
-    this.apiService.post(persistconversation, '/persist_conversation').then((response: any) => {
+    this.apiService.post(persistconversation, 'bot/persist_conversation').then((response: any) => {
       if (response) {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Started generating application, please look out for notifications in the top nav bar" });
@@ -284,7 +286,7 @@ export class ProductAlertPopupComponent implements OnInit {
   }
 
   getMeTotalAppsPublishedCount(): void {
-    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+    this.apiService.get('navi/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
       if (res && res.status === 200) {
         const restriction_max_value = localStorage.getItem('restriction_max_value');
         if (restriction_max_value) {

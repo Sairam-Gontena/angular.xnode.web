@@ -83,7 +83,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   getMeUserId() {
     let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email
 
-    this.apiService.get("/get_metadata/" + productEmail)
+    this.apiService.get("navi/get_metadata/" + productEmail)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -117,7 +117,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   getMeDataModel() {
     let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email
     this.dataModel = null;
-    this.apiService.get("/retrive_insights/" + productEmail + "/" + this.product_id)
+    this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {

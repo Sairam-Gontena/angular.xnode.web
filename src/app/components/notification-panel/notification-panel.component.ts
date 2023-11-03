@@ -92,7 +92,6 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
-
       this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.utils.loadSpinner(true);
@@ -101,7 +100,7 @@ export class NotificationPanelComponent {
     this.closeNotificationPanel.emit(true);
   }
   getMeMetaData() {
-    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
@@ -115,7 +114,6 @@ export class NotificationPanelComponent {
       .catch(error => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-
       });
   }
   gotoSpec(obj: any) {
@@ -188,7 +186,7 @@ export class NotificationPanelComponent {
   }
 
   getMeTotalAppsPublishedCount(obj: any): void {
-    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+    this.apiService.get('navi/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
       if (res && res.status === 200) {
         const restriction_max_value = localStorage.getItem('restriction_max_value');
         if (restriction_max_value) {

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
@@ -44,10 +44,15 @@ export class SpecificationsContentComponent implements OnInit {
   isOpenSmallCommentBox: boolean = false;
   smallCommentContent: string = '';
   product: any;
+  isContentSelected = false;
+  isCommnetsPanelOpened: boolean = false;
+  commentList: any;
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
+    private renderer: Renderer2,
+    private el: ElementRef,
     private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
     this.utils.getMeSpecItem.subscribe((event: any) => {
@@ -63,8 +68,12 @@ export class SpecificationsContentComponent implements OnInit {
     })
 
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isCommentPanelOpened = pnl === SidePanel.Comments;
+      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
+    this.utils.checkCommentsAdded.subscribe((event: any) => {
+      if (event)
+        this.getLatestComments();
+    })
   }
 
   checkedToggle(type: any, item: any, content: any) {
@@ -98,6 +107,11 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.openDockedNavi.subscribe((data: any) => {
+      if (data) {
+        this.isCommnetsPanelOpened = false;
+      }
+    })
     const record_id = localStorage.getItem('record_id');
     const product = localStorage.getItem('product');
     this.app_name = localStorage.getItem('app_name');
@@ -113,38 +127,53 @@ export class SpecificationsContentComponent implements OnInit {
     }
 
     this.makeTrustedUrl();
+    this.getLatestComments();
+  }
+
+  getLatestComments() {
+    this.utils.loadSpinner(true);
+    this.commentsService.getComments().then((response: any) => {
+      if (response && response.data) {
+        this.utils.saveCommentList(response.data)
+        this.commentList = response.data;
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(false);
+    });
   }
 
   isArray(item: any) {
     return Array.isArray(item);
   }
 
-  onClickSeeMore(item: any, content: any): void {
-    this.selectedContent = content;
+  _onClickSeeMore(event: any): void {
+    this.selectedContent = event.content;
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
-      if (obj.id === item.id) {
+      if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id)
+          if (conObj.id === event.content.id)
             conObj.collapsed = true;
         })
       }
     })
   }
 
-  onClickSeeLess(item: any, content: any): void {
-    this.selectedContent = content;
+  _onClickSeeLess(event: any): void {
+    this.selectedContent = event.content;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
-      if (obj.id === item.id) {
+      if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id)
+          if (conObj.id === event.content.id)
             conObj.collapsed = false;
         })
       }
     })
     setTimeout(() => {
-      this.utils.saveSelectedSection(item);
+      this.utils.saveSelectedSection(event.item);
     }, 100)
   }
 
@@ -200,7 +229,7 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  expandComponent(val: any): void {
+  _expandComponent(val: any): void {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
@@ -212,16 +241,22 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    setTimeout(() => {
-      this.scrollToItem();
-      this.fetchOpenAPISpec();
-    }, 1000);
+    this.scrollToItem();
+    this.fetchOpenAPISpec();
   }
 
-  onClickComment(item: any, content: any) {
-    this.utils.saveSelectedSection(item);
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    this.openAndGetComments.emit(content)
+  _showAddCommnetOverlay(event: any) {
+    this.specItemList.forEach((element: any) => {
+      if (event.item.id === element.id)
+        element.content.forEach((subEle: any) => {
+          if (event.content.id === subEle.id) {
+            subEle.showCommentOverlay = true;
+            this.isOpenSmallCommentBox = true;
+          } else {
+            subEle.showCommentOverlay = false;
+          }
+        });
+    });
   }
 
   getTestCaseKeys(testCase: any): string[] {
@@ -238,46 +273,65 @@ export class SpecificationsContentComponent implements OnInit {
     this.isOpenSmallCommentBox = false;
   }
 
-  sendComment(content: any) {
+  sendComment(comment: any) {
+    this.utils.openOrClosePanel(SidePanel.Comments);
     let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    if (this.smallCommentContent && this.smallCommentContent.length) {
-      this.isOpenSmallCommentBox = false;
-      this.commentsService.getComments(content)
-        .then((commentsReponse: any) => {
-          let body: any = {
-            product_id: localStorage.getItem('record_id'),
-            content_id: content.id,
-          };
-
-          if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-            body.comments = [
-              ...commentsReponse['data']['comments'],
-              ...[{
-                user_id: user_id,
-                message: this.smallCommentContent
-              }]
-            ]
-          } else {
-            body.comments = [{
+    this.isOpenSmallCommentBox = false;
+    this.commentsService.getComments(this.selectedSpecItem)
+      .then((commentsReponse: any) => {
+        let body: any = {
+          product_id: localStorage.getItem('record_id'),
+          content_id: this.selectedSpecItem.id,
+        };
+        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
+          this.isOpenSmallCommentBox = false;
+          body.comments = [
+            ...commentsReponse['data']['comments'],
+            ...[{
               user_id: user_id,
-              message: this.smallCommentContent
+              message: comment,
             }]
-          }
+          ]
+        } else {
+          body.comments = [{
+            user_id: user_id,
+            message: comment
+          }]
+        }
+        this.commentsService.updateComments(body)
+          .then((response: any) => {
+            this.smallCommentContent = "";
+            this.getCommentsAfterUpdate.emit(comment);
+            this.utils.openOrClosePanel(SidePanel.Comments);
+          })
+          .catch((error: any) => {
+            this.smallCommentContent = "";
+          });
+      })
+      .catch(res => {
+        console.log("comments get failed");
+      })
+  }
 
-
-          this.commentsService.updateComments(body)
-            .then((response: any) => {
-
-              this.smallCommentContent = "";
-              this.getCommentsAfterUpdate.emit(content);
-            })
-            .catch((error: any) => {
-              this.smallCommentContent = "";
-            });
-        })
-        .catch(res => {
-          console.log("comments get failed");
-        })
+  checkSelection(item: any, obj: any) {
+    this.selectedSpecItem = obj;
+    const selection = window.getSelection();
+    if (selection?.toString() !== '') {
+      const selectedElement = selection?.anchorNode?.parentElement;
+      const selectedContent = selection?.toString();
+      this.specItemList.forEach((element: any) => {
+        if (item.id === element.id)
+          element.content.forEach((subEle: any) => {
+            if (obj.id === subEle.id) {
+              subEle.showCommentOverlay = true;
+              this.isOpenSmallCommentBox = true;
+            } else {
+              subEle.showCommentOverlay = false;
+            }
+          });
+      });
+    } else {
+      console.log('Content is not selected.');
     }
   }
 

@@ -20,11 +20,11 @@
                     <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
                </span>
                <div class="flex-wrap">
-                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="tableInfo?.delete_action">
+                    <p-button styleClass="mr-3 t-header-btn"  [rounded]="true" *ngIf="tableInfo?.delete_action">
                          <img src="../../assets/delete.svg" alt="circle-ci-image" class="text-sm ml-1">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
                     </p-button>
-                    <p-button styleClass="p-button-rounded mr-3 t-header-btn" *ngIf="tableInfo?.export_action"
+                    <p-button styleClass="mr-3 t-header-btn"  [rounded]="true" *ngIf="tableInfo?.export_action"
                          (click)="op.toggle($event)">
                          <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm">
                          <span class=" text-sm font-semibold font-family-inter ml-2">Export</span>

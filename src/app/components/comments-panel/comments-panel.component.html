@@ -1,45 +1,36 @@
-<div class="flex justify-content-between flex-wrap text-white p-4 border-bottom-1 border-white-alpha-40">
-    <div class="flex align-items-center justify-content-center">Comments</div>
-    <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-times pointer" (click)="onClickClose()"></i>
+<div class="p-4">
+    <div class="flex justify-content-between flex-wrap">
+        <div class="flex align-items-center justify-content-center filter-grid ">
+            <p class="m-0 pr-2 pl-2">Filters:</p>
+            <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label">
+                <ng-template let-item pTemplate="item">
+                    <ng-container [ngClass]="{'selected-item': selectedFilter === item.label}">
+                        {{ item.label }}
+                        <i *ngIf="selectedFilter === item.label" class="pi pi-check check-mark"></i>
+                    </ng-container>
+                </ng-template>
+            </p-dropdown>
+            <!-- <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown> -->
+        </div>
+        <div class="flex align-items-center justify-content-center">
+        </div>
     </div>
-</div>
-<div class="no-comments" *ngIf="!commentList || commentList.length ===0">
-    <div class="pr-6 pl-6 text-center">
-        <img src="../assets/no-comments.svg" class="pointer" alt="no comment">
-        <p class="title">No open comments yet</p>
-        <p class="sub-title">Give feedback or @mention people
-            to collaborate. Hover over the content
-            and click the comment button on the left.</p>
-    </div>
-</div>
-<div class='comments-grid' *ngIf="commentList && commentList.length >0">
-    <div class="w-full" *ngFor="let cmt of commentList">
-        <div class="flex p-3 align-items-center">
-            <p-avatar [label]=" userImage" *ngIf="username" styleClass="mr-2"
-                [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
-                shape="circle"></p-avatar>
-            <div class="flex">
-                {{currentUser.first_name}} {{currentUser.last_name}}
+    <div class='comments-grid' *ngIf="commentList && commentList.length >0">
+        <div class="w-full" *ngFor="let cmt of commentList">
+            <div class="flex p-3 align-items-center">
+                <p-avatar [label]=" userImage" *ngIf="username" styleClass="mr-2"
+                    [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
+                    shape="circle"></p-avatar>
+                <div class="flex">
+                    {{currentUser.first_name}} {{currentUser.last_name}}
+                </div>
+                <div>
+
+                </div>
             </div>
-        </div>
-        <div class="mt-2 text-sm">
-            {{cmt.message}}
-        </div>
-    </div>
-</div>
-<div class="p-2">
-    <div class="flex align-items-end flex-wrap">
-        <div class="flex align-items-center justify-content-center ">
-            <p-avatar [label]="userImage" *ngIf="username" styleClass="mr-2"
-                [style]="{ 'background-color': '#9c27b0', fontSize: '10px', color: '#ffffff',width:'23px',height:'23px' }"
-                shape="circle"></p-avatar>
-        </div>
-        <div class="flex align-items-center justify-content-center w-90 relative">
-            <textarea type="text" rows="3" styleClaass="w-full" pInputTextarea [(ngModel)]="comment"
-                (keyup.enter)="onClickEnter($event)"></textarea>
-            <img src="../assets/comment-send.svg" class="pointer absolute comment-send-icon" alt="comment send"
-                (click)="onClickSend()">
+            <div class="mt-2 text-sm">
+                {{cmt.message}}
+            </div>
         </div>
     </div>
 </div>

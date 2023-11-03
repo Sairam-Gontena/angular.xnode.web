@@ -63,6 +63,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('app_name');
     localStorage.removeItem('show-upload-panel');
     localStorage.removeItem('product');
+    localStorage.removeItem('product_url');
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -91,7 +92,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("/total_apps_onboarded/" + user?.email).then((response: any) => {
+    this.apiService.get("navi/total_apps_onboarded/" + user?.email).then((response: any) => {
       if (response?.status === 200) {
         localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
         let user_audit_body = {
@@ -147,7 +148,6 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     if (!data.has_insights) {
-      this.utils.showProductStatusPopup(true);
       this.router.navigate(['/x-pilot']);
     } else {
       this.router.navigate(['/dashboard']);
@@ -177,7 +177,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;

@@ -172,7 +172,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
   getFlow(flow: String) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
+    this.api.get('navi/get_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
@@ -221,7 +221,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
   getOnboardingFlow() {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
+    this.api.get('navi/get_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
@@ -270,7 +270,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   getInsights() {
     let currentUserString = localStorage.getItem('currentUser');
     let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
-    this.api.get("/retrive_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.api.get("navi/get_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -305,7 +305,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
 
   getOverview() {
-    this.api.get("/retrive_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.api.get("navi/get_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {

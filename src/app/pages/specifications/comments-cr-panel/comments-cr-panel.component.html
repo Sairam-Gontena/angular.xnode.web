@@ -1,0 +1,11 @@
+<div class="relative">
+    <img src="../assets/comments-cr-close.svg" class="pointer comments-cr-close" alt="close" (click)="onClickClose()">
+    <p-tabView class="comments-cr-tabs">
+        <p-tabPanel header="Comments">
+            <xnode-comments-tabs [commentList]="commentList"></xnode-comments-tabs>
+        </p-tabPanel>
+        <p-tabPanel header="Change Request">
+            <xnode-cr-tabs></xnode-cr-tabs>
+        </p-tabPanel>
+    </p-tabView>
+</div>

@@ -37,6 +37,8 @@ export class AppComponent implements OnInit {
   showLimitReachedPopup?: boolean;
   productAlertPopup: boolean = false;
   content: any;
+  contentFromNavi: boolean = false;
+  showCommentIcon?: boolean;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -53,6 +55,24 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationStart) {
         if (event.navigationTrigger === 'popstate') {
           this.showLimitReachedPopup = false
+        }
+        if (event.url == "/x-pilot") {
+          let product = localStorage.getItem('product')
+          let user = localStorage.getItem('currentUser')
+          if (product && user) {
+            let productObj = JSON.parse(product);
+            let userObj = JSON.parse(user);
+            if (productObj?.has_insights == false && userObj?.email == productObj?.email) {
+              let data = {
+                'popup': true,
+                'data': {}
+              }
+              this.utilsService.toggleProductAlertPopup(data);
+            }
+          }
+        }
+        if (event.url == "/my-products") {
+          this.isSideWindowOpen = false;
         }
       }
     });
@@ -93,6 +113,9 @@ export class AppComponent implements OnInit {
       this.isNaviExpanded = false;
       this.utilsService.disableDockedNavi();
     })
+    this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
+      this.showProductStatusPopup = true;
+    })
   }
 
   redirectToPreviousUrl(): void {
@@ -130,7 +153,6 @@ export class AppComponent implements OnInit {
   handleBotIcon() {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        this.handleRouterChange();
         if (event.url === '/x-pilot') {
           this.isBotIconVisible = false
         } else {
@@ -140,7 +162,7 @@ export class AppComponent implements OnInit {
     });
   }
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("/total_apps_onboarded/" + user?.email)
+    this.apiService.get("navi/total_apps_onboarded/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
@@ -178,9 +200,11 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
-        this.content.length > 0 ? this.productAlertPopup = true : this.productAlertPopup = false;
-        this.showProductStatusPopup = true;
-        this.utilsService.toggleProductAlertPopup(true);
+        let data = {
+          'popup': true,
+          'data': this.content
+        }
+        this.utilsService.toggleProductAlertPopup(data);
       }
       if (event.data.message === 'change-app') {
         this.utilsService.saveProductId(event.data.id);
@@ -229,8 +253,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  handleRouterChange() {
-    this.isSideWindowOpen = false;
+  closePopup() {
+    this.showProductStatusPopup = false
   }
 
   getUserData() {

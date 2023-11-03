@@ -46,12 +46,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
-    // this.utilsService.getMeProductId.subscribe((event: any) => {
-    //   if (event) {
-    //     this.selectedTemplate = event;
-    //     this.storeProductData(event)
-    //   }
-    // })
+    this.utilsService.getMeProductId.subscribe((event: any) => {
+      if (event) {
+        this.selectedTemplate = event;
+        this.storeProductData(event)
+      }
+    })
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
@@ -172,7 +172,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   getMeTotalAppsPublishedCount(): void {
-    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+    this.apiService.get('navi/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
       if (res && res.status === 200) {
         const restriction_max_value = localStorage.getItem('restriction_max_value');
         if (restriction_max_value) {
@@ -286,6 +286,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
+      this.loadSpinnerInParent.emit(false);
+      this.utilsService.loadSpinner(false);
     }).catch(error => {
       let user_audit_body = {
         'method': 'POST',
@@ -300,9 +302,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
     });
   }
-  //get calls 
+  //get calls
   getAllProducts(): void {
-    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.templates = response.data.data;
@@ -323,7 +325,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   checkProductOptions() {
-    if (this.currentUser?.email == this.product.email) {
+    if (this.currentUser?.email == this.product?.email) {
       this.utilsService.hasProductPermission(true)
     } else {
       this.utilsService.hasProductPermission(false)

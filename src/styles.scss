@@ -396,6 +396,7 @@ body {
 
 .p-inputtext {
   background-color: #2E2D36;
+  color: #ffffff;
 }
 
 .p-column-filter-menu-button {
@@ -434,12 +435,21 @@ body {
   color: #02ADEE !important;
 }
 
-.p-overlaypanel .p-overlaypanel-content {
-  padding: 10px !important;
-  background-color: rgb(36, 35, 44);
-  color: #ffffff;
+.p-overlaypanel,
+.p-overlaypanel-content {
+  // padding: 10px !important;
+  background-color: #2E2D36 !important;
+  color: white;
+  border: 1px solid #535354;
+  border-radius: 6px;
 }
 
 .p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
-  background-color: #495057;
+  background-color: #393843;
+  color: #ffffff !important
+}
+
+.p-overlaypanel .p-overlaypanel-content {
+  // padding: 0px !important;
+  border-width: 0px;
 }
