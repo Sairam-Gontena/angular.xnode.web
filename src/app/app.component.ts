@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
   productAlertPopup: boolean = false;
   content: any;
   contentFromNavi: boolean = false;
+  showCommentIcon?: boolean;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -55,22 +56,22 @@ export class AppComponent implements OnInit {
         if (event.navigationTrigger === 'popstate') {
           this.showLimitReachedPopup = false
         }
-        if(event.url=="/x-pilot"){
+        if (event.url == "/x-pilot") {
           let product = localStorage.getItem('product')
           let user = localStorage.getItem('currentUser')
-          if(product && user){
+          if (product && user) {
             let productObj = JSON.parse(product);
             let userObj = JSON.parse(user);
-            if(productObj?.has_insights==false && userObj?.email==productObj?.email){
+            if (productObj?.has_insights == false && userObj?.email == productObj?.email) {
               let data = {
-                'popup':true,
-                'data':{ }
+                'popup': true,
+                'data': {}
               }
               this.utilsService.toggleProductAlertPopup(data);
             }
           }
         }
-        if(event.url=="/my-products"){
+        if (event.url == "/my-products") {
           this.isSideWindowOpen = false;
         }
       }
@@ -112,7 +113,7 @@ export class AppComponent implements OnInit {
       this.isNaviExpanded = false;
       this.utilsService.disableDockedNavi();
     })
-    this.utilsService.getMeproductAlertPopup.subscribe((data:any)=>{
+    this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = true;
     })
   }
@@ -200,8 +201,8 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
         let data = {
-          'popup':true,
-          'data':this.content
+          'popup': true,
+          'data': this.content
         }
         this.utilsService.toggleProductAlertPopup(data);
       }
@@ -252,7 +253,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  closePopup(){
+  closePopup() {
     this.showProductStatusPopup = false
   }
 

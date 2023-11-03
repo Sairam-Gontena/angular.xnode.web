@@ -8,6 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
 export class UserRolesComponent implements OnInit {
   @Input() content: any;
   @Input() searchTerm: any;
+  @Input() selectedContent!: string;
+  @Input() users: any = [];
+  showCommentIcon: boolean = false
+  seletedMainIndex?: number;
+  selecteedSubIndex?: number
 
   ngOnInit(): void {
   }
