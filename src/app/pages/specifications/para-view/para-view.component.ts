@@ -9,4 +9,8 @@ import { Section } from 'src/models/section';
 export class ParaViewComponent {
   @Input() searchTerm!: string;
   @Input() content!: Section;
+  @Input() selectedContent!: string;
+  @Input() users: any = [];
+  showCommentIcon: boolean = false;
+  commentOverlayPanelOpened:boolean=false
 }

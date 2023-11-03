@@ -6,13 +6,13 @@
                 <h3 class="m-0 pb-2 text-2xl font-bold"
                     [innerHTML]="(sectionIndex+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
             </div>
-            <p-overlayPanel #op>
+            <!-- <p-overlayPanel #op>
                 <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
                     [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                     [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
             <img src="../assets/comment.svg" class="pointer" alt="comment"
-                (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly">
+                (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly"> -->
         </div>
         <p-button (click)="onClickSeeMore.emit({item:specItem,content:content})" label="See More"
             *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
@@ -173,30 +173,86 @@
         </div>
 
         <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
-            <ul *ngFor="let content of content.content">
-                <li class="sub-content font-normal text-sm" [innerHTML]="content| highlight: searchTerm"></li>
+            <ul *ngFor="let content of content.content let i =index">
+                <div class="col-12 p-0 flex"
+                    (mouseover)="showCommentIcon = true ;seletedMainIndex=cIndex; selecteedSubIndex = i"
+                    (mouseleave)="showCommentIcon = false">
+                    <div class="col-11 p-0">
+                        <li class="sub-content font-normal text-sm" [innerHTML]="content| highlight: searchTerm"></li>
+                    </div>
+                    <div class="col-1 p-0 flex  align-items-start justify-content-center">
+                        <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
+                            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                (closeOverlay)="op.toggle(false)" [position]="'absolute'"
+                                [selectedContent]="selectedContent"
+                                placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                        </p-overlayPanel>
+                        <img src="../assets/comment.svg" class="pointer" alt="comment"
+                            (click)="op.toggle($event);commentOverlayPanelOpened=true"
+                            [style.display]="(showCommentIcon || commentOverlayPanelOpened) && seletedMainIndex == cIndex && selecteedSubIndex ==i  ? 'block' : 'none'">
+                    </div>
+                </div>
             </ul>
         </div>
 
         <div *ngIf="content.title ==='QA Test Cases' && isArray(content.content)">
-            <div *ngFor="let subItem of content.content">
+            <div *ngFor="let subItem of content.content let subIndex = index ">
                 <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
-                    <p class="m-0 pb-2"><span class="sub-title text-base font-medium"
-                            [innerHTML]="subItem.title|  highlight: searchTerm">
+                    <p class="m-0 pb-2">
+                        <span>
+                            <div class="flex col-12 p-0"
+                                (mouseover)="showCommentIcon = true;seletedMainIndex=cIndex;selecteedSubIndex =subIndex "
+                                (mouseleave)="showCommentIcon = false">
+                                <div class="col-11 p-0 ">
+                                    <span class="sub-title text-base font-medium"
+                                        [innerHTML]="subItem.title|  highlight: searchTerm">
+                                    </span>
+                                    : <span class="sub-content font-normal text-base"
+                                        [innerHTML]="subItem.content| highlight: searchTerm"></span>
+                                </div>
+                                <div class="col-1 p-0 flex  align-items-start justify-content-center">
+                                    <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
+                                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                            (closeOverlay)="op.toggle(false)" [position]="'absolute'"
+                                            [selectedContent]="selectedContent"
+                                            placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                                    </p-overlayPanel>
+                                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                                        (click)="op.toggle($event);commentOverlayPanelOpened=true"
+                                        *ngIf="(showCommentIcon || commentOverlayPanelOpened) && seletedMainIndex && selecteedSubIndex ">
+                                </div>
+                            </div>
                         </span>
-                        : <span class="sub-content font-normal text-base"
-                            [innerHTML]="subItem.content| highlight: searchTerm"></span>
                     </p>
                 </div>
                 <ng-template #sampleTestCases>
                     <div *ngIf="isArray(subItem.content)">
                         <h4 class="mb-2" [innerHTML]="subItem.title| highlight: searchTerm"></h4>
-                        <div *ngFor="let testCase of subItem.content; let lastItem = last">
-                            <p *ngFor="let key of getTestCaseKeys(testCase)" class="m-0 pb-2">
-                                <span class="sub-title text-base font-medium" [innerHTML]="key| highlight:
-                            searchTerm"></span> :
-                                <span class="sub-content font-normal text-base"
-                                    [innerHTML]="testCase[key] | highlight: searchTerm"></span>
+                        <div *ngFor="let testCase of subItem.content; let lastItem = last let subIndex = index ">
+                            <p *ngFor="let key of getTestCaseKeys(testCase);let subSubIndex = index" class="m-0 pb-2">
+                                <span>
+                                    <div class="col-12 p-0 flex "
+                                        (mouseover)="showCommentIcon = true;seletedMainIndex=cIndex;selecteedSubIndex =subIndex;selecteedSubSubIndex = subSubIndex "
+                                        (mouseleave)="showCommentIcon = false">
+                                        <div class="col-11 p-0">
+                                            <span class="sub-title text-base font-medium"
+                                                [innerHTML]="key| highlight:searchTerm"></span> :
+                                            <span class="sub-content font-normal text-base"
+                                                [innerHTML]="testCase[key] | highlight: searchTerm"></span>
+                                        </div>
+                                        <div class="col-1 p-0 flex  align-items-start justify-content-center">
+                                            <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
+                                                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                                    (closeOverlay)="op.toggle(false)" [position]="'absolute'"
+                                                    [selectedContent]="selectedContent"
+                                                    placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                                            </p-overlayPanel>
+                                            <img src="../assets/comment.svg" class="pointer" alt="comment"
+                                                (click)="op.toggle($event);commentOverlayPanelOpened=true"
+                                                *ngIf="(showCommentIcon || commentOverlayPanelOpened) && seletedMainIndex == cIndex && selecteedSubIndex == subIndex && selecteedSubSubIndex == subSubIndex">
+                                        </div>
+                                    </div>
+                                </span>
                             </p>
                             <ng-container *ngIf="!lastItem">
                                 <hr class="mt-2 mb-2">
@@ -215,13 +271,16 @@
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
         </div>
         <div *ngIf="content.title ==='User Roles'">
-            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"></xnode-user-roles>
+            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content" [users]="users"
+                [selectedContent]="selectedContent"></xnode-user-roles>
         </div>
         <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
-            <xnode-list-view [content]="content.content" [searchTerm]="searchTerm"></xnode-list-view>
+            <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
+                [users]="users"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm"></xnode-para-view>
+            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="users"
+                [selectedContent]="selectedContent"></xnode-para-view>
         </ng-template>
 
         <div class="gradientback" *ngIf="!content?.collapsed">
