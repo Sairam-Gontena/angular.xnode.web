@@ -141,8 +141,12 @@ img.highlighted {
     padding: 0.75rem 1.25rem;
 }
 
+:host ::ng-deep .p-tieredmenu .p-menuitem>.p-menuitem-content .p-menuitem-link:hover {
+    background: #393843 !important;
+    color: #ffffff !important;
+}
+
 :host ::ng-deep .p-tieredmenu .p-tieredmenu-overlay {
-    // top: 23px !important;
     left: unset !important;
     right: 1px !important;
     background: #2E2D36 !important;
