@@ -83,6 +83,11 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
+    this.utilsService.getMeIfProductChanges.subscribe((event:boolean)=>{
+      if(event){
+        this.isSideWindowOpen = false;
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -116,6 +121,10 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = true;
     })
+  }
+
+  botOnClick(){
+    this.isNaviExpanded=false;
   }
 
   redirectToPreviousUrl(): void {
