@@ -348,7 +348,7 @@ export class AppComponent implements OnInit {
     if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
-        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
       }
       this.router.navigate(['/x-pilot']);
     } else {
@@ -402,7 +402,7 @@ export class AppComponent implements OnInit {
       "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
       "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+    this.notifyApi.post('email/notify', body).then((res: any) => {
       if (res?.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }

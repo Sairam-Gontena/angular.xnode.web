@@ -120,7 +120,7 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ID_GET_METADATA_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
           this.id = response.data.data[0].id;
           this.getMeOverview();
         } else {
@@ -128,7 +128,7 @@ export class OverViewComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.loadSpinner(false);
         }
@@ -137,7 +137,7 @@ export class OverViewComponent {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       });
@@ -156,20 +156,20 @@ export class OverViewComponent {
           this.appName = response?.data?.Title ? response?.data?.Title : response?.data?.title;
           this.createOn = response?.data?.created_on;
           localStorage.setItem("app_name", response?.data?.Title ? response?.data?.Title : response?.data?.title);
-          this.auditUtil.post("RETRIEVE_OVERVIEW", 1, 'SUCCESS', 'user-audit');
+          this.auditUtil.postAudit("RETRIEVE_OVERVIEW", 1, 'SUCCESS', 'user-audit');
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         } else {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
-          this.auditUtil.post("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
+          this.auditUtil.postAudit("RETRIEVE_OVERVIEW" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utils.loadSpinner(false);
       }).catch(error => {
@@ -177,10 +177,10 @@ export class OverViewComponent {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ME_OVERVIEW_RETRIEVE_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
-        this.auditUtil.post("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');
       });
   }
 }

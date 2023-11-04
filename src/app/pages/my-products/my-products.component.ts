@@ -99,13 +99,13 @@ export class MyProductsComponent implements OnInit {
           'method': 'GET',
           'url': response?.request?.responseURL,
         }
-        this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
+        this.auditUtil.postAudit('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL,
         }
-        this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+        this.auditUtil.postAudit('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
       }
     }).catch((error: any) => {
@@ -113,7 +113,7 @@ export class MyProductsComponent implements OnInit {
         'method': 'GET',
         'url': error?.request?.responseURL,
       }
-      this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+      this.auditUtil.postAudit('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
       this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       this.utils.loadSpinner(true);
     });
@@ -152,12 +152,12 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/dashboard']);
     }
-    this.auditUtil.post('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
 
   onClickgotoxPilot() {
     this.router.navigate(['/x-pilot']);
-    this.auditUtil.post('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
 
   openExternalLink(productUrl: string) {
@@ -173,7 +173,7 @@ export class MyProductsComponent implements OnInit {
     }
     this.router.navigate(['/x-pilot'])
     localStorage.setItem('show-upload-panel', 'true');
-    this.auditUtil.post('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   getMetaData() {
@@ -185,7 +185,7 @@ export class MyProductsComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL,
           }
-          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
+          this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
           this.templateCard = response.data.data.map((dataItem: any) => {
             dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
             if (this.currentUser.user_id === dataItem?.user_id)
@@ -203,7 +203,7 @@ export class MyProductsComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL,
           }
-          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+          this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utils.loadSpinner(false);
@@ -213,7 +213,7 @@ export class MyProductsComponent implements OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL,
         }
-        this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+        this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
       });
@@ -246,7 +246,7 @@ export class MyProductsComponent implements OnInit {
 
   onClickNewWithNavi(): void {
     this.router.navigate(['/x-pilot']);
-    this.auditUtil.post('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
   }
 
   getMeCreateAppLimit(): void {
@@ -258,13 +258,13 @@ export class MyProductsComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL,
           }
-          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
+          this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.id);
         } else {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL,
           }
-          this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+          this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
       }).catch((error: any) => {
@@ -272,7 +272,7 @@ export class MyProductsComponent implements OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL,
         }
-        this.auditUtil.post('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
+        this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
         this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utils.loadSpinner(true);
       });

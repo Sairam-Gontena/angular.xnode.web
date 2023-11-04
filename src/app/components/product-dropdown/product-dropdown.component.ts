@@ -78,6 +78,6 @@ export class ProductDropdownComponent {
       this.utilsService.toggleProductChange(true)
     }
     this.refreshCurrentRoute();
-    this.auditUtil.post("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
 }

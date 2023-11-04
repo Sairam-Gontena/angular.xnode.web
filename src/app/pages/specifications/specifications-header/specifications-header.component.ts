@@ -80,7 +80,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.product_url = product.product_url;
     }
     this.refreshCurrentRoute.emit();
-    this.auditUtil.post("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
   toggleSideMenu() {
     this.utils.EnableSpecSubMenu()

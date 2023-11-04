@@ -81,7 +81,7 @@ export class TemplateBuilderComponent implements OnInit {
           if (event.data.message == 'retrive_dashboard_generic_screen') {
             let data = event.data.data;
             if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
-              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+              this.auditUtil.postAudit(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
           }
         });
       }

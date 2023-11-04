@@ -30,7 +30,7 @@ export class SignupDynamicFormComponent implements OnInit {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('RETRIEVE_XFLOWS', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.postAudit('RETRIEVE_XFLOWS', 1, 'SUCCESS', 'user-audit', user_audit_body);
         let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
         let userProfile = onboardingFlow[0].BackendFlow.find((flow: any) => {
           return flow.TaskId == 'CreateUserProfile';
@@ -57,7 +57,7 @@ export class SignupDynamicFormComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.postAudit('RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           let dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.inputControls = this.builderService.entityToDynamicForm(dataModel[entityName])

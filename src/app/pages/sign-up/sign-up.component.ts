@@ -72,7 +72,7 @@ export class SignUpComponent implements OnInit {
   }
 
   loginWithGoogle(user: any): void {
-    this.auditUtil.post('SIGNUP_WITH_GOOGLE', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('SIGNUP_WITH_GOOGLE', 1, 'SUCCESS', 'user-audit');
   }
 
 
@@ -82,7 +82,7 @@ export class SignUpComponent implements OnInit {
     const scope = 'r_liteprofile r_emailaddress';
     const authUrl = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=987654321&scope=${scope}`;
     window.location.href = authUrl;
-    this.auditUtil.post('SIGNUP_WITH_LINDEDIN', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('SIGNUP_WITH_LINDEDIN', 1, 'SUCCESS', 'user-audit');
   }
 
   get signUp() { return this.signUpForm.controls; }
@@ -103,17 +103,17 @@ export class SignUpComponent implements OnInit {
     this.authApiService.postAuth(this.signUpForm.value, 'auth/signup').then((response: any) => {
       if (response?.data?.detail) {
         this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail, life: 3000 });
-        this.auditUtil.post('SIGNUP_' + response?.data?.detail, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('SIGNUP_' + response?.data?.detail, 1, 'FAILURE', 'user-audit');
         return
       }
       if (response.data.message == "success") {
         this.visible = true;
         this.utilService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "Congratulations, your account has been successfully created", life: 3000 });
-        this.auditUtil.post('USER_SIGNUP', 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit('USER_SIGNUP', 1, 'SUCCESS', 'user-audit');
       }
     }).catch((error: any) => {
       this.utilService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      this.auditUtil.post('USER_SIGNUP_' + error, 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit('USER_SIGNUP_' + error, 1, 'FAILURE', 'user-audit');
     });
   }
 

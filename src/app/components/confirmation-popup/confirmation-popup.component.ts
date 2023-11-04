@@ -77,9 +77,9 @@ export class ConfirmationPopupComponent implements OnInit {
           } else {
             this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
           }
-          this.auditUtil.post(action, 1, 'SUCCESS', 'user-audit');
+          this.auditUtil.postAudit(action, 1, 'SUCCESS', 'user-audit');
         } else {
-          this.auditUtil.post(action + '_' + response.data.detail, 1, 'FAILURE', 'user-audit');
+          this.auditUtil.postAudit(action + '_' + response.data.detail, 1, 'FAILURE', 'user-audit');
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
         }
         this.utilsService.loadSpinner(false);
@@ -87,7 +87,7 @@ export class ConfirmationPopupComponent implements OnInit {
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
-        this.auditUtil.post(action + '_' + error, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit(action + '_' + error, 1, 'FAILURE', 'user-audit');
       });
   }
   deleteUserByEmail(email: string): void {
@@ -98,17 +98,17 @@ export class ConfirmationPopupComponent implements OnInit {
         if (response?.status === 200 && !response?.data?.detail) {
           this.refreshListService.toggleAdminUserListRefresh();
           this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been deleted successfully' });
-          this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT', 1, 'SUCCESS', 'user-audit');
+          this.auditUtil.postAudit('DELETE_USER_FROM_USERMANAGEMENT', 1, 'SUCCESS', 'user-audit');
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT_' + response.data.detail, 1, 'FAILURE', 'user-audit');
+          this.auditUtil.postAudit('DELETE_USER_FROM_USERMANAGEMENT_' + response.data.detail, 1, 'FAILURE', 'user-audit');
         }
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
         this.utilsService.loadSpinner(false);
-        this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT' + '_' + error, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('DELETE_USER_FROM_USERMANAGEMENT' + '_' + error, 1, 'FAILURE', 'user-audit');
       });
   }
 

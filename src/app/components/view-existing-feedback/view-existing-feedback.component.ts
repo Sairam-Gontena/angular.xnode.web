@@ -65,7 +65,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
       "message": this.message,
       "parentConversationId": this.selectedItemConversation.length === 0 ? null : this.selectedItemConversation[0].id
     }
-    this.userUtilService.post(payload, 'user-conversation').then((res: any) => {
+    this.userUtilService.post('user-conversation', payload).then((res: any) => {
       if (res && res?.data) {
         this.getMeConversations();
         this.message = '';
@@ -99,7 +99,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL,
         }
-        this.auditUtil.post('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         if (res.data) {
           this.selectedItemConversation = res.data.slice().reverse();
         }
@@ -108,7 +108,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL,
         }
-        this.auditUtil.post('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       }
     }).catch((err: any) => {
       console.log(err)
@@ -116,7 +116,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
         'method': 'GET',
         'url': err?.request?.responseURL,
       }
-      this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
     })
   }
   onChangeArea(event: any) {
@@ -143,13 +143,13 @@ export class ViewExistingFeedbackComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -158,7 +158,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
@@ -175,13 +175,13 @@ export class ViewExistingFeedbackComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -190,7 +190,7 @@ export class ViewExistingFeedbackComponent implements OnInit {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })

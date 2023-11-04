@@ -39,7 +39,7 @@ export class LogsComponent implements OnInit {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('NOTIFICATIONS_RETRIEVE_LOGS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('NOTIFICATIONS_RETRIEVE_LOGS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.logsData = response.data;
         this.utilsService.loadSpinner(false)
       }).catch((err: any) => {
@@ -47,7 +47,7 @@ export class LogsComponent implements OnInit {
           'method': 'GET',
           'url': err?.request?.responseURL
         }
-        this.auditUtil.post('NOTIFICATIONS_RETRIEVE_LOGS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('NOTIFICATIONS_RETRIEVE_LOGS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadSpinner(false)
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: err });
       })
