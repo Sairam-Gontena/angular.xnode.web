@@ -9,14 +9,14 @@ import { Section } from 'src/models/section';
 export class ParaViewComponent {
   @Input() searchTerm!: string;
   @Input() content!: Section;
+  @Input() selectedContent!: string;
+  @Input() users: any = [];
   @Input() obj:any;
   @Output() childEvent= new EventEmitter();
 
   selectedText:string = '';
-
-  ngOnInit(){
-  }
-
+  showCommentIcon: boolean = false;
+  commentOverlayPanelOpened:boolean=false
 
   selectText(event:any){
     var text;

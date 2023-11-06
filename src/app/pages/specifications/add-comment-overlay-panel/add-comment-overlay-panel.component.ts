@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
@@ -22,7 +22,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   currentUser: any;
   product: any;
   usersData: any;
-
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private api: ApiService) {
@@ -30,28 +29,26 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
-    this.api.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
-      this.utils.loadSpinner(true);
-      if (resp?.status === 200) {
-        this.usersData = resp.data;
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
-      }
-      this.utils.loadSpinner(false);
-    }).catch((error) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-      console.error(error);
-    })
+    // this.api.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
+    //   this.utils.loadSpinner(true);
+    //   if (resp?.status === 200) {
+    //     this.usersData = resp.data;
+    //   } else {
+    //     this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
+    //   }
+    //   this.utils.loadSpinner(false);
+    // }).catch((error) => {
+    //   this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+    //   console.error(error);
+    // })
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
     }
   }
-
   ngOnInit(): void {
 
   }
-
   onClickSend(): void {
     this.utils.loadSpinner(true);
     const mentionedUsers = this.comment.split(/[@ ]/);

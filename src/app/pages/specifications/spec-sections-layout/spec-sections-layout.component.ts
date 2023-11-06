@@ -41,15 +41,20 @@ export class SpecSectionsLayoutComponent implements OnInit {
   specExpanded: any;
   checked: boolean = false;
   currentUser: any;
-  usersData:any;
-  users:any = [];
+  usersData: any = [];
+  users: any = [];
   product: any;
   selectedText:string='';
+  seletedMainIndex?: number;
+  selecteedSubIndex?: number;
+  selecteedSubSubIndex?: number;
+  showCommentIcon?: boolean;
+  commentOverlayPanelOpened: boolean = false;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private domSanitizer: DomSanitizer,
-    private apiservice:ApiService) {
+    private apiservice: ApiService) {
   }
 
   ngOnInit(): void {
@@ -57,15 +62,26 @@ export class SpecSectionsLayoutComponent implements OnInit {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
-    this.apiservice.getAuthApi('user/get_all_users?account_id='+this.currentUser?.account_id).then((resp:any)=>{
+    const product = localStorage.getItem('product');
+    if (product) {
+      this.product = JSON.parse(product);
+    }
+    this.makeTrustedUrl();
+    this.getUsersData();
+  }
+
+  getUsersData() {
+    this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
       this.utils.loadSpinner(true);
       if (resp?.status === 200) {
         this.usersData = resp.data;
-        this.usersData.map((element:any) => {
-            let name:string = element?.first_name;
-            this.users.push(name)
+        let data = [] as any[];
+        this.usersData.map((element: any) => {
+          let name: string = element?.first_name;
+          data.push(name)
         });
-      }else{
+        this.users = data;
+      } else {
         this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -73,11 +89,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       console.error(error);
     })
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
-    this.makeTrustedUrl();
   }
 
   makeTrustedUrl(): void {

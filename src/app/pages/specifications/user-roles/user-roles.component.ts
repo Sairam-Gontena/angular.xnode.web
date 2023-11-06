@@ -11,6 +11,12 @@ export class UserRolesComponent implements OnInit {
   @Input() obj:any;
   selectedText:any;
   @Output() childEvent= new EventEmitter();
+  @Input() selectedContent!: string;
+  @Input() users: any = [];
+  showCommentIcon: boolean = false
+  seletedMainIndex?: number;
+  selecteedSubIndex?: number
+
   ngOnInit(): void {
   }
 

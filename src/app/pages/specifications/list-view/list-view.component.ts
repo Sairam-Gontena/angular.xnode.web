@@ -12,6 +12,12 @@ export class ListViewComponent {
   @Input() obj!: {[key: string]: string};
   selectedText:any;
   @Output() childEvent= new EventEmitter();
+  @Input() selectedContent!: string;
+  @Input() users: any = [];
+  showCommentIcon: boolean = false;
+  selectedIndex?: number;
+  commentOverlayPanelOpened: boolean = false;
+
 
   onTextSelected(event: MouseEvent) {
     const selectedText = this.getSelectedText();

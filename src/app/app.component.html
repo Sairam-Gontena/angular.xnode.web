@@ -2,7 +2,7 @@
     <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
         <span (click)="submenuFunc()">
             <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen"
-                (valueChange)="openNavi($event)"></xnode-bot>
+                (valueChange)="openNavi($event)" (click)="botOnClick()"></xnode-bot>
         </span>
         <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
         <div class="flex">
