@@ -6,13 +6,14 @@
                 <h3 class="m-0 pb-2 text-2xl font-bold"
                     [innerHTML]="(sectionIndex+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
             </div>
-            <!-- <p-overlayPanel #op [showTransitionOptions]="'1s linear'">
-                <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
+            <p-overlayPanel #op [showTransitionOptions]="'1.5s linear'">
+              <!-- content.showCommentOverlay &&  -->
+                <xnode-add-comment-overlay-panel *ngIf="isOpenSmallCommentBox"
                     [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                     [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
-            <img src="../assets/comment.svg" class="pointer" alt="comment"
-                (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly"> -->
+            <img src="../assets/comment.svg" class="pointer hidden" alt="comment"
+                (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly">
         </div>
         <p-button (click)="onClickSeeMore.emit({item:specItem,content:content})" label="See More"
             *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"

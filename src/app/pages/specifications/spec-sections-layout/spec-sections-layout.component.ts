@@ -110,7 +110,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   receiveMsg(event:any){
-
     console.log('at first',event)
     if(event?.selectedText.length>0){
       let obj = {
@@ -129,11 +128,11 @@ export class SpecSectionsLayoutComponent implements OnInit {
           (elem as HTMLElement)['style'].top = yAxis + 'px';
           (elem as HTMLElement)['style'].left =  event.screenX + 'px';
         }
-      }, 1000);
+      }, 800);
     }else{
       this.toggleOverlayPanel(false);
     }
-      // console.log(event)
+      // console.log('at last -> opensmlcmntbx -> content',event, this.isOpenSmallCommentBox, this.content)
       // console.log(this.isOpenSmallCommentBox)
       // console.log(this.content)
   }
