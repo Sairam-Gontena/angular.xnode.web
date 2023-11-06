@@ -83,8 +83,8 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-    this.utilsService.getMeIfProductChanges.subscribe((event:boolean)=>{
-      if(event){
+    this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
+      if (event) {
         this.isSideWindowOpen = false;
       }
     })
@@ -121,10 +121,15 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = true;
     })
+    this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      if (data && data?.email) {
+        this.makeTrustedUrl(data.email)
+      }
+    })
   }
 
-  botOnClick(){
-    this.isNaviExpanded=false;
+  botOnClick() {
+    this.isNaviExpanded = false;
   }
 
   redirectToPreviousUrl(): void {

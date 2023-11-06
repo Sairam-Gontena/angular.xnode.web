@@ -75,6 +75,7 @@ export class ProductDropdownComponent {
       localStorage.setItem('product', JSON.stringify(product));
       this.selectedProduct = product.id;
       this.product_url = product.product_url;
+      this.utilsService.saveProductDetails(product);
       this.utilsService.toggleProductChange(true)
     }
     this.refreshCurrentRoute();
