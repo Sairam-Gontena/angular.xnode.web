@@ -27,10 +27,14 @@
                     optionValue="id" class="custom-dropdown" [filter]="true" filterBy="title"
                     filterPlaceholder="Search">
                     <ng-template let-item pTemplate="item">
-                        <div [ngClass]="{ 'selected-item': item.id === bugReportForm.get('product')?.value }">
-                            {{item.title }}
-                            <i *ngIf="item.id === bugReportForm.get('product')?.value"
-                                class="pi pi-check check-mark"></i>
+                        <div class="col-12 flex align-items-center justify-content-between">
+                            <div class="title-container" [title]="item.title"
+                                [ngClass]="{ 'selected-item': item.id === bugReportForm.get('product')?.value }">
+                                {{item.title }}
+                            </div>
+                            <div>
+                                <i *ngIf="item.id === bugReportForm.get('product')?.value" class="pi pi-check"></i>
+                            </div>
                         </div>
                     </ng-template>
                 </p-dropdown>
@@ -54,11 +58,15 @@
                     [ngClass]="{ 'is-invalid': submitted && feedback['severityId'].errors }" optionLabel="lookupText"
                     optionValue="lookupCode" class="custom-dropdown">
                     <ng-template let-item pTemplate="item">
-                        <div
-                            [ngClass]="{ 'selected-item': item.lookupCode === bugReportForm.get('severityId')?.value }">
-                            {{ item.lookupText }}
-                            <i *ngIf="item.lookupCode === bugReportForm.get('severityId')?.value"
-                                class="pi pi-check check-mark"></i>
+                        <div class="col-12 flex align-items-center justify-content-between">
+                            <div
+                                [ngClass]="{ 'selected-item': item.lookupCode === bugReportForm.get('severityId')?.value }">
+                                {{ item.lookupText }}
+                            </div>
+                            <div>
+                                <i *ngIf="item.lookupCode === bugReportForm.get('severityId')?.value"
+                                    class="pi pi-check"></i>
+                            </div>
                         </div>
                     </ng-template>
                 </p-dropdown>
