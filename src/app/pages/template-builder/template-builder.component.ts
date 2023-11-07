@@ -39,9 +39,18 @@ export class TemplateBuilderComponent implements OnInit {
     this.email = this.currentUser?.email
     this.userId = this.currentUser?.user_id;
     this.environment = environment.name;
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit() {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
     const product = localStorage.getItem('product');
     let productDetails;
     if (product) {
@@ -64,6 +73,8 @@ export class TemplateBuilderComponent implements OnInit {
       this.makeTrustedUrl();
     }
   }
+
+
   makeTrustedUrl(): void {
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);
     this.loadIframeUrl();
@@ -81,7 +92,7 @@ export class TemplateBuilderComponent implements OnInit {
           if (event.data.message == 'retrive_dashboard_generic_screen') {
             let data = event.data.data;
             if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
-              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+              this.auditUtil.postAudit(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
           }
         });
       }

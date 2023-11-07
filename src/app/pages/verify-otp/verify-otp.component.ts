@@ -80,11 +80,11 @@ export class VerifyOtpComponent implements OnInit {
             this.authApiService.setUser(true);
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
-            this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.postAudit('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
-            this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
@@ -94,7 +94,7 @@ export class VerifyOtpComponent implements OnInit {
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
-        this.auditUtil.post('VERIFY_OTP_' + error?.response?.data?.detail, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('VERIFY_OTP_' + error?.response?.data?.detail, 1, 'FAILURE', 'user-audit');
       });
   }
   //get calls 
@@ -121,7 +121,7 @@ export class VerifyOtpComponent implements OnInit {
   onClickLogout(): void {
     localStorage.clear();
     this.router.navigate(['/']);
-    this.auditUtil.post('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
   }
 
   getMeCreateAppLimit(user: any): void {

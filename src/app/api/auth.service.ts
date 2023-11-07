@@ -1,74 +1,46 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { environment } from 'src/environments/environment';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class AuthApiService {
-  workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
-  authEndPoint = environment.authApiUrl;
+export class AuthApiService extends BaseApiService {
+  override get apiUrl(): string {
+    return environment.authApiUrl;
+  }
   userLoggedIn = false;
   otpVerifyInprogress = false;
   restInprogress = false;
 
   constructor() {
+    super();
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser)
       this.userLoggedIn = true
   }
 
-  config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-
   authPut(body: any, url: string) {
-    return axios.put(this.authEndPoint + url, body);
+    this.put(this.apiUrl, body)
   }
 
   getData(url: string) {
-    return axios.get(this.authEndPoint + url, {
-    });
+    return this.get(url);
   }
 
   login(body: any, url: string) {
-    return axios.post(this.authEndPoint + url, body, this.config);
+    return this.post(url, body);
   }
 
   postAuth(body: any, url: string) {
-    if (body != '') {
-      return axios.post(this.authEndPoint + url, body, this.config);
-    } else {
-      return axios.post(this.authEndPoint + url, {})
-    }
+    return this.post(url, body);
   }
 
   patchAuth(body: any, url: string) {
-    if (body != '') {
-      return axios.patch(this.authEndPoint + url, body, this.config);
-    } else {
-      return axios.patch(this.authEndPoint + url, {});
-    }
+    return this.patch(url, body);
   }
-
-  //Temp
-  get(url: string) {
-    return axios.get(this.authEndPoint + url, {
-    });
-  }
-
-  put(url: string) {
-    return axios.put(this.authEndPoint + url, {
-    });
-  }
-
-  delete(url: string) {
-    return axios.delete(this.authEndPoint + url);
-  }
-
   setUser(event: boolean): void {
     this.userLoggedIn = event;
   }

@@ -103,7 +103,7 @@ export class NotificationPanelComponent {
       } else {
         this.router.navigate(['/' + this.getMeComponent(obj.component)]);
       }
-      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
+      this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.utils.loadSpinner(true);
       this.getMeMetaData();
@@ -125,7 +125,7 @@ export class NotificationPanelComponent {
         if (response?.status === 200 && response.data.data?.length) {
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
           this.router.navigate(['/dashboard']);
-          this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
+          this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
         } else if (response?.status !== 200) {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
@@ -143,10 +143,10 @@ export class NotificationPanelComponent {
     if (obj.component && obj.component !== '') {
       this.utils.toggleSpecPage(true)
       this.router.navigate(['/specification']);
-      this.auditUtil.post(obj.component, 1, 'SUCCESS', 'user-audit');
+      this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
     } else {
       this.router.navigate(['/dashboard']);
-      this.auditUtil.post('DASHBOARD', 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
     this.closeNotificationPanel.emit(true);
   }
@@ -168,7 +168,7 @@ export class NotificationPanelComponent {
   }
 
   onClickProductUrl() {
-    this.auditUtil.post('PRODUCT_URL_CLICKED_FROM_NOTIFICATION_PANEL', 1, 'FAILURE', 'user-audit');
+    this.auditUtil.postAudit('PRODUCT_URL_CLICKED_FROM_NOTIFICATION_PANEL', 1, 'FAILURE', 'user-audit');
   }
 
   filterNotifications(val: any) {
@@ -226,13 +226,13 @@ export class NotificationPanelComponent {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
       }
     }).catch((err: any) => {
@@ -240,7 +240,7 @@ export class NotificationPanelComponent {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
     })
   }
@@ -258,14 +258,14 @@ export class NotificationPanelComponent {
       "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
       "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+    this.notifyApi.post('email/notify', body).then((res: any) => {
       if (res && res?.data?.detail) {
         let user_audit_body = {
           'method': 'POST',
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
       }
     }).catch((err: any) => {
@@ -274,7 +274,7 @@ export class NotificationPanelComponent {
         'url': err?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
@@ -283,7 +283,7 @@ export class NotificationPanelComponent {
     localStorage.setItem('record_id', obj.product_id);
     localStorage.setItem('app_name', obj.product_name);
     this.preparePublishPopup.emit(obj)
-    this.auditUtil.post('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('PUBLISH_APP_FROM_NOTIFICATION', 1, 'SUCCESS', 'user-audit');
   }
 
   onClickLaunchProduct(url: any): void {

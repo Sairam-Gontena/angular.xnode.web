@@ -214,7 +214,7 @@ export class ReportBugComponent implements OnInit {
       this.isInvalid = true;
       console.log("error");
     }
-    this.auditUtil.post('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('BUG_REPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   async onFileDropped($event?: any) {
@@ -254,7 +254,7 @@ export class ReportBugComponent implements OnInit {
             'url': res?.request?.responseURL,
             'payload': 'file'
           }
-          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
           if (data?.fileId) {
             resolve(data)
           }
@@ -264,7 +264,7 @@ export class ReportBugComponent implements OnInit {
             'url': res?.request?.responseURL,
             'payload': formData
           }
-          this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
           this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
           this.utils.loadSpinner(false);
         }
@@ -274,7 +274,7 @@ export class ReportBugComponent implements OnInit {
           'url': err?.request?.responseURL,
           'payload': formData
         }
-        this.auditUtil.post('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('FILE_DROP_FILE_AZURE_UPLOAD_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
         this.utils.loadSpinner(false);
       })
@@ -293,14 +293,14 @@ export class ReportBugComponent implements OnInit {
       "internalTicketId": '-',
       "userFiles": this.bugReportFiles
     }
-    this.userUtilsApi.post(body, 'user-bug-report').then((res: any) => {
+    this.userUtilsApi.post('user-bug-report', body).then((res: any) => {
       if (!res?.data?.detail) {
         let user_audit_body = {
           'method': 'POST',
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Bug reported successfully' });
         this.utils.showFeedbackPopupByType('thankyou');
       } else {
@@ -309,7 +309,7 @@ export class ReportBugComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }
       this.bugReportFiles = []
@@ -320,7 +320,7 @@ export class ReportBugComponent implements OnInit {
         'url': err?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('SEND_USER_BUG_REPORT_REPORT_BUG', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utils.loadSpinner(false);
       this.bugReportFiles = []

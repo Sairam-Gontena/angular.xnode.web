@@ -106,7 +106,7 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
-          this.auditUtil.post('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
+          this.auditUtil.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
           this.utilsService.showProductStatusPopup(false);
           this.utilsService.showLimitReachedPopup(false);
           setTimeout(() => {
@@ -129,7 +129,7 @@ export class AppHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
           const data = response.data.data.map((obj: any) => ({
             name: obj.title,
             value: obj.id,
@@ -142,7 +142,7 @@ export class AppHeaderComponent implements OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
@@ -150,7 +150,7 @@ export class AppHeaderComponent implements OnInit {
   toggleFeedbackPopup() {
     this.utilsService.loadSpinner(true);
     this.capture();
-    this.auditUtil.post('FEEDBACK', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('FEEDBACK', 1, 'SUCCESS', 'user-audit');
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
   }
@@ -159,7 +159,7 @@ export class AppHeaderComponent implements OnInit {
     this.router.navigate(['/help-center']);
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
-    this.auditUtil.post('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
   }
 
   capture(): void {
@@ -222,7 +222,7 @@ export class AppHeaderComponent implements OnInit {
       this.opOverlay.show(this.eventOverlay);
     }
     this.closeOverlay = false;
-    this.auditUtil.post('NOTIFICATIONS', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('NOTIFICATIONS', 1, 'SUCCESS', 'user-audit');
   }
 
   overlayToggleFromNotificationPanel(event: any) {
@@ -261,7 +261,7 @@ export class AppHeaderComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('PUBLISH_APP_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Your app publishing process started. You will get the notifications', life: 3000 });
       } else {
         let user_audit_body = {
@@ -269,7 +269,7 @@ export class AppHeaderComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('PUBLISH_APP_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error', life: 3000 });
       }
       this.utilsService.loadSpinner(false);
@@ -279,7 +279,7 @@ export class AppHeaderComponent implements OnInit {
         'url': error?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('PUBLISH_APP_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('PUBLISH_APP_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error, life: 3000 });
       this.utilsService.loadSpinner(false);
     });

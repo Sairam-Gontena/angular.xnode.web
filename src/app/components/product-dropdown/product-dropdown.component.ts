@@ -56,6 +56,6 @@ export class ProductDropdownComponent implements AfterViewInit {
       this.utilsService.saveProductDetails(product);
       this.utilsService.toggleProductChange(true)
     }
-    this.auditUtil.post("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
 }

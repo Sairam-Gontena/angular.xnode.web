@@ -54,6 +54,6 @@ export class AppSideMenuComponent implements OnInit {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }
-    this.auditUtil.post(item.path, 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit(item.path, 1, 'SUCCESS', 'user-audit');
   }
 }
