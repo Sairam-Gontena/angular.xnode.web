@@ -27,7 +27,6 @@ export class OverViewComponent {
   childData: any;
   currentUser?: any;
   overview: any;
-  id: String = '';
   email = '';
   features: any;
   createOn: any;
@@ -44,11 +43,6 @@ export class OverViewComponent {
     private auditUtil: AuditutilsService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-      if (info) {
-        this.getMeStorageData();
-      }
-    })
   }
 
   ngOnInit(): void {
@@ -86,7 +80,7 @@ export class OverViewComponent {
     this.templates = [
       { label: localStorage.getItem("app_name") }
     ]
-    this.get_ID();
+    this.getMeOverview();
   }
 
   emitIconClicked(icon: string) {
@@ -124,44 +118,9 @@ export class OverViewComponent {
     this.counter2 = step;
   }
 
-  get_ID() {
-    let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
-    this.apiService.get('navi/get_metadata/' + productEmail)
-      .then(response => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_ID_GET_METADATA_OVERVIEW', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-          this.id = response.data.data[0].id;
-          this.getMeOverview();
-        } else {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
-          this.utils.loadSpinner(false);
-        }
-      }).catch(error => {
-        let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.auditUtil.postAudit('GET_ID_GET_METADATA_OVERVIEW', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-      });
-  }
-
-  getMeProductId() {
-    return !localStorage.getItem('record_id') ? this.id : localStorage.getItem('record_id');
-  }
   getMeOverview() {
     let productEmail = this.productDetails.email == this.email ? this.email : this.productDetails.email
-    this.apiService.get("navi/get_overview/" + productEmail + "/" + this.getMeProductId())
+    this.apiService.get("navi/get_overview/" + productEmail + "/" + localStorage.getItem('record_id'))
       .then((response: any) => {
         if (response?.status === 200) {
           this.overview = response.data;
@@ -195,6 +154,14 @@ export class OverViewComponent {
         this.utils.loadSpinner(false);
         this.auditUtil.postAudit("RETRIEVE_OVERVIEW" + error, 1, 'FAILURE', 'user-audit');
       });
+  }
+
+  onChangeProduct(obj: any): void {
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.getMeStorageData();
   }
 }
 
