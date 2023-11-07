@@ -54,10 +54,19 @@ export class SpecificationsComponent implements OnInit {
       if (res) {
         this.getMeSpecList();
       }
+    });
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
     })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     })

@@ -1,135 +1,65 @@
-<div class="modal-header">
-  <h5 class="modal-title">
-    <ng-container *ngIf="mode === 'create'">Create Model</ng-container>
-    <ng-container *ngIf="mode === 'edit'">Edit Model</ng-container>
-  </h5>
-  <button type="button"
-          class="btn-close"
-          (click)="modalService.hide()"
-          aria-label="Close"></button>
-</div>
-<div class="modal-body">
-
+<p-dialog [(visible)]="isVisible" [style]="{width: '50vw'}">
+  <ng-template pTemplate="header">
+    <span class="text-xl font-bold" *ngIf="mode == 'create'">Create Modal</span>
+    <span class="text-xl font-bold" *ngIf="mode == 'edit'">Edit Modal</span>
+  </ng-template>
   <form>
-    <input type="hidden"
-           name="is_pivot"
-           [(ngModel)]="model.is_pivot">
-    <div class="form-group row">
-      <label for="name-field"
-             class="col-sm-4 col-form-label text-right">Name</label>
-      <div class="col-sm-8">
-
-        <ng-container
-                      *ngIf="use_laravel_auth && mode==='edit' && model.name=='user'; then laravelAuth; else notLaravelAuth">
-        </ng-container>
-        <ng-template #laravelAuth>
-          <input type="text"
-                 class="form-control form-control-sm"
-                 id="name-field"
-                 name="name"
-                 [(ngModel)]="model.name"
-                 readonly>
-          <small id="nameHelp"
-                 class="form-text text-muted">unable to change. This is for Laravel auth.</small>
-        </ng-template>
-        <ng-template #notLaravelAuth>
-          <input type="text"
-                 class="form-control form-control-sm"
-                 id="name-field"
-                 name="name"
-                 [(ngModel)]="model.name"
-                 require>
-          <small id="nameHelp"
-                 class="form-text text-muted">Input model name with singular camelCase.</small>
-        </ng-template>
-
+    <div class="flex flex-column gap-2 mb-3">
+      <label htmlFor="name-field">Name</label>
+      <ng-container
+        *ngIf="use_laravel_auth && mode === 'edit' && model.name === 'user'; then laravelAuth; else notLaravelAuth"></ng-container>
+      <ng-template #laravelAuth>
+        <input type="text" class="form-control form-control" id="name-field" name="name" [(ngModel)]="model.name"
+          readonly>
+        <small id="nameHelp" class="form-text text-muted">Unable to change. This is for Laravel auth.</small>
+      </ng-template>
+      <ng-template #notLaravelAuth>
+        <input type="text" pInputText id="name-field" name="name" [(ngModel)]="model.name" required>
+        <small id="nameHelp" class="form-text text-muted">Input model name with singular camelCase.</small>
+      </ng-template>
+    </div>
+    <div class="flex flex-column gap-2 mb-3">
+      <label htmlFor="username">Display name</label>
+      <input pInputText type="text" class="form-control form-control" id="display_name-field" name="display_name"
+        [(ngModel)]="model.display_name" />
+    </div>
+    <div class="flex flex-column gap-2 mb-3">
+      <label htmlFor="username">Comment</label>
+      <input pInputText type="text" class="form-control form-control" id="comment-field" name="comment"
+        [(ngModel)]="model.comment" />
+    </div>
+    <div class="flex flex-column gap-2 mb-3">
+      <div class="form-check form-check-inline">
+        <label class="form-check-label"><input pInputText type="checkbox" class="form-check-input"
+            id="use_soft_delete-field" name="use_soft_delete" value="true" [(ngModel)]="model.use_soft_delete"> use soft
+          delete</label>
       </div>
     </div>
-    <div class="form-group row">
-      <label for="display_name-field"
-             class="col-sm-4 col-form-label text-right">Display name</label>
-      <div class="col-sm-8">
-        <input type="text"
-               class="form-control form-control-sm"
-               id="display_name-field"
-               name="display_name"
-               [(ngModel)]="model.display_name">
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="comment-field"
-             class="col-sm-4 col-form-label text-right">Comment</label>
-      <div class="col-sm-8">
-        <input type="text"
-               class="form-control form-control-sm"
-               id="comment-field"
-               name="comment"
-               [(ngModel)]="model.comment">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-8 offset-sm-4">
-        <div class="form-check form-check-inline">
-          <label class="form-check-label"><input type="checkbox"
-                   class="form-check-input"
-                   id="use_soft_delete-field"
-                   name="use_soft_delete"
-                   value="true"
-                   [(ngModel)]="model.use_soft_delete"> use soft delete</label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="schema_id_for_relation-field"
-             class="col-sm-4 col-form-label text-right">Relation schema </label>
-      <div class="col-sm-8">
-        <select id="schema_id_for_relation-field"
-                name="schema_id_for_relation"
-                class="form-control form-control-sm"
-                [(ngModel)]="model.schema_id_for_relation"
-                *ngIf="model.schemas.length > 0; else elseBlock">
-          <option value=""
-                  selected
-                  disabled
-                  hidden>--- select display schema here ---</option>
-          <option value="0">id</option>
-          <option *ngFor="let schema of model.schemas;"
-                  value="{{schema.id}}">{{schema.name}}</option>
+    <div class="flex flex-column gap-2 mb-3">
+      <label htmlFor="schema_id_for_relation" class="">Relation schema </label>
+      <select id="schema_id_for_relation-field" name="schema_id_for_relation" class="form-control"
+        [(ngModel)]="model.schema_id_for_relation" *ngIf="model.schemas.length > 0; else elseBlock">
+        <option value="" selected disabled hidden>--- select display schema here ---</option>
+        <option value="0">id</option>
+        <option *ngFor="let schema of model.schemas;" value="{{schema.id}}">{{schema.name}}</option>
+      </select>
+      <ng-template #elseBlock>
+        <select id="schema_id_for_relation-field" name="schema_id_for_relation" class="form-control"
+          [(ngModel)]="model.schema_id_for_relation">
+          <option value="0" selected>--- no schemas ---</option>
         </select>
-        <ng-template #elseBlock>
-          <select id="schema_id_for_relation-field"
-                  name="schema_id_for_relation"
-                  class="form-control form-control-sm"
-                  [(ngModel)]="model.schema_id_for_relation">
-            <option value="0"
-                    selected>--- no schemas ---</option>
-          </select>
-        </ng-template>
-      </div>
-    </div>
+      </ng-template>
 
-    <div class="form-group row">
-      <label for="module"
-             class="col-sm-4 col-form-label text-right">Module name</label>
-      <div class="col-sm-8">
-        <input type="text"
-               class="form-control form-control-sm"
-               id="module"
-               name="module"
-               [(ngModel)]="model.module">
-      </div>
+    </div>
+    <div class="flex flex-column gap-2 mb-3">
+      <label htmlFor="module">Module name</label>
+      <input pInputText type="text" class="form-control form-control" id="module" name="module"
+        [(ngModel)]="model.module" />
     </div>
 
   </form>
-
-</div>
-<div class="modal-footer"
-     *ngIf="mode == 'create'">
-  <button type="button"
-          class="btn btn-primary"
-          (click)="create()">Create</button>
-  <button type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-          (click)="modalService.hide()">Close</button>
-</div>
+  <ng-template pTemplate="footer" *ngIf="mode == 'create'">
+    <p-button (click)="modalService.hide()" label="Close" styleClass="p-button-secondary" [rounded]="true"></p-button>
+    <p-button (click)="create()" label="Create" styleClass="create p-button-info" [rounded]="true"></p-button>
+  </ng-template>
+</p-dialog>

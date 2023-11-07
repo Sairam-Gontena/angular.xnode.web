@@ -10,7 +10,7 @@
                     <ng-template let-item pTemplate="item">
                         <ng-container [ngClass]="{'selected-item': selectedFilter === item.label}">
                             {{ item.label }}
-                            <i *ngIf="selectedFilter === item.label" class="pi pi-check check-mark"></i>
+                            <i *ngIf="selectedFilter === item.label" class="pi pi-check"></i>
                         </ng-container>
                     </ng-template>
                 </p-dropdown>

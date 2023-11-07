@@ -42,9 +42,20 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.router.events.subscribe((data: any) => {
       this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
     });
+    this.utilsService.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
+    this.jsPlumbService.init();
+    this.dataService.loadData(this.utilService.ToModelerSchema([]));
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);

@@ -1,15 +1,9 @@
-<div>
-    <!-- <p-dropdown [options]="products" [(ngModel)]="selectedTemplate" optionLabel="title" optionValue="id"
-        class="app-dropdown" (onChange)="selectedProduct($event)" [filter]="true" filterBy="title">
-    </p-dropdown> -->
-    <p-dropdown [options]="products" [(ngModel)]="selectedProduct" optionLabel="title" optionValue="id"
-        class="app-dropdown" (onChange)="selectedProducts($event)" [filter]="true" filterBy="title"
-        filterPlaceholder="Search">
-        <ng-template let-item pTemplate="item">
-            <div class="item-container">
-                {{ item.title }}
-                <i class="pi pi-check check-mark" *ngIf="selectedProduct === item.id"></i>
-            </div>
-        </ng-template>
-    </p-dropdown>
-</div>
+<p-dropdown [options]="products" [(ngModel)]="selectedProduct" class="app-dropdown" optionLabel="title" [filter]="true"
+    filterBy="title" filterPlaceholder="Search" (onChange)="onChangeProduct($event)">
+    <ng-template let-item pTemplate="item">
+        <div class="item-container">
+            {{ item.title }}
+            <i class="pi pi-check check-mark" *ngIf="selectedProduct === item.id"></i>
+        </div>
+    </ng-template>
+</p-dropdown>

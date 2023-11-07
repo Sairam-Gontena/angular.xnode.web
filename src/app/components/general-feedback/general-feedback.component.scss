@@ -292,3 +292,41 @@ textarea:enabled:hover {
 .check-mark {
     margin-left: 5rem;
 }
+
+.title-container {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40%);
+}
+
+@media (max-width: 2560px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 68%;
+    }
+}
+
+@media (max-width: 1920px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 65%;
+    }
+}
+
+@media (max-width: 1440px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 44%;
+    }
+}
+
+@media (max-width: 1024px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 27%;
+    }
+}
+
+@media (max-width: 768px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 25%;
+    }
+}

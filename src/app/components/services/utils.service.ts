@@ -67,6 +67,8 @@ export class UtilsService {
 
   private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeUpdatedCommentList: Observable<any> = this.saveComments.asObservable();
+  private productDetails: BehaviorSubject<Object> = new BehaviorSubject<Object>({});
+  public getMeProductDetails: Observable<Object> = this.productDetails.asObservable();
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -109,7 +111,7 @@ export class UtilsService {
     this.productAlertPopup.next(event);
   }
 
-  toggleProductChange(event:boolean){
+  toggleProductChange(event: boolean) {
     this.productChanged.next(event)
   }
 
@@ -151,6 +153,10 @@ export class UtilsService {
 
   saveCommentList(event: any) {
     this.saveComments.next(event);
+  }
+
+  saveProductDetails(event: object): void {
+    this.productDetails.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {

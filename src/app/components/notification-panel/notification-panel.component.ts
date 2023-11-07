@@ -17,7 +17,6 @@ export class NotificationPanelComponent {
   @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
   @Input() limitReachedContent: boolean = false;
-
   notifications: any[] = []
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -29,8 +28,9 @@ export class NotificationPanelComponent {
     pinned: false,
     all: true
   };
-  email: any;
-  productId: any;
+  email: string = '';
+  productId: string = '';
+  nonProductContextRoutes = ['/my-products', '/feedback-list', '/help-center']
 
   constructor(private router: Router, private apiService: ApiService,
     private auditUtil: AuditutilsService, public utils: UtilsService, private notifyApi: NotifyApiService) {
@@ -156,10 +156,15 @@ export class NotificationPanelComponent {
 
   }
 
-  navigateToActivity() {
+  onClickSeeAll() {
     this.utils.disableDockedNavi()
-    this.closeNotificationPanel.emit(true)
-    this.router.navigate(['/operate/change/history-log'])
+    this.closeNotificationPanel.emit(true);
+    this.router.url;
+    if (this.nonProductContextRoutes.filter(route => { return route === this.router.url }).length > 0) {
+      this.router.navigate(['/history-log']);
+    } else {
+      this.router.navigate(['/operate/change/history-log']);
+    }
   }
 
   onClickProductUrl() {

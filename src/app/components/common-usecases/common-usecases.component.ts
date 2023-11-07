@@ -33,9 +33,18 @@ export class CommonUsecasesComponent {
     } else {
       this.isInsideUseCases = false
     }
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
     this.utils.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         this.loading = event;

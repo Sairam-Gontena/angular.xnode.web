@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import *as data from '../../constants/overview.json';
 import { ApiService } from 'src/app/api/api.service';
-import { UserUtil, User } from '../../utils/user-util';
+import { UserUtil } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
@@ -38,11 +38,24 @@ export class OverViewComponent {
   productId: any;
   productDetails: any;
 
-  constructor(private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService,) {
+  constructor(
+    private apiService: ApiService,
+    private utils: UtilsService,
+    private auditUtil: AuditutilsService
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  };
+
+  getMeStorageData(): void {
     const product = localStorage.getItem('product');
     if (product) {
       this.productDetails = JSON.parse(product);
@@ -74,7 +87,7 @@ export class OverViewComponent {
       { label: localStorage.getItem("app_name") }
     ]
     this.get_ID();
-  };
+  }
 
   emitIconClicked(icon: string) {
     if (this.highlightedIndex === icon) {
