@@ -1,5 +1,5 @@
 // core
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 // ngx-bootstrap
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -10,36 +10,57 @@ import { DataService } from '../service/data.service';
 // class
 import { Model } from '../class/model';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'modal',
-  templateUrl: './modal-model.component.html'
+  templateUrl: './modal-model.component.html',
+  styleUrls: ['./modal-model.component.scss'],
 })
 
-export class ModalModelComponent {
+export class ModalModelComponent implements OnInit {
 
   public parent_model = null;
   public use_laravel_auth = null;
+  @Input() isVisible: boolean = true;
+  // @ts-ignore
+  @Input() model: Model;
+  formGroup: FormGroup | any;
+  // @ts-ignore
+  public mode: string | any; // create or edit
 
-  // @ts-ignore
-  public mode: string; // create or edit
-  // @ts-ignore
-  public model: Model;
   modalRef?: BsModalRef;
   constructor(
     public modalService: BsModalService,
-    public dataService: DataService
-  ) { }
-
-  ngOnDestroy() {
-
-    // convert string to number
-    this.model.schema_id_for_relation = Number(this.model.schema_id_for_relation);
-    this.dataService.flg_repaint = true;
+    public dataService: DataService,
+    private fb: FormBuilder
+  ) {
   }
 
-  public create() {
+  ngOnInit() {
+    console.log(this.model)
+
+    this.formGroup = this.fb.group({
+      name: [this.model.name, Validators.required],
+      displayName: [this.model.display_name, Validators.required],
+      comment: [this.model.comment],
+      use_soft_delete: [this.model.use_soft_delete, Validators.required],
+      schema_id_for_relation: [
+        this.model.schema_id_for_relation,
+        Validators.required,
+      ],
+      module: [this.model.module, Validators.required],
+      is_pivot: [this.model.is_pivot],
+    });
+  }
+
+  create() {
     this.dataService.addModel(this.model);
-    this.modalService.hide();
+    this.isVisible = false;
   }
+  cancel() {
+    this.model = new Model();
+    this.isVisible = false;
+  }
+
 }

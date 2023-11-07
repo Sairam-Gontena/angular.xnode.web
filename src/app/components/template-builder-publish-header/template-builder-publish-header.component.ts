@@ -139,14 +139,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     window.open(productUrl, '_blank');
   }
 
-  refreshCurrentRoute(): void {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      localStorage.setItem('trigger', 'graph');
-      this.router.navigate([currentUrl]);
-    });
-  }
-
   deviceIconClicked(icon: string) {
     if (this.selectedDeviceIndex === icon) {
       this.selectedDeviceIndex = null;
@@ -168,7 +160,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     } else {
       this.getMeTotalAppsPublishedCount();
     }
-    this.auditUtil.post(this.selectedOption, 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit(this.selectedOption, 1, 'SUCCESS', 'user-audit');
   }
 
   getMeTotalAppsPublishedCount(): void {
@@ -187,21 +179,21 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       }
     }).catch((err: any) => {
       let user_audit_body = {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
     })
   }
@@ -220,7 +212,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
       "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+    this.notifyApi.post('email/notify', body).then((res: any) => {
       if (res && res?.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
         let user_audit_body = {
@@ -228,7 +220,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       }
     }).catch((err: any) => {
       let user_audit_body = {
@@ -236,7 +228,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         'url': err?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
@@ -271,19 +263,19 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.loadSpinnerInParent.emit(false);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.utilsService.loadSpinner(false);
-        this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
           'method': 'POST',
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
       this.loadSpinnerInParent.emit(false);
@@ -294,11 +286,11 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         'url': error?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.loadSpinnerInParent.emit(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utilsService.loadSpinner(false)
-      this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
 
     });
   }
@@ -312,14 +304,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         }
       }).catch(error => {
         let user_audit_body = {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }

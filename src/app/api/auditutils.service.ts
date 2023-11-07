@@ -2,19 +2,24 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuditutilsService {
-  endPoint = environment.userUtilsApi;
+export class AuditutilsService extends BaseApiService {
+  override get apiUrl(): string {
+    return environment.userUtilsApi
+  }
   currentUser: any;
-  constructor(private utilsService: UtilsService,) { }
+  constructor(private utilsService: UtilsService) {
+    super();
+  }
 
   ngOnInit() {
   }
 
-  post(activity: any, attemptcount: number, attemptstatus: string, url: string, activityInfo?: any, useremail?: any, productid?: any) {
+  postAudit(activity: any, attemptcount: number, attemptstatus: string, url: string, activityInfo?: any, useremail?: any, productid?: any) {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser)
@@ -28,7 +33,7 @@ export class AuditutilsService {
       "userEmail": useremail,
       "productId": productid
     }
-    axios.post(this.endPoint + url, body).then(response => {
+    this.post(url, body).then(response => {
       if (response.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail })
       }

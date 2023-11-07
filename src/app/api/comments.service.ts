@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
+import { BaseApiService } from './base-api.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentsService {
+export class CommentsService extends BaseApiService {
+  override get apiUrl(): string {
+    return environment.commentsApiUrl;
+  }
 
-  constructor(private apiService: ApiService) { }
+  constructor() {
+    super();
+   }
 
   getComments(params?: any) {
     let url = '/comment';
-    return this.apiService.getComments(url, params)
+    return this.get(url, params)
   }
 
   updateComments(body: any) {
-    return this.apiService.patchApi(body, 'specs/update-comments/')
+    return this.patch('specs/update-comments/', body);
   }
 
   addComments(body: any) {
-    return this.apiService.postComments(body, 'comment')
+    return this.post('comment',body);
   }
 
   deletComment(id: any) {
-    return this.apiService.deleteComment('comment/' + id)
+    return this.delete('comment/' + id);
   }
 }
 

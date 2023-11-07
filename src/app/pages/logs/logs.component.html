@@ -1,14 +1,13 @@
 <div class="main-container">
-  <div class="side-menu">
+  <div class="side-menu" *ngIf="router.url !=='/history-log'">
     <xnode-page-tools-layout></xnode-page-tools-layout>
   </div>
   <div
-    [ngClass]="{'logs-container-menu':isSideMenuOpen && !isDockedNaviOpened, 'logs-container':!isSideMenuOpen && isDockedNaviOpened, 'logs-container-navi':isDockedNaviOpened,'logs-container-navi-menu':isSideMenuOpen && isDockedNaviOpened}">
+    [ngClass]="{'w-full':router.url ==='/history-log','logs-container-menu':isSideMenuOpen && !isDockedNaviOpened, 'logs-container':router.url !=='/history-log'&&!isSideMenuOpen && isDockedNaviOpened, 'logs-container-navi':isDockedNaviOpened,'logs-container-navi-menu':isSideMenuOpen && isDockedNaviOpened}">
     <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-    <div class="ml-4 mr-4 p-3 "
-      [ngClass]="{'logs-content-menu':isSideMenuOpen,'logs-content':!isSideMenuOpen,'logs-content-navi':isDockedNaviOpened,'logs-content-navi-menu':isDockedNaviOpened && isSideMenuOpen}">
-      <div class="h-full  w-full overflow-auto ">
-        <xnode-dynamic-table [inputData]="logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
+    <div class="grid m-3 p-3 logs-content-full">
+      <div class=" col-12 p-0 logs-content-table">
+        <xnode-dynamic-table [inputData]=" logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
       </div>
     </div>
   </div>

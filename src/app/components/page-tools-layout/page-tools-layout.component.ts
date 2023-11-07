@@ -124,7 +124,7 @@ export class PageToolsLayoutComponent {
     });
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
-      this.auditUtil.post(id, 1, 'SUCCESS', 'user-audit');
+      this.auditUtil.postAudit(id, 1, 'SUCCESS', 'user-audit');
       idElem.style.background = '#302e38';
     }
   }

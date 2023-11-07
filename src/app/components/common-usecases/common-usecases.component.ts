@@ -40,9 +40,18 @@ export class CommonUsecasesComponent {
     } else {
       this.isInsideUseCases = false
     }
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
     this.utils.startSpinner.subscribe((event: boolean) => {
       setTimeout(() => {
         this.loading = event;
@@ -74,7 +83,7 @@ export class CommonUsecasesComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
         } else {
@@ -82,7 +91,7 @@ export class CommonUsecasesComponent {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utils.showProductStatusPopup(true);
         }
@@ -93,7 +102,7 @@ export class CommonUsecasesComponent {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_USE_CASES_RETRIEVE_INSIGHTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utils.loadSpinner(false);
       });

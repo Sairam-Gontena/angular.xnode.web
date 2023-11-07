@@ -235,6 +235,32 @@ textarea {
     font-weight: bold;
 }
 
-.check-mark {
-    margin-left: 20rem;
+.title-container {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40%);
+}
+
+:host ::ng-deep .p-overlay .p-component {
+    max-width: 100%;
+}
+
+@media (max-width: 1440px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 94%;
+    }
+}
+
+@media (max-width: 1024px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 40%;
+    }
 }

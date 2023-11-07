@@ -54,10 +54,19 @@ export class SpecificationsComponent implements OnInit {
       if (res) {
         this.getMeSpecList();
       }
+    });
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
     })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     })
@@ -228,18 +237,18 @@ export class SpecificationsComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
+        this.auditUtil.postAudit('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
-        this.auditUtil.post("GENERATE_SPEC", 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit("GENERATE_SPEC", 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
           'method': 'POST',
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
-        this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
+        this.auditUtil.postAudit("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
@@ -249,10 +258,10 @@ export class SpecificationsComponent implements OnInit {
         'url': error?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
+      this.auditUtil.postAudit('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
       this.utils.loadSpinner(false)
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
     });
   }
 

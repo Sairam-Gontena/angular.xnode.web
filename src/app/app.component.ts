@@ -83,8 +83,8 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-    this.utilsService.getMeIfProductChanges.subscribe((event:boolean)=>{
-      if(event){
+    this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
+      if (event) {
         this.isSideWindowOpen = false;
       }
     })
@@ -121,10 +121,15 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = true;
     })
+    this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      if (data && data?.email) {
+        this.makeTrustedUrl(data.email)
+      }
+    })
   }
 
-  botOnClick(){
-    this.isNaviExpanded=false;
+  botOnClick() {
+    this.isNaviExpanded = false;
   }
 
   redirectToPreviousUrl(): void {
@@ -345,10 +350,10 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center" || window.location.hash === "#/history-log") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
-        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
       }
       this.router.navigate(['/x-pilot']);
     } else {
@@ -402,7 +407,7 @@ export class AppComponent implements OnInit {
       "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
       "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+    this.notifyApi.post('email/notify', body).then((res: any) => {
       if (res?.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }

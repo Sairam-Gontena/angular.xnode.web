@@ -39,6 +39,16 @@
     width: calc(100vw - 170px);
 }
 
+.logs-content-full {
+    background-color: #24232C;
+    height: calc(100vh - 150px);
+}
+
+.logs-content-table {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+}
+
 .logs-content-navi {
     background-color: #24232C;
     height: calc(100vh - 150px);

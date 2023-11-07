@@ -71,7 +71,7 @@ export class FeedbackConversationComponent {
       "message": this.message,
       "parentConversationId": this.selectedConv.id
     }
-    this.userUtilService.post(payload, 'user-conversation').then((res: any) => {
+    this.userUtilService.post('user-conversation',payload).then((res: any) => {
       if (res && res?.data) {
         this.utils.reloadList(true);
         this.conversation.showReply = false;
