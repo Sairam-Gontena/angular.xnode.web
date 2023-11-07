@@ -6,13 +6,6 @@
                 <h3 class="m-0 pb-2 text-2xl font-bold"
                     [innerHTML]="(sectionIndex+1) + '.' + (cIndex+1) +' '+ content.title | highlight: searchTerm "></h3>
             </div>
-            <!-- <p-overlayPanel #op>
-                <xnode-add-comment-overlay-panel *ngIf="content.showCommentOverlay && isOpenSmallCommentBox"
-                    [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                    [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
-            </p-overlayPanel>
-            <img src="../assets/comment.svg" class="pointer" alt="comment"
-                (click)="onClickAddComment({item:specItem, content:content});op.toggle($event)" *ngIf="!readOnly"> -->
         </div>
         <p-button (click)="onClickSeeMore.emit({item:specItem,content:content})" label="See More"
             *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
@@ -182,7 +175,7 @@
                     </div>
                     <div class="col-1 p-0 flex  align-items-start justify-content-center">
                         <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                 (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                                 [selectedContent]="selectedContent"
                                 placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -212,7 +205,7 @@
                                 </div>
                                 <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                     <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                             (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                                             [selectedContent]="selectedContent"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -242,7 +235,7 @@
                                         </div>
                                         <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                             <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                                                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                                     (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                                                     [selectedContent]="selectedContent"
                                                     placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -271,15 +264,15 @@
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
         </div>
         <div *ngIf="content.title ==='User Roles'">
-            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content" [users]="users"
+            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
                 [selectedContent]="selectedContent"></xnode-user-roles>
         </div>
         <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
             <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
-                [users]="users"></xnode-list-view>
+                [users]="usersList"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="users"
+            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
                 [selectedContent]="selectedContent"></xnode-para-view>
         </ng-template>
 
