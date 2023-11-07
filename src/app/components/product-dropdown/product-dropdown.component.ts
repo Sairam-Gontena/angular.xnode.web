@@ -53,7 +53,8 @@ export class ProductDropdownComponent implements AfterViewInit {
       localStorage.setItem('product', JSON.stringify(product));
       this.selectedProduct = product.id;
       this.product_url = product.product_url;
-      this.utilsService.toggleProductChange(true);
+      this.utilsService.saveProductDetails(product);
+      this.utilsService.toggleProductChange(true)
     }
     this.auditUtil.post("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }

@@ -121,6 +121,11 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = true;
     })
+    this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      if (data && data?.email) {
+        this.makeTrustedUrl(data.email)
+      }
+    })
   }
 
   botOnClick() {
