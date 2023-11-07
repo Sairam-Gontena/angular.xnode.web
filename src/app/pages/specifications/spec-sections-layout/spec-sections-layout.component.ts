@@ -12,6 +12,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
   templateUrl: './spec-sections-layout.component.html',
   styleUrls: ['./spec-sections-layout.component.scss']
 })
+
 export class SpecSectionsLayoutComponent implements OnInit {
   @Input() content: any;
   @Input() searchTerm: any;
@@ -21,6 +22,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() commentList: any;
+  @Input() usersList: any = [];
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
@@ -40,8 +42,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   specExpanded: any;
   checked: boolean = false;
   currentUser: any;
-  usersData: any = [];
-  users: any = [];
   product: any;
   selectedText:string='';
   seletedMainIndex?: number;
@@ -66,29 +66,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
-    this.getUsersData();
   }
 
-  getUsersData() {
-    this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
-      this.utils.loadSpinner(true);
-      if (resp?.status === 200) {
-        this.usersData = resp.data;
-        let data = [] as any[];
-        this.usersData.map((element: any) => {
-          let name: string = element?.first_name;
-          data.push(name)
-        });
-        this.users = data;
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
-      }
-      this.utils.loadSpinner(false);
-    }).catch((error:any) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-      console.error(error);
-    })
-  }
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
@@ -147,12 +126,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
     }
   }
 
-  onClickAddComment(obj: any): void {
-      this.isOpenSmallCommentBox=true;
-      this.selectedContent = obj.content;
-      this.showAddCommnetOverlay.emit(obj)
-  }
-
   selectText(event:any, object:any, id:any){
     var text;
     if (window.getSelection) {
@@ -169,6 +142,12 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.isOpenSmallCommentBox = false
       this.overlayPanel.toggle(false)
     }
+  }
+
+  onClickAddComment(obj: any): void {
+    this.isOpenSmallCommentBox=true;
+    this.selectedContent = obj.content;
+    this.showAddCommnetOverlay.emit(obj)
   }
 
   sendComment(comment: any) {

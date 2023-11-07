@@ -51,22 +51,6 @@ export class CommentsPanelComponent implements OnInit {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
     }
-    // this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
-    //   this.utils.loadSpinner(true);
-    //   if (resp?.status === 200) {
-    //     this.usersData = resp.data;
-    //     this.usersData.map((element: any) => {
-    //       let name: string = element?.first_name;
-    //       this.users.push(name)
-    //     });
-    //   } else {
-    //     this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
-    //   }
-    //   this.utils.loadSpinner(false);
-    // }).catch((error) => {
-    //   this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-    //   console.error(error);
-    // })
   }
 
   ngOnInit(): void {

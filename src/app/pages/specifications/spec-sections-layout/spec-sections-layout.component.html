@@ -9,7 +9,7 @@
             <p-overlayPanel #op [showTransitionOptions]="'1.5s linear'">
               <!-- content.showCommentOverlay &&  -->
                 <xnode-add-comment-overlay-panel *ngIf="isOpenSmallCommentBox"
-                    [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
+                    [width]="'w-30rem'" [users]="usersList" (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                     [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
             <img src="../assets/comment.svg" class="pointer hidden" alt="comment"
@@ -184,7 +184,7 @@
                     </div>
                     <div class="col-1 p-0 flex  align-items-start justify-content-center">
                         <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                 (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                                 [selectedContent]="selectedContent"
                                 placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -214,7 +214,7 @@
                                 </div>
                                 <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                     <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                             (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                                       >      [selectedContent]="selectedContent"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -244,7 +244,7 @@
                                         </div>
                                         <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                             <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                                                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                                                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                                     (closeOverlay)="op.toggle(false)" [position]="'absolute'"
                                                     [selectedContent]="selectedContent"
                                                     placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -273,15 +273,15 @@
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
         </div>
         <div *ngIf="content.title ==='User Roles'">
-            <xnode-user-roles [obj]="{item:specItem, content:content}"   (childEvent)="receiveMsg($event)" [searchTerm]="searchTerm" [content]="content.content" [users]="users"
+            <xnode-user-roles [obj]="{item:specItem, content:content}"   (childEvent)="receiveMsg($event)" [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
                 [selectedContent]="selectedContent"></xnode-user-roles>
         </div>
         <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
             <xnode-list-view [obj]="{item:specItem, content:content}"   (childEvent)="receiveMsg($event)" [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
-                [users]="users"></xnode-list-view>
+                [users]="usersList"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [obj]="{item:specItem, content:content}"   (childEvent)="receiveMsg($event)" [content]="content.content" [searchTerm]="searchTerm" [users]="users"
+            <xnode-para-view [obj]="{item:specItem, content:content}"   (childEvent)="receiveMsg($event)" [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
                 [selectedContent]="selectedContent"></xnode-para-view>
         </ng-template>
 
