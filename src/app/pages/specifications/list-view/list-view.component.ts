@@ -19,13 +19,13 @@ export class ListViewComponent {
   commentOverlayPanelOpened: boolean = false;
 
 
-  onTextSelected(event: MouseEvent) {
-    const selectedText = this.getSelectedText();
-    if (selectedText) {
-      console.log('Selected Text: ' + selectedText);
-      // You can now do something with the selected text.
-    }
-  }
+  // onTextSelected(event: MouseEvent) {
+  //   const selectedText = this.getSelectedText();
+  //   if (selectedText) {
+  //     console.log('Selected Text: ' + selectedText);
+  //     // You can now do something with the selected text.
+  //   }
+  // }
 
   ngOnInit(){
   }

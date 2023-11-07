@@ -7,7 +7,6 @@ import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { ApiService } from 'src/app/api/api.service';
 import { User } from 'src/models/user';
 import { OverlayPanel } from 'primeng/overlaypanel';
-
 @Component({
   selector: 'xnode-spec-sections-layout',
   templateUrl: './spec-sections-layout.component.html',
@@ -85,12 +84,11 @@ export class SpecSectionsLayoutComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
       }
       this.utils.loadSpinner(false);
-    }).catch((error) => {
+    }).catch((error:any) => {
       this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
       console.error(error);
     })
   }
-
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
@@ -116,11 +114,12 @@ export class SpecSectionsLayoutComponent implements OnInit {
         'item':event.item,
         'content':event.content
       }
+      this.selectedText = event.selectedText;
       this.toggleOverlayPanel(true, obj);
       setTimeout(() => {
         let elem = document.getElementsByClassName('p-overlaypanel')[0]
         if(elem){
-          const yAxis =event.screenY - 100;
+          const yAxis =event.screenY; // - 100
           (elem as HTMLElement)['style'].zIndex  = '1002';
           (elem as HTMLElement)['style'].transformOrigin  = 'center top';
           (elem as HTMLElement)['style'].transform ='translateY(0px)';
@@ -130,11 +129,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
         }
       }, 800);
     }else{
+      this.selectedText = '';
       this.toggleOverlayPanel(false);
     }
-      // console.log('at last -> opensmlcmntbx -> content',event, this.isOpenSmallCommentBox, this.content)
-      // console.log(this.isOpenSmallCommentBox)
-      // console.log(this.content)
   }
 
   toggleOverlayPanel(value:boolean,obj?:any){
@@ -151,8 +148,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   onClickAddComment(obj: any): void {
-      console.log(obj)
-      console.log(this.content,this.isOpenSmallCommentBox)
       this.isOpenSmallCommentBox=true;
       this.selectedContent = obj.content;
       this.showAddCommnetOverlay.emit(obj)
