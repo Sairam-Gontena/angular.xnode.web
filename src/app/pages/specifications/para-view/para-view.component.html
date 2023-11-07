@@ -1,12 +1,12 @@
 <div class="flex col-12 p-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
   <!-- (click)="selectText($event)" -->
     <div class="col-11 p-0 ">
-        <div class="content text-base font-normal" #paraContentDiv (click)="selectText($event,milliseconds)" [innerHTML]="content | highlight: searchTerm" [id]="milliseconds">
-          <!-- [id]="content.id" (click)="op.toggle($event);commentOverlayPanelOpened=true" -->
+        <div class="content text-base font-normal" #paraContentDiv (click)="selectText($event,milliseconds)" [innerHTML]="contentData | highlight: searchTerm" [id]="content.id">
+          <!-- (click)="op.toggle($event);commentOverlayPanelOpened=true" -->
         </div>
     </div>
     <div class="col-1 p-0 flex  align-items-start justify-content-center">
-        <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false;showCommentIcon=false">
+        <p-overlayPanel #op appendTo="body" (onHide)="commentOverlayPanelOpened=false;showCommentIcon=false">
             <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
                 (closeOverlay)="op.toggle(false);commentOverlayPanelOpened=false;" [position]="'absolute'"
                 [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
