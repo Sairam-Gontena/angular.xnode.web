@@ -124,7 +124,7 @@ export class AppComponent implements OnInit {
       this.utilsService.disableDockedNavi();
     })
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
-      this.showProductStatusPopup = true;
+      this.showProductStatusPopup = data.popup;
     })
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
