@@ -4,7 +4,8 @@
   </div>
   <div
     [ngClass]="{'w-full':router.url ==='/history-log','logs-container-menu':isSideMenuOpen && !isDockedNaviOpened, 'logs-container':router.url !=='/history-log'&&!isSideMenuOpen && isDockedNaviOpened, 'logs-container-navi':isDockedNaviOpened,'logs-container-navi-menu':isSideMenuOpen && isDockedNaviOpened}">
-    <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
+    <xnode-template-builder-publish-header
+      (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
     <div class="grid m-3 p-3 logs-content-full">
       <div class=" col-12 p-0 logs-content-table">
         <xnode-dynamic-table [inputData]=" logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>

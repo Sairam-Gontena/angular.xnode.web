@@ -1,61 +1,51 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
-import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Product } from 'src/models/product';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'xnode-product-dropdown',
   templateUrl: './product-dropdown.component.html',
   styleUrls: ['./product-dropdown.component.scss']
 })
-export class ProductDropdownComponent implements AfterViewInit {
-  selectedProduct?: string;
-  product?: Product;
+
+export class ProductDropdownComponent implements OnInit {
+  @Output() _onChangeProduct = new EventEmitter<object>();
+  selectedProduct: Product | undefined;
   products: Array<Product> = [];
-  product_url: any;
   currentUser: any;
-  email: any;
+  email: string = '';
+  myForm: FormGroup;
 
   constructor(
     private utilsService: UtilsService,
-    private auditUtil: AuditutilsService,
+    private fb: FormBuilder,
   ) {
+    this.myForm = this.fb.group({
+      selectedProduct: [null],
+    });
+  }
+
+  ngOnInit() {
+    this.getMeDataFromStorage();
+    this.myForm.valueChanges.subscribe((value: any) => {
+      this._onChangeProduct.emit(value.selectedProduct);
+      this.utilsService.saveProductDetails(value.selectedProduct);
+    });
   }
 
 
-  ngAfterViewInit() {
+  getMeDataFromStorage(): void {
     const metaData = localStorage.getItem('meta_data');
     const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-      this.selectedProduct = JSON.parse(product).id;
-      this.product_url = JSON.parse(product).product_url;
-    }
     if (metaData) {
       this.products = JSON.parse(metaData);
+      if (product) {
+        this.myForm.get('selectedProduct')?.patchValue(JSON.parse(product));
+      } else {
+        this.myForm.get('selectedProduct')?.patchValue(JSON.parse(metaData)[0]);
+      }
     }
-  }
-
-  onChangeProduct(data: any): void {
-    if (!data.value) {
-      return
-    }
-    const product = data.value;
-    if (this.currentUser?.email == product.email) {
-      this.utilsService.hasProductPermission(true)
-    } else {
-      this.utilsService.hasProductPermission(false)
-    }
-    if (product) {
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
-      localStorage.setItem('product', JSON.stringify(product));
-      this.selectedProduct = product.id;
-      this.product_url = product.product_url;
-      this.utilsService.saveProductDetails(product);
-      this.utilsService.toggleProductChange(true)
-    }
-    this.auditUtil.postAudit("SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
 }
+

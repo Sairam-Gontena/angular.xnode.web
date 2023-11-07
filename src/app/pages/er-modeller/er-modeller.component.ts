@@ -42,11 +42,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.router.events.subscribe((data: any) => {
       this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
     });
-    this.utilsService.getMeIfProductChanges.subscribe((info: boolean) => {
-      if (info) {
-        this.getMeStorageData();
-      }
-    })
   }
 
   ngOnInit(): void {
@@ -55,6 +50,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   getMeStorageData(): void {
     this.jsPlumbService.init();
+    this.dataModel = undefined;
     this.dataService.loadData(this.utilService.ToModelerSchema([]));
     const product = localStorage.getItem('product');
     if (product) {
@@ -87,42 +83,6 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   getLayout(layout: any): void {
     if (layout)
       this.dashboard = this.layoutColumns[layout];
-  }
-
-
-  //get calls 
-  getMeUserId() {
-    let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email;
-
-    this.apiService.get("navi/get_metadata/" + productEmail)
-      .then(response => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, productEmail, this.product_id);
-          this.id = response.data.data[0].id;
-          localStorage.setItem('record_id', response.data.data[0].id)
-          this.getMeDataModel();
-        } else {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, productEmail, this.product_id);
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
-        }
-        this.utilsService.loadSpinner(false);
-      }).catch(error => {
-        let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, productEmail, this.product_id);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utilsService.loadSpinner(false)
-      });
   }
 
   getMeDataModel() {
@@ -165,5 +125,12 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false);
       });
+  }
+  onChangeProduct(obj: any): void {
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.getMeStorageData();
   }
 }

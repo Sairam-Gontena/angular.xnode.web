@@ -39,11 +39,6 @@ export class TemplateBuilderComponent implements OnInit {
     this.email = this.currentUser?.email
     this.userId = this.currentUser?.user_id;
     this.environment = environment.name;
-    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-      if (info) {
-        this.getMeStorageData();
-      }
-    })
   }
 
   ngOnInit() {
@@ -107,5 +102,12 @@ export class TemplateBuilderComponent implements OnInit {
 
   loadSpinner(event: boolean) {
     this.utils.loadSpinner(event);
+  }
+  onChangeProduct(obj: any): void {
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.getMeStorageData();
   }
 }
