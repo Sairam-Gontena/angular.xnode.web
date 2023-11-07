@@ -83,8 +83,8 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-    this.utilsService.getMeIfProductChanges.subscribe((event:boolean)=>{
-      if(event){
+    this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
+      if (event) {
         this.isSideWindowOpen = false;
       }
     })
@@ -123,8 +123,8 @@ export class AppComponent implements OnInit {
     })
   }
 
-  botOnClick(){
-    this.isNaviExpanded=false;
+  botOnClick() {
+    this.isNaviExpanded = false;
   }
 
   redirectToPreviousUrl(): void {
@@ -345,7 +345,7 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center" || window.location.hash === "#/history-log") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
         this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
