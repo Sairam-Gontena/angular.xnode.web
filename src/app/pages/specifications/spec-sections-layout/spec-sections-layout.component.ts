@@ -120,10 +120,10 @@ export class SpecSectionsLayoutComponent implements OnInit {
         let elem = document.getElementsByClassName('p-overlaypanel')[0]
         if(elem){
           const yAxis =event.screenY; // - 100
-          (elem as HTMLElement)['style'].zIndex  = '1002';
-          (elem as HTMLElement)['style'].transformOrigin  = 'center top';
-          (elem as HTMLElement)['style'].transform ='translateY(0px)';
-          (elem as HTMLElement)['style'].opacity= '2';
+          // (elem as HTMLElement)['style'].zIndex  = '1002';
+          // (elem as HTMLElement)['style'].transformOrigin  = 'center top';
+          // (elem as HTMLElement)['style'].transform ='translateY(0px)';
+          // (elem as HTMLElement)['style'].opacity= '2';
           (elem as HTMLElement)['style'].top = yAxis + 'px';
           (elem as HTMLElement)['style'].left =  event.screenX + 'px';
         }
