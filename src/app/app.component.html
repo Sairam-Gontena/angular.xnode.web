@@ -1,8 +1,8 @@
 <div class="w-full">
     <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
         <span (click)="submenuFunc()">
-            <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen"
-                (valueChange)="openNavi($event)" (click)="botOnClick()"></xnode-bot>
+            <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
+                (click)="botOnClick()"></xnode-bot>
         </span>
         <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
         <div class="flex">
@@ -29,6 +29,7 @@
 
 <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
-  <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()" [contentdata]="content" (openDockedNavi)="openNavi($event)" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
+<xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()" [contentdata]="content"
+    (openDockedNavi)="openNavi($event)" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>

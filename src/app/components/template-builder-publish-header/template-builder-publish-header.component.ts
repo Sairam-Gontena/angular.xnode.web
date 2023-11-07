@@ -139,14 +139,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     window.open(productUrl, '_blank');
   }
 
-  refreshCurrentRoute(): void {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      localStorage.setItem('trigger', 'graph');
-      this.router.navigate([currentUrl]);
-    });
-  }
-
   deviceIconClicked(icon: string) {
     if (this.selectedDeviceIndex === icon) {
       this.selectedDeviceIndex = null;

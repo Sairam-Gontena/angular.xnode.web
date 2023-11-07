@@ -350,7 +350,7 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center" || window.location.hash === "#/history-log") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
         this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');

@@ -34,7 +34,7 @@
         <div class="text-sm font-medium">Filter</div>
         <i class="pi pi-sort-amount-up text-xs ml-2 pointer"></i>
     </div>
-    <div class="flex align-items-center pointer" (click)="navigateToActivity()">
+    <div class="flex align-items-center pointer" (click)="onClickSeeAll()">
         <div class="text-sm font-medium">See all in activity logs</div>
         <i class="pi pi-arrow-right text-xs ml-2"></i>
     </div>
@@ -126,6 +126,6 @@
         </div>
     </div>
 </div>
-<div class="mt-5 d-flex justify-content-center" *ngIf="allNotifications.length === 0">
-    <h5>No New Notifications Found</h5>
+<div class="p-5 flex justify-content-center align-items-center" *ngIf="allNotifications.length === 0">
+    <p>No New Notifications Found</p>
 </div>
