@@ -29,5 +29,8 @@ export class PublishComponent {
       { label: localStorage.getItem("app_name") }
     ]
     this.tableInfo = TableData.publish_overview.Table_Info;
+    this.utilService.openDockedNavi.subscribe((res) => {
+      console.log(res)
+    })
   }
 }

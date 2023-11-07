@@ -60,6 +60,18 @@ export class SpecificationsComponent implements OnInit {
         this.getMeStorageData();
       }
     })
+    this.utils.openSpecSubMenu.subscribe((data: any) => {
+      this.isSideMenuOpened = data;
+      console.log("isSideMenuOpened ", this.isSideMenuOpened);
+    })
+    this.utils.openDockedNavi.subscribe((data: any) => {
+      this.isCommnetsPanelOpened = false;
+      if (data) {
+        this.utils.disableSpecSubMenu();
+        this.isNaviOpened = true;
+        console.log("called here navi opeend")
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -67,17 +79,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   getMeStorageData(): void {
-    this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isSideMenuOpened = data;
-    })
-    this.utils.openDockedNavi.subscribe((data: any) => {
-      this.isNaviOpened = data;
-      this.isCommnetsPanelOpened = false;
-      if (data) {
-        this.utils.disableSpecSubMenu();
-      }
-    })
-    this.utils.disableDockedNavi();
+
     this.getMeSpecList();
     let user = localStorage.getItem('currentUser');
     if (user)

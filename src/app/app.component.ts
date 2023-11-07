@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
       if (event) {
-        this.isSideWindowOpen = false;
+        // this.isSideWindowOpen = false;
       }
     })
   }
@@ -122,6 +122,7 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = true;
     })
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      console.log("got here")
       if (data && data?.email) {
         this.makeTrustedUrl(data.email)
       }
@@ -130,6 +131,7 @@ export class AppComponent implements OnInit {
 
   botOnClick() {
     this.isNaviExpanded = false;
+    this.subMenuLayoutUtil.EnableDockedNavi();
   }
 
   redirectToPreviousUrl(): void {
@@ -285,7 +287,6 @@ export class AppComponent implements OnInit {
     let id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
-      this.subMenuLayoutUtil.EnableDockedNavi();
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
@@ -297,6 +298,8 @@ export class AppComponent implements OnInit {
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
       }
+      console.log("got rawurl  here ",rawUrl)
+
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
