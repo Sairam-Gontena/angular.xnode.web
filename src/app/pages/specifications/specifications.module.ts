@@ -10,15 +10,41 @@ import { SpecificationsContentComponent } from 'src/app/pages/specifications/spe
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
 import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
-
+import { UserPersonaComponent } from './user-persona/user-persona.component';
+import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
+import { UserRolesComponent } from './user-roles/user-roles.component';
+import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add-comment-overlay-panel.component';
+import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
+import { ListViewComponent } from './list-view/list-view.component';
+import { ParaViewComponent } from './para-view/para-view.component';
+import { CommentsCrPanelComponent } from './comments-cr-panel/comments-cr-panel.component';
+import { CommentsTabsComponent } from './comments-tabs/comments-tabs.component';
+import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
+import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
+import { SpecSectionsLayoutComponent } from './spec-sections-layout/spec-sections-layout.component';
+import { CommentsPanelComponent } from './comments-panel/comments-panel.component';
+import { ConfirmationalertComponent } from './confirmationalert/confirmationalert.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
     SpecificationsMenuComponent,
     SpecificationsHeaderComponent,
     SpecificationsContentComponent,
+    CommentsPanelComponent,
+    CommentsCrPanelComponent,
+    UserPersonaComponent,
+    SpecGenPopupComponent,
+    UserRolesComponent,
+    AddCommentOverlayPanelComponent,
+    ListViewComponent,
+    ParaViewComponent,
+    CommentsTabsComponent,
+    CrTabsComponent,
+    NoCommentsComponent,
+    SpecSectionsLayoutComponent,
     CamelToTitlePipe,
-    ObjectToArrayPipe
+    ObjectToArrayPipe,
+    ConfirmationalertComponent,
   ],
   imports: [
     CommonModule,
@@ -26,6 +52,7 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
     SpecificationsRoutingModule,
     SharedModule,
     SharedComponentModule
-  ]
+  ],
+  providers: [HighlightPipe]
 })
 export class SpecificationsModule { }

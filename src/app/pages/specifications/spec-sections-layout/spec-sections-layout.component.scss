@@ -1,0 +1,162 @@
+.sctions-grid {
+    background: #24232C;
+    padding: 30px;
+    color: #dfdfdf;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.openapi-spec {
+    background: #fff;
+    overflow: hidden;
+}
+
+.banner-grid {
+    background: #24232C;
+    width: 60%;
+    padding: 30px;
+    color: #dfdfdf;
+    overflow: hidden;
+}
+
+.intro-grid {
+    background: #24232C;
+    padding: 30px;
+    color: #dfdfdf;
+}
+
+.sctions-grid-full {
+    background: #24232C;
+    padding: 30px;
+    color: #dfdfdf;
+    max-height: none;
+}
+
+.content {
+    color: #949292;
+    line-height: 26px;
+}
+
+:host ::ng-deep .see-more-button {
+    color: #ffffff;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
+}
+
+.spec-body-full {
+    height: calc(100vh - 120px);
+    overflow: auto;
+    width: 100%;
+}
+
+.spec-body-collapsed {
+    height: calc(100vh - 120px);
+    overflow: auto;
+    width: calc(100% - 514px);
+}
+
+.sub-content {
+    font-size: 14px;
+    color: #7E7E7E;
+}
+
+.sub-title {
+    font-size: 14px;
+    color: #DEDEDE;
+    font-weight: 500;
+}
+
+pre {
+    width: 100%;
+    overflow: auto;
+}
+
+:host ::ng-deep .p-datatable>.p-datatable-wrapper {
+    border-radius: 6px;
+}
+
+.gradientback {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    background: -moz-linear-gradient(top, rgba(137, 255, 241, 0) 0%, rgba(0, 0, 0, 1) 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(137, 255, 241, 0)), color-stop(100%, rgba(0, 0, 0, 1)));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(137, 255, 241, 0) 0%, rgba(0, 0, 0, 1) 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(137, 255, 241, 0) 0%, rgba(0, 0, 0, 1) 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(137, 255, 241, 0) 0%, rgba(0, 0, 0, 1) 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, rgba(137, 255, 241, 0) 0%, rgba(0, 0, 0, 1) 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0089fff1', endColorstr='#000000', GradientType=0);
+    /* IE6-9 */
+
+}
+
+.collapse {
+    height: 30px;
+    width: 100%;
+}
+
+.spec-status {
+    color: #7E7E7E;
+    font-size: 14px;
+}
+
+.author {
+    columns: #dedede;
+}
+
+.pi-circle-fill {
+    font-size: 8px;
+}
+
+.tag-text-color {
+    color: #4B4B4B
+}
+
+.h-vh {
+    height: 100vh;
+}
+
+.expnad-icon {
+    width: 25px;
+}
+
+.small-comment-box {
+    position: fixed;
+    left: 45%;
+    bottom: 20%;
+    border: 1px solid #fff;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    z-index: 20;
+}
+
+:host ::ng-deep .yellow {
+    background: #8C7604 !important;
+    height: 30px !important;
+    color: white !important;
+    border-radius: 2px !important;
+}
+
+.commnets-panel-grid {
+    width: 514px;
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    border-left: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+:host ::ng-deep .p-overlaypanel .p-overlaypanel-content {
+    background: #302E38 !important;
+    border-radius: 6px !important;
+}

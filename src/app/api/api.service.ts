@@ -7,10 +7,12 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
-  endPoint = environment.apiUrl + "crud";
+  endPoint = environment.apiUrl;
   apiPoint = environment.apiUrl;
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
+  commentsEndPoint = environment.commentsApiUrl;
+
   constructor() {
   }
   config = {
@@ -32,6 +34,11 @@ export class ApiService {
     });
   }
 
+  getAuthApi(url: string) {
+    return axios.get(this.authEndPoint + url, {
+    });
+  }
+
   getApi(url: string) {
     return axios.get(this.apiPoint + url, {
     });
@@ -48,5 +55,21 @@ export class ApiService {
 
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);
+  }
+
+  patchApi(body: any, url: string) {
+    return axios.patch(this.apiPoint + url, body, this.config);
+  }
+
+  getComments(url: string, params?: any) {
+    return axios.get(this.commentsEndPoint + url, { params: params });
+  }
+
+  postComments(body: any, url: string) {
+    return axios.post(this.commentsEndPoint + url, body, this.config);
+  }
+
+  deleteComment(url: string) {
+    return axios.delete(this.commentsEndPoint + url, this.config);
   }
 }

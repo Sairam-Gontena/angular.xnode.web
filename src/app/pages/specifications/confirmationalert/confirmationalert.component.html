@@ -1,0 +1,20 @@
+<p-dialog [(visible)]="visible" [modal]="true" (onHide)="closePrompt()">
+    <ng-template pTemplate="header">
+        <p class="header font-bold flex justify-content-center">
+            Confirmation
+        </p>
+    </ng-template>
+    <div class="flex font-medium">
+        <span>
+            Are you sure you want to delete this comment.
+        </span>
+    </div>
+    <div class="flex justify-content-end mt-6">
+        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
+            (click)="closePrompt()"></p-button>
+        <span class="invite">
+            <p-button label="Confirm" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+                (click)="confirmPrompt()"></p-button>
+        </span>
+    </div>
+</p-dialog>

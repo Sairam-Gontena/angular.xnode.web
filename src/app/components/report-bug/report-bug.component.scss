@@ -80,17 +80,17 @@ textarea {
 
 :host::ng-deep.cancel-button .p-button {
     color: #ffffff;
-    background: #2E2D36;
+    // background: #2E2D36;
+    background: #23222B;
     font-size: 12px;
     padding-top: 6px;
     padding-bottom: 6px;
-    border: 1px solid #2E2D36;
+    border: 1px solid #ffffff;
 }
 
 :host::ng-deep.custom-dropdown .p-dropdown {
     width: 100%;
-    /* or any other desired width */
-    color: #ffffff;
+    // color: #ffffff;
     background: #2E2D36;
     border: 1px solid #2E2D36;
 }
@@ -128,55 +128,69 @@ textarea {
     width: 500px;
 }
 
-/* Shake animation */
-@keyframes shake {
-    0% {
-        transform: translate(1px, 1px) rotate(0deg);
-    }
+:host ::ng-deep .p-dropdown-panel {
+    border: 1px solid #535354;
+    background-color: #2E2D36 !important;
+    color: #ffffff !important;
+}
 
-    10% {
-        transform: translate(-1px, -2px) rotate(-1deg);
-    }
+:host ::ng-deep .p-dropdown-panel .p-dropdown-header {
+    background-color: #2E2D36 !important;
+}
 
-    20% {
-        transform: translate(-3px, 0px) rotate(1deg);
-    }
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper {
+    background-color: #2E2D36 !important;
+    max-height: 180px !important;
+}
 
-    30% {
-        transform: translate(3px, 2px) rotate(0deg);
-    }
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background-color: #42404B !important;
+    color: white !important;
+}
 
-    40% {
-        transform: translate(1px, -1px) rotate(1deg);
-    }
+:host ::ng-deep .p-dropdown-item {
+    color: #ffffff !important;
+}
 
-    50% {
-        transform: translate(-1px, 2px) rotate(-1deg);
-    }
+:host ::ng-deep .p-dropdown-item:hover {
+    background: #393843 !important;
+    color: #ffffff !important;
+}
 
-    60% {
-        transform: translate(-3px, 1px) rotate(0deg);
-    }
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
 
-    70% {
-        transform: translate(3px, 1px) rotate(-1deg);
-    }
+}
 
-    80% {
-        transform: translate(-1px, -1px) rotate(1deg);
-    }
+// :host ::ng-deep .p-dropdown-filter-container {
+//     box-shadow: none !important;
 
-    90% {
-        transform: translate(1px, 2px) rotate(0deg);
-    }
+// }
 
-    100% {
-        transform: translate(1px, -2px) rotate(-1deg);
-    }
+:host::ng-deep .p-dropdown-panel .p-dropdown-header {
+    padding: 0;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    background-color: #2E2D36 !important;
+    border: none;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-header .p-dropdown-filter .p-inputtext:enabled:focus {
+    box-shadow: none !important;
+    border-color: none;
+    background-color: #2E2D36 !important;
+    color: white !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
 }
 
 :host::ng-deep .p-dropdown .p-dropdown-label {
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 :host::ng-deep .p-dropdown {
@@ -189,13 +203,6 @@ textarea {
 
 :host ::ng-deep.p-inputtext:enabled:hover {
     border: 1px solid #2E2D36;
-}
-
-:host ::ng-deep {
-    .p-dropdown .p-dropdown-label {
-        color: #ffffff !important;
-        font-weight: 600;
-    }
 }
 
 :host ::ng-deep.p-dropdown:not(.p-disabled):hover {
@@ -222,4 +229,38 @@ textarea {
     background: var(--primary-color);
     border-color: var(--primary-color);
     border: 1px solid var(--primary-color);
+}
+
+.selected-item {
+    font-weight: bold;
+}
+
+.title-container {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 40%);
+}
+
+:host ::ng-deep .p-overlay .p-component {
+    max-width: 100%;
+}
+
+@media (max-width: 1440px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 94%;
+    }
+}
+
+@media (max-width: 1024px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    :host ::ng-deep .p-overlay .p-component {
+        max-width: 40%;
+    }
 }

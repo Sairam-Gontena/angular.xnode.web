@@ -33,7 +33,12 @@ import { ModalRelationComponent } from '../pages/er-modeller/modal-relation/moda
 import { SchemaComponent } from '../pages/er-modeller/schema/schema.component';
 import { BpmnDiagramComponent } from '../pages/bpmn-diagram/bpmn-diagram.component';
 import { ExpandSpecificationComponent } from '../components/expand-specification/expand-specification.component';
-import { CommentsPanelComponent } from '../components/comments-panel/comments-panel.component';
+import { CommonUsecasesComponent } from '../components/common-usecases/common-usecases.component';
+import { ChangeRequestsPanelComponent } from '../components/change-requests-panel/change-requests-panel.component';
+import { DataDictionaryComponent } from '../pages/specifications/data-dictionary/data-dictionary.component';
+import { CommonSpecTableComponent } from '../common-spec-table/common-spec-table.component';
+import { SharedPipesModule } from '../pipes/sharedPipes.module';
+import { ProductDropdownComponent } from '../components/product-dropdown/product-dropdown.component';
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -68,11 +73,16 @@ import { CommentsPanelComponent } from '../components/comments-panel/comments-pa
                 SchemaComponent,
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
-                CommentsPanelComponent
+                CommonUsecasesComponent,
+                ChangeRequestsPanelComponent,
+                DataDictionaryComponent,
+                CommonSpecTableComponent,
+                ProductDropdownComponent
         ],
         imports: [
                 CommonModule,
-                SharedModule
+                SharedModule,
+                SharedPipesModule
         ],
         exports: [
                 AdditionalInfoComponent,
@@ -107,7 +117,12 @@ import { CommentsPanelComponent } from '../components/comments-panel/comments-pa
                 SchemaComponent,
                 BpmnDiagramComponent,
                 ExpandSpecificationComponent,
-                CommentsPanelComponent
+                CommonUsecasesComponent,
+                ChangeRequestsPanelComponent,
+                DataDictionaryComponent,
+                CommonSpecTableComponent,
+                SharedPipesModule,
+                ProductDropdownComponent
         ]
 })
 export class SharedComponentModule { }

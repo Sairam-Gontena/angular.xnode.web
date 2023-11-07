@@ -1,0 +1,9 @@
+<p-dropdown [options]="products" [(ngModel)]="selectedProduct" class="app-dropdown" optionLabel="title" [filter]="true"
+    filterBy="title" filterPlaceholder="Search" (onChange)="onChangeProduct($event)">
+    <ng-template let-item pTemplate="item">
+        <div class="item-container">
+            {{ item.title }}
+            <i class="pi pi-check check-mark" *ngIf="selectedProduct === item.id"></i>
+        </div>
+    </ng-template>
+</p-dropdown>

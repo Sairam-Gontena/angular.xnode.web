@@ -1,14 +1,13 @@
-<div class="template-builder-wrapper">
-  <div class="template-builder-layout-wrapper">
+<div class="main-container">
+  <div class="side-menu" *ngIf="router.url !=='/history-log'">
     <xnode-page-tools-layout></xnode-page-tools-layout>
   </div>
-  <div class="template-builder-body-wrapper overflow-hidden"
-    [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
+  <div
+    [ngClass]="{'w-full':router.url ==='/history-log','logs-container-menu':isSideMenuOpen && !isDockedNaviOpened, 'logs-container':router.url !=='/history-log'&&!isSideMenuOpen && isDockedNaviOpened, 'logs-container-navi':isDockedNaviOpened,'logs-container-navi-menu':isSideMenuOpen && isDockedNaviOpened}">
     <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-    <div class="p-3 mr-4 ml-4 container ">
-      <div class="h-full overflow-auto">
-        <xnode-dynamic-table class="mt-2" [inputData]="logsData" [cols]="cols"
-          [tableInfo]="tableInfo"></xnode-dynamic-table>
+    <div class="grid m-3 p-3 logs-content-full">
+      <div class=" col-12 p-0 logs-content-table">
+        <xnode-dynamic-table [inputData]=" logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
       </div>
     </div>
   </div>

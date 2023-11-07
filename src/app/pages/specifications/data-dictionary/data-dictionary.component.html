@@ -1,0 +1,72 @@
+<div *ngFor="let table of content[0].tables">
+    <div class="flex align-items-center mb-2">
+        <label class=" font-normal text-sm">Table/Entity Name : </label>
+        <p class=" m-0 sub-content ml-2">{{table.tableName}}</p>
+    </div>
+    <div class="flex align-items-center mb-2">
+        <label class=" font-normal text-sm"> Purpose : </label>
+        <p class=" m-0 sub-content ml-2">{{table.tableDescription}}</p>
+    </div>
+    <div class="flex align-items-center mb-2">
+        <label class=" font-normal text-sm"> Data Source : </label>
+        <p class=" m-0 sub-content ml-2">{{table.dataSource}}</p>
+    </div>
+    <div class="flex align-items-center mb-2">
+        <label class=" font-normal text-sm">Data Owner : </label>
+        <p class=" m-0 sub-content ml-2">{{table.dataOwner}}</p>
+    </div>
+    <div class="flex align-items-center mb-2">
+        <label class=" font-normal text-sm">Last Updated : </label>
+        <p class=" m-0 sub-content ml-2">{{table.lastUpdated}}</p>
+    </div>
+    <label class=" font-normal text-sm">Table View</label>
+    <div class="mt-2 mb-4">
+        <p-table [value]="table.columns">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                        Field Name
+                    </th>
+                    <th>
+                        Data Type
+                    </th>
+                    <th>
+                        Format
+                    </th>
+                    <th>
+                        Min/Max Length (or Value)
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Sensitive
+                    </th>
+                    <th>
+                        Reference
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    <td [innerHTML]="rowData.columnName | highlight: searchTerm "></td>
+                    <td [innerHTML]="rowData.columnType.type | highlight: searchTerm"></td>
+                    <td [innerHTML]="rowData.columnType.displayFormat | highlight: searchTerm"></td>
+                    <td>
+                        <div>
+                            <p class="pt-0"
+                                [innerHTML]="'Required: ' + (rowData.validators.required | highlight: searchTerm)"></p>
+                            <p class="pt-0" [innerHTML]="'Min: ' + (rowData.validators.min | highlight: searchTerm)">
+                            </p>
+                            <p class="pt-0" [innerHTML]="'Max: ' + (rowData.validators.max | highlight: searchTerm)">
+                            </p>
+                        </div>
+                    </td>
+                    <td [innerHTML]="rowData.description | highlight: searchTerm"></td>
+                    <td [innerHTML]="rowData.sensitiveData | highlight: searchTerm"></td>
+                    <td [innerHTML]="rowData.reference | highlight: searchTerm"></td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

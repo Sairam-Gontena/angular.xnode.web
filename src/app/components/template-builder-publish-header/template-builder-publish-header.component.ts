@@ -21,6 +21,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string | null;
+
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;
@@ -46,8 +47,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     private notifyApi: NotifyApiService
   ) {
     this.utilsService.getMeProductId.subscribe((event: any) => {
-      if (event)
+      if (event) {
         this.selectedTemplate = event;
+        this.storeProductData(event)
+      }
     })
     this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
@@ -56,14 +59,27 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         command: () => {
           this.onChangeOption('Preview');
         }
-      },
-      {
-        label: 'Publish',
-        command: () => {
-          this.onChangeOption('Publish');
-        }
-      },
+      }
     ];
+    this.utilsService.hasProductEditPermission.subscribe((result) => {
+      if (result) {
+        this.productOptions = [
+          {
+            label: 'Preview',
+            command: () => {
+              this.onChangeOption('Preview');
+            }
+          },
+          {
+            label: 'Publish',
+            command: () => {
+              this.onChangeOption('Publish');
+            }
+          },
+        ];
+      }
+    })
+
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -102,20 +118,25 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
       let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
-
     }
+
+    this.checkProductOptions()
   };
+
+  storeProductData(id: string) {
+    const product = this.templates?.filter((obj: any) => { return obj.id === id })[0];
+    if (product) {
+      localStorage.setItem('record_id', product.id);
+      localStorage.setItem('app_name', product.title);
+      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
+      localStorage.setItem('product', JSON.stringify(product));
+      this.selectedTemplate = product.id;
+      this.product_url = product.product_url;
+    }
+  }
 
   openExternalLink(productUrl: string | undefined) {
     window.open(productUrl, '_blank');
-  }
-
-  refreshCurrentRoute(): void {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      localStorage.setItem('trigger', 'graph');
-      this.router.navigate([currentUrl]);
-    });
   }
 
   deviceIconClicked(icon: string) {
@@ -133,16 +154,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
+    let email = this.currentUser?.email == localStorage.getItem('product_email') ? this.currentUser?.email : localStorage.getItem('product_email')
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + true, "_blank");
+      window.open(environment.designStudioAppUrl + "?email=" + email + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + true, "_blank");
     } else {
       this.getMeTotalAppsPublishedCount();
     }
-    this.auditUtil.post(this.selectedOption, 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit(this.selectedOption, 1, 'SUCCESS', 'user-audit');
   }
 
   getMeTotalAppsPublishedCount(): void {
-    this.apiService.get('/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
+    this.apiService.get('navi/total_apps_published/' + this.currentUser?.account_id).then((res: any) => {
       if (res && res.status === 200) {
         const restriction_max_value = localStorage.getItem('restriction_max_value');
         if (restriction_max_value) {
@@ -157,21 +179,21 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       }
     }).catch((err: any) => {
       let user_audit_body = {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
     })
   }
@@ -190,7 +212,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       "emailTemplateCode": "PUBLISH_APP_LIMIT_EXCEEDED",
       "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+    this.notifyApi.post('email/notify', body).then((res: any) => {
       if (res && res?.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail });
         let user_audit_body = {
@@ -198,7 +220,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       }
     }).catch((err: any) => {
       let user_audit_body = {
@@ -206,7 +228,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         'url': err?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
@@ -241,38 +263,40 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         this.loadSpinnerInParent.emit(false);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.utilsService.loadSpinner(false);
-        this.auditUtil.post("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit("PUBLISH_APP", 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
           'method': 'POST',
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
+      this.loadSpinnerInParent.emit(false);
+      this.utilsService.loadSpinner(false);
     }).catch(error => {
       let user_audit_body = {
         'method': 'POST',
         'url': error?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.post('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.loadSpinnerInParent.emit(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utilsService.loadSpinner(false)
-      this.auditUtil.post("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
 
     });
   }
-  //get calls 
+  //get calls
   getAllProducts(): void {
-    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.templates = response.data.data;
@@ -280,31 +304,26 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         }
       }).catch(error => {
         let user_audit_body = {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
 
-  selectedProduct(data: any): void {
-    const product = this.templates?.filter((obj: any) => { return obj.id === data.value })[0];
-    if (product) {
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
-      localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
-      this.product_url = product.product_url;
+  checkProductOptions() {
+    if (this.currentUser?.email == this.product?.email) {
+      this.utilsService.hasProductPermission(true)
+    } else {
+      this.utilsService.hasProductPermission(false)
     }
-    this.utilsService.showProductStatusPopup(false);
-    this.refreshCurrentRoute();
-    this.auditUtil.post("TEMPLATE_HEADER_PRODUCT_DROPDOWN_CHANGE", 1, 'SUCCESS', 'user-audit');
   }
+
+
 }
 

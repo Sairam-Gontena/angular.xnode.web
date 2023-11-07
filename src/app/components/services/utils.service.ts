@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SidePanel } from 'src/models/side-panel.enum';
+import { User } from 'src/models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UtilsService {
+  currentUser?: User;
   private showLayoutSubmenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private specSubMenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private dockedNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -25,8 +28,11 @@ export class UtilsService {
   private productStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> = this.productStatus.asObservable();
 
-  private productAlertPopup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public getMeproductAlertPopup: Observable<boolean> = this.productAlertPopup.asObservable();
+  private productChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeIfProductChanges: Observable<boolean> = this.productChanged.asObservable();
+
+  private productAlertPopup: BehaviorSubject<Object> = new BehaviorSubject<Object>({ popup: false, data: {} });
+  public getMeproductAlertPopup: Observable<Object> = this.productAlertPopup.asObservable();
 
   private popupToShow: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public getMeFeedbackPopupTypeToDisplay: Observable<string> = this.popupToShow.asObservable();
@@ -41,21 +47,28 @@ export class UtilsService {
   private specItem: BehaviorSubject<Object> = new BehaviorSubject<Object>(false);
   public getMeSpecItem: Observable<Object> = this.specItem.asObservable();
 
-  private specItemIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public getMeSpecItemIndex: Observable<any> = this.specItemIndex.asObservable();
-
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
-  private showCommentPanel: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public isCommentPanelToggled: Observable<any> = this.showCommentPanel.asObservable();
-
+  private currentSidePanel: BehaviorSubject<SidePanel> = new BehaviorSubject<SidePanel>(SidePanel.None);
+  public sidePanelChanged: Observable<SidePanel> = this.currentSidePanel.asObservable();
 
   private selectedSection: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSelectedSection: Observable<any> = this.selectedSection.asObservable();
   private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeProductId: Observable<any> = this.productId.asObservable();
+  private productEditPermission: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public hasProductEditPermission: Observable<any> = this.productEditPermission.asObservable();
+  private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
 
+  private isCommentAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public checkCommentsAdded: Observable<any> = this.isCommentAdded.asObservable();
+
+  private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public getMeUpdatedCommentList: Observable<any> = this.saveComments.asObservable();
+  private productDetails: BehaviorSubject<Object> = new BehaviorSubject<Object>({});
+  public getMeProductDetails: Observable<Object> = this.productDetails.asObservable();
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -98,6 +111,10 @@ export class UtilsService {
     this.productAlertPopup.next(event);
   }
 
+  toggleProductChange(event: boolean) {
+    this.productChanged.next(event)
+  }
+
   showFeedbackPopupByType(event: any): void {
     this.popupToShow.next(event);
   }
@@ -113,24 +130,33 @@ export class UtilsService {
     this.specItem.next(event);
   }
 
-  passSelectedSpecIndex(event: any): void {
-    this.specItemIndex.next(event);
-  }
-
-  passSelectedSectionIndex(event: any): void {
-    this.sectionIndex.next(event);
-  }
-
-  openCommentPanel(event: any): void {
-    this.showCommentPanel.next(event);
+  openOrClosePanel(pnl: SidePanel): void {
+    this.currentSidePanel.next(pnl);
   }
   saveProductId(event: any): void {
     this.productId.next(event);
   }
-
+  hasProductPermission(event: any): void {
+    this.productEditPermission.next(event);
+  }
 
   saveSelectedSection(event: any): void {
     this.selectedSection.next(event);
+  }
+  toggleSpecPage(event: any): void {
+    this.isInSpec.next(event);
+  }
+
+  commentAdded(event: any): void {
+    this.isCommentAdded.next(event);
+  }
+
+  saveCommentList(event: any) {
+    this.saveComments.next(event);
+  }
+
+  saveProductDetails(event: object): void {
+    this.productDetails.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {
@@ -152,5 +178,23 @@ export class UtilsService {
     } else {
       return `${seconds}seconds`;
     }
+  }
+
+  setUsernameOrDP() {
+    let data = localStorage.getItem("currentUser");
+    let userDp: string = '';
+    if (data) {
+      this.currentUser = JSON.parse(data);
+      if (this.currentUser?.image) {
+        userDp = this.currentUser?.image;
+      } else if (this.currentUser?.first_name && this.currentUser?.last_name) {
+        userDp = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
+      } else {
+        userDp = ''
+      }
+    } else {
+      userDp = ''
+    }
+    return userDp;
   }
 }

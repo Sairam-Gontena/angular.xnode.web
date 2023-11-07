@@ -139,4 +139,82 @@ export const SPEC_DATA =
             "modified_by": "sohail.shroff@salientminds.com"
         },
 
-    ]
+    ];
+
+export const COMMENTS = [
+    {
+        "CreatedBy": {
+            "Id": "user123",
+            "DisplayName": "john_doe",
+            Email: "test"
+        },
+        "CreatedOn": new Date(),
+        "ModifiedBy": {
+            "Id": "user123",
+            "DisplayName": "john_doe",
+            Email: "test"
+        },
+        "ModifiedOn": new Date(),
+        "id": "comment123",
+        "content_id": "content456",
+        "product_id": "product789",
+        "content": [{
+            "title": "References",
+            "content": [
+                {
+                    "title": "Real-time Order Tracking",
+                    "content": "https://example.com/real-time-order-tracking"
+                },
+                {
+                    "title": "Order Status Updates",
+                    "content": "https://example.com/order-status-updates"
+                },
+                {
+                    "title": "Customer Support Integration",
+                    "content": "https://example.com/customer-support-integration"
+                },
+                {
+                    "title": "Logistics Systems Integration",
+                    "content": "https://example.com/logistics-systems-integration"
+                }
+            ],
+            "id": "12f7769e-f4c3-43d0-a4e5-4fd3c22cda3a",
+            "created_on": "2023-10-31 06:49:58",
+            "modified_on": "2023-10-31 06:49:58",
+            "version": 1,
+            "created_by": "arun.ragam@salientminds.com",
+            "modified_by": "arun.ragam@salientminds.com"
+        }],
+        "user_id": "user123",
+        "message": "This is a sample comment.",
+        "crId": "cr789",
+        "linkedCommentIds": ["comment456", "comment789"],
+        "attachments": [
+            {
+                "Id": "user123",
+                "Name": "john_doe",
+                FilePath: "test"
+            },
+            {
+                "Id": "user123",
+                "Name": "john_doe",
+                FilePath: "test"
+            }
+        ],
+        "userMentions": [
+            {
+                "Id": "user123",
+                "DisplayName": "john_doe",
+                Email: "test"
+            },
+            {
+                "Id": "user123",
+                "DisplayName": "john_doe",
+                Email: "test"
+            }
+        ],
+        "itemType": "Comment",
+        "status": "Resolved"
+    }
+
+]

@@ -3,6 +3,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import * as _ from "lodash";
+
 @Component({
   selector: 'xnode-specifications-menu',
   templateUrl: './specifications-menu.component.html',
@@ -11,13 +13,15 @@ import { debounceTime } from 'rxjs/operators';
 
 export class SpecificationsMenuComponent implements OnInit {
   @Input() specData?: any;
-  @Output() text: EventEmitter<any> = new EventEmitter();
+  @Input() keyword?: any;
+  @Output() searchtext: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
-  selectedSection: any;
-  activeIndex: any = 0;
   menuList: any;
+  selectedSection: any;
+  activeIndex: any = [0];
   selectedSecIndex: any;
   searchText: any;
+  multiAccordion: boolean = false;
   private textInputSubject = new Subject<string>();
   isOpen = true;
 
@@ -25,13 +29,30 @@ export class SpecificationsMenuComponent implements OnInit {
     private utils: UtilsService,
     private apiService: ApiService
   ) {
+    this.utils.getMeSpecItem.subscribe((resp: any) => {
+      setTimeout(() => {
+        this.menuList = resp.filter((item: any) => item !== null);
+      },);
+    })
   }
 
   ngOnInit(): void {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isOpen = data;
     })
-    this.utils.passSelectedSpecIndex(0);
+    this.populateMenuList();
+    this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
+      if (this.searchText.length > 0) {
+        this.searchtext.emit(this.searchText);
+        this.multiAccordion = true;
+      } else {
+        this.searchtext.emit('');
+        this.multiAccordion = false;
+      }
+    });
+  }
+
+  populateMenuList() {
     let list = this.specData;
     list.forEach((element: any) => {
       if (element.section) {
@@ -39,49 +60,17 @@ export class SpecificationsMenuComponent implements OnInit {
       }
     });
     this.menuList = [...list]
-    this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
-      if (this.searchText.length > 0) {
-        this.text.emit(this.searchText);
-      } else {
-        this.text.emit('');
-      }
-    });
   }
 
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
-    this.utils.passSelectedSpecIndex(event.index);
   }
 
   onClickSection(event: any, i: any) {
     this.selectedSection = event;
     this.selectedSecIndex = i;
-    this.utils.passSelectedSectionIndex(event);
-  }
-
-  // not using this function
-  getMeSpecList(): void {
-    this.apiService.getApi("specs/retrieve/" + '0b398791-1dc2-4fd6-b78b-b73928844e36')
-      .then(response => {
-        if (response?.status === 200 && !response.data.detail) {
-          const list = response.data;
-          list.forEach((obj: any) => {
-            if (obj?.title) {
-              obj.section.unshift({ title: obj.title, created_by: obj.created_by, created_on: obj.created_on, modified_by: obj.modified_by, modified_on: obj.modified_on })
-            }
-          })
-
-          this.specData = response.data;
-          this.specData.pop();
-        } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data.detail });
-        }
-        this.utils.loadSpinner(false);
-
-      }).catch(error => {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-      });
+    this.utils.saveSelectedSection(event);
   }
 
   shortTitle(title: string) {
@@ -97,8 +86,29 @@ export class SpecificationsMenuComponent implements OnInit {
       this.utils.disableSpecSubMenu();
     }
   }
+
+  clearInput() {
+    this.searchtext.emit('');
+    this.searchText = '';
+    this.multiAccordion = false;
+    this.activeIndex = [0];
+  }
+
   onInput() {
     this.textInputSubject.next(this.searchText);
   }
 
+  ngOnChanges() {
+    this.keyword = this.keyword;
+    this.specData = this.specData;
+    this.openAccordions();
+  }
+
+  openAccordions() {
+    this.specData.forEach((element: any, index: any) => {
+      this.activeIndex.push(index)
+    });
+    if (this.searchText?.length > 0)
+      this.multiAccordion = true;
+  }
 }

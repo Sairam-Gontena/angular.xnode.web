@@ -26,6 +26,11 @@
     opacity: 0.8;
 }
 
+:host ::ng-deep.p-button.send{
+  background-color:transparent!important;
+  border:1px solid white!important;
+}
+
 :host ::ng-deep.p-dialog {
     border: 1px solid #595959 !important;
 }
@@ -139,7 +144,7 @@
 }
 
 .report-list-height {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 150px);
     overflow-y: auto;
 }
 

@@ -1,9 +1,15 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
+import * as _ from "lodash";
 import { DataService } from '../../er-modeller/service/data.service';
+import { SidePanel } from 'src/models/side-panel.enum';
+import { SECTION_VIEW_CONFIG } from '../section-view-config';
+import { CommentsService } from 'src/app/api/comments.service';
+import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
+
 @Component({
   selector: 'xnode-specifications-content',
   templateUrl: './specifications-content.component.html',
@@ -12,16 +18,22 @@ declare const SwaggerUIBundle: any;
 
 export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
+  @Input() keyword: any;
+  @Input() noResults: any;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
+  @Output() openAndGetComments = new EventEmitter<any>();
+  @Output() getCommentsAfterUpdate = new EventEmitter<any>();
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   app_name: any;
   iframeSrc: SafeResourceUrl = '';
   dataModelIframeSrc: SafeResourceUrl = '';
+  searchTerm: any;
   showMoreContent?: boolean = false;
   selectedSpecItem: any;
   specItemList: any = [];
   selectedSpecItemListTitles: any = [];
-  selectedSectionIndex: any;
-  specItemIndex: any;
+  selectedContent: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
   dataToExpand: any
@@ -30,90 +42,113 @@ export class SpecificationsContentComponent implements OnInit {
   bodyData: any[] = [];
   dataQualityData: any[] = [];
   userInterfaceheaders: string[] = [];
+  isCommentPanelOpened: boolean = false;
+  isOpenSmallCommentBox: boolean = false;
+  smallCommentContent: string = '';
+  product: any;
+  isContentSelected = false;
+  isCommnetsPanelOpened: boolean = false;
+  commentList: any;
+  currentUser: any;
+  usersList: any;
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
-    private dataService: DataService,) {
+    private dataService: DataService,
+    private apiservice: ApiService,
+    private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+    }
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
-        event.forEach((element: any) => {
-          if (this.specItemList.length === 0) {
-            this.specItemList = element.section;
-          } else {
-            this.specItemList = this.specItemList.concat(element.section)
-          }
-        });
-        this.specItemList.forEach((obj: any) => {
-          if (obj.title === 'User Personas' || obj.title === 'Error Handling'
-            || obj.title === 'Stakeholder Approvals' || obj.title === 'Version Control' || obj.title === 'Glossary'
-            || obj.title === 'Historical Data Load') {
-            obj.contentType = 'table'
-          } else if (obj.title === 'User Interface Design') {
-            obj.contentType = 'iframe'
-          } else if (obj.title === 'Feature Descriptions' || obj.title === 'Usecases'
-            || obj.title === 'Reporting Requirements' || obj.title === 'Technical Known Issues' || obj.title === 'Technical Known Issues'
-            || obj.title === 'Technical Known Issues' || obj.title === 'Technical Assumptions'
-            || obj.title === 'Functional Assumptions' || obj.title === 'Functional Known Issues' || obj.title === 'Integration Points'
-          ) {
-            obj.contentType = 'list'
-          } else if (obj.title === 'Data Management Persistence') {
-            obj.contentType = 'data-model';
-            this.makeTrustDataModelUrl()
-          } else if (obj.title === 'Workflows') {
-            obj.contentType = 'x-flows';
-          }
-          else if (obj.title === 'Data Dictionary' || obj.title === 'User Interfaces' || obj.title === 'Data Quality Checks'
-            || obj.title === 'Functional Known Issues' || obj.title === 'Technical Known Issues' || obj.title === 'Annexures' || obj.title === 'Functional Dependencies'
-            || obj.title === 'Business Rules') {
-            obj.contentType = 'json'
-            if (obj.title === 'User Interfaces') {
-              this.userInterfaceheaders = Object.keys(obj.content[0]);
-              obj.content.map((item: any) => this.bodyData.push({ 'title': item.title, 'content': Object.values(item.content) }));
-            }
-            if (obj.title === 'Data Quality Checks') {
-              obj.content.map((item: any) => {
-                if (item.content[0]) {
-                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content[0]), 'content': Object.values(item.content[0]) })
-                } else {
-                  this.dataQualityData.push({ 'header': item?.title, 'title': Object.keys(item.content), 'content': Object.values(item.content) })
-                }
-              });
-            }
-          }
-          else if (obj.title === 'Interface Requirements') {
-            obj.contentType = 'header-list'
-          } else if (obj.title === 'OpenAPI Spec') {
-            obj.contentType = 'OpenAPI'
-          } else {
-            obj.contentType = 'paragraph'
-          }
-        })
+        this.specItemList = event;
+      }
+    })
+    this.utils.getMeSelectedSection.subscribe((event: any) => {
+      if (event) {
+        this.selectedSpecItem = event;
+        this.closeFullScreenView();
       }
     })
 
-    this.utils.getMeSpecItemIndex.subscribe((event: any) => {
-      if (event) {
-        this.specItemIndex = event;
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
+    });
+    this.utils.checkCommentsAdded.subscribe((event: any) => {
+      if (event)
+        this.getLatestComments();
+    })
+  }
+
+
+  ngOnInit(): void {
+    this.utils.openDockedNavi.subscribe((data: any) => {
+      if (data) {
+        this.isCommnetsPanelOpened = false;
       }
     })
-    this.utils.getMeSectionIndex.subscribe((event: any) => {
-      if (event) {
-        if (this.specExpanded) {
-          this.specExpanded = false;
-          setTimeout(() => {
-            this.scrollToItem(event.title)
-            this.fetchOpenAPISpec()
-          }, 500)
-        } else {
-          this.scrollToItem(event.title)
-        }
+    const record_id = localStorage.getItem('record_id');
+    const product = localStorage.getItem('product');
+    this.app_name = localStorage.getItem('app_name');
+    let userData: any
+    userData = localStorage.getItem('currentUser');
+    let email = JSON.parse(userData).email;
+    let user_id = JSON.parse(userData).id;
+    if (product) {
+      this.product = JSON.parse(product)
+    }
+    if (record_id) {
+      this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
+    }
+    this.makeTrustedUrl();
+    this.getLatestComments();
+    this.getUsersData();
+  }
+
+  ngAfterViewInit() {
+    this.fetchOpenAPISpec()
+  }
+
+  ngOnChanges() {
+    this.specItemList = this.specData;
+    this.searchTerm = this.keyword;
+  }
+
+
+  checkedToggle(type: any, item: any, content: any) {
+    this.specItemList.forEach((obj: any) => {
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id && type === 'table')
+            conObj.showTable = true;
+          else
+            conObj.showTable = false;
+        })
       }
     })
   }
 
-  checkedToggle(bool: boolean) {
-    this.checked = bool;
+  getUsersData() {
+    this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
+      this.utils.loadSpinner(true);
+      if (resp?.status === 200) {
+        let data = [] as any[];
+        resp.data.forEach((element: any) => {
+          let name: string = element?.first_name;
+          data.push(name)
+        });
+        this.usersList = data;
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((error) => {
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+      console.error(error);
+    })
   }
 
   isObject(value: any): boolean {
@@ -124,80 +159,85 @@ export class SpecificationsContentComponent implements OnInit {
     return Object.values(obj)
   }
 
-  ngAfterViewInit() {
-    this.fetchOpenAPISpec()
-  }
-
-  ngOnInit(): void {
-    const record_id = localStorage.getItem('record_id');
-    this.app_name = localStorage.getItem('app_name');
-    let userData: any
-    userData = localStorage.getItem('currentUser');
-    let email = JSON.parse(userData).email;
-    let user_id = JSON.parse(userData).id;
-    if (record_id) {
-      this.targetUrl = environment.designStudioAppUrl + "?email=" + email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
-    }
-    this.makeTrustedUrl();
+  getLatestComments() {
+    this.utils.loadSpinner(true);
+    this.commentsService.getComments().then((response: any) => {
+      if (response && response.data) {
+        this.utils.saveCommentList(response.data)
+        this.commentList = response.data;
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(false);
+    });
   }
 
   isArray(item: any) {
     return Array.isArray(item);
-
   }
 
-  onClickSeeMore(item: any, i: any): void {
-    this.selectedSectionIndex = i;
+  _onClickSeeMore(event: any): void {
+    this.selectedContent = event.content;
     this.showMoreContent = !this.showMoreContent;
     this.specItemList.forEach((obj: any) => {
-      if (obj.title === item.title) {
-        obj.collapsed = true;
+      if (obj.id === event.item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === event.content.id)
+            conObj.collapsed = true;
+        })
       }
     })
   }
-  onClickSeeLess(item: any, i: any): void {
-    this.selectedSectionIndex = i;
+
+  _onClickSeeLess(event: any): void {
+    this.selectedContent = event.content;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
-      if (obj.title === item.title) {
-        obj.collapsed = false;
+      if (obj.id === event.item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === event.content.id)
+            conObj.collapsed = false;
+        })
       }
     })
     setTimeout(() => {
-      this.utils.passSelectedSectionIndex(item);
+      this.utils.saveSelectedSection(event.item);
     }, 100)
   }
 
-  scrollToItem(itemId: string) {
-    const element = document.getElementById(itemId);
+  scrollToItem() {
+    const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
   getMeBanner(event: any) {
-    return './assets/' + event.title.toLowerCase().replace(/ /g, '') + '.svg';
+    return './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg';
   }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
+
   makeTrustDataModelUrl(): void {
     this.dataModelIframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://dev-xnode.azurewebsites.net/#/configuration/data-model/overview')
   }
 
-  setColumnsToTheTable(data: any) {
-    Object.entries(data.map((item: any) => {
-      if (typeof (item) == 'string') { return }
-    }))
-    let cols;
-    if (data[0]) {
-      cols = Object.entries(data[0]).map(([field, value]) => ({ field, header: field, value }));
-      return cols
-    } else {
-      cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
-      return cols
+  toTitleCase(str: any): void {
+    let words = str.split(' ');
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
+      words[i] = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }
+    return words.join(' ');
+  }
+
+  setColumnsToTheTable(data: any) {
+    let cols;
+    cols = Object.entries(data).map(([field, value]) => ({ field, header: this.toTitleCase(field), value }));
+    return cols
   }
 
   async fetchOpenAPISpec() {
@@ -218,24 +258,118 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  expandComponent(val: any): void {
-    this.dataToExpand = val;
-    if (val.dataModel || val.xflows || val.swagger || val.dashboard || val.table || val.dataQualityData || val.userInterfaces) {
-      this.specExpanded = true
+  _expandComponent(val: any): void {
+    if (val) {
+      this.selectedSpecItem = val;
+      this.utils.saveSelectedSection(val);
+      this.specExpanded = true;
     } else {
       this.specExpanded = false;
-      setTimeout(() => {
-        this.fetchOpenAPISpec()
-      }, 100)
     }
   }
 
-  onClickComment(item: any) {
-    this.utils.saveSelectedSection(item);
-    this.utils.openCommentPanel(true);
+  closeFullScreenView(): void {
+    this.specExpanded = false;
+    this.scrollToItem();
+    this.fetchOpenAPISpec();
   }
 
+  _showAddCommnetOverlay(event: any) {
+    this.specItemList.forEach((element: any) => {
+      if (event.item.id === element.id)
+        element.content.forEach((subEle: any) => {
+          if (event.content.id === subEle.id) {
+            subEle.showCommentOverlay = true;
+            this.isOpenSmallCommentBox = true;
+          } else {
+            subEle.showCommentOverlay = false;
+          }
+        });
+    });
+  }
 
+  getTestCaseKeys(testCase: any): string[] {
+    return Object.keys(testCase);
+  }
+
+  openSmallCommentBox(content: any) {
+    if (content && content.id) {
+      this.isOpenSmallCommentBox = true;
+    }
+  }
+
+  closeSmallCommentBix() {
+    this.isOpenSmallCommentBox = false;
+  }
+
+  sendComment(comment: any) {
+    this.utils.openOrClosePanel(SidePanel.Comments);
+    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
+    this.isOpenSmallCommentBox = false;
+    this.commentsService.getComments(this.selectedSpecItem)
+      .then((commentsReponse: any) => {
+        let body: any = {
+          product_id: localStorage.getItem('record_id'),
+          content_id: this.selectedSpecItem.id,
+        };
+        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
+          this.isOpenSmallCommentBox = false;
+          body.comments = [
+            ...commentsReponse['data']['comments'],
+            ...[{
+              user_id: user_id,
+              message: comment,
+            }]
+          ]
+        } else {
+          body.comments = [{
+            user_id: user_id,
+            message: comment
+          }]
+        }
+        this.commentsService.updateComments(body)
+          .then((response: any) => {
+            this.smallCommentContent = "";
+            this.getCommentsAfterUpdate.emit(comment);
+            this.utils.openOrClosePanel(SidePanel.Comments);
+          })
+          .catch((error: any) => {
+            this.smallCommentContent = "";
+          });
+      })
+      .catch(res => {
+        console.log("comments get failed");
+      })
+  }
+
+  checkSelection(item: any, obj: any) {
+    this.selectedSpecItem = obj;
+    const selection = window.getSelection();
+    if (selection?.toString() !== '') {
+      const selectedElement = selection?.anchorNode?.parentElement;
+      const selectedContent = selection?.toString();
+      this.specItemList.forEach((element: any) => {
+        if (item.id === element.id)
+          element.content.forEach((subEle: any) => {
+            if (obj.id === subEle.id) {
+              subEle.showCommentOverlay = true;
+              this.isOpenSmallCommentBox = true;
+            } else {
+              subEle.showCommentOverlay = false;
+            }
+          });
+      });
+    } else {
+      console.log('Content is not selected.');
+    }
+  }
+
+  checkParaViewSections(title: string) {
+    return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;
+  }
+  checkListViewSections(title: string) {
+    return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
+  }
 }
 
 

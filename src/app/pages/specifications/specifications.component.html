@@ -1,15 +1,28 @@
-<div class="flex" *ngIf="specData?.length">
-    <xnode-specifications-menu [specData]="specData"></xnode-specifications-menu>
+<div class="flex" *ngIf="specData?.length;else showHeader">
+    <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
+        [specData]="specData"></xnode-specifications-menu>
     <div class="w-full flex">
-        <div
-            [ngClass]="{'comments-opened': isCommnetsPanelOpened, 'side-menu-comments-opened': isCommnetsPanelOpened && isSideMenuOpened ,'spec-content-sideMenu': isSideMenuOpened, 'spec-content': !isSideMenuOpened,'spec-content-navi':isNaviOpened,'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
-            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"></xnode-specifications-header>
-            <xnode-specifications-content [specData]="specData"></xnode-specifications-content>
+        <div [ngClass]="{ 
+            'spec-content-sideMenu': isSideMenuOpened, 
+            'spec-content': !isSideMenuOpened,
+            'spec-content-navi':isNaviOpened,
+            'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
+            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+                (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+            <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
+            </xnode-specifications-content>
         </div>
-        <div [ngClass]="isCommnetsPanelOpened ? 'comments-panel' : 'comments-panel-hidden'">
-            <xnode-comments-panel></xnode-comments-panel>
+        <div [ngClass]="isCRsPanelOpened ? 'block' : 'hidden'">
+            <xnode-change-requests-panel></xnode-change-requests-panel>
         </div>
     </div>
-    <xnode-product-alert-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
-        [data]="productStatusPopupContent" [showProductStatusPopup]="showSpecGenaretePopup"></xnode-product-alert-popup>
 </div>
+
+<ng-template #showHeader>
+    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+        (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+</ng-template>
+
+<xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+    [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
+    [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generateSpec()"></xnode-spec-gen-popup>

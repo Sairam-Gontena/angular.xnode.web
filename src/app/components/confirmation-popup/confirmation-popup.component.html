@@ -4,16 +4,17 @@
             {{Data?.type + ' User'}}
         </p>
     </ng-template>
-
     <div class="flex font-medium">
         <span>
             Are you sure you want to {{invitationType}}
         </span>
     </div>
     <div class="flex justify-content-end mt-6">
-        <p-button label="Cancel" styleClass="p-button-sm p-button-rounded p-button-secondary" class="mr-3"
+        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
             (click)="onReject()"></p-button>
-        <p-button [label]="Data?.type" styleClass="p-button-sm p-button-rounded btn-primary"
-            (click)="onSuccess()"></p-button>
+        <span class="invite">
+            <p-button [label]="Data?.type" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+                (click)="onSuccess()"></p-button>
+        </span>
     </div>
 </p-dialog>

@@ -1,126 +1,189 @@
-.signup-image{
-    background-color: #000759;
+.signup-image {
+   background-color: #000759;
 }
 
-.signup-div{
-    background-color: #FFF;
+.signup-div {
+   background-color: #FFF;
 }
 
-.step-para-opacity{
-   color:#4B4B4B;
+.step-para-opacity {
+   color: #4B4B4B;
    opacity: 0.6;
 }
 
-.page-header{
-    color: #000759;
+.page-header {
+   color: #000759;
 }
 
-.step-para{
-    color:#4B4B4B;
- }
+.step-para {
+   color: #4B4B4B;
+}
 
- .border-div{
-    border: 1px solid #BFBFBF;
- }
+.border-div {
+   border: 1px solid #BFBFBF;
+}
 
 
- 
- .business-type{
-    font-family: Inter;
- }
 
- @media (min-width: 1330px) and (max-width: 1800px) {
-   .xnode-logo-div{
-      padding: 2rem!important;
-   }
-   .logo-div,.account-type-text{
-      padding:1rem!important;
-      margin-bottom: 0.25rem!important;
-      font-size: 3rem!important;
-   }
-   .account-type-image{
-      height: 330px!important;
-   }
-   .signup-div{
-      padding: 0.5rem!important;
-   }
-   .m-md-3{
-      margin: 1.5rem 0.25rem!important;
-   }
-   .account-type-div{
-      padding-top: 1rem!important;
-   }
- }
+.business-type {
+   font-family: Inter;
+}
 
- @media (max-width: 640px) {
+@media (min-width: 1330px) and (max-width: 1800px) {
+   .xnode-logo-div {
+      padding: 2rem !important;
+   }
+
+   .logo-div,
+   .account-type-text {
+      padding: 1rem !important;
+      margin-bottom: 0.25rem !important;
+      font-size: 3rem !important;
+   }
+
+   .account-type-image {
+      height: 330px !important;
+   }
+
+   .signup-div {
+      padding: 0.5rem !important;
+   }
+
+   .m-md-3 {
+      margin: 1.5rem 0.25rem !important;
+   }
+
+   .account-type-div {
+      padding-top: 1rem !important;
+   }
+}
+
+@media (max-width: 640px) {
    .page-header {
-      font-size: 38px!important;
-      margin-bottom: 0.25rem!important;
+      font-size: 38px !important;
+      margin-bottom: 0.25rem !important;
    }
-   .signup-div {
-      padding:0rem!important;
-      width: 100%!important;
-      border-radius: 0.25rem!important;
-      background-color: #000759!important;
-   }
-   .account-type-form{
-      margin:20px!important;
-      width: 100%!important;    
-      border-radius: 15px!important;
-      padding: 20px!important;
-   }
-   .border-div{
-      padding: 0.25rem 0.5rem!important;
-   }
-   .step-para{
-      font-size: 16px!important;
-      margin-bottom: 0.25rem!important;
-   }
-   .p-size-12{
-      font-size: 12px!important;
-   }
-   .p-size-18{
-      font-size: 18px!important;
-      font-weight: 600!important;
-   }
-   .step-para-opacity{
-      margin-bottom: 0.25rem!important;
-   }
-   .mt-xs-4{
-      margin-top:0.75rem!important;
-   }
-   .my-xs-4{
-      margin:4rem 0.25rem!important;
-   }
-   .p-l-xs-2{
-      padding-left: 0.5rem!important;
-   }
-   .account-type-div{
-      padding: 2rem 2rem 0rem 2rem!important; 
-   }
- }
 
- @media (min-width: 641px) and (max-width: 992px) {
    .signup-div {
-      padding:0rem!important;
-      width: 100%!important;
-      border-radius: 0.25rem!important;
-      background-color: #000759!important;
+      padding: 0rem !important;
+      width: 100% !important;
+      border-radius: 0.25rem !important;
+      background-color: #000759 !important;
    }
-   .bg-xnode-blue{
-      background-color: #000759!important;
+
+   .account-type-form {
+      margin: 20px !important;
+      width: 100% !important;
+      border-radius: 15px !important;
+      padding: 20px !important;
    }
-   .account-type-div{
+
+   .border-div {
+      padding: 0.25rem 0.5rem !important;
+   }
+
+   .step-para {
+      font-size: 16px !important;
+      margin-bottom: 0.25rem !important;
+   }
+
+   .p-size-12 {
+      font-size: 12px !important;
+   }
+
+   .p-size-18 {
+      font-size: 18px !important;
+      font-weight: 600 !important;
+   }
+
+   .step-para-opacity {
+      margin-bottom: 0.25rem !important;
+   }
+
+   .mt-xs-4 {
+      margin-top: 0.75rem !important;
+   }
+
+   .my-xs-4 {
+      margin: 4rem 0.25rem !important;
+   }
+
+   .p-l-xs-2 {
+      padding-left: 0.5rem !important;
+   }
+
+   .account-type-div {
+      padding: 2rem 2rem 0rem 2rem !important;
+   }
+}
+
+@media (min-width: 641px) and (max-width: 992px) {
+   .signup-div {
+      padding: 0rem !important;
+      width: 100% !important;
+      border-radius: 0.25rem !important;
+      background-color: #000759 !important;
+   }
+
+   .bg-xnode-blue {
+      background-color: #000759 !important;
+   }
+
+   .account-type-div {
       display: flex;
       flex-direction: row;
       justify-content: center;
    }
-   .account-type-form{
-      padding: 1rem 5rem!important;
-      border-radius: 8px!important;
-      width: 75%!important;
+
+   .account-type-form {
+      padding: 1rem 5rem !important;
+      border-radius: 8px !important;
+      width: 75% !important;
    }
-   .bg-image{
-      padding: 0px!important;
+
+   .bg-image {
+      padding: 0px !important;
    }
- }
+}
+
+:host ::ng-deep .p-dropdown-panel {
+   border: 1px solid #535354;
+   background-color: #2E2D36 !important;
+   color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-header {
+   background-color: #2E2D36 !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items-wrapper {
+   background-color: #2E2D36 !important;
+   max-height: 180px !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+   background-color: #2E2D36 !important;
+   color: white !important;
+}
+
+:host ::ng-deep .p-dropdown-item {
+   color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-item:hover {
+   color: #2E2D36 !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items {
+   padding: 0;
+
+}
+
+:host ::ng-deep .p-dropdown-filter-container {
+   border: 1px solid transparent !important;
+   background: transparent;
+}
+
+.selected-item {
+   font-weight: bold;
+}

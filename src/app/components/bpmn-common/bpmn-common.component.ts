@@ -29,6 +29,7 @@ import { Router } from '@angular/router';
 export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   @Output() dataFlowEmitter = new EventEmitter<any>();
+  @Input() specExpanded?: boolean;
   @Input() dataToExpand: any;
   @Input() item: any;
 
@@ -64,7 +65,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   product: any;
   product_id: any;
   email: any;
-  isExpanded: boolean = false;
   showBpmn: boolean = false;
 
   constructor(private api: ApiService, private utilsService: UtilsService, private auditUtil: AuditutilsService, private router: Router) {
@@ -102,13 +102,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     this.initializeBpmn();
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
     this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
-
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.dataToExpand?.xflows) {
-      this.isExpanded = true;
-    }
   }
 
   switchWindow() {
@@ -179,13 +172,13 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
   getFlow(flow: String) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
+    this.api.get('navi/get_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
         let appName = localStorage.getItem('app_name')
         let xflowJson = {
           'Flows': response.data.Flows.filter((f: any) => {
@@ -200,60 +193,60 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
         this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
         this.jsonWorkflowToShow = JSON.parse(this.jsonWorkflow);
 
-        this.auditUtil.post('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.loadXFlows(workflow);
         this.jsonWorkflow = JSON.stringify(workflow, null, 2);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
-        this.auditUtil.post('BPMN_FLOWS', 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('BPMN_FLOWS', 1, 'FAILURE', 'user-audit');
       }
     }).catch(error => {
       let user_audit_body = {
         'method': 'GET',
         'url': error?.request?.responseURL
       }
-      this.auditUtil.post('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
       this.loadXFlows(workflow);
       this.jsonWorkflow = JSON.stringify(workflow, null, 2);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      this.auditUtil.post('BPMN_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit('BPMN_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
     });
     this.getOverview();
   }
 
   getOnboardingFlow() {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api.get('/retrieve_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
+    this.api.get('navi/get_xflows/' + this.currentUser?.email + '/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
         let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
-        this.auditUtil.post('BPMN_ONBOARDING_FLOWS', 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit('BPMN_ONBOARDING_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
-        this.auditUtil.post('BPMN_ONBOARDING_FLOWS', 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('BPMN_ONBOARDING_FLOWS', 1, 'FAILURE', 'user-audit');
       }
     }).catch((error) => {
       let user_audit_body = {
         'method': 'GET',
         'url': error?.request?.responseURL
       }
-      this.auditUtil.post('GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.auditUtil.postAudit('GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      this.auditUtil.post('BPMN_ONBOARDING_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
+      this.auditUtil.postAudit('BPMN_ONBOARDING_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
     });
   }
 
@@ -277,14 +270,14 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   getInsights() {
     let currentUserString = localStorage.getItem('currentUser');
     let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
-    this.api.get("/retrive_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.api.get("navi/get_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
           this.graph(this.useCases);
@@ -294,7 +287,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
           this.utilsService.loadSpinner(false);
           this.utilsService.showProductStatusPopup(true);
         }
@@ -304,7 +297,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
@@ -312,14 +305,14 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
 
   getOverview() {
-    this.api.get("/retrive_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.api.get("navi/get_overview/" + this.currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_RETRIEVE_OVERVIEW_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_RETRIEVE_OVERVIEW_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           this.overview = response.data;
           this.sideBar = true;
         } else {
@@ -327,7 +320,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_RETRIEVE_OVERVIEW_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_RETRIEVE_OVERVIEW_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.detail });
         }
       })
@@ -336,7 +329,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_RETRIEVE_OVERVIEW_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_RETRIEVE_OVERVIEW_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
 
@@ -521,7 +514,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
           'url': response?.request?.responseURL,
           'payload': xFlowJsonCopy
         }
-        this.auditUtil.post('LOAD_XFLOWS_JSON_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('LOAD_XFLOWS_JSON_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
         const layoutedDiagramXML = await layoutProcess(this.xml);
         this.importDiagram(layoutedDiagramXML);
       } else {
@@ -530,7 +523,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
           'url': response?.request?.responseURL,
           'payload': xFlowJsonCopy
         }
-        this.auditUtil.post('LOAD_XFLOWS_JSON_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('LOAD_XFLOWS_JSON_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
       }
       this.utilsService.loadSpinner(false);
@@ -542,7 +535,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
         'url': error?.request?.responseURL,
         'payload': xFlowJsonCopy
       }
-      this.auditUtil.post('LOAD_XFLOWS_JSON_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+      this.auditUtil.postAudit('LOAD_XFLOWS_JSON_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utilsService.loadSpinner(false);
     });
@@ -968,9 +961,8 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     return svg.node();
   }
 
-  expandDataFlows(val: any): void {
-    this.dataFlowEmitter.emit({ xflows: val, item: this.item });
-    this.isExpanded = val;
+  expandDataFlows(): void {
+    this.dataFlowEmitter.emit(this.dataToExpand);
   }
 
 }

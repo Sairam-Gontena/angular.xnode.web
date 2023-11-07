@@ -4,4 +4,10 @@
 
 .swagger-h {
     height: calc(100vh - 100px);
+    background: #fff;
+}
+
+.data-dictionary {
+    overflow: scroll;
+    height: calc(100vh - 216px);
 }

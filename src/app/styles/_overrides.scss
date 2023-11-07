@@ -48,15 +48,34 @@
 }
 
 .p-confirm-dialog-reject {
-    background: var(--secondary-color);
+    color: #ffffff;
+    background: #23222B;
     font-size: 12px;
     padding-top: 6px;
     padding-bottom: 6px;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color) !important;
+    border: 1px solid #ffffff;
+    border-radius: 2rem;
 }
 
 .p-confirm-dialog-reject:hover {
-    background: var(--secondary-color) !important;
-    color: var(--primary-color) !important;
+    background: #23222B;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.p-confirm-dialog-accept {
+    background: var(--primary-color);
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-radius: 2rem;
+    border: 1px solid var(--primary-color);
+    color: #ffffff !important;
+}
+
+.p-confirm-dialog-accept:hover {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--primary-color) !important;
+
 }

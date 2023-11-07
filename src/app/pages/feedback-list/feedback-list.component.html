@@ -1,5 +1,5 @@
 <div class="feedback-div grid m-0 p-0">
-    <div class="feedback-header col-12 py-2 px-5 border-bottom-2 border-100">
+    <div class="feedback-header col-12 py-2 px-5 border-bottom-2 border-100  ">
         <div class="flex justify-content-between flex-wrap">
             <div class="flex">
                 <div class="flex flex-column justify-content-center">
@@ -25,11 +25,12 @@
                 (onChange)="onChangeArea($event)"></p-selectButton>
         </div>
     </div>
-    <div class="grid col-12" *ngIf="reportList?.length">
-        <div class="md:col-5 sm:col-12 p-0 feedback-list">
+    <div class="grid col-12 m-0 p-0" *ngIf="reportList?.length">
+        <div class="md:col-5 sm:col-12 feedback-list p-0">
             <div class="report-list-height">
                 <div class="list-item pl-4 pr-4 pt-4 pr-4  border-bottom-1"
-                    *ngFor="let report of reportList;let i= index" [ngClass]="{'active': selectedIndex === i}">
+                    *ngFor="let report of reportList;let i= index" [ngClass]="{'active': selectedIndex === i}"
+                    [id]="report.id">
                     <div (click)="onSelectListItem(report,i,false)">
                         <div class="flex justify-content-between flex-wrap">
                             <b class="text-base">{{getMeTitle(report)}}</b>
@@ -50,8 +51,8 @@
                                     </p>
                                 </div>
                                 <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
-                                    {{selectedListItem.modifiedOn | date:'medium'}}
-                                    <!-- {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
+                                    <!-- {{selectedListItem.modifiedOn | date:'medium'}} -->
+                                    {{report.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
                                 </div>
                                 <p class="m-0 text-sm font-normal pl-2">
                                     Status <span class="text-sm open">
@@ -63,71 +64,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-7 feedback-detail" *ngIf="reportList?.length">
-                <div class="report-list-height">
-                    <div class="grid m-0">
-                        <div class="col-12 px-4 border-bottom-1">
-                            <div class="flex justify-content-between flex-wrap">
-                                <p class="text-2xl font-medium m-0">{{getMeTitle(selectedListItem)}}
-                                </p>
-                                <div class="flex align-items-center">
-                                    <p-chip [label]="selectedListItem?.feedbackStatusId" class="ml-3"></p-chip>
-                                </div>
-                            </div>
-
-                            <p class="font-light text-base">
-                                {{selectedListItem.feedbackText}}
-                            </p>
-                            <div *ngFor="let file of selectedListItem?.userFiles">
-                                <div class="flex align-items-center" *ngIf="file?.filePath">
-                                    <img src="./assets/attachment.svg" alt="att" class="mr-2">
-                                    <p class="m-0">1 Attachment</p>
-                                </div>
-                                <img [src]="file.filePath" alt="att img" width="140">
-                            </div>
-                            <div class="flex justify-content-between flex-wrap align-items-center mt-4">
-                                <div class="flex align-items-center">
-                                    <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
-                                        [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                                    <p class="m-0 pl-2 font-sm font-medium">
-                                        {{selectedListItem?.userName|titlecase}}<span
-                                            class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                            {{selectedListItem.modifiedOn | date:'medium'}}
-                                            <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
-                                        </span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ng-container *ngIf="selectedItemConversation?.length > 0">
-                        <div class="m-0 pt-2 pb-2 pl-4 pr-4"
-                            *ngFor="let conv of selectedItemConversation; let i=index;">
-                            <xnode-feedback-conversation [conversation]="conv" [index]="i"
-                                conversationSourceId="conversationSourceId"
-                                [conversationSourceType]="selectedArea"></xnode-feedback-conversation>
-                        </div>
-                    </ng-container>
-                    <div class="grid m-0 pl-4 pr-4 pt-2 pb-2"
-                        *ngIf="selectedItemConversation?.length === 0 || showMessageBox">
-                        <div class="col-md-12">
-                            <div class="flex justify-content-between flex-wrap">
-                                <div class="flex align-items-center">
-                                    <p-avatar [label]="getMeUserAvatar(reportItem)" shape="circle"
-                                        [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                                    <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}
-                                    </p>
-                                </div>
-                                <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
-                                    (click)="onClickSend()"></p-button>
-                            </div>
-                            <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"
-                                (keydown.enter)="onClickSend()"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-        <div class="md:col-7 feedback-detail" *ngIf="reportList?.length">
+        <div class="md:col-7 feedback-detail p-0" *ngIf="reportList?.length">
             <div class="report-list-height">
                 <div class="grid m-0">
                     <div class="col-12 mt-1 px-4 selected-item border-bottom-1">
@@ -167,7 +105,7 @@
                                     [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                                 <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                         class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                        {{selectedListItem.modifiedOn | date:'medium'}}
+                                        {{selectedListItem.createdOn | date:'medium'}}
                                         <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                                     </span></p>
                             </div>
@@ -191,7 +129,7 @@
                                 <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name + ' '+
                                     currentUser?.last_name |titlecase}}</p>
                             </div>
-                            <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
+                            <p-button label="Send" styleClass="p-button-outlined send" [rounded]="true"
                                 (click)="onClickSend()"></p-button>
                         </div>
                         <textarea rows="5" cols="30" pInputTextarea class="w-full mt-2" [(ngModel)]="message"
@@ -257,7 +195,7 @@
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                         <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                 class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                {{selectedListItem?.modifiedOn | date:'medium'}}
+                                {{selectedListItem?.createdOn | date:'medium'}}
                                 <!-- {{selectedListItem?.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                             </span></p>
                     </div>
@@ -280,7 +218,7 @@
                         <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
                             {{currentUser?.last_name|titlecase}}</p>
                     </div>
-                    <p-button label="Send" styleClass="p-button-outlined p-button-rounded"
+                    <p-button label="Send" styleClass="p-button-outlined send" [rounded]="true"
                         (click)="onClickSend()"></p-button>
                 </div>
                 <textarea rows="5" (keydown.enter)="onClickSend()" cols="30" pInputTextarea class="w-full"

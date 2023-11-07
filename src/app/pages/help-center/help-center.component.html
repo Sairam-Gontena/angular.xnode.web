@@ -6,11 +6,11 @@
         </div>
         <div class="flex flex-column justify-content-center text-center">
             <p class="text-3xl font-medium">Hello. How can we help you?</p>
-            <p>if you couldn’t find the topic, mail us at <a class='no-underline'
+            <p>if you couldn’t find the topic, mail us at <a class='no-underline help-text'
                     [href]="'mailto:support@xnode.ai?subject=Assistance Needed - '+selectedjson?.title" target="_blank"
                     id="mail">support@xnode.ai</a></p>
             <p-button label="Send Email" (click)="sendEmail()"
-                styleClass="p-button-lg p-button-rounded font-medium text-lg w-18rem send-email-btn"></p-button>
+                styleClass="p-button-lg font-medium text-lg w-18rem send-email-btn"  [rounded]="true"></p-button>
         </div>
         <div class="">
             <img src="../../../assets/Group-1000004292.svg" alt="help-center" height="287px" width="287px" />
@@ -27,7 +27,7 @@
                     (click)="clearSearchText()"></i>
             </div>
             <p-button (click)="showDialog()" label="Demo video"
-                styleClass="p-button-lg p-button-rounded p-button-brand font-medium text-lg demo-video"></p-button>
+                styleClass="p-button-lg p-button-brand font-medium text-lg demo-video"  [rounded]="true"></p-button>
         </div>
     </div>
     <div class="grid" *ngIf="foundObjects.length==0 else elseTemplate">

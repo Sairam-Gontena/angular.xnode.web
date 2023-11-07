@@ -39,10 +39,23 @@ export class TemplateBuilderComponent implements OnInit {
     this.email = this.currentUser?.email
     this.userId = this.currentUser?.user_id;
     this.environment = environment.name;
+    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit() {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
     const product = localStorage.getItem('product');
+    let productDetails;
+    if (product) {
+      productDetails = JSON.parse(product)
+    }
     if (product) {
       this.product = JSON.parse(product);
       this.product_id = JSON.parse(product).id;
@@ -51,7 +64,8 @@ export class TemplateBuilderComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
     }
     if (this.product_id) {
-      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
+      let productEmail = this.currentUser?.email == productDetails?.email ? this.currentUser?.email : productDetails?.email;
+      this.rawUrl = environment.designStudioAppUrl + "?email=" + productEmail + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
       this.makeTrustedUrl();
     } else {
       this.product_id = localStorage.getItem('record_id');
@@ -59,8 +73,10 @@ export class TemplateBuilderComponent implements OnInit {
       this.makeTrustedUrl();
     }
   }
+
+
   makeTrustedUrl(): void {
-    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);;
+    this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);
     this.loadIframeUrl();
   }
 
@@ -76,7 +92,7 @@ export class TemplateBuilderComponent implements OnInit {
           if (event.data.message == 'retrive_dashboard_generic_screen') {
             let data = event.data.data;
             if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
-              this.auditUtil.post(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+              this.auditUtil.postAudit(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
           }
         });
       }

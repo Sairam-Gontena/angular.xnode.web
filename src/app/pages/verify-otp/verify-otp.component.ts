@@ -74,54 +74,54 @@ export class VerifyOtpComponent implements OnInit {
     this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
-          this.authApiService.setUser(true);
           localStorage.setItem('currentUser', JSON.stringify(response?.data));
           this.authApiService.isOtpVerifiedInprogress(false);
           if (response?.data?.role_name === 'Xnode Admin') {
+            this.authApiService.setUser(true);
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.router.navigate(['/admin/user-invitation']);
-            this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.postAudit('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           } else {
             this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
             this.getAllProducts(response.data);
-            this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
           }
         } else {
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          this.utilsService.loadSpinner(true);
+          this.utilsService.loadSpinner(false);
         }
-        this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
-        this.auditUtil.post('VERIFY_OTP_' + error?.response?.data?.detail, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit('VERIFY_OTP_' + error?.response?.data?.detail, 1, 'FAILURE', 'user-audit');
       });
   }
   //get calls 
   getAllProducts(user: any): void {
-    this.apiService.get("/get_metadata/" + user?.email)
+    this.apiService.get("navi/get_metadata/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
+          this.authApiService.setUser(true);
           if (response?.data?.data.length > 0) {
             this.router.navigate(['/my-products']);
           } else {
             this.router.navigate(['/x-pilot']);
+            this.getMeCreateAppLimit(user);
           }
-          this.utilsService.loadSpinner(true);
-          this.getMeCreateAppLimit(user);
+          this.utilsService.loadSpinner(false);
         }
       })
       .catch((error: any) => {
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
-        this.utilsService.loadSpinner(true);
+        this.utilsService.loadSpinner(false);
       });
   }
 
   onClickLogout(): void {
     localStorage.clear();
     this.router.navigate(['/']);
-    this.auditUtil.post('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
   }
 
   getMeCreateAppLimit(user: any): void {

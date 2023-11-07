@@ -6,9 +6,9 @@
             class="text-white" />
     </div>
     <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3  lg:mt-4">
-        <p-button label="New with Navi AI" styleClass="p-button-rounded mr-2 navi-btn"
+        <p-button label="New with Navi AI" styleClass="mr-2 navi-btn"  [rounded]="true"
             (click)="onClickNewWithNavi()"></p-button>
-        <p-button styleClass="p-button-secondary p-button-rounded mr-4">
+        <p-button styleClass="p-button-secondary mr-4"  [rounded]="true">
             <img alt="bot-btn-icon" src="./assets/import.svg" />
             <span class="import-btn ml-2" (click)="importNavi()">Import</span>
         </p-button>
@@ -17,7 +17,7 @@
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabAllProducts = true"
-                    (mouseleave)="tabAllProducts = false" (click)="activeIndex = 0">
+                    (mouseleave)="tabAllProducts = false" (click)="activeIndex = 0;onClickAllProducts()">
                     <img src="./assets/all-products.svg" class="tab-view-img"
                         [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
                     <p class="m-0 pl-2 tabview-header-txt">All Products</p>
@@ -43,11 +43,11 @@
                         <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                             styleClass="mr-2" shape="circle" *ngIf="!currentUser"
                             [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                        <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
+                        <p-avatar [label]="getMeMyAvatar(data.created_by)" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar>
                         <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">Created by you</p>
+                            <p class="m-0 card-subheading-txt">{{data.created_by}}</p>
                             <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
                             <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
                                 |
@@ -81,7 +81,7 @@
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabCreated = true"
-                    (mouseleave)="tabCreated = false" (click)="activeIndex = 2">
+                    (mouseleave)="tabCreated = false" (click)="activeIndex = 2;onClickcreatedByYou()">
                     <img src="./assets/user.svg" class="tab-view-img"
                         [src]="tabCreated || activeIndex === 2 ? './assets/user-hover.svg' : './assets/user.svg'" />
                     <p class="m-0 pl-2 tabview-header-txt">Created by you</p>
@@ -89,8 +89,7 @@
             </ng-template>
             <div class="grid">
                 <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
-                    *ngFor="let data of filteredProductsByEmail ; let i = index"
-                    (click)="onClickCreateNewTemplate(data)">
+                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickCreateNewTemplate(data)">
                     <div class="card-color relative">
                         <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
@@ -112,7 +111,7 @@
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar>
                         <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">Created by you</p>
+                            <p class="m-0 card-subheading-txt">{{data.created_by}}</p>
                             <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
                             <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
                                 |
@@ -121,11 +120,7 @@
                     </div>
                 </div>
                 <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
-                    *ngIf="filteredProductsByEmail.length > 0">
-                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                </div>
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 mt-2 card-color justify-content-center align-items-center empty-card"
-                    *ngIf="filteredProductsByEmail.length == 0">
+                    *ngIf="filteredProducts.length > 0">
                     <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                 </div>
             </div>

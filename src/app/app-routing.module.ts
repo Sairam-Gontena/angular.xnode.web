@@ -193,7 +193,11 @@ const routes: Routes = [
     path: 'operate/change/history-log',
     loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
     canActivate: [authGuard]
-
+  },
+  {
+    path: 'history-log',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
+    canActivate: [authGuard]
   },
   {
     path: 'admin/user-approval',

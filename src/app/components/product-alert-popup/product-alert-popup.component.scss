@@ -52,6 +52,15 @@
     border: 1px solid var(--primary-color);
 }
 
+:host::ng-deep.continue-chat {
+    color: #ffffff;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
+}
+
 .p-button:enabled:hover {
     background: var(--primary-color);
     border-color: var(--primary-color);

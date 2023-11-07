@@ -6,7 +6,7 @@ import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { SubMenuConfig } from 'src/app/constants/SubMeuItems';
 import { User } from 'src/app/utils/user-util';
-import { AuditutilsService } from 'src/app/api/auditutils.service'
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 
 @Component({
@@ -48,6 +48,11 @@ export class PageToolsLayoutComponent {
 
   toggleMenu() {
     this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.utils.EnablePageToolsLayoutSubMenu()
+    } else {
+      this.utils.disablePageToolsLayoutSubMenu()
+    }
   }
 
   loadSubMenu() {
@@ -119,7 +124,7 @@ export class PageToolsLayoutComponent {
     });
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
-      this.auditUtil.post(id, 1, 'SUCCESS', 'user-audit');
+      this.auditUtil.postAudit(id, 1, 'SUCCESS', 'user-audit');
       idElem.style.background = '#302e38';
     }
   }

@@ -24,13 +24,13 @@ export class SignupDynamicFormComponent implements OnInit {
   }
 
   fetchOnboardingFlow() {
-    this.apiService.get('/retrieve_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
+    this.apiService.get('navi/get_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
-        this.auditUtil.post('RETRIEVE_XFLOWS', 1, 'SUCCESS', 'user-audit', user_audit_body);
+        this.auditUtil.postAudit('RETRIEVE_XFLOWS', 1, 'SUCCESS', 'user-audit', user_audit_body);
         let onboardingFlow = response.data.Flows.filter((f: any) => f.Name.toLowerCase() === 'onboarding');
         let userProfile = onboardingFlow[0].BackendFlow.find((flow: any) => {
           return flow.TaskId == 'CreateUserProfile';
@@ -50,14 +50,14 @@ export class SignupDynamicFormComponent implements OnInit {
   }
 
   fetchDataModel(entityName: string) {
-    this.apiService.get("/retrive_insights/" + localStorage.getItem('record_id'))
+    this.apiService.get("navi/get_insights/" + localStorage.getItem('record_id'))
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
+          this.auditUtil.postAudit('RETRIEVE_INSIGHTS', 1, 'SUCCESS', 'user-audit', user_audit_body);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           let dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.inputControls = this.builderService.entityToDynamicForm(dataModel[entityName])

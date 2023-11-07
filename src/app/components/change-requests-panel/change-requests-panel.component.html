@@ -1,0 +1,55 @@
+<div class="flex justify-content-between flex-wrap text-white p-5 border-bottom-1 border-white-alpha-40">
+  <div class="flex align-items-center justify-content-center">Change Requests</div>
+  <div class="flex align-items-center justify-content-end">
+    <i class="pi pi-times pointer" (click)="onClickClose()"></i>
+  </div>
+</div>
+<div class="grid border-left-3 border-white  mt-2 ml-2" style="background-color: #2D3E65;">
+  <div class="col">
+    <div class="changerequest-title">
+      Create a new change request
+    </div>
+    <div class="text-white text-sm">
+      Create a new change request and attach your tasks
+    </div>
+  </div>
+  <div class="col">
+    <p-button label="Create new change" styleClass="p-button-outlined" [rounded]="true"></p-button>
+  </div>
+</div>
+<div>
+  <div class="flex justify-content-end mt-3" (click)="sortRequests()">
+    <div><i [ngClass]="{'pi-arrow-up': isAscending,
+      'pi-arrow-down': !isAscending,
+      'pi text-white text-sm': true}" class="pi pi-arrow-up text-white text-sm"></i></div>
+    <div><span class="text-white ml-2 mr-2">Date</span></div>
+  </div>
+  <div class="border-1 border-white-alpha-40 w-full mt-3" *ngFor="let changeRequest of changeRequests">
+    <div class="flex justify-content-between p-2">
+      <i class="pi pi-angle-right text-sm text-white ml-1"></i>
+      <img src="../../../assets/changerequest.svg" />
+      <span class="text-white text-lg text-left">
+        {{changeRequest.Title}}
+      </span>
+      <img src="../../../assets/changerequest.svg" class="ml-2" />
+      <span class="ml-1 text-white">{{changeRequest.Items?.length}}</span>
+      <span style="color: #C8E943;" class="ml-3">{{changeRequest.Status}}</span>
+      <i class="pi pi-user-plus text-sm text-white ml-2"></i>
+      <i class="pi pi-flag text-sm text-white ml-2"></i>
+      <i class="pi pi-ellipsis-v text-sm text-white ml-2"></i>
+    </div>
+    <div class="grid">
+      <div class="col-1">
+
+      </div>
+      <div class="col">
+        <span class="text-white text-sm text-left">
+          Req ID: #{{changeRequest.CrId}}
+        </span>
+        <span class="text-white text-sm text-left">
+          Assigned by {{changeRequest.CreatedBy.DisplayName}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

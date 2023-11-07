@@ -1,0 +1,24 @@
+<div class="relative use-case-body" [ngClass]="{'ml-4 mr-4' : isInsideUseCases}">
+    <div *ngIf="useCases?.length > 0" class="surface-900 pt-3 pb-3 h-full overflow-auto">
+        <div *ngFor="let usecase of useCases;let i = index">
+            <div class="flex justify-content-center flex-wrap card-container">
+                <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">
+                    <div class="col-2 md:col-2 lg:col-2">
+                        <img src="../../assets/case-0{{usecase.id}}.svg" alt="usecase-09" class="ml-3 w-7 h-5"
+                            *ngIf="i < 10">
+                        <img src="../../assets/case-010.svg" alt="usecase-09" class="ml-3 w-7 h-5" *ngIf="i >= 10">
+                    </div>
+                    <div class="col-10 md:col-10 lg:col-10">
+                        <h1 class=" text-white text-xl mt-3 font-bold"
+                            [innerHTML]="usecase.title | highlight: searchTerm"></h1>
+                        <p class=" text-white paragraph-color font-medium"
+                            [innerHTML]="usecase.description | highlight: searchTerm"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!loading && useCases?.length === 0">
+        <h2 class="text-center text-white">No Use cases found</h2>
+    </div>
+</div>

@@ -14,6 +14,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
+  templates: any;
   constructor(
     private router: Router,
     private utils: UtilsService,
@@ -23,14 +24,26 @@ export class NaviComponent implements OnInit {
   safeUrl: SafeResourceUrl = '';
   xnodeAppUrl: string = environment.xnodeAppUrl;
   currentUser: any
-  showProductStatusPopup: boolean = false;
+  showProductStatusPopup = false;
+  contentFromNavi = false;
   content: any;
+  productDetails: any;
+  productEmail: any;
 
   ngOnInit(): void {
     this.currentUser = localStorage.getItem('currentUser');
+    let product = localStorage.getItem('product');
+    if (product) {
+      this.productDetails = JSON.parse(product);
+    }
     const restriction_max_value = localStorage.getItem('restriction_max_value')
     if (this.currentUser) {
       this.currentUser = JSON.parse(this.currentUser)
+    }
+    if (this.productDetails?.email == this.currentUser?.email) {
+      this.productEmail = this.currentUser?.email;
+    } else {
+      this.productEmail = this.productDetails?.email;
     }
     localStorage.removeItem('has_insights');
     localStorage.getItem('show-upload-panel')
@@ -52,6 +65,11 @@ export class NaviComponent implements OnInit {
     if (restriction_max_value) {
       this.targetUrl = this.targetUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
     }
+    if (this.productDetails?.email !== this.currentUser?.email) {
+      this.targetUrl = this.targetUrl + '&product_user_email=' + this.productEmail;
+    } else {
+      this.targetUrl = this.targetUrl + '&product_user_email=' + email;
+    }
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
       if (contentWindow) {
@@ -65,6 +83,7 @@ export class NaviComponent implements OnInit {
             window.dispatchEvent(customEvent);
           }
           if (event.data.message === 'close-event') {
+            this.utils.showLimitReachedPopup(false)
             window.location.href = this.xnodeAppUrl + '#/my-products';
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
@@ -76,16 +95,32 @@ export class NaviComponent implements OnInit {
             this.utils.showLimitReachedPopup(true);
           }
           if (event.data.message === 'triggerProductPopup') {
-            this.content = event.data.data;
+            this.content = event?.data?.data;
+            let data = {
+              'popup':true,
+              'data':this.content
+            }
             this.showProductStatusPopup = true;
-            this.utils.toggleProductAlertPopup(true);
+            this.utils.toggleProductAlertPopup(data);
+            event.stopImmediatePropagation()
           }
           if (event.data.message === 'triggerRouteToMyProducts') {
             const itemId = event.data.id;
             localStorage.setItem('record_id', itemId);
             this.utils.saveProductId(itemId);
+            const metaData = localStorage.getItem('meta_data');
+            if(metaData){
+              this.templates = JSON.parse(metaData);
+              const product = this.templates?.filter((obj: any) => { return obj.id === itemId })[0];
+              localStorage.setItem('app_name', product.title);
+              localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
+              localStorage.setItem('product', JSON.stringify(product));
+            }
             const newUrl = this.xnodeAppUrl + '#/dashboard';
             window.location.href = newUrl;
+          }
+          if (event.data.message === 'help-center') {
+            window.location.href = this.xnodeAppUrl + '#/help-center';
           }
         });
         contentWindow.postMessage(data, this.targetUrl);

@@ -8,9 +8,9 @@
             </span>
         </p>
         <p class="mt-2 mb-0 mx-0">{{conversation.message}}</p>
-        <p-button label="Reply" styleClass="p-button-text p-button-rounded"
+        <p-button label="Reply" styleClass="p-button-text reply"  [rounded]="true"
             (click)="onClickReply(conversation)"></p-button>
-        <p-button [label]="getMeLabel()" icon="pi pi-chevron-down" styleClass="p-button-text p-button-rounded"
+        <p-button [label]="getMeLabel()" icon="pi pi-chevron-down" styleClass="p-button-text reply-count"  [rounded]="true"
             (click)="onClickSeeReplys()" *ngIf="conversation.responses && conversation.responses.length > 0"></p-button>
         <ng-container *ngIf="conversation.responses && conversation.responses.length > 0&& conversation.showReply">
             <div class="nested-replies">
@@ -23,9 +23,9 @@
             <textarea rows="5" cols="30" pInputTextarea class="w-full" [(ngModel)]="message"
                 (keyup.enter)="onClickSend()"></textarea>
             <div class="text-right">
-                <p-button label="Cancel" styleClass="p-button-text p-button-rounded"
+                <p-button label="Cancel" styleClass="p-button-text cancel"  [rounded]="true"
                     (click)="this.conversation.showReplyinput = false"></p-button>
-                <p-button label="Send" styleClass="p-button-text p-button-rounded" (click)="onClickSend()"></p-button>
+                <p-button label="Send" styleClass="p-button-text send"  [rounded]="true" (click)="onClickSend()"></p-button>
             </div>
         </ng-container>
     </div>

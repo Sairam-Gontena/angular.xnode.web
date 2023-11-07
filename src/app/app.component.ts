@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
 import { debounce } from "rxjs/operators";
 import { interval } from "rxjs";
+import { SidePanel } from 'src/models/side-panel.enum';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -34,7 +35,10 @@ export class AppComponent implements OnInit {
   targetUrl: string = environment.naviAppUrl;
   currentUser: any;
   showLimitReachedPopup?: boolean;
+  productAlertPopup: boolean = false;
   content: any;
+  contentFromNavi: boolean = false;
+  showCommentIcon?: boolean;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -47,6 +51,43 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService) {
+    router.events.forEach((event) => {
+      if (event instanceof NavigationStart) {
+        if (event.navigationTrigger === 'popstate') {
+          this.showLimitReachedPopup = false
+        }
+        if (event.url == "/x-pilot") {
+          let product = localStorage.getItem('product')
+          let user = localStorage.getItem('currentUser')
+          if (product && user) {
+            let productObj = JSON.parse(product);
+            let userObj = JSON.parse(user);
+            if (productObj?.has_insights == false && userObj?.email == productObj?.email) {
+              let data = {
+                'popup': true,
+                'data': {}
+              }
+              this.utilsService.toggleProductAlertPopup(data);
+            }
+          }
+        }
+        if (event.url == "/my-products") {
+          this.isSideWindowOpen = false;
+        }
+      }
+    });
+    this.utilsService.startSpinner.subscribe((event: boolean) => {
+      if (event) {
+        this.spinner.show();
+      } else {
+        this.spinner.hide();
+      }
+    });
+    this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
+      if (event) {
+        this.isSideWindowOpen = false;
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -66,16 +107,33 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/'])
         localStorage.clear();
       }
+      this.utilsService.getMeToastObject.subscribe((event: any) => {
+        this.messageService.add(event);
+      });
     }
-    this.redirectToPreviousUrl();
-    this.utilsService.isCommentPanelToggled.subscribe((event: any) => {
+    if (!window.location.hash.includes('#/reset-password?email'))
+      this.redirectToPreviousUrl();
+    this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isSideWindowOpen = false;
       this.isNaviExpanded = false;
       this.utilsService.disableDockedNavi();
     })
+    this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
+      this.showProductStatusPopup = true;
+    })
+    this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      if (data && data?.email) {
+        this.makeTrustedUrl(data.email)
+      }
+    })
   }
+
+  botOnClick() {
+    this.isNaviExpanded = false;
+  }
+
   redirectToPreviousUrl(): void {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         localStorage.setItem('previousUrl', event.url);
       }
@@ -88,15 +146,7 @@ export class AppComponent implements OnInit {
   }
 
   preparingData() {
-    this.utilsService.startSpinner.subscribe((event: boolean) => {
-      setTimeout(() => {
-        if (event) {
-          this.spinner.show();
-        } else {
-          this.spinner.hide();
-        }
-      }, 0);
-    });
+
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
@@ -115,9 +165,8 @@ export class AppComponent implements OnInit {
     });
   }
   handleBotIcon() {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        this.handleRouterChange();
         if (event.url === '/x-pilot') {
           this.isBotIconVisible = false
         } else {
@@ -127,7 +176,7 @@ export class AppComponent implements OnInit {
     });
   }
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("/total_apps_onboarded/" + user?.email)
+    this.apiService.get("navi/total_apps_onboarded/" + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
@@ -155,6 +204,7 @@ export class AppComponent implements OnInit {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
         this.utilsService.disableDockedNavi()
+        this.refreshCurrentRoute();
       }
       if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
@@ -164,8 +214,20 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
-        this.showProductStatusPopup = true;
-        this.utilsService.toggleProductAlertPopup(true);
+        let data = {
+          'popup': true,
+          'data': this.content
+        }
+        this.utilsService.toggleProductAlertPopup(data);
+      }
+      if (event.data.message === 'change-app') {
+        this.utilsService.saveProductId(event.data.id);
+        localStorage.setItem('product_email', event.data.product_user_email)
+        if (this.currentUser?.email == event.data.product_user_email) {
+          this.utilsService.hasProductPermission(true)
+        } else {
+          this.utilsService.hasProductPermission(false)
+        }
       }
     });
 
@@ -197,8 +259,16 @@ export class AppComponent implements OnInit {
     });
   }
 
-  handleRouterChange() {
-    this.isSideWindowOpen = false;
+  refreshCurrentRoute(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      localStorage.setItem('trigger', 'graph');
+      this.router.navigate([currentUrl]);
+    });
+  }
+
+  closePopup() {
+    this.showProductStatusPopup = false
   }
 
   getUserData() {
@@ -210,18 +280,20 @@ export class AppComponent implements OnInit {
     }
   }
 
-  makeTrustedUrl(): void {
+  makeTrustedUrl(productEmail: string): void {
     let user = localStorage.getItem('currentUser');
     let id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
+      this.subMenuLayoutUtil.EnableDockedNavi();
+      this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
       }
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
-        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id;
+        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id + '&product_user_email=' + productEmail
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
       }
@@ -231,6 +303,7 @@ export class AppComponent implements OnInit {
       }, 2000);
     } else {
       alert("Invalid record id")
+      this.isSideWindowOpen = false;
     }
 
   }
@@ -262,6 +335,9 @@ export class AppComponent implements OnInit {
       case '/specification':
         comp = 'specification'
         break;
+      case '/operate/change/history-log':
+        comp = 'history-log'
+        break;
       default:
         break;
     }
@@ -274,17 +350,17 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center") {
+    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center" || window.location.hash === "#/history-log") {
       let currentUser = localStorage.getItem('currentUser')
       if (currentUser) {
-        this.auditUtil.post('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
+        this.auditUtil.postAudit('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
       }
       this.router.navigate(['/x-pilot']);
     } else {
       this.getUserData();
       this.isSideWindowOpen = newItem.cbFlag;
       this.productContext = newItem.productContext;
-      this.makeTrustedUrl();
+      this.makeTrustedUrl(newItem.productEmail);
     }
   }
 
@@ -300,8 +376,6 @@ export class AppComponent implements OnInit {
   }
 
   submenuFunc() {
-    this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
-    this.subMenuLayoutUtil.EnableDockedNavi();
     if (this.isSideWindowOpen) {
       const chatbotContainer = document.getElementById('side-window') as HTMLElement;
       chatbotContainer.style.display = 'block';
@@ -333,7 +407,7 @@ export class AppComponent implements OnInit {
       "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
       "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
     }
-    this.notifyApi.post(body, 'email/notify').then((res: any) => {
+    this.notifyApi.post('email/notify', body).then((res: any) => {
       if (res?.data?.detail) {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
       }

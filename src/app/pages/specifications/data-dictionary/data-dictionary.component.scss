@@ -1,0 +1,10 @@
+.sub-content {
+    font-size: 14px;
+    color: #7E7E7E;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 14px;
+}

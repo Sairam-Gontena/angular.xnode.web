@@ -4,6 +4,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-feedback-list',
@@ -35,13 +36,30 @@ export class FeedbackListComponent {
   message: any;
   modalPosition: any;
   reportItem: any;
+  deepLinkId: string = ''
+  deepLinkType: string = ''
 
   constructor(
     public utils: UtilsService,
     private userUtilService: UserUtilsService,
     private auditUtil: AuditutilsService,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {
+    let queryParams = this.route.snapshot.queryParams;
+    if (queryParams['type']?.length > 0) {
+      if (queryParams['id']?.length > 0)
+        this.deepLinkId = queryParams['id'];
+      if (queryParams['type'] == 'user-feedback') {
+        this.deepLinkType = 'USER_FEEDBACK'
+      } else if (queryParams['type'] == 'user-bug-report') {
+        this.deepLinkType = 'USER_BUG_REPORT'
+      }
+    } else {
+      this.selectedArea = 'USER_BUG_REPORT';
+      this.utils.loadSpinner(true);
+      this.getMeReportedBugList();
+    }
     this.onWindowResize();
     let user = localStorage.getItem('currentUser')
     if (user) {
@@ -66,9 +84,19 @@ export class FeedbackListComponent {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
-    this.selectedArea = 'USER_BUG_REPORT';
     this.utils.loadSpinner(true);
-    this.getMeReportedBugList();
+    if (this.deepLinkType == 'USER_BUG_REPORT') {
+      this.getMeReportedBugList()
+    } else if (this.deepLinkType == 'USER_FEEDBACK') {
+      this.getMeGeneralFeedbackList()
+    } else {
+      this.getMeReportedBugList()
+    }
+    if (this.deepLinkType == 'USER_BUG_REPORT' || this.deepLinkType == 'USER_FEEDBACK') {
+      this.selectedArea = this.deepLinkType
+    } else {
+      this.selectedArea = 'USER_BUG_REPORT'
+    }
   }
 
   onClickClose() {
@@ -85,7 +113,7 @@ export class FeedbackListComponent {
       "parentConversationId": this.selectedItemConversation.length === 0 ? null : this.selectedItemConversation[0].id,
       "conversationSourceUserId": this.selectedListItem.userId
     }
-    this.userUtilService.post(payload, 'user-conversation').then((res: any) => {
+    this.userUtilService.post('user-conversation',payload).then((res: any) => {
       if (res && res?.data) {
         this.getMeConversations();
         this.message = '';
@@ -143,7 +171,7 @@ export class FeedbackListComponent {
           'method': 'GET',
           'url': res?.request?.responseURL,
         }
-        this.auditUtil.post('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
         if (res.data) {
           this.selectedItemConversation = res.data.slice().reverse();
         }
@@ -152,7 +180,7 @@ export class FeedbackListComponent {
           'method': 'GET',
           'url': res?.request?.responseURL,
         }
-        this.auditUtil.post('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('SELECT_ITEM_USER_CONVERSATION_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       }
       this.utils.loadSpinner(false);
     }).catch((err: any) => {
@@ -160,7 +188,7 @@ export class FeedbackListComponent {
         'method': 'GET',
         'url': err?.request?.responseURL,
       }
-      this.auditUtil.post('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
     })
   }
@@ -174,6 +202,8 @@ export class FeedbackListComponent {
     } else {
       this.getMeGeneralFeedbackList()
     }
+    this.deepLinkId = ''
+    this.deepLinkType = ''
   }
 
   getMeReportedBugList(): void {
@@ -183,20 +213,26 @@ export class FeedbackListComponent {
         this.reportList = res.data;
         this.reportItem = res.data[0];
         if (res?.data.length) {
-          this.selectedListItem = res.data[0];
-          this.onSelectListItem(this.selectedListItem, 0, true)
+          if (this.deepLinkId.length > 0) {
+            this.selectedListItem = res.data.filter((item: any) => item.id === this.deepLinkId)[0];
+            let selectedIndex = res.data.findIndex((item: any) => item.id === this.deepLinkId);
+            this.onSelectListItem(this.selectedListItem, selectedIndex, true)
+          } else {
+            this.selectedListItem = res.data[0];
+            this.onSelectListItem(this.selectedListItem, 0, true)
+          }
         }
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -205,7 +241,7 @@ export class FeedbackListComponent {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_REPORTED_BUG_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
@@ -217,19 +253,30 @@ export class FeedbackListComponent {
       this.reportItem = res.data[0];
       if (res) {
         if (res?.data.length) {
-          this.selectedListItem = res.data[0];
+          if (this.deepLinkId.length > 0) {
+            this.selectedListItem = res.data.filter((item: any) => item.id === this.deepLinkId)[0];
+            let selectedIndex = res.data.findIndex((item: any) => item.id === this.deepLinkId);
+            this.onSelectListItem(this.selectedListItem, selectedIndex, true)
+            setTimeout(() => {
+              this.scrollToItem(this.deepLinkId)
+            }, 1000)
+          } else {
+            this.selectedListItem = res.data[0];
+            this.onSelectListItem(this.selectedListItem, 0, true)
+          }
+          this.conversationSourceId = res?.data?.[0]?.id;
         }
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
       } else {
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
@@ -239,7 +286,7 @@ export class FeedbackListComponent {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.post('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('GET_GENERAL_FEEDBACK_LIST_EXISTING_FEEDBACK', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
@@ -263,4 +310,10 @@ export class FeedbackListComponent {
     this.visible = false;
   }
 
+  scrollToItem(itemId: string) {
+    const element = document.getElementById(itemId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

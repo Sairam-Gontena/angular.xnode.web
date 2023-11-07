@@ -31,6 +31,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   product: any;
   product_id: any;
   @Input() erModelInput: any;
+  productDetails: any
 
   constructor(private apiService: ApiService,
     private dataService: DataService, private jsPlumbService: JsPlumbService,
@@ -41,12 +42,24 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.router.events.subscribe((data: any) => {
       this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
     });
+    this.utilsService.getMeIfProductChanges.subscribe((info: boolean) => {
+      if (info) {
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
+    this.jsPlumbService.init();
+    this.dataService.loadData(this.utilService.ToModelerSchema([]));
     const product = localStorage.getItem('product');
     if (product) {
       this.product = JSON.parse(product);
+      this.productDetails = JSON.parse(product);
       this.product_id = JSON.parse(product).id;
       if (!this.product?.has_insights) {
         this.utilsService.showProductStatusPopup(true);
@@ -79,14 +92,16 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   //get calls 
   getMeUserId() {
-    this.apiService.get("/get_metadata/" + this.currentUser?.email)
+    let productEmail = this.productDetails.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email;
+
+    this.apiService.get("navi/get_metadata/" + productEmail)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+          this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, productEmail, this.product_id);
           this.id = response.data.data[0].id;
           localStorage.setItem('record_id', response.data.data[0].id)
           this.getMeDataModel();
@@ -95,7 +110,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+          this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, productEmail, this.product_id);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
         this.utilsService.loadSpinner(false);
@@ -104,22 +119,28 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+        this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, productEmail, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false)
       });
   }
 
   getMeDataModel() {
+    let productEmail;
+    if (this.productDetails) {
+      productEmail = this.productDetails?.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email;
+    } else {
+      productEmail = this.currentUser?.email
+    }
     this.dataModel = null;
-    this.apiService.get("/retrive_insights/" + this.currentUser?.email + "/" + this.product_id)
+    this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product_id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.jsPlumbService.init();
@@ -129,7 +150,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utilsService.showProductStatusPopup(true);
         }
@@ -140,7 +161,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.post('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+        this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false);
       });

@@ -1,17 +1,64 @@
-.template-builder-wrapper {
+.main-container {
     display: flex;
     height: calc(100vh - 42px);
 }
 
-.template-builder-body-wrapper {
-    width: calc(100% - 300px);
+.side-menu {
     height: calc(100vh - 42px);
-    overflow-y: hidden;
 }
 
-.another-template-builder-body-wrapper {
-    width: calc(100% - 50px);
+.logs-container {
     height: calc(100vh - 42px);
+    width: calc(100vw - 130px);
+}
+
+.logs-container-menu {
+    height: calc(100vh - 42px);
+    width: calc(100vw - 380px);
+}
+
+.logs-container-navi {
+    height: calc(100vh - 42px);
+    width: calc(100vw - 530px);
+}
+
+.logs-container-navi-menu {
+    height: calc(100vh - 42px);
+    width: calc(100vw - 780px);
+}
+
+.logs-content-menu {
+    background-color: #24232C;
+    height: calc(100vh - 150px);
+    width: calc(100vw - 420px);
+}
+
+.logs-content {
+    background-color: #24232C;
+    height: calc(100vh - 150px);
+    width: calc(100vw - 170px);
+}
+
+.logs-content-full {
+    background-color: #24232C;
+    height: calc(100vh - 150px);
+}
+
+.logs-content-table {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+}
+
+.logs-content-navi {
+    background-color: #24232C;
+    height: calc(100vh - 150px);
+    width: calc(100vw - 570px);
+}
+
+.logs-content-navi-menu {
+    background-color: #24232C;
+    height: calc(100vh - 150px);
+    width: calc(100vw - 820px);
 }
 
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
