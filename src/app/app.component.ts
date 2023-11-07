@@ -39,6 +39,8 @@ export class AppComponent implements OnInit {
   content: any;
   contentFromNavi: boolean = false;
   showCommentIcon?: boolean;
+  screenWidth: number;
+  screenHeight: number;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -51,6 +53,9 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService) {
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
+
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         if (event.navigationTrigger === 'popstate') {
@@ -293,7 +298,7 @@ export class AppComponent implements OnInit {
       let rawUrl = environment.naviAppUrl + '?email=' + this.email +
         '&productContext=' + localStorage.getItem('record_id') +
         '&targetUrl=' + environment.xnodeAppUrl +
-        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id + '&product_user_email=' + productEmail
+        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id + '&product_user_email=' + productEmail + '&device_width=' + this.screenWidth
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
       }
