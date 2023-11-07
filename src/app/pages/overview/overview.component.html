@@ -1,5 +1,5 @@
 <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-<div class="overview-body">
+<div class="relative overview-body ml-4 mr-4 p-2">
     <div class="grid">
         <div class="lg:col-7 md:col-12">
             <div class="flex mt-6 ">
@@ -30,9 +30,9 @@
                         <span class=" ml-3">{{currentUser?.phone}}</span>
                     </div>
                 </div>
-                <div class="col-md-6 flex flex-column">
+                <div class="col-md-6 card-grid flex align-items-center">
                     <div class="flex h-9rem  font-bold text-white  m-2 stake-holder align-items-center ">
-                        <div class="flex  flex-wrap card-container">
+                        <div class="col-12 flex flex-row flex-wrap card-grid-container">
                             <img src="../../assets/download-image.png" alt="download-image" class="h-3rem w-4rem mr-2">
                             <div class="flex flex-column">
                                 <span class="ml-3 para-text">Total Downloads</span>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="flex align-items-center h-9rem  font-bold text-white  m-2 stake-holder">
-                        <div class="flex  flex-wrap card-container">
+                        <div class="col-12 flex flex-row flex-wrap card-grid-container">
                             <img src="../../assets/people-image.png" alt="people-image" class="h-3rem w-4rem">
                             <div class="flex flex-column">
                                 <span class="ml-4 para-text">Monthly Users</span>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="lg:col-5 md:col-12" *ngIf="jsondata?.length">
-            <div class="card-container mt-6  stake-holder text-white stepper-card">
+            <div class="card-container mt-6 text-white stepper-card">
                 <div class="stepper-content p-1 mt-3">
                     <p class="text-xl font-normal stepper-text">Hey <span class="font-bold">{{username}}!</span> You
                         are on the verge of using the app.</p>

@@ -22,10 +22,14 @@
 }
 
 .card-gap {
-    margin-left: 5rem !important;
+    margin-left: 5rem;
 }
 
 .card-container {
+    margin-left: 3rem;
+}
+
+.card-grid-container {
     margin-left: 3rem;
 }
 
@@ -44,6 +48,8 @@
 .stepper-card {
     width: 566px;
     margin-left: 4rem;
+    background-color: none;
+    border: 1px solid #535353;
 }
 
 .stepper-content {
@@ -51,37 +57,62 @@
     margin-left: 2rem;
 }
 
+.card-grid {
+    display: flex;
+    flex-direction: column;
+}
+
 @media screen and (max-width: 780px) {
     .finbuddy-text {
         width: auto !important;
     }
-}
 
-@media screen and (max-width: 780px) {
     .stepper-text {
         width: 10rem !important;
     }
-}
 
-@media (max-width: 780px) {
-    :host::ng-deep.p-button {
-        margin: 10px;
-    }
-}
-
-@media (max-width: 780px) {
+    // :host ::ng-deep .p-button {
+    //     margin: 10px;
+    // }
 
     .stepper-card {
-        width: 500px;
-        margin-left: 49px;
+        width: 90%;
+        // margin-left: 49px;
     }
-}
 
-@media (max-width: 780px) {
+    .card-container {
+        margin-left: 3rem;
+        padding: 1rem;
+    }
 
     .stepper-text {
         width: 370px !important;
 
+    }
+
+    .card-gap {
+        margin-left: 1rem;
+    }
+
+    .stake-holder {
+        width: 100%;
+    }
+
+    .card-grid-container {
+        width: 252px;
+        margin-left: 1rem;
+        padding: 1rem;
+    }
+
+    .card-grid {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+    }
+
+    .overview-body {
+        padding-right: 2rem;
     }
 }
 
@@ -132,7 +163,7 @@
     }
 
     .card-gap {
-        margin-left: 0 !important;
+        margin-left: 0rem;
     }
 
     .stake-holder {
@@ -157,6 +188,10 @@
     .finbuddy-image {
         margin-left: 0.5rem;
     }
+
+    .overview-body {
+        padding: 0.5rem;
+    }
 }
 
 
@@ -175,6 +210,5 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #23222B;
-    margin: 25px;
-
+    // margin: 25px;
 }
