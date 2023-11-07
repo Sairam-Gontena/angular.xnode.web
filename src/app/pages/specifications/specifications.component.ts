@@ -56,29 +56,23 @@ export class SpecificationsComponent implements OnInit {
       }
     });
     this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-      console.log('info', info);
-
       if (info) {
         this.getMeStorageData();
       }
     })
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
-      console.log("isSideMenuOpened ", this.isSideMenuOpened);
     })
     this.utils.openDockedNavi.subscribe((data: any) => {
       this.isCommnetsPanelOpened = false;
       if (data) {
         this.utils.disableSpecSubMenu();
         this.isNaviOpened = true;
-        console.log("called here navi opeend")
       }
     })
   }
 
   ngOnInit(): void {
-    console.log('spec');
-
     this.getMeStorageData();
   }
 

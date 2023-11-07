@@ -282,9 +282,7 @@ export class AppComponent implements OnInit {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
-    } else {
-      console.log("current user not found");
-    }
+    } 
   }
 
   makeTrustedUrl(productEmail: string): void {
@@ -303,8 +301,6 @@ export class AppComponent implements OnInit {
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
       }
-      console.log("got rawurl  here ",rawUrl)
-
       setTimeout(() => {
         this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();

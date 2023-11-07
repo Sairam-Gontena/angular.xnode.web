@@ -53,12 +53,10 @@ export class ProductDropdownComponent implements AfterViewInit {
       this.utilsService.hasProductPermission(false)
     }
     if (product) {
-      // console.log("got inside  here ",product.id)
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
-      // this.selectedProduct = product.id;
       this.product_url = product.product_url;
       this.utilsService.saveProductDetails(product);
       this.utilsService.toggleProductChange(true)
