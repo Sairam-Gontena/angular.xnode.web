@@ -51,8 +51,8 @@
                                     </p>
                                 </div>
                                 <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
-                                    {{selectedListItem.modifiedOn | date:'medium'}}
-                                    <!-- {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
+                                    <!-- {{selectedListItem.modifiedOn | date:'medium'}} -->
+                                    {{report.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
                                 </div>
                                 <p class="m-0 text-sm font-normal pl-2">
                                     Status <span class="text-sm open">
@@ -105,7 +105,7 @@
                                     [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                                 <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                         class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                        {{selectedListItem.modifiedOn | date:'medium'}}
+                                        {{selectedListItem.createdOn | date:'medium'}}
                                         <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                                     </span></p>
                             </div>
@@ -195,7 +195,7 @@
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                         <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                 class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                {{selectedListItem?.modifiedOn | date:'medium'}}
+                                {{selectedListItem?.createdOn | date:'medium'}}
                                 <!-- {{selectedListItem?.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                             </span></p>
                     </div>

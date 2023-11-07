@@ -7,7 +7,9 @@ import { DataService } from '../../er-modeller/service/data.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { CommentsService } from 'src/app/api/comments.service';
+import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
+
 @Component({
   selector: 'xnode-specifications-content',
   templateUrl: './specifications-content.component.html',
@@ -47,14 +49,19 @@ export class SpecificationsContentComponent implements OnInit {
   isContentSelected = false;
   isCommnetsPanelOpened: boolean = false;
   commentList: any;
+  currentUser: any;
+  usersList: any;
 
   constructor(private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
-    private renderer: Renderer2,
-    private el: ElementRef,
+    private apiservice: ApiService,
     private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      this.currentUser = JSON.parse(currentUser);
+    }
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         this.specItemList = event;
@@ -76,35 +83,6 @@ export class SpecificationsContentComponent implements OnInit {
     })
   }
 
-  checkedToggle(type: any, item: any, content: any) {
-    this.specItemList.forEach((obj: any) => {
-      if (obj.id === item.id) {
-        obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id && type === 'table')
-            conObj.showTable = true;
-          else
-            conObj.showTable = false;
-        })
-      }
-    })
-  }
-
-  isObject(value: any): boolean {
-    return typeof value === 'object';
-  }
-
-  returnValues(obj: any) {
-    return Object.values(obj)
-  }
-
-  ngAfterViewInit() {
-    this.fetchOpenAPISpec()
-  }
-
-  ngOnChanges() {
-    this.specItemList = this.specData;
-    this.searchTerm = this.keyword;
-  }
 
   ngOnInit(): void {
     this.utils.openDockedNavi.subscribe((data: any) => {
@@ -125,9 +103,60 @@ export class SpecificationsContentComponent implements OnInit {
     if (record_id) {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
-
     this.makeTrustedUrl();
     this.getLatestComments();
+    this.getUsersData();
+  }
+
+  ngAfterViewInit() {
+    this.fetchOpenAPISpec()
+  }
+
+  ngOnChanges() {
+    this.specItemList = this.specData;
+    this.searchTerm = this.keyword;
+  }
+
+
+  checkedToggle(type: any, item: any, content: any) {
+    this.specItemList.forEach((obj: any) => {
+      if (obj.id === item.id) {
+        obj.content.forEach((conObj: any) => {
+          if (conObj.id === content.id && type === 'table')
+            conObj.showTable = true;
+          else
+            conObj.showTable = false;
+        })
+      }
+    })
+  }
+
+  getUsersData() {
+    this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
+      this.utils.loadSpinner(true);
+      if (resp?.status === 200) {
+        let data = [] as any[];
+        resp.data.forEach((element: any) => {
+          let name: string = element?.first_name;
+          data.push(name)
+        });
+        this.usersList = data;
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((error) => {
+      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
+      console.error(error);
+    })
+  }
+
+  isObject(value: any): boolean {
+    return typeof value === 'object';
+  }
+
+  returnValues(obj: any) {
+    return Object.values(obj)
   }
 
   getLatestComments() {
