@@ -75,6 +75,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
+  }
+
+  getMeStorageData(): void {
+    var element = document.getElementById('graph');
+    while (element?.firstChild) {
+      element.removeChild(element.firstChild);
+    }
     this.router.url == '/configuration/workflow/overview' ? this.showBpmn = false : this.showBpmn = true
     const product = localStorage.getItem('product');
     if (product) {
@@ -961,5 +969,13 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
 
     return svg.node();
+  }
+
+  onChangeProduct(obj: any): void {
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.getMeStorageData();
   }
 }

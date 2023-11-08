@@ -88,11 +88,6 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-    this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
-      if (event) {
-        // this.isSideWindowOpen = false;
-      }
-    })
   }
 
   ngOnInit(): void {
@@ -127,7 +122,7 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = data.popup;
     })
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
-      console.log("got here")
+      console.log("dklfjkdl ",data)
       if (data && data?.email) {
         this.makeTrustedUrl(data.email)
       }
