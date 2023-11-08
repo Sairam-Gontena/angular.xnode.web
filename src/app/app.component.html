@@ -9,7 +9,7 @@
             <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
-            <div [ngClass]="showSideMenu()  ? 'app-body-wrapper' : 'app-body-wrapper-full'">
+            <div [ngClass]="showSideMenu()  ? 'app-body-wrapper' : 'app-body-wrapper-full'" class="flex-1">
                 <router-outlet></router-outlet>
             </div>
             <div id="side-window" [ngClass]=" isNaviExpanded ? 'full-screen-navi': 'side-window'"
