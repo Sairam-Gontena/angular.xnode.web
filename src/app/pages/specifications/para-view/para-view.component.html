@@ -1,7 +1,6 @@
 <div class="flex col-12 p-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
-  <!-- (click)="selectText($event)" -->
     <div class="col-11 p-0 ">
-        <div class="content text-base font-normal" #paraContentDiv (click)="selectText($event,milliseconds)" [innerHTML]="contentData | highlight: searchTerm" [id]="content.id">
+        <div class="content text-base font-normal" #paraContentDiv (click)="selectText($event)" [innerHTML]="contentData | highlight: searchTerm" [id]="content.id">
           <!-- (click)="op.toggle($event);commentOverlayPanelOpened=true" -->
         </div>
     </div>

@@ -15,6 +15,10 @@
 @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
 // @import '~bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
 
+:root {
+  --poverlay: block;
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -455,4 +459,7 @@ body {
 .p-overlaypanel .p-overlaypanel-content {
   // padding: 0px !important;
   border-width: 0px;
+}
+.p-overlaypanel:after,.p-overlaypanel:before{
+  display:  var(--poverlay)!important;
 }

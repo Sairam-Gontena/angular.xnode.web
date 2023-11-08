@@ -1,13 +1,3 @@
-:root {
-  --poverlay-top: 0px;
-  --poverlay-left: 0px;
-}
-
-:host ::ng-deep .p-overlaypanel, .p-overlaypanel-content{
-   top: var(--poverlay-top);
-  left: var(--poverlay-left);
-}
-
 .sctions-grid {
     background: #24232C;
     padding: 30px;
@@ -169,4 +159,13 @@ pre {
 :host ::ng-deep .p-overlaypanel .p-overlaypanel-content {
     background: #302E38 !important;
     border-radius: 6px !important;
+}
+
+.triangle {
+  display:none;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid #ffffff;
 }

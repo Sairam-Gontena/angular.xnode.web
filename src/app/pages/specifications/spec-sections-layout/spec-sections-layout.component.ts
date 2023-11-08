@@ -87,34 +87,60 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   receiveMsg(event:any){
-    console.log('at first',event)
-    if(event?.selectedText.length>0){
+    if(event?.selectedText.length>0 && event?.selectedText.length!=""){
       let obj = {
         'item':event.item,
         'content':event.content
       }
       this.selectedText = event.selectedText;
+      let rect = event.rect;
       this.toggleOverlayPanel(true, obj);
+      const triangle = document.getElementById('triangle');
+        if(triangle){
+          triangle.style.display='block'
+          triangle.style.position = 'absolute';
+          triangle.style.left = event.screenX - 50 + 'px';
+          triangle.style.top = event.screenY - 70+'px';
+        }
+      document.documentElement.style.setProperty(`--poverlay`, 'none');
       setTimeout(() => {
         let elem = document.getElementsByClassName('p-overlaypanel')[0]
         if(elem){
-          const yAxis =event.screenY; // - 100
-          // (elem as HTMLElement)['style'].zIndex  = '1002';
-          // (elem as HTMLElement)['style'].transformOrigin  = 'center top';
-          // (elem as HTMLElement)['style'].transform ='translateY(0px)';
-          // (elem as HTMLElement)['style'].opacity= '2';
-          (elem as HTMLElement)['style'].top = yAxis + 'px';
-          (elem as HTMLElement)['style'].left =  event.screenX + 'px';
+          const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+          const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+          let insetTop = (rect.top / vh)*100 +5  + 'vh';
+          let insetRight = (rect.right  / vw) * 100 + 'vw';
+          let insetBottom = (rect.bottom / vh)*100  + 'vh';
+          let insetLeft = (rect.left  / vw) * 100 + 'vw';
+          if (rect.top < 0) {
+            insetTop = '0vh';
+          }
+          if (rect.left < 0) {
+            insetLeft = '0vw';
+          }
+          if (rect.bottom > vh) {
+            insetBottom = '100vh';
+          }
+          if (rect.right > vw) {
+            insetRight = '100vw';
+          }
+          (elem as HTMLElement)['style'].transformOrigin  = 'inherit';
+          (elem as HTMLElement)['style'].inset = `${insetTop} 10vw  ${insetBottom} 40vw`;
         }
       }, 800);
     }else{
+      const triangle = document.getElementById('triangle');
+      if(triangle){
+        triangle.style.display='none'
+      }
       this.selectedText = '';
+      document.documentElement.style.setProperty(`--poverlay`,  'block');
       this.toggleOverlayPanel(false);
     }
   }
 
   toggleOverlayPanel(value:boolean,obj?:any){
-    if(value){
+    if(value==true){
       this.isOpenSmallCommentBox = true;
       this.content.showCommentOverlay = true;
       this.onClickAddComment(obj);
@@ -126,23 +152,23 @@ export class SpecSectionsLayoutComponent implements OnInit {
     }
   }
 
-  selectText(event:any, object:any, id:any){
-    var text;
-    if (window.getSelection) {
-        text = window.getSelection()?.toString();
-    } else if ((document as any).selection && (document as any).selection.type != 'Control') {
-      text = (document as any).selection.createRange().text;
-    }
-    if(text.length>0){
-      this.selectedText = text;
-      this.isOpenSmallCommentBox = true
-      this.onClickAddComment(object)
-    }else{
-      this.selectedText = '';
-      this.isOpenSmallCommentBox = false
-      this.overlayPanel.toggle(false)
-    }
-  }
+  // selectText(event:any, object:any, id:any){
+  //   var text;
+  //   if (window.getSelection) {
+  //       text = window.getSelection()?.toString();
+  //   } else if ((document as any).selection && (document as any).selection.type != 'Control') {
+  //     text = (document as any).selection.createRange().text;
+  //   }
+  //   if(text.length>0){
+  //     this.selectedText = text;
+  //     this.isOpenSmallCommentBox = true
+  //     this.onClickAddComment(object)
+  //   }else{
+  //     this.selectedText = '';
+  //     this.isOpenSmallCommentBox = false
+  //     this.overlayPanel.toggle(false)
+  //   }
+  // }
 
   onClickAddComment(obj: any): void {
     this.isOpenSmallCommentBox=true;
