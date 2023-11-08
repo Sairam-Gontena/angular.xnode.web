@@ -9,6 +9,8 @@ import { BaseApiService } from './base-api.service';
 })
 
 export class UserUtilsService extends BaseApiService {
+  apiUrlEndPoint = environment.userUtilsApi;
+
     override get apiUrl(): string {
         return  environment.userUtilsApi;
     }
@@ -16,7 +18,7 @@ export class UserUtilsService extends BaseApiService {
         super();
     }
     getData(url: string) {
-        return axios.get(url);
+        return axios.get( this.apiUrlEndPoint+url);
     }
     login(body: any, url: string) {
         return this.post(url, body);
