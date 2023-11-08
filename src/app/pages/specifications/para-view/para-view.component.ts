@@ -28,6 +28,7 @@ export class ParaViewComponent {
     var text;
     const selection = window.getSelection();
     text = selection?.toString();
+    console.log('window.getSelection', text)
     if(text && text?.length>0 && selection){
         this.selectedText = text;
         this.obj.selectedText = text;

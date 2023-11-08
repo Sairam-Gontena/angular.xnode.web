@@ -87,6 +87,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   receiveMsg(event:any){
+    console.log('event at receive msg', event)
     if(event?.selectedText.length>0 && event?.selectedText.length!=""){
       let obj = {
         'item':event.item,
@@ -106,23 +107,14 @@ export class SpecSectionsLayoutComponent implements OnInit {
       setTimeout(() => {
         let elem = document.getElementsByClassName('p-overlaypanel')[0]
         if(elem){
-          const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
           const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
           let insetTop = (rect.top / vh)*100 +5  + 'vh';
-          let insetRight = (rect.right  / vw) * 100 + 'vw';
           let insetBottom = (rect.bottom / vh)*100  + 'vh';
-          let insetLeft = (rect.left  / vw) * 100 + 'vw';
           if (rect.top < 0) {
             insetTop = '0vh';
           }
-          if (rect.left < 0) {
-            insetLeft = '0vw';
-          }
           if (rect.bottom > vh) {
             insetBottom = '100vh';
-          }
-          if (rect.right > vw) {
-            insetRight = '100vw';
           }
           (elem as HTMLElement)['style'].transformOrigin  = 'inherit';
           (elem as HTMLElement)['style'].inset = `${insetTop} 10vw  ${insetBottom} 40vw`;
