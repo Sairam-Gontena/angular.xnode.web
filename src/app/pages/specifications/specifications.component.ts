@@ -55,11 +55,6 @@ export class SpecificationsComponent implements OnInit {
         this.getMeSpecList();
       }
     });
-    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-      if (info) {
-        this.getMeStorageData();
-      }
-    })
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     })
@@ -77,14 +72,13 @@ export class SpecificationsComponent implements OnInit {
   }
 
   getMeStorageData(): void {
-
-    this.getMeSpecList();
     let user = localStorage.getItem('currentUser');
     if (user)
       this.currentUser = JSON.parse(user);
     let product = localStorage.getItem('product');
     if (product)
       this.product = JSON.parse(product);
+    this.getMeSpecList();
   }
 
   searchText(keyword: any) {
@@ -271,6 +265,15 @@ export class SpecificationsComponent implements OnInit {
 
   _openAndGetComments(contendata: SpecContent) {
     this.contentData = { ...contendata };
+  }
+
+  onChangeProduct(obj: any): void {
+    this.specData = [];
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.getMeStorageData();
   }
 
 }

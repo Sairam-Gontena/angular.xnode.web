@@ -17,8 +17,8 @@
 </div>
 
 <ng-template #showHeader>
-    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-        (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="checkUserEmail()"
+        (changeProduct)="onChangeProduct($event)"></xnode-specifications-header>
 </ng-template>
 
 <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"

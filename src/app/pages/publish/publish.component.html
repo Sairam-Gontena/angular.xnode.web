@@ -2,21 +2,19 @@
   <xnode-page-tools-layout></xnode-page-tools-layout>
   <div class="h-full w-full">
     <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-    <div>
-      <div class="surface-900 h-full overflow-auto ml-4 mr-4 p-4 publish-body overflow-auto">
-        <h6 class="text-4xl text-white  font-bold">Dev</h6>
-        <div class="flex align-items-center justify-content-between mt-4  pb-4">
+    <div class="surface-900 h-full overflow-auto mx-4 p-4 publish-body">
+      <h6 class="text-4xl text-white mt-0 mb-5 font-bold">DEV</h6>
+      <div class="align-items-center justify-content-between mb-4">
+        <div class="flex justify-content-between align-items-center ">
           <div class="flex">
             <div class="text-white text-sm">Cloud Provider : </div>
             <div class="text-white text-sm font-bold ml-2"> Azure</div>
           </div>
-          <div class="flex pl-5">
-            <div class="flex justify-content-center align-items-center deployvbtn text-xs border-round-3xl text-white">
-              Deploy v3.0
-            </div>
+          <div class="flex justify-content-center align-items-center deployvbtn text-xs border-round-3xl text-white">
+            Deploy v3.0
           </div>
         </div>
-        <div class="">
+        <div class="mt-3">
           <xnode-dynamic-table class="mt-2" [inputData]="publish_overview" [cols]="cols" [tableInfo]="tableInfo">
           </xnode-dynamic-table>
         </div>

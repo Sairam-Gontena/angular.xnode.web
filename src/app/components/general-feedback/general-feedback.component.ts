@@ -288,7 +288,7 @@ export class GeneralFeedbackComponent implements OnInit {
       "feedbackStatusId": "Open",
       "userFiles": this.feedbackReportFiles
     }
-    this.userUtilsApi.post('user-feedback',body).then((res: any) => {
+    this.userUtilsApi.post('user-feedback', body).then((res: any) => {
       if (!res?.data?.detail) {
         let user_audit_body = {
           'method': 'POST',
