@@ -18,7 +18,7 @@ export class UserUtilsService extends BaseApiService {
         super();
     }
     getData(url: string) {
-        return axios.get( this.apiUrlEndPoint+url);
+      return axios.get(this.apiUrl + url);
     }
     login(body: any, url: string) {
         return this.post(url, body);
