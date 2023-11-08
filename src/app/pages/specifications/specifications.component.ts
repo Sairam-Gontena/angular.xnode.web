@@ -55,18 +55,9 @@ export class SpecificationsComponent implements OnInit {
         this.getMeSpecList();
       }
     });
-    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-      console.log('info', info);
-
-      if (info) {
-        this.getMeStorageData();
-      }
-    })
   }
 
   ngOnInit(): void {
-    console.log('spec');
-
     this.getMeStorageData();
   }
 

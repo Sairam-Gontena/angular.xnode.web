@@ -37,23 +37,16 @@ export class LogsComponent implements OnInit {
     this.utilsService.openDockedNavi.subscribe((info: boolean) => {
       this.isDockedNaviOpened = info
     })
-    this.utilsService.getMeIfProductChanges.subscribe((info: boolean) => {
-      if (info) {
-        this.getStorageData();
-      }
-    })
-
   }
 
   ngOnInit(): void {
-    this.getStorageData();
+    this.getMeStorageData();
   }
 
-  getStorageData(): void {
+  getMeStorageData(): void {
+    this.utilsService.loadSpinner(true);
     const metaData = localStorage.getItem('meta_data');
     let product = localStorage.getItem('product');
-    console.log('product', product);
-
     let currentUser = localStorage.getItem('currentUser');
     this.utilsService.loadSpinner(true);
     this.tableInfo = TableData.notification_list.Table_Info;
@@ -96,5 +89,12 @@ export class LogsComponent implements OnInit {
     })
   }
 
+  onChangeProduct(obj: any): void {
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.getMeStorageData();
+  }
 
 }
