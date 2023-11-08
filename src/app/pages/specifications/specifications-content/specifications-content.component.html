@@ -1,34 +1,31 @@
-<div class="flex">
-    <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
-        <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
-            (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
-        <div *ngIf="!specExpanded && noResults==false">
-            <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
-                <div class="w-8">
-                    <div class="intro-grid" [id]="item.title">
-                        <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
-                        <div class="flex align-items-center spec-status">
-                            <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d,
-                                y'}}
-                            </p>
-                            <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date: 'MMM
-                                d,y'}}
-                            </p>
-                            <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">3 mins read</p>
-                        </div>
-                        <div class="flex mt-2">
-                            <div
-                                class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-xs font-medium tag-text-color">
-                                #{{app_name}}
-                            </div>
-                        </div>
-                        <div class="flex mt-3 author align-items-center">
-                            <p class="spec-status text-sm font-medium m-0"> By {{item?.content?.[0]?.modified_by}}
-                        </div>
-                        <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
+<div class="spec-body-full ">
+    <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
+        (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
+    <div *ngIf="!specExpanded && noResults==false">
+        <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
+            <div class="w-8">
+                <div class="intro-grid" [id]="item.title">
+                    <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
+                    <div class="flex align-items-center spec-status">
+                        <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d,'}}
+                        </p>
+                        <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                        <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date: 'MMMd,y'}}
+                        </p>
+                        <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                        <p class="text-sm font-medium">3 mins read</p>
                     </div>
+                    <div class="flex mt-2">
+                        <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-xs font-medium tag-text-color">
+                            #{{app_name}}
+                        </div>
+                    </div>
+                    <div class="flex mt-3 author align-items-center">
+                        <p class="spec-status text-sm font-medium m-0"> By {{item?.content?.[0]?.modified_by}}
+                    </div>
+                    <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
+                </div>
+                <div>
                     <xnode-spec-sections-layout [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i"
                         [specItem]="item" (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
                         (onClickSeeLess)="_onClickSeeLess($event)"
@@ -39,19 +36,5 @@
                 </div>
             </div>
         </div>
-        <div class="h-screen w-full flex justify-content-center" *ngIf="noResults==true">
-            <div class="flex flex-column justify-content-center">
-                <div></div>
-                <div class="text-center">
-                    <img src="../../../assets/no-search.svg" />
-                    <p class="font-bold text-white text-2xl">No search results found for <b>“Messaging”</b></p>
-                </div>
-                <div></div>
-            </div>
-        </div>
-    </div>
-    <div [ngClass]="isCommnetsPanelOpened ? 'commnets-panel-grid' : 'hidden'">
-        <xnode-comments-cr-panel class="w-full" [specData]="specData"
-            [commentList]="commentList"></xnode-comments-cr-panel>
     </div>
 </div>

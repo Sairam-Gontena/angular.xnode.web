@@ -49,7 +49,12 @@
             <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
                 [content]="content.content"></xnode-data-dictionary>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm "></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Business Rules'">
@@ -63,11 +68,20 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <xnode-common-spec-table [searchTerm]="searchTerm"
+                            [content]="content.content"></xnode-common-spec-table>
+                    </div>
+                </div>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Functional Dependencies'">
@@ -81,11 +95,18 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
+                <div class="table-view">
+                    <xnode-common-spec-table [searchTerm]="searchTerm"
+                        [content]="content.content"></xnode-common-spec-table>
+                </div>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='User Interfaces'">
@@ -99,11 +120,18 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
+                <div class="table-view">
+                    <xnode-common-spec-table [searchTerm]="searchTerm"
+                        [content]="content.content"></xnode-common-spec-table>
+                </div>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Annexures'">
@@ -117,11 +145,18 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
+                <div class="table-view">
+                    <xnode-common-spec-table [searchTerm]="searchTerm"
+                        [content]="content.content"></xnode-common-spec-table>
+                </div>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Historical Data Load'">
@@ -129,7 +164,10 @@
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+            <div class="table-view">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
         </div>
         <div *ngIf="content.title ==='User Personas' && isArray(content.content)">
             <div *ngFor="let persona of content.content" class="pb-3">
@@ -141,30 +179,41 @@
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+            <div class="table-view">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
         </div>
         <div *ngIf="content.title ==='Version Control'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+            <div class="table-view">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
         </div>
         <div *ngIf="content.title ==='Error Handling'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+            <div class="table-view">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
         </div>
         <div *ngIf="content.title ==='Stakeholder Approvals'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
+            <div class="table-view">
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
+            </div>
         </div>
-
         <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
             <ul *ngFor="let content of content.content let i =index">
                 <div class="col-12 p-0 flex"
