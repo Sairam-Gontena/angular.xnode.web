@@ -69,8 +69,8 @@
                         Tell us more is required</div>
                 </div>
             </div>
-            <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+            <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 flex flex-wrap">
+                <div class="field col-6 sm:col-12 md:col-12 lg:col-12 xl:col-6">
                     <label class="text-sm font-hover">Product</label>
                     <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
                         [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
@@ -89,16 +89,12 @@
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    <!-- <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
-                        [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
-                        optionValue="id" class="custom-dropdown">
-                    </p-dropdown> -->
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                         <div *ngIf="feedback['product'].errors?.['required']">
                             Product is required</div>
                     </div>
                 </div>
-                <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+                <div class="field col-6 sm:col-12 md:col-12 lg:col-12 xl:col-6">
                     <label class="text-sm font-hover">Section</label>
                     <input type="text" pInputText formControlName="section" placeholder="e.g., Dashboard"
                         [ngClass]="{ 'is-invalid': submitted && feedback['section'].errors }" class="col-12" />
