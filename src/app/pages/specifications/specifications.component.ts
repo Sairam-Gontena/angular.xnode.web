@@ -56,7 +56,6 @@ export class SpecificationsComponent implements OnInit {
       }
     });
     this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-
       if (info) {
         this.getMeStorageData();
       }

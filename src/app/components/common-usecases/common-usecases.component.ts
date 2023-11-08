@@ -6,12 +6,12 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Router, NavigationEnd } from '@angular/router';
 
-
 @Component({
   selector: 'xnode-common-usecases',
   templateUrl: './common-usecases.component.html',
   styleUrls: ['./common-usecases.component.scss']
 })
+
 export class CommonUsecasesComponent {
   @Input() searchTerm: any;
 
@@ -19,7 +19,7 @@ export class CommonUsecasesComponent {
   selectedText:any;
   @Output() childEvent= new EventEmitter();
 
-  useCases: any = [];
+  // useCases: any = [];
   email: any;
   id: String = '';
   currentUser?: User;
@@ -27,8 +27,9 @@ export class CommonUsecasesComponent {
   highlightedIndex: any;
   product: any;
   product_id: any;
+  productDetails:any;
+  @Input() useCases: any = [];
   isInsideUseCases: boolean = false;
-  productDetails: any
 
 
 
@@ -40,11 +41,6 @@ export class CommonUsecasesComponent {
     } else {
       this.isInsideUseCases = false
     }
-    this.utils.getMeIfProductChanges.subscribe((info: boolean) => {
-      if (info) {
-        this.getMeStorageData();
-      }
-    })
   }
 
   ngOnInit(): void {

@@ -19,9 +19,9 @@ import { NotifyApiService } from 'src/app/api/notify.service';
 
 export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onChangeProduct = new EventEmitter<object>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() productId?: string | null;
-
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;

@@ -2,7 +2,8 @@
     <xnode-page-tools-layout></xnode-page-tools-layout>
     <div class="pl-4 pr-4"
         [ngClass]="!isOpen ? 'template-builder-body-wrapper': 'another-template-builder-body-wrapper'">
-        <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-        <xnode-data-model-common></xnode-data-model-common>
+        <xnode-template-builder-publish-header
+            (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
+        <xnode-data-model-common *ngIf="dataModel"></xnode-data-model-common>
     </div>
 </div>
