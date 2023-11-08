@@ -9,7 +9,6 @@ import { BaseApiService } from './base-api.service';
 })
 
 export class UserUtilsService extends BaseApiService {
-  apiUrlEndPoint = environment.userUtilsApi;
 
     override get apiUrl(): string {
         return  environment.userUtilsApi;
