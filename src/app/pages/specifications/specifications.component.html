@@ -7,8 +7,8 @@
             'spec-content': !isSideMenuOpened,
             'spec-content-navi':isNaviOpened,
             'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
-            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-                (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="checkUserEmail()"
+                (changeProduct)="onChangeProduct($event)"></xnode-specifications-header>
             <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
             </xnode-specifications-content>
         </div>
@@ -19,8 +19,8 @@
 </div>
 
 <ng-template #showHeader>
-    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-        (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="checkUserEmail()"
+        (changeProduct)="onChangeProduct($event)"></xnode-specifications-header>
 </ng-template>
 
 <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"

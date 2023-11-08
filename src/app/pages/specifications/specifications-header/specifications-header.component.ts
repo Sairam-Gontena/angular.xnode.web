@@ -11,6 +11,7 @@ import { SidePanel } from 'src/models/side-panel.enum';
 })
 export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
+  @Output() changeProduct = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
   currentUser: any;
   templates: any;
@@ -119,8 +120,12 @@ export class SpecificationsHeaderComponent implements OnInit {
   openComments() {
     this.utils.openOrClosePanel(SidePanel.Comments);
   }
+
   openCRs() {
     this.utils.openOrClosePanel(SidePanel.ChangeRequests);
   }
 
+  onChangeProduct(data: any): void {
+    this.changeProduct.emit(data)
+  }
 }
