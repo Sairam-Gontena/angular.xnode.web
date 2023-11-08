@@ -11,8 +11,8 @@
           </div>
      </div>
 </p-overlayPanel>
-<p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [tableStyle]="{'min-width': '100rem'}"
-     [scrollable]="true" scrollDirection="horizontal">
+<p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
+     scrollDirection="horizontal">
      <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
           <div class="flex justify-content-between align-items-center">
                <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">

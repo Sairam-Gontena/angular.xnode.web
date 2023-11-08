@@ -88,11 +88,6 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-    // this.utilsService.getMeIfProductChanges.subscribe((event: boolean) => {
-    //   if (event) {
-    //     this.isSideWindowOpen = false;
-    //   }
-    // })
   }
 
   ngOnInit(): void {
@@ -127,6 +122,7 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = data.popup;
     })
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      console.log("dklfjkdl ",data)
       if (data && data?.email) {
         this.makeTrustedUrl(data.email)
       }
@@ -135,6 +131,7 @@ export class AppComponent implements OnInit {
 
   botOnClick() {
     this.isNaviExpanded = false;
+    this.subMenuLayoutUtil.EnableDockedNavi();
   }
 
   redirectToPreviousUrl(): void {
@@ -280,9 +277,7 @@ export class AppComponent implements OnInit {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
-    } else {
-      console.log("current user not found");
-    }
+    } 
   }
 
   makeTrustedUrl(productEmail: string): void {
@@ -290,7 +285,6 @@ export class AppComponent implements OnInit {
     let id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
-      this.subMenuLayoutUtil.EnableDockedNavi();
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
