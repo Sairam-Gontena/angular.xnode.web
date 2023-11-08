@@ -1,17 +1,15 @@
 <div class="flex" *ngIf="specData?.length;else showHeader">
     <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
         [specData]="specData"></xnode-specifications-menu>
-    <div class="w-full flex">
-        <div [ngClass]="{ 
-            'spec-content-sideMenu': isSideMenuOpened, 
-            'spec-content': !isSideMenuOpened,
-            'spec-content-navi':isNaviOpened,
-            'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
+    <div class="w-full">
+        <div>
             <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
                 (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-            <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
-            </xnode-specifications-content>
+                <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
+                </xnode-specifications-content>
         </div>
+    </div>
+    <div class="flex">
         <div [ngClass]="isCRsPanelOpened ? 'block' : 'hidden'">
             <xnode-change-requests-panel></xnode-change-requests-panel>
         </div>

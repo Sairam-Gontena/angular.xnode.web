@@ -1,22 +1,24 @@
-<p-table [columns]="setColumnsToTheTable(content[0])" [value]="content">
-    <ng-template pTemplate="header" let-columns>
-        <tr>
-            <th *ngFor="let col of columns">
-                {{ col.header }}
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-            <td *ngFor="let col of columns; let i = index ">
-                <div *ngIf="isArray(rowData[col.field])">
-                    <div *ngFor="let data of rowData[col.field]"
-                        [innerHTML]="data.columnName ? data.columnName : data | highlight: searchTerm">
+<div class="table-container">
+    <p-table [columns]="setColumnsToTheTable(content[0])" [value]="content">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{ col.header }}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns; let i = index ">
+                    <div *ngIf="isArray(rowData[col.field])">
+                        <div *ngFor="let data of rowData[col.field]"
+                            [innerHTML]="data.columnName ? data.columnName : data | highlight: searchTerm">
+                        </div>
                     </div>
-                </div>
-                <div *ngIf="!isArray(rowData[col.field])" [innerHTML]="rowData[col.field] | highlight: searchTerm ">
-                </div>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+                    <div *ngIf="!isArray(rowData[col.field])" [innerHTML]="rowData[col.field] | highlight: searchTerm ">
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

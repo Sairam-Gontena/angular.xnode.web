@@ -28,6 +28,9 @@ export class DynamicTableComponent implements OnInit {
   showConfirmationPopover: boolean = false;
   exportFileName: any
 
+  products?: any;
+
+
   ngOnChanges(changes: SimpleChanges): void {
     this.dynamicData = this.inputData;
     this.tableData = this.inputData;
