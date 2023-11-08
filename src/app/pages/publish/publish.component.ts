@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import TableData from '../../../assets/json/table_columns.json';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'xnode-publish',
   templateUrl: './publish.component.html',
