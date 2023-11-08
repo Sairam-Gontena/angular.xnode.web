@@ -225,8 +225,8 @@
                     <div class="col-1 p-0 flex  align-items-start justify-content-center">
                         <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
                             <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                [selectedContent]="selectedContent"
+                                *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
+                                [position]="'absolute'" [selectedContent]="selectedContent"
                                 placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                         </p-overlayPanel>
                         <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -255,8 +255,8 @@
                                 <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                     <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
                                         <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                            (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                            [selectedContent]="selectedContent"
+                                            *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
+                                            [position]="'absolute'" [selectedContent]="selectedContent"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                     </p-overlayPanel>
                                     <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -285,8 +285,8 @@
                                         <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                             <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
                                                 <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                                    (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                                    [selectedContent]="selectedContent"
+                                                    *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
+                                                    [position]="'absolute'" [selectedContent]="selectedContent"
                                                     placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                             </p-overlayPanel>
                                             <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -313,16 +313,15 @@
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
         </div>
         <div *ngIf="content.title ==='User Roles'">
-            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
-                [selectedContent]="selectedContent"></xnode-user-roles>
+            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"
+                [users]="usersList"></xnode-user-roles>
         </div>
         <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
             <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
                 [users]="usersList"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
-                [selectedContent]="selectedContent"></xnode-para-view>
+            <xnode-para-view [content]="content" [searchTerm]="searchTerm" [users]="usersList"></xnode-para-view>
         </ng-template>
 
         <div class="gradientback" *ngIf="!content?.collapsed">

@@ -21,7 +21,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   assignAsaTask: boolean = false;
   currentUser: any;
   product: any;
-  usersData: any;
+  listToMention: any;
+
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private api: ApiService) {
@@ -34,14 +35,23 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.product = JSON.parse(product);
     }
   }
-  ngOnInit(): void {
 
+  ngOnInit(): void {
+    let data = [] as any[];
+    if (this.users) {
+      this.users.forEach((element: any) => {
+        let name: string = element?.first_name;
+        data.push(name)
+      });
+      this.listToMention = data;
+    }
   }
+  
   onClickSend(): void {
     this.utils.loadSpinner(true);
     const mentionedUsers = this.comment.split(/[@ ]/);
     let users: { userId: any; displayName: any; email: any; }[] = [];
-    this.usersData.forEach((elem: any) => {
+    this.users.forEach((elem: any) => {
       mentionedUsers.some((user: any) => {
         let nameArray: any;
         if (elem?.first_name.includes(" ")) {
@@ -67,14 +77,18 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       userMentions: uniqueData
     }
     this.commentsService.addComments(body).then((commentsReponse: any) => {
-      this.utils.commentAdded(true);
-      this.utils.openOrClosePanel(SidePanel.Comments);
-      this.comment = '';
+      if (commentsReponse?.data?.common?.status === 'fail') {
+        this.utils.loadToaster({ severity: 'error', summary: 'SUCCESS', detail: commentsReponse?.data?.common?.status });
+      } else {
+        this.utils.commentAdded(true);
+        this.utils.openOrClosePanel(SidePanel.Comments);
+        this.comment = '';
+        this.closeOverlay.emit()
+      }
       this.utils.loadSpinner(false);
-      this.closeOverlay.emit()
     }).catch(err => {
-      console.log('err', err);
       this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
 

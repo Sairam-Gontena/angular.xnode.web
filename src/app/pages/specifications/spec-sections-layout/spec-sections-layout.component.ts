@@ -69,20 +69,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
-  getCommentListBasedOnContentId(contentId: string) {
-    this.utils.loadSpinner(true);
-    this.commentsService.getComments({ contentId: contentId }).then((response: any) => {
-      if (response && response.data) {
-        this.utils.saveCommentList(response.data)
-        this.commentList = response.data;
-      }
-      this.utils.loadSpinner(true);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(true);
-    });
-  }
-
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
     this.showAddCommnetOverlay.emit(obj)

@@ -135,12 +135,8 @@ export class SpecificationsContentComponent implements OnInit {
     this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
       this.utils.loadSpinner(true);
       if (resp?.status === 200) {
-        let data = [] as any[];
-        resp.data.forEach((element: any) => {
-          let name: string = element?.first_name;
-          data.push(name)
-        });
-        this.usersList = data;
+        this.usersList = resp.data;
+
       } else {
         this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
       }
@@ -161,15 +157,31 @@ export class SpecificationsContentComponent implements OnInit {
 
   getLatestComments() {
     this.utils.loadSpinner(true);
-    this.commentsService.getComments().then((response: any) => {
+    this.commentsService.getComments({ productId: this.product.id }).then((response: any) => {
       if (response && response.data) {
         this.utils.saveCommentList(response.data)
         this.commentList = response.data;
+        this.insertContentIntoComments();
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
       console.log(err);
       this.utils.loadSpinner(false);
+    });
+  }
+
+  insertContentIntoComments(): void {
+    this.commentList.forEach((element: any) => {
+      if (!element.contentText || element.contentText === '') {
+        this.specData.forEach((specEle: any) => {
+          specEle.content.forEach((specContentEle: any) => {
+            if (element.contentId === specContentEle.id) {
+              element.contentText = specContentEle.content;
+              element.contentTitle = specContentEle.title;
+            }
+          });
+        });
+      }
     });
   }
 
