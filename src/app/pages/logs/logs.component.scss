@@ -1,6 +1,105 @@
-.main-container {
-    display: flex;
-    height: calc(100vh - 42px);
+@media (min-width: 1024px) {
+    .main-container {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 130px);
+    }
+
+    .main-container-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 230px);
+    }
+
+    .main-container-navi {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 435px);
+    }
+
+    .main-container-navi-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 535px);
+    }
+}
+
+@media (min-width: 1280px) {
+    .main-container {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 80px);
+    }
+
+    .main-container-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 330px);
+    }
+
+    .main-container-navi {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 515px);
+    }
+
+    .main-container-navi-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 715px);
+    }
+}
+
+@media (min-width: 1440px) {
+    .main-container {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 80px);
+    }
+
+    .main-container-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 430px);
+    }
+
+    .main-container-navi {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 560px);
+    }
+
+    .main-container-navi-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 865px);
+    }
+}
+
+@media (min-width: 1680px) {
+    .main-container {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 80px);
+    }
+
+    .main-container-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 80px);
+    }
+
+    .main-container-navi {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 635px);
+    }
+
+    .main-container-navi-sidemenu {
+        display: flex;
+        height: calc(100vh - 42px);
+        width: calc(100vw - 935px);
+    }
 }
 
 .side-menu {
@@ -45,8 +144,9 @@
 }
 
 .logs-content-table {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 160px);
     overflow-y: auto;
+    background-color: #24232C;
 }
 
 .logs-content-navi {
