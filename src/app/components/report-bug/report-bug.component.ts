@@ -226,6 +226,13 @@ export class ReportBugComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
+      // const entries = formData.entries();
+      formData.forEach((e: any) => {
+        console.log(e);
+      })
+      // for (var key of entries) {
+      //   console.log(key[0] + ', ' + key[1]);
+      // }
       const headers = {
         'Content-Type': 'application/json',
       };
@@ -243,7 +250,7 @@ export class ReportBugComponent implements OnInit {
   fileUploadCall(formData: any, headers: any) {
     let data: any;
     return new Promise((resolve, reject) => {
-      this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
+      this.commonApi.postFile('file-azure/upload', formData, { headers }).then((res: any) => {
         if (res) {
           data = {
             "fileId": res.data.id,
@@ -447,15 +454,18 @@ export class ReportBugComponent implements OnInit {
     const selectedFile = event.target.files[0];
     const fileName = selectedFile.name;
     if (selectedFile) {
+      console.log(selectedFile, '===========')
       this.readFileContent(selectedFile, fileName);
     }
   }
 
   private readFileContent(file: File, fileName: string) {
     this.screenshotName.push(fileName);
-    const reader = new FileReader();
+    var reader = new FileReader();
     this.uploadedFile.push(file)
     reader.readAsDataURL(file);
+    console.log(reader.result);
+
     reader.onload = (e) => {
       if (e?.target) {
         this.screenshot = e?.target.result;
@@ -464,8 +474,11 @@ export class ReportBugComponent implements OnInit {
       this.uploadedFile = _.uniq(this.uploadedFile)
       this.images = _.uniq(this.images)
       this.screenshotName = _.uniq(this.screenshotName)
+      console.log(this.uploadedFile, this.images, '===========')
+
     };
     reader.readAsArrayBuffer(file);
+    console.log(reader.result);
   }
 
   onDragOver(event: Event) {
