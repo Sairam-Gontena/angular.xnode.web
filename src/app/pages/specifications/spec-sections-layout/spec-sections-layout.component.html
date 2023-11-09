@@ -13,7 +13,6 @@
         <p-button (click)="onClickSeeLess.emit({item:specItem,content:content})" label="See Less"
             *ngIf="content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
             class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
-
         <div *ngIf="content.title ==='Usecases' || content.title === 'Use Cases'">
             <div class="flex col-12 justify-content-end align-items-center">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
@@ -68,12 +67,8 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <div class="grid col-12">
-                    <div class="col-12">
-                        <xnode-common-spec-table [searchTerm]="searchTerm"
-                            [content]="content.content"></xnode-common-spec-table>
-                    </div>
-                </div>
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
                 <div class="grid col-12">
@@ -95,10 +90,8 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <div class="table-view">
-                    <xnode-common-spec-table [searchTerm]="searchTerm"
-                        [content]="content.content"></xnode-common-spec-table>
-                </div>
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
                 <div class="grid col-12">
@@ -120,10 +113,8 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <div class="table-view">
-                    <xnode-common-spec-table [searchTerm]="searchTerm"
-                        [content]="content.content"></xnode-common-spec-table>
-                </div>
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
                 <div class="grid col-12">
@@ -145,10 +136,8 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <div class="table-view">
-                    <xnode-common-spec-table [searchTerm]="searchTerm"
-                        [content]="content.content"></xnode-common-spec-table>
-                </div>
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
                 <div class="grid col-12">
@@ -164,10 +153,7 @@
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <div class="table-view">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
-            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='User Personas' && isArray(content.content)">
             <div *ngFor="let persona of content.content" class="pb-3">
@@ -179,40 +165,28 @@
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <div class="table-view">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
-            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
-        <div *ngIf="content.title ==='Version Control'">
+        <div class="w-full" *ngIf="content.title ==='Version Control'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <div class="table-view">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
-            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='Error Handling'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <div class="table-view">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
-            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='Stakeholder Approvals'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
-            <div class="table-view">
-                <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table>
-            </div>
+            <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
             <ul *ngFor="let content of content.content let i =index">

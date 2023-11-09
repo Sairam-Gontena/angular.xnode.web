@@ -1,7 +1,9 @@
 <div class="flex">
-    <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
+    <div class="expand-spec" *ngIf="specExpanded && noResults==false">
         <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
             (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
+    </div>
+    <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
         <div *ngIf="!specExpanded && noResults==false">
             <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
                 <div class="w-8">
