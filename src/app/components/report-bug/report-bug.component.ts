@@ -226,13 +226,6 @@ export class ReportBugComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
-      // const entries = formData.entries();
-      formData.forEach((e: any) => {
-        console.log(e);
-      })
-      // for (var key of entries) {
-      //   console.log(key[0] + ', ' + key[1]);
-      // }
       const headers = {
         'Content-Type': 'application/json',
       };
