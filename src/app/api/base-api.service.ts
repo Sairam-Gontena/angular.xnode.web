@@ -17,6 +17,9 @@ export abstract class BaseApiService {
   post(url: string, body: any = {}, config: AxiosRequestConfig = {}) {
     return axios.post(this.apiUrl + url, body, this.getConfigJsonHeader(config));
   }
+  fileUpload(url: string, body: any = {}, config: any) {
+    return axios.post(this.apiUrl + url, body, config);
+  }
   put(url: string, body: any = {}, config: AxiosRequestConfig = {}) {
     return axios.post(this.apiUrl + url, body, this.getConfigJsonHeader(config));
   }
