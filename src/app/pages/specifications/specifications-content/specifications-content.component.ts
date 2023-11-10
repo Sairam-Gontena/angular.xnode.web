@@ -268,6 +268,14 @@ export class SpecificationsContentComponent implements OnInit {
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });
+    if(this.selectedSpecItem.id){
+      setTimeout(() => {
+        const element = document.getElementById(this.selectedSpecItem.id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+      });
+    }
   }
 
   _expandComponent(val: any): void {
