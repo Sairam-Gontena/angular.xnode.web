@@ -2,6 +2,8 @@
     background: #24232C;
     padding: 30px;
     color: #dfdfdf;
+    max-height: 200px;
+    overflow: hidden;
 }
 
 .openapi-spec {
@@ -159,8 +161,3 @@ pre {
     border-radius: 6px !important;
 }
 
-.table-view {
-    width: 100%;
-    overflow: auto;
-    white-space: nowrap;
-}
