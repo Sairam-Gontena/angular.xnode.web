@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { ApiService } from 'src/app/api/api.service';
 import * as _ from "lodash";
 import { SidePanel } from 'src/models/side-panel.enum';
 import { MentionConfig } from 'angular-mentions';
@@ -10,6 +9,7 @@ import { MentionConfig } from 'angular-mentions';
   templateUrl: './add-comment-overlay-panel.component.html',
   styleUrls: ['./add-comment-overlay-panel.component.scss']
 })
+
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() closeOverlay = new EventEmitter<any>();
   @Input() position?: string;
@@ -30,8 +30,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   references: any;
 
   constructor(public utils: UtilsService,
-    private commentsService: CommentsService,
-    private api: ApiService) {
+    private commentsService: CommentsService) {
     this.references = [];
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -64,10 +63,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
-    console.log('>>>', this.comment);
-    console.log('>>>', this.references);
-    console.log('specItem', this.specItem)
     let body = {
+      "createdBy": this.currentUser.user_id,
+      "topParentId": null,
       "parentEntity": this.parentEntity,
       "parentId": this.parentId,
       "message": this.comment,
@@ -79,39 +77,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       ],
       "feedback": {}
     }
-    console.log('body', body);
-    // return
-
     this.saveComment(body);
-    return
-
-
-    this.utils.loadSpinner(true);
-    const mentionedUsers = this.comment.split(/[@ ]/);
-    let users: { userId: any; displayName: any; email: any; }[] = [];
-    this.users.forEach((elem: any) => {
-      mentionedUsers.some((user: any) => {
-        let nameArray: any;
-        if (elem?.first_name.includes(" ")) {
-          nameArray = elem?.first_name.split(" ");
-        }
-        if (user.toLowerCase() == elem?.first_name.toLowerCase() || nameArray?.some((name: any) => name === user)) {
-          let data = {
-            "userId": elem?.user_id,
-            "displayName": elem?.first_name + elem?.last_name,
-            "email": elem?.email
-          }
-          users.push(data)
-        }
-      })
-    });
-    const uniqueData = _.uniqWith(users, (a, b) => a.userId === b.userId);
-    this.saveComment(uniqueData);
   }
 
   saveComment(body: any): void {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
-      console.log('commentsReponse', commentsReponse);
       if (commentsReponse.statusText === 'Created') {
         this.utils._updateCommnetsList(true);
         this.utils.openOrClosePanel(SidePanel.Comments);
@@ -139,10 +109,5 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     while ((match = regex.exec(this.comment)) !== null) {
       this.assinedUsers.push(match[1]);
     }
-  }
-
-  test(obj: any, ele: any): void {
-    console.log('@#@#', obj, ele);
-
   }
 }

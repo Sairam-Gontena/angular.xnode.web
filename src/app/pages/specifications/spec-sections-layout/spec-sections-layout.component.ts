@@ -74,65 +74,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.showAddCommnetOverlay.emit(obj)
   }
 
-  sendComment(comment: any) {
-    // this.utils.loadSpinner(true);
-    // const body = {
-    //   contentId: this.selectedContent.id,
-    //   productId: this.product.id,
-    //   userId: this.currentUser.user_id,
-    //   message: comment,
-    //   itemType: 'Comment',
-    // }
-    // this.commentsService.addComments(body)
-    //   .then((commentsReponse: any) => {
-    //     console.log('commentsReponse', commentsReponse);
-    //     this.utils.commentAdded(true);
-    //     this.utils.loadSpinner(false);
-    //   }).catch(err => {
-    //     console.log('err', err);
-    //     this.utils.loadSpinner(false);
-    //   })
-    return
-
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    this.isOpenSmallCommentBox = false;
-    this.commentsService.getComments(this.selectedSpecItem)
-      .then((commentsReponse: any) => {
-        let body: any = {
-          product_id: localStorage.getItem('record_id'),
-          content_id: this.selectedSpecItem.id,
-        };
-        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-          this.isOpenSmallCommentBox = false;
-          body.comments = [
-            ...commentsReponse['data']['comments'],
-            ...[{
-              user_id: user_id,
-              message: comment,
-            }]
-          ]
-        } else {
-          body.comments = [{
-            user_id: user_id,
-            message: comment
-          }]
-        }
-        this.commentsService.updateComments(body)
-          .then((response: any) => {
-            this.smallCommentContent = "";
-            this.getCommentsAfterUpdate.emit(comment);
-            this.utils.openOrClosePanel(SidePanel.Comments);
-          })
-          .catch((error: any) => {
-            this.smallCommentContent = "";
-          });
-      })
-      .catch(res => {
-        console.log("comments get failed");
-      })
-  }
-
   checkedToggle(type: any, item: any, content: any) {
     this.specItemList.forEach((obj: any) => {
       if (obj.id === item.id) {
@@ -151,7 +92,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   checkListViewSections(title: string) {
     return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
   }
-
 
   getTestCaseKeys(testCase: any): string[] {
     return Object.keys(testCase);

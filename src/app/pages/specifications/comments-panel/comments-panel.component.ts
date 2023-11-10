@@ -60,8 +60,8 @@ export class CommentsPanelComponent implements OnInit {
 
   setAvatar(userObj: any): string {
     let avatar: string = '';
-    if (userObj.modified_by) {
-      avatar = userObj.modified_by.charAt(0).toUpperCase()
+    if (userObj.createdBy && userObj.createdBy?.displayName) {
+      avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
     }
     return avatar;
   }
