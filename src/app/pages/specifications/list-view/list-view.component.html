@@ -15,7 +15,8 @@
                 <p-overlayPanel #op (onHide)="showCommentIcon=false" (onHide)="commentOverlayPanelOpened=false">
                     <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
                         *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)" [selectedContent]="content"
-                        placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                        placeHolder="Add a Comment" [parentEntity]="'SPEC'"
+                        [parentId]="specItem.id"></xnode-add-comment-overlay-panel>
                 </p-overlayPanel>
                 <img src="../assets/comment.svg" class="pointer" alt="comment"
                     (click)="op.toggle($event);commentOverlayPanelOpened=true"

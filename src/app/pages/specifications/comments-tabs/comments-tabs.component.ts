@@ -8,6 +8,7 @@ import { Comment } from 'src/models/comment';
 })
 export class CommentsTabsComponent implements OnInit {
   @Input() commentList: Array<Comment> = [];
+  @Input() usersList: any;
   ngOnInit(): void {
   }
 }

@@ -11,17 +11,13 @@ export class ListViewComponent {
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
   @Input() users: any = [];
+  @Input() specItem: any;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
   commentOverlayPanelOpened: boolean = false;
 
-
   onTextSelected(event: MouseEvent) {
     const selectedText = this.getSelectedText();
-    if (selectedText) {
-      console.log('Selected Text: ' + selectedText);
-      // You can now do something with the selected text.
-    }
   }
 
   private getSelectedText() {
