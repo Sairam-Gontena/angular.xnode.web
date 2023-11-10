@@ -39,6 +39,7 @@ export class SpecificationsComponent implements OnInit {
   consversationList: any;
   contentData: any;
   noResults: boolean = false;
+  useCases: any;
 
   constructor(
     private utils: UtilsService,
@@ -85,7 +86,50 @@ export class SpecificationsComponent implements OnInit {
     let product = localStorage.getItem('product');
     if (product)
       this.product = JSON.parse(product);
-    this.getMeSpecList();
+
+    this.getInsights();
+
+  }
+  getInsights() {
+    let currentUserString = localStorage.getItem('currentUser');
+    let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
+    this.apiService.get("navi/get_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
+      .then((response: any) => {
+        if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
+          this.useCases = data?.usecase || [];
+          this.getMeSpecList();
+          this.utils.loadSpinner(false);
+        } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.utils.loadSpinner(false);
+          this.utils.showProductStatusPopup(true);
+        }
+      })
+      .catch((error: any) => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      });
+  }
+  email(arg0: string, arg1: number, arg2: string, arg3: string, user_audit_body: { method: string; url: any; }, email: any, product_id: any) {
+    throw new Error('Method not implemented.');
+  }
+  product_id(arg0: string, arg1: number, arg2: string, arg3: string, user_audit_body: { method: string; url: any; }, email: any, product_id: any) {
+    throw new Error('Method not implemented.');
   }
 
   searchText(keyword: any) {
