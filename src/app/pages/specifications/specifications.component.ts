@@ -68,6 +68,11 @@ export class SpecificationsComponent implements OnInit {
         this.isNaviOpened = true;
       }
     })
+    this.utils.getMeProductDetails.subscribe((res: any) => {
+      if (res && res?.id) {
+        this.onChangeProduct(res)
+      }
+    })
   }
 
   ngOnInit(): void {

@@ -24,6 +24,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() commentList: any;
   @Input() usersList: any = [];
   @Input() useCases: any[] = [];
+  @Input() specItemList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
@@ -34,7 +35,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
   selectedSpecItem: any;
-  specItemList: any;
   smallCommentContent: any;
   showMoreContent: any;
   specExpanded: any;

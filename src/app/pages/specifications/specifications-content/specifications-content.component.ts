@@ -219,11 +219,12 @@ export class SpecificationsContentComponent implements OnInit {
     }, 100)
   }
 
-  scrollToItem() {
-    const element = document.getElementById(this.selectedSpecItem.id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  async scrollToItem() {
+    await new Promise(resolve => setTimeout(resolve, 500));
+      const element = document.getElementById(this.selectedSpecItem.id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
   }
 
   getMeBanner(event: any) {
@@ -283,8 +284,8 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.scrollToItem();
     this.fetchOpenAPISpec();
+    this.scrollToItem();
   }
 
   _showAddCommnetOverlay(event: any) {
