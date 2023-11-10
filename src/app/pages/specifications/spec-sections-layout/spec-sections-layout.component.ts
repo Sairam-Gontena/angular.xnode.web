@@ -66,12 +66,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
 
 
   }
-  ngOnChange() {
-    setTimeout(() => {
-      console.log(this.useCases, '22222222222')
-
-    }, 500)
-  }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);

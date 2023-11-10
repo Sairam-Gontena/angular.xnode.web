@@ -90,7 +90,6 @@ export class SpecificationsComponent implements OnInit {
     let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
     this.apiService.get("navi/get_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
       .then((response: any) => {
-        console.log(response.data.usecase, '5555555555')
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
@@ -99,8 +98,6 @@ export class SpecificationsComponent implements OnInit {
           this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
-          console.log(this.useCases, '00000000')
-
           this.getMeSpecList();
           this.utils.loadSpinner(false);
         } else {
