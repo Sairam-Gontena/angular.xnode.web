@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT'">
-                    <div *ngIf="selectedIndex !== i ">{{cmt.message}}</div>
+                    <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
                 </div>
                 <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt.id">
                     <div class="w-full text-end">

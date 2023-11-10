@@ -6,6 +6,7 @@ import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { AuditInfo } from 'src/models/audit-info';
 import { ApiService } from 'src/app/api/api.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -39,7 +40,7 @@ export class CommentsPanelComponent implements OnInit {
   originalBackgroundColor: string = 'blue';
 
   constructor(private utils: UtilsService, private commentsService: CommentsService,
-    private apiservice: ApiService) {
+    private apiservice: ApiService, private sanitizer: DomSanitizer) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     });
@@ -114,4 +115,15 @@ export class CommentsPanelComponent implements OnInit {
       this.utils.loadSpinner(false);
     })
   }
+
+  highlightMatch(conversation: string): SafeHtml {
+    console.log(conversation)
+    const regex = /@[^,\s]*/g;
+    const highlighted = conversation.replace(regex, (match) => {
+      const spanWithId = `<span class="highlight-tags" style="background-color:rgb(2, 173, 238);" >${match}</span>`;
+      return spanWithId;
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+  }
+
 }

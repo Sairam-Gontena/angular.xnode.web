@@ -59,7 +59,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   format(item: any) {
     let outputObject: Record<string, any> = {};
     outputObject[item.user_id] = item.first_name + " " + item.last_name;
-    this.references = outputObject;;
+    this.references = outputObject;
     return `@${item.first_name} ${item.last_name},`
   }
 
