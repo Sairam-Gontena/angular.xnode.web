@@ -65,7 +65,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   onClickSend(): void {
     let body = {
       "createdBy": this.currentUser.user_id,
-      "topParentId": null,
+      "topParentId": this.parentId ? this.parentId : null,
       "parentEntity": this.parentEntity,
       "parentId": this.parentId,
       "message": this.comment,

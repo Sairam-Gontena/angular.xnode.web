@@ -16,6 +16,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() commentList: any;
+  @Input() usersList: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -119,12 +120,35 @@ export class CommentsPanelComponent implements OnInit {
   highlightMatch(conversation: string): SafeHtml {
     const regex = /@.*?,/g;
     const highlighted = conversation.replace(regex, (match) => {
-      // Remove the trailing comma from the matched text
       const matchedTextWithoutComma = match.slice(0, -1);
       const spanWithId = `<span class="highlight-tags" style="color:rgb(2, 173, 238);" >${matchedTextWithoutComma}</span>`;
       return spanWithId;
     });
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+  }
+
+  viewReplys(cmt: any) {
+    this.utils.loadSpinner(true);
+    this.commentsService.getComments({ topParentId: cmt.id }).then((response: any) => {
+      if (response && response.data) {
+        response.data.forEach((element: any) => {
+          element.parentUser = this.commentList.filter((ele: any) => { return ele.id === cmt.id })[0].createdBy;
+        });
+        this.commentList.forEach((obj: any) => {
+          if (obj.id === cmt.id) {
+            obj.comments = response.data;
+          }
+        })
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+
+    });
   }
 
 }

@@ -2,7 +2,6 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
-import { SpecContent } from 'src/models/spec-content';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
@@ -12,7 +11,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   styleUrls: ['./comments-cr-panel.component.scss']
 })
 export class CommentsCrPanelComponent implements OnInit {
-  @Input() specData?: Array<[]>
+  @Input() specData?: Array<[]>;
+  @Input() usersList: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -26,19 +26,6 @@ export class CommentsCrPanelComponent implements OnInit {
   comment: any;
   currentUser: any;
   selectedSection: any;
-
-  // private _contentData: any;
-  // @Input()
-  // set contentData(contentData: SpecContent) {
-  //   this._contentData = contentData;
-  //   if (this._contentData) {
-  //     this.getLatestComments();
-  //   }
-  // }
-
-  // get contentData(): any {
-  //   return this._contentData;
-  // }
 
   constructor(private utils: UtilsService, private commentsService: CommentsService) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {

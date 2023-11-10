@@ -42,6 +42,11 @@
                             <p-overlayPanel #op class="dots-overlay">
                                 <div class="">
                                     <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                                        (click)="viewReplys(cmt);op.hide();" (keydown)="op.hide()">
+                                        <!-- <img src="../../../../assets//edit.png" class="confirm-overlay-icon" /> -->
+                                        <div class="pl-2 text-sm ">View Replys</div>
+                                    </div>
+                                    <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
                                         (click)="editComment(cmt);op.hide();" (keydown)="op.hide()">
                                         <img src="../../../../assets//edit.png" class="confirm-overlay-icon" />
                                         <div class="pl-2 text-sm ">Edit</div>
@@ -74,7 +79,6 @@
                     <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
                         {{cmt.referenceContent.content }} </p>
                 </div>
-
                 <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT'">
                     <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
                 </div>
@@ -84,7 +88,7 @@
                             (click)="showCommentInput = false;action='';"></i>
                     </div>
                     <div class="w-full">
-                        <xnode-add-comment-overlay-panel placeHolder="Reply" [users]="users" parentEntity="COMMENT"
+                        <xnode-add-comment-overlay-panel placeHolder="Reply" [users]="usersList" parentEntity="COMMENT"
                             [parentId]="cmt.id" [comment]="action === 'EDIT' ? cmt.message: ''" [width]="'w-full'"
                             (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
                     </div>
