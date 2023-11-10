@@ -65,9 +65,14 @@ export class SpecificationsMenuComponent implements OnInit {
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specData[event.index]))
+    this.selectedSection = this.specData[event.index].content[0];
+    this.selectedSecIndex = 0;
+    this.utils.saveSelectedSection(this.specData[event.index].content[0]);
+    this.utils._updateCommnetsList(true);
   }
 
-  onClickSection(event: any, i: any) {
+  onSelectSpec(event: any, i: any) {
     this.selectedSection = event;
     this.selectedSecIndex = i;
     this.utils.saveSelectedSection(event);
