@@ -295,7 +295,8 @@
                 [users]="usersList"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"></xnode-para-view>
+            <xnode-para-view [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
+                [selectedContent]="selectedContent"></xnode-para-view>
         </ng-template>
 
         <div class="gradientback" *ngIf="!content?.collapsed">

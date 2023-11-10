@@ -12,6 +12,7 @@ export class ParaViewComponent {
   @Input() searchTerm!: string;
   @Input() content!: Section;
   @Input() users: any = [];
+  @Input() selectedContent!: string;
   @Input() id: any;
   @Input() specId :any;
   selectedText:string='';

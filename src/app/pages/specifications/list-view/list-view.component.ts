@@ -8,7 +8,7 @@ import { Section } from 'src/models/section';
   styleUrls: ['./list-view.component.scss']
 })
 export class ListViewComponent {
-  @Input() content!: Array<Section>; //:any;
+  @Input() content!: Array<Section>;
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
   @Input() users: any = [];
