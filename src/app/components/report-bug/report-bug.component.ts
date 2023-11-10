@@ -227,8 +227,8 @@ export class ReportBugComponent implements OnInit {
       formData.append('file', file);
       formData.append('containerName', 'user-feedback');
       const headers = {
-        'Content-Type': 'application/json',
-      };
+        'Content-Type': 'multipart/form-data'
+      }
       return this.fileUploadCall(formData, headers);
     });
     const responses = await Promise.all(promises);

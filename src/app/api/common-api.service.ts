@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { environment } from 'src/environments/environment';
 import { BaseApiService } from './base-api.service';
 
@@ -21,7 +21,8 @@ export class CommonApiService extends BaseApiService {
     override get apiUrl(): string {
         return environment.commonApiUrl;
     }
-    postFile(url: string, body: unknown, headers: any) {
-        return this.post(url, body, { headers })
+    postFile(url: string, body: unknown, headers: AxiosRequestConfig = {}) {
+        console.log(url, body, headers, '0000000000000')
+        return this.post(url, body, headers)
     }
 }
