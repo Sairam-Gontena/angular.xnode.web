@@ -62,8 +62,8 @@ export class UtilsService {
   private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
 
-  private isCommentAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public checkCommentsAdded: Observable<any> = this.isCommentAdded.asObservable();
+  private updateComments: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeLatestComments: Observable<any> = this.updateComments.asObservable();
 
   private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeUpdatedCommentList: Observable<any> = this.saveComments.asObservable();
@@ -147,8 +147,8 @@ export class UtilsService {
     this.isInSpec.next(event);
   }
 
-  commentAdded(event: any): void {
-    this.isCommentAdded.next(event);
+  _updateCommnetsList(event: any): void {
+    this.updateComments.next(event);
   }
 
   saveCommentList(event: any) {

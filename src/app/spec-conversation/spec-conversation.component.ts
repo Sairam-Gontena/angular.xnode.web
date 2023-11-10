@@ -1,31 +1,17 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
-import { UtilsService } from '../../../components/services/utils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
-import { CommentsService } from 'src/app/api/comments.service';
-import { Comment } from 'src/models/comment';
-import { DropdownOptions } from 'src/models/dropdownOptions';
-import { AuditInfo } from 'src/models/audit-info';
-import { ApiService } from 'src/app/api/api.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { UtilsService } from '../components/services/utils.service';
+import { CommentsService } from '../api/comments.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'xnode-comments-panel',
-  templateUrl: './comments-panel.component.html',
-  styleUrls: ['./comments-panel.component.scss']
+  selector: 'xnode-spec-conversation',
+  templateUrl: './spec-conversation.component.html',
+  styleUrls: ['./spec-conversation.component.scss']
 })
-export class CommentsPanelComponent implements OnInit {
-  @Input() specData?: Array<[]>;
-  @Input() commentList: any;
+export class SpecConversationComponent {
+  @Input() list: any;
   @Input() usersList: any;
-  userImage?: any = "DC";
-  username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
-  selectedFilter: object = { label: 'All Comments', value: 'all' };
-  commentObj: any = {
-    comment: '',
-    role: '',
-    user_id: ''
-  };
+  @Output() onClickClose = new EventEmitter<any>();
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -40,24 +26,24 @@ export class CommentsPanelComponent implements OnInit {
   users: any = [];
   originalBackgroundColor: string = 'blue';
 
-  constructor(private utils: UtilsService, private commentsService: CommentsService,
-    private apiservice: ApiService, private sanitizer: DomSanitizer) {
-    this.utils.getMeSelectedSection.subscribe((event: any) => {
-      this.selectedSection = event;
-    });
-    let data = localStorage.getItem("currentUser")
-    if (data) {
-      this.currentUser = JSON.parse(data);
-      this.username = this.currentUser.first_name.toUpperCase() + ' ' + this.currentUser.last_name.toUpperCase();
-      if (this.currentUser.first_name && this.currentUser.last_name) {
-        this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
-      }
+  constructor(private utils: UtilsService,
+    private commentsService: CommentsService,
+    private sanitizer: DomSanitizer) {
+    // this.utils.getMeLatestComments.subscribe((event: any) => {
+    //   if (event) {
+    //     this.viewReplys();
+    //   }
+    // })
+  }
+
+  setAvatar(userObj: any): string {
+    let avatar: string = '';
+    if (userObj.createdBy && userObj.createdBy?.displayName) {
+      avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
     }
+    return avatar;
   }
 
-  ngOnInit(): void {
-
-  }
 
   onClickReply(cmt: any): void {
     this.selectedComment = cmt;
@@ -101,15 +87,19 @@ export class CommentsPanelComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
   }
 
-  viewReplys(cmt: any) {
+  viewReplys(cmt?: any) {
+    console.log('cmt', cmt);
+
+    if (cmt)
+      this.selectedComment = cmt;
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ topParentId: cmt.id }).then((response: any) => {
+    this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
         response.data.forEach((element: any) => {
-          element.parentUser = this.commentList.filter((ele: any) => { return ele.id === cmt.id })[0].createdBy;
+          element.parentUser = this.list.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
         });
-        this.commentList.forEach((obj: any) => {
-          if (obj.id === cmt.id) {
+        this.list.forEach((obj: any) => {
+          if (obj.id === this.selectedComment.id) {
             obj.comments = response.data;
           }
         })

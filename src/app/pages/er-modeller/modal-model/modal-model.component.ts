@@ -38,8 +38,6 @@ export class ModalModelComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.model)
-
     this.formGroup = this.fb.group({
       name: [this.model.name, Validators.required],
       displayName: [this.model.display_name, Validators.required],

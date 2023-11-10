@@ -10,6 +10,7 @@ export class ParaViewComponent {
   @Input() searchTerm!: string;
   @Input() content!: Section;
   @Input() users: any = [];
+  @Input() specItem: any;
   showCommentIcon: boolean = false;
   commentOverlayPanelOpened: boolean = false
 }
