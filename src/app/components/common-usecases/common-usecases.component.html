@@ -9,9 +9,9 @@
                         <img src="../../assets/case-010.svg" alt="usecase-09" class="ml-3 w-7 h-5" *ngIf="i >= 10">
                     </div>
                     <div class="col-10 md:col-10 lg:col-10">
-                        <h1 class=" text-white text-xl mt-3 font-bold"
+                        <h1 class="text-white text-xl mt-3 font-bold"
                             [innerHTML]="usecase.title | highlight: searchTerm"></h1>
-                        <p class=" text-white paragraph-color font-medium"
+                        <p class="text-white paragraph-color font-medium"
                             [innerHTML]="usecase.description | highlight: searchTerm"></p>
                     </div>
                 </div>
