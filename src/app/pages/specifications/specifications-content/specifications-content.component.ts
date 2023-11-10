@@ -218,13 +218,12 @@ export class SpecificationsContentComponent implements OnInit {
     }, 100)
   }
 
-  scrollToItem() {
-    setTimeout(() => {
+  async scrollToItem() {
+    await new Promise(resolve => setTimeout(resolve, 500));
       const element = document.getElementById(this.selectedSpecItem.id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    });
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
   }
 
   getMeBanner(event: any) {
