@@ -219,10 +219,12 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   scrollToItem() {
-    const element = document.getElementById(this.selectedSpecItem.id);
+    setTimeout(() => {
+      const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    });
   }
 
   getMeBanner(event: any) {
@@ -282,8 +284,8 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.scrollToItem();
     this.fetchOpenAPISpec();
+    this.scrollToItem();
   }
 
   _showAddCommnetOverlay(event: any) {
