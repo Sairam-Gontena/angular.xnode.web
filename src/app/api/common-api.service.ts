@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
 import { environment } from 'src/environments/environment';
 import { BaseApiService } from './base-api.service';
 
@@ -12,6 +11,7 @@ export class CommonApiService extends BaseApiService {
         return environment.commonApiUrl;
     }
     postFile(url: string, body: unknown, headers: any) {
-        return this.post(url, body, { headers })
+        return this.fileUpload(url, body, { headers });
     }
+
 }
