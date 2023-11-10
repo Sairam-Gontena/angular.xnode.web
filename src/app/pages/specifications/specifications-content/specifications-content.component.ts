@@ -157,11 +157,14 @@ export class SpecificationsContentComponent implements OnInit {
 
   getLatestComments() {
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ productId: this.product.id }).then((response: any) => {
+    // { parentEntity: 'SPEC' }
+    this.commentsService.getComments({ parentId: '017958b0-109e-46af-b53e-82d9c792b9b6' }).then((response: any) => {
       if (response && response.data) {
         this.utils.saveCommentList(response.data)
         this.commentList = response.data;
-        this.insertContentIntoComments();
+        console.log('this.commentList', this.commentList);
+
+        // this.insertContentIntoComments();
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -170,20 +173,20 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  insertContentIntoComments(): void {
-    this.commentList.forEach((element: any) => {
-      if (!element.contentText || element.contentText === '') {
-        this.specData.forEach((specEle: any) => {
-          specEle.content.forEach((specContentEle: any) => {
-            if (element.contentId === specContentEle.id) {
-              element.contentText = specContentEle.content;
-              element.contentTitle = specContentEle.title;
-            }
-          });
-        });
-      }
-    });
-  }
+  // insertContentIntoComments(): void {
+  //   this.commentList.forEach((element: any) => {
+  //     if (!element.contentText || element.contentText === '') {
+  //       this.specData.forEach((specEle: any) => {
+  //         specEle.content.forEach((specContentEle: any) => {
+  //           if (element.contentId === specContentEle.id) {
+  //             element.contentText = specContentEle.content;
+  //             element.contentTitle = specContentEle.title;
+  //           }
+  //         });
+  //       });
+  //     }
+  //   });
+  // }
 
   isArray(item: any) {
     return Array.isArray(item);

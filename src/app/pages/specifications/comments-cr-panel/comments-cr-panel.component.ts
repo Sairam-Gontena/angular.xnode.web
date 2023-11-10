@@ -55,31 +55,6 @@ export class CommentsCrPanelComponent implements OnInit {
         this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
       }
     }
-    this.getMeTheContent();
-  }
-
-  // getLatestComments() {
-  //   this.commentsService.getComments().then((response: any) => {
-  //     if (response && response.data) {
-  //       this.commentList = response.data;
-  //       // this.getMeTheContent();
-  //     }
-  //   }).catch(err => {
-  //     console.log(err);
-  //   });
-  // }
-
-  getMeTheContent(): void {
-    if (this.commentList?.length)
-      this.commentList.forEach((obj: Comment) => {
-        this.specData?.forEach((specObj: any) => {
-          specObj?.content?.forEach((sec: any) => {
-            if (obj.content_id === sec.id) {
-              obj.content = sec;
-            }
-          })
-        })
-      });
   }
 
   onClickClose() {

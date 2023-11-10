@@ -11,6 +11,7 @@ export class ListViewComponent {
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
   @Input() users: any = [];
+  @Input() specItem: any;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
   commentOverlayPanelOpened: boolean = false;
