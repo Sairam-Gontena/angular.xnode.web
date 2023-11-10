@@ -1,6 +1,5 @@
-import { Component, ElementRef, Input, NgZone, Renderer2, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Section } from 'src/models/section';
-import { OverlayModule } from '@angular/cdk/overlay';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 @Component({
