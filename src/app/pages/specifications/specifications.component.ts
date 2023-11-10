@@ -7,6 +7,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
+import { SpecService } from 'src/app/api/spec.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -42,6 +43,7 @@ export class SpecificationsComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
+    private specService: SpecService,
     private router: Router,
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService
@@ -120,9 +122,9 @@ export class SpecificationsComponent implements OnInit {
 
   getMeSpecList(): void {
     this.utils.loadSpinner(true);
-    this.apiService.getApi("specs/get/" + localStorage.getItem('record_id'))
+    this.specService.getSpec({ productId: localStorage.getItem('record_id') })
       .then(response => {
-        if (response.data && Array.isArray(response.data?.content)) {
+        if (response.status === 200 && response.data && response.data.length > 0) {
           this.isTheSpecGenerated = true;
           this.handleData(response);
         } else {
@@ -157,29 +159,24 @@ export class SpecificationsComponent implements OnInit {
   }
 
   handleData(response: any): void {
-    if (response?.status === 200 && !response.data.detail) {
-      const list = response.data.content;
-      list.forEach((obj: any, index: any) => {
-        if (obj?.title == 'Technical Specifications') {
-          if (!Array.isArray(obj.content)) {
-            obj.content = [];
-          }
-          obj.content.push({ title: 'OpenAPI Spec', content: [], id: "open-api-spec" })
-
+    const list = response.data;
+    list.forEach((obj: any, index: any) => {
+      if (obj?.title == 'Technical Specifications') {
+        if (!Array.isArray(obj.content)) {
+          obj.content = [];
         }
-      })
-      this.specDataCopy = list;
-      this.specData = list;
-      if (this.specDataBool) {
-        let stringList = JSON.stringify([...list])
-        localStorage.setItem('specData', stringList)
+        obj.content.push({ title: 'OpenAPI Spec', content: [], id: "open-api-spec" })
+
       }
-      this.specDataBool = false;
-      this.utils.passSelectedSpecItem(list);
-    } else {
-      this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
-      this.showSpecGenaretePopup = true;
+    })
+    this.specDataCopy = list;
+    this.specData = list;
+    if (this.specDataBool) {
+      let stringList = JSON.stringify([...list])
+      localStorage.setItem('specData', stringList)
     }
+    this.specDataBool = false;
+    this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
   }
 
