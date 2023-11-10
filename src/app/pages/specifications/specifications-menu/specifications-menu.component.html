@@ -21,7 +21,7 @@
                         [ngClass]="{
                             'active-section': i === activeIndex && ind === selectedSecIndex
                         }" *ngFor="let content of item?.content let ind = index; "
-                        (click)="onClickSection(content,ind)"
+                        (click)="onSelectSpec(content,ind)"
                         [innerHTML]="(i + 1) + '.' + (ind + 1) + ' ' + shortTitle(content.title) | Accordionhighlight: keyword">
                     </div>
                 </p-accordionTab>

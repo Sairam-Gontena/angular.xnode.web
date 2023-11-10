@@ -77,9 +77,9 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
-    this.utils.checkCommentsAdded.subscribe((event: any) => {
+    this.utils.getMeLatestComments.subscribe((event: any) => {
       if (event)
-        this.getLatestComments();
+        this.getMeCommentsList();
     })
   }
 
@@ -104,7 +104,7 @@ export class SpecificationsContentComponent implements OnInit {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
     this.makeTrustedUrl();
-    this.getLatestComments();
+    this.getMeCommentsList();
     this.getUsersData();
   }
 
@@ -155,38 +155,24 @@ export class SpecificationsContentComponent implements OnInit {
     return Object.values(obj)
   }
 
-  getLatestComments() {
+  getMeCommentsList() {
     this.utils.loadSpinner(true);
-    // { parentEntity: 'SPEC' }
-    this.commentsService.getComments({ parentId: '017958b0-109e-46af-b53e-82d9c792b9b6' }).then((response: any) => {
-      if (response && response.data) {
-        this.utils.saveCommentList(response.data)
-        this.commentList = response.data;
-        console.log('this.commentList', this.commentList);
-
-        // this.insertContentIntoComments();
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(false);
-    });
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService.getComments({ parentId: selectedSpec.id }).then((response: any) => {
+        if (response && response.data) {
+          this.utils.saveCommentList(response.data)
+          this.commentList = response.data;
+        }
+        this.utils.loadSpinner(false);
+      }).catch(err => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+    }
   }
-
-  // insertContentIntoComments(): void {
-  //   this.commentList.forEach((element: any) => {
-  //     if (!element.contentText || element.contentText === '') {
-  //       this.specData.forEach((specEle: any) => {
-  //         specEle.content.forEach((specContentEle: any) => {
-  //           if (element.contentId === specContentEle.id) {
-  //             element.contentText = specContentEle.content;
-  //             element.contentTitle = specContentEle.title;
-  //           }
-  //         });
-  //       });
-  //     }
-  //   });
-  // }
 
   isArray(item: any) {
     return Array.isArray(item);
@@ -224,9 +210,9 @@ export class SpecificationsContentComponent implements OnInit {
   scrollToItem() {
     setTimeout(() => {
       const element = document.getElementById(this.selectedSpecItem.id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     });
   }
 

@@ -53,8 +53,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('specItem', this.specItem);
-
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);

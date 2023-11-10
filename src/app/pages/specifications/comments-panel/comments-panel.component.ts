@@ -107,7 +107,7 @@ export class CommentsPanelComponent implements OnInit {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.commentAdded(true)
+        this.utils._updateCommnetsList(true);
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -117,10 +117,11 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   highlightMatch(conversation: string): SafeHtml {
-    console.log(conversation)
-    const regex = /@[^,\s]*/g;
+    const regex = /@.*?,/g;
     const highlighted = conversation.replace(regex, (match) => {
-      const spanWithId = `<span class="highlight-tags" style="background-color:rgb(2, 173, 238);" >${match}</span>`;
+      // Remove the trailing comma from the matched text
+      const matchedTextWithoutComma = match.slice(0, -1);
+      const spanWithId = `<span class="highlight-tags" style="color:rgb(2, 173, 238);" >${matchedTextWithoutComma}</span>`;
       return spanWithId;
     });
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);

@@ -113,7 +113,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       console.log('commentsReponse', commentsReponse);
       if (commentsReponse.statusText === 'Created') {
-        this.utils.commentAdded(true);
+        this.utils._updateCommnetsList(true);
         this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
         this.closeOverlay.emit();

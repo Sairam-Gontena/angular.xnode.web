@@ -170,6 +170,7 @@ export class SpecificationsComponent implements OnInit {
       }
     })
     this.specDataCopy = list;
+    localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
     if (this.specDataBool) {
       let stringList = JSON.stringify([...list]);
