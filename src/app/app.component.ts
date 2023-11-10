@@ -122,7 +122,6 @@ export class AppComponent implements OnInit {
       this.showProductStatusPopup = data.popup;
     })
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
-      console.log("dklfjkdl ",data)
       if (data && data?.email) {
         this.makeTrustedUrl(data.email)
       }
@@ -277,7 +276,7 @@ export class AppComponent implements OnInit {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser && localStorage.getItem('record_id')) {
       this.email = JSON.parse(currentUser).email;
-    } 
+    }
   }
 
   makeTrustedUrl(productEmail: string): void {
