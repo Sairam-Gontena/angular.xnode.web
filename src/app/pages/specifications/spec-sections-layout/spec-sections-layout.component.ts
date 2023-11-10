@@ -23,6 +23,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() commentList: any;
   @Input() usersList: any = [];
+  @Input() useCases: any[] = [];
   @Input() specItemList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
@@ -62,8 +63,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
-  }
 
+
+  }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
@@ -99,4 +101,5 @@ export class SpecSectionsLayoutComponent implements OnInit {
   isArray(item: any) {
     return Array.isArray(item);
   }
+
 }

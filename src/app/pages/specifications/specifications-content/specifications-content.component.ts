@@ -20,6 +20,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @Input() keyword: any;
   @Input() noResults: any;
+  @Input() useCases: any[] = [];
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
@@ -207,13 +208,12 @@ export class SpecificationsContentComponent implements OnInit {
     }, 100)
   }
 
-  scrollToItem() {
-    setTimeout(() => {
-      const element = document.getElementById(this.selectedSpecItem.id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+  async scrollToItem() {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const element = document.getElementById(this.selectedSpecItem.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   getMeBanner(event: any) {
