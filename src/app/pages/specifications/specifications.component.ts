@@ -67,6 +67,16 @@ export class SpecificationsComponent implements OnInit {
         this.isNaviOpened = true;
       }
     })
+    this.utils.getMeProductDetails.subscribe((res: any) => {
+      if (res && res?.id) {
+        this.specData = [];
+        localStorage.setItem('record_id', res?.id);
+        localStorage.setItem('app_name', res.title);
+        localStorage.setItem('product_url', res.url && res.url !== '' ? res.url : '');
+        localStorage.setItem('product', JSON.stringify(res));
+        this.getMeStorageData();
+      }
+    })
   }
 
   ngOnInit(): void {
