@@ -18,7 +18,7 @@ export class CommentsPanelComponent implements OnInit {
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
-  selectedFilter: string = 'All Comments';
+  selectedFilter: object = { label: 'All Comments', value: 'all' };
   commentObj: any = {
     comment: '',
     role: '',

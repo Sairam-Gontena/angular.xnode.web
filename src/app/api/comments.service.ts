@@ -14,10 +14,10 @@ export class CommentsService extends BaseApiService {
 
   constructor() {
     super();
-   }
+  }
 
   getComments(params?: any) {
-    let url = '/comment';
+    let url = 'comment';
     return this.get(url, params)
   }
 
@@ -26,7 +26,7 @@ export class CommentsService extends BaseApiService {
   }
 
   addComments(body: any) {
-    return this.post('comment',body);
+    return this.post('comment', body);
   }
 
   deletComment(id: any) {

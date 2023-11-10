@@ -8,8 +8,11 @@ export abstract class BaseApiService {
   constructor() {
   }
   abstract get apiUrl(): string;
-  get(url: string, config: AxiosRequestConfig = {}) {
-    return axios.get(this.apiUrl + url, this.getConfigJsonHeader(config));
+  get(url: string, queryParams: Record<string, any> = {}, config: AxiosRequestConfig = {}) {
+    return axios.get(this.apiUrl + url, {
+      ...this.getConfigJsonHeader(config),
+      params: queryParams,
+    });
   }
   getApiData<T>(url: string, config: AxiosRequestConfig = {}) {
     return axios.get<T>(this.apiUrl + url, this.getConfigJsonHeader(config));

@@ -13,7 +13,6 @@
         <p-button (click)="onClickSeeLess.emit({item:specItem,content:content})" label="See Less"
             *ngIf="content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
             class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
-
         <div *ngIf="content.title ==='Usecases' || content.title === 'Use Cases'">
             <div class="flex col-12 justify-content-end align-items-center">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
@@ -49,7 +48,12 @@
             <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
                 [content]="content.content"></xnode-data-dictionary>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm "></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Business Rules'">
@@ -67,7 +71,12 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Functional Dependencies'">
@@ -85,7 +94,12 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='User Interfaces'">
@@ -103,7 +117,12 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Annexures'">
@@ -121,7 +140,12 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <pre [innerHTML]="content.content | json | highlight: searchTerm"></pre>
+                <div class="grid col-12">
+                    <div class="col-12">
+                        <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
+                            style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                </div>
             </ng-template>
         </div>
         <div *ngIf="content.title ==='Historical Data Load'">
@@ -143,7 +167,7 @@
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
-        <div *ngIf="content.title ==='Version Control'">
+        <div class="w-full" *ngIf="content.title ==='Version Control'">
             <div class="flex justify-content-end mb-2">
                 <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
                     class="expnad-icon pointer" *ngIf="!readOnly">
@@ -164,7 +188,6 @@
             </div>
             <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table>
         </div>
-
         <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
             <ul *ngFor="let content of content.content let i =index">
                 <div class="col-12 p-0 flex"
@@ -176,8 +199,8 @@
                     <div class="col-1 p-0 flex  align-items-start justify-content-center">
                         <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
                             <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                [selectedContent]="selectedContent"
+                                *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
+                                [position]="'absolute'" [selectedContent]="selectedContent"
                                 placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                         </p-overlayPanel>
                         <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -206,8 +229,8 @@
                                 <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                     <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
                                         <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                            (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                            [selectedContent]="selectedContent"
+                                            *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
+                                            [position]="'absolute'" [selectedContent]="selectedContent"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                     </p-overlayPanel>
                                     <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -236,8 +259,8 @@
                                         <div class="col-1 p-0 flex  align-items-start justify-content-center">
                                             <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
                                                 <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                                    (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                                    [selectedContent]="selectedContent"
+                                                    *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
+                                                    [position]="'absolute'" [selectedContent]="selectedContent"
                                                     placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                             </p-overlayPanel>
                                             <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -272,8 +295,7 @@
                 [users]="usersList"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
-                [selectedContent]="selectedContent"></xnode-para-view>
+            <xnode-para-view [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"></xnode-para-view>
         </ng-template>
 
         <div class="gradientback" *ngIf="!content?.collapsed">

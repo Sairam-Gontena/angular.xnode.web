@@ -11,7 +11,6 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 export class ParaViewComponent {
   @Input() searchTerm!: string;
   @Input() content!: Section;
-  @Input() selectedContent!: string;
   @Input() users: any = [];
   @Input() id: any;
   @Input() specId :any;
@@ -72,5 +71,4 @@ export class ParaViewComponent {
     const text = window.getSelection()?.toString();
     return text;
   }
-
 }

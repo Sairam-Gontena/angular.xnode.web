@@ -1,19 +1,21 @@
 <div class="flex">
-    <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
+    <div class="expand-spec" *ngIf="specExpanded && noResults==false">
         <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
             (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
+    </div>
+    <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
         <div *ngIf="!specExpanded && noResults==false">
             <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
                 <div class="w-8">
                     <div class="intro-grid" [id]="item.title">
                         <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
                         <div class="flex align-items-center spec-status">
-                            <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date: 'MMM d,
-                                y'}}
+                            <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date:
+                                'MMMd,'}}
                             </p>
                             <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date: 'MMM
-                                d,y'}}
+                            <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date:
+                                'MMMd,y'}}
                             </p>
                             <i class="pi pi-circle-fill pl-3 pr-3"></i>
                             <p class="text-sm font-medium">3 mins read</p>
@@ -29,13 +31,15 @@
                         </div>
                         <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                     </div>
-                    <xnode-spec-sections-layout [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i"
-                        [specItem]="item" (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                        (onClickSeeLess)="_onClickSeeLess($event)"
-                        (showAddCommnetOverlay)="_showAddCommnetOverlay($event)" [commentList]='commentList'
-                        (expandComponent)="_expandComponent($event)" [readOnly]="false"
-                        [isOpenSmallCommentBox]="isOpenSmallCommentBox"
-                        [targetUrl]="targetUrl"></xnode-spec-sections-layout>
+                    <div>
+                        <xnode-spec-sections-layout [content]="item.content" [searchTerm]="searchTerm"
+                            [sectionIndex]="i" [specItem]="item" (onClickSeeMore)="_onClickSeeMore($event)"
+                            [usersList]="usersList" (onClickSeeLess)="_onClickSeeLess($event)"
+                            (showAddCommnetOverlay)="_showAddCommnetOverlay($event)" [commentList]='commentList'
+                            (expandComponent)="_expandComponent($event)" [readOnly]="false"
+                            [isOpenSmallCommentBox]="isOpenSmallCommentBox"
+                            [targetUrl]="targetUrl"></xnode-spec-sections-layout>
+                    </div>
                 </div>
             </div>
         </div>
