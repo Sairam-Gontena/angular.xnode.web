@@ -10,24 +10,43 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class ParaViewComponent {
   @Input() searchTerm!: string;
-  @Input() content:any;//!: Section;
+  @Input() content!: Section;
   @Input() selectedContent!: string;
   @Input() users: any = [];
+  @Input() id: any;
+  @Input() specId :any;
   selectedText:string='';
-  milliseconds:any;
   showCommentIcon: boolean = false;
   commentOverlayPanelOpened:boolean=false;
   @ViewChild('op')overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
-  paraContentDiv!: ElementRef;
 
-  constructor(public utils: UtilsService,private renderer: Renderer2,private ngZone:NgZone){
-    this.milliseconds = new Date().getMilliseconds();
+  constructor(public utils: UtilsService){
+  }
+
+  ngOnInit(){
+  }
+
+  getWords(subitem: any){
+    if (typeof subitem === 'string') {
+      return subitem.split(' ');
+    } else if(typeof subitem === undefined){
+      if(typeof subitem === 'string'){
+        return subitem.split(' ');
+      }
+    }else if(typeof subitem === 'object'){
+      if(subitem.hasOwnProperty('content')){
+        return subitem.content
+      }else{
+        return subitem
+      }
+    }else {
+      return [];
+    }
   }
 
 
   alter(event:any) {
-    console.log(event)
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
       return ;
@@ -38,8 +57,14 @@ export class ParaViewComponent {
       this.selectedText='';
      }
      setTimeout(() => {
-      this.selectionText.toggle(event)
-      console.log(this.selectedText)
+      if(this.selectedText.length>0){
+        this.selectionText.toggle(event)
+        console.log('final console',{
+          'selected Text': this.selectedText.replace(/\n/g, ' '),
+          'spec with content id': this.specId,
+          'spec heading id':Math.floor(this.specId),
+          'id':this.specId })
+      }
      }, 500);
   }
 
@@ -48,10 +73,4 @@ export class ParaViewComponent {
     return text;
   }
 
-  refreshDiv(){
-    const div = document.getElementById('paraContentDiv');
-    if(div)
-      div.innerHTML = this.content;
-    this.paraContentDiv.nativeElement.innerHTML = this.content;
-  }
 }

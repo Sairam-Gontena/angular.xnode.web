@@ -264,15 +264,15 @@
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
         </div>
         <div *ngIf="content.title ==='User Roles'">
-            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+            <xnode-user-roles [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
                 [selectedContent]="selectedContent"></xnode-user-roles>
         </div>
         <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
-            <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
+            <xnode-list-view [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
                 [users]="usersList"></xnode-list-view>
         </div>
         <ng-template #notArray>
-            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
+            <xnode-para-view [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
                 [selectedContent]="selectedContent"></xnode-para-view>
         </ng-template>
 

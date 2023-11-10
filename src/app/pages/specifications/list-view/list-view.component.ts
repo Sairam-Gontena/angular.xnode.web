@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { OverlayPanel } from 'primeng/overlaypanel';
 import { Section } from 'src/models/section';
 
 @Component({
@@ -7,21 +8,60 @@ import { Section } from 'src/models/section';
   styleUrls: ['./list-view.component.scss']
 })
 export class ListViewComponent {
-  @Input() content!: Array<Section>;
+  @Input() content!: Array<Section>; //:any;
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
   @Input() users: any = [];
+  @Input() id: any;
+  @Input() specId :any;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
+  selectedText:string='';
   commentOverlayPanelOpened: boolean = false;
+  @ViewChild('op')overlayPanel: OverlayPanel | any;
+  @ViewChild('selectionText')selectionText: OverlayPanel | any;
 
+  ngOnInit():void{
+  }
 
-  onTextSelected(event: MouseEvent) {
-    const selectedText = this.getSelectedText();
-    if (selectedText) {
-      console.log('Selected Text: ' + selectedText);
-      // You can now do something with the selected text.
+  getWords(subitem: any){
+    if (typeof subitem.content === 'string') {
+      return subitem.content.split(' ');
+    } else if(typeof subitem.content === undefined){
+      if(typeof subitem === 'string'){
+        return subitem.split(' ');
+      }
+    }else if(typeof subitem === 'object'){
+      if(subitem.hasOwnProperty('content')){
+        return subitem.content
+      }else{
+        return subitem
+      }
+    }else {
+      return [];
     }
+  }
+
+  alter(event:any) {
+    const selectedText = this.getSelectedText();
+    if (selectedText === undefined) {
+      return ;
+    }
+    if(selectedText && selectedText.length>0 ){
+      this.selectedText = selectedText
+     }else{
+      this.selectedText='';
+     }
+     setTimeout(() => {
+      if(this.selectedText.length>0){
+        this.selectionText.toggle(event)
+        console.log('final console',{
+                            'selected Text': this.selectedText.replace(/\n/g, ' '),
+                            'spec with content id': this.specId,
+                            'spec heading id':Math.floor(this.specId),
+                            'id':this.specId })
+      }
+     }, 500);
   }
 
   private getSelectedText() {
