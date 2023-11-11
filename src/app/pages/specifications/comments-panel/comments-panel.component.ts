@@ -82,7 +82,7 @@ export class CommentsPanelComponent implements OnInit {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils._updateCommnetsList(true);
+        this.utils.updateCommnetsList(true);
       }
       this.utils.loadSpinner(false);
     }).catch(err => {

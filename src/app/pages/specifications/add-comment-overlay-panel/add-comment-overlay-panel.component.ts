@@ -67,7 +67,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       "createdBy": this.currentUser.user_id,
       "topParentId": this.parentId ? this.parentId : null,
       "parentEntity": this.parentEntity,
-      "parentId": this.parentId,
+      "parentId": this.selectedContent.id,
       "message": this.comment,
       "referenceContent": this.parentEntity === 'SPEC' ? { title: this.selectedContent.title, content: this.selectedContent.content } : {},
       "attachments": [
@@ -83,7 +83,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   saveComment(body: any): void {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
-        this.utils._updateCommnetsList(true);
+        this.utils.updateCommnetsList(true);
         this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
         this.closeOverlay.emit();

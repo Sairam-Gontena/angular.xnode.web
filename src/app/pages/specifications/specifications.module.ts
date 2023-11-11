@@ -25,6 +25,7 @@ import { SpecSectionsLayoutComponent } from './spec-sections-layout/spec-section
 import { CommentsPanelComponent } from './comments-panel/comments-panel.component';
 import { ConfirmationalertComponent } from './confirmationalert/confirmationalert.component';
 import { SpecConversationComponent } from 'src/app/spec-conversation/spec-conversation.component';
+import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -46,7 +47,8 @@ import { SpecConversationComponent } from 'src/app/spec-conversation/spec-conver
     CamelToTitlePipe,
     ObjectToArrayPipe,
     ConfirmationalertComponent,
-    SpecConversationComponent
+    SpecConversationComponent,
+    LinkToCrComponent
   ],
   imports: [
     CommonModule,

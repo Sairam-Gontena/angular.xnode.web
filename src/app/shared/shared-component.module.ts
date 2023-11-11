@@ -121,8 +121,8 @@ import { ProductDropdownComponent } from '../components/product-dropdown/product
                 ChangeRequestsPanelComponent,
                 DataDictionaryComponent,
                 CommonSpecTableComponent,
-                SharedPipesModule,
-                ProductDropdownComponent
+                ProductDropdownComponent,
+                SharedPipesModule
         ]
 })
 export class SharedComponentModule { }
