@@ -31,7 +31,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
-  paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
   selectedSpecItem: any;
@@ -88,9 +88,11 @@ export class SpecSectionsLayoutComponent implements OnInit {
       }
     })
   }
+
   checkParaViewSections(title: string) {
     return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;
   }
+
   checkListViewSections(title: string) {
     return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
   }

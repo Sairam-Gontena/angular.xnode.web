@@ -90,8 +90,8 @@
                     style="width: 25px;">
             </div>
             <div *ngIf="content.showTable; else elsejson">
-                <!-- <xnode-common-spec-table [searchTerm]="searchTerm"
-                    [content]="content.content"></xnode-common-spec-table> -->
+                <xnode-common-spec-table [searchTerm]="searchTerm"
+                    [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
                 <div class="grid col-12">
@@ -188,7 +188,7 @@
             </div>
             <!-- <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content"></xnode-common-spec-table> -->
         </div>
-        <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
+        <!-- <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
             <ul *ngFor="let content of content.content let i =index">
                 <div class="col-12 p-0 flex"
                     (mouseover)="showCommentIcon = true ;seletedMainIndex=cIndex; selecteedSubIndex = i"
@@ -210,7 +210,7 @@
                     </div>
                 </div>
             </ul>
-        </div>
+        </div> -->
 
         <div *ngIf="content.title ==='QA Test Cases' && isArray(content.content)">
             <div *ngFor="let subItem of content.content let subIndex = index ">
@@ -294,14 +294,14 @@
             <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"
                 [users]="usersList"></xnode-user-roles>
         </div>
-        <div class="w-full" *ngIf=" isArray(content.content); else notArray" [id]="content.id">
+        <div class="w-full" *ngIf="checkListViewSections(content.title)" [id]="content.id">
             <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
                 [users]="usersList" [specItem]="specItem"></xnode-list-view>
         </div>
-        <ng-template #notArray>
+        <div *ngIf="checkParaViewSections(content.title)" [id]="content.id">
             <xnode-para-view [content]="content" [searchTerm]="searchTerm" [users]="usersList"
                 [specItem]="specItem"></xnode-para-view>
-        </ng-template>
+        </div>
 
         <div class="gradientback" *ngIf="!content?.collapsed">
         </div>
