@@ -1,5 +1,5 @@
 <div class="w-full" *ngFor="let cmt of list;let i = index; ">
-    <div class="grid m-0 p-2">
+    <div class="grid m-0 p-2" [ngClass]="{'border-gray-800 border-bottom-1': !cmt.topParentId}">
         <div class="col-6">
             <div class="flex align-items-center">
                 <p-avatar [label]="setAvatar(cmt)" styleClass="mr-2"
@@ -55,7 +55,7 @@
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT'">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
         </div>
-        <div class="col-12" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened">
+        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
                     Replies</span>
             </div>
@@ -65,7 +65,7 @@
             <xnode-spec-conversation [list]="cmt.comments.slice().reverse()"
                 [topParentId]="topParentId"></xnode-spec-conversation>
         </div>
-        <div class="col-12" *ngIf="cmt.replyCount !== -1 && cmt.repliesOpened">
+        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && cmt.repliesOpened">
             <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
                     Replies</span>
             </div>
