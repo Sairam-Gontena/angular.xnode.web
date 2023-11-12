@@ -447,7 +447,6 @@ export class ReportBugComponent implements OnInit {
     const selectedFile = event.target.files[0];
     const fileName = selectedFile.name;
     if (selectedFile) {
-      console.log(selectedFile, '===========')
       this.readFileContent(selectedFile, fileName);
     }
   }
@@ -457,8 +456,6 @@ export class ReportBugComponent implements OnInit {
     var reader = new FileReader();
     this.uploadedFile.push(file)
     reader.readAsDataURL(file);
-    console.log(reader.result);
-
     reader.onload = (e) => {
       if (e?.target) {
         this.screenshot = e?.target.result;
@@ -467,11 +464,8 @@ export class ReportBugComponent implements OnInit {
       this.uploadedFile = _.uniq(this.uploadedFile)
       this.images = _.uniq(this.images)
       this.screenshotName = _.uniq(this.screenshotName)
-      console.log(this.uploadedFile, this.images, '===========')
-
     };
     reader.readAsArrayBuffer(file);
-    console.log(reader.result);
   }
 
   onDragOver(event: Event) {

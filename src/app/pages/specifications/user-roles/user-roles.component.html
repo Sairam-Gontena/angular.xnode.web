@@ -2,10 +2,10 @@
     <h4 class="mb-0 pb-2">{{item.title}}</h4>
     <div *ngIf="isArray(item.content)">
         <div *ngFor="let subItem of item.content; let i=index " class="pl-4">
-            <div class="flex col-12 p-0 " (mouseover)="showCommentIcon = true;seletedMainIndex=mainIndex;selecteedSubIndex =i "
-            (mouseleave)="showCommentIcon = false" >
-                <div class="col-10 p-0"
-                    >
+            <div class="flex col-12 p-0 "
+                (mouseover)="showCommentIcon = true;seletedMainIndex=mainIndex;selecteedSubIndex =i "
+                (mouseleave)="showCommentIcon = false">
+                <div class="col-10 p-0">
                     <p class="m-0 pb-1 line-height-3">
                         <span class="sub-title text-base font-medium"
                             [innerHTML]="subItem.title| highlight: searchTerm">
@@ -19,7 +19,7 @@
                     <p-overlayPanel #op>
                         <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
                             (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                            [selectedContent]="selectedContent"
+                            [selectedContent]="selectedContent" [commentType]="'comment'"
                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                     </p-overlayPanel>
                     <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)"

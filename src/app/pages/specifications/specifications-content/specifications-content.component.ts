@@ -79,10 +79,8 @@ export class SpecificationsContentComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
     this.utils.getMeLatestComments.subscribe((event: any) => {
-      if (event) {
-        console.log('event getMeCommentsList');
+      if (event === 'comment') {
         this.getMeCommentsList();
-
       }
     })
   }
@@ -160,8 +158,6 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getMeCommentsList() {
-    console.log('getMeCommentsList');
-
     this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
@@ -308,46 +304,6 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeSmallCommentBix() {
     this.isOpenSmallCommentBox = false;
-  }
-
-  sendComment(comment: any) {
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    this.isOpenSmallCommentBox = false;
-    this.commentsService.getComments(this.selectedSpecItem)
-      .then((commentsReponse: any) => {
-        let body: any = {
-          product_id: localStorage.getItem('record_id'),
-          content_id: this.selectedSpecItem.id,
-        };
-        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-          this.isOpenSmallCommentBox = false;
-          body.comments = [
-            ...commentsReponse['data']['comments'],
-            ...[{
-              user_id: user_id,
-              message: comment,
-            }]
-          ]
-        } else {
-          body.comments = [{
-            user_id: user_id,
-            message: comment
-          }]
-        }
-        this.commentsService.updateComments(body)
-          .then((response: any) => {
-            this.smallCommentContent = "";
-            this.getCommentsAfterUpdate.emit(comment);
-            this.utils.openOrClosePanel(SidePanel.Comments);
-          })
-          .catch((error: any) => {
-            this.smallCommentContent = "";
-          });
-      })
-      .catch(res => {
-        console.log("comments get failed");
-      })
   }
 
   checkSelection(item: any, obj: any) {

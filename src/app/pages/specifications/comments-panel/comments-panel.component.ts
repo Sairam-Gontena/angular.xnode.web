@@ -60,8 +60,6 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   onClickReply(cmt: any): void {
-    console.log('cmt', cmt);
-
     this.selectedComment = cmt;
     this.showCommentInput = true;
     this.action = 'REPLY';
@@ -84,7 +82,7 @@ export class CommentsPanelComponent implements OnInit {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.updateCommnetsList(true);
+        this.utils.updateCommnetsList('reply');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {

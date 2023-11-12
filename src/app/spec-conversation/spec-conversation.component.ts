@@ -29,11 +29,18 @@ export class SpecConversationComponent {
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
+  showReplies: boolean = false;
+  replies: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private messagingService: MessagingService) {
+    this.utils.getMeLatestComments.subscribe((event: any) => {
+      if (event === 'reply') {
+        this.viewReplies(this.selectedComment);
+      }
+    })
   }
 
   setAvatar(userObj: any): string {
@@ -46,6 +53,9 @@ export class SpecConversationComponent {
 
 
   onClickReply(cmt: any): void {
+    if (!cmt.topParentId) {
+      this.topParentId = cmt.id
+    }
     this.selectedComment = cmt;
     this.showCommentInput = true;
     this.action = 'REPLY';
@@ -68,7 +78,7 @@ export class SpecConversationComponent {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.updateCommnetsList(true);
+        this.utils.updateCommnetsList('comment');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -87,22 +97,27 @@ export class SpecConversationComponent {
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
   }
 
-  viewReplys(cmt?: any) {
-    console.log('cmt', cmt);
-
+  viewReplies(cmt?: any) {
+    if (!cmt.topParentId || cmt.topParentId !== null) {
+      this.topParentId = cmt.id;
+    }
+    this.showReplies = true;
     if (cmt)
       this.selectedComment = cmt;
     this.utils.loadSpinner(true);
     this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
+        this.replies = response.data;
         response.data.forEach((element: any) => {
           element.parentUser = this.list.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
         });
         this.list.forEach((obj: any) => {
           if (obj.id === this.selectedComment.id) {
             obj.comments = response.data;
+            obj.repliesOpened = true
           }
         })
+        this.replies = response.data;
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
       }
@@ -114,6 +129,17 @@ export class SpecConversationComponent {
 
     });
   }
+
+  hideReplies(cmt?: any) {
+    this.list.forEach((obj: any) => {
+      if (obj.id === this.selectedComment.id) {
+        obj.comments = this.replies;
+        obj.repliesOpened = false
+      }
+    })
+  }
+
+
   linkToCr(cmt?: any) {
     if (cmt) {
       this.selectedComment = cmt;

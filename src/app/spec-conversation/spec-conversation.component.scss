@@ -161,3 +161,17 @@
 .content-title {
     color: #A2A2A3;
 }
+
+:host ::ng-deep .view-replies {
+    width: 100%;
+    border-bottom: 1px solid #A2A2A3;
+    line-height: 0.1em;
+    margin: 10px 0 20px;
+    padding-left: 30px;
+}
+
+:host ::ng-deep .view-replies span {
+    background: linear-gradient(0deg, #23222B, #23222B), linear-gradient(0deg, #535354, #535354);
+    color: #A2A2A3;
+    padding: 0 10px;
+}
