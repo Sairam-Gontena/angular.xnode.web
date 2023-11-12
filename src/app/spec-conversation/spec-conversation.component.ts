@@ -34,7 +34,6 @@ export class SpecConversationComponent {
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private messagingService: MessagingService) {
-    console.log('topParentId', this.topParentId);
   }
 
   setAvatar(userObj: any): string {
@@ -69,8 +68,6 @@ export class SpecConversationComponent {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        console.log('confirm');
-
         this.utils.updateCommnetsList(true);
       }
       this.utils.loadSpinner(false);
