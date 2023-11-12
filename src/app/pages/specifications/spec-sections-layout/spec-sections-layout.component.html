@@ -201,7 +201,7 @@
                             <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                 [parentEntity]="'SPEC'" [parentId]="specItem.id" *ngIf="commentOverlayPanelOpened"
                                 (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                [selectedContent]="selectedContent"
+                                [selectedContent]="selectedContent" [commentType]="'comment'"
                                 placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                         </p-overlayPanel>
                         <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -233,6 +233,7 @@
                                             [parentEntity]="'SPEC'" [parentId]="specItem.id"
                                             *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
                                             [position]="'absolute'" [selectedContent]="selectedContent"
+                                            [commentType]="'comment'"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                     </p-overlayPanel>
                                     <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -263,7 +264,7 @@
                                                 <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
                                                     [parentEntity]="'SPEC'" [parentId]="specItem.id"
                                                     *ngIf="commentOverlayPanelOpened" (closeOverlay)="op.toggle(false)"
-                                                    [position]="'absolute'" [selectedContent]="selectedContent"
+                                                    [selectedContent]="selectedContent" [commentType]="'comment'"
                                                     placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                             </p-overlayPanel>
                                             <img src="../assets/comment.svg" class="pointer" alt="comment"

@@ -38,7 +38,6 @@ export class LinkToCrComponent implements OnInit {
     else {
       this.prSpecsTitle = currentSpec.title;
     }
-    console.log(this.prSpecsTitle);
   }
 
   getBreadcrumbTitles(specs: any, parentId: string): string[] | null {

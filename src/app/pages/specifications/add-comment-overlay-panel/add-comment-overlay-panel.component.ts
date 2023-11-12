@@ -22,7 +22,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() parentEntity: any;
   @Input() parentId: any;
   @Input() topParentId: any;
-
+  @Input() commentType: string = '';
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -85,7 +85,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   saveComment(body: any): void {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
-        this.utils.updateCommnetsList(true);
+        this.utils.updateCommnetsList(this.commentType);
         this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
         this.closeOverlay.emit();
