@@ -147,7 +147,7 @@ export class UtilsService {
     this.isInSpec.next(event);
   }
 
-  _updateCommnetsList(event: any): void {
+  updateCommnetsList(event: any): void {
     this.updateComments.next(event);
   }
 
