@@ -11,6 +11,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
+  @Input() topParentId: any;
   @Output() onClickClose = new EventEmitter<any>();
   comment: any;
   currentUser: any;
@@ -29,11 +30,7 @@ export class SpecConversationComponent {
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer) {
-    // this.utils.getMeLatestComments.subscribe((event: any) => {
-    //   if (event) {
-    //     this.viewReplys();
-    //   }
-    // })
+    console.log('topParentId', this.topParentId);
   }
 
   setAvatar(userObj: any): string {

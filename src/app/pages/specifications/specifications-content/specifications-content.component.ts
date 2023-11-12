@@ -162,7 +162,7 @@ export class SpecificationsContentComponent implements OnInit {
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getComments({ parentId: selectedSpec.id }).then((response: any) => {
+      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
         if (response && response.data) {
           this.utils.saveCommentList(response.data)
           this.commentList = response.data;

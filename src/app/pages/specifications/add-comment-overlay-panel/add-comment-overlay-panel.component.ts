@@ -21,6 +21,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() specItem: any;
   @Input() parentEntity: any;
   @Input() parentId: any;
+  @Input() topParentId: any;
+
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -65,7 +67,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   onClickSend(): void {
     let body = {
       "createdBy": this.currentUser.user_id,
-      "topParentId": this.parentId ? this.parentId : null,
+      "topParentId": this.topParentId,
       "parentEntity": this.parentEntity,
       "parentId": this.parentId,
       "message": this.comment,
