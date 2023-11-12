@@ -31,7 +31,7 @@
                             </div>
                             <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
                             <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
-                                (keydown)="op.hide()">
+                                (keydown)="op.hide()" (click)="linkToCr(cmt);op.hide();">
                                 <img src="../../../../assets//linktocr.png" class="confirm-overlay-icon" />
                                 <div class="pl-2 text-sm ">Link to CR</div>
                             </div>
@@ -74,6 +74,8 @@
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
         </div>
-
+        <p-dialog header="Link to Change Request" [(visible)]="showPrWindow" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+            <xnode-link-to-cr [comment]="selectedComment"></xnode-link-to-cr>
+        </p-dialog>
     </div>
 </div>

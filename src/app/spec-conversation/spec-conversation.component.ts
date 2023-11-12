@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from '../api/comments.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Comment } from 'src/models/comment';
+import { MessagingService } from '../components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
   selector: 'xnode-spec-conversation',
@@ -22,14 +25,15 @@ export class SpecConversationComponent {
   selectedIndex?: number;
   enableDeletePrompt: boolean = false;
   action?: string;
-
+  showPrWindow: boolean = false;
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private messagingService: MessagingService) {
     console.log('topParentId', this.topParentId);
   }
 
@@ -65,7 +69,9 @@ export class SpecConversationComponent {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils._updateCommnetsList(true);
+        console.log('confirm');
+
+        this.utils.updateCommnetsList(true);
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -110,6 +116,17 @@ export class SpecConversationComponent {
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
 
     });
+  }
+  linkToCr(cmt?: any) {
+    if (cmt) {
+      this.selectedComment = cmt;
+      this.showPrWindow = true;
+      this.messagingService.sendMessage({
+        msgType: MessageTypes.LinkToCR,
+        msgData: cmt
+      });
+    }
+
   }
 
 }

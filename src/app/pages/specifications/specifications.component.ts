@@ -8,6 +8,8 @@ import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
 import { SpecService } from 'src/app/api/spec.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -47,7 +49,8 @@ export class SpecificationsComponent implements OnInit {
     private specService: SpecService,
     private router: Router,
     private auditUtil: AuditutilsService,
-    private searchSpec: SearchspecService
+    private searchSpec: SearchspecService,
+    private localStorageService: LocalStorageService
   ) {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
@@ -144,11 +147,7 @@ export class SpecificationsComponent implements OnInit {
       this.filteredSpecData = [];
       this.wantedIndexes = [];
       this.removableIndexes = [];
-      let specLocalStorage = localStorage.getItem('specData')
-      if (specLocalStorage) {
-        let parseData = JSON.parse(specLocalStorage);
-        this.specData = parseData;
-      }
+      this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
       this.searchSpec.searchSpec(this.specData, keyword).subscribe((returnData: any) => {
         if (returnData) {
           this.specData = returnData.specData;
@@ -222,12 +221,14 @@ export class SpecificationsComponent implements OnInit {
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
     if (this.specDataBool) {
-      let stringList = JSON.stringify([...list]);
-      localStorage.setItem('specData', stringList);
+      this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
     this.specDataBool = false;
     this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
+    console.log('handleData');
+
+    // this.utils.updateCommnetsList(true);
   }
 
   checkUserEmail(): void {
