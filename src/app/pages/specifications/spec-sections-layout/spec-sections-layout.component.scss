@@ -4,6 +4,7 @@
     color: #dfdfdf;
     max-height: 200px;
     overflow: hidden;
+    border-radius: 6px;
 }
 
 .openapi-spec {
@@ -23,6 +24,7 @@
     background: #24232C;
     padding: 30px;
     color: #dfdfdf;
+    border-radius: 6px;
 }
 
 .sctions-grid-full {
@@ -30,6 +32,7 @@
     padding: 30px;
     color: #dfdfdf;
     max-height: none;
+    border-radius: 6px;
 }
 
 .content {
@@ -160,4 +163,3 @@ pre {
     background: #302E38 !important;
     border-radius: 6px !important;
 }
-

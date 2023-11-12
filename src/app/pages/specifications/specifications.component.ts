@@ -226,7 +226,6 @@ export class SpecificationsComponent implements OnInit {
     this.specDataBool = false;
     this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
-    this.utils.updateCommnetsList(true);
   }
 
   checkUserEmail(): void {

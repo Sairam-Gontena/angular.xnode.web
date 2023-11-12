@@ -21,6 +21,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() specItem: any;
   @Input() parentEntity: any;
   @Input() parentId: any;
+  @Input() topParentId: any;
+
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -65,9 +67,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   onClickSend(): void {
     let body = {
       "createdBy": this.currentUser.user_id,
-      "topParentId": this.parentId ? this.parentId : null,
+      "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
       "parentEntity": this.parentEntity,
-      "parentId": this.selectedContent.id,
+      "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
       "message": this.comment,
       "referenceContent": this.parentEntity === 'SPEC' ? { title: this.selectedContent.title, content: this.selectedContent.content } : {},
       "attachments": [

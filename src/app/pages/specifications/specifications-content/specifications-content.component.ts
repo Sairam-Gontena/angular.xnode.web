@@ -79,8 +79,11 @@ export class SpecificationsContentComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
     this.utils.getMeLatestComments.subscribe((event: any) => {
-      if (event)
+      if (event) {
+        console.log('event getMeCommentsList');
         this.getMeCommentsList();
+
+      }
     })
   }
 
@@ -157,12 +160,14 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getMeCommentsList() {
+    console.log('getMeCommentsList');
+
     this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getComments({ topParentId: selectedSpec.id }).then((response: any) => {
+      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
         if (response && response.data) {
           this.utils.saveCommentList(response.data)
           this.commentList = response.data;

@@ -20,6 +20,7 @@
         </div>
     </div>
     <div class='comments-grid' *ngIf="commentList && commentList.length >0">
-        <xnode-spec-conversation [list]="commentList" [usersList]="usersList"></xnode-spec-conversation>
+        <xnode-spec-conversation [list]="commentList" [usersList]="usersList"
+            [topParentId]="selectedComment?.id"></xnode-spec-conversation>
     </div>
 </div>

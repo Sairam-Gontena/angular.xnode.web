@@ -60,6 +60,8 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   onClickReply(cmt: any): void {
+    console.log('cmt', cmt);
+
     this.selectedComment = cmt;
     this.showCommentInput = true;
     this.action = 'REPLY';

@@ -14,6 +14,7 @@ import { MessageTypes } from 'src/models/message-types.enum';
 export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
+  @Input() topParentId: any;
   @Output() onClickClose = new EventEmitter<any>();
   comment: any;
   currentUser: any;
@@ -33,11 +34,6 @@ export class SpecConversationComponent {
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private messagingService: MessagingService) {
-    // this.utils.getMeLatestComments.subscribe((event: any) => {
-    //   if (event) {
-    //     this.viewReplys();
-    //   }
-    // })
   }
 
   setAvatar(userObj: any): string {

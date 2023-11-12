@@ -69,7 +69,8 @@
             </div>
             <div class="w-full">
                 <xnode-add-comment-overlay-panel placeHolder="Reply" [users]="usersList" parentEntity="COMMENT"
-                    [parentId]="cmt.id" [comment]="action === 'EDIT' ? cmt.message: ''" [width]="'w-full'"
+                    [parentId]="cmt.id" [topParentId]="selectedComment?.id"
+                    [comment]="action === 'EDIT' ? cmt.message: ''" [width]="'w-full'"
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
         </div>
