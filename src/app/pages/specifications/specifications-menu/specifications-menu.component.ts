@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from "lodash";
+import { SidePanel } from 'src/models/side-panel.enum';
 
 @Component({
   selector: 'xnode-specifications-menu',
@@ -33,6 +34,11 @@ export class SpecificationsMenuComponent implements OnInit {
       setTimeout(() => {
         this.menuList = resp.filter((item: any) => item !== null);
       },);
+    })
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      if (pnl === SidePanel.Comments)
+        this.isOpen = false;
+      this.utils.disableSpecSubMenu();
     })
   }
 
