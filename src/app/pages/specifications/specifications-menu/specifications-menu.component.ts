@@ -36,9 +36,10 @@ export class SpecificationsMenuComponent implements OnInit {
       },);
     })
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      if (pnl === SidePanel.Comments)
+      if (pnl === SidePanel.Comments) {
         this.isOpen = false;
-      this.utils.disableSpecSubMenu();
+        this.utils.disableSpecSubMenu();
+      }
     })
   }
 
