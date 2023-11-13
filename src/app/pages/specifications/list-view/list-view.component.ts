@@ -45,7 +45,7 @@ export class ListViewComponent {
     }
   }
 
-  alter(event:any) {
+  contentSelected(event:any) {
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
       return ;
@@ -55,16 +55,21 @@ export class ListViewComponent {
      }else{
       this.selectedText='';
      }
-     setTimeout(() => {
-      if(this.selectedText.length>0){
-        this.selectionText.toggle(event)
-        console.log('final console',{
-                            'selected Text': this.selectedText.replace(/\n/g, ' '),
-                            'spec with content id': this.specId,
-                            'spec heading id':Math.floor(this.specId),
-                            'id':this.specId })
-      }
-     }, 500);
+     this.handleSelectionText(event);
+  }
+
+
+  async handleSelectionText(event: any) {
+    if (this.selectedText.length > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await this.selectionText.toggle(event);
+      console.log('final console', {
+        'selected Text': this.selectedText.replace(/\n/g, ' '),
+        'spec with content id': this.specId,
+        'spec heading id': Math.floor(this.specId),
+        'id': this.specId,
+      });
+    }
   }
 
   private getSelectedText() {

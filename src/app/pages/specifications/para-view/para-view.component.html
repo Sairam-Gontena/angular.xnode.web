@@ -1,7 +1,7 @@
 <div class="flex col-12 p-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
     <div class="col-11 p-0 ">
       <p class="flex flex-wrap content text-base font-normal" [id]="content.id">
-        <span *ngFor="let word of getWords(content); index as i" class="mr-1" (mouseup)="alter($event)"  [innerHTML]="word | highlight: searchTerm">
+        <span *ngFor="let word of getWords(content); index as i" class="mr-1" (mouseup)="contentSelected($event)"  [innerHTML]="word | highlight: searchTerm">
            <p-overlayPanel #selectionText>
               <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"  *ngIf="selectedText.length>0"  [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
