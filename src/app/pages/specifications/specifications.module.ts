@@ -24,7 +24,7 @@ import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
 import { SpecSectionsLayoutComponent } from './spec-sections-layout/spec-sections-layout.component';
 import { CommentsPanelComponent } from './comments-panel/comments-panel.component';
 import { ConfirmationalertComponent } from './confirmationalert/confirmationalert.component';
-import { SpecConversationComponent } from 'src/app/spec-conversation/spec-conversation.component';
+import { SpecConversationComponent } from 'src/app/pages/specifications/spec-conversation/spec-conversation.component';
 import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
 @NgModule({
   declarations: [

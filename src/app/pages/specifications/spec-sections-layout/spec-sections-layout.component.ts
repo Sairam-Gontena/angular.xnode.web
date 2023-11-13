@@ -1,11 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { CommentsService } from 'src/app/api/comments.service';
-import { UtilsService } from 'src/app/components/services/utils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
-import { ApiService } from 'src/app/api/api.service';
-import { User } from 'src/models/user';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-spec-sections-layout',
@@ -24,6 +20,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() commentList: any;
   @Input() usersList: any = [];
   @Input() useCases: any[] = [];
+  @Input() selectedSpecItem: any;
   @Input() specItemList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
@@ -34,7 +31,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
-  selectedSpecItem: any;
   smallCommentContent: any;
   showMoreContent: any;
   specExpanded: any;
@@ -47,10 +43,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
   showCommentIcon?: boolean;
   commentOverlayPanelOpened: boolean = false;
 
-  constructor(private utils: UtilsService,
-    private commentsService: CommentsService,
-    private domSanitizer: DomSanitizer,
-    private apiservice: ApiService) {
+  constructor(private domSanitizer: DomSanitizer,
+  ) {
   }
 
   ngOnInit(): void {
@@ -63,7 +57,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
-
 
   }
 
