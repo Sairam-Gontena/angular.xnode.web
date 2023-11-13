@@ -6,6 +6,7 @@ import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { AuditInfo } from 'src/models/audit-info';
 import { ApiService } from 'src/app/api/api.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -15,6 +16,7 @@ import { ApiService } from 'src/app/api/api.service';
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() commentList: any;
+  @Input() usersList: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -39,7 +41,7 @@ export class CommentsPanelComponent implements OnInit {
   originalBackgroundColor: string = 'blue';
 
   constructor(private utils: UtilsService, private commentsService: CommentsService,
-    private apiservice: ApiService) {
+    private apiservice: ApiService, private sanitizer: DomSanitizer) {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       this.selectedSection = event;
     });
@@ -55,32 +57,6 @@ export class CommentsPanelComponent implements OnInit {
 
   ngOnInit(): void {
 
-  }
-
-  setAvatar(userObj: any): string {
-    let avatar: string = '';
-    if (userObj.modified_by) {
-      avatar = userObj.modified_by.charAt(0).toUpperCase()
-    }
-    return avatar;
-  }
-
-  onClickClose() {
-    this.utils.openOrClosePanel(SidePanel.None);
-    this.utils.saveSelectedSection(null);
-  }
-
-  onClickEnter(event: KeyboardEventInit) {
-    if (event.key === 'Enter' && this.comment.trim().length !== 0) {
-      this.onClickSend()
-    }
-  }
-
-  onClickSend() {
-    this.commentObj.comment = this.comment;
-    this.commentObj.role = 'user';
-    this.commentObj.user_id = this.currentUser.id;
-    this.commentList.push(this.commentObj);
   }
 
   onClickReply(cmt: any): void {
@@ -106,7 +82,7 @@ export class CommentsPanelComponent implements OnInit {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.commentAdded(true)
+        this.utils.updateCommnetsList('reply');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -114,4 +90,39 @@ export class CommentsPanelComponent implements OnInit {
       this.utils.loadSpinner(false);
     })
   }
+
+  highlightMatch(conversation: string): SafeHtml {
+    const regex = /@.*?,/g;
+    const highlighted = conversation.replace(regex, (match) => {
+      const matchedTextWithoutComma = match.slice(0, -1);
+      const spanWithId = `<span class="highlight-tags" style="color:rgb(2, 173, 238);" >${matchedTextWithoutComma}</span>`;
+      return spanWithId;
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+  }
+
+  viewReplys(cmt: any) {
+    this.utils.loadSpinner(true);
+    this.commentsService.getComments({ topParentId: cmt.id }).then((response: any) => {
+      if (response && response.data) {
+        response.data.forEach((element: any) => {
+          element.parentUser = this.commentList.filter((ele: any) => { return ele.id === cmt.id })[0].createdBy;
+        });
+        this.commentList.forEach((obj: any) => {
+          if (obj.id === cmt.id) {
+            obj.comments = response.data;
+          }
+        })
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+
+    });
+  }
+
 }

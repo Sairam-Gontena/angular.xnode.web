@@ -62,13 +62,15 @@ export class UtilsService {
   private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
 
-  private isCommentAdded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public checkCommentsAdded: Observable<any> = this.isCommentAdded.asObservable();
+  private updateComments: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public getMeLatestComments: Observable<string> = this.updateComments.asObservable();
 
   private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeUpdatedCommentList: Observable<any> = this.saveComments.asObservable();
+
   private productDetails: BehaviorSubject<Object> = new BehaviorSubject<Object>({});
   public getMeProductDetails: Observable<Object> = this.productDetails.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -147,8 +149,8 @@ export class UtilsService {
     this.isInSpec.next(event);
   }
 
-  commentAdded(event: any): void {
-    this.isCommentAdded.next(event);
+  updateCommnetsList(event: any): void {
+    this.updateComments.next(event);
   }
 
   saveCommentList(event: any) {

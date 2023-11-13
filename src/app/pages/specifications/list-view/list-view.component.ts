@@ -14,6 +14,7 @@ export class ListViewComponent {
   @Input() users: any = [];
   @Input() id: any;
   @Input() specId :any;
+  @Input() specItem: any;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
   selectedText:string='';
@@ -22,6 +23,8 @@ export class ListViewComponent {
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
 
   ngOnInit():void{
+    // console.log('list view content', this.content)
+    // console.log('list view specId', this.specId)
   }
 
   getWords(subitem: any){

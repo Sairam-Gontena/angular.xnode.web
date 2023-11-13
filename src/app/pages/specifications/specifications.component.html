@@ -5,8 +5,9 @@
         <div>
             <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
                 (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-                <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
-                </xnode-specifications-content>
+            <xnode-specifications-content [noResults]="noResults" [specData]="specData" [useCases]="useCases"
+                [keyword]="keyword">
+            </xnode-specifications-content>
         </div>
     </div>
     <div class="flex">
@@ -23,4 +24,5 @@
 
 <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
     [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
-    [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generateSpec()"></xnode-spec-gen-popup>
+    [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generateSpec()">
+</xnode-spec-gen-popup>

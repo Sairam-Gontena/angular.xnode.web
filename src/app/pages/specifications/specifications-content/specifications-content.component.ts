@@ -20,6 +20,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @Input() keyword: any;
   @Input() noResults: any;
+  @Input() useCases: any[] = [];
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
@@ -77,9 +78,10 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
-    this.utils.checkCommentsAdded.subscribe((event: any) => {
-      if (event)
-        this.getLatestComments();
+    this.utils.getMeLatestComments.subscribe((event: any) => {
+      if (event === 'comment') {
+        this.getMeCommentsList();
+      }
     })
   }
 
@@ -104,7 +106,7 @@ export class SpecificationsContentComponent implements OnInit {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
     this.makeTrustedUrl();
-    this.getLatestComments();
+    this.getMeCommentsList();
     this.getUsersData();
   }
 
@@ -155,34 +157,23 @@ export class SpecificationsContentComponent implements OnInit {
     return Object.values(obj)
   }
 
-  getLatestComments() {
+  getMeCommentsList() {
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ productId: this.product.id }).then((response: any) => {
-      if (response && response.data) {
-        this.utils.saveCommentList(response.data)
-        this.commentList = response.data;
-        this.insertContentIntoComments();
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(false);
-    });
-  }
-
-  insertContentIntoComments(): void {
-    this.commentList.forEach((element: any) => {
-      if (!element.contentText || element.contentText === '') {
-        this.specData.forEach((specEle: any) => {
-          specEle.content.forEach((specContentEle: any) => {
-            if (element.contentId === specContentEle.id) {
-              element.contentText = specContentEle.content;
-              element.contentTitle = specContentEle.title;
-            }
-          });
-        });
-      }
-    });
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
+        if (response && response.data) {
+          this.utils.saveCommentList(response.data)
+          this.commentList = response.data;
+        }
+        this.utils.loadSpinner(false);
+      }).catch(err => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+    }
   }
 
   isArray(item: any) {
@@ -220,10 +211,10 @@ export class SpecificationsContentComponent implements OnInit {
 
   async scrollToItem() {
     await new Promise(resolve => setTimeout(resolve, 500));
-      const element = document.getElementById(this.selectedSpecItem.id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+    const element = document.getElementById(this.selectedSpecItem.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   getMeBanner(event: any) {
@@ -313,46 +304,6 @@ export class SpecificationsContentComponent implements OnInit {
 
   closeSmallCommentBix() {
     this.isOpenSmallCommentBox = false;
-  }
-
-  sendComment(comment: any) {
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    this.isOpenSmallCommentBox = false;
-    this.commentsService.getComments(this.selectedSpecItem)
-      .then((commentsReponse: any) => {
-        let body: any = {
-          product_id: localStorage.getItem('record_id'),
-          content_id: this.selectedSpecItem.id,
-        };
-        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-          this.isOpenSmallCommentBox = false;
-          body.comments = [
-            ...commentsReponse['data']['comments'],
-            ...[{
-              user_id: user_id,
-              message: comment,
-            }]
-          ]
-        } else {
-          body.comments = [{
-            user_id: user_id,
-            message: comment
-          }]
-        }
-        this.commentsService.updateComments(body)
-          .then((response: any) => {
-            this.smallCommentContent = "";
-            this.getCommentsAfterUpdate.emit(comment);
-            this.utils.openOrClosePanel(SidePanel.Comments);
-          })
-          .catch((error: any) => {
-            this.smallCommentContent = "";
-          });
-      })
-      .catch(res => {
-        console.log("comments get failed");
-      })
   }
 
   checkSelection(item: any, obj: any) {

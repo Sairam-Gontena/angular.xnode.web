@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from "lodash";
+import { SidePanel } from 'src/models/side-panel.enum';
 
 @Component({
   selector: 'xnode-specifications-menu',
@@ -33,6 +34,12 @@ export class SpecificationsMenuComponent implements OnInit {
       setTimeout(() => {
         this.menuList = resp.filter((item: any) => item !== null);
       },);
+    })
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      if (pnl === SidePanel.Comments) {
+        this.isOpen = false;
+        this.utils.disableSpecSubMenu();
+      }
     })
   }
 
@@ -65,9 +72,14 @@ export class SpecificationsMenuComponent implements OnInit {
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specData[event.index]))
+    this.selectedSection = this.specData[event.index].content[0];
+    this.selectedSecIndex = 0;
+    this.utils.saveSelectedSection(this.specData[event.index].content[0]);
+    this.utils.updateCommnetsList('comment');
   }
 
-  onClickSection(event: any, i: any) {
+  onSelectSpec(event: any, i: any) {
     this.selectedSection = event;
     this.selectedSecIndex = i;
     this.utils.saveSelectedSection(event);

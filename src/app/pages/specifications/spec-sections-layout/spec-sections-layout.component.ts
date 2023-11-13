@@ -23,6 +23,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() commentList: any;
   @Input() usersList: any = [];
+  @Input() useCases: any[] = [];
   @Input() specItemList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
@@ -30,7 +31,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
-  paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
   selectedSpecItem: any;
@@ -62,8 +63,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
-  }
 
+
+  }
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
@@ -72,65 +74,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
     this.showAddCommnetOverlay.emit(obj)
-  }
-
-  sendComment(comment: any) {
-    // this.utils.loadSpinner(true);
-    // const body = {
-    //   contentId: this.selectedContent.id,
-    //   productId: this.product.id,
-    //   userId: this.currentUser.user_id,
-    //   message: comment,
-    //   itemType: 'Comment',
-    // }
-    // this.commentsService.addComments(body)
-    //   .then((commentsReponse: any) => {
-    //     console.log('commentsReponse', commentsReponse);
-    //     this.utils.commentAdded(true);
-    //     this.utils.loadSpinner(false);
-    //   }).catch(err => {
-    //     console.log('err', err);
-    //     this.utils.loadSpinner(false);
-    //   })
-    return
-
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    this.isOpenSmallCommentBox = false;
-    this.commentsService.getComments(this.selectedSpecItem)
-      .then((commentsReponse: any) => {
-        let body: any = {
-          product_id: localStorage.getItem('record_id'),
-          content_id: this.selectedSpecItem.id,
-        };
-        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-          this.isOpenSmallCommentBox = false;
-          body.comments = [
-            ...commentsReponse['data']['comments'],
-            ...[{
-              user_id: user_id,
-              message: comment,
-            }]
-          ]
-        } else {
-          body.comments = [{
-            user_id: user_id,
-            message: comment
-          }]
-        }
-        this.commentsService.updateComments(body)
-          .then((response: any) => {
-            this.smallCommentContent = "";
-            this.getCommentsAfterUpdate.emit(comment);
-            this.utils.openOrClosePanel(SidePanel.Comments);
-          })
-          .catch((error: any) => {
-            this.smallCommentContent = "";
-          });
-      })
-      .catch(res => {
-        console.log("comments get failed");
-      })
   }
 
   checkedToggle(type: any, item: any, content: any) {
@@ -145,13 +88,14 @@ export class SpecSectionsLayoutComponent implements OnInit {
       }
     })
   }
+
   checkParaViewSections(title: string) {
     return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;
   }
+
   checkListViewSections(title: string) {
     return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
   }
-
 
   getTestCaseKeys(testCase: any): string[] {
     return Object.keys(testCase);
@@ -159,4 +103,5 @@ export class SpecSectionsLayoutComponent implements OnInit {
   isArray(item: any) {
     return Array.isArray(item);
   }
+
 }

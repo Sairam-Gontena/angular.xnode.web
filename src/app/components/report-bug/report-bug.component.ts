@@ -228,7 +228,7 @@ export class ReportBugComponent implements OnInit {
       formData.append('containerName', 'user-feedback');
       const headers = {
         'Content-Type': 'application/json',
-      };
+      }
       return this.fileUploadCall(formData, headers);
     });
     const responses = await Promise.all(promises);
@@ -243,7 +243,7 @@ export class ReportBugComponent implements OnInit {
   fileUploadCall(formData: any, headers: any) {
     let data: any;
     return new Promise((resolve, reject) => {
-      this.commonApi.post('file-azure/upload', formData, { headers }).then((res: any) => {
+      this.commonApi.postFile('file-azure/upload', formData, { headers }).then((res: any) => {
         if (res) {
           data = {
             "fileId": res.data.id,
@@ -453,7 +453,7 @@ export class ReportBugComponent implements OnInit {
 
   private readFileContent(file: File, fileName: string) {
     this.screenshotName.push(fileName);
-    const reader = new FileReader();
+    var reader = new FileReader();
     this.uploadedFile.push(file)
     reader.readAsDataURL(file);
     reader.onload = (e) => {

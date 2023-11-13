@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Section } from 'src/models/section';
+import { Section,ContentArray } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 @Component({
@@ -15,6 +15,7 @@ export class ParaViewComponent {
   @Input() id: any;
   @Input() specId :any;
   selectedText:string='';
+  @Input() specItem: any;
   showCommentIcon: boolean = false;
   commentOverlayPanelOpened:boolean=false;
   @ViewChild('op')overlayPanel: OverlayPanel | any;
@@ -27,8 +28,8 @@ export class ParaViewComponent {
   }
 
   getWords(subitem: any){
-    if (typeof subitem === 'string') {
-      return subitem.split(' ');
+    if (typeof subitem.content === 'string') {
+      return subitem.content.split(' ');
     } else if(typeof subitem === undefined){
       if(typeof subitem === 'string'){
         return subitem.split(' ');
@@ -43,7 +44,6 @@ export class ParaViewComponent {
       return [];
     }
   }
-
 
   alter(event:any) {
     const selectedText = this.getSelectedText();

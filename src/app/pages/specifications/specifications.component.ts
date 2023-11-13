@@ -8,6 +8,8 @@ import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
 import { SpecService } from 'src/app/api/spec.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -39,6 +41,7 @@ export class SpecificationsComponent implements OnInit {
   consversationList: any;
   contentData: any;
   noResults: boolean = false;
+  useCases: any;
 
   constructor(
     private utils: UtilsService,
@@ -46,7 +49,8 @@ export class SpecificationsComponent implements OnInit {
     private specService: SpecService,
     private router: Router,
     private auditUtil: AuditutilsService,
-    private searchSpec: SearchspecService
+    private searchSpec: SearchspecService,
+    private localStorageService: LocalStorageService
   ) {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
@@ -85,7 +89,50 @@ export class SpecificationsComponent implements OnInit {
     let product = localStorage.getItem('product');
     if (product)
       this.product = JSON.parse(product);
-    this.getMeSpecList();
+
+    this.getInsights();
+
+  }
+  getInsights() {
+    let currentUserString = localStorage.getItem('currentUser');
+    let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
+    this.apiService.get("navi/get_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
+      .then((response: any) => {
+        if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
+          this.useCases = data?.usecase || [];
+          this.getMeSpecList();
+          this.utils.loadSpinner(false);
+        } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.utils.loadSpinner(false);
+          this.utils.showProductStatusPopup(true);
+        }
+      })
+      .catch((error: any) => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      });
+  }
+  email(arg0: string, arg1: number, arg2: string, arg3: string, user_audit_body: { method: string; url: any; }, email: any, product_id: any) {
+    throw new Error('Method not implemented.');
+  }
+  product_id(arg0: string, arg1: number, arg2: string, arg3: string, user_audit_body: { method: string; url: any; }, email: any, product_id: any) {
+    throw new Error('Method not implemented.');
   }
 
   searchText(keyword: any) {
@@ -100,11 +147,7 @@ export class SpecificationsComponent implements OnInit {
       this.filteredSpecData = [];
       this.wantedIndexes = [];
       this.removableIndexes = [];
-      let specLocalStorage = localStorage.getItem('specData')
-      if (specLocalStorage) {
-        let parseData = JSON.parse(specLocalStorage);
-        this.specData = parseData;
-      }
+      this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
       this.searchSpec.searchSpec(this.specData, keyword).subscribe((returnData: any) => {
         if (returnData) {
           this.specData = returnData.specData;
@@ -175,10 +218,10 @@ export class SpecificationsComponent implements OnInit {
       }
     })
     this.specDataCopy = list;
+    localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
     if (this.specDataBool) {
-      let stringList = JSON.stringify([...list])
-      localStorage.setItem('specData', stringList)
+      this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
     this.specDataBool = false;
     this.utils.passSelectedSpecItem(list);
