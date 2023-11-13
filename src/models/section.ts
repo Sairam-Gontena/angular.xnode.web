@@ -1,10 +1,6 @@
-export interface ContentArray extends Array<any> {
-  content?: any;
-}
-
 export interface Section {
     title: string;
-    content: string | string[] | object[] | Array<string | string[] | object[]>| ContentArray;
+    content: string | string[] | object[];
     id: string;
     created_on: string;
     modified_on: string;

@@ -11,6 +11,7 @@ export class UserRolesComponent implements OnInit {
   @Input() selectedContent!: string;
   @Input() users: any = [];
   @Input() specId :any;
+  @Input() specItem: any;
   showCommentIcon: boolean = false
   seletedMainIndex?: number;
   selecteedSubIndex?: number;
@@ -48,7 +49,7 @@ export class UserRolesComponent implements OnInit {
       return ;
     }
     if(selectedText && selectedText.length>0 ){
-      this.selectedText = selectedText
+      this.selectedText = selectedText.replace(/\n/g, ' ')
      }else{
       this.selectedText='';
      }

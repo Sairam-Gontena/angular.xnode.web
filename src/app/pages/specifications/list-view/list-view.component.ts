@@ -51,7 +51,7 @@ export class ListViewComponent {
       return ;
     }
     if(selectedText && selectedText.length>0 ){
-      this.selectedText = selectedText
+      this.selectedText = selectedText.replace(/\n/g, ' ')
      }else{
       this.selectedText='';
      }
@@ -63,12 +63,12 @@ export class ListViewComponent {
     if (this.selectedText.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       await this.selectionText.toggle(event);
-      console.log('final console', {
-        'selected Text': this.selectedText.replace(/\n/g, ' '),
-        'spec with content id': this.specId,
-        'spec heading id': Math.floor(this.specId),
-        'id': this.specId,
-      });
+      // console.log('final console', {
+      //   'selected Text': this.selectedText.replace(/\n/g, ' '),
+      //   'spec with content id': this.specId,
+      //   'spec heading id': Math.floor(this.specId),
+      //   'id': this.specId,
+      // });
     }
   }
 
