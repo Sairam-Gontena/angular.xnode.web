@@ -23,14 +23,14 @@ export class ListViewComponent {
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
 
   ngOnInit():void{
-    // console.log('list view content', this.content)
-    // console.log('list view specId', this.specId)
   }
 
   getWords(subitem: any){
     if (typeof subitem.content === 'string') {
       return subitem.content.split(' ');
-    } else if(typeof subitem.content === undefined){
+    } else if(typeof subitem === 'string'){
+      return subitem.split(' ');
+    }else if(typeof subitem.content === undefined){
       if(typeof subitem === 'string'){
         return subitem.split(' ');
       }
