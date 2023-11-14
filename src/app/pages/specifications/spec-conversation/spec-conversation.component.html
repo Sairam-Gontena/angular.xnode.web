@@ -51,6 +51,5 @@
         </p-dialog>
     </div>
 </div>
-
-<xnode-confirmationalert *ngIf="enableDeletePrompt" (confirmationPrompt)="handleConfirmationPrompt($event)"
-    [visible]="enableDeletePrompt"></xnode-confirmationalert>
+<xnode-confirmation-popup  *ngIf="showDeletePopup" (confirmationAction)="handleDeleteConfirmation($event)"
+[data]="'showDeletePopup'" (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>

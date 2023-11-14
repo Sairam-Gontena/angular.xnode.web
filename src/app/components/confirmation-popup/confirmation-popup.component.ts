@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
@@ -14,9 +14,14 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 })
 
 export class ConfirmationPopupComponent implements OnInit {
-  @Input() Data: any;
+  @Input() data: any;
+  @Output() confirmationAction = new EventEmitter<boolean>();
+  @Output() toggleAlert = new EventEmitter<boolean>();
+  @Input() visibleAlert:boolean=false;
+  notUserRelated:boolean=false;
+  header:any;
   invitationType: string = '';
-  visible: boolean = false;
+  showPopup: boolean = false;
   currentUser?: any;
 
   constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService) {
@@ -24,41 +29,56 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    if(this.data==='showDeletePopup'){
+      this.notUserRelated = true;
+      this.header = 'Confirmation';
+      this.invitationType = 'delete this comment';
+      this.showPopup = true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let data = localStorage.getItem('currentUser')
-    if (data) {
-      let data1 = JSON.parse(data)
-      this.currentUser = data1;
+    let localData = localStorage.getItem('currentUser')
+    if (localData) {
+      let parsedData = JSON.parse(localData)
+      this.currentUser = parsedData;
     }
-    const userData = changes['Data'].currentValue.userData;
-    if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + userData.first_name + ' ' + userData.last_name;
+    const userData = changes['data'].currentValue.userData;
+    if (this.data && this.data!='showDeletePopup') {
+      this.invitationType = this.data?.type + ' ' + userData?.first_name + ' ' + userData?.last_name;
     }
     this.showDialog();
   }
 
+  confirmDelete() {
+    this.visibleAlert = false
+    this.confirmationAction.emit(false);
+  }
 
   showDialog() {
-    this.visible = true;
+    this.showPopup = true;
   }
 
   onSuccess(): void {
-    if (this.Data.type === 'Invite') {
-      this.updateUserId(this.Data.userData.id, 'Invited')
-    } else if (this.Data.type === 'Hold') {
-      this.updateUserId(this.Data.userData.id, 'OnHold')
-    } else if (this.Data.type === 'Reject') {
-      this.updateUserId(this.Data.userData.id, 'Rejected')
-    } else if (this.Data.type === 'Delete') {
-      this.deleteUserByEmail(this.Data.userData.email)
+    if (this.data.type === 'Invite') {
+      this.updateUserId(this.data.userData.id, 'Invited')
+    } else if (this.data.type === 'Hold') {
+      this.updateUserId(this.data.userData.id, 'OnHold')
+    } else if (this.data.type === 'Reject') {
+      this.updateUserId(this.data.userData.id, 'Rejected')
+    } else if (this.data.type === 'Delete') {
+      this.deleteUserByEmail(this.data.userData.email)
     }
-    this.visible = false;
+    this.showPopup = false;
   }
+
   onReject(): void {
-    this.visible = false;
+    if(this.data==='showDeletePopup'){
+      this.toggleAlert.emit(false);
+      this.visibleAlert = false;
+    }else{
+      this.showPopup = false;
+    }
   }
 
   updateUserId(id: string, action: string): void {
@@ -113,7 +133,7 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   updateProductTier(): void {
-    let url = 'auth/prospect/product_tier_manage/' + this.Data.userData.email;
+    let url = 'auth/prospect/product_tier_manage/' + this.data.userData.email;
     this.authApiService.put(url)
       .then((response: any) => {
         if (response?.status === 200) {
