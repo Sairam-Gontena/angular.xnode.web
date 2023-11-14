@@ -74,6 +74,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         'content': this.selectedContent?.content,
         'commentedtext':this.selectedText
       }
+      this.commentType = 'comment';
     }else{
       obj = {
         'title': this.selectedContent?.title,
