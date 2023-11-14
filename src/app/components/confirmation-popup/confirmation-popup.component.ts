@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
@@ -15,6 +15,11 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 export class ConfirmationPopupComponent implements OnInit {
   @Input() Data: any;
+  @Output() confirmationPrompt = new EventEmitter<boolean>();
+  @Output() toggleAlert = new EventEmitter<boolean>();
+  @Input() visibleAlert:boolean=false;
+  notUserRelated:boolean=false;
+  pDialogHeader:any;
   invitationType: string = '';
   visible: boolean = false;
   currentUser?: any;
@@ -24,22 +29,32 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    if(this.Data==='enableDeletePrompt'){
+      this.notUserRelated = true;
+      this.pDialogHeader = 'Confirmation';
+      this.invitationType = 'delete this comment';
+      this.visible = true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     let data = localStorage.getItem('currentUser')
     if (data) {
-      let data1 = JSON.parse(data)
-      this.currentUser = data1;
+      let parsedData = JSON.parse(data)
+      this.currentUser = parsedData;
     }
     const userData = changes['Data'].currentValue.userData;
-    if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + userData.first_name + ' ' + userData.last_name;
+    if (this.Data && this.Data!='enableDeletePrompt') {
+      this.invitationType = this.Data?.type + ' ' + userData?.first_name + ' ' + userData?.last_name;
     }
     this.showDialog();
   }
 
+  confirmPrompt() {
+    this.visibleAlert = false
+    this.confirmationPrompt.emit(false);
+    // call service call to delete comment
+  }
 
   showDialog() {
     this.visible = true;
@@ -57,8 +72,15 @@ export class ConfirmationPopupComponent implements OnInit {
     }
     this.visible = false;
   }
+
   onReject(): void {
-    this.visible = false;
+    if(this.Data==='enableDeletePrompt'){
+      this.toggleAlert.emit(false);
+      this.visibleAlert = false;
+      console.log('in onreject')
+    }else{
+      this.visible = false;
+    }
   }
 
   updateUserId(id: string, action: string): void {

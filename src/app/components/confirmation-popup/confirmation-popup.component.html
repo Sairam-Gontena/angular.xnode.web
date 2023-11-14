@@ -1,7 +1,12 @@
-<p-dialog [(visible)]="visible" [modal]="true">
+<p-dialog [(visible)]="visible" [modal]="true" [transitionOptions]="'200ms'">
     <ng-template pTemplate="header">
         <p class="header font-bold flex justify-content-center">
+          <span *ngIf="notUserRelated; else userType">
+            {{pDialogHeader}}
+          </span>
+          <ng-template #userType>
             {{Data?.type + ' User'}}
+          </ng-template>
         </p>
     </ng-template>
     <div class="flex font-medium">
@@ -13,8 +18,11 @@
         <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
             (click)="onReject()"></p-button>
         <span class="invite">
+          <p-button *ngIf="notUserRelated; else userTypeBtn" (click)="confirmPrompt()" label="Confirm" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+          <ng-template #userTypeBtn>
             <p-button [label]="Data?.type" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
-                (click)="onSuccess()"></p-button>
+            (click)="onSuccess()" ></p-button>
+          </ng-template>
         </span>
     </div>
 </p-dialog>

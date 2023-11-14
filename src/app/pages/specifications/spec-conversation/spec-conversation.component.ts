@@ -72,6 +72,10 @@ export class SpecConversationComponent {
     this.enableDeletePrompt = true
   }
 
+  toggleAlert(event:any){
+    this.enableDeletePrompt = event
+  }
+
   handleConfirmationPrompt(event: boolean): void {
     this.utils.loadSpinner(true);
     this.enableDeletePrompt = event;
