@@ -296,16 +296,16 @@
             <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
         </div>
         <div *ngIf="content.title ==='User Roles'">
-            <xnode-user-roles [searchTerm]="searchTerm" [content]="content.content"
-                [users]="usersList"></xnode-user-roles>
+            <xnode-user-roles [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+                [selectedContent]="selectedContent" [specItem]="specItem"></xnode-user-roles>
         </div>
         <div class="w-full" *ngIf="checkListViewSections(content.title)" [id]="content.id">
             <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
-                [users]="usersList" [specItem]="specItem"></xnode-list-view>
+                [users]="usersList" [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)"  [specItem]="specItem"></xnode-list-view>
         </div>
         <div *ngIf="checkParaViewSections(content.title)" [id]="content.id">
-            <xnode-para-view [content]="content" [searchTerm]="searchTerm" [users]="usersList"
-                [specItem]="specItem"></xnode-para-view>
+            <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="usersList"
+                [specItem]="specItem" [id]="content.id" [specId]="(sectionIndex+1) + '.' + (cIndex+1)" [content]="content" [selectedContent]="selectedContent"></xnode-para-view>
         </div>
 
         <div class="gradientback" *ngIf="!content?.collapsed">
