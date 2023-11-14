@@ -25,6 +25,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() commentType: string = '';
   @Input() selectedComment: any;
   @Input() action: any;
+  @Input() selectedText: any;
+  @Input() specId: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -67,6 +69,20 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
+    let referenceContentObject;
+    if (this.selectedText) {
+      referenceContentObject = {
+        'title': this.selectedContent?.title,
+        'content': this.selectedContent?.content,
+        'commentedtext': this.selectedText
+      }
+      this.commentType = 'comment';
+    } else {
+      referenceContentObject = {
+        'title': this.selectedContent?.title,
+        'content': this.selectedContent?.content
+      }
+    }
     let body;
     if (this.action === 'EDIT') {
       this.selectedComment.message = this.comment;
@@ -78,7 +94,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
         "message": this.comment,
-        "referenceContent": this.parentEntity === 'SPEC' ? { title: this.selectedContent.title, content: this.selectedContent.content } : {},
+        "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject : {},
         "attachments": [
         ],
         "references": { Users: this.references },
