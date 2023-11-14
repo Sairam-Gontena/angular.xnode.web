@@ -35,6 +35,7 @@ export class ExpandSpecificationComponent {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
     this.makeTrustedUrl();
+    console.log(this.dataToExpand, '99999999999999')
   }
 
   ngAfterViewInit() {

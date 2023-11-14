@@ -105,7 +105,9 @@ export class SpecificationsComponent implements OnInit {
           }
           this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
+          console.log(data, '==============')
           this.useCases = data?.usecase || [];
+          console.log(this.useCases, '-------')
           this.getMeSpecList();
           this.utils.loadSpinner(false);
         } else {

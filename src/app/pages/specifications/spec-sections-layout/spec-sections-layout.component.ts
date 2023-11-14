@@ -23,7 +23,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() commentList: any;
   @Input() usersList: any = [];
-  @Input() useCases: any[] = [];
+  @Input() useCases: any;
   @Input() specItemList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();

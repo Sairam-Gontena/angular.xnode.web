@@ -34,7 +34,7 @@
         <div class="flex flex-row col-12 justify-content-end">
             <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
         </div>
-        <xnode-common-usecases></xnode-common-usecases>
+        <xnode-common-usecases [useCases]="dataToExpand"></xnode-common-usecases>
     </div>
     <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="surface-900 p-4">
         <div class="flex flex-row justify-content-end pb-4">

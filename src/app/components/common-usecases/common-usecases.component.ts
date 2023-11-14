@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 export class CommonUsecasesComponent {
   @Input() searchTerm: any;
-  @Input() useCases: any = [];
+  @Input() useCases: any;
   isInsideUseCases: boolean = false;
 
   constructor(private router: Router,) {
@@ -20,4 +20,7 @@ export class CommonUsecasesComponent {
     }
   }
 
+  ngOnInit() {
+    console.log(this.useCases, '00000000', this.isInsideUseCases)
+  }
 }
