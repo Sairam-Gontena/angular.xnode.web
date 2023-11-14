@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UtilsService } from '../components/services/utils.service';
-import { CommentsService } from '../api/comments.service';
+import { UtilsService } from '../../../components/services/utils.service';
+import { CommentsService } from '../../../api/comments.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
-import { MessagingService } from '../components/services/messaging.service';
+import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
@@ -24,7 +24,7 @@ export class SpecConversationComponent {
   showCommentInput: boolean = false;
   openEditComment: boolean = false;
   selectedIndex?: number;
-  enableDeletePrompt: boolean = false;
+  showDeletePopup: boolean = false;
   action?: string;
   showPrWindow: boolean = false;
   usersData: any;
@@ -40,6 +40,8 @@ export class SpecConversationComponent {
     this.utils.getMeLatestComments.subscribe((event: any) => {
       if (event === 'reply') {
         this.viewReplies(this.selectedComment);
+        this.showCommentInput = false;
+        this.action = ''
       }
     })
   }
@@ -54,6 +56,17 @@ export class SpecConversationComponent {
     return avatar;
   }
 
+  eventFromConversationAction(data: { action: string, cmt: any }) {
+    if (data.action === 'REPLY') {
+      this.onClickReply(data.cmt);
+    } if (data.action === 'EDIT') {
+      this.editComment(data.cmt);
+    } if (data.action === 'LINKTOCR') {
+      this.linkToCr(data.cmt);
+    } if (data.action === 'DELETE') {
+      this.deleteCurrentComment(data.cmt);
+    }
+  }
 
   onClickReply(cmt: any): void {
     if (!cmt.topParentId) {
@@ -72,12 +85,16 @@ export class SpecConversationComponent {
 
   deleteCurrentComment(comment: string): void {
     this.selectedComment = comment;
-    this.enableDeletePrompt = true
+    this.showDeletePopup = true
   }
 
-  handleConfirmationPrompt(event: boolean): void {
+  toggleConfirmPopup(event: boolean) {
+    this.showDeletePopup = event
+  }
+
+  handleDeleteConfirmation(event: boolean): void {
     this.utils.loadSpinner(true);
-    this.enableDeletePrompt = event;
+    this.showDeletePopup = event;
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });

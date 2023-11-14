@@ -80,7 +80,7 @@ export class SpecificationsContentComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
     this.utils.getMeLatestComments.subscribe((event: any) => {
-      if (event === 'comment') {
+      if (event === 'comment' || event == 'reply') {
         this.getMeCommentsList();
       }
     })

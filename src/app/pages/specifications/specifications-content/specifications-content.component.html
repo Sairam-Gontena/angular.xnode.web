@@ -32,9 +32,10 @@
                         <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                     </div>
                     <div>
-                        <xnode-spec-sections-layout [content]="item.content" [searchTerm]="searchTerm"
-                            [sectionIndex]="i" [specItem]="item" (onClickSeeMore)="_onClickSeeMore($event)"
-                            [usersList]="usersList" (onClickSeeLess)="_onClickSeeLess($event)"
+                        <xnode-spec-sections-layout [selectedSpecItem]="selectedSpecItem" [content]="item.content"
+                            [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
+                            (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
+                            (onClickSeeLess)="_onClickSeeLess($event)"
                             (showAddCommnetOverlay)="_showAddCommnetOverlay($event)" [commentList]='commentList'
                             (expandComponent)="_expandComponent($event)" [readOnly]="false" [useCases]="useCases"
                             [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
