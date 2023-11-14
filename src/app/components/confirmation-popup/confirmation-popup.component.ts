@@ -77,7 +77,6 @@ export class ConfirmationPopupComponent implements OnInit {
     if(this.Data==='enableDeletePrompt'){
       this.toggleAlert.emit(false);
       this.visibleAlert = false;
-      console.log('in onreject')
     }else{
       this.visible = false;
     }
