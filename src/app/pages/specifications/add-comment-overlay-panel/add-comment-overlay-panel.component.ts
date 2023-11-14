@@ -23,8 +23,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() parentId: any;
   @Input() topParentId: any;
   @Input() commentType: string = '';
-  @Input() selectedText:any;
-  @Input() specId:any;
+  @Input() selectedComment: any;
+  @Input() action: any;
+  @Input() selectedText: any;
+  @Input() specId: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -68,32 +70,38 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   onClickSend(): void {
     let referenceContentObject;
-    if(this.selectedText){
+    if (this.selectedText) {
       referenceContentObject = {
         'title': this.selectedContent?.title,
         'content': this.selectedContent?.content,
-        'commentedtext':this.selectedText
+        'commentedtext': this.selectedText
       }
       this.commentType = 'comment';
-    }else{
+    } else {
       referenceContentObject = {
         'title': this.selectedContent?.title,
         'content': this.selectedContent?.content
       }
     }
-    let body = {
-      "createdBy": this.currentUser.user_id,
-      "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
-      "parentEntity": this.parentEntity,
-      "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
-      "message": this.comment,
-      "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject : {},
-      "attachments": [
-      ],
-      "references": { Users: this.references },
-      "followers": [
-      ],
-      "feedback": {}
+    let body;
+    if (this.action === 'EDIT') {
+      this.selectedComment.message = this.comment;
+      body = this.selectedComment;
+    } else {
+      body = {
+        "createdBy": this.currentUser.user_id,
+        "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
+        "parentEntity": this.parentEntity,
+        "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+        "message": this.comment,
+        "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject : {},
+        "attachments": [
+        ],
+        "references": { Users: this.references },
+        "followers": [
+        ],
+        "feedback": {}
+      }
     }
     this.saveComment(body);
   }
@@ -105,7 +113,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
         this.closeOverlay.emit();
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Comment added successfully' });
+        let detail = 'Comment added successfully'
+        if (this.action == 'EDIT') {
+          detail = 'Comment edited successfully'
+        }
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
