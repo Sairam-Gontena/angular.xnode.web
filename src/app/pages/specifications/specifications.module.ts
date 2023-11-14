@@ -26,6 +26,7 @@ import { CommentsPanelComponent } from './comments-panel/comments-panel.componen
 import { ConfirmationalertComponent } from './confirmationalert/confirmationalert.component';
 import { SpecConversationComponent } from 'src/app/pages/specifications/spec-conversation/spec-conversation.component';
 import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
+import { ConversationActionsComponent } from './conversation-actions/conversation-actions.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -48,7 +49,8 @@ import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
     ObjectToArrayPipe,
     ConfirmationalertComponent,
     SpecConversationComponent,
-    LinkToCrComponent
+    LinkToCrComponent,
+    ConversationActionsComponent
   ],
   imports: [
     CommonModule,

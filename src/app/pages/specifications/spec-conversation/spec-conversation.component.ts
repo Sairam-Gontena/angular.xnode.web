@@ -51,6 +51,17 @@ export class SpecConversationComponent {
     return avatar;
   }
 
+  eventFromConversationAction(data: {action: string, cmt: any}){
+    if(data.action === 'onClickReply') {
+      this.onClickReply(data.cmt);
+    }if(data.action === 'editComment') {
+      this.editComment(data.cmt);
+    }if(data.action === 'linkToCr') {
+      this.linkToCr(data.cmt);
+    }if(data.action === 'deleteCurrentComment') {
+      this.deleteCurrentComment(data.cmt);
+    }
+  }
 
   onClickReply(cmt: any): void {
     if (!cmt.topParentId) {
