@@ -67,16 +67,16 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
-    let obj;
+    let referenceContentObject;
     if(this.selectedText){
-      obj = {
+      referenceContentObject = {
         'title': this.selectedContent?.title,
         'content': this.selectedContent?.content,
         'commentedtext':this.selectedText
       }
       this.commentType = 'comment';
     }else{
-      obj = {
+      referenceContentObject = {
         'title': this.selectedContent?.title,
         'content': this.selectedContent?.content
       }
@@ -87,7 +87,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       "parentEntity": this.parentEntity,
       "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
       "message": this.comment,
-      "referenceContent": this.parentEntity === 'SPEC' ? obj : {},
+      "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject : {},
       "attachments": [
       ],
       "references": { Users: this.references },
