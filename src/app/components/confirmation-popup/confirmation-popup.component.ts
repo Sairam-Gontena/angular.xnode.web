@@ -15,13 +15,13 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 
 export class ConfirmationPopupComponent implements OnInit {
   @Input() data: any;
-  @Output() confirmationPrompt = new EventEmitter<boolean>();
+  @Output() confirmationAction = new EventEmitter<boolean>();
   @Output() toggleAlert = new EventEmitter<boolean>();
   @Input() visibleAlert:boolean=false;
   notUserRelated:boolean=false;
   header:any;
   invitationType: string = '';
-  visible: boolean = false;
+  showPopup: boolean = false;
   currentUser?: any;
 
   constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService) {
@@ -29,11 +29,11 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.data==='enableDeletePrompt'){
+    if(this.data==='showDeletePopup'){
       this.notUserRelated = true;
       this.header = 'Confirmation';
       this.invitationType = 'delete this comment';
-      this.visible = true;
+      this.showPopup = true;
     }
   }
 
@@ -44,7 +44,7 @@ export class ConfirmationPopupComponent implements OnInit {
       this.currentUser = parsedData;
     }
     const userData = changes['data'].currentValue.userData;
-    if (this.data && this.data!='enableDeletePrompt') {
+    if (this.data && this.data!='showDeletePopup') {
       this.invitationType = this.data?.type + ' ' + userData?.first_name + ' ' + userData?.last_name;
     }
     this.showDialog();
@@ -52,11 +52,11 @@ export class ConfirmationPopupComponent implements OnInit {
 
   confirmDelete() {
     this.visibleAlert = false
-    this.confirmationPrompt.emit(false);
+    this.confirmationAction.emit(false);
   }
 
   showDialog() {
-    this.visible = true;
+    this.showPopup = true;
   }
 
   onSuccess(): void {
@@ -69,15 +69,15 @@ export class ConfirmationPopupComponent implements OnInit {
     } else if (this.data.type === 'Delete') {
       this.deleteUserByEmail(this.data.userData.email)
     }
-    this.visible = false;
+    this.showPopup = false;
   }
 
   onReject(): void {
-    if(this.data==='enableDeletePrompt'){
+    if(this.data==='showDeletePopup'){
       this.toggleAlert.emit(false);
       this.visibleAlert = false;
     }else{
-      this.visible = false;
+      this.showPopup = false;
     }
   }
 

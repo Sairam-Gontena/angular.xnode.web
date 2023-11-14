@@ -23,7 +23,7 @@ export class SpecConversationComponent {
   showCommentInput: boolean = false;
   openEditComment: boolean = false;
   selectedIndex?: number;
-  enableDeletePrompt: boolean = false;
+  showDeletePopup: boolean = false;
   action?: string;
   showPrWindow: boolean = false;
   usersData: any;
@@ -80,16 +80,16 @@ export class SpecConversationComponent {
 
   deleteCurrentComment(comment: string): void {
     this.selectedComment = comment;
-    this.enableDeletePrompt = true
+    this.showDeletePopup = true
   }
 
   toggleConfirmPopup(event:boolean){
-    this.enableDeletePrompt = event
+    this.showDeletePopup = event
   }
 
-  handleConfirmationPrompt(event: boolean): void {
+  handleDeleteConfirmation(event: boolean): void {
     this.utils.loadSpinner(true);
-    this.enableDeletePrompt = event;
+    this.showDeletePopup = event;
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
