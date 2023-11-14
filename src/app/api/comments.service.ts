@@ -20,6 +20,10 @@ export class CommentsService extends BaseApiService {
     let url = 'comment';
     return this.get(url, params)
   }
+  getTasks(params?: any) {
+    let url = 'task';
+    return this.get(url, params)
+  }
 
   updateComments(body: any) {
     return this.patch('specs/update-comments/', body);
@@ -27,6 +31,9 @@ export class CommentsService extends BaseApiService {
 
   addComments(body: any) {
     return this.post('comment', body);
+  }
+  addTask(body: any) {
+    return this.post('task', body);
   }
 
   deletComment(id: any) {

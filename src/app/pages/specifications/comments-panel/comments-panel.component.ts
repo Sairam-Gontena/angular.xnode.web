@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -16,7 +16,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() commentList: any;
+  @Input() tasksList: any;
   @Input() usersList: any;
+  @Input() activeIndex: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];

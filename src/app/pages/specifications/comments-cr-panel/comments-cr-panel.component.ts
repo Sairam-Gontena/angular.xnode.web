@@ -18,6 +18,7 @@ export class CommentsCrPanelComponent implements OnInit {
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
   selectedFilter: string = 'All Comments';
   @Input() commentList: Array<Comment> = [];
+  @Input() tasksList: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
