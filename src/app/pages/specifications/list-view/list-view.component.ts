@@ -63,12 +63,6 @@ export class ListViewComponent {
     if (this.selectedText.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       await this.selectionText.toggle(event);
-      // console.log('final console', {
-      //   'selected Text': this.selectedText.replace(/\n/g, ' '),
-      //   'spec with content id': this.specId,
-      //   'spec heading id': Math.floor(this.specId),
-      //   'id': this.specId,
-      // });
     }
   }
 
