@@ -14,12 +14,12 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 })
 
 export class ConfirmationPopupComponent implements OnInit {
-  @Input() Data: any;
+  @Input() data: any;
   @Output() confirmationPrompt = new EventEmitter<boolean>();
   @Output() toggleAlert = new EventEmitter<boolean>();
   @Input() visibleAlert:boolean=false;
   notUserRelated:boolean=false;
-  pDialogHeader:any;
+  header:any;
   invitationType: string = '';
   visible: boolean = false;
   currentUser?: any;
@@ -29,31 +29,30 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.Data==='enableDeletePrompt'){
+    if(this.data==='enableDeletePrompt'){
       this.notUserRelated = true;
-      this.pDialogHeader = 'Confirmation';
+      this.header = 'Confirmation';
       this.invitationType = 'delete this comment';
       this.visible = true;
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let data = localStorage.getItem('currentUser')
-    if (data) {
-      let parsedData = JSON.parse(data)
+    let localData = localStorage.getItem('currentUser')
+    if (localData) {
+      let parsedData = JSON.parse(localData)
       this.currentUser = parsedData;
     }
-    const userData = changes['Data'].currentValue.userData;
-    if (this.Data && this.Data!='enableDeletePrompt') {
-      this.invitationType = this.Data?.type + ' ' + userData?.first_name + ' ' + userData?.last_name;
+    const userData = changes['data'].currentValue.userData;
+    if (this.data && this.data!='enableDeletePrompt') {
+      this.invitationType = this.data?.type + ' ' + userData?.first_name + ' ' + userData?.last_name;
     }
     this.showDialog();
   }
 
-  confirmPrompt() {
+  confirmDelete() {
     this.visibleAlert = false
     this.confirmationPrompt.emit(false);
-    // call service call to delete comment
   }
 
   showDialog() {
@@ -61,20 +60,20 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   onSuccess(): void {
-    if (this.Data.type === 'Invite') {
-      this.updateUserId(this.Data.userData.id, 'Invited')
-    } else if (this.Data.type === 'Hold') {
-      this.updateUserId(this.Data.userData.id, 'OnHold')
-    } else if (this.Data.type === 'Reject') {
-      this.updateUserId(this.Data.userData.id, 'Rejected')
-    } else if (this.Data.type === 'Delete') {
-      this.deleteUserByEmail(this.Data.userData.email)
+    if (this.data.type === 'Invite') {
+      this.updateUserId(this.data.userData.id, 'Invited')
+    } else if (this.data.type === 'Hold') {
+      this.updateUserId(this.data.userData.id, 'OnHold')
+    } else if (this.data.type === 'Reject') {
+      this.updateUserId(this.data.userData.id, 'Rejected')
+    } else if (this.data.type === 'Delete') {
+      this.deleteUserByEmail(this.data.userData.email)
     }
     this.visible = false;
   }
 
   onReject(): void {
-    if(this.Data==='enableDeletePrompt'){
+    if(this.data==='enableDeletePrompt'){
       this.toggleAlert.emit(false);
       this.visibleAlert = false;
     }else{
@@ -134,7 +133,7 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   updateProductTier(): void {
-    let url = 'auth/prospect/product_tier_manage/' + this.Data.userData.email;
+    let url = 'auth/prospect/product_tier_manage/' + this.data.userData.email;
     this.authApiService.put(url)
       .then((response: any) => {
         if (response?.status === 200) {

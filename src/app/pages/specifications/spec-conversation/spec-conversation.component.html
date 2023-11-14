@@ -52,4 +52,4 @@
     </div>
 </div>
 <xnode-confirmation-popup  *ngIf="enableDeletePrompt" (confirmationPrompt)="handleConfirmationPrompt($event)"
-[Data]="'enableDeletePrompt'" (toggleAlert)="toggleAlert($event)" [visibleAlert]="enableDeletePrompt"></xnode-confirmation-popup>
+[data]="'enableDeletePrompt'" (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="enableDeletePrompt"></xnode-confirmation-popup>

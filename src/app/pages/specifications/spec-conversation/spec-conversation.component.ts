@@ -83,7 +83,7 @@ export class SpecConversationComponent {
     this.enableDeletePrompt = true
   }
 
-  toggleAlert(event:any){
+  toggleConfirmPopup(event:boolean){
     this.enableDeletePrompt = event
   }
 
