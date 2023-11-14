@@ -75,9 +75,9 @@
                 <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
             </div>
             <div class="w-full">
-                <xnode-add-comment-overlay-panel placeHolder="Reply" [users]="usersList" parentEntity="COMMENT"
-                    [parentId]="cmt.id" [topParentId]="topParentId" [comment]="action === 'EDIT' ? cmt.message: ''"
-                    [commentType]="'reply'" [width]="'w-full'"
+                <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment" [action]="action"
+                    [users]="usersList" parentEntity="COMMENT" [parentId]="cmt.id" [topParentId]="topParentId"
+                    [comment]="action === 'EDIT' ? cmt.message: ''" [commentType]="'reply'" [width]="'w-full'"
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
         </div>
