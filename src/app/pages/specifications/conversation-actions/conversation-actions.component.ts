@@ -11,28 +11,28 @@ export class ConversationActionsComponent {
 
   onClickReply(cmt: any): void {
     this.updateAction.emit({
-      action: 'onClickReply',
+      action: 'REPLY',
       cmt: cmt
     })
   }
 
   editComment(cmt: any): void {
     this.updateAction.emit({
-      action: 'editComment',
+      action: 'EDIT',
       cmt: cmt
     })
   }
 
   linkToCr(cmt: any): void {
     this.updateAction.emit({
-      action: 'linkToCr',
+      action: 'LINKTOCR',
       cmt: cmt
     })
   }
 
   deleteCurrentComment(cmt: any): void {
     this.updateAction.emit({
-      action: 'deleteCurrentComment',
+      action: 'DELETE',
       cmt: cmt
     })
   }

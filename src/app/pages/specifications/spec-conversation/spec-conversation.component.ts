@@ -52,13 +52,13 @@ export class SpecConversationComponent {
   }
 
   eventFromConversationAction(data: {action: string, cmt: any}){
-    if(data.action === 'onClickReply') {
+    if(data.action === 'REPLY') {
       this.onClickReply(data.cmt);
-    }if(data.action === 'editComment') {
+    }if(data.action === 'EDIT') {
       this.editComment(data.cmt);
-    }if(data.action === 'linkToCr') {
+    }if(data.action === 'LINKTOCR') {
       this.linkToCr(data.cmt);
-    }if(data.action === 'deleteCurrentComment') {
+    }if(data.action === 'DELETE') {
       this.deleteCurrentComment(data.cmt);
     }
   }
