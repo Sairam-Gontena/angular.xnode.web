@@ -30,7 +30,21 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              {
+                "input": "src/themes/viva-dark.css",
+                "bundleName": "viva-dark",
+                "inject": false
+              },
+              {
+                "input": "src/themes/lara-light-blue.css",
+                "bundleName": "lara-light-blue",
+                "inject": false
+              },
+              {
+                "input": "src/themes/luna-green.css",
+                "bundleName": "luna-green",
+                "inject": false
+              },
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
               "node_modules/bpmn-js/dist/assets/diagram-js.css",
