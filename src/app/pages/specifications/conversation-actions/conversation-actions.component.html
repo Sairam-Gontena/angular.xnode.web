@@ -1,0 +1,37 @@
+<div class="flex align-items-center">
+  <div class="flex align-items-center comment-btns">
+      <p-button [outlined]="true">
+          <img src="./assets/reply.svg" alt="reply" class="pointer" (click)="onClickReply(cmt)" />
+      </p-button>
+      <p-button [outlined]="true" (click)="op.toggle($event)">
+          <img src="./assets/3-dots.svg" alt="3 dots" class="pointer" />
+      </p-button>
+      <p-overlayPanel #op class="dots-overlay">
+          <div class="">
+              <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                  (click)="editComment(cmt);op.hide();" (keydown)="op.hide()">
+                  <img src="../../../../assets//edit.png" class="confirm-overlay-icon" />
+                  <div class="pl-2 text-sm ">Edit</div>
+              </div>
+              <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
+              <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                  (keydown)="op.hide()" (click)="linkToCr(cmt);op.hide();">
+                  <img src="../../../../assets//linktocr.png" class="confirm-overlay-icon" />
+                  <div class="pl-2 text-sm ">Link to CR</div>
+              </div>
+              <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
+              <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                  (keydown)="op.hide()">
+                  <img src="../../../../assets//copy.png" class="confirm-overlay-icon" />
+                  <div class="pl-2 text-sm ">Copy Link</div>
+              </div>
+              <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
+              <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                  (keydown)="op.hide()" (click)="deleteCurrentComment(cmt);op.hide();">
+                  <img src="../../../../assets//delete.png" class="confirm-overlay-icon" />
+                  <div class="pl-2 text-sm ">Delete</div>
+              </div>
+          </div>
+      </p-overlayPanel>
+  </div>
+</div>
