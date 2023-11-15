@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdditionalInfoComponent } from '../components/additional-info/additional-info.component';
 import { AppHeaderComponent } from '../components/app-header/app-header.component';
@@ -123,6 +123,7 @@ import { ProductDropdownComponent } from '../components/product-dropdown/product
                 CommonSpecTableComponent,
                 ProductDropdownComponent,
                 SharedPipesModule
-        ]
+        ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedComponentModule { }

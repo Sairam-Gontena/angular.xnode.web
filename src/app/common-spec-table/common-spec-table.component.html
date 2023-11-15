@@ -1,4 +1,6 @@
 <div class="card p-0 m-0">
+  <div class="flex col-12 p-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
+    <div class="col-11 p-0 ">
     <p-table #dt [value]="content" [columns]="setColumnsToTheTable(content[0])" [resizableColumns]="true"
         [scrollable]="true" scrollDirection="horizontal">
         <ng-template pTemplate="header" let-columns>
@@ -24,4 +26,18 @@
             </tr>
         </ng-template>
     </p-table>
+    </div>
+    <div class="col-1 p-0 flex  align-items-start justify-content-center">
+      <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false;showCommentIcon=false">
+          <!-- <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" *ngIf="commentOverlayPanelOpened"
+              (closeOverlay)="op.toggle(false);commentOverlayPanelOpened=false;" [position]="'absolute'"
+              [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+              [parentEntity]="'SPEC'" [parentId]="specItem.id"
+              [specItem]="specItem"></xnode-add-comment-overlay-panel> -->
+      </p-overlayPanel>
+      <img src="../assets/comment.svg" class="pointer" alt="comment"
+          (click)="op.toggle($event);commentOverlayPanelOpened=true" (mouseleave)="showCommentIcon = false"
+          *ngIf="showCommentIcon || commentOverlayPanelOpened">
+    </div>
+  </div>
 </div>
