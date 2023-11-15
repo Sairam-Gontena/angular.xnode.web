@@ -55,6 +55,8 @@ export class SpecConversationComponent {
       avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
     } else if (userObj.assignee && userObj.assignee?.displayName) {
       avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
+    }else{
+      avatar ='';
     }
     return avatar;
   }
