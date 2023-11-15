@@ -27,6 +27,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() action: any;
   @Input() selectedText: any;
   @Input() specId: any;
+  @Input() activeIndex: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -103,14 +104,20 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {}
       }
     }
-    if (this.assignAsaTask) {
+
+    if (this.activeIndex == 1) {
       this.saveTask()
     } else {
-      this.saveComment(body);
+      if (this.assignAsaTask) {
+        this.saveTask()
+      } else {
+        this.saveComment(body);
+      }
     }
   }
 
   saveComment(body: any): void {
+    console.log("body is", body)
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.updateCommnetsList(this.commentType);
@@ -133,21 +140,40 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     })
   }
   saveTask(): void {
-    let body = {
-      "parentEntity": this.parentEntity,
-      "parentId": this.parentId,
-      "priority": '1',
-      "title": this.comment,
-      "description": this.comment,
-      "attachments": [],
-      "references": { Users: this.references },
-      "followers": [],
-      "feedback": {},
-      "status": "",
-      "assignee": this.currentUser.user_id,
-      "deadline": ""
-    }
+    let body;
+    if (this.action === 'EDIT') {
+      body = {
+        "id": this.selectedComment.id,
+        "parentEntity": this.parentEntity,
+        "parentId": this.selectedComment.parentId,
+        "priority": '1',
+        "title": this.comment,
+        "description": this.comment,
+        "attachments": [],
+        "references": this.selectedComment.references,
+        "followers": [],
+        "feedback": {},
+        "status": "",
+        "assignee": this.selectedComment.assignee.userId,
+        "deadline": ""
+      }
 
+    } else {
+      body = {
+        "parentEntity": this.parentEntity,
+        "parentId": this.parentId,
+        "priority": '1',
+        "title": this.comment,
+        "description": this.comment,
+        "attachments": [],
+        "references": { Users: this.references },
+        "followers": [],
+        "feedback": {},
+        "status": "",
+        "assignee": this.currentUser.user_id,
+        "deadline": ""
+      }
+    }
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.updateCommnetsList(this.commentType);
