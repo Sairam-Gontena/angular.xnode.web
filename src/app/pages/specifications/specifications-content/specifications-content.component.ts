@@ -82,6 +82,8 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.getMeLatestComments.subscribe((event: any) => {
       if (event === 'comment' || event == 'reply') {
         this.getMeCommentsList();
+      } else if (event === 'task') {
+        this.getMeTasksList()
       }
     })
   }
@@ -187,7 +189,7 @@ export class SpecificationsContentComponent implements OnInit {
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getTasks({ parentId: selectedSpec.id}).then((response: any) => {
+      this.commentsService.getTasks({ parentId: selectedSpec.id }).then((response: any) => {
         if (response && response.data) {
           // this.utils.saveCommentList(response.data)
           this.tasksList = response.data;
