@@ -46,12 +46,17 @@ export class SpecConversationComponent {
     })
   }
 
+  ngOnInit(){
+  }
+
   setAvatar(userObj: any): string {
     let avatar: string = '';
     if (this.activeIndex == 0 && userObj.createdBy && userObj.createdBy?.displayName) {
       avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
     } else if (this.activeIndex == 0 && userObj.assignee && userObj.assignee?.displayName) {
       avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
+    }else if((this.activeIndex=='undefined'|| this.activeIndex==undefined) && userObj.createdBy && userObj.createdBy?.displayName){
+      avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
     }
     return avatar;
   }

@@ -44,7 +44,7 @@
                 <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
                     [action]="action" [users]="usersList" parentEntity="COMMENT" [parentId]="cmt.id"
                     [topParentId]="topParentId" [comment]="action === 'EDIT' ? cmt.message: ''" [commentType]="'reply'"
-                    [width]="'w-full'" (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+                    [width]="'w-full'" [selectedContent]="cmt" (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
         </div>
         <p-dialog header="Link to Change Request" [(visible)]="showPrWindow" [modal]="true" [style]="{ width: '50vw' }"

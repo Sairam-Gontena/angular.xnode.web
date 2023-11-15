@@ -82,6 +82,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         'title': this.selectedContent?.title,
         'content': this.selectedContent?.content
       }
+      if(this.selectedContent.referenceContent){
+        referenceContentObject = {
+          'title': this.selectedContent?.referenceContent?.title,
+          'content': this.selectedContent?.referenceContent?.content
+        }
+      }
     }
     let body;
     if (this.action === 'EDIT') {
@@ -94,7 +100,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
         "message": this.comment,
-        "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject : {},
+        "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject :referenceContentObject,
         "attachments": [
         ],
         "references": { Users: this.references },
