@@ -15,6 +15,7 @@ export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
   @Input() topParentId: any;
+  @Input() activeIndex: any;
   @Output() onClickClose = new EventEmitter<any>();
   comment: any;
   currentUser: any;
@@ -47,20 +48,22 @@ export class SpecConversationComponent {
 
   setAvatar(userObj: any): string {
     let avatar: string = '';
-    if (userObj.createdBy && userObj.createdBy?.displayName) {
+    if (this.activeIndex == 0 && userObj.createdBy && userObj.createdBy?.displayName) {
       avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
+    } else if (this.activeIndex == 0 && userObj.assignee && userObj.assignee?.displayName) {
+      avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
     }
     return avatar;
   }
 
-  eventFromConversationAction(data: {action: string, cmt: any}){
-    if(data.action === 'REPLY') {
+  eventFromConversationAction(data: { action: string, cmt: any }) {
+    if (data.action === 'REPLY') {
       this.onClickReply(data.cmt);
-    }if(data.action === 'EDIT') {
+    } if (data.action === 'EDIT') {
       this.editComment(data.cmt);
-    }if(data.action === 'LINKTOCR') {
+    } if (data.action === 'LINKTOCR') {
       this.linkToCr(data.cmt);
-    }if(data.action === 'DELETE') {
+    } if (data.action === 'DELETE') {
       this.deleteCurrentComment(data.cmt);
     }
   }
@@ -85,7 +88,7 @@ export class SpecConversationComponent {
     this.showDeletePopup = true
   }
 
-  toggleConfirmPopup(event:boolean){
+  toggleConfirmPopup(event: boolean) {
     this.showDeletePopup = event
   }
 

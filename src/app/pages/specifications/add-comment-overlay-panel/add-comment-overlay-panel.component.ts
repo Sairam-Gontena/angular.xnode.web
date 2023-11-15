@@ -103,7 +103,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {}
       }
     }
-    this.saveComment(body);
+    if (this.assignAsaTask) {
+      this.saveTask()
+    } else {
+      this.saveComment(body);
+    }
   }
 
   saveComment(body: any): void {
@@ -118,6 +122,40 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           detail = 'Comment edited successfully'
         }
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
+        this.utils.toggleTaskAssign(false);
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
+  saveTask(): void {
+    let body = {
+      "parentEntity": this.parentEntity,
+      "parentId": this.parentId,
+      "priority": '1',
+      "title": this.comment,
+      "description": this.comment,
+      "attachments": [],
+      "references": { Users: this.references },
+      "followers": [],
+      "feedback": {},
+      "status": "",
+      "assignee": this.currentUser.user_id,
+      "deadline": ""
+    }
+
+    this.commentsService.addTask(body).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === 'Created') {
+        this.utils.updateCommnetsList(this.commentType);
+        this.utils.openOrClosePanel(SidePanel.Comments);
+        this.comment = '';
+        this.closeOverlay.emit();
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
+        this.utils.toggleTaskAssign(true);
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }

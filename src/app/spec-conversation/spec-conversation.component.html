@@ -1,0 +1,90 @@
+<div class="w-full" *ngFor="let cmt of list;let i = index; ">
+    <div class="grid m-0 p-2" [ngClass]="{'border-gray-800 border-bottom-1': !cmt.topParentId}">
+        <div class="col-6">
+            <div class="flex align-items-center">
+                <p-avatar [label]="setAvatar(cmt)" styleClass="mr-2"
+                    [style]="{ 'background-color': '#02ADEE', fontSize: '12px', color: '#ffffff',width:'25px',height:'25px' }"
+                    shape="circle"></p-avatar>
+                <p class="text-xs text-white-alpha-70">{{ activeIndex ? cmt?.createdBy?.displayName
+                    :cmt?.assignee?.displayName}}</p>
+            </div>
+        </div>
+        <div class="col-6  flex justify-content-end flex-wrap">
+            <div class="flex align-items-center">
+                <div class="flex align-items-center comment-btns">
+                    <p-button [outlined]="true">
+                        <img src="./assets/reply.svg" alt="reply" class="pointer" (click)="onClickReply(cmt)" />
+                    </p-button>
+                    <p-button [outlined]="true" (click)="op.toggle($event)">
+                        <img src="./assets/3-dots.svg" alt="3 dots" class="pointer" />
+                    </p-button>
+                    <p-overlayPanel #op class="dots-overlay">
+                        <div class="">
+                            <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                                (click)="editComment(cmt);op.hide();" (keydown)="op.hide()">
+                                <img src="../../../../assets//edit.png" class="confirm-overlay-icon" />
+                                <div class="pl-2 text-sm ">Edit</div>
+                            </div>
+                            <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
+                            <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                                (keydown)="op.hide()" (click)="linkToCr(cmt);op.hide();">
+                                <img src="../../../../assets//linktocr.png" class="confirm-overlay-icon" />
+                                <div class="pl-2 text-sm ">Link to CR</div>
+                            </div>
+                            <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
+                            <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                                (keydown)="op.hide()">
+                                <img src="../../../../assets//copy.png" class="confirm-overlay-icon" />
+                                <div class="pl-2 text-sm ">Copy Link</div>
+                            </div>
+                            <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
+                            <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                                (keydown)="op.hide()" (click)="deleteCurrentComment(cmt);op.hide();">
+                                <img src="../../../../assets//delete.png" class="confirm-overlay-icon" />
+                                <div class="pl-2 text-sm ">Delete</div>
+                            </div>
+                        </div>
+                    </p-overlayPanel>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" *ngIf=" activeIndex ? cmt.description : cmt.referenceContent.content">
+            <p class="mt-0 content-title text-xs">{{ activeIndex ? cmt.title : cmt.referenceContent.title }}</p>
+            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
+                {{ activeIndex ? cmt.description : cmt.referenceContent.content }} </p>
+        </div>
+        <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' && activeIndex ==0 ">
+            <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
+        </div>
+        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened && activeIndex == 0 ">
+            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
+                    Replies</span>
+            </div>
+        </div>
+        <div class="col-12"
+            *ngIf="cmt.comments &&cmt.comments.length > 0 &&selectedComment.id === cmt.id &&cmt.repliesOpened && activeIndex == 0 ">
+            <xnode-spec-conversation [list]="cmt.comments.slice().reverse()"
+                [topParentId]="topParentId"></xnode-spec-conversation>
+        </div>
+        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && cmt.repliesOpened && activeIndex ==0 ">
+            <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
+                    Replies</span>
+            </div>
+        </div>
+        <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt.id ">
+            <div class="w-full text-end">
+                <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
+            </div>
+            <div class="w-full">
+                <xnode-add-comment-overlay-panel placeHolder="Reply" [users]="usersList" parentEntity="COMMENT"
+                    [parentId]="cmt.id" [topParentId]="topParentId" [comment]="action === 'EDIT' ? cmt.message: ''"
+                    [commentType]="'reply'" [width]="'w-full'"
+                    (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+            </div>
+        </div>
+        <p-dialog header="Link to Change Request" [(visible)]="showPrWindow" [modal]="true" [style]="{ width: '50vw' }"
+            [draggable]="false" [resizable]="false">
+            <xnode-link-to-cr [comment]="selectedComment"></xnode-link-to-cr>
+        </p-dialog>
+    </div>
+</div>
