@@ -93,11 +93,37 @@ export class SpecConversationComponent {
   }
 
   handleDeleteConfirmation(event: boolean): void {
+    if (this.activeIndex == 0) {
+      this.deleteComment(event)
+      this.utils.updateCommnetsList('comment')
+    } else if (this.activeIndex == 1) {
+      this.deleteTask(event)
+      this.utils.updateCommnetsList('task')
+
+    }
+  }
+
+  deleteComment(event: boolean) {
     this.utils.loadSpinner(true);
     this.showDeletePopup = event;
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
+        this.utils.updateCommnetsList('comment');
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
+  }
+
+  deleteTask(event: boolean) {
+    this.utils.loadSpinner(true);
+    this.showDeletePopup = event;
+    this.commentsService.deletTask(this.selectedComment.id).then(res => {
+      if (res) {
+        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
         this.utils.updateCommnetsList('comment');
       }
       this.utils.loadSpinner(false);

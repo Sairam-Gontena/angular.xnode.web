@@ -39,5 +39,8 @@ export class CommentsService extends BaseApiService {
   deletComment(id: any) {
     return this.delete('comment/' + id);
   }
+  deletTask(id: any) {
+    return this.delete('task/' + id);
+  }
 }
 
