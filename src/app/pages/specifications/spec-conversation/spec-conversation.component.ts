@@ -124,15 +124,15 @@ export class SpecConversationComponent {
     if (minutesDifference < 1) {
       return 'Just now';
     } else if (minutesDifference === 1) {
-      return '1 m ago';
+      return '1m ago';
     } else if (minutesDifference < 60) {
-      return `${minutesDifference} m ago`;
+      return `${minutesDifference}m ago`;
     } else {
       const hoursDifference = Math.floor(minutesDifference / 60);
       if (hoursDifference === 1) {
-        return '1 h ago';
+        return '1h ago';
       } else {
-        return `${hoursDifference} h ago`;
+        return `${hoursDifference}h ago`;
       }
     }
   }
