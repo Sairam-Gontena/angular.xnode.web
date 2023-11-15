@@ -48,7 +48,7 @@
             <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
                 [content]="content.content"></xnode-data-dictionary>
             <ng-template #elsejson>
-                <div class="grid col-12">
+                <div class="grid">
                     <div class="col-11">
                         <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
                             style="white-space: pre-wrap; overflow: auto;"></pre>
