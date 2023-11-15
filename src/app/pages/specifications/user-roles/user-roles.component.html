@@ -7,12 +7,18 @@
                 (mouseleave)="showCommentIcon = false">
                 <div class="col-10 p-0">
                     <p class="m-0 pb-1 line-height-3">
-                        <span class="sub-title text-base font-medium"
-                            [innerHTML]="subItem.title| highlight: searchTerm">
+                        <span class="sub-title text-base font-medium" *ngFor="let word of subItem?.title?.split(' '); index as i" class="mr-1" [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
+                          <p-overlayPanel #selectionText>
+                            <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"  *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)" [selectedText]="selectedText" [specId]="specId" [parentId]="specItem.id" [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                        </p-overlayPanel>
                         </span>
                         :
-                        <span class="sub-content font-normal text-base"
-                            [innerHTML]="subItem.content | highlight: searchTerm"></span>
+                        <span class="sub-content font-normal text-base"  *ngFor="let word of subItem?.content?.split(' '); index as i" class="mr-1" [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
+                            <p-overlayPanel #selectionText>
+                              <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"  *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"
+                                 [selectedText]="selectedText" [parentEntity]="specId" [parentId]="specItem.id" [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                          </p-overlayPanel>
+                          </span>
                     </p>
                 </div>
                 <div class="col-1 p-0 flex  align-items-start justify-content-center">

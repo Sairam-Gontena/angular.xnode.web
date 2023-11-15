@@ -50,6 +50,7 @@ export class SpecificationsContentComponent implements OnInit {
   isContentSelected = false;
   isCommnetsPanelOpened: boolean = false;
   commentList: any;
+  tasksList: any;
   currentUser: any;
   usersList: any;
 
@@ -79,7 +80,7 @@ export class SpecificationsContentComponent implements OnInit {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
     });
     this.utils.getMeLatestComments.subscribe((event: any) => {
-      if (event === 'comment') {
+      if (event === 'comment' || event == 'reply') {
         this.getMeCommentsList();
       }
     })
@@ -105,8 +106,13 @@ export class SpecificationsContentComponent implements OnInit {
     if (record_id) {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
+    this.utils.sidePanelChanged.subscribe((res) => {
+      if (res) {
+        this.getMeCommentsList();
+        this.getMeTasksList()
+      }
+    })
     this.makeTrustedUrl();
-    this.getMeCommentsList();
     this.getUsersData();
   }
 
@@ -167,6 +173,24 @@ export class SpecificationsContentComponent implements OnInit {
         if (response && response.data) {
           this.utils.saveCommentList(response.data)
           this.commentList = response.data;
+        }
+        this.utils.loadSpinner(false);
+      }).catch(err => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+    }
+  }
+  getMeTasksList() {
+    this.utils.loadSpinner(true);
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService.getTasks({ parentId: selectedSpec.id}).then((response: any) => {
+        if (response && response.data) {
+          // this.utils.saveCommentList(response.data)
+          this.tasksList = response.data;
         }
         this.utils.loadSpinner(false);
       }).catch(err => {
