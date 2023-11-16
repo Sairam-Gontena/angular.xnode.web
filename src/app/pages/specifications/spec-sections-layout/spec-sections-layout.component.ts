@@ -17,7 +17,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() readOnly!: boolean;
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
-  @Input() commentList: any;
   @Input() usersList: any = [];
   @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
