@@ -42,6 +42,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   selecteedSubSubIndex?: number;
   showCommentIcon?: boolean;
   commentOverlayPanelOpened: boolean = false;
+
   businessRulesPanelOpened: boolean = false;
   businessRulesshowCommentIcon: boolean= false;
   dataDictionaryshowCommentIcon: boolean= false;
@@ -52,6 +53,23 @@ export class SpecSectionsLayoutComponent implements OnInit {
   userInterfaceshowCommentIcon: boolean= false;
   AnnexuresPanelOpened:boolean= false;
   AnnexureshowCommentIcon:boolean= false;
+  usecasePanelOpened:boolean=false;
+  usecaseshowCommentIcon:boolean=false;
+  dataManagementPanelOpened:boolean=false;
+  dataManagementCommentIcon:boolean=false;
+  workflowPanelOpened:boolean=false;
+  workflowshowCommentIcon:boolean=false;
+  dataShowCommentIcon:boolean=false;
+  dataPanelOpened:boolean=false;
+  userinterfaceShowCommentIcon:boolean=false;
+  userinterfacePanelOpened:boolean=false;
+  userpersonaShowCommentIcon:boolean=false;
+  usepersonaPanelOpened:boolean=false;
+  qashowCommentIcon:boolean=false;
+  qaPanelOpened:boolean=false;
+  openAPIShowCommentIcon:boolean=false;
+  openAPIPanelOpened:boolean=false;
+
   constructor(private domSanitizer: DomSanitizer,
   ) {
   }
