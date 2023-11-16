@@ -1,4 +1,17 @@
-<div *ngFor="let table of content[0].tables">
+<div *ngFor="let table of content[0].tables" (mouseover)="dataShowCommentIcon = true;" (mouseleave)="dataShowCommentIcon = false;">
+  <div class="grid" >
+  <div class="col-12 text-right p-0">
+    <p-overlayPanel #dataop (onHide)="dataPanelOpened=false;dataShowCommentIcon=false">
+      <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataPanelOpened"
+          (closeOverlay)="dataop.toggle(false);dataPanelOpened=false;" [position]="'absolute'"
+          [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+          [parentEntity]="'SPEC'" [parentId]="specItem.id"
+          [specItem]="specItem"></xnode-add-comment-overlay-panel>
+  </p-overlayPanel>
+    <img src="../assets/comment.svg" class="pointer comment-msg pt-1" alt="comment"
+    (click)="dataop.toggle($event);dataPanelOpened=true" (mouseleave)="dataShowCommentIcon = false" [ngClass]="dataShowCommentIcon || dataPanelOpened?'opacity-100':'opacity-0'"/>
+  </div>
+</div>
     <div class="flex align-items-center mb-2">
         <label class=" font-normal text-sm">Table/Entity Name : </label>
         <p class=" m-0 sub-content ml-2">{{table.tableName}}</p>

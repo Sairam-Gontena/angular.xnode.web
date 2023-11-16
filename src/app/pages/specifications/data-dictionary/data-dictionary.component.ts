@@ -8,6 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DataDictionaryComponent implements OnInit {
   @Input() content: any;
   @Input() searchTerm: any;
+  @Input() usersList:any;
+  @Input() specItem:any;
+
+  dataShowCommentIcon:boolean=false;
+  dataPanelOpened:boolean=false;
   ngOnInit(): void {
   }
 
