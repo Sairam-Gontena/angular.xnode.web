@@ -26,7 +26,7 @@ export class SpecConversationComponent {
   selectedIndex?: number;
   showDeletePopup: boolean = false;
   action?: string;
-  showPrWindow: boolean = false;
+  showCrPopup: boolean = false;
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
@@ -46,7 +46,7 @@ export class SpecConversationComponent {
     })
   }
 
-  ngOnInit(){
+  ngOnInit() {
   }
 
   setAvatar(userObj: any): string {
@@ -55,8 +55,8 @@ export class SpecConversationComponent {
       avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
     } else if (userObj.assignee && userObj.assignee?.displayName) {
       avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
-    }else{
-      avatar ='';
+    } else {
+      avatar = '';
     }
     return avatar;
   }
@@ -66,7 +66,7 @@ export class SpecConversationComponent {
       this.onClickReply(data.cmt);
     } if (data.action === 'EDIT') {
       this.editComment(data.cmt);
-    } if (data.action === 'LINKTOCR') {
+    } if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
     } if (data.action === 'DELETE') {
       this.deleteCurrentComment(data.cmt);
@@ -100,11 +100,8 @@ export class SpecConversationComponent {
   handleDeleteConfirmation(event: boolean): void {
     if (this.activeIndex == 0) {
       this.deleteComment(event)
-      this.utils.updateCommnetsList('comment')
     } else if (this.activeIndex == 1) {
       this.deleteTask(event)
-      this.utils.updateCommnetsList('task')
-
     }
   }
 
@@ -129,7 +126,7 @@ export class SpecConversationComponent {
     this.commentsService.deletTask(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.utils.updateCommnetsList('comment');
+        this.utils.updateCommnetsList('task');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -214,7 +211,7 @@ export class SpecConversationComponent {
   linkToCr(cmt?: any) {
     if (cmt) {
       this.selectedComment = cmt;
-      this.showPrWindow = true;
+      this.showCrPopup = true;
       this.messagingService.sendMessage({
         msgType: MessageTypes.LinkToCR,
         msgData: cmt

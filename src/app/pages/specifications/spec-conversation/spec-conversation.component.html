@@ -37,8 +37,8 @@
             </div>
         </div>
         <div class="col-12"
-            *ngIf="cmt?.comments &&cmt?.comments?.length > 0 && selectedComment.id === cmt.id && cmt?.repliesOpened">
-            <xnode-spec-conversation [list]="cmt?.comments?.slice().reverse()"
+            *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment.id === cmt?.id && cmt?.repliesOpened">
+            <xnode-spec-conversation [activeIndex]="activeIndex" [list]="cmt?.comments?.slice().reverse()"
                 [topParentId]="topParentId"></xnode-spec-conversation>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
@@ -46,7 +46,7 @@
                     Replies</span>
             </div>
         </div>
-        <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt.id">
+        <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">
             <div class="w-full text-end">
                 <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
             </div>
@@ -59,12 +59,9 @@
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
         </div>
-        <p-dialog header="Link to Change Request" [(visible)]="showPrWindow" [modal]="true" [style]="{ width: '50vw' }"
-            [draggable]="false" [resizable]="false">
-            <xnode-link-to-cr [comment]="selectedComment"></xnode-link-to-cr>
-        </p-dialog>
     </div>
 </div>
 <xnode-confirmation-popup *ngIf="showDeletePopup" [activeIndex]="activeIndex"
     (confirmationAction)="handleDeleteConfirmation($event)" [data]="'showDeletePopup'"
     (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>
+<xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"></xnode-link-to-cr>

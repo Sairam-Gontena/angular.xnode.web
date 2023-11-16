@@ -11,6 +11,7 @@ export class CommentsTabsComponent implements OnInit {
   @Input() commentList: Array<Comment> = [];
   @Input() tasksList: Array<Comment> = [];
   @Input() usersList: any;
+  list: Array<Comment> = [];
   activeIndex: number = 0;
 
   constructor(public utils: UtilsService) {
@@ -21,8 +22,29 @@ export class CommentsTabsComponent implements OnInit {
     })
   }
 
-
-
   ngOnInit(): void {
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.activeIndex === 0) {
+      this.list = this.commentList;
+    } else if (this.activeIndex === 1) {
+      this.list = this.tasksList;
+    }
+  }
+
+
+  onTabChange(event: any) {
+    this.activeIndex = event.index;
+    this.updateCommentsList();
+  }
+
+  updateCommentsList() {
+    if (this.activeIndex === 0) {
+      this.list = this.commentList;
+    } else if (this.activeIndex === 1) {
+      this.list = this.tasksList;
+    }
   }
 }

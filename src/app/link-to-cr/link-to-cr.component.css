@@ -1,0 +1,67 @@
+:host ::ng-deep.p-dialog {
+    border: 1px solid #595959 !important;
+
+}
+
+:host ::ng-deep.p-dialog-header {
+    border-top-width: 1px;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-header {
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    border-color: #fff;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-content {
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    color: #fff;
+}
+
+:host ::ng-deep .p-breadcrumb {
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    padding: 0;
+    color: #A2A2A3;
+    border: none;
+    font-size: 16px;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+    color: #EFEEEE;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+:host ::ng-deep form label {
+    color: #EFEEEE;
+    font-weight: 400;
+    font-size: 16px;
+    padding-bottom: 5px;
+}
+
+.api-ticket {
+    color: #A2A2A3;
+}
+
+.reviewer-grid {
+    background: #2E2D36;
+    border-radius: 4px;
+    align-items: center;
+    width: 100%;
+}
+
+.level-title {
+    background: #2E2D36;
+    border-radius: 4px;
+}
+
+.reviewer-chip {
+    background: #535354;
+    font-size: 14px;
+    border-radius: 20px;
+    padding: 5px;
+}

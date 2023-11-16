@@ -355,31 +355,6 @@
             <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Stakeholder Approvals'" [users]="usersList"
                 [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
         </div>
-        <!-- <div *ngIf="checkListViewSections(content.title) && isArray(content.content)">
-            <ul *ngFor="let content of content.content let i =index">
-                <div class="col-12 p-0 flex"
-                    (mouseover)="showCommentIcon = true ;seletedMainIndex=cIndex; selecteedSubIndex = i"
-                    (mouseleave)="showCommentIcon = false">
-                    <div class="col-11 p-0">
-                        <li class="sub-content font-normal text-sm" [innerHTML]="content| highlight: searchTerm"></li>
-                    </div>
-                    <div class="col-1 p-0 flex  align-items-start justify-content-center">
-                        <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false">
-                            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-                                [parentEntity]="'SPEC'" [parentId]="specItem.id" *ngIf="commentOverlayPanelOpened"
-                                (closeOverlay)="op.toggle(false)" [position]="'absolute'"
-                                [selectedContent]="selectedContent" [commentType]="'comment'"
-                                placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
-                        </p-overlayPanel>
-                        <img src="../assets/comment.svg" class="pointer" alt="comment"
-                            (click)="op.toggle($event);commentOverlayPanelOpened=true"
-                            [style.display]="(showCommentIcon || commentOverlayPanelOpened) && seletedMainIndex == cIndex && selecteedSubIndex ==i  ? 'block' : 'none'">
-                    </div>
-                </div>
-            </ul>
-        </div> -->
-
-
         <div *ngIf="content.title ==='QA Test Cases' && isArray(content.content)">
               <div class="grid" (mouseover)="qashowCommentIcon = true;" (mouseleave)="qashowCommentIcon = false;">
                 <div class="col-11" >
