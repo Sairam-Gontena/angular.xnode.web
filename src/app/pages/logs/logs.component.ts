@@ -70,6 +70,7 @@ export class LogsComponent implements OnInit {
     } else {
       prod_id = this.product.id;
     }
+    localStorage.setItem('record_id', prod_id);
     this.apiService.getApi('notifications/retrieve/' + environment.branchName + '?email=' + this.email + '&product_id=' + prod_id).then((response: any) => {
       let user_audit_body = {
         'method': 'GET',
