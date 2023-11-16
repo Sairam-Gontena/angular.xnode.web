@@ -42,7 +42,16 @@ export class SpecSectionsLayoutComponent implements OnInit {
   selecteedSubSubIndex?: number;
   showCommentIcon?: boolean;
   commentOverlayPanelOpened: boolean = false;
-
+  businessRulesPanelOpened: boolean = false;
+  businessRulesshowCommentIcon: boolean= false;
+  dataDictionaryshowCommentIcon: boolean= false;
+  dataDictionaryPanelOpened: boolean= false;
+  functionalDependenciesshowCommentIcon: boolean= false;
+  functionalDepedencyPanelOpened: boolean= false;
+  userInterfacePanelOpened: boolean= false;
+  userInterfaceshowCommentIcon: boolean= false;
+  AnnexuresPanelOpened:boolean= false;
+  AnnexureshowCommentIcon:boolean= false;
   constructor(private domSanitizer: DomSanitizer,
   ) {
   }

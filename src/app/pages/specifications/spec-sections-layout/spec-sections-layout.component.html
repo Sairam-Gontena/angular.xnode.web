@@ -48,11 +48,23 @@
             <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
                 [content]="content.content"></xnode-data-dictionary>
             <ng-template #elsejson>
-                <div class="grid">
-                    <div class="col-12">
+                <div class="grid" (mouseover)="dataDictionaryshowCommentIcon = true;" (mouseleave)="dataDictionaryshowCommentIcon = false;">
+                    <div class="col-11">
                         <pre [innerHTML]="content.content | json | highlight: searchTerm"
                            class="overflow-auto pre-content"></pre>
                     </div>
+                    <div class="col-1">
+                      <p-overlayPanel #dataDictionaryop (onHide)="dataDictionaryPanelOpened=false;dataDictionaryshowCommentIcon=false">
+                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataDictionaryPanelOpened"
+                            (closeOverlay)="dataDictionaryop.toggle(false);dataDictionaryPanelOpened=false;" [position]="'absolute'"
+                            [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                            [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+                    </p-overlayPanel>
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                        (click)="dataDictionaryop.toggle($event);dataDictionaryPanelOpened=true" (mouseleave)="dataDictionaryshowCommentIcon = false"
+                        *ngIf="dataDictionaryshowCommentIcon || dataDictionaryPanelOpened">
+                  </div>
                 </div>
             </ng-template>
         </div>
@@ -71,10 +83,22 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <div class="grid col-12">
-                    <div class="col-12">
+                <div class="grid" (mouseover)="businessRulesshowCommentIcon = true;" (mouseleave)="businessRulesshowCommentIcon = false;">
+                    <div class="col-11">
                         <pre [innerHTML]="content.content | json | highlight: searchTerm"
                             style="white-space: pre-wrap; overflow: auto;"></pre>
+                    </div>
+                    <div class="col-1">
+                      <p-overlayPanel #businessRulesop (onHide)="businessRulesPanelOpened=false;businessRulesshowCommentIcon=false">
+                          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="businessRulesPanelOpened"
+                              (closeOverlay)="businessRulesop.toggle(false);businessRulesPanelOpened=false;" [position]="'absolute'"
+                              [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                              [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                              [specItem]="specItem"></xnode-add-comment-overlay-panel>
+                      </p-overlayPanel>
+                      <img src="../assets/comment.svg" class="pointer" alt="comment"
+                          (click)="businessRulesop.toggle($event);businessRulesPanelOpened=true" (mouseleave)="businessRulesshowCommentIcon = false"
+                          *ngIf="businessRulesshowCommentIcon || businessRulesPanelOpened">
                     </div>
                 </div>
             </ng-template>
@@ -94,11 +118,23 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <div class="grid col-12">
-                    <div class="col-12">
+                <div class="grid"  (mouseover)="functionalDependenciesshowCommentIcon = true;" (mouseleave)="functionalDependenciesshowCommentIcon = false;">
+                    <div class="col-11">
                         <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
                             style="white-space: pre-wrap; overflow: auto;"></pre>
                     </div>
+                    <div class="col-1">
+                      <p-overlayPanel #functionalDepedencyop (onHide)="functionalDepedencyPanelOpened=false;functionalDependenciesshowCommentIcon=false">
+                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="functionalDepedencyPanelOpened"
+                            (closeOverlay)="functionalDepedencyop.toggle(false);functionalDepedencyPanelOpened=false;" [position]="'absolute'"
+                            [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                            [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+                    </p-overlayPanel>
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                        (click)="functionalDepedencyop.toggle($event);functionalDepedencyPanelOpened=true" (mouseleave)="functionalDependenciesshowCommentIcon = false"
+                        *ngIf="functionalDependenciesshowCommentIcon || functionalDepedencyPanelOpened">
+                  </div>
                 </div>
             </ng-template>
         </div>
@@ -117,11 +153,23 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <div class="grid col-12">
-                    <div class="col-12">
+                <div class="grid" (mouseover)="userInterfaceshowCommentIcon = true;" (mouseleave)="userInterfaceshowCommentIcon = false;">
+                    <div class="col-11">
                         <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
                             style="white-space: pre-wrap; overflow: auto;"></pre>
                     </div>
+                    <div class="col-1">
+                      <p-overlayPanel #userInterfacesop (onHide)="userInterfacePanelOpened=false;userInterfaceshowCommentIcon=false">
+                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="userInterfacePanelOpened"
+                            (closeOverlay)="userInterfacesop.toggle(false);userInterfacePanelOpened=false;" [position]="'absolute'"
+                            [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                            [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+                    </p-overlayPanel>
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                        (click)="userInterfacesop.toggle($event);userInterfacePanelOpened=true" (mouseleave)="userInterfaceshowCommentIcon = false"
+                        *ngIf="userInterfaceshowCommentIcon || userInterfacePanelOpened">
+                  </div>
                 </div>
             </ng-template>
         </div>
@@ -140,11 +188,23 @@
                     [content]="content.content"></xnode-common-spec-table>
             </div>
             <ng-template #elsejson>
-                <div class="grid col-12">
-                    <div class="col-12">
+                <div class="grid" (mouseover)="AnnexureshowCommentIcon = true;" (mouseleave)="AnnexureshowCommentIcon = false;">
+                    <div class="col-11">
                         <pre [innerHTML]="content.content | json | highlight: searchTerm" class="col-12"
                             style="white-space: pre-wrap; overflow: auto;"></pre>
                     </div>
+                    <div class="col-1">
+                      <p-overlayPanel #Annexuresop (onHide)="AnnexuresPanelOpened=false;AnnexureshowCommentIcon=false">
+                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="AnnexuresPanelOpened"
+                            (closeOverlay)="Annexuresop.toggle(false);AnnexuresPanelOpened=false;" [position]="'absolute'"
+                            [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                            [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+                    </p-overlayPanel>
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                        (click)="Annexuresop.toggle($event);AnnexuresPanelOpened=true" (mouseleave)="AnnexureshowCommentIcon = false"
+                        *ngIf="AnnexureshowCommentIcon || AnnexuresPanelOpened">
+                  </div>
                 </div>
             </ng-template>
         </div>

@@ -29,11 +29,11 @@
     </div>
     <div class="col-1">
       <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false;showCommentIcon=false">
-          <!-- <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" *ngIf="commentOverlayPanelOpened"
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" *ngIf="commentOverlayPanelOpened"
               (closeOverlay)="op.toggle(false);commentOverlayPanelOpened=false;" [position]="'absolute'"
               [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
               [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel> -->
+              [specItem]="specItem"></xnode-add-comment-overlay-panel>
       </p-overlayPanel>
       <img src="../assets/comment.svg" class="pointer" alt="comment"
           (click)="op.toggle($event);commentOverlayPanelOpened=true" (mouseleave)="showCommentIcon = false"
