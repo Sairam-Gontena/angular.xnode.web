@@ -19,10 +19,7 @@
                     *ngIf="!readOnly" class="expnad-icon pointer">
             </div>
             <div class="grid" (mouseover)="usecaseshowCommentIcon = true;" (mouseleave)="usecaseshowCommentIcon = false;">
-              <div class="col-11">
-                <xnode-common-usecases [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem" [useCases]="useCases"></xnode-common-usecases>
-              </div>
-              <div class="col-1">
+              <div class="col-12 text-right p-0">
                 <p-overlayPanel #usecaseop (onHide)="usecasePanelOpened=false;usecaseshowCommentIcon=false">
                   <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="usecasePanelOpened"
                       (closeOverlay)="usecaseop.toggle(false);usecasePanelOpened=false;" [position]="'absolute'"
@@ -30,9 +27,11 @@
                       [parentEntity]="'SPEC'" [parentId]="specItem.id"
                       [specItem]="specItem"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>
-                <img src="../assets/comment.svg" class="comment-msg pointer absolute pt-1" alt="comment"
-                (click)="usecaseop.toggle($event);usecasePanelOpened=true" (mouseleave)="usecaseshowCommentIcon = false"
-                *ngIf="usecaseshowCommentIcon || usecasePanelOpened"/>
+                <img src="../assets/comment.svg" class="pointer comment-msg pt-1" alt="comment"
+                (click)="usecaseop.toggle($event);usecasePanelOpened=true" (mouseleave)="usecaseshowCommentIcon = false"  [ngClass]="usecaseshowCommentIcon || usecasePanelOpened?'opacity-100':'opacity-0'"/>
+              </div>
+              <div class="col-12">
+                <xnode-common-usecases [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem" [useCases]="useCases"></xnode-common-usecases>
               </div>
             </div>
         </div>
@@ -43,11 +42,7 @@
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <div class="grid" (mouseover)="userinterfaceShowCommentIcon = true;" (mouseleave)="userinterfaceShowCommentIcon = false;" >
-              <div class="col-11">
-                <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
-                </iframe>
-              </div>
-              <div class="col-1">
+              <div class="col-12 text-right p-0">
                 <p-overlayPanel #useinterfaceop (onHide)="userinterfacePanelOpened=false;userinterfaceShowCommentIcon=false">
                   <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="userinterfacePanelOpened"
                       (closeOverlay)="useinterfaceop.toggle(false);userinterfacePanelOpened=false;" [position]="'absolute'"
@@ -55,9 +50,12 @@
                       [parentEntity]="'SPEC'" [parentId]="specItem.id"
                       [specItem]="specItem"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>
-                <img src="../assets/comment.svg" class="comment-msg pointer absolute pt-1" alt="comment"
-                (click)="useinterfaceop.toggle($event);userinterfacePanelOpened=true"
-                *ngIf="userinterfaceShowCommentIcon ||userinterfacePanelOpened" (mouseleave)="userinterfaceShowCommentIcon = false"/>
+                <img src="../assets/comment.svg" class="pointer comment-msg pt-1" alt="comment"
+                (click)="useinterfaceop.toggle($event);userinterfacePanelOpened=true"  [ngClass]="userinterfaceShowCommentIcon || userinterfacePanelOpened?'opacity-100':'opacity-0'" (mouseleave)="userinterfaceShowCommentIcon = false"/>
+              </div>
+              <div class="col-12">
+                <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                </iframe>
               </div>
             </div>
 
@@ -65,11 +63,7 @@
         <div *ngIf="content.title ==='Data Management Persistence'">
 
                 <div class="grid" (mouseover)="dataManagementCommentIcon = true;" (mouseleave)="dataManagementCommentIcon = false;">
-                  <div class="col-11">
-                      <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
-                      [item]="content"></xnode-data-model-common>
-                  </div>
-                  <div class="col-1">
+                  <div class="col-12 text-right p-0">
                     <p-overlayPanel #dataManagementop (onHide)="dataManagementPanelOpened=false;dataManagementCommentIcon=false">
                       <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataManagementPanelOpened"
                           (closeOverlay)="dataManagementop.toggle(false);dataManagementPanelOpened=false;" [position]="'absolute'"
@@ -77,19 +71,19 @@
                           [parentEntity]="'SPEC'" [parentId]="specItem.id"
                           [specItem]="specItem"></xnode-add-comment-overlay-panel>
                   </p-overlayPanel>
-                    <img src="../assets/comment.svg" class="comment-msg pointer absolute pt-1" alt="comment"
-                    (click)="dataManagementop.toggle($event);dataManagementPanelOpened=true" (mouseleave)="dataManagementCommentIcon = false"
-                    *ngIf="dataManagementCommentIcon || dataManagementPanelOpened"/>
+                    <img src="../assets/comment.svg" class="pointer comment-msg pt-1" alt="comment"
+                    (click)="dataManagementop.toggle($event);dataManagementPanelOpened=true" (mouseleave)="dataManagementCommentIcon = false" [ngClass]="dataManagementCommentIcon || dataManagementPanelOpened?'opacity-100':'opacity-0'" />
+                  </div>
+                  <div class="col-12">
+                      <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
+                      [item]="content"></xnode-data-model-common>
                   </div>
                 </div>
 
         </div>
         <div *ngIf="content.title ==='Workflows'">
           <div class="grid" (mouseover)="workflowshowCommentIcon = true;" (mouseleave)="workflowshowCommentIcon = false;">
-            <div class="col-11">
-              <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [item]="content"></xnode-bpmn-common>
-            </div>
-            <div class="col-1">
+            <div class="col-12  text-right p-0">
               <p-overlayPanel #workflowsop (onHide)="workflowPanelOpened=false;workflowshowCommentIcon=false">
                 <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="workflowPanelOpened"
                     (closeOverlay)="workflowsop.toggle(false);workflowPanelOpened=false;" [position]="'absolute'"
@@ -97,9 +91,11 @@
                     [parentEntity]="'SPEC'" [parentId]="specItem.id"
                     [specItem]="specItem"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
-              <img src="../assets/comment.svg" class="comment-msg pointer absolute pt-1" alt="comment"
-              (click)="workflowsop.toggle($event);workflowPanelOpened=true" (mouseleave)="workflowshowCommentIcon = false"
-              *ngIf="workflowshowCommentIcon || workflowPanelOpened"/>
+              <img src="../assets/comment.svg" class="pointer comment-msg pt-1" alt="comment"
+              (click)="workflowsop.toggle($event);workflowPanelOpened=true" (mouseleave)="workflowshowCommentIcon = false" [ngClass]="workflowshowCommentIcon || workflowPanelOpened?'opacity-100':'opacity-0'" />
+            </div>
+            <div class="col-12">
+              <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [item]="content"></xnode-bpmn-common>
             </div>
           </div>
         </div>
@@ -300,14 +296,8 @@
                 [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
         </div>
         <div *ngIf="content.title ==='User Personas' && isArray(content.content)">
-
           <div class="grid" (mouseover)="userpersonaShowCommentIcon = true;" (mouseleave)="userpersonaShowCommentIcon = false;">
-            <div class="col-11">
-              <div *ngFor="let persona of content.content" class="pb-3">
-                <xnode-user-persona [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
-            </div>
-            </div>
-            <div class="col-1">
+            <div class="col-12 text-right p-0">
               <p-overlayPanel #userpersonaop (onHide)="usepersonaPanelOpened=false;userpersonaShowCommentIcon=false">
                 <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="usepersonaPanelOpened"
                     (closeOverlay)="userpersonaop.toggle(false);usepersonaPanelOpened=false;" [position]="'absolute'"
@@ -316,12 +306,14 @@
                     [specItem]="specItem"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
               <img src="../assets/comment.svg" class="pointer" alt="comment"
-              (click)="userpersonaop.toggle($event);usepersonaPanelOpened=true" (mouseleave)="userpersonaShowCommentIcon = false"
-              *ngIf="userpersonaShowCommentIcon || usepersonaPanelOpened"/>
+              (click)="userpersonaop.toggle($event);usepersonaPanelOpened=true" (mouseleave)="userpersonaShowCommentIcon = false" [ngClass]="userpersonaShowCommentIcon || usepersonaPanelOpened?'opacity-100':'opacity-0'"/>
+            </div>
+            <div class="col-12">
+              <div *ngFor="let persona of content.content" class="pb-3">
+                <xnode-user-persona [searchTerm]="searchTerm" [content]="persona"></xnode-user-persona>
+            </div>
             </div>
           </div>
-
-
         </div>
         <div class="w-full" *ngIf="content.title ==='Glossary'">
             <div class="flex justify-content-end mb-2">
@@ -357,7 +349,18 @@
         </div>
         <div *ngIf="content.title ==='QA Test Cases' && isArray(content.content)">
               <div class="grid" (mouseover)="qashowCommentIcon = true;" (mouseleave)="qashowCommentIcon = false;">
-                <div class="col-11" >
+                <div class="col-12 text-right p-0">
+                  <p-overlayPanel #qaop (onHide)="qaPanelOpened=false;qashowCommentIcon=false">
+                    <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="qaPanelOpened"
+                        (closeOverlay)="qaop.toggle(false);qaPanelOpened=false;" [position]="'absolute'"
+                        [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                        [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                        [specItem]="specItem"></xnode-add-comment-overlay-panel>
+                </p-overlayPanel>
+                  <img src="../assets/comment.svg" class="pointer" alt="comment"
+                  (click)="qaop.toggle($event);qaPanelOpened=true" (mouseleave)="qashowCommentIcon = false" [ngClass]="qashowCommentIcon || qaPanelOpened?'opacity-100':'opacity-0'" />
+                </div>
+                <div class="col-12" >
                     <div *ngFor="let subItem of content.content let subIndex = index ">
                         <div *ngIf="subItem.title !=='Sample Test Cases';else sampleTestCases">
                             <p class="m-0 pb-2">
@@ -427,18 +430,6 @@
                         </ng-template>
                     </div>
                 </div>
-                <div class="col-1">
-                  <p-overlayPanel #qaop (onHide)="qaPanelOpened=false;qashowCommentIcon=false">
-                    <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="qaPanelOpened"
-                        (closeOverlay)="qaop.toggle(false);qaPanelOpened=false;" [position]="'absolute'"
-                        [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
-                        [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                        [specItem]="specItem"></xnode-add-comment-overlay-panel>
-                </p-overlayPanel>
-                  <img src="../assets/comment.svg" class="pointer" alt="comment"
-                  (click)="qaop.toggle($event);qaPanelOpened=true" (mouseleave)="qashowCommentIcon = false"
-                  *ngIf="qashowCommentIcon || qaPanelOpened"/>
-                </div>
               </div>
         </div>
 
@@ -449,10 +440,7 @@
                     class="expnad-icon pointer" *ngIf="!readOnly">
             </div>
             <div class="grid" (mouseover)="openAPIShowCommentIcon = true;" (mouseleave)="openAPIShowCommentIcon = false;">
-              <div class="col-11">
-                  <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
-              </div>
-              <div class="col-1">
+              <div class="col-12 text-right p-0">
                 <p-overlayPanel #openAPIop (onHide)="openAPIPanelOpened=false;openAPIShowCommentIcon=false">
                   <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="openAPIPanelOpened"
                       (closeOverlay)="openAPIop.toggle(false);openAPIPanelOpened=false;" [position]="'absolute'"
@@ -461,8 +449,10 @@
                       [specItem]="specItem"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>
                 <img src="../assets/comment.svg" class="pointer" alt="comment"
-                (click)="openAPIop.toggle($event);openAPIPanelOpened=true" (mouseleave)="openAPIShowCommentIcon = false"
-                *ngIf="openAPIShowCommentIcon || openAPIPanelOpened"/>
+                (click)="openAPIop.toggle($event);openAPIPanelOpened=true" (mouseleave)="openAPIShowCommentIcon = false" [ngClass]="openAPIShowCommentIcon || openAPIPanelOpened?'opacity-100':'opacity-0'" />
+              </div>
+              <div class="col-12">
+                  <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
               </div>
             </div>
         </div>
