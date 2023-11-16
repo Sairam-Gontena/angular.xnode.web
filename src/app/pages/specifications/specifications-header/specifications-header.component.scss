@@ -55,3 +55,12 @@
 :host::ng-deep .p-overlaypanel .p-overlaypanel-content {
     padding: 0px !important;
 }
+
+:host ::ng-deep .update-spec-button {
+    color: #ffffff;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
+}
