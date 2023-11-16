@@ -7,30 +7,39 @@
       </div>
       <div class="col-3">
         <label>Priority</label>
-        <p-dropdown formControlName="city" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <p-dropdown formControlName="priority" [options]="priorityList" optionLabel="name"></p-dropdown>
       </div>
       <div class="col-3">
         <label>To Version</label>
-        <p-dropdown formControlName="city" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <p-dropdown formControlName="version" [options]="priorityList" optionLabel="name"></p-dropdown>
       </div>
       <div class="col-6">
         <label>Due Date</label>
-        <p-calendar [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="dueDate" [showIcon]="true" placeholder="DD/MM/YYYY"
+          styleClass="due-date"></p-calendar>
       </div>
       <div class="col-12">
-        <p-dropdown formControlName="city" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <img src="./assets/cr.svg" alt="cr">
+          </span>
+          <p-dropdown formControlName="crToAdd" [options]="priorityList" optionLabel="name"></p-dropdown>
+        </div>
         <p class="text-sm pointer mt-1 mb-0 api-ticket"><span><i class="pi pi-plus pr-2"></i></span> Connect with the
           api
           ticketing
           system
         </p>
       </div>
-      <div class="col-12">
+      <div class="col-12 pb-0">
         <div class="flex justify-content-between flex-wrap">
           <p class="m-0">
             Add Reviewer
           </p>
-          <p class="m-0">
+          <p class="m-0 text-sm flex align-items-center">
+            <span class="mr-2">
+              <p-inputSwitch formControlName="seqReview"></p-inputSwitch>
+            </span>
             Require sequential review in each level
           </p>
         </div>
@@ -53,13 +62,23 @@
             L2
           </div>
           <div class="flex reviewer-grid h-3rem">
-            <p class="m-0 pl-2"> <span>DC</span> Dilip Chandra</p>
+            <p class="m-0 reviewer-chip">
+              <span> <p-avatar [label]="'DC'" styleClass="mr-2"
+                  [style]="{ 'background-color': '#02ADEE', fontSize: '10px', color: '#ffffff',width:'25px',height:'25px' }"
+                  shape="circle"></p-avatar></span> Dilip Chandra
+            </p>
+            <p class="m-0 reviewer-chip ml-2">
+              <span> <p-avatar [label]="'DC'" styleClass="mr-2"
+                  [style]="{ 'background-color': '#02ADEE', fontSize: '10px', color: '#ffffff',width:'25px',height:'25px' }"
+                  shape="circle"></p-avatar></span> Dilip Chandra
+            </p>
           </div>
         </div>
       </div>
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" label="Ok" styleClass="p-button-text"></p-button>
+    <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"></p-button>
+    <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
   </ng-template>
 </p-dialog>
