@@ -20,6 +20,7 @@ export class SpecConversationComponent {
   comment: any;
   currentUser: any;
   selectedSection: any;
+  showNewCrPopup: boolean = false;
   selectedComment: any;
   showCommentInput: boolean = false;
   openEditComment: boolean = false;
@@ -39,7 +40,7 @@ export class SpecConversationComponent {
     private messagingService: MessagingService) {
     this.utils.getMeLatestComments.subscribe((event: any) => {
       if (event === 'reply') {
-        this.viewReplies(this.selectedComment);
+        // this.viewReplies(this.selectedComment);
         this.showCommentInput = false;
         this.action = ''
       }

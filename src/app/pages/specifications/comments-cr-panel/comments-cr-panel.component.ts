@@ -17,8 +17,7 @@ export class CommentsCrPanelComponent implements OnInit {
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
   selectedFilter: string = 'All Comments';
-  @Input() commentList: Array<Comment> = [];
-  @Input() tasksList: Array<Comment> = [];
+  @Input() list: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
@@ -60,6 +59,6 @@ export class CommentsCrPanelComponent implements OnInit {
     this.commentObj.comment = this.comment;
     this.commentObj.role = 'user';
     this.commentObj.user_id = this.currentUser.id;
-    this.commentList.push(this.commentObj);
+    this.list.push(this.commentObj);
   }
 }

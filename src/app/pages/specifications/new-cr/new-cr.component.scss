@@ -25,14 +25,6 @@
     color: #fff;
 }
 
-:host ::ng-deep .p-breadcrumb {
-    background: linear-gradient(0deg, #23222B, #23222B),
-        linear-gradient(0deg, #535354, #535354);
-    padding: 0;
-    color: #A2A2A3;
-    border: none;
-    font-size: 16px;
-}
 
 :host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
     color: #EFEEEE;
@@ -47,45 +39,6 @@
     padding-bottom: 5px;
 }
 
-.api-ticket {
-    color: #A2A2A3;
-}
-
-.reviewer-grid {
-    background: #2E2D36;
-    border-radius: 4px;
-    align-items: center;
-    width: 100%;
-}
-
-.level-title {
-    background: #2E2D36;
-    border-radius: 4px;
-}
-
-.reviewer-chip {
-    background: #535354;
-    font-size: 14px;
-    border-radius: 20px;
-    padding: 5px;
-}
-
-:host ::ng-deep .due-date {
-    .p-inputtext {
-        border: none;
-    }
-
-    .p-button {
-        background: #2E2D36;
-        border: none;
-        color: #A2A2A3;
-    }
-
-    .p-inputtext:enabled:focus {
-        box-shadow: none;
-    }
-}
-
 :host ::ng-deep {
     .p-inputgroup-addon {
         background: #2E2D36;
@@ -94,6 +47,9 @@
     }
 }
 
-:host ::ng-deep .p-inputswitch.p-focus .p-inputswitch-slider {
-    box-shadow: none;
+:host ::ng-deep {
+    .p-inputtext:enabled:focus {
+        box-shadow: none;
+        border: none;
+    }
 }

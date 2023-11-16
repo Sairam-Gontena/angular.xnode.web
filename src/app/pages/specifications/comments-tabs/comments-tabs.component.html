@@ -1,14 +1,7 @@
 <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
-  <p-tabPanel header="Conversation">
+  <p-tabPanel [header]="tab" *ngFor="let tab of tabTypes">
     <xnode-no-comments *ngIf="list?.length === 0; else conversationComments"></xnode-no-comments>
     <ng-template #conversationComments>
-      <xnode-comments-panel [activeIndex]="activeIndex" [commenttasksList]="list"
-        [usersList]="usersList"></xnode-comments-panel>
-    </ng-template>
-  </p-tabPanel>
-  <p-tabPanel header="Tasks">
-    <xnode-no-comments *ngIf="list?.length === 0; else tasksComments"></xnode-no-comments>
-    <ng-template #tasksComments>
       <xnode-comments-panel [activeIndex]="activeIndex" [commenttasksList]="list"
         [usersList]="usersList"></xnode-comments-panel>
     </ng-template>

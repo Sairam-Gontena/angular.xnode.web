@@ -32,6 +32,7 @@ export class LinkToCrComponent implements OnInit {
       version: ['', [Validators.required]],
       dueDate: ['', [Validators.required]],
       crToAdd: ['', [Validators.required]],
+      seqReview: ['', [Validators.required]],
     });
   }
 

@@ -177,6 +177,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       if (commentsReponse.statusText === 'Created') {
         this.utils.updateCommnetsList(this.commentType);
         this.utils.openOrClosePanel(SidePanel.Comments);
+        this.utils.updateCommnetsList('task')
         this.comment = '';
         this.closeOverlay.emit();
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });

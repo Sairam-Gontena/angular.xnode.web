@@ -2,8 +2,7 @@
     <img src="../assets/comments-cr-close.svg" class="pointer comments-cr-close" alt="close" (click)="onClickClose()">
     <p-tabView class="comments-cr-tabs">
         <p-tabPanel header="Conversations">
-            <xnode-comments-tabs [commentList]="commentList" [tasksList]="tasksList"
-                [usersList]="usersList"></xnode-comments-tabs>
+            <xnode-comments-tabs [list]="list" [usersList]="usersList"></xnode-comments-tabs>
         </p-tabPanel>
         <p-tabPanel header="Change Request">
             <xnode-cr-tabs></xnode-cr-tabs>
