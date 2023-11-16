@@ -27,7 +27,7 @@
                 {{activeIndex ? cmt?.description : cmt?.referenceContent?.content }} </p>
         </div>
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
-            <span *ngIf="selectedIndex !== i && !activeIndex " [innerHTML]="highlightMatch(cmt.message)"></span>
+            <span *ngIf="selectedIndex !== i && (!activeIndex || activeIndex==undefined)" [innerHTML]="highlightMatch(cmt.message)"></span>
             <span *ngIf="selectedIndex !== i && activeIndex" [innerHTML]="highlightMatch(cmt.description)"></span>
 
         </div>
