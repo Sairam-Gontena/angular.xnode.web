@@ -70,6 +70,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
   openAPIShowCommentIcon:boolean=false;
   openAPIPanelOpened:boolean=false;
 
+  expandSpecSections:any = ['Usecases','Use Cases','User Interface Design','Data Management Persistence','Workflows','Data Dictionary','Annexures','Historical Data Load','Glossary','Version Control','Error Handling','Stakeholder Approvals','OpenAPI Spec']
+
   constructor(private domSanitizer: DomSanitizer,
   ) {
   }
@@ -84,7 +86,12 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
+  }
 
+  checkExpandSpecSections(spec:string){
+    let returnVal:boolean;
+    this.expandSpecSections.includes(spec)? returnVal = true : returnVal = false;
+    return returnVal;
   }
 
   makeTrustedUrl(): void {
