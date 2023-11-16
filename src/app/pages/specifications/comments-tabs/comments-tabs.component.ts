@@ -8,11 +8,10 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   styleUrls: ['./comments-tabs.component.scss']
 })
 export class CommentsTabsComponent implements OnInit {
-  @Input() commentList: Array<Comment> = [];
-  @Input() tasksList: Array<Comment> = [];
+  @Input() list: Array<Comment> = [];
   @Input() usersList: any;
-  list: Array<Comment> = [];
   activeIndex: number = 0;
+  tabTypes: Array<string> = ['Conversation', 'Tasks'];
 
   constructor(public utils: UtilsService) {
     this.utils.getMeTaskAssigned.subscribe((taskAssigned) => {
@@ -26,25 +25,12 @@ export class CommentsTabsComponent implements OnInit {
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.activeIndex === 0) {
-      this.list = this.commentList;
-    } else if (this.activeIndex === 1) {
-      this.list = this.tasksList;
-    }
-  }
-
-
   onTabChange(event: any) {
     this.activeIndex = event.index;
-    this.updateCommentsList();
-  }
-
-  updateCommentsList() {
     if (this.activeIndex === 0) {
-      this.list = this.commentList;
+      this.utils.updateCommnetsList('comment')
     } else if (this.activeIndex === 1) {
-      this.list = this.tasksList;
+      this.utils.updateCommnetsList('task')
     }
   }
 }
