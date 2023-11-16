@@ -18,11 +18,11 @@ interface AutoCompleteCompleteEvent {
 export class LinkToCrComponent implements OnInit {
   items: MenuItem[] | undefined;
   @Input() comment: any;
-  @Input() showPrWindow: boolean = false;
+  @Input() showCrPopup: boolean = false;
   specData: any;
   prSpecsTitle: string = "";
   crForm!: FormGroup;
-  priorityList: any = [{name:'High'}, {name:'Medium'}, {name:'Low'}];
+  priorityList: any = [{ name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
   selectedReviewers: any;
   suggestions?: any[];
   reviewers?: any[];
@@ -37,7 +37,6 @@ export class LinkToCrComponent implements OnInit {
 
   ngOnInit() {
     this.items = [{ label: 'Functional Specifications' }, { label: '3.1 User roles' }];
-
     this.messagingService.getMessage<any>().subscribe(msg => {
       if (msg.msgType === MessageTypes.LinkToCR) {
         if (this.comment) {

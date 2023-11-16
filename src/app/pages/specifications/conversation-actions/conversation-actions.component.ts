@@ -6,8 +6,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./conversation-actions.component.scss']
 })
 export class ConversationActionsComponent {
-  @Input() cmt:any;
-  @Output() updateAction = new EventEmitter<{action: string, cmt: any}>();
+  @Input() cmt: any;
+  @Output() updateAction = new EventEmitter<{ action: string, cmt: any }>();
 
   onClickReply(cmt: any): void {
     this.updateAction.emit({
@@ -25,7 +25,7 @@ export class ConversationActionsComponent {
 
   linkToCr(cmt: any): void {
     this.updateAction.emit({
-      action: 'LINKTOCR',
+      action: 'LINK_TO_CR',
       cmt: cmt
     })
   }
