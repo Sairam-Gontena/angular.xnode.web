@@ -33,7 +33,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { DataService } from '../pages/er-modeller/service/data.service';
 import { DataViewModule } from "primeng/dataview";
 import { MentionModule } from 'angular-mentions';
-
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CalendarModule } from 'primeng/calendar';
 @NgModule({
   declarations: [
   ],
@@ -67,6 +68,8 @@ import { MentionModule } from 'angular-mentions';
     FieldsetModule,
     DataViewModule,
     MentionModule,
+    AutoCompleteModule,
+    CalendarModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -100,7 +103,9 @@ import { MentionModule } from 'angular-mentions';
     PanelModule,
     SidebarModule,
     FieldsetModule,
-    MentionModule
+    MentionModule,
+    CalendarModule,
+    AutoCompleteModule
   ],
   providers: [
     DataService

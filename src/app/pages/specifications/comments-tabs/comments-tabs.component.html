@@ -1,5 +1,5 @@
 <p-tabView [(activeIndex)]="activeIndex">
-  <p-tabPanel header="Conversation">
+  <p-tabPanel header="Comments">
     <xnode-no-comments *ngIf="commentList?.length === 0; else conversationComments"></xnode-no-comments>
     <ng-template #conversationComments>
       <xnode-comments-panel [activeIndex]="activeIndex" [commentList]="commentList"

@@ -1,3 +1,65 @@
-<div class="grid">
-  {{prSpecsTitle}}
-</div>
+<p-dialog header="Link to Change Request" [(visible)]="showPrWindow" [modal]="true" [style]="{ width: '30vw' }"
+  [draggable]="false" [resizable]="false">
+  <form [formGroup]="crForm">
+    <div class="grid">
+      <div class="col-12">
+        <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      </div>
+      <div class="col-3">
+        <label>Priority</label>
+        <p-dropdown formControlName="city" [options]="priorityList" optionLabel="name"></p-dropdown>
+      </div>
+      <div class="col-3">
+        <label>To Version</label>
+        <p-dropdown formControlName="city" [options]="priorityList" optionLabel="name"></p-dropdown>
+      </div>
+      <div class="col-6">
+        <label>Due Date</label>
+        <p-calendar [showIcon]="true"></p-calendar>
+      </div>
+      <div class="col-12">
+        <p-dropdown formControlName="city" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <p class="text-sm pointer mt-1 mb-0 api-ticket"><span><i class="pi pi-plus pr-2"></i></span> Connect with the
+          api
+          ticketing
+          system
+        </p>
+      </div>
+      <div class="col-12">
+        <div class="flex justify-content-between flex-wrap">
+          <p class="m-0">
+            Add Reviewer
+          </p>
+          <p class="m-0">
+            Require sequential review in each level
+          </p>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="flex align-items-center">
+          <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
+            L1
+          </div>
+          <div class="flex reviewer-grid h-3rem">
+            <p class="m-0 reviewer-chip"> <span> <p-avatar [label]="'DC'" styleClass="mr-2"
+                  [style]="{ 'background-color': '#02ADEE', fontSize: '10px', color: '#ffffff',width:'25px',height:'25px' }"
+                  shape="circle"></p-avatar></span> Dilip Chandra</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="flex align-items-center">
+          <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
+            L2
+          </div>
+          <div class="flex reviewer-grid h-3rem">
+            <p class="m-0 pl-2"> <span>DC</span> Dilip Chandra</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" label="Ok" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

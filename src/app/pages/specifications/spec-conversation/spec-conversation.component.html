@@ -47,12 +47,9 @@
                     [width]="'w-full'" (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
         </div>
-        <p-dialog header="Link to Change Request" [(visible)]="showPrWindow" [modal]="true" [style]="{ width: '50vw' }"
-            [draggable]="false" [resizable]="false">
-            <xnode-link-to-cr [comment]="selectedComment"></xnode-link-to-cr>
-        </p-dialog>
     </div>
 </div>
 <xnode-confirmation-popup *ngIf="showDeletePopup" (confirmationAction)="handleDeleteConfirmation($event)"
     [data]="'showDeletePopup'" (toggleAlert)="toggleConfirmPopup($event)"
     [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>
+<xnode-link-to-cr [comment]="selectedComment" [showPrWindow]="showPrWindow"></xnode-link-to-cr>
