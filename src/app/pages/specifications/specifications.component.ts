@@ -79,6 +79,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.loadSpinner(true);
     this.getMeStorageData();
   }
 
