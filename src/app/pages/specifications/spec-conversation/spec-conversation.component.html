@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="col-12"
-            *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment.id === cmt?.id && cmt?.repliesOpened">
+            *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
             <xnode-spec-conversation [activeIndex]="activeIndex" [list]="cmt?.comments?.slice().reverse()"
                 [topParentId]="topParentId"></xnode-spec-conversation>
         </div>
