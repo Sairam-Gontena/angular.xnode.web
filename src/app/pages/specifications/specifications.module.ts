@@ -13,7 +13,6 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
-import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add-comment-overlay-panel.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
 import { ListViewComponent } from './list-view/list-view.component';
 import { ParaViewComponent } from './para-view/para-view.component';
@@ -39,7 +38,6 @@ import { NewCrComponent } from './new-cr/new-cr.component';
     UserPersonaComponent,
     SpecGenPopupComponent,
     UserRolesComponent,
-    AddCommentOverlayPanelComponent,
     ListViewComponent,
     ParaViewComponent,
     CommentsTabsComponent,

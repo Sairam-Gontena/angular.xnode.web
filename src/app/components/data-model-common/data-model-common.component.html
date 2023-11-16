@@ -7,8 +7,6 @@
         <div [ngClass]="{'modal-view-header':currentUrl == '/specification'}">
             <div class="flex align-items-center justify-content-between p-4" *ngIf="currentUrl == '/specification'">
                 <h6 class="text-4xl text-white  font-bold m-0">Data Model</h6>
-                <img src="./assets/spec-minimize.svg" class="expnad-icon pointer" alt="container" *ngIf="!specExpanded"
-                    (click)="expandDataFlows()">
                 <i class="pi pi-times text-white text-xl pointer" *ngIf="specExpanded" (click)="expandDataFlows()"></i>
             </div>
         </div>
