@@ -33,6 +33,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { DataService } from '../pages/er-modeller/service/data.service';
 import { DataViewModule } from "primeng/dataview";
 import { MentionModule } from 'angular-mentions';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import { MentionModule } from 'angular-mentions';
     MentionModule
   ],
   providers: [
-    DataService
+    DataService,
+    DialogService
   ]
 })
 export class SharedModule { }

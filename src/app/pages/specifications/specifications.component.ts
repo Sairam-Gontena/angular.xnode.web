@@ -10,6 +10,8 @@ import { SearchspecService } from 'src/app/api/searchspec.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CrIntegrationComponent } from 'src/app/cr-integration/cr-integration.component';
 
 @Component({
   selector: 'xnode-specifications',
@@ -42,6 +44,7 @@ export class SpecificationsComponent implements OnInit {
   contentData: any;
   noResults: boolean = false;
   useCases: any;
+  ref: DynamicDialogRef | undefined;
 
   constructor(
     private utils: UtilsService,
@@ -50,7 +53,8 @@ export class SpecificationsComponent implements OnInit {
     private router: Router,
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    public dialogService: DialogService
   ) {
     this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
       this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
@@ -80,6 +84,7 @@ export class SpecificationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMeStorageData();
+    this.openCrIntegrationPopup();
   }
 
   getMeStorageData(): void {
@@ -319,6 +324,17 @@ export class SpecificationsComponent implements OnInit {
     localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
+  }
+
+  openCrIntegrationPopup() {
+    this.ref = this.dialogService.open(CrIntegrationComponent, 
+      { header: 'Integration',
+        width: '70%',
+        height: '60%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+      }
+    );
   }
 
 }

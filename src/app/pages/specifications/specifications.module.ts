@@ -27,6 +27,7 @@ import { ConfirmationalertComponent } from './confirmationalert/confirmationaler
 import { SpecConversationComponent } from 'src/app/pages/specifications/spec-conversation/spec-conversation.component';
 import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
 import { ConversationActionsComponent } from './conversation-actions/conversation-actions.component';
+import { CrIntegrationComponent } from 'src/app/cr-integration/cr-integration.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -50,7 +51,8 @@ import { ConversationActionsComponent } from './conversation-actions/conversatio
     ConfirmationalertComponent,
     SpecConversationComponent,
     LinkToCrComponent,
-    ConversationActionsComponent
+    ConversationActionsComponent,
+    CrIntegrationComponent
   ],
   imports: [
     CommonModule,
