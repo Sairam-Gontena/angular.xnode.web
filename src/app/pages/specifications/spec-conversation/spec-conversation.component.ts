@@ -100,11 +100,8 @@ export class SpecConversationComponent {
   handleDeleteConfirmation(event: boolean): void {
     if (this.activeIndex == 0) {
       this.deleteComment(event)
-      this.utils.updateCommnetsList('comment')
     } else if (this.activeIndex == 1) {
       this.deleteTask(event)
-      this.utils.updateCommnetsList('task')
-
     }
   }
 
@@ -129,7 +126,7 @@ export class SpecConversationComponent {
     this.commentsService.deletTask(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.utils.updateCommnetsList('comment');
+        this.utils.updateCommnetsList('task');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {

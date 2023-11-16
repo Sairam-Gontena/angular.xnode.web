@@ -117,9 +117,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
-    console.log("body is", body)
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
+        this.utils.toggleTaskAssign(false);
         this.utils.updateCommnetsList(this.commentType);
         this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
@@ -129,7 +129,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           detail = 'Comment edited successfully'
         }
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
-        this.utils.toggleTaskAssign(false);
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }

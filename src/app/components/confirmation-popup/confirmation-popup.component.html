@@ -1,28 +1,29 @@
-<p-dialog [(visible)]="showPopup" [modal]="true">
-    <ng-template pTemplate="header">
-        <p class="header font-bold flex justify-content-center">
-          <span *ngIf="notUserRelated; else userType">
-            {{header}}
-          </span>
-          <ng-template #userType>
-            {{data?.type + ' User'}}
-          </ng-template>
-        </p>
-    </ng-template>
-    <div class="flex font-medium">
-        <span>
-            Are you sure you want to {{invitationType}}
-        </span>
-    </div>
-    <div class="flex justify-content-end mt-6">
-        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
-            (click)="onReject()"></p-button>
-        <span class="invite">
-          <p-button *ngIf="notUserRelated; else userRelatedBtn" (click)="confirmDelete()" label="Confirm" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
-          <ng-template #userRelatedBtn>
-            <p-button [label]="data?.type" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
-            (click)="onSuccess()" ></p-button>
-          </ng-template>
-        </span>
-    </div>
+<p-dialog [(visible)]="showPopup" [modal]="true" (onHide)="onReject()">
+  <ng-template pTemplate="header">
+    <p class="header font-bold flex justify-content-center">
+      <span *ngIf="notUserRelated; else userType">
+        {{header}}
+      </span>
+      <ng-template #userType>
+        {{data?.type + ' User'}}
+      </ng-template>
+    </p>
+  </ng-template>
+  <div class="flex font-medium">
+    <span>
+      Are you sure you want to {{invitationType}}
+    </span>
+  </div>
+  <div class="flex justify-content-end mt-6">
+    <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
+      (click)="onReject()"></p-button>
+    <span class="invite">
+      <p-button *ngIf="notUserRelated; else userRelatedBtn" (click)="confirmDelete()" label="Confirm"
+        styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+      <ng-template #userRelatedBtn>
+        <p-button [label]="data?.type" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+          (click)="onSuccess()"></p-button>
+      </ng-template>
+    </span>
+  </div>
 </p-dialog>
