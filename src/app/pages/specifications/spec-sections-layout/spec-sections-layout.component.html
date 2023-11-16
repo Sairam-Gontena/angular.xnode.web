@@ -109,23 +109,11 @@
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
             </div>
-            <div class="grid" (mouseover)="dataShowCommentIcon = true;" (mouseleave)="dataShowCommentIcon = false;">
+            <div class="grid" >
               <div class="col-12">
                 <xnode-data-dictionary [searchTerm]="searchTerm" *ngIf="content.showTable; else elsejson"
-                [content]="content.content"></xnode-data-dictionary>
+                [content]="content.content" [usersList]="usersList" [specItem]="specItem"></xnode-data-dictionary>
               </div>
-              <!-- <div class="col-1">
-                <p-overlayPanel #dataop (onHide)="dataPanelOpened=false;dataShowCommentIcon=false">
-                  <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataPanelOpened"
-                      (closeOverlay)="dataop.toggle(false);dataPanelOpened=false;" [position]="'absolute'"
-                      [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
-                      [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                      [specItem]="specItem"></xnode-add-comment-overlay-panel>
-              </p-overlayPanel>
-                <img src="../assets/comment.svg" class="comment-msg pointer absolute pt-1" alt="comment"
-                (click)="dataop.toggle($event);dataPanelOpened=true" (mouseleave)="dataShowCommentIcon = false"
-                *ngIf="dataShowCommentIcon || dataPanelOpened"/>
-              </div> -->
             </div>
             <ng-template #elsejson>
                 <div class="grid" (mouseover)="dataDictionaryshowCommentIcon = true;" (mouseleave)="dataDictionaryshowCommentIcon = false;">

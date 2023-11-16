@@ -58,8 +58,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   dataManagementCommentIcon:boolean=false;
   workflowPanelOpened:boolean=false;
   workflowshowCommentIcon:boolean=false;
-  dataShowCommentIcon:boolean=false;
-  dataPanelOpened:boolean=false;
   userinterfaceShowCommentIcon:boolean=false;
   userinterfacePanelOpened:boolean=false;
   userpersonaShowCommentIcon:boolean=false;
