@@ -17,12 +17,8 @@
             </div>
         </div>
     </div>
-    <div class='comments-grid' *ngIf="activeIndex == 0 && commentList && commentList.length >0">
-        <xnode-spec-conversation [activeIndex]="activeIndex" [list]="commentList" [usersList]="usersList"
-            [topParentId]="selectedComment?.id"></xnode-spec-conversation>
-    </div>
-    <div class='comments-grid' *ngIf="activeIndex == 1 && tasksList && tasksList.length >0">
-        <xnode-spec-conversation [activeIndex]="activeIndex" [list]="tasksList" [usersList]="usersList"
+    <div class='comments-grid' *ngIf="commenttasksList && commenttasksList.length >0">
+        <xnode-spec-conversation [activeIndex]="activeIndex" [list]="commenttasksList" [usersList]="usersList"
             [topParentId]="selectedComment?.id"></xnode-spec-conversation>
     </div>
 </div>
