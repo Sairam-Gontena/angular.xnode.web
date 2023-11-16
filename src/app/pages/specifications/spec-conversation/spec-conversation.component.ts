@@ -39,7 +39,7 @@ export class SpecConversationComponent {
     private messagingService: MessagingService) {
     this.utils.getMeLatestComments.subscribe((event: any) => {
       if (event === 'reply') {
-        this.viewReplies(this.selectedComment);
+        // this.viewReplies(this.selectedComment);
         this.showCommentInput = false;
         this.action = ''
       }
