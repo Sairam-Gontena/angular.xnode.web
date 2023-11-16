@@ -8,6 +8,10 @@ import { Component, Input } from '@angular/core';
 export class CommonSpecTableComponent {
   @Input() content: any;
   @Input() searchTerm: any;
+  @Input() specItem:any
+  @Input() users:any;
+  showCommentIcon:boolean=false;
+  commentOverlayPanelOpened:boolean=false;
   constructor() { }
 
   setColumnsToTheTable(data: any) {

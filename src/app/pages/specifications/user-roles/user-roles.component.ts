@@ -16,6 +16,7 @@ export class UserRolesComponent implements OnInit {
   seletedMainIndex?: number;
   selecteedSubIndex?: number;
   selectedText:string='';
+  commentOverlayPanelOpened:boolean=false;
   @ViewChild('op')overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
 

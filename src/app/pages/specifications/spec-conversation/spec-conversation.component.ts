@@ -46,12 +46,17 @@ export class SpecConversationComponent {
     })
   }
 
+  ngOnInit(){
+  }
+
   setAvatar(userObj: any): string {
     let avatar: string = '';
-    if (this.activeIndex == 0 && userObj.createdBy && userObj.createdBy?.displayName) {
+    if (userObj.createdBy && userObj.createdBy?.displayName) {
       avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
-    } else if (this.activeIndex == 0 && userObj.assignee && userObj.assignee?.displayName) {
+    } else if (userObj.assignee && userObj.assignee?.displayName) {
       avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
+    }else{
+      avatar ='';
     }
     return avatar;
   }
@@ -93,11 +98,37 @@ export class SpecConversationComponent {
   }
 
   handleDeleteConfirmation(event: boolean): void {
+    if (this.activeIndex == 0) {
+      this.deleteComment(event)
+      this.utils.updateCommnetsList('comment')
+    } else if (this.activeIndex == 1) {
+      this.deleteTask(event)
+      this.utils.updateCommnetsList('task')
+
+    }
+  }
+
+  deleteComment(event: boolean) {
     this.utils.loadSpinner(true);
     this.showDeletePopup = event;
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
+        this.utils.updateCommnetsList('comment');
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
+  }
+
+  deleteTask(event: boolean) {
+    this.utils.loadSpinner(true);
+    this.showDeletePopup = event;
+    this.commentsService.deletTask(this.selectedComment.id).then(res => {
+      if (res) {
+        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
         this.utils.updateCommnetsList('comment');
       }
       this.utils.loadSpinner(false);
@@ -115,6 +146,26 @@ export class SpecConversationComponent {
       return spanWithId;
     });
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+  }
+  modifiedTimeDifference(modifiedOn: Date): string {
+    const now = new Date();
+    const modifiedTime = new Date(modifiedOn);
+    const timeDifference = now.getTime() - modifiedTime.getTime();
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    if (minutesDifference < 1) {
+      return 'Just now';
+    } else if (minutesDifference === 1) {
+      return '1m ago';
+    } else if (minutesDifference < 60) {
+      return `${minutesDifference}m ago`;
+    } else {
+      const hoursDifference = Math.floor(minutesDifference / 60);
+      if (hoursDifference === 1) {
+        return '1h ago';
+      } else {
+        return `${hoursDifference}h ago`;
+      }
+    }
   }
 
   viewReplies(cmt?: any) {
