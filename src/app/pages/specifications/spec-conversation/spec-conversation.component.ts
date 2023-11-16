@@ -26,7 +26,7 @@ export class SpecConversationComponent {
   selectedIndex?: number;
   showDeletePopup: boolean = false;
   action?: string;
-  showPrWindow: boolean = false;
+  showCrPopup: boolean = false;
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
@@ -66,7 +66,7 @@ export class SpecConversationComponent {
       this.onClickReply(data.cmt);
     } if (data.action === 'EDIT') {
       this.editComment(data.cmt);
-    } if (data.action === 'LINKTOCR') {
+    } if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
     } if (data.action === 'DELETE') {
       this.deleteCurrentComment(data.cmt);
@@ -211,7 +211,7 @@ export class SpecConversationComponent {
   linkToCr(cmt?: any) {
     if (cmt) {
       this.selectedComment = cmt;
-      this.showPrWindow = true;
+      this.showCrPopup = true;
       this.messagingService.sendMessage({
         msgType: MessageTypes.LinkToCR,
         msgData: cmt

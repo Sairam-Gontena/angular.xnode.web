@@ -122,7 +122,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openCRs() {
-    this.utils.openOrClosePanel(SidePanel.ChangeRequests);
+    // this.utils.openOrClosePanel(SidePanel.ChangeRequests);
   }
 
   onChangeProduct(data: any): void {
