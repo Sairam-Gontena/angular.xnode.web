@@ -26,6 +26,26 @@ export class LinkToCrComponent implements OnInit {
   selectedReviewers: any;
   suggestions?: any[];
   reviewers?: any[];
+
+  reveiwerList: any = [{ name: 'Afghanistan', code: 'AF' },
+  { name: 'Albania', code: 'AL' },
+  { name: 'Algeria', code: 'DZ' },
+  { name: 'American Samoa', code: 'AS' },
+  { name: 'Andorra', code: 'AD' },
+  { name: 'Angola', code: 'AO' },
+  { name: 'nAlbania', code: 'AL' },
+  { name: 'nAlgeria', code: 'DZ' },
+  { name: 'nAmerican Samoa', code: 'AS' },
+  { name: 'nAndorra', code: 'AD' },
+  { name: 'nAngola', code: 'AO' },
+  ]
+
+  formGroup: FormGroup | undefined;
+
+  filteredReveiwers: any;
+
+
+
   constructor(private fb: FormBuilder, private localStorageService: LocalStorageService, private messagingService: MessagingService) {
     this.crForm = this.fb.group({
       priority: ['', [Validators.required]],
@@ -46,6 +66,20 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
+  }
+
+  filteredReveiwer(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
+      let reveiwer = (this.reveiwerList as any[])[i];
+      if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(reveiwer);
+      }
+    }
+
+    this.filteredReveiwers = filtered;
   }
 
   getSpecsTitle() {
@@ -77,6 +111,13 @@ export class LinkToCrComponent implements OnInit {
 
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(item => event.query + '-' + item);
+  }
+
+  reduceToInitials(fullName: string): string {
+    const nameParts = fullName.split(' ');
+    const initials = nameParts.map(part => part.charAt(0));
+    const reducedName = initials.join('');
+    return reducedName;
   }
 
 }
