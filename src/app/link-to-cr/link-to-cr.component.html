@@ -11,7 +11,8 @@
       </div>
       <div class="col-3">
         <label>To Version</label>
-        <p-dropdown formControlName="version" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <p-dropdown formControlName="version" [options]="versionList" optionLabel="name"
+          (onChange)="onDropdownChange($event)"></p-dropdown>
       </div>
       <div class="col-6">
         <label>Due Date</label>
@@ -95,3 +96,6 @@
     <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
   </ng-template>
 </p-dialog>
+
+<xnode-new-cr [visible]="showNewCrPopup" header="Add New Version" (closePopUp)="closeNewCrPopup($event)">
+</xnode-new-cr>

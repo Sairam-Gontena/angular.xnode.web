@@ -1,5 +1,5 @@
-<p-dialog header="New Change Request" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }"
-    [draggable]="false" [resizable]="false">
+<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+    [resizable]="false" (onHide)="popUpClose()">
     <div class="grid">
         <div class="col-12">
             <div class="p-inputgroup">
@@ -13,7 +13,7 @@
     </div>
     <ng-template pTemplate="footer">
         <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
-            (click)="visible=false"></p-button>
+            (click)="popUpClose()"></p-button>
         <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
             (click)="visible=false"></p-button>
     </ng-template>

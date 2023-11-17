@@ -23,9 +23,11 @@ export class LinkToCrComponent implements OnInit {
   prSpecsTitle: string = "";
   crForm!: FormGroup;
   priorityList: any = [{ name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
+  versionList: any = [{ name: 'Add New Version' }, { name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
   selectedReviewers: any;
   suggestions?: any[];
   reviewers?: any[];
+  showNewCrPopup: boolean = false
 
   reveiwerList: any = [{ name: 'Afghanistan', code: 'AF' },
   { name: 'Albania', code: 'AL' },
@@ -118,6 +120,17 @@ export class LinkToCrComponent implements OnInit {
     const initials = nameParts.map(part => part.charAt(0));
     const reducedName = initials.join('');
     return reducedName;
+  }
+
+  onDropdownChange(event: any): void {
+    if (event.value.name === 'Add New Version') {
+      this.showNewCrPopup = true
+    }
+  }
+  closeNewCrPopup(event: boolean) {
+    if (event == false) {
+      this.showNewCrPopup = false
+    }
   }
 
 }
