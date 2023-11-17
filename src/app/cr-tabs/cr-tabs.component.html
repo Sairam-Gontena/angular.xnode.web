@@ -1,1 +1,72 @@
-<p>Coming soon</p>
+<div class="p-4">
+  <div class="flex flex-row justify-content-between w-full p-0">
+    <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title" class="custom-dropdown" [filter]="true" filterBy="title"
+                        filterPlaceholder="Search">
+                        <ng-template let-item pTemplate="item">
+                            <div class="col-12 flex align-items-center justify-content-between">
+                                <div class="title-container" [title]="item.title" >
+                                    {{item.title }}
+                                </div>
+                            </div>
+                        </ng-template>
+     </p-dropdown>
+     <div>
+          <i class="pi pi-search text-base mx-1 light-grey"></i>
+          <i class="pi pi-user text-base mx-1 light-grey"></i>
+     </div>
+  </div>
+  <div class="flex flex-row justify-content-between w-full p-0">
+    <p class="text-base light-grey">Today</p>
+     <div class="flex flex-row mt-3">
+          <i class="pi pi-arrow-up text-base mx-1 text-gray-200"></i>
+          <p class="my-0 text-gray-200">Date Created</p>
+          <i class="pi pi-chevron-down text-base mx-1 text-gray-200"></i>
+     </div>
+  </div>
+  <div class="flex flex-row justify-content-between w-full px-0 pb-4 border-bottom-1">
+    <div class="flex flex-column justify-content-end">
+        <i class="pi pi-angle-right text-base mx-1 text-gray-200"></i>
+    </div>
+    <div class="flex flex-column">
+      <div class="flex flex-row pb-2">
+        <img src="../../assets/high.svg" class="mx-2" alt="high"/>
+        <a href="" class="text-primary-500">#CR-1837</a>
+      </div>
+      <div class="flex flex-row">
+        <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
+        <p class="my-0 text-gray-200">Functional Specifications</p>
+      </div>
+    </div>
+    <p-avatar [label]="getMeUserAvatar()" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+    <div class="flex mt-2">
+      <img src="../../assets/Group.svg" alt="CR"/>
+      <span class="mx-1 text-gray-200 mt-2">3</span>
+    </div>
+    <div  class="flex mt-2">
+      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
+    </div>
+  </div>
+  <div class="flex flex-row justify-content-between w-full px-0 pt-4 pb-4">
+    <div class="flex flex-column justify-content-end">
+        <i class="pi pi-angle-right text-base mx-1 text-gray-200"></i>
+    </div>
+    <div class="flex flex-column">
+      <div class="flex flex-row pb-2">
+        <img src="../../assets/medium.svg" class="mx-2" alt="medium"/>
+        <a href="" class="text-primary-500">#CR-1837</a>
+      </div>
+      <div class="flex flex-row">
+        <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
+        <p class="my-0 text-gray-200">Technical Specifications</p>
+      </div>
+    </div>
+    <p-avatar [label]="getMeUserAvatar()" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+    <div class="flex mt-2">
+      <img src="../../assets/Group.svg" alt="CR"/>
+      <span class="mx-1 text-gray-200 mt-2">2</span>
+    </div>
+    <div  class="flex mt-2">
+      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
+    </div>
+  </div>
+</div>
