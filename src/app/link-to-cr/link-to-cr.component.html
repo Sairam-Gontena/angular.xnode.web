@@ -49,10 +49,20 @@
           <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
             L1
           </div>
-          <div class="flex reviewer-grid h-3rem">
-            <p class="m-0 reviewer-chip"> <span> <p-avatar [label]="'DC'" styleClass="mr-2"
-                  [style]="{ 'background-color': '#02ADEE', fontSize: '10px', color: '#ffffff',width:'25px',height:'25px' }"
-                  shape="circle"></p-avatar></span> Dilip Chandra</p>
+          <div class="flex reviewer-grid">
+            <div class="flex reviewer-grid">
+              <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
+                (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
+                <ng-template let-country pTemplate="selectedItem">
+                  <div class="flex align-items-center">
+                    <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
+                      {{reduceToInitials(country.name)}}
+                    </div>
+                    <span class="ml-2">{{ country.name }}</span>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+            </div>
           </div>
         </div>
       </div>
@@ -61,17 +71,20 @@
           <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
             L2
           </div>
-          <div class="flex reviewer-grid h-3rem">
-            <p class="m-0 reviewer-chip">
-              <span> <p-avatar [label]="'DC'" styleClass="mr-2"
-                  [style]="{ 'background-color': '#02ADEE', fontSize: '10px', color: '#ffffff',width:'25px',height:'25px' }"
-                  shape="circle"></p-avatar></span> Dilip Chandra
-            </p>
-            <p class="m-0 reviewer-chip ml-2">
-              <span> <p-avatar [label]="'DC'" styleClass="mr-2"
-                  [style]="{ 'background-color': '#02ADEE', fontSize: '10px', color: '#ffffff',width:'25px',height:'25px' }"
-                  shape="circle"></p-avatar></span> Dilip Chandra
-            </p>
+          <div class="flex reviewer-grid">
+            <div class="flex reviewer-grid">
+              <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
+                (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
+                <ng-template let-country pTemplate="selectedItem">
+                  <div class="flex align-items-center">
+                    <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
+                      {{reduceToInitials(country.name)}}
+                    </div>
+                    <span class="ml-2">{{ country.name }}</span>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+            </div>
           </div>
         </div>
       </div>
