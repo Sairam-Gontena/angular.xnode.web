@@ -33,6 +33,8 @@ export class SpecConversationComponent {
   originalBackgroundColor: string = 'blue';
   showReplies: boolean = false;
   replies: any;
+  specListCopy: any;
+  specList: any[] = [];
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -48,6 +50,23 @@ export class SpecConversationComponent {
   }
 
   ngOnInit() {
+    if(this.list?.[0]?.parentEntity=="COMMENT"){
+      this.specListCopy = this.list;
+      this.specList = this.list.slice(0, 2);
+    }else{
+      this.specList = this.list;
+    }
+  }
+
+  loadComments(change:string) {
+    if(change==='increment'){
+      const startIndex = this.specList.length;
+      const endIndex = Math.min(startIndex + 2, this.specListCopy.length);
+      const newItems  = this.specListCopy.slice(startIndex, endIndex);
+      this.specList.push(...newItems);
+    }else{
+      this.specList = this.specListCopy.slice(0, 2);
+    }
   }
 
   setAvatar(userObj: any): string {
