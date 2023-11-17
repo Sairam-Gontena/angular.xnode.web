@@ -11,7 +11,7 @@ export class CommentsTabsComponent implements OnInit {
   @Input() list: Array<Comment> = [];
   @Input() usersList: any;
   activeIndex: number = 0;
-  tabTypes: Array<string> = ['Conversation', 'Tasks'];
+  tabTypes: Array<string> = ['Comments', 'Tasks'];
 
   constructor(public utils: UtilsService) {
     this.utils.getMeTaskAssigned.subscribe((taskAssigned) => {
