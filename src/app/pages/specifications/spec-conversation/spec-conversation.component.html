@@ -30,7 +30,7 @@
             <span *ngIf="selectedIndex !== i && !activeIndex " [innerHTML]="highlightMatch(cmt.message)"></span>
             <span *ngIf="selectedIndex !== i && activeIndex" [innerHTML]="highlightMatch(cmt.description)"></span>
         </div>
-        <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT'">
+        <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT' && specListCopy.length>2">
           <span class="pointer text-xs" *ngIf="specList.length-1 != list.length-1" (click)="loadComments('increment')">
             Show More
           </span>
