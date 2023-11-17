@@ -55,6 +55,8 @@ export class LogsComponent implements OnInit {
     }
     if (currentUser) {
       this.email = JSON.parse(currentUser)?.email;
+      console.log(' this.email', this.email);
+
     }
     if (metaData) {
       this.products = JSON.parse(metaData);

@@ -2,8 +2,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
-
-
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-product-dropdown',
@@ -22,6 +22,7 @@ export class ProductDropdownComponent implements OnInit {
   constructor(
     private utilsService: UtilsService,
     private fb: FormBuilder,
+    private localStorageService: LocalStorageService
   ) {
     this.myForm = this.fb.group({
       selectedProduct: [null],
@@ -39,6 +40,7 @@ export class ProductDropdownComponent implements OnInit {
 
   getMeDataFromStorage(): void {
     const metaData = localStorage.getItem('meta_data');
+    this.products = this.localStorageService.getItem(StorageKeys.MetaData)
     const product = localStorage.getItem('product');
     if (metaData) {
       this.products = JSON.parse(metaData);

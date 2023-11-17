@@ -138,9 +138,9 @@ export class MyProductsComponent implements OnInit {
 
   onClickCreateNewTemplate(data: any): void {
     if (this.currentUser?.email == data.email) {
-      this.utils.hasProductPermission(true)
+      this.utils.userHasPermissionForProduct(true)
     } else {
-      this.utils.hasProductPermission(false)
+      this.utils.userHasPermissionForProduct(false)
     }
     localStorage.setItem('product_email', data.email);
     localStorage.setItem('record_id', data.id);

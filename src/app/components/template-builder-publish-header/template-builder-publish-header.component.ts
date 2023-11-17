@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
-import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { NotifyApiService } from 'src/app/api/notify.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -29,7 +29,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   currentUser?: any;
   productOptions: MenuItem[];
   templates: any;
-  selectedTemplate: any;
   url: any;
   product: any;
   iframeSrc: any;
@@ -41,18 +40,16 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
-    private sanitizer: DomSanitizer,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
-    private notifyApi: NotifyApiService
+    private notifyApi: NotifyApiService,
+    private localStorageService: LocalStorageService
   ) {
     this.utilsService.getMeProductId.subscribe((event: any) => {
       if (event) {
-        this.selectedTemplate = event;
         this.storeProductData(event)
       }
     })
-    this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
         label: 'Preview',
@@ -61,7 +58,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         }
       }
     ];
-    this.utilsService.hasProductEditPermission.subscribe((result) => {
+    this.utilsService.userHasProductEditPermission.subscribe((result) => {
       if (result) {
         this.productOptions = [
           {
@@ -79,47 +76,15 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         ];
       }
     })
-
-    let currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.email = JSON.parse(currentUser).email;
-      this.userId = JSON.parse(currentUser).user_id;
-    }
   }
 
   ngOnInit(): void {
-    const currentUrl = this.router.url;
-    if (currentUrl === '/dashboard') {
+    if (this.router.url === '/dashboard') {
       this.showDeviceIcons = true;
     }
-    const metaData = localStorage.getItem('meta_data');
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
-    if (metaData) {
-      this.templates = JSON.parse(metaData);
-      setTimeout(() => {
-        this.selectedTemplate = this.productId;
-      }, 100)
-      if (product) {
-        this.selectedTemplate = JSON.parse(product).id;
-        this.product_url = JSON.parse(product).product_url;
-      }
-    }
-
-    this.emailData = localStorage.getItem('currentUser');
-    if (this.emailData) {
-      let JsonData = JSON.parse(this.emailData)
-      this.emailData = JsonData?.email;
-    }
-
-    if (localStorage.getItem('record_id')) {
-      this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
-      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
-      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
-    }
-
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.templates = this.localStorageService.getItem(StorageKeys.MetaData);
+    this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
     this.checkProductOptions()
   };
 
@@ -130,7 +95,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
       this.product_url = product.product_url;
     }
   }
@@ -294,33 +258,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
 
     });
   }
-  //get calls
-  getAllProducts(): void {
-    this.apiService.get("navi/get_metadata/" + this.currentUser?.email)
-      .then(response => {
-        if (response?.status === 200 && response.data.data?.length) {
-          this.templates = response.data.data;
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
-        }
-      }).catch(error => {
-        let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
-      });
-  }
 
   checkProductOptions() {
-    if (this.currentUser?.email == this.product?.email) {
-      this.utilsService.hasProductPermission(true)
+    if (this.currentUser?.email === this.product?.email) {
+      this.utilsService.userHasPermissionForProduct(true)
     } else {
-      this.utilsService.hasProductPermission(false)
+      this.utilsService.userHasPermissionForProduct(false)
     }
   }
 

@@ -58,7 +58,7 @@ export class UtilsService {
   private productId: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeProductId: Observable<any> = this.productId.asObservable();
   private productEditPermission: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public hasProductEditPermission: Observable<any> = this.productEditPermission.asObservable();
+  public userHasProductEditPermission: Observable<any> = this.productEditPermission.asObservable();
   private isInSpec: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public isInSameSpecPage: Observable<any> = this.isInSpec.asObservable();
 
@@ -142,7 +142,7 @@ export class UtilsService {
   saveProductId(event: any): void {
     this.productId.next(event);
   }
-  hasProductPermission(event: any): void {
+  userHasPermissionForProduct(event: any): void {
     this.productEditPermission.next(event);
   }
 

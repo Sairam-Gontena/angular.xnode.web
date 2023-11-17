@@ -5,12 +5,13 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   providedIn: 'root'
 })
 export class LocalStorageService {
-
   constructor() { }
+
   saveItem<T>(key: StorageKeys, data: T) {
     const dataString = JSON.stringify(data);
     localStorage.setItem(key, dataString);
   }
+
   getItem<T>(key: StorageKeys): T | undefined {
     const data = localStorage.getItem(key);
     if (data) {
@@ -25,7 +26,9 @@ export class LocalStorageService {
     }
     return undefined;
   }
+
   removeItem(key: StorageKeys) {
     localStorage.removeItem(key);
   }
+
 }
