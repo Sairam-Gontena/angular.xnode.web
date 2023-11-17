@@ -11,8 +11,8 @@
       </div>
       <div class="col-3">
         <label>To Version</label>
-        <p-dropdown formControlName="version" [options]="versionList" optionLabel="name"
-          (onChange)="onDropdownChange($event)"></p-dropdown>
+        <p-dropdown formControlName="version" [options]="versionList" optionLabel="version"
+          (onChange)="onDropdownChange($event)" placeholder="Select a version"></p-dropdown>
       </div>
       <div class="col-6">
         <label>Due Date</label>
@@ -97,5 +97,7 @@
   </ng-template>
 </p-dialog>
 
-<xnode-new-cr [visible]="showNewCrPopup" header="Add New Version" (closePopUp)="closeNewCrPopup($event)">
+<xnode-new-cr [visible]="showNewCrPopup" header="Add New Version"
+  [version]="versionList.length > 0 ? versionList[1]?.version : versionList[0]?.version"
+  (closePopUp)="closeNewCrPopup($event)" (updateLatestVersion)="updateLatestVersion($event)">
 </xnode-new-cr>

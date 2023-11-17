@@ -23,7 +23,7 @@ export class LinkToCrComponent implements OnInit {
   prSpecsTitle: string = "";
   crForm!: FormGroup;
   priorityList: any = [{ name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
-  versionList: any = [{ name: 'Add New Version' }, { name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
+  versionList: any = [{ version: 'Add New Version' }];
   selectedReviewers: any;
   suggestions?: any[];
   reviewers?: any[];
@@ -123,7 +123,7 @@ export class LinkToCrComponent implements OnInit {
   }
 
   onDropdownChange(event: any): void {
-    if (event.value.name === 'Add New Version') {
+    if (event.value.version === 'Add New Version') {
       this.showNewCrPopup = true
     }
   }
@@ -131,6 +131,12 @@ export class LinkToCrComponent implements OnInit {
     if (event == false) {
       this.showNewCrPopup = false
     }
+  }
+  updateLatestVersion(event: string) {
+
+    this.versionList.shift();
+    this.versionList.unshift({ version: event })
+    this.versionList.unshift({ version: 'Add New Version' })
   }
 
 }
