@@ -6,6 +6,8 @@ import { MessagingService } from '../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { MenuItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommentsService } from 'src/app/api/comments.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -48,7 +50,7 @@ export class LinkToCrComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private localStorageService: LocalStorageService, private messagingService: MessagingService) {
+  constructor(private fb: FormBuilder, private localStorageService: LocalStorageService, private messagingService: MessagingService, private commentsService: CommentsService, private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       priority: ['', [Validators.required]],
       version: ['', [Validators.required]],
@@ -68,6 +70,31 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
+    this.getAllVersions()
+  }
+
+  getAllVersions() {
+    let data = localStorage.getItem('product');
+    if (data) {
+      let productDetails = JSON.parse(data);
+      let body = {
+        "productId": productDetails.id
+      }
+      this.utilsService.loadSpinner(true);
+      this.commentsService.getVersions(body).then((response: any) => {
+        if (response.status == 200) {
+          console.log(response.data)
+          // this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
+        } else {
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+        }
+        this.utilsService.loadSpinner(false);
+      }).catch(err => {
+        this.utilsService.toggleTaskAssign(false);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      })
+
+    }
   }
 
   filteredReveiwer(event: AutoCompleteCompleteEvent) {

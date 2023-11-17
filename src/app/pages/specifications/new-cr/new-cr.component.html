@@ -1,12 +1,38 @@
 <p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
     [resizable]="false" (onHide)="popUpClose()">
     <div class="grid">
-        <div class="col-12">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon">
-                    <img src="./assets/cr.svg" alt="cr">
-                </span>
-                <input type="text" pInputText [(ngModel)]="inputValue" />
+        <div class="col-12 p-0 pl-2">
+            <div class="p-inputgroup p-0">
+                <div class="col-12 p-0">
+                    <div class="col-6 p-0 mt-1">
+                        <span>Major</span>
+                        <div class="col-12 flex p-0 mt-2 ">
+                            <span class="p-inputgroup-addon">
+                                <img src="./assets/cr.svg" alt="cr">
+                            </span>
+                            <input type="text" pInputText [(ngModel)]="majorInputValue" class="col-12 ml-1 " />
+                        </div>
+                    </div>
+                    <div class="col-6 p-0 mt-3">
+                        <span>Minor</span>
+                        <div class="col-12 flex p-0 mt-2 ">
+                            <span class="p-inputgroup-addon">
+                                <img src="./assets/cr.svg" alt="cr">
+                            </span>
+                            <input type="text" pInputText [(ngModel)]="minorInputValue" class="col-12 ml-1 " />
+                        </div>
+                    </div>
+                    <div class="col-6 p-0 mt-3">
+                        <span>Build</span>
+                        <div class="col-12 flex p-0 mt-2 ">
+                            <span class="p-inputgroup-addon">
+                                <img src="./assets/cr.svg" alt="cr">
+                            </span>
+                            <input type="text" pInputText [(ngModel)]="buildInputValue" class="col-12 ml-1 "
+                                [disabled]="true" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

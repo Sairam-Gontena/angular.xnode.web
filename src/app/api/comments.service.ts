@@ -32,6 +32,7 @@ export class CommentsService extends BaseApiService {
   addComments(body: any) {
     return this.post('comment', body);
   }
+
   addTask(body: any) {
     return this.post('task', body);
   }
@@ -41,6 +42,13 @@ export class CommentsService extends BaseApiService {
   }
   deletTask(id: any) {
     return this.delete('task/' + id);
+  }
+
+  addVersion(body: any) {
+    return this.post('product-version', body);
+  }
+  getVersions(body: any) {
+    return this.get('product-version', body);
   }
 }
 
