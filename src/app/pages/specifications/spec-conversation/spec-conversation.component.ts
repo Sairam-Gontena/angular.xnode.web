@@ -20,6 +20,7 @@ export class SpecConversationComponent {
   comment: any;
   currentUser: any;
   selectedSection: any;
+  showNewCrPopup: boolean = false;
   selectedComment: any;
   showCommentInput: boolean = false;
   openEditComment: boolean = false;
