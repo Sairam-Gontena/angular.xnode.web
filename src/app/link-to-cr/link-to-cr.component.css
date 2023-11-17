@@ -97,3 +97,58 @@
 :host ::ng-deep .p-inputswitch.p-focus .p-inputswitch-slider {
     box-shadow: none;
 }
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container:not(.p-disabled).p-focus {
+    box-shadow: none !important;
+    border-color: none;
+    background-color: #2E2D36 !important;
+    color: white !important;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container {
+    border-width: 0px;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container:hover {
+    border-width: 0px;
+}
+
+:host ::ng-deep .p-autocomplete .p-element.p-inputwrapper {
+    width: 100%;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-token {
+    background: #535354;
+    font-size: 14px;
+    border-radius: 20px;
+    padding: 5px;
+    color: #fff;
+}
+
+.autocomplete-label {
+    height: 25px;
+    width: 25px;
+    border-radius: 20px;
+    background-color: #02ADEE;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+    color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items {
+    background-color: #2E2D36;
+    color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+    color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
+    color: black;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
+    color: black;
+}
