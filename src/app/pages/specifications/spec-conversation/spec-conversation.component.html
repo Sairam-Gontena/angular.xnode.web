@@ -38,7 +38,7 @@
         </div>
         <div class="col-12"
             *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
-            <xnode-spec-conversation [activeIndex]="activeIndex" [list]="cmt?.comments?.slice().reverse()"
+            <xnode-spec-conversation [activeIndex]="activeIndex"
                 [topParentId]="topParentId"></xnode-spec-conversation>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
