@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { isArray } from 'lodash';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from '../components/services/local-storage.service';
@@ -8,6 +8,7 @@ import { MenuItem } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { Dropdown } from 'primeng/dropdown';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -17,20 +18,25 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './link-to-cr.component.html',
   styleUrls: ['./link-to-cr.component.css']
 })
+
 export class LinkToCrComponent implements OnInit {
+  @ViewChild('dropdown') dropdown?: Dropdown;
   items: MenuItem[] | undefined;
   @Input() comment: any;
+  @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
   specData: any;
+  product: any;
   prSpecsTitle: string = "";
   crForm!: FormGroup;
   priorityList: any = [{ name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
-  versionList: any = [{ version: 'Add New Version' }];
+  versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
   selectedReviewers: any;
   suggestions?: any[];
   reviewers?: any[];
-  showNewCrPopup: boolean = false
-
+  showNewCrPopup: boolean = false;
+  isTheNewVersionCreated: boolean = false;
+  latestVersion: any;
   reveiwerList: any = [{ name: 'Afghanistan', code: 'AF' },
   { name: 'Albania', code: 'AL' },
   { name: 'Algeria', code: 'DZ' },
@@ -50,7 +56,11 @@ export class LinkToCrComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private localStorageService: LocalStorageService, private messagingService: MessagingService, private commentsService: CommentsService, private utilsService: UtilsService) {
+  constructor(private fb: FormBuilder,
+    private localStorageService: LocalStorageService,
+    private messagingService: MessagingService,
+    private commentsService: CommentsService,
+    private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       priority: ['', [Validators.required]],
       version: ['', [Validators.required]],
@@ -61,40 +71,37 @@ export class LinkToCrComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.utilsService.loadSpinner(true);
+    this.product = this.localStorageService.getItem(StorageKeys.Product)
     this.items = [{ label: 'Functional Specifications' }, { label: '3.1 User roles' }];
     this.messagingService.getMessage<any>().subscribe(msg => {
       if (msg.msgType === MessageTypes.LinkToCR) {
         if (this.comment) {
           this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
-          this.getSpecsTitle();
         }
       }
     });
-    this.getAllVersions()
+    this.getAllVersions();
   }
 
   getAllVersions() {
-    let data = localStorage.getItem('product');
-    if (data) {
-      let productDetails = JSON.parse(data);
-      let body = {
-        "productId": productDetails.id
-      }
-      this.utilsService.loadSpinner(true);
-      this.commentsService.getVersions(body).then((response: any) => {
-        if (response.status == 200) {
-          console.log(response.data)
-          // this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
-        } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
-        }
-        this.utilsService.loadSpinner(false);
-      }).catch(err => {
-        this.utilsService.toggleTaskAssign(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-      })
-
+    let body = {
+      "productId": this.product.id
     }
+    this.commentsService.getVersions(body).then((response: any) => {
+      if (response.status == 200) {
+        console.log(response.data);
+        response.data.forEach((element: any) => {
+          this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
+        });
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(err => {
+      this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 
   filteredReveiwer(event: AutoCompleteCompleteEvent) {
@@ -111,33 +118,6 @@ export class LinkToCrComponent implements OnInit {
     this.filteredReveiwers = filtered;
   }
 
-  getSpecsTitle() {
-    const currentSpec = this.specData.find((m: any) => m.id === this.comment.topParentId);
-    if (currentSpec && isArray(currentSpec.content) && currentSpec.content.length > 0) {
-      const titles = this.getBreadcrumbTitles(currentSpec.content, this.comment.parentId);
-      if (titles) {
-        this.prSpecsTitle = titles.join(" > ");
-      }
-    }
-    else {
-      this.prSpecsTitle = currentSpec.title;
-    }
-  }
-
-  getBreadcrumbTitles(specs: any, parentId: string): string[] | null {
-    for (const item of specs) {
-      if (item.id === this.comment.parentId) {
-        return [item.title];
-      }
-      const subBreadcrumb = this.getBreadcrumbTitles(item.content, parentId);
-      if (subBreadcrumb !== null) {
-        return [item.title, ...subBreadcrumb];
-      }
-    }
-    return null;
-  }
-
-
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(item => event.query + '-' + item);
   }
@@ -150,20 +130,31 @@ export class LinkToCrComponent implements OnInit {
   }
 
   onDropdownChange(event: any): void {
-    if (event.value.version === 'Add New Version') {
-      this.showNewCrPopup = true
+    if (event === 'ADD_NEW') {
+      this.showNewCrPopup = true;
+      console.log(this.versionList, 'this.versionList');
     }
   }
-  closeNewCrPopup(event: boolean) {
-    if (event == false) {
-      this.showNewCrPopup = false
+
+  closePopUp(event: any) {
+    if (event.id) {
+      this.getAllVersions();
     }
+    this.showNewCrPopup = false;
+    this.crForm.patchValue({ version: '' });
+    console.log('this.crForm', this.crForm);
+
   }
+
   updateLatestVersion(event: string) {
 
     this.versionList.shift();
     this.versionList.unshift({ version: event })
     this.versionList.unshift({ version: 'Add New Version' })
+  }
+
+  onSubmit(event: any): void {
+    this.close.emit(false)
   }
 
 }

@@ -229,6 +229,8 @@ export class SpecConversationComponent {
 
 
   linkToCr(cmt?: any) {
+    console.log('cmt', cmt);
+    
     if (cmt) {
       this.selectedComment = cmt;
       this.showCrPopup = true;
