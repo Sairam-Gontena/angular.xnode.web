@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
-import { isArray } from 'lodash';
+import { forEach, isArray } from 'lodash';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from '../components/services/local-storage.service';
 import { MessagingService } from '../components/services/messaging.service';
@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Dropdown } from 'primeng/dropdown';
+import { AuthApiService } from '../api/auth.service';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -21,15 +22,15 @@ interface AutoCompleteCompleteEvent {
 
 export class LinkToCrComponent implements OnInit {
   @ViewChild('dropdown') dropdown?: Dropdown;
-  items: MenuItem[] | undefined;
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
+  items: MenuItem[] | undefined;
   specData: any;
   product: any;
   prSpecsTitle: string = "";
   crForm!: FormGroup;
-  priorityList: any = [{ name: 'High' }, { name: 'Medium' }, { name: 'Low' }];
+  priorityList: any = [{ label: 'High', value: 'HIGH' }, { label: 'Medium', value: 'MEDIUM' }, { label: 'Low', value: 'LOW' }];
   versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
   selectedReviewers: any;
   suggestions?: any[];
@@ -37,29 +38,17 @@ export class LinkToCrComponent implements OnInit {
   showNewCrPopup: boolean = false;
   isTheNewVersionCreated: boolean = false;
   latestVersion: any;
-  reveiwerList: any = [{ name: 'Afghanistan', code: 'AF' },
-  { name: 'Albania', code: 'AL' },
-  { name: 'Algeria', code: 'DZ' },
-  { name: 'American Samoa', code: 'AS' },
-  { name: 'Andorra', code: 'AD' },
-  { name: 'Angola', code: 'AO' },
-  { name: 'nAlbania', code: 'AL' },
-  { name: 'nAlgeria', code: 'DZ' },
-  { name: 'nAmerican Samoa', code: 'AS' },
-  { name: 'nAndorra', code: 'AD' },
-  { name: 'nAngola', code: 'AO' },
-  ]
+  reveiwerList: any;
   newVersion: any;
   formGroup: FormGroup | undefined;
-
   filteredReveiwers: any;
-
-
+  currentUser: any;
 
   constructor(private fb: FormBuilder,
     private localStorageService: LocalStorageService,
     private messagingService: MessagingService,
     private commentsService: CommentsService,
+    private authApiService: AuthApiService,
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       priority: ['', [Validators.required]],
@@ -72,7 +61,8 @@ export class LinkToCrComponent implements OnInit {
 
   ngOnInit() {
     this.utilsService.loadSpinner(true);
-    this.product = this.localStorageService.getItem(StorageKeys.Product)
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
     this.items = [{ label: 'Functional Specifications' }, { label: '3.1 User roles' }];
     this.messagingService.getMessage<any>().subscribe(msg => {
       if (msg.msgType === MessageTypes.LinkToCR) {
@@ -81,7 +71,25 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
-    this.getAllVersions();
+    this.getUserByAccountId();
+  }
+
+  getUserByAccountId(): void {
+    this.authApiService.getAllUsers('user/get_all_users?account_id=' + this.currentUser?.account_id).then((response: any) => {
+      if (response.status === 200 && response?.data) {
+        response.data.forEach((element: any) => {
+          element.name = element.first_name + " " + element.last_name;
+        });
+        this.reveiwerList = response.data;
+        this.getAllVersions();
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 
   getAllVersions() {
@@ -110,14 +118,12 @@ export class LinkToCrComponent implements OnInit {
   filteredReveiwer(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
     let query = event.query;
-
     for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
       let reveiwer = (this.reveiwerList as any[])[i];
       if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(reveiwer);
       }
     }
-
     this.filteredReveiwers = filtered;
   }
 

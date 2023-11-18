@@ -7,8 +7,7 @@
       </div>
       <div class="col-3">
         <label>Priority</label>
-        <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"
-          optionLabel="name"></p-dropdown>
+        <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"></p-dropdown>
       </div>
       <div class="col-3">
         <label>To Version</label>
@@ -55,12 +54,12 @@
             <div class="flex reviewer-grid">
               <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
                 (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
-                <ng-template let-country pTemplate="selectedItem">
+                <ng-template let-reviewer pTemplate="selectedItem">
                   <div class="flex align-items-center">
                     <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
-                      {{reduceToInitials(country.name)}}
+                      {{reduceToInitials(reviewer.name)}}
                     </div>
-                    <span class="ml-2">{{ country.name }}</span>
+                    <span class="ml-2">{{ reviewer.name }}</span>
                   </div>
                 </ng-template>
               </p-autoComplete>
@@ -77,12 +76,12 @@
             <div class="flex reviewer-grid">
               <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
                 (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
-                <ng-template let-country pTemplate="selectedItem">
+                <ng-template let-reviewer pTemplate="selectedItem">
                   <div class="flex align-items-center">
                     <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
-                      {{reduceToInitials(country.name)}}
+                      {{reduceToInitials(reviewer.first_name)}}
                     </div>
-                    <span class="ml-2">{{ country.name }}</span>
+                    <span class="ml-2">{{ reviewer.first_name }}</span>
                   </div>
                 </ng-template>
               </p-autoComplete>
