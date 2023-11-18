@@ -49,7 +49,7 @@ export class LinkToCrComponent implements OnInit {
   { name: 'nAndorra', code: 'AD' },
   { name: 'nAngola', code: 'AO' },
   ]
-
+  newVersion: any;
   formGroup: FormGroup | undefined;
 
   filteredReveiwers: any;
@@ -90,10 +90,13 @@ export class LinkToCrComponent implements OnInit {
     }
     this.commentsService.getVersions(body).then((response: any) => {
       if (response.status == 200) {
-        console.log(response.data);
         response.data.forEach((element: any) => {
           this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
         });
+        if (this.newVersion) {
+          this.crForm.patchValue({ version: this.newVersion });
+          this.newVersion = undefined;
+        }
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
       }
@@ -132,18 +135,17 @@ export class LinkToCrComponent implements OnInit {
   onDropdownChange(event: any): void {
     if (event === 'ADD_NEW') {
       this.showNewCrPopup = true;
-      console.log(this.versionList, 'this.versionList');
     }
   }
 
   closePopUp(event: any) {
-    if (event.id) {
+    if (event?.id) {
+      this.newVersion = event.major + '.' + event.minor + '.' + event.build;
       this.getAllVersions();
+    } else {
+      this.crForm.patchValue({ version: '' });
     }
     this.showNewCrPopup = false;
-    this.crForm.patchValue({ version: '' });
-    console.log('this.crForm', this.crForm);
-
   }
 
   updateLatestVersion(event: string) {

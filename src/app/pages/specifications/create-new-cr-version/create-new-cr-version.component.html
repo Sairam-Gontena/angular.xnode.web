@@ -1,7 +1,7 @@
 <p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '20vw' }" [draggable]="false"
     [resizable]="false" (onHide)="closePopup()">
     <div class="grid">
-        <form [formGroup]="versionForm" (ngSubmit)="save($event)">
+        <form [formGroup]="versionForm" (ngSubmit)="onSubmit($event)">
             <div class="col-12 p-0 pl-2">
                 <div class="p-inputgroup p-0">
                     <div class="col-12 p-0">
@@ -30,7 +30,7 @@
                                     <img src="./assets/cr.svg" alt="cr">
                                 </span>
                                 <input type="text" pInputText formControlName="build" class="col-12 ml-1 "
-                                    [disabled]="true" />
+                                    aria-disabled="true" />
                             </div>
                         </div>
                     </div>
@@ -41,6 +41,7 @@
     <ng-template pTemplate="footer">
         <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
             (click)="closePopup()"></p-button>
-        <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+        <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+            (click)="save()"></p-button>
     </ng-template>
 </p-dialog>
