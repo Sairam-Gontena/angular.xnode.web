@@ -31,12 +31,14 @@
             <span *ngIf="selectedIndex !== i && activeIndex" [innerHTML]="highlightMatch(cmt.description)"></span>
         </div>
         <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT'">
-          <span class="pointer text-xs" *ngIf="specList.length-1 != list.length-1" (click)="loadComments('increment')">
-            Show More
-          </span>
-          <span class="pointer text-xs" *ngIf="specList.length-1 === list.length-1" (click)="loadComments('decrement')">
-            Show Less
-          </span>
+            <span class="pointer text-xs" *ngIf="specList.length-1 != list.length-1"
+                (click)="loadComments('increment')">
+                Show More
+            </span>
+            <span class="pointer text-xs" *ngIf="specList.length-1 === list.length-1"
+                (click)="loadComments('decrement')">
+                Show Less
+            </span>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
