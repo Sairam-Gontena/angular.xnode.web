@@ -31,9 +31,9 @@ export class CreateNewCrVersionComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private utilsService: UtilsService) {
     this.versionForm = this.fb.group({
-      major: ['', [Validators.required]],
-      minor: ['', [Validators.required]],
-      build: ['', [Validators.required]],
+      major: ['2311', [Validators.required]],
+      minor: ['0', [Validators.required]],
+      build: ['0', [Validators.required]],
     });
   }
 
@@ -41,8 +41,10 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
     console.log('versions', this.versions);
-    if (this.versions.length >= 1) {
-      let numbers = this.versions[1].split('.')
+    if (this.versions.length >= 2) {
+      let numbers = this.versions[1].split('.');
+      console.log('numbers', numbers);
+
       this.versionForm.patchValue({ major: parseFloat(numbers[0]) });
       this.versionForm.patchValue({ minor: parseFloat(numbers[0]) });
       this.versionForm.patchValue({ build: parseFloat(numbers[0]) });

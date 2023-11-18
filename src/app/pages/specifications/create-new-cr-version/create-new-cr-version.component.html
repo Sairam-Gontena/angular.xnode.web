@@ -1,7 +1,7 @@
-<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '20vw' }" [draggable]="false"
     [resizable]="false" (onHide)="closePopup()">
-    <form [formGroup]="versionForm" (ngSubmit)="save($event)">
-        <div class="grid">
+    <div class="grid">
+        <form [formGroup]="versionForm" (ngSubmit)="save($event)">
             <div class="col-12 p-0 pl-2">
                 <div class="p-inputgroup p-0">
                     <div class="col-12 p-0">
@@ -36,11 +36,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <ng-template pTemplate="footer">
-            <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
-                (click)="closePopup()"></p-button>
-            <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
-        </ng-template>
-    </form>
+        </form>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
+            (click)="closePopup()"></p-button>
+        <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+    </ng-template>
 </p-dialog>
