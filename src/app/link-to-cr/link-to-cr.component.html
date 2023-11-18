@@ -1,17 +1,19 @@
 <p-dialog header="Link to Change Request" [(visible)]="showCrPopup" [modal]="true" [style]="{ width: '30vw' }"
-  [draggable]="false" [resizable]="false">
-  <form [formGroup]="crForm">
+  [draggable]="false" [resizable]="false" (onHide)="close.emit(false)">
+  <form [formGroup]="crForm" (ngSubmit)="onSubmit($event)">
     <div class="grid">
       <div class="col-12">
         <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
       </div>
       <div class="col-3">
         <label>Priority</label>
-        <p-dropdown formControlName="priority" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"
+          optionLabel="name"></p-dropdown>
       </div>
       <div class="col-3">
         <label>To Version</label>
-        <p-dropdown formControlName="version" [options]="priorityList" optionLabel="name"></p-dropdown>
+        <p-dropdown [(ngModel)]="crForm.value.version" (ngModelChange)="onDropdownChange($event)"
+          formControlName="version" [options]="versionList" placeholder="Select"></p-dropdown>
       </div>
       <div class="col-6">
         <label>Due Date</label>
@@ -91,7 +93,12 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"></p-button>
+    <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
+      (click)="close.emit(false)"></p-button>
     <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
   </ng-template>
 </p-dialog>
+
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New Version"
+  [versions]="versionList" (close)="closePopUp($event)" (updateLatestVersion)="updateLatestVersion($event)">
+</xnode-create-new-cr-version>

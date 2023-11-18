@@ -1,0 +1,47 @@
+<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '20vw' }" [draggable]="false"
+    [resizable]="false" (onHide)="closePopup()">
+    <div class="grid">
+        <form [formGroup]="versionForm" (ngSubmit)="onSubmit($event)">
+            <div class="col-12 p-0 pl-2">
+                <div class="p-inputgroup p-0">
+                    <div class="col-12 p-0">
+                        <div class="col-6 p-0 mt-1">
+                            <span>Major</span>
+                            <div class="col-12 flex p-0 mt-2 ">
+                                <span class="p-inputgroup-addon">
+                                    <img src="./assets/cr.svg" alt="cr">
+                                </span>
+                                <input type="text" pInputText formControlName="major" class="col-12 ml-1 " />
+                            </div>
+                        </div>
+                        <div class="col-6 p-0 mt-3">
+                            <span>Minor</span>
+                            <div class="col-12 flex p-0 mt-2 ">
+                                <span class="p-inputgroup-addon">
+                                    <img src="./assets/cr.svg" alt="cr">
+                                </span>
+                                <input type="text" pInputText formControlName="minor" class="col-12 ml-1 " />
+                            </div>
+                        </div>
+                        <div class="col-6 p-0 mt-3">
+                            <span>Build</span>
+                            <div class="col-12 flex p-0 mt-2 ">
+                                <span class="p-inputgroup-addon">
+                                    <img src="./assets/cr.svg" alt="cr">
+                                </span>
+                                <input type="text" pInputText formControlName="build" class="col-12 ml-1 "
+                                    aria-disabled="true" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
+            (click)="closePopup()"></p-button>
+        <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+            (click)="save()"></p-button>
+    </ng-template>
+</p-dialog>
