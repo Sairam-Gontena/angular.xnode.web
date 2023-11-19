@@ -5,27 +5,14 @@
       <div class="col-12">
         <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
       </div>
-      <div class="col-3">
-        <label>Priority</label>
-        <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"
-          optionLabel="name"></p-dropdown>
-      </div>
-      <div class="col-3">
-        <label>To Version</label>
-        <p-dropdown [(ngModel)]="crForm.value.version" (ngModelChange)="onDropdownChange($event)"
-          formControlName="version" [options]="versionList" placeholder="Select"></p-dropdown>
-      </div>
-      <div class="col-6">
-        <label>Due Date</label>
-        <p-calendar formControlName="dueDate" [showIcon]="true" placeholder="DD/MM/YYYY"
-          styleClass="due-date"></p-calendar>
-      </div>
       <div class="col-12">
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">
             <img src="./assets/cr.svg" alt="cr">
           </span>
-          <p-dropdown formControlName="crToAdd" [options]="priorityList" optionLabel="name"></p-dropdown>
+          <p-dropdown formControlName="crToAdd" [options]="crList" [(ngModel)]="crForm.value.crToAdd"
+            (ngModelChange)="onDropdownChange($event)" optionLabel="label"
+            placeholder="Add new or search exsiting change requests"></p-dropdown>
         </div>
         <p class="text-sm pointer mt-1 mb-0 api-ticket"><span><i class="pi pi-plus pr-2"></i></span> Connect with the
           api
@@ -33,59 +20,36 @@
           system
         </p>
       </div>
+      <div class="col-4">
+        <label>Priority</label>
+        <p-dropdown formControlName="priority" [options]="priorityList" [disabled]="true"
+          optionLabel="label"></p-dropdown>
+      </div>
+      <div class="col-4">
+        <label>To Version</label>
+        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true"
+          optionLabel="label"></p-dropdown>
+      </div>
+      <div class="col-4">
+        <label>Due Date</label>
+        <p-calendar formControlName="duedate" [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"
+          [disabled]="true"></p-calendar>
+      </div>
       <div class="col-12 pb-0">
         <div class="flex justify-content-between flex-wrap">
           <p class="m-0">
-            Add Reviewer
-          </p>
-          <p class="m-0 text-sm flex align-items-center">
-            <span class="mr-2">
-              <p-inputSwitch formControlName="seqReview"></p-inputSwitch>
-            </span>
-            Require sequential review in each level
+            Reviewers
           </p>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12" *ngIf="reviewerList?.length">
         <div class="flex align-items-center">
           <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
             L1
           </div>
-          <div class="flex reviewer-grid">
-            <div class="flex reviewer-grid">
-              <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
-                <ng-template let-country pTemplate="selectedItem">
-                  <div class="flex align-items-center">
-                    <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
-                      {{reduceToInitials(country.name)}}
-                    </div>
-                    <span class="ml-2">{{ country.name }}</span>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="flex align-items-center">
-          <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
-            L2
-          </div>
-          <div class="flex reviewer-grid">
-            <div class="flex reviewer-grid">
-              <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
-                <ng-template let-country pTemplate="selectedItem">
-                  <div class="flex align-items-center">
-                    <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
-                      {{reduceToInitials(country.name)}}
-                    </div>
-                    <span class="ml-2">{{ country.name }}</span>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
+          <div class="flex reviewer-grid" *ngFor="let reviewer of reviewerList">
+            <div class="reviewer-chip">
+              {{reviewer.displayName}}
             </div>
           </div>
         </div>
@@ -95,10 +59,11 @@
   <ng-template pTemplate="footer">
     <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
       (click)="close.emit(false)"></p-button>
-    <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+    <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+      (click)="linkCr()"></p-button>
   </ng-template>
 </p-dialog>
 
-<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New Version"
-  [versions]="versionList" (close)="closePopUp($event)" (updateLatestVersion)="updateLatestVersion($event)">
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR"
+  [versions]="versionList" (close)="closePopUp($event)">
 </xnode-create-new-cr-version>

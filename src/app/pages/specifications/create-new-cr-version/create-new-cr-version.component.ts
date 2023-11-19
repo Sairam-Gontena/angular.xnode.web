@@ -1,10 +1,14 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'xnode-create-new-cr-version',
   templateUrl: './create-new-cr-version.component.html',
@@ -16,40 +20,117 @@ export class CreateNewCrVersionComponent implements OnInit {
   @Input() header: string = '';
   @Input() versions?: any;
   @Output() close = new EventEmitter<any>();
-  @Output() updateLatestVersion = new EventEmitter<string>();
   formGroup: FormGroup | undefined;
+  crForm: FormGroup;
   versionForm: FormGroup;
   majorInputValue: any = '';
   minorInputValue: any = '';
   buildInputValue: any = '';
   inputValue: any = '';
+  reveiwerList: any = []
+  filteredReveiwers: any;
+  suggestions: any;
   product: any;
   currentUser: any;
+  crVersion: any = 0;
+  priorityList: any = [{ label: 'High', value: 'HIGH' }, { label: 'Medium', value: 'MEDIUM' }, { label: 'Low', value: 'LOW' }];
+  versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
+  newVersion: boolean = false;
+  showAddVersionForm: boolean = false;
 
   constructor(private fb: FormBuilder,
     private commentsService: CommentsService,
     private localStorageService: LocalStorageService,
+    private authApiService: AuthApiService,
     private utilsService: UtilsService) {
+    this.crForm = this.fb.group({
+      title: ['', [Validators.required]],
+      cr: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      reason: ['', [Validators.required]],
+      version: ['', [Validators.required]],
+      priority: ['', [Validators.required]],
+      duedate: ['', [Validators.required]],
+      seqReview: ['', [Validators.required]],
+      reviewersLOne: [[], [Validators.required]],
+      reviewersLTwo: [[], [Validators.required]],
+    });
     this.versionForm = this.fb.group({
-      major: ['2311', [Validators.required]],
-      minor: ['0', [Validators.required]],
-      build: ['0', [Validators.required]],
+      major: ['', [Validators.required]],
+      minor: ['', [Validators.required]],
+      build: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
+    this.utilsService.loadSpinner(true)
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
-    if (this.versions?.length >= 2) {
-      let numbers = this.versions[1].label.split('.');
-      this.versionForm.patchValue({ major: parseFloat(numbers[0]) });
-      this.versionForm.patchValue({ minor: parseFloat(numbers[1]) });
-      this.versionForm.patchValue({ build: parseFloat(numbers[2]) + 1 });
+    // this.versionForm.controls['build'].disable();
+
+    this.getUserByAccountId();
+    if (this.versionForm) {
+      const majorControl = this.versionForm.get('major');
+      const minorControl = this.versionForm.get('minor');
+      // if (majorControl)
+      //   majorControl.valueChanges.subscribe((newValue: any) => {
+      //     console.log('newValue', newValue);
+
+      //     this.versionForm.patchValue({ minor: 0 });
+      //     this.versionForm.patchValue({ build: 0 });
+      //   });
+      // if (minorControl)
+      //   minorControl.valueChanges.subscribe((newValue: any) => {
+      //     console.log('>>>', newValue);
+
+      //     this.versionForm.patchValue({ build: 0 });
+      //   });
+    }
+    if (this.crForm) {
+      const reviewersControl = this.crForm.get('reviewersLOne');
+      if (reviewersControl)
+        reviewersControl.valueChanges.subscribe((newValue: any) => {
+        });
     }
   }
 
+  onDropdownChange(event: any): void {
+    this.showAddVersionForm = event === 'ADD_NEW';
+  }
+
+
+  getAllVersions() {
+    this.versionList = [{ label: 'Add New Version', value: 'ADD_NEW' }];
+    let body = {
+      "productId": this.product.id
+    }
+    this.commentsService.getVersions(body).then((response: any) => {
+      if (response.status == 200) {
+        response.data.forEach((element: any, index: any) => {
+          if (index === 0) {
+            this.versionForm.patchValue({ build: element.build + 1 })
+            this.versionForm.patchValue({ major: element.major });
+            this.versionForm.patchValue({ minor: element.minor });
+          }
+          this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
+        });
+        if (this.newVersion) {
+          this.versionForm.patchValue({ version: this.newVersion });
+          this.newVersion = false;
+        }
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(err => {
+      this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
+
   save(event?: any): void {
-    this.saveValue()
+    this.utilsService.loadSpinner(true);
+    this.saveValue();
   }
 
   onSubmit(event: any) {
@@ -79,7 +160,59 @@ export class CreateNewCrVersionComponent implements OnInit {
     return result;
   }
 
+  getMeReviewerIds() {
+    return this.crForm.value.reviewersLOne.concat(this.crForm.value.reviewersLTwo).map((obj: any) => obj.user_id);
+  }
+
   saveValue() {
+    let body = {
+      "author": this.currentUser.user_id,
+      "title": this.crForm.value.title,
+      "description": this.crForm.value.description,
+      "status": 'DRAFT',
+      "reason": this.crForm.value.reason,
+      "reviewers": this.getMeReviewerIds(),
+      "versionId": this.crForm.value.version,
+      "productId": this.product.id,
+      "priority": this.crForm.value.priority,
+      "duedate": this.crForm.value.duedate,
+    }
+    this.commentsService.createCr(body).then((response: any) => {
+      if (response.statusText === 'Created') {
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Change Request created successfully' });
+        this.close.emit(response.data)
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(err => {
+      this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
+  filteredReveiwer(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
+      let reveiwer = (this.reveiwerList as any[])[i];
+      if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(reveiwer);
+      }
+    }
+    this.filteredReveiwers = filtered;
+  }
+
+  search(event: AutoCompleteCompleteEvent) {
+    this.suggestions = [...Array(10).keys()].map(item => event.query + '-' + item);
+  }
+  reduceToInitials(fullName: string): string {
+    const nameParts = fullName.split(' ');
+    const initials = nameParts.map(part => part.charAt(0));
+    const reducedName = initials.join('');
+    return reducedName;
+  }
+
+  saveVersion(): void {
     this.utilsService.loadSpinner(true);
     let body = {
       "productId": this.product.id,
@@ -93,13 +226,33 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.commentsService.addVersion(body).then((response: any) => {
       if (response.statusText === 'Created') {
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
-        this.close.emit(response.data)
+        this.showAddVersionForm = false;
+        this.versionForm.reset();
+        this.getAllVersions();
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
       }
       this.utilsService.loadSpinner(false);
     }).catch(err => {
       this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
+
+  getUserByAccountId(): void {
+    this.authApiService.getAllUsers('user/get_all_users?account_id=' + this.currentUser?.account_id).then((response: any) => {
+      if (response.status === 200 && response?.data) {
+        response.data.forEach((element: any) => {
+          element.name = element.first_name + " " + element.last_name;
+        });
+        this.reveiwerList = response.data;
+        this.getAllVersions();
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+        this.utilsService.loadSpinner(false);
+      }
+    }).catch((err: any) => {
+      this.utilsService.loadSpinner(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }

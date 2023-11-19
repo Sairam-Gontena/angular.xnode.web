@@ -30,6 +30,10 @@ export class AuthApiService extends BaseApiService {
     return this.get(url);
   }
 
+  getAllUsers(url: string) {
+    return this.get(url);
+  }
+
   login(body: any, url: string) {
     return this.post(url, body);
   }
