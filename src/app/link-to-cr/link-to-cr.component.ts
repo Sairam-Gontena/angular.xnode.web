@@ -31,7 +31,7 @@ export class LinkToCrComponent implements OnInit {
   prSpecsTitle: string = "";
   crForm!: FormGroup;
   priorityList: any = [{ label: 'High', value: 'HIGH' }, { label: 'Medium', value: 'MEDIUM' }, { label: 'Low', value: 'LOW' }];
-  versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
+  versionList: any = [];
   crList: any = [{ label: 'New Change Request', value: 'ADD_NEW' }]
   selectedReviewers: any;
   suggestions?: any[];
@@ -72,8 +72,27 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
-    console.log('comment', this.comment);
     this.getMeCrList();
+  }
+
+  getAllVersions() {
+    let body = {
+      "productId": this.product.id
+    }
+    this.commentsService.getVersions(body).then((response: any) => {
+      if (response.status == 200) {
+        response.data.forEach((element: any) => {
+          this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
+        });
+
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(err => {
+      this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 
   getMeCrList() {
@@ -87,10 +106,11 @@ export class LinkToCrComponent implements OnInit {
           element.value = element.id
         });
         this.crList = this.crList.concat(response.data);
+        this.getAllVersions();
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+        this.utilsService.loadSpinner(false);
       }
-      this.utilsService.loadSpinner(false);
     }).catch(err => {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
@@ -103,20 +123,11 @@ export class LinkToCrComponent implements OnInit {
       this.showNewCrPopup = true;
     } else {
       this.crList.forEach((cr: any) => {
-        console.log('cr.id', cr);
-        console.log('event', event);
-
-
         if (cr.value === event) {
-          console.log('cr', cr, event);
-
           this.crForm.patchValue({ 'priority': cr.priority, version: cr.versionId, dueDate: cr.dueDate })
         }
       })
-      console.log(' this.crForm', this.crForm.value);
-
     }
-
   }
 
   closePopUp(event: any) {
@@ -124,7 +135,6 @@ export class LinkToCrComponent implements OnInit {
   }
 
   updateLatestVersion(event: string) {
-
     this.versionList.shift();
     this.versionList.unshift({ version: event })
     this.versionList.unshift({ version: 'Add New Version' })
@@ -133,5 +143,29 @@ export class LinkToCrComponent implements OnInit {
   onSubmit(event: any): void {
     this.close.emit(false)
   }
+
+  linkCr(): void {
+    this.utilsService.loadSpinner(true);
+    const body = {
+      "crId": this.crForm.value.crToAdd,
+      "entityType": "COMMENT",
+      "entityId": this.comment.id,
+      "status": "",
+    }
+    this.commentsService.linkCr(body).then((response: any) => {
+      if (response) {
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'CR has been successfully linked' });
+        this.close.emit();
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(err => {
+      this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
+
+
 
 }

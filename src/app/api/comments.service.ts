@@ -56,5 +56,8 @@ export class CommentsService extends BaseApiService {
   createCr(body: any) {
     return this.post('change-request', body);
   }
+  linkCr(body: any) {
+    return this.post('cr-entity-mapping', body);
+  }
 }
 

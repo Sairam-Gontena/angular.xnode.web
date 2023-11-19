@@ -96,7 +96,8 @@
   <ng-template pTemplate="footer">
     <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
       (click)="close.emit(false)"></p-button>
-    <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+    <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+      (click)="linkCr()"></p-button>
   </ng-template>
 </p-dialog>
 
