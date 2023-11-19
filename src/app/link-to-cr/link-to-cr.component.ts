@@ -54,7 +54,7 @@ export class LinkToCrComponent implements OnInit {
     this.crForm = this.fb.group({
       priority: ['', [Validators.required]],
       version: ['', [Validators.required]],
-      dueDate: ['', [Validators.required]],
+      duedate: [null, [Validators.required]],
       crToAdd: ['', [Validators.required]],
       seqReview: ['', [Validators.required]],
     });
@@ -72,6 +72,9 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
+    this.crForm.controls['priority'].disable();
+    this.crForm.controls['version'].disable();
+    this.crForm.controls['duedate'].disable();
     this.getMeCrList();
   }
 
@@ -82,9 +85,9 @@ export class LinkToCrComponent implements OnInit {
     this.commentsService.getVersions(body).then((response: any) => {
       if (response.status == 200) {
         response.data.forEach((element: any) => {
-          this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
+          this.versionList.push({ label: element.version, value: element.id })
         });
-
+        console.log(' this.versionList', this.versionList);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
       }
@@ -102,8 +105,8 @@ export class LinkToCrComponent implements OnInit {
     this.commentsService.getChangeRequestList(body).then((response: any) => {
       if (response.status == 200 && response.data) {
         response.data.forEach((element: any) => {
-          element.label = element.crId + "-" + element.description;
-          element.value = element.id
+          element.label = element.crId;
+          element.value = element.id;
         });
         this.crList = this.crList.concat(response.data);
         this.getAllVersions();
@@ -119,26 +122,21 @@ export class LinkToCrComponent implements OnInit {
 
 
   onDropdownChange(event: any): void {
-    if (event === 'ADD_NEW') {
+    console.log('event', typeof event);
+    if (event.value === 'ADD_NEW') {
       this.showNewCrPopup = true;
-    } else {
-      this.crList.forEach((cr: any) => {
-        if (cr.value === event) {
-          this.crForm.patchValue({ 'priority': cr.priority, version: cr.versionId, dueDate: cr.dueDate })
-        }
-      })
+    } else if (event?.value !== '' && event?.value !== 'ADD_NEW') {
+      this.crForm.patchValue({ priority: this.priorityList.filter((obj: any) => { return obj.value === event.priority })[0], version: this.versionList.filter((obj: any) => { return obj.value === event.versionId })[0], duedate: new Date(event.duedate) })
+      console.log(' this.crForm>>>>>>', this.crForm.value);
     }
   }
 
   closePopUp(event: any) {
+    this.showNewCrPopup = false;
+    this.crList = [{ label: 'New Change Request', value: 'ADD_NEW' }];
     this.getMeCrList();
   }
 
-  updateLatestVersion(event: string) {
-    this.versionList.shift();
-    this.versionList.unshift({ version: event })
-    this.versionList.unshift({ version: 'Add New Version' })
-  }
 
   onSubmit(event: any): void {
     this.close.emit(false)

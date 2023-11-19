@@ -20,10 +20,9 @@ export class CreateNewCrVersionComponent implements OnInit {
   @Input() header: string = '';
   @Input() versions?: any;
   @Output() close = new EventEmitter<any>();
-  @Output() updateLatestVersion = new EventEmitter<string>();
   formGroup: FormGroup | undefined;
   crForm: FormGroup;
-  versionform: FormGroup;
+  versionForm: FormGroup;
   majorInputValue: any = '';
   minorInputValue: any = '';
   buildInputValue: any = '';
@@ -51,10 +50,10 @@ export class CreateNewCrVersionComponent implements OnInit {
       reason: ['', [Validators.required]],
       version: ['', [Validators.required]],
       priority: ['', [Validators.required]],
-      dueDate: ['', [Validators.required]],
+      duedate: ['', [Validators.required]],
       seqReview: ['', [Validators.required]],
     });
-    this.versionform = this.fb.group({
+    this.versionForm = this.fb.group({
       major: ['2311', [Validators.required]],
       minor: ['0', [Validators.required]],
       build: ['0', [Validators.required]],
@@ -145,8 +144,8 @@ export class CreateNewCrVersionComponent implements OnInit {
     }
     this.commentsService.createCr(body).then((response: any) => {
       if (response.statusText === 'Created') {
-        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
-        // this.close.emit(response.data)
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Change Request created successfully' });
+        this.close.emit(response.data)
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
       }
@@ -179,8 +178,30 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   saveVersion(): void {
-    this.showAddVersionForm = false;
-
+    this.utilsService.loadSpinner(true);
+    let body = {
+      "productId": this.product.id,
+      "major": this.versionForm.value.major,
+      "minor": this.versionForm.value.minor,
+      "build": this.versionForm.value.build,
+      "notes": {},
+      "attachments": [],
+      "createdBy": this.currentUser.user_id
+    }
+    this.commentsService.addVersion(body).then((response: any) => {
+      if (response.statusText === 'Created') {
+        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
+        this.showAddVersionForm = false;
+        this.versionForm.reset();
+        this.getAllVersions();
+      } else {
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch(err => {
+      this.utilsService.toggleTaskAssign(false);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 
   getUserByAccountId(): void {

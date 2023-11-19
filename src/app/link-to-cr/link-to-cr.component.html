@@ -11,7 +11,7 @@
             <img src="./assets/cr.svg" alt="cr">
           </span>
           <p-dropdown formControlName="crToAdd" [options]="crList" [(ngModel)]="crForm.value.crToAdd"
-            (ngModelChange)="onDropdownChange($event)"
+            (ngModelChange)="onDropdownChange($event)" optionLabel="label"
             placeholder="Add new or search exsiting change requests"></p-dropdown>
         </div>
         <p class="text-sm pointer mt-1 mb-0 api-ticket"><span><i class="pi pi-plus pr-2"></i></span> Connect with the
@@ -20,19 +20,20 @@
           system
         </p>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <label>Priority</label>
-        <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"></p-dropdown>
+        <p-dropdown formControlName="priority" [options]="priorityList" [disabled]="true"
+          optionLabel="label"></p-dropdown>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <label>To Version</label>
-        <p-dropdown [(ngModel)]="crForm.value.version" (ngModelChange)="onDropdownChange($event)"
-          formControlName="version" [options]="versionList" placeholder="Select"></p-dropdown>
+        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true" optionLabel="label"
+          optionValue="value"></p-dropdown>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <label>Due Date</label>
-        <p-calendar formControlName="dueDate" [showIcon]="true" placeholder="DD/MM/YYYY"
-          styleClass="due-date"></p-calendar>
+        <p-calendar formControlName="duedate" [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"
+          [disabled]="true"></p-calendar>
       </div>
       <div class="col-12 pb-0">
         <div class="flex justify-content-between flex-wrap">
@@ -102,5 +103,5 @@
 </p-dialog>
 
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR"
-  [versions]="versionList" (close)="closePopUp($event)" (updateLatestVersion)="updateLatestVersion($event)">
+  [versions]="versionList" (close)="closePopUp($event)">
 </xnode-create-new-cr-version>

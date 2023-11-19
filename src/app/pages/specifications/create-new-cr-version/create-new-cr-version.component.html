@@ -40,12 +40,12 @@
             <div class="col-4">
                 <label>Due Date</label>
                 <div class="p-inputgroup mt-1">
-                    <p-calendar formControlName="dueDate" [showIcon]="true" placeholder="DD/MM/YYYY"
+                    <p-calendar formControlName="duedate" [showIcon]="true" placeholder="DD/MM/YYYY"
                         styleClass="due-date"></p-calendar>
                 </div>
             </div>
             <div class="col-12 border-1 border-white-alpha-40 border-round-xl" *ngIf="showAddVersionForm">
-                <form [formGroup]="versionform">
+                <form [formGroup]="versionForm">
                     <div class="grid">
                         <div class="col-12">
                             <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true"
@@ -68,7 +68,7 @@
                         <div class="col-4">
                             <label>Build</label>
                             <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="build" />
+                                <input type="text" pInputText formControlName="build" [disabled]="true" />
                             </div>
                         </div>
                     </div>
