@@ -52,11 +52,13 @@ export class CreateNewCrVersionComponent implements OnInit {
       priority: ['', [Validators.required]],
       duedate: ['', [Validators.required]],
       seqReview: ['', [Validators.required]],
+      reviewersLOne: [[], [Validators.required]],
+      reviewersLTwo: [[], [Validators.required]],
     });
     this.versionForm = this.fb.group({
-      major: ['2311', [Validators.required]],
-      minor: ['0', [Validators.required]],
-      build: ['0', [Validators.required]],
+      major: ['', [Validators.required]],
+      minor: ['', [Validators.required]],
+      build: ['', [Validators.required]],
     });
   }
 
@@ -64,7 +66,32 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.utilsService.loadSpinner(true)
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
+    // this.versionForm.controls['build'].disable();
+
     this.getUserByAccountId();
+    if (this.versionForm) {
+      const majorControl = this.versionForm.get('major');
+      const minorControl = this.versionForm.get('minor');
+      // if (majorControl)
+      //   majorControl.valueChanges.subscribe((newValue: any) => {
+      //     console.log('newValue', newValue);
+
+      //     this.versionForm.patchValue({ minor: 0 });
+      //     this.versionForm.patchValue({ build: 0 });
+      //   });
+      // if (minorControl)
+      //   minorControl.valueChanges.subscribe((newValue: any) => {
+      //     console.log('>>>', newValue);
+
+      //     this.versionForm.patchValue({ build: 0 });
+      //   });
+    }
+    if (this.crForm) {
+      const reviewersControl = this.crForm.get('reviewersLOne');
+      if (reviewersControl)
+        reviewersControl.valueChanges.subscribe((newValue: any) => {
+        });
+    }
   }
 
   onDropdownChange(event: any): void {
@@ -73,16 +100,22 @@ export class CreateNewCrVersionComponent implements OnInit {
 
 
   getAllVersions() {
+    this.versionList = [{ label: 'Add New Version', value: 'ADD_NEW' }];
     let body = {
       "productId": this.product.id
     }
     this.commentsService.getVersions(body).then((response: any) => {
       if (response.status == 200) {
-        response.data.forEach((element: any) => {
+        response.data.forEach((element: any, index: any) => {
+          if (index === 0) {
+            this.versionForm.patchValue({ build: element.build + 1 })
+            this.versionForm.patchValue({ major: element.major });
+            this.versionForm.patchValue({ minor: element.minor });
+          }
           this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
         });
         if (this.newVersion) {
-          this.crForm.patchValue({ version: this.newVersion });
+          this.versionForm.patchValue({ version: this.newVersion });
           this.newVersion = false;
         }
       } else {
@@ -96,8 +129,6 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   save(event?: any): void {
-    console.log('event');
-    console.log('form', this.crForm);
     this.utilsService.loadSpinner(true);
     this.saveValue();
   }
@@ -129,6 +160,10 @@ export class CreateNewCrVersionComponent implements OnInit {
     return result;
   }
 
+  getMeReviewerIds() {
+    return this.crForm.value.reviewersLOne.concat(this.crForm.value.reviewersLTwo).map((obj: any) => obj.user_id);
+  }
+
   saveValue() {
     let body = {
       "author": this.currentUser.user_id,
@@ -136,7 +171,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       "description": this.crForm.value.description,
       "status": 'DRAFT',
       "reason": this.crForm.value.reason,
-      "reviewers": [],
+      "reviewers": this.getMeReviewerIds(),
       "versionId": this.crForm.value.version,
       "productId": this.product.id,
       "priority": this.crForm.value.priority,

@@ -44,6 +44,7 @@ export class LinkToCrComponent implements OnInit {
   formGroup: FormGroup | undefined;
   filteredReveiwers: any;
   currentUser: any;
+  reviewerList: any = [];
 
   constructor(private fb: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -56,7 +57,6 @@ export class LinkToCrComponent implements OnInit {
       version: ['', [Validators.required]],
       duedate: [null, [Validators.required]],
       crToAdd: ['', [Validators.required]],
-      seqReview: ['', [Validators.required]],
     });
   }
 
@@ -87,7 +87,6 @@ export class LinkToCrComponent implements OnInit {
         response.data.forEach((element: any) => {
           this.versionList.push({ label: element.version, value: element.id })
         });
-        console.log(' this.versionList', this.versionList);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
       }
@@ -122,12 +121,11 @@ export class LinkToCrComponent implements OnInit {
 
 
   onDropdownChange(event: any): void {
-    console.log('event', typeof event);
     if (event.value === 'ADD_NEW') {
       this.showNewCrPopup = true;
     } else if (event?.value !== '' && event?.value !== 'ADD_NEW') {
       this.crForm.patchValue({ priority: this.priorityList.filter((obj: any) => { return obj.value === event.priority })[0], version: this.versionList.filter((obj: any) => { return obj.value === event.versionId })[0], duedate: new Date(event.duedate) })
-      console.log(' this.crForm>>>>>>', this.crForm.value);
+      this.reviewerList = event.reviewers
     }
   }
 
@@ -163,7 +161,4 @@ export class LinkToCrComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-
-
-
 }

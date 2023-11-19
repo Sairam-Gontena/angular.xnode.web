@@ -1,27 +1,27 @@
-<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
+<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '40vw' }" [draggable]="false"
     [resizable]="false" (onHide)="closePopup()">
     <form [formGroup]="crForm" (ngSubmit)="onSubmit($event)">
         <div class="grid">
             <div class="col-12">
                 <label>Title</label>
                 <div class="p-inputgroup mt-1">
-                    <input type="text" pInputText formControlName="title" />
+                    <input type="text" pInputText formControlName="title" placeholder="Enter Title" />
                 </div>
             </div>
             <div class="col-12">
-                <label>CR & Description</label>
+                <label>CR Description</label>
                 <div class="p-inputgroup mt-1">
                     <span class="p-inputgroup-addon">
                         <img src="./assets/cr.svg" alt="cr">
-                        CR-{{crVersion}}
+                        #CR-
                     </span>
-                    <input type="text" pInputText formControlName="description" />
+                    <input type="text" pInputText formControlName="description" placeholder="Enter Description" />
                 </div>
             </div>
             <div class="col-12">
                 <label>Reason</label>
                 <div class="p-inputgroup mt-1">
-                    <input type="text" pInputText formControlName="reason" />
+                    <input type="text" pInputText formControlName="reason" placeholder="Enter Reason" />
                 </div>
             </div>
             <div class="col-4">
@@ -47,11 +47,9 @@
             <div class="col-12 border-1 border-white-alpha-40 border-round-xl" *ngIf="showAddVersionForm">
                 <form [formGroup]="versionForm">
                     <div class="grid">
-                        <div class="col-12">
-                            <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true"
-                                class="mr-2" (click)="showAddVersionForm = false"></p-button>
-                            <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
-                                (click)="saveVersion()"></p-button>
+                        <div class="col-12 text-right pb-0">
+                            <img src="../assets/version-close.svg" alt="close" class="mr-2 pointer">
+                            <img src="../assets/version-save.svg" alt="save" (click)="saveVersion()" class="pointer">
                         </div>
                         <div class="col-4">
                             <label>Major</label>
@@ -68,7 +66,7 @@
                         <div class="col-4">
                             <label>Build</label>
                             <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="build" [disabled]="true" />
+                                <input type="text" pInputText formControlName="build" readonly="true" />
                             </div>
                         </div>
                     </div>
@@ -94,7 +92,8 @@
                         L1
                     </span>
                     <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                        (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="w-full">
+                        formControlName="reviewersLOne" (completeMethod)="filteredReveiwer($event)" field="name"
+                        [multiple]="true" styleClass="w-full">
                         <ng-template let-reviewer pTemplate="selectedItem">
                             <div class="flex align-items-center">
                                 <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
@@ -112,7 +111,8 @@
                         L2
                     </span>
                     <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                        (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="w-full">
+                        (completeMethod)="filteredReveiwer($event)" formControlName="reviewersLTwo" field="name"
+                        [multiple]="true" styleClass="w-full">
                         <ng-template let-reviewer pTemplate="selectedItem">
                             <div class="flex align-items-center">
                                 <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">

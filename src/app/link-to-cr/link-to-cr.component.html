@@ -27,8 +27,8 @@
       </div>
       <div class="col-4">
         <label>To Version</label>
-        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true" optionLabel="label"
-          optionValue="value"></p-dropdown>
+        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true"
+          optionLabel="label"></p-dropdown>
       </div>
       <div class="col-4">
         <label>Due Date</label>
@@ -38,60 +38,22 @@
       <div class="col-12 pb-0">
         <div class="flex justify-content-between flex-wrap">
           <p class="m-0">
-            Add Reviewer
-          </p>
-          <p class="m-0 text-sm flex align-items-center">
-            <span class="mr-2">
-              <p-inputSwitch formControlName="seqReview"></p-inputSwitch>
-            </span>
-            Require sequential review in each level
+            Reviewers
           </p>
         </div>
       </div>
-      <!-- <div class="col-12">
+      <div class="col-12" *ngIf="reviewerList?.length">
         <div class="flex align-items-center">
           <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
             L1
           </div>
-          <div class="flex reviewer-grid">
-            <div class="flex reviewer-grid">
-              <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
-                <ng-template let-reviewer pTemplate="selectedItem">
-                  <div class="flex align-items-center">
-                    <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
-                      {{reduceToInitials(reviewer.name)}}
-                    </div>
-                    <span class="ml-2">{{ reviewer.name }}</span>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
+          <div class="flex reviewer-grid" *ngFor="let reviewer of reviewerList">
+            <div class="reviewer-chip">
+              {{reviewer.displayName}}
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <div class="flex align-items-center">
-          <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
-            L2
-          </div>
-          <div class="flex reviewer-grid">
-            <div class="flex reviewer-grid">
-              <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="flex-grow-1">
-                <ng-template let-reviewer pTemplate="selectedItem">
-                  <div class="flex align-items-center">
-                    <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
-                      {{reduceToInitials(reviewer.first_name)}}
-                    </div>
-                    <span class="ml-2">{{ reviewer.first_name }}</span>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </form>
   <ng-template pTemplate="footer">
