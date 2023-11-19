@@ -1,43 +1,131 @@
-<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '20vw' }" [draggable]="false"
+<p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '30vw' }" [draggable]="false"
     [resizable]="false" (onHide)="closePopup()">
-    <div class="grid">
-        <form [formGroup]="versionForm" (ngSubmit)="onSubmit($event)">
-            <div class="col-12 p-0 pl-2">
-                <div class="p-inputgroup p-0">
-                    <div class="col-12 p-0">
-                        <div class="col-6 p-0 mt-1">
-                            <span>Major</span>
-                            <div class="col-12 flex p-0 mt-2 ">
-                                <span class="p-inputgroup-addon">
-                                    <img src="./assets/cr.svg" alt="cr">
-                                </span>
-                                <input type="text" pInputText formControlName="major" class="col-12 ml-1 " />
+    <form [formGroup]="crForm" (ngSubmit)="onSubmit($event)">
+        <div class="grid">
+            <div class="col-12">
+                <label>Title</label>
+                <div class="p-inputgroup mt-1">
+                    <input type="text" pInputText formControlName="title" />
+                </div>
+            </div>
+            <div class="col-12">
+                <label>CR & Description</label>
+                <div class="p-inputgroup mt-1">
+                    <span class="p-inputgroup-addon">
+                        <img src="./assets/cr.svg" alt="cr">
+                        CR-{{crVersion}}
+                    </span>
+                    <input type="text" pInputText formControlName="description" />
+                </div>
+            </div>
+            <div class="col-12">
+                <label>Reason</label>
+                <div class="p-inputgroup mt-1">
+                    <input type="text" pInputText formControlName="reason" />
+                </div>
+            </div>
+            <div class="col-4">
+                <label>Version</label>
+                <div class="p-inputgroup mt-1">
+                    <p-dropdown [(ngModel)]="crForm.value.version" (ngModelChange)="onDropdownChange($event)"
+                        formControlName="version" [options]="versionList" placeholder="Select"></p-dropdown>
+                </div>
+            </div>
+            <div class="col-4">
+                <label>Prioriry</label>
+                <div class="p-inputgroup mt-1">
+                    <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"></p-dropdown>
+                </div>
+            </div>
+            <div class="col-4">
+                <label>Due Date</label>
+                <div class="p-inputgroup mt-1">
+                    <p-calendar formControlName="dueDate" [showIcon]="true" placeholder="DD/MM/YYYY"
+                        styleClass="due-date"></p-calendar>
+                </div>
+            </div>
+            <div class="col-12 border-1 border-white-alpha-40 border-round-xl" *ngIf="showAddVersionForm">
+                <form [formGroup]="versionform">
+                    <div class="grid">
+                        <div class="col-12">
+                            <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true"
+                                class="mr-2" (click)="showAddVersionForm = false"></p-button>
+                            <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+                                (click)="saveVersion()"></p-button>
+                        </div>
+                        <div class="col-4">
+                            <label>Major</label>
+                            <div class="p-inputgroup mt-1">
+                                <input type="text" pInputText formControlName="major" />
                             </div>
                         </div>
-                        <div class="col-6 p-0 mt-3">
-                            <span>Minor</span>
-                            <div class="col-12 flex p-0 mt-2 ">
-                                <span class="p-inputgroup-addon">
-                                    <img src="./assets/cr.svg" alt="cr">
-                                </span>
-                                <input type="text" pInputText formControlName="minor" class="col-12 ml-1 " />
+                        <div class="col-4">
+                            <label>Minor</label>
+                            <div class="p-inputgroup mt-1">
+                                <input type="text" pInputText formControlName="minor" />
                             </div>
                         </div>
-                        <div class="col-6 p-0 mt-3">
-                            <span>Build</span>
-                            <div class="col-12 flex p-0 mt-2 ">
-                                <span class="p-inputgroup-addon">
-                                    <img src="./assets/cr.svg" alt="cr">
-                                </span>
-                                <input type="text" pInputText formControlName="build" class="col-12 ml-1 "
-                                    aria-disabled="true" />
+                        <div class="col-4">
+                            <label>Build</label>
+                            <div class="p-inputgroup mt-1">
+                                <input type="text" pInputText formControlName="build" />
                             </div>
                         </div>
                     </div>
+                </form>
+            </div>
+
+            <div class="col-12 pb-0">
+                <div class="flex justify-content-between flex-wrap">
+                    <p class="m-0">
+                        Add Reviewer
+                    </p>
+                    <p class="m-0 text-sm flex align-items-center">
+                        <span class="mr-2">
+                            <p-inputSwitch formControlName="seqReview"></p-inputSwitch>
+                        </span>
+                        Require sequential review in each level
+                    </p>
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="col-12">
+                <div class="p-inputgroup mt-1">
+                    <span class="p-inputgroup-addon">
+                        L1
+                    </span>
+                    <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
+                        (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="w-full">
+                        <ng-template let-reviewer pTemplate="selectedItem">
+                            <div class="flex align-items-center">
+                                <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
+                                    {{reduceToInitials(reviewer.name)}}
+                                </div>
+                                <span class="ml-2">{{ reviewer.name }}</span>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="p-inputgroup mt-1">
+                    <span class="p-inputgroup-addon">
+                        L2
+                    </span>
+                    <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
+                        (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="w-full">
+                        <ng-template let-reviewer pTemplate="selectedItem">
+                            <div class="flex align-items-center">
+                                <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
+                                    {{reduceToInitials(reviewer.first_name)}}
+                                </div>
+                                <span class="ml-2">{{ reviewer.first_name }}</span>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+            </div>
+        </div>
+    </form>
     <ng-template pTemplate="footer">
         <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
             (click)="closePopup()"></p-button>

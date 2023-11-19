@@ -50,5 +50,11 @@ export class CommentsService extends BaseApiService {
   getVersions(body: any) {
     return this.get('product-version', body);
   }
+  getChangeRequestList(body: any) {
+    return this.get('change-request', body);
+  }
+  createCr(body: any) {
+    return this.post('change-request', body);
+  }
 }
 

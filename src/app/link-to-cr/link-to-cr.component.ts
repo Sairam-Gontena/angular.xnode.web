@@ -32,6 +32,7 @@ export class LinkToCrComponent implements OnInit {
   crForm!: FormGroup;
   priorityList: any = [{ label: 'High', value: 'HIGH' }, { label: 'Medium', value: 'MEDIUM' }, { label: 'Low', value: 'LOW' }];
   versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
+  crList: any = [{ label: 'New Change Request', value: 'ADD_NEW' }]
   selectedReviewers: any;
   suggestions?: any[];
   reviewers?: any[];
@@ -71,40 +72,21 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
-    this.getUserByAccountId();
+    console.log('comment', this.comment);
+    this.getMeCrList();
   }
 
-  getUserByAccountId(): void {
-    this.authApiService.getAllUsers('user/get_all_users?account_id=' + this.currentUser?.account_id).then((response: any) => {
-      if (response.status === 200 && response?.data) {
-        response.data.forEach((element: any) => {
-          element.name = element.first_name + " " + element.last_name;
-        });
-        this.reveiwerList = response.data;
-        this.getAllVersions();
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-        this.utilsService.loadSpinner(false);
-      }
-    }).catch((err: any) => {
-      this.utilsService.loadSpinner(false);
-      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    })
-  }
-
-  getAllVersions() {
+  getMeCrList() {
     let body = {
       "productId": this.product.id
     }
-    this.commentsService.getVersions(body).then((response: any) => {
-      if (response.status == 200) {
+    this.commentsService.getChangeRequestList(body).then((response: any) => {
+      if (response.status == 200 && response.data) {
         response.data.forEach((element: any) => {
-          this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
+          element.label = element.crId + "-" + element.description;
+          element.value = element.id
         });
-        if (this.newVersion) {
-          this.crForm.patchValue({ version: this.newVersion });
-          this.newVersion = undefined;
-        }
+        this.crList = this.crList.concat(response.data);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
       }
@@ -115,43 +97,30 @@ export class LinkToCrComponent implements OnInit {
     })
   }
 
-  filteredReveiwer(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
-      let reveiwer = (this.reveiwerList as any[])[i];
-      if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(reveiwer);
-      }
-    }
-    this.filteredReveiwers = filtered;
-  }
-
-  search(event: AutoCompleteCompleteEvent) {
-    this.suggestions = [...Array(10).keys()].map(item => event.query + '-' + item);
-  }
-
-  reduceToInitials(fullName: string): string {
-    const nameParts = fullName.split(' ');
-    const initials = nameParts.map(part => part.charAt(0));
-    const reducedName = initials.join('');
-    return reducedName;
-  }
 
   onDropdownChange(event: any): void {
     if (event === 'ADD_NEW') {
       this.showNewCrPopup = true;
+    } else {
+      this.crList.forEach((cr: any) => {
+        console.log('cr.id', cr);
+        console.log('event', event);
+
+
+        if (cr.value === event) {
+          console.log('cr', cr, event);
+
+          this.crForm.patchValue({ 'priority': cr.priority, version: cr.versionId, dueDate: cr.dueDate })
+        }
+      })
+      console.log(' this.crForm', this.crForm.value);
+
     }
+
   }
 
   closePopUp(event: any) {
-    if (event?.id) {
-      this.newVersion = event.major + '.' + event.minor + '.' + event.build;
-      this.getAllVersions();
-    } else {
-      this.crForm.patchValue({ version: '' });
-    }
-    this.showNewCrPopup = false;
+    this.getMeCrList();
   }
 
   updateLatestVersion(event: string) {
