@@ -55,8 +55,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="isCommnetsPanelOpened ? 'commnets-panel-grid' : 'hidden'">
-        <xnode-comments-cr-panel class="w-full" [specData]="specData" [list]="list"
-            [usersList]="usersList"></xnode-comments-cr-panel>
+    <div *ngIf="isCommnetsPanelOpened" class="comments-panel">
+        <xnode-comments-cr-panel class="w-full" [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
     </div>
 </div>

@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class='comments-grid' *ngIf="commenttasksList && commenttasksList.length >0">
-        <xnode-spec-conversation [activeIndex]="activeIndex" [list]="commenttasksList" [usersList]="usersList"
-            [topParentId]="selectedComment?.id"></xnode-spec-conversation>
+        <xnode-spec-conversation [activeIndex]="activeIndex" [usersList]="usersList" [topParentId]="selectedComment?.id"
+            [list]="commenttasksList"></xnode-spec-conversation>
     </div>
 </div>

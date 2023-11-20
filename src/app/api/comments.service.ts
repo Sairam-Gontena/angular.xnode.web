@@ -32,6 +32,7 @@ export class CommentsService extends BaseApiService {
   addComments(body: any) {
     return this.post('comment', body);
   }
+
   addTask(body: any) {
     return this.post('task', body);
   }
@@ -41,6 +42,22 @@ export class CommentsService extends BaseApiService {
   }
   deletTask(id: any) {
     return this.delete('task/' + id);
+  }
+
+  addVersion(body: any) {
+    return this.post('product-version', body);
+  }
+  getVersions(body: any) {
+    return this.get('product-version', body);
+  }
+  getChangeRequestList(body: any) {
+    return this.get('change-request', body);
+  }
+  createCr(body: any) {
+    return this.post('change-request', body);
+  }
+  linkCr(body: any) {
+    return this.post('cr-entity-mapping', body);
   }
 }
 

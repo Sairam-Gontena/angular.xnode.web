@@ -79,3 +79,7 @@
     border: 1px solid var(--primary-color) !important;
 
 }
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items :hover {
+    background: #5b5d61 !important;
+}
