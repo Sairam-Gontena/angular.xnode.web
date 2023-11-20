@@ -39,7 +39,7 @@
             <div class="flex flex-row justify-content-between w-full">
               <div class="flex flex-row align-items-center">
                 <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
-                <p class="my-0 text-gray-200">{{data?.description}}</p>
+                <p class="my-0 text-gray-200">{{data?.title}}</p>
               </div>
               <div class="flex flex-row">
                 <span *ngFor="let reviewers of data?.reviewers">
@@ -69,21 +69,18 @@
             </div>
             <div class="py-2 border-bottom-1 px-3">
               <div class="flex flex-row justify-content-between">
-                <div class="flex flex-column h-full">
-                  <div>
-                    <i class="pi pi-plus text-200 text-sm border-1 border-200 border-round-sm p-1 mx-2"></i>
+                <div class="">
+                  <div class="relative">
+                    <i class="pi pi-plus text-sm border-1 border-200 border-round-sm mx-2" [ngStyle]="{'background-color':'#EFEEEE'}"></i>
                   </div>
-                  <img src="../../assets/verticalLine.svg" alt="vertical" class="h-5rem pt-2"/>
-                </div>
-                <div>
-                <ul class="text-content ml-2 text-sm font-normal">
-                  <li>
-                    {{truncateText(subData?.comment?.referenceContent?.content, 180)}}
-                    <!-- {{subData?.comment?.referenceContent?.content}} -->
-                  </li>
-                </ul>
+                <p class="text-content ml-3 pl-4 text-sm font-normal border-left-1 border-50">
+                    {{subData?.comment?.referenceContent?.content}}
+                </p>
                 </div>
               </div>
+              <span class="text-lg my-2 text-gray-200 flex align-items-center">
+                {{subData.comment.message}}
+              </span>
             </div>
         </div>
     </ng-template>

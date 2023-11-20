@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { UtilsService } from '../components/services/utils.service';
 @Component({
   selector: 'xnode-cr-tabs',
   templateUrl: './cr-tabs.component.html',
@@ -10,8 +11,8 @@ export class CrTabsComponent {
   currentUser: any;
   crData:any;
   subCRData:any;
-  constructor(private api:ApiService){
-
+  constructor(private api:ApiService,
+    private utilsService: UtilsService){
   }
 
   ngOnInit(){
@@ -24,28 +25,39 @@ export class CrTabsComponent {
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
-    this.getCRList();
   }
 
   getCRList(){
     const prodId = localStorage.getItem('record_id');
+    this.utilsService.loadSpinner(true);
     this.api.getComments('change-request?productId='+prodId).then((res:any)=>{
-      this.crData = res.data;
+      if(res){
+        this.crData = res.data;
+      }else{
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
     }).catch((err:any)=>{
       console.log(err)
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      this.utilsService.loadSpinner(false);
     });
   }
 
   getCRDetails(crId:any){
+    this.utilsService.loadSpinner(true);
     this.api.getComments('cr-entity-mapping?crId='+crId).then((res:any)=>{
-      this.subCRData = res.data
+      if(res){
+        this.subCRData = res.data;
+      }else{
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.common?.status });
+      }
+      this.utilsService.loadSpinner(false);
     }).catch((err:any)=>{
-      console.log(err)
+      console.log(err);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      this.utilsService.loadSpinner(false);
     })
-  }
-
-  truncateText(text: string, length: number): string {
-    return text.length > length ? text.substring(0, length) + ' ...' : text;
   }
 
   getMeUserAvatar(report?: any) {
