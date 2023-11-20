@@ -143,7 +143,7 @@ export class LinkToCrComponent implements OnInit {
   linkCr(): void {
     this.utilsService.loadSpinner(true);
     const body = {
-      "crId": this.crForm.value.crToAdd,
+      "crId": this.crForm.value.crToAdd.id,
       "entityType": "COMMENT",
       "entityId": this.comment.id,
       "status": "",
