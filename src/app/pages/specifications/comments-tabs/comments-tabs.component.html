@@ -3,7 +3,6 @@
     <xnode-comments-panel [usersList]="usersList"></xnode-comments-panel>
   </p-tabPanel>
   <p-tabPanel [header]="'Tasks'">
-    <!-- <xnode-no-comments *ngIf="list?.length === 0; else conversationComments"></xnode-no-comments> -->
-    <!-- <xnode-comments-panel [activeIndex]="'1'" [commenttasksList]="list" [usersList]="usersList"></xnode-comments-panel> -->
+    <xnode-tasks-panel [usersList]="usersList"></xnode-tasks-panel>
   </p-tabPanel>
 </p-tabView>

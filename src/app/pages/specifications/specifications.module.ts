@@ -28,6 +28,8 @@ import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
 import { ConversationActionsComponent } from './conversation-actions/conversation-actions.component';
 import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-cr-version.component';
 import { SpecChildConversationComponent } from './spec-child-conversation/spec-child-conversation.component';
+import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
+import { TaskListComponent } from './task-list/task-list.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -52,7 +54,9 @@ import { SpecChildConversationComponent } from './spec-child-conversation/spec-c
     LinkToCrComponent,
     ConversationActionsComponent,
     CreateNewCrVersionComponent,
-    SpecChildConversationComponent
+    SpecChildConversationComponent,
+    TasksPanelComponent,
+    TaskListComponent
   ],
   imports: [
     CommonModule,
