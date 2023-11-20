@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="col-12" *ngIf=" activeIndex ? cmt.description : cmt.referenceContent.content">
+        <div class="col-12" *ngIf=" activeIndex ? cmt.description : cmt.referenceContent?.content">
             <p class="mt-0 content-title text-xs">{{activeIndex ? cmt.title : cmt.referenceContent.title }}</p>
             <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
                 {{activeIndex ? cmt?.description : cmt?.referenceContent?.content }} </p>
