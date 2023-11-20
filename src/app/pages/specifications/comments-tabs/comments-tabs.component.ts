@@ -17,12 +17,13 @@ export class CommentsTabsComponent implements OnInit {
   tabTypes: Array<string> = ['Comments', 'Tasks'];
   constructor(public utils: UtilsService,
     private commentsService: CommentsService) {
-    // this.utils.getMeTaskAssigned.subscribe((taskAssigned) => {
-    //   if (taskAssigned) {
-    //     this.activeIndex = 1;
-    //     this.getMeTasksList();
-    //   }
-    // });
+    this.utils.getMeLatestConversation.subscribe((event: any) => {
+      if (event === 'COMMENT') {
+        this.activeIndex = 0;
+      } else if (event === 'TASK') {
+        this.activeIndex = 1;
+      }
+    })
   }
 
   ngOnInit(): void {

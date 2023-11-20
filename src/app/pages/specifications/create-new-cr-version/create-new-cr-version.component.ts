@@ -74,14 +74,12 @@ export class CreateNewCrVersionComponent implements OnInit {
       const minorControl = this.versionForm.get('minor');
       // if (majorControl)
       //   majorControl.valueChanges.subscribe((newValue: any) => {
-      //     console.log('newValue', newValue);
 
       //     this.versionForm.patchValue({ minor: 0 });
       //     this.versionForm.patchValue({ build: 0 });
       //   });
       // if (minorControl)
       //   minorControl.valueChanges.subscribe((newValue: any) => {
-      //     console.log('>>>', newValue);
 
       //     this.versionForm.patchValue({ build: 0 });
       //   });

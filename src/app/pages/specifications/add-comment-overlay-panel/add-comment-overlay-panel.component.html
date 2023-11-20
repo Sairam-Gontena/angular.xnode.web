@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="col-12 add-comments-footer align-items-center flex pl-4 pt-3 pb-3 " *ngIf="assinedUsers.length > 0">
-        <p-checkbox name="assign" [value]="true" [(ngModel)]="assignAsaTask" inputId="ny"></p-checkbox>
-        <label class="text-sm font-normal text-200 pl-2">Assign as a Task</label>
+        <p-checkbox name="assign" value="ASSIGN_AS_A_TASK" [(ngModel)]="assignAsaTask"></p-checkbox>
+        <label class=" text-sm font-normal text-200 pl-2">Assign as a Task</label>
     </div>
 </div>

@@ -100,15 +100,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {}
       }
     }
-
-    if (this.activeIndex == 1) {
-      this.saveTask()
+    if (this.assignAsaTask || this.activeIndex === 1) {
+      this.prepareDataToSaveAsTask()
     } else {
-      if (this.assignAsaTask) {
-        this.saveTask()
-      } else {
-        this.saveComment(body);
-      }
+      this.saveComment(body);
     }
   }
 
@@ -137,7 +132,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-  saveTask(): void {
+
+  prepareDataToSaveAsTask(): void {
     let body;
     if (this.action === 'EDIT') {
       body = {
@@ -172,11 +168,16 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "deadline": ""
       }
     }
+    this.saveAsTask(body);
+  }
+
+  saveAsTask(body: any): void {
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
-        // this.utils.updateConversationList(this.commentType);
-        // this.utils.openOrClosePanel(SidePanel.Comments);
-        // this.utils.updateConversationList('task')
+        if (this.isCommnetsPanelOpened)
+          this.utils.updateConversationList('TASK');
+        else
+          this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
         this.closeOverlay.emit();
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });

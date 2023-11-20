@@ -119,6 +119,7 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   openComments() {
     this.utils.openOrClosePanel(SidePanel.Comments);
+    this.utils.updateConversationList(null);
   }
 
   openCRs() {
