@@ -1,7 +1,8 @@
 // @import "bootstrap/scss/bootstrap";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "primeicons/primeicons.css";
-// @import './theme.scss';
+// @import './themes/viva-dark/theme.css';
+@import './theme.scss';
 // @import './app/styles/overrides.scss';
 // @import './app/styles/utils.scss';
 @import 'node_modules/bpmn-js/dist/assets/diagram-js.css';
@@ -23,6 +24,7 @@ html {
 body {
   font-family: var(--font-family);
   margin: 0;
+  background: var(--surface-section);
   // background: #3A3942;
   overflow: hidden;
 }
