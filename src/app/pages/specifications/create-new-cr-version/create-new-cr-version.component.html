@@ -5,23 +5,25 @@
             <div class="col-12">
                 <label>Title</label>
                 <div class="p-inputgroup mt-1">
+                    <span class="p-inputgroup-addon">
+                        <img src="./assets/cr.svg" alt="cr">
+                        #CR-
+                    </span>
                     <input type="text" pInputText formControlName="title" placeholder="Enter Title" />
                 </div>
             </div>
             <div class="col-12">
                 <label>CR Description</label>
                 <div class="p-inputgroup mt-1">
-                    <span class="p-inputgroup-addon">
-                        <img src="./assets/cr.svg" alt="cr">
-                        #CR-
-                    </span>
-                    <input type="text" pInputText formControlName="description" placeholder="Enter Description" />
+                    <textarea pInputTextarea formControlName="description" class="border-round-md"
+                        placeholder="Enter Description"></textarea>
                 </div>
             </div>
             <div class="col-12">
                 <label>Reason</label>
                 <div class="p-inputgroup mt-1">
-                    <input type="text" pInputText formControlName="reason" placeholder="Enter Reason" />
+                    <textarea pInputTextarea pInputText formControlName="reason" class="border-round-md"
+                        placeholder="Enter Reason"></textarea>
                 </div>
             </div>
             <div class="col-4">

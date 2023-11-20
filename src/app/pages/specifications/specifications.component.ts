@@ -34,8 +34,6 @@ export class SpecificationsComponent implements OnInit {
   isNaviOpened = false
   isSideMenuOpened = true
   product: any;
-  isCommnetsPanelOpened?: boolean = false;
-  isCRsPanelOpened: boolean = false;
   isTheCurrentUserOwner: boolean = false;
   isTheSpecGenerated?: boolean;
   consversationList: any;
@@ -52,10 +50,6 @@ export class SpecificationsComponent implements OnInit {
     private searchSpec: SearchspecService,
     private localStorageService: LocalStorageService
   ) {
-    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
-      this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
-    })
     this.utils.isInSameSpecPage.subscribe((res) => {
       if (res) {
         this.getMeSpecList();
@@ -66,7 +60,7 @@ export class SpecificationsComponent implements OnInit {
       this.isSideMenuOpened = data;
     })
     this.utils.openDockedNavi.subscribe((data: any) => {
-      this.isCommnetsPanelOpened = false;
+      // this.isCommnetsPanelOpened = false;
       if (data) {
         this.utils.disableSpecSubMenu();
         this.isNaviOpened = true;
