@@ -51,10 +51,6 @@ export class CommentsCrPanelComponent implements OnInit {
     }
   }
 
-  callMyChild(){
-    this.child.getCRList();
-  }
-
   onClickClose() {
     this.utils.openOrClosePanel(SidePanel.None);
     this.utils.saveSelectedSection(null);
