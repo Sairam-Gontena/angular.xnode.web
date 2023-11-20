@@ -1,11 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
-import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
-import { AuditInfo } from 'src/models/audit-info';
-import { ApiService } from 'src/app/api/api.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
@@ -13,6 +9,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   templateUrl: './comments-panel.component.html',
   styleUrls: ['./comments-panel.component.scss']
 })
+
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() commenttasksList: any;
@@ -36,28 +33,42 @@ export class CommentsPanelComponent implements OnInit {
   selectedIndex?: number;
   enableDeletePrompt: boolean = false;
   action?: string;
-
+  list: any = [];
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
 
   constructor(private utils: UtilsService, private commentsService: CommentsService,
-    private apiservice: ApiService, private sanitizer: DomSanitizer) {
-    this.utils.getMeSelectedSection.subscribe((event: any) => {
-      this.selectedSection = event;
-    });
-    let data = localStorage.getItem("currentUser")
-    if (data) {
-      this.currentUser = JSON.parse(data);
-      this.username = this.currentUser.first_name.toUpperCase() + ' ' + this.currentUser.last_name.toUpperCase();
-      if (this.currentUser.first_name && this.currentUser.last_name) {
-        this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
+    private sanitizer: DomSanitizer) {
+    this.utils.getMeLatestConversation.subscribe((event: any) => {
+      if (event === 'COMMENT') {
+        console.log('eventeventeventevent', event);
+
+        this.getMeCommentsList();
       }
-    }
+    })
   }
 
   ngOnInit(): void {
+    this.getMeCommentsList();
+  }
 
+  getMeCommentsList() {
+    this.utils.loadSpinner(true);
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.list = response.data;
+        }
+        this.utils.loadSpinner(false);
+      }).catch(err => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+    }
   }
 
   onClickReply(cmt: any): void {
@@ -83,7 +94,7 @@ export class CommentsPanelComponent implements OnInit {
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.updateCommnetsList('reply');
+        this.utils.updateConversationList('reply');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {

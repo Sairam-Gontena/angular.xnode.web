@@ -25,23 +25,11 @@ export class CommentsCrPanelComponent implements OnInit {
   };
   comment: any;
   currentUser: any;
-  selectedSection: any;
 
-  constructor(private utils: UtilsService, private commentsService: CommentsService) {
-    this.utils.getMeSelectedSection.subscribe((event: any) => {
-      this.selectedSection = event;
-    })
+  constructor(private utils: UtilsService) {
   }
 
   ngOnInit(): void {
-    let data = localStorage.getItem("currentUser")
-    if (data) {
-      this.currentUser = JSON.parse(data);
-      this.username = this.currentUser.first_name.toUpperCase() + ' ' + this.currentUser.last_name.toUpperCase();
-      if (this.currentUser.first_name && this.currentUser.last_name) {
-        this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
-      }
-    }
   }
 
   onClickClose() {

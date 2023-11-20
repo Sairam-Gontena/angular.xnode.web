@@ -27,6 +27,7 @@ import { SpecConversationComponent } from 'src/app/pages/specifications/spec-con
 import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
 import { ConversationActionsComponent } from './conversation-actions/conversation-actions.component';
 import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-cr-version.component';
+import { SpecChildConversationComponent } from './spec-child-conversation/spec-child-conversation.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -50,7 +51,8 @@ import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-
     SpecConversationComponent,
     LinkToCrComponent,
     ConversationActionsComponent,
-    CreateNewCrVersionComponent
+    CreateNewCrVersionComponent,
+    SpecChildConversationComponent
   ],
   imports: [
     CommonModule,

@@ -1,24 +1,27 @@
-<div class="p-4">
-    <div class="grid">
-        <div class="col-6">
-            <div class="flex align-items-center filter-grid ">
-                <p class="m-0 pl-2">Filters:</p>
-                <p-dropdown [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
-                    optionLabel="label"></p-dropdown>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="flex align-items-center search-grid">
-                <div class="p-inputgroup">
-                    <input type="text" pInputText />
-                    <button type="button" pButton icon="pi pi-search" styleClass="p-button-warn"></button>
+<xnode-no-comments *ngIf="list?.length === 0; else conversationComments"></xnode-no-comments>
+<ng-template #conversationComments>
+    <div class="p-4">
+        <div class="grid">
+            <div class="col-6">
+                <div class="flex align-items-center filter-grid ">
+                    <p class="m-0 pl-2">Filters:</p>
+                    <p-dropdown [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
+                        optionLabel="label"></p-dropdown>
                 </div>
-                <img src="./assets/user.svg" alt="user" />
+            </div>
+            <div class="col-6">
+                <div class="flex align-items-center search-grid">
+                    <div class="p-inputgroup">
+                        <input type="text" pInputText />
+                        <button type="button" pButton icon="pi pi-search" styleClass="p-button-warn"></button>
+                    </div>
+                    <img src="./assets/user.svg" alt="user" />
+                </div>
             </div>
         </div>
+        <div class='comments-grid'>
+            <xnode-spec-conversation [activeIndex]="activeIndex" [list]="list" [usersList]="usersList"
+                [topParentId]="selectedComment?.id"></xnode-spec-conversation>
+        </div>
     </div>
-    <div class='comments-grid' *ngIf="commenttasksList && commenttasksList.length >0">
-        <xnode-spec-conversation [activeIndex]="activeIndex" [usersList]="usersList" [topParentId]="selectedComment?.id"
-            [list]="commenttasksList"></xnode-spec-conversation>
-    </div>
-</div>
+</ng-template>

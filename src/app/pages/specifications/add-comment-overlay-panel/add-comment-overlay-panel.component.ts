@@ -35,6 +35,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   listToMention: any;
   config: MentionConfig = {};
   references: any;
+  isCommnetsPanelOpened: boolean = false;
 
   constructor(public utils: UtilsService,
     private commentsService: CommentsService) {
@@ -47,6 +48,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (product) {
       this.product = JSON.parse(product);
     }
+
+    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
+    });
   }
 
   ngOnInit(): void {
@@ -70,6 +75,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
+    this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
       this.commentType = 'comment';
@@ -110,16 +116,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.toggleTaskAssign(false);
-        this.utils.updateCommnetsList(this.commentType);
-        this.utils.openOrClosePanel(SidePanel.Comments);
+        if (this.isCommnetsPanelOpened)
+          this.utils.updateConversationList('COMMENT');
+        else
+          this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
         this.closeOverlay.emit();
         let detail = 'Comment added successfully'
         if (this.action == 'EDIT') {
-          detail = 'Comment edited successfully'
+          detail = 'Comment edited successfully';
         }
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
       } else {
+        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
       this.utils.loadSpinner(false);
@@ -165,9 +174,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
-        this.utils.updateCommnetsList(this.commentType);
-        this.utils.openOrClosePanel(SidePanel.Comments);
-        this.utils.updateCommnetsList('task')
+        // this.utils.updateConversationList(this.commentType);
+        // this.utils.openOrClosePanel(SidePanel.Comments);
+        // this.utils.updateConversationList('task')
         this.comment = '';
         this.closeOverlay.emit();
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
