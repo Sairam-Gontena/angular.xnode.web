@@ -20,18 +20,21 @@ export class SpecConversationComponent {
   comment: any;
   currentUser: any;
   selectedSection: any;
+  showNewCrPopup: boolean = false;
   selectedComment: any;
   showCommentInput: boolean = false;
   openEditComment: boolean = false;
   selectedIndex?: number;
   showDeletePopup: boolean = false;
   action?: string;
-  showPrWindow: boolean = false;
+  showCrPopup: boolean = false;
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
   showReplies: boolean = false;
   replies: any;
+  specListCopy: any;
+  specList: any[] = [];
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -39,19 +42,41 @@ export class SpecConversationComponent {
     private messagingService: MessagingService) {
     this.utils.getMeLatestComments.subscribe((event: any) => {
       if (event === 'reply') {
-        this.viewReplies(this.selectedComment);
+        // this.viewReplies(this.selectedComment);
         this.showCommentInput = false;
         this.action = ''
       }
     })
   }
 
+  ngOnInit() {
+    if(this.list?.[0]?.parentEntity=="COMMENT"){
+      this.specListCopy = this.list;
+      this.specList = this.list.slice(0, 2);
+    }else{
+      this.specList = this.list;
+    }
+  }
+
+  loadComments(change:string) {
+    if(change==='increment'){
+      const startIndex = this.specList.length;
+      const endIndex = Math.min(startIndex + 2, this.specListCopy.length);
+      const newItems  = this.specListCopy.slice(startIndex, endIndex);
+      this.specList.push(...newItems);
+    }else{
+      this.specList = this.specListCopy.slice(0, 2);
+    }
+  }
+
   setAvatar(userObj: any): string {
     let avatar: string = '';
-    if (this.activeIndex == 0 && userObj.createdBy && userObj.createdBy?.displayName) {
+    if (userObj.createdBy && userObj.createdBy?.displayName) {
       avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
-    } else if (this.activeIndex == 0 && userObj.assignee && userObj.assignee?.displayName) {
+    } else if (userObj.assignee && userObj.assignee?.displayName) {
       avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
+    } else {
+      avatar = '';
     }
     return avatar;
   }
@@ -61,7 +86,7 @@ export class SpecConversationComponent {
       this.onClickReply(data.cmt);
     } if (data.action === 'EDIT') {
       this.editComment(data.cmt);
-    } if (data.action === 'LINKTOCR') {
+    } if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
     } if (data.action === 'DELETE') {
       this.deleteCurrentComment(data.cmt);
@@ -93,12 +118,35 @@ export class SpecConversationComponent {
   }
 
   handleDeleteConfirmation(event: boolean): void {
+    if (this.activeIndex == 0) {
+      this.deleteComment(event)
+    } else if (this.activeIndex == 1) {
+      this.deleteTask(event)
+    }
+  }
+
+  deleteComment(event: boolean) {
     this.utils.loadSpinner(true);
     this.showDeletePopup = event;
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
         this.utils.updateCommnetsList('comment');
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      this.utils.loadSpinner(false);
+    })
+  }
+
+  deleteTask(event: boolean) {
+    this.utils.loadSpinner(true);
+    this.showDeletePopup = event;
+    this.commentsService.deletTask(this.selectedComment.id).then(res => {
+      if (res) {
+        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
+        this.utils.updateCommnetsList('task');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -115,6 +163,26 @@ export class SpecConversationComponent {
       return spanWithId;
     });
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+  }
+  modifiedTimeDifference(modifiedOn: Date): string {
+    const now = new Date();
+    const modifiedTime = new Date(modifiedOn);
+    const timeDifference = now.getTime() - modifiedTime.getTime();
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    if (minutesDifference < 1) {
+      return 'Just now';
+    } else if (minutesDifference === 1) {
+      return '1m ago';
+    } else if (minutesDifference < 60) {
+      return `${minutesDifference}m ago`;
+    } else {
+      const hoursDifference = Math.floor(minutesDifference / 60);
+      if (hoursDifference === 1) {
+        return '1h ago';
+      } else {
+        return `${hoursDifference}h ago`;
+      }
+    }
   }
 
   viewReplies(cmt?: any) {
@@ -161,9 +229,11 @@ export class SpecConversationComponent {
 
 
   linkToCr(cmt?: any) {
+    console.log('cmt', cmt);
+    
     if (cmt) {
       this.selectedComment = cmt;
-      this.showPrWindow = true;
+      this.showCrPopup = true;
       this.messagingService.sendMessage({
         msgType: MessageTypes.LinkToCR,
         msgData: cmt

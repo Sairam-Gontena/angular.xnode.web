@@ -17,9 +17,10 @@ export class ConfirmationPopupComponent implements OnInit {
   @Input() data: any;
   @Output() confirmationAction = new EventEmitter<boolean>();
   @Output() toggleAlert = new EventEmitter<boolean>();
-  @Input() visibleAlert:boolean=false;
-  notUserRelated:boolean=false;
-  header:any;
+  @Input() visibleAlert: boolean = false;
+  @Input() activeIndex?: number;
+  notUserRelated: boolean = false;
+  header: any;
   invitationType: string = '';
   showPopup: boolean = false;
   currentUser?: any;
@@ -29,10 +30,10 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.data==='showDeletePopup'){
+    if (this.data === 'showDeletePopup') {
       this.notUserRelated = true;
       this.header = 'Confirmation';
-      this.invitationType = 'delete this comment';
+      this.activeIndex == 0 ? this.invitationType = 'delete this comment' : this.invitationType = 'delete this task';
       this.showPopup = true;
     }
   }
@@ -44,7 +45,7 @@ export class ConfirmationPopupComponent implements OnInit {
       this.currentUser = parsedData;
     }
     const userData = changes['data'].currentValue.userData;
-    if (this.data && this.data!='showDeletePopup') {
+    if (this.data && this.data != 'showDeletePopup') {
       this.invitationType = this.data?.type + ' ' + userData?.first_name + ' ' + userData?.last_name;
     }
     this.showDialog();
@@ -73,10 +74,10 @@ export class ConfirmationPopupComponent implements OnInit {
   }
 
   onReject(): void {
-    if(this.data==='showDeletePopup'){
+    if (this.data === 'showDeletePopup') {
       this.toggleAlert.emit(false);
       this.visibleAlert = false;
-    }else{
+    } else {
       this.showPopup = false;
     }
   }

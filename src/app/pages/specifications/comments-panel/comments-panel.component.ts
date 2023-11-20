@@ -15,8 +15,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
-  @Input() commentList: any;
-  @Input() tasksList: any;
+  @Input() commenttasksList: any;
   @Input() usersList: any;
   @Input() activeIndex: any;
   userImage?: any = "DC";
@@ -108,9 +107,9 @@ export class CommentsPanelComponent implements OnInit {
     this.commentsService.getComments({ topParentId: cmt.id }).then((response: any) => {
       if (response && response.data) {
         response.data.forEach((element: any) => {
-          element.parentUser = this.commentList.filter((ele: any) => { return ele.id === cmt.id })[0].createdBy;
+          element.parentUser = this.commenttasksList.filter((ele: any) => { return ele.id === cmt.id })[0].createdBy;
         });
-        this.commentList.forEach((obj: any) => {
+        this.commenttasksList.forEach((obj: any) => {
           if (obj.id === cmt.id) {
             obj.comments = response.data;
           }

@@ -59,6 +59,7 @@ export class SpecificationsComponent implements OnInit {
     this.utils.isInSameSpecPage.subscribe((res) => {
       if (res) {
         this.getMeSpecList();
+        this.utils.loadSpinner(true);
       }
     });
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -79,6 +80,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.loadSpinner(true);
     this.getMeStorageData();
   }
 
@@ -107,7 +109,6 @@ export class SpecificationsComponent implements OnInit {
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
           this.getMeSpecList();
-          this.utils.loadSpinner(false);
         } else {
           let user_audit_body = {
             'method': 'GET',

@@ -1,3 +1,69 @@
-<div class="grid">
-  {{prSpecsTitle}}
-</div>
+<p-dialog header="Link to Change Request" [(visible)]="showCrPopup" [modal]="true" [style]="{ width: '30vw' }"
+  [draggable]="false" [resizable]="false" (onHide)="close.emit(false)">
+  <form [formGroup]="crForm" (ngSubmit)="onSubmit($event)">
+    <div class="grid">
+      <div class="col-12">
+        <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      </div>
+      <div class="col-12">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <img src="./assets/cr.svg" alt="cr">
+          </span>
+          <p-dropdown formControlName="crToAdd" [options]="crList" [(ngModel)]="crForm.value.crToAdd"
+            (ngModelChange)="onDropdownChange($event)" optionLabel="label"
+            placeholder="Add new or search exsiting change requests"></p-dropdown>
+        </div>
+        <p class="text-sm pointer mt-1 mb-0 api-ticket"><span><i class="pi pi-plus pr-2"></i></span> Connect with the
+          api
+          ticketing
+          system
+        </p>
+      </div>
+      <div class="col-4">
+        <label>Priority</label>
+        <p-dropdown formControlName="priority" [options]="priorityList" [disabled]="true"
+          optionLabel="label"></p-dropdown>
+      </div>
+      <div class="col-4">
+        <label>To Version</label>
+        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true"
+          optionLabel="label"></p-dropdown>
+      </div>
+      <div class="col-4">
+        <label>Due Date</label>
+        <p-calendar formControlName="duedate" [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"
+          [disabled]="true"></p-calendar>
+      </div>
+      <div class="col-12 pb-0">
+        <div class="flex justify-content-between flex-wrap">
+          <p class="m-0">
+            Reviewers
+          </p>
+        </div>
+      </div>
+      <div class="col-12" *ngIf="reviewerList?.length">
+        <div class="flex align-items-center">
+          <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
+            L1
+          </div>
+          <div class="flex reviewer-grid" *ngFor="let reviewer of reviewerList">
+            <div class="reviewer-chip">
+              {{reviewer.displayName}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
+      (click)="close.emit(false)"></p-button>
+    <p-button label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+      (click)="linkCr()"></p-button>
+  </ng-template>
+</p-dialog>
+
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR"
+  [versions]="versionList" (close)="closePopUp($event)">
+</xnode-create-new-cr-version>

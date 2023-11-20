@@ -17,7 +17,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() readOnly!: boolean;
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
-  @Input() commentList: any;
   @Input() usersList: any = [];
   @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
@@ -43,6 +42,33 @@ export class SpecSectionsLayoutComponent implements OnInit {
   showCommentIcon?: boolean;
   commentOverlayPanelOpened: boolean = false;
 
+  businessRulesPanelOpened: boolean = false;
+  businessRulesshowCommentIcon: boolean= false;
+  dataDictionaryshowCommentIcon: boolean= false;
+  dataDictionaryPanelOpened: boolean= false;
+  functionalDependenciesshowCommentIcon: boolean= false;
+  functionalDepedencyPanelOpened: boolean= false;
+  userInterfacePanelOpened: boolean= false;
+  userInterfaceshowCommentIcon: boolean= false;
+  AnnexuresPanelOpened:boolean= false;
+  AnnexureshowCommentIcon:boolean= false;
+  usecasePanelOpened:boolean=false;
+  usecaseshowCommentIcon:boolean=false;
+  dataManagementPanelOpened:boolean=false;
+  dataManagementCommentIcon:boolean=false;
+  workflowPanelOpened:boolean=false;
+  workflowshowCommentIcon:boolean=false;
+  userinterfaceShowCommentIcon:boolean=false;
+  userinterfacePanelOpened:boolean=false;
+  userpersonaShowCommentIcon:boolean=false;
+  usepersonaPanelOpened:boolean=false;
+  qashowCommentIcon:boolean=false;
+  qaPanelOpened:boolean=false;
+  openAPIShowCommentIcon:boolean=false;
+  openAPIPanelOpened:boolean=false;
+
+  expandSpecSections:any = ['Usecases','Use Cases','User Interface Design','Data Management Persistence','Workflows','Data Dictionary','Annexures','Historical Data Load','Glossary','Version Control','Error Handling','Stakeholder Approvals','OpenAPI Spec']
+
   constructor(private domSanitizer: DomSanitizer,
   ) {
   }
@@ -57,7 +83,12 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
+  }
 
+  checkExpandSpecSections(spec:string){
+    let returnVal:boolean;
+    this.expandSpecSections.includes(spec)? returnVal = true : returnVal = false;
+    return returnVal;
   }
 
   makeTrustedUrl(): void {

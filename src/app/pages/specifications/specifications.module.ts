@@ -13,7 +13,6 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
-import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add-comment-overlay-panel.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
 import { ListViewComponent } from './list-view/list-view.component';
 import { ParaViewComponent } from './para-view/para-view.component';
@@ -27,6 +26,7 @@ import { ConfirmationalertComponent } from './confirmationalert/confirmationaler
 import { SpecConversationComponent } from 'src/app/pages/specifications/spec-conversation/spec-conversation.component';
 import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
 import { ConversationActionsComponent } from './conversation-actions/conversation-actions.component';
+import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-cr-version.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -38,7 +38,6 @@ import { ConversationActionsComponent } from './conversation-actions/conversatio
     UserPersonaComponent,
     SpecGenPopupComponent,
     UserRolesComponent,
-    AddCommentOverlayPanelComponent,
     ListViewComponent,
     ParaViewComponent,
     CommentsTabsComponent,
@@ -50,7 +49,8 @@ import { ConversationActionsComponent } from './conversation-actions/conversatio
     ConfirmationalertComponent,
     SpecConversationComponent,
     LinkToCrComponent,
-    ConversationActionsComponent
+    ConversationActionsComponent,
+    CreateNewCrVersionComponent
   ],
   imports: [
     CommonModule,

@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 export class CommonUsecasesComponent {
   @Input() searchTerm: any;
   @Input() useCases: any = [];
+  @Input() specItem:any;
+  @Input() users:any;
   isInsideUseCases: boolean = false;
 
   constructor(private router: Router,) {

@@ -27,6 +27,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() action: any;
   @Input() selectedText: any;
   @Input() specId: any;
+  @Input() activeIndex: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -69,24 +70,14 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
-    let referenceContentObject;
     if (this.selectedText) {
-      referenceContentObject = {
-        'title': this.selectedContent?.title,
-        'content': this.selectedContent?.content,
-        'commentedtext': this.selectedText
-      }
+      this.selectedContent['commentedtext'] = this.selectedText;
       this.commentType = 'comment';
-    } else {
-      referenceContentObject = {
-        'title': this.selectedContent?.title,
-        'content': this.selectedContent?.content
-      }
     }
     let body;
     if (this.action === 'EDIT') {
-      this.selectedComment.message = this.comment;
       body = this.selectedComment;
+      body.message = this.comment;
     } else {
       body = {
         "createdBy": this.currentUser.user_id,
@@ -94,7 +85,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
         "message": this.comment,
-        "referenceContent": this.parentEntity === 'SPEC' ? referenceContentObject : {},
+        "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": [
         ],
         "references": { Users: this.references },
@@ -103,16 +94,22 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {}
       }
     }
-    if (this.assignAsaTask) {
+
+    if (this.activeIndex == 1) {
       this.saveTask()
     } else {
-      this.saveComment(body);
+      if (this.assignAsaTask) {
+        this.saveTask()
+      } else {
+        this.saveComment(body);
+      }
     }
   }
 
   saveComment(body: any): void {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
+        this.utils.toggleTaskAssign(false);
         this.utils.updateCommnetsList(this.commentType);
         this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
@@ -122,7 +119,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           detail = 'Comment edited successfully'
         }
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
-        this.utils.toggleTaskAssign(false);
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
@@ -133,25 +129,45 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     })
   }
   saveTask(): void {
-    let body = {
-      "parentEntity": this.parentEntity,
-      "parentId": this.parentId,
-      "priority": '1',
-      "title": this.comment,
-      "description": this.comment,
-      "attachments": [],
-      "references": { Users: this.references },
-      "followers": [],
-      "feedback": {},
-      "status": "",
-      "assignee": this.currentUser.user_id,
-      "deadline": ""
-    }
+    let body;
+    if (this.action === 'EDIT') {
+      body = {
+        "id": this.selectedComment.id,
+        "parentEntity": this.parentEntity,
+        "parentId": this.selectedComment.parentId,
+        "priority": '1',
+        "title": this.comment,
+        "description": this.comment,
+        "attachments": [],
+        "references": this.selectedComment.references,
+        "followers": [],
+        "feedback": {},
+        "status": "",
+        "assignee": this.selectedComment.assignee.userId,
+        "deadline": ""
+      }
 
+    } else {
+      body = {
+        "parentEntity": this.parentEntity,
+        "parentId": this.parentId,
+        "priority": '1',
+        "title": this.comment,
+        "description": this.comment,
+        "attachments": [],
+        "references": { Users: this.references },
+        "followers": [],
+        "feedback": {},
+        "status": "",
+        "assignee": this.currentUser.user_id,
+        "deadline": ""
+      }
+    }
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.updateCommnetsList(this.commentType);
         this.utils.openOrClosePanel(SidePanel.Comments);
+        this.utils.updateCommnetsList('task')
         this.comment = '';
         this.closeOverlay.emit();
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });

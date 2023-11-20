@@ -36,7 +36,7 @@
                             [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                             (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
                             (onClickSeeLess)="_onClickSeeLess($event)"
-                            (showAddCommnetOverlay)="_showAddCommnetOverlay($event)" [commentList]='commentList'
+                            (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                             (expandComponent)="_expandComponent($event)" [readOnly]="false" [useCases]="useCases"
                             [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
                             [targetUrl]="targetUrl"></xnode-spec-sections-layout>
@@ -55,8 +55,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="isCommnetsPanelOpened ? 'commnets-panel-grid' : 'hidden'">
-        <xnode-comments-cr-panel class="w-full" [specData]="specData" [commentList]="commentList"
-            [usersList]="usersList" [tasksList]="tasksList"></xnode-comments-cr-panel>
+    <div *ngIf="isCommnetsPanelOpened" class="comments-panel">
+        <xnode-comments-cr-panel class="w-full" [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
     </div>
 </div>
