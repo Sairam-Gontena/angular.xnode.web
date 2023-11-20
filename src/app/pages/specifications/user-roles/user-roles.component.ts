@@ -10,63 +10,57 @@ export class UserRolesComponent implements OnInit {
   @Input() searchTerm: any;
   @Input() selectedContent!: string;
   @Input() users: any = [];
-  @Input() specId :any;
+  @Input() specId: any;
   @Input() specItem: any;
   showCommentIcon: boolean = false
   seletedMainIndex?: number;
   selecteedSubIndex?: number;
-  selectedText:string='';
-  commentOverlayPanelOpened:boolean=false;
-  @ViewChild('op')overlayPanel: OverlayPanel | any;
-  @ViewChild('selectionText')selectionText: OverlayPanel | any;
+  selectedText: string = '';
+  commentOverlayPanelOpened: boolean = false;
+  @ViewChild('op') overlayPanel: OverlayPanel | any;
+  @ViewChild('selectionText') selectionText: OverlayPanel | any;
 
 
-  constructor(){  }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  getWords(subitem: any){
+  getWords(subitem: any) {
     if (typeof subitem.content === 'string') {
       return subitem.content.split(' ');
-    } else if(typeof subitem.content === undefined){
-      if(typeof subitem === 'string'){
+    } else if (typeof subitem.content === undefined) {
+      if (typeof subitem === 'string') {
         return subitem.split(' ');
       }
-    }else if(typeof subitem === 'object'){
-      if(subitem.hasOwnProperty('content')){
+    } else if (typeof subitem === 'object') {
+      if (subitem.hasOwnProperty('content')) {
         return subitem.content
-      }else{
+      } else {
         return subitem
       }
-    }else {
+    } else {
       return [];
     }
   }
 
-  contentSelected(event:any) {
+  contentSelected(event: any) {
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
-      return ;
+      return;
     }
-    if(selectedText && selectedText.length>0 ){
+    if (selectedText && selectedText.length > 0) {
       this.selectedText = selectedText.replace(/\n/g, ' ')
-     }else{
-      this.selectedText='';
-     }
-     this.handleSelectionText(event);
+    } else {
+      this.selectedText = '';
+    }
+    this.handleSelectionText(event);
   }
 
   async handleSelectionText(event: any) {
     if (this.selectedText.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       await this.selectionText.toggle(event);
-      console.log('final console', {
-        'selected Text': this.selectedText.replace(/\n/g, ' '),
-        'spec with content id': this.specId,
-        'spec heading id': Math.floor(this.specId),
-        'id': this.specId,
-      });
     }
   }
 

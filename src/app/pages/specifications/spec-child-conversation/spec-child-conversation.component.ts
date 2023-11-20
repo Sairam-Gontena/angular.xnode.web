@@ -5,13 +5,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
-
 @Component({
-  selector: 'xnode-spec-conversation',
-  templateUrl: './spec-conversation.component.html',
-  styleUrls: ['./spec-conversation.component.scss']
+  selector: 'xnode-spec-child-conversation',
+  templateUrl: './spec-child-conversation.component.html',
+  styleUrls: ['./spec-child-conversation.component.scss']
 })
-export class SpecConversationComponent {
+export class SpecChildConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
   @Input() topParentId: any;
@@ -50,8 +49,13 @@ export class SpecConversationComponent {
   }
 
   ngOnInit() {
+    if (this.list?.[0]?.parentEntity == "COMMENT") {
+      this.specListCopy = this.list;
+      this.specList = this.list.slice(0, 2);
+    } else {
+      this.specList = this.list;
+    }
   }
-
 
   loadComments(change: string) {
     if (change === 'increment') {
@@ -152,14 +156,13 @@ export class SpecConversationComponent {
 
   highlightMatch(conversation: string): SafeHtml {
     const regex = /@.*?,/g;
-    const highlighted = conversation?.replace(regex, (match) => {
+    const highlighted = conversation.replace(regex, (match) => {
       const matchedTextWithoutComma = match.slice(0, -1);
       const spanWithId = `<span class="highlight-tags" style="color:rgb(2, 173, 238);" >${matchedTextWithoutComma}</span>`;
       return spanWithId;
     });
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
   }
-
   modifiedTimeDifference(modifiedOn: Date): string {
     const now = new Date();
     const modifiedTime = new Date(modifiedOn);
@@ -235,5 +238,4 @@ export class SpecConversationComponent {
     }
 
   }
-
 }

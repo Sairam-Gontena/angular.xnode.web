@@ -7,11 +7,11 @@ import { MessagingService } from '../../../components/services/messaging.service
 import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
-  selector: 'xnode-spec-conversation',
-  templateUrl: './spec-conversation.component.html',
-  styleUrls: ['./spec-conversation.component.scss']
+  selector: 'xnode-task-list',
+  templateUrl: './task-list.component.html',
+  styleUrls: ['./task-list.component.scss']
 })
-export class SpecConversationComponent {
+export class TaskListComponent {
   @Input() list: any;
   @Input() usersList: any;
   @Input() topParentId: any;
