@@ -1,4 +1,4 @@
-<div class="p-4">
+<div class="cr-tabs-div p-4">
   <div class="flex flex-row justify-content-between w-full p-0">
     <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title" class="custom-dropdown" [filter]="true" filterBy="title"
                         filterPlaceholder="Search">
@@ -23,50 +23,144 @@
           <i class="pi pi-chevron-down text-base mx-1 text-gray-200"></i>
      </div>
   </div>
-  <div class="flex flex-row justify-content-between w-full px-0 pb-4 border-bottom-1">
-    <div class="flex flex-column justify-content-end">
-        <i class="pi pi-angle-right text-base mx-1 text-gray-200"></i>
-    </div>
-    <div class="flex flex-column">
-      <div class="flex flex-row pb-2">
-        <img src="../../assets/high.svg" class="mx-2" alt="high"/>
-        <a href="" class="text-primary-500">#CR-1837</a>
-      </div>
-      <div class="flex flex-row">
-        <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
-        <p class="my-0 text-gray-200">Functional Specifications</p>
-      </div>
-    </div>
-    <p-avatar [label]="getMeUserAvatar()" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-    <div class="flex mt-2">
-      <img src="../../assets/Group.svg" alt="CR"/>
-      <span class="mx-1 text-gray-200 mt-2">3</span>
-    </div>
-    <div  class="flex mt-2">
-      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
-    </div>
-  </div>
-  <div class="flex flex-row justify-content-between w-full px-0 pt-4 pb-4">
-    <div class="flex flex-column justify-content-end">
-        <i class="pi pi-angle-right text-base mx-1 text-gray-200"></i>
-    </div>
-    <div class="flex flex-column">
-      <div class="flex flex-row pb-2">
-        <img src="../../assets/medium.svg" class="mx-2" alt="medium"/>
-        <a href="" class="text-primary-500">#CR-1837</a>
-      </div>
-      <div class="flex flex-row">
-        <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
-        <p class="my-0 text-gray-200">Technical Specifications</p>
-      </div>
-    </div>
-    <p-avatar [label]="getMeUserAvatar()" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-    <div class="flex mt-2">
-      <img src="../../assets/Group.svg" alt="CR"/>
-      <span class="mx-1 text-gray-200 mt-2">2</span>
-    </div>
-    <div  class="flex mt-2">
-      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
-    </div>
-  </div>
+  <p-accordion class="cr-tabs" [multiple]="true">
+    <p-accordionTab class="border-bottom-1">
+      <ng-template pTemplate="header">
+        <div class="flex flex-row justify-content-between w-full px-0">
+          <div class="flex flex-column">
+            <div class="flex flex-row pb-2">
+              <img src="../../assets/high.svg" class="mx-2" alt="high"/>
+              <a href="" class="text-primary-500">#CR-1837</a>
+            </div>
+            <div class="flex flex-row">
+              <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
+              <p class="my-0 text-gray-200">Functional Specifications</p>
+            </div>
+          </div>
+          <p-avatar [label]="getMeUserAvatar()" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+          <div class="flex mt-2">
+            <img src="../../assets/Group.svg" alt="CR"/>
+            <span class="mx-1 text-gray-200 mt-2">3</span>
+          </div>
+          <div  class="flex mt-2">
+            <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
+          </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <p-accordion [multiple]="true">
+        <p-accordionTab class="border-bottom-1">
+          <ng-template pTemplate="header">
+            <div class="flex flex-row justify-content-between w-full">
+                <p class="my-0 text-gray-200 text-sm font-normal">User Roles</p>
+                <div  class="flex flex-row justify-content-between w-6">
+                  <span class="my-0 text-content text-sm font-normal">#TS0041</span>
+                  <p-avatar [label]="getMeUserAvatar()" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+                  <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="py-2 border-bottom-1 px-3">
+          <div class="flex flex-row justify-content-between">
+            <div class="flex flex-column h-full">
+              <div>
+                <i class="pi pi-plus text-200 text-sm border-1 border-200 border-round-sm p-1 mx-2"></i>
+              </div>
+              <img src="../../assets/verticalLine.svg" alt="vertical" class="h-5rem pt-2"/>
+            </div>
+            <div>
+              <span class="text-content ml-2 text-sm font-normal">&bull; AI Assistant:</span>
+            <ul class="text-content ml-2 text-sm font-normal">
+              <li>
+                Automated role.
+              </li>
+              <li>
+                Analyzes user data to provide personalized insights, reminders, and suggestions.
+              </li>
+            </ul>
+            </div>
+          </div>
+          </div>
+          <div class="py-2 border-bottom-1 px-3">
+            <div class="flex flex-row justify-content-between">
+              <div class="flex flex-column h-full">
+                <div>
+                  <i class="pi pi-plus text-200 text-sm border-1 border-200 border-round-sm p-1 mx-2"></i>
+                </div>
+                <img src="../../assets/verticalLine.svg" alt="vertical" class="h-5rem pt-2"/>
+              </div>
+              <div>
+                <span class="text-content ml-2 text-sm font-normal">&bull; Administrator:</span>
+              <ul class="text-content ml-2 text-sm font-normal">
+                <li>
+                  Typically the app's support and management staff.
+                </li>
+                <li>
+                  Can manage user accounts, oversee system functionality, and handle user complaints or issues.
+                </li>
+              </ul>
+              </div>
+            </div>
+          </div>
+          <div class="py-2 border-bottom-1 px-3">
+              <div class="flex flex-row justify-content-between">
+                <div class="flex flex-column h-full">
+                  <div>
+                    <i class="pi pi-plus text-200 text-sm border-1 border-200 border-round-sm p-1 mx-2"></i>
+                  </div>
+                  <img src="../../assets/verticalLine.svg" alt="vertical" class="h-5rem pt-2"/>
+                </div>
+                <div>
+                  <span class="text-content ml-2 text-sm font-normal">&bull; Administrator:</span>
+                <ul class="text-content ml-2 text-sm font-normal">
+                  <li>
+                    Typically the app's support and management staff.
+                  </li>
+                  <li>
+                    Can manage user accounts, oversee system functionality, and handle user complaints or issues.
+                  </li>
+                </ul>
+                </div>
+              </div>
+          </div>
+        </ng-template>
+          </p-accordionTab>
+      </p-accordion>
+    </ng-template>
+
+    </p-accordionTab>
+    <p-accordionTab class="border-bottom-1">
+      <ng-template pTemplate="header">
+        <div class="flex flex-row justify-content-between w-full px-0">
+          <div class="flex flex-column">
+            <div class="flex flex-row pb-2">
+              <img src="../../assets/medium.svg" class="mx-2" alt="medium"/>
+              <a href="" class="text-primary-500">#CR-1837</a>
+            </div>
+            <div class="flex flex-row">
+              <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
+              <p class="my-0 text-gray-200">Technical Specifications</p>
+            </div>
+          </div>
+          <p-avatar [label]="getMeUserAvatar()" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+          <div class="flex mt-2">
+            <img src="../../assets/Group.svg" alt="CR"/>
+            <span class="mx-1 text-gray-200 mt-2">2</span>
+          </div>
+          <div  class="flex mt-2">
+            <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
+          </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <p class="m-0">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.
+        </p>
+    </ng-template>
+
+    </p-accordionTab>
+  </p-accordion>
 </div>
