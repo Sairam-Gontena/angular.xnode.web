@@ -56,9 +56,9 @@ export class CreateNewCrVersionComponent implements OnInit {
       reviewersLTwo: [[], [Validators.required]],
     });
     this.versionForm = this.fb.group({
-      major: ['', [Validators.required]],
-      minor: ['', [Validators.required]],
-      build: ['', [Validators.required]],
+      major: ['2311', [Validators.required]],
+      minor: ['0', [Validators.required]],
+      build: ['0', [Validators.required]],
     });
   }
 

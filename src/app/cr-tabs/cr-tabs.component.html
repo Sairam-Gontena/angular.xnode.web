@@ -1,1 +1,107 @@
-<p>Coming soon</p>
+<div class="cr-tabs-div p-4">
+  <div class="flex flex-row justify-content-between w-full p-0">
+    <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title" class="custom-dropdown" [filter]="true" filterBy="title"
+                        filterPlaceholder="Search">
+                        <ng-template let-item pTemplate="item">
+                            <div class="col-12 flex align-items-center justify-content-between">
+                                <div class="title-container" [title]="item.title" >
+                                    {{item.title }}
+                                </div>
+                            </div>
+                        </ng-template>
+     </p-dropdown>
+     <div>
+          <i class="pi pi-search text-base mx-1 light-grey"></i>
+          <i class="pi pi-user text-base mx-1 light-grey"></i>
+     </div>
+  </div>
+  <div class="flex flex-row justify-content-between w-full p-0">
+    <p class="text-base light-grey">Today</p>
+     <div class="flex flex-row mt-3">
+          <i class="pi pi-arrow-up text-base mx-1 text-gray-200"></i>
+          <p class="my-0 text-gray-200">Date Created</p>
+          <i class="pi pi-chevron-down text-base mx-1 text-gray-200"></i>
+     </div>
+  </div>
+  <p-accordion class="cr-tabs" [multiple]="true">
+    <p-accordionTab class="border-bottom-1" *ngFor="let data of crData" (click)="getCRDetails(data?.id)">
+      <ng-template pTemplate="header">
+        <div class="flex flex-column w-full">
+          <div class="flex flex-row justify-content-between w-full px-0">
+            <div class="flex flex-column">
+              <div class="flex flex-row pb-2 align-items-center">
+                <img src="../../assets/high.svg" class="mx-2" alt="high"/>
+                <a href="" class="text-primary-500"># {{data.crId}}</a>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between w-full px-0">
+            <div class="flex flex-row justify-content-between w-full">
+              <div class="flex flex-row align-items-center">
+                <img src="../../assets/todo.svg" class="mx-2" alt="todo"/>
+                <p class="my-0 text-gray-200">{{data?.title}}</p>
+              </div>
+              <div class="flex flex-row">
+                <span *ngFor="let reviewers of data?.reviewers">
+                  <p-avatar [label]="getMeUserAvatar(reviewers)" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+                </span>
+              </div>
+              <div class="flex">
+                <img src="../../assets/Group.svg" alt="CR"/>
+                <span class="mx-1 text-gray-200 mt-2">3</span>
+              </div>
+              <div  class="flex">
+                <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2" (click)="op.toggle($event)"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content" >
+        <div class="border-bottom-1 px-3"  *ngFor="let subData of subCRData">
+            <div class="flex flex-row justify-content-between align-items-center w-full">
+                <p class="my-0 text-gray-200 text-sm font-normal">{{subData?.comment?.referenceContent?.title}}</p>
+                <!-- <div  class="flex flex-row justify-content-between w-6 align-items-center">
+                  <span class="my-0 text-content text-sm font-normal">#TS0041</span>
+                  <p-avatar [label]="getMeUserAvatar(reviewers)" *ngFor="let reviewers of data?.reviewers" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+                  <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
+                </div> -->
+            </div>
+            <div class="py-2 border-bottom-1 px-3">
+              <div class="flex flex-row justify-content-between">
+                <div class="">
+                  <div class="relative">
+                    <i class="pi pi-plus text-sm border-1 border-200 border-round-sm mx-2" [ngStyle]="{'background-color':'#EFEEEE'}"></i>
+                  </div>
+                <p class="text-content ml-3 pl-4 text-sm font-normal border-left-1 border-50">
+                    {{subData?.comment?.referenceContent?.content}}
+                </p>
+                </div>
+              </div>
+              <span class="text-lg my-2 text-gray-200 flex align-items-center">
+                {{subData.comment.message}}
+              </span>
+            </div>
+        </div>
+    </ng-template>
+    </p-accordionTab>
+  </p-accordion>
+
+  <p-overlayPanel #op>
+    <div class="card px-2">
+      <div class="flex align-items-center border-bottom-1 border-600 pointer">
+        <i class="pi pi-check border-circle p-1" style="background:#11CF46;height: 25px;"></i>
+        <p class="text-base font-normal ml-1">Approve</p>
+      </div>
+      <div class="flex align-items-center border-bottom-1 border-600 pointer">
+        <i class="pi pi-times border-circle p-1" style="background:#E93F3F;height: 25px;"></i>
+        <p class="text-base font-normal ml-1">Reject</p>
+      </div>
+      <div class="flex align-items-center border-bottom-1 border-600 pointer">
+        <i class="pi pi-comment" style="height: 25px;"></i>
+        <p class="text-base font-normal ml-1">Needs work</p>
+      </div>
+    </div>
+
+  </p-overlayPanel>
+</div>
