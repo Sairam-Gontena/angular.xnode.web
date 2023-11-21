@@ -44,7 +44,7 @@
               <div class="flex flex-row">
                 <span *ngFor="let reviewers of data?.reviewers">
                   <p-avatar [label]="getMeUserAvatar(reviewers)" class="pt-2" shape="circle"
-                    [ngStyle]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+                  [style]="{ 'background-color': '#9c27b0', 'color': '#ffffff' }"></p-avatar>
                 </span>
               </div>
               <div class="flex">
@@ -59,35 +59,10 @@
         </div>
       </ng-template>
       <ng-template pTemplate="content">
-        <!-- dont delete write a comment code
-          <div class="card px-2" *ngIf="showComment" (click)="$event.stopPropagation();">
-          <div class="flex flex-row w-full">
-            <div class="border-1 border-round-sm w-full px-3" [ngStyle]="{'border-color':'#02ADEE'}">
-                <p class="text-base text-gray-200">Write a comment</p>
-            </div>
-            <div class="w-full"></div>
+        <!-- dont delete write a comment code -->
+          <div class="card px-2 mb-2" *ngIf="showComment" (click)="$event.stopPropagation();">
+            <xnode-add-comment-overlay-panel [width]="'auto'" (closeOverlay)="op.toggle(false);"  [position]="'absolute'" placeHolder="Reason for your actions"></xnode-add-comment-overlay-panel>
           </div>
-          <div class="border-1 border-round-sm px-2" [ngStyle]="{'border-color':'#02ADEE'}">
-            <div class="flex border-bottom-1">
-              <textarea pInputTextarea [autoResize]="true" placeholder="Reason for your actions" class="border-none px-3 w-full"
-              [ngStyle]="{'min-height': '80px'}"></textarea>
-            </div>
-            <div class="flex flex-row justify-content-between">
-              <div class="flex px-3 align-items-center">
-                <i class="pi pi-plus text-sm border-1 border-200  align-items-center border-round-sm mx-2"
-                [ngStyle]="{'background-color':'#EFEEEE','height': '18px'}"></i>
-                <span class="text-sm text-gray-200">Assign as a Task</span>
-              </div>
-              <div class="flex flex-row align-items-center px-3">
-                <i class="pi pi-paperclip mx-1"></i>
-                <i class="pi pi-at mx-1"></i>
-                <p-divider layout="vertical" class="cr-comment pt-3"></p-divider>
-                <i class="pi pi-times border-circle p-1 mx-1" [ngStyle]="{'background':'#A2A2A3','height': '25px'}"></i>
-                <i class="pi pi-check border-circle p-1 mx-1" [ngStyle]="{'background':'#11CF46','height': '25px'}"></i>
-              </div>
-            </div>
-          </div>
-        </div> -->
         <div class="border-bottom-1 px-3" *ngFor="let subData of subCRData">
           <div class="flex flex-row justify-content-between align-items-center w-full">
             <p class="my-0 text-gray-200 text-sm font-normal">{{subData?.comment?.referenceContent?.title}}</p>
