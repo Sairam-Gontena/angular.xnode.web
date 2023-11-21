@@ -76,7 +76,7 @@ export class SpecificationsMenuComponent implements OnInit {
     this.selectedSection = this.specData[event.index].content[0];
     this.selectedSecIndex = 0;
     this.utils.saveSelectedSection(this.specData[event.index].content[0]);
-    this.utils.updateCommnetsList('comment');
+    this.utils.updateConversationList('comment');
   }
 
   onSelectSpec(event: any, i: any) {
