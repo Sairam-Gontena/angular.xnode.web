@@ -4,6 +4,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
 import { SidePanel } from 'src/models/side-panel.enum';
 import { MentionConfig } from 'angular-mentions';
+import { CommonApiService } from 'src/app/api/common-api.service';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -36,9 +37,14 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   config: MentionConfig = {};
   references: any;
   isCommnetsPanelOpened: boolean = false;
+  isUploading: boolean = false;
+  files: any = [];
+  selectedFile: any;
 
   constructor(public utils: UtilsService,
-    private commentsService: CommentsService) {
+    private commentsService: CommentsService,
+    private commonApi: CommonApiService,
+  ) {
     this.references = [];
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -73,7 +79,87 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.references = outputObject;
     return `@${item.first_name} ${item.last_name},`
   }
+  onFileInput(event: Event) {
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      if (files[0].size > maxSizeInBytes) {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+      } else {
+        this.handleFiles(files);
+        this.prepareFilesList(files[0]); // Update this line
 
+      }
+    }
+  }
+  private handleFiles(files: FileList) {
+    this.readFileContent(files[0], files[0].name);
+  }
+  // const reader = new FileReader();
+  // reader.onload = (e) => {
+  //   const binaryData = reader.result as ArrayBuffer;
+  //   if (binaryData)
+  //     this.uploadCsv(reader.result, fileName);
+  // };
+  // reader.readAsArrayBuffer(file);
+  onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const fileName = selectedFile.name;
+    if (selectedFile) {
+      this.readFileContent(selectedFile, fileName);
+    }
+    this.prepareFilesList(selectedFile);
+
+  }
+
+  private readFileContent(file: File, fileName: string) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      const headers = { 'Content-Type': 'application/json' };
+      this.fileUploadCall(formData, headers);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  fileUploadCall(formData: any, headers: any) {
+    if (!this.isUploading) {
+      this.isUploading = true;
+      this.commonApi.postFile('file-azure/upload', formData, { headers }).then((res: any) => {
+        this.files = res.data;
+        console.log('File upload response:', this.files);
+        this.isUploading = false;
+      }).catch((error: any) => {
+        console.error('File upload error:', error);
+      });
+    }
+  }
+  prepareFilesList(files: File) {
+    this.files.push(files);
+  }
+
+  deleteFile() {
+    if (this.selectedFile) {
+      this.selectedFile = null;
+      this.selectedFile = '';
+    }
+  }
+  /**
+     * format bytes
+     * @param bytes (File size in bytes)
+     * @param decimals (Decimals point)
+     */
+  formatBytes(bytes: any, decimals: any) {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+    const k = 1024;
+    const dm = decimals <= 0 ? 0 : decimals || 2;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
   onClickSend(): void {
     this.utils.loadSpinner(true);
     if (this.selectedText) {
@@ -92,11 +178,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
         "message": this.comment,
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        "attachments": [
-        ],
+        "attachments": this.files,
         "references": { Users: this.references },
-        "followers": [
-        ],
+        "followers": [],
         "feedback": {}
       }
     }
