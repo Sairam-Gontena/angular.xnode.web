@@ -6,3 +6,7 @@
   height: 80vh!important;
   overflow-y: auto!important;
 }
+
+:host ::ng-deep .cr-comment .p-divider-vertical:before {
+  height: 65%!important;
+ }
