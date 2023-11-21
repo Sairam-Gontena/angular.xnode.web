@@ -100,6 +100,15 @@ export class CreateNewCrVersionComponent implements OnInit {
     }
   }
 
+  onMajorInputChange(event: Event) {
+    this.versionForm.get('minor')!.setValue('0');
+    this.versionForm.get('build')!.setValue('0');
+  }
+
+  onMinorInputChange(event: Event) {
+    this.versionForm.get('build')!.setValue('0');
+  }
+
   onDropdownChange(event: any): void {
     this.showAddVersionForm = event === 'ADD_NEW';
   }
@@ -111,6 +120,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       "productId": this.product.id
     }
     this.commentsService.getVersions(body).then((response: any) => {
+      console.log("got response for versions ",response)
       if (response.status == 200) {
         response.data.forEach((element: any, index: any) => {
           if (index === 0) {
