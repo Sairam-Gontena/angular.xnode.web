@@ -67,10 +67,10 @@
                         Priority is required</div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 ">
                 <label>Due Date</label>
                 <div class="p-inputgroup mt-1">
-                    <p-calendar formControlName="duedate"
+                    <p-calendar formControlName="duedate" [showClear]="true"
                         [ngClass]="{ 'is-invalid': submitted && crFormControl['duedate'].errors }" [showIcon]="true"
                         placeholder="DD/MM/YYYY" styleClass="due-date"></p-calendar>
                 </div>

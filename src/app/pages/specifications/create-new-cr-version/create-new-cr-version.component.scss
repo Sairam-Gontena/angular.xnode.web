@@ -1,3 +1,154 @@
+@media (min-width: 1440px) {
+    :host ::ng-deep .p-calendar .p-datepicker {
+        width: 150px;
+        padding: 0px;
+    }
+
+    :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
+        padding: 0px;
+        margin: 0px;
+        font-size: 10px;
+    }
+
+    :host ::ng-deep .p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
+        padding: 0px;
+        margin: 0px;
+        font-size: 10px;
+    }
+
+    :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year,
+    .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
+        padding: 0px;
+        margin: 0px;
+        font-size: 10px;
+        margin-left: 5px;
+    }
+
+    :host ::ng-deep .p-datepicker table th {
+        padding: 0px;
+        margin: 0px;
+        font-size: 8px;
+        height: 16px;
+        width: 16px;
+    }
+
+    :host ::ng-deep .p-datepicker table td {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    :host ::ng-deep .p-datepicker table td>span {
+        padding: 0px;
+        margin: 0px;
+        font-size: 6px;
+        height: 18px;
+        width: 18px;
+        margin-left: 5px;
+    }
+}
+
+@media (min-width: 2560px) {
+    :host ::ng-deep .p-calendar .p-datepicker {
+        width: 200px;
+        padding: 0px;
+    }
+
+    :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
+        padding: 0px;
+        margin: 0px;
+        font-size: 12px;
+    }
+
+    :host ::ng-deep .p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
+        padding: 0px;
+        margin: 0px;
+        font-size: 12px;
+    }
+
+    :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year,
+    .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
+        padding: 0px;
+        margin: 0px;
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+    :host ::ng-deep .p-datepicker table th {
+        padding: 0px;
+        margin: 0px;
+        font-size: 10px;
+        height: 18px;
+        width: 18px;
+    }
+
+    :host ::ng-deep .p-datepicker table td {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    :host ::ng-deep .p-datepicker table td>span {
+        padding: 0px;
+        margin: 0px;
+        font-size: 8px;
+        height: 20px;
+        width: 20px;
+        margin-left: 15px;
+    }
+}
+
+@media (min-width: 1024px) {
+    :host ::ng-deep .p-calendar .p-datepicker {
+        width: 120px;
+        padding: 0px;
+    }
+
+    :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
+        padding: 0px;
+        margin: 0px;
+        font-size: 8px;
+    }
+
+    :host ::ng-deep .p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
+        padding: 0px;
+        margin: 0px;
+        font-size: 8px;
+    }
+
+    :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year,
+    .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
+        padding: 0px;
+        margin: 0px;
+        font-size: 8px;
+        margin-left: 5px;
+    }
+
+    :host ::ng-deep .p-datepicker table th {
+        padding: 0px;
+        margin: 0px;
+        font-size: 10px;
+        height: 15px;
+        width: 15px;
+    }
+
+    :host ::ng-deep .p-datepicker table td {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    :host ::ng-deep .p-datepicker table td>span {
+        padding: 0px;
+        margin: 0px;
+        font-size: 8px;
+        height: 16px;
+        width: 16px;
+        margin-left: 5px;
+    }
+}
+
+:host ::ng-deep .p-datepicker-prev-icon .p-icon {
+    // height: 6px;
+}
+
 .is-invalid {
     color: #CC3514;
 }

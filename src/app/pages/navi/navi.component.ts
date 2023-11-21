@@ -56,6 +56,9 @@ export class NaviComponent implements OnInit {
     }
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.xnodeAppUrl + '&user_id=' + this.currentUser.user_id;
+    if (this.currentUser.account_id == this.productDetails.account_id) {
+      this.targetUrl = this.targetUrl + '&hasEditPermission=' + true
+    }
     if (localStorage.getItem('record_id')) {
       this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
     }
@@ -97,8 +100,8 @@ export class NaviComponent implements OnInit {
           if (event.data.message === 'triggerProductPopup') {
             this.content = event?.data?.data;
             let data = {
-              'popup':true,
-              'data':this.content
+              'popup': true,
+              'data': this.content
             }
             this.showProductStatusPopup = true;
             this.utils.toggleProductAlertPopup(data);
@@ -109,7 +112,7 @@ export class NaviComponent implements OnInit {
             localStorage.setItem('record_id', itemId);
             this.utils.saveProductId(itemId);
             const metaData = localStorage.getItem('meta_data');
-            if(metaData){
+            if (metaData) {
               this.templates = JSON.parse(metaData);
               const product = this.templates?.filter((obj: any) => { return obj.id === itemId })[0];
               localStorage.setItem('app_name', product.title);
