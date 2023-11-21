@@ -68,10 +68,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   format(item: any) {
-    let outputObject: Record<string, any> = {};
-    outputObject[item.user_id] = item.first_name + " " + item.last_name;
-    this.references = outputObject;
-    return `@${item.first_name} ${item.last_name},`
+    const entityId = item.user_id;
+    const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
+    if (!isDuplicate) {
+      this.references.push({ entity_type: "User", entity_id: entityId });
+    }
+    return `@${item.first_name} ${item.last_name},`;
   }
 
   onClickSend(): void {
@@ -94,14 +96,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": [
         ],
-        "references": { Users: this.references },
+        "references": this.references,
         "followers": [
         ],
         "feedback": {}
       }
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.prepareDataToSaveAsTask()
+      if (this.action === 'REPLY') {
+        delete body.topParentId
+        this.saveComment(body);
+      }
+      else
+        this.prepareDataToSaveAsTask()
     } else {
       this.saveComment(body);
     }
@@ -151,8 +158,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "assignee": this.selectedComment.assignee.userId,
         "deadline": ""
       }
-
-    } else {
+    } else if (this.action !== 'REPLY') {
       body = {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId,
