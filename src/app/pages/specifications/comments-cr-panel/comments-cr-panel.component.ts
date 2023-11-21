@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
+import { TabView } from 'primeng/tabview';
 
 @Component({
   selector: 'xnode-comments-cr-panel',
@@ -11,6 +13,11 @@ import { UtilsService } from 'src/app/components/services/utils.service';
   styleUrls: ['./comments-cr-panel.component.scss']
 })
 export class CommentsCrPanelComponent implements OnInit {
+  @ViewChild(CrTabsComponent, { static: true })
+  child!: CrTabsComponent;
+  @ViewChild(TabView)
+  tabView!: TabView;
+
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
   userImage?: any = "DC";
@@ -25,23 +32,11 @@ export class CommentsCrPanelComponent implements OnInit {
   };
   comment: any;
   currentUser: any;
-  selectedSection: any;
 
-  constructor(private utils: UtilsService, private commentsService: CommentsService) {
-    this.utils.getMeSelectedSection.subscribe((event: any) => {
-      this.selectedSection = event;
-    })
+  constructor(private utils: UtilsService) {
   }
 
   ngOnInit(): void {
-    let data = localStorage.getItem("currentUser")
-    if (data) {
-      this.currentUser = JSON.parse(data);
-      this.username = this.currentUser.first_name.toUpperCase() + ' ' + this.currentUser.last_name.toUpperCase();
-      if (this.currentUser.first_name && this.currentUser.last_name) {
-        this.userImage = this.currentUser.first_name.charAt(0).toUpperCase() + this.currentUser.last_name.charAt(0).toUpperCase();
-      }
-    }
   }
 
   onClickClose() {
@@ -60,5 +55,13 @@ export class CommentsCrPanelComponent implements OnInit {
     this.commentObj.role = 'user';
     this.commentObj.user_id = this.currentUser.id;
     this.list.push(this.commentObj);
+  }
+
+  switchHeaders(event:any){
+    const tabs = this.tabView.tabs;
+    const header = tabs[event.index].header;
+    if(header=='Change Request'){
+      this.child.getCRList();
+    }
   }
 }

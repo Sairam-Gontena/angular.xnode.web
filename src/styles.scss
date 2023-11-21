@@ -456,3 +456,20 @@ body {
   // padding: 0px !important;
   border-width: 0px;
 }
+.cr-tabs .p-accordion .p-accordion-header .p-accordion-header-link{
+    background: transparent!important;
+    border:none!important;
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+.cr-tabs .p-accordion .p-accordion-content{
+  background: transparent!important;
+  border:none!important;
+  padding-left: 0px!important;
+  padding-right: 0px!important;
+}
+
+.cr-tabs .p-accordion .p-accordion-content .text-content{
+  color: #a2a2a3 !important;
+}

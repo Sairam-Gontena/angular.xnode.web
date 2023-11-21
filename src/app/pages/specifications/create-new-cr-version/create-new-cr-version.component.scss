@@ -95,6 +95,7 @@
         margin-left: 15px;
     }
 }
+
 @media (min-width: 1024px) {
     :host ::ng-deep .p-calendar .p-datepicker {
         width: 120px;
@@ -146,4 +147,16 @@
 
 :host ::ng-deep .p-datepicker-prev-icon .p-icon {
     // height: 6px;
+}
+
+.is-invalid {
+    color: #CC3514;
+}
+
+.invalid-feedback {
+    color: #CC3514;
+}
+
+:host ::ng-deep .p-inputtext.ng-dirty.ng-invalid {
+    border-color: transparent;
 }

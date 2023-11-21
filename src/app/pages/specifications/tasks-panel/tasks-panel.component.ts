@@ -5,12 +5,11 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'xnode-comments-panel',
-  templateUrl: './comments-panel.component.html',
-  styleUrls: ['./comments-panel.component.scss']
+  selector: 'xnode-tasks-panel',
+  templateUrl: './tasks-panel.component.html',
+  styleUrls: ['./tasks-panel.component.scss']
 })
-
-export class CommentsPanelComponent implements OnInit {
+export class TasksPanelComponent {
   @Input() specData?: Array<[]>;
   @Input() commenttasksList: any;
   @Input() usersList: any;
@@ -41,26 +40,24 @@ export class CommentsPanelComponent implements OnInit {
   constructor(private utils: UtilsService, private commentsService: CommentsService,
     private sanitizer: DomSanitizer) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
-      if (event === 'COMMENT') {
-        console.log('eventeventeventevent', event);
-
-        this.getMeCommentsList();
+      if (event === 'TASK') {
+        this.getMeTasksList();
       }
     })
   }
 
   ngOnInit(): void {
-    this.getMeCommentsList();
+    this.getMeTasksList();
   }
 
-  getMeCommentsList() {
+  getMeTasksList() {
     this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
-        if (response.status === 200 && response.data) {
+      this.commentsService.getTasks({ parentId: selectedSpec.id }).then((response: any) => {
+        if (response && response.data) {
           this.list = response.data;
         }
         this.utils.loadSpinner(false);
