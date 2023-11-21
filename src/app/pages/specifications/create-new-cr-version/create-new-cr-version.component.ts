@@ -37,6 +37,8 @@ export class CreateNewCrVersionComponent implements OnInit {
   versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
   newVersion: boolean = false;
   showAddVersionForm: boolean = false;
+  screenWidth?: number
+  submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
     private commentsService: CommentsService,
@@ -56,13 +58,19 @@ export class CreateNewCrVersionComponent implements OnInit {
       reviewersLTwo: [[], [Validators.required]],
     });
     this.versionForm = this.fb.group({
-      major: ['2311', [Validators.required]],
-      minor: ['0', [Validators.required]],
-      build: ['0', [Validators.required]],
+      major: ['', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      minor: ['', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      build: ['', [Validators.required]],
     });
   }
-
+  get crFormControl() {
+    return this.crForm.controls;
+  }
+  get versionFormControl() {
+    return this.versionForm.controls;
+  }
   ngOnInit(): void {
+    this.screenWidth = window.innerWidth;
     this.utilsService.loadSpinner(true)
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
@@ -126,11 +134,15 @@ export class CreateNewCrVersionComponent implements OnInit {
     })
   }
 
-  save(event?: any): void {
+  save(event: Event): void {
+    this.submitted = true;
+    if (this.crForm.invalid) {
+      return;
+    }
+
     this.utilsService.loadSpinner(true);
     this.saveValue();
   }
-
   onSubmit(event: any) {
   }
 
@@ -210,7 +222,11 @@ export class CreateNewCrVersionComponent implements OnInit {
     return reducedName;
   }
 
-  saveVersion(): void {
+  saveVersion(event: Event) {
+    this.submitted = true;
+    if (this.versionForm.invalid) {
+      return;
+    }
     this.utilsService.loadSpinner(true);
     let body = {
       "productId": this.product.id,
@@ -235,6 +251,8 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
+    event.stopPropagation();
+
   }
 
   getUserByAccountId(): void {
