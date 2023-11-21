@@ -153,3 +153,15 @@
 :host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
     color: black;
 }
+
+.invalid-feedback {
+    color: #CC3514;
+}
+
+.error-message {
+    color: #CC3514;
+}
+
+:host ::ng-deep .p-inputtext.ng-dirty.ng-invalid {
+    border-color: transparent;
+}
