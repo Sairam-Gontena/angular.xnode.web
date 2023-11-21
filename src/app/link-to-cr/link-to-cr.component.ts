@@ -45,6 +45,7 @@ export class LinkToCrComponent implements OnInit {
   filteredReveiwers: any;
   currentUser: any;
   reviewerList: any = [];
+  submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -77,7 +78,9 @@ export class LinkToCrComponent implements OnInit {
     this.crForm.controls['duedate'].disable();
     this.getMeCrList();
   }
-
+  get crFormControl() {
+    return this.crForm.controls;
+  }
   getAllVersions() {
     let body = {
       "productId": this.product.id
@@ -141,6 +144,10 @@ export class LinkToCrComponent implements OnInit {
   }
 
   linkCr(): void {
+    this.submitted = true;
+    if (this.crForm.invalid) {
+      return;
+    }
     this.utilsService.loadSpinner(true);
     const body = {
       "crId": this.crForm.value.crToAdd.id,
