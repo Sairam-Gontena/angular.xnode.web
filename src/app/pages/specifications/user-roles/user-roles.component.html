@@ -1,7 +1,7 @@
-<div class="grid" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
-  <div class="col-11">
-    <div *ngFor="let item of content let mainIndex = index ">
-        <h4 class="mb-0 pb-2">{{item.title}}</h4>
+<div class="grid pt-4" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
+  <div class="col-11 py-0">
+    <div class="mb-2" *ngFor="let item of content let mainIndex = index ">
+        <span class="text-xl">{{item.title}}</span>
         <div *ngIf="isArray(item.content)">
             <div *ngFor="let subItem of item.content; let i=index " class="pl-4">
                 <div class="flex col-12 p-0 "

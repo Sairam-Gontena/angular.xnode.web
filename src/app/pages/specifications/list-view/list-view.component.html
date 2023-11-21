@@ -5,9 +5,9 @@
           <div class="col-11 p-0 ">
             <div class="m-0 pb-1 line-height-3" >
               <span class="flex flex-wrap sub-title text-base font-medium">
-                <span  *ngFor="let word of subItem?.title?.split(' '); index as i" class="mr-1" [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
+                <span  *ngFor="let word of subItem?.title?.split(' '); index as i" class="pr-1" [innerHTML]="word | highlight: searchTerm" [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}" (mouseup)="contentSelected($event)">
                   <p-overlayPanel #selectionText>
-                    <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"  *ngIf="selectedText.length>0"  [position]="'absolute'" [selectedContent]="subItem" [selectedText]="selectedText" [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false)" [parentId]="specItem.id" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                    <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"  *ngIf="selectedText.length>0"  [position]="'absolute'" [selectedContent]="subItem" [selectedText]="selectedText" [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);selectedText=''" [parentId]="specItem.id" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                 </p-overlayPanel>
                 </span><span *ngIf="subItem?.title || subItem?.content"> :  <br/></span>
                 </span>
