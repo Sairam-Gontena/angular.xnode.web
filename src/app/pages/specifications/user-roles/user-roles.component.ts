@@ -24,6 +24,7 @@ export class UserRolesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.content)
   }
 
   getWords(subitem: any) {
@@ -71,6 +72,14 @@ export class UserRolesComponent implements OnInit {
 
   isArray(item: any) {
     return Array.isArray(item);
+  }
+
+  isString(item: any){
+    if(typeof(item)=='string'){
+      return true;
+    }else{
+      return false
+    }
   }
 
 }
