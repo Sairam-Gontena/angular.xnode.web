@@ -20,7 +20,7 @@ export class ParaViewComponent {
   commentOverlayPanelOpened:boolean=false;
   @ViewChild('op')overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
-
+  selectedWordIndices: number[]=[];
   constructor(public utils: UtilsService){
   }
 
@@ -46,6 +46,7 @@ export class ParaViewComponent {
   }
 
   contentSelected(event:any) {
+    this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
       return ;
@@ -56,6 +57,23 @@ export class ParaViewComponent {
       this.selectedText='';
      }
      this.handleSelectionText(event);
+  }
+
+  highlightSelectedText(){
+    const selection = window.getSelection();
+    this.selectedWordIndices = [];
+    if(selection){
+      if (!selection.rangeCount) return;
+      const range = selection.getRangeAt(0);
+      const elements = range.cloneContents().querySelectorAll('span');
+      elements.forEach(element => {
+        const id = element.id;
+        const index = parseInt(id.replace('word', ''));
+        if (!this.selectedWordIndices.includes(index)) {
+          this.selectedWordIndices.push(index);
+        }
+      });
+    }
   }
 
   async handleSelectionText(event: any) {

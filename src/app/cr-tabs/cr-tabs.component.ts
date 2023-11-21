@@ -11,6 +11,7 @@ export class CrTabsComponent {
   currentUser: any;
   crData:any;
   subCRData:any;
+  showComment:boolean=false;
   constructor(private api:ApiService,
     private utilsService: UtilsService){
   }
@@ -57,7 +58,12 @@ export class CrTabsComponent {
       console.log(err);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       this.utilsService.loadSpinner(false);
-    })
+    });
+    this.showComment=false;
+  }
+
+  toggleShowComment(){
+    this.showComment = !this.showComment;
   }
 
   getMeUserAvatar(report?: any) {
