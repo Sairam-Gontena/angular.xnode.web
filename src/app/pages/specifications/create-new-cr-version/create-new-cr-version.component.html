@@ -37,11 +37,11 @@
                     <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"></p-dropdown>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 ">
                 <label>Due Date</label>
                 <div class="p-inputgroup mt-1">
-                    <p-calendar formControlName="duedate" [showIcon]="true" placeholder="DD/MM/YYYY"
-                        styleClass="due-date"></p-calendar>
+                    <p-calendar [showClear]="true" [style]="{'width': '100%'}" formControlName="duedate"
+                        [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"></p-calendar>
                 </div>
             </div>
             <div class="col-12 border-1 border-white-alpha-40 border-round-xl" *ngIf="showAddVersionForm">

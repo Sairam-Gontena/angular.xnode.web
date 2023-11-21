@@ -37,6 +37,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
   newVersion: boolean = false;
   showAddVersionForm: boolean = false;
+  screenWidth?: number
 
   constructor(private fb: FormBuilder,
     private commentsService: CommentsService,
@@ -63,6 +64,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.screenWidth = window.innerWidth;
     this.utilsService.loadSpinner(true)
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
