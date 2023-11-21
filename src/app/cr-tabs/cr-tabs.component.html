@@ -44,7 +44,7 @@
               <div class="flex flex-row">
                 <span *ngFor="let reviewers of data?.reviewers">
                   <p-avatar [label]="getMeUserAvatar(reviewers)" class="pt-2" shape="circle"
-                    [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
+                    [ngStyle]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                 </span>
               </div>
               <div class="flex">
@@ -130,7 +130,7 @@
         <p class="text-base font-normal ml-1" [ngStyle]="{'color':'#E93F3F'}">Reject</p>
       </div>
       <div class="flex align-items-center border-bottom-1 border-600 pointer" (click)="toggleShowComment();op.toggle(false)">
-        <i class="pi pi-comment" style="height: 25px;"></i>
+        <i class="pi pi-comment" [ngStyle]="{'height': '25px'}"></i>
         <p class="text-base font-normal ml-1">Needs work</p>
       </div>
     </div>
