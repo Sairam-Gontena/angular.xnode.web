@@ -95,13 +95,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   private handleFiles(files: FileList) {
     this.readFileContent(files[0], files[0].name);
   }
-  // const reader = new FileReader();
-  // reader.onload = (e) => {
-  //   const binaryData = reader.result as ArrayBuffer;
-  //   if (binaryData)
-  //     this.uploadCsv(reader.result, fileName);
-  // };
-  // reader.readAsArrayBuffer(file);
+
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
     const fileName = selectedFile.name;
@@ -124,13 +118,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   fileUploadCall(formData: any, headers: any) {
+    this.utils.loadSpinner(true);
+
     if (!this.isUploading) {
       this.isUploading = true;
       this.commonApi.postFile('file-azure/upload', formData, { headers }).then((res: any) => {
         this.files = res.data;
         console.log('File upload response:', this.files);
         this.isUploading = false;
+        this.utils.loadSpinner(false);
       }).catch((error: any) => {
+        this.utils.loadSpinner(false);
         console.error('File upload error:', error);
       });
     }
@@ -138,13 +136,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   prepareFilesList(files: File) {
     this.files.push(files);
   }
-
-  deleteFile() {
-    if (this.selectedFile) {
-      this.selectedFile = null;
-      this.selectedFile = '';
-    }
+  deleteFile(index: number) {
+    this.files.splice(index, 1);
   }
+  // deleteFile() {
+  //   if (this.selectedFile) {
+  //     this.selectedFile = null;
+  //     this.selectedFile = '';
+  //   }
+  // }
   /**
      * format bytes
      * @param bytes (File size in bytes)

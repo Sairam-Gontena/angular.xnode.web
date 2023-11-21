@@ -26,21 +26,21 @@
                     </div>
                 </div>
                 <div class="files-list">
-                    <div class="single-file" *ngFor="let files of files">
+                    <div class="single-file" *ngFor="let files of files;let  i = index">
                         <div class="file-icon" style="width: 50px">
 
                         </div>
                         <div class="info">
                             <h4 class="name">
-                                {{ files?.fileName }}
+                                {{ files?.name }}
                             </h4>
                             <p class="size">
                                 {{ formatBytes(files?.size,0) }}
                             </p>
                         </div>
 
-                        <div class="delete" (click)="deleteFile()">
-                            <i class="pi pi-trash" style="font-size: 1rem"></i>
+                        <div class="delete">
+                            <i class="pi pi-trash" style="font-size: 1rem" (click)="deleteFile(i)"></i>
                         </div>
                     </div>
                 </div>
