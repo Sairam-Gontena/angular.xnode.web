@@ -96,6 +96,8 @@
                             <div *ngIf="submitted && versionFormControl['major'].errors" class="invalid-feedback">
                                 <div *ngIf="versionFormControl['major'].errors?.['required']">
                                     Major is required</div>
+                                <div *ngIf="versionFormControl['major'].errors?.['pattern']">
+                                    Enter numbers only</div>
                             </div>
                         </div>
                         <div class="col-4">
@@ -107,6 +109,8 @@
                             <div *ngIf="submitted && versionFormControl['minor'].errors" class="invalid-feedback">
                                 <div *ngIf="versionFormControl['minor'].errors?.['required']">
                                     Minor is required</div>
+                                <div *ngIf="versionFormControl['minor'].errors?.['pattern']">
+                                    Enter numbers only</div>
                             </div>
                         </div>
                         <div class="col-4">
