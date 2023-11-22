@@ -73,4 +73,12 @@ export class UserRolesComponent implements OnInit {
     return Array.isArray(item);
   }
 
+  isString(item: any){
+    if(typeof(item)=='string'){
+      return true;
+    }else{
+      return false
+    }
+  }
+
 }
