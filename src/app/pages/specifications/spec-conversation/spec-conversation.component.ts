@@ -68,6 +68,10 @@ export class SpecConversationComponent {
           this.specItemCommentCount == this.childSpecListCount?this.hideShowMore=true:this.hideShowMore=false;
         }
       })
+      if(this.specItemCommentCount==this.childSpecListCount){
+        this.hideShowMore = true;
+      }
+      console.log('check',this.specItemCommentCount,this.childSpecListCount)
     }
   }
 

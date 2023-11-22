@@ -41,10 +41,10 @@
             <xnode-spec-child-conversation [activeIndex]="activeIndex" [usersList]="usersList" (childEvent)="receiveMsg($event)"
                 [list]="cmt?.comments?.slice().reverse()" [topParentId]="topParentId"></xnode-spec-child-conversation>
         </div>
-          <div class="col-12 pb-0" *ngIf="!hideShowMore && cmt.replyCount !== -1">
-              <div class="view-replies">
+          <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1" [ngClass]="{'p-0':hideShowMore!=false}"> <!--!hideShowMore && -->
+              <div class="view-replies" [ngClass]="{'border-none':hideShowMore!=false,'m-auto':hideShowMore!=false}">
                 <span class="pointer text-xs" *ngIf="!cmt?.repliesOpened" (click)="viewReplies(cmt)">See More</span>
-                <span class="pointer text-xs" *ngIf="cmt?.repliesOpened" (click)="loadComments('increment')">See More</span>
+                <span class="pointer text-xs" *ngIf="!hideShowMore && cmt?.repliesOpened" (click)="loadComments('increment')">See More</span>
               </div>
           </div>
           <div class="col-12 pb-0" *ngIf="specItemCommentCount == childSpecListCount && specItemCommentCount!=undefined ">
