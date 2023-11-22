@@ -1,8 +1,8 @@
 <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
   <p-tabPanel [header]="'Comments'">
-    <xnode-comments-panel [usersList]="usersList"></xnode-comments-panel>
+    <xnode-comments-panel [usersList]="usersList" [activeIndex]="activeIndex"></xnode-comments-panel>
   </p-tabPanel>
   <p-tabPanel [header]="'Tasks'">
-    <xnode-tasks-panel [usersList]="usersList"></xnode-tasks-panel>
+    <xnode-tasks-panel [usersList]="usersList" [activeIndex]="activeIndex"></xnode-tasks-panel>
   </p-tabPanel>
 </p-tabView>

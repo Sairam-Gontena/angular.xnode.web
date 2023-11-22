@@ -6,11 +6,12 @@ import { Comment } from 'src/models/comment';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 @Component({
-  selector: 'xnode-spec-child-conversation',
-  templateUrl: './spec-child-conversation.component.html',
-  styleUrls: ['./spec-child-conversation.component.scss']
+  selector: 'xnode-task-child-conversation',
+  templateUrl: './task-child-conversation.component.html',
+  styleUrls: ['./task-child-conversation.component.scss']
 })
-export class SpecChildConversationComponent {
+export class TaskChildConversationComponent {
+
   @Input() list: any;
   @Input() usersList: any;
   @Input() topParentId: any;
@@ -93,9 +94,6 @@ export class SpecChildConversationComponent {
   }
 
   onClickReply(cmt: any): void {
-    if (!cmt.topParentId) {
-      this.topParentId = cmt.id
-    }
     this.selectedComment = cmt;
     this.showCommentInput = true;
     this.action = 'REPLY';
@@ -185,14 +183,14 @@ export class SpecChildConversationComponent {
   }
 
   viewReplies(cmt?: any) {
-    if (!cmt.topParentId || cmt.topParentId !== null) {
-      this.topParentId = cmt.id;
-    }
+    // if (!cmt.topParentId || cmt.topParentId !== null) {
+    //   this.topParentId = cmt.id;
+    // }
     this.showReplies = true;
     if (cmt)
       this.selectedComment = cmt;
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
+    this.commentsService.getTasks({ parentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
         this.replies = response.data;
         response.data.forEach((element: any) => {

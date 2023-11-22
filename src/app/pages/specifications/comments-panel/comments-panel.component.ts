@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
@@ -40,17 +40,16 @@ export class CommentsPanelComponent implements OnInit {
 
   constructor(private utils: UtilsService, private commentsService: CommentsService,
     private sanitizer: DomSanitizer) {
-    this.utils.getMeLatestConversation.subscribe((event: any) => {
-      if (event === 'COMMENT') {
-        console.log('eventeventeventevent', event);
-
-        this.getMeCommentsList();
-      }
-    })
   }
 
   ngOnInit(): void {
-    this.getMeCommentsList();
+  }
+
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    const activeIndexChange = changes['activeIndex'] as SimpleChange;
+    if (activeIndexChange && activeIndexChange.currentValue === 0) {
+      this.getMeCommentsList();
+    }
   }
 
   getMeCommentsList() {
