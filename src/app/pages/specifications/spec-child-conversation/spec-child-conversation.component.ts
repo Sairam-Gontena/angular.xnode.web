@@ -56,7 +56,7 @@ export class SpecChildConversationComponent {
   public populateSpecListBasedOnType(notComment?:boolean){
     if (this.list?.[0]?.parentEntity == "COMMENT" && notComment) {
       this.specListCopy = this.list;
-      this.specList = this.list.slice(0, 2);
+      this.specList = this.list.slice(0, 10);
     } else {
       this.specList = this.list;
     }
@@ -70,7 +70,7 @@ export class SpecChildConversationComponent {
       const newItems = this.specListCopy.slice(startIndex, endIndex);
       this.specList.push(...newItems);
     } else {
-      this.specList = this.specListCopy.slice(0, 2);
+      this.specList = this.specListCopy.slice(0, 10);
     }
     this.childEvent.emit(this.specList.length)
   }
