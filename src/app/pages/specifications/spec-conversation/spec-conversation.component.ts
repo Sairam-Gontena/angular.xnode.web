@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
 
 @Component({
   selector: 'xnode-spec-conversation',
@@ -17,6 +18,8 @@ export class SpecConversationComponent {
   @Input() topParentId: any;
   @Input() activeIndex: any;
   @Output() onClickClose = new EventEmitter<any>();
+  @ViewChild(SpecChildConversationComponent)
+  child!: SpecChildConversationComponent;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -35,6 +38,9 @@ export class SpecConversationComponent {
   replies: any;
   specListCopy: any;
   specList: any[] = [];
+  childSpecListCount:any;
+  specItemCommentCount:any;
+  hideShowMore: boolean = false;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -50,18 +56,29 @@ export class SpecConversationComponent {
   }
 
   ngOnInit() {
+    this.specListCopy = this.list;
+  }
+
+  receiveMsg(event:any){
+    if(event){
+      this.childSpecListCount = event;
+      this.list.forEach((item:any)=>{
+        if(item.id==this.topParentId){
+          this.specItemCommentCount = item.comments.length;
+          this.specItemCommentCount == this.childSpecListCount?this.hideShowMore=true:this.hideShowMore=false;
+        }
+      })
+    }
   }
 
 
   loadComments(change: string) {
     if (change === 'increment') {
-      const startIndex = this.specList.length;
-      const endIndex = Math.min(startIndex + 2, this.specListCopy.length);
-      const newItems = this.specListCopy.slice(startIndex, endIndex);
-      this.specList.push(...newItems);
+      this.child.loadComments('increment')
     } else {
-      this.specList = this.specListCopy.slice(0, 2);
+      this.child.loadComments('decrement')
     }
+    this.childSpecListCount = this.child.specList.length;
   }
 
   setAvatar(userObj: any): string {
@@ -210,7 +227,6 @@ export class SpecConversationComponent {
       console.log(err);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-
     });
   }
 

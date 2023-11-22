@@ -16,6 +16,7 @@ export class SpecChildConversationComponent {
   @Input() topParentId: any;
   @Input() activeIndex: any;
   @Output() onClickClose = new EventEmitter<any>();
+  @Output() childEvent = new EventEmitter<any>();
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -49,12 +50,17 @@ export class SpecChildConversationComponent {
   }
 
   ngOnInit() {
-    if (this.list?.[0]?.parentEntity == "COMMENT") {
+    this.populateSpecListBasedOnType(true);
+  }
+
+  public populateSpecListBasedOnType(notComment?:boolean){
+    if (this.list?.[0]?.parentEntity == "COMMENT" && notComment) {
       this.specListCopy = this.list;
       this.specList = this.list.slice(0, 2);
     } else {
       this.specList = this.list;
     }
+    this.childEvent.emit(this.specList.length)
   }
 
   loadComments(change: string) {
@@ -66,6 +72,7 @@ export class SpecChildConversationComponent {
     } else {
       this.specList = this.specListCopy.slice(0, 2);
     }
+    this.childEvent.emit(this.specList.length)
   }
 
   setAvatar(userObj: any): string {
