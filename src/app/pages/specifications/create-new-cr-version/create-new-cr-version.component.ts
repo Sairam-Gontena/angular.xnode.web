@@ -120,7 +120,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       "productId": this.product.id
     }
     this.commentsService.getVersions(body).then((response: any) => {
-      console.log("got response for versions ",response)
+      console.log("got response for versions ", response)
       if (response.status == 200) {
         response.data.forEach((element: any, index: any) => {
           if (index === 0) {
@@ -145,10 +145,14 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   save(event: Event): void {
+    console.log(this.crForm.value)
     this.submitted = true;
     if (this.crForm.invalid) {
+      console.log("Invalid form. Please check the form for errors.");
       return;
     }
+    console.log(this.crForm.value)
+    console.log("Form is valid. Submitting data...");
 
     this.utilsService.loadSpinner(true);
     this.saveValue();
@@ -185,6 +189,8 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   saveValue() {
+    console.log("Saving CR data...");
+
     let body = {
       "author": this.currentUser.user_id,
       "title": this.crForm.value.title,
@@ -209,6 +215,8 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
+    console.log("CR data saved successfully.");
+
   }
   filteredReveiwer(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
