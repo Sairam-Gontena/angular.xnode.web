@@ -47,7 +47,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       title: ['', [Validators.required]],
-      cr: ['', [Validators.required]],
+      // cr: ['', [Validators.required]],
       description: ['', [Validators.required]],
       reason: ['', [Validators.required]],
       version: ['', [Validators.required]],
@@ -144,10 +144,14 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   save(event: Event): void {
+    console.log(this.crForm.value)
     this.submitted = true;
     if (this.crForm.invalid) {
+      console.log("Invalid form. Please check the form for errors.");
       return;
     }
+    console.log(this.crForm.value)
+    console.log("Form is valid. Submitting data...");
 
     this.utilsService.loadSpinner(true);
     this.saveValue();
@@ -184,6 +188,8 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   saveValue() {
+    console.log("Saving CR data...");
+
     let body = {
       "author": this.currentUser.user_id,
       "title": this.crForm.value.title,
@@ -208,6 +214,8 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
+    console.log("CR data saved successfully.");
+
   }
   filteredReveiwer(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
