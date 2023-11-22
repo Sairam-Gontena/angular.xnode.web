@@ -47,7 +47,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       title: ['', [Validators.required]],
-      cr: ['', [Validators.required]],
+      // cr: ['', [Validators.required]],
       description: ['', [Validators.required]],
       reason: ['', [Validators.required]],
       version: ['', [Validators.required]],
