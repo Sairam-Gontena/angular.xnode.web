@@ -66,11 +66,13 @@ export class SpecChildConversationComponent {
   loadComments(change: string) {
     if (change === 'increment') {
       const startIndex = this.specList.length;
-      const endIndex = Math.min(startIndex + 2, this.specListCopy.length);
+      let indexNum:number=0;
+      this.specListCopy.length>10 ?  indexNum = 10: indexNum = this.specListCopy.length;
+      const endIndex = Math.min(startIndex + indexNum, this.specListCopy.length);
       const newItems = this.specListCopy.slice(startIndex, endIndex);
       this.specList.push(...newItems);
     } else {
-      this.specList = this.specListCopy.slice(0, 10);
+      this.specList = this.specListCopy.slice(0, 2);
     }
     this.childEvent.emit(this.specList.length)
   }

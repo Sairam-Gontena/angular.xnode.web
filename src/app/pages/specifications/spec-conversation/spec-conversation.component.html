@@ -49,7 +49,7 @@
           </div>
           <div class="col-12 pb-0" *ngIf="specItemCommentCount == childSpecListCount && specItemCommentCount!=undefined ">
               <div class="view-replies">
-                <span class="pointer text-xs" *ngIf="!cmt?.repliesOpened" (click)="viewReplies(cmt)">See Less</span>
+                <!-- <span class="pointer text-xs" *ngIf="!cmt?.repliesOpened" (click)="viewReplies(cmt)">See Less</span> -->
                 <span class="pointer text-xs" *ngIf="cmt?.repliesOpened" (click)="loadComments('decrement')">See Less</span>
               </div>
           </div>
