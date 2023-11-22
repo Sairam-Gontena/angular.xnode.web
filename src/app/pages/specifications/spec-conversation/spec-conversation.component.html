@@ -21,7 +21,7 @@
 
         <div class="col-12" *ngIf=" cmt.referenceContent?.content">
             <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50" [innerHTML]="cmt?.referenceContent?.content|highlight:cmt?.referenceContent?.commentedtext"></p>
+            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50" [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext"></p>
         </div>
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>

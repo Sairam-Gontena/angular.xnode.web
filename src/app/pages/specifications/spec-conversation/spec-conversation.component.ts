@@ -158,7 +158,7 @@ export class SpecConversationComponent {
     this.commentsService.deletTask(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.utils.updateConversationList('task');
+        this.utils.updateConversationList('TASK');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {

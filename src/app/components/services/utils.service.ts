@@ -74,7 +74,8 @@ export class UtilsService {
   private assignAsTask: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeTaskAssigned: Observable<boolean> = this.assignAsTask.asObservable();
 
-
+  private selectedContent: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public clearSelectedContent: Observable<boolean> = this.selectedContent.asObservable();
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -164,8 +165,13 @@ export class UtilsService {
   saveProductDetails(event: object): void {
     this.productDetails.next(event);
   }
+
   toggleTaskAssign(event: boolean): void {
     this.assignAsTask.next(event);
+  }
+
+  changeSelectContentChange(event:boolean):void{
+    this.selectedContent.next(event)
   }
 
   calculateTimeAgo(timestamp: string): string {
