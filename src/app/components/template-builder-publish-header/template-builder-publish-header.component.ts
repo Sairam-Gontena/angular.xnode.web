@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ApiService } from 'src/app/api/api.service';
 import { environment } from 'src/environments/environment';
-import { UserUtil } from '../../utils/user-util';
 import { MenuItem } from 'primeng/api';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from '../services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { NotifyApiService } from 'src/app/api/notify.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -21,7 +21,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   @Output() iconClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() onChangeProduct = new EventEmitter<object>();
   @Output() loadSpinnerInParent: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() productId?: string | null;
   selectedOption = 'Preview';
   selectedDeviceIndex: string | null = null;
   templateEvent: any;
@@ -29,30 +28,24 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   currentUser?: any;
   productOptions: MenuItem[];
   templates: any;
-  selectedTemplate: any;
+  productId: any;
   url: any;
   product: any;
-  iframeSrc: any;
-  emailData: any;
-  product_url: any;
-  email: any;
-  userId: any;
   showLimitReachedPopup: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
-    private sanitizer: DomSanitizer,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
-    private notifyApi: NotifyApiService
+    private notifyApi: NotifyApiService,
+    private localStorageService: LocalStorageService
   ) {
     this.utilsService.getMeProductId.subscribe((event: any) => {
       if (event) {
-        this.selectedTemplate = event;
+        this.productId = event;
         this.storeProductData(event)
       }
     })
-    this.currentUser = UserUtil.getCurrentUser();
     this.productOptions = [
       {
         label: 'Preview',
@@ -79,12 +72,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         ];
       }
     })
-
-    let currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.email = JSON.parse(currentUser).email;
-      this.userId = JSON.parse(currentUser).user_id;
-    }
   }
 
   ngOnInit(): void {
@@ -92,36 +79,20 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     if (currentUrl === '/dashboard') {
       this.showDeviceIcons = true;
     }
-    const metaData = localStorage.getItem('meta_data');
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
-    if (metaData) {
-      this.templates = JSON.parse(metaData);
-      setTimeout(() => {
-        this.selectedTemplate = this.productId;
-      }, 100)
-      if (product) {
-        this.selectedTemplate = JSON.parse(product).id;
-        this.product_url = JSON.parse(product).product_url;
-      }
-    }
-
-    this.emailData = localStorage.getItem('currentUser');
-    if (this.emailData) {
-      let JsonData = JSON.parse(this.emailData)
-      this.emailData = JsonData?.email;
-    }
-
-    if (localStorage.getItem('record_id')) {
-      this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
-      let iframeSrc = environment.designStudioAppUrl + "?email=" + this.emailData + "&id=" + this.productId + "" + "&userId=" + this.userId;
-      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(iframeSrc);
-    }
-
+    this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.templates = this.localStorageService.getItem(StorageKeys.MetaData);
+    this.productId = this.productId ? this.productId : localStorage.getItem('record_id')
     this.checkProductOptions()
   };
+
+  changeTheProduct(event: any): void {
+    console.log('event', event);
+    this.product = event;
+    this.onChangeProduct.emit(event)
+
+
+  }
 
   storeProductData(id: string) {
     const product = this.templates?.filter((obj: any) => { return obj.id === id })[0];
@@ -130,8 +101,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('product_url', product.url && product.url !== '' ? product.url : '');
       localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
-      this.product_url = product.product_url;
     }
   }
 
@@ -154,9 +123,9 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   onSelectOption(): void {
-    let email = this.currentUser?.email == localStorage.getItem('product_email') ? this.currentUser?.email : localStorage.getItem('product_email')
     if (this.selectedOption == 'Preview') {
-      window.open(environment.designStudioAppUrl + "?email=" + email + "&id=" + this.productId + '&isVerified=true' + "&has_insights=" + true, "_blank");
+      const url = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + this.product.id + '&isVerified=true' + "&has_insights=" + true;
+      window.open(url, "_blank");
     } else {
       this.getMeTotalAppsPublishedCount();
     }
@@ -179,21 +148,21 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res.data.detail, life: 3000 });
         let user_audit_body = {
           'method': 'GET',
           'url': res?.request?.responseURL
         }
-        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
       }
     }).catch((err: any) => {
       let user_audit_body = {
         'method': 'GET',
         'url': err?.request?.responseURL
       }
-      this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('TOTAL_APPS_PUBLISHED_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err, life: 3000 });
     })
   }
@@ -220,7 +189,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': res?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
       }
     }).catch((err: any) => {
       let user_audit_body = {
@@ -228,7 +197,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         'url': err?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('EMAIL_NOTIFY_TO_USER_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
@@ -263,7 +232,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
         this.loadSpinnerInParent.emit(false);
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
         this.utilsService.loadSpinner(false);
@@ -274,7 +243,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
           'url': response?.request?.responseURL,
           'payload': body
         }
-        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
         this.auditUtil.postAudit("PUBLISH_APP", 1, 'FAILURE', 'user-audit');
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
       }
@@ -286,7 +255,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
         'url': error?.request?.responseURL,
         'payload': body
       }
-      this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+      this.auditUtil.postAudit('PUBLISH_APP_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
       this.loadSpinnerInParent.emit(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       this.utilsService.loadSpinner(false)
@@ -304,14 +273,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.productId);
+          this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
         }
       }).catch(error => {
         let user_audit_body = {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.productId);
+        this.auditUtil.postAudit('GET_ALL_PRODUCTS_GET_METADATA_TEMPLATE_BUILDER_PUBLISH_HEADER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.productId);
         this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
       });
   }
