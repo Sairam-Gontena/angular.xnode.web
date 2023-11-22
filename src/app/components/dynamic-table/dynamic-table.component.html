@@ -36,7 +36,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
                <tr>
-                    <th pResizableColumn *ngFor="let col of columns" [ngClass]="'tableheader'">
+                    <th style="min-width:300px"  *ngFor="let col of columns" [ngClass]="'tableheader'">
                          {{ col.header }}
                          <p-columnFilter type="text" [field]="col.field" display="menu"
                               *ngIf="col.filter"></p-columnFilter>

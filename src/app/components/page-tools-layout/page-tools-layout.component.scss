@@ -1,25 +1,7 @@
-@media (min-width: 768px) {
-     .template-builder-body-wrapper {
-          width: 150px !important;
-          background: #24232C;
-          transition: width 0.5s ease;
-     }
-}
-
-@media (min-width: 1240px) {
-     .template-builder-body-wrapper {
-          width: 250px !important;
-          background: #24232C;
-          transition: width 0.5s ease;
-     }
-}
-
-@media (min-width: 1440px) {
-     .template-builder-body-wrapper {
-          width: 350px !important;
-          background: #24232C;
-          transition: width 0.5s ease;
-     }
+.template-builder-body-wrapper {
+     background: #24232C;
+     transition: width 0.5s ease;
+     height: calc(100vh - 42px);
 }
 
 .text-xs {
