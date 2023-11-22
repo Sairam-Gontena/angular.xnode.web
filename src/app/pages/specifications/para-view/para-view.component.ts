@@ -25,6 +25,11 @@ export class ParaViewComponent {
   }
 
   ngOnInit(){
+    this.utils.clearSelectedContent.subscribe((res:boolean)=>{
+      if(res){
+        this.emptySelectedContent();
+      }
+    })
   }
 
   getWords(subitem: any){
@@ -46,6 +51,7 @@ export class ParaViewComponent {
   }
 
   contentSelected(event:any) {
+    this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
@@ -74,6 +80,11 @@ export class ParaViewComponent {
         }
       });
     }
+  }
+
+  emptySelectedContent(){
+    this.selectedText='';
+    this.selectedWordIndices = [];
   }
 
   async handleSelectionText(event: any) {

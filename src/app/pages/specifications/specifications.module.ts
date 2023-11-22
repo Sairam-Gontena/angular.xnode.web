@@ -14,6 +14,7 @@ import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
+import { CompleteTextHighlightPipe } from 'src/app/pipes/completeTextHighlight.pipe';
 import { ListViewComponent } from './list-view/list-view.component';
 import { ParaViewComponent } from './para-view/para-view.component';
 import { CommentsCrPanelComponent } from './comments-cr-panel/comments-cr-panel.component';
@@ -65,6 +66,6 @@ import { TaskListComponent } from './task-list/task-list.component';
     SharedModule,
     SharedComponentModule
   ],
-  providers: [HighlightPipe]
+  providers: [HighlightPipe, CompleteTextHighlightPipe]
 })
 export class SpecificationsModule { }

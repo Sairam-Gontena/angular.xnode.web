@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Section } from 'src/models/section';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-list-view',
@@ -23,7 +24,16 @@ export class ListViewComponent {
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
   selectedWordIndices: number[]=[];
 
+  constructor(private utils:UtilsService){
+
+  }
+
   ngOnInit():void{
+    this.utils.clearSelectedContent.subscribe((res:boolean)=>{
+      if(res){
+        this.emptySelectedContent();
+      }
+    })
   }
 
   getWords(subitem: any){
@@ -46,7 +56,13 @@ export class ListViewComponent {
     }
   }
 
+  emptySelectedContent(){
+    this.selectedText='';
+    this.selectedWordIndices = [];
+  }
+
   contentSelected(event:any) {
+    this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
