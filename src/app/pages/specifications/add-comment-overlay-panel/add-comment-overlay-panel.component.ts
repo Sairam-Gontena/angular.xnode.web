@@ -118,8 +118,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.toggleTaskAssign(false);
-        if (this.isCommnetsPanelOpened)
-          this.utils.updateConversationList('COMMENT');
+        if (this.isCommnetsPanelOpened) {
+          this.utils.updateConversationList(body.topParentId ? 'COMMENT' : 'TASK');
+        }
         else
           this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';

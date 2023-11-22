@@ -41,7 +41,7 @@ export class TaskListComponent {
     private sanitizer: DomSanitizer,
     private messagingService: MessagingService) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
-      if (event === 'reply') {
+      if (event === 'REPLY') {
         // this.viewReplies(this.selectedComment);
         this.showCommentInput = false;
         this.action = ''
@@ -113,26 +113,8 @@ export class TaskListComponent {
   }
 
   handleDeleteConfirmation(event: boolean): void {
-    if (this.activeIndex == 0) {
-      this.deleteComment(event)
-    } else if (this.activeIndex == 1) {
-      this.deleteTask(event)
-    }
-  }
-
-  deleteComment(event: boolean) {
     this.utils.loadSpinner(true);
-    this.showDeletePopup = event;
-    this.commentsService.deletComment(this.selectedComment.id).then(res => {
-      if (res) {
-        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.updateConversationList('comment');
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-      this.utils.loadSpinner(false);
-    })
+    this.deleteTask(event)
   }
 
   deleteTask(event: boolean) {
@@ -141,7 +123,7 @@ export class TaskListComponent {
     this.commentsService.deletTask(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.utils.updateConversationList('task');
+        this.utils.updateConversationList('TASK');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -189,7 +171,7 @@ export class TaskListComponent {
     if (cmt)
       this.selectedComment = cmt;
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
+    this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
         this.replies = response.data;
         response.data.forEach((element: any) => {

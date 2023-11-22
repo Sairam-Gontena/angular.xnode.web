@@ -30,6 +30,7 @@ import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-
 import { SpecChildConversationComponent } from './spec-child-conversation/spec-child-conversation.component';
 import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
 import { TaskListComponent } from './task-list/task-list.component';
+import { TaskChildConversationComponent } from 'src/app/pages/specifications/task-child-conversation/task-child-conversation.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -56,7 +57,8 @@ import { TaskListComponent } from './task-list/task-list.component';
     CreateNewCrVersionComponent,
     SpecChildConversationComponent,
     TasksPanelComponent,
-    TaskListComponent
+    TaskListComponent,
+    TaskChildConversationComponent
   ],
   imports: [
     CommonModule,
