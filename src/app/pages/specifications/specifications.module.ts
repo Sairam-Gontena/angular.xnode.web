@@ -14,6 +14,7 @@ import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
+import { CompleteTextHighlightPipe } from 'src/app/pipes/completeTextHighlight.pipe';
 import { ListViewComponent } from './list-view/list-view.component';
 import { ParaViewComponent } from './para-view/para-view.component';
 import { CommentsCrPanelComponent } from './comments-cr-panel/comments-cr-panel.component';
@@ -30,6 +31,7 @@ import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-
 import { SpecChildConversationComponent } from './spec-child-conversation/spec-child-conversation.component';
 import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
 import { TaskListComponent } from './task-list/task-list.component';
+import { TaskChildConversationComponent } from 'src/app/pages/specifications/task-child-conversation/task-child-conversation.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -56,7 +58,8 @@ import { TaskListComponent } from './task-list/task-list.component';
     CreateNewCrVersionComponent,
     SpecChildConversationComponent,
     TasksPanelComponent,
-    TaskListComponent
+    TaskListComponent,
+    TaskChildConversationComponent
   ],
   imports: [
     CommonModule,
@@ -65,6 +68,6 @@ import { TaskListComponent } from './task-list/task-list.component';
     SharedModule,
     SharedComponentModule
   ],
-  providers: [HighlightPipe]
+  providers: [HighlightPipe, CompleteTextHighlightPipe]
 })
 export class SpecificationsModule { }

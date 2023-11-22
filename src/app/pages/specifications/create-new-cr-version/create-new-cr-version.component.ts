@@ -120,7 +120,6 @@ export class CreateNewCrVersionComponent implements OnInit {
       "productId": this.product.id
     }
     this.commentsService.getVersions(body).then((response: any) => {
-      console.log("got response for versions ", response)
       if (response.status == 200) {
         response.data.forEach((element: any, index: any) => {
           if (index === 0) {
