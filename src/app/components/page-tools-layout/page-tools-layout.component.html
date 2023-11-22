@@ -1,5 +1,5 @@
-<div class="submenu"
-     [ngClass]="{'template-builder-body-wrapper': isOpen, 'hide-template-builder-body-wrapper': !isOpen}">
+<div class="submenu" [style.width]="containerWidth" style="transition: width 0.5s ease;"
+     class="template-builder-body-wrapper">
      <div class="flex justify-content-end">
           <div class="pi pi-angle-left text-white p-2 p-button" [ngClass]="{'hide-icon': !isOpen, 'show-icon': isOpen}"
                (click)="toggleMenu()"></div>
