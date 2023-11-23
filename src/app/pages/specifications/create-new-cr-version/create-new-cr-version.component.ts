@@ -205,7 +205,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   reduceToInitials(fullName: string): string {
     const nameParts = fullName.split(' ');
     const initials = nameParts.map(part => part.charAt(0));
-    const reducedName = initials.join('');
+    const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
 
@@ -259,5 +259,4 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-
 }

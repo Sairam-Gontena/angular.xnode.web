@@ -53,10 +53,10 @@ export class LinkToCrComponent implements OnInit {
     private commentsService: CommentsService,
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
-      priority: ['', [Validators.required]],
-      version: ['', [Validators.required]],
-      duedate: ['', [Validators.required]],
-      crToAdd: ['', [Validators.required]],
+      priority: new FormControl({ value: '', disabled: true }, Validators.required),
+      version: new FormControl({ value: '', disabled: true }, Validators.required),
+      duedate: new FormControl({ value: '', disabled: true }, Validators.required),
+      crToAdd: new FormControl({ value: null, disabled: false }, Validators.required),
     });
   }
 
@@ -72,9 +72,6 @@ export class LinkToCrComponent implements OnInit {
         }
       }
     });
-    this.crForm.controls['priority'].disable();
-    this.crForm.controls['version'].disable();
-    this.crForm.controls['duedate'].disable();
     this.getMeCrList();
   }
   get crFormControl() {
@@ -173,5 +170,8 @@ export class LinkToCrComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
+  }
+  setAvatar(userObj: any): string {
+    return userObj.firstName.charAt(0).toUpperCase() + userObj.lastName.charAt(0).toUpperCase();;
   }
 }
