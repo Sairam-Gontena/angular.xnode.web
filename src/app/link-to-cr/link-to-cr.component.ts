@@ -5,7 +5,7 @@ import { LocalStorageService } from '../components/services/local-storage.servic
 import { MessagingService } from '../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { MenuItem } from 'primeng/api';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Dropdown } from 'primeng/dropdown';
@@ -46,17 +46,16 @@ export class LinkToCrComponent implements OnInit {
   currentUser: any;
   reviewerList: any = [];
   submitted: boolean = false;
-
+  isNewCrCreated: boolean = false;
   constructor(private fb: FormBuilder,
     private localStorageService: LocalStorageService,
     private messagingService: MessagingService,
     private commentsService: CommentsService,
-    private authApiService: AuthApiService,
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       priority: ['', [Validators.required]],
       version: ['', [Validators.required]],
-      duedate: [null, [Validators.required]],
+      duedate: ['', [Validators.required]],
       crToAdd: ['', [Validators.required]],
     });
   }
@@ -66,7 +65,7 @@ export class LinkToCrComponent implements OnInit {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
     this.items = [{ label: this.comment?.referenceContent?.specTitle }, { label: this.comment?.referenceContent?.title }];
-    this.messagingService.getMessage<any>().subscribe(msg => {
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgType === MessageTypes.LinkToCR) {
         if (this.comment) {
           this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
@@ -83,7 +82,7 @@ export class LinkToCrComponent implements OnInit {
   }
   getAllVersions() {
     let body = {
-      "productId": this.product.id
+      "productId": this.product?.id
     }
     this.commentsService.getVersions(body).then((response: any) => {
       if (response.status == 200) {
@@ -102,7 +101,7 @@ export class LinkToCrComponent implements OnInit {
 
   getMeCrList() {
     let body = {
-      "productId": this.product.id
+      "productId": this.product?.id
     }
     this.commentsService.getChangeRequestList(body).then((response: any) => {
       if (response.status == 200 && response.data) {
@@ -111,6 +110,10 @@ export class LinkToCrComponent implements OnInit {
           element.value = element.id;
         });
         this.crList = this.crList.concat(response.data);
+        if (this.isNewCrCreated) {
+          this.crForm.patchValue({ 'crToAdd': this.crList[1] });
+          this.isNewCrCreated = false;
+        }
         this.getAllVersions();
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
@@ -133,6 +136,9 @@ export class LinkToCrComponent implements OnInit {
   }
 
   closePopUp(event: any) {
+    if (event.id) {
+      this.isNewCrCreated = true;
+    }
     this.showNewCrPopup = false;
     this.crList = [{ label: 'New Change Request', value: 'ADD_NEW' }];
     this.getMeCrList();
