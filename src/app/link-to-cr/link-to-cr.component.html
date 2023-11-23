@@ -36,8 +36,8 @@
       </div>
       <div class="col-4">
         <label>Due Date</label>
-        <p-calendar *ngIf="crForm.get('duedate')?.value" formControlName="duedate" [showIcon]="true"
-          placeholder="DD/MM/YYYY" styleClass="due-date" [disabled]="true"></p-calendar>
+        <p-calendar formControlName="duedate" [showClear]="true" [showIcon]="true" placeholder="DD/MM/YYYY"
+          styleClass="due-date"></p-calendar>
       </div>
       <div class="col-12 pb-0" *ngIf="reviewerList?.length">
         <div class="flex justify-content-between flex-wrap">
@@ -48,12 +48,19 @@
       </div>
       <div class="col-12" *ngIf="reviewerList?.length">
         <div class="flex align-items-center">
-          <div class="flex level-title justify-content-center align-items-center w-3rem h-3rem mr-2">
+          <div class="flex level-title p-2 justify-content-center align-items-center w-3rem h-3rem mr-2">
             L1
           </div>
-          <div class="flex reviewer-grid" *ngFor="let reviewer of reviewerList">
-            <div class="reviewer-chip">
-              {{reviewer.displayName}}
+          <div class="reviewer-grid flex">
+            <div class="flex" *ngFor="let reviewer of reviewerList">
+              <div class="reviewer-chip flex align-items-center mr-1">
+                <p class="m-0 avtar">
+                  {{setAvatar(reviewer)}}
+                </p>
+                <p class="mt-0 mb-0 ml-1">
+                  {{reviewer.displayName}}
+                </p>
+              </div>
             </div>
           </div>
         </div>
