@@ -1,0 +1,18 @@
+<p-dialog [(visible)]="visible" [modal]="true" (onHide)="onClickAction.emit('No')">
+    <ng-template pTemplate="header">
+        <p class="header font-bold flex justify-content-center">
+            {{header}}
+        </p>
+    </ng-template>
+    <div class="flex font-medium">
+        <span>
+            {{content}}
+        </span>
+    </div>
+    <div class="flex justify-content-end mt-6">
+        <p-button label="No" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
+            (click)="onClickAction.emit('No')"></p-button>
+        <p-button label="Yes" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+            (click)="onClickAction.emit('Yes')"></p-button>
+    </div>
+</p-dialog>

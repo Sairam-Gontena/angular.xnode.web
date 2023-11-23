@@ -26,9 +26,12 @@ export class SpecificationsHeaderComponent implements OnInit {
   data: any;
   productDetails: any;
   userHasPermissionToEditProduct = true;
+  showConfirmationPopup: boolean = false;
 
-  constructor(private router: Router, private utils: UtilsService, private apiService: ApiService) {
+  constructor(private utils: UtilsService,
+    private apiService: ApiService) {
   }
+
   ngOnInit(): void {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
@@ -128,5 +131,17 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   onChangeProduct(data: any): void {
     this.changeProduct.emit(data)
+  }
+
+  onClickUpdateSpec(): void {
+    this.showConfirmationPopup = true;
+  }
+
+  onClickAction(event: any): void {
+    if (event === 'Yes') {
+      this.showConfirmationPopup = false;
+    } else {
+      this.showConfirmationPopup = false;
+    }
   }
 }
