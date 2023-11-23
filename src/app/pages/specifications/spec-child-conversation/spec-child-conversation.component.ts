@@ -63,8 +63,9 @@ export class SpecChildConversationComponent {
     this.childEvent.emit(this.specList.length)
   }
 
-  loadComments(change: string) {
+  loadComments(change: string,cmt?:any) {
     let indexNum:number=0;
+    let emitToParent:boolean=true;
     if (change === 'increment') {
       const startIndex = this.specList.length;
       this.specListCopy.length>10 ?  indexNum = 10: indexNum = this.specListCopy.length;
@@ -74,14 +75,23 @@ export class SpecChildConversationComponent {
     } else {
       if(this.specListCopy.length<2){
         indexNum = 1
-        this.specList =this.specListCopy;
+        this.specList = this.specListCopy;
+        this.specList.forEach((item:any)=>{
+          if(item.id==cmt.id){
+            item.repliesOpened = false;
+          }
+        })
+      }else if(this.specList.length>10){
+        emitToParent = false;
+        indexNum = this.specList.length-10;
+        this.specList = this.specListCopy.slice(0, indexNum)
       }else{
         indexNum = 2;
         this.specList = this.specListCopy.slice(0, indexNum);
       }
-      console.log(this.specListCopy,indexNum)
     }
-    this.childEvent.emit(this.specList.length)
+    if(emitToParent)
+      this.childEvent.emit(cmt?.id)
   }
 
   setAvatar(userObj: any): string {

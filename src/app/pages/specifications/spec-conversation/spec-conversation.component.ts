@@ -39,8 +39,6 @@ export class SpecConversationComponent {
   specListCopy: any;
   specList: any[] = [];
   childSpecListCount:any;
-  specItemCommentCount:any;
-  hideShowMore: boolean = false;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -61,17 +59,15 @@ export class SpecConversationComponent {
 
   receiveMsg(event:any){
     if(event){
-      this.childSpecListCount = event;
       this.list.forEach((item:any)=>{
-        if(item.id==this.topParentId){
-          this.specItemCommentCount = item.comments.length;
-          this.specItemCommentCount == this.childSpecListCount?this.hideShowMore=true:this.hideShowMore=false;
+        if(item.comments){
+          item.comments.forEach((comment:any) => {
+            if(comment.id==event){
+              item.repliesOpened = false;
+            }
+          });
         }
-      })
-      if(this.specItemCommentCount==this.childSpecListCount){
-        this.hideShowMore = true;
-      }
-      console.log('check',this.specItemCommentCount,this.childSpecListCount)
+      });
     }
   }
 
@@ -82,7 +78,6 @@ export class SpecConversationComponent {
     } else {
       this.child.loadComments('decrement')
     }
-    this.childSpecListCount = this.child.specList.length;
   }
 
   setAvatar(userObj: any): string {
