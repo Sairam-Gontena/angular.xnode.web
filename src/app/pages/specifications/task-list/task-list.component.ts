@@ -50,8 +50,22 @@ export class TaskListComponent {
   }
 
   ngOnInit() {
-  }
+    this.specListCopy = this.list;
 
+  }
+  receiveMsg(event: any) {
+    if (event) {
+      this.list.forEach((item: any) => {
+        if (item.comments) {
+          item.comments.forEach((comment: any) => {
+            if (comment.id == event) {
+              item.repliesOpened = false;
+            }
+          });
+        }
+      });
+    }
+  }
 
   loadComments(change: string) {
     if (change === 'increment') {
@@ -170,6 +184,8 @@ export class TaskListComponent {
     this.showReplies = true;
     if (cmt)
       this.selectedComment = cmt;
+    console.log(cmt, '0000000000000')
+
     this.utils.loadSpinner(true);
     this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
@@ -184,6 +200,8 @@ export class TaskListComponent {
           }
         })
         this.replies = response.data;
+        console.log(this.replies, '0000000000000')
+
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
       }
@@ -217,5 +235,7 @@ export class TaskListComponent {
     }
 
   }
-
+  deleteFile(index: any) {
+    console.log(index, '999999999');
+  }
 }

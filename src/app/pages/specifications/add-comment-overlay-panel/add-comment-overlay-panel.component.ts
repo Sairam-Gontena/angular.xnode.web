@@ -166,14 +166,14 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "assignee": this.selectedComment.assignee.userId,
         "deadline": ""
       }
-    } else if (this.action !== 'REPLY') {
+    } else if (this.action !== 'EDIT') {
       body = {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId,
         "priority": '1',
         "title": this.comment,
         "description": this.comment,
-        "attachments": [],
+        "attachments": this.uploadedFiles,
         "references": { Users: this.references },
         "followers": [],
         "feedback": {},
@@ -182,6 +182,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "deadline": ""
       }
     }
+    console.log(body, '00000000000000')
     this.saveAsTask(body);
   }
 
@@ -234,6 +235,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   }
   prepareFilesList(files: Array<any>) {
+    console.log('999999999999', files)
     for (const item of files) {
       this.files.push(item);
     }

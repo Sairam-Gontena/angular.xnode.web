@@ -1,4 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommentsService } from 'src/app/api/comments.service';
+import { CommonApiService } from 'src/app/api/common-api.service';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-conversation-actions',
@@ -8,7 +11,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ConversationActionsComponent {
   @Input() cmt: any;
   @Output() updateAction = new EventEmitter<{ action: string, cmt: any }>();
+  files: any[] = [];
+  uploadedFiles: any;
 
+  constructor(public utils: UtilsService,
+    private commentsService: CommentsService,
+    private commonApi: CommonApiService,
+  ) { }
   onClickReply(cmt: any): void {
     this.updateAction.emit({
       action: 'REPLY',
@@ -35,5 +44,72 @@ export class ConversationActionsComponent {
       action: 'DELETE',
       cmt: cmt
     })
+  }
+  fileBrowseHandler(event: any) {
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > maxSizeInBytes) {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+        } else {
+          this.prepareFilesList(event.target.files);
+        }
+      }
+    }
+
+  }
+  prepareFilesList(files: Array<any>) {
+    for (const item of files) {
+      this.files.push(item);
+    }
+    this.readFileContent(this.files[0]);
+
+  }
+  deleteFile(index: number) {
+    console.log(index, '0000000')
+    this.files.splice(index, 1);
+
+  }
+
+  formatBytes(bytes: any, decimals: any) {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+    const k = 1024;
+    const dm = decimals <= 0 ? 0 : decimals || 2;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+  private async readFileContent(file: File) {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      await this.fileUploadCall(formData, headers); // await here
+    };
+
+    reader.readAsArrayBuffer(file); // Move this line outside the onload function
+  }
+  async fileUploadCall(formData: any, headers: any) {
+    try {
+      this.utils.loadSpinner(true);
+      const res = await this.commonApi.postFile('file-azure/upload', formData, { headers });
+      if (res.statusText === 'Created') {
+        this.uploadedFiles.push(res.data.id);
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File uploaded successfully' });
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+      }
+    } catch (error) {
+      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Error' });
+
+    } finally {
+      this.utils.loadSpinner(false);
+    }
   }
 }
