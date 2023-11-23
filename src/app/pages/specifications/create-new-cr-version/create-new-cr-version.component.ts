@@ -35,7 +35,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   crVersion: any = 0;
   priorityList: any = [{ label: 'High', value: 'HIGH' }, { label: 'Medium', value: 'MEDIUM' }, { label: 'Low', value: 'LOW' }];
   versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
-  newVersion: boolean = false;
+  isNewVersionAdded: boolean = false;
   showAddVersionForm: boolean = false;
   screenWidth?: number
   submitted: boolean = false;
@@ -47,20 +47,19 @@ export class CreateNewCrVersionComponent implements OnInit {
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       title: ['', [Validators.required]],
-      // cr: ['', [Validators.required]],
       description: ['', [Validators.required]],
       reason: ['', [Validators.required]],
       version: ['', [Validators.required]],
       priority: ['', [Validators.required]],
       duedate: ['', [Validators.required]],
-      seqReview: ['', [Validators.required]],
+      seqReview: [''],
       reviewersLOne: [[], [Validators.required]],
       reviewersLTwo: [[], [Validators.required]],
     });
     this.versionForm = this.fb.group({
-      major: ['', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
-      minor: ['', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
-      build: ['', [Validators.required]],
+      major: ['2311', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      minor: ['0', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      build: ['0', [Validators.required]],
     });
   }
   get crFormControl() {
@@ -74,30 +73,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.utilsService.loadSpinner(true)
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
-    // this.versionForm.controls['build'].disable();
-
     this.getUserByAccountId();
-    if (this.versionForm) {
-      const majorControl = this.versionForm.get('major');
-      const minorControl = this.versionForm.get('minor');
-      // if (majorControl)
-      //   majorControl.valueChanges.subscribe((newValue: any) => {
-
-      //     this.versionForm.patchValue({ minor: 0 });
-      //     this.versionForm.patchValue({ build: 0 });
-      //   });
-      // if (minorControl)
-      //   minorControl.valueChanges.subscribe((newValue: any) => {
-
-      //     this.versionForm.patchValue({ build: 0 });
-      //   });
-    }
-    if (this.crForm) {
-      const reviewersControl = this.crForm.get('reviewersLOne');
-      if (reviewersControl)
-        reviewersControl.valueChanges.subscribe((newValue: any) => {
-        });
-    }
   }
 
   onMajorInputChange(event: Event) {
@@ -117,7 +93,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   getAllVersions() {
     this.versionList = [{ label: 'Add New Version', value: 'ADD_NEW' }];
     let body = {
-      "productId": this.product.id
+      "productId": this.product?.id
     }
     this.commentsService.getVersions(body).then((response: any) => {
       if (response.status == 200) {
@@ -129,9 +105,9 @@ export class CreateNewCrVersionComponent implements OnInit {
           }
           this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
         });
-        if (this.newVersion) {
-          this.versionForm.patchValue({ version: this.newVersion });
-          this.newVersion = false;
+        if (this.isNewVersionAdded) {
+          this.crForm.patchValue({ version: this.versionList[1].value });
+          this.isNewVersionAdded = false;
         }
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
@@ -144,15 +120,11 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   save(event: Event): void {
-    console.log(this.crForm.value)
     this.submitted = true;
     if (this.crForm.invalid) {
       console.log("Invalid form. Please check the form for errors.");
       return;
     }
-    console.log(this.crForm.value)
-    console.log("Form is valid. Submitting data...");
-
     this.utilsService.loadSpinner(true);
     this.saveValue();
   }
@@ -188,8 +160,6 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   saveValue() {
-    console.log("Saving CR data...");
-
     let body = {
       "author": this.currentUser.user_id,
       "title": this.crForm.value.title,
@@ -214,9 +184,8 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
-    console.log("CR data saved successfully.");
-
   }
+
   filteredReveiwer(event: AutoCompleteCompleteEvent) {
     let filtered: any[] = [];
     let query = event.query;
@@ -232,10 +201,11 @@ export class CreateNewCrVersionComponent implements OnInit {
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(item => event.query + '-' + item);
   }
+
   reduceToInitials(fullName: string): string {
     const nameParts = fullName.split(' ');
     const initials = nameParts.map(part => part.charAt(0));
-    const reducedName = initials.join('');
+    const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
 
@@ -258,6 +228,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       if (response.statusText === 'Created') {
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
         this.showAddVersionForm = false;
+        this.isNewVersionAdded = true;
         this.versionForm.reset();
         this.getAllVersions();
       } else {
@@ -269,7 +240,6 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
     event.stopPropagation();
-
   }
 
   getUserByAccountId(): void {
@@ -289,5 +259,4 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-
 }
