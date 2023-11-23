@@ -47,7 +47,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     private utilsService: UtilsService) {
     this.crForm = this.fb.group({
       title: ['', [Validators.required]],
-      // cr: ['', [Validators.required]],
+      cr: [''],
       description: ['', [Validators.required]],
       reason: ['', [Validators.required]],
       version: ['', [Validators.required]],
@@ -58,9 +58,9 @@ export class CreateNewCrVersionComponent implements OnInit {
       reviewersLTwo: [[], [Validators.required]],
     });
     this.versionForm = this.fb.group({
-      major: ['', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
-      minor: ['', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
-      build: ['', [Validators.required]],
+      major: ['23111', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      minor: ['0', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      build: ['0', [Validators.required]],
     });
   }
   get crFormControl() {
@@ -203,8 +203,11 @@ export class CreateNewCrVersionComponent implements OnInit {
       "duedate": this.crForm.value.duedate,
     }
     this.commentsService.createCr(body).then((response: any) => {
+      console.log(response, '999999999999999'); // Log the response to see what the server returns
+
       if (response.statusText === 'Created') {
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Change Request created successfully' });
+        console.log("CR data saved successfully.");
         this.close.emit(response.data)
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
@@ -214,7 +217,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
-    console.log("CR data saved successfully.");
+    console.log("CR data not saved.");
 
   }
   filteredReveiwer(event: AutoCompleteCompleteEvent) {
@@ -268,7 +271,6 @@ export class CreateNewCrVersionComponent implements OnInit {
       this.utilsService.toggleTaskAssign(false);
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
-    event.stopPropagation();
 
   }
 
