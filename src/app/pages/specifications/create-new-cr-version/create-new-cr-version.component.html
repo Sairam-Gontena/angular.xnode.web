@@ -90,7 +90,8 @@
                         <div class="col-4">
                             <label>Major</label>
                             <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="major" (input)="onMajorInputChange($event)"
+                                <input type="text" pInputText formControlName="major"
+                                    (input)="onMajorInputChange($event)"
                                     [ngClass]="{ 'is-invalid': submitted && versionFormControl['major'].errors }" />
                             </div>
                             <div *ngIf="submitted && versionFormControl['major'].errors" class="invalid-feedback">
@@ -103,7 +104,8 @@
                         <div class="col-4">
                             <label>Minor</label>
                             <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="minor" (input)="onMinorInputChange($event)"
+                                <input type="text" pInputText formControlName="minor"
+                                    (input)="onMinorInputChange($event)"
                                     [ngClass]="{ 'is-invalid': submitted && versionFormControl['minor'].errors }" />
                             </div>
                             <div *ngIf="submitted && versionFormControl['minor'].errors" class="invalid-feedback">
