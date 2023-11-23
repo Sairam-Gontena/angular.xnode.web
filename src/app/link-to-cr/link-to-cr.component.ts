@@ -45,6 +45,7 @@ export class LinkToCrComponent implements OnInit {
   filteredReveiwers: any;
   currentUser: any;
   reviewerList: any = [];
+  submitted: boolean = false;
 
   constructor(private fb: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -64,7 +65,7 @@ export class LinkToCrComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
-    this.items = [{ label: 'Functional Specifications' }, { label: '3.1 User roles' }];
+    this.items = [{ label: this.comment?.referenceContent?.specTitle }, { label: this.comment?.referenceContent?.title }];
     this.messagingService.getMessage<any>().subscribe(msg => {
       if (msg.msgType === MessageTypes.LinkToCR) {
         if (this.comment) {
@@ -77,7 +78,9 @@ export class LinkToCrComponent implements OnInit {
     this.crForm.controls['duedate'].disable();
     this.getMeCrList();
   }
-
+  get crFormControl() {
+    return this.crForm.controls;
+  }
   getAllVersions() {
     let body = {
       "productId": this.product.id
@@ -141,6 +144,10 @@ export class LinkToCrComponent implements OnInit {
   }
 
   linkCr(): void {
+    this.submitted = true;
+    if (this.crForm.invalid) {
+      return;
+    }
     this.utilsService.loadSpinner(true);
     const body = {
       "crId": this.crForm.value.crToAdd.id,

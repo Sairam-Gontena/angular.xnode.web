@@ -19,37 +19,46 @@
             </div>
         </div>
 
-        <div class="col-12" *ngIf=" cmt.referenceContent?.content">
+        <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
             <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
-                {{cmt?.referenceContent?.content }} </p>
+            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
+                [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
+            </p>
+            <div class="gradientback">
+            </div>
         </div>
+
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
         </div>
-        <!-- <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT' && specListCopy.length>2">
-          <span class="pointer text-xs" *ngIf="specList.length-1 != list.length-1" (click)="loadComments('increment')">
-            Show More
-          </span>
-          <span class="pointer text-xs" *ngIf="specList.length-1 === list.length-1" (click)="loadComments('decrement')">
-            Show Less
-          </span>
-        </div> -->
-        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
-            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
-                    Replies</span>
+        <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
+            <div *ngFor="let file of cmt.attachments" class="flex justify-content-between flex-wrap single-file">
+                <div class="flex align-items-center justify-content-center">
+                    <p class="m-0">{{ file.fileName }}</p>
+                </div>
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-times pointer"></i>
+                </div>
             </div>
         </div>
         <div class="col-12"
             *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
-            <!-- <xnode-spec-conversation [activeIndex]="activeIndex" [usersList]="usersList"
-                [list]="cmt?.comments?.slice().reverse()" [topParentId]="topParentId"></xnode-spec-conversation> -->
             <xnode-spec-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
-                [list]="cmt?.comments?.slice().reverse()" [topParentId]="topParentId"></xnode-spec-child-conversation>
+                (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
+                [topParentId]="topParentId"></xnode-spec-child-conversation>
         </div>
-        <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
-            <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
-                    Replies</span>
+        <div class="col-12 pb-0" *ngIf="!hideShowMore && cmt.replyCount !== -1">
+            <div class="view-replies">
+                <span class="pointer text-xs" *ngIf="!cmt?.repliesOpened" (click)="viewReplies(cmt)">See More</span>
+                <span class="pointer text-xs" *ngIf="cmt?.repliesOpened" (click)="loadComments('increment')">See
+                    More</span>
+            </div>
+        </div>
+        <div class="col-12 pb-0" *ngIf="specItemCommentCount == childSpecListCount && specItemCommentCount!=undefined ">
+            <div class="view-replies">
+                <span class="pointer text-xs" *ngIf="!cmt?.repliesOpened" (click)="viewReplies(cmt)">See Less</span>
+                <span class="pointer text-xs" *ngIf="cmt?.repliesOpened" (click)="loadComments('decrement')">See
+                    Less</span>
             </div>
         </div>
         <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">

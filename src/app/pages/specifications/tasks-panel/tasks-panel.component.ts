@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
@@ -39,15 +39,15 @@ export class TasksPanelComponent {
 
   constructor(private utils: UtilsService, private commentsService: CommentsService,
     private sanitizer: DomSanitizer) {
-    this.utils.getMeLatestConversation.subscribe((event: any) => {
-      if (event === 'TASK') {
-        this.getMeTasksList();
-      }
-    })
   }
 
   ngOnInit(): void {
-    this.getMeTasksList();
+    this.utils.getMeLatestConversation.subscribe((event: any) => {
+      if (event === 'TASK') {
+        this.getMeTasksList();
+
+      }
+    })
   }
 
   getMeTasksList() {
@@ -57,13 +57,16 @@ export class TasksPanelComponent {
     if (specData) {
       selectedSpec = JSON.parse(specData);
       this.commentsService.getTasks({ parentId: selectedSpec.id }).then((response: any) => {
-        if (response && response.data) {
+        if (response && response.data?.common?.status !== 'fail') {
           this.list = response.data;
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.common?.status });
         }
         this.utils.loadSpinner(false);
       }).catch(err => {
         console.log(err);
         this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
       });
     }
   }

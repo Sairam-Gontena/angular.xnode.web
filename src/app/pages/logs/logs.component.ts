@@ -24,6 +24,10 @@ export class LogsComponent implements OnInit {
   productId: string = '';
   isSideMenuOpen: boolean = true
   isDockedNaviOpened: boolean = false;
+  screenWidth?: number
+  containerWidth?: string = (window.innerWidth - 80) + 'px';
+  bodyContainerWidth?: string = (((window.innerWidth * 80) / 100) - 80) + 'px';
+  // isSideMenuOpen?: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -32,15 +36,45 @@ export class LogsComponent implements OnInit {
     public router: Router
   ) {
     this.utilsService.openSubmenu.subscribe((event: boolean) => {
+      // alert("event "+event)
       this.isSideMenuOpen = event;
+      this.calculateContainerWidth();
+      this.calculateBodyWidth();
     })
     this.utilsService.openDockedNavi.subscribe((info: boolean) => {
       this.isDockedNaviOpened = info
+      this.calculateContainerWidth();
+      this.calculateBodyWidth();
     })
   }
 
   ngOnInit(): void {
+    this.calculateContainerWidth()
+    this.calculateBodyWidth();
     this.getMeStorageData();
+  }
+
+  calculateContainerWidth(): void {
+    this.screenWidth = window.innerWidth;
+    if (this.isDockedNaviOpened) {
+      this.containerWidth = (((this.screenWidth * 70) / 100) - 80) + 'px';
+    } else {
+      this.containerWidth = (this.screenWidth - 80) + 'px';
+    }
+  }
+  calculateBodyWidth(): void {
+    if (this.isDockedNaviOpened && this.isSideMenuOpen) {
+      this.bodyContainerWidth = (((window.innerWidth * 50) / 100) - 80) + 'px';
+    }
+    else if (this.isSideMenuOpen && !this.isDockedNaviOpened) {
+      this.bodyContainerWidth = (((window.innerWidth * 80) / 100) - 80) + 'px';
+    }
+    else if (!this.isSideMenuOpen && this.isDockedNaviOpened) {
+      this.bodyContainerWidth = (((window.innerWidth * 70) / 100) - 150) + 'px';
+    }
+    else if (!this.isSideMenuOpen && !this.isDockedNaviOpened) {
+      this.bodyContainerWidth = (window.innerWidth - 130) + 'px';
+    }
   }
 
   getMeStorageData(): void {
@@ -96,6 +130,11 @@ export class LogsComponent implements OnInit {
     localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
+  }
+
+  sideMenuToggle(val: boolean): void {
+    this.calculateContainerWidth();
+    this.calculateBodyWidth();
   }
 
 }

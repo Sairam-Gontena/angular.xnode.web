@@ -1,6 +1,6 @@
 <p-dialog [header]="header" [(visible)]="visible" [modal]="true" [style]="{ width: '40vw' }" [draggable]="false"
     [resizable]="false" (onHide)="closePopup()">
-    <form [formGroup]="crForm" (ngSubmit)="onSubmit($event)">
+    <form [formGroup]="crForm" (ngSubmit)="save($event)">
         <div class="grid">
             <div class="col-12">
                 <label>Title</label>
@@ -9,41 +9,74 @@
                         <img src="./assets/cr.svg" alt="cr">
                         #CR-
                     </span>
-                    <input type="text" pInputText formControlName="title" placeholder="Enter Title" />
+                    <input type="text" pInputText formControlName="title"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['title'].errors }"
+                        placeholder="Enter Title" />
+                </div>
+                <div *ngIf="submitted && crFormControl['title'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['title'].errors?.['required']">
+                        Title is required</div>
                 </div>
             </div>
             <div class="col-12">
                 <label>CR Description</label>
                 <div class="p-inputgroup mt-1">
-                    <textarea pInputTextarea formControlName="description" class="border-round-md"
-                        placeholder="Enter Description"></textarea>
+                    <textarea pInputTextarea formControlName="description"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['description'].errors }"
+                        class="border-round-md" placeholder="Enter Description"></textarea>
+                </div>
+                <div *ngIf="submitted && crFormControl['description'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['description'].errors?.['required']">
+                        Description is required</div>
                 </div>
             </div>
             <div class="col-12">
                 <label>Reason</label>
                 <div class="p-inputgroup mt-1">
-                    <textarea pInputTextarea pInputText formControlName="reason" class="border-round-md"
-                        placeholder="Enter Reason"></textarea>
+                    <textarea pInputTextarea pInputText formControlName="reason"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['reason'].errors }"
+                        class="border-round-md" placeholder="Enter Reason"></textarea>
+                </div>
+                <div *ngIf="submitted && crFormControl['reason'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['reason'].errors?.['required']">
+                        Reason is required</div>
                 </div>
             </div>
             <div class="col-4">
                 <label>Version</label>
                 <div class="p-inputgroup mt-1">
                     <p-dropdown [(ngModel)]="crForm.value.version" (ngModelChange)="onDropdownChange($event)"
-                        formControlName="version" [options]="versionList" placeholder="Select"></p-dropdown>
+                        formControlName="version" [options]="versionList"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['version'].errors }"
+                        placeholder="Select"></p-dropdown>
+                </div>
+                <div *ngIf="submitted && crFormControl['version'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['version'].errors?.['required']">
+                        Version is required</div>
                 </div>
             </div>
             <div class="col-4">
                 <label>Prioriry</label>
                 <div class="p-inputgroup mt-1">
-                    <p-dropdown formControlName="priority" placeholder="Select" [options]="priorityList"></p-dropdown>
+                    <p-dropdown formControlName="priority"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['priority'].errors }" placeholder="Select"
+                        [options]="priorityList"></p-dropdown>
+                </div>
+                <div *ngIf="submitted && crFormControl['priority'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['priority'].errors?.['required']">
+                        Priority is required</div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-4 ">
                 <label>Due Date</label>
                 <div class="p-inputgroup mt-1">
-                    <p-calendar formControlName="duedate" [showIcon]="true" placeholder="DD/MM/YYYY"
-                        styleClass="due-date"></p-calendar>
+                    <p-calendar formControlName="duedate" [showClear]="true"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['duedate'].errors }" [showIcon]="true"
+                        placeholder="DD/MM/YYYY" styleClass="due-date"></p-calendar>
+                </div>
+                <div *ngIf="submitted && crFormControl['duedate'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['duedate'].errors?.['required']">
+                        Due date is required</div>
                 </div>
             </div>
             <div class="col-12 border-1 border-white-alpha-40 border-round-xl" *ngIf="showAddVersionForm">
@@ -51,18 +84,33 @@
                     <div class="grid">
                         <div class="col-12 text-right pb-0">
                             <img src="../assets/version-close.svg" alt="close" class="mr-2 pointer">
-                            <img src="../assets/version-save.svg" alt="save" (click)="saveVersion()" class="pointer">
+                            <img src="../assets/version-save.svg" alt="save" (click)="saveVersion($event)"
+                                class="pointer">
                         </div>
                         <div class="col-4">
                             <label>Major</label>
                             <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="major" />
+                                <input type="text" pInputText formControlName="major" (input)="onMajorInputChange($event)"
+                                    [ngClass]="{ 'is-invalid': submitted && versionFormControl['major'].errors }" />
+                            </div>
+                            <div *ngIf="submitted && versionFormControl['major'].errors" class="invalid-feedback">
+                                <div *ngIf="versionFormControl['major'].errors?.['required']">
+                                    Major is required</div>
+                                <div *ngIf="versionFormControl['major'].errors?.['pattern']">
+                                    Enter numbers only</div>
                             </div>
                         </div>
                         <div class="col-4">
                             <label>Minor</label>
                             <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="minor" />
+                                <input type="text" pInputText formControlName="minor" (input)="onMinorInputChange($event)"
+                                    [ngClass]="{ 'is-invalid': submitted && versionFormControl['minor'].errors }" />
+                            </div>
+                            <div *ngIf="submitted && versionFormControl['minor'].errors" class="invalid-feedback">
+                                <div *ngIf="versionFormControl['minor'].errors?.['required']">
+                                    Minor is required</div>
+                                <div *ngIf="versionFormControl['minor'].errors?.['pattern']">
+                                    Enter numbers only</div>
                             </div>
                         </div>
                         <div class="col-4">
@@ -94,8 +142,9 @@
                         L1
                     </span>
                     <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                        formControlName="reviewersLOne" (completeMethod)="filteredReveiwer($event)" field="name"
-                        [multiple]="true" styleClass="w-full">
+                        formControlName="reviewersLOne"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['reviewersLOne'].errors }"
+                        (completeMethod)="filteredReveiwer($event)" field="name" [multiple]="true" styleClass="w-full">
                         <ng-template let-reviewer pTemplate="selectedItem">
                             <div class="flex align-items-center">
                                 <div class="autocomplete-label text-xs flex justify-content-center align-items-center ">
@@ -106,6 +155,10 @@
                         </ng-template>
                     </p-autoComplete>
                 </div>
+                <div *ngIf="submitted && crFormControl['reviewersLOne'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['reviewersLOne'].errors?.['required']">
+                        Reviewer L1 is required</div>
+                </div>
             </div>
             <div class="col-12">
                 <div class="p-inputgroup mt-1">
@@ -113,7 +166,8 @@
                         L2
                     </span>
                     <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-                        (completeMethod)="filteredReveiwer($event)" formControlName="reviewersLTwo" field="name"
+                        (completeMethod)="filteredReveiwer($event)" formControlName="reviewersLTwo"
+                        [ngClass]="{ 'is-invalid': submitted && crFormControl['reviewersLTwo'].errors }" field="name"
                         [multiple]="true" styleClass="w-full">
                         <ng-template let-reviewer pTemplate="selectedItem">
                             <div class="flex align-items-center">
@@ -125,6 +179,10 @@
                         </ng-template>
                     </p-autoComplete>
                 </div>
+                <div *ngIf="submitted && crFormControl['reviewersLTwo'].errors" class="invalid-feedback">
+                    <div *ngIf="crFormControl['reviewersLTwo'].errors?.['required']">
+                        Reviewer L2 is required</div>
+                </div>
             </div>
         </div>
     </form>
@@ -132,6 +190,6 @@
         <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
             (click)="closePopup()"></p-button>
         <p-button label="Save" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
-            (click)="save()"></p-button>
+            (click)="save($event)"></p-button>
     </ng-template>
 </p-dialog>

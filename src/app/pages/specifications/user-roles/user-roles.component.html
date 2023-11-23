@@ -1,14 +1,14 @@
-<div class="grid" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
-  <div class="col-11">
-    <div *ngFor="let item of content let mainIndex = index ">
-        <h4 class="mb-0 pb-2">{{item.title}}</h4>
+<div class="pt-4">
+  <div class="py-0">
+    <div class="mb-2" *ngFor="let item of content let mainIndex = index;">
+        <p class="text-xl">{{item.title}}</p>
         <div *ngIf="isArray(item.content)">
             <div *ngFor="let subItem of item.content; let i=index " class="pl-4">
                 <div class="flex col-12 p-0 "
                     (mouseover)="showCommentIcon = true;seletedMainIndex=mainIndex;selecteedSubIndex =i "
                     (mouseleave)="showCommentIcon = false">
                     <div class="col-10 p-0">
-                        <p class="m-0 pb-1 line-height-3">
+                        <p class="m-0 flex flex-wrap pb-1 line-height-3">
                             <span class="sub-title text-base font-medium" *ngFor="let word of subItem?.title?.split(' '); index as i" class="mr-1" [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
                               <p-overlayPanel #selectionText>
                                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"  *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)" [selectedText]="selectedText" [specId]="specId" [parentId]="specItem.id" [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -36,18 +36,29 @@
                 </div>
             </div>
         </div>
+        <div *ngIf="isString(item.content)">
+          <div class="flex col-12 p-0"
+          (mouseover)="showCommentIcon = true;seletedMainIndex=mainIndex;selecteedSubIndex =mainIndex "
+          (mouseleave)="showCommentIcon = false">
+          <div class="col-10 p-0">
+              <p class="m-0 pb-1 line-height-3">
+                  <span class="sub-content font-normal text-base">
+                    {{item?.content}}
+                  </span>
+              </p>
+          </div>
+          <div class="col-1 p-0 flex  align-items-start justify-content-center">
+              <p-overlayPanel #op>
+                  <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                      (closeOverlay)="op.toggle(false)" [position]="'absolute'"
+                      [selectedContent]="selectedContent" [commentType]="'comment'"
+                      placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+              </p-overlayPanel>
+              <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)"
+              [style.display]="showCommentIcon && seletedMainIndex == mainIndex && selecteedSubIndex == mainIndex ? 'block' : 'none'">
+          </div>
+        </div>
     </div>
-</div>
-<div class="col-1">
-  <p-overlayPanel #op (onHide)="commentOverlayPanelOpened=false;showCommentIcon=false">
-      <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" *ngIf="commentOverlayPanelOpened"
-          (closeOverlay)="op.toggle(false);commentOverlayPanelOpened=false;" [position]="'absolute'"
-          [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
-          [parentEntity]="'SPEC'" [parentId]="specItem.id"
-          [specItem]="specItem"></xnode-add-comment-overlay-panel>
-  </p-overlayPanel>
-  <img src="../assets/comment.svg" class="pointer" alt="comment"
-      (click)="op.toggle($event);commentOverlayPanelOpened=true" (mouseleave)="showCommentIcon = false"
-      *ngIf="showCommentIcon || commentOverlayPanelOpened">
-</div>
+    </div>
+  </div>
 </div>

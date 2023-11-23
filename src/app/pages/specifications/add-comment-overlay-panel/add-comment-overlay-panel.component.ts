@@ -76,10 +76,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   format(item: any) {
-    let outputObject: Record<string, any> = {};
-    outputObject[item.user_id] = item.first_name + " " + item.last_name;
-    this.references = outputObject;
-    return `@${item.first_name} ${item.last_name},`
+    const entityId = item.user_id;
+    const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
+    if (!isDuplicate) {
+      this.references.push({ entity_type: "User", entity_id: entityId });
+    }
+    return `@${item.first_name} ${item.last_name},`;
   }
 
   onClickSend(): void {
@@ -101,13 +103,18 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "message": this.comment,
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": this.uploadedFiles,
-        "references": { Users: this.references },
+        "references": this.references,
         "followers": [],
         "feedback": {}
       }
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.prepareDataToSaveAsTask()
+      if (this.action === 'REPLY') {
+        delete body.topParentId
+        this.saveComment(body);
+      }
+      else
+        this.prepareDataToSaveAsTask()
     } else {
       this.saveComment(body);
     }
@@ -117,8 +124,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.toggleTaskAssign(false);
-        if (this.isCommnetsPanelOpened)
-          this.utils.updateConversationList('COMMENT');
+        if (this.isCommnetsPanelOpened) {
+          this.utils.updateConversationList(body.topParentId ? 'COMMENT' : 'TASK');
+        }
         else
           this.utils.openOrClosePanel(SidePanel.Comments);
         this.comment = '';
@@ -158,8 +166,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "assignee": this.selectedComment.assignee.userId,
         "deadline": ""
       }
-
-    } else {
+    } else if (this.action !== 'REPLY') {
       body = {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId,
@@ -268,7 +275,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.utils.loadSpinner(true);
       const res = await this.commonApi.postFile('file-azure/upload', formData, { headers });
       if (res.statusText === 'Created') {
-        this.uploadedFiles.push(res.data.filePath);
+        this.uploadedFiles.push(res.data.id);
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File uploaded successfully' });
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });

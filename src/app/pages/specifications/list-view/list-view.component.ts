@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Section } from 'src/models/section';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-list-view',
@@ -21,8 +22,18 @@ export class ListViewComponent {
   commentOverlayPanelOpened: boolean = false;
   @ViewChild('op')overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText')selectionText: OverlayPanel | any;
+  selectedWordIndices: number[]=[];
+
+  constructor(private utils:UtilsService){
+
+  }
 
   ngOnInit():void{
+    this.utils.clearSelectedContent.subscribe((res:boolean)=>{
+      if(res){
+        this.emptySelectedContent();
+      }
+    })
   }
 
   getWords(subitem: any){
@@ -45,7 +56,14 @@ export class ListViewComponent {
     }
   }
 
+  emptySelectedContent(){
+    this.selectedText='';
+    this.selectedWordIndices = [];
+  }
+
   contentSelected(event:any) {
+    this.utils.changeSelectContentChange(true)
+    this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
       return ;
@@ -58,6 +76,22 @@ export class ListViewComponent {
      this.handleSelectionText(event);
   }
 
+  highlightSelectedText(){
+    const selection = window.getSelection();
+    this.selectedWordIndices = [];
+    if(selection){
+      if (!selection.rangeCount) return;
+      const range = selection.getRangeAt(0);
+      const elements = range.cloneContents().querySelectorAll('span');
+      elements.forEach(element => {
+        const id = element.id;
+        const index = parseInt(id.replace('word', ''));
+        if (!this.selectedWordIndices.includes(index)) {
+          this.selectedWordIndices.push(index);
+        }
+      });
+    }
+  }
 
   async handleSelectionText(event: any) {
     if (this.selectedText.length > 0) {
