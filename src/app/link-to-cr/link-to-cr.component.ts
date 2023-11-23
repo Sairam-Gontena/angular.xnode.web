@@ -65,7 +65,7 @@ export class LinkToCrComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
-    this.items = [{ label: 'Functional Specifications' }, { label: '3.1 User roles' }];
+    this.items = [{ label: this.comment?.referenceContent?.specTitle }, { label: this.comment?.referenceContent?.title }];
     this.messagingService.getMessage<any>().subscribe(msg => {
       if (msg.msgType === MessageTypes.LinkToCR) {
         if (this.comment) {
