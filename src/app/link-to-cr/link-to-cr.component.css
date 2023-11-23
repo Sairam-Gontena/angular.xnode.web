@@ -87,6 +87,10 @@
     }
 }
 
+:host ::ng-deep .p-calendar:not(.p-calendar-disabled).p-focus>.p-inputtext {
+    box-shadow: none;
+}
+
 :host ::ng-deep {
     .p-inputgroup-addon {
         background: #2E2D36;
@@ -132,6 +136,17 @@
     border-radius: 20px;
     background-color: #02ADEE;
 }
+
+.avtar {
+    border-radius: 15px;
+    background-color: #02ADEE;
+    font-size: 12px;
+    display: flex;
+    padding: 3px;
+    align-items: center;
+    justify-content: center;
+}
+
 
 :host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
     color: white;

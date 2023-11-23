@@ -87,6 +87,23 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     return `@${item.first_name} ${item.last_name},`;
   }
 
+  setTemplateTypeInRefs(): string {
+    if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
+      this.references.forEach((obj: any) => {
+        obj.template_type = 'TASK'
+      })
+    } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
+      this.references.forEach((obj: any) => {
+        obj.template_type = 'COMMENT'
+      })
+    } else {
+      this.references.forEach((obj: any) => {
+        obj.template_type = this.parentEntity
+      })
+    }
+    return this.references;
+  }
+
   onClickSend(): void {
     if (this.from == 'cr-tabs') {
       this.commentInfo.emit({ message: this.comment, attachments: this.uploadedFiles, referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {}, parentId: this.parentId });
@@ -110,7 +127,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "message": this.comment,
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": this.uploadedFiles,
-        "references": this.references,
+        "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {}
       }
@@ -166,7 +183,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "title": this.comment,
         "description": this.comment,
         "attachments": [],
-        "references": this.selectedComment.references,
+        "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
         "status": "",
@@ -181,7 +198,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "title": this.comment,
         "description": this.comment,
         "attachments": [],
-        "references": { Users: this.references },
+        "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
         "status": "",

@@ -145,9 +145,6 @@
     }
 }
 
-:host ::ng-deep .p-datepicker-prev-icon .p-icon {
-    // height: 6px;
-}
 
 .is-invalid {
     color: #CC3514;
@@ -159,4 +156,18 @@
 
 :host ::ng-deep .p-inputtext.ng-dirty.ng-invalid {
     border-color: transparent;
+}
+
+:host ::ng-deep .p-calendar:not(.p-calendar-disabled).p-focus>.p-inputtext {
+    box-shadow: none;
+}
+
+.avtar {
+    border-radius: 15px;
+    background-color: #02ADEE;
+    font-size: 12px;
+    display: flex;
+    padding: 3px;
+    align-items: center;
+    justify-content: center;
 }
