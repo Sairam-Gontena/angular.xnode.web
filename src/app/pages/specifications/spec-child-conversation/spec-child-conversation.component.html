@@ -10,7 +10,6 @@
                         cmt.assignee?.displayName :
                         cmt.createdBy?.displayName}}</p>
                 </div>
-
                 <div class="flex align-items-center text-xs text-white-alpha-70">
                     Commented {{ modifiedTimeDifference(cmt.modifiedOn) }}
                 </div>
@@ -21,7 +20,7 @@
             </div>
         </div>
 
-        <div class="col-12" *ngIf=" activeIndex ? cmt.description : cmt.referenceContent?.content">
+        <div class="col-12 sctions-grid" *ngIf=" activeIndex ? cmt.description : cmt.referenceContent?.content">
             <p class="mt-0 content-title text-xs">{{activeIndex ? cmt.title : cmt.referenceContent.title }}</p>
             <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
                 {{activeIndex ? cmt?.description : cmt?.referenceContent?.content }} </p>
@@ -30,27 +29,10 @@
             <span *ngIf="selectedIndex !== i && !activeIndex " [innerHTML]="highlightMatch(cmt.message)"></span>
             <span *ngIf="selectedIndex !== i && activeIndex" [innerHTML]="highlightMatch(cmt.description)"></span>
         </div>
-        <!-- <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT'">
-            <span class="pointer text-xs" *ngIf="specList.length-1 != list.length-1"
-                (click)="loadComments('increment')">
-                Show More
-            </span>
-            <span class="pointer text-xs" *ngIf="specList.length-1 === list.length-1"
-                (click)="loadComments('decrement')">
-                Show Less
-            </span>
-        </div> -->
         <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
                     Replies</span>
             </div>
-        </div>
-        <div class="col-12"
-            *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
-            <!-- <xnode-spec-conversation [activeIndex]="activeIndex" [usersList]="usersList"
-                [list]="cmt?.comments?.slice().reverse()" [topParentId]="topParentId"></xnode-spec-conversation> -->
-            <xnode-spec-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
-                [list]="cmt?.comments?.slice().reverse()" [topParentId]="topParentId"></xnode-spec-child-conversation>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
             <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
@@ -69,6 +51,8 @@
                     [commentType]="'reply'" [width]="'w-full'"
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
             </div>
+        </div>
+        <div class="gradientback">
         </div>
     </div>
 </div>

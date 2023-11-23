@@ -38,8 +38,8 @@ export class SpecConversationComponent {
   replies: any;
   specListCopy: any;
   specList: any[] = [];
-  childSpecListCount:any;
-  specItemCommentCount:any;
+  childSpecListCount: any;
+  specItemCommentCount: any;
   hideShowMore: boolean = false;
 
   constructor(private utils: UtilsService,
@@ -48,7 +48,6 @@ export class SpecConversationComponent {
     private messagingService: MessagingService) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'reply') {
-        // this.viewReplies(this.selectedComment);
         this.showCommentInput = false;
         this.action = ''
       }
@@ -59,13 +58,13 @@ export class SpecConversationComponent {
     this.specListCopy = this.list;
   }
 
-  receiveMsg(event:any){
-    if(event){
+  receiveMsg(event: any) {
+    if (event) {
       this.childSpecListCount = event;
-      this.list.forEach((item:any)=>{
-        if(item.id==this.topParentId){
+      this.list.forEach((item: any) => {
+        if (item.id == this.topParentId) {
           this.specItemCommentCount = item.comments.length;
-          this.specItemCommentCount == this.childSpecListCount?this.hideShowMore=true:this.hideShowMore=false;
+          this.specItemCommentCount == this.childSpecListCount ? this.hideShowMore = true : this.hideShowMore = false;
         }
       })
     }
@@ -249,7 +248,17 @@ export class SpecConversationComponent {
         msgData: cmt
       });
     }
+  }
 
+  formatBytes(bytes: any, decimals: any) {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+    const k = 1024;
+    const dm = decimals <= 0 ? 0 : decimals || 2;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
 }
