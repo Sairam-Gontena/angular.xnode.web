@@ -199,7 +199,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "deadline": ""
       }
     }
-    console.log(body, '00000000000000')
     this.saveAsTask(body);
   }
 
