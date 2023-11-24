@@ -43,6 +43,11 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.getMeLatestConversation.subscribe((res)=>{
+      if(res == 'COMMENT'){
+        this.getMeCommentsList();
+      }
+    })
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
