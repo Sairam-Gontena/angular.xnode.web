@@ -1,4 +1,4 @@
-import { Component,Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -89,6 +89,7 @@ export class CrTabsComponent {
 
   updateSelectedCr(obj: any) {
     this.selectedCr = obj;
+    this.getCRDetails(obj?.id)
   }
 
   updateChagneRequestStatus(value: string) {

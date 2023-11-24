@@ -65,7 +65,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(JSON.stringify(this.users))
+    if (this.from == 'cr-tabs') {
+      this.assignAsaTask = true;
+    }
     let data = [] as any[];
     if (this.users) {
       this.users.forEach((element: any) => {
