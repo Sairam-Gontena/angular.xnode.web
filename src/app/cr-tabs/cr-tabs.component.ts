@@ -168,6 +168,7 @@ export class CrTabsComponent {
         this.showComment = false;
         let details = body.status == 'REJECTED' ? 'Change request rejected successfully' : body.status == 'NEEDMOREWORK' ? 'Change request updated successfully' : ''
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: details });
+        this.getCRList()
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.description });
       }
