@@ -185,14 +185,14 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "assignee": this.selectedComment.assignee.userId,
         "deadline": ""
       }
-    } else if (this.action !== 'REPLY') {
+    } else if (this.action !== 'EDIT') {
       body = {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId,
         "priority": '1',
         "title": this.comment,
         "description": this.comment,
-        "attachments": [],
+        "attachments": this.uploadedFiles,
         "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
@@ -255,12 +255,14 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   }
   prepareFilesList(files: Array<any>) {
-    for (const item of files) {
+    let item: any;
+    for (item of files) {
       this.files.push(item);
     }
-    this.readFileContent(this.files[0]);
+    this.readFileContent(item);
 
   }
+
   deleteFile(index: number) {
     console.log(index, '0000000')
     this.files.splice(index, 1);

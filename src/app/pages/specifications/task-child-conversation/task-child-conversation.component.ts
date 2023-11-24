@@ -17,6 +17,7 @@ export class TaskChildConversationComponent {
   @Input() topParentId: any;
   @Input() activeIndex: any;
   @Output() onClickClose = new EventEmitter<any>();
+  @Output() childEvent = new EventEmitter<any>();
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -50,12 +51,15 @@ export class TaskChildConversationComponent {
   }
 
   ngOnInit() {
-    if (this.list?.[0]?.parentEntity == "COMMENT") {
+    let notComment !: boolean;
+    if (this.list?.[0]?.parentEntity == "COMMENT" && notComment) {
       this.specListCopy = this.list;
-      this.specList = this.list.slice(0, 2);
+      this.specList = this.list.slice(0, 10);
     } else {
       this.specList = this.list;
     }
+    this.childEvent.emit(this.specList.length)
+
   }
 
   loadComments(change: string) {
@@ -65,8 +69,9 @@ export class TaskChildConversationComponent {
       const newItems = this.specListCopy.slice(startIndex, endIndex);
       this.specList.push(...newItems);
     } else {
-      this.specList = this.specListCopy.slice(0, 2);
+      this.specList = this.specListCopy.slice(0, 10);
     }
+    this.childEvent.emit(this.specList.length)
   }
 
   setAvatar(userObj: any): string {

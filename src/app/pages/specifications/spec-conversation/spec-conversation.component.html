@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="flex align-items-center flex-wrap">
-                <xnode-conversation-actions [cmt]="cmt"
+                <xnode-conversation-actions [cmt]="cmt" [activeIndex]="activeIndex"
                     (updateAction)="eventFromConversationAction($event)"></xnode-conversation-actions>
             </div>
         </div>
@@ -40,16 +40,19 @@
           </span>
         </div> -->
         <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
-          <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See More</span>
-          </div>
-      </div>
+            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See More</span>
+            </div>
+        </div>
         <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
-            <div *ngFor="let file of cmt.attachments" class="flex justify-content-between flex-wrap single-file">
+            <div *ngFor="let file of cmt.attachments" class="flex justify-content-between flex-wrap single-file mb-1">
                 <div class="flex align-items-center justify-content-center">
                     <p class="m-0">{{ file.fileName }}</p>
                 </div>
+                <!-- <div class="flex align-items-center justify-content-center">
+                    <p class="size">{{ formatBytes(file.size, 0) }}</p>
+                </div> -->
                 <div class="flex align-items-center justify-content-center">
-                    <i class="pi pi-times pointer"></i>
+                    <i class="pi pi-times pointer" (click)="onClickUpdateSpec(cmt)"></i>
                 </div>
             </div>
         </div>
@@ -78,3 +81,6 @@
     (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>
 <xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"
     (close)="showCrPopup = false"></xnode-link-to-cr>
+<xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
+    [header]="'Delete Attachment'" [content]="'Are you sure, do you want to delete the attachment?'" (onClickAction)="
+    onClickAction($event)"></xnode-confirmation-popup-new>

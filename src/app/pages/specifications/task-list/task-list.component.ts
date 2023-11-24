@@ -35,6 +35,7 @@ export class TaskListComponent {
   replies: any;
   specListCopy: any;
   specList: any[] = [];
+  showConfirmationPopup: boolean = false;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -50,8 +51,22 @@ export class TaskListComponent {
   }
 
   ngOnInit() {
-  }
+    this.specListCopy = this.list;
 
+  }
+  receiveMsg(event: any) {
+    if (event) {
+      this.list.forEach((item: any) => {
+        if (item.comments) {
+          item.comments.forEach((comment: any) => {
+            if (comment.id == event) {
+              item.repliesOpened = false;
+            }
+          });
+        }
+      });
+    }
+  }
 
   loadComments(change: string) {
     if (change === 'increment') {
@@ -170,6 +185,7 @@ export class TaskListComponent {
     this.showReplies = true;
     if (cmt)
       this.selectedComment = cmt;
+
     this.utils.loadSpinner(true);
     this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
@@ -184,6 +200,7 @@ export class TaskListComponent {
           }
         })
         this.replies = response.data;
+
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
       }
@@ -217,5 +234,43 @@ export class TaskListComponent {
     }
 
   }
+  onClickUpdateSpec(cmt: any): void {
+    this.showConfirmationPopup = true;
+    this.selectedComment = cmt;
+  }
 
+  onClickAction(event: any): void {
+    if (event === 'Yes') {
+      this.showConfirmationPopup = false;
+      this.deleteFile(this.selectedComment);
+    } else {
+      this.showConfirmationPopup = false;
+    }
+  }
+  deleteFile(cmt: any) {
+    let index: any;
+    let latestFiles: any = [];
+    cmt?.attachments?.splice(index, 1).map((res: any) => {
+      latestFiles.push(res.fileId)
+    })
+    cmt.attachments = latestFiles;
+    cmt.deadline = "";
+    this.saveAsTask(cmt);
+  }
+
+  saveAsTask(cmt: any): void {
+    console.log(cmt);
+    this.commentsService.addTask(cmt).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === 'Created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
+      } else {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
 }

@@ -17,6 +17,8 @@ export class SpecConversationComponent {
   @Input() usersList: any;
   @Input() topParentId: any;
   @Input() activeIndex: any;
+  @Input() parentEntity: any;
+  @Input() parentId: any;
   @Output() onClickClose = new EventEmitter<any>();
   @ViewChild(SpecChildConversationComponent)
   child!: SpecChildConversationComponent;
@@ -38,7 +40,11 @@ export class SpecConversationComponent {
   replies: any;
   specListCopy: any;
   specList: any[] = [];
-  childSpecListCount:any;
+  childSpecListCount: any;
+  commentDelete: any;
+  uploadedFiles: any;
+  references: any;
+  showConfirmationPopup: boolean = false;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -56,12 +62,12 @@ export class SpecConversationComponent {
     this.specListCopy = this.list;
   }
 
-  receiveMsg(event:any){
-    if(event){
-      this.list.forEach((item:any)=>{
-        if(item.comments){
-          item.comments.forEach((comment:any) => {
-            if(comment.id==event){
+  receiveMsg(event: any) {
+    if (event) {
+      this.list.forEach((item: any) => {
+        if (item.comments) {
+          item.comments.forEach((comment: any) => {
+            if (comment.id == event) {
               item.repliesOpened = false;
             }
           });
@@ -197,6 +203,7 @@ export class SpecConversationComponent {
   }
 
   viewReplies(cmt?: any) {
+    this.commentDelete = cmt;
     if (!cmt.topParentId || cmt.topParentId !== null) {
       this.topParentId = cmt.id;
     }
@@ -259,5 +266,43 @@ export class SpecConversationComponent {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
+  onClickUpdateSpec(cmt: any): void {
+    this.showConfirmationPopup = true;
+    this.selectedComment = cmt;
+  }
 
+  onClickAction(event: any): void {
+    if (event === 'Yes') {
+      this.showConfirmationPopup = false;
+      this.deleteFile(this.selectedComment);
+    } else {
+      this.showConfirmationPopup = false;
+    }
+  }
+  deleteFile(cmt: any) {
+    let index: any;
+    let latestFiles: any = [];
+    cmt?.attachments?.splice(index, 1).map((res: any) => {
+      latestFiles.push(res.fileId)
+    })
+    cmt.attachments = latestFiles;
+    this.saveComment(cmt);
+  }
+
+
+  saveComment(cmt: any): void {
+    this.commentsService.addComments(cmt).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === 'Created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
+        // this.utils.saveCommentList(true);
+      } else {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
 }

@@ -25,11 +25,16 @@
 
                     </div>
                 </div>
-                <div class="files-list" style="height:100%">
-                    <div *ngFor="let file of files; let i = index" class="single-file">
-                        <div class="info flex flex-wrap justify-content-between align-items-center">
-                            <h4 class="name">{{ file.name }}</h4>
+                <div class="col-12 ">
+                    <div *ngFor="let file of files; let i = index"
+                        class="flex justify-content-between flex-wrap single-file mb-1">
+                        <div class="flex align-items-center justify-content-center">
+                            <p class="m-0">{{ file.name }}</p>
+                        </div>
+                        <div class="flex align-items-center justify-content-center">
                             <p class="size">{{ formatBytes(file.size, 0) }}</p>
+                        </div>
+                        <div class="flex align-items-center justify-content-center">
                             <i class="pi pi-times pointer" (click)="deleteFile(i)"></i>
                         </div>
                     </div>
