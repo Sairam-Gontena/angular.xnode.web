@@ -235,13 +235,14 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   }
   prepareFilesList(files: Array<any>) {
-    console.log('999999999999', files)
-    for (const item of files) {
+    let item: any;
+    for (item of files) {
       this.files.push(item);
     }
-    this.readFileContent(this.files[0]);
+    this.readFileContent(item);
 
   }
+
   deleteFile(index: number) {
     console.log(index, '0000000')
     this.files.splice(index, 1);

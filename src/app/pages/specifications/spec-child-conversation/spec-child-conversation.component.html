@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="flex align-items-center flex-wrap">
-                <xnode-conversation-actions [cmt]="cmt"
+                <xnode-conversation-actions [cmt]="cmt" [activeIndex]="activeIndex"
                     (updateAction)="eventFromConversationAction($event)"></xnode-conversation-actions>
             </div>
         </div>
@@ -30,18 +30,16 @@
             <span *ngIf="selectedIndex !== i && activeIndex" [innerHTML]="highlightMatch(cmt.description)"></span>
         </div>
         <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT'">
-          <div class="view-replies"  *ngIf="specList.length-1 != list.length-1">
-            <span class="pointer text-xs"
-                (click)="loadComments('increment')">
-                See More
-            </span>
-          </div>
-          <div class="view-replies"  *ngIf="specList.length-1 === list.length-1">
-            <span class="pointer text-xs"
-                (click)="loadComments('decrement',cmt)">
-                See Less
-            </span>
-          </div>
+            <div class="view-replies" *ngIf="specList.length-1 != list.length-1">
+                <span class="pointer text-xs" (click)="loadComments('increment')">
+                    See More
+                </span>
+            </div>
+            <div class="view-replies" *ngIf="specList.length-1 === list.length-1">
+                <span class="pointer text-xs" (click)="loadComments('decrement',cmt)">
+                    See Less
+                </span>
+            </div>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All

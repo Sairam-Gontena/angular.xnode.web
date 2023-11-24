@@ -10,9 +10,11 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class ConversationActionsComponent {
   @Input() cmt: any;
+  @Input() activeIndex: any;
   @Output() updateAction = new EventEmitter<{ action: string, cmt: any }>();
   files: any[] = [];
-  uploadedFiles: any;
+  uploadedFiles: any = [];
+  selectedComment: any;
 
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
@@ -45,7 +47,8 @@ export class ConversationActionsComponent {
       cmt: cmt
     })
   }
-  fileBrowseHandler(event: any) {
+  fileBrowseHandler(event: any, cmt: any) {
+    this.selectedComment = cmt;
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
     const files = (event.target as HTMLInputElement).files;
     if (files && files.length > 0) {
@@ -60,17 +63,14 @@ export class ConversationActionsComponent {
 
   }
   prepareFilesList(files: Array<any>) {
-    for (const item of files) {
+    let item: any;
+    for (item of files) {
       this.files.push(item);
     }
-    this.readFileContent(this.files[0]);
+    this.readFileContent(item);
 
   }
-  deleteFile(index: number) {
-    console.log(index, '0000000')
-    this.files.splice(index, 1);
 
-  }
 
   formatBytes(bytes: any, decimals: any) {
     if (bytes === 0) {
@@ -101,6 +101,11 @@ export class ConversationActionsComponent {
       const res = await this.commonApi.postFile('file-azure/upload', formData, { headers });
       if (res.statusText === 'Created') {
         this.uploadedFiles.push(res.data.id);
+        if (this.activeIndex === 0) {
+          this.saveComment();
+        } else if (this.activeIndex === 1) {
+          this.saveAsTask();
+        }
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File uploaded successfully' });
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
@@ -111,5 +116,43 @@ export class ConversationActionsComponent {
     } finally {
       this.utils.loadSpinner(false);
     }
+  }
+
+  saveComment(): void {
+    let cmt = this.selectedComment;
+    cmt.attachments = this.uploadedFiles;
+    this.commentsService.addComments(cmt).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === 'Created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File Updated successfully' });
+        this.uploadedFiles = [];
+        // this.utils.saveCommentList(true);
+      } else {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
+  }
+  saveAsTask(): void {
+    let cmt = this.selectedComment;
+    cmt.attachments = this.uploadedFiles;
+    cmt.parentEntity = 'SPEC';
+    cmt.deadline = "";
+    this.commentsService.addTask(cmt).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === 'Created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File updated successfully' });
+        this.uploadedFiles = [];
+      } else {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 }

@@ -268,12 +268,13 @@ export class SpecConversationComponent {
   }
   onClickUpdateSpec(cmt: any): void {
     this.showConfirmationPopup = true;
+    this.selectedComment = cmt;
   }
 
   onClickAction(event: any): void {
     if (event === 'Yes') {
       this.showConfirmationPopup = false;
-      this.deleteFile(event)
+      this.deleteFile(this.selectedComment);
     } else {
       this.showConfirmationPopup = false;
     }
@@ -284,15 +285,12 @@ export class SpecConversationComponent {
     cmt?.attachments?.splice(index, 1).map((res: any) => {
       latestFiles.push(res.fileId)
     })
-    // let uploadedFiles = this.uploadedFiles.filter((file: any) => file !== cmt);
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
 
 
   saveComment(cmt: any): void {
-
-    console.log(cmt);
     this.commentsService.addComments(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
