@@ -142,10 +142,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       if (commentsReponse.statusText === 'Created') {
         this.utils.toggleTaskAssign(false);
         if (this.isCommnetsPanelOpened) {
-          this.utils.updateConversationList(body.topParentId ? 'COMMENT' : 'TASK');
+          this.utils.updateConversationList('COMMENT');
         }
-        else
+        else{
           this.utils.openOrClosePanel(SidePanel.Comments);
+          this.utils.updateConversationList('COMMENT');
+        }
         this.comment = '';
         this.closeOverlay.emit();
         let detail = 'Comment added successfully'
@@ -207,8 +209,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       if (commentsReponse.statusText === 'Created') {
         if (this.isCommnetsPanelOpened)
           this.utils.updateConversationList('TASK');
-        else
+        else{
           this.utils.openOrClosePanel(SidePanel.Comments);
+          this.utils.updateConversationList('TASK');
+        }
         this.comment = '';
         this.closeOverlay.emit();
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
