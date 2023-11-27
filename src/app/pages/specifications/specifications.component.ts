@@ -165,7 +165,7 @@ export class SpecificationsComponent implements OnInit {
 
   getMeSpecList(): void {
     this.utils.loadSpinner(true);
-    this.specService.getSpec({ productId: localStorage.getItem('record_id') })
+    this.specService.getSpec({ productId: localStorage.getItem('record_id'), live: true })
       .then(response => {
         if (response.status === 200 && response.data && response.data.length > 0) {
           this.isTheSpecGenerated = true;
