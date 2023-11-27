@@ -12,6 +12,7 @@ import { CommonApiService } from 'src/app/api/common-api.service';
 })
 
 export class AddCommentOverlayPanelComponent implements OnInit {
+  @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Output() closeOverlay = new EventEmitter<any>();
   @Input() position?: string;
   @Input() placeHolder?: string;
@@ -29,6 +30,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() selectedText: any;
   @Input() specId: any;
   @Input() activeIndex: any;
+  @Input() from: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -63,6 +65,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.from == 'cr-tabs') {
+      this.assignAsaTask = true;
+    }
     let data = [] as any[];
     if (this.users) {
       this.users.forEach((element: any) => {
@@ -102,6 +107,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
+    if (this.from == 'cr-tabs') {
+      this.commentInfo.emit({ message: this.comment, attachments: this.uploadedFiles, referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {}, parentId: this.parentId });
+      return
+    }
     this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
