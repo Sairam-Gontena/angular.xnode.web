@@ -5,13 +5,12 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { CommentsService } from 'src/app/api/comments.service';
 
-
 @Component({
-  selector: 'xnode-addcrversion',
-  templateUrl: './addcrversion.component.html',
-  styleUrls: ['./addcrversion.component.scss']
+  selector: 'xnode-add-cr-version',
+  templateUrl: './add-cr-version.component.html',
+  styleUrls: ['./add-cr-version.component.scss']
 })
-export class AddcrversionComponent {
+export class AddCrVersionComponent {
   @Input() comment: any;
   @Input()   latestVersion:any;
   @Output() closeNewVersionPopUp = new EventEmitter<boolean>();
@@ -88,9 +87,4 @@ export class AddcrversionComponent {
       this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-
-
-  // onSubmit(event: any): void {
-  //   this.close.emit(false)
-  // }
 }

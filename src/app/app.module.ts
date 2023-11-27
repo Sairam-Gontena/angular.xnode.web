@@ -16,8 +16,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
 
 @NgModule({
-  declarations: [	AppComponent 
-   ],
+  declarations: [	AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
