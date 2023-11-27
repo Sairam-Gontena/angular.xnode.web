@@ -259,7 +259,6 @@ export class TaskListComponent {
   }
 
   saveAsTask(cmt: any): void {
-    console.log(cmt);
     this.commentsService.addTask(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });

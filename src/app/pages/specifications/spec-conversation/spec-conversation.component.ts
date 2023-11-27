@@ -289,9 +289,7 @@ export class SpecConversationComponent {
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
-  // getFileDetails(fileId: string) {
-  //   return this.files.find((file: any) => file.fileId === fileId);
-  // }
+
 
 
   saveComment(cmt: any): void {

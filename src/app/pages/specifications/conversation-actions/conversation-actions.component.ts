@@ -57,7 +57,6 @@ export class ConversationActionsComponent {
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
         } else {
           this.prepareFilesList(event.target.files);
-          // this.files.push(files);
         }
       }
     }
@@ -126,7 +125,6 @@ export class ConversationActionsComponent {
 
     cmt.attachments = concatenatedFiles.map(file => file.fileId);
 
-    // cmt.attachments = this.uploadedFiles;
     this.commentsService.addComments(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File Updated successfully' });
@@ -144,7 +142,6 @@ export class ConversationActionsComponent {
   }
   saveAsTask(): void {
     let cmt = this.selectedComment;
-    // cmt.attachments = this.uploadedFiles;
     const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
 
     cmt.attachments = concatenatedFiles.map(file => file.fileId);
