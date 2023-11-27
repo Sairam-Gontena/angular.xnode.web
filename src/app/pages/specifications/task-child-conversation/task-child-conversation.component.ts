@@ -36,6 +36,7 @@ export class TaskChildConversationComponent {
   replies: any;
   specListCopy: any;
   specList: any[] = [];
+  showConfirmationPopup: boolean = false;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -240,5 +241,43 @@ export class TaskChildConversationComponent {
       });
     }
 
+  }
+  onClickUpdateSpec(cmt: any): void {
+    this.showConfirmationPopup = true;
+    this.selectedComment = cmt;
+  }
+
+  onClickAction(event: any): void {
+    if (event === 'Yes') {
+      this.showConfirmationPopup = false;
+      this.deleteFile(this.selectedComment);
+    } else {
+      this.showConfirmationPopup = false;
+    }
+  }
+  deleteFile(cmt: any) {
+    let index: any;
+    let latestFiles: any = [];
+    cmt?.attachments?.splice(index, 1).map((res: any) => {
+      latestFiles.push(res.fileId)
+    })
+    cmt.attachments = latestFiles;
+    cmt.assignee = cmt.assignee.userId;
+    this.saveAsTask(cmt);
+  }
+
+  saveAsTask(cmt: any): void {
+    this.commentsService.addTask(cmt).then((commentsReponse: any) => {
+      if (commentsReponse.statusText === 'Created') {
+        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
+      } else {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    })
   }
 }

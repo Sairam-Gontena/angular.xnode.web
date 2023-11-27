@@ -289,20 +289,6 @@ export class SpecChildConversationComponent {
     this.saveComment(cmt);
   }
 
-  // deleteFile(cmt: any) {
-  //   let newFiles: any = [];
-  //   // Check if the comment has attachments
-  //   if (cmt.attachments) {
-  //     // If existing attachments exist, push new files to the existing array
-  //     cmt.attachments.push(newFiles);
-  //   } else {
-  //     // If no existing attachments, initialize attachments with new files
-  //     cmt.attachments = newFiles;
-  //   }
-
-  //   // Assuming the subsequent logic saves the comment with updated attachments
-  //   this.saveComment(cmt);
-  // }
   saveComment(cmt: any): void {
     this.commentsService.addComments(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
