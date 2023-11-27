@@ -8,6 +8,9 @@ import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { CommentsService } from 'src/app/api/comments.service';
 import { ApiService } from 'src/app/api/api.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -57,17 +60,19 @@ export class SpecificationsContentComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private dataService: DataService,
     private apiservice: ApiService,
+    private storageService: LocalStorageService,
+    private specUtils: SpecUtilsService,
+
     private commentsService: CommentsService) {
     this.dataModel = this.dataService.data;
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-    }
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         this.specItemList = event;
       }
     })
+
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       if (event) {
         this.selectedSpecItem = event;
@@ -75,9 +80,12 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
 
-    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
-    });
+    // this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
+    //   this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
+    // });
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommnetsPanelOpened = event;
+    })
 
   }
 
