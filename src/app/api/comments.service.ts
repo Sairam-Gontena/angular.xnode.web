@@ -59,5 +59,12 @@ export class CommentsService extends BaseApiService {
   linkCr(body: any) {
     return this.post('cr-entity-mapping', body);
   }
+
+  approveCr(body: any) {
+    return this.post('change-request', body);
+  }
+  rejectCr(body: any) {
+    return this.post('change-request', body);
+  }
 }
 
