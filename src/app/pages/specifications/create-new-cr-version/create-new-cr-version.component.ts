@@ -39,6 +39,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   showAddVersionForm: boolean = false;
   screenWidth?: number
   submitted: boolean = false;
+  latestVersion:object={major:0,minor:0,build:0}
 
   constructor(private fb: FormBuilder,
     private commentsService: CommentsService,
@@ -91,6 +92,7 @@ export class CreateNewCrVersionComponent implements OnInit {
 
 
   getAllVersions() {
+    this.utilsService.loadSpinner(true)
     this.versionList = [{ label: 'Add New Version', value: 'ADD_NEW' }];
     let body = {
       "productId": this.product?.id
@@ -99,9 +101,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       if (response.status == 200) {
         response.data.forEach((element: any, index: any) => {
           if (index === 0) {
-            this.versionForm.patchValue({ build: element.build + 1 })
-            this.versionForm.patchValue({ major: element.major });
-            this.versionForm.patchValue({ minor: element.minor });
+           this.latestVersion = {major:element.major,minor:element.minor,build:element.build }
           }
           this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
         });
@@ -136,6 +136,10 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.close.emit(false);
   }
 
+  newVersionClosePopup(val:boolean){
+    this.getAllVersions()
+    this.showAddVersionForm = val;
+  }
   incrementString(inputString: any) {
     let segments = inputString.split('.');
     let carry = 1;
@@ -207,39 +211,6 @@ export class CreateNewCrVersionComponent implements OnInit {
     const initials = nameParts.map(part => part.charAt(0));
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
-  }
-
-  saveVersion(event: Event) {
-    this.submitted = true;
-    if (this.versionForm.invalid) {
-      return;
-    }
-    this.utilsService.loadSpinner(true);
-    let body = {
-      "productId": this.product.id,
-      "major": this.versionForm.value.major,
-      "minor": this.versionForm.value.minor,
-      "build": this.versionForm.value.build,
-      "notes": {},
-      "attachments": [],
-      "createdBy": this.currentUser.user_id
-    }
-    this.commentsService.addVersion(body).then((response: any) => {
-      if (response.statusText === 'Created') {
-        this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Version added successfully' });
-        this.showAddVersionForm = false;
-        this.isNewVersionAdded = true;
-        this.versionForm.reset();
-        this.getAllVersions();
-      } else {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });
-      }
-      this.utilsService.loadSpinner(false);
-    }).catch(err => {
-      this.utilsService.toggleTaskAssign(false);
-      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    })
-    event.stopPropagation();
   }
 
   getUserByAccountId(): void {
