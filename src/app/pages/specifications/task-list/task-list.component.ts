@@ -254,7 +254,7 @@ export class TaskListComponent {
       latestFiles.push(res.fileId)
     })
     cmt.attachments = latestFiles;
-    cmt.deadline = "";
+    cmt.assignee = cmt.assignee.userId;
     this.saveAsTask(cmt);
   }
 
