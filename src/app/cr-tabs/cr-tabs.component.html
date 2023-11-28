@@ -183,12 +183,14 @@
     <div class="card p-0 m-0 ">
       <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0 "
         (click)="updateChagneRequestStatus('APPROVED');op.toggle(false);">
-        <i class="pi pi-check border-circle  flex justify-content-center align-items-center text-xs  bg-green-500" [ngStyle]="{padding:'3px'}"></i>
+        <i class="pi pi-check border-circle  flex justify-content-center align-items-center text-xs  bg-green-500"
+          [ngStyle]="{padding:'3px'}"></i>
         <p class="text-sm font-normal ml-1 text-green-500 ">Approve</p>
       </div>
       <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
         (click)="updateChagneRequestStatus('REJECTED');op.toggle(false);">
-        <i class="pi pi-times border-circle flex justify-content-center align-items-center text-xs  bg-red-500" [ngStyle]="{padding:'3px'}"></i>
+        <i class="pi pi-times border-circle flex justify-content-center align-items-center text-xs  bg-red-500"
+          [ngStyle]="{padding:'3px'}"></i>
         <p class="text-sm font-normal ml-1 text-red-500 ">Reject</p>
       </div>
       <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
