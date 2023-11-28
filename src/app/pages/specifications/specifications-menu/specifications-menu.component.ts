@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { ApiService } from 'src/app/api/api.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from "lodash";
 import { SidePanel } from 'src/models/side-panel.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-specifications-menu',
@@ -25,22 +25,21 @@ export class SpecificationsMenuComponent implements OnInit {
   multiAccordion: boolean = false;
   private textInputSubject = new Subject<string>();
   isOpen = true;
-
   constructor(
     private utils: UtilsService,
-    private apiService: ApiService
+    private specUtils: SpecUtilsService
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
         this.menuList = resp.filter((item: any) => item !== null);
       },);
-    })
-    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      if (pnl === SidePanel.Comments) {
+    });
+    this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
+      if (event) {
         this.isOpen = false;
         this.utils.disableSpecSubMenu();
       }
-    })
+    });
   }
 
   ngOnInit(): void {

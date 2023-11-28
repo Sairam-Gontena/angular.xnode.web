@@ -45,6 +45,7 @@ export class SpecConversationComponent {
   uploadedFiles: any;
   references: any;
   showConfirmationPopup: boolean = false;
+  files: any[] = [];
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -288,6 +289,7 @@ export class SpecConversationComponent {
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
+
 
 
   saveComment(cmt: any): void {

@@ -79,52 +79,6 @@
                         Due date is required</div>
                 </div>
             </div>
-            <div class="col-12 border-1 border-white-alpha-40 border-round-xl" *ngIf="showAddVersionForm">
-                <form [formGroup]="versionForm">
-                    <div class="grid">
-                        <div class="col-12 text-right pb-0">
-                            <img src="../assets/version-close.svg" alt="close" class="mr-2 pointer">
-                            <img src="../assets/version-save.svg" alt="save" (click)="saveVersion($event)"
-                                class="pointer">
-                        </div>
-                        <div class="col-4">
-                            <label>Major</label>
-                            <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="major"
-                                    (input)="onMajorInputChange($event)"
-                                    [ngClass]="{ 'is-invalid': submitted && versionFormControl['major'].errors }" />
-                            </div>
-                            <div *ngIf="submitted && versionFormControl['major'].errors" class="invalid-feedback">
-                                <div *ngIf="versionFormControl['major'].errors?.['required']">
-                                    Major is required</div>
-                                <div *ngIf="versionFormControl['major'].errors?.['pattern']">
-                                    Enter numbers only</div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <label>Minor</label>
-                            <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="minor"
-                                    (input)="onMinorInputChange($event)"
-                                    [ngClass]="{ 'is-invalid': submitted && versionFormControl['minor'].errors }" />
-                            </div>
-                            <div *ngIf="submitted && versionFormControl['minor'].errors" class="invalid-feedback">
-                                <div *ngIf="versionFormControl['minor'].errors?.['required']">
-                                    Minor is required</div>
-                                <div *ngIf="versionFormControl['minor'].errors?.['pattern']">
-                                    Enter numbers only</div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <label>Build</label>
-                            <div class="p-inputgroup mt-1">
-                                <input type="text" pInputText formControlName="build" readonly="true" />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
             <div class="col-12 pb-0">
                 <div class="flex justify-content-between flex-wrap">
                     <p class="m-0">
@@ -195,3 +149,4 @@
             (click)="save($event)"></p-button>
     </ng-template>
 </p-dialog>
+<xnode-add-cr-version [latestVersion]="latestVersion" (closeNewVersionPopUp)="newVersionClosePopup($event)" [showVersionPopup]="showAddVersionForm" ></xnode-add-cr-version>

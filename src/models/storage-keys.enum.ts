@@ -1,5 +1,5 @@
 export enum StorageKeys {
-    SelectedSpec = "SELECTED_SPEC",
+    SelectedSpec = "selectedSpec",
     SpecData = "SPEC_DATA",
     CurrentUser = "currentUser",
     MetaData = "meta_data",

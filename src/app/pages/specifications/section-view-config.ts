@@ -1,17 +1,13 @@
 export const SECTION_VIEW_CONFIG = {
     paraViewSections: [
-        'System Architecture',
         'Hardware Interfaces',
         'Software Interfaces',
-        'Functional Assumptions',
         'Technical Assumptions',
         'Functional Known Issues',
         'Technical Known Issues',
         'Purpose',
         'Audience',
         'Scope',
-        'References',
-        'UserClasses Characteristics',
         'Data Model',
         'Relationships',
     ],
@@ -32,6 +28,9 @@ export const SECTION_VIEW_CONFIG = {
         'Maintainability',
         'Portability',
         'Integration Points',
-
+        'References',
+        'UserClasses Characteristics',
+        'System Architecture',
+        'Functional Assumptions',
     ]
 }

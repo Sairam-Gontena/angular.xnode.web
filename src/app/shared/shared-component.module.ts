@@ -41,6 +41,9 @@ import { SharedPipesModule } from '../pipes/sharedPipes.module';
 import { ProductDropdownComponent } from '../components/product-dropdown/product-dropdown.component';
 import { AddCommentOverlayPanelComponent } from '../pages/specifications/add-comment-overlay-panel/add-comment-overlay-panel.component';
 import { ConfirmationPopupNewComponent } from '../confirmation-popup-new/confirmation-popup-new.component';
+import { AddCrVersionComponent } from '../components/add-cr-version/add-cr-version.component';
+
+
 @NgModule({
         declarations: [
                 AdditionalInfoComponent,
@@ -81,7 +84,8 @@ import { ConfirmationPopupNewComponent } from '../confirmation-popup-new/confirm
                 CommonSpecTableComponent,
                 ProductDropdownComponent,
                 AddCommentOverlayPanelComponent,
-                ConfirmationPopupNewComponent
+                ConfirmationPopupNewComponent,
+                AddCrVersionComponent
         ],
         imports: [
                 CommonModule,
@@ -128,7 +132,8 @@ import { ConfirmationPopupNewComponent } from '../confirmation-popup-new/confirm
                 ProductDropdownComponent,
                 SharedPipesModule,
                 AddCommentOverlayPanelComponent,
-                ConfirmationPopupNewComponent
+                ConfirmationPopupNewComponent,
+                AddCrVersionComponent
         ]
 })
 export class SharedComponentModule { }

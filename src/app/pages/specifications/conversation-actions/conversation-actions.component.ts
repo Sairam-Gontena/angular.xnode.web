@@ -100,7 +100,8 @@ export class ConversationActionsComponent {
       this.utils.loadSpinner(true);
       const res = await this.commonApi.postFile('file-azure/upload', formData, { headers });
       if (res.statusText === 'Created') {
-        this.uploadedFiles.push(res.data.id);
+        // this.uploadedFiles.push(res.data.id);
+        this.uploadedFiles.push({ fileId: res.data.id, fileName: res.data.fileName });
         if (this.activeIndex === 0) {
           this.saveComment();
         } else if (this.activeIndex === 1) {
@@ -120,7 +121,10 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    cmt.attachments = this.uploadedFiles;
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
+
+    cmt.attachments = concatenatedFiles.map(file => file.fileId);
+
     this.commentsService.addComments(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File Updated successfully' });
@@ -138,8 +142,12 @@ export class ConversationActionsComponent {
   }
   saveAsTask(): void {
     let cmt = this.selectedComment;
-    cmt.attachments = this.uploadedFiles;
-    cmt.parentEntity = 'SPEC';
+    cmt.assignee = cmt.assignee.userId;
+
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
+
+    cmt.attachments = concatenatedFiles.map(file => file.fileId);
+    // cmt.parentEntity = 'SPEC';
     cmt.deadline = "";
     this.commentsService.addTask(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {

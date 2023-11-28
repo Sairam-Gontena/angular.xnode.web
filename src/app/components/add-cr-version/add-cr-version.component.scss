@@ -1,0 +1,11 @@
+.is-invalid {
+    color: #CC3514;
+}
+
+.invalid-feedback {
+    color: #CC3514;
+}
+
+:host ::ng-deep.p-dialog .p-dialog-content {
+    padding: 0 1.5rem 0 1.5rem
+}

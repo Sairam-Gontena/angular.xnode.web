@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
-import { SidePanel } from 'src/models/side-panel.enum';
 import { MentionConfig } from 'angular-mentions';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { DatePipe } from '@angular/common';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -15,6 +17,7 @@ import { DatePipe } from '@angular/common';
 })
 
 export class AddCommentOverlayPanelComponent implements OnInit {
+  @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Output() closeOverlay = new EventEmitter<any>();
   @Input() position?: string;
   @Input() placeHolder?: string;
@@ -32,6 +35,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() selectedText: any;
   @Input() specId: any;
   @Input() activeIndex: any;
+  @Input() from: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -53,26 +57,23 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private storageService: LocalStorageService,
+    private specUtils: SpecUtilsService
   ) {
     this.minDate = new Date();
     this.references = [];
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-    }
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
-
-    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
+    this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
+      this.isCommnetsPanelOpened = event;
     });
   }
 
   ngOnInit(): void {
-    let data = [] as any[];
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    if (this.from == 'cr-tabs') {
+      this.assignAsaTask = true;
+    }
     if (this.users) {
       this.users.forEach((element: any) => {
         element.name = element?.first_name + " " + element?.last_name;
@@ -139,6 +140,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
 
   onClickSend(): void {
+    if (this.from == 'cr-tabs') {
+      this.commentInfo.emit({ message: this.comment, attachments: this.uploadedFiles, referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {}, parentId: this.parentId });
+      return
+    }
     this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
@@ -177,24 +182,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   saveComment(body: any): void {
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
-        this.utils.toggleTaskAssign(false);
-        if (this.isCommnetsPanelOpened) {
-          this.utils.updateConversationList('COMMENT');
-        }
-        else {
-          this.utils.openOrClosePanel(SidePanel.Comments);
-          this.utils.updateConversationList('COMMENT');
-        }
-        this.comment = '';
-        this.closeOverlay.emit();
-        let detail = 'Comment added successfully'
-        if (this.action == 'EDIT') {
-          detail = 'Comment edited successfully';
-        }
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
-        this.uploadedFiles = [];
+        this.prepareDataToDisplayOnCommentsPanel();
       } else {
-        this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
       this.utils.loadSpinner(false);
@@ -202,6 +191,23 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
+  }
+
+  prepareDataToDisplayOnCommentsPanel(): void {
+    let detail = '';
+    if (this.action === 'EDIT') {
+      detail = 'Comment edited successfully';
+    } else {
+      detail = 'Comment added successfully';
+    }
+    if (!this.isCommnetsPanelOpened) {
+      this.specUtils._openCommentsPanel(true);
+    }
+    this.comment = '';
+    this.closeOverlay.emit();
+    this.specUtils._tabToActive('COMMENT');
+    this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
+    this.uploadedFiles = [];
   }
 
   prepareDataToSaveAsTask(): void {
@@ -244,17 +250,13 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   saveAsTask(body: any): void {
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
-        if (this.isCommnetsPanelOpened)
-          this.utils.updateConversationList('TASK');
-        else {
-          this.utils.openOrClosePanel(SidePanel.Comments);
-          this.utils.updateConversationList('TASK');
-        }
+        if (!this.isCommnetsPanelOpened)
+          this.specUtils._openCommentsPanel(true);
         this.comment = '';
         this.closeOverlay.emit();
+        this.specUtils._tabToActive('TASK');
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
         this.uploadedFiles = [];
-        this.utils.toggleTaskAssign(true);
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
@@ -290,22 +292,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
       }
     }
-
   }
+
   prepareFilesList(files: Array<any>) {
     let item: any;
     for (item of files) {
       this.files.push(item);
     }
     this.readFileContent(item);
-
   }
 
   deleteFile(index: number) {
-    console.log(index, '0000000')
     this.files.splice(index, 1);
     this.closeOverlay.emit(false);
-
   }
 
   formatBytes(bytes: any, decimals: any) {

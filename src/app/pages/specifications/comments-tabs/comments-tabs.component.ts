@@ -1,8 +1,6 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Comment } from 'src/models/comment';
-import { UtilsService } from 'src/app/components/services/utils.service';
-import { CommentsService } from 'src/app/api/comments.service';
-import { SidePanel } from 'src/models/side-panel.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-comments-tabs',
@@ -15,8 +13,8 @@ export class CommentsTabsComponent implements OnInit {
   @Input() usersList: any;
   activeIndex: number = 0;
   tabTypes: Array<string> = ['Comments', 'Tasks'];
-  constructor(public utils: UtilsService) {
-    this.utils.getMeLatestConversation.subscribe((event: any) => {
+  constructor(public specUtils: SpecUtilsService) {
+    this.specUtils.tabToActive.subscribe((event: any) => {
       if (event === 'COMMENT') {
         this.activeIndex = 0;
       } else if (event === 'TASK') {
@@ -32,8 +30,8 @@ export class CommentsTabsComponent implements OnInit {
   onTabChange(event: any) {
     this.activeIndex = event.index;
     if (event.index === 0)
-      this.utils.updateConversationList('COMMENT');
+      this.specUtils._tabToActive('COMMENT');
     else
-      this.utils.updateConversationList('TASK');
+      this.specUtils._tabToActive('TASK');
   }
 }
