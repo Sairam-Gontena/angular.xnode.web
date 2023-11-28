@@ -6,6 +6,7 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
 import { TabView } from 'primeng/tabview';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-comments-cr-panel',
@@ -17,7 +18,6 @@ export class CommentsCrPanelComponent implements OnInit {
   child!: CrTabsComponent;
   @ViewChild(TabView)
   tabView!: TabView;
-
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
   userImage?: any = "DC";
@@ -33,14 +33,15 @@ export class CommentsCrPanelComponent implements OnInit {
   comment: any;
   currentUser: any;
 
-  constructor(private utils: UtilsService) {
+  constructor(private utils: UtilsService,
+    private specUtils: SpecUtilsService) {
   }
 
   ngOnInit(): void {
   }
 
   onClickClose() {
-    this.utils.openOrClosePanel(SidePanel.None);
+    this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
   }
 
@@ -57,10 +58,10 @@ export class CommentsCrPanelComponent implements OnInit {
     this.list.push(this.commentObj);
   }
 
-  switchHeaders(event:any){
+  switchHeaders(event: any) {
     const tabs = this.tabView.tabs;
     const header = tabs[event.index].header;
-    if(header=='Change Request'){
+    if (header == 'Change Request') {
       this.child.getCRList();
     }
   }

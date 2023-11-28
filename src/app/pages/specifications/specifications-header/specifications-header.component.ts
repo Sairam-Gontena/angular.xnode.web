@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SidePanel } from 'src/models/side-panel.enum';
 
@@ -29,6 +30,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   showConfirmationPopup: boolean = false;
 
   constructor(private utils: UtilsService,
+    private specUtils: SpecUtilsService,
     private apiService: ApiService) {
   }
 
@@ -121,8 +123,9 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    this.utils.updateConversationList(null);
+    // this.utils.openOrClosePanel(SidePanel.Comments);
+    // this.utils.updateConversationList(null);
+    this.specUtils._openCommentsPanel(true);
   }
 
   openCRs() {

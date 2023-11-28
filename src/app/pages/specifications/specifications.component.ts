@@ -56,21 +56,23 @@ export class SpecificationsComponent implements OnInit {
         this.utils.loadSpinner(true);
       }
     });
+
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
-    })
+    });
+
     this.utils.openDockedNavi.subscribe((data: any) => {
-      // this.isCommnetsPanelOpened = false;
       if (data) {
         this.utils.disableSpecSubMenu();
         this.isNaviOpened = true;
       }
-    })
+    });
+
     this.utils.getMeProductDetails.subscribe((res: any) => {
       if (res && res?.id) {
         this.onChangeProduct(res)
       }
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -79,27 +81,20 @@ export class SpecificationsComponent implements OnInit {
   }
 
   getMeStorageData(): void {
-    let user = localStorage.getItem('currentUser');
-    if (user)
-      this.currentUser = JSON.parse(user);
-    let product = localStorage.getItem('product');
-    if (product)
-      this.product = JSON.parse(product);
-
+    this.currentUser = this.localStorageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.getInsights();
-
   }
+
   getInsights() {
-    let currentUserString = localStorage.getItem('currentUser');
-    let currentUser = currentUserString != null ? JSON.parse(currentUserString) : null;
-    this.apiService.get("navi/get_insights/" + currentUser?.email + "/" + localStorage.getItem('record_id'))
+    this.apiService.get("navi/get_insights/" + this.currentUser?.email + "/" + this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.product?.id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.useCases = data?.usecase || [];
           this.getMeSpecList();
@@ -108,7 +103,7 @@ export class SpecificationsComponent implements OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product?.id);
           this.utils.loadSpinner(false);
           this.utils.showProductStatusPopup(true);
         }
@@ -118,16 +113,10 @@ export class SpecificationsComponent implements OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.product_id);
+        this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product?.id);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
       });
-  }
-  email(arg0: string, arg1: number, arg2: string, arg3: string, user_audit_body: { method: string; url: any; }, email: any, product_id: any) {
-    throw new Error('Method not implemented.');
-  }
-  product_id(arg0: string, arg1: number, arg2: string, arg3: string, user_audit_body: { method: string; url: any; }, email: any, product_id: any) {
-    throw new Error('Method not implemented.');
   }
 
   searchText(keyword: any) {

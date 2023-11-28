@@ -8,7 +8,6 @@
                         shape="circle"></p-avatar>
                     <p class="flex align-items-center text-xs text-white-alpha-70">{{cmt.createdBy?.displayName}}</p>
                 </div>
-
                 <div class="flex align-items-center text-xs text-white-alpha-70">
                     Commented {{ modifiedTimeDifference(cmt.modifiedOn) }}
                 </div>
@@ -18,7 +17,6 @@
                     (updateAction)="eventFromConversationAction($event)"></xnode-conversation-actions>
             </div>
         </div>
-
         <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
             <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
             <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
@@ -27,18 +25,9 @@
             <div class="gradientback">
             </div>
         </div>
-
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
         </div>
-        <!-- <div class="flex flex-row justify-content-end w-full" *ngIf="isLast && cmt.parentEntity=='COMMENT' && specListCopy.length>2">
-          <span class="pointer text-xs" *ngIf="specList.length-1 != list.length-1" (click)="loadComments('increment')">
-            Show More
-          </span>
-          <span class="pointer text-xs" *ngIf="specList.length-1 === list.length-1" (click)="loadComments('decrement')">
-            Show Less
-          </span>
-        </div> -->
         <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See More</span>
             </div>
@@ -48,9 +37,6 @@
                 <div class="flex align-items-center justify-content-center">
                     <p class="m-0">{{ file.fileName }}</p>
                 </div>
-                <!-- <div class="flex align-items-center justify-content-center">
-                    <p class="size">{{ formatBytes(file.size, 0) }}</p>
-                </div> -->
                 <div class="flex align-items-center justify-content-center">
                     <i class="pi pi-times pointer" (click)="onClickUpdateSpec(cmt)"></i>
                 </div>

@@ -3,6 +3,7 @@ import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -38,16 +39,18 @@ export class CommentsPanelComponent implements OnInit {
   users: any = [];
   originalBackgroundColor: string = 'blue';
 
-  constructor(private utils: UtilsService, private commentsService: CommentsService,
+  constructor(private utils: UtilsService,
+    private specUtils: SpecUtilsService, private commentsService: CommentsService,
     private sanitizer: DomSanitizer) {
+    this.specUtils.tabToActive.subscribe((res: any) => {
+      if (res == 'COMMENT') {
+        this.getMeCommentsList();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.utils.getMeLatestConversation.subscribe((res)=>{
-      if(res == 'COMMENT'){
-        this.getMeCommentsList();
-      }
-    })
+
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
