@@ -142,6 +142,8 @@ export class ConversationActionsComponent {
   }
   saveAsTask(): void {
     let cmt = this.selectedComment;
+    cmt.assignee = cmt.assignee.userId;
+
     const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
 
     cmt.attachments = concatenatedFiles.map(file => file.fileId);

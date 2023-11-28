@@ -18,58 +18,63 @@
                     (updateAction)="eventFromConversationAction($event)"></xnode-conversation-actions>
             </div>
         </div>
-        <div class="col-12 text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
-            <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
-                <span [innerHTML]="highlightMatch(cmt.description)"></span>
+        <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
+            <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
+            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
+                [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
+            </p>
+            <div class="gradientback">
             </div>
-            <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
-                <div *ngFor="let file of cmt.attachments"
-                    class="flex justify-content-between flex-wrap single-file mb-1">
-                    <div class="flex align-items-center justify-content-center">
-                        <p class="m-0">{{ file.fileName }}</p>
-                    </div>
-                    <div class="flex align-items-center justify-content-center">
-                        <i class="pi pi-times pointer" (click)="onClickUpdateSpec(cmt)"></i>
-                    </div>
+        </div>
+
+        <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
+            <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
+        </div>
+        <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
+            <div *ngFor="let file of cmt.attachments" class="flex justify-content-between flex-wrap single-file mb-1">
+                <div class="flex align-items-center justify-content-center">
+                    <p class="m-0">{{ file.fileName }}</p>
                 </div>
-            </div>
-            <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened">
-                <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
-                        Replies{{cmt?.replyCount}}</span>
-                </div>
-            </div>
-            <div class="col-12"
-                *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
-                <xnode-task-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
-                    (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
-                    [topParentId]="cmt.id"></xnode-task-child-conversation>
-            </div>
-            <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
-                <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
-                        Replies</span>
-                </div>
-            </div>
-            <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">
-                <div class="w-full text-end">
-                    <i class="pi pi-times pointer" style="color: #fff;"
-                        (click)="showCommentInput = false;action='';"></i>
-                </div>
-                <div class="w-full">
-                    <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
-                        [action]="action" [users]="usersList" [parentEntity]="
-                     'TASK'" [activeIndex]="1" [parentId]="cmt.id" [topParentId]="topParentId"
-                        [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'"
-                        [width]="'w-full'" (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+                <div class="flex align-items-center justify-content-center">
+                    <i class="pi pi-times pointer" (click)="onClickUpdateSpec(cmt)"></i>
                 </div>
             </div>
         </div>
+        <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened">
+            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
+                    Replies{{cmt?.replyCount}}</span>
+            </div>
+        </div>
+        <div class="col-12"
+            *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
+            <xnode-task-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
+                (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
+                [topParentId]="cmt.id"></xnode-task-child-conversation>
+        </div>
+        <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
+            <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
+                    Replies</span>
+            </div>
+        </div>
+        <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">
+            <div class="w-full text-end">
+                <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
+            </div>
+            <div class="w-full">
+                <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
+                    [action]="action" [users]="usersList" [parentEntity]="
+                     'TASK'" [activeIndex]="1" [parentId]="cmt.id" [topParentId]="topParentId"
+                    [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'" [width]="'w-full'"
+                    (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+            </div>
+        </div>
     </div>
-    <xnode-confirmation-popup *ngIf="showDeletePopup" [activeIndex]="1"
-        (confirmationAction)="handleDeleteConfirmation($event)" [data]="'showDeletePopup'"
-        (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>
-    <xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"
-        (close)="showCrPopup = false"></xnode-link-to-cr>
-    <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
-        [header]="'Delete Attachment'" [content]="'Are you sure, do you want to delete the attachment?'"
-        (onClickAction)="
+</div>
+<xnode-confirmation-popup *ngIf="showDeletePopup" [activeIndex]="1"
+    (confirmationAction)="handleDeleteConfirmation($event)" [data]="'showDeletePopup'"
+    (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>
+<xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"
+    (close)="showCrPopup = false"></xnode-link-to-cr>
+<xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
+    [header]="'Delete Attachment'" [content]="'Are you sure, do you want to delete the attachment?'" (onClickAction)="
     onClickAction($event)"></xnode-confirmation-popup-new>
