@@ -28,6 +28,6 @@ export class CommentsTabsComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    this.activeIndex = event.index;
+    this.activeIndex = event.index;   
   }
 }

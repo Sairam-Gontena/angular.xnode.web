@@ -130,10 +130,24 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {}
       }
     }
+
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
-        delete body.topParentId
-        this.saveComment(body);
+        const body = {
+          "parentEntity": this.parentEntity,
+          "parentId": this.parentId,
+          "priority": '1',
+          "title": this.comment,
+          "description": this.comment,
+          "attachments": this.uploadedFiles,
+          "references": this.setTemplateTypeInRefs(),
+          "followers": [],
+          "feedback": {},
+          "status": "",
+          "assignee": this.currentUser.user_id,
+          "deadline": ""
+        }
+        this.saveAsTask(body);
       }
       else
         this.prepareDataToSaveAsTask()
@@ -224,9 +238,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
       this.utils.loadSpinner(false);
+      this.assignAsaTask = false;
     }).catch(err => {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+      this.assignAsaTask = false;
     })
   }
 
@@ -255,7 +271,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       }
     }
   }
-  
+
   prepareFilesList(files: Array<any>) {
     let item: any;
     for (item of files) {
