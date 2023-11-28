@@ -5,10 +5,13 @@ import * as _ from "lodash";
 import { SidePanel } from 'src/models/side-panel.enum';
 import { MentionConfig } from 'angular-mentions';
 import { CommonApiService } from 'src/app/api/common-api.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
-  styleUrls: ['./add-comment-overlay-panel.component.scss']
+  styleUrls: ['./add-comment-overlay-panel.component.scss'],
+  providers: [DatePipe]
+
 })
 
 export class AddCommentOverlayPanelComponent implements OnInit {
@@ -42,10 +45,13 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   selectedFile: any;
   maxSizeInBytes = 5 * 1024 * 1024;
   uploadedFiles: any[] = [];
+  selectedDateLabel: any;
+  isCommentEmpty: boolean = true;
 
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
+    private datePipe: DatePipe
   ) {
     this.references = [];
     const currentUser = localStorage.getItem('currentUser');
@@ -101,6 +107,34 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     return this.references;
   }
 
+  onDateSelect(event: any): void {
+    const selectedDate: Date = event;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const formattedSelectedDate = this.datePipe.transform(selectedDate, 'shortDate');
+    const formattedToday = this.datePipe.transform(today, 'shortDate');
+    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
+
+    let label: any;
+
+    if (formattedSelectedDate === formattedToday) {
+      label = 'Today';
+    } else if (formattedSelectedDate === formattedTomorrow) {
+      label = 'Tomorrow';
+    } else {
+      label = formattedSelectedDate;
+    }
+
+    this.selectedDateLabel = label;
+  }
+
+
   onClickSend(): void {
     this.utils.loadSpinner(true);
     if (this.selectedText) {
@@ -144,7 +178,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         if (this.isCommnetsPanelOpened) {
           this.utils.updateConversationList('COMMENT');
         }
-        else{
+        else {
           this.utils.openOrClosePanel(SidePanel.Comments);
           this.utils.updateConversationList('COMMENT');
         }
@@ -209,7 +243,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       if (commentsReponse.statusText === 'Created') {
         if (this.isCommnetsPanelOpened)
           this.utils.updateConversationList('TASK');
-        else{
+        else {
           this.utils.openOrClosePanel(SidePanel.Comments);
           this.utils.updateConversationList('TASK');
         }
@@ -227,9 +261,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-
-  onChangeComment(): void {
+  onChangeComment() {
+    this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
+
   }
 
   checkAndGetAssinedUsers(): void {
