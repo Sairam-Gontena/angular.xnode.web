@@ -254,12 +254,11 @@ export class TaskListComponent {
       latestFiles.push(res.fileId)
     })
     cmt.attachments = latestFiles;
-    cmt.deadline = "";
+    cmt.assignee = cmt.assignee.userId;
     this.saveAsTask(cmt);
   }
 
   saveAsTask(cmt: any): void {
-    console.log(cmt);
     this.commentsService.addTask(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });

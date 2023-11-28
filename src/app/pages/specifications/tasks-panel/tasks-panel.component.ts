@@ -1,8 +1,11 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-tasks-panel',
@@ -10,7 +13,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./tasks-panel.component.scss']
 })
 export class TasksPanelComponent {
-  @Input() specData?: Array<[]>;
+  @Input() specData?: any;
   @Input() commenttasksList: any;
   @Input() usersList: any;
   @Input() activeIndex: any;
@@ -37,38 +40,46 @@ export class TasksPanelComponent {
   users: any = [];
   originalBackgroundColor: string = 'blue';
 
-  constructor(private utils: UtilsService, private commentsService: CommentsService,
+  constructor(private utils: UtilsService,
+    private commentsService: CommentsService,
+    private specUtils: SpecUtilsService,
+    private localStorageService: LocalStorageService,
     private sanitizer: DomSanitizer) {
+    this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
+
+    this.specUtils.tabToActive.subscribe((res: any) => {
+      if (res == 'TASK') {
+        this.getMeTasksList();
+      }
+    });
   }
 
   ngOnInit(): void {
-    this.utils.getMeLatestConversation.subscribe((event: any) => {
-      if (event === 'TASK') {
-        this.getMeTasksList();
+  }
 
-      }
-    })
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    const activeIndexChange = changes['activeIndex'] as SimpleChange;
+    if (activeIndexChange && activeIndexChange.currentValue === 1) {
+      this.getMeTasksList();
+    }
   }
 
   getMeTasksList() {
     this.utils.loadSpinner(true);
-    let specData = localStorage.getItem('selectedSpec');
-    let selectedSpec: any;
-    if (specData) {
-      selectedSpec = JSON.parse(specData);
-      this.commentsService.getTasks({ parentId: selectedSpec.id }).then((response: any) => {
-        if (response && response.data?.common?.status !== 'fail') {
-          this.list = response.data;
-        } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.common?.status });
-        }
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-      });
-    }
+    console.log('this.specData', this.specData);
+
+    this.commentsService.getTasks({ parentId: this.specData?.id }).then((response: any) => {
+      if (response && response.data?.common?.status !== 'fail') {
+        this.list = response.data;
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.common?.status });
+      }
+      this.utils.loadSpinner(false);
+    }).catch(err => {
+      console.log(err);
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
+    });
   }
 
   onClickReply(cmt: any): void {

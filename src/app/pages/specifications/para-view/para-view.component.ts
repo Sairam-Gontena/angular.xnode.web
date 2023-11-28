@@ -2,6 +2,8 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { Section } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-para-view',
   templateUrl: './para-view.component.html',
@@ -13,62 +15,64 @@ export class ParaViewComponent {
   @Input() users: any = [];
   @Input() selectedContent!: string;
   @Input() id: any;
-  @Input() specId :any;
-  selectedText:string='';
+  @Input() specId: any;
+  selectedText: string = '';
   @Input() specItem: any;
   showCommentIcon: boolean = false;
-  commentOverlayPanelOpened:boolean=false;
-  @ViewChild('op')overlayPanel: OverlayPanel | any;
-  @ViewChild('selectionText')selectionText: OverlayPanel | any;
-  selectedWordIndices: number[]=[];
-  constructor(public utils: UtilsService){
+  @ViewChild('op') overlayPanel: OverlayPanel | any;
+  @ViewChild('selectionText') selectionText: OverlayPanel | any;
+  selectedWordIndices: number[] = [];
+  currentUser: any;
+
+  constructor(public utils: UtilsService, private storageService: LocalStorageService) {
   }
 
-  ngOnInit(){
-    this.utils.clearSelectedContent.subscribe((res:boolean)=>{
-      if(res){
+  ngOnInit() {
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.utils.clearSelectedContent.subscribe((res: boolean) => {
+      if (res) {
         this.emptySelectedContent();
       }
     })
   }
 
-  getWords(subitem: any){
+  getWords(subitem: any) {
     if (typeof subitem.content === 'string') {
       return subitem.content.split(' ');
-    } else if(typeof subitem === undefined){
-      if(typeof subitem === 'string'){
+    } else if (typeof subitem === undefined) {
+      if (typeof subitem === 'string') {
         return subitem.split(' ');
       }
-    }else if(typeof subitem === 'object'){
-      if(subitem.hasOwnProperty('content')){
+    } else if (typeof subitem === 'object') {
+      if (subitem.hasOwnProperty('content')) {
         return subitem.content
-      }else{
+      } else {
         return subitem
       }
-    }else {
+    } else {
       return [];
     }
   }
 
-  contentSelected(event:any) {
+  contentSelected(event: any) {
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
-      return ;
+      return;
     }
-    if(selectedText && selectedText.length>0 ){
+    if (selectedText && selectedText.length > 0) {
       this.selectedText = selectedText.replace(/\n/g, ' ')
-     }else{
-      this.selectedText='';
-     }
-     this.handleSelectionText(event);
+    } else {
+      this.selectedText = '';
+    }
+    this.handleSelectionText(event);
   }
 
-  highlightSelectedText(){
+  highlightSelectedText() {
     const selection = window.getSelection();
     this.selectedWordIndices = [];
-    if(selection){
+    if (selection) {
       if (!selection.rangeCount) return;
       const range = selection.getRangeAt(0);
       const elements = range.cloneContents().querySelectorAll('span');
@@ -82,8 +86,8 @@ export class ParaViewComponent {
     }
   }
 
-  emptySelectedContent(){
-    this.selectedText='';
+  emptySelectedContent() {
+    this.selectedText = '';
     this.selectedWordIndices = [];
   }
 
@@ -98,4 +102,35 @@ export class ParaViewComponent {
     const text = window.getSelection()?.toString();
     return text;
   }
+
+  // sendComment(obj: any): void {
+  //   const body = {
+  //     "createdBy": this.currentUser.user_id,
+  //     "topParentId": null, // For new comment it is 'null' and reply level this should be top comment id.
+  //     "parentEntity": 'SPEC',
+  //     "parentId": this.specItem.id, // It should be spec id at New comment level and parent commment id at reply level
+  //     "message": obj.comment,
+  //     "referenceContent": this.specItem,
+  //     "attachments": obj.uploadedFiles,
+  //     "references": this.setTemplateTypeInRefs(),
+  //     "followers": [],
+  //     "feedback": {}
+  //   }
+  // }
+  // setTemplateTypeInRefs(): string {
+  //   if (this.parentEntity === 'SPEC' && this.`assignAsaTask`) {
+  //     this.references.forEach((obj: any) => {
+  //       obj.template_type = 'TASK'
+  //     })
+  //   } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
+  //     this.references.forEach((obj: any) => {
+  //       obj.template_type = 'COMMENT'
+  //     })
+  //   } else {
+  //     this.references.forEach((obj: any) => {
+  //       obj.template_type = this.parentEntity
+  //     })
+  //   }
+  //   return this.references;
+  // }
 }

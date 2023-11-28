@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Comment } from 'src/models/comment';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
@@ -35,8 +34,6 @@ export class SpecConversationComponent {
   action?: string;
   showCrPopup: boolean = false;
   usersData: any;
-  users: any = [];
-  originalBackgroundColor: string = 'blue';
   showReplies: boolean = false;
   replies: any;
   specListCopy: any;
@@ -46,6 +43,7 @@ export class SpecConversationComponent {
   uploadedFiles: any;
   references: any;
   showConfirmationPopup: boolean = false;
+  files: any[] = [];
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -289,6 +287,7 @@ export class SpecConversationComponent {
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
+
 
 
   saveComment(cmt: any): void {

@@ -19,10 +19,11 @@
                             <div class="pointer">
                                 @
                             </div>
-                            <img src="../assets/send-blue.svg" [ngClass]="{'disabled': comment.length < 5}"
-                                class="pointer" alt="comment send" (click)="onClickSend()">
-                        </div>
+                            <img src="../assets/send-gray.svg"
+                                [src]="isCommentEmpty ? '../assets/send-gray.svg' : '../assets/send-blue.svg'"
+                                class="pointer" alt="comment send" (click)="onClickSend()" />
 
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 ">
@@ -42,9 +43,18 @@
             </div>
         </div>
     </div>
-    <div class="col-12 add-comments-footer align-items-center flex pl-4 pt-3 pb-3 "
+    <div class="col-12 add-comments-footer flex flex-wrap align-items-center  pl-4 pt-3 pb-3 "
         *ngIf="assinedUsers.length > 0 || from == 'cr-tabs' ">
-        <p-checkbox name="assign" value="ASSIGN_AS_A_TASK" [(ngModel)]="assignAsaTask"></p-checkbox>
-        <label class=" text-sm font-normal text-200 pl-2">Assign as a Task</label>
+        <div class="col-8">
+            <p-checkbox name="assign" value="ASSIGN_AS_A_TASK" [(ngModel)]="assignAsaTask"></p-checkbox>
+            <label class=" text-sm font-normal text-200 pl-2">Assign as a Task</label>
+        </div>
+        <div class="col-4">
+            <p-calendar [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate" [showIcon]="true"
+                icon="pi pi-calendar-plus" (onSelect)="onDateSelect($event)" [minDate]="minDate"></p-calendar>
+            <span class=" text-sm font-normal text-200" *ngIf="!selectedDateLabel">Due Date</span>
+            <span class=" text-sm font-normal text-200" *ngIf="selectedDateLabel">{{ selectedDateLabel }}</span>
+
+        </div>
     </div>
 </div>
