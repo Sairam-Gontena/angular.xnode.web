@@ -4,13 +4,16 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from "lodash";
 import { MentionConfig } from 'angular-mentions';
 import { CommonApiService } from 'src/app/api/common-api.service';
+import { DatePipe } from '@angular/common';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
-  styleUrls: ['./add-comment-overlay-panel.component.scss']
+  styleUrls: ['./add-comment-overlay-panel.component.scss'],
+  providers: [DatePipe]
+
 })
 
 export class AddCommentOverlayPanelComponent implements OnInit {
@@ -46,13 +49,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   selectedFile: any;
   maxSizeInBytes = 5 * 1024 * 1024;
   uploadedFiles: any[] = [];
+  selectedDateLabel: any;
+  isCommentEmpty: boolean = true;
+  minDate!: Date;
+
 
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
+    private datePipe: DatePipe,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService
   ) {
+    this.minDate = new Date();
     this.references = [];
     this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
       this.isCommnetsPanelOpened = event;
@@ -101,6 +110,34 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     return this.references;
   }
+
+  onDateSelect(event: any): void {
+    const selectedDate: Date = event;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const formattedSelectedDate = this.datePipe.transform(selectedDate, 'shortDate');
+    const formattedToday = this.datePipe.transform(today, 'shortDate');
+    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
+
+    let label: any;
+
+    if (formattedSelectedDate === formattedToday) {
+      label = 'Today';
+    } else if (formattedSelectedDate === formattedTomorrow) {
+      label = 'Tomorrow';
+    } else {
+      label = formattedSelectedDate;
+    }
+
+    this.selectedDateLabel = label;
+  }
+
 
   onClickSend(): void {
     if (this.from == 'cr-tabs') {
@@ -229,9 +266,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     })
   }
-
-  onChangeComment(): void {
+  onChangeComment() {
+    this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
+
   }
 
   checkAndGetAssinedUsers(): void {
@@ -255,7 +293,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       }
     }
   }
-  
+
   prepareFilesList(files: Array<any>) {
     let item: any;
     for (item of files) {
