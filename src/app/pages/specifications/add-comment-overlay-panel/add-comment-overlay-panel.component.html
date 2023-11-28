@@ -52,7 +52,7 @@
         </div>
         <div class="col-4">
             <p-calendar [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate" [showIcon]="true"
-                icon="pi pi-calendar-plus" (onSelect)="onDateSelect($event)"></p-calendar>
+                icon="pi pi-calendar-plus" (onSelect)="onDateSelect($event)" [minDate]="minDate"></p-calendar>
             <span class=" text-sm font-normal text-200 pl-2">{{ selectedDateLabel }}</span>
 
         </div>

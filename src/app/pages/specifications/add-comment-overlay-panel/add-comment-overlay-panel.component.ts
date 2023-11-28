@@ -47,12 +47,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   uploadedFiles: any[] = [];
   selectedDateLabel: any;
   isCommentEmpty: boolean = true;
+  minDate!: Date;
+
 
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private datePipe: DatePipe
   ) {
+    this.minDate = new Date();
     this.references = [];
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
