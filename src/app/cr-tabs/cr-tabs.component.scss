@@ -1,15 +1,98 @@
-.light-grey{
-  color:#A2A2A3!important;
+.light-grey {
+  color: #a2a2a3 !important;
 }
 
-.cr-tabs-div{
-  height: 80vh!important;
-  overflow-y: auto!important;
+.cr-tabs-div {
+  height: 80vh !important;
+  overflow-y: auto !important;
 }
 
 :host ::ng-deep .cr-comment .p-divider-vertical:before {
-  height: 65%!important;
- }:host ::ng-deep .accordian .p-icon {
+  height: 65% !important;
+}
+:host ::ng-deep .accordian .p-icon {
   color: white;
- }
+}
+:host
+  ::ng-deep
+  .cr-tabs
+  .p-accordion
+  .p-accordion-header
+  .p-accordion-header-link {
+  padding: 0px;
+  align-items: flex-start;
+}
 
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+  background-color: #23222b;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+// :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+//   border-width: 0px;
+//   border-color: #ffff;
+// }
+// :host ::ng-deep .p-checkbox .p-checkbox-box:hover {
+//   border-color: #ffff;
+// }
+// :host ::ng-deep .p-checkbox .p-checkbox-box:active {
+//   border-color: #fff;
+//   border-width: 0px;
+// }
+// :host ::ng-deep .p-checkbox .p-checkbox-box:focus {
+//   border-color: #fff;
+//   border-width: 0px;
+// }
+
+:host
+  ::ng-deep
+  .cr-tabs
+  .p-accordion
+  .p-accordion-header
+  .p-accordion-header-link {
+  position: relative;
+}
+
+:host
+  ::ng-deep
+  .p-accordion
+  .p-accordion-header
+  .p-accordion-header-link
+  .p-accordion-toggle-icon {
+  position: absolute !important;
+  left: 7%;
+  top:2px;
+  height: 10px;
+}
+
+.shaded-color {
+  color: #a2a2a3;
+}
+
+.normal-font-weight {
+  font-weight: 100;
+}
+.half-white {
+  color: #efeeee;
+}
+
+.submit-cr-window {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease-in-out;
+  background-color: #2E2D36;
+}
+
+.submit-cr-window-icon {
+  height: 15px;
+  width: 15px;
+}
+
+// .submit-cr-color{
+// }
+
+
+:host ::ng-deep .p-button {
+  background-color: #02ADEE;
+}

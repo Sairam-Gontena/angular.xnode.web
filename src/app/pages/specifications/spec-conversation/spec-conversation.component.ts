@@ -12,6 +12,7 @@ import { SpecChildConversationComponent } from '../spec-child-conversation/spec-
   templateUrl: './spec-conversation.component.html',
   styleUrls: ['./spec-conversation.component.scss']
 })
+
 export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
