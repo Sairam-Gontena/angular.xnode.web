@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
@@ -55,6 +55,13 @@ export class TasksPanelComponent {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    const activeIndexChange = changes['activeIndex'] as SimpleChange;
+    if (activeIndexChange && activeIndexChange.currentValue === 1) {
+      this.getMeTasksList();
+    }
   }
 
   getMeTasksList() {

@@ -28,10 +28,6 @@ export class CommentsTabsComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    this.activeIndex = event.index;
-    if (event.index === 0)
-      this.specUtils._tabToActive('COMMENT');
-    else
-      this.specUtils._tabToActive('TASK');
+    this.activeIndex = event.index;   
   }
 }
