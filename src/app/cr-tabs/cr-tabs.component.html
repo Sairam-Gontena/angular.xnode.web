@@ -35,7 +35,7 @@
         class="submit-cr-window-icon"
         alt="link"
       />
-      <p-button label="Submit to CR" [rounded]="true" ></p-button>
+      <p-button label="Submit to CR" [rounded]="true"></p-button>
       <!-- <div class="px-2 py-1 submit-cr-color border-round-2xl">
         <span class="text-white text-xs">Submit to CR</span>
       </div> -->
@@ -77,18 +77,15 @@
   </div>
   <div>
     <div class="w-full pl-4 pr-4">
-      <p-accordion
-        class="cr-tabs"
-        [multiple]="true"
-      >
+      <p-accordion class="cr-tabs" [multiple]="true">
         <p-accordionTab
           class="border-bottom-1 accordian mt-4"
-          *ngFor="let data of crData"
+          *ngFor="let data of crData;let i = index"
         >
           <ng-template pTemplate="header">
             <div class="w-full">
               <div class="grid col-12 flex-column">
-                <p-checkbox
+                <p-checkbox 
                   (onChange)="onCheckCheckbox($event)"
                   [binary]="true"
                   inputId="binary"
@@ -159,7 +156,11 @@
                     </div>
                     <i
                       class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                      (click)="op.toggle($event);updateSelectedCr(data); $event.stopPropagation()"
+                      (click)="
+                        op.toggle($event);
+                        updateSelectedCr(data);
+                        $event.stopPropagation()
+                      "
                     ></i>
                   </div>
                   <div></div>
@@ -168,7 +169,7 @@
                     style="margin-top: -15px"
                   >
                     <p class="text-xs shaded-color normal-font-weight">
-                      Due by : 29/11/2023
+                      Due by : {{data.duedate | date}}
                     </p>
                     <img src="../../assets/Group.svg" class="ml-4" alt="CR" />
                     <span class="shaded-color ml-1 normal-font-weight">3</span>
@@ -203,14 +204,23 @@
                     <p class="my-0 text-gray-200 text-sm font-normal">
                       {{ subData?.comment?.referenceContent?.title }}
                     </p>
-                    <div class="flex" >
-
+                    <div class="flex align-items-center ">
+                      <span *ngFor="let reviewers of data?.reviewers">
+                        <p-avatar
+                          [label]="getMeUserAvatar(reviewers)"
+                          class=""
+                          shape="circle"
+                          [style]="{
+                            'background-color': '#9c27b0',
+                            color: '#ffffff'
+                          }"
+                        ></p-avatar>
+                      </span>
                       <i
-                      class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                      (click)="op.toggle($event); $event.stopPropagation()"
-                    ></i>
+                        class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        (click)="op.toggle($event); $event.stopPropagation()"
+                      ></i>
                     </div>
-                    
                   </div>
                   <!-- dont delete need to continue after api values updation
                 <div  class="flex flex-row justify-content-between w-6 align-items-center">
@@ -250,18 +260,26 @@
   </div>
 
   <p-overlayPanel #op>
-    <div class="card p-0 m-0 ">
-      <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0 "
-        (click)="updateChagneRequestStatus('APPROVED');op.toggle(false);">
-        <i class="pi pi-check border-circle  flex justify-content-center align-items-center text-xs  bg-green-500"
-          [ngStyle]="{padding:'3px'}"></i>
-        <p class="text-sm font-normal ml-1 text-green-500 ">Approve</p>
+    <div class="card p-0 m-0">
+      <div
+        class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
+        (click)="updateChagneRequestStatus('APPROVED'); op.toggle(false)"
+      >
+        <i
+          class="pi pi-check border-circle flex justify-content-center align-items-center text-xs bg-green-500"
+          [ngStyle]="{ padding: '3px' }"
+        ></i>
+        <p class="text-sm font-normal ml-1 text-green-500">Approve</p>
       </div>
-      <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
-        (click)="updateChagneRequestStatus('REJECTED');op.toggle(false);">
-        <i class="pi pi-times border-circle flex justify-content-center align-items-center text-xs  bg-red-500"
-          [ngStyle]="{padding:'3px'}"></i>
-        <p class="text-sm font-normal ml-1 text-red-500 ">Reject</p>
+      <div
+        class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
+        (click)="updateChagneRequestStatus('REJECTED'); op.toggle(false)"
+      >
+        <i
+          class="pi pi-times border-circle flex justify-content-center align-items-center text-xs bg-red-500"
+          [ngStyle]="{ padding: '3px' }"
+        ></i>
+        <p class="text-sm font-normal ml-1 text-red-500">Reject</p>
       </div>
       <div
         class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
@@ -282,10 +300,3 @@
   [visible]="openConfirmationPopUp"
   (onClickAction)="onClickAction($event)"
 ></xnode-confirmation-popup-new>
-
-<!-- <div class="flex flex-row">
-            <span *ngFor="let reviewers of data?.reviewers">
-              <p-avatar [label]="getMeUserAvatar(reviewers)" class="pt-2" shape="circle"
-                [style]="{ 'background-color': '#9c27b0', 'color': '#ffffff' }"></p-avatar>
-            </span>
-          </div> -->

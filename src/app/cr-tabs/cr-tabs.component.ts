@@ -1,12 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'xnode-cr-tabs',
   templateUrl: './cr-tabs.component.html',
   styleUrls: ['./cr-tabs.component.scss'],
+  providers: [DatePipe],
 })
 export class CrTabsComponent {
   @Input() usersList: any;
