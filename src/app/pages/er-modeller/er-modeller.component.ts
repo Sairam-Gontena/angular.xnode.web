@@ -9,6 +9,8 @@ import { UserUtil, User } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-er-modeller',
   templateUrl: './er-modeller.component.html',
@@ -31,14 +33,15 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   product: any;
   product_id: any;
   @Input() erModelInput: any;
-  productDetails: any
 
   constructor(private apiService: ApiService,
     private dataService: DataService, private jsPlumbService: JsPlumbService,
     private utilService: UtilService, private router: Router,
+    private storageService: LocalStorageService,
     private utilsService: UtilsService, private auditUtil: AuditutilsService) {
     this.data = this.dataService.data;
-    this.currentUser = UserUtil.getCurrentUser();
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.router.events.subscribe((data: any) => {
       this.router.url == "/configuration/data-model/x-bpmn" ? this.bpmnSubUrl = true : this.bpmnSubUrl = false;
     });
@@ -49,22 +52,15 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   getMeStorageData(): void {
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    if (!this.product?.has_insights) {
+      this.utilsService.showProductStatusPopup(true);
+      return
+    }
     this.jsPlumbService.init();
     this.dataModel = undefined;
     this.dataService.loadData(this.utilService.ToModelerSchema([]));
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-      this.productDetails = JSON.parse(product);
-      this.product_id = JSON.parse(product).id;
-      if (!this.product?.has_insights) {
-        this.utilsService.showProductStatusPopup(true);
-        return
-      }
-    } else {
-      let pro_id = localStorage.getItem('record_id');
-      this.product_id = pro_id;
-    }
     this.utilsService.loadSpinner(true);
     this.getMeDataModel();
   }
@@ -86,21 +82,15 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   }
 
   getMeDataModel() {
-    let productEmail;
-    if (this.productDetails) {
-      productEmail = this.productDetails?.email == this.currentUser?.email ? this.currentUser?.email : this.productDetails.email;
-    } else {
-      productEmail = this.currentUser?.email
-    }
     this.dataModel = null;
-    this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product_id)
+    this.apiService.get("navi/get_insights/" + this.product.email + "/" + this.product.id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
           const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
           this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
           this.jsPlumbService.init();
@@ -110,7 +100,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'method': 'GET',
             'url': response?.request?.responseURL
           }
-          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
           this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
           this.utilsService.showProductStatusPopup(true);
         }
@@ -121,7 +111,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
           'method': 'GET',
           'url': error?.request?.responseURL
         }
-        this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product_id);
+        this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
         this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
         this.utilsService.loadSpinner(false);
       });

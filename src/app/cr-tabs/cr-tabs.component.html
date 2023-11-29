@@ -43,23 +43,13 @@
   <div>
     <div class="w-full pl-4 pr-4">
       <p-accordion class="cr-tabs" [multiple]="true">
-        <p-accordionTab
-          class="border-bottom-1 accordian mt-4"
-          *ngFor="let data of crData;let i = index"
-        >
+        <p-accordionTab class="border-bottom-1 accordian mt-4" *ngFor="let data of crData;let i = index">
           <ng-template pTemplate="header">
             <div class="w-full">
               <div class="grid col-12 flex-column">
-                <p-checkbox 
-                  (onChange)="onCheckCheckbox($event)"
-                  [binary]="true"
-                  inputId="binary"
-                  [(ngModel)]="data.checked"
-                ></p-checkbox>
-                <div
-                  class="flex flex-row align-items-center"
-                  style="position: absolute; margin-left: 13%"
-                >
+                <p-checkbox (onChange)="onCheckCheckbox($event)" [binary]="true" inputId="binary"
+                  [(ngModel)]="data.checked"></p-checkbox>
+                <div class="flex flex-row align-items-center" style="position: absolute; margin-left: 13%">
                   <img src="../../assets/high.svg" class="" alt="high" />
                   <p class="p-0 m-0 text-xs ml-2">
                     <a href="" class="text-primary-500"># {{ data.crId }}</a>
@@ -105,14 +95,11 @@
                         </div>
                       </div>
                     </div>
-                    <i
-                      class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                      (click)="
+                    <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200" (click)="
                         op.toggle($event);
                         updateSelectedCr(data);
                         $event.stopPropagation()
-                      "
-                    ></i>
+                      "></i>
                   </div>
                   <div></div>
                   <div class="flex align-items-center pl-4" style="margin-top: -15px">
@@ -144,20 +131,13 @@
                     </p>
                     <div class="flex align-items-center ">
                       <span *ngFor="let reviewers of data?.reviewers">
-                        <p-avatar
-                          [label]="getMeUserAvatar(reviewers)"
-                          class=""
-                          shape="circle"
-                          [style]="{
+                        <p-avatar [label]="getMeUserAvatar(reviewers)" class="" shape="circle" [style]="{
                             'background-color': '#9c27b0',
                             color: '#ffffff'
-                          }"
-                        ></p-avatar>
+                          }"></p-avatar>
                       </span>
-                      <i
-                        class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                        (click)="op.toggle($event); $event.stopPropagation()"
-                      ></i>
+                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        (click)="op.toggle($event); $event.stopPropagation()"></i>
                     </div>
                   </div>
                   <!-- dont delete need to continue after api values updation
@@ -193,24 +173,16 @@
 
   <p-overlayPanel #op>
     <div class="card p-0 m-0">
-      <div
-        class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
-        (click)="updateChagneRequestStatus('APPROVED'); op.toggle(false)"
-      >
-        <i
-          class="pi pi-check border-circle flex justify-content-center align-items-center text-xs bg-green-500"
-          [ngStyle]="{ padding: '3px' }"
-        ></i>
+      <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
+        (click)="updateChagneRequestStatus('APPROVED'); op.toggle(false)">
+        <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs bg-green-500"
+          [ngStyle]="{ padding: '3px' }"></i>
         <p class="text-sm font-normal ml-1 text-green-500">Approve</p>
       </div>
-      <div
-        class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
-        (click)="updateChagneRequestStatus('REJECTED'); op.toggle(false)"
-      >
-        <i
-          class="pi pi-times border-circle flex justify-content-center align-items-center text-xs bg-red-500"
-          [ngStyle]="{ padding: '3px' }"
-        ></i>
+      <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
+        (click)="updateChagneRequestStatus('REJECTED'); op.toggle(false)">
+        <i class="pi pi-times border-circle flex justify-content-center align-items-center text-xs bg-red-500"
+          [ngStyle]="{ padding: '3px' }"></i>
         <p class="text-sm font-normal ml-1 text-red-500">Reject</p>
       </div>
       <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"

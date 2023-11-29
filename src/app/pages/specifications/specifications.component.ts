@@ -87,7 +87,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   getInsights() {
-    this.apiService.get("navi/get_insights/" + this.currentUser?.email + "/" + this.product?.id)
+    this.apiService.get("navi/get_insights/" + this.product?.email + "/" + this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
           let user_audit_body = {
