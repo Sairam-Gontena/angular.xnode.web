@@ -148,3 +148,63 @@ pre {
     background: #302E38 !important;
     border-radius: 6px !important;
 }
+
+// when menu opened
+@media (max-width: 1440px){
+    .common-spec-table{
+        width: 600px;
+    }
+}
+@media (max-width: 1280px){
+    .common-spec-table{
+        width: 500px;
+    }
+}
+@media (max-width: 1024px){
+    .common-spec-table{
+        width: 420px;
+    }
+}
+
+// when navi and menu opened
+@media (max-width: 2560px){
+    .common-spec-table-navi-menu{
+        width: 820px;
+    }
+}
+@media (max-width: 1440px){
+    .common-spec-table-navi-menu{
+        width: 300px;
+    }
+}
+@media (max-width: 1280px){
+    .common-spec-table-navi-menu{
+        width: 250px;
+    }
+}
+@media (max-width: 1024px){
+    .common-spec-table-navi-menu{
+        width: 230px;
+    }
+}
+// when navi and cr opened
+@media (max-width: 2560px){
+    .common-spec-table-cr-menu{
+        width: 1000px;
+    }
+}
+@media (max-width: 1440px){
+    .common-spec-table-cr-menu{
+        width: 250px;
+    }
+}
+@media (max-width: 1280px){
+    .common-spec-table-cr-menu{
+        width: 180px;
+    }
+}
+@media (max-width: 1024px){
+    .common-spec-table-cr-menu{
+        width: 150px;
+    }
+}

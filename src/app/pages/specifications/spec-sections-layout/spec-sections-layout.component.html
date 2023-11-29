@@ -37,7 +37,11 @@
                 <img src="../assets/comment.svg" class="pointer comment-msg pt-2" alt="comment"
                 (click)="usecaseop.toggle($event);usecasePanelOpened=true" (mouseleave)="usecaseshowCommentIcon = false"  [ngClass]="usecaseshowCommentIcon || usecasePanelOpened?'opacity-100':'opacity-0'"/>
               </div>
-              <div class="col-12">
+              <div [ngClass]="{
+                'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+                'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+                'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+              }" class="col-12">
                 <xnode-common-usecases [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem" [useCases]="useCases"></xnode-common-usecases>
               </div>
             </div>
@@ -143,7 +147,11 @@
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
             </div>
-            <div *ngIf="content.showTable; else elsejson">
+            <div [ngClass]="{
+                'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+                'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+                'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+              }" class="common-spec-table" *ngIf="content.showTable; else elsejson">
                 <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList"  [specItem]="specItem"
                     [content]="content.content"></xnode-common-spec-table>
             </div>
@@ -175,7 +183,11 @@
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
             </div>
-            <div *ngIf="content.showTable; else elsejson">
+            <div [ngClass]="{
+                'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+                'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+                'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+              }" *ngIf="content.showTable; else elsejson">
                 <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                     [content]="content.content"></xnode-common-spec-table>
             </div>
@@ -207,7 +219,11 @@
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
             </div>
-            <div *ngIf="content.showTable; else elsejson">
+            <div [ngClass]="{
+                'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+                'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+                'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+              }" *ngIf="content.showTable; else elsejson">
                 <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                     [content]="content.content"></xnode-common-spec-table>
             </div>
@@ -239,7 +255,11 @@
                 <i class="pi pi-table pointer ml-2" pTooltip="Table view"
                     (click)="checkedToggle('table', specItem, content)"></i>
             </div>
-            <div *ngIf="content.showTable; else elsejson">
+            <div [ngClass]="{
+                'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+                'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+                'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+              }" *ngIf="content.showTable; else elsejson">
                 <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                     [content]="content.content"></xnode-common-spec-table>
             </div>
@@ -264,7 +284,11 @@
                 </div>
             </ng-template>
         </div>
-        <div *ngIf="content.title ==='Historical Data Load'">
+        <div [ngClass]="{
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" *ngIf="content.title ==='Historical Data Load'">
             <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Historical Data Load'"
                 [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
         </div>
@@ -288,19 +312,35 @@
             </div>
           </div>
         </div>
-        <div class="w-full" *ngIf="content.title ==='Glossary'">
+        <div [ngClass]="{
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" *ngIf="content.title ==='Glossary'">
             <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Glossary'" [searchTerm]="searchTerm"
                 [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
         </div>
-        <div class="w-full" *ngIf="content.title ==='Version Control'">
+        <div [ngClass]="{
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" *ngIf="content.title ==='Version Control'">
             <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Version Control'" [searchTerm]="searchTerm"
                 [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
         </div>
-        <div *ngIf="content.title ==='Error Handling'">
+        <div [ngClass]="{
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" *ngIf="content.title ==='Error Handling'">
             <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Error Handling'" [searchTerm]="searchTerm"
                 [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
         </div>
-        <div *ngIf="content.title ==='Stakeholder Approvals'">
+        <div [ngClass]="{
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" *ngIf="content.title ==='Stakeholder Approvals'">
             <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Stakeholder Approvals'" [users]="usersList"
                 [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
         </div>
@@ -390,7 +430,11 @@
               </div>
         </div>
 
-        <div *ngIf="content.title ==='OpenAPI Spec'">
+        <div [ngClass]="{
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table': !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" *ngIf="content.title ==='OpenAPI Spec'">
             <div class="flex col-12 justify-content-between align-items-center">
                 <h4 class="m-0 ">Swagger API</h4>
             </div>

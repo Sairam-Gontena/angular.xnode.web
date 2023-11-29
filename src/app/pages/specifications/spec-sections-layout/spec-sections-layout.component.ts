@@ -2,13 +2,13 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-spec-sections-layout',
   templateUrl: './spec-sections-layout.component.html',
-  styleUrls: ['./spec-sections-layout.component.scss']
+  styleUrls: ['./spec-sections-layout.component.scss'],
 })
-
 export class SpecSectionsLayoutComponent implements OnInit {
   @Input() content: any;
   @Input() searchTerm: any;
@@ -41,37 +41,55 @@ export class SpecSectionsLayoutComponent implements OnInit {
   selecteedSubSubIndex?: number;
   showCommentIcon?: boolean;
   commentOverlayPanelOpened: boolean = false;
+  isDockedNaviOpened?: boolean = false;
+  isSideMenuOpened?: boolean = false;
+  isCommnetsPanelOpened?: boolean = false;
 
   businessRulesPanelOpened: boolean = false;
-  businessRulesshowCommentIcon: boolean= false;
-  dataDictionaryshowCommentIcon: boolean= false;
-  dataDictionaryPanelOpened: boolean= false;
-  functionalDependenciesshowCommentIcon: boolean= false;
-  functionalDepedencyPanelOpened: boolean= false;
-  userInterfacePanelOpened: boolean= false;
-  userInterfaceshowCommentIcon: boolean= false;
-  AnnexuresPanelOpened:boolean= false;
-  AnnexureshowCommentIcon:boolean= false;
-  usecasePanelOpened:boolean=false;
-  usecaseshowCommentIcon:boolean=false;
-  dataManagementPanelOpened:boolean=false;
-  dataManagementCommentIcon:boolean=false;
-  workflowPanelOpened:boolean=false;
-  workflowshowCommentIcon:boolean=false;
-  userinterfaceShowCommentIcon:boolean=false;
-  userinterfacePanelOpened:boolean=false;
-  userpersonaShowCommentIcon:boolean=false;
-  usepersonaPanelOpened:boolean=false;
-  qashowCommentIcon:boolean=false;
-  qaPanelOpened:boolean=false;
-  openAPIShowCommentIcon:boolean=false;
-  openAPIPanelOpened:boolean=false;
+  businessRulesshowCommentIcon: boolean = false;
+  dataDictionaryshowCommentIcon: boolean = false;
+  dataDictionaryPanelOpened: boolean = false;
+  functionalDependenciesshowCommentIcon: boolean = false;
+  functionalDepedencyPanelOpened: boolean = false;
+  userInterfacePanelOpened: boolean = false;
+  userInterfaceshowCommentIcon: boolean = false;
+  AnnexuresPanelOpened: boolean = false;
+  AnnexureshowCommentIcon: boolean = false;
+  usecasePanelOpened: boolean = false;
+  usecaseshowCommentIcon: boolean = false;
+  dataManagementPanelOpened: boolean = false;
+  dataManagementCommentIcon: boolean = false;
+  workflowPanelOpened: boolean = false;
+  workflowshowCommentIcon: boolean = false;
+  userinterfaceShowCommentIcon: boolean = false;
+  userinterfacePanelOpened: boolean = false;
+  userpersonaShowCommentIcon: boolean = false;
+  usepersonaPanelOpened: boolean = false;
+  qashowCommentIcon: boolean = false;
+  qaPanelOpened: boolean = false;
+  openAPIShowCommentIcon: boolean = false;
+  openAPIPanelOpened: boolean = false;
 
-  expandSpecSections:any = ['Usecases','Use Cases','User Interface Design','Data Management Persistence','Workflows','Data Dictionary','Annexures','Historical Data Load','Glossary','Version Control','Error Handling','Stakeholder Approvals','OpenAPI Spec']
+  expandSpecSections: any = [
+    'Usecases',
+    'Use Cases',
+    'User Interface Design',
+    'Data Management Persistence',
+    'Workflows',
+    'Data Dictionary',
+    'Annexures',
+    'Historical Data Load',
+    'Glossary',
+    'Version Control',
+    'Error Handling',
+    'Stakeholder Approvals',
+    'OpenAPI Spec',
+  ];
 
-  constructor(private domSanitizer: DomSanitizer,
-  ) {
-  }
+  constructor(
+    private domSanitizer: DomSanitizer,
+    private utilsService: UtilsService,private specUtils: SpecUtilsService
+  ) {}
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
@@ -83,21 +101,34 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.product = JSON.parse(product);
     }
     this.makeTrustedUrl();
+    this.utilsService.openDockedNavi.subscribe((res) => {
+      this.isDockedNaviOpened = res;
+    });
+    this.utilsService.openSpecSubMenu.subscribe((res: any) => {
+      this.isSideMenuOpened = res;
+    })
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommnetsPanelOpened = event;
+    })
   }
 
-  checkExpandSpecSections(spec:string){
-    let returnVal:boolean;
-    this.expandSpecSections.includes(spec)? returnVal = true : returnVal = false;
+  checkExpandSpecSections(spec: string) {
+    let returnVal: boolean;
+    this.expandSpecSections.includes(spec)
+      ? (returnVal = true)
+      : (returnVal = false);
     return returnVal;
   }
 
   makeTrustedUrl(): void {
-    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
+    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
+      this.targetUrl
+    );
   }
 
   onClickAddComment(obj: any): void {
     this.selectedContent = obj.content;
-    this.showAddCommnetOverlay.emit(obj)
+    this.showAddCommnetOverlay.emit(obj);
   }
 
   checkedToggle(type: any, item: any, content: any) {
@@ -106,19 +137,26 @@ export class SpecSectionsLayoutComponent implements OnInit {
         obj.content.forEach((conObj: any) => {
           if (conObj.id === content.id && type === 'table')
             conObj.showTable = true;
-          else
-            conObj.showTable = false;
-        })
+          else conObj.showTable = false;
+        });
       }
-    })
+    });
   }
 
   checkParaViewSections(title: string) {
-    return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
   }
 
   checkListViewSections(title: string) {
-    return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
   }
 
   getTestCaseKeys(testCase: any): string[] {
@@ -127,5 +165,4 @@ export class SpecSectionsLayoutComponent implements OnInit {
   isArray(item: any) {
     return Array.isArray(item);
   }
-
 }
