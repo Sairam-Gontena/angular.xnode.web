@@ -1,7 +1,9 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
+import { LocalStorageService } from '../components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -24,15 +26,18 @@ export class CrTabsComponent {
   selectedStatus: string = '';
   listData: any = [];
   isOpen = true;
-  checkedCrList: number = 0;
-
+  checkedCrList: any = [];
+  updateSpecBtnTriggered: boolean = false;
+  product: any;
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
-    private commentsService: CommentsService
-  ) {}
+    private commentsService: CommentsService,
+    private storageService: LocalStorageService
+  ) { }
 
   ngOnInit() {
+    this.product = this.storageService.getItem(StorageKeys.Product)
     this.filters = [
       { title: 'Filters', code: 'F' },
       { title: 'All', code: 'A' },
@@ -139,14 +144,58 @@ export class CrTabsComponent {
   }
 
   onClickAction(action: string) {
-    this.openConfirmationPopUp = false;
     if (action == 'Yes') {
-      this.approveRequest();
+      if (this.updateSpecBtnTriggered) {
+        this.updateSpec();
+      } else {
+        this.approveRequest();
+      }
     } else if (action == 'No') {
       this.header = '';
       this.content = '';
-      this.openConfirmationPopUp = false;
     }
+    this.openConfirmationPopUp = false;
+    this.updateSpecBtnTriggered = false;
+  };
+
+  updateSpec(): void {
+    this.utilsService.loadSpinner(true);
+    const cr_ids = this.checkedCrList.map((item: any) => item.id)
+    this.api
+      .postApi({ product_id: this.product?.id, cr_id: cr_ids }, 'specs/update')
+      .then((res: any) => {
+        if (res && res.status === 200) {
+          if (typeof res.data !== 'string') {
+            this.utilsService.loadToaster({
+              severity: 'success',
+              summary: 'SUCCESS',
+              detail: 'The spec has been updated to the new version successfully',
+            });
+          } else {
+            this.utilsService.loadToaster({
+              severity: 'error',
+              summary: 'ERROR',
+              detail: res?.data,
+            });
+          }
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.detail,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utilsService.loadSpinner(false);
+      });
   }
 
   approveRequest(): void {
@@ -221,8 +270,8 @@ export class CrTabsComponent {
             body.status == 'REJECTED'
               ? 'Change request rejected successfully'
               : body.status == 'NEEDMOREWORK'
-              ? 'Change request updated successfully'
-              : '';
+                ? 'Change request updated successfully'
+                : '';
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
@@ -249,6 +298,12 @@ export class CrTabsComponent {
   }
 
   onCheckCheckbox(checked: any): void {
-    this.checkedCrList = this.crData.filter((cr: any) => cr.checked).length;
+    this.checkedCrList = this.crData.filter((cr: any) => cr.checked);
+  }
+
+  onClickUpdateSpec(): void {
+    this.updateSpecBtnTriggered = true;
+    this.content = 'Are you sure, do you want to update spec?';
+    this.header = 'Update Spec';
   }
 }
