@@ -22,6 +22,12 @@
   padding: 0px;
   align-items: flex-start;
 }
+:host
+  ::ng-deep
+  .cr-tabs .p-accordion .p-accordion-content {
+  padding-top: 0px;
+  align-items: flex-start;
+}
 
 :host ::ng-deep .p-checkbox .p-checkbox-box {
   background-color: #23222b;

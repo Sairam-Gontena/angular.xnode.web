@@ -4,11 +4,13 @@ import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from '../components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'xnode-cr-tabs',
   templateUrl: './cr-tabs.component.html',
   styleUrls: ['./cr-tabs.component.scss'],
+  providers: [DatePipe],
 })
 export class CrTabsComponent {
   @Input() usersList: any;
