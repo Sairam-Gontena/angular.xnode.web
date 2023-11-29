@@ -49,8 +49,7 @@ export class UseCasesComponent implements OnInit {
   }
 
   getUsecases() {
-    let productEmail = this.product?.email === this.currentUser?.email ? this.currentUser?.email : this.product?.email
-    this.apiService.get("navi/get_insights/" + productEmail + "/" + this.product?.id)
+    this.apiService.get("navi/get_insights/" + this.product?.email + "/" + this.product?.id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {

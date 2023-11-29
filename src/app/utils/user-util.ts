@@ -15,7 +15,6 @@ export class UserUtil {
   static getCurrentUser(): User | undefined {
     const storedCurrentUser = localStorage.getItem('currentUser');
     UserUtil.currentUser = storedCurrentUser ? JSON.parse(storedCurrentUser) : undefined;
-
     return UserUtil.currentUser;
   }
 }
