@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-spec-conversation',
@@ -44,10 +45,13 @@ export class SpecConversationComponent {
   references: any;
   showConfirmationPopup: boolean = false;
   files: any[] = [];
+  confirmarionContent: string = '';
+  confirmarionHeader: string = '';
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
+    private specUtils: SpecUtilsService,
     private messagingService: MessagingService) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'reply') {
@@ -97,6 +101,7 @@ export class SpecConversationComponent {
   }
 
   eventFromConversationAction(data: { action: string, cmt: any }) {
+    this.action = data.action;
     if (data.action === 'REPLY') {
       this.onClickReply(data.cmt);
     } if (data.action === 'EDIT') {
@@ -125,28 +130,21 @@ export class SpecConversationComponent {
 
   deleteCurrentComment(comment: string): void {
     this.selectedComment = comment;
-    this.showDeletePopup = true
+    this.showConfirmationPopup = true;
+    this.confirmarionContent = "Are you sure, Do you want to delete this Comment?";
+    this.confirmarionHeader = "Delete Comment";
   }
 
   toggleConfirmPopup(event: boolean) {
     this.showDeletePopup = event
   }
 
-  handleDeleteConfirmation(event: boolean): void {
-    if (this.activeIndex == 0) {
-      this.deleteComment(event)
-    } else if (this.activeIndex == 1) {
-      this.deleteTask(event)
-    }
-  }
-
-  deleteComment(event: boolean) {
+  deleteComment() {
     this.utils.loadSpinner(true);
-    this.showDeletePopup = event;
     this.commentsService.deletComment(this.selectedComment.id).then(res => {
       if (res) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.utils.updateConversationList('comment');
+        this.specUtils._tabToActive('COMMENT');
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -265,17 +263,24 @@ export class SpecConversationComponent {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-  onClickUpdateSpec(cmt: any): void {
+  deleteAttachment(cmt: any): void {
     this.showConfirmationPopup = true;
     this.selectedComment = cmt;
+    this.confirmarionContent = "Are you sure, Do you want to delete this Attachment?";
+    this.confirmarionHeader = "Delete Attachment";
   }
 
-  onClickAction(event: any): void {
+  onClickConfirmationAction(event: any): void {
+    console.log('action', this.action, event);
     if (event === 'Yes') {
-      this.showConfirmationPopup = false;
-      this.deleteFile(this.selectedComment);
-    } else {
-      this.showConfirmationPopup = false;
+      this.checkAction();
+    }
+    this.showConfirmationPopup = false;
+  }
+
+  checkAction(): void {
+    if (this.action === 'DELETE') {
+      this.deleteComment()
     }
   }
   deleteFile(cmt: any) {
