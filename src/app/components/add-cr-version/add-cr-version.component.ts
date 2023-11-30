@@ -19,7 +19,8 @@ import { CommentsService } from 'src/app/api/comments.service';
 export class AddCrVersionComponent {
   @Input() comment: any;
   @Input() latestVersion: any;
-  @Output() closeNewVersionPopUp = new EventEmitter<object>();
+  @Output() closeNewVersionPopUp = new EventEmitter<boolean>();
+  @Output() saveNewVersion = new EventEmitter<boolean>();
   @Input() showVersionPopup: boolean = false;
   versionForm: FormGroup;
   submitted: boolean = false;
@@ -58,7 +59,7 @@ export class AddCrVersionComponent {
   }
 
   closePopUp() {
-    this.closeNewVersionPopUp.emit({ refresh: false });
+    this.closeNewVersionPopUp.emit(true);
   }
 
   onMajorInputChange(event: Event) {
@@ -95,15 +96,16 @@ export class AddCrVersionComponent {
             detail: 'Version added successfully',
           });
           this.versionForm.reset();
-          this.closeNewVersionPopUp.emit({ refresh: true });
+          this.saveNewVersion.emit(true);
+          this.utilsService.loadSpinner(false);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
             summary: 'ERROR',
             detail: response?.data?.common?.message,
           });
+          this.utilsService.loadSpinner(false);
         }
-        this.utilsService.loadSpinner(false);
       })
       .catch((err) => {
         this.utilsService.toggleTaskAssign(false);

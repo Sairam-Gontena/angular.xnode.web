@@ -106,11 +106,11 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   getAllVersions() {
-    this.utilsService.loadSpinner(true);
     this.versionList = [{ label: 'Add New Version', value: 'ADD_NEW' }];
     let body = {
       productId: this.product?.id,
     };
+    this.utilsService.loadSpinner(true);
     this.commentsService
       .getVersions(body)
       .then((response: any) => {
@@ -131,6 +131,9 @@ export class CreateNewCrVersionComponent implements OnInit {
           if (this.isNewVersionAdded) {
             this.crForm.patchValue({ version: this.versionList[1].value });
             this.isNewVersionAdded = false;
+            this.utilsService.loadSpinner(false);
+          } else {
+            this.utilsService.loadSpinner(false);
           }
         } else {
           this.utilsService.loadToaster({
@@ -138,8 +141,8 @@ export class CreateNewCrVersionComponent implements OnInit {
             summary: 'ERROR',
             detail: response?.data?.common?.status,
           });
+          this.utilsService.loadSpinner(false);
         }
-        this.utilsService.loadSpinner(false);
       })
       .catch((err) => {
         this.utilsService.toggleTaskAssign(false);
@@ -168,11 +171,12 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   newVersionClosePopup(val: any) {
-    if (val && val.refresh) {
-      this.isNewVersionAdded = true;
-      this.getAllVersions();
-    }
     this.showAddVersionForm = false;
+  }
+  onSaveNewVersion(val: any) {
+    this.isNewVersionAdded = true;
+    this.showAddVersionForm = false;
+    this.getAllVersions();
   }
   incrementString(inputString: any) {
     let segments = inputString.split('.');
@@ -211,7 +215,16 @@ export class CreateNewCrVersionComponent implements OnInit {
       productId: this.product.id,
       priority: this.crForm.value.priority,
       duedate: this.crForm.value.duedate,
+      baseVersionId: null,
     };
+    let specData: any[] | undefined = this.localStorageService.getItem(
+      StorageKeys.SpecData
+    );
+    if (specData) {
+      body.baseVersionId = specData[0].versionId;
+    } else {
+      console.log('specData is empty or undefined');
+    }
     this.commentsService
       .createCr(body)
       .then((response: any) => {

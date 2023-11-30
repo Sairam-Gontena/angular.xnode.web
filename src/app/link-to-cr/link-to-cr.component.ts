@@ -98,7 +98,8 @@ export class LinkToCrComponent implements OnInit {
 
   getMeCrList() {
     let body = {
-      "productId": this.product?.id
+      "productId": this.product?.id,
+      "status": 'DRAFT'
     }
     this.commentsService.getChangeRequestList(body).then((response: any) => {
       if (response.status == 200 && response.data) {
