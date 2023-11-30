@@ -164,7 +164,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "attachments": this.uploadedFiles,
         "references": this.setTemplateTypeInRefs(),
         "followers": [],
-        "feedback": {}
+        "feedback": {},
       }
     }
 

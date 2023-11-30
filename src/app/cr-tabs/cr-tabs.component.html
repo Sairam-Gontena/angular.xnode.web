@@ -1,6 +1,6 @@
 <div class="cr-tabs-div">
-  <xnode-no-comments *ngIf="checkedCrList?.length === 0" [content]="'No open CRs yet'"></xnode-no-comments>
-  <div *ngIf="checkedCrList?.length > 0">
+  <xnode-no-comments *ngIf="crData?.length === 0" [content]="'No open CRs yet'"></xnode-no-comments>
+  <div *ngIf="crData?.length > 0">
     <div class="h-3rem p-0 m-0 w-full submit-cr-window grid align-items-center px-4 justify-content-between">
       <div class="p-0 m-0 flex col-5">
         <img src="../../assets/checkbox.svg" class="" alt="high" />
