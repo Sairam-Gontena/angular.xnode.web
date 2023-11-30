@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -10,9 +16,8 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
-  styleUrls: ['./spec-conversation.component.scss']
+  styleUrls: ['./spec-conversation.component.scss'],
 })
-
 export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
@@ -49,17 +54,19 @@ export class SpecConversationComponent {
   confirmarionHeader: string = '';
   fileIndex: any;
 
-  constructor(private utils: UtilsService,
+  constructor(
+    private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
-    private messagingService: MessagingService) {
+    private messagingService: MessagingService
+  ) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'reply') {
         this.showCommentInput = false;
-        this.action = ''
+        this.action = '';
       }
-    })
+    });
   }
 
   ngOnInit() {
@@ -80,43 +87,48 @@ export class SpecConversationComponent {
     }
   }
 
-
   loadComments(change: string) {
     if (change === 'increment') {
-      this.child.loadComments('increment')
+      this.child.loadComments('increment');
     } else {
-      this.child.loadComments('decrement')
+      this.child.loadComments('decrement');
     }
   }
 
   setAvatar(userObj: any): string {
     let avatar: string = '';
     if (userObj.createdBy && userObj.createdBy?.displayName) {
-      avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
+      avatar =
+        userObj.createdBy.firstName.charAt(0).toUpperCase() +
+        userObj.createdBy.lastName.charAt(0).toUpperCase();
     } else if (userObj.assignee && userObj.assignee?.displayName) {
-      avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
+      avatar =
+        userObj.assignee.firstName.charAt(0).toUpperCase() +
+        userObj.assignee.lastName.charAt(0).toUpperCase();
     } else {
       avatar = '';
     }
     return avatar;
   }
 
-  eventFromConversationAction(data: { action: string, cmt: any }) {
+  eventFromConversationAction(data: { action: string; cmt: any }) {
     this.action = data.action;
     if (data.action === 'REPLY') {
       this.onClickReply(data.cmt);
-    } if (data.action === 'EDIT') {
+    } else if (data.action === 'EDIT') {
       this.editComment(data.cmt);
-    } if (data.action === 'LINK_TO_CR') {
+    } else if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
-    } if (data.action === 'DELETE') {
+    } else if (data.action === 'DELETE') {
       this.deleteCurrentComment(data.cmt);
+    } else {
+      this.unLinkToCr(data.cmt);
     }
   }
 
   onClickReply(cmt: any): void {
     if (!cmt.topParentId) {
-      this.topParentId = cmt.id
+      this.topParentId = cmt.id;
     }
     this.selectedComment = cmt;
     this.showCommentInput = true;
@@ -132,41 +144,64 @@ export class SpecConversationComponent {
   deleteCurrentComment(comment: string): void {
     this.selectedComment = comment;
     this.showConfirmationPopup = true;
-    this.confirmarionContent = "Are you sure, Do you want to delete this Comment?";
-    this.confirmarionHeader = "Delete Comment";
+    this.confirmarionContent =
+      'Are you sure, Do you want to delete this Comment?';
+    this.confirmarionHeader = 'Delete Comment';
   }
 
   toggleConfirmPopup(event: boolean) {
-    this.showDeletePopup = event
+    this.showDeletePopup = event;
   }
 
   deleteComment() {
     this.utils.loadSpinner(true);
-    this.commentsService.deletComment(this.selectedComment.id).then(res => {
-      if (res) {
-        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Comment deleted successfully' });
-        this.specUtils._tabToActive('COMMENT');
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-      this.utils.loadSpinner(false);
-    })
+    this.commentsService
+      .deletComment(this.selectedComment.id)
+      .then((res) => {
+        if (res) {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Comment deleted successfully',
+          });
+          this.specUtils._tabToActive('COMMENT');
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
   }
 
   deleteTask(event: boolean) {
     this.utils.loadSpinner(true);
     this.showDeletePopup = event;
-    this.commentsService.deletTask(this.selectedComment.id).then(res => {
-      if (res) {
-        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.utils.updateConversationList('TASK');
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-      this.utils.loadSpinner(false);
-    })
+    this.commentsService
+      .deletTask(this.selectedComment.id)
+      .then((res) => {
+        if (res) {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Task deleted successfully',
+          });
+          this.utils.updateConversationList('TASK');
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
   }
 
   highlightMatch(conversation: string): SafeHtml {
@@ -206,42 +241,53 @@ export class SpecConversationComponent {
       this.topParentId = cmt.id;
     }
     this.showReplies = true;
-    if (cmt)
-      this.selectedComment = cmt;
+    if (cmt) this.selectedComment = cmt;
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
-      if (response && response.data) {
-        this.replies = response.data;
-        response.data.forEach((element: any) => {
-          element.parentUser = this.list.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
+    this.commentsService
+      .getComments({ topParentId: this.selectedComment.id })
+      .then((response: any) => {
+        if (response && response.data) {
+          this.replies = response.data;
+          response.data.forEach((element: any) => {
+            element.parentUser = this.list.filter((ele: any) => {
+              return ele.id === this.selectedComment.id;
+            })[0].createdBy;
+          });
+          this.list.forEach((obj: any) => {
+            if (obj.id === this.selectedComment.id) {
+              obj.comments = response.data;
+              obj.repliesOpened = true;
+            }
+          });
+          this.replies = response.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: response.data?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
         });
-        this.list.forEach((obj: any) => {
-          if (obj.id === this.selectedComment.id) {
-            obj.comments = response.data;
-            obj.repliesOpened = true
-          }
-        })
-        this.replies = response.data;
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-    });
+      });
   }
 
   hideReplies(cmt?: any) {
     this.list.forEach((obj: any) => {
       if (obj.id === this.selectedComment.id) {
         obj.comments = this.replies;
-        obj.repliesOpened = false
+        obj.repliesOpened = false;
       }
-    })
+    });
   }
-
 
   linkToCr(cmt?: any) {
     if (cmt) {
@@ -249,9 +295,18 @@ export class SpecConversationComponent {
       this.showCrPopup = true;
       this.messagingService.sendMessage({
         msgType: MessageTypes.LinkToCR,
-        msgData: cmt
+        msgData: cmt,
       });
     }
+  }
+
+  unLinkToCr(cmt?: any) {
+    this.selectedComment = cmt;
+    this.showConfirmationPopup = true;
+    this.confirmarionContent =
+      'Are you sure, Do you want to Unlink this Comment from CR?';
+    this.confirmarionHeader = 'UnLink Comment';
+    this.action = 'UNLINK_CR';
   }
 
   formatBytes(bytes: any, decimals: any) {
@@ -285,33 +340,80 @@ export class SpecConversationComponent {
       this.deleteComment();
     } else if (this.action === 'DELETE_ATTACHMENT') {
       this.deleteFile(this.selectedComment);
+    } else if (this.action === 'UNLINK_CR') {
+      this.deleteCrEntity();
     }
   }
+
+  deleteCrEntity(): void {
+    this.commentsService
+      .deleteCrEntity({ entityType: 'COMMENT', id: this.selectedComment.id })
+      .then((res: any) => {
+        if (res && res.status === 200) {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'Comment has been unlinked from CR successfully',
+          });
+          this.specUtils._tabToActive('COMMENT');
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
   deleteFile(cmt: any) {
-    let latestFiles: any[] = [];
-    cmt?.attachments?.map((res: any, index: number) => {
-      if (index !== this.fileIndex) {
-        latestFiles.push(res.fileId)
-      }
-    })
+    let index: any;
+    let latestFiles: any = [];
+    cmt?.attachments?.splice(index, 1).map((res: any) => {
+      latestFiles.push(res.fileId);
+    });
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
 
   saveComment(cmt: any): void {
-    this.commentsService.addComments(cmt).then((commentsReponse: any) => {
-      if (commentsReponse.statusText === 'Created') {
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
-        this.fileIndex = null;
-        this.specUtils._tabToActive('COMMENT');
-      } else {
+    this.commentsService
+      .addComments(cmt)
+      .then((commentsReponse: any) => {
+        if (commentsReponse.statusText === 'Created') {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'File deleted successfully',
+          });
+          this.fileIndex = null;
+          this.specUtils._tabToActive('COMMENT');
+          // this.utils.saveCommentList(true);
+        } else {
+          this.utils.loadSpinner(false);
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: commentsReponse?.data?.common?.status,
+          });
+        }
         this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    })
+      })
+      .catch((err) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 }

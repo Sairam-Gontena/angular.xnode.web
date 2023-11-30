@@ -157,7 +157,6 @@ export class LinkToCrComponent implements OnInit {
       "crId": this.crForm.value.crToAdd.id,
       "entityType": "COMMENT",
       "entityId": this.comment.id,
-      "status": "",
     }
     this.commentsService.linkCr(body).then((response: any) => {
       if (response) {
