@@ -84,11 +84,9 @@ export class SpecificationsContentComponent implements OnInit {
       }
     })
     this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + this.product?.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.currentUser.id;
+    this.fetchOpenAPISpec();
   }
 
-  ngAfterViewInit() {
-    this.fetchOpenAPISpec()
-  }
 
   ngOnChanges() {
     this.specItemList = this.specData;
