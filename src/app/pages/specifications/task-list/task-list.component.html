@@ -31,12 +31,13 @@
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
         </div>
         <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
-            <div *ngFor="let file of cmt.attachments" class="flex justify-content-between flex-wrap single-file mb-1">
+            <div *ngFor="let file of cmt.attachments; let i=index;"
+                class="flex justify-content-between flex-wrap single-file mb-1">
                 <div class="flex align-items-center justify-content-center">
                     <p class="m-0">{{ file.fileName }}</p>
                 </div>
                 <div class="flex align-items-center justify-content-center">
-                    <i class="pi pi-times pointer" (click)="onClickUpdateSpec(cmt)"></i>
+                    <i class="pi pi-times pointer" (click)="deleteAttachment(cmt,i)"></i>
                 </div>
             </div>
         </div>
@@ -74,4 +75,4 @@
     (close)="showCrPopup = false"></xnode-link-to-cr>
 <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
     [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="
-    onClickConformationAction($event)"></xnode-confirmation-popup-new>
+    onClickConfirmationAction($event)"></xnode-confirmation-popup-new>

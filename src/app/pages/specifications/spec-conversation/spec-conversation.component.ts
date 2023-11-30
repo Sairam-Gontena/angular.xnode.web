@@ -47,6 +47,7 @@ export class SpecConversationComponent {
   files: any[] = [];
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
+  fileIndex: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -263,16 +264,16 @@ export class SpecConversationComponent {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-  deleteAttachment(cmt: any): void {
+  deleteAttachment(cmt: any, index: number): void {
+    this.fileIndex = index;
     this.showConfirmationPopup = true;
     this.selectedComment = cmt;
     this.confirmarionContent = "Are you sure, Do you want to delete this Attachment?";
     this.confirmarionHeader = "Delete Attachment";
-    this.action = 'DELETE';
+    this.action = 'DELETE_ATTACHMENT';
   }
 
   onClickConfirmationAction(event: any): void {
-    console.log('action', this.action, event);
     if (event === 'Yes') {
       this.checkAction();
     }
@@ -280,28 +281,29 @@ export class SpecConversationComponent {
   }
 
   checkAction(): void {
-    console.log(this.action, '00000000')
     if (this.action === 'DELETE') {
-      this.deleteComment()
+      this.deleteComment();
+    } else if (this.action === 'DELETE_ATTACHMENT') {
+      this.deleteFile(this.selectedComment);
     }
   }
   deleteFile(cmt: any) {
-    let index: any;
-    let latestFiles: any = [];
-    cmt?.attachments?.splice(index, 1).map((res: any) => {
-      latestFiles.push(res.fileId)
+    let latestFiles: any[] = [];
+    cmt?.attachments?.map((res: any, index: number) => {
+      if (index !== this.fileIndex) {
+        latestFiles.push(res.fileId)
+      }
     })
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
 
-
-
   saveComment(cmt: any): void {
     this.commentsService.addComments(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
-        // this.utils.saveCommentList(true);
+        this.fileIndex = null;
+        this.specUtils._tabToActive('COMMENT');
       } else {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });

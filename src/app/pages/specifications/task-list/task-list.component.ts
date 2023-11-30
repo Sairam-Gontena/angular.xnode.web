@@ -39,6 +39,7 @@ export class TaskListComponent {
   showConfirmationPopup: boolean = false;
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
+  fileIndex: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -236,12 +237,16 @@ export class TaskListComponent {
     }
 
   }
-  onClickUpdateSpec(cmt: any): void {
+  deleteAttachment(cmt: any, index: number): void {
+    this.fileIndex = index;
     this.showConfirmationPopup = true;
     this.selectedComment = cmt;
+    this.confirmarionContent = "Are you sure, Do you want to delete this Attachment?";
+    this.confirmarionHeader = "Delete Attachment";
+    this.action = 'DELETE_ATTACHMENT';
   }
 
-  onClickConformationAction(event: any): void {
+  onClickConfirmationAction(event: any): void {
     if (event === 'Yes') {
       this.checkAction();
     }
@@ -251,14 +256,16 @@ export class TaskListComponent {
   checkAction(): void {
     if (this.action === 'DELETE') {
       this.deleteTask()
+    } else if (this.action === 'DELETE_ATTACHMENT') {
+      this.deleteFile(this.selectedComment);
     }
   }
-
   deleteFile(cmt: any) {
-    let index: any;
-    let latestFiles: any = [];
-    cmt?.attachments?.splice(index, 1).map((res: any) => {
-      latestFiles.push(res.fileId)
+    let latestFiles: any[] = [];
+    cmt?.attachments?.map((res: any, index: number) => {
+      if (index !== this.fileIndex) {
+        latestFiles.push(res.fileId)
+      }
     })
     cmt.attachments = latestFiles;
     cmt.assignee = cmt.assignee.userId;
@@ -269,6 +276,8 @@ export class TaskListComponent {
     this.commentsService.addTask(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
+        this.fileIndex = null;
+        this.specUtils._tabToActive('TASK');
       } else {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
