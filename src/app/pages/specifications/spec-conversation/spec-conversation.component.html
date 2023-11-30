@@ -66,5 +66,5 @@
 <xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"
     (close)="showCrPopup = false"></xnode-link-to-cr>
 <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
-    [header]="'Delete Attachment'" [content]="'Are you sure, do you want to delete the attachment?'" (onClickAction)="
+    [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="
     onClickConfirmationAction($event)"></xnode-confirmation-popup-new>

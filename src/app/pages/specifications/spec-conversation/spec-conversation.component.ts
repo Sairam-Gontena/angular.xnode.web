@@ -268,6 +268,7 @@ export class SpecConversationComponent {
     this.selectedComment = cmt;
     this.confirmarionContent = "Are you sure, Do you want to delete this Attachment?";
     this.confirmarionHeader = "Delete Attachment";
+    this.action = 'DELETE';
   }
 
   onClickConfirmationAction(event: any): void {
@@ -279,6 +280,7 @@ export class SpecConversationComponent {
   }
 
   checkAction(): void {
+    console.log(this.action, '00000000')
     if (this.action === 'DELETE') {
       this.deleteComment()
     }
