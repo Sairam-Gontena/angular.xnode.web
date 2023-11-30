@@ -39,7 +39,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   showAddVersionForm: boolean = false;
   screenWidth?: number
   submitted: boolean = false;
-  latestVersion:object={major:0,minor:0,build:0}
+  latestVersion: object = { major: 0, minor: 0, build: 0 }
 
   constructor(private fb: FormBuilder,
     private commentsService: CommentsService,
@@ -101,7 +101,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       if (response.status == 200) {
         response.data.forEach((element: any, index: any) => {
           if (index === 0) {
-           this.latestVersion = {major:element.major,minor:element.minor,build:element.build }
+            this.latestVersion = { major: element.major, minor: element.minor, build: element.build }
           }
           this.versionList.push({ label: element.major + '.' + element.minor + '.' + element.build, value: element.id })
         });
@@ -136,7 +136,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.close.emit(false);
   }
 
-  newVersionClosePopup(val:boolean){
+  newVersionClosePopup(val: boolean) {
     this.getAllVersions()
     this.showAddVersionForm = val;
   }
@@ -175,6 +175,13 @@ export class CreateNewCrVersionComponent implements OnInit {
       "productId": this.product.id,
       "priority": this.crForm.value.priority,
       "duedate": this.crForm.value.duedate,
+      "baseVersionId": null
+    }
+    let specData: any[] | undefined = this.localStorageService.getItem(StorageKeys.SpecData);
+    if (specData) {
+      body.baseVersionId = specData[0].versionId
+    } else {
+      console.log('specData is empty or undefined');
     }
     this.commentsService.createCr(body).then((response: any) => {
       if (response.statusText === 'Created') {

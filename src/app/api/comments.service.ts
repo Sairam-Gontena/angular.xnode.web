@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
 import { BaseApiService } from './base-api.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class CommentsService extends BaseApiService {
   override get apiUrl(): string {
     return environment.commentsApiUrl;
@@ -20,6 +19,7 @@ export class CommentsService extends BaseApiService {
     let url = 'comment';
     return this.get(url, params)
   }
+  
   getTasks(params?: any) {
     let url = 'task';
     return this.get(url, params)
@@ -40,6 +40,7 @@ export class CommentsService extends BaseApiService {
   deletComment(id: any) {
     return this.delete('comment/' + id);
   }
+
   deletTask(id: any) {
     return this.delete('task/' + id);
   }
@@ -47,15 +48,19 @@ export class CommentsService extends BaseApiService {
   addVersion(body: any) {
     return this.post('product-version', body);
   }
+
   getVersions(body: any) {
     return this.get('product-version', body);
   }
+
   getChangeRequestList(body: any) {
     return this.get('change-request', body);
   }
+
   createCr(body: any) {
     return this.post('change-request', body);
   }
+
   linkCr(body: any) {
     return this.post('cr-entity-mapping', body);
   }
@@ -63,6 +68,7 @@ export class CommentsService extends BaseApiService {
   approveCr(body: any) {
     return this.post('change-request', body);
   }
+
   rejectCr(body: any) {
     return this.post('change-request', body);
   }
