@@ -3,9 +3,8 @@ import { BaseApiService } from './base-api.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class CommentsService extends BaseApiService {
   override get apiUrl(): string {
     return environment.commentsApiUrl;
@@ -17,12 +16,12 @@ export class CommentsService extends BaseApiService {
 
   getComments(params?: any) {
     let url = 'comment';
-    return this.get(url, params)
+    return this.get(url, params);
   }
-  
+
   getTasks(params?: any) {
     let url = 'task';
-    return this.get(url, params)
+    return this.get(url, params);
   }
 
   updateComments(body: any) {
@@ -72,5 +71,8 @@ export class CommentsService extends BaseApiService {
   rejectCr(body: any) {
     return this.post('change-request', body);
   }
-}
 
+  deleteCrEntity(body: any) {
+    return this.delete('cr-entity-mapping/' + body.entityType + '/' + body.id);
+  }
+}

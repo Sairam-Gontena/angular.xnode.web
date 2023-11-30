@@ -41,6 +41,13 @@ export class ConversationActionsComponent {
     })
   }
 
+  unLinkToCr(cmt: any): void {
+    this.updateAction.emit({
+      action: 'UNLINK_CR',
+      cmt: cmt
+    })
+  }
+
   deleteCurrentComment(cmt: any): void {
     this.updateAction.emit({
       action: 'DELETE',
