@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-task-list',
@@ -36,14 +37,16 @@ export class TaskListComponent {
   specListCopy: any;
   specList: any[] = [];
   showConfirmationPopup: boolean = false;
+  confirmarionContent: string = '';
+  confirmarionHeader: string = '';
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
+    private specUtils: SpecUtilsService,
     private messagingService: MessagingService) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'REPLY') {
-        // this.viewReplies(this.selectedComment);
         this.showCommentInput = false;
         this.action = ''
       }
@@ -92,6 +95,7 @@ export class TaskListComponent {
   }
 
   eventFromConversationAction(data: { action: string, cmt: any }) {
+    this.action = data.action;
     if (data.action === 'REPLY') {
       this.onClickReply(data.cmt);
     } if (data.action === 'EDIT') {
@@ -99,7 +103,7 @@ export class TaskListComponent {
     } if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
     } if (data.action === 'DELETE') {
-      this.deleteCurrentComment(data.cmt);
+      this.onClickDeleteTask(data.cmt);
     }
   }
 
@@ -118,27 +122,25 @@ export class TaskListComponent {
     this.action = 'EDIT';
   }
 
-  deleteCurrentComment(comment: string): void {
+  onClickDeleteTask(comment: string): void {
     this.selectedComment = comment;
-    this.showDeletePopup = true
+    this.showConfirmationPopup = true;
+    this.confirmarionContent = "Are you sure, Do you want to delete this Task?";
+    this.confirmarionHeader = "Delete Task";
   }
 
   toggleConfirmPopup(event: boolean) {
     this.showDeletePopup = event
   }
 
-  handleDeleteConfirmation(event: boolean): void {
+  deleteTask() {
     this.utils.loadSpinner(true);
-    this.deleteTask(event)
-  }
-
-  deleteTask(event: boolean) {
-    this.utils.loadSpinner(true);
-    this.showDeletePopup = event;
     this.commentsService.deletTask(this.selectedComment.id).then(res => {
-      if (res) {
+      if (res && res.status === 200) {
         this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.utils.updateConversationList('TASK');
+        this.specUtils._tabToActive('TASK');
+      } else {
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res.data?.detail });
       }
       this.utils.loadSpinner(false);
     }).catch(err => {
@@ -239,14 +241,19 @@ export class TaskListComponent {
     this.selectedComment = cmt;
   }
 
-  onClickAction(event: any): void {
+  onClickConformationAction(event: any): void {
     if (event === 'Yes') {
-      this.showConfirmationPopup = false;
-      this.deleteFile(this.selectedComment);
-    } else {
-      this.showConfirmationPopup = false;
+      this.checkAction();
+    }
+    this.showConfirmationPopup = false;
+  }
+
+  checkAction(): void {
+    if (this.action === 'DELETE') {
+      this.deleteTask()
     }
   }
+
   deleteFile(cmt: any) {
     let index: any;
     let latestFiles: any = [];
