@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 @Component({
   selector: 'xnode-task-child-conversation',
   templateUrl: './task-child-conversation.component.html',
@@ -37,10 +38,14 @@ export class TaskChildConversationComponent {
   specListCopy: any;
   specList: any[] = [];
   showConfirmationPopup: boolean = false;
+  fileIndex: any;
+  confirmarionContent: string = '';
+  confirmarionHeader: string = '';
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
+    private specUtils: SpecUtilsService,
     private messagingService: MessagingService) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'reply') {
@@ -242,24 +247,33 @@ export class TaskChildConversationComponent {
     }
 
   }
-  onClickUpdateSpec(cmt: any): void {
+  deleteAttachment(cmt: any, index: number): void {
+    this.fileIndex = index;
     this.showConfirmationPopup = true;
     this.selectedComment = cmt;
+    this.confirmarionContent = "Are you sure, Do you want to delete this Attachment?";
+    this.confirmarionHeader = "Delete Attachment";
+    this.action = 'DELETE_ATTACHMENT';
   }
 
-  onClickAction(event: any): void {
+  onClickConfirmationAction(event: any): void {
     if (event === 'Yes') {
-      this.showConfirmationPopup = false;
+      this.checkAction();
+    }
+    this.showConfirmationPopup = false;
+  }
+
+  checkAction(): void {
+    if (this.action === 'DELETE_ATTACHMENT') {
       this.deleteFile(this.selectedComment);
-    } else {
-      this.showConfirmationPopup = false;
     }
   }
   deleteFile(cmt: any) {
-    let index: any;
-    let latestFiles: any = [];
-    cmt?.attachments?.splice(index, 1).map((res: any) => {
-      latestFiles.push(res.fileId)
+    let latestFiles: any[] = [];
+    cmt?.attachments?.map((res: any, index: number) => {
+      if (index !== this.fileIndex) {
+        latestFiles.push(res.fileId)
+      }
     })
     cmt.attachments = latestFiles;
     cmt.assignee = cmt.assignee.userId;
@@ -270,6 +284,8 @@ export class TaskChildConversationComponent {
     this.commentsService.addTask(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
+        this.fileIndex = null;
+        this.specUtils._tabToActive('TASK');
       } else {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
