@@ -54,6 +54,8 @@
                     <img src="../../assets/high.svg" class="" alt="high" />
                     <p class="p-0 m-0 text-xs ml-2">
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
+                      <a href="" class="text-primary-500 ml-2" (click)="onClickViewChanges(data)">View Changes</a>
+
                     </p>
                   </div>
                   <div class="w-full pl-7">
@@ -92,7 +94,7 @@
                             <div>
                               <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
                             </div>
-                            <div class="text-xs ml-2 text-orange-500">Draft</div>
+                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
                           </div>
                         </div>
                       </div>
@@ -127,14 +129,15 @@
                   *ngFor="let subData of subCRData; let i = index">
                   <div class="flex flex-row justify-content-between align-items-center w-full">
                     <div class="w-full flex justify-content-between align-items-center">
-                      <p class="my-0 text-gray-200 text-sm font-normal">
-                        {{ subData?.comment?.referenceContent?.title }}
-                      </p>
+                        <p class="my-0 text-gray-200 text-sm font-normal">
+                          {{ subData?.comment?.referenceContent?.title }}
+                        </p>
                       <div class="flex align-items-center ">
+                        <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
                         <span *ngFor="let reviewers of data?.reviewers">
-                          <p-avatar [label]="getMeUserAvatar(reviewers)" class="" shape="circle" [style]="{
+                          <p-avatar [label]="getMeUserAvatar(reviewers)" class="text-xs" shape="circle" [style]="{
                             'background-color': '#9c27b0',
-                            color: '#ffffff'
+                            color: '#ffffff', fontSize: '10px'
                           }"></p-avatar>
                         </span>
                         <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
