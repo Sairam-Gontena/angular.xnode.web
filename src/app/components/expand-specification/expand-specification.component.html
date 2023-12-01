@@ -1,52 +1,103 @@
-<div class="content overflow-hidden" [ngClass]="{'bg-white':dataToExpand.swagger}">
-    <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Management Persistence'"
-        (dataFlowEmitter)="closeFullScreenView.emit()" [dataToExpand]="dataToExpand"
-        [specExpanded]="specExpanded"></xnode-data-model-common>
-    <xnode-bpmn-common *ngIf="dataToExpand.title ==='Workflows'" (dataFlowEmitter)="closeFullScreenView.emit()"
-        [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
-    <div *ngIf="dataToExpand.title ==='OpenAPI Spec'" class="swagger-h overflow-auto">
-        <div class="flex col-12 justify-content-between align-items-center p-4">
-            <h4 class="m-0 pb-3">Swagger API</h4>
-            <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
-        </div>
-        <div id="openapi-ui-spec" class="openapi-spec"></div>
+<div
+  class="content overflow-hidden"
+  [ngClass]="{ 'bg-white': dataToExpand.swagger }"
+>
+  <xnode-data-model-common
+    *ngIf="dataToExpand.title === 'Data Management Persistence'"
+    (dataFlowEmitter)="closeFullScreenView.emit()"
+    [dataToExpand]="dataToExpand"
+    [specExpanded]="specExpanded"
+  ></xnode-data-model-common>
+  <xnode-bpmn-common
+    *ngIf="dataToExpand.title === 'Workflows'"
+    (dataFlowEmitter)="closeFullScreenView.emit()"
+    [dataToExpand]="dataToExpand"
+    [specExpanded]="specExpanded"
+  ></xnode-bpmn-common>
+  <div
+    *ngIf="dataToExpand.title === 'OpenAPI Spec'"
+    class="swagger-h overflow-auto"
+  >
+    <div class="flex col-12 justify-content-between align-items-center p-4">
+      <h4 class="m-0 pb-3">Swagger API</h4>
+      <i
+        class="pi pi-times text-xl pointer"
+        (click)="closeFullScreenView.emit()"
+      ></i>
     </div>
-    <div *ngIf="dataToExpand.title ==='User Interface Design'" class="h-full bg-white">
-        <div class="h-full relative">
-            <div class="absolute right-0 mr-2 mt-2">
-                <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
-            </div>
-            <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
-            </iframe>
-        </div>
+    <div id="openapi-ui-spec" class="openapi-spec"></div>
+  </div>
+  <div
+    *ngIf="dataToExpand.title === 'User Interface Design'"
+    class="h-full bg-white"
+  >
+    <div class="h-full relative">
+      <div class="absolute right-0 mr-2 mt-2">
+        <i
+          class="pi pi-times text-xl pointer"
+          (click)="closeFullScreenView.emit()"
+        ></i>
+      </div>
+      <iframe
+        id="myIframe"
+        [src]="iframeSrc"
+        class="h-full w-full pl-1 pr-1"
+        title="Template Builder"
+      >
+      </iframe>
     </div>
-    <div *ngIf="dataToExpand.title === 'Error Handling' || dataToExpand.title === 'Glossary' ||
-    dataToExpand.title === 'Historical Data Load' || dataToExpand.title === 'Version Control' ||
-    dataToExpand.title ==='Stakeholder Approvals'" class="h-full bg-white overflow-auto">
-        <div class="h-full">
-            <div class="flex flex-row col-12 justify-content-end">
-                <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
-            </div>
-            <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
-        </div>
+  </div>
+  <div
+    *ngIf="
+      dataToExpand.title === 'Error Handling' ||
+      dataToExpand.title === 'Glossary' ||
+      dataToExpand.title === 'Historical Data Load' ||
+      dataToExpand.title === 'Version Control' ||
+      dataToExpand.title === 'Stakeholder Approvals'
+    "
+    class="h-full bg-white overflow-auto"
+  >
+    <div class="h-full expand-spec">
+      <div class="flex flex-row col-12 justify-content-end">
+        <i
+          class="pi pi-times text-xl pointer"
+          (click)="closeFullScreenView.emit()"
+        ></i>
+      </div>
+      <xnode-common-spec-table
+        [content]="dataToExpand.content"
+      ></xnode-common-spec-table>
     </div>
-    <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="h-full surface-900">
-        <div class="flex flex-row col-12 justify-content-end">
-            <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
-        </div>
-        <xnode-common-usecases></xnode-common-usecases>
+  </div>
+  <div
+    *ngIf="
+      dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'
+    "
+    class="h-full surface-900"
+  >
+    <div class="flex flex-row col-12 justify-content-end">
+      <i
+        class="pi pi-times text-xl pointer text-white"
+        (click)="closeFullScreenView.emit()"
+      ></i>
     </div>
-    <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="surface-900 p-4">
-        <div class="flex flex-row justify-content-end pb-4">
-            <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
-        </div>
-        <div class="p-4 bg-white data-dictionary">
-            <xnode-data-dictionary *ngIf="dataToExpand.showTable; else elsejson"
-                [content]="dataToExpand.content"></xnode-data-dictionary>
-            <ng-template #elsejson>
-                <pre>{{ dataToExpand.content | json }}</pre>
-            </ng-template>
-        </div>
-
+    <xnode-common-usecases></xnode-common-usecases>
+  </div>
+  <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="surface-900 p-4">
+    <div class="flex flex-row justify-content-end pb-4">
+      <i
+        class="pi pi-times text-xl pointer text-white"
+        (click)="closeFullScreenView.emit()"
+      ></i>
     </div>
+    <div class="p-4 bg-white data-dictionary">
+      <xnode-data-dictionary
+        *ngIf="dataToExpand.showTable; else elsejson"
+        [content]="dataToExpand.content"
+      ></xnode-data-dictionary>
+      <ng-template #elsejson>
+        <pre>{{ dataToExpand.content | json }}</pre>
+      </ng-template>
+    </div>
+  </div>
 </div>
