@@ -1,15 +1,27 @@
-<p-dialog header="Generate Spec" [(visible)]="showSpecGenaretePopup" [style]="{width: '30vw'}"
-    [breakpoints]="{ '1450px': '35vw' }">
-    <div class="p-4 line-height-4">
-        {{content}}
+<p-dialog
+  header="Generate Spec"
+  [(visible)]="showSpecGenaretePopup"
+  [style]="{ width: '30vw' }"
+  [breakpoints]="{ '1450px': '35vw' }"
+>
+  <div class="p-4 line-height-4">
+    {{ content }}
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="mt-3">
+      <p-button
+        label="Cancel"
+        [rounded]="true"
+        class="cancel-button"
+        (click)="this.closePopup.emit()"
+      ></p-button>
+      <p-button
+        *ngIf="isTheCurrentUserOwner"
+        (click)="generate()"
+        label="Generate"
+        styleClass="generate-btn"
+        [rounded]="true"
+      ></p-button>
     </div>
-    <ng-template pTemplate="footer">
-        <div class="mt-3">
-            <p-button label="Cancel"  [rounded]="true" class="cancel-button"
-                (click)="this.closePopup.emit()"></p-button>
-            <p-button *ngIf="isTheCurrentUserOwner" (click)="generate()" label="Generate"
-                styleClass="generate-btn"  [rounded]="true"></p-button>
-        </div>
-
-    </ng-template>
+  </ng-template>
 </p-dialog>
