@@ -28,11 +28,11 @@
                     <div class="pl-2 text-sm ">Unlink CR</div>
                 </div>
                 <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
-                <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                <!-- <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
                     (keydown)="op.hide()">
                     <img src="../../../../assets//copy.png" class="confirm-overlay-icon" />
                     <div class="pl-2 text-sm ">Copy Link</div>
-                </div>
+                </div> -->
                 <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
                 <div [ngClass]="{'disabled': cmt.status !== 'NEW'}"
                     class="confirm-overlay p-1 cursor-pointer border-round-md  flex  align-items-center"
@@ -43,8 +43,8 @@
                         (change)="fileBrowseHandler($event,cmt)">
                 </div>
                 <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
-                <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
-                    (keydown)="op.hide()" (click)="deleteCurrentComment(cmt);op.hide();">
+                <div  [ngClass]="{'disabled': cmt.status !== 'ARCHIVE'}" class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
+                    (keydown)="op.hide()" (click)="archiveComment(cmt);op.hide();">
                     <img src="../../../../assets//delete.png" class="confirm-overlay-icon" />
                     <div class="pl-2 text-sm ">Archive</div>
                 </div>

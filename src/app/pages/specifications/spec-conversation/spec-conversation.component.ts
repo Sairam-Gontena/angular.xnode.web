@@ -12,6 +12,8 @@ import { MessagingService } from '../../../components/services/messaging.service
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-spec-conversation',
@@ -58,8 +60,10 @@ export class SpecConversationComponent {
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private storageService: LocalStorageService
   ) {
+    this.currentUser =this.storageService.getItem(StorageKeys.CurrentUser);
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'reply') {
         this.showCommentInput = false;
@@ -118,8 +122,8 @@ export class SpecConversationComponent {
       this.editComment(data.cmt);
     } else if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
-    } else if (data.action === 'DELETE') {
-      this.deleteCurrentComment(data.cmt);
+    } else if (data.action === 'ARCHIVE') {
+      this.archiveCurrentComment(data.cmt);
     } else {
       this.unLinkToCr(data.cmt);
     }
@@ -140,22 +144,25 @@ export class SpecConversationComponent {
     this.action = 'EDIT';
   }
 
-  deleteCurrentComment(comment: string): void {
+  archiveCurrentComment(comment: string): void {
     this.selectedComment = comment;
     this.showConfirmationPopup = true;
     this.confirmarionContent =
-      'Are you sure, Do you want to delete this Comment?';
-    this.confirmarionHeader = 'Delete Comment';
+      'Are you sure, Do you want to Archive this Comment?';
+    this.confirmarionHeader = 'Archive Comment';
   }
 
   toggleConfirmPopup(event: boolean) {
     this.showDeletePopup = event;
   }
 
-  deleteComment() {
+  archiveComment() {
     this.utils.loadSpinner(true);
+    let body = { ...this.selectedComment };
+    body.status = 'ARCHIVE';
+    body.createdBy = this.currentUser?.userId;
     this.commentsService
-      .deletComment(this.selectedComment.id)
+      .addComments(body)
       .then((res) => {
         if (res) {
           this.utils.loadToaster({
@@ -334,8 +341,8 @@ export class SpecConversationComponent {
   }
 
   checkAction(): void {
-    if (this.action === 'DELETE') {
-      this.deleteComment();
+    if (this.action === 'ARCHIVE') {
+      this.archiveComment();
     } else if (this.action === 'UNLINK_CR') {
       this.deleteCrEntity();
     }
