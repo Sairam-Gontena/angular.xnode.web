@@ -55,6 +55,7 @@ export class ParaViewComponent {
   }
 
   contentSelected(event: any) {
+    this.showCommentIcon = true;
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
