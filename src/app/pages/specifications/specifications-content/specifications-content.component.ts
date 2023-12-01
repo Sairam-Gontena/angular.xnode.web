@@ -139,8 +139,11 @@ export class SpecificationsContentComponent implements OnInit {
     this.selectedContent = event.content;
     this.showMoreContent = false;
     this.specItemList.forEach((obj: any) => {
+      console.log(obj.id, event.item.id, '============')
       if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
+          console.log(conObj.id, event.content.id, '============')
+
           if (conObj.id === event.content.id)
             conObj.collapsed = false;
         })
