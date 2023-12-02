@@ -22,7 +22,7 @@ export class ConversationActionsComponent {
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private specUtils: SpecUtilsService
-  ) {}
+  ) { }
   onClickReply(cmt: any): void {
     this.updateAction.emit({
       action: 'REPLY',
@@ -183,7 +183,7 @@ export class ConversationActionsComponent {
     let cmt = this.selectedComment;
     cmt.assignee = cmt.assignee.userId;
 
-    const concatenatedFiles = [this.uploadedFiles, cmt.attachments || []];
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
 
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
     cmt.deadline = '';

@@ -383,15 +383,15 @@ export class SpecConversationComponent {
       });
   }
   deleteFile(cmt: any) {
-    let index: any;
-    let latestFiles: any = [];
-    cmt?.attachments?.splice(index, 1).map((res: any) => {
-      latestFiles.push(res.fileId);
-    });
+    let latestFiles: any[] = [];
+    cmt?.attachments?.map((res: any, index: number) => {
+      if (index !== this.fileIndex) {
+        latestFiles.push(res.fileId)
+      }
+    })
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
-
   saveComment(cmt: any): void {
     this.commentsService
       .addComments(cmt)
