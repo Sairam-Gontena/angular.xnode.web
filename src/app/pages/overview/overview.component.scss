@@ -46,14 +46,16 @@
 }
 
 .stepper-card {
-    width: 566px;
+    // width: 566px;
+    width: auto;
     margin-left: 4rem;
     background-color: none;
     border: 1px solid #535353;
 }
 
 .stepper-content {
-    width: 26rem;
+    // width: 26rem;
+    width: auto;
     margin-left: 2rem;
 }
 
