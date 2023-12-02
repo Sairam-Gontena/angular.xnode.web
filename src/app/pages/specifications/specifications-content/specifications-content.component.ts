@@ -1,8 +1,17 @@
-import { Component, Input, ViewChild, OnInit, Output, EventEmitter, ElementRef, Renderer2 } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  OnInit,
+  Output,
+  EventEmitter,
+  ElementRef,
+  Renderer2,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { DataService } from '../../er-modeller/service/data.service';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -15,9 +24,8 @@ declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-specifications-content',
   templateUrl: './specifications-content.component.html',
-  styleUrls: ['./specifications-content.component.scss']
+  styleUrls: ['./specifications-content.component.scss'],
 })
-
 export class SpecificationsContentComponent implements OnInit {
   @Input() specData: any;
   @Input() keyword: any;
@@ -35,7 +43,7 @@ export class SpecificationsContentComponent implements OnInit {
   selectedContent: any;
   targetUrl: string = environment.naviAppUrl;
   dataModel: any;
-  dataToExpand: any
+  dataToExpand: any;
   specExpanded: boolean = false;
   checked: boolean = false;
   bodyData: any[] = [];
@@ -51,11 +59,13 @@ export class SpecificationsContentComponent implements OnInit {
   currentUser: any;
   usersList: any = null;
 
-  constructor(private utils: UtilsService,
+  constructor(
+    private utils: UtilsService,
     private dataService: DataService,
     private apiservice: ApiService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService) {
+    private specUtils: SpecUtilsService
+  ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -64,35 +74,44 @@ export class SpecificationsContentComponent implements OnInit {
       if (event) {
         this.specItemList = event;
       }
-    })
+    });
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       if (event) {
         this.selectedSpecItem = event;
         this.closeFullScreenView();
       }
-    })
+    });
     this.specUtils.openCommentsPanel.subscribe((event: any) => {
       this.isCommnetsPanelOpened = event;
-    })
+    });
   }
-
 
   ngOnInit(): void {
     this.utils.openDockedNavi.subscribe((data: any) => {
       if (data) {
         this.isCommnetsPanelOpened = false;
       }
-    })
-    this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product?.email + "&id=" + this.product?.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.currentUser.id;
+    });
+    this.targetUrl =
+      environment.designStudioAppUrl +
+      '?email=' +
+      this.product?.email +
+      '&id=' +
+      this.product?.id +
+      '&targetUrl=' +
+      environment.xnodeAppUrl +
+      '&has_insights=' +
+      true +
+      '&isVerified=true' +
+      '&userId=' +
+      this.currentUser.id;
     this.fetchOpenAPISpec();
   }
-
 
   ngOnChanges() {
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
   }
-
 
   checkedToggle(type: any, item: any, content: any) {
     this.specItemList.forEach((obj: any) => {
@@ -100,26 +119,38 @@ export class SpecificationsContentComponent implements OnInit {
         obj.content.forEach((conObj: any) => {
           if (conObj.id === content.id && type === 'table')
             conObj.showTable = true;
-          else
-            conObj.showTable = false;
-        })
+          else conObj.showTable = false;
+        });
       }
-    })
+    });
   }
 
   getUsersData() {
-    this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
-      this.utils.loadSpinner(true);
-      if (resp?.status === 200) {
-        this.usersList = resp.data;
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
-      }
-      this.utils.loadSpinner(false);
-    }).catch((error) => {
-      this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-      console.error(error);
-    })
+    this.apiservice
+      .getAuthApi(
+        'user/get_all_users?account_id=' + this.currentUser?.account_id
+      )
+      .then((resp: any) => {
+        this.utils.loadSpinner(true);
+        if (resp?.status === 200) {
+          this.usersList = resp.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: resp.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
+        console.error(error);
+      });
   }
 
   _onClickSeeMore(event: any): void {
@@ -128,11 +159,10 @@ export class SpecificationsContentComponent implements OnInit {
     this.specItemList.forEach((obj: any) => {
       if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === event.content.id)
-            conObj.collapsed = true;
-        })
+          if (conObj.id === event.content.id) conObj.collapsed = true;
+        });
       }
-    })
+    });
   }
 
   _onClickSeeLess(event: any): void {
@@ -141,18 +171,17 @@ export class SpecificationsContentComponent implements OnInit {
     this.specItemList.forEach((obj: any) => {
       if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === event.content.id)
-            conObj.collapsed = false;
-        })
+          if (conObj.id === event.content.id) conObj.collapsed = false;
+        });
       }
-    })
+    });
     setTimeout(() => {
       this.utils.saveSelectedSection(event.item);
-    }, 100)
+    }, 100);
   }
 
   async scrollToItem() {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -160,7 +189,9 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getMeBanner(event: any) {
-    return './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg';
+    return (
+      './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg'
+    );
   }
 
   toTitleCase(str: any): void {
@@ -174,7 +205,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   async fetchOpenAPISpec() {
     const record_id = localStorage.getItem('record_id');
-    let userData: any
+    let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     const ui = SwaggerUIBundle({
@@ -182,11 +213,18 @@ export class SpecificationsContentComponent implements OnInit {
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
-        SwaggerUIBundle.SwaggerUIStandalonePreset
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id,
+      url:
+        environment.uigenApiUrl +
+        'openapi-spec/' +
+        localStorage.getItem('app_name') +
+        '/' +
+        email +
+        '/' +
+        record_id,
       docExpansion: 'none',
-      operationsSorter: 'alpha'
+      operationsSorter: 'alpha',
     });
   }
 
@@ -220,5 +258,3 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 }
-
-

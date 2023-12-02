@@ -51,11 +51,11 @@ export class AddCrVersionComponent {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.latestVersion) {
-      this.versionForm.patchValue({ build: this.latestVersion.build + 1 });
-      this.versionForm.patchValue({ major: this.latestVersion.major });
-      this.versionForm.patchValue({ minor: this.latestVersion.minor });
-    }
+    // if (this.latestVersion) {
+    //   this.versionForm.patchValue({ build: this.latestVersion.build + 1 });
+    //   this.versionForm.patchValue({ major: this.latestVersion.major });
+    //   this.versionForm.patchValue({ minor: this.latestVersion.minor });
+    // }
   }
 
   closePopUp() {

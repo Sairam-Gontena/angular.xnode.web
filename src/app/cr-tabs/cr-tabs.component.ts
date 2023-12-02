@@ -5,6 +5,7 @@ import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from '../components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
+import { SpecUtilsService } from '../components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -33,11 +34,12 @@ export class CrTabsComponent {
     private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
-    private storageService: LocalStorageService
-  ) { }
+    private storageService: LocalStorageService,
+    private specUtils: SpecUtilsService
+  ) {}
 
   ngOnInit() {
-    this.product = this.storageService.getItem(StorageKeys.Product)
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.filters = [
       { title: 'Filters', code: 'F' },
       { title: 'All', code: 'A' },
@@ -59,7 +61,6 @@ export class CrTabsComponent {
           let data: any[] = res.data.map((item: any) => {
             return { ...item, checked: false };
           });
-          console.log(data);
           this.crData = data;
         } else {
           this.utilsService.loadToaster({
@@ -156,11 +157,11 @@ export class CrTabsComponent {
     }
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
-  };
+  }
 
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
-    const cr_ids = this.checkedCrList.map((item: any) => item.id)
+    const cr_ids = this.checkedCrList.map((item: any) => item.id);
     this.api
       .postApi({ product_id: this.product?.id, cr_id: cr_ids }, 'specs/update')
       .then((res: any) => {
@@ -169,7 +170,8 @@ export class CrTabsComponent {
             this.utilsService.loadToaster({
               severity: 'success',
               summary: 'SUCCESS',
-              detail: 'The spec has been updated to the new version successfully',
+              detail:
+                'The spec has been updated to the new version successfully',
             });
           } else {
             this.utilsService.loadToaster({
@@ -270,8 +272,8 @@ export class CrTabsComponent {
             body.status == 'REJECTED'
               ? 'Change request rejected successfully'
               : body.status == 'NEEDMOREWORK'
-                ? 'Change request updated successfully'
-                : '';
+              ? 'Change request updated successfully'
+              : '';
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
@@ -305,5 +307,9 @@ export class CrTabsComponent {
     this.updateSpecBtnTriggered = true;
     this.content = 'Are you sure, do you want to update spec?';
     this.header = 'Update Spec';
+  }
+
+  onClickViewChanges(data: any): void {
+    this.specUtils._getSpecBasedOnVersionID(data);
   }
 }
