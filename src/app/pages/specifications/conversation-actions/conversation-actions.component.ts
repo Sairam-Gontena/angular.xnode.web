@@ -148,16 +148,28 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
-
-    cmt.attachments = concatenatedFiles.map(file => file.fileId);
-
-    this.commentsService.addComments(cmt).then((commentsReponse: any) => {
-      if (commentsReponse.statusText === 'Created') {
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File Updated successfully' });
-        this.specUtils._tabToActive('COMMENT');
-        this.uploadedFiles = [];
-      } else {
+    const concatenatedFiles = [this.uploadedFiles, cmt.attachments || []];
+    cmt.attachments = concatenatedFiles.map((file) => file.fileId);
+    this.commentsService
+      .addComments(cmt)
+      .then((commentsReponse: any) => {
+        if (commentsReponse.statusText === 'Created') {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'File Updated successfully',
+          });
+          this.specUtils._tabToActive('COMMENT');
+          this.uploadedFiles = [];
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: commentsReponse?.data?.common?.status,
+          });
+        }
+      })
+      .catch((err) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
