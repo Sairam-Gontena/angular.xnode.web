@@ -176,6 +176,7 @@ export class SpecificationsContentComponent implements OnInit {
       }
     });
     setTimeout(() => {
+      this.scrollToItemOnSeeLess(event?.content?.id);
       this.utils.saveSelectedSection(event.item);
     }, 100);
   }
@@ -183,6 +184,13 @@ export class SpecificationsContentComponent implements OnInit {
   async scrollToItem() {
     await new Promise((resolve) => setTimeout(resolve, 500));
     const element = document.getElementById(this.selectedSpecItem.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+  async scrollToItemOnSeeLess(id: string) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
