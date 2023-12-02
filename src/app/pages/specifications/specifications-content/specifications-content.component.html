@@ -10,11 +10,11 @@
                     <div class="intro-grid" [id]="item.title">
                         <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
                         <div class="flex align-items-center spec-status">
-                            <p class="text-sm font-medium">Published on {{item?.content?.[0]?.created_on | date:
-                                'MMMd,'}}
+                            <p class="text-sm font-medium">Published on {{item?.createdOn | date:
+                                'MMMd,y'}}
                             </p>
                             <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">Updated on {{item?.content?.[0]?.modified_on | date:
+                            <p class="text-sm font-medium">Updated on {{item?.modifiedOn | date:
                                 'MMMd,y'}}
                             </p>
                             <i class="pi pi-circle-fill pl-3 pr-3"></i>

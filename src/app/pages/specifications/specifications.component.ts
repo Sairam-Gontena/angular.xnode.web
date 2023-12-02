@@ -10,6 +10,8 @@ import { SearchspecService } from 'src/app/api/searchspec.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { treemapSquarify } from 'd3';
 
 @Component({
   selector: 'xnode-specifications',
@@ -48,11 +50,19 @@ export class SpecificationsComponent implements OnInit {
     private router: Router,
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
+    private specUtils: SpecUtilsService,
     private localStorageService: LocalStorageService
   ) {
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.utils.isInSameSpecPage.subscribe((res) => {
       if (res) {
-        this.getMeSpecList();
+        this.getMeSpecList({ productId: this.product?.id, live: treemapSquarify });
+        this.utils.loadSpinner(true);
+      }
+    });
+    this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
+      if (res) {
+        this.getMeSpecList({ versionId: res.versionId });
         this.utils.loadSpinner(true);
       }
     });
@@ -84,7 +94,6 @@ export class SpecificationsComponent implements OnInit {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.getInsights();
   }
 
@@ -110,7 +119,7 @@ export class SpecificationsComponent implements OnInit {
             ? response?.data[0]
             : response?.data;
           this.useCases = data?.usecase || [];
-          this.getMeSpecList();
+          this.getMeSpecList({ productId: this.product?.id, live: true });
         } else {
           let user_audit_body = {
             method: 'GET',
@@ -189,10 +198,10 @@ export class SpecificationsComponent implements OnInit {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeSpecList(): void {
+  getMeSpecList(body: any): void {
     this.utils.loadSpinner(true);
     this.specService
-      .getSpec({ productId: localStorage.getItem('record_id'), live: true })
+      .getSpec(body)
       .then((response) => {
         if (
           response.status === 200 &&
