@@ -149,9 +149,7 @@ export class ConversationActionsComponent {
   saveComment(): void {
     let cmt = this.selectedComment;
     const concatenatedFiles = [this.uploadedFiles, cmt.attachments || []];
-
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
-
     this.commentsService
       .addComments(cmt)
       .then((commentsReponse: any) => {
@@ -170,7 +168,6 @@ export class ConversationActionsComponent {
             detail: commentsReponse?.data?.common?.status,
           });
         }
-        this.utils.loadSpinner(false);
       })
       .catch((err) => {
         this.utils.loadSpinner(false);
@@ -181,6 +178,7 @@ export class ConversationActionsComponent {
         });
       });
   }
+
   saveAsTask(): void {
     let cmt = this.selectedComment;
     cmt.assignee = cmt.assignee.userId;
@@ -200,6 +198,7 @@ export class ConversationActionsComponent {
           });
           this.specUtils._tabToActive('TASK');
           this.uploadedFiles = [];
+          this.utils.loadSpinner(false);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -207,7 +206,6 @@ export class ConversationActionsComponent {
             detail: commentsReponse?.data?.common?.status,
           });
         }
-        this.utils.loadSpinner(false);
       })
       .catch((err) => {
         this.utils.loadSpinner(false);
