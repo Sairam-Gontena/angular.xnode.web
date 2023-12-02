@@ -54,6 +54,7 @@ export class SpecConversationComponent {
   files: any[] = [];
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
+  fileIndex: any;
 
   constructor(
     private utils: UtilsService,
@@ -63,7 +64,7 @@ export class SpecConversationComponent {
     private messagingService: MessagingService,
     private storageService: LocalStorageService
   ) {
-    this.currentUser =this.storageService.getItem(StorageKeys.CurrentUser);
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'reply') {
         this.showCommentInput = false;
@@ -325,12 +326,14 @@ export class SpecConversationComponent {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-  deleteAttachment(cmt: any): void {
+  deleteAttachment(cmt: any, index: number): void {
+    this.fileIndex = index;
     this.showConfirmationPopup = true;
     this.selectedComment = cmt;
     this.confirmarionContent =
       'Are you sure, Do you want to delete this Attachment?';
     this.confirmarionHeader = 'Delete Attachment';
+    this.action = 'DELETE_ATTACHMENT';
   }
 
   onClickConfirmationAction(event: any): void {
@@ -343,6 +346,8 @@ export class SpecConversationComponent {
   checkAction(): void {
     if (this.action === 'ARCHIVE') {
       this.archiveComment();
+    } else if (this.action === 'DELETE_ATTACHMENT') {
+      this.deleteFile(this.selectedComment);
     } else if (this.action === 'UNLINK_CR') {
       this.deleteCrEntity();
     }
@@ -397,6 +402,8 @@ export class SpecConversationComponent {
             summary: 'SUCCESS',
             detail: 'File deleted successfully',
           });
+          this.fileIndex = null;
+          this.specUtils._tabToActive('COMMENT');
           // this.utils.saveCommentList(true);
         } else {
           this.utils.loadSpinner(false);

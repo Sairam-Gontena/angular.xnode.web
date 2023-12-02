@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
@@ -19,7 +20,8 @@ export class ConversationActionsComponent {
   constructor(
     public utils: UtilsService,
     private commentsService: CommentsService,
-    private commonApi: CommonApiService
+    private commonApi: CommonApiService,
+    private specUtils: SpecUtilsService
   ) {}
   onClickReply(cmt: any): void {
     this.updateAction.emit({
@@ -146,10 +148,7 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    const concatenatedFiles = [
-      ...this.uploadedFiles,
-      ...(cmt.attachments || []),
-    ];
+    const concatenatedFiles = [this.uploadedFiles, cmt.attachments || []];
 
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
 
@@ -162,10 +161,9 @@ export class ConversationActionsComponent {
             summary: 'SUCCESS',
             detail: 'File Updated successfully',
           });
+          this.specUtils._tabToActive('COMMENT');
           this.uploadedFiles = [];
-          // this.utils.saveCommentList(true);
         } else {
-          this.utils.loadSpinner(false);
           this.utils.loadToaster({
             severity: 'error',
             summary: 'ERROR',
@@ -187,13 +185,9 @@ export class ConversationActionsComponent {
     let cmt = this.selectedComment;
     cmt.assignee = cmt.assignee.userId;
 
-    const concatenatedFiles = [
-      ...this.uploadedFiles,
-      ...(cmt.attachments || []),
-    ];
+    const concatenatedFiles = [this.uploadedFiles, cmt.attachments || []];
 
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
-    // cmt.parentEntity = 'SPEC';
     cmt.deadline = '';
     this.commentsService
       .addTask(cmt)
@@ -204,9 +198,9 @@ export class ConversationActionsComponent {
             summary: 'SUCCESS',
             detail: 'File updated successfully',
           });
+          this.specUtils._tabToActive('TASK');
           this.uploadedFiles = [];
         } else {
-          this.utils.loadSpinner(false);
           this.utils.loadToaster({
             severity: 'error',
             summary: 'ERROR',

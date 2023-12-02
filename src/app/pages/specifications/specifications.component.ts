@@ -411,6 +411,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   onChangeProduct(obj: any): void {
+    this.showSpecGenaretePopup = false;
     this.specData = [];
     localStorage.setItem('record_id', obj?.id);
     localStorage.setItem('app_name', obj.title);
