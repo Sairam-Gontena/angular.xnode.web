@@ -89,7 +89,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     const entityId = item.user_id;
     const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
     if (!isDuplicate) {
-      this.references.push({ entity_type: "User", entity_id: entityId });
+      this.references.push({ entity_type: "User", entity_id: entityId, product_id: this.product?.id || null });
     }
     return `@${item.first_name} ${item.last_name},`;
   }
