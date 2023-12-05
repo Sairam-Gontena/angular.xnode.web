@@ -175,6 +175,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         const body = {
+          "createdBy": this.currentUser.user_id,
           "parentEntity": this.parentEntity,
           "parentId": this.parentId,
           "priority": '1',
@@ -232,6 +233,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     let body;
     if (this.action === 'EDIT') {
       body = {
+        "createdBy": this.currentUser.user_id,
         "id": this.selectedComment.id,
         "parentEntity": this.parentEntity,
         "parentId": this.selectedComment.parentId,
@@ -248,6 +250,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       }
     } else if (this.action !== 'EDIT') {
       body = {
+        "createdBy": this.currentUser.user_id,
         "parentEntity": this.parentEntity,
         "parentId": this.parentId,
         "priority": '1',
