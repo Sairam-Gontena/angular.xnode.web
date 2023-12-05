@@ -95,17 +95,21 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   setTemplateTypeInRefs(): string {
+    let productId = localStorage.getItem('record_id');
     if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
       this.references.forEach((obj: any) => {
-        obj.template_type = 'TASK'
+        obj.template_type = 'TASK';
+        obj.product_id = productId; 
       })
     } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
       this.references.forEach((obj: any) => {
-        obj.template_type = 'COMMENT'
+        obj.template_type = 'COMMENT';
+        obj.product_id = productId; 
       })
     } else {
       this.references.forEach((obj: any) => {
-        obj.template_type = this.parentEntity
+        obj.template_type = this.parentEntity;
+        obj.product_id = productId; 
       })
     }
     return this.references;

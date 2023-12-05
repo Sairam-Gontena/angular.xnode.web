@@ -71,7 +71,6 @@ export class UtilsService {
     false
   );
   public getMeSpecItem: Observable<Object> = this.specItem.asObservable();
-
   private sectionIndex: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSectionIndex: Observable<any> = this.sectionIndex.asObservable();
 
