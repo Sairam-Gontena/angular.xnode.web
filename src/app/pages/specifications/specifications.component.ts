@@ -60,16 +60,16 @@ export class SpecificationsComponent implements OnInit {
         this.utils.loadSpinner(true);
       }
     });
-    this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
-      if (res) {
-        this.getMeSpecList({ versionId: res.versionId });
-        this.utils.loadSpinner(true);
-      }
-    });
+    // this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
+    //   if (res) {
+    //     this.getMeSpecList({ versionId: res.versionId });
+    //     this.utils.loadSpinner(true);
+    //   }
+    // });
 
-    this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isSideMenuOpened = data;
-    });
+    // this.utils.openSpecSubMenu.subscribe((data: any) => {
+    //   this.isSideMenuOpened = data;
+    // });
 
     this.utils.openDockedNavi.subscribe((data: any) => {
       if (data) {
