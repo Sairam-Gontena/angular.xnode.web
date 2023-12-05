@@ -163,17 +163,20 @@ export class MyProductsComponent implements OnInit {
   openExternalLink(productUrl: string) {
     window.open(productUrl, '_blank');
   }
-
   importNavi() {
-    const restriction_max_value = localStorage.getItem('restriction_max_value');
-    const total_apps_onboarded = localStorage.getItem('total_apps_onboarded');
-    if (restriction_max_value && total_apps_onboarded && (JSON.parse(total_apps_onboarded) >= JSON.parse(restriction_max_value))) {
-      this.utils.showLimitReachedPopup(true);
-      return
+    const restrictionMaxValue = localStorage.getItem('restriction_max_value');
+    let totalApps = localStorage.getItem('meta_data');
+    if (totalApps) {
+      let data = JSON.parse(totalApps);
+      let filteredApps = data.filter((product: any) => product.email == this.currentUser.email)
+      if (restrictionMaxValue && filteredApps.length >= parseInt(restrictionMaxValue)) {
+        this.utils.showLimitReachedPopup(true);
+        localStorage.setItem('show-upload-panel', 'false');
+      }
+      this.router.navigate(['/x-pilot'])
+      localStorage.setItem('show-upload-panel', 'true');
+      this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
     }
-    this.router.navigate(['/x-pilot'])
-    localStorage.setItem('show-upload-panel', 'true');
-    this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
   }
 
   getMetaData() {
