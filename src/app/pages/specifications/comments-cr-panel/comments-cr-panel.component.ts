@@ -40,6 +40,10 @@ export class CommentsCrPanelComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    localStorage.removeItem('deep_link_info');
+  }
+
   onClickClose() {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);

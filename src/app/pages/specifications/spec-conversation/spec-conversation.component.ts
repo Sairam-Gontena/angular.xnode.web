@@ -14,6 +14,7 @@ import { SpecChildConversationComponent } from '../spec-child-conversation/spec-
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-spec-conversation',
@@ -62,7 +63,8 @@ export class SpecConversationComponent {
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
     private messagingService: MessagingService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private route: ActivatedRoute
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.utils.getMeLatestConversation.subscribe((event: any) => {
@@ -75,6 +77,12 @@ export class SpecConversationComponent {
 
   ngOnInit() {
     this.specListCopy = this.list;
+    let queryParams = this.route.snapshot.queryParams;
+    if (queryParams && queryParams?.['template_id']) {
+      setTimeout(() => {
+        this.scrollToItem(queryParams?.['template_id']);
+      }, 0);
+    }
   }
 
   receiveMsg(event: any) {
@@ -386,9 +394,9 @@ export class SpecConversationComponent {
     let latestFiles: any[] = [];
     cmt?.attachments?.map((res: any, index: number) => {
       if (index !== this.fileIndex) {
-        latestFiles.push(res.fileId)
+        latestFiles.push(res.fileId);
       }
-    })
+    });
     cmt.attachments = latestFiles;
     this.saveComment(cmt);
   }
@@ -423,5 +431,11 @@ export class SpecConversationComponent {
           detail: err,
         });
       });
+  }
+  scrollToItem(id: string) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

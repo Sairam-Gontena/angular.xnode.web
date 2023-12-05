@@ -1,24 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import {
+  Router,
+  NavigationStart,
+  NavigationEnd,
+  ActivatedRoute,
+} from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
-import { debounce } from "rxjs/operators";
-import { interval } from "rxjs";
+import { debounce } from 'rxjs/operators';
+import { interval } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
-
 export class AppComponent implements OnInit {
   title = 'xnode';
   isSideWindowOpen: boolean = false;
@@ -52,31 +56,36 @@ export class AppComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
-    private notifyApi: NotifyApiService) {
+    private notifyApi: NotifyApiService,
+    private route: ActivatedRoute
+  ) {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
 
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         if (event.navigationTrigger === 'popstate') {
-          this.showLimitReachedPopup = false
+          this.showLimitReachedPopup = false;
         }
-        if (event.url == "/x-pilot") {
-          let product = localStorage.getItem('product')
-          let user = localStorage.getItem('currentUser')
+        if (event.url == '/x-pilot') {
+          let product = localStorage.getItem('product');
+          let user = localStorage.getItem('currentUser');
           if (product && user) {
             let productObj = JSON.parse(product);
             let userObj = JSON.parse(user);
-            if (productObj?.has_insights == false && userObj?.email == productObj?.email) {
+            if (
+              productObj?.has_insights == false &&
+              userObj?.email == productObj?.email
+            ) {
               let data = {
-                'popup': true,
-                'data': {}
-              }
+                popup: true,
+                data: {},
+              };
               this.utilsService.toggleProductAlertPopup(data);
             }
           }
         }
-        if (event.url == "/my-products") {
+        if (event.url == '/my-products') {
           this.isSideWindowOpen = false;
         }
       }
@@ -91,6 +100,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe((params) => {
+      const productId = params.get('product_id');
+      const templateId = params.get('template_id');
+      const templateType = params.get('template_type');
+      let deepLinkInfo = {
+        product_id: productId,
+        template_id: templateId,
+        template_type: templateType,
+      };
+      this.navigateToConversation(deepLinkInfo);
+    });
+
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
@@ -104,7 +125,7 @@ export class AppComponent implements OnInit {
       this.handleBotIcon();
     } else {
       if (!window.location.hash.includes('#/reset-password?email')) {
-        this.router.navigate(['/'])
+        this.router.navigate(['/']);
         localStorage.clear();
       }
       this.utilsService.getMeToastObject.subscribe((event: any) => {
@@ -117,15 +138,64 @@ export class AppComponent implements OnInit {
       this.isSideWindowOpen = false;
       this.isNaviExpanded = false;
       this.utilsService.disableDockedNavi();
-    })
+    });
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = data.popup;
-    })
+    });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
-        this.makeTrustedUrl(data.email)
+        this.makeTrustedUrl(data.email);
       }
-    })
+    });
+  }
+
+  navigateToConversation(val: any) {
+    this.getAllProductsInfo('meta_data')
+      .then((result: any) => {
+        if (result) {
+          let products = JSON.parse(result);
+          let product = products.find((x: any) => x.id === val.product_id);
+          localStorage.setItem('product_email', product.email);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('product', JSON.stringify(product));
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          this.storeProductInfoForDeepLink('deep_link_info', val)
+            .then(() => {
+              this.router.navigate(['/specification']);
+            })
+            .catch((error) => {
+              console.error('Error storing data:', error);
+            });
+        } else {
+          console.log('not able to fetch product details');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data from localStorage:', error);
+      });
+  }
+
+  getAllProductsInfo(key: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = localStorage.getItem(key);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   botOnClick() {
@@ -147,29 +217,30 @@ export class AppComponent implements OnInit {
   }
 
   preparingData() {
-
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
     this.utilsService.getMeProductStatus.subscribe((event: any) => {
       this.showProductStatusPopup = event;
     });
-    this.utilsService.handleLimitReachedPopup.pipe(debounce(() => interval(1000))).subscribe((event: any) => {
-      this.showLimitReachedPopup = event;
-      if (event) {
-        let currentUser = localStorage.getItem('currentUser')
-        if (currentUser) {
-          this.currentUser = JSON.parse(currentUser);
+    this.utilsService.handleLimitReachedPopup
+      .pipe(debounce(() => interval(1000)))
+      .subscribe((event: any) => {
+        this.showLimitReachedPopup = event;
+        if (event) {
+          let currentUser = localStorage.getItem('currentUser');
+          if (currentUser) {
+            this.currentUser = JSON.parse(currentUser);
+          }
+          this.sendEmailNotificationToTheUser();
         }
-        this.sendEmailNotificationToTheUser();
-      }
-    });
+      });
   }
   handleBotIcon() {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         if (event.url === '/x-pilot') {
-          this.isBotIconVisible = false
+          this.isBotIconVisible = false;
         } else {
           this.isBotIconVisible = true;
         }
@@ -177,20 +248,31 @@ export class AppComponent implements OnInit {
     });
   }
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService.get("navi/total_apps_onboarded/" + user?.email)
+    this.apiService
+      .get('navi/total_apps_onboarded/' + user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
-          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
+          localStorage.setItem(
+            'total_apps_onboarded',
+            response.data.total_apps_onboarded
+          );
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: response.data?.detail,
+          });
         }
       })
       .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
         this.utilsService.loadSpinner(true);
       });
   }
-
 
   loadIframeUrl(): void {
     window.addEventListener('message', (event) => {
@@ -204,7 +286,7 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'close-docked-navi') {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
-        this.utilsService.disableDockedNavi()
+        this.utilsService.disableDockedNavi();
         this.refreshCurrentRoute();
       }
       if (event.data.message === 'expand-navi') {
@@ -216,22 +298,21 @@ export class AppComponent implements OnInit {
       if (event.data.message === 'triggerProductPopup') {
         this.content = event.data.data;
         let data = {
-          'popup': true,
-          'data': this.content
-        }
+          popup: true,
+          data: this.content,
+        };
         this.utilsService.toggleProductAlertPopup(data);
       }
       if (event.data.message === 'change-app') {
         this.utilsService.saveProductId(event.data.id);
-        localStorage.setItem('product_email', event.data.product_user_email)
+        localStorage.setItem('product_email', event.data.product_user_email);
         if (this.currentUser?.email == event.data.product_user_email) {
-          this.utilsService.hasProductPermission(true)
+          this.utilsService.hasProductPermission(true);
         } else {
-          this.utilsService.hasProductPermission(false)
+          this.utilsService.hasProductPermission(false);
         }
       }
     });
-
 
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     iframe.addEventListener('load', () => {
@@ -269,7 +350,7 @@ export class AppComponent implements OnInit {
   }
 
   closePopup() {
-    this.showProductStatusPopup = false
+    this.showProductStatusPopup = false;
   }
 
   getUserData() {
@@ -288,53 +369,67 @@ export class AppComponent implements OnInit {
       if (user) {
         id = JSON.parse(user).user_id;
       }
-      let rawUrl = environment.naviAppUrl + '?email=' + this.email +
-        '&productContext=' + localStorage.getItem('record_id') +
-        '&targetUrl=' + environment.xnodeAppUrl +
-        '&xnode_flag=' + 'XNODE-APP' + '&component=' + this.getMeComponent() + '&user_id=' + id + '&product_user_email=' + productEmail + '&device_width=' + this.screenWidth
+      let rawUrl =
+        environment.naviAppUrl +
+        '?email=' +
+        this.email +
+        '&productContext=' +
+        localStorage.getItem('record_id') +
+        '&targetUrl=' +
+        environment.xnodeAppUrl +
+        '&xnode_flag=' +
+        'XNODE-APP' +
+        '&component=' +
+        this.getMeComponent() +
+        '&user_id=' +
+        id +
+        '&product_user_email=' +
+        productEmail +
+        '&device_width=' +
+        this.screenWidth;
       if (has_insights) {
-        rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights)
+        rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights);
       }
       setTimeout(() => {
-        this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.iframeUrl =
+          this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
       }, 2000);
     } else {
-      alert("Invalid record id")
+      alert('Invalid record id');
       this.isSideWindowOpen = false;
     }
-
   }
 
   getMeComponent() {
     let comp = '';
     switch (this.router.url) {
       case '/dashboard':
-        comp = 'dashboard'
+        comp = 'dashboard';
         break;
       case '/overview':
-        comp = 'overview'
+        comp = 'overview';
         break;
       case '/usecases':
-        comp = 'usecase'
+        comp = 'usecase';
         break;
       case '/configuration/workflow/overview':
-        comp = 'xflows'
+        comp = 'xflows';
         break;
       case '/configuration/data-model/overview':
-        comp = 'data_model'
+        comp = 'data_model';
         break;
       case '/operate':
-        comp = 'operate'
+        comp = 'operate';
         break;
       case '/publish':
-        comp = 'publish'
+        comp = 'publish';
         break;
       case '/specification':
-        comp = 'specification'
+        comp = 'specification';
         break;
       case '/operate/change/history-log':
-        comp = 'history-log'
+        comp = 'history-log';
         break;
       default:
         break;
@@ -344,12 +439,16 @@ export class AppComponent implements OnInit {
 
   isUserExists() {
     const currentUser = localStorage.getItem('currentUser');
-    return currentUser
+    return currentUser;
   }
 
   openNavi(newItem: any) {
-    if (window.location.hash === "#/my-products" || window.location.hash === "#/help-center" || window.location.hash === "#/history-log") {
-      let currentUser = localStorage.getItem('currentUser')
+    if (
+      window.location.hash === '#/my-products' ||
+      window.location.hash === '#/help-center' ||
+      window.location.hash === '#/history-log'
+    ) {
+      let currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
         this.auditUtil.postAudit('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
       }
@@ -364,7 +463,9 @@ export class AppComponent implements OnInit {
 
   toggleSideWindow() {
     this.isSideWindowOpen = !this.isSideWindowOpen;
-    const chatbotContainer = document.getElementById('side-window') as HTMLElement;
+    const chatbotContainer = document.getElementById(
+      'side-window'
+    ) as HTMLElement;
     chatbotContainer.classList.remove('open');
     chatbotContainer.classList.add('chatbot-closing');
     setTimeout(() => {
@@ -375,7 +476,9 @@ export class AppComponent implements OnInit {
 
   submenuFunc() {
     if (this.isSideWindowOpen) {
-      const chatbotContainer = document.getElementById('side-window') as HTMLElement;
+      const chatbotContainer = document.getElementById(
+        'side-window'
+      ) as HTMLElement;
       chatbotContainer.style.display = 'block';
       chatbotContainer.classList.add('open');
     }
@@ -386,31 +489,52 @@ export class AppComponent implements OnInit {
   }
 
   showSideMenu() {
-    return window.location.hash === "#/configuration/data-model/overview" || window.location.hash === "#/usecases"
-      || window.location.hash === "#/specification" || window.location.hash === "#/overview" || window.location.hash === "#/dashboard" || window.location.hash === "#/operate" || window.location.hash === "#/publish" || window.location.hash === "#/activity" || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/admin/user-invitation" || window.location.hash === "#/admin/user-approval"
-      || window.location.hash === "#/configuration/workflow/overview" || window.location.hash === "#/logs" || window.location.hash === '#/operate/change/history-log';
+    return (
+      window.location.hash === '#/configuration/data-model/overview' ||
+      window.location.hash === '#/usecases' ||
+      window.location.hash === '#/specification' ||
+      window.location.hash === '#/overview' ||
+      window.location.hash === '#/dashboard' ||
+      window.location.hash === '#/operate' ||
+      window.location.hash === '#/publish' ||
+      window.location.hash === '#/activity' ||
+      window.location.hash === '#/configuration/workflow/overview' ||
+      window.location.hash === '#/admin/user-invitation' ||
+      window.location.hash === '#/admin/user-approval' ||
+      window.location.hash === '#/configuration/workflow/overview' ||
+      window.location.hash === '#/logs' ||
+      window.location.hash === '#/operate/change/history-log'
+    );
   }
 
   sendEmailNotificationToTheUser(): void {
     const body = {
-      "to": [
-        this.currentUser?.email
-      ],
-      "cc": [
-        "beta@xnode.ai"
-      ],
-      "bcc": [
-        "dev.xnode@salientminds.com"
-      ],
-      "emailTemplateCode": "CREATE_APP_LIMIT_EXCEEDED",
-      "params": { "username": this.currentUser?.first_name + " " + this.currentUser?.last_name }
-    }
-    this.notifyApi.post('email/notify', body).then((res: any) => {
-      if (res?.data?.detail) {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: res?.data?.detail });
-      }
-    }).catch((err: any) => {
-      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: err?.response?.data?.detail });
-    })
+      to: [this.currentUser?.email],
+      cc: ['beta@xnode.ai'],
+      bcc: ['dev.xnode@salientminds.com'],
+      emailTemplateCode: 'CREATE_APP_LIMIT_EXCEEDED',
+      params: {
+        username:
+          this.currentUser?.first_name + ' ' + this.currentUser?.last_name,
+      },
+    };
+    this.notifyApi
+      .post('email/notify', body)
+      .then((res: any) => {
+        if (res?.data?.detail) {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.detail,
+          });
+        }
+      })
+      .catch((err: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err?.response?.data?.detail,
+        });
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -12,13 +12,14 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { treemapSquarify } from 'd3';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-specifications',
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-export class SpecificationsComponent implements OnInit {
+export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
   specDataCopy?: any;
@@ -51,21 +52,39 @@ export class SpecificationsComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
     private specUtils: SpecUtilsService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private route: ActivatedRoute
   ) {
+    this.getDeepLinkInfo('deep_link_info')
+      .then((res: any) => {
+        let info = JSON.parse(res);
+        if(info){
+          this.getMeSpecList({ productId: info.product_id, live: true });
+        }
+        // localStorage.removeItem('deep_link_info');
+      })
+      .catch((err: any) => {
+        console.log('got error:', err);
+      });
     this.product = this.localStorageService.getItem(StorageKeys.Product);
-    this.utils.isInSameSpecPage.subscribe((res) => {
-      if (res) {
-        this.getMeSpecList({ productId: this.product?.id, live: treemapSquarify });
-        this.utils.loadSpinner(true);
-      }
-    });
-    this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
-      if (res) {
-        this.getMeSpecList({ versionId: res.versionId });
-        this.utils.loadSpinner(true);
-      }
-    });
+    if (this.product) {
+      this.getMeStorageData();
+    }
+    // this.utils.isInSameSpecPage.subscribe((res) => {
+    //   if (res) {
+    //     this.getMeSpecList({
+    //       productId: this.product?.id,
+    //       live: treemapSquarify,
+    //     });
+    //     this.utils.loadSpinner(true);
+    //   }
+    // });
+    // this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
+    //   if (res) {
+    //     this.getMeSpecList({ versionId: res.versionId });
+    //     this.utils.loadSpinner(true);
+    //   }
+    // });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
@@ -86,8 +105,54 @@ export class SpecificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        this.getDeepLinkDetails(params);
+      }
+    });
     this.utils.loadSpinner(true);
-    this.getMeStorageData();
+  }
+
+  getDeepLinkDetails(val: any) {
+    this.getAllProductsInfo('meta_data')
+      .then((result: any) => {
+        if (result) {
+          let products = JSON.parse(result);
+          let product = products.find((x: any) => x.id === val.product_id);
+          localStorage.setItem('product_email', product.email);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('product', JSON.stringify(product));
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+        } else {
+          console.log('not able to fetch product details');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data from localStorage:', error);
+      });
+  }
+
+  getAllProductsInfo(key: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = localStorage.getItem(key);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getDeepLinkInfo(key: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = localStorage.getItem(key);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   getMeStorageData(): void {

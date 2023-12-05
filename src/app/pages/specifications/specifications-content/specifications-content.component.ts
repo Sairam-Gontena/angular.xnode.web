@@ -19,6 +19,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { ActivatedRoute } from '@angular/router';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -64,7 +65,8 @@ export class SpecificationsContentComponent implements OnInit {
     private dataService: DataService,
     private apiservice: ApiService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private route: ActivatedRoute
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -108,9 +110,37 @@ export class SpecificationsContentComponent implements OnInit {
     this.fetchOpenAPISpec();
   }
 
+  getDeepLinkInfo(key: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = localStorage.getItem(key);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   ngOnChanges() {
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
+
+    let queryParams = this.route.snapshot.queryParams;
+    if (queryParams && queryParams?.['template_id']) {
+      this.specUtils._openCommentsPanel(true);
+      this.specUtils._tabToActive(queryParams?.['template_type']);
+    }
+    this.getDeepLinkInfo('deep_link_info')
+      .then((res: any) => {
+        let info = JSON.parse(res);
+        if (info) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive(info.template_type);
+        }
+      })
+      .catch((err: any) => {
+        console.log('got error:', err);
+      });
   }
 
   checkedToggle(type: any, item: any, content: any) {
