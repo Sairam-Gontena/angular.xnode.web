@@ -185,7 +185,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           "references": this.setTemplateTypeInRefs(),
           "followers": [],
           "feedback": {},
-          "status": "",
           "assignee": this.currentUser.user_id,
           "deadline": ""
         }
@@ -244,7 +243,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
-        "status": "",
         "assignee": this.selectedComment.assignee.userId,
         "deadline": ""
       }
@@ -260,7 +258,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
-        "status": "",
         "assignee": this.currentUser.user_id,
         "deadline": ""
       }
