@@ -31,6 +31,7 @@ export class ProductDropdownComponent implements OnInit {
   ngOnInit() {
     this.getMeDataFromStorage();
     this.myForm.valueChanges.subscribe((value: any) => {
+      console.log(value, '---------------')
       this._onChangeProduct.emit(value.selectedProduct);
       this.utilsService.saveProductDetails(value.selectedProduct);
     });

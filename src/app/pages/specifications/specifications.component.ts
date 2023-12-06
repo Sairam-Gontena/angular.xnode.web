@@ -101,6 +101,7 @@ export class SpecificationsComponent implements OnInit {
     this.apiService
       .get('navi/get_insights/' + this.product?.email + '/' + this.product?.id)
       .then((response: any) => {
+        console.log(response, '9999999999999')
         if (response?.status === 200) {
           let user_audit_body = {
             method: 'GET',
@@ -411,6 +412,7 @@ export class SpecificationsComponent implements OnInit {
   }
 
   onChangeProduct(obj: any): void {
+    console.log(obj, '=============')
     this.showSpecGenaretePopup = false;
     this.specData = [];
     localStorage.setItem('record_id', obj?.id);
