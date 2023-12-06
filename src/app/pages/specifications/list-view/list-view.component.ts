@@ -14,72 +14,72 @@ export class ListViewComponent {
   @Input() selectedContent!: string;
   @Input() users: any = [];
   @Input() id: any;
-  @Input() specId :any;
+  @Input() specId: any;
   @Input() specItem: any;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
-  selectedText:string='';
+  selectedText: string = '';
   commentOverlayPanelOpened: boolean = false;
-  @ViewChild('op')overlayPanel: OverlayPanel | any;
-  @ViewChild('selectionText')selectionText: OverlayPanel | any;
-  selectedWordIndices: number[]=[];
+  @ViewChild('op') overlayPanel: OverlayPanel | any;
+  @ViewChild('selectionText') selectionText: OverlayPanel | any;
+  selectedWordIndices: number[] = [];
 
-  constructor(private utils:UtilsService){
+  constructor(private utils: UtilsService) {
 
   }
 
-  ngOnInit():void{
-    this.utils.clearSelectedContent.subscribe((res:boolean)=>{
-      if(res){
+  ngOnInit(): void {
+    this.utils.clearSelectedContent.subscribe((res: boolean) => {
+      if (res) {
         this.emptySelectedContent();
       }
     })
   }
 
-  getWords(subitem: any){
+  getWords(subitem: any) {
     if (typeof subitem.content === 'string') {
       return subitem.content.split(' ');
-    } else if(typeof subitem === 'string'){
+    } else if (typeof subitem === 'string') {
       return subitem.split(' ');
-    }else if(typeof subitem.content === undefined){
-      if(typeof subitem === 'string'){
+    } else if (typeof subitem.content === undefined) {
+      if (typeof subitem === 'string') {
         return subitem.split(' ');
       }
-    }else if(typeof subitem === 'object'){
-      if(subitem.hasOwnProperty('content')){
+    } else if (typeof subitem === 'object') {
+      if (subitem.hasOwnProperty('content')) {
         return subitem.content
-      }else{
+      } else {
         return subitem
       }
-    }else {
+    } else {
       return [];
     }
   }
 
-  emptySelectedContent(){
-    this.selectedText='';
+  emptySelectedContent() {
+    this.selectedText = '';
     this.selectedWordIndices = [];
   }
 
-  contentSelected(event:any) {
+  contentSelected(event: any) {
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
-      return ;
+      return;
     }
-    if(selectedText && selectedText.length>0 ){
+    if (selectedText && selectedText.length > 0) {
       this.selectedText = selectedText.replace(/\n/g, ' ')
-     }else{
-      this.selectedText='';
-     }
-     this.handleSelectionText(event);
+    } else {
+      this.selectedText = '';
+    }
+    this.handleSelectionText(event);
   }
 
-  highlightSelectedText(){
+  highlightSelectedText() {
     const selection = window.getSelection();
     this.selectedWordIndices = [];
-    if(selection){
+    if (selection) {
       if (!selection.rangeCount) return;
       const range = selection.getRangeAt(0);
       const elements = range.cloneContents().querySelectorAll('span');
@@ -103,6 +103,10 @@ export class ListViewComponent {
   private getSelectedText() {
     const text = window.getSelection()?.toString();
     return text ? text.trim() : null;
+  }
+
+  saveSecInLocal() {
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
   }
 }
 

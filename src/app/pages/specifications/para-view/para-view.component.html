@@ -1,8 +1,9 @@
-<div class="grid m-0" (mouseover)="showCommentIcon = true;" >
+<div class="grid m-0" (mouseover)="showCommentIcon = true;">
     <div class="col-11 p-0 ">
         <p class="flex flex-wrap content text-base font-normal my-0" [id]="content.id">
-            <span *ngFor="let word of getWords(content); index as i" class="pr-1" (mouseup)="contentSelected($event);"
-                [attr.id]="'word' + i" [innerHTML]="word | highlight: searchTerm"
+            <span *ngFor="let word of getWords(content); index as i" class="pr-1"
+                (mouseup)="contentSelected($event);saveSecInLocal()" [attr.id]="'word' + i"
+                [innerHTML]="word | highlight: searchTerm"
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}">
                 <p-overlayPanel #selectionText *ngIf="showCommentIcon">
                     <xnode-add-comment-overlay-panel [users]="users" [selectedText]="selectedText"
@@ -21,7 +22,7 @@
                 [parentEntity]="'SPEC'" [parentId]="specItem.id"
                 [specItem]="specItem"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
-        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event);"
+        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event);saveSecInLocal()"
             (mouseleave)="showCommentIcon = false" *ngIf="showCommentIcon">
     </div>
 </div>
