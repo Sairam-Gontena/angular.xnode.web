@@ -51,7 +51,7 @@ export class CommentsPanelComponent implements OnInit {
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getCommentsByProductId({ productId: this.product.id, versionId: selectedSpec.versionId }).then((response: any) => {
+      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
         if (response.status === 200 && response.data) {
           this.list = response.data;
         }
