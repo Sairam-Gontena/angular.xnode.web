@@ -134,4 +134,7 @@ export class ParaViewComponent {
   //   }
   //   return this.references;
   // }
+  saveSecInLocal() {
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
 }

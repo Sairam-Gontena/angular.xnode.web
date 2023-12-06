@@ -8,7 +8,7 @@
             <span *ngFor="let word of subItem?.title?.split(' '); index as i" class="pr-1"
               [innerHTML]="word | highlight: searchTerm"
               [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}"
-              (mouseup)="contentSelected($event)">
+              (mouseup)="contentSelected($event);saveSecInLocal()">
               <p-overlayPanel #selectionText>
                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
                   [position]="'absolute'" [selectedContent]="subItem" [selectedText]="selectedText"
