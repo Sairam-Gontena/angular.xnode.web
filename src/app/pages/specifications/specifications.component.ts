@@ -70,8 +70,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
 
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
-      console.log('listner', data);
-
       if (data)
         this.getMeSpecList({ versionId: data.versionId, productId: data.productId, });
     });
