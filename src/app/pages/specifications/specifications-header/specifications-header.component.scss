@@ -33,6 +33,14 @@
     color: #ffffff;
 }
 
+.status {
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+
 
 :host ::ng-deep.ellipsis-btn .p-button,
 :host ::ng-deep.ellipsis-btn .p-button:hover {
