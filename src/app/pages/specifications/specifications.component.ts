@@ -69,6 +69,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.getMeStorageData();
     }
 
+    this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
+      console.log('listner', data);
+
+      if (data)
+        this.getMeSpecList({ versionId: data.versionId, productId: data.productId, });
+    });
+
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     });

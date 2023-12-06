@@ -36,7 +36,7 @@ export class CrTabsComponent {
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -272,8 +272,8 @@ export class CrTabsComponent {
             body.status == 'REJECTED'
               ? 'Change request rejected successfully'
               : body.status == 'NEEDMOREWORK'
-              ? 'Change request updated successfully'
-              : '';
+                ? 'Change request updated successfully'
+                : '';
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
