@@ -10,6 +10,7 @@ import { SpecService } from 'src/app/api/spec.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { ActivatedRoute } from '@angular/router';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -46,6 +47,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     private apiService: ApiService,
     private specService: SpecService,
+    private specUtils: SpecUtilsService,
     private router: Router,
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
@@ -104,7 +106,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     });
 
     let deep_link_info = localStorage.getItem('deep_link_info');
-    if(deep_link_info){
+    if (deep_link_info) {
       deep_link_info = JSON.parse(deep_link_info);
       this.getDeepLinkDetails(deep_link_info);
     }
@@ -121,7 +123,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getMetaData(userEmail: string, val: any) {
     this.apiService
-      .get('navi/get_metadata/' + userEmail +'?product_id='+ val.product_id)
+      .get('navi/get_metadata/' + userEmail + '?product_id=' + val.product_id)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0]
@@ -134,7 +136,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -355,6 +357,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   handleData(response: any): void {
     const list = response.data;
+    console.log('list', list);
+    this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
       if (obj?.title == 'Technical Specifications') {
         if (!Array.isArray(obj.content)) {
