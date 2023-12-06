@@ -100,19 +100,24 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
-      const productId = params.get('product_id');
-      const templateId = params.get('template_id');
-      const templateType = params.get('template_type');
+    this.route.queryParams.subscribe((params) => {
+      const productId = params['product_id'];
+      const templateId = params['template_id'];
+      const templateType = params['template_type'];
       let deepLinkInfo = {
         product_id: productId,
         template_id: templateId,
         template_type: templateType,
       };
-      this.navigateToConversation(deepLinkInfo);
+      if (
+        templateType &&
+        (templateType == 'COMMENT' || templateType == 'TASK')
+      ) {
+        this.navigateToConversation(deepLinkInfo);
+      }
     });
-
     const currentUser = localStorage.getItem('currentUser');
+
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
       this.getMeTotalOnboardedApps(JSON.parse(currentUser));
@@ -150,10 +155,20 @@ export class AppComponent implements OnInit {
   }
 
   navigateToConversation(val: any) {
-    this.getAllProductsInfo('meta_data')
-      .then((result: any) => {
-        if (result) {
-          let products = JSON.parse(result);
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      let user = JSON.parse(currentUser);
+      this.getMetaData(user?.email, val);
+    }
+  }
+
+  getMetaData(userEmail: string, val: any) {
+    this.apiService
+      .get('navi/get_metadata/' + userEmail)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
+          let products = response.data.data;
           let product = products.find((x: any) => x.id === val.product_id);
           localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
@@ -167,13 +182,9 @@ export class AppComponent implements OnInit {
             .catch((error) => {
               console.error('Error storing data:', error);
             });
-        } else {
-          console.log('not able to fetch product details');
         }
       })
-      .catch((error) => {
-        console.error('Error fetching data from localStorage:', error);
-      });
+      .catch((error) => {});
   }
 
   getAllProductsInfo(key: string) {
