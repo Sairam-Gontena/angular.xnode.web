@@ -95,17 +95,21 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   setTemplateTypeInRefs(): string {
+    let productId = localStorage.getItem('record_id');
     if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
       this.references.forEach((obj: any) => {
-        obj.template_type = 'TASK'
+        obj.template_type = 'TASK';
+        obj.product_id = productId; 
       })
     } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
       this.references.forEach((obj: any) => {
-        obj.template_type = 'COMMENT'
+        obj.template_type = 'COMMENT';
+        obj.product_id = productId; 
       })
     } else {
       this.references.forEach((obj: any) => {
-        obj.template_type = this.parentEntity
+        obj.template_type = this.parentEntity;
+        obj.product_id = productId; 
       })
     }
     return this.references;
@@ -171,6 +175,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         const body = {
+          "createdBy": this.currentUser.user_id,
           "parentEntity": this.parentEntity,
           "parentId": this.parentId,
           "priority": '1',
@@ -180,7 +185,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           "references": this.setTemplateTypeInRefs(),
           "followers": [],
           "feedback": {},
-          "status": "",
           "assignee": this.currentUser.user_id,
           "deadline": ""
         }
@@ -228,6 +232,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     let body;
     if (this.action === 'EDIT') {
       body = {
+        "createdBy": this.currentUser.user_id,
         "id": this.selectedComment.id,
         "parentEntity": this.parentEntity,
         "parentId": this.selectedComment.parentId,
@@ -238,12 +243,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
-        "status": "",
         "assignee": this.selectedComment.assignee.userId,
         "deadline": ""
       }
     } else if (this.action !== 'EDIT') {
       body = {
+        "createdBy": this.currentUser.user_id,
         "parentEntity": this.parentEntity,
         "parentId": this.parentId,
         "priority": '1',
@@ -253,7 +258,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "references": this.setTemplateTypeInRefs(),
         "followers": [],
         "feedback": {},
-        "status": "",
         "assignee": this.currentUser.user_id,
         "deadline": ""
       }

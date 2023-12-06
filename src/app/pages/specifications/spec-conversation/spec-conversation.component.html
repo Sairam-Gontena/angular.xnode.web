@@ -1,4 +1,4 @@
-<div class="w-full" *ngFor="let cmt of list;let i = index;let isLast = last">
+<div class="w-full" [id]="cmt.id" *ngFor="let cmt of list;let i = index;let isLast = last">
     <div class="grid m-0 p-2" [ngClass]="{'border-gray-800 border-bottom-1': !cmt.topParentId}">
         <div class="col-12 flex justify-content-between">
             <div class="flex align-items-center flex-wrap gap-2">
