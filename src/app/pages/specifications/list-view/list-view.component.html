@@ -13,7 +13,8 @@
                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
                   [position]="'absolute'" [selectedContent]="subItem" [selectedText]="selectedText"
                   [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
-                  [parentId]="specItem.id" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                  [specItem]="specItem" [parentId]="specItem.id"
+                  placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>
             </span><span *ngIf="subItem?.title || subItem?.content"> <br /></span>
           </span>
@@ -24,7 +25,7 @@
               <p-overlayPanel #selectionText>
                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
                   [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                  [selectedContent]="subItem" placeHolder="Add a Comment"
+                  [selectedContent]="subItem" placeHolder="Add a Comment" [specItem]="specItem"
                   (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>
             </span>
@@ -35,11 +36,11 @@
         <p-overlayPanel #op (onHide)="showCommentIcon=false" (onHide)="commentOverlayPanelOpened=false">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)"
             [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
-            [parentEntity]="'SPEC'" [commentType]="'comment'"
+            [parentEntity]="'SPEC'" [commentType]="'comment'" [specItem]="specItem"
             [parentId]="specItem.id"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <img src="../assets/comment.svg" class="pointer" alt="comment"
-          (click)="op.toggle($event);commentOverlayPanelOpened=true"
+          (click)="op.toggle($event);commentOverlayPanelOpened=true;saveSecInLocal()"
           *ngIf="(showCommentIcon || commentOverlayPanelOpened) && selectedIndex == i ">
       </div>
     </div>

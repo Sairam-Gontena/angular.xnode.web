@@ -1,17 +1,14 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from 'lodash';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-import { treemapSquarify } from 'd3';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -19,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
+
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
@@ -51,17 +49,15 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private router: Router,
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
-    private specUtils: SpecUtilsService,
     private localStorageService: LocalStorageService,
     private route: ActivatedRoute
   ) {
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
         let info = JSON.parse(res);
-        if(info){
+        if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
         }
-        // localStorage.removeItem('deep_link_info');
       })
       .catch((err: any) => {
         console.log('got error:', err);
@@ -70,21 +66,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     if (this.product) {
       this.getMeStorageData();
     }
-    // this.utils.isInSameSpecPage.subscribe((res) => {
-    //   if (res) {
-    //     this.getMeSpecList({
-    //       productId: this.product?.id,
-    //       live: treemapSquarify,
-    //     });
-    //     this.utils.loadSpinner(true);
-    //   }
-    // });
-    // this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
-    //   if (res) {
-    //     this.getMeSpecList({ versionId: res.versionId });
-    //     this.utils.loadSpinner(true);
-    //   }
-    // });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
