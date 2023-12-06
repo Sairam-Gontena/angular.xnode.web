@@ -18,8 +18,7 @@ export class SpecUtilsService {
   public getMeSpecVersion: Observable<string> = this.saveSpecVersion.asObservable();
 
   private getMeSpec: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  public getSpecBasedOnVersionID: Observable<any> =
-    this.activeTab.asObservable();
+  public getSpecBasedOnVersionID: Observable<any> = this.getMeSpec.asObservable();
 
   _openCommentsPanel(event: boolean): void {
     this.openPanel.next(event);
@@ -29,7 +28,7 @@ export class SpecUtilsService {
     this.activeTab.next(event);
   }
   _getSpecBasedOnVersionID(event: string): void {
-    this.activeTab.next(event);
+    this.getMeSpec.next(event);
   }
 
   _saveSpecVersion(event: any): void {
