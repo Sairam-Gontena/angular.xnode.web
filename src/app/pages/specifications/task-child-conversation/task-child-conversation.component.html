@@ -72,7 +72,7 @@
 <xnode-confirmation-popup *ngIf="showDeletePopup" [activeIndex]="activeIndex"
     (confirmationAction)="handleDeleteConfirmation($event)" [data]="'showDeletePopup'"
     (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>
-<xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"
+<xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"  [entityType]="'TASK'"
     (close)="showCrPopup = false"></xnode-link-to-cr>
 <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
     [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="
