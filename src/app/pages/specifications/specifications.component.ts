@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -58,10 +58,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
         let info = JSON.parse(res);
-        if(info){
+        if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
         }
-        // localStorage.removeItem('deep_link_info');
       })
       .catch((err: any) => {
         console.log('got error:', err);
@@ -106,11 +105,65 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      if (params) {
-        this.getDeepLinkDetails(params);
+      const productId = params['product_id'];
+      const templateId = params['template_id'];
+      const templateType = params['template_type'];
+      let deepLinkInfo = {
+        product_id: productId,
+        template_id: templateId,
+        template_type: templateType,
+      };
+      if (
+        templateType &&
+        (templateType == 'COMMENT' || templateType == 'TASK')
+      ) {
+        this.navigateToConversation(deepLinkInfo);
       }
     });
+
+    let deep_link_info = localStorage.getItem('deep_link_info');
+    if(deep_link_info){
+      deep_link_info = JSON.parse(deep_link_info);
+      this.getDeepLinkDetails(deep_link_info);
+    }
     this.utils.loadSpinner(true);
+  }
+
+  navigateToConversation(val: any) {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      let user = JSON.parse(currentUser);
+      this.getMetaData(user?.email, val);
+    }
+  }
+
+  getMetaData(userEmail: string, val: any) {
+    this.apiService
+      .get('navi/get_metadata/' + userEmail +'?product_id='+ val.product_id)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          let product = response.data.data[0]
+          localStorage.setItem('product_email', product.email);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('product', JSON.stringify(product));
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive(val.template_type);
+        }
+      })
+      .catch((error) => {});
+  }
+
+  storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   getDeepLinkDetails(val: any) {
@@ -124,6 +177,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive(val.template_type);
         } else {
           console.log('not able to fetch product details');
         }

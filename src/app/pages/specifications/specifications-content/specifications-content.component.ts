@@ -121,26 +121,14 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(){
+    this.specUtils._openCommentsPanel(false);
+    this.utils.EnableSpecSubMenu()
+  }
   ngOnChanges() {
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
 
-    let queryParams = this.route.snapshot.queryParams;
-    if (queryParams && queryParams?.['template_id']) {
-      this.specUtils._openCommentsPanel(true);
-      this.specUtils._tabToActive(queryParams?.['template_type']);
-    }
-    this.getDeepLinkInfo('deep_link_info')
-      .then((res: any) => {
-        let info = JSON.parse(res);
-        if (info) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(info.template_type);
-        }
-      })
-      .catch((err: any) => {
-        console.log('got error:', err);
-      });
   }
 
   checkedToggle(type: any, item: any, content: any) {
