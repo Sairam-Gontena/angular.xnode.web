@@ -1,15 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
 
 @Component({
   selector: 'xnode-specifications-header',
   templateUrl: './specifications-header.component.html',
   styleUrls: ['./specifications-header.component.scss']
 })
+
 export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
   @Output() changeProduct = new EventEmitter<any>();
@@ -28,6 +27,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   productDetails: any;
   userHasPermissionToEditProduct = true;
   showConfirmationPopup: boolean = false;
+  specVersion: any;
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -35,9 +35,14 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     })
+    this.specUtils.getMeSpecVersion.subscribe((data: any) => {
+      this.specVersion = data;
+    })
+
     let user = localStorage.getItem('currentUser');
     if (user) {
       this.currentUser = JSON.parse(user)

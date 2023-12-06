@@ -18,6 +18,10 @@ export class CommentsService extends BaseApiService {
     let url = 'comment';
     return this.get(url, params);
   }
+  getCommentsByProductId(params?: any) {
+    let url = 'comments-by-productId';
+    return this.get(url, params);
+  }
 
   getTasks(params?: any) {
     let url = 'task';
