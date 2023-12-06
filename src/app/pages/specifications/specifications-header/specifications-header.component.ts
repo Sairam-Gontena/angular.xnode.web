@@ -133,8 +133,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   onChangeProduct(data: any): void {
-    console.log(data)
-
     this.changeProduct.emit(data)
   }
 

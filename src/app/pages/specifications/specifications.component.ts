@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -58,7 +58,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
         let info = JSON.parse(res);
-        if(info){
+        if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
         }
         // localStorage.removeItem('deep_link_info');
@@ -166,7 +166,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.apiService
       .get('navi/get_insights/' + this.product?.email + '/' + this.product?.id)
       .then((response: any) => {
-        console.log(response, '9999999999999')
         if (response?.status === 200) {
           let user_audit_body = {
             method: 'GET',
@@ -185,7 +184,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             ? response?.data[0]
             : response?.data;
           this.useCases = data?.usecase || [];
-          this.getMeSpecList({ productId: this.product?.id, live: true });
+          this.getMeSpecList();
         } else {
           let user_audit_body = {
             method: 'GET',
@@ -264,7 +263,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeSpecList(body: any): void {
+  getMeSpecList(body?: any): void {
+    if (!body) {
+      body = { productId: localStorage.getItem('record_id'), live: true };
+    }
     this.utils.loadSpinner(true);
     this.specService
       .getSpec(body)
@@ -477,7 +479,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   onChangeProduct(obj: any): void {
-    console.log(obj, '=============')
     this.showSpecGenaretePopup = false;
     this.specData = [];
     localStorage.setItem('record_id', obj?.id);
