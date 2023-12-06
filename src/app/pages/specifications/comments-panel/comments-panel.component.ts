@@ -3,6 +3,8 @@ import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -18,9 +20,13 @@ export class CommentsPanelComponent implements OnInit {
   selectedFilter: object = { label: 'All Comments', value: 'all' };
   selectedComment: any;
   list: any = [];
+  product: any;
 
   constructor(private utils: UtilsService,
-    private specUtils: SpecUtilsService, private commentsService: CommentsService) {
+    private specUtils: SpecUtilsService,
+    private commentsService: CommentsService,
+    private storageService: LocalStorageService) {
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'COMMENT') {
         this.getMeCommentsList();
@@ -45,7 +51,7 @@ export class CommentsPanelComponent implements OnInit {
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
+      this.commentsService.getCommentsByProductId({ productId: this.product.id, versionId: selectedSpec.versionId }).then((response: any) => {
         if (response.status === 200 && response.data) {
           this.list = response.data;
         }
