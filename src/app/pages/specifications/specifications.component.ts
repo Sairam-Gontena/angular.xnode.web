@@ -239,7 +239,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             ? response?.data[0]
             : response?.data;
           this.useCases = data?.usecase || [];
-          this.getMeSpecList({ productId: this.product?.id, live: true });
+          this.getMeSpecList();
         } else {
           let user_audit_body = {
             method: 'GET',
@@ -318,7 +318,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeSpecList(body: any): void {
+  getMeSpecList(body?: any): void {
+    if (!body) {
+      body = { productId: localStorage.getItem('record_id'), live: true };
+    }
     this.utils.loadSpinner(true);
     this.specService
       .getSpec(body)
