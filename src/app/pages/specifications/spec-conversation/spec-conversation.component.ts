@@ -77,12 +77,6 @@ export class SpecConversationComponent {
 
   ngOnInit() {
     this.specListCopy = this.list;
-    let queryParams = this.route.snapshot.queryParams;
-    if (queryParams && queryParams?.['template_id']) {
-      setTimeout(() => {
-        this.scrollToItem(queryParams?.['template_id']);
-      }, 0);
-    }
   }
 
   receiveMsg(event: any) {

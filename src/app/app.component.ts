@@ -100,22 +100,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const productId = params['product_id'];
-      const templateId = params['template_id'];
-      const templateType = params['template_type'];
-      let deepLinkInfo = {
-        product_id: productId,
-        template_id: templateId,
-        template_type: templateType,
-      };
-      if (
-        templateType &&
-        (templateType == 'COMMENT' || templateType == 'TASK')
-      ) {
-        this.navigateToConversation(deepLinkInfo);
-      }
-    });
     const currentUser = localStorage.getItem('currentUser');
 
     if (currentUser) {
@@ -154,38 +138,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  navigateToConversation(val: any) {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      let user = JSON.parse(currentUser);
-      this.getMetaData(user?.email, val);
-    }
-  }
-
-  getMetaData(userEmail: string, val: any) {
-    this.apiService
-      .get('navi/get_metadata/' + userEmail)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
-          let products = response.data.data;
-          let product = products.find((x: any) => x.id === val.product_id);
-          localStorage.setItem('product_email', product.email);
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.storeProductInfoForDeepLink('deep_link_info', val)
-            .then(() => {
-              this.router.navigate(['/specification']);
-            })
-            .catch((error) => {
-              console.error('Error storing data:', error);
-            });
-        }
-      })
-      .catch((error) => {});
-  }
 
   getAllProductsInfo(key: string) {
     return new Promise((resolve, reject) => {
@@ -198,16 +150,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      try {
-        localStorage.setItem(key, JSON.stringify(data));
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
 
   botOnClick() {
     this.isNaviExpanded = false;
@@ -414,7 +356,7 @@ export class AppComponent implements OnInit {
 
   getMeComponent() {
     let comp = '';
-    switch (this.router.url) {
+    switch (this.router.url) { 
       case '/dashboard':
         comp = 'dashboard';
         break;
@@ -500,21 +442,23 @@ export class AppComponent implements OnInit {
   }
 
   showSideMenu() {
+    const hashWithoutParams = window.location.hash.split('?')[0];
+  
     return (
-      window.location.hash === '#/configuration/data-model/overview' ||
-      window.location.hash === '#/usecases' ||
-      window.location.hash === '#/specification' ||
-      window.location.hash === '#/overview' ||
-      window.location.hash === '#/dashboard' ||
-      window.location.hash === '#/operate' ||
-      window.location.hash === '#/publish' ||
-      window.location.hash === '#/activity' ||
-      window.location.hash === '#/configuration/workflow/overview' ||
-      window.location.hash === '#/admin/user-invitation' ||
-      window.location.hash === '#/admin/user-approval' ||
-      window.location.hash === '#/configuration/workflow/overview' ||
-      window.location.hash === '#/logs' ||
-      window.location.hash === '#/operate/change/history-log'
+      hashWithoutParams === '#/configuration/data-model/overview' ||
+      hashWithoutParams === '#/usecases' ||
+      hashWithoutParams === '#/specification' ||
+      hashWithoutParams === '#/overview' ||
+      hashWithoutParams === '#/dashboard' ||
+      hashWithoutParams === '#/operate' ||
+      hashWithoutParams === '#/publish' ||
+      hashWithoutParams === '#/activity' ||
+      hashWithoutParams === '#/configuration/workflow/overview' ||
+      hashWithoutParams === '#/admin/user-invitation' ||
+      hashWithoutParams === '#/admin/user-approval' ||
+      hashWithoutParams === '#/configuration/workflow/overview' ||
+      hashWithoutParams === '#/logs' ||
+      hashWithoutParams === '#/operate/change/history-log'
     );
   }
 

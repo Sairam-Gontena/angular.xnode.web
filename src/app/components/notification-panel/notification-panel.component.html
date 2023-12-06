@@ -166,14 +166,27 @@
             View Specification
           </div>
         </div>
-        <div class="flex mt-2" *ngIf="notification?.template_type ==='COMMENT' || notification?.template_type ==='TASK'">
-            <div
-              (click)="navigateToConversation(notification)"
-              class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-            >
-              view Comment
-            </div>
+        <div
+          class="flex mt-2"
+          *ngIf="
+            notification?.template_type === 'COMMENT' ||
+            notification?.template_type === 'TASK'
+          "
+        >
+          <div
+            (click)="navigateToConversation(notification)"
+            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
+          >
+            View
+            {{
+              notification?.template_type === "COMMENT"
+                ? "Comment"
+                : notification?.template_type === "TASK"
+                ? "Task"
+                : null
+            }}
           </div>
+        </div>
         <div
           class="flex mt-2"
           *ngIf="notification?.conversationID && notification.title"
