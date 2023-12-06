@@ -25,6 +25,7 @@ export class LinkToCrComponent implements OnInit {
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
+  @Input() entityType? = '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -155,7 +156,7 @@ export class LinkToCrComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     const body = {
       "crId": this.crForm.value.crToAdd.id,
-      "entityType": "COMMENT",
+      "entityType": this.entityType,
       "entityId": this.comment.id,
     }
     this.commentsService.linkCr(body).then((response: any) => {
