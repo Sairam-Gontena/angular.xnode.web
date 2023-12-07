@@ -129,7 +129,7 @@
             }" field="name" [multiple]="true" styleClass="w-full">
             <ng-template let-reviewer pTemplate="selectedItem">
               <div class="flex align-items-center">
-                <div class="autocomplete-label avtar-reviewer text-xs flex justify-content-center align-items-center">
+                <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
                   {{ reduceToInitials(reviewer.first_name) }}
                 </div>
                 <span class="ml-2">{{ reviewer.first_name }}</span>

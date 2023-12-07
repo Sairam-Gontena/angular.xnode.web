@@ -163,21 +163,13 @@
 }
 
 .avtar {
-    border-radius: 15px;
+    border-radius: 50%;
     background-color: #02ADEE;
+    color: white;
     font-size: 12px;
     display: flex;
-    padding: 3px;
-    align-items: center;
-    justify-content: center;
-}
-
-.avtar-reviewer {
-    border-radius: 8px;
-    background-color: #02ADEE;
-    font-size: 12px;
-    display: flex;
-    padding: 2px;
+    width: 24px;
+    height: 24px;
     align-items: center;
     justify-content: center;
 }
