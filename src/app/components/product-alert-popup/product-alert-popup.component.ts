@@ -29,6 +29,7 @@ export class ProductAlertPopupComponent implements OnInit {
   product: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
   showLimitReachedPopup: boolean = false;
+  productUuid: any;
 
   constructor(private apiService: ApiService, private utils: UtilsService, private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService) {
@@ -84,7 +85,7 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      if(this.contentdata?.conversation)
+      if (this.contentdata?.conversation)
         this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
   }
@@ -125,6 +126,7 @@ export class ProductAlertPopupComponent implements OnInit {
     this.apiService.get('navi/get_entire_data/' + this.currentUser?.email + '/' + this.product_id).then((res: any) => {
       if (res) {
         this.proTitle = res?.data?.conversation_details?.title;
+        this.productUuid = res?.data?.product_uuid;
         this.getMeTotalAppsPublishedCount();
         this.closePopup.emit(true);
         let user_audit_body = {
@@ -155,7 +157,8 @@ export class ProductAlertPopupComponent implements OnInit {
 
   publishProduct() {
     const body = {
-      repoName: this.proTitle,
+      // repoName: this.proTitle,
+      repoName: this.productUuid,
       projectName: environment.projectName,
       email: this.currentUser?.email,
       envName: environment.branchName,

@@ -32,6 +32,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   url: any;
   product: any;
   showLimitReachedPopup: boolean = false;
+  productUuid: any;
 
   constructor(private apiService: ApiService, private router: Router,
     private confirmationService: ConfirmationService,
@@ -209,7 +210,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       accept: () => {
         this.utilsService.loadSpinner(true)
         const body = {
-          repoName: localStorage.getItem('app_name'),
+          // repoName: localStorage.getItem('app-name'),
+          repoName: this.productUuid,
           projectName: environment.projectName,
           email: this.currentUser?.email,
           envName: environment.branchName,
@@ -269,6 +271,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       .then(response => {
         if (response?.status === 200 && response.data.data?.length) {
           this.templates = response.data.data;
+
           let user_audit_body = {
             'method': 'GET',
             'url': response?.request?.responseURL

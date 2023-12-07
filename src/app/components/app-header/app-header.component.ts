@@ -248,7 +248,8 @@ export class AppHeaderComponent implements OnInit {
   publishApp(obj: any): void {
     this.utilsService.loadSpinner(true)
     const body = {
-      repoName: obj.product_name,
+      // repoName: obj.product_name,
+      repoName: obj.product_uuid,
       projectName: environment.projectName,
       email: this.email,
       envName: environment.branchName,
