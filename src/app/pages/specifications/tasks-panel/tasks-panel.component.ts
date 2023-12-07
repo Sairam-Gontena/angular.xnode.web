@@ -19,8 +19,8 @@ export class TasksPanelComponent {
   @Input() activeIndex: any;
   userImage?: any = "DC";
   username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
-  selectedFilter: object = { label: 'All Comments', value: 'all' };
+  filterOptions: Array<DropdownOptions> = [{ label: 'All Tasks', value: 'all' }];
+  selectedFilter: object = { label: 'All Tasks', value: 'all' };
   commentObj: any = {
     comment: '',
     role: '',

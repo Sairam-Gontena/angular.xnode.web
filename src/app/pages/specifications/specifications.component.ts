@@ -4,20 +4,21 @@ import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from 'lodash';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { ActivatedRoute } from '@angular/router';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { treemapSquarify } from 'd3';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-specifications',
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
@@ -47,10 +48,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private utils: UtilsService,
     private apiService: ApiService,
     private specService: SpecService,
-    private specUtils: SpecUtilsService,
     private router: Router,
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
+    private specUtils: SpecUtilsService,
     private localStorageService: LocalStorageService,
     private route: ActivatedRoute
   ) {
@@ -60,6 +61,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
         }
+        // localStorage.removeItem('deep_link_info');
       })
       .catch((err: any) => {
         console.log('got error:', err);
@@ -68,11 +70,21 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     if (this.product) {
       this.getMeStorageData();
     }
-
-    this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
-      if (data)
-        this.getMeSpecList({ versionId: data.versionId, productId: data.productId, });
-    });
+    // this.utils.isInSameSpecPage.subscribe((res) => {
+    //   if (res) {
+    //     this.getMeSpecList({
+    //       productId: this.product?.id,
+    //       live: treemapSquarify,
+    //     });
+    //     this.utils.loadSpinner(true);
+    //   }
+    // });
+    // this.specUtils.getSpecBasedOnVersionID.subscribe((res) => {
+    //   if (res) {
+    //     this.getMeSpecList({ versionId: res.versionId });
+    //     this.utils.loadSpinner(true);
+    //   }
+    // });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
@@ -94,65 +106,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      const productId = params['product_id'];
-      const templateId = params['template_id'];
-      const templateType = params['template_type'];
-      let deepLinkInfo = {
-        product_id: productId,
-        template_id: templateId,
-        template_type: templateType,
-      };
-      if (
-        templateType &&
-        (templateType == 'COMMENT' || templateType == 'TASK')
-      ) {
-        this.navigateToConversation(deepLinkInfo);
+      if (params) {
+        this.getDeepLinkDetails(params);
       }
     });
-
-    let deep_link_info = localStorage.getItem('deep_link_info');
-    if (deep_link_info) {
-      deep_link_info = JSON.parse(deep_link_info);
-      this.getDeepLinkDetails(deep_link_info);
-    }
     this.utils.loadSpinner(true);
-  }
-
-  navigateToConversation(val: any) {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      let user = JSON.parse(currentUser);
-      this.getMetaData(user?.email, val);
-    }
-  }
-
-  getMetaData(userEmail: string, val: any) {
-    this.apiService
-      .get('navi/get_metadata/' + userEmail + '?product_id=' + val.product_id)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          let product = response.data.data[0]
-          localStorage.setItem('product_email', product.email);
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
-        }
-      })
-      .catch((error) => { });
-  }
-
-  storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      try {
-        localStorage.setItem(key, JSON.stringify(data));
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
   }
 
   getDeepLinkDetails(val: any) {
@@ -166,8 +124,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
         } else {
           console.log('not able to fetch product details');
         }
@@ -210,6 +166,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.apiService
       .get('navi/get_insights/' + this.product?.email + '/' + this.product?.id)
       .then((response: any) => {
+        console.log(response, '9999999999999')
         if (response?.status === 200) {
           let user_audit_body = {
             method: 'GET',
@@ -377,8 +334,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specDataCopy = list;
+    console.log(list, "00000000000000");
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
+    console.log(list, "00000000000000");
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
