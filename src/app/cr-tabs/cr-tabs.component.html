@@ -14,7 +14,8 @@
         <img src="../../assets/status.svg" class="submit-cr-window-icon" alt="status" />
         <img src="../../assets/calender.svg" class="submit-cr-window-icon" alt="calender" />
         <img src="../../assets/link-cr.svg" class="submit-cr-window-icon" alt="link" />
-        <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"></p-button>
+        <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
+          [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
     </div>
     <div class="flex align-items-center justify-content-between w-full pt-2 pl-4 pr-4">
@@ -129,9 +130,9 @@
                   *ngFor="let subData of crList[i]; let i = index">
                   <div class="flex flex-row justify-content-between align-items-center w-full">
                     <div class="w-full flex justify-content-between align-items-center">
-                        <p class="my-0 text-gray-200 text-sm font-normal">
-                          {{ subData?.comment?.referenceContent?.title }}
-                        </p>
+                      <p class="my-0 text-gray-200 text-sm font-normal">
+                        {{ subData?.comment?.referenceContent?.title }}
+                      </p>
                       <div class="flex align-items-center ">
                         <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
                         <span *ngFor="let reviewers of data?.reviewers">
