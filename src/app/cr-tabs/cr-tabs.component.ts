@@ -303,7 +303,8 @@ export class CrTabsComponent {
       });
   }
 
-  onCheckCheckbox(checked: any): void {
+  onCheckCheckbox(event: any): void {
+    event.stopPropagation();    
     this.checkedCrList = this.crData.filter((cr: any) => cr.checked);
   }
 
