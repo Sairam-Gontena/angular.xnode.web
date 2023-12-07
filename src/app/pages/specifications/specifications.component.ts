@@ -71,7 +71,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data)
-        this.getMeSpecList({ versionId: data.versionId, productId: data.productId, });
+        this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
     });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -359,7 +359,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.router.navigate([currentUrl]);
     });
   }
-
+  onSpecDataChange(data: { productId: any, id: any }): void {
+    this.getMeSpecList({ productId: data.productId, id: data.id });
+  }
   handleData(response: any): void {
     const list = response.data;
     console.log('list', list);

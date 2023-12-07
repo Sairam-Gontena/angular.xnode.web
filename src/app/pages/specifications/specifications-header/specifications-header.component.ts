@@ -13,6 +13,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
   @Output() changeProduct = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
+  @Output() specDataChange = new EventEmitter<{ productId: any, id: any }>();
+
   currentUser: any;
   templates: any;
   selectedTemplate: any;
@@ -161,7 +163,11 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   onVersionChange(event: any): void {
     let id = event.value.id;
-    console.log(this.productId, id, '00000000000000000')
+    console.log(this.productId, id, '00000000000000000');
+    this.emitSpecDataChange(this.productId, id);
+  }
+  emitSpecDataChange(productId: any, id: any): void {
+    this.specDataChange.emit({ productId, id });
   }
 
 }

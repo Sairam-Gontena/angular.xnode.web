@@ -3,7 +3,7 @@
         [specData]="specData"></xnode-specifications-menu>
     <div class="w-full">
         <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-            (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+            (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
         <xnode-specifications-content [noResults]="noResults" [specData]="specData" [useCases]="useCases"
             [keyword]="keyword">
         </xnode-specifications-content>
