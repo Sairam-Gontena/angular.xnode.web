@@ -18,7 +18,6 @@ export class CrTabsComponent {
   filters: any;
   currentUser: any;
   crData: any;
-  subCRData: any;
   showComment: boolean = false;
   header: string = '';
   content: string = '';
@@ -30,6 +29,7 @@ export class CrTabsComponent {
   checkedCrList: any = [];
   updateSpecBtnTriggered: boolean = false;
   product: any;
+  crList:any=[];
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -62,6 +62,7 @@ export class CrTabsComponent {
             return { ...item, checked: false };
           });
           this.crData = data;
+          this.crList = Array.from({ length: this.crData.length }, () => []);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -82,13 +83,17 @@ export class CrTabsComponent {
       });
   }
 
-  getCRDetails(crId: any) {
+  onAccordionOpen(obj:any,index:number):void {
+    this.getCRDetails(obj?.id,index);
+  }
+
+  getCRDetails(crId: any,index:number):void {
     this.utilsService.loadSpinner(true);
     this.api
       .getComments('cr-entity-mapping?crId=' + crId)
       .then((res: any) => {
         if (res) {
-          this.subCRData = res.data;
+          this.crList[index] = res.data;
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -130,7 +135,6 @@ export class CrTabsComponent {
 
   updateSelectedCr(obj: any) {
     this.selectedCr = obj;
-    this.getCRDetails(obj?.id);
   }
 
   updateChagneRequestStatus(value: string) {
