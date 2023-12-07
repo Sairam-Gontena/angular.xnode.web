@@ -12,6 +12,8 @@ export class SpecUtilsService {
 
   private activeTab: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public tabToActive: Observable<string> = this.activeTab.asObservable();
+  private commentsCrActiveTab: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeCommentsCrActiveTab: Observable<boolean> = this.commentsCrActiveTab.asObservable();
 
 
   private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>('');
@@ -26,6 +28,9 @@ export class SpecUtilsService {
 
   _tabToActive(event: string): void {
     this.activeTab.next(event);
+  }
+  _commentsCrActiveTab(event: boolean): void {
+    this.commentsCrActiveTab.next(event);
   }
   _getSpecBasedOnVersionID(event: string): void {
     this.getMeSpec.next(event);

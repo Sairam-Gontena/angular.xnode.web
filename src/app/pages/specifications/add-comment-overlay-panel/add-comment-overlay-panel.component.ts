@@ -227,6 +227,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     this.comment = '';
     this.closeOverlay.emit();
+    this.specUtils._commentsCrActiveTab(false);
     this.specUtils._tabToActive('COMMENT');
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
@@ -278,6 +279,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.specUtils._openCommentsPanel(true);
         this.comment = '';
         this.closeOverlay.emit();
+        this.specUtils._commentsCrActiveTab(false);
         this.specUtils._tabToActive('TASK');
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
         this.uploadedFiles = [];
