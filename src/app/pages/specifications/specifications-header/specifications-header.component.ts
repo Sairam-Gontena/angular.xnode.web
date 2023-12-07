@@ -28,6 +28,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   userHasPermissionToEditProduct = true;
   showConfirmationPopup: boolean = false;
   specVersion: any;
+  version: any;
+  versionSelected: any;
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -35,6 +37,11 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.version = [
+      { name: 'ver 1', id: 'v1' },
+      { name: 'ver 2', id: 'v2' },
+      { name: 'ver 3', id: 'v3' },
+    ];
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
@@ -152,4 +159,9 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.showConfirmationPopup = false;
     }
   }
+  onVersionChange(event: any): void {
+    let id = event.value.id;
+    console.log(this.productId, id, '00000000000000000')
+  }
+
 }
