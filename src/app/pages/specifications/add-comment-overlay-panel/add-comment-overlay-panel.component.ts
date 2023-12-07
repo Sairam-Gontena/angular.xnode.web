@@ -99,17 +99,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
       this.references.forEach((obj: any) => {
         obj.template_type = 'TASK';
-        obj.product_id = productId; 
+        obj.product_id = productId;
       })
     } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
       this.references.forEach((obj: any) => {
         obj.template_type = 'COMMENT';
-        obj.product_id = productId; 
+        obj.product_id = productId;
       })
     } else {
       this.references.forEach((obj: any) => {
         obj.template_type = this.parentEntity;
-        obj.product_id = productId; 
+        obj.product_id = productId;
       })
     }
     return this.references;
@@ -199,6 +199,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
+    console.log('selectedContent', this.selectedContent);
+
+    // return
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.prepareDataToDisplayOnCommentsPanel();

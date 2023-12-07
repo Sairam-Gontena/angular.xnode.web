@@ -88,8 +88,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
 
   constructor(
     private domSanitizer: DomSanitizer,
-    private utilsService: UtilsService,private specUtils: SpecUtilsService
-  ) {}
+    private utilsService: UtilsService, private specUtils: SpecUtilsService
+  ) { }
 
   ngOnInit(): void {
     const currentUser = localStorage.getItem('currentUser');
@@ -164,5 +164,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
   }
   isArray(item: any) {
     return Array.isArray(item);
+  }
+
+  saveSecInLocal() {
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
   }
 }
