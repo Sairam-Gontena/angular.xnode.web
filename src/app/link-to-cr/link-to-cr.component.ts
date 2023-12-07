@@ -25,7 +25,7 @@ export class LinkToCrComponent implements OnInit {
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
-  @Input() entityType? = '';
+  @Input() entityType?= '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -103,6 +103,7 @@ export class LinkToCrComponent implements OnInit {
       "status": 'DRAFT'
     }
     this.commentsService.getChangeRequestList(body).then((response: any) => {
+      console.log(response, '000000000');
       if (response.status == 200 && response.data) {
         response.data.forEach((element: any) => {
           element.label = element.crId;

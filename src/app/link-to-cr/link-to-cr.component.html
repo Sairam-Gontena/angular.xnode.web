@@ -25,19 +25,23 @@
           system
         </p>
       </div>
-      <div class="col-4">
-        <label for="priority">Priority</label>
-        <p-dropdown formControlName="priority" [options]="priorityList" optionLabel="label"></p-dropdown>
-      </div>
-      <div class="col-4">
-        <label>To Version</label>
-        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true"
-          optionLabel="label"></p-dropdown>
-      </div>
-      <div class="col-4">
-        <label>Due Date</label>
-        <p-calendar formControlName="duedate" [showClear]="true" [showIcon]="true" placeholder="DD/MM/YYYY"
-          styleClass="due-date"></p-calendar>
+      <div class="col-12 flex flex-wrap">
+        <div class="col-4">
+          <label for="priority">Priority: </label>
+          <div>
+            {{ crForm.get('priority')?.value?.label }}
+          </div>
+        </div>
+        <div class="col-4">
+          <label>To Version: </label>
+          <div> {{ crForm.get('version')?.value?.label }}</div>
+        </div>
+        <div class="col-4">
+          <label>Due Date: </label>
+          <div>
+            {{ crForm.get('duedate')?.value | date: 'shortDate' }}
+          </div>
+        </div>
       </div>
       <div class="col-12 pb-0" *ngIf="reviewerList?.length">
         <div class="flex justify-content-between flex-wrap">
