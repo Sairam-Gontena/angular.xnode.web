@@ -6,8 +6,8 @@
             <div class="col-6">
                 <div class="flex align-items-center filter-grid ">
                     <p class="m-0 pl-2">Filters:</p>
-                    <p-dropdown [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
-                        optionLabel="label"></p-dropdown>
+                    <p-dropdown class="filter w-full ml-2 " [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
+                        optionLabel="label" (onChange)="filterList(list)" ></p-dropdown>
                 </div>
             </div>
             <div class="col-6">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class='comments-grid'>
-            <xnode-spec-conversation [activeIndex]="activeIndex" [list]="list" [usersList]="usersList"
+            <xnode-spec-conversation [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList"
                 [topParentId]="selectedComment?.id"></xnode-spec-conversation>
         </div>
     </div>
