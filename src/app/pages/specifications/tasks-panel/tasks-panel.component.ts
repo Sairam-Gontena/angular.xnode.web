@@ -19,8 +19,8 @@ export class TasksPanelComponent {
   @Input() activeIndex: any;
   userImage?: any = "DC";
   username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
-  selectedFilter: object = { label: 'All Comments', value: 'all' };
+  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
+  selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   commentObj: any = {
     comment: '',
     role: '',
@@ -36,6 +36,7 @@ export class TasksPanelComponent {
   enableDeletePrompt: boolean = false;
   action?: string;
   list: any = [];
+  filteredList:any=[]
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
@@ -66,11 +67,10 @@ export class TasksPanelComponent {
 
   getMeTasksList() {
     this.utils.loadSpinner(true);
-    console.log('this.specData', this.specData);
-
     this.commentsService.getTasks({ parentId: this.specData?.id }).then((response: any) => {
       if (response && response.data?.common?.status !== 'fail') {
         this.list = response.data;
+        this.filterList(response.data);
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data?.common?.status });
       }
@@ -80,6 +80,23 @@ export class TasksPanelComponent {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
     });
+  }
+
+  filterList(data: any): void {
+    switch (this.selectedFilter.value) {
+      case 'LINKED':
+        this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        break;
+      case 'NEW':
+        this.filteredList = data.filter((item: any) => item.status === 'NEW');
+        break;
+      case 'CLOSED':
+        this.filteredList = data.filter((item: any) => item.status === 'CLOSED');
+        break;
+      default:
+        this.filteredList = data;
+        break;
+    }
   }
 
   onClickReply(cmt: any): void {
