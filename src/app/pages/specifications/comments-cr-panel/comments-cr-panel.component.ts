@@ -73,6 +73,13 @@ export class CommentsCrPanelComponent implements OnInit {
 
   switchHeaders(event: any) {
     this.activeIndex = event.index
+    if(event.index == 0){
+      let specData = localStorage.getItem('SPEC_DATA');
+      if(specData){
+        let data = JSON.parse(specData);
+        localStorage.setItem('selectedSpec', JSON.stringify(data[0]));
+      }
+    }
     const tabs = this.tabView.tabs;
     const header = tabs[event.index].header;
     if (header == 'Change Request') {
