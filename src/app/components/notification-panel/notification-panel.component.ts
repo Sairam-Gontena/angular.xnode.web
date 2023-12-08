@@ -155,9 +155,15 @@ export class NotificationPanelComponent {
       });
   }
   gotoSpec(obj: any) {
-    localStorage.setItem('spec_record_id', obj.product_id);
-    localStorage.setItem('record_id', obj.product_id);
-    localStorage.setItem('app_name', obj?.product_name);
+let specData = localStorage.getItem('meta_data')
+if(specData){
+  let products = JSON.parse(specData);
+    let product = products.find((x: any) => x.id === obj.product_id);
+    localStorage.setItem('product_email', product.email);
+    localStorage.setItem('record_id', product.id);
+    localStorage.setItem('product', JSON.stringify(product));
+    localStorage.setItem('app_name', product.title);
+    localStorage.setItem('has_insights', product.has_insights);
     if (obj.component && obj.component !== '') {
       this.utils.toggleSpecPage(true);
       this.router.navigate(['/specification']);
@@ -167,6 +173,7 @@ export class NotificationPanelComponent {
       this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
     this.closeNotificationPanel.emit(true);
+}
   }
 
   getMeLabel(obj: any) {
