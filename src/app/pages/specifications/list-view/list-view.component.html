@@ -35,9 +35,8 @@
       <div class="col-1 p-0 flex  align-items-start justify-content-center">
         <p-overlayPanel #op (onHide)="showCommentIcon=false" (onHide)="commentOverlayPanelOpened=false">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)"
-            [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
-            [parentEntity]="'SPEC'" [commentType]="'comment'" [specItem]="specItem"
-            [parentId]="specItem.id"></xnode-add-comment-overlay-panel>
+            [position]="'absolute'" [selectedContent]="subItem" placeHolder="Add a Comment" [parentEntity]="'SPEC'"
+            [commentType]="'comment'" [specItem]="specItem" [parentId]="specItem.id"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <img src="../assets/comment.svg" class="pointer" alt="comment"
           (click)="op.toggle($event);commentOverlayPanelOpened=true;saveSecInLocal()"

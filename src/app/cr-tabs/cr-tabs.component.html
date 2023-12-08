@@ -44,8 +44,9 @@
     </div>
     <div>
       <div class="w-full pl-4 pr-4">
-        <p-accordion class="cr-tabs" [multiple]="true"  *ngFor="let data of crData;let i = index" (onOpen)="onAccordionOpen(data,i)" >
-          <p-accordionTab class="border-bottom-1 accordian mt-4" >
+        <p-accordion class="cr-tabs" [multiple]="true" *ngFor="let data of crData;let i = index"
+          (onOpen)="onAccordionOpen(data,i)">
+          <p-accordionTab class="border-bottom-1 accordian mt-4">
             <ng-template pTemplate="header">
               <div class="w-full">
                 <div class="grid col-12 flex-column">
@@ -145,23 +146,31 @@
                           (click)="op.toggle($event); $event.stopPropagation()"></i>
                       </div>
                     </div>
-                    <!-- dont delete need to continue after api values updation
-                <div  class="flex flex-row justify-content-between w-6 align-items-center">
-                    <span class="my-0 text-content text-sm font-normal">#TS0041</span>
-                    <p-avatar [label]="getMeUserAvatar(reviewers)" *ngFor="let reviewers of data?.reviewers" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                    <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
-                  </div> -->
                   </div>
                   <div class="py-2 border-bottom-1 pr-4">
                     <div class="flex flex-row justify-content-between">
-                      <div class="">
-                        <div class="relative">
+                      <div class="sctions-grid">
+                        <!-- <div class="relative">
                           <i class="pi pi-plus text-sm border-1 border-200 border-round-sm mx-2"
                             [ngStyle]="{ 'background-color': '#EFEEEE' }"></i>
+                        </div> -->
+                        <div *ngIf="checktableJsonSection(subData?.comment  .referenceContent?.title); else normalView">
+                          <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p> -->
+                          <pre *ngIf="!subData?.comment.referenceContent?.showTable"
+                            [innerHTML]="subData?.comment.referenceContent?.content | json"
+                            style=" white-space: pre-wrap; overflow: auto"></pre>
+                          <xnode-common-spec-table *ngIf="subData?.comment.referenceContent?.showTable"
+                            [specItem]="subData?.comment.referenceContent?.content.content"
+                            [content]="subData?.comment.referenceContent?.content"></xnode-common-spec-table>
                         </div>
-                        <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
-                          {{ subData?.comment?.referenceContent?.content }}
-                        </p>
+                        <ng-template #normalView>
+                          <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
+                          <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
+                            {{ subData?.comment?.referenceContent?.content }}
+                          </p>
+                        </ng-template>
+                        <div class="gradientback">
+                        </div>
                       </div>
                     </div>
                     <span class="text-xs my-2 text-gray-200 flex align-items-center">

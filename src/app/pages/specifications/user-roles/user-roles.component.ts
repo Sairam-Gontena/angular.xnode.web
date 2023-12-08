@@ -19,7 +19,7 @@ export class UserRolesComponent implements OnInit {
   commentOverlayPanelOpened: boolean = false;
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
-
+  selectedIndex: any;
 
   constructor() { }
 
@@ -73,12 +73,15 @@ export class UserRolesComponent implements OnInit {
     return Array.isArray(item);
   }
 
-  isString(item: any){
-    if(typeof(item)=='string'){
+  isString(item: any) {
+    if (typeof (item) == 'string') {
       return true;
-    }else{
+    } else {
       return false
     }
+  }
+  saveSecInLocal() {
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
   }
 
 }

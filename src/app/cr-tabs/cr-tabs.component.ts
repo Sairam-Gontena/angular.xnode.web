@@ -29,7 +29,7 @@ export class CrTabsComponent {
   checkedCrList: any = [];
   updateSpecBtnTriggered: boolean = false;
   product: any;
-  crList:any=[];
+  crList: any = [];
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -83,11 +83,11 @@ export class CrTabsComponent {
       });
   }
 
-  onAccordionOpen(obj:any,index:number):void {
-    this.getCRDetails(obj?.id,index);
+  onAccordionOpen(obj: any, index: number): void {
+    this.getCRDetails(obj?.id, index);
   }
 
-  getCRDetails(crId: any,index:number):void {
+  getCRDetails(crId: any, index: number): void {
     this.utilsService.loadSpinner(true);
     this.api
       .getComments('cr-entity-mapping?crId=' + crId)
@@ -304,7 +304,7 @@ export class CrTabsComponent {
   }
 
   onCheckCheckbox(event: any): void {
-    event.stopPropagation();    
+    // event.stopPropagation();    
     this.checkedCrList = this.crData.filter((cr: any) => cr.checked);
   }
 
@@ -316,5 +316,9 @@ export class CrTabsComponent {
 
   onClickViewChanges(data: any): void {
     this.specUtils._getSpecBasedOnVersionID(data);
+  }
+
+  checktableJsonSection(title: string): boolean {
+    return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
   }
 }
