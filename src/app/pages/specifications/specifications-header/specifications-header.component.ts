@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
+import { SpecService } from 'src/app/api/spec.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
@@ -13,7 +14,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
   @Output() changeProduct = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
-  @Output() specDataChange = new EventEmitter<{ productId: any, id: any }>();
+  @Output() specDataChange = new EventEmitter<{ productId: any, versionId: any }>();
+  @Input() versionIdEmitter: any;
 
   currentUser: any;
   templates: any;
@@ -32,17 +34,20 @@ export class SpecificationsHeaderComponent implements OnInit {
   specVersion: any;
   version: any;
   versionSelected: any;
+  allVersions: any = [];
+  selectedVersion: any;
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private apiService: ApiService) {
+    private apiService: ApiService,
+    private specService: SpecService,) {
   }
 
   ngOnInit(): void {
     this.version = [
-      { name: 'ver 1', id: 'v1' },
-      { name: 'ver 2', id: 'v2' },
-      { name: 'ver 3', id: 'v3' },
+      { label: 'ver 1', value: 'v1' },
+      { label: 'ver 2', value: 'v2' },
+      { label: 'ver 3', value: 'v3' },
     ];
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -76,9 +81,28 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.hasProductEditPermission.subscribe((result: boolean) => {
       this.userHasPermissionToEditProduct = result
     })
-
+    this.getVersions();
   }
-
+  getVersions() {
+    this.utils.loadSpinner(true);
+    this.specService.getVersionIds(this.productId)
+      .then((response) => {
+        if (response.status === 200 && response.data) {
+          this.allVersions = response.data.map((item: any) => ({
+            label: item.version,
+            value: item.version,
+            id: item.id
+          }));
+          this.utils.loadSpinner(false);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+        }
+        this.utils.loadSpinner(false);
+      }).catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      })
+  }
   getMeUserAvatar() {
     var firstLetterOfFirstWord = this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
     var firstLetterOfSecondWord = this.currentUser.last_name[0][0].toUpperCase(); // Get the first letter of the second word
@@ -162,12 +186,20 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
   }
   onVersionChange(event: any): void {
-    let id = event.value.id;
-    console.log(this.productId, id, '00000000000000000');
-    this.emitSpecDataChange(this.productId, id);
-  }
-  emitSpecDataChange(productId: any, id: any): void {
-    this.specDataChange.emit({ productId, id });
+    let data = { productId: this.productId, versionId: event.value.id };
+    this.specDataChange.emit(data);
+
+    let selectedVersionId = event.value.id;
+
+    if (this.versionIdEmitter && this.versionIdEmitter.length > 0) {
+      const foundVersion = this.versionIdEmitter.find((obj: any) => obj.versionId === selectedVersionId);
+      if (foundVersion) {
+        this.selectedVersion = event.value.label;
+      } else {
+        this.selectedVersion = '';
+      }
+    }
+
   }
 
 }

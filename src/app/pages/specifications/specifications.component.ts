@@ -42,6 +42,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   contentData: any;
   noResults: boolean = false;
   useCases: any;
+  versionIdEmitter: any = [];
 
   constructor(
     private utils: UtilsService,
@@ -321,6 +322,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
+          this.versionIdEmitter = response.data
+
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
@@ -359,8 +362,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.router.navigate([currentUrl]);
     });
   }
-  onSpecDataChange(data: { productId: any, id: any }): void {
-    this.getMeSpecList({ productId: data.productId, id: data.id });
+  onSpecDataChange(data: any): void {
+    this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
+
+    // this.getMeSpecList({ productId: data.productId, versionId: data.versionId });
   }
   handleData(response: any): void {
     const list = response.data;
@@ -414,6 +419,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         'navi/get_conversation/' + this.product.email + '/' + this.product.id
       )
       .then((res: any) => {
+
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
           this.generate();

@@ -7,12 +7,12 @@
         class="flex justify-content-between align-items-center pl-4 pr-4 flex-wrap border-bottom-1 border-white-alpha-40 header-items">
         <div class="flex align-items-center">
             <xnode-product-dropdown (_onChangeProduct)="onChangeProduct($event)"></xnode-product-dropdown>
-            <p-dropdown formControlName="selectedVersion" [options]="version" optionLabel="name"
-                (onChange)="onVersionChange($event)" placeholder="Select a version"
+            <p-dropdown formControlName="selectedVersion" [options]="allVersions" optionLabel="label"
+                (onChange)="onVersionChange($event)" placeholder="Select a version" optionValue="selectedVersion"
                 class="ml-3 app-dropdown-version"></p-dropdown>
             <p class="text-xs status ml-6" *ngIf="specVersion">{{specVersion}}</p>
         </div>
-        <div class="flex align-items-center ">
+        <div class="flex align-items-center">
             <img src="../assets/fav.svg " class="pr-3 pointer" alt="Logo">
             <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
                 (click)="openComments()">
