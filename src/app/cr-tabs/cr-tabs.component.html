@@ -19,16 +19,20 @@
       </div>
     </div>
     <div class="flex align-items-center justify-content-between w-full pt-2 pl-4 pr-4">
-      <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
-        class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
-        <ng-template let-item pTemplate="item">
-          <div class="col-12 flex align-items-center justify-content-between">
-            <div class="title-container" [title]="item.title">
-              {{ item.title }}
+      <div class="flex align-items-center">
+        <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
+          class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
+          <ng-template let-item pTemplate="item">
+            <div class="col-12 flex align-items-center justify-content-between">
+              <div class="title-container" [title]="item.title">
+                {{ item.title }}
+              </div>
             </div>
-          </div>
-        </ng-template>
-      </p-dropdown>
+          </ng-template>
+        </p-dropdown>
+        <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
+          (click)="createNewCr()"></p-button>
+      </div>
       <div>
         <i class="pi pi-search text-base mx-1 light-grey"></i>
         <i class="pi pi-user text-base mx-1 light-grey"></i>
@@ -226,3 +230,6 @@
 <xnode-confirmation-popup-new [header]="header" [content]="content"
   [visible]="openConfirmationPopUp || updateSpecBtnTriggered"
   (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR" [versions]="[]"
+  (close)="showNewCrPopup = false;">
+</xnode-create-new-cr-version>

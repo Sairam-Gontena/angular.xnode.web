@@ -30,13 +30,20 @@ export class CrTabsComponent {
   updateSpecBtnTriggered: boolean = false;
   product: any;
   crList: any = [];
+  showNewCrPopup: boolean = false;
+
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService
-  ) { }
+  ) {
+    this.specUtils.getMeCrList.subscribe((event: any) => {
+      if (event)
+        this.getCRList();
+    })
+  }
 
   ngOnInit() {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -320,5 +327,9 @@ export class CrTabsComponent {
 
   checktableJsonSection(title: string): boolean {
     return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
+  }
+
+  createNewCr(): void {
+    this.showNewCrPopup = true;
   }
 }
