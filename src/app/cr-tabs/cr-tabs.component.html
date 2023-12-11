@@ -122,7 +122,8 @@
                       <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200" (click)="
                         op.toggle($event);
                         updateSelectedCr(data);
-                        $event.stopPropagation()
+                        $event.stopPropagation();
+                        getMeActions(data)
                       "></i>
                     </div>
                     <div></div>
@@ -169,12 +170,7 @@
                   <div class="py-2 border-bottom-1 pr-4">
                     <div class="flex flex-row justify-content-between">
                       <div class="sctions-grid">
-                        <!-- <div class="relative">
-                          <i class="pi pi-plus text-sm border-1 border-200 border-round-sm mx-2"
-                            [ngStyle]="{ 'background-color': '#EFEEEE' }"></i>
-                        </div> -->
-                        <div *ngIf="checktableJsonSection(subData?.comment  .referenceContent?.title); else normalView">
-                          <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p> -->
+                        <div *ngIf="checktableJsonSection(subData?.comment.referenceContent?.title); else normalView">
                           <pre *ngIf="!subData?.comment.referenceContent?.showTable"
                             [innerHTML]="subData?.comment.referenceContent?.content | json"
                             style=" white-space: pre-wrap; overflow: auto"></pre>
@@ -205,23 +201,15 @@
     </div>
 
     <p-overlayPanel #op>
-      <div class="card p-0 m-0">
+      <div class="card p-0 m-0" *ngFor="let action of crActions">
         <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
-          (click)="updateChagneRequestStatus('APPROVED'); op.toggle(false)">
-          <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs bg-green-500"
+          (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
+          <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
+            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'bg-green-500' : 'bg-red-500'"
             [ngStyle]="{ padding: '3px' }"></i>
-          <p class="text-sm font-normal ml-1 text-green-500">Approve</p>
-        </div>
-        <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
-          (click)="updateChagneRequestStatus('REJECTED'); op.toggle(false)">
-          <i class="pi pi-times border-circle flex justify-content-center align-items-center text-xs bg-red-500"
-            [ngStyle]="{ padding: '3px' }"></i>
-          <p class="text-sm font-normal ml-1 text-red-500">Reject</p>
-        </div>
-        <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
-          (click)="updateChagneRequestStatus('NEEDMOREWORK'); op.toggle(false)">
-          <i class="pi pi-comment flex justify-content-center align-items-center text-xs" [ngStyle]="{}"></i>
-          <p class="text-sm font-normal ml-1">Needs work</p>
+          <p class="text-sm font-normal ml-1"
+            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'text-green-500' : 'text-red-500'">
+            {{action.label}}</p>
         </div>
       </div>
     </p-overlayPanel>

@@ -31,13 +31,15 @@ export class CrTabsComponent {
   product: any;
   crList: any = [];
   showNewCrPopup: boolean = false;
+  crActions: any;
 
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+
   ) {
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event)
@@ -46,16 +48,13 @@ export class CrTabsComponent {
   }
 
   ngOnInit() {
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.filters = [
       { title: 'Filters', code: 'F' },
       { title: 'All', code: 'A' },
       { title: 'None', code: 'N' },
     ];
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-    }
   }
 
   getCRList() {
@@ -331,5 +330,33 @@ export class CrTabsComponent {
 
   createNewCr(): void {
     this.showNewCrPopup = true;
+  }
+
+  getMeActions(cr: any): void {
+    this.utilsService.loadSpinner(true);
+    const body = {
+      entityId: cr.id,
+      userId: this.currentUser?.user_id
+    }
+    this.commentsService.getCrActions(body).then((res: any) => {
+      console.log('err', res);
+      if (res) {
+        this.crActions = res?.data;
+      } else {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: res.data.description,
+        });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch((err => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({
+        severity: 'error',
+        summary: 'ERROR',
+        detail: err,
+      });
+    }))
   }
 }
