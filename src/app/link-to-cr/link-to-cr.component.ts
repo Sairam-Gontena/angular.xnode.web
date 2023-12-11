@@ -1,5 +1,4 @@
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
-import { forEach, isArray } from 'lodash';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from '../components/services/local-storage.service';
 import { MessagingService } from '../components/services/messaging.service';
@@ -9,7 +8,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Dropdown } from 'primeng/dropdown';
-import { AuthApiService } from '../api/auth.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 
@@ -55,7 +53,7 @@ export class LinkToCrComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private messagingService: MessagingService,
     private commentsService: CommentsService,
-    private utilsService: UtilsService,private specUtils:SpecUtilsService) {
+    private utilsService: UtilsService, private specUtils: SpecUtilsService) {
     this.crForm = this.fb.group({
       priority: new FormControl({ value: '', disabled: true }, Validators.required),
       version: new FormControl({ value: '', disabled: true }, Validators.required),
