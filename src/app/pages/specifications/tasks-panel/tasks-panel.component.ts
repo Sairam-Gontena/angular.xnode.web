@@ -66,8 +66,6 @@ export class TasksPanelComponent {
 
   getMeTasksList() {
     this.utils.loadSpinner(true);
-    console.log('this.specData', this.specData);
-
     this.commentsService.getTasks({ parentId: this.specData?.id }).then((response: any) => {
       if (response && response.data?.common?.status !== 'fail') {
         this.list = response.data;

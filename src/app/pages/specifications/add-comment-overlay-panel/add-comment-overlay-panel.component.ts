@@ -174,22 +174,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
-        const body = {
+        body = {
           "createdBy": this.currentUser.user_id,
+          "topParentId": this.parentId, // For new comment it is 'null' and reply level this should be top comment id.
           "parentEntity": this.parentEntity,
-          "parentId": this.parentId,
-          "priority": '1',
-          "title": this.comment,
-          "description": this.comment,
+          "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+          "message": this.comment,
           "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
           "attachments": this.uploadedFiles,
           "references": this.setTemplateTypeInRefs(),
           "followers": [],
           "feedback": {},
-          "assignee": this.currentUser.user_id,
-          "deadline": ""
         }
-        this.saveAsTask(body);
+        this.saveComment(body);
       }
       else
         this.prepareDataToSaveAsTask()
@@ -199,9 +196,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
-    console.log('selectedContent', this.selectedContent);
-
-    // return
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.prepareDataToDisplayOnCommentsPanel();
@@ -228,7 +222,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.comment = '';
     this.closeOverlay.emit();
     this.specUtils._commentsCrActiveTab(false);
-    this.specUtils._tabToActive('COMMENT');
+    if (this.assignAsaTask || this.activeIndex === 1) {
+      this.specUtils._tabToActive('TASK');
+    } else {
+      this.specUtils._tabToActive('COMMENT');
+    }
+
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
   }
