@@ -46,8 +46,8 @@
             </div>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened">
-            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
-                    Replies{{cmt?.replyCount}}</span>
+            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See
+                    More{{cmt?.replyCount}}</span>
             </div>
         </div>
         <div class="col-12"
@@ -57,8 +57,7 @@
                 [topParentId]="cmt.id"></xnode-task-child-conversation>
         </div>
         <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
-            <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
-                    Replies</span>
+            <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">See Less</span>
             </div>
         </div>
         <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">

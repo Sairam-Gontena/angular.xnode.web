@@ -56,7 +56,8 @@
                     <img src="../../assets/high.svg" class="" alt="high" />
                     <p class="p-0 m-0 text-xs ml-2">
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
-                      <a href="" class="text-primary-500 ml-2" (click)="onClickViewChanges(data)">View Changes</a>
+                      <a href="" class="text-primary-500 ml-2" *ngIf="data.status ==='UPDATED'"
+                        (click)="onClickViewChanges(data)">View Changes</a>
 
                     </p>
                   </div>
@@ -92,6 +93,20 @@
                             </div>
                           </div>
                           <div *ngIf="data?.status == 'DRAFT'"
+                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
+                            <div>
+                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
+                            </div>
+                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
+                          </div>
+                          <div *ngIf="data?.status == 'UPDATED'"
+                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
+                            <div>
+                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
+                            </div>
+                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
+                          </div>
+                          <div *ngIf="data?.status == 'SUBMITTED'"
                             class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
                             <div>
                               <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
