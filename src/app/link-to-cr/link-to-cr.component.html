@@ -15,7 +15,7 @@
             placeholder="Add new or search existing change requests"
             [ngClass]="{ 'is-invalid': submitted && crFormControl['crToAdd'].errors }">
             <ng-template let-item pTemplate="selectedItem">
-              {{ item.label }} - {{ item.title }}
+              {{ item?.label }} - {{ item?.title }}
             </ng-template>
           </p-dropdown>
         </div>
