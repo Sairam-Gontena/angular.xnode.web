@@ -48,12 +48,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.version = [
-      { label: 'ver 1', value: 'v1' },
-      { label: 'ver 2', value: 'v2' },
-      { label: 'ver 3', value: 'v3' },
-    ];
-
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     })

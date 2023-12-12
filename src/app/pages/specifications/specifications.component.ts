@@ -368,7 +368,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   onSpecDataChange(data: any): void {
     this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
 
-    // this.getMeSpecList({ productId: data.productId, versionId: data.versionId });
   }
   handleData(response: any): void {
     const list = response.data;
