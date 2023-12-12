@@ -32,19 +32,15 @@
 .p-button.p-button-secondary,
 .p-buttonset.p-button-secondary>.p-button,
 .p-splitbutton.p-button-secondary>.p-button {
-    color: #ffffff;
-    background: #23222b;
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    color: #24232C;
 }
 
 .p-button.p-button-secondary:enabled:hover,
 .p-buttonset.p-button-secondary>.p-button:enabled:hover,
 .p-splitbutton.p-button-secondary>.p-button:enabled:hover {
-    color: #ffffff;
-    background: #23222b;
+    background-color: #ffffff;
+    color: #24232C;
 }
 
 .p-button.p-button-secondary:enabled:focus {
