@@ -20,7 +20,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 
 })
 export class DataModelCommonComponent {
-  
+
   @Input() dataModelData: any;
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
@@ -60,8 +60,8 @@ export class DataModelCommonComponent {
       this.utilsService.showProductStatusPopup(true);
       return
     }
-    this.utilsService.loadSpinner(true);
-    this.getMeDataModel();
+    // this.utilsService.loadSpinner(true);
+    // this.getMeDataModel();
   }
 
   toggleMenu() {
@@ -93,7 +93,7 @@ export class DataModelCommonComponent {
           this.auditUtil.postAudit('GET_USERID_GET_METADATA_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
           this.id = response.data.data[0].id;
           localStorage.setItem('record_id', response.data.data[0].id)
-          this.getMeDataModel();
+          // this.getMeDataModel();
         } else {
           let user_audit_body = {
             'method': 'GET',

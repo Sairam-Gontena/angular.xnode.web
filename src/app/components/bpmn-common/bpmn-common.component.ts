@@ -35,8 +35,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   @Input() dataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
-  
-
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
@@ -79,17 +77,17 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     this.router.url == '/specification' ? this.showBpmn = false : this.showBpmn = true
   }
 
-  ngOnChanges(){
-    if(this.bpmnFrom === 'SPEC'){
-      setTimeout(() => {
-        if (this.showUsecaseGraph) this.getInsights();
-      }, 100);
-    }else{
-      setTimeout(() => {
-        if (this.showUsecaseGraph) this.getInsights();
-      }, 500);
-    }
-   
+  ngOnChanges() {
+    // if(this.bpmnFrom === 'SPEC'){
+    //   setTimeout(() => {
+    //     if (this.showUsecaseGraph) this.getInsights();
+    //   }, 100);
+    // }else{
+    //   setTimeout(() => {
+    //     if (this.showUsecaseGraph) this.getInsights();
+    //   }, 500);
+    // }
+
   }
 
   ngOnInit(): void {

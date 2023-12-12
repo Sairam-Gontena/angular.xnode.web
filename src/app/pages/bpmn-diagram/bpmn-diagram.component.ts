@@ -91,7 +91,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       element.removeChild(element.firstChild);
     }
     this.router.url == '/configuration/workflow/overview' ? this.showBpmn = false : this.showBpmn = true
-    this.utilsService.loadSpinner(true);
+    // this.utilsService.loadSpinner(true);
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById("diagramRef");
@@ -101,9 +101,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       if (graphWindow) graphWindow.style.display = '';
     }, 0);
 
-    setTimeout(() => {
-      if (this.showUsecaseGraph) this.getInsights();
-    }, 500);
+    // setTimeout(() => {
+    //   if (this.showUsecaseGraph) this.getInsights();
+    // }, 500);
 
     this.initializeBpmn();
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
