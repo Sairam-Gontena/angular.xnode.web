@@ -79,7 +79,6 @@ export class CrTabsComponent {
         this.utilsService.loadSpinner(false);
       })
       .catch((err: any) => {
-        console.log(err);
         this.utilsService.loadToaster({
           severity: 'error',
           summary: 'ERROR',
@@ -110,7 +109,6 @@ export class CrTabsComponent {
         this.utilsService.loadSpinner(false);
       })
       .catch((err: any) => {
-        console.log(err);
         this.utilsService.loadToaster({
           severity: 'error',
           summary: 'ERROR',
@@ -145,13 +143,36 @@ export class CrTabsComponent {
 
   updateChagneRequestStatus(value: string) {
     this.selectedStatus = value;
-    if (value == 'APPROVED') {
-      this.header = 'Approve Request';
-      this.content = 'Are you sure you want to approve request?';
-      this.openConfirmationPopUp = true;
-    } else if (value == 'REJECTED' || value == 'NEEDMOREWORK') {
-      this.showComment = true;
+    switch (value) {
+      case 'ARCHIVE':
+        this.header = 'Archive CR';
+        this.content = 'Are you sure you want to Archive this CR?';
+        break;
+      case 'SUBMIT':
+        this.header = 'Submit CR';
+        this.content = 'Are you sure you want to Submit this CR?';
+        break;
+      case 'REJECT':
+        this.header = 'Reject CR';
+        this.content = 'Are you sure you want to Reject this CR?';
+        this.showComment = true;
+        break;
+      case 'APPROVE':
+        this.header = 'Approve CR';
+        this.content = 'Are you sure you want to Approve this CR?';
+        break;
+      default:
+        break;
     }
+    this.openConfirmationPopUp = true;
+
+    // if (value == 'APPROVED') {
+    //   this.header = 'Approve Request';
+    //   this.content = 'Are you sure you want to approve request?';
+    //   this.openConfirmationPopUp = true;
+    // } else if (value == 'REJECTED' || value == 'NEEDMOREWORK') {
+    //   this.showComment = true;
+    // }
   }
 
   onClickAction(action: string) {
@@ -200,7 +221,6 @@ export class CrTabsComponent {
         this.utilsService.loadSpinner(false);
       })
       .catch((err: any) => {
-        console.log(err);
         this.utilsService.loadToaster({
           severity: 'error',
           summary: 'ERROR',
@@ -211,29 +231,28 @@ export class CrTabsComponent {
   }
 
   approveRequest(): void {
-    this.selectedCr.status = 'APPROVED';
-    this.selectedCr.author = this.selectedCr.author.userId;
-    let reviewers: any[] = [];
-    this.selectedCr.reviewers.map((res: any) => {
-      reviewers.push(res.userId + '');
-    });
-    this.selectedCr.reviewers = reviewers;
+    this.utilsService.loadSpinner(true);
+    const body = {
+      entityId: this.selectedCr.id,
+      action: this.selectedStatus,
+      userId: this.currentUser.user_id
+    }
     this.utilsService.loadSpinner(true);
     this.commentsService
-      .approveCr(this.selectedCr)
+      .performCrActions(body)
       .then((response: any) => {
-        if (response.statusText == 'Created') {
+        if (response?.data?.common?.status !== 'fail') {
           this.showComment = false;
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
-            detail: 'Chagne request approved successfully',
+            detail: 'CR has been' + ' ' + this.selectedStatus + " " + 'successfully',
           });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
             summary: 'ERROR',
-            detail: response.data.description,
+            detail: response?.data?.common?.status,
           });
         }
         this.utilsService.loadSpinner(false);
@@ -339,7 +358,6 @@ export class CrTabsComponent {
       userId: this.currentUser?.user_id
     }
     this.commentsService.getCrActions(body).then((res: any) => {
-      console.log('err', res);
       if (res) {
         this.crActions = res?.data;
       } else {

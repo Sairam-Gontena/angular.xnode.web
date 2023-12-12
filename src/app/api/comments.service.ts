@@ -83,4 +83,8 @@ export class CommentsService extends BaseApiService {
   getCrActions(body: any) {
     return this.get('workflow-instance/actions/' + body.entityId + '/' + body.userId);
   }
+
+  performCrActions(body: any) {
+    return this.get('workflow-instance/perform-action/' + body.entityId + '/' + body.action + '/' + body.userId);
+  }
 }
