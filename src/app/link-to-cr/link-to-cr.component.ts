@@ -104,11 +104,11 @@ export class LinkToCrComponent implements OnInit {
       "status": 'DRAFT'
     }
     this.commentsService.getChangeRequestList(body).then((response: any) => {
-      console.log(response, '000000000');
       if (response.status == 200 && response.data) {
         response.data.forEach((element: any) => {
           element.label = element.crId;
           element.value = element.id;
+          element.title = element.title;
         });
         this.crList = this.crList.concat(response.data);
         if (this.isNewCrCreated) {
@@ -128,12 +128,14 @@ export class LinkToCrComponent implements OnInit {
 
 
   onDropdownChange(event: any): void {
+
     if (event.value === 'ADD_NEW') {
       this.showNewCrPopup = true;
     } else if (event?.value !== '' && event?.value !== 'ADD_NEW') {
       this.crForm.patchValue({ priority: this.priorityList.filter((obj: any) => { return obj.value === event.priority })[0], version: this.versionList.filter((obj: any) => { return obj.value === event.versionId })[0], duedate: new Date(event.duedate) })
       this.reviewerList = event.reviewers
     }
+
   }
 
   closePopUp(event: any) {
