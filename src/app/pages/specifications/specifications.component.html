@@ -2,8 +2,9 @@
     <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
         [specData]="specData"></xnode-specifications-menu>
     <div class="w-full">
-        <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" [versionIdEmitter]="versionIdEmitter"
-            (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+        <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+            [currentSpecVersionId]="currentSpecVersionId" (specDataChange)="onSpecDataChange($event)"
+            (generateSpec)="checkUserEmail()"></xnode-specifications-header>
         <xnode-specifications-content [noResults]="noResults" [specData]="specData" [useCases]="useCases"
             [keyword]="keyword">
         </xnode-specifications-content>

@@ -42,7 +42,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   contentData: any;
   noResults: boolean = false;
   useCases: any;
-  versionIdEmitter: any = [];
+  currentSpecVersionId: string = '';
 
   constructor(
     private utils: UtilsService,
@@ -60,7 +60,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
-        }else{
+        } else {
           let productId = localStorage.getItem('record_id');
           this.getMeSpecList({ productId: productId, live: true });
         }
@@ -325,7 +325,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
-          this.versionIdEmitter = response.data
+          this.currentSpecVersionId = response.data[0].versionId;
 
           this.handleData(response);
         } else {
@@ -372,7 +372,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
   handleData(response: any): void {
     const list = response.data;
-    console.log('list', list);
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
       if (obj?.title == 'Technical Specifications') {

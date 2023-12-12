@@ -3,6 +3,10 @@ import { ApiService } from 'src/app/api/api.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+interface Version {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'xnode-specifications-header',
@@ -15,7 +19,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() changeProduct = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
   @Output() specDataChange = new EventEmitter<{ productId: any, versionId: any }>();
-  @Input() versionIdEmitter: any;
+  @Input() currentSpecVersionId: any;
 
   currentUser: any;
   templates: any;
@@ -35,7 +39,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   version: any;
   versionSelected: any;
   allVersions: any = [];
-  selectedVersion: any;
+  selectedVersion: Version | undefined;
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -90,9 +94,17 @@ export class SpecificationsHeaderComponent implements OnInit {
         if (response.status === 200 && response.data) {
           this.allVersions = response.data.map((item: any) => ({
             label: item.version,
-            value: item.version,
-            id: item.id
+            value: item.id
           }));
+          response.data.map((item: any) => {
+            if (item.id === this.currentSpecVersionId) {
+              this.selectedVersion = {
+                label: item.version,
+                value: item.id
+              }
+            }
+
+          });
           this.utils.loadSpinner(false);
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
@@ -188,18 +200,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   onVersionChange(event: any): void {
     let data = { productId: this.productId, versionId: event.value.id };
     this.specDataChange.emit(data);
-
-    let selectedVersionId = event.value.id;
-
-    if (this.versionIdEmitter && this.versionIdEmitter.length > 0) {
-      const foundVersion = this.versionIdEmitter.find((obj: any) => obj.versionId === selectedVersionId);
-      if (foundVersion) {
-        this.selectedVersion = event.value.label;
-      } else {
-        this.selectedVersion = '';
-      }
-    }
-
   }
 
 }

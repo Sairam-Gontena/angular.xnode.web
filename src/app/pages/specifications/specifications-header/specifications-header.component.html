@@ -7,8 +7,8 @@
         class="flex justify-content-between align-items-center pl-4 pr-4 flex-wrap border-bottom-1 border-white-alpha-40 header-items">
         <div class="flex align-items-center">
             <xnode-product-dropdown (_onChangeProduct)="onChangeProduct($event)"></xnode-product-dropdown>
-            <p-dropdown formControlName="selectedVersion" [options]="allVersions" optionLabel="label"
-                (onChange)="onVersionChange($event)" placeholder="Select a version" optionValue="selectedVersion"
+            <p-dropdown [options]="allVersions" [(ngModel)]="selectedVersion" optionLabel="label"
+                (onChange)="onVersionChange($event)" placeholder="Select a version"
                 class="ml-3 app-dropdown-version"></p-dropdown>
             <p class="text-xs status ml-6" *ngIf="specVersion">{{specVersion}}</p>
         </div>
