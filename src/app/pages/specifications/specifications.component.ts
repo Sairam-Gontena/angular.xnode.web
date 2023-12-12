@@ -41,6 +41,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   consversationList: any;
   contentData: any;
   noResults: boolean = false;
+  // useCases: any;
   useCases: any;
   currentSpecVersionId: string = '';
 
@@ -231,7 +232,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           const data = Array.isArray(response?.data)
             ? response?.data[0]
             : response?.data;
-          this.useCases = data?.usecase || [];
+          // this.useCases = data?.usecase || [];
           this.getMeSpecList();
         } else {
           let user_audit_body = {
@@ -383,10 +384,35 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           id: 'open-api-spec',
         });
       }
+      if (obj?.title == 'Quality Assurance') {
+       let content = obj.content;
+       content.forEach((useCase:any) => {
+        if (useCase["Test Cases"]) {
+            useCase.TestCases = useCase["Test Cases"];
+            delete useCase["Test Cases"];
+            useCase.TestCases.forEach((testCase:any) => {
+                testCase.TestCases = testCase["Test Cases"];
+                delete testCase["Test Cases"];
+            });
+        }
+    });
+
+        if (Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+        
+         obj.content.push({
+          title: 'Test Cases',
+          content: content,
+        });
+
+      }
     });
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
+  
+
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
