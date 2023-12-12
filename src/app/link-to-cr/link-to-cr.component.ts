@@ -1,5 +1,4 @@
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
-import { forEach, isArray } from 'lodash';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from '../components/services/local-storage.service';
 import { MessagingService } from '../components/services/messaging.service';
@@ -9,7 +8,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Dropdown } from 'primeng/dropdown';
-import { AuthApiService } from '../api/auth.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+
+
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -25,7 +26,7 @@ export class LinkToCrComponent implements OnInit {
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
-  @Input() entityType? = '';
+  @Input() entityType?= '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -52,7 +53,7 @@ export class LinkToCrComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private messagingService: MessagingService,
     private commentsService: CommentsService,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService, private specUtils: SpecUtilsService) {
     this.crForm = this.fb.group({
       priority: new FormControl({ value: '', disabled: true }, Validators.required),
       version: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -103,6 +104,7 @@ export class LinkToCrComponent implements OnInit {
       "status": 'DRAFT'
     }
     this.commentsService.getChangeRequestList(body).then((response: any) => {
+      console.log(response, '000000000');
       if (response.status == 200 && response.data) {
         response.data.forEach((element: any) => {
           element.label = element.crId;
@@ -162,6 +164,7 @@ export class LinkToCrComponent implements OnInit {
     this.commentsService.linkCr(body).then((response: any) => {
       if (response) {
         this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'CR has been successfully linked' });
+        this.specUtils._commentsCrActiveTab(true);
         this.close.emit();
       } else {
         this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.common?.status });

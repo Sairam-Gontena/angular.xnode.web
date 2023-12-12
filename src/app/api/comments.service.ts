@@ -79,4 +79,12 @@ export class CommentsService extends BaseApiService {
   deleteCrEntity(body: any) {
     return this.delete('cr-entity-mapping/' + body.entityType + '/' + body.id);
   }
+
+  getCrActions(body: any) {
+    return this.get('workflow-instance/actions/' + body.entityId + '/' + body.userId);
+  }
+
+  performCrActions(body: any) {
+    return this.put('workflow-instance/perform-action/' + body.entityId + '/' + body.action + '/' + body.userId);
+  }
 }

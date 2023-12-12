@@ -10,21 +10,17 @@
 :host ::ng-deep .cr-comment .p-divider-vertical:before {
   height: 65% !important;
 }
+
 :host ::ng-deep .accordian .p-icon {
   color: white;
 }
-:host
-  ::ng-deep
-  .cr-tabs
-  .p-accordion
-  .p-accordion-header
-  .p-accordion-header-link {
+
+:host ::ng-deep .cr-tabs .p-accordion .p-accordion-header .p-accordion-header-link {
   padding: 0px;
   align-items: flex-start;
 }
-:host
-  ::ng-deep
-  .cr-tabs .p-accordion .p-accordion-content {
+
+:host ::ng-deep .cr-tabs .p-accordion .p-accordion-content {
   padding-top: 0px;
   align-items: flex-start;
 }
@@ -35,6 +31,7 @@
   height: 16px;
   margin-top: 2px;
 }
+
 // :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
 //   border-width: 0px;
 //   border-color: #ffff;
@@ -51,24 +48,14 @@
 //   border-width: 0px;
 // }
 
-:host
-  ::ng-deep
-  .cr-tabs
-  .p-accordion
-  .p-accordion-header
-  .p-accordion-header-link {
+:host ::ng-deep .cr-tabs .p-accordion .p-accordion-header .p-accordion-header-link {
   position: relative;
 }
 
-:host
-  ::ng-deep
-  .p-accordion
-  .p-accordion-header
-  .p-accordion-header-link
-  .p-accordion-toggle-icon {
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
   position: absolute !important;
   left: 7%;
-  top:2px;
+  top: 2px;
   height: 10px;
 }
 
@@ -79,6 +66,7 @@
 .normal-font-weight {
   font-weight: 100;
 }
+
 .half-white {
   color: #efeeee;
 }
@@ -95,10 +83,10 @@
   width: 15px;
 }
 
-// .submit-cr-color{
-// }
-
-
-:host ::ng-deep .p-button {
-  background-color: #02ADEE;
+.sctions-grid {
+  background: #24232C;
+  color: #dfdfdf;
+  max-height: 200px;
+  overflow: hidden;
+  border-radius: 6px;
 }

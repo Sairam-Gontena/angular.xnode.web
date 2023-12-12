@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 interface AutoCompleteCompleteEvent {
@@ -57,7 +58,8 @@ export class CreateNewCrVersionComponent implements OnInit {
     private commentsService: CommentsService,
     private localStorageService: LocalStorageService,
     private authApiService: AuthApiService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private specUtils: SpecUtilsService
   ) {
     this.crForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -163,7 +165,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.saveValue();
   }
-  onSubmit(event: any) {}
+  onSubmit(event: any) { }
 
   closePopup() {
     this.visible = false;
@@ -235,6 +237,7 @@ export class CreateNewCrVersionComponent implements OnInit {
             detail: 'Change Request created successfully',
           });
           this.close.emit(response.data);
+          this.specUtils._getLatestCrList(true)
         } else {
           this.utilsService.loadToaster({
             severity: 'error',

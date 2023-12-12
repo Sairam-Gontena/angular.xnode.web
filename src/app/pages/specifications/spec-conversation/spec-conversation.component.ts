@@ -432,4 +432,8 @@ export class SpecConversationComponent {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  checktableJsonSection(title: string): boolean {
+    return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
+  }
 }

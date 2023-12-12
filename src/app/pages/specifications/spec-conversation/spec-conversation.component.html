@@ -7,7 +7,8 @@
                         [style]="{ 'background-color': '#02ADEE', fontSize: '12px', color: '#ffffff',width:'25px',height:'25px' }"
                         shape="circle"></p-avatar>
                     <div>
-                        <p class="flex align-items-center text-xs text-white-alpha-70 m-0 pb-1">{{cmt.createdBy?.displayName}}</p>
+                        <p class="flex align-items-center text-xs text-white-alpha-70 m-0 pb-1">
+                            {{cmt.createdBy?.displayName}}</p>
                         <span class="text-xs status">{{cmt.status}}</span>
                     </div>
                 </div>
@@ -21,10 +22,20 @@
             </div>
         </div>
         <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
-            <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
-                [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
-            </p>
+            <div *ngIf="checktableJsonSection(cmt.referenceContent?.title); else normalView">
+                <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
+                <pre *ngIf="!cmt.referenceContent?.showTable" [innerHTML]="cmt.referenceContent?.content | json"
+                    style=" white-space: pre-wrap; overflow: auto"></pre>
+                <xnode-common-spec-table *ngIf="cmt.referenceContent?.showTable"
+                    [specItem]="cmt.referenceContent?.content.content"
+                    [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
+            </div>
+            <ng-template #normalView>
+                <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
+                <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
+                    [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
+                </p>
+            </ng-template>
             <div class="gradientback">
             </div>
         </div>
@@ -67,7 +78,7 @@
 
     </div>
 </div>
-<xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment"  [entityType]="'COMMENT'"
+<xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment" [entityType]="'COMMENT'"
     (close)="showCrPopup = false"></xnode-link-to-cr>
 <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
     [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="

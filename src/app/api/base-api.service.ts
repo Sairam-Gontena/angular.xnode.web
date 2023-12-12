@@ -24,7 +24,7 @@ export abstract class BaseApiService {
     return axios.post(this.apiUrl + url, body, config);
   }
   put(url: string, body: any = {}, config: AxiosRequestConfig = {}) {
-    return axios.post(this.apiUrl + url, body, this.getConfigJsonHeader(config));
+    return axios.put(this.apiUrl + url, body, this.getConfigJsonHeader(config));
   }
   patch(url: string, body: any = {}, config: AxiosRequestConfig = {}) {
     return axios.patch(this.apiUrl + url, body, this.getConfigJsonHeader(config));

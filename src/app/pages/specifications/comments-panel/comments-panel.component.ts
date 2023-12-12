@@ -16,10 +16,11 @@ export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
   @Input() activeIndex: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
-  selectedFilter: object = { label: 'All Comments', value: 'all' };
+  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
+  selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
   list: any = [];
+  filteredList:any=[]
   product: any;
 
   constructor(private utils: UtilsService,
@@ -47,19 +48,41 @@ export class CommentsPanelComponent implements OnInit {
 
   getMeCommentsList() {
     this.utils.loadSpinner(true);
-    let specData = localStorage.getItem('selectedSpec');
-    let selectedSpec: any;
-    if (specData) {
-      selectedSpec = JSON.parse(specData);
-      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
+    // let specData = localStorage.getItem('selectedSpec');
+    let allSpecsData = localStorage.getItem('SPEC_DATA');
+    let specIds =''
+    if(allSpecsData){
+      let data = JSON.parse(allSpecsData);
+      specIds = data.map((item:any) => item.id).join(',');
+    }
+    if (allSpecsData) {
+      this.commentsService.getComments({ parentId: specIds, isReplyCountRequired: true }).then((response: any) => {
         if (response.status === 200 && response.data) {
           this.list = response.data;
+          this.filterList(response.data);
         }
         this.utils.loadSpinner(false);
       }).catch(err => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
+    }
+  }
+
+  filterList(data: any): void {
+    switch (this.selectedFilter.value) {
+      case 'LINKED':
+        this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        break;
+      case 'NEW':
+        this.filteredList = data.filter((item: any) => item.status === 'NEW');
+        break;
+      case 'CLOSED':
+        this.filteredList = data.filter((item: any) => item.status === 'CLOSED');
+        break;
+      default:
+        this.filteredList = data;
+        break;
     }
   }
 

@@ -19,29 +19,36 @@
           <div *ngIf="crFormControl['crToAdd'].errors?.['required']">
             CR is required</div>
         </div>
-        <p class="text-sm pointer mt-1 mb-0 api-ticket"><span><i class="pi pi-plus pr-2"></i></span> Connect with the
+        <p class="text-sm pointer mt-1 mb-0 api-ticket"
+          *ngIf="crForm.get('priority')?.value || crForm.get('version')?.value || crForm.get('duedate')?.value">
+          <span><i class="pi pi-plus pr-2"></i></span> Connect with the
           api
           ticketing
           system
         </p>
       </div>
-      <div class="col-4">
-        <label for="priority">Priority</label>
-        <p-dropdown formControlName="priority" [options]="priorityList" optionLabel="label"></p-dropdown>
-      </div>
-      <div class="col-4">
-        <label>To Version</label>
-        <p-dropdown formControlName="version" [options]="versionList" [disabled]="true"
-          optionLabel="label"></p-dropdown>
-      </div>
-      <div class="col-4">
-        <label>Due Date</label>
-        <p-calendar formControlName="duedate" [showClear]="true" [showIcon]="true" placeholder="DD/MM/YYYY"
-          styleClass="due-date"></p-calendar>
+      <div class="col-12 flex flex-wrap"
+        *ngIf="crForm.get('priority')?.value || crForm.get('version')?.value || crForm.get('duedate')?.value">
+        <div class="col-4">
+          <label for="priority" class="api-ticket text-sm ">Priority: </label>
+          <div class="ml-2">
+            {{ crForm.get('priority')?.value?.label }}
+          </div>
+        </div>
+        <div class="col-4">
+          <label class="api-ticket text-sm ">To Version: </label>
+          <div class="ml-2"> {{ crForm.get('version')?.value?.label }}</div>
+        </div>
+        <div class="col-4">
+          <label class="api-ticket text-sm ">Due Date: </label>
+          <div class="ml-2">
+            {{ crForm.get('duedate')?.value | date: 'shortDate' }}
+          </div>
+        </div>
       </div>
       <div class="col-12 pb-0" *ngIf="reviewerList?.length">
         <div class="flex justify-content-between flex-wrap">
-          <p class="m-0">
+          <p class="m-0 api-ticket text-sm">
             Reviewers
           </p>
         </div>

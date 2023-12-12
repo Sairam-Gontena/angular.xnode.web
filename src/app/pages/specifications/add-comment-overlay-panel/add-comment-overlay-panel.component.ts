@@ -99,17 +99,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
       this.references.forEach((obj: any) => {
         obj.template_type = 'TASK';
-        obj.product_id = productId; 
+        obj.product_id = productId;
       })
     } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
       this.references.forEach((obj: any) => {
         obj.template_type = 'COMMENT';
-        obj.product_id = productId; 
+        obj.product_id = productId;
       })
     } else {
       this.references.forEach((obj: any) => {
         obj.template_type = this.parentEntity;
-        obj.product_id = productId; 
+        obj.product_id = productId;
       })
     }
     return this.references;
@@ -174,22 +174,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
-        const body = {
+        body = {
           "createdBy": this.currentUser.user_id,
+          "topParentId": this.parentId, // For new comment it is 'null' and reply level this should be top comment id.
           "parentEntity": this.parentEntity,
-          "parentId": this.parentId,
-          "priority": '1',
-          "title": this.comment,
-          "description": this.comment,
+          "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+          "message": this.comment,
           "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
           "attachments": this.uploadedFiles,
           "references": this.setTemplateTypeInRefs(),
           "followers": [],
           "feedback": {},
-          "assignee": this.currentUser.user_id,
-          "deadline": ""
         }
-        this.saveAsTask(body);
+        this.saveComment(body);
       }
       else
         this.prepareDataToSaveAsTask()
@@ -224,7 +221,13 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     this.comment = '';
     this.closeOverlay.emit();
-    this.specUtils._tabToActive('COMMENT');
+    this.specUtils._commentsCrActiveTab(false);
+    if (this.assignAsaTask || this.activeIndex === 1) {
+      this.specUtils._tabToActive('TASK');
+    } else {
+      this.specUtils._tabToActive('COMMENT');
+    }
+
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
   }
@@ -275,6 +278,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.specUtils._openCommentsPanel(true);
         this.comment = '';
         this.closeOverlay.emit();
+        this.specUtils._commentsCrActiveTab(false);
         this.specUtils._tabToActive('TASK');
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
         this.uploadedFiles = [];

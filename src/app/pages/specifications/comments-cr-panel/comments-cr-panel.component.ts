@@ -32,12 +32,21 @@ export class CommentsCrPanelComponent implements OnInit {
   };
   comment: any;
   currentUser: any;
+  activeIndex: number = 0;
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService) {
   }
 
   ngOnInit(): void {
+    this.specUtils.getMeCommentsCrActiveTab.subscribe((res)=>{
+      if(res){
+        this.activeIndex =1;
+        this.child.getCRList();
+      }else{
+        this.activeIndex =0;
+      }
+    })
   }
 
   ngOnDestroy(): void {
@@ -63,10 +72,21 @@ export class CommentsCrPanelComponent implements OnInit {
   }
 
   switchHeaders(event: any) {
+    this.activeIndex = event.index
+    if(event.index == 0){
+      let specData = localStorage.getItem('SPEC_DATA');
+      if(specData){
+        let data = JSON.parse(specData);
+        localStorage.setItem('selectedSpec', JSON.stringify(data[0]));
+      }
+    }
     const tabs = this.tabView.tabs;
     const header = tabs[event.index].header;
     if (header == 'Change Request') {
       this.child.getCRList();
+    }else{
+      this.specUtils._commentsCrActiveTab(false);
+      this.specUtils._tabToActive('COMMENT');
     }
   }
 }

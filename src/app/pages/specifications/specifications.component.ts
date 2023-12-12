@@ -60,6 +60,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
+        }else{
+          let productId = localStorage.getItem('record_id');
+          this.getMeSpecList({ productId: productId, live: true });
         }
       })
       .catch((err: any) => {

@@ -19,16 +19,20 @@
       </div>
     </div>
     <div class="flex align-items-center justify-content-between w-full pt-2 pl-4 pr-4">
-      <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
-        class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
-        <ng-template let-item pTemplate="item">
-          <div class="col-12 flex align-items-center justify-content-between">
-            <div class="title-container" [title]="item.title">
-              {{ item.title }}
+      <div class="flex align-items-center">
+        <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
+          class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
+          <ng-template let-item pTemplate="item">
+            <div class="col-12 flex align-items-center justify-content-between">
+              <div class="title-container" [title]="item.title">
+                {{ item.title }}
+              </div>
             </div>
-          </div>
-        </ng-template>
-      </p-dropdown>
+          </ng-template>
+        </p-dropdown>
+        <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
+          (click)="createNewCr()"></p-button>
+      </div>
       <div>
         <i class="pi pi-search text-base mx-1 light-grey"></i>
         <i class="pi pi-user text-base mx-1 light-grey"></i>
@@ -44,8 +48,9 @@
     </div>
     <div>
       <div class="w-full pl-4 pr-4">
-        <p-accordion class="cr-tabs" [multiple]="true"  *ngFor="let data of crData;let i = index" (onOpen)="onAccordionOpen(data,i)" >
-          <p-accordionTab class="border-bottom-1 accordian mt-4" >
+        <p-accordion class="cr-tabs" [multiple]="true" *ngFor="let data of crData;let i = index"
+          (onOpen)="onAccordionOpen(data,i)">
+          <p-accordionTab class="border-bottom-1 accordian mt-4">
             <ng-template pTemplate="header">
               <div class="w-full">
                 <div class="grid col-12 flex-column">
@@ -55,7 +60,8 @@
                     <img src="../../assets/high.svg" class="" alt="high" />
                     <p class="p-0 m-0 text-xs ml-2">
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
-                      <a href="" class="text-primary-500 ml-2" (click)="onClickViewChanges(data)">View Changes</a>
+                      <a href="" class="text-primary-500 ml-2" *ngIf="data.status ==='UPDATED'"
+                        (click)="onClickViewChanges(data)">View Changes</a>
 
                     </p>
                   </div>
@@ -97,12 +103,27 @@
                             </div>
                             <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
                           </div>
+                          <div *ngIf="data?.status == 'UPDATED'"
+                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
+                            <div>
+                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
+                            </div>
+                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
+                          </div>
+                          <div *ngIf="data?.status == 'SUBMITTED'"
+                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
+                            <div>
+                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
+                            </div>
+                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
+                          </div>
                         </div>
                       </div>
                       <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200" (click)="
                         op.toggle($event);
                         updateSelectedCr(data);
-                        $event.stopPropagation()
+                        $event.stopPropagation();
+                        getMeActions(data)
                       "></i>
                     </div>
                     <div></div>
@@ -145,23 +166,26 @@
                           (click)="op.toggle($event); $event.stopPropagation()"></i>
                       </div>
                     </div>
-                    <!-- dont delete need to continue after api values updation
-                <div  class="flex flex-row justify-content-between w-6 align-items-center">
-                    <span class="my-0 text-content text-sm font-normal">#TS0041</span>
-                    <p-avatar [label]="getMeUserAvatar(reviewers)" *ngFor="let reviewers of data?.reviewers" class="pt-2" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
-                    <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200 pt-2"></i>
-                  </div> -->
                   </div>
                   <div class="py-2 border-bottom-1 pr-4">
                     <div class="flex flex-row justify-content-between">
-                      <div class="">
-                        <div class="relative">
-                          <i class="pi pi-plus text-sm border-1 border-200 border-round-sm mx-2"
-                            [ngStyle]="{ 'background-color': '#EFEEEE' }"></i>
+                      <div class="sctions-grid">
+                        <div *ngIf="checktableJsonSection(subData?.comment.referenceContent?.title); else normalView">
+                          <pre *ngIf="!subData?.comment.referenceContent?.showTable"
+                            [innerHTML]="subData?.comment.referenceContent?.content | json"
+                            style=" white-space: pre-wrap; overflow: auto"></pre>
+                          <xnode-common-spec-table *ngIf="subData?.comment.referenceContent?.showTable"
+                            [specItem]="subData?.comment.referenceContent?.content.content"
+                            [content]="subData?.comment.referenceContent?.content"></xnode-common-spec-table>
                         </div>
-                        <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
-                          {{ subData?.comment?.referenceContent?.content }}
-                        </p>
+                        <ng-template #normalView>
+                          <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
+                          <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
+                            {{ subData?.comment?.referenceContent?.content }}
+                          </p>
+                        </ng-template>
+                        <div class="gradientback">
+                        </div>
                       </div>
                     </div>
                     <span class="text-xs my-2 text-gray-200 flex align-items-center">
@@ -177,23 +201,15 @@
     </div>
 
     <p-overlayPanel #op>
-      <div class="card p-0 m-0">
+      <div class="card p-0 m-0" *ngFor="let action of crActions">
         <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
-          (click)="updateChagneRequestStatus('APPROVED'); op.toggle(false)">
-          <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs bg-green-500"
+          (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
+          <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
+            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'bg-green-500' : 'bg-red-500'"
             [ngStyle]="{ padding: '3px' }"></i>
-          <p class="text-sm font-normal ml-1 text-green-500">Approve</p>
-        </div>
-        <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
-          (click)="updateChagneRequestStatus('REJECTED'); op.toggle(false)">
-          <i class="pi pi-times border-circle flex justify-content-center align-items-center text-xs bg-red-500"
-            [ngStyle]="{ padding: '3px' }"></i>
-          <p class="text-sm font-normal ml-1 text-red-500">Reject</p>
-        </div>
-        <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2"
-          (click)="updateChagneRequestStatus('NEEDMOREWORK'); op.toggle(false)">
-          <i class="pi pi-comment flex justify-content-center align-items-center text-xs" [ngStyle]="{}"></i>
-          <p class="text-sm font-normal ml-1">Needs work</p>
+          <p class="text-sm font-normal ml-1"
+            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'text-green-500' : 'text-red-500'">
+            {{action.label}}</p>
         </div>
       </div>
     </p-overlayPanel>
@@ -202,3 +218,6 @@
 <xnode-confirmation-popup-new [header]="header" [content]="content"
   [visible]="openConfirmationPopUp || updateSpecBtnTriggered"
   (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR" [versions]="[]"
+  (close)="showNewCrPopup = false;">
+</xnode-create-new-cr-version>
