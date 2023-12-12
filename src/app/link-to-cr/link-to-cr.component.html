@@ -11,9 +11,13 @@
             <img src="./assets/cr.svg" alt="cr">
           </span>
           <p-dropdown formControlName="crToAdd" [options]="crList" [(ngModel)]="crForm.value.crToAdd"
-            (ngModelChange)="onDropdownChange($event)" optionLabel="label"
-            placeholder="Add new or search exsiting change requests"
-            [ngClass]="{ 'is-invalid': submitted && crFormControl['crToAdd'].errors }"></p-dropdown>
+            (ngModelChange)="onDropdownChange($event)" optionLabel="label" appendTo="body"
+            placeholder="Add new or search existing change requests"
+            [ngClass]="{ 'is-invalid': submitted && crFormControl['crToAdd'].errors }">
+            <ng-template let-item pTemplate="selectedItem">
+              {{ item?.label }} - {{ item?.title }}
+            </ng-template>
+          </p-dropdown>
         </div>
         <div *ngIf="submitted && crFormControl['crToAdd'].errors" class="invalid-feedback">
           <div *ngIf="crFormControl['crToAdd'].errors?.['required']">
