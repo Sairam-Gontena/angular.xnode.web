@@ -20,6 +20,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 
 })
 export class DataModelCommonComponent {
+  
+  @Input() dataModelData: any;
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
   @Input() item: any;
