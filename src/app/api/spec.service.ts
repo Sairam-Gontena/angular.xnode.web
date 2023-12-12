@@ -19,5 +19,10 @@ export class SpecService extends BaseApiService {
         let url = 'product-spec';
         return this.get(url, params)
     }
+
+    getLatestSpec(productId?: any) {
+        let url = 'product-spec/latest/' + productId;
+        return this.get(url)
+    }
 }
 

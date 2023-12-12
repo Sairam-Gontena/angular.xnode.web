@@ -42,6 +42,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   contentData: any;
   noResults: boolean = false;
   useCases: any;
+  specDataLatest?: any;
 
   constructor(
     private utils: UtilsService,
@@ -59,9 +60,14 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
-        }else{
+          this.getMeLatestSpec(info.product_id);
+
+
+        } else {
           let productId = localStorage.getItem('record_id');
           this.getMeSpecList({ productId: productId, live: true });
+          this.getMeLatestSpec(productId);
+
         }
       })
       .catch((err: any) => {
@@ -232,6 +238,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             : response?.data;
           this.useCases = data?.usecase || [];
           this.getMeSpecList();
+          this.getMeLatestSpec();
         } else {
           let user_audit_body = {
             method: 'GET',
@@ -309,7 +316,44 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.currentUser.last_name[1][0].toUpperCase(); // Get the first letter of the second word
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
-
+  getMeLatestSpec(body?: any) {
+    this.utils.loadSpinner(true);
+    this.specService
+      .getLatestSpec(body)
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data
+        ) {
+          this.isTheSpecGenerated = true;
+          // this.handleData(response);
+          this.specDataLatest = response.data;
+          console.log(this.specDataLatest, '00000000')
+        } else {
+          this.isTheSpecGenerated = false;
+          if (this.currentUser.email === this.product?.email) {
+            this.showSpecGenaretePopup = true;
+            this.isTheCurrentUserOwner = true;
+            this.productStatusPopupContent =
+              'No spec generated for this product. Do you want to generate Spec?';
+          } else {
+            this.showSpecGenaretePopup = true;
+            this.isTheCurrentUserOwner = false;
+            this.productStatusPopupContent =
+              'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
+          }
+          this.utils.loadSpinner(false);
+        }
+      })
+      .catch((error) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+      });
+  }
   getMeSpecList(body?: any): void {
     if (!body) {
       body = { productId: localStorage.getItem('record_id'), live: true };
