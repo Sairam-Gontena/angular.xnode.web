@@ -42,6 +42,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   contentData: any;
   noResults: boolean = false;
   // useCases: any;
+  useCases: any;
+  currentSpecVersionId: string = '';
 
   constructor(
     private utils: UtilsService,
@@ -59,7 +61,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
-        }else{
+        } else {
           let productId = localStorage.getItem('record_id');
           this.getMeSpecList({ productId: productId, live: true });
         }
@@ -74,7 +76,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data)
-        this.getMeSpecList({ versionId: data.versionId, productId: data.productId, });
+        this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
     });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -324,6 +326,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
+          this.currentSpecVersionId = response.data[0].versionId;
+
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
@@ -362,7 +366,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.router.navigate([currentUrl]);
     });
   }
+  onSpecDataChange(data: any): void {
+    this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
 
+  }
   handleData(response: any): void {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
@@ -439,6 +446,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         'navi/get_conversation/' + this.product.email + '/' + this.product.id
       )
       .then((res: any) => {
+
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
           this.generate();

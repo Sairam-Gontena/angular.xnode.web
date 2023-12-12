@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -6,6 +6,7 @@ import { LocalStorageService } from '../components/services/local-storage.servic
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
 import { SpecUtilsService } from '../components/services/spec-utils.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -32,29 +33,29 @@ export class CrTabsComponent {
   crList: any = [];
   showNewCrPopup: boolean = false;
   crActions: any;
+  @ViewChild('op') overlayPanel: OverlayPanel | any;
 
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService,
-
+    private specUtils: SpecUtilsService
   ) {
     this.specUtils.getMeCrList.subscribe((event: any) => {
-      if (event)
-        this.getCRList();
-    })
+      if (event) this.getCRList();
+    });
   }
 
   ngOnInit() {
-    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.filters = [
       { title: 'Filters', code: 'F' },
       { title: 'All', code: 'A' },
       { title: 'None', code: 'N' },
     ];
+    this.overlayPanel.toggle(true);
   }
 
   getCRList() {
@@ -211,6 +212,7 @@ export class CrTabsComponent {
               detail: res?.data,
             });
           }
+          this.specUtils._getLatestCrList(true);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -235,8 +237,8 @@ export class CrTabsComponent {
     const body = {
       entityId: this.selectedCr.id,
       action: this.selectedStatus,
-      userId: this.currentUser.user_id
-    }
+      userId: this.currentUser.user_id,
+    };
     this.utilsService.loadSpinner(true);
     this.commentsService
       .performCrActions(body)
@@ -246,8 +248,16 @@ export class CrTabsComponent {
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
-            detail: 'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE' ? 'ARCHIVED' : this.selectedStatus === 'SUBMIT' ? 'SUBMITTED' : this.selectedStatus === 'REJECT' ? "REJECTED" : this.selectedStatus === 'APPROVE' ?
-              'APPROVED' : '' + " " + 'successfully',
+            detail:
+              'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
+                ? 'ARCHIVED'
+                : this.selectedStatus === 'SUBMIT'
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
         } else {
@@ -303,8 +313,8 @@ export class CrTabsComponent {
             body.status == 'REJECTED'
               ? 'Change request rejected successfully'
               : body.status == 'NEEDMOREWORK'
-                ? 'Change request updated successfully'
-                : '';
+              ? 'Change request updated successfully'
+              : '';
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
@@ -331,7 +341,7 @@ export class CrTabsComponent {
   }
 
   onCheckCheckbox(event: any): void {
-    // event.stopPropagation();    
+    // event.stopPropagation();
     this.checkedCrList = this.crData.filter((cr: any) => cr.checked);
   }
 
@@ -346,7 +356,13 @@ export class CrTabsComponent {
   }
 
   checktableJsonSection(title: string): boolean {
-    return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
+    return (
+      title === 'Business Rules' ||
+      title === 'Functional Dependencies' ||
+      title === 'Data Dictionary' ||
+      title === 'User Interfaces' ||
+      title === 'Annexures'
+    );
   }
 
   createNewCr(): void {
@@ -357,26 +373,29 @@ export class CrTabsComponent {
     this.utilsService.loadSpinner(true);
     const body = {
       entityId: cr.id,
-      userId: this.currentUser?.user_id
-    }
-    this.commentsService.getCrActions(body).then((res: any) => {
-      if (res) {
-        this.crActions = res?.data;
-      } else {
+      userId: this.currentUser?.user_id,
+    };
+    this.commentsService
+      .getCrActions(body)
+      .then((res: any) => {
+        if (res) {
+          this.crActions = res?.data;
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res.data.description,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utilsService.loadSpinner(false);
         this.utilsService.loadToaster({
           severity: 'error',
           summary: 'ERROR',
-          detail: res.data.description,
+          detail: err,
         });
-      }
-      this.utilsService.loadSpinner(false);
-    }).catch((err => {
-      this.utilsService.loadSpinner(false);
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: 'ERROR',
-        detail: err,
       });
-    }))
   }
 }
