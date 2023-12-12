@@ -246,8 +246,10 @@ export class CrTabsComponent {
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
-            detail: 'CR has been' + ' ' + this.selectedStatus + " " + 'successfully',
+            detail: 'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE' ? 'ARCHIVED' : this.selectedStatus === 'SUBMIT' ? 'SUBMITTED' : this.selectedStatus === 'REJECT' ? "REJECTED" : this.selectedStatus === 'APPROVE' ?
+              'APPROVED' : '' + " " + 'successfully',
           });
+          this.specUtils._getLatestCrList(true);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
