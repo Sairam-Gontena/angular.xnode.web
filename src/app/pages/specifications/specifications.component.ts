@@ -41,7 +41,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   consversationList: any;
   contentData: any;
   noResults: boolean = false;
-  // useCases: any;
   useCases: any;
   currentSpecVersionId: string = '';
 
@@ -342,8 +341,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             this.productStatusPopupContent =
               'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
           }
-          this.utils.loadSpinner(false);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((error) => {
         this.utils.loadSpinner(false);

@@ -81,6 +81,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     })
     this.getVersions();
   }
+
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersionIds(this.productId)
