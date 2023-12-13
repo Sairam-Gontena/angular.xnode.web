@@ -42,6 +42,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   contentData: any;
   noResults: boolean = false;
   useCases: any;
+  currentSpecVersionId: string = '';
 
   constructor(
     private utils: UtilsService,
@@ -59,7 +60,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, live: true });
-        }else{
+        } else {
           let productId = localStorage.getItem('record_id');
           this.getMeSpecList({ productId: productId, live: true });
         }
@@ -74,7 +75,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data)
-        this.getMeSpecList({ versionId: data.versionId, productId: data.productId, });
+        this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
     });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -206,7 +207,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.getInsights();
+    // this.getInsights();
   }
 
   getInsights() {
@@ -230,7 +231,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           const data = Array.isArray(response?.data)
             ? response?.data[0]
             : response?.data;
-          this.useCases = data?.usecase || [];
+          // this.useCases = data?.usecase || [];
           this.getMeSpecList();
         } else {
           let user_audit_body = {
@@ -324,6 +325,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
+          this.currentSpecVersionId = response.data[0].versionId;
+
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
@@ -338,8 +341,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             this.productStatusPopupContent =
               'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
           }
-          this.utils.loadSpinner(false);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((error) => {
         this.utils.loadSpinner(false);
@@ -362,10 +365,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.router.navigate([currentUrl]);
     });
   }
+  onSpecDataChange(data: any): void {
+    this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
 
+  }
   handleData(response: any): void {
     const list = response.data;
-    console.log('list', list);
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
       if (obj?.title == 'Technical Specifications') {
@@ -378,10 +383,35 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           id: 'open-api-spec',
         });
       }
+      if (obj?.title == 'Quality Assurance') {
+        let content = obj.content;
+        content.forEach((useCase: any) => {
+          if (useCase["Test Cases"]) {
+            useCase.TestCases = useCase["Test Cases"];
+            delete useCase["Test Cases"];
+            useCase.TestCases.forEach((testCase: any) => {
+              testCase.TestCases = testCase["Test Cases"];
+              delete testCase["Test Cases"];
+            });
+          }
+        });
+
+        if (Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+
+        obj.content.push({
+          title: 'Test Cases',
+          content: content,
+        });
+
+      }
     });
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
+
+
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
@@ -415,6 +445,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         'navi/get_conversation/' + this.product.email + '/' + this.product.id
       )
       .then((res: any) => {
+
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
           this.generate();

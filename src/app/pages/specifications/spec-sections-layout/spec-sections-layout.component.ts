@@ -18,7 +18,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() usersList: any = [];
-  @Input() useCases: any[] = [];
+  // @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
   @Input() specItemList: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
@@ -26,6 +26,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() onClickSeeLess = new EventEmitter<any>();
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
+  bpmnFrom:string='SPEC';
   iframeSrc: SafeResourceUrl = '';
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;

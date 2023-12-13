@@ -23,6 +23,32 @@
     padding: 10px !important;
 }
 
+:host ::ng-deep .app-dropdown-version .p-dropdown {
+    border-radius: 25px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 0;
+    width: 100%;
+    color: #11CF46 !important;
+    background: #CCFFDA;
+}
+
+:host ::ng-deep .app-dropdown-version .p-inputtext {
+    background: #CCFFDA !important;
+    color: #11CF46 !important;
+    padding: 8px 10px !important;
+}
+
+:host ::ng-deep .app-dropdown-version .p-dropdown-label {
+    font-size: 12px;
+    border-radius: 30px;
+}
+
+:host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-label,
+:host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-trigger {
+    color: #11CF46;
+}
+
 :host ::ng-deep .app-dropdown .p-dropdown-label {
     font-size: 12px;
     border-radius: 30px;

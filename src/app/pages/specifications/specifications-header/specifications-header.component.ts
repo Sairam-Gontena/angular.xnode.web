@@ -1,7 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ApiService } from 'src/app/api/api.service';
+import { SpecService } from 'src/app/api/spec.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+interface Version {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'xnode-specifications-header',
@@ -13,6 +18,9 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() refreshCurrentRoute = new EventEmitter<any>();
   @Output() changeProduct = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
+  @Output() specDataChange = new EventEmitter<{ productId: any, versionId: any }>();
+  @Input() currentSpecVersionId: any;
+
   currentUser: any;
   templates: any;
   selectedTemplate: any;
@@ -28,14 +36,18 @@ export class SpecificationsHeaderComponent implements OnInit {
   userHasPermissionToEditProduct = true;
   showConfirmationPopup: boolean = false;
   specVersion: any;
+  version: any;
+  versionSelected: any;
+  allVersions: any = [];
+  selectedVersion: Version | undefined;
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private apiService: ApiService) {
+    private apiService: ApiService,
+    private specService: SpecService,) {
   }
 
   ngOnInit(): void {
-
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     })
@@ -67,9 +79,37 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.hasProductEditPermission.subscribe((result: boolean) => {
       this.userHasPermissionToEditProduct = result
     })
-
+    this.getVersions();
   }
 
+  getVersions() {
+    this.utils.loadSpinner(true);
+    this.specService.getVersionIds(this.productId)
+      .then((response) => {
+        if (response.status === 200 && response.data) {
+          this.allVersions = response.data.map((item: any) => ({
+            label: item.version,
+            value: item.id
+          }));
+          response.data.map((item: any) => {
+            if (item.id === this.currentSpecVersionId) {
+              this.selectedVersion = {
+                label: item.version,
+                value: item.id
+              }
+            }
+
+          });
+          this.utils.loadSpinner(false);
+        } else {
+          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
+        }
+        this.utils.loadSpinner(false);
+      }).catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
+      })
+  }
   getMeUserAvatar() {
     var firstLetterOfFirstWord = this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
     var firstLetterOfSecondWord = this.currentUser.last_name[0][0].toUpperCase(); // Get the first letter of the second word
@@ -152,4 +192,9 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.showConfirmationPopup = false;
     }
   }
+  onVersionChange(event: any): void {
+    let data = { productId: this.productId, versionId: event.value.id };
+    this.specDataChange.emit(data);
+  }
+
 }
