@@ -60,13 +60,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((res: any) => {
         let info = JSON.parse(res);
         if (info) {
-          this.getMeSpecList({ productId: info.product_id, live: true });
+          // this.getMeSpecList({ productId: info.product_id, live: true });
           this.getMeLatestSpec(info.product_id);
 
 
         } else {
           let productId = localStorage.getItem('record_id');
-          this.getMeSpecList({ productId: productId, live: true });
+          // this.getMeSpecList({ productId: productId, live: true });
           this.getMeLatestSpec(productId);
 
         }
@@ -238,7 +238,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             ? response?.data[0]
             : response?.data;
           this.useCases = data?.usecase || [];
-          this.getMeSpecList();
+          // this.getMeSpecList();
           this.getMeLatestSpec();
         } else {
           let user_audit_body = {
@@ -318,19 +318,25 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
   getMeLatestSpec(body?: any) {
+    if (!body) {
+      let productId = localStorage.getItem('record_id')
+      body = productId;
+    }
     this.utils.loadSpinner(true);
     this.specService
       .getLatestSpec(body)
       .then((response) => {
+        console.log(response.data, '00000000')
+
         if (
           response.status === 200 &&
           response.data
         ) {
           this.isTheSpecGenerated = true;
-          this.specDataLatest = response.data;
-          this.specData = this.specDataLatest;
-          this.specData = [...this.specData]
-          console.log(this.specData, '00000000')
+          console.log(response.data, '00000000')
+
+          this.specData = response.data;
+          this.specDataCopy = [...this.specData];
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
