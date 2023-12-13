@@ -45,7 +45,7 @@ export class UseCasesComponent implements OnInit {
         return
       }
     }
-    this.getUsecases();
+    // this.getUsecases();
   }
 
   getUsecases() {

@@ -6,9 +6,9 @@
             class="text-white" />
     </div>
     <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3  lg:mt-4">
-        <p-button label="New with Navi AI" styleClass="mr-2 navi-btn"  [rounded]="true"
+        <p-button label="New with Navi AI" styleClass="mr-2 navi-btn" [rounded]="true"
             (click)="onClickNewWithNavi()"></p-button>
-        <p-button styleClass="p-button-secondary mr-4"  [rounded]="true">
+        <p-button styleClass="p-button-secondary mr-4" [rounded]="true">
             <img alt="bot-btn-icon" src="./assets/import.svg" />
             <span class="import-btn ml-2" (click)="importNavi()">Import</span>
         </p-button>
@@ -25,7 +25,7 @@
             </ng-template>
             <div class="grid">
                 <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
-                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickCreateNewTemplate(data)">
+                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
                     <div class="card-color relative">
                         <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
@@ -89,7 +89,7 @@
             </ng-template>
             <div class="grid">
                 <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
-                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickCreateNewTemplate(data)">
+                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
                     <div class="card-color relative">
                         <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>

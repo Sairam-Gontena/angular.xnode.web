@@ -67,7 +67,7 @@
               isCommnetsPanelOpened && isSideMenuOpened
           }" class="col-12">
           <xnode-common-usecases [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-            [useCases]="useCases"></xnode-common-usecases>
+            [useCases]="content.content"></xnode-common-usecases>
         </div>
       </div>
     </div>
@@ -128,7 +128,7 @@
         </div>
         <div class="col-12">
           <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
-            [item]="content"></xnode-data-model-common>
+            [item]="content" [dataModelData]="content" ></xnode-data-model-common>
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@
             " />
         </div>
         <div class="col-12">
-          <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [item]="content"></xnode-bpmn-common>
+          <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [bpmnFrom]="bpmnFrom" [item]="content"></xnode-bpmn-common>
         </div>
       </div>
     </div>
@@ -490,6 +490,25 @@
       <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Stakeholder Approvals'" [users]="usersList"
         [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
     </div>
+    <div *ngIf="content.title === 'Test Cases'">
+      <div *ngFor="let item of content.content" >
+        <div class="mt-2" >
+          <div>
+          {{item.Usecase}}
+          </div>
+          <div class="mt-2" [ngClass]="{
+            'common-spec-table-menu': isSideMenuOpened,
+            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+            'common-spec-table':
+              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+          }" class="common-spec-table">
+            <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+              [content]="item.TestCases"></xnode-common-spec-table>
+          </div>
+        </div>
+      </div>
+   </div>
     <div *ngIf="content.title === 'QA Test Cases' && isArray(content.content)">
       <div class="grid" (mouseover)="qashowCommentIcon = true" (mouseleave)="qashowCommentIcon = false">
         <div class="col-12 text-right p-0">

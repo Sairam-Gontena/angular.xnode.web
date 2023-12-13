@@ -34,7 +34,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
   @Input() specExpanded?: boolean;
   @Input() dataToExpand: any;
   @Input() item: any;
-
+  @Input() bpmnFrom: any;
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
@@ -77,6 +77,19 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
     this.router.url == '/specification' ? this.showBpmn = false : this.showBpmn = true
   }
 
+  ngOnChanges() {
+    // if(this.bpmnFrom === 'SPEC'){
+    //   setTimeout(() => {
+    //     if (this.showUsecaseGraph) this.getInsights();
+    //   }, 100);
+    // }else{
+    //   setTimeout(() => {
+    //     if (this.showUsecaseGraph) this.getInsights();
+    //   }, 500);
+    // }
+
+  }
+
   ngOnInit(): void {
     if (this.product && !this.product?.has_insights) {
       this.utilsService.showProductStatusPopup(true);
@@ -92,9 +105,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
       if (graphWindow) graphWindow.style.display = '';
     }, 0);
 
-    setTimeout(() => {
-      if (this.showUsecaseGraph) this.getInsights();
-    }, 500);
+
 
     this.initializeBpmn();
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
@@ -556,7 +567,6 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
 
 
   graph(data: any) {
-
     let mod_data = this.modifyGraphData(data);
     this.showUsecaseGraph = true;
 
