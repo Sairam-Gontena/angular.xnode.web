@@ -250,6 +250,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.utils.loadSpinner(false);
           this.utils.showProductStatusPopup(true);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((error: any) => {
         let user_audit_body = {
@@ -445,7 +446,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         'navi/get_conversation/' + this.product.email + '/' + this.product.id
       )
       .then((res: any) => {
-
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
           this.generate();
@@ -457,6 +457,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             detail: 'Network Error',
           });
         }
+        this.utils.loadSpinner(false);
       })
       .catch((err: any) => {
         this.utils.loadSpinner(false);
