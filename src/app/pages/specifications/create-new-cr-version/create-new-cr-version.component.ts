@@ -277,17 +277,17 @@ export class CreateNewCrVersionComponent implements OnInit {
 
     this.filteredReveiwers = filtered;
 
-    // Update the disabled property of the control based on the length of filteredReveiwers
-    if (reviewerType === 'L2') {
-      const reviewersLTwoControl = this.crForm.get('reviewersLTwo');
-      if (reviewersLTwoControl) {
-        if (this.filteredReveiwers.length === 0) {
-          reviewersLTwoControl.disable();
-        } else {
-          reviewersLTwoControl.enable();
-        }
-      }
-    }
+    // // Update the disabled property of the control based on the length of filteredReveiwers
+    // if (reviewerType === 'L2') {
+    //   const reviewersLTwoControl = this.crForm.get('reviewersLTwo');
+    //   if (reviewersLTwoControl) {
+    //     if (this.filteredReveiwers.length === 0) {
+    //       reviewersLTwoControl.disable();
+    //     } else {
+    //       reviewersLTwoControl.enable();
+    //     }
+    //   }
+    // }
   }
 
 
