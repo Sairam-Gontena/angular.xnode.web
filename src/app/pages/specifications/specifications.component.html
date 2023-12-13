@@ -1,10 +1,10 @@
-<div class="flex" *ngIf="specDataLatest; else showHeader">
+<div class="flex" *ngIf="specData else showHeader">
     <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
-        [specData]="specDataLatest"></xnode-specifications-menu>
+        [specData]="specData"></xnode-specifications-menu>
     <div class="w-full">
         <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
             (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-        <xnode-specifications-content [noResults]="noResults" [specData]="specDataLatest " [useCases]="useCases"
+        <xnode-specifications-content [noResults]="noResults" [specData]="specData" [useCases]="useCases"
             [keyword]="keyword">
         </xnode-specifications-content>
     </div>

@@ -326,9 +326,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data
         ) {
           this.isTheSpecGenerated = true;
-          // this.handleData(response);
           this.specDataLatest = response.data;
-          console.log(this.specDataLatest, '00000000')
+          this.specData = this.specDataLatest;
+          this.specData = [...this.specData]
+          console.log(this.specData, '00000000')
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
