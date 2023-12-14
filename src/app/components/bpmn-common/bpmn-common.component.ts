@@ -1,15 +1,12 @@
 import {
-  AfterContentInit,
   Component,
   Input,
   ElementRef,
   ViewChild,
   OnDestroy,
   OnInit,
-  Renderer2,
   Output,
   EventEmitter,
-  SimpleChanges,
 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule,
@@ -42,8 +39,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   styleUrls: ['./bpmn-common.component.scss'],
 })
 export class BpmnCommonComponent
-  implements AfterContentInit, OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
     | undefined;
@@ -104,9 +100,7 @@ export class BpmnCommonComponent
       return;
     }
     const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    console.log('list', list);
-    
-    this.useCases = list[3].content[1].content;
+    this.useCases = list[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById('diagramRef');
@@ -390,72 +384,6 @@ export class BpmnCommonComponent
     if (layout) this.dashboard = this.layoutColumns[layout];
   }
 
-  ngAfterContentInit(): void {}
-
-  getInsights() {
-    this.api
-      .get('navi/get_insights/' + this.product?.email + '/' + this.product?.id)
-      .then((response) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_INSIGHTS_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          const data = Array.isArray(response?.data)
-            ? response?.data[0]
-            : response?.data;
-          this.useCases = data?.usecase || [];
-          // this.graph(this.useCases);
-          this.utilsService.loadSpinner(false);
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_INSIGHTS_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utilsService.loadSpinner(false);
-          this.utilsService.showProductStatusPopup(true);
-        }
-      })
-      .catch((error) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_RETRIEVE_INSIGHTS_BPMN',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser.email,
-          this.product?.id
-        );
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error,
-        });
-      });
-  }
 
   getOverview() {
     this.api

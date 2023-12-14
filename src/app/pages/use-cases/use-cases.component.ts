@@ -22,7 +22,7 @@ export class UseCasesComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private storageService: LocalStorageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getMeStorageData();
@@ -51,7 +51,6 @@ export class UseCasesComponent implements OnInit {
 
   getMeUsecases(): void {
     const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    console.log('list', list);
     this.useCases = list[2].content[0].content;
   }
 }

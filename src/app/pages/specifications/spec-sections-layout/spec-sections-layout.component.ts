@@ -94,10 +94,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
     private storageService: LocalStorageService,
     private utilsService: UtilsService,
     private specUtils: SpecUtilsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    console.log('targetUrl', this.targetUrl);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.utilsService.openDockedNavi.subscribe((res) => {
