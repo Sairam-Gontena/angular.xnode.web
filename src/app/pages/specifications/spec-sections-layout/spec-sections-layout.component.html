@@ -126,9 +126,9 @@
                 : 'opacity-0'
             " />
         </div>
-        <div class="col-12">
+        <div class="col-12" *ngIf="content">
           <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
-            [item]="content" [dataModelData]="content" ></xnode-data-model-common>
+            [dataModelData]="content" ></xnode-data-model-common>
         </div>
       </div>
     </div>

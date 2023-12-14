@@ -104,7 +104,9 @@ export class BpmnCommonComponent
       return;
     }
     const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    this.useCases = list[0].content[0].content;
+    console.log('list', list);
+    
+    this.useCases = list[3].content[1].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById('diagramRef');
@@ -866,7 +868,7 @@ export class BpmnCommonComponent
         let e = event.target.__data__;
         let flow = e.data.title;
         if (e.depth == 2) {
-          this.utilsService.loadSpinner(true);
+          // this.utilsService.loadSpinner(true);
           this.showUsecaseGraph = false;
           var bpmnWindow = document.getElementById('diagramRef');
           if (bpmnWindow) bpmnWindow.style.display = '';

@@ -3,16 +3,13 @@ import {
   Input,
   Output,
   EventEmitter,
-  SimpleChanges,
 } from '@angular/core';
 import { Data } from '../../pages/er-modeller/class/data';
 import { Router } from '@angular/router';
 import { DataService } from '../../pages/er-modeller/service/data.service';
 import { JsPlumbService } from '../../pages/er-modeller/service/jsPlumb.service';
 import { UtilService } from '../../pages/er-modeller/service/util.service';
-import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { MessageService } from 'primeng/api';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -23,14 +20,13 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   styleUrls: ['./data-model-common.component.scss'],
   providers: [DataService, JsPlumbService, UtilService, MessageService],
 })
+
 export class DataModelCommonComponent {
   @Input() dataModelData: any;
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
-  @Input() item: any;
   @Input() specExpanded?: boolean;
   @Output() dataFlowEmitter = new EventEmitter<any>();
-
   data: Data | any;
   bpmnSubUrl: boolean = false;
   dashboard: any;
@@ -38,21 +34,18 @@ export class DataModelCommonComponent {
   loading: boolean = true;
   highlightedIndex: string | null = null;
   isOpen = true;
-  id: String = '';
   currentUser?: any;
   dataModel: any;
   product: any;
   currentUrl: string = '';
 
   constructor(
-    private apiService: ApiService,
     private dataService: DataService,
     private jsPlumbService: JsPlumbService,
     private utilService: UtilService,
     private router: Router,
     private storageService: LocalStorageService,
     private utilsService: UtilsService,
-    private auditUtil: AuditutilsService
   ) {
     this.data = this.dataService.data;
     this.router.events.subscribe((data: any) => {
@@ -71,7 +64,7 @@ export class DataModelCommonComponent {
       return;
     }
     const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    this.dataModel = list[0].content[9].content;
+    this.dataModel = list[3].content[9].content;
     this.jsPlumbService.init();
     this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
   }

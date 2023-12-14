@@ -17,7 +17,6 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
@@ -400,6 +399,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             detail: 'Network Error',
           });
         }
+        this.utils.loadSpinner(false);
       })
       .catch((err: any) => {
         this.utils.loadSpinner(false);
