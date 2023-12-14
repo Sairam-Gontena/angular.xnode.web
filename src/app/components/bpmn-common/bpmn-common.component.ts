@@ -95,7 +95,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
       this.utilsService.showProductStatusPopup(true);
       return
     }
-    this.utilsService.loadSpinner(true);
+    // this.utilsService.loadSpinner(true);
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById("diagramRef");
@@ -596,7 +596,7 @@ export class BpmnCommonComponent implements AfterContentInit, OnDestroy, OnInit 
         let e = event.target.__data__;
         let flow = e.data.title;
         if (e.depth == 2) {
-          this.utilsService.loadSpinner(true);
+          // this.utilsService.loadSpinner(true);
           this.showUsecaseGraph = false;
           var bpmnWindow = document.getElementById("diagramRef");
           if (bpmnWindow) bpmnWindow.style.display = '';
