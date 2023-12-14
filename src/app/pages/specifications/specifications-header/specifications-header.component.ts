@@ -85,20 +85,27 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.loadSpinner(true);
     this.specService.getVersionIds(this.productId)
       .then((response) => {
+        console.log(response, '999999999999999999')
+
         if (response.status === 200 && response.data) {
           this.allVersions = response.data.map((item: any) => ({
             label: item.version,
             value: item.id
           }));
           response.data.map((item: any) => {
+            console.log(item, item.id, this.currentSpecVersionId, '1111111111111')
+
             if (item.id === this.currentSpecVersionId) {
+              console.log('Match Found:', item);
               this.selectedVersion = {
                 label: item.version,
                 value: item.id
               }
-            }
+              console.log(this.selectedVersion, '000000000')
 
+            }
           });
+
           this.utils.loadSpinner(false);
         } else {
           this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });

@@ -60,13 +60,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((res: any) => {
         let info = JSON.parse(res);
         if (info) {
-          // this.getMeSpecList({ productId: info.product_id, live: true });
+          this.getMeSpecList({ productId: info.product_id, live: true });
           this.getMeLatestSpec(info.product_id);
 
 
         } else {
           let productId = localStorage.getItem('record_id');
-          // this.getMeSpecList({ productId: productId, live: true });
+          this.getMeSpecList({ productId: productId, live: true });
           this.getMeLatestSpec(productId);
 
         }
@@ -377,7 +377,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.isTheSpecGenerated = true;
           this.currentSpecVersionId = response.data[0].versionId;
-
+          console.log(this.currentSpecVersionId, '222222')
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
