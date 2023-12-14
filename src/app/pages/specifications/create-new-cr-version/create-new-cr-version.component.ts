@@ -52,6 +52,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   submitted: boolean = false;
   latestVersion: object = { major: 0, minor: 0, build: 0 };
   showClearDueDate: boolean = false;
+  isLTwoDisabled: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -256,18 +257,41 @@ export class CreateNewCrVersionComponent implements OnInit {
         });
       });
   }
-
-  filteredReveiwer(event: AutoCompleteCompleteEvent) {
+  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-    for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
-      let reveiwer = (this.reveiwerList as any[])[i];
-      if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(reveiwer);
-      }
+    let selectedL1Reviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.user_id);
+    let selectedL2Reviewers = this.crForm.value.reviewersLTwo.map((reviewer: any) => reviewer.user_id);
+
+    if (reviewerType === 'L1') {
+      filtered = this.reveiwerList.filter(
+        (reviewer: any) => !selectedL2Reviewers.includes(reviewer.user_id) &&
+          reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0
+      );
+    } else if (reviewerType === 'L2') {
+      filtered = this.reveiwerList.filter(
+        (reviewer: any) => !selectedL1Reviewers.includes(reviewer.user_id) &&
+          reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0
+      );
     }
+
     this.filteredReveiwers = filtered;
+
+
   }
+
+
+  // filteredReveiwer(event: AutoCompleteCompleteEvent) {
+  //   let filtered: any[] = [];
+  //   let query = event.query;
+  //   for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
+  //     let reveiwer = (this.reveiwerList as any[])[i];
+  //     if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+  //       filtered.push(reveiwer);
+  //     }
+  //   }
+  //   this.filteredReveiwers = filtered;
+  // }
 
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(
