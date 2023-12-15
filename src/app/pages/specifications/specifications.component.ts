@@ -553,5 +553,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     );
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
+    let productId = localStorage.getItem('record_id');
+    this.getMeLatestSpec(productId);
   }
 }
