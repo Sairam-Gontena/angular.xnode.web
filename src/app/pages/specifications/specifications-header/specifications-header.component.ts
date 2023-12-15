@@ -48,7 +48,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private apiService: ApiService,
     private specService: SpecService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -83,6 +83,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.userHasPermissionToEditProduct = result;
     });
     this.getVersions();
+
   }
 
   getVersions() {
@@ -99,10 +100,11 @@ export class SpecificationsHeaderComponent implements OnInit {
             if (item.id === this.currentSpecVersionId) {
               this.selectedVersion = {
                 label: item.version,
-                value: item.id,
-              };
+                value: item.id
+              }
             }
           });
+          this.utils.loadSpinner(false);
         } else {
           this.utils.loadToaster({
             severity: 'error',

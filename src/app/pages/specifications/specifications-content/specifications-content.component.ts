@@ -28,7 +28,7 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./specifications-content.component.scss'],
 })
 export class SpecificationsContentComponent implements OnInit {
-  @Input() specData: any;
+  @Input() specData?: any;
   @Input() keyword: any;
   @Input() noResults: any;
   // @Input() useCases: any[] = [];
@@ -121,7 +121,7 @@ export class SpecificationsContentComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.specUtils._openCommentsPanel(false);
     this.utils.EnableSpecSubMenu()
   }
