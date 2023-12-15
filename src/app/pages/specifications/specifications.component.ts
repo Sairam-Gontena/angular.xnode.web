@@ -59,15 +59,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((res: any) => {
         let info = JSON.parse(res);
         if (info) {
-          this.getMeSpecList({ productId: info.product_id, live: true });
-          this.getMeLatestSpec(info.product_id);
-
-
+          this.getMeSpecList({ productId: info.product_id, versionId: '' });
         } else {
           let productId = localStorage.getItem('record_id');
-          this.getMeSpecList({ productId: productId, live: true });
           this.getMeLatestSpec(productId);
-
         }
       })
       .catch((err: any) => {
@@ -215,72 +210,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.getInsights();
-  }
-
-  getInsights() {
-    this.apiService
-      .get('navi/get_insights/' + this.product?.email + '/' + this.product?.id)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_INSIGHTS_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          const data = Array.isArray(response?.data)
-            ? response?.data[0]
-            : response?.data;
-          this.useCases = data?.usecase || [];
-          // this.getMeSpecList();
-          this.getMeLatestSpec();
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_INSIGHTS_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utils.loadSpinner(false);
-          this.utils.showProductStatusPopup(true);
-        }
-      })
-      .catch((error: any) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_RETRIEVE_INSIGHTS_BPMN',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser.email,
-          this.product?.id
-        );
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error,
-        });
-      });
   }
 
   searchText(keyword: any) {
@@ -328,15 +257,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.specService
       .getLatestSpec(body)
       .then((response) => {
-        console.log(response.data, '00000000')
-
         if (
           response.status === 200 &&
           response.data
         ) {
           this.isTheSpecGenerated = true;
-          console.log(response.data, '00000000')
-
+          this.currentSpecVersionId = response.data[0].versionId;
           this.specData = response.data;
           this.specDataCopy = [...this.specData];
         } else {
@@ -366,7 +292,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
   getMeSpecList(body?: any): void {
     if (!body) {
-      body = { productId: localStorage.getItem('record_id'), live: true };
+      body = { productId: localStorage.getItem('record_id') };
     }
     this.utils.loadSpinner(true);
     this.specService
@@ -378,8 +304,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
-          this.currentSpecVersionId = response.data[0].versionId;
-          console.log(this.currentSpecVersionId, '222222')
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;

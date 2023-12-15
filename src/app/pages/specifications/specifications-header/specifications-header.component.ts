@@ -83,6 +83,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.userHasPermissionToEditProduct = result;
     });
     this.getVersions();
+
   }
 
   getVersions() {
@@ -90,27 +91,19 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.specService
       .getVersionIds(this.productId)
       .then((response) => {
-        console.log(response, '999999999999999999')
-
         if (response.status === 200 && response.data) {
           this.allVersions = response.data.map((item: any) => ({
             label: item.version,
             value: item.id,
           }));
           response.data.map((item: any) => {
-            console.log(item, item.id, this.currentSpecVersionId, '1111111111111')
-
             if (item.id === this.currentSpecVersionId) {
-              console.log('Match Found:', item);
               this.selectedVersion = {
                 label: item.version,
                 value: item.id
               }
-              console.log(this.selectedVersion, '000000000')
-
             }
           });
-
           this.utils.loadSpinner(false);
         } else {
           this.utils.loadToaster({
@@ -240,6 +233,5 @@ export class SpecificationsHeaderComponent implements OnInit {
   onVersionChange(event: any): void {
     let data = { productId: this.productId, versionId: event.value.value };
     this.specDataChange.emit(data);
-    console.log(this.specDataChange, '0000000000000')
   }
 }
