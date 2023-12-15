@@ -136,7 +136,8 @@ export class MyProductsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  onClickCreateNewTemplate(data: any): void {
+  onClickProductCard(data: any): void {
+    this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true)
     } else {
@@ -150,9 +151,8 @@ export class MyProductsComponent implements OnInit {
     if (!data.has_insights) {
       this.router.navigate(['/x-pilot']);
     } else {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/specification']);
     }
-    this.auditUtil.postAudit('PRODUCT_OPENED', 1, 'SUCCESS', 'user-audit');
   }
 
   onClickgotoxPilot() {

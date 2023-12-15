@@ -31,7 +31,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword: any;
   @Input() noResults: any;
-  @Input() useCases: any[] = [];
+  // @Input() useCases: any[] = [];
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();

@@ -3,7 +3,7 @@
   [ngClass]="{ 'bg-white': dataToExpand.swagger }"
 >
   <xnode-data-model-common
-    *ngIf="dataToExpand.title === 'Data Management Persistence'"
+    *ngIf="dataToExpand.title === 'Data Model'"
     (dataFlowEmitter)="closeFullScreenView.emit()"
     [dataToExpand]="dataToExpand"
     [specExpanded]="specExpanded"
@@ -49,7 +49,6 @@
   </div>
   <div
     *ngIf="
-      dataToExpand.title === 'Error Handling' ||
       dataToExpand.title === 'Glossary' ||
       dataToExpand.title === 'Historical Data Load' ||
       dataToExpand.title === 'Version Control' ||

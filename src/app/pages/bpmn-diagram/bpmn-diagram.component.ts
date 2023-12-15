@@ -86,12 +86,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.utilsService.showProductStatusPopup(true);
       return;
     }
+    const list: any = this.storageService.getItem(StorageKeys.SpecData);
+    this.useCases = list[2].content[0].content;
     var element = document.getElementById('graph');
     while (element?.firstChild) {
       element.removeChild(element.firstChild);
     }
     this.router.url == '/configuration/workflow/overview' ? this.showBpmn = false : this.showBpmn = true
-    this.utilsService.loadSpinner(true);
+    // this.utilsService.loadSpinner(true);
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById("diagramRef");
@@ -100,15 +102,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       var graphWindow = document.getElementById("sc");
       if (graphWindow) graphWindow.style.display = '';
     }, 0);
-
-    setTimeout(() => {
-      if (this.showUsecaseGraph) this.getInsights();
-    }, 500);
-
     this.initializeBpmn();
     this.items = [{ label: 'Computer' }, { label: 'Notebook' }, { label: 'Accessories' }, { label: 'Backpacks' }, { label: 'Item' }];
     this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
-
+    this.graph();
   }
 
   switchWindow() {
@@ -269,42 +266,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   }
 
-
-  getInsights() {
-    this.api.get("navi/get_insights/" + this.product.email + "/" + this.product.id)
-      .then(response => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
-          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.useCases = data?.usecase || [];
-          this.graph(this.useCases);
-          this.utilsService.loadSpinner(false);
-        } else {
-          let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
-          this.utilsService.loadSpinner(false);
-          this.utilsService.showProductStatusPopup(true);
-        }
-      })
-      .catch(error => {
-        let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.auditUtil.postAudit('GET_RETRIEVE_INSIGHTS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      });
-  }
-
-
   getOverview() {
     this.api.get("navi/get_overview/" + this.product?.email + "/" + this.product?.id)
       .then(response => {
@@ -339,7 +300,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
 
   getElement() {
     this.sidebarVisible = true;
-
     this.bpmnJS.get('eventBus').on('element.click', 9, (event: any) => {
       let type = event.element.type;
       if (type === 'bpmn:Process') {
@@ -564,9 +524,9 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   }
 
 
-  graph(data: any) {
+  graph() {
 
-    let mod_data = this.modifyGraphData(data);
+    let mod_data = this.modifyGraphData(this.useCases);
     this.showUsecaseGraph = true;
 
     //TBD

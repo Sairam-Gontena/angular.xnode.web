@@ -17,7 +17,6 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
@@ -81,7 +80,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data)
-        this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
+        this.getMeSpecList({
+          versionId: data.versionId,
+          productId: data.productId,
+        });
     });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -141,7 +143,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .get('navi/get_metadata/' + userEmail + '?product_id=' + val.product_id)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
-          let product = response.data.data[0]
+          let product = response.data.data[0];
           localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
@@ -392,8 +394,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             this.productStatusPopupContent =
               'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
           }
-          this.utils.loadSpinner(false);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((error) => {
         this.utils.loadSpinner(false);
@@ -416,10 +418,14 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.router.navigate([currentUrl]);
     });
   }
+
   onSpecDataChange(data: any): void {
-    this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
-    console.log(data, '3333333')
+    this.getMeSpecList({
+      versionId: data.versionId,
+      productId: data.productId,
+    });
   }
+
   handleData(response: any): void {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
@@ -428,16 +434,44 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         if (!Array.isArray(obj.content)) {
           obj.content = [];
         }
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Model Table Data') {
+            obj.content.splice(idx, 1);
+          }
+        });
         obj.content.push({
           title: 'OpenAPI Spec',
           content: [],
           id: 'open-api-spec',
         });
       }
+      if (obj?.title == 'Quality Assurance') {
+        let content = obj.content;
+        content.forEach((useCase: any) => {
+          if (useCase['Test Cases']) {
+            useCase.TestCases = useCase['Test Cases'];
+            delete useCase['Test Cases'];
+            useCase.TestCases.forEach((testCase: any) => {
+              testCase.TestCases = testCase['Test Cases'];
+              delete testCase['Test Cases'];
+            });
+          }
+        });
+
+        if (Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+
+        obj.content.push({
+          title: 'Test Cases',
+          content: content,
+        });
+      }
     });
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
+
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
@@ -471,7 +505,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         'navi/get_conversation/' + this.product.email + '/' + this.product.id
       )
       .then((res: any) => {
-
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
           this.generate();
@@ -483,6 +516,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             detail: 'Network Error',
           });
         }
+        this.utils.loadSpinner(false);
       })
       .catch((err: any) => {
         this.utils.loadSpinner(false);
