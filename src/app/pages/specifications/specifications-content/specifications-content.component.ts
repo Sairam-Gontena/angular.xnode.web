@@ -80,7 +80,7 @@ export class SpecificationsContentComponent implements OnInit {
     this.utils.getMeSelectedSection.subscribe((event: any) => {
       if (event) {
         this.selectedSpecItem = event;
-        this.closeFullScreenView();
+        this.onSelectMenuItem();
       }
     });
     this.specUtils.openCommentsPanel.subscribe((event: any) => {
@@ -264,6 +264,9 @@ export class SpecificationsContentComponent implements OnInit {
     }
   }
 
+  onSelectMenuItem(): void {
+    this.scrollToItem();
+  }
   closeFullScreenView(): void {
     this.specExpanded = false;
     this.fetchOpenAPISpec();
