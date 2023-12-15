@@ -201,8 +201,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.prepareDataToDisplayOnCommentsPanel();
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+        this.utils.loadSpinner(false);
       }
-      this.utils.loadSpinner(false);
     }).catch(err => {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });

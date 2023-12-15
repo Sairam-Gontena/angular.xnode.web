@@ -55,7 +55,7 @@ export class CrTabsComponent {
       { title: 'All', code: 'A' },
       { title: 'None', code: 'N' },
     ];
-    this.overlayPanel.toggle(true);
+    this.overlayPanel?.toggle(true);
   }
 
   getCRList() {
@@ -252,12 +252,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
         } else {
@@ -313,8 +313,8 @@ export class CrTabsComponent {
             body.status == 'REJECTED'
               ? 'Change request rejected successfully'
               : body.status == 'NEEDMOREWORK'
-              ? 'Change request updated successfully'
-              : '';
+                ? 'Change request updated successfully'
+                : '';
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',

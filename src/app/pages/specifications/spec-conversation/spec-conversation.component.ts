@@ -14,13 +14,13 @@ import { SpecChildConversationComponent } from '../spec-child-conversation/spec-
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
   styleUrls: ['./spec-conversation.component.scss'],
 })
+
 export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
@@ -63,8 +63,7 @@ export class SpecConversationComponent {
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
     private messagingService: MessagingService,
-    private storageService: LocalStorageService,
-    private route: ActivatedRoute
+    private storageService: LocalStorageService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.utils.getMeLatestConversation.subscribe((event: any) => {
