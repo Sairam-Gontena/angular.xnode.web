@@ -71,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="content.title === 'User Interface Design'">
+    <div *ngIf="content.title === 'Dashboards'">
       <div class="flex justify-content-between align-items-center">
         <h1 class="my-1">Dashboard</h1>
       </div>
@@ -103,7 +103,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="content.title === 'Data Management Persistence'">
+    <div *ngIf="content.title === 'Data Model'">
       <div class="grid" (mouseover)="dataManagementCommentIcon = true" (mouseleave)="dataManagementCommentIcon = false">
         <div class="col-12 text-right p-0">
           <p-overlayPanel #dataManagementop (onHide)="
@@ -126,9 +126,9 @@
                 : 'opacity-0'
             " />
         </div>
-        <div class="col-12">
+        <div class="col-12" *ngIf="content">
           <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
-            [item]="content" [dataModelData]="content" ></xnode-data-model-common>
+            [dataModelData]="content" ></xnode-data-model-common>
         </div>
       </div>
     </div>
@@ -418,7 +418,7 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Historical Data Load'">
-      <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Historical Data Load'" [searchTerm]="searchTerm"
+      <xnode-common-spec-table [searchTerm]="searchTerm"
         [users]="usersList" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
     </div>
     <div *ngIf="content.title === 'User Personas' && isArray(content.content)">
@@ -457,7 +457,7 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Glossary'">
-      <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Glossary'" [searchTerm]="searchTerm"
+      <xnode-common-spec-table  [searchTerm]="searchTerm"
         [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
     </div>
     <div [ngClass]="{
@@ -467,17 +467,7 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Version Control'">
-      <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Version Control'" [searchTerm]="searchTerm"
-        [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
-    </div>
-    <div [ngClass]="{
-        'common-spec-table-menu': isSideMenuOpened,
-        'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-        'common-spec-table':
-          !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-        'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-      }" *ngIf="content.title === 'Error Handling'">
-      <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Error Handling'" [searchTerm]="searchTerm"
+      <xnode-common-spec-table [searchTerm]="searchTerm"
         [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
     </div>
     <div [ngClass]="{
@@ -487,15 +477,29 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Stakeholder Approvals'">
-      <xnode-common-spec-table *ngIf="selectedSpecItem?.title === 'Stakeholder Approvals'" [users]="usersList"
+      <xnode-common-spec-table [users]="usersList"
         [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
     </div>
+    <div [ngClass]="{
+      'common-spec-table-menu': isSideMenuOpened,
+      'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
+      'common-spec-table':
+        !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
+      'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
+    }" class="common-spec-table" *ngIf="content.title === 'Data Quality Checks'">
+    <!-- <div class="grid">
+      <div class="col-12">
+        <xnode-common-spec-table  [users]="usersList"
+        [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content[0].content"></xnode-common-spec-table>
+      </div>
+    </div> -->
+  </div>
     <div *ngIf="content.title === 'Test Cases'">
       <div *ngFor="let item of content.content" >
         <div class="mt-2" >
-          <div>
+          <h3>
           {{item.Usecase}}
-          </div>
+          </h3>
           <div class="mt-2" [ngClass]="{
             'common-spec-table-menu': isSideMenuOpened,
             'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,

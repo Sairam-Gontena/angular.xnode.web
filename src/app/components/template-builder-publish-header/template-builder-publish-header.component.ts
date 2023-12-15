@@ -87,7 +87,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   };
 
   changeTheProduct(event: any): void {
-    console.log('event', event);
     this.product = event;
     this.onChangeProduct.emit(event)
 

@@ -103,7 +103,6 @@ export class SpecificationsHeaderComponent implements OnInit {
               };
             }
           });
-          this.utils.loadSpinner(false);
         } else {
           this.utils.loadToaster({
             severity: 'error',

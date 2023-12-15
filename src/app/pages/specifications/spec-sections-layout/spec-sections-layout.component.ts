@@ -3,6 +3,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-spec-sections-layout',
@@ -26,7 +28,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() onClickSeeLess = new EventEmitter<any>();
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
-  bpmnFrom:string='SPEC';
+  bpmnFrom: string = 'SPEC';
   iframeSrc: SafeResourceUrl = '';
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
@@ -75,42 +77,38 @@ export class SpecSectionsLayoutComponent implements OnInit {
     'Usecases',
     'Use Cases',
     'User Interface Design',
-    'Data Management Persistence',
     'Workflows',
     'Data Dictionary',
     'Annexures',
     'Historical Data Load',
     'Glossary',
     'Version Control',
-    'Error Handling',
     'Stakeholder Approvals',
     'OpenAPI Spec',
+    'Data Quality Checks',
+    'Data Model',
   ];
 
   constructor(
     private domSanitizer: DomSanitizer,
-    private utilsService: UtilsService, private specUtils: SpecUtilsService
+    private storageService: LocalStorageService,
+    private utilsService: UtilsService,
+    private specUtils: SpecUtilsService
   ) { }
 
   ngOnInit(): void {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-    }
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
-    this.makeTrustedUrl();
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.utilsService.openDockedNavi.subscribe((res) => {
       this.isDockedNaviOpened = res;
     });
     this.utilsService.openSpecSubMenu.subscribe((res: any) => {
       this.isSideMenuOpened = res;
-    })
+    });
     this.specUtils.openCommentsPanel.subscribe((event: any) => {
       this.isCommnetsPanelOpened = event;
-    })
+    });
+    this.makeTrustedUrl();
   }
 
   checkExpandSpecSections(spec: string) {

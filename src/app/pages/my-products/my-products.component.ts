@@ -139,7 +139,6 @@ export class MyProductsComponent implements OnInit {
   onClickProductCard(data: any): void {
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
       this.utils.hasProductPermission(true)
     } else {
       this.utils.hasProductPermission(false)

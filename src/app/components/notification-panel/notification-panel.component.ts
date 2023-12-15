@@ -155,25 +155,25 @@ export class NotificationPanelComponent {
       });
   }
   gotoSpec(obj: any) {
-let specData = localStorage.getItem('meta_data')
-if(specData){
-  let products = JSON.parse(specData);
-    let product = products.find((x: any) => x.id === obj.product_id);
-    localStorage.setItem('product_email', product.email);
-    localStorage.setItem('record_id', product.id);
-    localStorage.setItem('product', JSON.stringify(product));
-    localStorage.setItem('app_name', product.title);
-    localStorage.setItem('has_insights', product.has_insights);
-    if (obj.component && obj.component !== '') {
-      this.utils.toggleSpecPage(true);
-      this.router.navigate(['/specification']);
-      this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
-    } else {
-      this.router.navigate(['/dashboard']);
-      this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
+    let specData = localStorage.getItem('meta_data')
+    if (specData) {
+      let products = JSON.parse(specData);
+      let product = products.find((x: any) => x.id === obj.product_id);
+      localStorage.setItem('product_email', product.email);
+      localStorage.setItem('record_id', product.id);
+      localStorage.setItem('product', JSON.stringify(product));
+      localStorage.setItem('app_name', product.title);
+      localStorage.setItem('has_insights', product.has_insights);
+      if (obj.component && obj.component !== '') {
+        this.utils.toggleSpecPage(true);
+        this.router.navigate(['/specification']);
+        this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
+      } else {
+        this.router.navigate(['/dashboard']);
+        this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
+      }
+      this.closeNotificationPanel.emit(true);
     }
-    this.closeNotificationPanel.emit(true);
-}
   }
 
   getMeLabel(obj: any) {
@@ -240,7 +240,6 @@ if(specData){
   onClickPublish(obj: any): void {
     this.limitReachedContent = true;
     this.getMeTotalAppsPublishedCount(obj);
-    console.log(obj);
   }
 
   getMeTotalAppsPublishedCount(obj: any): void {
@@ -417,7 +416,7 @@ if(specData){
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);
           this.closeNotificationPanel.emit(true);
-          this.storeProductInfoForDeepLink('deep_link_info',val)
+          this.storeProductInfoForDeepLink('deep_link_info', val)
             .then(() => {
               this.router.navigate(['/specification']);
             })

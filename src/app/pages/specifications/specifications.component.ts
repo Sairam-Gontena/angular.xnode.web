@@ -17,7 +17,6 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
@@ -75,7 +74,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data)
-        this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
+        this.getMeSpecList({
+          versionId: data.versionId,
+          productId: data.productId,
+        });
     });
 
     this.utils.openSpecSubMenu.subscribe((data: any) => {
@@ -135,7 +137,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .get('navi/get_metadata/' + userEmail + '?product_id=' + val.product_id)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
-          let product = response.data.data[0]
+          let product = response.data.data[0];
           localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
@@ -207,72 +209,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    // this.getInsights();
-  }
-
-  getInsights() {
-    this.apiService
-      .get('navi/get_insights/' + this.product?.email + '/' + this.product?.id)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_INSIGHTS_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          const data = Array.isArray(response?.data)
-            ? response?.data[0]
-            : response?.data;
-          // this.useCases = data?.usecase || [];
-          this.getMeSpecList();
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_INSIGHTS_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utils.loadSpinner(false);
-          this.utils.showProductStatusPopup(true);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((error: any) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_RETRIEVE_INSIGHTS_BPMN',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser.email,
-          this.product?.id
-        );
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error,
-        });
-      });
   }
 
   searchText(keyword: any) {
@@ -327,7 +263,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.isTheSpecGenerated = true;
           this.currentSpecVersionId = response.data[0].versionId;
-
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
@@ -366,10 +301,14 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.router.navigate([currentUrl]);
     });
   }
-  onSpecDataChange(data: any): void {
-    this.getMeSpecList({ versionId: data.versionId, productId: data.productId });
 
+  onSpecDataChange(data: any): void {
+    this.getMeSpecList({
+      versionId: data.versionId,
+      productId: data.productId,
+    });
   }
+
   handleData(response: any): void {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
@@ -378,6 +317,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         if (!Array.isArray(obj.content)) {
           obj.content = [];
         }
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Model Table Data') {
+            obj.content.splice(idx, 1);
+          }
+        });
         obj.content.push({
           title: 'OpenAPI Spec',
           content: [],
@@ -387,12 +331,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       if (obj?.title == 'Quality Assurance') {
         let content = obj.content;
         content.forEach((useCase: any) => {
-          if (useCase["Test Cases"]) {
-            useCase.TestCases = useCase["Test Cases"];
-            delete useCase["Test Cases"];
+          if (useCase['Test Cases']) {
+            useCase.TestCases = useCase['Test Cases'];
+            delete useCase['Test Cases'];
             useCase.TestCases.forEach((testCase: any) => {
-              testCase.TestCases = testCase["Test Cases"];
-              delete testCase["Test Cases"];
+              testCase.TestCases = testCase['Test Cases'];
+              delete testCase['Test Cases'];
             });
           }
         });
@@ -405,13 +349,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           title: 'Test Cases',
           content: content,
         });
-
       }
     });
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
-
 
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
