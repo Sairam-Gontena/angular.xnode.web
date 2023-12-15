@@ -42,6 +42,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   versionSelected: any;
   allVersions: any = [];
   selectedVersion: Version | undefined;
+  enabledGeneratespec : boolean = true; 
 
   constructor(
     private utils: UtilsService,
@@ -202,6 +203,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   openPopup(content: any) {
     if (this.product?.id) {
       this.generateSpec.emit();
+    this.enabledGeneratespec = false;
     }
   }
 
