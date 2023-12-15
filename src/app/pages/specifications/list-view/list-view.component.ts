@@ -62,6 +62,14 @@ export class ListViewComponent {
     this.selectedWordIndices = [];
   }
 
+  deSelect(){
+    if (window.getSelection) {
+        window.getSelection()?.empty();
+        window.getSelection()?.removeAllRanges();
+        this.selectedWordIndices = [];
+    }
+  }
+
   contentSelected(event: any,type:string) {
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();

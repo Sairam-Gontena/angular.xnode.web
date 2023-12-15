@@ -99,7 +99,7 @@ export class ParaViewComponent {
     }
   }
 
-  deselect(){
+  deSelect(){
     if (window.getSelection) {
         window.getSelection()?.empty();
         window.getSelection()?.removeAllRanges();

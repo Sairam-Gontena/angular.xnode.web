@@ -1,5 +1,4 @@
-<ul *ngFor="let subItem of content; let i = index" (mouseleave)="showCommentIcon = false;">
-  <!-- (mouseleave)="emptySelectedContent()" -->
+<ul *ngFor="let subItem of content; let i = index" (mouseleave)="showCommentIcon = false;deSelect()">
   <li>
     <div class="flex col-12 p-0 " (mouseover)="showCommentIcon = true; selectedIndex=i "
       >
