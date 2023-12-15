@@ -99,6 +99,14 @@ export class ParaViewComponent {
     }
   }
 
+  deselect(){
+    if (window.getSelection) {
+        window.getSelection()?.empty();
+        window.getSelection()?.removeAllRanges();
+        this.selectedWordIndices = [];
+    }
+  }
+
   private getSelectedText() {
     const text = window.getSelection()?.toString();
     return text;

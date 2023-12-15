@@ -1,4 +1,4 @@
-<div class="grid m-0" (mouseover)="showCommentIcon = true;">
+<div class="grid m-0" (mouseover)="showCommentIcon = true;" (mouseleave)="deselect()">
     <div class="col-11 p-0 ">
         <p class="flex flex-wrap content text-base font-normal my-0" [id]="content.id">
             <span *ngFor="let word of getWords(content); index as i" class="pr-1"
