@@ -201,6 +201,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   onVersionChange(event: any): void {
     let data = { productId: this.productId, versionId: event.value.id };
     this.specDataChange.emit(data);
+    console.log(this.specDataChange, '0000000000000')
   }
 
 }
