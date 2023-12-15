@@ -279,7 +279,6 @@ export class SpecConversationComponent {
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -406,7 +405,6 @@ export class SpecConversationComponent {
           });
           this.fileIndex = null;
           this.specUtils._tabToActive('COMMENT');
-          // this.utils.saveCommentList(true);
         } else {
           this.utils.loadSpinner(false);
           this.utils.loadToaster({
