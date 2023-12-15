@@ -248,10 +248,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.currentUser.last_name[1][0].toUpperCase(); // Get the first letter of the second word
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
-  getMeLatestSpec(body?: any) {
+
+  getMeLatestSpec(body?: any): void {
     if (!body) {
-      let productId = localStorage.getItem('record_id')
-      body = productId;
+      body = { productId: localStorage.getItem('record_id') };
     }
     this.utils.loadSpinner(true);
     this.specService
@@ -259,12 +259,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (
           response.status === 200 &&
-          response.data
+          response.data &&
+          response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
-          this.currentSpecVersionId = response.data[0].versionId;
-          this.specData = response.data;
-          this.specDataCopy = [...this.specData];
+          this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
@@ -278,8 +277,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             this.productStatusPopupContent =
               'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
           }
-          this.utils.loadSpinner(false);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((error) => {
         this.utils.loadSpinner(false);
@@ -389,6 +388,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         obj.content.push({
           title: 'Test Cases',
           content: content,
+          id:obj.id
         });
       }
     });
