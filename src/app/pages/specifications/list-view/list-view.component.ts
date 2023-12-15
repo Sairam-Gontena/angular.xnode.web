@@ -22,7 +22,8 @@ export class ListViewComponent {
   commentOverlayPanelOpened: boolean = false;
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
-  selectedWordIndices: number[] = [];
+  @ViewChild('selectionContent') selectionContent: OverlayPanel | any;
+  selectedWordIndices: any[] = [];
 
   constructor(private utils: UtilsService) {
 
@@ -61,7 +62,7 @@ export class ListViewComponent {
     this.selectedWordIndices = [];
   }
 
-  contentSelected(event: any) {
+  contentSelected(event: any,type:string) {
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
@@ -73,7 +74,7 @@ export class ListViewComponent {
     } else {
       this.selectedText = '';
     }
-    this.handleSelectionText(event);
+    this.handleSelectionText(event,type);
   }
 
   highlightSelectedText() {
@@ -85,7 +86,7 @@ export class ListViewComponent {
       const elements = range.cloneContents().querySelectorAll('span');
       elements.forEach(element => {
         const id = element.id;
-        const index = parseInt(id.replace('word', ''));
+        let index=id;
         if (!this.selectedWordIndices.includes(index)) {
           this.selectedWordIndices.push(index);
         }
@@ -93,16 +94,20 @@ export class ListViewComponent {
     }
   }
 
-  async handleSelectionText(event: any) {
+  async handleSelectionText(event: any,type:string) {
     if (this.selectedText.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      await this.selectionText.toggle(event);
+      if(type=='title'){
+        await this.selectionText.toggle(event);
+      }else if(type=='content'){
+        await this.selectionContent.toggle(event);
+      }
     }
   }
 
   private getSelectedText() {
     const text = window.getSelection()?.toString();
-    return text ? text.trim() : null;
+    return text // ? text.trim() : null;
   }
 
   saveSecInLocal() {

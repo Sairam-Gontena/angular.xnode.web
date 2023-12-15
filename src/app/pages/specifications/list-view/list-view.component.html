@@ -1,15 +1,16 @@
-<ul *ngFor="let subItem of content; let i = index" (mouseleave)="emptySelectedContent()">
+<ul *ngFor="let subItem of content; let i = index" (mouseleave)="showCommentIcon = false;">
+  <!-- (mouseleave)="emptySelectedContent()" -->
   <li>
     <div class="flex col-12 p-0 " (mouseover)="showCommentIcon = true; selectedIndex=i "
-      (mouseleave)="showCommentIcon = false;">
+      >
       <div class="col-11 p-0 ">
         <div class="m-0 pb-1 line-height-3">
           <span class="flex flex-wrap sub-title text-base font-medium">
             <span *ngFor="let word of subItem?.title?.split(' '); index as i" class="pr-1"
               [innerHTML]="word | highlight: searchTerm"
               [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}"
-              (mouseup)="contentSelected($event);saveSecInLocal()">
-              <p-overlayPanel #selectionText>
+              (mouseup)="contentSelected($event,'title');saveSecInLocal()">
+              <p-overlayPanel #selectionText >
                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
                   [position]="'absolute'" [selectedContent]="subItem" [selectedText]="selectedText"
                   [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
@@ -20,13 +21,13 @@
           </span>
 
           <span class="flex flex-wrap sub-content font-normal text-base">
-            <span *ngFor="let word of getWords(subItem); index as i" class="mr-1"
-              [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
-              <p-overlayPanel #selectionText>
+            <span *ngFor="let word of getWords(subItem); index as i" class="mr-1" [attr.id]="'word'+word+'^^'++i"
+              [innerHTML]="word | highlight: searchTerm" [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i) && selectedText.length>0}" (mouseup)="contentSelected($event,'content');saveSecInLocal()">
+              <p-overlayPanel #selectionContent>
                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
                   [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'" [parentId]="specItem.id"
                   [selectedContent]="subItem" placeHolder="Add a Comment" [specItem]="specItem"
-                  (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"></xnode-add-comment-overlay-panel>
+                  (closeOverlay)="selectionContent.toggle(false);emptySelectedContent()"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>
             </span>
           </span>
