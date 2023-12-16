@@ -219,6 +219,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       priority: this.crForm.value.priority,
       duedate: this.crForm.value.duedate,
       baseVersionId: null,
+      accountId: this.currentUser.account_id
     };
     let specData: any[] | undefined = this.localStorageService.getItem(
       StorageKeys.SpecData

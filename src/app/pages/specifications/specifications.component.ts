@@ -263,6 +263,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
+          this.currentSpecVersionId = response.data[0].versionId;
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;

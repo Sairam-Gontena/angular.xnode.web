@@ -33,6 +33,7 @@ export class CrTabsComponent {
   crList: any = [];
   showNewCrPopup: boolean = false;
   crActions: any;
+  comments: string = 'test';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
 
   constructor(
@@ -240,6 +241,7 @@ export class CrTabsComponent {
       entityId: this.selectedCr.id,
       action: this.selectedStatus,
       userId: this.currentUser.user_id,
+      comments: this.comments
     };
     this.utilsService.loadSpinner(true);
     this.commentsService

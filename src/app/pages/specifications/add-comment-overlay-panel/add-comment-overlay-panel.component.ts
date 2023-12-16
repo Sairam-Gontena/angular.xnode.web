@@ -53,7 +53,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   isCommentEmpty: boolean = true;
   minDate!: Date;
 
-
   constructor(public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
@@ -230,6 +229,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
+    this.files = [];
   }
 
   prepareDataToSaveAsTask(): void {
@@ -296,7 +296,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
-
   }
 
   checkAndGetAssinedUsers(): void {
@@ -331,7 +330,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   deleteFile(index: number) {
     this.files.splice(index, 1);
-    this.closeOverlay.emit(false);
+    this.uploadedFiles.splice(index, 1);
   }
 
   formatBytes(bytes: any, decimals: any) {
