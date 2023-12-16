@@ -30,16 +30,14 @@
           <div *ngIf="crFormControl['crToAdd'].errors?.['required']">
             CR is required</div>
         </div>
-        <p class="text-sm pointer mt-1 mb-0 api-ticket"
-          *ngIf="crForm.get('priority')?.value || crForm.get('version')?.value || crForm.get('duedate')?.value">
+        <p class="text-sm pointer mt-1 mb-0 api-ticket" *ngIf="selectedPriority || selectedPriority || selectedDueDate">
           <span><i class="pi pi-plus pr-2"></i></span> Connect with the
           api
           ticketing
           system
         </p>
       </div>
-      <div class="col-12 flex flex-wrap"
-        *ngIf="crForm.get('priority')?.value || crForm.get('version')?.value || crForm.get('duedate')?.value">
+      <div class="col-12 flex flex-wrap" *ngIf="selectedPriority || selectedPriority || selectedDueDate">
         <div class="col-4">
           <label for="priority" class="api-ticket text-sm ">Priority: </label>
           <div class="ml-2">
