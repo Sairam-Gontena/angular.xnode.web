@@ -15,10 +15,12 @@
             placeholder="Add new or search existing change requests"
             [ngClass]="{ 'is-invalid': submitted && crFormControl['crToAdd'].errors }">
             <ng-template let-item pTemplate="selectedItem">
-              <div *ngIf="item?.label === 'New Change Request'">
+              <div
+                *ngIf="item?.label === 'New Change Request' || item?.label === 'Add new or search existing change requests'">
                 {{ item?.label }}
               </div>
-              <div *ngIf="item?.label !== 'New Change Request'">
+              <div
+                *ngIf="item?.label !== 'New Change Request' && item?.label !== 'Add new or search existing change requests'">
                 {{ item?.label }} - {{ item?.title }}
               </div>
             </ng-template>
@@ -41,17 +43,20 @@
         <div class="col-4">
           <label for="priority" class="api-ticket text-sm ">Priority: </label>
           <div class="ml-2">
-            {{ crForm.get('priority')?.value?.label }}
+            {{ selectedPriority }}
           </div>
         </div>
         <div class="col-4">
           <label class="api-ticket text-sm ">To Version: </label>
-          <div class="ml-2"> {{ crForm.get('version')?.value?.label }}</div>
+          <div class="ml-2">
+            {{ selectedVersion }}
+          </div>
         </div>
         <div class="col-4">
           <label class="api-ticket text-sm ">Due Date: </label>
           <div class="ml-2">
-            {{ crForm.get('duedate')?.value | date: 'shortDate' }}
+            {{ selectedDueDate | date: 'shortDate'}}
+
           </div>
         </div>
       </div>
@@ -88,9 +93,10 @@
       (click)="close.emit(false)"></p-button>
     <p-button type="submit" label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
       (click)="linkCr()"></p-button>
+
   </ng-template>
 </p-dialog>
 
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR"
-  [versions]="versionList" (close)="closePopUp($event)">
+  [versions]="versionList" (close)="closePopUp($event)" (versionChanged)="onVersionChanged($event)">
 </xnode-create-new-cr-version>
