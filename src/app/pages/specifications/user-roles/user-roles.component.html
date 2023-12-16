@@ -68,6 +68,7 @@
                         <img src="../assets/comment.svg" class="pointer" alt="comment"
                             (click)="op.toggle($event);commentOverlayPanelOpened=true;saveSecInLocal()"
                             *ngIf="(showCommentIcon || commentOverlayPanelOpened) ">
+                          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon || commentOverlayPanelOpened" (click)="openCommentSection()"></i>
                     </div>
                 </div>
             </div>
