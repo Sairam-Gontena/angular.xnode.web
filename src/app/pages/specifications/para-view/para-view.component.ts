@@ -111,7 +111,10 @@ export class ParaViewComponent {
 
   openCommentSection(){
     this.specUtils._openCommentsPanel(false);
+    this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    this.specUtils._openCommentsPanel(true);
+    setTimeout(() => {
+      this.specUtils._openCommentsPanel(true);
+    },);
   }
 }

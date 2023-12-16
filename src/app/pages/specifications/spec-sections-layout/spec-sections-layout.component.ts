@@ -117,7 +117,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
     setTimeout(() => {
       this.specUtils._openCommentsPanel(true);
-    }, 100);
+    },);
 
   }
 
