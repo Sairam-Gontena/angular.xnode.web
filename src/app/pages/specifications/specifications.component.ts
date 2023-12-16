@@ -263,6 +263,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
+          this.currentSpecVersionId = response.data[0].versionId;
           this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
@@ -388,7 +389,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         obj.content.push({
           title: 'Test Cases',
           content: content,
-          id:obj.id
+          id: obj.id
         });
       }
     });
