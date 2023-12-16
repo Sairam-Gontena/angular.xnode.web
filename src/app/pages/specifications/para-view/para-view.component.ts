@@ -37,23 +37,38 @@ export class ParaViewComponent {
     })
   }
 
-  getWords(subitem: any) {
-    if (typeof subitem.content === 'string') {
-      return subitem.content.split(' ');
-    } else if (typeof subitem === undefined) {
-      if (typeof subitem === 'string') {
-        return subitem.split(' ');
-      }
-    } else if (typeof subitem === 'object') {
-      if (subitem.hasOwnProperty('content')) {
-        return subitem.content
+  getWords(subitem: any): string[] {
+    if (typeof subitem === 'object' && subitem !== null) {
+      if (typeof subitem.content === 'string') {
+        return subitem.content.split(' ');
+      } else if (Array.isArray(subitem.content)) {
+        return subitem.content;
       } else {
-        return subitem
+        return [subitem.toString()];
       }
+    } else if (typeof subitem === 'string') {
+      return subitem.split(' ');
     } else {
       return [];
     }
   }
+  // getWords(subitem: any) {
+  //   if (typeof subitem.content === 'string') {
+  //     return subitem.content.split(' ');
+  //   } else if (typeof subitem === undefined) {
+  //     if (typeof subitem === 'string') {
+  //       return subitem.split(' ');
+  //     }
+  //   } else if (typeof subitem === 'object') {
+  //     if (subitem.hasOwnProperty('content')) {
+  //       return subitem.content
+  //     } else {
+  //       return subitem
+  //     }
+  //   } else {
+  //     return [];
+  //   }
+  // }
 
   contentSelected(event: any) {
     this.showCommentIcon = true;

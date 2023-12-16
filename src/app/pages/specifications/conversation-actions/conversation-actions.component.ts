@@ -148,7 +148,7 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    const concatenatedFiles = [this.uploadedFiles, cmt.attachments || []];
+    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
     this.commentsService
       .addComments(cmt)

@@ -22,7 +22,7 @@
                                     <p class="size">{{ formatBytes(file.size, 0) }}</p>
                                 </div>
                                 <div class="col-3 p-0 flex align-items-center justify-content-center">
-                                    <i class="pi pi-times pointer" (click)="deleteFile(i)"></i>
+                                    <i class="pi pi-times pointer" (click)="deleteFile(i);$event.stopPropagation()"></i>
                                 </div>
                             </div>
                         </div>

@@ -70,7 +70,6 @@ export class SpecificationsContentComponent implements OnInit {
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.product = this.storageService.getItem(StorageKeys.Product);
     this.getUsersData();
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
@@ -128,7 +127,7 @@ export class SpecificationsContentComponent implements OnInit {
   ngOnChanges() {
     this.specItemList = this.specData;
     this.searchTerm = this.keyword;
-
+    this.product = this.storageService.getItem(StorageKeys.Product);
   }
 
   checkedToggle(type: any, item: any, content: any) {
