@@ -332,8 +332,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   deleteFile(index: number) {
     this.files.splice(index, 1);
     this.uploadedFiles.splice(index, 1);
-    // this.closeOverlay.emit(flase);
-    console.log(this.closeOverlay, '000000')
   }
 
   formatBytes(bytes: any, decimals: any) {
