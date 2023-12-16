@@ -103,21 +103,21 @@
                               Need More Work
                             </div>
                           </div> -->
-                          <div 
+                          <div *ngIf="data?.status !== 'UPDATED' && data?.status !== 'SUBMITTED'"
                             class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
                             <div>
                               <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
                             </div>
                             <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
                           </div>
-                          <div *ngIf="data?.status == 'UPDATED'"
+                          <div *ngIf="data?.status === 'UPDATED'"
                             class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
                             <div>
                               <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
                             </div>
                             <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
                           </div>
-                          <div *ngIf="data?.status == 'SUBMITTED'"
+                          <div *ngIf="data?.status === 'SUBMITTED'"
                             class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
                             <div>
                               <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
