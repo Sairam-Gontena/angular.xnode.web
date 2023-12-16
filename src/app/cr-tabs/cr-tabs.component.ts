@@ -143,6 +143,8 @@ export class CrTabsComponent {
   }
 
   updateChagneRequestStatus(value: string) {
+    console.log('value', value);
+
     this.selectedStatus = value;
     switch (value) {
       case 'ARCHIVE':

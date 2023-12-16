@@ -350,7 +350,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   handleData(response: any): void {
-    const list = response.data;
+    const list = [response.data[0]];
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
       if (obj?.title == 'Technical Specifications') {
@@ -388,7 +388,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         obj.content.push({
           title: 'Test Cases',
           content: content,
-          id:obj.id
+          id: obj.id
         });
       }
     });

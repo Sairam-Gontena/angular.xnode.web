@@ -5,6 +5,8 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from '../services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -37,7 +39,8 @@ export class NotificationPanelComponent {
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     public utils: UtilsService,
-    private notifyApi: NotifyApiService
+    private notifyApi: NotifyApiService,
+    private storageService: LocalStorageService
   ) {
     let user = localStorage.getItem('currentUser');
     if (user) {
@@ -154,26 +157,23 @@ export class NotificationPanelComponent {
         });
       });
   }
-  gotoSpec(obj: any) {
-    let specData = localStorage.getItem('meta_data')
-    if (specData) {
-      let products = JSON.parse(specData);
-      let product = products.find((x: any) => x.id === obj.product_id);
-      localStorage.setItem('product_email', product.email);
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('product', JSON.stringify(product));
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('has_insights', product.has_insights);
-      if (obj.component && obj.component !== '') {
-        this.utils.toggleSpecPage(true);
-        this.router.navigate(['/specification']);
-        this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
-      } else {
-        this.router.navigate(['/dashboard']);
-        this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
-      }
-      this.closeNotificationPanel.emit(true);
+  goToSpec(obj: any) {
+    let products: any = this.storageService.getItem(StorageKeys.MetaData)
+    let product = products.find((x: any) => x.id === obj.product_id);
+    localStorage.setItem('product_email', product.email);
+    localStorage.setItem('record_id', product.id);
+    localStorage.setItem('product', JSON.stringify(product));
+    localStorage.setItem('app_name', product.title);
+    localStorage.setItem('has_insights', product.has_insights);
+    if (obj.component && obj.component !== '') {
+      this.utils.toggleSpecPage(true);
+      this.router.navigate(['/specification']);
+      this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
+    } else {
+      this.router.navigate(['/dashboard']);
+      this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
     }
+    this.closeNotificationPanel.emit(true);
   }
 
   getMeLabel(obj: any) {
