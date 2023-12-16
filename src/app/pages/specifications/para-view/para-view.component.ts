@@ -4,6 +4,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 @Component({
   selector: 'xnode-para-view',
   templateUrl: './para-view.component.html',
@@ -24,7 +25,7 @@ export class ParaViewComponent {
   selectedWordIndices: number[] = [];
   currentUser: any;
 
-  constructor(public utils: UtilsService, private storageService: LocalStorageService) {
+  constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils:SpecUtilsService) {
   }
 
   ngOnInit() {
@@ -106,5 +107,11 @@ export class ParaViewComponent {
 
   saveSecInLocal() {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
+
+  openCommentSection(){
+    this.specUtils._openCommentsPanel(false);
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+    this.specUtils._openCommentsPanel(true);
   }
 }

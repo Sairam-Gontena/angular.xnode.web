@@ -2,6 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Section } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-list-view',
@@ -25,7 +26,7 @@ export class ListViewComponent {
   @ViewChild('selectionContent') selectionContent: OverlayPanel | any;
   selectedWordIndices: any[] = [];
 
-  constructor(private utils: UtilsService) {
+  constructor(private utils: UtilsService, private specUtils:SpecUtilsService) {
 
   }
 
@@ -112,6 +113,12 @@ export class ListViewComponent {
 
   saveSecInLocal() {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
+
+  openCommentSection(){
+    this.specUtils._openCommentsPanel(false);
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+    this.specUtils._openCommentsPanel(true);
   }
 }
 

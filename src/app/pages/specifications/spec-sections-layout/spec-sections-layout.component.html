@@ -55,6 +55,7 @@
                 ? 'opacity-100'
                 : 'opacity-0'
             " />
+            <i class="pi pi-eye relative pointer ml-2" style="color:#0991c6;top:-5px" *ngIf="usecaseshowCommentIcon || usecasePanelOpened" (click)="openCommentSection()"></i>
         </div>
         <div [ngClass]="{
             'common-spec-table-navi-menu':
@@ -91,11 +92,12 @@
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer comment-msg pt-2" alt="comment" (click)="
               useinterfaceop.toggle($event); userinterfacePanelOpened = true;saveSecInLocal();
-            " [ngClass]="
-              userinterfaceShowCommentIcon || userinterfacePanelOpened
-                ? 'opacity-100'
-                : 'opacity-0'
-            " (mouseleave)="userinterfaceShowCommentIcon = false" />
+            "  (mouseleave)="userinterfaceShowCommentIcon = false" [ngClass]="
+            userinterfaceShowCommentIcon || userinterfacePanelOpened
+              ? 'opacity-100'
+              : 'opacity-0'
+          "/>
+            <i class="pi pi-eye relative pointer ml-2" style="color:#0991c6;top:-5px" (click)="openCommentSection()" *ngIf="userinterfaceShowCommentIcon || userinterfacePanelOpened"></i>
         </div>
         <div class="col-12">
           <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
@@ -125,6 +127,7 @@
                 ? 'opacity-100'
                 : 'opacity-0'
             " />
+             <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="dataManagementCommentIcon || dataManagementPanelOpened" (click)="openCommentSection()"></i>
         </div>
         <div class="col-12" *ngIf="content">
           <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
@@ -152,6 +155,7 @@
                 ? 'opacity-100'
                 : 'opacity-0'
             " />
+            <i class="pi pi-eye relative pointer ml-2" style="color:#0991c6;top:-5px" *ngIf="workflowshowCommentIcon || workflowPanelOpened" (click)="openCommentSection()"></i>
         </div>
         <div class="col-12">
           <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [bpmnFrom]="bpmnFrom"
@@ -172,6 +176,7 @@
             businessRulesop.toggle($event); dataDictionaryPanelOpened = true;saveSecInLocal();
           " (mouseleave)="dataDictionaryshowCommentIcon = false"
             *ngIf="dataDictionaryshowCommentIcon || dataDictionaryPanelOpened" />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="dataDictionaryshowCommentIcon || dataDictionaryPanelOpened" (click)="openCommentSection()"></i>
           <p-overlayPanel #businessRulesop (onHide)="
           dataDictionaryPanelOpened = false;
               dataDictionaryshowCommentIcon = false
@@ -222,6 +227,7 @@
             businessRulesop.toggle($event); businessRulesPanelOpened = true;saveSecInLocal();
           " (mouseleave)="businessRulesshowCommentIcon = false"
             *ngIf="businessRulesshowCommentIcon || businessRulesPanelOpened" />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="businessRulesshowCommentIcon || businessRulesPanelOpened" (click)="openCommentSection()"></i>
           <p-overlayPanel #businessRulesop (onHide)="
               businessRulesPanelOpened = false;
               businessRulesshowCommentIcon = false
@@ -273,6 +279,7 @@
           functionalDepedencyop.toggle($event); functionalDepedencyPanelOpened = true;saveSecInLocal();
           " (mouseleave)="functionalDependenciesshowCommentIcon = false"
             *ngIf="functionalDependenciesshowCommentIcon || functionalDepedencyPanelOpened" />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="functionalDependenciesshowCommentIcon || functionalDepedencyPanelOpened" (click)="openCommentSection()"></i>
           <p-overlayPanel #functionalDepedencyop (onHide)="
           functionalDepedencyPanelOpened = false;
               functionalDependenciesshowCommentIcon = false
@@ -325,6 +332,7 @@
           functionalDepedencyop.toggle($event); userInterfacePanelOpened = true;saveSecInLocal();
           " (mouseleave)="userInterfaceshowCommentIcon = false"
             *ngIf="userInterfaceshowCommentIcon || userInterfacePanelOpened" />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="userInterfaceshowCommentIcon || userInterfacePanelOpened" (click)="openCommentSection()"></i>
           <p-overlayPanel #functionalDepedencyop (onHide)="
           userInterfacePanelOpened = false;
           userInterfaceshowCommentIcon = false
@@ -374,6 +382,7 @@
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
           functionalDepedencyop.toggle($event); AnnexuresPanelOpened = true;saveSecInLocal();
           " (mouseleave)="AnnexureshowCommentIcon = false" *ngIf="AnnexureshowCommentIcon || AnnexuresPanelOpened" />
+          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="AnnexureshowCommentIcon || AnnexuresPanelOpened" (click)="openCommentSection()"></i>
           <p-overlayPanel #functionalDepedencyop (onHide)="
           AnnexuresPanelOpened = false;
           AnnexureshowCommentIcon = false
@@ -443,6 +452,7 @@
                 ? 'opacity-100'
                 : 'opacity-0'
             " />
+            <i class="pi pi-eye relative pointer ml-2" style="color:#0991c6;top:-5px" *ngIf="userpersonaShowCommentIcon || usepersonaPanelOpened" (click)="openCommentSection()"></i>
         </div>
         <div class="col-12">
           <div *ngFor="let persona of content.content" class="pb-3">
@@ -488,12 +498,12 @@
         !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
       'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
     }" class="common-spec-table" *ngIf="content.title === 'Data Quality Checks'">
-      <!-- <div class="grid">
+      <div class="grid">
       <div class="col-12">
         <xnode-common-spec-table  [users]="usersList"
         [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content[0].content"></xnode-common-spec-table>
       </div>
-    </div> -->
+    </div>
     </div>
     <div *ngIf="content.title === 'Test Cases'">
       <div *ngFor="let item of content.content">
@@ -528,6 +538,7 @@
             (mouseleave)="qashowCommentIcon = false" [ngClass]="
               qashowCommentIcon || qaPanelOpened ? 'opacity-100' : 'opacity-0'
             " />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf=" qashowCommentIcon || qaPanelOpened" (click)="openCommentSection()"></i>
         </div>
         <div class="col-12">
           <div *ngFor="let subItem of content.content; let subIndex = index">
@@ -564,6 +575,9 @@
                           seletedMainIndex &&
                           selecteedSubIndex
                         " />
+                         <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="(showCommentIcon || commentOverlayPanelOpened) &&
+                         seletedMainIndex &&
+                         selecteedSubIndex" (click)="openCommentSection()"></i>
                     </div>
                   </div>
                 </span>
@@ -611,6 +625,10 @@
                               selecteedSubIndex == subIndex &&
                               selecteedSubSubIndex == subSubIndex
                             " />
+                            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="(showCommentIcon || commentOverlayPanelOpened) &&
+                            seletedMainIndex == cIndex &&
+                            selecteedSubIndex == subIndex &&
+                            selecteedSubSubIndex == subSubIndex" (click)="openCommentSection()"></i>
                         </div>
                       </div>
                     </span>
@@ -654,6 +672,7 @@
                 ? 'opacity-100'
                 : 'opacity-0'
             " />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="openAPIShowCommentIcon || openAPIPanelOpened" (click)="openCommentSection()"></i>
         </div>
         <div class="col-12">
           <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>

@@ -111,6 +111,16 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.makeTrustedUrl();
   }
 
+  openCommentSection(){
+    this.specUtils._openCommentsPanel(false);
+    this.utilsService.saveSelectedSection(null);
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+    setTimeout(() => {
+      this.specUtils._openCommentsPanel(true);
+    }, 100);
+
+  }
+
   checkExpandSpecSections(spec: string) {
     let returnVal: boolean;
     this.expandSpecSections.includes(spec)
