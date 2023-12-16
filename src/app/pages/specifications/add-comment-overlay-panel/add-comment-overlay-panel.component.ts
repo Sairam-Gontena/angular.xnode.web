@@ -296,7 +296,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
-
   }
 
   checkAndGetAssinedUsers(): void {
