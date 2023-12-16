@@ -30,6 +30,7 @@ export class CommentsPanelComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'COMMENT') {
+        this.utils.loadSpinner(true);
         this.getMeCommentsList();
       }
     });
@@ -42,12 +43,12 @@ export class CommentsPanelComponent implements OnInit {
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     const activeIndexChange = changes['activeIndex'] as SimpleChange;
     if (activeIndexChange && activeIndexChange.currentValue === 0) {
+      this.utils.loadSpinner(true);
       this.getMeCommentsList();
     }
   }
 
   getMeCommentsList() {
-    this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
     if (specData) {

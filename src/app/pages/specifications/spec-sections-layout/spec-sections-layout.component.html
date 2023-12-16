@@ -49,8 +49,8 @@
               [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer comment-msg pt-2" alt="comment"
-            (click)="usecaseop.toggle($event); usecasePanelOpened = true" (mouseleave)="usecaseshowCommentIcon = false"
-            [ngClass]="
+            (click)="usecaseop.toggle($event); usecasePanelOpened = true;saveSecInLocal();"
+            (mouseleave)="usecaseshowCommentIcon = false" [ngClass]="
               usecaseshowCommentIcon || usecasePanelOpened
                 ? 'opacity-100'
                 : 'opacity-0'
@@ -90,7 +90,7 @@
               [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer comment-msg pt-2" alt="comment" (click)="
-              useinterfaceop.toggle($event); userinterfacePanelOpened = true
+              useinterfaceop.toggle($event); userinterfacePanelOpened = true;saveSecInLocal();
             " [ngClass]="
               userinterfaceShowCommentIcon || userinterfacePanelOpened
                 ? 'opacity-100'
@@ -119,7 +119,7 @@
               [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer comment-msg pt-2" alt="comment" (click)="
-              dataManagementop.toggle($event); dataManagementPanelOpened = true
+              dataManagementop.toggle($event); dataManagementPanelOpened = true;saveSecInLocal();
             " (mouseleave)="dataManagementCommentIcon = false" [ngClass]="
               dataManagementCommentIcon || dataManagementPanelOpened
                 ? 'opacity-100'
@@ -128,7 +128,7 @@
         </div>
         <div class="col-12" *ngIf="content">
           <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
-            [dataModelData]="content" ></xnode-data-model-common>
+            [dataModelData]="content"></xnode-data-model-common>
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@
               [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer comment-msg pt-2" alt="comment"
-            (click)="workflowsop.toggle($event); workflowPanelOpened = true"
+            (click)="workflowsop.toggle($event); workflowPanelOpened = true;saveSecInLocal();"
             (mouseleave)="workflowshowCommentIcon = false" [ngClass]="
               workflowshowCommentIcon || workflowPanelOpened
                 ? 'opacity-100'
@@ -154,7 +154,8 @@
             " />
         </div>
         <div class="col-12">
-          <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [bpmnFrom]="bpmnFrom" [item]="content"></xnode-bpmn-common>
+          <xnode-bpmn-common (dataFlowEmitter)="expandComponent.emit(content)" [bpmnFrom]="bpmnFrom"
+            [item]="content"></xnode-bpmn-common>
         </div>
       </div>
     </div>
@@ -418,8 +419,8 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Historical Data Load'">
-      <xnode-common-spec-table [searchTerm]="searchTerm"
-        [users]="usersList" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
+      <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+        [content]="content.content"></xnode-common-spec-table>
     </div>
     <div *ngIf="content.title === 'User Personas' && isArray(content.content)">
       <div class="grid" (mouseover)="userpersonaShowCommentIcon = true"
@@ -436,7 +437,7 @@
               [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer" alt="comment"
-            (click)="userpersonaop.toggle($event); usepersonaPanelOpened = true"
+            (click)="userpersonaop.toggle($event); usepersonaPanelOpened = true;saveSecInLocal()"
             (mouseleave)="userpersonaShowCommentIcon = false" [ngClass]="
               userpersonaShowCommentIcon || usepersonaPanelOpened
                 ? 'opacity-100'
@@ -457,8 +458,8 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Glossary'">
-      <xnode-common-spec-table  [searchTerm]="searchTerm"
-        [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
+      <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+        [specItem]="specItem"></xnode-common-spec-table>
     </div>
     <div [ngClass]="{
         'common-spec-table-menu': isSideMenuOpened,
@@ -467,8 +468,8 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Version Control'">
-      <xnode-common-spec-table [searchTerm]="searchTerm"
-        [content]="content.content" [users]="usersList" [specItem]="specItem"></xnode-common-spec-table>
+      <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+        [specItem]="specItem"></xnode-common-spec-table>
     </div>
     <div [ngClass]="{
         'common-spec-table-menu': isSideMenuOpened,
@@ -477,8 +478,8 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Stakeholder Approvals'">
-      <xnode-common-spec-table [users]="usersList"
-        [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content"></xnode-common-spec-table>
+      <xnode-common-spec-table [users]="usersList" [searchTerm]="searchTerm" [specItem]="specItem"
+        [content]="content.content"></xnode-common-spec-table>
     </div>
     <div [ngClass]="{
       'common-spec-table-menu': isSideMenuOpened,
@@ -487,18 +488,18 @@
         !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
       'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
     }" class="common-spec-table" *ngIf="content.title === 'Data Quality Checks'">
-    <!-- <div class="grid">
+      <!-- <div class="grid">
       <div class="col-12">
         <xnode-common-spec-table  [users]="usersList"
         [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content[0].content"></xnode-common-spec-table>
       </div>
     </div> -->
-  </div>
+    </div>
     <div *ngIf="content.title === 'Test Cases'">
-      <div *ngFor="let item of content.content" >
-        <div class="mt-2" >
+      <div *ngFor="let item of content.content">
+        <div class="mt-2">
           <h3>
-          {{item.Usecase}}
+            {{item.Usecase}}
           </h3>
           <div class="mt-2" [ngClass]="{
             'common-spec-table-menu': isSideMenuOpened,
@@ -512,7 +513,7 @@
           </div>
         </div>
       </div>
-   </div>
+    </div>
     <div *ngIf="content.title === 'QA Test Cases' && isArray(content.content)">
       <div class="grid" (mouseover)="qashowCommentIcon = true" (mouseleave)="qashowCommentIcon = false">
         <div class="col-12 text-right p-0">
@@ -523,7 +524,8 @@
               [parentId]="specItem.id" [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer" alt="comment"
-            (click)="qaop.toggle($event); qaPanelOpened = true" (mouseleave)="qashowCommentIcon = false" [ngClass]="
+            (click)="qaop.toggle($event); qaPanelOpened = true;saveSecInLocal();"
+            (mouseleave)="qashowCommentIcon = false" [ngClass]="
               qashowCommentIcon || qaPanelOpened ? 'opacity-100' : 'opacity-0'
             " />
         </div>
@@ -556,7 +558,7 @@
                           placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                       </p-overlayPanel>
                       <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-                          op.toggle($event); commentOverlayPanelOpened = true
+                          op.toggle($event); commentOverlayPanelOpened = true;saveSecInLocal();
                         " *ngIf="
                           (showCommentIcon || commentOverlayPanelOpened) &&
                           seletedMainIndex &&
@@ -602,7 +604,7 @@
                           </p-overlayPanel>
                           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
                               op.toggle($event);
-                              commentOverlayPanelOpened = true
+                              commentOverlayPanelOpened = true;saveSecInLocal();
                             " *ngIf="
                               (showCommentIcon || commentOverlayPanelOpened) &&
                               seletedMainIndex == cIndex &&
@@ -646,8 +648,8 @@
               [specItem]="specItem"></xnode-add-comment-overlay-panel>
           </p-overlayPanel>
           <img src="../assets/comment.svg" class="pointer" alt="comment"
-            (click)="openAPIop.toggle($event); openAPIPanelOpened = true" (mouseleave)="openAPIShowCommentIcon = false"
-            [ngClass]="
+            (click)="openAPIop.toggle($event); openAPIPanelOpened = true;saveSecInLocal();"
+            (mouseleave)="openAPIShowCommentIcon = false" [ngClass]="
               openAPIShowCommentIcon || openAPIPanelOpened
                 ? 'opacity-100'
                 : 'opacity-0'
