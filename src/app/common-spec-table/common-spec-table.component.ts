@@ -12,8 +12,14 @@ export class CommonSpecTableComponent {
   @Input() users:any;
   showCommentIcon:boolean=false;
   commentOverlayPanelOpened:boolean=false;
+  columns:any = []
   constructor() { }
 
+  ngOnChanges(){
+    if(this.content){
+     this.columns = this.setColumnsToTheTable(this.content[0])
+    }
+  }
   setColumnsToTheTable(data: any) {
     let cols;
     cols = Object.entries(data).map(([field, value]) => ({ field, header: this.toTitleCase(field), value }));

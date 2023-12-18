@@ -43,7 +43,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   useCases: any;
   specDataLatest?: any;
   currentSpecVersionId: string = '';
-
+  isDataManagementPersistence: boolean = false;
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
@@ -248,10 +248,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.currentUser.last_name[1][0].toUpperCase(); // Get the first letter of the second word
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
-  getMeLatestSpec(body?: any) {
+
+  getMeLatestSpec(body?: any): void {
     if (!body) {
-      let productId = localStorage.getItem('record_id')
-      body = productId;
+      body = { productId: localStorage.getItem('record_id') };
     }
     this.utils.loadSpinner(true);
     this.specService
@@ -259,12 +259,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (
           response.status === 200 &&
-          response.data
+          response.data &&
+          response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
           this.currentSpecVersionId = response.data[0].versionId;
-          this.specData = response.data;
-          this.specDataCopy = [...this.specData];
+          this.handleData(response);
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
@@ -278,8 +278,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             this.productStatusPopupContent =
               'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
           }
-          this.utils.loadSpinner(false);
         }
+        this.utils.loadSpinner(false);
       })
       .catch((error) => {
         this.utils.loadSpinner(false);
@@ -350,10 +350,29 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     });
   }
 
+  deleteDataManagementPersistence(list: any) {
+    if (this.isDataManagementPersistence) {
+      list.forEach((obj: any, index: any) => {
+        obj.content.forEach((elem: any, idx: any) => {
+          if (elem.title === 'Data Management Persistence') {
+            obj.content.splice(idx, 1);
+          }
+        });
+      });
+    }
+  }
+
   handleData(response: any): void {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
+      if (obj?.title == 'Functional Specifications') {
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Management Persistence') {
+            this.isDataManagementPersistence = true;
+          }
+        });
+      }
       if (obj?.title == 'Technical Specifications') {
         if (!Array.isArray(obj.content)) {
           obj.content = [];
@@ -361,6 +380,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         obj.content.forEach((ele: any, idx: any) => {
           if (ele.title === 'Data Model Table Data') {
             obj.content.splice(idx, 1);
+          }
+          if (ele.title === 'Data Model') {
+            this.deleteDataManagementPersistence(list)
           }
         });
         obj.content.push({
@@ -389,6 +411,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         obj.content.push({
           title: 'Test Cases',
           content: content,
+          id: obj.id
         });
       }
     });
@@ -553,5 +576,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     );
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
+    let productId = localStorage.getItem('record_id');
+    this.getMeLatestSpec(productId);
   }
 }

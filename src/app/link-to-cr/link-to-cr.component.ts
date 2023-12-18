@@ -37,7 +37,6 @@ export class LinkToCrComponent implements OnInit {
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
   @Input() entityType?= '';
-
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -163,9 +162,8 @@ export class LinkToCrComponent implements OnInit {
       .then((response: any) => {
         if (response.status == 200 && response.data) {
           response.data.forEach((element: any) => {
-            element.label = element.crId;
+            element.label = element.crId + ' - ' + element.title;
             element.value = element.id;
-            element.title = element.title;
           });
           this.crList = this.crList.concat(response.data);
           if (this.isNewCrCreated) {
@@ -199,7 +197,7 @@ export class LinkToCrComponent implements OnInit {
 
   }
   onDropdownChange(event: any): void {
-    if (event.value === 'ADD_NEW') {
+    if (event?.value === 'ADD_NEW') {
       this.showNewCrPopup = true;
     } else if (event?.value !== '' && event?.value !== 'ADD_NEW') {
       const selectedPriority = this.priorityList.find((obj: any) => obj.value === event.priority);
@@ -216,7 +214,7 @@ export class LinkToCrComponent implements OnInit {
       this.selectedDueDate = event.duedate;
       console.log(this.selectedVersion, '0000000000')
 
-      this.reviewerList = event.reviewers;
+      this.reviewerList = event.reviewers.reviewers;
     }
 
     //   this.crForm.patchValue({

@@ -2,6 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Section } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-list-view',
@@ -22,9 +23,10 @@ export class ListViewComponent {
   commentOverlayPanelOpened: boolean = false;
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
-  selectedWordIndices: number[] = [];
+  @ViewChild('selectionContent') selectionContent: OverlayPanel | any;
+  selectedWordIndices: any[] = [];
 
-  constructor(private utils: UtilsService) {
+  constructor(private utils: UtilsService, private specUtils:SpecUtilsService) {
 
   }
 
@@ -61,7 +63,15 @@ export class ListViewComponent {
     this.selectedWordIndices = [];
   }
 
-  contentSelected(event: any) {
+  deSelect(){
+    if (window.getSelection) {
+        window.getSelection()?.empty();
+        window.getSelection()?.removeAllRanges();
+        this.selectedWordIndices = [];
+    }
+  }
+
+  contentSelected(event: any,type:string) {
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
@@ -73,7 +83,7 @@ export class ListViewComponent {
     } else {
       this.selectedText = '';
     }
-    this.handleSelectionText(event);
+    this.handleSelectionText(event,type);
   }
 
   highlightSelectedText() {
@@ -85,7 +95,7 @@ export class ListViewComponent {
       const elements = range.cloneContents().querySelectorAll('span');
       elements.forEach(element => {
         const id = element.id;
-        const index = parseInt(id.replace('word', ''));
+        let index=id;
         if (!this.selectedWordIndices.includes(index)) {
           this.selectedWordIndices.push(index);
         }
@@ -93,20 +103,33 @@ export class ListViewComponent {
     }
   }
 
-  async handleSelectionText(event: any) {
+  async handleSelectionText(event: any,type:string) {
     if (this.selectedText.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      await this.selectionText.toggle(event);
+      if(type=='title'){
+        await this.selectionText.toggle(event);
+      }else if(type=='content'){
+        await this.selectionContent.toggle(event);
+      }
     }
   }
 
   private getSelectedText() {
     const text = window.getSelection()?.toString();
-    return text ? text.trim() : null;
+    return text // ? text.trim() : null;
   }
 
   saveSecInLocal() {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
+
+  openCommentSection(){
+    this.specUtils._openCommentsPanel(false);
+    this.utils.saveSelectedSection(null);
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+    setTimeout(() => {
+      this.specUtils._openCommentsPanel(true);
+    },);
   }
 }
 

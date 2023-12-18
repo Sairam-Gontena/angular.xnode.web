@@ -14,16 +14,6 @@
             (ngModelChange)="onDropdownChange($event)" optionLabel="label" appendTo="body"
             placeholder="Add new or search existing change requests"
             [ngClass]="{ 'is-invalid': submitted && crFormControl['crToAdd'].errors }">
-            <ng-template let-item pTemplate="selectedItem">
-              <div
-                *ngIf="item?.label === 'New Change Request' || item?.label === 'Add new or search existing change requests'">
-                {{ item?.label }}
-              </div>
-              <div
-                *ngIf="item?.label !== 'New Change Request' && item?.label !== 'Add new or search existing change requests'">
-                {{ item?.label }} - {{ item?.title }}
-              </div>
-            </ng-template>
           </p-dropdown>
         </div>
         <div *ngIf="submitted && crFormControl['crToAdd'].errors" class="invalid-feedback">
@@ -71,7 +61,7 @@
             L1
           </div>
           <div class="reviewer-grid flex">
-            <div class="flex" *ngFor="let reviewer of reviewerList">
+            <div class="flex" *ngFor="let reviewer of reviewerList[0].users">
               <div class="reviewer-chip flex align-items-center mr-1">
                 <p class="m-0 avtar">
                   {{setAvatar(reviewer)}}
