@@ -24,5 +24,6 @@
         </p-overlayPanel>
         <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event);saveSecInLocal()"
             (mouseleave)="showCommentIcon = false" *ngIf="showCommentIcon">
+        <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon" (click)="openCommentSection()"></i>
     </div>
 </div>

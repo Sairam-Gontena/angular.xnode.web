@@ -4,6 +4,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 @Component({
   selector: 'xnode-para-view',
   templateUrl: './para-view.component.html',
@@ -24,7 +25,7 @@ export class ParaViewComponent {
   selectedWordIndices: number[] = [];
   currentUser: any;
 
-  constructor(public utils: UtilsService, private storageService: LocalStorageService) {
+  constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils:SpecUtilsService) {
   }
 
   ngOnInit() {
@@ -36,23 +37,38 @@ export class ParaViewComponent {
     })
   }
 
-  getWords(subitem: any) {
-    if (typeof subitem.content === 'string') {
-      return subitem.content.split(' ');
-    } else if (typeof subitem === undefined) {
-      if (typeof subitem === 'string') {
-        return subitem.split(' ');
-      }
-    } else if (typeof subitem === 'object') {
-      if (subitem.hasOwnProperty('content')) {
-        return subitem.content
+  getWords(subitem: any): string[] {
+    if (typeof subitem === 'object' && subitem !== null) {
+      if (typeof subitem.content === 'string') {
+        return subitem.content.split(' ');
+      } else if (Array.isArray(subitem.content)) {
+        return subitem.content;
       } else {
-        return subitem
+        return [subitem.toString()];
       }
+    } else if (typeof subitem === 'string') {
+      return subitem.split(' ');
     } else {
       return [];
     }
   }
+  // getWords(subitem: any) {
+  //   if (typeof subitem.content === 'string') {
+  //     return subitem.content.split(' ');
+  //   } else if (typeof subitem === undefined) {
+  //     if (typeof subitem === 'string') {
+  //       return subitem.split(' ');
+  //     }
+  //   } else if (typeof subitem === 'object') {
+  //     if (subitem.hasOwnProperty('content')) {
+  //       return subitem.content
+  //     } else {
+  //       return subitem
+  //     }
+  //   } else {
+  //     return [];
+  //   }
+  // }
 
   contentSelected(event: any) {
     this.showCommentIcon = true;
@@ -112,37 +128,16 @@ export class ParaViewComponent {
     return text;
   }
 
-  // sendComment(obj: any): void {
-  //   const body = {
-  //     "createdBy": this.currentUser.user_id,
-  //     "topParentId": null, // For new comment it is 'null' and reply level this should be top comment id.
-  //     "parentEntity": 'SPEC',
-  //     "parentId": this.specItem.id, // It should be spec id at New comment level and parent commment id at reply level
-  //     "message": obj.comment,
-  //     "referenceContent": this.specItem,
-  //     "attachments": obj.uploadedFiles,
-  //     "references": this.setTemplateTypeInRefs(),
-  //     "followers": [],
-  //     "feedback": {}
-  //   }
-  // }
-  // setTemplateTypeInRefs(): string {
-  //   if (this.parentEntity === 'SPEC' && this.`assignAsaTask`) {
-  //     this.references.forEach((obj: any) => {
-  //       obj.template_type = 'TASK'
-  //     })
-  //   } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
-  //     this.references.forEach((obj: any) => {
-  //       obj.template_type = 'COMMENT'
-  //     })
-  //   } else {
-  //     this.references.forEach((obj: any) => {
-  //       obj.template_type = this.parentEntity
-  //     })
-  //   }
-  //   return this.references;
-  // }
   saveSecInLocal() {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
+
+  openCommentSection(){
+    this.specUtils._openCommentsPanel(false);
+    this.utils.saveSelectedSection(null);
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+    setTimeout(() => {
+      this.specUtils._openCommentsPanel(true);
+    },);
   }
 }

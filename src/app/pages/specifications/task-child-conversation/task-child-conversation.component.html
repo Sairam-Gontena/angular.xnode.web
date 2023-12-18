@@ -61,7 +61,7 @@
             <div class="w-full">
                 <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
                     [action]="action" [users]="usersList" [parentEntity]="activeIndex == 0 ? 'COMMENT' : 'TASK'"
-                    [activeIndex]="activeIndex" [parentId]="cmt.id" [topParentId]="topParentId"
+                    [activeIndex]="activeIndex" [parentId]="cmt.parentId" [topParentId]="topParentId"
                     [comment]="action === 'EDIT' ? activeIndex == 0 ? cmt.message : cmt.description : ''"
                     [commentType]="'reply'" [width]="'w-full'"
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
@@ -69,6 +69,7 @@
         </div>
     </div>
 </div>
+
 <xnode-confirmation-popup *ngIf="showDeletePopup" [activeIndex]="activeIndex"
     (confirmationAction)="handleDeleteConfirmation($event)" [data]="'showDeletePopup'"
     (toggleAlert)="toggleConfirmPopup($event)" [visibleAlert]="showDeletePopup"></xnode-confirmation-popup>

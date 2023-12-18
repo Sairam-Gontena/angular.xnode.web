@@ -62,7 +62,6 @@
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
                       <a href="" class="text-primary-500 ml-2" *ngIf="data.status ==='UPDATED'"
                         (click)="onClickViewChanges(data)">View Changes</a>
-
                     </p>
                   </div>
                   <div class="w-full pl-7">
@@ -71,69 +70,44 @@
                         <img src="../../assets/todo.svg" alt="todo" />
                         <div class="flex align-items-center">
                           <p class="text-sm half-white pl-2">{{ data?.title }}</p>
-                          <!-- <div class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-red-500"
-                            *ngIf="data?.status == 'REVIEWED'">
-                            <div>
-                              <i class="pi pi-times border-circle text-xs text-red-500"></i>
+                          <div [ngClass]="{
+                          'border-green-500': data.status === 'SUBMITTTED',
+                          'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
+                          'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED',
+                          'border-yellow-500': data.status === 'DRAFT',
+                          }" class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl">
+                            <div class="border-circle text-xs">
+                              <ng-container *ngIf="data.status === 'SUBMITTTED'">
+                                <i class="pi pi-circle-fill text-green-500"></i>
+                              </ng-container>
+                              <ng-container *ngIf="data.status === 'ARCHIVED' || data.status === 'REJECTED'">
+                                <i class="pi pi-times-circle text-red-500"></i>
+                              </ng-container>
+                              <ng-container *ngIf="data.status === 'UPDATED' || data.status ==='REVIEWED'">
+                                <i class="pi pi-check-circle text-orange-500"></i>
+                              </ng-container>
+                              <ng-container *ngIf="data.status === 'DRAFT'">
+                                <i class="pi pi-clock text-yellow-500"></i>
+                              </ng-container>
                             </div>
-                            <div class="text-xs ml-2 text-red-500">Rejected</div>
-                          </div>
-                          <div class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-red-500"
-                            *ngIf="data?.status == 'REJECTED'">
-                            <div>
-                              <i class="pi pi-times border-circle text-xs text-red-500"></i>
+                            <div class="text-xs ml-2" [ngClass]="{
+                              'text-green-500': data.status === 'SUBMITTTED',
+                              'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
+                              'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' ,
+                              'text-yellow-500': data.status == 'DRAFT'
+                            }">{{data.status | uppercase}}
                             </div>
-                            <div class="text-xs ml-2 text-red-500">Rejected</div>
-                          </div>
-                          <div *ngIf="data?.status == 'APPROVED'"
-                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-green-500">
-                            <div>
-                              <i class="pi pi-check text-xs text-green-500"></i>
-                            </div>
-                            <div class="text-xs ml-2 text-green-500">
-                              Approved
-                            </div>
-                          </div>
-                          <div *ngIf="data?.status == 'NEEDMOREWORK'"
-                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
-                            <div>
-                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
-                            </div>
-                            <div class="text-xs ml-2 text-orange-500">
-                              Need More Work
-                            </div>
-                          </div> -->
-                          <div 
-                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
-                            <div>
-                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
-                            </div>
-                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
-                          </div>
-                          <div *ngIf="data?.status == 'UPDATED'"
-                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
-                            <div>
-                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
-                            </div>
-                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
-                          </div>
-                          <div *ngIf="data?.status == 'SUBMITTED'"
-                            class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl border-orange-500">
-                            <div>
-                              <i class="pi pi-clock border-circle text-xs text-orange-500"></i>
-                            </div>
-                            <div class="text-xs ml-2 text-orange-500">{{data.status}}</div>
                           </div>
                         </div>
                       </div>
-                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200" (click)="
+                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
                         op.toggle($event);
                         updateSelectedCr(data);
                         $event.stopPropagation();
                         getMeActions(data)
                       "></i>
                     </div>
-                    <div></div>
                     <div class="flex align-items-center pl-4" style="margin-top: -15px">
                       <p class="text-xs shaded-color normal-font-weight">
                         Due by : {{data.duedate | date}}
@@ -186,7 +160,7 @@
                             [content]="subData?.comment.referenceContent?.content"></xnode-common-spec-table>
                         </div>
                         <ng-template #normalView>
-                          <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
+                          <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p> -->
                           <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
                             {{ subData?.comment?.referenceContent?.content }}
                           </p>
