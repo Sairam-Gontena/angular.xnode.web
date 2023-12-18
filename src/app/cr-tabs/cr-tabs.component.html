@@ -116,6 +116,12 @@
                       <span class="shaded-color ml-1 normal-font-weight">3</span>
                     </div>
                   </div>
+                      <!-- dont delete write a comment code -->
+                <div class="card m-0 p-0 mb-2" *ngIf="data.showComment"  (click)="$event.stopPropagation()">
+                  <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
+                    placeHolder="Reason for your actions"
+                    (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
+                </div>
                 </div>
               </div>
             </ng-template>

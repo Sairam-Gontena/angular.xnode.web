@@ -58,11 +58,11 @@ export class CrTabsComponent {
       { title: 'None', code: 'N' },
     ];
     this.overlayPanel?.toggle(true);
-    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
-      if(this.activeIndex){
+    this.specUtils.getMeProductDropdownChange.subscribe((res) => {
+      if (this.activeIndex) {
         this.getCRList();
       }
-    })
+    });
   }
 
   getCRList() {
@@ -150,8 +150,6 @@ export class CrTabsComponent {
   }
 
   updateChagneRequestStatus(value: string) {
-    console.log('value', value);
-
     this.selectedStatus = value;
     switch (value) {
       case 'ARCHIVE':
@@ -163,9 +161,13 @@ export class CrTabsComponent {
         this.content = 'Are you sure you want to Submit this CR?';
         break;
       case 'REJECT':
-        this.header = 'Reject CR';
-        this.content = 'Are you sure you want to Reject this CR?';
-        this.showComment = true;
+        this.crData.forEach((element: any) => {
+          if (element.id === this.selectedCr.id) {
+            element.showComment = true;
+          } else {
+            element.showComment = false;
+          }
+        });
         break;
       case 'APPROVE':
         this.header = 'Approve CR';
@@ -174,15 +176,6 @@ export class CrTabsComponent {
       default:
         break;
     }
-    this.openConfirmationPopUp = true;
-
-    // if (value == 'APPROVED') {
-    //   this.header = 'Approve Request';
-    //   this.content = 'Are you sure you want to approve request?';
-    //   this.openConfirmationPopUp = true;
-    // } else if (value == 'REJECTED' || value == 'NEEDMOREWORK') {
-    //   this.showComment = true;
-    // }
   }
 
   onClickAction(action: string) {
@@ -247,7 +240,7 @@ export class CrTabsComponent {
       entityId: this.selectedCr.id,
       action: this.selectedStatus,
       userId: this.currentUser.user_id,
-      comments: this.comments
+      comments: this.selectedCr.comments,
     };
     this.utilsService.loadSpinner(true);
     this.commentsService
@@ -262,14 +255,17 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
+          this.crData.forEach((ele: any) => {
+            ele.showComment = false;
+          })
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -290,64 +286,16 @@ export class CrTabsComponent {
   }
 
   updateCommentsInfo(crInfo: any) {
-    let body = {
-      id: this.selectedCr.id,
-      parentEntity: 'TASK',
-      priority: this.selectedCr.priority,
-      title: this.selectedCr.title,
-      description: crInfo.message,
-      attachments: crInfo.attachments,
-      references: crInfo.referenceContent,
-      followers: [],
-      feedback: {},
-      status: '',
-      assignee: '',
-      deadline: '',
-    };
-    if (this.selectedStatus == 'REJECTED') {
-      body.status = 'REJECTED';
-    } else if (this.selectedStatus == 'NEEDMOREWORK') {
-      body.status = 'NEEDMOREWORK';
+    this.selectedCr['comments'] = crInfo.message
+    switch (this.selectedStatus) {
+      case 'REJECT':
+        this.header = 'Reject CR';
+        this.content = 'Are you sure you want to Reject this CR?';
+        break;
+      default:
+        break;
     }
-    this.rejectRequest(body);
-  }
-
-  rejectRequest(body: any): void {
-    this.utilsService.loadSpinner(true);
-    this.commentsService
-      .rejectCr(body)
-      .then((response: any) => {
-        if (response.statusText == 'Created') {
-          this.showComment = false;
-          let details =
-            body.status == 'REJECTED'
-              ? 'Change request rejected successfully'
-              : body.status == 'NEEDMOREWORK'
-                ? 'Change request updated successfully'
-                : '';
-          this.utilsService.loadToaster({
-            severity: 'success',
-            summary: 'SUCCESS',
-            detail: details,
-          });
-          this.getCRList();
-        } else {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data.description,
-          });
-        }
-        this.utilsService.loadSpinner(false);
-      })
-      .catch((err) => {
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-      });
+    this.openConfirmationPopUp = true;
   }
 
   onCheckCheckbox(event: any): void {
@@ -385,6 +333,7 @@ export class CrTabsComponent {
       entityId: cr.id,
       userId: this.currentUser?.user_id,
     };
+    this.selectedCr = cr;
     this.commentsService
       .getCrActions(body)
       .then((res: any) => {
