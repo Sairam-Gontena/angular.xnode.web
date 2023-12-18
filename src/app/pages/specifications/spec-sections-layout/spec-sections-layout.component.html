@@ -427,9 +427,9 @@
         'common-spec-table':
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-      }" *ngIf="content.title === 'Historical Data Load'">
+      }" *ngIf="content.title === 'Historical Data Load'" (mouseenter)="historicalDataPanelOpened = true" (mouseleave)="historicalDataPanelOpened = false" >
 
-<div class="col-12 py-0 text-right" (mouseenter)="historicalDataPanelOpened = true" (mouseleave)="historicalDataPanelOpened = false" >
+<div class="col-12 py-0 text-right" >
   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
   historicalDataOp.toggle($event); historicalDataPanelOpened = true;saveSecInLocal();
   " (mouseleave)="historicalDatashowCommentIcon = false" *ngIf="historicalDatashowCommentIcon || historicalDataPanelOpened" />
@@ -438,7 +438,7 @@
   historicalDataPanelOpened = false;
   historicalDatashowCommentIcon = false
     ">
-    <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="historicalDataPanelOpened"
+    <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
       (closeOverlay)="
       historicalDataOp.toggle(false);
       historicalDataPanelOpened = false

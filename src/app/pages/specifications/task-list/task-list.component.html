@@ -56,6 +56,22 @@
                 </iframe>
               </div>
             </div>
+            <div *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control'|| cmt?.referenceContent?.title == 'Stakeholder Approvals'" >
+              <xnode-common-spec-table  [users]="usersList"
+              [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-common-spec-table>
+            </div>
+            <div *ngIf="cmt?.referenceContent?.title=='Test Cases'" >
+              <div *ngFor="let item of cmt?.referenceContent?.content">
+                <div class="mt-2">
+                  <h3>
+                    {{item.Usecase}}
+                  </h3>
+                  <div class="mt-2">
+                    <xnode-common-spec-table [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [content]="item.TestCases"></xnode-common-spec-table>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
               <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
             </div>

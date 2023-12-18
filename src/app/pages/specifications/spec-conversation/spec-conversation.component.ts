@@ -83,6 +83,7 @@ export class SpecConversationComponent {
   ngOnInit() {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
+    console.log(this.list)
   }
 
   makeTrustedUrl(): void {
