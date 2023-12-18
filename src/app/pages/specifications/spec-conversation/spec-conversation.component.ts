@@ -14,7 +14,7 @@ import { SpecChildConversationComponent } from '../spec-child-conversation/spec-
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-
+import { SECTION_VIEW_CONFIG } from '../section-view-config';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -31,6 +31,8 @@ export class SpecConversationComponent {
   @Output() onClickClose = new EventEmitter<any>();
   @ViewChild(SpecChildConversationComponent)
   child!: SpecChildConversationComponent;
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -76,6 +78,23 @@ export class SpecConversationComponent {
 
   ngOnInit() {
     this.specListCopy = this.list;
+    console.log(this.list)
+  }
+
+  checkParaViewSections(title: string) {
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
   }
 
   receiveMsg(event: any) {
