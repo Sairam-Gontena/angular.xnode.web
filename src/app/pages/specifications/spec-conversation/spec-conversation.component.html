@@ -46,6 +46,17 @@
               <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem" >
                   <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-user-persona>
               </div>
+              <div *ngIf="cmt.referenceContent.title === 'Dashboards'">
+                <div class="flex justify-content-between align-items-center">
+                  <h1 class="my-1">Dashboard</h1>
+                </div>
+                <div class="grid">
+                  <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                  </iframe>
+                </div>
+              </div>
+
+
               <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
                 <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
               </div>

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
@@ -55,11 +55,13 @@ export class SpecConversationComponent {
   commentDelete: any;
   uploadedFiles: any;
   references: any;
+  iframeSrc: SafeResourceUrl = '';
   showConfirmationPopup: boolean = false;
   files: any[] = [];
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
   fileIndex: any;
+  targetUrl: string = '';
 
   constructor(
     private utils: UtilsService,
@@ -80,7 +82,17 @@ export class SpecConversationComponent {
 
   ngOnInit() {
     this.specListCopy = this.list;
-    console.log(this.list)
+    this.makeTrustedUrl();
+  }
+
+  makeTrustedUrl(): void {
+    let target =localStorage.getItem('targetUrl');
+    if(target){
+      this.targetUrl = target;
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.targetUrl
+      );
+    }
   }
 
   checkParaViewSections(title: string,parentTitle?:string) {

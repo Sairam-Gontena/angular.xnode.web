@@ -23,14 +23,57 @@
             </div>
         </div>
         <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
+          <div *ngIf="checktableJsonSection(cmt.referenceContent?.title); else normalView">
             <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
-                [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
-            </p>
+            <pre *ngIf="!cmt.referenceContent?.showTable" [innerHTML]="cmt.referenceContent?.content | json"
+                style=" white-space: pre-wrap; overflow: auto"></pre>
+            <xnode-common-spec-table *ngIf="cmt.referenceContent?.showTable"
+                [specItem]="cmt.referenceContent?.content.content"
+                [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
+          </div>
+          <ng-template #normalView>
+            <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)" class="h-8rem" >
+              <xnode-para-view [showComments]="false" [content]="cmt?.referenceContent?.content" [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [specItem]="cmt?.referenceContent?.content"
+                  [id]="cmt?.referenceContent?.id" ></xnode-para-view>
+            </div>
+            <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >
+              <xnode-list-view [content]="cmt?.referenceContent"[searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [id]="cmt?.referenceContent?.id"
+              [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
+            </div>
+            <div *ngIf="checkUserRoleSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >
+              <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
+                [content]="cmt?.referenceContent" [users]="usersList" [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
+            </div>
+            <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem" >
+                <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-user-persona>
+            </div>
+            <div *ngIf="cmt.referenceContent.title === 'Dashboards'">
+              <div class="flex justify-content-between align-items-center">
+                <h1 class="my-1">Dashboard</h1>
+              </div>
+              <div class="grid">
+                <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                </iframe>
+              </div>
+            </div>
+            <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
+              <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
+            </div>
+            <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
+              <xnode-data-model-common [dataModelData]="cmt?.referenceContent"></xnode-data-model-common>
+            </div>
+            <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
+              <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
+            </div>
             <div class="gradientback">
             </div>
+          </ng-template>
         </div>
 
+            <!-- <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
+            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
+                [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
+            </p> -->
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
         </div>

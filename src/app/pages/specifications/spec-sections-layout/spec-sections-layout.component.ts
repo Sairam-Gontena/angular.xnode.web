@@ -143,6 +143,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
       this.targetUrl
     );
+    localStorage.setItem('targetUrl',this.targetUrl)
   }
 
   onClickAddComment(obj: any): void {
