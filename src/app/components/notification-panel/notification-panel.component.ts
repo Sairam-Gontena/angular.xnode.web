@@ -5,6 +5,8 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from '../services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -37,7 +39,8 @@ export class NotificationPanelComponent {
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     public utils: UtilsService,
-    private notifyApi: NotifyApiService
+    private notifyApi: NotifyApiService,
+    private storageService: LocalStorageService
   ) {
     let user = localStorage.getItem('currentUser');
     if (user) {
@@ -154,12 +157,13 @@ export class NotificationPanelComponent {
         });
       });
   }
-  gotoSpec(obj: any) {
+
+  goToSpec(obj: any) {
     let specData = localStorage.getItem('meta_data')
     if (specData) {
       let products = JSON.parse(specData);
       let product = products.find((x: any) => x.id === obj.product_id);
-      if(product){
+      if (product) {
         localStorage.setItem('product_email', product.email);
         localStorage.setItem('record_id', product.id);
         localStorage.setItem('product', JSON.stringify(product));
@@ -174,49 +178,49 @@ export class NotificationPanelComponent {
           this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
         }
         this.closeNotificationPanel.emit(true);
-      }else{
+      } else {
         this.utils.loadSpinner(true)
-        this.apiService 
-        .get('navi/get_metadata/' + this.currentUser?.email)
-        .then((response) => {
-          if (response?.status === 200 && response.data.data?.length) {
-            localStorage.setItem('meta_data', JSON.stringify(response.data.data));
-            let products = response.data.data;
-            let product = products.find((x: any) => x.id === obj.product_id);
-            if(product){
-              localStorage.setItem('product_email', product.email);
-              localStorage.setItem('record_id', product.id);
-              localStorage.setItem('product', JSON.stringify(product));
-              localStorage.setItem('app_name', product.title);
-              localStorage.setItem('has_insights', product.has_insights);
-              if (obj.component && obj.component !== '') {
-                this.utils.toggleSpecPage(true);
-                this.router.navigate(['/specification']);
-                this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
-              } 
+        this.apiService
+          .get('navi/get_metadata/' + this.currentUser?.email)
+          .then((response) => {
+            if (response?.status === 200 && response.data.data?.length) {
+              localStorage.setItem('meta_data', JSON.stringify(response.data.data));
+              let products = response.data.data;
+              let product = products.find((x: any) => x.id === obj.product_id);
+              if (product) {
+                localStorage.setItem('product_email', product.email);
+                localStorage.setItem('record_id', product.id);
+                localStorage.setItem('product', JSON.stringify(product));
+                localStorage.setItem('app_name', product.title);
+                localStorage.setItem('has_insights', product.has_insights);
+                if (obj.component && obj.component !== '') {
+                  this.utils.toggleSpecPage(true);
+                  this.router.navigate(['/specification']);
+                  this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
+                }
+              }
+              this.closeNotificationPanel.emit(true);
+              this.utils.loadSpinner(false)
+            } else if (response?.status !== 200) {
+              this.utils.loadToaster({
+                severity: 'error',
+                summary: 'ERROR',
+                detail: response?.data?.detail,
+              });
             }
-            this.closeNotificationPanel.emit(true);
-            this.utils.loadSpinner(false)
-          } else if (response?.status !== 200) {
+            this.utils.loadSpinner(false);
+          })
+          .catch((error) => {
+            this.utils.loadSpinner(false);
             this.utils.loadToaster({
               severity: 'error',
-              summary: 'ERROR',
-              detail: response?.data?.detail,
+              summary: 'Error',
+              detail: error,
             });
-          }
-          this.utils.loadSpinner(false);
-        })
-        .catch((error) => {
-          this.utils.loadSpinner(false);
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'Error',
-            detail: error,
           });
-        });
       }
-  
     }
+    this.closeNotificationPanel.emit(true);
   }
 
   getMeLabel(obj: any) {

@@ -62,7 +62,6 @@
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
                       <a href="" class="text-primary-500 ml-2" *ngIf="data.status ==='UPDATED'"
                         (click)="onClickViewChanges(data)">View Changes</a>
-
                     </p>
                   </div>
                   <div class="w-full pl-7">
@@ -101,14 +100,14 @@
                           </div>
                         </div>
                       </div>
-                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200" (click)="
+                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
                         op.toggle($event);
                         updateSelectedCr(data);
                         $event.stopPropagation();
                         getMeActions(data)
                       "></i>
                     </div>
-                    <div></div>
                     <div class="flex align-items-center pl-4" style="margin-top: -15px">
                       <p class="text-xs shaded-color normal-font-weight">
                         Due by : {{data.duedate | date}}
@@ -161,7 +160,7 @@
                             [content]="subData?.comment.referenceContent?.content"></xnode-common-spec-table>
                         </div>
                         <ng-template #normalView>
-                          <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
+                          <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p> -->
                           <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
                             {{ subData?.comment?.referenceContent?.content }}
                           </p>

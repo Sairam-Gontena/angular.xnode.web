@@ -43,7 +43,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   useCases: any;
   specDataLatest?: any;
   currentSpecVersionId: string = '';
-  isDataManagementPersistence:boolean=false;
+  isDataManagementPersistence: boolean = false;
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
@@ -350,9 +350,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteDataManagementPersistence(list:any){
-    if(this.isDataManagementPersistence){
-      list.forEach((obj:any, index: any)=>{
+  deleteDataManagementPersistence(list: any) {
+    if (this.isDataManagementPersistence) {
+      list.forEach((obj: any, index: any) => {
         obj.content.forEach((elem: any, idx: any) => {
           if (elem.title === 'Data Management Persistence') {
             obj.content.splice(idx, 1);
@@ -366,10 +366,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
-      if(obj?.title=='Functional Specifications'){
+      if (obj?.title == 'Functional Specifications') {
         obj.content.forEach((ele: any, idx: any) => {
           if (ele.title === 'Data Management Persistence') {
-            this.isDataManagementPersistence=true;
+            this.isDataManagementPersistence = true;
           }
         });
       }
@@ -381,7 +381,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           if (ele.title === 'Data Model Table Data') {
             obj.content.splice(idx, 1);
           }
-          if(ele.title === 'Data Model') {
+          if (ele.title === 'Data Model') {
             this.deleteDataManagementPersistence(list)
           }
         });

@@ -2,70 +2,48 @@
   <div class="flex justify-content-between">
     <div class="text-white text-2xl font-semibold">Notifications</div>
     <div class="flex align-items-center">
-      <img
-        src="./assets/mute-notification.svg"
-        alt="bell"
-        class="w-0.3rem h-0.3rem mr-2"
-      />
+      <img src="./assets/mute-notification.svg" alt="bell" class="w-0.3rem h-0.3rem mr-2" />
       <i class="pi pi-ellipsis-h text-lg"></i>
-      <i
-        class="pi pi-times ml-2 pointer text-white"
-        (click)="this.closeNotificationPanel.emit(true)"
-      ></i>
+      <i class="pi pi-times ml-2 pointer text-white" (click)="this.closeNotificationPanel.emit(true)"></i>
     </div>
   </div>
 </div>
-<div
-  *ngIf="allNotifications.length > 0"
-  class="flex mt-4 notification-btns ml-3 mr-3"
->
+<div *ngIf="allNotifications.length > 0" class="flex mt-4 notification-btns ml-3 mr-3">
   <div class="flex align-items-center pointer">
-    <div
-      [class]="
+    <div [class]="
         filterTypes.all
           ? 'text-white text-base font-semibold border-bottom-1'
           : 'text-base font-medium'
-      "
-      (click)="filterNotifications('all')"
-    >
+      " (click)="filterNotifications('all')">
       All
     </div>
   </div>
   <div class="flex align-items-center ml-3 pointer">
-    <div
-      [class]="
+    <div [class]="
         filterTypes.recent
           ? 'text-white text-base font-semibold border-bottom-1'
           : 'text-base font-medium'
-      "
-      (click)="filterNotifications('recent')"
-    >
+      " (click)="filterNotifications('recent')">
       Recent
     </div>
     <div class="dot"></div>
   </div>
   <div class="flex align-items-center ml-3 pointer">
-    <div
-      [class]="
+    <div [class]="
         filterTypes.important
           ? 'text-white text-base font-semibold border-bottom-1'
           : 'text-base font-medium'
-      "
-      (click)="filterNotifications('important')"
-    >
+      " (click)="filterNotifications('important')">
       Important
     </div>
     <div class="dot"></div>
   </div>
   <div class="flex align-items-center ml-3 pointer">
-    <div
-      [class]="
+    <div [class]="
         filterTypes.pinned
           ? 'text-white text-base font-semibold border-bottom-1'
           : 'text-base font-medium'
-      "
-      (click)="filterNotifications('pinned')"
-    >
+      " (click)="filterNotifications('pinned')">
       Pinned
     </div>
   </div>
@@ -81,10 +59,8 @@
   </div>
 </div>
 <div class="notif-list ml-3 pr-3" *ngIf="allNotifications.length > 0">
-  <div
-    *ngFor="let notification of notifications"
-    class="flex p-2 border-50 notif-card text-white text-xs justify-content-between"
-  >
+  <div *ngFor="let notification of notifications"
+    class="flex p-2 border-50 notif-card text-white text-xs justify-content-between">
     <div class="flex">
       <div>
         <ng-container [ngSwitch]="notification?.status">
@@ -93,18 +69,13 @@
           <img *ngSwitchCase="'reject'" src="../../../assets/cancel.svg" />
           <img *ngSwitchCase="'error'" src="../../../assets/cancel.svg" />
         </ng-container>
-        <i
-          class="text-white pi pi-bell text-base"
-          *ngIf="notification?.type == 'publish'"
-        ></i>
-        <div
-          *ngIf="
+        <i class="text-white pi pi-bell text-base" *ngIf="notification?.type == 'publish'"></i>
+        <div *ngIf="
             notification?.type == 'request' &&
             notification?.status != 'success' &&
             notification?.status != 'pending' &&
             notification?.status != 'reject'
-          "
-        >
+          ">
           <img src="../../../assets/user-image.svg" class="w-0.5rem h-0.5rem" />
         </div>
       </div>
@@ -112,144 +83,87 @@
         <div class="text-sm font-medium">
           {{ notification?.title?.toUpperCase().replaceAll("_", " ") }}
         </div>
-        <div
-          class="text-sm font-medium"
-          *ngIf="notification?.component == 'Product Specifications'"
-        >
+        <div class="text-sm font-medium" *ngIf="notification?.component == 'Product Specifications'">
           {{ notification?.component?.toUpperCase() }}
         </div>
-        <div
-          (click)="navigateToConversation(notification)"
-          class="text-500 mt-2 text-sm font-normal"
-        >
+        <div (click)="navigateToConversation(notification)" class="text-500 mt-2 text-sm font-normal">
           {{ notification?.description }}
         </div>
         <div class="flex mt-2" *ngIf="notification?.type === 'request'">
-          <div
-            class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer"
-          >
+          <div class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
             Decline
           </div>
-          <div
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-          >
+          <div class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             Accept
           </div>
         </div>
-        <div
-          class="flex mt-2"
-          *ngIf="notification?.product_status === 'completed'"
-        >
-          <div
-            class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
-            (click)="onClickPublish(notification)"
-          >
+        <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
+          <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
+            (click)="onClickPublish(notification)">
             Publish
             <i class="text-white pi pi-arrow-right text-xs ml-2"></i>
           </div>
-          <div
-            (click)="navigateToProduct(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-          >
+          <div (click)="navigateToProduct(notification)"
+            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             {{ getMeLabel(notification) }}
           </div>
         </div>
-        <div
-          class="flex mt-2"
-          *ngIf="notification?.spec_status === 'Completed'"
-        >
-          <div
-            (click)="gotoSpec(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-          >
+        <div class="flex mt-2" *ngIf="notification?.spec_status === 'Completed'">
+          <div (click)="goToSpec(notification)"
+            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Specification
           </div>
         </div>
-        <div
-          class="flex mt-2"
-          *ngIf="
+        <div class="flex mt-2" *ngIf="
             notification?.template_type === 'COMMENT' ||
             notification?.template_type === 'TASK'
-          "
-        >
-          <div
-            (click)="navigateToConversation(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-          >
+          ">
+          <div (click)="navigateToConversation(notification)"
+            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View
             {{
-              notification?.template_type === "COMMENT"
-                ? "Comment"
-                : notification?.template_type === "TASK"
-                ? "Task"
-                : null
+            notification?.template_type === "COMMENT"
+            ? "Comment"
+            : notification?.template_type === "TASK"
+            ? "Task"
+            : null
             }}
           </div>
         </div>
-        <div
-          class="flex mt-2"
-          *ngIf="notification?.conversationID && notification.title"
-        >
-          <div
-            (click)="navigateToFeedbackList(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer"
-          >
+        <div class="flex mt-2" *ngIf="notification?.conversationID && notification.title">
+          <div (click)="navigateToFeedbackList(notification)"
+            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Report
           </div>
         </div>
-        <div
-          class="flex mt-2"
-          *ngIf="notification?.product_status === 'deployed'"
-        >
-          <p-button
-            label="Launch Product"
-            styleClass="p-button-primary launch-product"
-            [rounded]="true"
-            (click)="onClickLaunchProduct(notification?.product_url)"
-          ></p-button>
+        <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
+          <p-button label="Launch Product" styleClass="p-button-primary launch-product" [rounded]="true"
+            (click)="onClickLaunchProduct(notification?.product_url)"></p-button>
         </div>
       </div>
     </div>
     <div>
-      <i
-        class="pi pi-ellipsis-h text-lg text-500"
-        (click)="op1.show($event)"
-      ></i>
+      <i class="pi pi-ellipsis-h text-lg text-500" (click)="op1.show($event)"></i>
       <p-overlayPanel #op1 [style]="{ 'background-color': '#24232C' }">
         <div class="flex pt-2 pl-2 pr-2">
-          <img
-            src="../../../assets/double-check.svg"
-            class="w-0.5rem h-0.5rem"
-          />
-          <div
-            class="text-xs text-500 ml-2"
-            (click)="toggleNotificationRead('read', notification?.id)"
-            *ngIf="!notification?.read"
-          >
+          <img src="../../../assets/double-check.svg" class="w-0.5rem h-0.5rem" />
+          <div class="text-xs text-500 ml-2" (click)="toggleNotificationRead('read', notification?.id)"
+            *ngIf="!notification?.read">
             Mark as read
           </div>
-          <div
-            class="text-xs text-500 ml-2"
-            (click)="toggleNotificationRead('unread', notification?.id)"
-            *ngIf="notification?.read"
-          >
+          <div class="text-xs text-500 ml-2" (click)="toggleNotificationRead('unread', notification?.id)"
+            *ngIf="notification?.read">
             Mark as unread
           </div>
         </div>
         <div class="flex mt-2 pl-2 pr-2 pb-2">
           <img src="../../../assets/pin.svg" class="w-0.5rem h-0.5rem" />
-          <div
-            class="text-xs text-500 ml-2"
-            (click)="toggleNotificationPinned('pinned', notification?.id)"
-            *ngIf="!notification?.pinned"
-          >
+          <div class="text-xs text-500 ml-2" (click)="toggleNotificationPinned('pinned', notification?.id)"
+            *ngIf="!notification?.pinned">
             Pin
           </div>
-          <div
-            class="text-xs text-500 ml-2"
-            (click)="toggleNotificationPinned('unpinned', notification?.id)"
-            *ngIf="notification?.pinned"
-          >
+          <div class="text-xs text-500 ml-2" (click)="toggleNotificationPinned('unpinned', notification?.id)"
+            *ngIf="notification?.pinned">
             Un Pin
           </div>
         </div>
@@ -260,9 +174,6 @@
     </div>
   </div>
 </div>
-<div
-  class="p-5 flex justify-content-center align-items-center"
-  *ngIf="allNotifications.length === 0"
->
+<div class="p-5 flex justify-content-center align-items-center" *ngIf="allNotifications.length === 0">
   <p>No New Notifications Found</p>
 </div>
