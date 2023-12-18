@@ -190,21 +190,7 @@ export class LinkToCrComponent implements OnInit {
         });
       });
   }
-  onVersionChanged(version: any) {
-    const selected = this.versionList.find((item: any) => item.value === version);
-    if (selected) {
-      this.selectedVersion = selected.label;
-      console.log(this.selectedVersion, version, this.versionList, '0000000000');
-    } else {
-      // Handle the case when no matching version is found
-      console.error('Selected version not found in versionList');
-    }
-    // this.selectedVersion = this.versionList.find((item: any) =>
-    //   item.value === version)?.label;
-    // console.log(this.selectedVersion, version, this.versionList, '0000000000')
-    console.log(this.selectedVersion, version, this.versionList, '0000000000');
 
-  }
 
   onDropdownChange(event: any): void {
     if (event?.value === 'ADD_NEW') {
@@ -228,21 +214,6 @@ export class LinkToCrComponent implements OnInit {
       this.reviewerList = event.reviewers.reviewers;
     }
 
-    //   this.crForm.patchValue({
-    //     priority: this.priorityList.filter((obj: any) => {
-    //       return obj.value === event.priority;
-    //     })[0],
-
-    //     version: this.versionList.filter((obj: any) => {
-    //       return obj.value === event.versionId;
-    //     })[0],
-    //     duedate: new Date(event.duedate),
-    //   });
-    //   this.selectedPriority = event.priority;
-    //   this.selectedVersion = this.versionList.find((item: any) => item.value === event.versionId)?.label;
-    //   this.selectedDueDate = event.duedate;
-    //   this.reviewerList = event.reviewers;
-    // }
   }
 
   closePopUp(event: any) {
