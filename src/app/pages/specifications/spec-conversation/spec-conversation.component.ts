@@ -83,7 +83,10 @@ export class SpecConversationComponent {
     console.log(this.list)
   }
 
-  checkParaViewSections(title: string) {
+  checkParaViewSections(title: string,parentTitle?:string) {
+    if(parentTitle=='Technical Specifications'){
+      return;
+    }
     return (
       this.paraViewSections.filter((secTitle) => {
         return secTitle === title;
@@ -92,7 +95,6 @@ export class SpecConversationComponent {
   }
 
   checkListViewSections(title: string) {
-    console.log(title)
     return (
       this.listViewSections.filter((secTitle) => {
         return secTitle === title;

@@ -44,6 +44,7 @@
                             </p-overlayPanel>
                             <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)"
                                 [style.display]="showCommentIcon && seletedMainIndex == mainIndex && selecteedSubIndex == i ? 'block' : 'none'">
+                            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon" (click)="openCommentSection()"></i>
                         </div>
                     </div>
                 </div>
@@ -77,7 +78,7 @@
       </div>
       <ng-template #obj>
         <p class="text-xl">{{content.title}}</p>
-        <div *ngIf="isArray(content)">
+        <div *ngIf="isArray(content.content)">
           <div *ngFor="let subItem of content; let i=index " class="pl-4">
               <div class="flex col-12 p-0 " >
                   <div class="col-10 p-0">
@@ -96,12 +97,12 @@
               </div>
           </div>
       </div>
-      <div *ngIf="isString(content)">
+      <div *ngIf="isString(content.content)">
           <div class="flex col-12 p-0">
               <div class="col-10 p-0">
                   <p class="m-0 pb-1 line-height-3">
                       <span class="sub-content font-normal text-base">
-                          {{content}}
+                          {{content.content}}
                       </span>
                   </p>
               </div>

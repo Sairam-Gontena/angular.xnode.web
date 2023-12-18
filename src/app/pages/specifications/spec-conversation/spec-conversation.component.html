@@ -31,11 +31,10 @@
                     [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
             </div>
             <ng-template #normalView>
-              <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title)" class="h-8rem" >
+              <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)" class="h-8rem" >
                 <xnode-para-view [content]="cmt?.referenceContent?.content" [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [specItem]="cmt?.referenceContent?.content"
                     [id]="cmt?.referenceContent?.id" ></xnode-para-view>
               </div>
-              <!-- || checkListViewSections(cmt.referenceContent?.title) -->
               <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >
                 <xnode-list-view [content]="cmt?.referenceContent"[searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [id]="cmt?.referenceContent?.id"
                 [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
@@ -44,9 +43,18 @@
                 <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
                   [content]="cmt?.referenceContent" [users]="usersList" [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
               </div>
-              <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >
+              <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem" >
                   <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-user-persona>
               </div>
+              <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
+                <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
+              </div>
+              <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
+                <xnode-data-model-common [dataModelData]="cmt?.referenceContent"></xnode-data-model-common>
+              </div>
+              <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
+                <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
+              </div> <!--[specItem]="specItem"-->
             </ng-template>
             <!-- <div  *ngIf="cmt.referenceContent.title === 'Usecases' || cmt.referenceContent.title === 'Use Cases'">
                 <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>

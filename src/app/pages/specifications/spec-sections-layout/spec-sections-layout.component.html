@@ -428,8 +428,27 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Historical Data Load'">
-      <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-        [content]="content.content"></xnode-common-spec-table>
+
+<div class="col-12 py-0 text-right" (mouseenter)="historicalDataPanelOpened = true" (mouseleave)="historicalDataPanelOpened = false" >
+  <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+  historicalDataOp.toggle($event); historicalDataPanelOpened = true;saveSecInLocal();
+  " (mouseleave)="historicalDatashowCommentIcon = false" *ngIf="historicalDatashowCommentIcon || historicalDataPanelOpened" />
+  <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="historicalDatashowCommentIcon || historicalDataPanelOpened" (click)="openCommentSection()"></i>
+  <p-overlayPanel #historicalDataOp (onHide)="
+  historicalDataPanelOpened = false;
+  historicalDatashowCommentIcon = false
+    ">
+    <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="historicalDataPanelOpened"
+      (closeOverlay)="
+      historicalDataOp.toggle(false);
+      historicalDataPanelOpened = false
+      " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+      [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+      [specItem]="specItem"></xnode-add-comment-overlay-panel>
+  </p-overlayPanel>
+  <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+  [content]="content.content"></xnode-common-spec-table>
+</div>
     </div>
     <div *ngIf="content.title === 'User Personas' && isArray(content.content)">
       <div class="grid" (mouseover)="userpersonaShowCommentIcon = true"
@@ -478,8 +497,29 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Version Control'">
-      <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+
+  <div class="col-12 py-0 text-right" (mouseenter)="versionControlshowCommentIcon = true" (mouseleave)="versionControlshowCommentIcon = false" >
+    <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+    versionControlOp.toggle($event); versionControlPanelOpened = true;saveSecInLocal();
+    " *ngIf="versionControlshowCommentIcon || versionControlPanelOpened" />
+    <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="versionControlshowCommentIcon || versionControlPanelOpened" (click)="openCommentSection()"></i>
+    <p-overlayPanel #versionControlOp (onHide)="
+    versionControlPanelOpened = false;
+    versionControlshowCommentIcon = false
+      ">
+      <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="versionControlPanelOpened"
+        (closeOverlay)="
+        versionControlOp.toggle(false);
+        versionControlPanelOpened = false
+        " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+        [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+        [specItem]="specItem"></xnode-add-comment-overlay-panel>
+    </p-overlayPanel>
+    <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
         [specItem]="specItem"></xnode-common-spec-table>
+  </div>
+
+
     </div>
     <div [ngClass]="{
         'common-spec-table-menu': isSideMenuOpened,
@@ -488,8 +528,27 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Stakeholder Approvals'">
-      <xnode-common-spec-table [users]="usersList" [searchTerm]="searchTerm" [specItem]="specItem"
+
+      <div class="col-12 py-0 text-right" (mouseenter)="stakeHoldershowCommentIcon = true" (mouseleave)="stakeHoldershowCommentIcon = false" >
+        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+        stakeholderOp.toggle($event); stakeHolderPanelOpened = true;saveSecInLocal();
+        " *ngIf="stakeHoldershowCommentIcon || stakeHolderPanelOpened" />
+        <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="stakeHoldershowCommentIcon || stakeHolderPanelOpened" (click)="openCommentSection()"></i>
+        <p-overlayPanel #stakeholderOp (onHide)="
+        stakeHolderPanelOpened = false;
+        stakeHoldershowCommentIcon = false
+          ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="stakeHolderPanelOpened"
+            (closeOverlay)="
+            stakeholderOp.toggle(false);
+            stakeHolderPanelOpened = false
+            " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <xnode-common-spec-table [users]="usersList" [searchTerm]="searchTerm" [specItem]="specItem"
         [content]="content.content"></xnode-common-spec-table>
+      </div>
     </div>
     <div [ngClass]="{
       'common-spec-table-menu': isSideMenuOpened,
@@ -499,10 +558,26 @@
       'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
     }" class="common-spec-table" *ngIf="content.title === 'Data Quality Checks'">
       <div class="grid">
-      <div class="col-12">
-        <xnode-common-spec-table  [users]="usersList"
+        <div class="col-12 py-0 text-right" (mouseenter)="dataQualityshowCommentIcon = true" (mouseleave)="dataQualityshowCommentIcon = false" >
+          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+          dataQualityOp.toggle($event); dataQualityPanelOpened = true;saveSecInLocal();
+          " *ngIf="dataQualityshowCommentIcon || dataQualityPanelOpened" />
+          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="dataQualityshowCommentIcon || dataQualityPanelOpened" (click)="openCommentSection()"></i>
+          <p-overlayPanel #dataQualityOp (onHide)="
+          dataQualityPanelOpened = false;
+          dataQualityshowCommentIcon = false
+            ">
+            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataQualityPanelOpened"
+              (closeOverlay)="
+              dataQualityOp.toggle(false);
+              dataQualityPanelOpened = false
+              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+              [specItem]="specItem"></xnode-add-comment-overlay-panel>
+          </p-overlayPanel>
+          <xnode-common-spec-table  [users]="usersList"
         [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content[0].content"></xnode-common-spec-table>
-      </div>
+        </div>
     </div>
     </div>
     <div *ngIf="content.title === 'Test Cases'">
@@ -518,8 +593,29 @@
               !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
             'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
           }" class="common-spec-table">
+
+          <div class="col-12 py-0 text-right" (mouseenter)="testCaseshowCommentIcon = true" (mouseleave)="testCaseshowCommentIcon = false" >
+            <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+            testCaseOp.toggle($event); testCasePanelOpened = true;saveSecInLocal();
+            " *ngIf="testCaseshowCommentIcon || testCasePanelOpened" />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="testCaseshowCommentIcon || testCasePanelOpened" (click)="openCommentSection()"></i>
+            <p-overlayPanel #testCaseOp (onHide)="
+            testCasePanelOpened = false;
+            testCaseshowCommentIcon = false
+              ">
+              <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="testCasePanelOpened"
+                (closeOverlay)="
+                testCaseOp.toggle(false);
+                testCasePanelOpened = false
+                " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+                [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                [specItem]="specItem"></xnode-add-comment-overlay-panel>
+            </p-overlayPanel>
             <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-              [content]="item.TestCases"></xnode-common-spec-table>
+            [content]="item.TestCases"></xnode-common-spec-table>
+          </div>
+
+
           </div>
         </div>
       </div>

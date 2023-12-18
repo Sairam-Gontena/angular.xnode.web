@@ -1,6 +1,4 @@
 <span *ngIf="isArray(content) else obj">
-
-
 <ul *ngFor="let subItem of content; let i = index" (mouseleave)="showCommentIcon = false;">
   <li>
     <div class="flex col-12 p-0 " (mouseover)="showCommentIcon = true; selectedIndex=i "

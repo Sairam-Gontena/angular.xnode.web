@@ -72,6 +72,16 @@ export class SpecSectionsLayoutComponent implements OnInit {
   qaPanelOpened: boolean = false;
   openAPIShowCommentIcon: boolean = false;
   openAPIPanelOpened: boolean = false;
+  stakeHolderPanelOpened: boolean = false;
+  stakeHoldershowCommentIcon: boolean = false;
+  versionControlPanelOpened: boolean = false;
+  versionControlshowCommentIcon: boolean = false;
+  historicalDataPanelOpened: boolean = false;
+  historicalDatashowCommentIcon: boolean = false;
+  dataQualityPanelOpened: boolean = false;
+  dataQualityshowCommentIcon: boolean = false;
+  testCasePanelOpened: boolean = false;
+  testCaseshowCommentIcon: boolean = false;
 
   expandSpecSections: any = [
     'Usecases',

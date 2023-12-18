@@ -201,7 +201,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }else{
       body.referenceContent.parentTitle = this.specItem.title;
     }
-    console.log(this.parentTitle,body,this.specItem, this.selectedContent)
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.prepareDataToDisplayOnCommentsPanel();
