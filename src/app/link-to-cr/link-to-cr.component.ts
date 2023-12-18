@@ -158,9 +158,8 @@ export class LinkToCrComponent implements OnInit {
       .then((response: any) => {
         if (response.status == 200 && response.data) {
           response.data.forEach((element: any) => {
-            element.label = element.crId;
+            element.label = element.crId + ' - ' + element.title;
             element.value = element.id;
-            element.title = element.title;
           });
           this.crList = this.crList.concat(response.data);
           if (this.isNewCrCreated) {
