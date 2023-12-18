@@ -37,7 +37,13 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
+      if(res){
+        if(this.activeIndex == 0){
+          this.getMeCommentsList();
+        }
+      }
+    })
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {

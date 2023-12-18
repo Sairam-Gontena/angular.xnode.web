@@ -16,6 +16,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class CrTabsComponent {
   @Input() usersList: any;
+  @Input() activeIndex: any;
   filters: any;
   currentUser: any;
   crData: any;
@@ -57,6 +58,11 @@ export class CrTabsComponent {
       { title: 'None', code: 'N' },
     ];
     this.overlayPanel?.toggle(true);
+    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
+      if(this.activeIndex){
+        this.getCRList();
+      }
+    })
   }
 
   getCRList() {

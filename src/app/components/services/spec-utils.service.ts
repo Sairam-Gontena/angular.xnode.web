@@ -24,6 +24,9 @@ export class SpecUtilsService {
 
   private getMeSpec: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getSpecBasedOnVersionID: Observable<any> = this.getMeSpec.asObservable();
+  
+  private onProductDropdownChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public getMeProductDropdownChange: Observable<boolean> = this.onProductDropdownChange.asObservable();
 
   _openCommentsPanel(event: boolean): void {
     this.openPanel.next(event);
@@ -35,6 +38,9 @@ export class SpecUtilsService {
 
   _commentsCrActiveTab(event: boolean): void {
     this.commentsCrActiveTab.next(event);
+  }
+  _productDropdownChanged(event: boolean): void {
+    this.onProductDropdownChange.next(event);
   }
 
   _getSpecBasedOnVersionID(event: string): void {

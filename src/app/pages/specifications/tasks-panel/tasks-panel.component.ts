@@ -56,11 +56,20 @@ export class TasksPanelComponent {
   }
 
   ngOnInit(): void {
+    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
+      if(res){
+        if(this.activeIndex == 1){
+          this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
+          this.getMeTasksList();
+        }
+      }
+    })
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     const activeIndexChange = changes['activeIndex'] as SimpleChange;
     if (activeIndexChange && activeIndexChange.currentValue === 1) {
+      this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
       this.getMeTasksList();
     }
   }
