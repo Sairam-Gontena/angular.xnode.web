@@ -19,6 +19,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Output() closeOverlay = new EventEmitter<any>();
+  @Input() parentTitle:any;
   @Input() position?: string;
   @Input() placeHolder?: string;
   @Input() selectedContent: any;
@@ -163,7 +164,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "parentEntity": this.parentEntity,
         "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
         "message": this.comment,
-        "referenceContentTitle":this.specItem.title,
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": this.uploadedFiles,
         "references": this.setTemplateTypeInRefs(),
@@ -171,7 +171,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {},
       }
     }
-    console.log(body);console.log(this.specItem);
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         body = {
@@ -180,7 +179,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           "parentEntity": this.parentEntity,
           "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
           "message": this.comment,
-          "referenceContentTitle":this.specItem.title,
           "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
           "attachments": this.uploadedFiles,
           "references": this.setTemplateTypeInRefs(),
@@ -198,7 +196,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
-    console.log(body)
+    if(this.parentTitle!='' && this.parentTitle!=undefined){
+      body.referenceContent.parentTitle = this.parentTitle
+    }else{
+      body.referenceContent.parentTitle = this.specItem.title;
+    }
+    console.log(this.parentTitle,body,this.specItem, this.selectedContent)
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.prepareDataToDisplayOnCommentsPanel();
@@ -247,7 +250,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "priority": '1',
         "title": this.comment,
         "description": this.comment,
-        "referenceContentTitle":this.specItem.title,
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": [],
         "references": this.setTemplateTypeInRefs(),
@@ -264,7 +266,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "priority": '1',
         "title": this.comment,
         "description": this.comment,
-        "referenceContentTitle":this.specItem.title,
         "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
         "attachments": this.uploadedFiles,
         "references": this.setTemplateTypeInRefs(),
@@ -278,6 +279,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
+    this.parentTitle ? body.referenceContent.parentTitle = this.parentTitle :body.referenceContent.parentTitle = this.specItem.title;
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         if (!this.isCommnetsPanelOpened)

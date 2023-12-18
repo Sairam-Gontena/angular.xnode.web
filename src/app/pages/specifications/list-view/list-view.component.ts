@@ -10,7 +10,8 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   styleUrls: ['./list-view.component.scss']
 })
 export class ListViewComponent {
-  @Input() content!: Array<Section>;
+  @Input() parentTitle:any;
+  @Input() content!: any;//Array<Section>;
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
   @Input() users: any = [];
@@ -36,6 +37,10 @@ export class ListViewComponent {
         this.emptySelectedContent();
       }
     })
+  }
+
+  isArray(obj:any):boolean{
+    return Array.isArray(obj);
   }
 
   getWords(subitem: any) {

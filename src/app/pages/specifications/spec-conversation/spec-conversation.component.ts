@@ -33,6 +33,8 @@ export class SpecConversationComponent {
   child!: SpecChildConversationComponent;
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
+  userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -90,8 +92,25 @@ export class SpecConversationComponent {
   }
 
   checkListViewSections(title: string) {
+    console.log(title)
     return (
       this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserRoleSections(title: string) {
+    return (
+      this.userRolesViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserPersonaSections(title:string){
+    return (
+      this.userPersonaViewSections.filter((secTitle) => {
         return secTitle === title;
       }).length > 0
     );

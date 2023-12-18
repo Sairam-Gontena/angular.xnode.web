@@ -1,3 +1,6 @@
+<span *ngIf="isArray(content) else obj">
+
+
 <ul *ngFor="let subItem of content; let i = index" (mouseleave)="showCommentIcon = false;">
   <li>
     <div class="flex col-12 p-0 " (mouseover)="showCommentIcon = true; selectedIndex=i "
@@ -35,7 +38,7 @@
       <div class="col-1 p-0 flex  align-items-start justify-content-center">
         <p-overlayPanel #op (onHide)="showCommentIcon=false" (onHide)="commentOverlayPanelOpened=false">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)"
-            [position]="'absolute'" [selectedContent]="subItem" placeHolder="Add a Comment" [parentEntity]="'SPEC'"
+            [position]="'absolute'" [parentTitle]="parentTitle" [selectedContent]="subItem" placeHolder="Add a Comment" [parentEntity]="'SPEC'"
             [commentType]="'comment'" [specItem]="specItem" [parentId]="specItem.id"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <img src="../assets/comment.svg" class="pointer" alt="comment"
@@ -46,3 +49,18 @@
     </div>
   </li>
 </ul>
+</span>
+<ng-template #obj>
+  <ul>
+    <li>
+      <span class="flex flex-wrap sub-title text-base font-medium">
+        <span class="pr-1" [innerHTML]="content?.title | highlight: searchTerm" > </span>
+      </span>
+      <span class="flex flex-wrap sub-content font-normal text-base">
+        <span class="mr-1"
+          [innerHTML]="content?.content | highlight: searchTerm">
+        </span>
+      </span>
+    </li>
+  </ul>
+</ng-template>

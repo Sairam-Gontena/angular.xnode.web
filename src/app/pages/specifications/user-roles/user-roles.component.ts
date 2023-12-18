@@ -9,6 +9,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class UserRolesComponent implements OnInit {
   @Input() content: any;
+  @Input() parentTitle:any;
   @Input() searchTerm: any;
   @Input() selectedContent!: string;
   @Input() users: any = [];
@@ -26,6 +27,7 @@ export class UserRolesComponent implements OnInit {
   constructor(private specUtils: SpecUtilsService,private utilsService:UtilsService) { }
 
   ngOnInit(): void {
+    console.log(this.content)
   }
 
   getWords(subitem: any) {

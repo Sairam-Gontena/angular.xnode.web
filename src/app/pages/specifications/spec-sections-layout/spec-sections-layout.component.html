@@ -682,12 +682,12 @@
 
     <div *ngIf="content.title === 'User Roles'">
       <xnode-user-roles [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)" [searchTerm]="searchTerm"
-        [content]="content.content" [users]="usersList" [selectedContent]="selectedContent"
+        [content]="content.content" [users]="usersList" [selectedContent]="selectedContent" [parentTitle]="content.title"
         [specItem]="specItem"></xnode-user-roles>
     </div>
 
     <div class="w-full" *ngIf="checkListViewSections(content.title)" [id]="content.id">
-      <xnode-list-view [content]="content.content" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
+      <xnode-list-view [content]="content.content" [parentTitle]="content.title" [selectedContent]="selectedContent" [searchTerm]="searchTerm"
         [users]="usersList" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
         [specItem]="specItem"></xnode-list-view>
     </div>
