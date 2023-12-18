@@ -27,6 +27,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   @Input() header: string = '';
   @Input() versions?: any;
   @Output() close = new EventEmitter<any>();
+
   formGroup: FormGroup | undefined;
   crForm: FormGroup;
   versionForm: FormGroup;
@@ -138,6 +139,7 @@ export class CreateNewCrVersionComponent implements OnInit {
           } else {
             this.utilsService.loadSpinner(false);
           }
+
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -237,6 +239,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.commentsService
       .createCr(body)
       .then((response: any) => {
+
         if (response.statusText === 'Created') {
           this.utilsService.loadToaster({
             severity: 'success',
@@ -244,6 +247,8 @@ export class CreateNewCrVersionComponent implements OnInit {
             detail: 'Change Request created successfully',
           });
           this.close.emit(response.data);
+
+
           this.specUtils._getLatestCrList(true)
         } else {
           this.utilsService.loadToaster({

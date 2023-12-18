@@ -63,6 +63,10 @@ export class LinkToCrComponent implements OnInit {
   reviewerList: any = [];
   submitted: boolean = false;
   isNewCrCreated: boolean = false;
+  selectedPriority: string = '';
+  selectedVersion: string = '';
+  selectedDueDate: any;
+
   constructor(
     private fb: FormBuilder,
     private localStorageService: LocalStorageService,
@@ -164,6 +168,7 @@ export class LinkToCrComponent implements OnInit {
           this.crList = this.crList.concat(response.data);
           if (this.isNewCrCreated) {
             this.crForm.patchValue({ crToAdd: this.crList[1] });
+            console.log(this.crForm, this.crList[1], '6666666')
             this.isNewCrCreated = false;
           }
           this.getAllVersions();
@@ -186,21 +191,29 @@ export class LinkToCrComponent implements OnInit {
       });
   }
 
+
   onDropdownChange(event: any): void {
     if (event?.value === 'ADD_NEW') {
       this.showNewCrPopup = true;
     } else if (event?.value !== '' && event?.value !== 'ADD_NEW') {
+
       this.crForm.patchValue({
         priority: this.priorityList.filter((obj: any) => {
           return obj.value === event.priority;
         })[0],
+
         version: this.versionList.filter((obj: any) => {
           return obj.value === event.versionId;
         })[0],
         duedate: new Date(event.duedate),
       });
+      this.selectedPriority = event.priority;
+      this.selectedVersion = event.version.productVersion.version;
+      this.selectedDueDate = event.duedate;
+
       this.reviewerList = event.reviewers.reviewers;
     }
+
   }
 
   closePopUp(event: any) {
