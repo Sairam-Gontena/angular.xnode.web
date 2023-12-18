@@ -1,3 +1,13 @@
+<div class="grid" *ngIf="showComments==false else mainBlock">
+    <div class="col-12 p-2">
+      <p class="flex flex-wrap content text-base font-normal my-0">
+        <span
+            [innerHTML]="content | highlight: searchTerm" >
+        </span>
+    </p>
+    </div>
+</div>
+<ng-template #mainBlock>
 <div class="grid m-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
     <div class="col-11 p-0 ">
         <p class="flex flex-wrap content text-base font-normal my-0" [id]="content.id">
@@ -27,3 +37,4 @@
         <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon" (click)="openCommentSection()"></i>
     </div>
 </div>
+</ng-template>

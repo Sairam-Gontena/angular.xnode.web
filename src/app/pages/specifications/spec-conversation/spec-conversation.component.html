@@ -32,7 +32,7 @@
             </div>
             <ng-template #normalView>
               <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)" class="h-8rem" >
-                <xnode-para-view [content]="cmt?.referenceContent?.content" [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [specItem]="cmt?.referenceContent?.content"
+                <xnode-para-view [showComments]="false" [content]="cmt?.referenceContent?.content" [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [specItem]="cmt?.referenceContent?.content"
                     [id]="cmt?.referenceContent?.id" ></xnode-para-view>
               </div>
               <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >

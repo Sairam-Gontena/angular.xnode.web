@@ -24,6 +24,7 @@ export class ParaViewComponent {
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   selectedWordIndices: number[] = [];
   currentUser: any;
+  @Input() showComments:any;
 
   constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils:SpecUtilsService) {
   }
@@ -35,6 +36,7 @@ export class ParaViewComponent {
         this.emptySelectedContent();
       }
     })
+    this.showComments = this.showComments;
   }
 
   getWords(subitem: any): string[] {
