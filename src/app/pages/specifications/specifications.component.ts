@@ -62,7 +62,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.getMeSpecList({ productId: info.product_id, versionId: '' });
         } else {
           let productId = localStorage.getItem('record_id');
-          this.getMeLatestSpec(productId);
+          this.getMeLatestSpec(productId,'');
         }
       })
       .catch((err: any) => {
@@ -249,7 +249,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeLatestSpec(body?: any): void {
+  getMeLatestSpec(body?: any,isDropdownChannge?:string): void {
     if (!body) {
       body = { productId: localStorage.getItem('record_id') };
     }
@@ -264,7 +264,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.isTheSpecGenerated = true;
           this.currentSpecVersionId = response.data[0].versionId;
-          this.handleData(response);
+          if(isDropdownChannge){
+            this.handleData(response,isDropdownChannge);
+          }else{
+          this.handleData(response,'');
+          }
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
@@ -304,7 +308,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
-          this.handleData(response);
+          this.handleData(response,'');
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
@@ -362,7 +366,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleData(response: any): void {
+  handleData(response: any,isDropdownChannge:string): void {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
@@ -418,7 +422,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
-
+    if(isDropdownChannge == 'DropdownChange'){
+      this.specUtils._productDropdownChanged(true);
+    }
+    
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
@@ -577,6 +584,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
     let productId = localStorage.getItem('record_id');
-    this.getMeLatestSpec(productId);
+    this.getMeLatestSpec(productId,'DropdownChange');
   }
 }

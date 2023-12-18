@@ -46,11 +46,12 @@ export class CommentsCrPanelComponent implements OnInit {
       }else{
         this.activeIndex =0;
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {
     localStorage.removeItem('deep_link_info');
+    this.specUtils._productDropdownChanged(false)
   }
 
   onClickClose() {
@@ -77,7 +78,7 @@ export class CommentsCrPanelComponent implements OnInit {
       let specData = localStorage.getItem('SPEC_DATA');
       if(specData){
         let data = JSON.parse(specData);
-        localStorage.setItem('selectedSpec', JSON.stringify(data[0]));
+        // localStorage.setItem('selectedSpec', JSON.stringify(data[0])); // uncomment this onnly if it is necessary
       }
     }
     const tabs = this.tabView.tabs;
