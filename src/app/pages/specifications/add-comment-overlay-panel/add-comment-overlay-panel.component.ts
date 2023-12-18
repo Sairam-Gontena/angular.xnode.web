@@ -278,7 +278,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
-    this.parentTitle ? body.referenceContent.parentTitle = this.parentTitle :body.referenceContent.parentTitle = this.specItem.title;
+    if(this.parentTitle!='' && this.parentTitle!=undefined){
+      body.referenceContent.parentTitle = this.parentTitle
+    }else{
+      body.referenceContent.parentTitle = this.specItem.title;
+    }
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         if (!this.isCommnetsPanelOpened)

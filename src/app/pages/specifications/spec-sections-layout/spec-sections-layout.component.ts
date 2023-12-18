@@ -82,6 +82,8 @@ export class SpecSectionsLayoutComponent implements OnInit {
   dataQualityshowCommentIcon: boolean = false;
   testCasePanelOpened: boolean = false;
   testCaseshowCommentIcon: boolean = false;
+  glossaryPanelOpened: boolean = false;
+  glossaryshowCommentIcon: boolean = false;
 
   expandSpecSections: any = [
     'Usecases',

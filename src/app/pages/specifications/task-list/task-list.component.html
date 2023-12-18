@@ -56,7 +56,7 @@
                 </iframe>
               </div>
             </div>
-            <div *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control'|| cmt?.referenceContent?.title == 'Stakeholder Approvals'" >
+            <div *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control' || cmt?.referenceContent?.title == 'Stakeholder Approvals'|| cmt?.referenceContent?.title=='Glossary'" >
               <xnode-common-spec-table  [users]="usersList"
               [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-common-spec-table>
             </div>

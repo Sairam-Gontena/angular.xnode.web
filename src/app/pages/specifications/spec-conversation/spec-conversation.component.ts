@@ -62,6 +62,8 @@ export class SpecConversationComponent {
   confirmarionHeader: string = '';
   fileIndex: any;
   targetUrl: string = '';
+  bpmnFrom: string = 'Comments';//'SPEC';
+
 
   constructor(
     private utils: UtilsService,
@@ -83,7 +85,6 @@ export class SpecConversationComponent {
   ngOnInit() {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
-    console.log(this.list)
   }
 
   makeTrustedUrl(): void {

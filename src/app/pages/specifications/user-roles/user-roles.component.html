@@ -15,7 +15,7 @@
                                     [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
                                     <p-overlayPanel #selectionText>
                                         <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
-                                            *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"
+                                            *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"  [parentEntity]="'SPEC'"
                                             [selectedText]="selectedText" [specId]="specId" [parentId]="specItem.id"
                                             [position]="'absolute'" [selectedContent]="item"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -26,9 +26,10 @@
                                     *ngFor="let word of subItem?.content?.split(' '); index as i" class="mr-1"
                                     [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
                                     <p-overlayPanel #selectionText>
+                                      <!-- specId -->
                                         <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
                                             *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"
-                                            [selectedText]="selectedText" [parentEntity]="specId"
+                                            [selectedText]="selectedText" [parentEntity]="'SPEC'"
                                             [parentId]="specItem.id" [position]="'absolute'" [selectedContent]="item"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                     </p-overlayPanel>
@@ -39,7 +40,7 @@
                             <p-overlayPanel #op>
                                 <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
                                     (closeOverlay)="op.toggle(false)" [parentTitle]="parentTitle" [position]="'absolute'" [selectedContent]="item"
-                                    [commentType]="'comment'"
+                                    [commentType]="'comment'"  [parentEntity]="'SPEC'"
                                     placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                             </p-overlayPanel>
                             <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)"

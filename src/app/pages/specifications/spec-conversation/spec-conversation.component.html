@@ -55,7 +55,7 @@
                   </iframe>
                 </div>
               </div>
-              <div *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control'|| cmt?.referenceContent?.title == 'Stakeholder Approvals'" >
+              <div *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control'|| cmt?.referenceContent?.title == 'Stakeholder Approvals' || cmt?.referenceContent?.title=='Glossary'" >
                 <xnode-common-spec-table  [users]="usersList"
                 [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-common-spec-table>
               </div>
@@ -72,7 +72,8 @@
                 </div>
               </div>
               <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
-                <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
+                <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                [item]="cmt?.referenceContent"></xnode-bpmn-common>
               </div>
               <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
                 <xnode-data-model-common [dataModelData]="cmt?.referenceContent"></xnode-data-model-common>

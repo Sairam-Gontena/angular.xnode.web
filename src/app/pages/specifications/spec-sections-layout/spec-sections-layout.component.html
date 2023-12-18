@@ -487,8 +487,27 @@
           !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
         'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
       }" *ngIf="content.title === 'Glossary'">
-      <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+
+      <div class="col-12 py-0 text-right" (mouseenter)="glossaryshowCommentIcon = true" (mouseleave)="glossaryshowCommentIcon = false" >
+        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+        glossaryOp.toggle($event); glossaryPanelOpened = true;saveSecInLocal();
+        " *ngIf="glossaryshowCommentIcon || glossaryPanelOpened" />
+        <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="glossaryshowCommentIcon || glossaryshowCommentIcon" (click)="openCommentSection()"></i>
+        <p-overlayPanel #glossaryOp (onHide)="
+        glossaryPanelOpened = false;
+        glossaryshowCommentIcon = false
+          ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="glossaryPanelOpened"
+            (closeOverlay)="
+            glossaryOp.toggle(false);
+            glossaryPanelOpened = false
+            " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
         [specItem]="specItem"></xnode-common-spec-table>
+      </div>
     </div>
     <div [ngClass]="{
         'common-spec-table-menu': isSideMenuOpened,
