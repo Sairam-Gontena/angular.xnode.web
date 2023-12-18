@@ -68,7 +68,7 @@
             L1
           </div>
           <div class="reviewer-grid flex">
-            <div class="flex" *ngFor="let reviewer of reviewerList">
+            <div class="flex" *ngFor="let reviewer of reviewerList[0].users">
               <div class="reviewer-chip flex align-items-center mr-1">
                 <p class="m-0 avtar">
                   {{setAvatar(reviewer)}}
