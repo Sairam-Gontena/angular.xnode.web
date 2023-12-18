@@ -200,7 +200,7 @@ export class LinkToCrComponent implements OnInit {
         })[0],
         duedate: new Date(event.duedate),
       });
-      this.reviewerList = event.reviewers;
+      this.reviewerList = event.reviewers.reviewers;
     }
   }
 

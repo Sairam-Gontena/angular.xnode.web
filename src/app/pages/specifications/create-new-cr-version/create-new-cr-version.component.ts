@@ -45,6 +45,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     { label: 'Medium', value: 'MEDIUM' },
     { label: 'Low', value: 'LOW' },
   ];
+  reviewersList: any;
   versionList: any = [{ label: 'Add New Version', value: 'ADD_NEW' }];
   isNewVersionAdded: boolean = false;
   showAddVersionForm: boolean = false;
@@ -70,8 +71,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       priority: ['', [Validators.required]],
       duedate: ['', [Validators.required]],
       seqReview: [''],
-      reviewersLOne: [[], [Validators.required]],
-      reviewersLTwo: [[], [Validators.required]],
+      reviewersLOne: [[], [Validators.required]]
     });
     this.versionForm = this.fb.group({
       major: ['2311', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
@@ -201,9 +201,14 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   getMeReviewerIds() {
-    return this.crForm.value.reviewersLOne
-      .concat(this.crForm.value.reviewersLTwo)
-      .map((obj: any) => obj.user_id);
+    return {
+      reviewers: [
+        {
+          level: 'L1',
+          users: this.crForm.value.reviewersLOne.map((obj: any) => obj.user_id)
+        }
+      ]
+    }
   }
 
   saveValue() {
@@ -261,38 +266,12 @@ export class CreateNewCrVersionComponent implements OnInit {
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-    let selectedL1Reviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.user_id);
-    let selectedL2Reviewers = this.crForm.value.reviewersLTwo.map((reviewer: any) => reviewer.user_id);
-
-    if (reviewerType === 'L1') {
-      filtered = this.reveiwerList.filter(
-        (reviewer: any) => !selectedL2Reviewers.includes(reviewer.user_id) &&
-          reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0
-      );
-    } else if (reviewerType === 'L2') {
-      filtered = this.reveiwerList.filter(
-        (reviewer: any) => !selectedL1Reviewers.includes(reviewer.user_id) &&
-          reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0
-      );
-    }
-
+    filtered = this.reveiwerList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0
+    );
     this.filteredReveiwers = filtered;
-
-
   }
-
-
-  // filteredReveiwer(event: AutoCompleteCompleteEvent) {
-  //   let filtered: any[] = [];
-  //   let query = event.query;
-  //   for (let i = 0; i < (this.reveiwerList as any[]).length; i++) {
-  //     let reveiwer = (this.reveiwerList as any[])[i];
-  //     if (reveiwer.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-  //       filtered.push(reveiwer);
-  //     }
-  //   }
-  //   this.filteredReveiwers = filtered;
-  // }
 
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(

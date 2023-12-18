@@ -87,4 +87,8 @@ export class CommentsService extends BaseApiService {
   performCrActions(body: any) {
     return this.put('workflow-instance/perform-action', body);
   }
+
+  reviewerListByAccountId(body: any) {
+    return this.get('review-policy/policies/' + body.accountId + '/' + body.phase);
+  }
 }
