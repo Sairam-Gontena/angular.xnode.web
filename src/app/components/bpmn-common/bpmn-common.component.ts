@@ -95,7 +95,6 @@ export class BpmnCommonComponent
   }
 
   ngOnInit(): void {
-    console.log(this.item)
     if (this.product && !this.product?.has_insights) {
       this.utilsService.showProductStatusPopup(true);
       return;

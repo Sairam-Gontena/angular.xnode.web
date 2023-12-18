@@ -80,13 +80,8 @@
               </div>
               <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
                 <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
-              </div> <!--[specItem]="specItem"-->
+              </div>
             </ng-template>
-            <!-- <div  *ngIf="cmt.referenceContent.title === 'Usecases' || cmt.referenceContent.title === 'Use Cases'">
-                <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-                    <xnode-common-usecases [users]="usersList" [specItem]="cmt.referenceContent?.content.content"
-                    [useCases]="cmt.referenceContent.content"></xnode-common-usecases>
-            </div> -->
             <div class="gradientback">
             </div>
         </div>

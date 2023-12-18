@@ -26,7 +26,6 @@
                                     *ngFor="let word of subItem?.content?.split(' '); index as i" class="mr-1"
                                     [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
                                     <p-overlayPanel #selectionText>
-                                      <!-- specId -->
                                         <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
                                             *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"
                                             [selectedText]="selectedText" [parentEntity]="'SPEC'"

@@ -11,7 +11,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 })
 export class ListViewComponent {
   @Input() parentTitle:any;
-  @Input() content!: any;//Array<Section>;
+  @Input() content!: any;
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
   @Input() users: any = [];
