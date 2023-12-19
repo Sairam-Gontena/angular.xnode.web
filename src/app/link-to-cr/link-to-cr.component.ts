@@ -31,6 +31,7 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './link-to-cr.component.html',
   styleUrls: ['./link-to-cr.component.css'],
 })
+
 export class LinkToCrComponent implements OnInit {
   @ViewChild('dropdown') dropdown?: Dropdown;
   @Input() comment: any;
@@ -76,18 +77,6 @@ export class LinkToCrComponent implements OnInit {
     private specUtils: SpecUtilsService
   ) {
     this.crForm = this.fb.group({
-      priority: new FormControl(
-        { value: '', disabled: true },
-        Validators.required
-      ),
-      version: new FormControl(
-        { value: '', disabled: true },
-        Validators.required
-      ),
-      duedate: new FormControl(
-        { value: '', disabled: true },
-        Validators.required
-      ),
       crToAdd: new FormControl(
         { value: null, disabled: false },
         Validators.required
@@ -168,7 +157,6 @@ export class LinkToCrComponent implements OnInit {
           this.crList = this.crList.concat(response.data);
           if (this.isNewCrCreated) {
             this.crForm.patchValue({ crToAdd: this.crList[1] });
-            console.log(this.crForm, this.crList[1], '6666666')
             this.isNewCrCreated = false;
           }
           this.getAllVersions();
@@ -195,25 +183,12 @@ export class LinkToCrComponent implements OnInit {
   onDropdownChange(event: any): void {
     if (event?.value === 'ADD_NEW') {
       this.showNewCrPopup = true;
-    } else if (event?.value !== '' && event?.value !== 'ADD_NEW') {
-
-      this.crForm.patchValue({
-        priority: this.priorityList.filter((obj: any) => {
-          return obj.value === event.priority;
-        })[0],
-
-        version: this.versionList.filter((obj: any) => {
-          return obj.value === event.versionId;
-        })[0],
-        duedate: new Date(event.duedate),
-      });
+    } else if (event && event?.value !== '' && event?.value !== 'ADD_NEW') {
       this.selectedPriority = event.priority;
       this.selectedVersion = event.version.productVersion.version;
       this.selectedDueDate = event.duedate;
-
       this.reviewerList = event.reviewers.reviewers;
     }
-
   }
 
   closePopUp(event: any) {
