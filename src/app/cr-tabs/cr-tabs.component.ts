@@ -7,6 +7,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
 import { SpecUtilsService } from '../components/services/spec-utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { SECTION_VIEW_CONFIG } from '../pages/specifications/section-view-config';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -35,6 +37,13 @@ export class CrTabsComponent {
   showNewCrPopup: boolean = false;
   crActions: any;
   comments: string = 'test';
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
+  userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
+  targetUrl: string = '';
+  bpmnFrom: string ='SPEC';//;  'Comments'
+  iframeSrc: SafeResourceUrl = '';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
 
   constructor(
@@ -42,7 +51,8 @@ export class CrTabsComponent {
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private sanitizer: DomSanitizer,
   ) {
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
@@ -63,6 +73,52 @@ export class CrTabsComponent {
         this.getCRList();
       }
     });
+    this.makeTrustedUrl();
+  }
+
+  makeTrustedUrl(): void {
+    let target =localStorage.getItem('targetUrl');
+    if(target){
+      this.targetUrl = target;
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.targetUrl
+      );
+    }
+  }
+
+  checkParaViewSections(title: string,parentTitle?:string) {
+    if(parentTitle=='Technical Specifications'){
+      return;
+    }
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserRoleSections(title: string) {
+    return (
+      this.userRolesViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserPersonaSections(title:string){
+    return (
+      this.userPersonaViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
   }
 
   getCRList() {
@@ -94,7 +150,6 @@ export class CrTabsComponent {
         });
         this.utilsService.loadSpinner(false);
       });
-      console.log(this.crData, this.crList)
   }
 
   onAccordionOpen(obj: any, index: number): void {

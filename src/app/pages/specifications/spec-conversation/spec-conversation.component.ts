@@ -62,7 +62,7 @@ export class SpecConversationComponent {
   confirmarionHeader: string = '';
   fileIndex: any;
   targetUrl: string = '';
-  bpmnFrom: string = 'Comments';//'SPEC';
+  bpmnFrom: string ='SPEC';//;  'Comments'
 
 
   constructor(

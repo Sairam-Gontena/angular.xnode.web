@@ -135,50 +135,198 @@
                     (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                 </div>
                 <div class="border-bottom-1" [ngClass]="{ 'mt-4': i > 0 }"
-                  *ngFor="let subData of crList[i]; let i = index">
-                  <div class="flex flex-row justify-content-between align-items-center w-full">
-                    <div class="w-full flex justify-content-between align-items-center">
-                      <p class="my-0 text-gray-200 text-sm font-normal">
-                        {{ subData?.comment?.referenceContent?.title }}
-                      </p>
-                      <div class="flex align-items-center ">
-                        <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
-                        <span *ngFor="let reviewers of data?.reviewers">
-                          <p-avatar [label]="getMeUserAvatar(reviewers)" class="text-xs" shape="circle" [style]="{
-                            'background-color': '#9c27b0',
-                            color: '#ffffff', fontSize: '10px'
-                          }"></p-avatar>
-                        </span>
-                        <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                          (click)="op.toggle($event); $event.stopPropagation()"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="py-2 border-bottom-1 pr-4">
-                    <div class="flex flex-row justify-content-between">
-                      <div class="sctions-grid">
-                        <div *ngIf="checktableJsonSection(subData?.comment?.referenceContent?.title); else normalView">
-                          <pre *ngIf="!subData?.comment?.referenceContent?.showTable"
-                            [innerHTML]="subData?.comment?.referenceContent?.content | json"
-                            style=" white-space: pre-wrap; overflow: auto"></pre>
-                          <xnode-common-spec-table *ngIf="subData?.comment?.referenceContent?.showTable"
-                            [specItem]="subData?.comment?.referenceContent?.content.content"
-                            [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
-                        </div>
-                        <ng-template #normalView>
-                          <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p> -->
-                          <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
-                            {{ subData?.comment?.referenceContent?.content }}
-                          </p>
-                        </ng-template>
-                        <div class="gradientback">
+                  *ngFor="let subData of crList?.[i]; ">
+                  <span *ngIf="subData?.task else commentSpan">
+                    <div class="flex flex-row justify-content-between align-items-center w-full">
+                      <div class="w-full flex justify-content-between align-items-center">
+                        <p class="my-0 text-gray-200 text-sm font-normal">
+                          {{ subData?.task?.referenceContent?.title }}
+                        </p>
+                        <div class="flex align-items-center ">
+                          <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
+                          <span *ngFor="let reviewers of data?.reviewers">
+                            <p-avatar [label]="getMeUserAvatar(reviewers)" class="text-xs" shape="circle" [style]="{
+                              'background-color': '#9c27b0',
+                              color: '#ffffff', fontSize: '10px'
+                            }"></p-avatar>
+                          </span>
+                          <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                            (click)="op.toggle($event); $event.stopPropagation()"></i>
                         </div>
                       </div>
                     </div>
-                    <span class="text-xs my-2 text-gray-200 flex align-items-center">
-                      {{ subData?.comment?.message }}
-                    </span>
-                  </div>
+                    <div class="py-2 border-bottom-1 pr-4">
+                      <div class="flex flex-row justify-content-between">
+                        <div class="sctions-grid">
+                          <div *ngIf="checktableJsonSection(subData?.task?.referenceContent?.title) else normalView">
+                            <pre *ngIf="!subData?.task?.referenceContent?.showTable"
+                              [innerHTML]="subData?.task?.referenceContent?.content | json"
+                              style=" white-space: pre-wrap; overflow: auto"></pre>
+                            <xnode-common-spec-table *ngIf="subData?.task?.referenceContent?.showTable"
+                              [specItem]="subData?.task?.referenceContent?.content?.content"
+                              [content]="subData?.task?.referenceContent?.content"></xnode-common-spec-table>
+                          </div>
+                          <ng-template #normalView>
+
+                            <div *ngIf="checkParaViewSections(subData?.task?.referenceContent?.title,subData?.task?.referenceContent?.parentTitle)" class="h-8rem" >
+                              <xnode-para-view [showComments]="false" [content]="subData?.task?.referenceContent?.content" [searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList" [specItem]="subData?.task?.referenceContent?.content"
+                                  [id]="subData?.task?.referenceContent?.id" ></xnode-para-view>
+                            </div>
+                            <div *ngIf="checkListViewSections(subData?.task?.referenceContent?.parentTitle)" class="h-8rem" >
+                              <xnode-list-view [content]="subData?.task?.referenceContent"[searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList" ></xnode-list-view>
+                            </div>
+                            <div *ngIf="checkUserRoleSections(subData?.task?.referenceContent?.parentTitle)" class="h-8rem" >
+                              <xnode-user-roles [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                                [content]="subData?.task?.referenceContent" [users]="usersList" [specItem]="subData?.task?.referenceContent?.content"></xnode-user-roles>
+                            </div>
+                            <div *ngIf="checkUserPersonaSections(subData?.task?.referenceContent?.title)" class="h-8rem" >
+                                <xnode-user-persona [searchTerm]="subData?.task?.referenceContent?.commentedtext" [content]="subData?.task?.referenceContent?.content"></xnode-user-persona>
+                            </div>
+                            <div *ngIf="subData?.task?.referenceContent.title === 'Dashboards'">
+                              <div class="flex justify-content-between align-items-center">
+                                <h1 class="my-1">Dashboard</h1>
+                              </div>
+                              <div class="grid">
+                                <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                                </iframe>
+                              </div>
+                            </div>
+                            <div *ngIf="subData?.task?.referenceContent?.title=='Data Quality Checks' || subData?.task?.referenceContent?.title=='Historical Data Load'|| subData?.task?.referenceContent?.title == 'Version Control'|| subData?.task?.referenceContent?.title == 'Stakeholder Approvals' || subData?.task?.referenceContent?.title=='Glossary'" >
+                              <xnode-common-spec-table  [users]="usersList"
+                              [searchTerm]="subData?.task?.referenceContent?.commentedtext" [content]="subData?.task?.referenceContent?.content"></xnode-common-spec-table>
+                            </div>
+                            <div *ngIf="subData?.task?.referenceContent?.title=='Test Cases'" >
+                              <div *ngFor="let itemuc of subData?.task?.referenceContent?.content">
+                                <div class="mt-2">
+                                  <h3>
+                                    {{itemuc.Usecase}}
+                                  </h3>
+                                  <div class="mt-2">
+                                    <xnode-common-spec-table [searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList" [content]="itemuc.TestCases"></xnode-common-spec-table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="subData?.task?.referenceContent?.title==='Workflows'">
+                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                              [item]="subData?.task?.referenceContent"></xnode-bpmn-common>
+                            </div>
+                            <div *ngIf="subData?.task?.referenceContent?.title==='Data Model'">
+                              <xnode-data-model-common [dataModelData]="subData?.task?.referenceContent"></xnode-data-model-common>
+                            </div>
+                            <div *ngIf="subData?.task?.referenceContent?.title === 'Usecases' || subData?.task?.referenceContent?.title === 'Use Cases'">
+                              <xnode-common-usecases [searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="subData?.task?.referenceContent.content"></xnode-common-usecases>
+                            </div>
+                            <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
+                            <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
+                              {{ subData?.comment?.referenceContent?.content }}
+                            </p> -->
+                          </ng-template>
+                          <div class="gradientback">
+                          </div>
+                        </div>
+                      </div>
+                      <span class="text-xs my-2 text-gray-200 flex align-items-center">
+                        {{ subData?.task?.message }}
+                      </span>
+                    </div>
+                  </span>
+                  <ng-template #commentSpan>
+                    <div class="flex flex-row justify-content-between align-items-center w-full">
+                      <div class="w-full flex justify-content-between align-items-center">
+                        <p class="my-0 text-gray-200 text-sm font-normal">
+                          {{ subData?.comment?.referenceContent?.title }}
+                        </p>
+                        <div class="flex align-items-center ">
+                          <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
+                          <span *ngFor="let reviewers of data?.reviewers">
+                            <p-avatar [label]="getMeUserAvatar(reviewers)" class="text-xs" shape="circle" [style]="{
+                              'background-color': '#9c27b0',
+                              color: '#ffffff', fontSize: '10px'
+                            }"></p-avatar>
+                          </span>
+                          <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                            (click)="op.toggle($event); $event.stopPropagation()"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="py-2 border-bottom-1 pr-4">
+                      <div class="flex flex-row justify-content-between">
+                        <div class="sctions-grid">
+                          <div *ngIf="checktableJsonSection(subData?.comment?.referenceContent?.title) else normalView">
+                            <pre *ngIf="!subData?.comment?.referenceContent?.showTable"
+                              [innerHTML]="subData?.comment?.referenceContent?.content | json"
+                              style=" white-space: pre-wrap; overflow: auto"></pre>
+                            <xnode-common-spec-table *ngIf="subData?.comment?.referenceContent?.showTable"
+                              [specItem]="subData?.comment?.referenceContent?.content?.content"
+                              [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
+                          </div>
+                          <ng-template #normalView>
+
+                            <div *ngIf="checkParaViewSections(subData?.comment?.referenceContent?.title,subData?.comment?.referenceContent?.parentTitle)" class="h-8rem" >
+                              <xnode-para-view [showComments]="false" [content]="subData?.comment?.referenceContent?.content" [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList" [specItem]="subData?.comment?.referenceContent?.content"
+                                  [id]="subData?.comment?.referenceContent?.id" ></xnode-para-view>
+                            </div>
+                            <div *ngIf="checkListViewSections(subData?.comment?.referenceContent?.parentTitle)" class="h-8rem" >
+                              <xnode-list-view [content]="subData?.comment?.referenceContent"[searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList" ></xnode-list-view>
+                            </div>
+                            <div *ngIf="checkUserRoleSections(subData?.comment?.referenceContent?.parentTitle)" class="h-8rem" >
+                              <xnode-user-roles [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
+                                [content]="subData?.comment?.referenceContent" [users]="usersList" [specItem]="subData?.comment?.referenceContent?.content"></xnode-user-roles>
+                            </div>
+                            <div *ngIf="checkUserPersonaSections(subData?.comment?.referenceContent?.title)" class="h-8rem" >
+                                <xnode-user-persona [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [content]="subData?.comment?.referenceContent?.content"></xnode-user-persona>
+                            </div>
+                            <div *ngIf="subData?.comment?.referenceContent.title === 'Dashboards'">
+                              <div class="flex justify-content-between align-items-center">
+                                <h1 class="my-1">Dashboard</h1>
+                              </div>
+                              <div class="grid">
+                                <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                                </iframe>
+                              </div>
+                            </div>
+                            <div *ngIf="subData?.comment?.referenceContent?.title=='Data Quality Checks' || subData?.comment?.referenceContent?.title=='Historical Data Load'|| subData?.comment?.referenceContent?.title == 'Version Control'|| subData?.comment?.referenceContent?.title == 'Stakeholder Approvals' || subData?.comment?.referenceContent?.title=='Glossary'" >
+                              <xnode-common-spec-table  [users]="usersList"
+                              [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
+                            </div>
+                            <div *ngIf="subData?.comment?.referenceContent?.title=='Test Cases'" >
+                              <div *ngFor="let itemuc of subData?.comment?.referenceContent?.content">
+                                <div class="mt-2">
+                                  <h3>
+                                    {{itemuc.Usecase}}
+                                  </h3>
+                                  <div class="mt-2">
+                                    <xnode-common-spec-table [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList" [content]="itemuc.TestCases"></xnode-common-spec-table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="subData?.comment?.referenceContent?.title==='Workflows'">
+                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                              [item]="subData?.comment?.referenceContent"></xnode-bpmn-common>
+                            </div>
+                            <div *ngIf="subData?.comment?.referenceContent?.title==='Data Model'">
+                              <xnode-data-model-common [dataModelData]="subData?.comment?.referenceContent"></xnode-data-model-common>
+                            </div>
+                            <div *ngIf="subData?.comment?.referenceContent?.title === 'Usecases' || subData?.comment?.referenceContent?.title === 'Use Cases'">
+                              <xnode-common-usecases [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="subData?.comment?.referenceContent.content"></xnode-common-usecases>
+                            </div>
+
+                            <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
+                            <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
+                              {{ subData?.comment?.referenceContent?.content }}
+                            </p> -->
+                          </ng-template>
+                          <div class="gradientback">
+                          </div>
+                        </div>
+                      </div>
+                      <span class="text-xs my-2 text-gray-200 flex align-items-center">
+                        {{ subData?.comment?.message }}
+                      </span>
+                    </div>
+                  </ng-template>
                 </div>
               </div>
             </ng-template>
