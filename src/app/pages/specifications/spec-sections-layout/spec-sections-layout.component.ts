@@ -5,6 +5,8 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { environment } from 'src/environments/environment';
+declare const SwaggerUIBundle: any;
 
 @Component({
   selector: 'xnode-spec-sections-layout',
@@ -121,6 +123,9 @@ export class SpecSectionsLayoutComponent implements OnInit {
       this.isCommnetsPanelOpened = event;
     });
     this.makeTrustedUrl();
+    setTimeout(() => {
+      this.fetchOpenAPISpec();
+    }, );
   }
 
   openCommentSection(){
@@ -130,8 +135,32 @@ export class SpecSectionsLayoutComponent implements OnInit {
     setTimeout(() => {
       this.specUtils._openCommentsPanel(true);
     },);
-
   }
+
+  async fetchOpenAPISpec() {
+    const record_id = localStorage.getItem('record_id');
+  let userData: any;
+  userData = localStorage.getItem('currentUser');
+  let email = JSON.parse(userData).email;
+  const ui = SwaggerUIBundle({
+    domNode: document.getElementById('openapi-ui-spec'),
+    layout: 'BaseLayout',
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIBundle.SwaggerUIStandalonePreset,
+    ],
+    url:
+      environment.uigenApiUrl +
+      'openapi-spec/' +
+      localStorage.getItem('app_name') +
+      '/' +
+      email +
+      '/' +
+      record_id,
+    docExpansion: 'none',
+    operationsSorter: 'alpha',
+  });
+}
 
   checkExpandSpecSections(spec: string) {
     let returnVal: boolean;

@@ -120,8 +120,10 @@ export class BpmnCommonComponent
       icon: 'pi pi-home',
       routerLink: '/configuration/workflow/overview',
     };
-    this.initializeBpmn();
-    this.graph();
+    setTimeout(() => {
+      this.initializeBpmn();
+      this.graph();
+    },);
   }
 
   switchWindow() {
