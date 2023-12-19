@@ -271,13 +271,13 @@ export class CreateNewCrVersionComponent implements OnInit {
  
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
-    let query = event.query.toLowerCase();
+    let query = event.query;
     
     const selectedReviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
   
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;
   }
