@@ -71,7 +71,7 @@
                         <div class="flex align-items-center">
                           <p class="text-sm half-white pl-2">{{ data?.title }}</p>
                           <div [ngClass]="{
-                          'border-green-500': data.status === 'SUBMITTED',
+                          'border-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
                           'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
                           'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED',
                           'border-yellow-500': data.status === 'DRAFT',
@@ -91,7 +91,7 @@
                               </ng-container>
                             </div>
                             <div class="text-xs ml-2" [ngClass]="{
-                              'text-green-500': data.status === 'SUBMITTED',
+                              'text-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
                               'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
                               'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' ,
                               'text-yellow-500': data.status == 'DRAFT'
@@ -192,11 +192,13 @@
         <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
           (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
-            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'bg-green-500' : 'bg-red-500'"
-            [ngStyle]="{ padding: '3px' }"></i>
-          <p class="text-sm font-normal ml-1"
-            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'text-green-500' : 'text-red-500'">
-            {{action.label}}</p>
+          [ngClass]="{
+            'text-green-500':action.value === 'SUBMIT' || action.value === 'APPROVE' ,
+            'text-red-500': action.value === 'ARCHIVED' ||action.value === 'REJECT',
+            'text-orange-500': action.value=== 'NEEDS WORK' || action.value==='REVIEW',
+            'text-yellow-500':action.value === 'DRAFT',
+            }" [ngStyle]="{ padding: '3px' }"></i>
+          <p class="text-sm font-normal ml-1">            {{action.label}}</p>
         </div>
       </div>
     </p-overlayPanel>
