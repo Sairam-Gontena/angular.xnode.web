@@ -157,13 +157,13 @@
                   <div class="py-2 border-bottom-1 pr-4">
                     <div class="flex flex-row justify-content-between">
                       <div class="sctions-grid">
-                        <div *ngIf="checktableJsonSection(subData?.comment.referenceContent?.title); else normalView">
-                          <pre *ngIf="!subData?.comment.referenceContent?.showTable"
-                            [innerHTML]="subData?.comment.referenceContent?.content | json"
+                        <div *ngIf="checktableJsonSection(subData?.comment?.referenceContent?.title); else normalView">
+                          <pre *ngIf="!subData?.comment?.referenceContent?.showTable"
+                            [innerHTML]="subData?.comment?.referenceContent?.content | json"
                             style=" white-space: pre-wrap; overflow: auto"></pre>
-                          <xnode-common-spec-table *ngIf="subData?.comment.referenceContent?.showTable"
-                            [specItem]="subData?.comment.referenceContent?.content.content"
-                            [content]="subData?.comment.referenceContent?.content"></xnode-common-spec-table>
+                          <xnode-common-spec-table *ngIf="subData?.comment?.referenceContent?.showTable"
+                            [specItem]="subData?.comment?.referenceContent?.content.content"
+                            [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
                         </div>
                         <ng-template #normalView>
                           <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p> -->
@@ -176,7 +176,7 @@
                       </div>
                     </div>
                     <span class="text-xs my-2 text-gray-200 flex align-items-center">
-                      {{ subData.comment.message }}
+                      {{ subData?.comment?.message }}
                     </span>
                   </div>
                 </div>

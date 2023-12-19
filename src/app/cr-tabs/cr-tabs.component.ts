@@ -94,6 +94,7 @@ export class CrTabsComponent {
         });
         this.utilsService.loadSpinner(false);
       });
+      console.log(this.crData, this.crList)
   }
 
   onAccordionOpen(obj: any, index: number): void {
