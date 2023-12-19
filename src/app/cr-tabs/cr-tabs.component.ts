@@ -155,10 +155,12 @@ export class CrTabsComponent {
       case 'ARCHIVE':
         this.header = 'Archive CR';
         this.content = 'Are you sure you want to Archive this CR?';
+        this.openConfirmationPopUp = true;
         break;
       case 'SUBMIT':
         this.header = 'Submit CR';
         this.content = 'Are you sure you want to Submit this CR?';
+        this.openConfirmationPopUp = true;
         break;
       case 'REJECT':
         this.crData.forEach((element: any) => {
@@ -172,6 +174,7 @@ export class CrTabsComponent {
       case 'APPROVE':
         this.header = 'Approve CR';
         this.content = 'Are you sure you want to Approve this CR?';
+        this.openConfirmationPopUp = true;
         break;
       default:
         break;
@@ -255,12 +258,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
