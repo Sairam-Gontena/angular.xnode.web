@@ -100,6 +100,5 @@
 }
 
 :host ::ng-deep .app-dropdown-version .p-dropdown-panel {
-    position: fixed;
-    z-index: 1000;
+    position: absolute; 
 }
