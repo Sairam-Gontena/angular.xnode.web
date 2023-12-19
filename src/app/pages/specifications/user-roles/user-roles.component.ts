@@ -27,6 +27,7 @@ export class UserRolesComponent implements OnInit {
   constructor(private specUtils: SpecUtilsService,private utilsService:UtilsService) { }
 
   ngOnInit(): void {
+    console.log(this.content)
   }
 
   getWords(subitem: any) {
