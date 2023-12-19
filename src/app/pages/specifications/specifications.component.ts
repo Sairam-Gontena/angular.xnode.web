@@ -17,6 +17,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
+
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
@@ -42,8 +43,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   noResults: boolean = false;
   useCases: any;
   specDataLatest?: any;
+  versions: any;
   currentSpecVersionId: string = '';
   isDataManagementPersistence: boolean = false;
+
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
@@ -55,24 +58,22 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private localStorageService: LocalStorageService,
     private route: ActivatedRoute
   ) {
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, versionId: '' });
         } else {
-          let productId = localStorage.getItem('record_id');
-          this.getMeLatestSpec(productId,'');
+          this.getVersions();
         }
       })
       .catch((err: any) => {
         console.log('got error:', err);
       });
-    this.product = this.localStorageService.getItem(StorageKeys.Product);
     if (this.product) {
       this.getMeStorageData();
     }
-
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data)
         this.getMeSpecList({
@@ -80,18 +81,15 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           productId: data.productId,
         });
     });
-
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     });
-
     this.utils.openDockedNavi.subscribe((data: any) => {
       if (data) {
         this.utils.disableSpecSubMenu();
         this.isNaviOpened = true;
       }
     });
-
     this.utils.getMeProductDetails.subscribe((res: any) => {
       if (res && res?.id) {
         this.onChangeProduct(res);
@@ -123,6 +121,33 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.getDeepLinkDetails(deep_link_info);
     }
     this.utils.loadSpinner(true);
+  }
+
+  getVersions() {
+    this.versions = [];
+    this.utils.loadSpinner(true);
+    this.specService
+      .getVersionIds(this.product?.id)
+      .then((response) => {
+        if (response.status === 200 && response.data) {
+          this.versions = response.data;
+          this.getMeSpecList({ productId: this.product?.id, versionId: this.versions[0].id });
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Network Error',
+          });
+        }
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
+      });
   }
 
   navigateToConversation(val: any) {
@@ -249,7 +274,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeLatestSpec(body?: any,isDropdownChannge?:string): void {
+  getMeLatestSpec(body?: any, isDropdownChannge?: string): void {
     if (!body) {
       body = { productId: localStorage.getItem('record_id') };
     }
@@ -264,10 +289,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.isTheSpecGenerated = true;
           this.currentSpecVersionId = response.data[0].versionId;
-          if(isDropdownChannge){
-            this.handleData(response,isDropdownChannge);
-          }else{
-          this.handleData(response,'');
+          if (isDropdownChannge) {
+            this.handleData(response, isDropdownChannge);
+          } else {
+            this.handleData(response, '');
           }
         } else {
           this.isTheSpecGenerated = false;
@@ -294,6 +319,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         });
       });
   }
+
   getMeSpecList(body?: any): void {
     if (!body) {
       body = { productId: localStorage.getItem('record_id') };
@@ -308,7 +334,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data.length > 0
         ) {
           this.isTheSpecGenerated = true;
-          this.handleData(response,'');
+          this.handleData(response, '');
         } else {
           this.isTheSpecGenerated = false;
           if (this.currentUser.email === this.product?.email) {
@@ -366,7 +392,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleData(response: any,isDropdownChannge:string): void {
+  handleData(response: any, isDropdownChannge: string): void {
     const list = response.data;
     this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
@@ -422,10 +448,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
-    if(isDropdownChannge == 'DropdownChange'){
+    if (isDropdownChannge == 'DropdownChange') {
       this.specUtils._productDropdownChanged(true);
     }
-    
+
     if (this.specDataBool) {
       this.localStorageService.saveItem(StorageKeys.SpecData, list);
     }
@@ -583,7 +609,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     );
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
-    let productId = localStorage.getItem('record_id');
-    this.getMeLatestSpec(productId,'DropdownChange');
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.utils.loadSpinner(true);
+    this.getVersions();
   }
 }
