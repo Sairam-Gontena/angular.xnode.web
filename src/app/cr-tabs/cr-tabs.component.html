@@ -55,7 +55,7 @@
               <div class="w-full">
                 <div class="grid col-12 flex-column">
                   <p-checkbox (onChange)="onCheckCheckbox($event)" [binary]="true" inputId="binary"
-                    [(ngModel)]="data.checked"></p-checkbox>
+                    [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
                   <div class="flex flex-row align-items-center" style="position: absolute; margin-left: 13%">
                     <img src="../../assets/high.svg" class="" alt="high" />
                     <p class="p-0 m-0 text-xs ml-2">
@@ -71,13 +71,13 @@
                         <div class="flex align-items-center">
                           <p class="text-sm half-white pl-2">{{ data?.title }}</p>
                           <div [ngClass]="{
-                          'border-green-500': data.status === 'SUBMITTTED',
+                          'border-green-500': data.status === 'SUBMITTED',
                           'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
                           'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED',
                           'border-yellow-500': data.status === 'DRAFT',
                           }" class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl">
                             <div class="border-circle text-xs">
-                              <ng-container *ngIf="data.status === 'SUBMITTTED'">
+                              <ng-container *ngIf="data.status === 'SUBMITTED'">
                                 <i class="pi pi-circle-fill text-green-500"></i>
                               </ng-container>
                               <ng-container *ngIf="data.status === 'ARCHIVED' || data.status === 'REJECTED'">
@@ -91,7 +91,7 @@
                               </ng-container>
                             </div>
                             <div class="text-xs ml-2" [ngClass]="{
-                              'text-green-500': data.status === 'SUBMITTTED',
+                              'text-green-500': data.status === 'SUBMITTED',
                               'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
                               'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' ,
                               'text-yellow-500': data.status == 'DRAFT'
@@ -115,6 +115,12 @@
                       <img src="../../assets/Group.svg" class="ml-4" alt="CR" />
                       <span class="shaded-color ml-1 normal-font-weight">3</span>
                     </div>
+                  </div>
+                  <!-- dont delete write a comment code -->
+                  <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
+                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
+                      placeHolder="Reason for your actions"
+                      (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>
               </div>
