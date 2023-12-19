@@ -34,11 +34,20 @@ export class AddCrVersionComponent {
     private commentsService: CommentsService
   ) {
     this.versionForm = this.fb.group({
-      major: ['2311', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
+      major: [this.getCurrentYYMM(), [Validators.required, Validators.pattern(/^[.\d]+$/)]],
       minor: ['0', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
       build: ['0', [Validators.required]],
     });
   }
+
+  getCurrentYYMM() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear() % 100;
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const yymm = `${year}${month}`;
+    return yymm;
+  }
+
   get versionFormControl() {
     return this.versionForm.controls;
   }
@@ -52,9 +61,9 @@ export class AddCrVersionComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.latestVersion) {
-      this.versionForm.patchValue({ build: this.latestVersion.build + 1 });
+      this.versionForm.patchValue({ build: 0 });
       this.versionForm.patchValue({ major: this.latestVersion.major });
-      this.versionForm.patchValue({ minor: this.latestVersion.minor });
+      this.versionForm.patchValue({ minor: this.latestVersion.minor + 1 });
     }
   }
 
