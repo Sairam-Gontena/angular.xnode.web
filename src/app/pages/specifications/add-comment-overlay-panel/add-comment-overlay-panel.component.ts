@@ -19,6 +19,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Output() closeOverlay = new EventEmitter<any>();
+  @Input() parentTitle:any;
   @Input() position?: string;
   @Input() placeHolder?: string;
   @Input() selectedContent: any;
@@ -170,7 +171,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "feedback": {},
       }
     }
-
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         body = {
@@ -187,14 +187,20 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.saveComment(body);
       }
-      else
+      else{
         this.prepareDataToSaveAsTask()
+      }
     } else {
       this.saveComment(body);
     }
   }
 
   saveComment(body: any): void {
+    if(this.parentTitle!='' && this.parentTitle!=undefined){
+      body.referenceContent.parentTitle = this.parentTitle
+    }else{
+      body.referenceContent.parentTitle = this.specItem.title;
+    }
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.prepareDataToDisplayOnCommentsPanel();
@@ -272,6 +278,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
+    if(this.parentTitle!='' && this.parentTitle!=undefined){
+      body.referenceContent.parentTitle = this.parentTitle
+    }else{
+      body.referenceContent.parentTitle = this.specItem.title;
+    }
     this.commentsService.addTask(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         if (!this.isCommnetsPanelOpened)

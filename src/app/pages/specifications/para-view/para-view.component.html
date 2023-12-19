@@ -1,11 +1,21 @@
-<div class="grid m-0" (mouseover)="showCommentIcon = true;" (mouseleave)="deSelect()">
+<div class="grid" *ngIf="showComments==false else mainBlock">
+    <div class="col-12 p-2">
+      <p class="flex flex-wrap content text-base font-normal my-0">
+        <span
+            [innerHTML]="content | highlight: searchTerm" >
+        </span>
+    </p>
+    </div>
+</div>
+<ng-template #mainBlock>
+<div class="grid m-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
     <div class="col-11 p-0 ">
         <p class="flex flex-wrap content text-base font-normal my-0" [id]="content.id">
             <span *ngFor="let word of getWords(content); index as i" class="pr-1"
                 (mouseup)="contentSelected($event);saveSecInLocal()" [attr.id]="'word' + i"
                 [innerHTML]="word | highlight: searchTerm"
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}">
-                <p-overlayPanel #selectionText *ngIf="showCommentIcon">
+                <p-overlayPanel #selectionText > <!-- *ngIf="showCommentIcon" -->
                     <xnode-add-comment-overlay-panel [users]="users" [selectedText]="selectedText"
                         [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
                         [parentId]="specItem.id" *ngIf="selectedText.length>0" [position]="'absolute'"
@@ -27,3 +37,4 @@
         <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon" (click)="openCommentSection()"></i>
     </div>
 </div>
+</ng-template>
