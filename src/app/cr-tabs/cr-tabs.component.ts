@@ -163,6 +163,7 @@ export class CrTabsComponent {
         this.openConfirmationPopUp = true;
         break;
       case 'REJECT':
+      case 'NEEDS WORK':
         this.crData.forEach((element: any) => {
           if (element.id === this.selectedCr.id) {
             element.showComment = true;
@@ -258,17 +259,17 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
             ele.showComment = false;
-          })
+          });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -289,9 +290,13 @@ export class CrTabsComponent {
   }
 
   updateCommentsInfo(crInfo: any) {
-    this.selectedCr['comments'] = crInfo.message
+    this.selectedCr['comments'] = crInfo.message;
     switch (this.selectedStatus) {
       case 'REJECT':
+        this.header = 'Reject CR';
+        this.content = 'Are you sure you want to Reject this CR?';
+        break;
+      case 'NEEDS WORK':
         this.header = 'Reject CR';
         this.content = 'Are you sure you want to Reject this CR?';
         break;
