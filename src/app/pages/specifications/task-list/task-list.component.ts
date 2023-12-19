@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
+import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
@@ -18,6 +19,10 @@ export class TaskListComponent {
   @Input() topParentId: any;
   @Input() activeIndex: any;
   @Output() onClickClose = new EventEmitter<any>();
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
+  userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -40,6 +45,8 @@ export class TaskListComponent {
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
   fileIndex: any;
+  targetUrl: string = '';
+  iframeSrc: SafeResourceUrl = '';
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -56,8 +63,54 @@ export class TaskListComponent {
 
   ngOnInit() {
     this.specListCopy = this.list;
-
+    this.makeTrustedUrl();
   }
+
+  makeTrustedUrl(): void {
+    let target =localStorage.getItem('targetUrl');
+    if(target){
+      this.targetUrl = target;
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.targetUrl
+      );
+    }
+  }
+
+  checkParaViewSections(title: string,parentTitle?:string) {
+    if(parentTitle=='Technical Specifications'){
+      return;
+    }
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserRoleSections(title: string) {
+    return (
+      this.userRolesViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserPersonaSections(title:string){
+    return (
+      this.userPersonaViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
   receiveMsg(event: any) {
     if (event) {
       this.list.forEach((item: any) => {
@@ -158,6 +211,10 @@ export class TaskListComponent {
       return spanWithId;
     });
     return this.sanitizer.bypassSecurityTrustHtml(highlighted);
+  }
+
+  checktableJsonSection(title: string): boolean {
+    return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
   }
 
   modifiedTimeDifference(modifiedOn: Date): string {

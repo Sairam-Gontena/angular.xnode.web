@@ -20,30 +20,31 @@
           <div *ngIf="crFormControl['crToAdd'].errors?.['required']">
             CR is required</div>
         </div>
-        <p class="text-sm pointer mt-1 mb-0 api-ticket"
-          *ngIf="crForm.get('priority')?.value || crForm.get('version')?.value || crForm.get('duedate')?.value">
+        <p class="text-sm pointer mt-1 mb-0 api-ticket" *ngIf="selectedPriority || selectedVersion || selectedDueDate">
           <span><i class="pi pi-plus pr-2"></i></span> Connect with the
           api
           ticketing
           system
         </p>
       </div>
-      <div class="col-12 flex flex-wrap"
-        *ngIf="crForm.get('priority')?.value || crForm.get('version')?.value || crForm.get('duedate')?.value">
+      <div class="col-12 flex flex-wrap" *ngIf="selectedPriority || selectedVersion || selectedDueDate">
         <div class="col-4">
           <label for="priority" class="api-ticket text-sm ">Priority: </label>
           <div class="ml-2">
-            {{ crForm.get('priority')?.value?.label }}
+            {{ selectedPriority }}
           </div>
         </div>
         <div class="col-4">
           <label class="api-ticket text-sm ">To Version: </label>
-          <div class="ml-2"> {{ crForm.get('version')?.value?.label }}</div>
+          <div class="ml-2">
+            {{ selectedVersion }}
+          </div>
         </div>
         <div class="col-4">
           <label class="api-ticket text-sm ">Due Date: </label>
           <div class="ml-2">
-            {{ crForm.get('duedate')?.value | date: 'shortDate' }}
+            {{ selectedDueDate | date: 'shortDate'}}
+
           </div>
         </div>
       </div>
@@ -80,6 +81,7 @@
       (click)="close.emit(false)"></p-button>
     <p-button type="submit" label="Link" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
       (click)="linkCr()"></p-button>
+
   </ng-template>
 </p-dialog>
 

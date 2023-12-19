@@ -72,6 +72,18 @@ export class SpecSectionsLayoutComponent implements OnInit {
   qaPanelOpened: boolean = false;
   openAPIShowCommentIcon: boolean = false;
   openAPIPanelOpened: boolean = false;
+  stakeHolderPanelOpened: boolean = false;
+  stakeHoldershowCommentIcon: boolean = false;
+  versionControlPanelOpened: boolean = false;
+  versionControlshowCommentIcon: boolean = false;
+  historicalDataPanelOpened: boolean = false;
+  historicalDatashowCommentIcon: boolean = false;
+  dataQualityPanelOpened: boolean = false;
+  dataQualityshowCommentIcon: boolean = false;
+  testCasePanelOpened: boolean = false;
+  testCaseshowCommentIcon: boolean = false;
+  glossaryPanelOpened: boolean = false;
+  glossaryshowCommentIcon: boolean = false;
 
   expandSpecSections: any = [
     'Usecases',
@@ -133,6 +145,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
       this.targetUrl
     );
+    localStorage.setItem('targetUrl',this.targetUrl)
   }
 
   onClickAddComment(obj: any): void {

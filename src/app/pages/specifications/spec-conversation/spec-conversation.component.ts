@@ -7,14 +7,14 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-
+import { SECTION_VIEW_CONFIG } from '../section-view-config';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -31,6 +31,10 @@ export class SpecConversationComponent {
   @Output() onClickClose = new EventEmitter<any>();
   @ViewChild(SpecChildConversationComponent)
   child!: SpecChildConversationComponent;
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
+  userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -51,11 +55,15 @@ export class SpecConversationComponent {
   commentDelete: any;
   uploadedFiles: any;
   references: any;
+  iframeSrc: SafeResourceUrl = '';
   showConfirmationPopup: boolean = false;
   files: any[] = [];
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
   fileIndex: any;
+  targetUrl: string = '';
+  bpmnFrom: string = 'Comments';//'SPEC';
+
 
   constructor(
     private utils: UtilsService,
@@ -76,6 +84,52 @@ export class SpecConversationComponent {
 
   ngOnInit() {
     this.specListCopy = this.list;
+    this.makeTrustedUrl();
+  }
+
+  makeTrustedUrl(): void {
+    let target =localStorage.getItem('targetUrl');
+    if(target){
+      this.targetUrl = target;
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.targetUrl
+      );
+    }
+  }
+
+  checkParaViewSections(title: string,parentTitle?:string) {
+    if(parentTitle=='Technical Specifications'){
+      return;
+    }
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserRoleSections(title: string) {
+    return (
+      this.userRolesViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserPersonaSections(title:string){
+    return (
+      this.userPersonaViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
   }
 
   receiveMsg(event: any) {

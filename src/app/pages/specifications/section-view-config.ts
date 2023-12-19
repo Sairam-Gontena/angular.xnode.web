@@ -36,4 +36,10 @@ export const SECTION_VIEW_CONFIG = {
     'Hardware Interfaces',
     'Software Interfaces',
   ],
+  userRoleSection:[
+    'User Roles'
+  ],
+  userPersonaSection:[
+    'User Personas'
+  ]
 };
