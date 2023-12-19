@@ -1,4 +1,4 @@
-<div class="pt-4">
+<div [ngClass]="{'pt-4':isArray(content)}">
     <div class="py-0">
       <div *ngIf="isArray(content) else obj" >
         <div class="mb-2" *ngFor="let item of content; let mainIndex = index;">
@@ -16,7 +16,7 @@
                                     <p-overlayPanel #selectionText>
                                         <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
                                             *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"  [parentEntity]="'SPEC'"
-                                            [selectedText]="selectedText" [specId]="specId" [parentId]="specItem.id"
+                                            [selectedText]="selectedText" [parentTitle]="parentTitle" [specId]="specId" [parentId]="specItem.id"
                                             [position]="'absolute'" [selectedContent]="item"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                                     </p-overlayPanel>
@@ -27,7 +27,7 @@
                                     [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
                                     <p-overlayPanel #selectionText>
                                         <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
-                                            *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"
+                                            *ngIf="selectedText.length>0" [parentTitle]="parentTitle" (closeOverlay)="selectionText.toggle(false)"
                                             [selectedText]="selectedText" [parentEntity]="'SPEC'"
                                             [parentId]="specItem.id" [position]="'absolute'" [selectedContent]="item"
                                             placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
@@ -77,9 +77,9 @@
         </div>
       </div>
       <ng-template #obj>
-        <p class="text-xl">{{content.title}}</p>
-        <div *ngIf="isArray(content.content)">
-          <div *ngFor="let subItem of content; let i=index " class="pl-4">
+        <p [ngClass]="{'my-3 text-xl':isArray(content)==false}">{{content.title}}</p>
+        <div class="array" *ngIf="isArray(content.content)">
+          <div *ngFor="let subItem of content.content; let i=index " class="pl-4">
               <div class="flex col-12 p-0 " >
                   <div class="col-10 p-0">
                       <p class="m-0 flex flex-wrap pb-1 line-height-3">
