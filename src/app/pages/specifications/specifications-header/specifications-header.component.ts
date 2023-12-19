@@ -22,7 +22,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     versionId: any;
   }>();
   @Input() currentSpecVersionId: any;
-
+  @Input() versions: any;
   currentUser: any;
   templates: any;
   selectedTemplate: any;
@@ -40,9 +40,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   specVersion: any;
   version: any;
   versionSelected: any;
-  allVersions: any = [];
   selectedVersion: Version | undefined;
-  enabledGeneratespec : boolean = true; 
+  enabledGeneratespec: boolean = true;
 
   constructor(
     private utils: UtilsService,
@@ -52,6 +51,13 @@ export class SpecificationsHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.versions && this.versions.length > 0) {
+      this.versions.forEach((element: any) => {
+        element['label'] = element.version;
+        element['value'] = element.id;
+      });
+      this.selectedVersion = this.versions[0];
+    }
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     });
@@ -83,47 +89,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.hasProductEditPermission.subscribe((result: boolean) => {
       this.userHasPermissionToEditProduct = result;
     });
-    this.getVersions();
-
   }
 
-  getVersions() {
-    this.utils.loadSpinner(true);
-    this.specService
-      .getVersionIds(this.productId)
-      .then((response) => {
-        if (response.status === 200 && response.data) {
-          this.allVersions = response.data.map((item: any) => ({
-            label: item.version,
-            value: item.id,
-          }));
-          response.data.map((item: any) => {
-            if (item.id === this.currentSpecVersionId) {
-              this.selectedVersion = {
-                label: item.version,
-                value: item.id
-              }
-            }
-          });
-          this.utils.loadSpinner(false);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Network Error',
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: err,
-        });
-      });
-  }
   getMeUserAvatar() {
     var firstLetterOfFirstWord =
       this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
@@ -203,7 +170,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   openPopup(content: any) {
     if (this.product?.id) {
       this.generateSpec.emit();
-    this.enabledGeneratespec = false;
+      this.enabledGeneratespec = false;
     }
   }
 

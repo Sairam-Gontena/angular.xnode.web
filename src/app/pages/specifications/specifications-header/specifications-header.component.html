@@ -7,7 +7,7 @@
         class="flex justify-content-between align-items-center pl-4 pr-4 flex-wrap border-bottom-1 border-white-alpha-40 header-items">
         <div class="flex align-items-center">
             <xnode-product-dropdown (_onChangeProduct)="onChangeProduct($event)"></xnode-product-dropdown>
-            <p-dropdown [options]="allVersions" [(ngModel)]="selectedVersion" optionLabel="label"
+            <p-dropdown [options]="versions" [(ngModel)]="selectedVersion" optionLabel="label"
                 (onChange)="onVersionChange($event)" placeholder="Select a version"
                 class="ml-3 app-dropdown-version"></p-dropdown>
             <p class="text-xs status ml-6" *ngIf="specVersion">{{specVersion}}</p>
@@ -17,7 +17,8 @@
             <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
                 (click)="openComments()">
             <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
-            <p-button [disabled]="!enabledGeneratespec" (click)="op.toggle($event)" class="ellipsis-btn " icon="pi pi-ellipsis-v"></p-button>
+            <p-button [disabled]="!enabledGeneratespec" (click)="op.toggle($event)" class="ellipsis-btn "
+                icon="pi pi-ellipsis-v"></p-button>
             <p-overlayPanel class="overlay-class" #op>
                 <!-- Dont remove this code -->
                 <!-- <div class="confirm-overlay p-2 cursor-pointer " (click)="openCRs()">Change Requests
