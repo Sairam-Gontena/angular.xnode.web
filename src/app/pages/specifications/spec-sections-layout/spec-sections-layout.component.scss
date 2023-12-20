@@ -149,78 +149,23 @@ pre {
   border-radius: 6px !important;
 }
 
-// when menu opened
-@media (max-width: 1440px) {
-  .common-spec-table-menu {
-    width: 600px;
-  }
-}
-@media (max-width: 1280px) {
-  .common-spec-table-menu {
-    width: 500px;
-  }
-}
-@media (max-width: 1024px) {
-  .common-spec-table-menu {
-    width: 420px;
-  }
-}
-// full spec
-@media (max-width: 1440px) {
-  .common-spec-table {
-    width: 600px;
-  }
-}
-@media (max-width: 1280px) {
-  .common-spec-table {
-    width: 500px;
-  }
-}
-@media (max-width: 1024px) {
-  .common-spec-table {
-    width: 420px;
-  }
-}
 
-// when navi and menu opened
-@media (max-width: 2560px) {
-  .common-spec-table-navi-menu {
-    width: 820px;
-  }
-}
+// new styles
 @media (max-width: 1440px) {
+  .common-spec-table{
+    width: 600px;
+  }
+  .common-spec-table-sidemenu {
+    width: 590px;
+  }
+  .common-spec-table-navi {
+    width: 555px;
+  }
   .common-spec-table-navi-menu {
     width: 300px;
+    background-color: yellow;
   }
-}
-@media (max-width: 1280px) {
-  .common-spec-table-navi-menu {
-    width: 250px;
-  }
-}
-@media (max-width: 1024px) {
-  .common-spec-table-navi-menu {
-    width: 230px;
-  }
-}
-// when navi and cr opened
-@media (max-width: 2560px) {
-  .common-spec-table-cr-menu {
-    width: 1000px;
-  }
-}
-@media (max-width: 1440px) {
-  .common-spec-table-cr-menu {
-    width: 250px;
-  }
-}
-@media (max-width: 1280px) {
-  .common-spec-table-cr-menu {
-    width: 180px;
-  }
-}
-@media (max-width: 1024px) {
-  .common-spec-table-cr-menu {
-    width: 150px;
+  .common-spec-table-menu-comments {
+    width: 300px;
   }
 }

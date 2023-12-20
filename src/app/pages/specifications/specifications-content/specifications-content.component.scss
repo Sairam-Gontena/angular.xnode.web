@@ -49,15 +49,12 @@
 }
 
 .spec-body-full {
-    height: calc(100vh - 120px);
-    overflow: auto;
-    width: 70vw;
+    height: calc(100vh - 112px);
 }
 
 .spec-body-collapsed {
     height: calc(100vh - 120px);
     overflow: auto;
-    width: calc(100% - 514px);
 }
 
 .sub-content {
@@ -147,9 +144,200 @@ pre {
 
 .expand-spec {
     height: calc(100vh - 112px);
-    width: 100%;
+    width: 300px;
 }
 
-.comments-panel {
-    width: 514px;
-}
+// new styles
+@media (min-width: 1024px) {
+    .spec-section, .comments-open, .comments-close {
+      transition: all 0.5s ease-in-out;
+      height: calc(100vh - 42px);
+    }
+    .comments-open {
+      width: 350px;
+    }
+    .spec-content{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 42px); 
+    }
+    .spec-content-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+        width: calc(100vw - 380px);
+    }
+    .spec-content-navi{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px);
+        width:650px;
+    }
+    .spec-content-navi-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px);
+        width: 380px;
+    }
+    .spec-content-comments{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+        width: calc(100vw - 430px); 
+    }
+    .spec-content-comments-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+        width: calc(100vw - 730px); 
+    }
+  }
+
+@media (min-width: 1366px) {
+    .spec-section, .comments-open, .comments-close {
+      transition: all 0.5s ease-in-out;
+      height: calc(100vw - 112px);
+    }
+    .comments-open {
+      width: 512px;
+    }
+    .spec-content{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+    }
+    .spec-content-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+        width: calc(100vw - 430px);
+    }
+    .spec-content-navi{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px);
+        width: 890px;
+    }
+    .spec-content-navi-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px);
+        width: 555px;
+    }
+    .spec-content-comments{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+        width: calc(100vw - 592px); 
+    }
+    .spec-content-comments-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vw - 112px); 
+        width: calc(100vw - 930px); 
+    }
+  }
+@media (min-width: 1440px) {
+    .spec-section, .comments-open, .comments-close {
+      transition: all 0.5s ease-in-out;
+      height: calc(100vh - 112px); 
+    }
+    .comments-open {
+      width: 512px;
+    }
+    .spec-content{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+    }
+    .spec-content-navi{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: 930px;
+    }
+    .spec-content-navi-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: 555px;
+    }
+    .spec-content-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 455px);
+    }
+    .spec-content-comments{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 592px); 
+    }
+    .spec-content-comments-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 967px); 
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .spec-section, .comments-open, .comments-close {
+      transition: all 0.5s ease-in-out;
+      height: calc(100vh - 112px); 
+    }
+    .comments-open {
+      width: 512px;
+    }
+    .spec-content{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+    }
+    .spec-content-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 455px);
+    }
+    .spec-content-navi{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: 1265px;
+    }
+    .spec-content-navi-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: 900px;
+    }
+    .spec-content-comments{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 592px); 
+    }
+    .spec-content-comments-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 980px); 
+    }
+  }
+  @media (min-width: 2560px) {
+    .spec-section, .comments-open, .comments-close {
+      transition: all 0.5s ease-in-out;
+      height: calc(100vh - 112px); 
+    }
+    .comments-open {
+      width: 712px;
+    }
+    .spec-content{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+    }
+    .spec-content-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 455px);
+    }
+    .spec-content-navi{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: 100%;
+    }
+    .spec-content-navi-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: 1350px;
+    }
+    .spec-content-comments{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 592px); 
+    }
+    .spec-content-comments-menu{
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px); 
+        width: calc(100vw - 1170px); 
+    }
+  }
+

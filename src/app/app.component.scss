@@ -88,3 +88,32 @@
   border-width: 0px;
   border-color: white;
 }
+
+@media (min-width: 768px) {
+  .main-component-navi {
+    transition: all 0.5s ease-in-out;
+    width: 70%;
+    height: calc(100vh - 42px);
+  }
+}
+@media (min-width: 768px) {
+  .main-component {
+    transition: all 0.5s ease-in-out;
+    width: 100%;
+    height: calc(100vh - 42px);
+  }
+}
+
+@media (min-width: 768px) {
+  .docked-navi {
+    transition: all 0.5s ease-in-out;
+    width: 30%;
+    height: calc(100vh - 42px);
+  }
+}
+@media (min-width: 768px) {
+  .docked-navi-component {
+    transition: all 0.5s ease-in-out;
+    width: 0%;
+  }
+}

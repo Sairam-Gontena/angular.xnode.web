@@ -17,6 +17,8 @@ export class ExpandSpecificationComponent {
   iframeSrc: SafeResourceUrl = '';
   targetUrl: string = environment.naviAppUrl;
   product: any;
+  isSpecSideMenuOpened: boolean = false;
+  isDockedNaviOpended: boolean = false;
   constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
   }
 
@@ -35,6 +37,12 @@ export class ExpandSpecificationComponent {
       this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
     }
     this.makeTrustedUrl();
+    this.utils.openSpecSubMenu.subscribe((event: any) => {
+      this.isSpecSideMenuOpened = event; 
+      })
+      this.utils.openDockedNavi.subscribe((event: any) => {
+      this.isDockedNaviOpended = event
+      })
   }
 
   ngAfterViewInit() {

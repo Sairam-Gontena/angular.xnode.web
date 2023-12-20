@@ -75,6 +75,9 @@
     <div *ngIf="content.title === 'Dashboards'">
       <div class="flex justify-content-between align-items-center">
         <h1 class="my-1">Dashboard</h1>
+        <img src="./assets/spec-minimize.svg" alt="container" (click)="expandComponent.emit(content)"
+        class="expnad-icon pointer" class="ml-3"
+        style="width: 25px" />
       </div>
       <div class="grid" (mouseover)="userinterfaceShowCommentIcon = true"
         (mouseleave)="userinterfaceShowCommentIcon = false">
@@ -171,7 +174,7 @@
       </div>
       <div class="grid" (mouseover)="dataDictionaryshowCommentIcon = true"
         (mouseleave)="dataDictionaryshowCommentIcon = false">
-        <div class="col-12 py-0 text-right">
+        <div class="col-12 flex justify-content-end align-items-center h-2rem">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
             businessRulesop.toggle($event); dataDictionaryPanelOpened = true;saveSecInLocal();
           " (mouseleave)="dataDictionaryshowCommentIcon = false"
@@ -191,15 +194,11 @@
           </p-overlayPanel>
         </div>
         <div class="col-12">
-          <div [ngClass]="{
-            'common-spec-table-menu': isSideMenuOpened,
-            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-            'common-spec-table':
-              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-          }" class="common-spec-table" *ngIf="content.showTable; else elsejson">
-            <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-              [content]="content.content"></xnode-common-spec-table>
+          <div  *ngIf="content.showTable; else elsejson">
+              <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+                <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+                [content]="content.content"></xnode-common-spec-table>
+                  </div>
           </div>
           <ng-template #elsejson>
             <div class="grid" (mouseover)="dataDictionaryshowCommentIcon = true"
@@ -222,7 +221,7 @@
       </div>
       <div class="grid" (mouseover)="businessRulesshowCommentIcon = true"
         (mouseleave)="businessRulesshowCommentIcon = false">
-        <div class="col-12 py-0 text-right">
+        <div class="col-12 flex justify-content-end align-items-center h-2rem">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
             businessRulesop.toggle($event); businessRulesPanelOpened = true;saveSecInLocal();
           " (mouseleave)="businessRulesshowCommentIcon = false"
@@ -242,15 +241,11 @@
           </p-overlayPanel>
         </div>
         <div class="col-12">
-          <div [ngClass]="{
-            'common-spec-table-menu': isSideMenuOpened,
-            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-            'common-spec-table':
-              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-          }" class="common-spec-table" *ngIf="content.showTable; else elsejson">
-            <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-              [content]="content.content"></xnode-common-spec-table>
+          <div *ngIf="content.showTable; else elsejson">
+              <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+                <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+                [content]="content.content"></xnode-common-spec-table>
+                  </div>
           </div>
           <ng-template #elsejson>
             <div class="grid" (mouseover)="businessRulesshowCommentIcon = true"
@@ -274,7 +269,7 @@
       </div>
       <div class="grid" (mouseover)="functionalDependenciesshowCommentIcon = true"
         (mouseleave)="functionalDependenciesshowCommentIcon = false">
-        <div class="col-12 py-0 text-right">
+        <div class="w-full flex justify-content-end align-items-center h-2rem  ">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
           functionalDepedencyop.toggle($event); functionalDepedencyPanelOpened = true;saveSecInLocal();
           " (mouseleave)="functionalDependenciesshowCommentIcon = false"
@@ -294,15 +289,11 @@
           </p-overlayPanel>
         </div>
         <div class="col-12">
-          <div [ngClass]="{
-            'common-spec-table-menu': isSideMenuOpened,
-            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-            'common-spec-table':
-              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-          }" class="common-spec-table" *ngIf="content.showTable; else elsejson">
-            <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-              [content]="content.content"></xnode-common-spec-table>
+          <div  *ngIf="content.showTable; else elsejson">
+              <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+                <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+                [content]="content.content"></xnode-common-spec-table>
+                  </div>
           </div>
           <ng-template #elsejson>
             <div class="grid" (mouseover)="functionalDependenciesshowCommentIcon = true"
@@ -318,7 +309,6 @@
 
     </div>
 
-
     <div *ngIf="content.title === 'User Interfaces'">
       <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle('json', specItem, content)"></i>
@@ -327,7 +317,7 @@
       </div>
       <div class="grid" (mouseover)="userInterfaceshowCommentIcon = true"
         (mouseleave)="userInterfaceshowCommentIcon = false">
-        <div class="col-12 py-0 text-right">
+        <div class="h-2rem w-full justify-content-end align-items-center flex">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
           functionalDepedencyop.toggle($event); userInterfacePanelOpened = true;saveSecInLocal();
           " (mouseleave)="userInterfaceshowCommentIcon = false"
@@ -347,15 +337,11 @@
           </p-overlayPanel>
         </div>
         <div class="col-12">
-          <div [ngClass]="{
-            'common-spec-table-menu': isSideMenuOpened,
-            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-            'common-spec-table':
-              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-          }" class="common-spec-table" *ngIf="content.showTable; else elsejson">
-            <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-              [content]="content.content"></xnode-common-spec-table>
+          <div   *ngIf="content.showTable; else elsejson">
+              <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+                <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+                [content]="content.content"></xnode-common-spec-table>
+                  </div>
           </div>
           <ng-template #elsejson>
             <div class="grid" (mouseover)="userInterfaceshowCommentIcon = true"
@@ -378,7 +364,7 @@
           (click)="checkedToggle('table', specItem, content)"></i>
       </div>
       <div class="grid" (mouseover)="AnnexureshowCommentIcon = true" (mouseleave)="AnnexureshowCommentIcon = false">
-        <div class="col-12 py-0 text-right">
+        <div class="h-2rem w-full justify-content-end align-items-center flex " >
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
           functionalDepedencyop.toggle($event); AnnexuresPanelOpened = true;saveSecInLocal();
           " (mouseleave)="AnnexureshowCommentIcon = false" *ngIf="AnnexureshowCommentIcon || AnnexuresPanelOpened" />
@@ -397,15 +383,11 @@
           </p-overlayPanel>
         </div>
         <div class="col-12">
-          <div [ngClass]="{
-            'common-spec-table-menu': isSideMenuOpened,
-            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-            'common-spec-table':
-              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-          }" class="common-spec-table" *ngIf="content.showTable; else elsejson">
-            <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-              [content]="content.content"></xnode-common-spec-table>
+          <div  *ngIf="content.showTable; else elsejson">
+              <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+                <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+                [content]="content.content"></xnode-common-spec-table>
+                  </div>
           </div>
           <ng-template #elsejson>
             <div class="grid" (mouseover)="AnnexureshowCommentIcon = true"
@@ -420,16 +402,10 @@
       </div>
 
     </div>
+ 
+    <div *ngIf="content.title === 'Historical Data Load'" (mouseenter)="historicalDataPanelOpened = true" (mouseleave)="historicalDataPanelOpened = false" >
 
-    <div [ngClass]="{
-        'common-spec-table-menu': isSideMenuOpened,
-        'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-        'common-spec-table':
-          !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-        'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-      }" *ngIf="content.title === 'Historical Data Load'" (mouseenter)="historicalDataPanelOpened = true" (mouseleave)="historicalDataPanelOpened = false" >
-
-<div class="col-12 py-0 text-right" >
+    <div class="flex h-2rem justify-content-end align-items-center" >
   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
   historicalDataOp.toggle($event); historicalDataPanelOpened = true;saveSecInLocal();
   " (mouseleave)="historicalDatashowCommentIcon = false" *ngIf="historicalDatashowCommentIcon || historicalDataPanelOpened" />
@@ -446,11 +422,15 @@
       [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
       [specItem]="specItem"></xnode-add-comment-overlay-panel>
   </p-overlayPanel>
-  <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-  [content]="content.content"></xnode-common-spec-table>
-</div>
+  
     </div>
-    <div *ngIf="content.title === 'User Personas' && isArray(content.content)">
+    <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+        <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+        [content]="content.content"></xnode-common-spec-table>
+    </div>  
+  </div>  
+
+      <div *ngIf="content.title === 'User Personas' && isArray(content.content)">
       <div class="grid" (mouseover)="userpersonaShowCommentIcon = true"
         (mouseleave)="userpersonaShowCommentIcon = false">
         <div class="col-12 text-right p-0">
@@ -480,15 +460,9 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="{
-        'common-spec-table-menu': isSideMenuOpened,
-        'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-        'common-spec-table':
-          !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-        'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-      }" *ngIf="content.title === 'Glossary'">
+    <div (mouseenter)="glossaryshowCommentIcon = true" (mouseleave)="glossaryshowCommentIcon = false"  *ngIf="content.title === 'Glossary'">
 
-      <div class="col-12 py-0 text-right" (mouseenter)="glossaryshowCommentIcon = true" (mouseleave)="glossaryshowCommentIcon = false" >
+      <div class="flex w-full justify-content-end align-items-center h-2rem " >
         <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
         glossaryOp.toggle($event); glossaryPanelOpened = true;saveSecInLocal();
         " *ngIf="glossaryshowCommentIcon || glossaryPanelOpened" />
@@ -505,19 +479,15 @@
             [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
             [specItem]="specItem"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
+        
+      </div>
+      <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
         <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
         [specItem]="specItem"></xnode-common-spec-table>
       </div>
     </div>
-    <div [ngClass]="{
-        'common-spec-table-menu': isSideMenuOpened,
-        'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-        'common-spec-table':
-          !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-        'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-      }" *ngIf="content.title === 'Version Control'">
-
-  <div class="col-12 py-0 text-right" (mouseenter)="versionControlshowCommentIcon = true" (mouseleave)="versionControlshowCommentIcon = false" >
+    <div  *ngIf="content.title === 'Version Control'" (mouseenter)="versionControlshowCommentIcon = true" (mouseleave)="versionControlshowCommentIcon = false" >
+     <div class="flex w-full justify-content-end align-items-center h-2rem "   >
     <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
     versionControlOp.toggle($event); versionControlPanelOpened = true;saveSecInLocal();
     " *ngIf="versionControlshowCommentIcon || versionControlPanelOpened" />
@@ -534,21 +504,18 @@
         [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
         [specItem]="specItem"></xnode-add-comment-overlay-panel>
     </p-overlayPanel>
-    <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
-        [specItem]="specItem"></xnode-common-spec-table>
   </div>
-
-
+  <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+  [specItem]="specItem"></xnode-common-spec-table>
+  <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+    <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
+    [specItem]="specItem"></xnode-common-spec-table>
+  </div>
     </div>
-    <div [ngClass]="{
-        'common-spec-table-menu': isSideMenuOpened,
-        'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-        'common-spec-table':
-          !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-        'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-      }" *ngIf="content.title === 'Stakeholder Approvals'">
+    <div *ngIf="content.title === 'Stakeholder Approvals'">
 
-      <div class="col-12 py-0 text-right" (mouseenter)="stakeHoldershowCommentIcon = true" (mouseleave)="stakeHoldershowCommentIcon = false" >
+      <div  (mouseenter)="stakeHoldershowCommentIcon = true" (mouseleave)="stakeHoldershowCommentIcon = false" >
+      <div class="w-full flex justify-content-end align-items-center h-2rem  " >
         <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
         stakeholderOp.toggle($event); stakeHolderPanelOpened = true;saveSecInLocal();
         " *ngIf="stakeHoldershowCommentIcon || stakeHolderPanelOpened" />
@@ -565,76 +532,73 @@
             [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
             [specItem]="specItem"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
-        <xnode-common-spec-table [users]="usersList" [searchTerm]="searchTerm" [specItem]="specItem"
-        [content]="content.content"></xnode-common-spec-table>
+      </div>
+        <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+          <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+          [content]="content.content"></xnode-common-spec-table>
+        </div>
       </div>
     </div>
-    <div [ngClass]="{
-      'common-spec-table-menu': isSideMenuOpened,
-      'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-      'common-spec-table':
-        !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-      'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-    }" class="common-spec-table" *ngIf="content.title === 'Data Quality Checks'">
-      <div class="grid">
-        <div class="col-12 py-0 text-right" (mouseenter)="dataQualityshowCommentIcon = true" (mouseleave)="dataQualityshowCommentIcon = false" >
-          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-          dataQualityOp.toggle($event); dataQualityPanelOpened = true;saveSecInLocal();
-          " *ngIf="dataQualityshowCommentIcon || dataQualityPanelOpened" />
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="dataQualityshowCommentIcon || dataQualityPanelOpened" (click)="openCommentSection()"></i>
-          <p-overlayPanel #dataQualityOp (onHide)="
-          dataQualityPanelOpened = false;
-          dataQualityshowCommentIcon = false
-            ">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataQualityPanelOpened"
-              (closeOverlay)="
-              dataQualityOp.toggle(false);
-              dataQualityPanelOpened = false
-              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
-              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel>
-          </p-overlayPanel>
-          <xnode-common-spec-table  [users]="usersList"
-        [searchTerm]="searchTerm" [specItem]="specItem" [content]="content.content[0].content"></xnode-common-spec-table>
-        </div>
-    </div>
-    </div>
-    <div *ngIf="content.title === 'Test Cases'">
-      <div *ngFor="let item of content.content">
-        <div class="mt-2">
-          <h3>
-            {{item.Usecase}}
-          </h3>
-          <div class="mt-2" [ngClass]="{
-            'common-spec-table-menu': isSideMenuOpened,
-            'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
-            'common-spec-table':
-              !isSideMenuOpened && !isDockedNaviOpened && !isCommnetsPanelOpened,
-            'common-spec-table-cr-menu': isCommnetsPanelOpened && isSideMenuOpened
-          }" class="common-spec-table">
-
-          <div class="col-12 py-0 text-right" (mouseenter)="testCaseshowCommentIcon = true" (mouseleave)="testCaseshowCommentIcon = false" >
+    <div  *ngIf="content.title === 'Data Quality Checks'">
+      <div class="grid" (mouseenter)="dataQualityshowCommentIcon = true" (mouseleave)="dataQualityshowCommentIcon = false">
+          <div  class="h-2rem flex justify-content-end align-items-center w-full "  >
             <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-            testCaseOp.toggle($event); testCasePanelOpened = true;saveSecInLocal();
-            " *ngIf="testCaseshowCommentIcon || testCasePanelOpened" />
-            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="testCaseshowCommentIcon || testCasePanelOpened" (click)="openCommentSection()"></i>
-            <p-overlayPanel #testCaseOp (onHide)="
-            testCasePanelOpened = false;
-            testCaseshowCommentIcon = false
+            dataQualityOp.toggle($event); dataQualityPanelOpened = true;saveSecInLocal();
+            " *ngIf="dataQualityshowCommentIcon || dataQualityPanelOpened" />
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="dataQualityshowCommentIcon || dataQualityPanelOpened" (click)="openCommentSection()"></i>
+            <p-overlayPanel #dataQualityOp (onHide)="
+            dataQualityPanelOpened = false;
+            dataQualityshowCommentIcon = false
               ">
-              <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="testCasePanelOpened"
+              <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataQualityPanelOpened"
                 (closeOverlay)="
-                testCaseOp.toggle(false);
-                testCasePanelOpened = false
+                dataQualityOp.toggle(false);
+                dataQualityPanelOpened = false
                 " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
                 [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
                 [specItem]="specItem"></xnode-add-comment-overlay-panel>
             </p-overlayPanel>
+          </div>
+        <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
+          <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+          [content]="content.content[0].content"></xnode-common-spec-table>
+        </div>
+    </div>
+  </div>
+
+    <div *ngIf="content.title === 'Test Cases'">
+      <div *ngFor="let item of content.content">
+        <div class="mt-2">
+       
+         
+          <div (mouseenter)="testCaseshowCommentIcon = true" (mouseleave)="testCaseshowCommentIcon = false" >
+            <div class="flex justify-content-between align-items-center" >
+              <h3>
+                {{item.Usecase}}
+              </h3>
+              <div class="flex justify-content-end align-items-center">
+                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
+                testCaseOp.toggle($event); testCasePanelOpened = true;saveSecInLocal();
+                " *ngIf="testCaseshowCommentIcon || testCasePanelOpened" />
+                <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="testCaseshowCommentIcon || testCasePanelOpened" (click)="openCommentSection()"></i>
+              </div>
+              <p-overlayPanel #testCaseOp (onHide)="
+              testCasePanelOpened = false;
+              testCaseshowCommentIcon = false
+                ">
+                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="testCasePanelOpened"
+                  (closeOverlay)="
+                  testCaseOp.toggle(false);
+                  testCasePanelOpened = false
+                  " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
+                  [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                  [specItem]="specItem"></xnode-add-comment-overlay-panel>
+              </p-overlayPanel>
+            </div>
+           <div [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
             <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
             [content]="item.TestCases"></xnode-common-spec-table>
-          </div>
-
-
+           </div>
           </div>
         </div>
       </div>
@@ -758,7 +722,6 @@
         </div>
       </div>
     </div>
-
     <div [ngClass]="{
         'common-spec-table-navi-menu': isSideMenuOpened && isDockedNaviOpened,
         'common-spec-table':
@@ -794,7 +757,6 @@
         </div>
       </div>
     </div>
-
     <div *ngIf="content.title === 'User Roles'">
       <xnode-user-roles [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)" [searchTerm]="searchTerm"
         [content]="content.content" [users]="usersList" [selectedContent]="selectedContent" [parentTitle]="content.title"
@@ -816,4 +778,3 @@
     <div class="gradientback" *ngIf="!content?.collapsed"></div>
     <div class="collapse" *ngIf="content?.collapsed"></div>
   </div>
-</div>
