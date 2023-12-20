@@ -50,7 +50,6 @@ export class SpecificationsContentComponent implements OnInit {
   bodyData: any[] = [];
   dataQualityData: any[] = [];
   userInterfaceheaders: string[] = [];
-  isCommentPanelOpened: boolean = false;
   isOpenSmallCommentBox: boolean = false;
   smallCommentContent: string = '';
   product: any;
@@ -59,6 +58,9 @@ export class SpecificationsContentComponent implements OnInit {
   list: any;
   currentUser: any;
   usersList: any = null;
+  isSpecSideMenuOpened: boolean = false;
+  isDockedNaviOpended: boolean = false;
+  expandView: any = null;
 
   constructor(
     private utils: UtilsService,
@@ -85,6 +87,12 @@ export class SpecificationsContentComponent implements OnInit {
     this.specUtils.openCommentsPanel.subscribe((event: any) => {
       this.isCommnetsPanelOpened = event;
     });
+    this.utils.openSpecSubMenu.subscribe((event: any) => {
+    this.isSpecSideMenuOpened = event; 
+    })
+    this.utils.openDockedNavi.subscribe((event: any) => {
+    this.isDockedNaviOpended = event
+    })
   }
 
   onChildLoaded(isLoaded: boolean) {
@@ -263,6 +271,9 @@ export class SpecificationsContentComponent implements OnInit {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
+      this.specUtils._openCommentsPanel(false)
+      this.utils.disableDockedNavi()
+      this.utils.EnableSpecSubMenu()
       this.specExpanded = true;
     } else {
       this.specExpanded = false;
@@ -273,6 +284,7 @@ export class SpecificationsContentComponent implements OnInit {
     this.scrollToItem();
   }
   closeFullScreenView(): void {
+    this.expandView = true;
     this.specExpanded = false;
     this.fetchOpenAPISpec();
     this.scrollToItem();

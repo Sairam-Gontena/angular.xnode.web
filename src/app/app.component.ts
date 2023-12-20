@@ -136,6 +136,9 @@ export class AppComponent implements OnInit {
         this.makeTrustedUrl(data.email);
       }
     });
+    this.utilsService.openDockedNavi.subscribe((data:any)=>{
+      this.isSideWindowOpen = data;
+    })
   }
 
 

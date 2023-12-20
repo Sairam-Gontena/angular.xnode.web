@@ -1,62 +1,65 @@
 <div class="flex" *ngIf="usersList">
-    <div class="expand-spec" *ngIf="specExpanded && noResults==false">
-        <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
-            (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
-    </div>
-    <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
-        <div *ngIf="!specExpanded && noResults==false">
-            <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
-                <div class="w-8">
-                    <div class="intro-grid" [id]="item.title">
-                        <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
-                        <div class="flex align-items-center spec-status">
-                            <p class="text-sm font-medium">Published on {{item?.createdOn | date:
-                                'MMMd,y'}}
-                            </p>
-                            <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">Updated on {{item?.modifiedOn | date:
-                                'MMMd,y'}}
-                            </p>
-                            <i class="pi pi-circle-fill pl-3 pr-3"></i>
-                            <p class="text-sm font-medium">3 mins read</p>
-                        </div>
-                        <div class="flex mt-2">
-                            <div
-                                class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-xs font-medium tag-text-color">
-                                #{{product.title}}
+    <div class="w-full  flex" >
+    
+        <div class="overflow-auto" [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommnetsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommnetsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommnetsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommnetsPanelOpened}" >
+            <div  *ngIf="specExpanded && noResults==false">
+            
+                <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
+                    (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
+            </div>
+            <div *ngIf="!specExpanded && noResults==false">
+                <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
+                    <div class="w-8">
+                        <div class="intro-grid" [id]="item.title">
+                            <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
+                            <div class="flex align-items-center spec-status">
+                                <p class="text-sm font-medium">Published on {{item?.createdOn | date:
+                                    'MMMd,y'}}
+                                </p>
+                                <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                                <p class="text-sm font-medium">Updated on {{item?.modifiedOn | date:
+                                    'MMMd,y'}}
+                                </p>
+                                <i class="pi pi-circle-fill pl-3 pr-3"></i>
+                                <p class="text-sm font-medium">3 mins read</p>
                             </div>
+                            <div class="flex mt-2">
+                                <div
+                                    class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-xs font-medium tag-text-color">
+                                    #{{product.title}}
+                                </div>
+                            </div>
+                            <div class="flex mt-3 author align-items-center">
+                                <p class="spec-status text-sm font-medium m-0"> By {{item?.content?.[0]?.modified_by}}
+                            </div>
+                            <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                         </div>
-                        <div class="flex mt-3 author align-items-center">
-                            <p class="spec-status text-sm font-medium m-0"> By {{item?.content?.[0]?.modified_by}}
+                        <div>
+                            <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem" [content]="item.content"
+                                [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
+                                (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
+                                (onClickSeeLess)="_onClickSeeLess($event)"
+                                (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
+                                (expandComponent)="_expandComponent($event)" [readOnly]="false"
+                                [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
+                                [targetUrl]="targetUrl"></xnode-spec-sections-layout>
                         </div>
-                        <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
-                    </div>
-                    <div>
-                        <xnode-spec-sections-layout [selectedSpecItem]="selectedSpecItem" [content]="item.content"
-                            [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
-                            (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                            (onClickSeeLess)="_onClickSeeLess($event)"
-                            (childLoaded)="onChildLoaded($event)"
-                            (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
-                            (expandComponent)="_expandComponent($event)" [readOnly]="false"
-                            [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
-                            [targetUrl]="targetUrl"></xnode-spec-sections-layout>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="h-screen w-full flex justify-content-center" *ngIf="noResults==true">
-            <div class="flex flex-column justify-content-center">
-                <div></div>
-                <div class="text-center">
-                    <img src="../../../assets/no-search.svg" />
-                    <p class="font-bold text-white text-2xl">No search results found for <b>“Messaging”</b></p>
+            <div class="h-screen w-full flex justify-content-center" *ngIf="noResults==true">
+                <div class="flex flex-column justify-content-center">
+                    <div></div>
+                    <div class="text-center">
+                        <img src="../../../assets/no-search.svg" />
+                        <p class="font-bold text-white text-2xl">No search results found for <b>“Messaging”</b></p>
+                    </div>
+                    <div></div>
                 </div>
-                <div></div>
             </div>
         </div>
-    </div>
-    <div *ngIf="isCommnetsPanelOpened" class="comments-panel">
-        <xnode-comments-cr-panel class="w-full" [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
+        <div *ngIf="isCommnetsPanelOpened"  [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
+            <xnode-comments-cr-panel  [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
+        </div>
     </div>
 </div>
