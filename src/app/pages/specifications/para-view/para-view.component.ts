@@ -17,6 +17,7 @@ export class ParaViewComponent {
   @Input() selectedContent!: string;
   @Input() id: any;
   @Input() specId: any;
+  @Input() visible: any;
   selectedText: string = '';
   @Input() specItem: any;
   showCommentIcon: boolean = false;
@@ -25,6 +26,7 @@ export class ParaViewComponent {
   selectedWordIndices: number[] = [];
   currentUser: any;
   @Input() showComments:any;
+  showAddTask: boolean = false;
 
   constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils:SpecUtilsService) {
   }
@@ -141,5 +143,8 @@ export class ParaViewComponent {
     setTimeout(() => {
       this.specUtils._openCommentsPanel(true);
     },);
+  }
+  toggleAddTask() {
+    this.showAddTask = !this.showAddTask;
   }
 }

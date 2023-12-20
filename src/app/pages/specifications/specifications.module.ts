@@ -32,6 +32,7 @@ import { SpecChildConversationComponent } from './spec-child-conversation/spec-c
 import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskChildConversationComponent } from 'src/app/pages/specifications/task-child-conversation/task-child-conversation.component';
+import { AddTaskComponent } from './add-task/add-task.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -59,7 +60,8 @@ import { TaskChildConversationComponent } from 'src/app/pages/specifications/tas
     SpecChildConversationComponent,
     TasksPanelComponent,
     TaskListComponent,
-    TaskChildConversationComponent
+    TaskChildConversationComponent,
+    AddTaskComponent
   ],
   imports: [
     CommonModule,
