@@ -123,13 +123,13 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
       this.isCommnetsPanelOpened = event;
     });
     this.makeTrustedUrl();
-    this.fetchOpenAPISpec()
+    // this.fetchOpenAPISpec()
   }
 
   ngOnChanges() {
   if(this.expandView){
      setTimeout(()=>{
-      this.fetchOpenAPISpec()
+      // this.fetchOpenAPISpec()
      },500)
   }
   }
