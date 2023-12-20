@@ -4,5 +4,6 @@ export enum StorageKeys {
     CurrentUser = "currentUser",
     MetaData = "meta_data",
     Product = "product",
-    ProductId = "PRODUCT_ID"
+    ProductId = "PRODUCT_ID",
+    SpecVersion = "SPEC_VERISON"
 }

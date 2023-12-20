@@ -40,6 +40,7 @@ export class CrTabsComponent {
   comments: string = 'test';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
+  specVersion: any;
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -50,8 +51,15 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
+
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
+    });
+    this.specUtils.getMeSpecVersion.subscribe((res) => {
+      if (res) {
+        this.specVersion = res;
+        this.getCRList();
+      }
     });
   }
 
@@ -72,10 +80,13 @@ export class CrTabsComponent {
   }
 
   getCRList() {
-    const prodId = localStorage.getItem('record_id');
+    let body: any = {
+      productId: this.product?.id,
+      baseVersionId: this.specVersion.id
+    }
     this.utilsService.loadSpinner(true);
-    this.api
-      .getComments('change-request?productId=' + prodId)
+    this.commentsService
+      .getCrList(body)
       .then((res: any) => {
         if (res) {
           let data: any[] = res.data.map((item: any) => {
@@ -156,7 +167,7 @@ export class CrTabsComponent {
   }
 
   updateChagneRequestStatus(value: string) {
-        this.selectedStatus = value;
+    this.selectedStatus = value;
     switch (value) {
       case 'ARCHIVE':
         this.header = 'Archive CR';
@@ -472,7 +483,7 @@ export class CrTabsComponent {
     }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus ,
+      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus,
       userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
@@ -489,12 +500,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {

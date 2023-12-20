@@ -23,7 +23,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   specData?: any;
   specDataCopy?: any;
   keyword: any;
-  private specDataBool: boolean = true;
   selectedSpec: any;
   selectedSection: any;
   specId: any;
@@ -394,7 +393,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   handleData(response: any, isDropdownChannge: string): void {
     const list = response.data;
-    this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
       if (obj?.title == 'Functional Specifications') {
         obj.content.forEach((ele: any, idx: any) => {
@@ -451,11 +449,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     if (isDropdownChannge == 'DropdownChange') {
       this.specUtils._productDropdownChanged(true);
     }
-
-    if (this.specDataBool) {
-      this.localStorageService.saveItem(StorageKeys.SpecData, list);
-    }
-    this.specDataBool = false;
+    this.localStorageService.saveItem(StorageKeys.SpecData, list);
     this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
   }
