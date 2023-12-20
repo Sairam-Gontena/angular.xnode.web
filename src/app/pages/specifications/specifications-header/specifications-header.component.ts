@@ -37,7 +37,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   productDetails: any;
   userHasPermissionToEditProduct = true;
   showConfirmationPopup: boolean = false;
-  specVersion: any;
   version: any;
   versionSelected: any;
   selectedVersion: Version | undefined;
@@ -61,10 +60,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     });
-    this.specUtils.getMeSpecVersion.subscribe((data: any) => {
-      this.specVersion = data;
-    });
-
     let user = localStorage.getItem('currentUser');
     if (user) {
       this.currentUser = JSON.parse(user);
