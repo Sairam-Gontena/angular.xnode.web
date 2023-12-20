@@ -53,7 +53,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     if (this.versions && this.versions.length > 0) {
       this.versions.forEach((element: any) => {
-        element['label'] = element.version;
+        element['label'] = element.specStatus+"-"+element.version;
         element['value'] = element.id;
       });
       this.selectedVersion = this.versions[0];
