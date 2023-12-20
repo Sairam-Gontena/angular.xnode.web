@@ -97,7 +97,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   onChildLoaded(isLoaded: boolean) {
     if (isLoaded) {
-      this.fetchOpenAPISpec();
+      // this.fetchOpenAPISpec();
     }
   }
 
@@ -120,7 +120,7 @@ export class SpecificationsContentComponent implements OnInit {
       '&isVerified=true' +
       '&userId=' +
       this.currentUser.id;
-    this.fetchOpenAPISpec();
+    // this.fetchOpenAPISpec();
   }
 
   getDeepLinkInfo(key: string) {
