@@ -1,17 +1,23 @@
 <div class="flex" *ngIf="usersList">
-    <div class="w-full  flex" >
-    
-        <div class="overflow-auto" [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommnetsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommnetsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommnetsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommnetsPanelOpened}" >
-            <div  *ngIf="specExpanded && noResults==false">
-            
+    <div class="w-full  flex">
+
+        <div class="overflow-auto"
+            [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommnetsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommnetsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommnetsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommnetsPanelOpened}">
+            <div *ngIf="specExpanded && noResults==false">
+
                 <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
-                    (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
+                    (closeFullScreenView)="closeFullScreenView()"
+                    [specExpanded]="specExpanded"></xnode-expand-specification>
             </div>
             <div *ngIf="!specExpanded && noResults==false">
                 <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
                     <div class="w-8">
-                        <div class="intro-grid" [id]="item.title">
-                            <div class="text-4xl font-semibold">{{i+1+".0" + ' ' + item?.title}}</div>
+                        <div class="intro-grid " [id]="item.title">
+                            <div class="text-4xl font-semibold flex align-items-center">{{i+1+".0" + ' ' + item?.title}}
+                                <span class="version-badge">
+                                    Version: {{item.version?.version}}
+                                </span>
+                            </div>
                             <div class="flex align-items-center spec-status">
                                 <p class="text-sm font-medium">Published on {{item?.createdOn | date:
                                     'MMMd,y'}}
@@ -35,8 +41,8 @@
                             <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
                         </div>
                         <div>
-                            <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem" [content]="item.content"
-                                [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
+                            <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem"
+                                [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                                 (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
                                 (onClickSeeLess)="_onClickSeeLess($event)"
                                 (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
@@ -58,8 +64,9 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="isCommnetsPanelOpened"  [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
-            <xnode-comments-cr-panel  [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
+        <div *ngIf="isCommnetsPanelOpened"
+            [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
+            <xnode-comments-cr-panel [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
         </div>
     </div>
 </div>
