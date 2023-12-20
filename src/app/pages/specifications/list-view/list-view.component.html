@@ -11,7 +11,7 @@
               [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}"
               (mouseup)="contentSelected($event,'title');saveSecInLocal()">
               <p-overlayPanel #selectionText >
-                <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
+                <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"  [parentTitle]="parentTitle"
                   [position]="'absolute'" [selectedContent]="subItem" [selectedText]="selectedText"
                   [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
                   [specItem]="specItem" [parentId]="specItem.id"
@@ -25,7 +25,7 @@
               [innerHTML]="word | highlight: searchTerm" [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i) && selectedText.length>0}" (mouseup)="contentSelected($event,'content');saveSecInLocal()">
               <p-overlayPanel #selectionContent>
                 <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
-                  [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                  [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'" [parentId]="specItem.id"  [parentTitle]="parentTitle"
                   [selectedContent]="subItem" placeHolder="Add a Comment" [specItem]="specItem"
                   (closeOverlay)="selectionContent.toggle(false);emptySelectedContent()"></xnode-add-comment-overlay-panel>
               </p-overlayPanel>

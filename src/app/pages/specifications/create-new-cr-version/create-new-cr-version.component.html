@@ -114,29 +114,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-12">
-        <div class="p-inputgroup mt-1">
-          <span class="p-inputgroup-addon"> L2 </span>
-          <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
-            (completeMethod)="filteredReveiwer($event, 'L2')" formControlName="reviewersLTwo" [ngClass]="{
-              'is-invalid': submitted && crFormControl['reviewersLTwo'].errors
-            }" field="name" [multiple]="true" styleClass="w-full">
-            <ng-template let-reviewer pTemplate="selectedItem">
-              <div class="flex align-items-center">
-                <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
-                  {{ reduceToInitials(reviewer.first_name) }}
-                </div>
-                <span class="ml-2">{{ reviewer.first_name }}</span>
-              </div>
-            </ng-template>
-          </p-autoComplete>
-        </div>
-        <div *ngIf="submitted && crFormControl['reviewersLTwo'].errors" class="invalid-feedback">
-          <div *ngIf="crFormControl['reviewersLTwo'].errors?.['required']">
-            Reviewer L2 is required
-          </div>
-        </div>
-      </div> -->
     </div>
   </form>
   <ng-template pTemplate="footer">

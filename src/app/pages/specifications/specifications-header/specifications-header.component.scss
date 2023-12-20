@@ -98,3 +98,7 @@
     padding-bottom: 6px;
     border: 1px solid #ffffff;
 }
+
+:host ::ng-deep .app-dropdown-version .p-dropdown-panel {
+    position: absolute; 
+}

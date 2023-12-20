@@ -7,6 +7,9 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
 import { SpecUtilsService } from '../components/services/spec-utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { environment } from 'src/environments/environment';
+import { AuditutilsService } from '../api/auditutils.service';
+import { NotifyApiService } from '../api/notify.service';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -36,13 +39,16 @@ export class CrTabsComponent {
   crActions: any;
   comments: string = 'test';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
-
+  showLimitReachedPopup: boolean = false;
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private apiService: ApiService,
+    private auditUtil: AuditutilsService,
+    private notifyApi: NotifyApiService
   ) {
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
@@ -58,11 +64,11 @@ export class CrTabsComponent {
       { title: 'None', code: 'N' },
     ];
     this.overlayPanel?.toggle(true);
-    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
-      if(this.activeIndex){
+    this.specUtils.getMeProductDropdownChange.subscribe((res) => {
+      if (this.activeIndex) {
         this.getCRList();
       }
-    })
+    });
   }
 
   getCRList() {
@@ -150,39 +156,41 @@ export class CrTabsComponent {
   }
 
   updateChagneRequestStatus(value: string) {
-    console.log('value', value);
-
-    this.selectedStatus = value;
+        this.selectedStatus = value;
     switch (value) {
       case 'ARCHIVE':
         this.header = 'Archive CR';
         this.content = 'Are you sure you want to Archive this CR?';
+        this.openConfirmationPopUp = true;
         break;
       case 'SUBMIT':
         this.header = 'Submit CR';
         this.content = 'Are you sure you want to Submit this CR?';
+        this.openConfirmationPopUp = true;
         break;
       case 'REJECT':
-        this.header = 'Reject CR';
-        this.content = 'Are you sure you want to Reject this CR?';
-        this.showComment = true;
+      case 'NEEDS WORK':
+        this.crData.forEach((element: any) => {
+          if (element.id === this.selectedCr.id) {
+            element.showComment = true;
+          } else {
+            element.showComment = false;
+          }
+        });
         break;
       case 'APPROVE':
         this.header = 'Approve CR';
         this.content = 'Are you sure you want to Approve this CR?';
+        this.openConfirmationPopUp = true;
+        break;
+      case 'PUBLISH APP':
+        this.header = 'Publish APP';
+        this.content = 'Are you sure you want to Publish App?';
+        this.openConfirmationPopUp = true;
         break;
       default:
         break;
     }
-    this.openConfirmationPopUp = true;
-
-    // if (value == 'APPROVED') {
-    //   this.header = 'Approve Request';
-    //   this.content = 'Are you sure you want to approve request?';
-    //   this.openConfirmationPopUp = true;
-    // } else if (value == 'REJECTED' || value == 'NEEDMOREWORK') {
-    //   this.showComment = true;
-    // }
   }
 
   onClickAction(action: string) {
@@ -241,13 +249,232 @@ export class CrTabsComponent {
       });
   }
 
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      to: [this.currentUser?.email],
+      cc: ['beta@xnode.ai'],
+      bcc: ['dev.xnode@salientminds.com'],
+      emailTemplateCode: 'PUBLISH_APP_LIMIT_EXCEEDED',
+      params: {
+        username:
+          this.currentUser?.first_name + ' ' + this.currentUser?.last_name,
+      },
+    };
+    this.notifyApi
+      .post('email/notify', body)
+      .then((res: any) => {
+        if (res && res?.data?.detail) {
+          let user_audit_body = {
+            method: 'POST',
+            url: res?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res.data.detail,
+          });
+        }
+      })
+      .catch((err: any) => {
+        let user_audit_body = {
+          method: 'POST',
+          url: err?.request?.responseURL,
+          payload: body,
+        };
+        this.auditUtil.postAudit(
+          'SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
+
+  getMeTotalAppsPublishedCount(): void {
+    this.apiService
+      .get('navi/total_apps_published/' + this.currentUser?.account_id)
+      .then((res: any) => {
+        if (res && res.status === 200) {
+          const restriction_max_value = localStorage.getItem(
+            'restriction_max_value'
+          );
+          if (restriction_max_value) {
+            if (res.data.total_apps_published >= restriction_max_value) {
+              this.showLimitReachedPopup = true;
+              this.sendEmailNotificationToTheUser();
+            } else {
+              this.publishApp();
+            }
+          }
+          let user_audit_body = {
+            method: 'GET',
+            url: res?.request?.responseURL,
+          };
+          this.auditUtil.postAudit(
+            'GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+        } else {
+          let user_audit_body = {
+            method: 'GET',
+            url: res?.request?.responseURL,
+          };
+          this.auditUtil.postAudit(
+            'GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res.data.detail,
+            life: 3000,
+          });
+        }
+      })
+      .catch((err: any) => {
+        let user_audit_body = {
+          method: 'GET',
+          url: err?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+          life: 3000,
+        });
+      });
+  }
+
+  publishApp(): void {
+    const body = {
+      repoName: this.product.title,
+      projectName: environment.projectName,
+      email: this.currentUser.email,
+      envName: environment.branchName,
+      productId: this.product?.id,
+    };
+    this.apiService
+      .publishApp(body)
+      .then((response: any) => {
+        if (response) {
+          let user_audit_body = {
+            method: 'POST',
+            url: response?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'PUBLISH_APP_HEADER',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail:
+              'Your app publishing process started. You will get the notifications',
+            life: 3000,
+          });
+        } else {
+          let user_audit_body = {
+            method: 'POST',
+            url: response?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'PUBLISH_APP_HEADER',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: 'Network Error',
+            life: 3000,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        let user_audit_body = {
+          method: 'POST',
+          url: error?.request?.responseURL,
+          payload: body,
+        };
+        this.auditUtil.postAudit(
+          'PUBLISH_APP_HEADER',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+          life: 3000,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
   approveRequest(): void {
     this.utilsService.loadSpinner(true);
+    if (this.selectedStatus === 'PUBLISH APP') {
+      this.getMeTotalAppsPublishedCount();
+      return;
+    }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus,
+      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus ,
       userId: this.currentUser.user_id,
-      comments: this.comments
+      comments: this.selectedCr.comments,
     };
     this.utilsService.loadSpinner(true);
     this.commentsService
@@ -262,14 +489,17 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
+          this.crData.forEach((ele: any) => {
+            ele.showComment = false;
+          });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -290,64 +520,20 @@ export class CrTabsComponent {
   }
 
   updateCommentsInfo(crInfo: any) {
-    let body = {
-      id: this.selectedCr.id,
-      parentEntity: 'TASK',
-      priority: this.selectedCr.priority,
-      title: this.selectedCr.title,
-      description: crInfo.message,
-      attachments: crInfo.attachments,
-      references: crInfo.referenceContent,
-      followers: [],
-      feedback: {},
-      status: '',
-      assignee: '',
-      deadline: '',
-    };
-    if (this.selectedStatus == 'REJECTED') {
-      body.status = 'REJECTED';
-    } else if (this.selectedStatus == 'NEEDMOREWORK') {
-      body.status = 'NEEDMOREWORK';
+    this.selectedCr['comments'] = crInfo.message;
+    switch (this.selectedStatus) {
+      case 'REJECT':
+        this.header = 'Reject CR';
+        this.content = 'Are you sure you want to Reject this CR?';
+        break;
+      case 'NEEDS WORK':
+        this.header = 'Needs Work';
+        this.content = 'Are you sure you want to  Reject this CR?';
+        break;
+      default:
+        break;
     }
-    this.rejectRequest(body);
-  }
-
-  rejectRequest(body: any): void {
-    this.utilsService.loadSpinner(true);
-    this.commentsService
-      .rejectCr(body)
-      .then((response: any) => {
-        if (response.statusText == 'Created') {
-          this.showComment = false;
-          let details =
-            body.status == 'REJECTED'
-              ? 'Change request rejected successfully'
-              : body.status == 'NEEDMOREWORK'
-                ? 'Change request updated successfully'
-                : '';
-          this.utilsService.loadToaster({
-            severity: 'success',
-            summary: 'SUCCESS',
-            detail: details,
-          });
-          this.getCRList();
-        } else {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data.description,
-          });
-        }
-        this.utilsService.loadSpinner(false);
-      })
-      .catch((err) => {
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-      });
+    this.openConfirmationPopUp = true;
   }
 
   onCheckCheckbox(event: any): void {
@@ -385,6 +571,7 @@ export class CrTabsComponent {
       entityId: cr.id,
       userId: this.currentUser?.user_id,
     };
+    this.selectedCr = cr;
     this.commentsService
       .getCrActions(body)
       .then((res: any) => {

@@ -71,6 +71,11 @@
     padding: 0;
 }
 
+:host ::ng-deep .app-dropdown .p-dropdown-panel {
+    position: absolute;
+    z-index: 1000;
+}
+
 .selected-item {
     font-weight: bold;
 }

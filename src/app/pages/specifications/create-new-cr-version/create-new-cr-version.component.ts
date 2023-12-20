@@ -268,16 +268,19 @@ export class CreateNewCrVersionComponent implements OnInit {
         });
       });
   }
+ 
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
+    
+    const selectedReviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
+  
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;
   }
-
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(
       (item) => event.query + '-' + item

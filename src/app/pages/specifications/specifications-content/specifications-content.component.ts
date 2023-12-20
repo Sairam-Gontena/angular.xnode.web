@@ -95,6 +95,12 @@ export class SpecificationsContentComponent implements OnInit {
     })
   }
 
+  onChildLoaded(isLoaded: boolean) {
+    if (isLoaded) {
+      this.fetchOpenAPISpec();
+    }
+  }
+
   ngOnInit(): void {
     this.utils.openDockedNavi.subscribe((data: any) => {
       if (data) {
