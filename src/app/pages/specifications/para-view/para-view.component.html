@@ -1,42 +1,48 @@
 <div class="grid" *ngIf="showComments==false else mainBlock">
     <div class="col-12 p-2">
-      <p class="flex flex-wrap content text-base font-normal my-0">
-        <span
-            [innerHTML]="content | highlight: searchTerm" >
-        </span>
-    </p>
-    </div>
-</div>
-<ng-template #mainBlock>
-<div class="grid m-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
-    <div class="col-11 p-0 ">
-        <p class="flex flex-wrap content text-base font-normal my-0" [id]="content.id">
-            <span *ngFor="let word of getWords(content); index as i" class="pr-1"
-                (mouseup)="contentSelected($event);saveSecInLocal()" [attr.id]="'word' + i"
-                [innerHTML]="word | highlight: searchTerm"
-                [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}">
-                <p-overlayPanel #selectionText > <!-- *ngIf="showCommentIcon" -->
-                    <xnode-add-comment-overlay-panel [users]="users" [selectedText]="selectedText"
-                        [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
-                        [parentId]="specItem.id" *ngIf="selectedText.length>0" [position]="'absolute'"
-                        [selectedContent]="content" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
-                </p-overlayPanel>
+        <p class="flex flex-wrap content text-base font-normal my-0">
+            <span [innerHTML]="content | highlight: searchTerm">
             </span>
         </p>
     </div>
-    <div class="col-1 p-0 flex  align-items-start justify-content-center">
-        <p-overlayPanel #op (onHide)="showCommentIcon=false">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
-                (closeOverlay)="op.toggle(false);emptySelectedContent()" [position]="'absolute'"
-                [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
-                [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                [specItem]="specItem"></xnode-add-comment-overlay-panel>
-        </p-overlayPanel>
-        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event);saveSecInLocal()"
-            (mouseleave)="showCommentIcon = false" *ngIf="showCommentIcon">
-        <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon" (click)="openCommentSection()"></i>
-        <i class="pi pi-book pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon" (click)="toggleAddTask()"></i>
-    <xnode-add-task *ngIf="showAddTask" [visible]="showAddTask"></xnode-add-task>
-    </div>
 </div>
+<ng-template #mainBlock>
+    <div class="grid m-0" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
+        <div class="col-11 p-0 ">
+            <p class="flex flex-wrap content text-base font-normal my-0" [id]="content.id">
+                <span *ngFor="let word of getWords(content); index as i" class="pr-1"
+                    (mouseup)="contentSelected($event);saveSecInLocal()" [attr.id]="'word' + i"
+                    [innerHTML]="word | highlight: searchTerm"
+                    [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}">
+                    <p-overlayPanel #selectionText> <!-- *ngIf="showCommentIcon" -->
+                        <xnode-add-comment-overlay-panel [users]="users" [selectedText]="selectedText"
+                            [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
+                            [parentId]="specItem.id" *ngIf="selectedText.length>0" [position]="'absolute'"
+                            [selectedContent]="content" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                    </p-overlayPanel>
+                </span>
+            </p>
+        </div>
+        <div class="col-1 p-0 flex  align-items-start justify-content-center">
+            <p-overlayPanel #op (onHide)="showCommentIcon=false">
+                <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                    (closeOverlay)="op.toggle(false);emptySelectedContent()" [position]="'absolute'"
+                    [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
+                    [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                    [specItem]="specItem"></xnode-add-comment-overlay-panel>
+            </p-overlayPanel>
+            <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event);saveSecInLocal()"
+                (mouseleave)="showCommentIcon = false" *ngIf="showCommentIcon">
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon"
+                (click)="openCommentSection()"></i>
+            <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon"
+                (click)="op1.toggle($event);toggleAddTask()">
+            <p-overlayPanel #op1 appendTo="body" (onHide)="showCommentIcon=false">
+                <xnode-add-task *ngIf="showAddTask" (closeOverlay)="op1.toggle(false);emptySelectedContent()"
+                    placeHolder="Add a Task" [visible]="showAddTask" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                    [specItem]="specItem"></xnode-add-task>
+            </p-overlayPanel>
+
+        </div>
+    </div>
 </ng-template>
