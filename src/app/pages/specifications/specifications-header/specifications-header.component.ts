@@ -52,10 +52,12 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     if (this.versions && this.versions.length > 0) {
       this.versions.forEach((element: any) => {
-        element['label'] = element.specStatus+"-"+element.version;
+        element['label'] = element.specStatus + "-" + element.version;
         element['value'] = element.id;
       });
       this.selectedVersion = this.versions[0];
+      localStorage.setItem('SPEC_VERISON', JSON.stringify(this.versions[0]));
+      this.specUtils._saveSpecVersion(this.versions[0]);
     }
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
@@ -197,6 +199,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   onVersionChange(event: any): void {
     let data = { productId: this.productId, versionId: event.value.value };
+    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
+    this.specUtils._saveSpecVersion(event.value);
     this.specDataChange.emit(data);
   }
 }
