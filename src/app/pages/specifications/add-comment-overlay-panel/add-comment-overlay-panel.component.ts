@@ -198,8 +198,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   saveComment(body: any): void {
     if(this.parentTitle!='' && this.parentTitle!=undefined){
       body.referenceContent.parentTitle = this.parentTitle
-    }else{
-      body.referenceContent.parentTitle = this.specItem.title;
     }
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {

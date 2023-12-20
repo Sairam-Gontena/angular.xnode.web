@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -11,7 +11,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   templateUrl: './spec-sections-layout.component.html',
   styleUrls: ['./spec-sections-layout.component.scss'],
 })
-export class SpecSectionsLayoutComponent implements OnInit {
+export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
   @Input() content: any;
   @Input() searchTerm: any;
   @Input() sectionIndex!: number;
@@ -28,6 +28,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Output() onClickSeeLess = new EventEmitter<any>();
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
+  @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   bpmnFrom: string = 'SPEC';
   iframeSrc: SafeResourceUrl = '';
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
@@ -123,6 +124,14 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.makeTrustedUrl();
   }
 
+  ngAfterViewInit() {
+    this.content.forEach((item:any)=>{
+      if(item.title === 'OpenAPI Spec'){
+        this.childLoaded.emit(true);
+      }
+    });
+  }
+
   openCommentSection(){
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
@@ -130,7 +139,6 @@ export class SpecSectionsLayoutComponent implements OnInit {
     setTimeout(() => {
       this.specUtils._openCommentsPanel(true);
     },);
-
   }
 
   checkExpandSpecSections(spec: string) {

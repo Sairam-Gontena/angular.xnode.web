@@ -36,6 +36,7 @@
                             [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                             (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
                             (onClickSeeLess)="_onClickSeeLess($event)"
+                            (childLoaded)="onChildLoaded($event)"
                             (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                             (expandComponent)="_expandComponent($event)" [readOnly]="false"
                             [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
