@@ -156,7 +156,7 @@ export class CrTabsComponent {
   }
 
   updateChagneRequestStatus(value: string) {
-    this.selectedStatus = value;
+        this.selectedStatus = value;
     switch (value) {
       case 'ARCHIVE':
         this.header = 'Archive CR';
@@ -169,6 +169,7 @@ export class CrTabsComponent {
         this.openConfirmationPopUp = true;
         break;
       case 'REJECT':
+      case 'NEEDS WORK':
         this.crData.forEach((element: any) => {
           if (element.id === this.selectedCr.id) {
             element.showComment = true;
@@ -471,7 +472,7 @@ export class CrTabsComponent {
     }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus,
+      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus ,
       userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
@@ -524,6 +525,10 @@ export class CrTabsComponent {
       case 'REJECT':
         this.header = 'Reject CR';
         this.content = 'Are you sure you want to Reject this CR?';
+        break;
+      case 'NEEDS WORK':
+        this.header = 'Needs Work';
+        this.content = 'Are you sure you want to  Reject this CR?';
         break;
       default:
         break;
