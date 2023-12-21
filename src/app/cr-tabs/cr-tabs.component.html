@@ -60,7 +60,7 @@
                     <img src="../../assets/high.svg" class="" alt="high" />
                     <p class="p-0 m-0 text-xs ml-2">
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
-                      <a href="" class="text-primary-500 ml-2" *ngIf="data.status ==='UPDATED'"
+                      <a href="" class="text-primary-500 ml-2" *ngIf="data.status !=='DRAFT'"
                         (click)="onClickViewChanges(data)">View Changes</a>
                     </p>
                   </div>
