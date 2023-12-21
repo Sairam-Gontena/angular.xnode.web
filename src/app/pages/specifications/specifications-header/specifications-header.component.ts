@@ -47,7 +47,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private apiService: ApiService,
     private specService: SpecService
-  ) { }
+  ) {
+    this.specUtils.getMeSpecVersion.subscribe((event) => {
+      if(event){
+        this.versions.forEach((element: any) => {
+          if(event.versionId === element.id)
+          this.selectedVersion = element;
+        });
+      }
+    })
+   }
 
   ngOnInit(): void {
     if (this.versions && this.versions.length > 0) {

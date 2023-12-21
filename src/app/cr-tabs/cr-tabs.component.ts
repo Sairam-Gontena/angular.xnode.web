@@ -155,7 +155,7 @@ export class CrTabsComponent {
   getCRList() {
     let body: any = {
       productId: this.product?.id,
-      baseVersionId: this.specVersion.id
+      // baseVersionId: this.specVersion.id
     }
     this.utilsService.loadSpinner(true);
     this.commentsService
