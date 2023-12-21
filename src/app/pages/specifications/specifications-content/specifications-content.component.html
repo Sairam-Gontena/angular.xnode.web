@@ -4,8 +4,8 @@
             [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommnetsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommnetsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommnetsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommnetsPanelOpened}">
             <div *ngIf="specExpanded && noResults==false">
 
-                <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem" (childLoaded)="onChildLoaded($event)"
-                    (closeFullScreenView)="closeFullScreenView()"
+                <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
+                    (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
                     [specExpanded]="specExpanded"></xnode-expand-specification>
             </div>
             <div *ngIf="!specExpanded && noResults==false">
@@ -43,13 +43,23 @@
                             <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem"
                                 [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                                 (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                                (onClickSeeLess)="_onClickSeeLess($event)"
-                                (childLoaded)="onChildLoaded($event)"
+                                (onClickSeeLess)="_onClickSeeLess($event)" (childLoaded)="onChildLoaded($event)"
                                 (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                                 (expandComponent)="_expandComponent($event)" [readOnly]="false"
                                 [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
                                 [targetUrl]="targetUrl"></xnode-spec-sections-layout>
                         </div>
+                        <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
+                    </div>
+                    <div>
+                        <xnode-spec-sections-layout [selectedSpecItem]="selectedSpecItem" [content]="item.content"
+                            [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item" [reveiwerList]="reveiwerList"
+                            (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
+                            (onClickSeeLess)="_onClickSeeLess($event)"
+                            (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
+                            (expandComponent)="_expandComponent($event)" [readOnly]="false"
+                            [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
+                            [targetUrl]="targetUrl"></xnode-spec-sections-layout>
                     </div>
                 </div>
             </div>
@@ -66,7 +76,8 @@
         </div>
         <div *ngIf="isCommnetsPanelOpened"
             [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
-            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData" [usersList]="usersList"></xnode-comments-cr-panel>
+            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData"
+                [usersList]="usersList"></xnode-comments-cr-panel>
         </div>
     </div>
 </div>

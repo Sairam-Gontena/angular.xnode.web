@@ -13,7 +13,7 @@ declare const SwaggerUIBundle: any;
   templateUrl: './spec-sections-layout.component.html',
   styleUrls: ['./spec-sections-layout.component.scss'],
 })
-export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
+export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   @Input() content: any;
   @Input() searchTerm: any;
   @Input() sectionIndex!: number;
@@ -22,6 +22,8 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() usersList: any = [];
+  @Input() reveiwerList: any;
+  // @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
   @Input() specItemList: any;
   @Input() expandView: any;
@@ -127,22 +129,22 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
   }
 
   ngOnChanges() {
-  if(this.expandView){
-     setTimeout(()=>{
-      // this.fetchOpenAPISpec()
-     },500)
-  }
+    if (this.expandView) {
+      setTimeout(() => {
+        // this.fetchOpenAPISpec()
+      }, 500)
+    }
   }
 
   ngAfterViewInit() {
-    this.content.forEach((item:any)=>{
-      if(item.title === 'OpenAPI Spec'){
+    this.content.forEach((item: any) => {
+      if (item.title === 'OpenAPI Spec') {
         this.childLoaded.emit(true);
       }
     });
   }
 
-  openCommentSection(){
+  openCommentSection() {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
@@ -163,7 +165,7 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
       this.targetUrl
     );
-    localStorage.setItem('targetUrl',this.targetUrl)
+    localStorage.setItem('targetUrl', this.targetUrl)
   }
 
   onClickAddComment(obj: any): void {

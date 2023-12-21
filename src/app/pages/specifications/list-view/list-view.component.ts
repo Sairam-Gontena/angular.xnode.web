@@ -10,7 +10,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   styleUrls: ['./list-view.component.scss']
 })
 export class ListViewComponent {
-  @Input() parentTitle:any;
+  @Input() parentTitle: any;
   @Input() content!: any;
   @Input() searchTerm!: string;
   @Input() selectedContent!: string;
@@ -18,6 +18,8 @@ export class ListViewComponent {
   @Input() id: any;
   @Input() specId: any;
   @Input() specItem: any;
+  @Input() visible: any;
+
   showCommentIcon: boolean = false;
   selectedIndex?: number;
   selectedText: string = '';
@@ -26,8 +28,9 @@ export class ListViewComponent {
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   @ViewChild('selectionContent') selectionContent: OverlayPanel | any;
   selectedWordIndices: any[] = [];
+  showAddTask: boolean = false;
 
-  constructor(private utils: UtilsService, private specUtils:SpecUtilsService) {
+  constructor(private utils: UtilsService, private specUtils: SpecUtilsService) {
 
   }
 
@@ -39,7 +42,7 @@ export class ListViewComponent {
     })
   }
 
-  isArray(obj:any):boolean{
+  isArray(obj: any): boolean {
     return Array.isArray(obj);
   }
 
@@ -68,15 +71,15 @@ export class ListViewComponent {
     this.selectedWordIndices = [];
   }
 
-  deSelect(){
+  deSelect() {
     if (window.getSelection) {
-        window.getSelection()?.empty();
-        window.getSelection()?.removeAllRanges();
-        this.selectedWordIndices = [];
+      window.getSelection()?.empty();
+      window.getSelection()?.removeAllRanges();
+      this.selectedWordIndices = [];
     }
   }
 
-  contentSelected(event: any,type:string) {
+  contentSelected(event: any, type: string) {
     this.utils.changeSelectContentChange(true)
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
@@ -88,7 +91,7 @@ export class ListViewComponent {
     } else {
       this.selectedText = '';
     }
-    this.handleSelectionText(event,type);
+    this.handleSelectionText(event, type);
   }
 
   highlightSelectedText() {
@@ -100,7 +103,7 @@ export class ListViewComponent {
       const elements = range.cloneContents().querySelectorAll('span');
       elements.forEach(element => {
         const id = element.id;
-        let index=id;
+        let index = id;
         if (!this.selectedWordIndices.includes(index)) {
           this.selectedWordIndices.push(index);
         }
@@ -108,12 +111,12 @@ export class ListViewComponent {
     }
   }
 
-  async handleSelectionText(event: any,type:string) {
+  async handleSelectionText(event: any, type: string) {
     if (this.selectedText.length > 0) {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      if(type=='title'){
+      if (type == 'title') {
         await this.selectionText.toggle(event);
-      }else if(type=='content'){
+      } else if (type == 'content') {
         await this.selectionContent.toggle(event);
       }
     }
@@ -128,13 +131,16 @@ export class ListViewComponent {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
   }
 
-  openCommentSection(){
+  openCommentSection() {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
     setTimeout(() => {
       this.specUtils._openCommentsPanel(true);
     },);
+  }
+  toggleAddTask() {
+    this.showAddTask = !this.showAddTask;
   }
 }
 
