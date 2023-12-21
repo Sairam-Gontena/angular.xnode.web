@@ -104,9 +104,6 @@ export class SpecificationsContentComponent implements OnInit {
        ).subscribe((results) => {
         this.fetchOpenAPISpec();
       })
-    // if (isLoaded) {
-    //   // this.fetchOpenAPISpec();
-    // }
   }
 }
 
