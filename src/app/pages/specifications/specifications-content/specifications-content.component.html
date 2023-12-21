@@ -43,23 +43,14 @@
                             <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem"
                                 [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                                 (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                                (onClickSeeLess)="_onClickSeeLess($event)" (childLoaded)="onChildLoaded($event)"
+                                [reveiwerList]="reveiwerList" (onClickSeeLess)="_onClickSeeLess($event)"
+                                (childLoaded)="onChildLoaded($event)"
                                 (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                                 (expandComponent)="_expandComponent($event)" [readOnly]="false"
                                 [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
                                 [targetUrl]="targetUrl"></xnode-spec-sections-layout>
                         </div>
                         <img [src]="getMeBanner(item)" alt="banner" class="mt-3 w-full">
-                    </div>
-                    <div>
-                        <xnode-spec-sections-layout [selectedSpecItem]="selectedSpecItem" [content]="item.content"
-                            [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item" [reveiwerList]="reveiwerList"
-                            (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                            (onClickSeeLess)="_onClickSeeLess($event)"
-                            (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
-                            (expandComponent)="_expandComponent($event)" [readOnly]="false"
-                            [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
-                            [targetUrl]="targetUrl"></xnode-spec-sections-layout>
                     </div>
                 </div>
             </div>
