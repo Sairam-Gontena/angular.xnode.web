@@ -20,6 +20,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { ActivatedRoute } from '@angular/router';
+import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -61,6 +62,7 @@ export class SpecificationsContentComponent implements OnInit {
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
+  swaggerData:any;
 
   constructor(
     private utils: UtilsService,
@@ -96,10 +98,14 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   onChildLoaded(isLoaded: boolean) {
-    if (isLoaded) {
-      // this.fetchOpenAPISpec();
-    }
+    if(isLoaded){
+      of(([])).pipe(
+        delay(500)
+       ).subscribe((results) => {
+        this.fetchOpenAPISpec();
+      })
   }
+}
 
   ngOnInit(): void {
     this.utils.openDockedNavi.subscribe((data: any) => {
@@ -247,6 +253,8 @@ export class SpecificationsContentComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
+    let swaggerUrl = environment.uigenApiUrl + 'openapi-spec/' +
+    localStorage.getItem('app_name') + '/' + email + '/' + record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -254,17 +262,14 @@ export class SpecificationsContentComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url:
-        environment.uigenApiUrl +
-        'openapi-spec/' +
-        localStorage.getItem('app_name') +
-        '/' +
-        email +
-        '/' +
-        record_id,
+      url: swaggerUrl ,
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
+    fetch(swaggerUrl)
+    .then(response => response.json())
+    .then(data => this.swaggerData = data)
+    .catch(error => console.error('Error:', error));
   }
 
   _expandComponent(val: any): void {

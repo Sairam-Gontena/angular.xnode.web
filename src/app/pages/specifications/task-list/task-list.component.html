@@ -81,6 +81,14 @@
             <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
               <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
             </div>
+            <div *ngIf="cmt?.referenceContent.title === 'OpenAPI Spec'">
+              <div class="flex col-12 justify-content-between align-items-center">
+                <h4 class="m-0">Swagger API</h4>
+              </div>
+              <div class="col-12">
+                <div id="openapi-ui-spec{{cmt.id}}" class="openapi-spec mt-2"></div>
+              </div>
+            </div>
             <div class="gradientback">
             </div>
           </ng-template>
