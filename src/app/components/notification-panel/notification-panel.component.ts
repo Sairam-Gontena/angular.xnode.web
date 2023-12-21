@@ -158,6 +158,10 @@ export class NotificationPanelComponent {
       });
   }
 
+  goToCr(obj: any) {
+    
+  }
+
   goToSpec(obj: any) {
     let specData = localStorage.getItem('meta_data')
     if (specData) {

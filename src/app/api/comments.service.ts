@@ -95,4 +95,8 @@ export class CommentsService extends BaseApiService {
   getCrList(body: any) {
     return this.get('change-request', body);
   }
+
+  publishApp(body: any) {
+    return this.get('product-spec/publish', body);
+  }
 }

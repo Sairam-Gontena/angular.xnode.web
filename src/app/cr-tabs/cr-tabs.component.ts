@@ -493,10 +493,9 @@ export class CrTabsComponent {
       repoName: this.product.title,
       projectName: environment.projectName,
       email: this.currentUser.email,
-      envName: environment.branchName,
-      productId: this.product?.id,
+      crId: this.selectedCr.id
     };
-    this.apiService
+    this.commentsService
       .publishApp(body)
       .then((response: any) => {
         if (response) {
