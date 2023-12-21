@@ -20,6 +20,7 @@ export class CommentsCrPanelComponent implements OnInit {
   tabView!: TabView;
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
+  @Input() swaggerData:any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];

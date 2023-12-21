@@ -62,11 +62,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((res: any) => {
         let info = JSON.parse(res);
         if (info) {
-          console.log("info here",info)
           this.getMeSpecList({ productId: info.product_id, versionId: '' });
         } else {
           this.getVersions();
-          console.log("called here")
         }
       })
       .catch((err: any) => {
@@ -326,24 +324,15 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     let products = localStorage.getItem('meta_data');
     if(products){
       let allProducts = JSON.parse(products);
-      console.log("one")
       if(allProducts.length > 0){
-      console.log("two")
-
         let product = allProducts.find((x: any) => x.id === body.productId);
         if(product.has_insights){
-          console.log("five")
-          console.log("got here2",body)
           this.getMeSpecInfo(body)
         }else{
           this.showGenerateSpecPopup(product)
         }
       }
-      console.log("three")
-
     }
-    console.log("four")
-    
   }
 
   getMeSpecInfo(body?: any){
@@ -363,7 +352,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.handleData(response, '');
         } else {
           // this.isTheSpecGenerated = false;
-        
+
         }
         this.utils.loadSpinner(false);
       })
@@ -649,6 +638,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     }
 
-   
+
   }
 }

@@ -116,7 +116,6 @@
                       <span class="shaded-color ml-1 normal-font-weight">3</span>
                     </div>
                   </div>
-                  <!-- dont delete write a comment code -->
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
                     <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
                       placeHolder="Reason for your actions"
@@ -128,15 +127,14 @@
 
             <ng-template pTemplate="content">
               <div class="pl-7 pr-4">
-                <!-- dont delete write a comment code -->
                 <div class="card m-0 p-0 mb-2" *ngIf="showComment">
                   <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
                     placeHolder="Reason for your actions"
                     (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                 </div>
-                <div class="border-bottom-1" [ngClass]="{ 'mt-4': i > 0 }"
+                <div class="border-bottom-1 pt-2"
                   *ngFor="let subData of crList?.[i]; ">
-                  <span *ngIf="subData?.task else commentSpan">
+                  <span *ngIf="subData.task else commentSpan">
                     <div class="flex flex-row justify-content-between align-items-center w-full">
                       <div class="w-full flex justify-content-between align-items-center">
                         <p class="my-0 text-gray-200 text-sm font-normal">
@@ -157,7 +155,7 @@
                     </div>
                     <div class="py-2 border-bottom-1 pr-4">
                       <div class="flex flex-row justify-content-between">
-                        <div class="sctions-grid">
+                        <div class="sctions-grid w-full">
                           <div *ngIf="checktableJsonSection(subData?.task?.referenceContent?.title) else normalView">
                             <pre *ngIf="!subData?.task?.referenceContent?.showTable"
                               [innerHTML]="subData?.task?.referenceContent?.content | json"
@@ -222,13 +220,9 @@
                                 <h4 class="m-0">Swagger API</h4>
                               </div>
                               <div class="col-12">
-                                <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
+                                <div id="openapi-ui-spec{{subData?.crId}}" class="openapi-spec mt-2"></div>
                               </div>
                             </div>
-                            <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
-                            <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
-                              {{ subData?.comment?.referenceContent?.content }}
-                            </p> -->
                           </ng-template>
                           <div class="gradientback">
                           </div>
@@ -239,7 +233,8 @@
                       </span>
                     </div>
                   </span>
-                  <ng-template #commentSpan>
+
+                    <ng-template #commentSpan>
                     <div class="flex flex-row justify-content-between align-items-center w-full">
                       <div class="w-full flex justify-content-between align-items-center">
                         <p class="my-0 text-gray-200 text-sm font-normal">
@@ -260,8 +255,8 @@
                     </div>
                     <div class="py-2 border-bottom-1 pr-4">
                       <div class="flex flex-row justify-content-between">
-                        <div class="sctions-grid">
-                          <div *ngIf="checktableJsonSection(subData?.comment?.referenceContent?.title) else normalView">
+                        <div class="sctions-grid  w-full">
+                          <div *ngIf="checktableJsonSection(subData?.comment?.referenceContent?.title) else normalCommentView">
                             <pre *ngIf="!subData?.comment?.referenceContent?.showTable"
                               [innerHTML]="subData?.comment?.referenceContent?.content | json"
                               style=" white-space: pre-wrap; overflow: auto"></pre>
@@ -269,7 +264,7 @@
                               [specItem]="subData?.comment?.referenceContent?.content?.content"
                               [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
                           </div>
-                          <ng-template #normalView>
+                          <ng-template #normalCommentView>
 
                             <div *ngIf="checkParaViewSections(subData?.comment?.referenceContent?.title,subData?.comment?.referenceContent?.parentTitle)" class="h-8rem" >
                               <xnode-para-view [showComments]="false" [content]="subData?.comment?.referenceContent?.content" [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList" [specItem]="subData?.comment?.referenceContent?.content"
@@ -325,13 +320,9 @@
                                 <h4 class="m-0">Swagger API</h4>
                               </div>
                               <div class="col-12">
-                                <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
+                                <div id="openapi-ui-spec{{subData?.crId}}" class="openapi-spec mt-2"></div>
                               </div>
                             </div>
-                            <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
-                            <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
-                              {{ subData?.comment?.referenceContent?.content }}
-                            </p> -->
                           </ng-template>
                           <div class="gradientback">
                           </div>
@@ -342,6 +333,7 @@
                       </span>
                     </div>
                   </ng-template>
+
                 </div>
               </div>
             </ng-template>

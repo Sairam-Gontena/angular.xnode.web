@@ -12,6 +12,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
+declare const SwaggerUIBundle: any;
+import { delay, of } from 'rxjs';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -22,6 +24,7 @@ import { NotifyApiService } from '../api/notify.service';
 export class CrTabsComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
+  @Input() swaggerData:any;
   filters: any;
   currentUser: any;
   crData: any;
@@ -61,7 +64,6 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
-
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
     });
@@ -135,6 +137,24 @@ export class CrTabsComponent {
     );
   }
 
+
+  fetchOpenSpecAPI(crId:any){
+    setTimeout(() => {
+      const ui = SwaggerUIBundle({
+        domNode: document.getElementById('openapi-ui-spec'+crId),
+        layout: 'BaseLayout',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        spec: this.swaggerData,
+        docExpansion: 'none',
+        operationsSorter: 'alpha',
+      });
+    },);
+
+  }
+
   getCRList() {
     let body: any = {
       productId: this.product?.id,
@@ -180,6 +200,28 @@ export class CrTabsComponent {
       .then((res: any) => {
         if (res) {
           this.crList[index] = res.data;
+          this.crList.forEach((item:any)=>{
+            item.forEach((subItem:any)=>{
+              if(subItem.comment){
+                if(subItem.comment.referenceContent.title==='OpenAPI Spec'){
+                  of(([])).pipe(
+                    delay(500)
+                   ).subscribe((results) => {
+                    this.fetchOpenSpecAPI(subItem.crId)
+                  });
+                }
+              }else{
+                if(subItem.task.referenceContent.title==='OpenAPI Spec'){
+                  of(([])).pipe(
+                    delay(500)
+                   ).subscribe((results) => {
+                    this.fetchOpenSpecAPI(subItem.crId)
+                  });
+                }
+              }
+            })
+
+          })
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
