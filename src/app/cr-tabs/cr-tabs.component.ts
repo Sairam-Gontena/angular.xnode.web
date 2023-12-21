@@ -138,9 +138,9 @@ export class CrTabsComponent {
   }
 
 
-  fetchOpenSpecAPI(crId:any){
+  fetchOpenSpecAPI(id:any){
       const ui = SwaggerUIBundle({
-        domNode: document.getElementById('openapi-ui-spec'+crId),
+        domNode: document.getElementById('openapi-ui-spec'+id),
         layout: 'BaseLayout',
         presets: [
           SwaggerUIBundle.presets.apis,
@@ -204,7 +204,7 @@ export class CrTabsComponent {
                   of(([])).pipe(
                     delay(500)
                    ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.crId)
+                    this.fetchOpenSpecAPI(subItem.id)
                   });
                 }
               }else{
@@ -212,7 +212,7 @@ export class CrTabsComponent {
                   of(([])).pipe(
                     delay(500)
                    ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.crId)
+                    this.fetchOpenSpecAPI(subItem.id)
                   });
                 }
               }
