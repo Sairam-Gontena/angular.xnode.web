@@ -20,6 +20,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { ActivatedRoute } from '@angular/router';
+import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -88,8 +89,12 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   onChildLoaded(isLoaded: boolean) {
-    if (isLoaded) {
-      this.fetchOpenAPISpec();
+    if(isLoaded){
+      of(([])).pipe(
+        delay(500)
+       ).subscribe((results) => {
+        this.fetchOpenAPISpec();
+      })
     }
   }
 

@@ -1,7 +1,8 @@
 <div class="flex" *ngIf="usersList">
     <div class="expand-spec" *ngIf="specExpanded && noResults==false">
         <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
-            (closeFullScreenView)="closeFullScreenView()" [specExpanded]="specExpanded"></xnode-expand-specification>
+            (closeFullScreenView)="closeFullScreenView()" 
+            (childLoaded)="onChildLoaded($event)" [specExpanded]="specExpanded"></xnode-expand-specification>
     </div>
     <div [ngClass]="isCommnetsPanelOpened ? 'spec-body-collapsed' : 'spec-body-full'">
         <div *ngIf="!specExpanded && noResults==false">

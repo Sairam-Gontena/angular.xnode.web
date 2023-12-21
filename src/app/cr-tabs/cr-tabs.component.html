@@ -217,6 +217,14 @@
                             <div *ngIf="subData?.task?.referenceContent?.title === 'Usecases' || subData?.task?.referenceContent?.title === 'Use Cases'">
                               <xnode-common-usecases [searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="subData?.task?.referenceContent.content"></xnode-common-usecases>
                             </div>
+                            <div *ngIf="subData?.task?.referenceContent.title === 'OpenAPI Spec'">
+                              <div class="flex col-12 justify-content-between align-items-center">
+                                <h4 class="m-0">Swagger API</h4>
+                              </div>
+                              <div class="col-12">
+                                <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
+                              </div>
+                            </div>
                             <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
                             <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
                               {{ subData?.comment?.referenceContent?.content }}
@@ -312,7 +320,14 @@
                             <div *ngIf="subData?.comment?.referenceContent?.title === 'Usecases' || subData?.comment?.referenceContent?.title === 'Use Cases'">
                               <xnode-common-usecases [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="subData?.comment?.referenceContent.content"></xnode-common-usecases>
                             </div>
-
+                            <div *ngIf="subData?.comment?.referenceContent.title === 'OpenAPI Spec'">
+                              <div class="flex col-12 justify-content-between align-items-center">
+                                <h4 class="m-0">Swagger API</h4>
+                              </div>
+                              <div class="col-12">
+                                <div id="openapi-ui-spec" class="openapi-spec mt-2"></div>
+                              </div>
+                            </div>
                             <!-- <p class="mt-0 content-title text-xs">{{subData?.comment.referenceContent.title }}</p>
                             <p class="text-content ml-3 pl-4 text-xs font-normal border-left-1 border-50">
                               {{ subData?.comment?.referenceContent?.content }}
