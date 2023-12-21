@@ -141,7 +141,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.specUtils._openCommentsPanel(false);
+    // this.specUtils._openCommentsPanel(false);
     this.utils.EnableSpecSubMenu()
   }
   ngOnChanges() {
