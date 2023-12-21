@@ -5,7 +5,7 @@
     <form [formGroup]="addTaskForm">
         <div class="px-4 flex flex-wrap justify-content-center m-0 p-0 pb-4">
             <div class="col-12 m-0 p-0">
-                <p>Spec Id</p>
+                <p class="m-0 p-0">{{selectedContent.title}}</p>
             </div>
             <div class="col-12 flex m-0 p-0 mt-3">
                 <input type="text" pInputText formControlName="title" placeholder="Task Title">
@@ -52,7 +52,7 @@
                     <p-dropdown formControlName="priority" placeholder="Select Prioriry"
                         [options]="priorityList"></p-dropdown>
                 </div>
-                <div class="col-6 justify-content-center m-0 p-0 ml-5">
+                <div class="col-6 justify-content-center m-0 p-0 ml-7">
                     <span class="text-sm  font-normal text-200" *ngIf="!selectedDateLabel">Due By</span>
                     <span class=" text-sm font-normal text-200" *ngIf="selectedDateLabel">{{
                         selectedDateLabel }}</span>
@@ -76,7 +76,7 @@
                     </ng-template>
                 </p-autoComplete>
             </div>
-            <div class="col-12 flex justify-content-end flex-wrap gap-2 mt-3">
+            <div class="col-12 m-0 p-0 flex justify-content-end flex-wrap gap-3 mt-4">
                 <p-button label="Cancel" [rounded]="true" class="cancel-button"></p-button>
                 <p-button label="Create" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
                     (click)="createTask($event)"></p-button>

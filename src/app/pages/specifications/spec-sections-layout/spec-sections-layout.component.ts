@@ -20,6 +20,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() usersList: any = [];
+  @Input() reveiwerList: any;
   // @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
   @Input() specItemList: any;
@@ -123,7 +124,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.makeTrustedUrl();
   }
 
-  openCommentSection(){
+  openCommentSection() {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
@@ -145,7 +146,7 @@ export class SpecSectionsLayoutComponent implements OnInit {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
       this.targetUrl
     );
-    localStorage.setItem('targetUrl',this.targetUrl)
+    localStorage.setItem('targetUrl', this.targetUrl)
   }
 
   onClickAddComment(obj: any): void {

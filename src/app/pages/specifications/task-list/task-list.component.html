@@ -1,140 +1,148 @@
 <div class="w-full" *ngFor="let cmt of list;let i = index;let isLast = last">
-    <div class="grid m-0 p-2" [ngClass]="{'border-gray-800 border-bottom-1': !cmt.topParentId}">
-        <div class="col-12 flex justify-content-between">
-            <div class="flex align-items-center flex-wrap gap-2">
-                <div class="flex align-items-center">
-                    <p-avatar [label]="setAvatar(cmt)" styleClass="mr-2"
-                        [style]="{ 'background-color': '#02ADEE', fontSize: '12px', color: '#ffffff',width:'25px',height:'25px' }"
-                        shape="circle"></p-avatar>
-                    <div>
-                        <p class="flex align-items-center text-xs text-white-alpha-70 m-0 pb-1">
-                            {{cmt.assignee?.displayName}}</p>
-                        <span class="text-xs status">{{cmt.status}}</span>
-                    </div>
-                </div>
-
-                <div class="flex align-items-center text-xs text-white-alpha-70">
-                    Commented {{ modifiedTimeDifference(cmt.modifiedOn) }}
-                </div>
-            </div>
-            <div class="flex align-items-center flex-wrap">
-                <xnode-conversation-actions [cmt]="cmt" [activeIndex]="activeIndex"
-                    (updateAction)="eventFromConversationAction($event)"></xnode-conversation-actions>
-            </div>
-        </div>
-        <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
-          <div *ngIf="checktableJsonSection(cmt.referenceContent?.title); else normalView">
-            <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <pre *ngIf="!cmt.referenceContent?.showTable" [innerHTML]="cmt.referenceContent?.content | json"
-                style=" white-space: pre-wrap; overflow: auto"></pre>
-            <xnode-common-spec-table *ngIf="cmt.referenceContent?.showTable"
-                [specItem]="cmt.referenceContent?.content.content"
-                [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
+  <div class="grid m-0 p-2" [ngClass]="{'border-gray-800 border-bottom-1': !cmt.topParentId}">
+    <div class="col-12 flex justify-content-between">
+      <div class="flex align-items-center flex-wrap gap-2">
+        <div class="flex align-items-center">
+          <p-avatar [label]="setAvatar(cmt)" styleClass="mr-2"
+            [style]="{ 'background-color': '#02ADEE', fontSize: '12px', color: '#ffffff',width:'25px',height:'25px' }"
+            shape="circle"></p-avatar>
+          <div>
+            <p class="flex align-items-center text-xs text-white-alpha-70 m-0 pb-1">
+              {{cmt.assignee?.displayName}}</p>
+            <span class="text-xs status">{{cmt.status}}</span>
           </div>
-          <ng-template #normalView>
-            <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)" class="h-8rem" >
-              <xnode-para-view [showComments]="false" [content]="cmt?.referenceContent?.content" [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [specItem]="cmt?.referenceContent?.content"
-                  [id]="cmt?.referenceContent?.id" ></xnode-para-view>
-            </div>
-            <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >
-              <xnode-list-view [content]="cmt?.referenceContent"[searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [id]="cmt?.referenceContent?.id"
-              [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
-            </div>
-            <div *ngIf="checkUserRoleSections(cmt.referenceContent?.parentTitle)" class="h-8rem" >
-              <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
-                [content]="cmt?.referenceContent" [users]="usersList" [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
-            </div>
-            <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem" >
-                <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-user-persona>
-            </div>
-            <div *ngIf="cmt.referenceContent.title === 'Dashboards'">
-              <div class="flex justify-content-between align-items-center">
-                <h1 class="my-1">Dashboard</h1>
-              </div>
-              <div class="grid">
-                <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
-                </iframe>
-              </div>
-            </div>
-            <div *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control' || cmt?.referenceContent?.title == 'Stakeholder Approvals'|| cmt?.referenceContent?.title=='Glossary'" >
-              <xnode-common-spec-table  [users]="usersList"
-              [searchTerm]="cmt?.referenceContent?.commentedtext" [content]="cmt?.referenceContent?.content"></xnode-common-spec-table>
-            </div>
-            <div *ngIf="cmt?.referenceContent?.title=='Test Cases'" >
-              <div *ngFor="let item of cmt?.referenceContent?.content">
-                <div class="mt-2">
-                  <h3>
-                    {{item.Usecase}}
-                  </h3>
-                  <div class="mt-2">
-                    <xnode-common-spec-table [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList" [content]="item.TestCases"></xnode-common-spec-table>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
-              <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
-            </div>
-            <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
-              <xnode-data-model-common [dataModelData]="cmt?.referenceContent"></xnode-data-model-common>
-            </div>
-            <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
-              <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"  [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
-            </div>
-            <div class="gradientback">
-            </div>
-          </ng-template>
         </div>
 
-            <!-- <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
+        <div class="flex align-items-center text-xs text-white-alpha-70">
+          Commented {{ modifiedTimeDifference(cmt.modifiedOn) }}
+        </div>
+      </div>
+      <div class="flex align-items-center flex-wrap">
+        <xnode-conversation-actions [cmt]="cmt" [activeIndex]="activeIndex"
+          (updateAction)="eventFromConversationAction($event)"></xnode-conversation-actions>
+      </div>
+    </div>
+    <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
+      <div *ngIf="checktableJsonSection(cmt.referenceContent?.title); else normalView">
+        <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
+        <pre *ngIf="!cmt.referenceContent?.showTable" [innerHTML]="cmt.referenceContent?.content | json"
+          style=" white-space: pre-wrap; overflow: auto"></pre>
+        <xnode-common-spec-table *ngIf="cmt.referenceContent?.showTable"
+          [specItem]="cmt.referenceContent?.content.content"
+          [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
+      </div>
+      <ng-template #normalView>
+        <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)"
+          class="h-8rem">
+          <xnode-para-view [showComments]="false" [content]="cmt?.referenceContent?.content"
+            [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
+            [specItem]="cmt?.referenceContent?.content" [id]="cmt?.referenceContent?.id"></xnode-para-view>
+        </div>
+        <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
+          <xnode-list-view [content]="cmt?.referenceContent" [searchTerm]="cmt?.referenceContent?.commentedtext"
+            [users]="usersList" [id]="cmt?.referenceContent?.id"
+            [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
+        </div>
+        <div *ngIf="checkUserRoleSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
+          <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
+            [content]="cmt?.referenceContent" [users]="usersList"
+            [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
+        </div>
+        <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem">
+          <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext"
+            [content]="cmt?.referenceContent?.content"></xnode-user-persona>
+        </div>
+        <div *ngIf="cmt.referenceContent.title === 'Dashboards'">
+          <div class="flex justify-content-between align-items-center">
+            <h1 class="my-1">Dashboard</h1>
+          </div>
+          <div class="grid">
+            <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+            </iframe>
+          </div>
+        </div>
+        <div
+          *ngIf="cmt?.referenceContent?.title=='Data Quality Checks' || cmt?.referenceContent?.title=='Historical Data Load'|| cmt?.referenceContent?.title == 'Version Control' || cmt?.referenceContent?.title == 'Stakeholder Approvals'|| cmt?.referenceContent?.title=='Glossary'">
+          <xnode-common-spec-table [users]="usersList" [searchTerm]="cmt?.referenceContent?.commentedtext"
+            [content]="cmt?.referenceContent?.content"></xnode-common-spec-table>
+        </div>
+        <div *ngIf="cmt?.referenceContent?.title=='Test Cases'">
+          <div *ngFor="let item of cmt?.referenceContent?.content">
+            <div class="mt-2">
+              <h3>
+                {{item.Usecase}}
+              </h3>
+              <div class="mt-2">
+                <xnode-common-spec-table [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
+                  [content]="item.TestCases"></xnode-common-spec-table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="cmt?.referenceContent?.title==='Workflows'">
+          <xnode-bpmn-common [bpmnFrom]="'SPEC'" [item]="cmt?.referenceContent"></xnode-bpmn-common>
+        </div>
+        <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
+          <xnode-data-model-common [dataModelData]="cmt?.referenceContent"></xnode-data-model-common>
+        </div>
+        <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
+          <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
+            [useCases]="cmt?.referenceContent.content"></xnode-common-usecases>
+        </div>
+        <div class="gradientback">
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
             <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50"
                 [innerHTML]="cmt?.referenceContent?.content|completetexthighlight:cmt?.referenceContent?.commentedtext">
             </p> -->
-        <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
-            <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
-        </div>
-        <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
-            <div *ngFor="let file of cmt.attachments; let i=index;"
-                class="flex justify-content-between flex-wrap single-file mb-1">
-                <div class="flex align-items-center justify-content-center">
-                    <p class="m-0">{{ file.fileName }}</p>
-                </div>
-                <div class="flex align-items-center justify-content-center">
-                    <i class="pi pi-times pointer" (click)="deleteAttachment(cmt,i)"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened">
-            <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See
-                    More{{cmt?.replyCount}}</span>
-            </div>
-        </div>
-        <div class="col-12"
-            *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
-            <xnode-task-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
-                (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
-                [topParentId]="cmt.id"></xnode-task-child-conversation>
-        </div>
-        <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
-            <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">See Less</span>
-            </div>
-        </div>
-        <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">
-            <div class="w-full text-end">
-                <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
-            </div>
-            <div class="w-full">
-                <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
-                    [action]="action" [users]="usersList" [parentEntity]="
-                     'TASK'" [activeIndex]="1" [parentId]="cmt.id" [topParentId]="topParentId"
-                    [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'" [width]="'w-full'"
-                    (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
-            </div>
-        </div>
+    <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
+      <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.description)"></span>
     </div>
+    <div class="col-12 " *ngIf=" cmt?.attachments && cmt.attachments.length >0">
+      <div *ngFor="let file of cmt.attachments; let i=index;"
+        class="flex justify-content-between flex-wrap single-file mb-1">
+        <div class="flex align-items-center justify-content-center">
+          <p class="m-0">{{ file.fileName }}</p>
+        </div>
+        <div class="flex align-items-center justify-content-center">
+          <i class="pi pi-times pointer" (click)="deleteAttachment(cmt,i)"></i>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened">
+      <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See
+          More{{cmt?.replyCount}}</span>
+      </div>
+    </div>
+    <div class="col-12"
+      *ngIf="cmt?.comments && cmt?.comments?.length > 0 && selectedComment?.id === cmt?.id && cmt?.repliesOpened">
+      <xnode-task-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
+        (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
+        [topParentId]="cmt.id"></xnode-task-child-conversation>
+    </div>
+    <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
+      <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">See Less</span>
+      </div>
+    </div>
+    <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt?.id">
+      <div class="w-full text-end">
+        <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
+      </div>
+      <div class="w-full">
+        <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment" [action]="action"
+          [users]="usersList" [parentEntity]="
+                     'TASK'" [activeIndex]="1" [parentId]="cmt.id" [topParentId]="topParentId"
+          [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'" [width]="'w-full'"
+          (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+      </div>
+    </div>
+  </div>
 </div>
 <xnode-link-to-cr *ngIf="showCrPopup" [showCrPopup]="showCrPopup" [comment]="selectedComment" [entityType]="'TASK'"
-    (close)="showCrPopup = false"></xnode-link-to-cr>
+  (close)="showCrPopup = false"></xnode-link-to-cr>
 <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
-    [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="
+  [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="
     onClickConfirmationAction($event)"></xnode-confirmation-popup-new>

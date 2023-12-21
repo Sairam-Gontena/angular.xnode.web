@@ -18,6 +18,7 @@ export class ParaViewComponent {
   @Input() id: any;
   @Input() specId: any;
   @Input() visible: any;
+  @Input() reveiwerList: any;
   selectedText: string = '';
   @Input() specItem: any;
   showCommentIcon: boolean = false;
@@ -25,10 +26,10 @@ export class ParaViewComponent {
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   selectedWordIndices: number[] = [];
   currentUser: any;
-  @Input() showComments:any;
+  @Input() showComments: any;
   showAddTask: boolean = false;
 
-  constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils:SpecUtilsService) {
+  constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils: SpecUtilsService) {
   }
 
   ngOnInit() {
@@ -119,11 +120,11 @@ export class ParaViewComponent {
     }
   }
 
-  deSelect(){
+  deSelect() {
     if (window.getSelection) {
-        window.getSelection()?.empty();
-        window.getSelection()?.removeAllRanges();
-        this.selectedWordIndices = [];
+      window.getSelection()?.empty();
+      window.getSelection()?.removeAllRanges();
+      this.selectedWordIndices = [];
     }
   }
 
@@ -136,7 +137,7 @@ export class ParaViewComponent {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
   }
 
-  openCommentSection(){
+  openCommentSection() {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));

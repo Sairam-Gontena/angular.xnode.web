@@ -21,6 +21,7 @@ interface AutoCompleteCompleteEvent {
   providers: [DatePipe]
 })
 export class AddTaskComponent {
+  @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Input() visible: boolean = false;
   @Input() width?: string;
   @Output() closeOverlay = new EventEmitter<any>();
@@ -37,6 +38,11 @@ export class AddTaskComponent {
   @Input() commentType: string = '';
   @Input() selectedComment: any;
   @Input() action: any;
+  @Input() selectedText: any;
+  @Input() specId: any;
+  @Input() activeIndex: any;
+  @Input() from: any;
+  @Input() reveiwerList: any;
   minDate!: Date;
   assinedUsers: string[] = [];
   isCommentEmpty: boolean = true;
@@ -53,7 +59,6 @@ export class AddTaskComponent {
   task: any;
   config: MentionConfig = {};
   addTaskForm: FormGroup;
-  reveiwerList: any;
   filteredReveiwers: any = [];
   suggestions: any;
   currentUser: any;
@@ -67,7 +72,6 @@ export class AddTaskComponent {
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
-    private authApiService: AuthApiService,
     private utilsService: UtilsService,
     private specUtils: SpecUtilsService,
     private localStorageService: LocalStorageService,
@@ -87,30 +91,13 @@ export class AddTaskComponent {
     });
   }
   ngOnInit(): void {
-    // this.utilsService.loadSpinner(true);
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    // if (this.users) {
-    //   this.users.forEach((element: any) => {
-    //     element.name = element?.first_name + " " + element?.last_name;
-    //   });
-    // }
-    // this.config = {
-    //   labelKey: 'name',
-    //   mentionSelect: this.format.bind(this),
-    // };
-    this.getUserByAccountId();
+
   }
-  // format(item: any) {
-  //   const entityId = item.user_id;
-  //   const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
-  //   if (!isDuplicate) {
-  //     this.references.push({ entity_type: "User", entity_id: entityId, product_id: this.product?.id || null });
-  //   }
-  //   return `@${item.first_name} ${item.last_name},`;
-  // }
+
   onDateSelect(event: any): void {
     const selectedDate: Date = event;
 
@@ -138,10 +125,12 @@ export class AddTaskComponent {
     this.selectedDateLabel = label;
   }
   createTask(event: any) {
-    console.log(this.addTaskForm.value, '000000000000')
-    console.log('Parent Entity:', this.parentEntity);
-    console.log('Parent ID:', this.parentId);
-    const body = {
+    this.utils.loadSpinner(true);
+    if (this.selectedText) {
+      this.selectedContent['commentedtext'] = this.selectedText;
+      this.commentType = 'comment';
+    }
+    let body = {
       createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
       parentId: this.parentId,
@@ -282,41 +271,7 @@ export class AddTaskComponent {
     return reducedName;
   }
 
-  getUserByAccountId(): void {
-    this.authApiService
-      .getAllUsers(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
-      .then((response: any) => {
-        if (response.status === 200 && response?.data) {
-          response.data.forEach((element: any) => {
-            element.name = element.first_name + ' ' + element.last_name;
-          });
-          this.reveiwerList = response.data;
-        } else {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data.detail,
-          });
-          this.utilsService.loadSpinner(false);
-        }
-      })
-      .catch((err: any) => {
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-      });
-  }
-
   saveAsTask(body: any): void {
-    console.log(this.parentTitle, '7777777777777')
-    if (!body.referenceContent) {
-      body.referenceContent = {};
-    }
     if (this.parentTitle !== '' && this.parentTitle !== undefined) {
       body.referenceContent.parentTitle = this.parentTitle;
     } else {
@@ -336,11 +291,9 @@ export class AddTaskComponent {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
       this.utils.loadSpinner(false);
-      // this.assignAsaTask = false;
     }).catch(err => {
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-      // this.assignAsaTask = false;
     })
   }
 }

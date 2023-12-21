@@ -20,6 +20,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthApiService } from 'src/app/api/auth.service';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -59,6 +60,7 @@ export class SpecificationsContentComponent implements OnInit {
   list: any;
   currentUser: any;
   usersList: any = null;
+  reveiwerList: any;
 
   constructor(
     private utils: UtilsService,
@@ -66,7 +68,8 @@ export class SpecificationsContentComponent implements OnInit {
     private apiservice: ApiService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authApiService: AuthApiService,
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -107,6 +110,7 @@ export class SpecificationsContentComponent implements OnInit {
       '&userId=' +
       this.currentUser.id;
     this.fetchOpenAPISpec();
+    this.getUserByAccountId();
   }
 
   getDeepLinkInfo(key: string) {
@@ -284,5 +288,34 @@ export class SpecificationsContentComponent implements OnInit {
           }
         });
     });
+  }
+  getUserByAccountId(): void {
+    this.authApiService
+      .getAllUsers(
+        'user/get_all_users?account_id=' + this.currentUser?.account_id
+      )
+      .then((response: any) => {
+        if (response.status === 200 && response?.data) {
+          response.data.forEach((element: any) => {
+            element.name = element.first_name + ' ' + element.last_name;
+          });
+          this.reveiwerList = response.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
+          this.utils.loadSpinner(false);
+        }
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 }

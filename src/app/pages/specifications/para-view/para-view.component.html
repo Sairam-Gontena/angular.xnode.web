@@ -38,9 +38,10 @@
             <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon"
                 (click)="op1.toggle($event);toggleAddTask()">
             <p-overlayPanel #op1 appendTo="body" (onHide)="showCommentIcon=false">
-                <xnode-add-task *ngIf="showAddTask" (closeOverlay)="op1.toggle(false);emptySelectedContent()"
-                    placeHolder="Add a Task" [visible]="showAddTask" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                    [specItem]="specItem"></xnode-add-task>
+                <xnode-add-task *ngIf="showAddTask" [reveiwerList]="reveiwerList"
+                    (closeOverlay)="op1.toggle(false);emptySelectedContent()" [selectedContent]="content"
+                    [users]="users" placeHolder="Add a Task" [visible]="showAddTask" [parentEntity]="'SPEC'"
+                    [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
             </p-overlayPanel>
 
         </div>
