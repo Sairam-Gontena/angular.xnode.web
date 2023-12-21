@@ -63,10 +63,12 @@ export class DataModelCommonComponent {
       this.utilsService.showProductStatusPopup(true);
       return;
     }
-    const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    this.dataModel = list[3].content[9].content;
-    this.jsPlumbService.init();
-    this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+    setTimeout(()=>{
+      const list: any = this.storageService.getItem(StorageKeys.SpecData);
+      this.dataModel = list[3].content[9].content;
+      this.jsPlumbService.init();
+      this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+    },100)
   }
 
   toggleMenu() {

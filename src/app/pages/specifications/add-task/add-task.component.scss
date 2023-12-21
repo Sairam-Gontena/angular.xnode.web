@@ -1,0 +1,123 @@
+:host ::ng-deep.p-dialog {
+    // border: 1px solid #595959 !important;
+    background: #23222B !important;
+    color: #ffffff;
+}
+
+:host::ng-deep .p-dialog .p-dialog-header {
+    // border-bottom: 1px solid #4B4B4B;
+    background: #23222B !important;
+    color: #ffffff;
+}
+
+:host::ng-deep .p-dialog .p-dialog-content {
+    background: #23222B !important;
+    color: #ffffff;
+}
+
+:host::ng-deep .p-dialog .p-dialog-footer {
+    // border-top: 1px solid #4B4B4B;
+    background: #23222B !important;
+    color: #ffffff;
+}
+
+.p-inputtext,
+textarea {
+    color: #ffffff;
+    background: #2E2D36;
+    padding: 0.75rem 0.75rem;
+    border: 1px solid #2E2D36;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 6px;
+    resize: none !important;
+    width: 100%;
+}
+
+:host::ng-deep.cancel-button .p-button {
+    color: #ffffff;
+    // background: #2E2D36;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
+}
+
+:host ::ng-deep .send-feedback-btn .p-button {
+    // background: var(--primary-color);
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    // border: 1px solid var(--primary-color);
+}
+
+.label-text {
+    color: #A2A2A3;
+}
+
+:host ::ng-deep .dueDate .p-inputtext {
+    background-color: #302E38;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    font-weight: normal;
+    padding: 0;
+}
+
+.add-task-panel {
+    right: 75px;
+    border-color: #02ADEE;
+    background-color: #202123;
+    width: 30rem;
+}
+
+:host ::ng-deep .due-date .p-button {
+    color: #ffffff;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 0;
+    font-size: 1.5rem !important;
+    border-radius: 6px;
+}
+
+.add-comment-panel-body {
+    background-color: #2E2D36;
+}
+
+:host ::ng-deep .p-dropdown {
+    width: 100%;
+    border: none;
+}
+
+:host ::ng-deep .p-autocomplete {
+    width: 100% !important;
+    display: block;
+}
+
+:host ::ng-deep .p-autocomplete .p-inputtext {
+    border: none;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+    color: white;
+    border: none;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items {
+    background-color: #2E2D36;
+    color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+    color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
+    color: black;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
+    color: black;
+}

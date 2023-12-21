@@ -1,0 +1,86 @@
+<div class="p-0 border-1 add-task-panel">
+    <div class="flex align-items-start ">
+        <p class="ml-4 font-bold text-2xl">Create Task</p>
+    </div>
+    <form [formGroup]="addTaskForm">
+        <div class="px-4 flex flex-wrap justify-content-center m-0 p-0 pb-4">
+            <div class="col-12 m-0 p-0">
+                <p class="m-0 p-0">{{selectedContent.title}}</p>
+            </div>
+            <div class="col-12 flex m-0 p-0 mt-3">
+                <input type="text" pInputText formControlName="title" placeholder="Task Title">
+            </div>
+            <div class="w-full m-0 p-0 mt-3">
+                <div [class]="width+ ' border-round-md'">
+                    <div class="grid p-0 flex add-comment-panel-body border-round-md m-0">
+                        <div class="col-12 p-0 align-items-center flex m-0">
+                            <textarea pInputTextarea formControlName="description" [autoResize]="true"
+                                [placeholder]="placeHolder" [mention]="users" [mentionConfig]="config"
+                                (input)="onChangeComment()" class="col-12" style="min-height: 80px;"></textarea>
+                        </div>
+                        <div class="col-12 flex align-items-end justify-content-between">
+                            <div class="col-9 p-0 mt-1 ml-2">
+                                <div *ngFor="let file of files; let i = index"
+                                    class="col-12 p-0 flex justify-content-center flex-wrap single-file mb-1">
+                                    <div class="col-6 p-0 flex justify-content-start flex-wrap ">
+                                        <p class="m-0 flex align-items-center justify-content-center">{{ file.name }}
+                                        </p>
+                                    </div>
+                                    <div class="col-3 p-0 flex align-items-center justify-content-center">
+                                        <p class="size">{{ formatBytes(file.size, 0) }}</p>
+                                    </div>
+                                    <div class="col-3 p-0 flex align-items-center justify-content-center">
+                                        <i class="pi pi-times pointer"
+                                            (click)="deleteFile(i);$event.stopPropagation()"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 flex justify-content-end">
+                                <img src="../assets/attach.svg"
+                                    class="pointer flex align-items-center justify-content-center" alt="attach"
+                                    (click)="selectImage.click()">
+                                <input type="file" accept=".png, .jpeg" #selectImage style="display: none;" id="file"
+                                    #fileInput (change)="fileBrowseHandler($event)">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 p-0 m-0 flex justify-content-between align-items-center mt-3">
+                <div class="col-6 p-0 m-0">
+                    <p-dropdown formControlName="priority" placeholder="Select Prioriry"
+                        [options]="priorityList"></p-dropdown>
+                </div>
+                <div class="col-6 justify-content-center m-0 p-0 ml-7">
+                    <span class="text-sm  font-normal text-200" *ngIf="!selectedDateLabel">Due By</span>
+                    <span class=" text-sm font-normal text-200" *ngIf="selectedDateLabel">{{
+                        selectedDateLabel }}</span>
+                    <p-calendar [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate"
+                        (onSelect)="onDateSelect($event)" formControlName="duedate" [showIcon]="true"
+                        icon="pi pi-calendar-plus" [minDate]="minDate" styleClass="due-date"></p-calendar>
+                </div>
+            </div>
+            <div class="col-12 p-0 m-0 mt-3">
+                <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers"
+                    formControlName="reviewersLOne" (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
+                    [multiple]="true" styleClass="w-full">
+                    <ng-template let-reviewer pTemplate="selectedItem">
+                        <div class="flex align-items-center">
+                            <div
+                                class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                                {{ reduceToInitials(reviewer.name) }}
+                            </div>
+                            <span class="ml-2">{{ reviewer.name }}</span>
+                        </div>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
+            <div class="col-12 m-0 p-0 flex justify-content-end flex-wrap gap-3 mt-4">
+                <p-button label="Cancel" [rounded]="true" class="cancel-button"></p-button>
+                <p-button label="Create" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
+                    (click)="createTask($event)"></p-button>
+            </div>
+        </div>
+    </form>
+</div>

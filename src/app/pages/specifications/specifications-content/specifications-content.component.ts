@@ -20,6 +20,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthApiService } from 'src/app/api/auth.service';
 import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
 
@@ -59,10 +60,11 @@ export class SpecificationsContentComponent implements OnInit {
   list: any;
   currentUser: any;
   usersList: any = null;
+  reveiwerList: any;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
-  swaggerData:any;
+  swaggerData: any;
 
   constructor(
     private utils: UtilsService,
@@ -70,7 +72,8 @@ export class SpecificationsContentComponent implements OnInit {
     private apiservice: ApiService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authApiService: AuthApiService,
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -90,22 +93,22 @@ export class SpecificationsContentComponent implements OnInit {
       this.isCommnetsPanelOpened = event;
     });
     this.utils.openSpecSubMenu.subscribe((event: any) => {
-    this.isSpecSideMenuOpened = event; 
+      this.isSpecSideMenuOpened = event;
     })
     this.utils.openDockedNavi.subscribe((event: any) => {
-    this.isDockedNaviOpended = event
+      this.isDockedNaviOpended = event
     })
   }
 
   onChildLoaded(isLoaded: boolean) {
-    if(isLoaded){
+    if (isLoaded) {
       of(([])).pipe(
         delay(500)
-       ).subscribe((results) => {
+      ).subscribe((results) => {
         this.fetchOpenAPISpec();
       })
+    }
   }
-}
 
   ngOnInit(): void {
     this.utils.openDockedNavi.subscribe((data: any) => {
@@ -126,6 +129,8 @@ export class SpecificationsContentComponent implements OnInit {
       '&isVerified=true' +
       '&userId=' +
       this.currentUser.id;
+    this.fetchOpenAPISpec();
+    this.getUserByAccountId();
     // this.fetchOpenAPISpec();
   }
 
@@ -254,7 +259,7 @@ export class SpecificationsContentComponent implements OnInit {
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     let swaggerUrl = environment.uigenApiUrl + 'openapi-spec/' +
-    localStorage.getItem('app_name') + '/' + email + '/' + record_id;
+      localStorage.getItem('app_name') + '/' + email + '/' + record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -262,14 +267,14 @@ export class SpecificationsContentComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url: swaggerUrl ,
+      url: swaggerUrl,
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
     fetch(swaggerUrl)
-    .then(response => response.json())
-    .then(data => this.swaggerData = data)
-    .catch(error => console.error('Error:', error));
+      .then(response => response.json())
+      .then(data => this.swaggerData = data)
+      .catch(error => console.error('Error:', error));
   }
 
   _expandComponent(val: any): void {
@@ -307,5 +312,34 @@ export class SpecificationsContentComponent implements OnInit {
           }
         });
     });
+  }
+  getUserByAccountId(): void {
+    this.authApiService
+      .getAllUsers(
+        'user/get_all_users?account_id=' + this.currentUser?.account_id
+      )
+      .then((response: any) => {
+        if (response.status === 200 && response?.data) {
+          response.data.forEach((element: any) => {
+            element.name = element.first_name + ' ' + element.last_name;
+          });
+          this.reveiwerList = response.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
+          this.utils.loadSpinner(false);
+        }
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 }

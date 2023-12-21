@@ -19,7 +19,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Output() closeOverlay = new EventEmitter<any>();
-  @Input() parentTitle:any;
+  @Input() parentTitle: any;
   @Input() position?: string;
   @Input() placeHolder?: string;
   @Input() selectedContent: any;
@@ -187,7 +187,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.saveComment(body);
       }
-      else{
+      else {
         this.prepareDataToSaveAsTask()
       }
     } else {
@@ -196,7 +196,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
-    if(this.parentTitle!='' && this.parentTitle!=undefined){
+    console.log(this.parentTitle, '7777777777777')
+
+    if (this.parentTitle != '' && this.parentTitle != undefined) {
       body.referenceContent.parentTitle = this.parentTitle
     }
     this.commentsService.addComments(body).then((commentsReponse: any) => {
@@ -276,9 +278,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
-    if(this.parentTitle!='' && this.parentTitle!=undefined){
+    if (this.parentTitle != '' && this.parentTitle != undefined) {
       body.referenceContent.parentTitle = this.parentTitle
-    }else{
+    } else {
       body.referenceContent.parentTitle = this.specItem.title;
     }
     this.commentsService.addTask(body).then((commentsReponse: any) => {
