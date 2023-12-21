@@ -17,13 +17,11 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   templateUrl: './specifications.component.html',
   styleUrls: ['./specifications.component.scss'],
 })
-
 export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
   specDataCopy?: any;
   keyword: any;
-  private specDataBool: boolean = true;
   selectedSpec: any;
   selectedSection: any;
   specId: any;
@@ -61,12 +59,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
-        let info = JSON.parse(res);
-        if (info) {
-          this.getMeSpecList({ productId: info.product_id, versionId: '' });
-        } else {
-          this.getVersions();
-        }
+        this.product = this.localStorageService.getItem(StorageKeys.Product);
+        this.getVersions();
       })
       .catch((err: any) => {
         console.log('got error:', err);
@@ -75,11 +69,16 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.getMeStorageData();
     }
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
-      if (data)
+      if (data) {
         this.getMeSpecList({
           versionId: data.versionId,
           productId: data.productId,
         });
+        this.specUtils._saveSpecVersion({
+          versionId: data.versionId,
+          productId: data.productId,
+        });
+      }
     });
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
@@ -131,7 +130,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (response.status === 200 && response.data) {
           this.versions = response.data;
-          this.getMeSpecList({ productId: this.product?.id, versionId: this.versions[0].id });
+          this.getMeSpecList({
+            productId: this.product?.id,
+            versionId: this.versions[0].id,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -173,7 +175,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => { });
+      .catch((error) => {});
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -274,53 +276,22 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeLatestSpec(body?: any, isDropdownChannge?: string): void {
-    if (!body) {
-      body = { productId: localStorage.getItem('record_id') };
-    }
-    this.utils.loadSpinner(true);
-    this.specService
-      .getLatestSpec(body)
-      .then((response) => {
-        if (
-          response.status === 200 &&
-          response.data &&
-          response.data.length > 0
-        ) {
-          this.isTheSpecGenerated = true;
-          this.currentSpecVersionId = response.data[0].versionId;
-          if (isDropdownChannge) {
-            this.handleData(response, isDropdownChannge);
-          } else {
-            this.handleData(response, '');
-          }
+  getMeSpecList(body?: any): void {
+    let products = localStorage.getItem('meta_data');
+    if (products) {
+      let allProducts = JSON.parse(products);
+      if (allProducts.length > 0) {
+        let product = allProducts.find((x: any) => x.id === body.productId);
+        if (product.has_insights) {
+          this.getMeSpecInfo(body);
         } else {
-          this.isTheSpecGenerated = false;
-          if (this.currentUser.email === this.product?.email) {
-            this.showSpecGenaretePopup = true;
-            this.isTheCurrentUserOwner = true;
-            this.productStatusPopupContent =
-              'No spec generated for this product. Do you want to generate Spec?';
-          } else {
-            this.showSpecGenaretePopup = true;
-            this.isTheCurrentUserOwner = false;
-            this.productStatusPopupContent =
-              'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
-          }
+          this.showGenerateSpecPopup(product);
         }
-        this.utils.loadSpinner(false);
-      })
-      .catch((error) => {
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: error,
-        });
-      });
+      }
+    }
   }
 
-  getMeSpecList(body?: any): void {
+  getMeSpecInfo(body?: any) {
     if (!body) {
       body = { productId: localStorage.getItem('record_id') };
     }
@@ -335,19 +306,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.isTheSpecGenerated = true;
           this.handleData(response, '');
-        } else {
-          this.isTheSpecGenerated = false;
-          if (this.currentUser.email === this.product?.email) {
-            this.showSpecGenaretePopup = true;
-            this.isTheCurrentUserOwner = true;
-            this.productStatusPopupContent =
-              'No spec generated for this product. Do you want to generate Spec?';
-          } else {
-            this.showSpecGenaretePopup = true;
-            this.isTheCurrentUserOwner = false;
-            this.productStatusPopupContent =
-              'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
-          }
         }
         this.utils.loadSpinner(false);
       })
@@ -359,6 +317,20 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           detail: error,
         });
       });
+  }
+
+  showGenerateSpecPopup(product: any) {
+    if (this.currentUser.email === product?.email) {
+      this.showSpecGenaretePopup = true;
+      this.isTheCurrentUserOwner = true;
+      this.productStatusPopupContent =
+        'No spec generated for this product. Do you want to generate Spec?';
+    } else {
+      this.showSpecGenaretePopup = true;
+      this.isTheCurrentUserOwner = false;
+      this.productStatusPopupContent =
+        'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
+    }
   }
 
   clearSearchText() {
@@ -394,7 +366,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   handleData(response: any, isDropdownChannge: string): void {
     const list = response.data;
-    this.specUtils._saveSpecVersion(list[0].status);
     list.forEach((obj: any, index: any) => {
       if (obj?.title == 'Functional Specifications') {
         obj.content.forEach((ele: any, idx: any) => {
@@ -412,7 +383,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             obj.content.splice(idx, 1);
           }
           if (ele.title === 'Data Model') {
-            this.deleteDataManagementPersistence(list)
+            this.deleteDataManagementPersistence(list);
           }
         });
         obj.content.push({
@@ -441,7 +412,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         obj.content.push({
           title: 'Test Cases',
           content: content,
-          id: obj.id
+          id: obj.id,
         });
       }
     });
@@ -451,23 +422,19 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     if (isDropdownChannge == 'DropdownChange') {
       this.specUtils._productDropdownChanged(true);
     }
-
-    if (this.specDataBool) {
-      this.localStorageService.saveItem(StorageKeys.SpecData, list);
-    }
-    this.specDataBool = false;
+    this.localStorageService.saveItem(StorageKeys.SpecData, list);
     this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
   }
 
   checkUserEmail(): void {
     if (this.currentUser.email === this.product.email) {
-      this.showSpecGenaretePopup = true;
+      // this.showSpecGenaretePopup = true;
       this.isTheCurrentUserOwner = true;
       this.productStatusPopupContent =
         ' Do you want to regenerate Spec for this product?';
     } else {
-      this.showSpecGenaretePopup = true;
+      // this.showSpecGenaretePopup = true;
       this.isTheCurrentUserOwner = false;
       this.productStatusPopupContent =
         'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
@@ -591,7 +558,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('specData');
+    localStorage.removeItem('SPEC_DATA');
+    localStorage.removeItem('selectedSpec');
+    localStorage.removeItem('SPEC_VERISON');
+    this.utils.saveProductDetails({});
   }
 
   _openAndGetComments(contendata: SpecContent) {
@@ -599,18 +569,32 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   onChangeProduct(obj: any): void {
+    // localStorage.removeItem('selectedSpec');
     this.showSpecGenaretePopup = false;
     this.specData = [];
-    localStorage.setItem('record_id', obj?.id);
-    localStorage.setItem('app_name', obj.title);
-    localStorage.setItem(
-      'product_url',
-      obj.url && obj.url !== '' ? obj.url : ''
-    );
-    localStorage.setItem('product', JSON.stringify(obj));
-    this.getMeStorageData();
-    this.product = this.localStorageService.getItem(StorageKeys.Product);
-    this.utils.loadSpinner(true);
-    this.getVersions();
+    let products = localStorage.getItem('meta_data');
+    if (products) {
+      let allProducts = JSON.parse(products);
+      if (allProducts.length > 0) {
+        let product = allProducts.find((x: any) => x.id === obj.id);
+        if (product && product.has_insights) {
+          localStorage.setItem('product_email', product.email);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('product', JSON.stringify(product));
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          localStorage.setItem(
+            'product_url',
+            obj.url && obj.url !== '' ? obj.url : ''
+          );
+          this.product = this.localStorageService.getItem(StorageKeys.Product);
+          // this.getMeStorageData();
+          this.getVersions();
+          this.utils.loadSpinner(true);
+        } else {
+          this.showGenerateSpecPopup(product);
+        }
+      }
+    }
   }
 }

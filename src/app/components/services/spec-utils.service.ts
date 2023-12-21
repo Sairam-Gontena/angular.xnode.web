@@ -16,15 +16,15 @@ export class SpecUtilsService {
   private commentsCrActiveTab: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeCommentsCrActiveTab: Observable<boolean> = this.commentsCrActiveTab.asObservable();
 
-  private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  public getMeSpecVersion: Observable<string> = this.saveSpecVersion.asObservable();
+  private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeSpecVersion: Observable<any> = this.saveSpecVersion.asObservable();
 
   private getLatestCrList: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getMeCrList: Observable<string> = this.getLatestCrList.asObservable();
 
   private getMeSpec: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getSpecBasedOnVersionID: Observable<any> = this.getMeSpec.asObservable();
-  
+
   private onProductDropdownChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductDropdownChange: Observable<boolean> = this.onProductDropdownChange.asObservable();
 

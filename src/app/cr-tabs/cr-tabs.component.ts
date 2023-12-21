@@ -7,6 +7,13 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
 import { SpecUtilsService } from '../components/services/spec-utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { SECTION_VIEW_CONFIG } from '../pages/specifications/section-view-config';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
+import { AuditutilsService } from '../api/auditutils.service';
+import { NotifyApiService } from '../api/notify.service';
+declare const SwaggerUIBundle: any;
+import { delay, of } from 'rxjs';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -17,6 +24,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 export class CrTabsComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
+  @Input() swaggerData:any;
   filters: any;
   currentUser: any;
   crData: any;
@@ -35,17 +43,35 @@ export class CrTabsComponent {
   showNewCrPopup: boolean = false;
   crActions: any;
   comments: string = 'test';
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
+  userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
+  targetUrl: string = '';
+  bpmnFrom: string ='SPEC';//;  'Comments'
+  iframeSrc: SafeResourceUrl = '';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
-
+  showLimitReachedPopup: boolean = false;
+  specVersion: any;
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private sanitizer: DomSanitizer,
+    private apiService: ApiService,
+    private auditUtil: AuditutilsService,
+    private notifyApi: NotifyApiService
   ) {
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
+    });
+    this.specUtils.getMeSpecVersion.subscribe((res) => {
+      if (res) {
+        this.specVersion = res;
+        this.getCRList();
+      }
     });
   }
 
@@ -63,13 +89,77 @@ export class CrTabsComponent {
         this.getCRList();
       }
     });
+    this.makeTrustedUrl();
+  }
+
+  makeTrustedUrl(): void {
+    let target =localStorage.getItem('targetUrl');
+    if(target){
+      this.targetUrl = target;
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.targetUrl
+      );
+    }
+  }
+
+  checkParaViewSections(title: string,parentTitle?:string) {
+    if(parentTitle=='Technical Specifications'){
+      return;
+    }
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserRoleSections(title: string) {
+    return (
+      this.userRolesViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserPersonaSections(title:string){
+    return (
+      this.userPersonaViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+
+  fetchOpenSpecAPI(id:any){
+      const ui = SwaggerUIBundle({
+        domNode: document.getElementById('openapi-ui-spec'+id),
+        layout: 'BaseLayout',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        spec: this.swaggerData,
+        docExpansion: 'none',
+        operationsSorter: 'alpha',
+      });
   }
 
   getCRList() {
-    const prodId = localStorage.getItem('record_id');
+    let body: any = {
+      productId: this.product?.id,
+      // baseVersionId: this.specVersion.id
+    }
     this.utilsService.loadSpinner(true);
-    this.api
-      .getComments('change-request?productId=' + prodId)
+    this.commentsService
+      .getCrList(body)
       .then((res: any) => {
         if (res) {
           let data: any[] = res.data.map((item: any) => {
@@ -107,6 +197,28 @@ export class CrTabsComponent {
       .then((res: any) => {
         if (res) {
           this.crList[index] = res.data;
+          this.crList.forEach((item:any)=>{
+            item.forEach((subItem:any)=>{
+              if(subItem.comment){
+                if(subItem.comment.referenceContent.title==='OpenAPI Spec'){
+                  of(([])).pipe(
+                    delay(500)
+                   ).subscribe((results) => {
+                    this.fetchOpenSpecAPI(subItem.id)
+                  });
+                }
+              }else{
+                if(subItem.task.referenceContent.title==='OpenAPI Spec'){
+                  of(([])).pipe(
+                    delay(500)
+                   ).subscribe((results) => {
+                    this.fetchOpenSpecAPI(subItem.id)
+                  });
+                }
+              }
+            })
+
+          })
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -163,6 +275,7 @@ export class CrTabsComponent {
         this.openConfirmationPopUp = true;
         break;
       case 'REJECT':
+      case 'NEEDS WORK':
         this.crData.forEach((element: any) => {
           if (element.id === this.selectedCr.id) {
             element.showComment = true;
@@ -174,6 +287,11 @@ export class CrTabsComponent {
       case 'APPROVE':
         this.header = 'Approve CR';
         this.content = 'Are you sure you want to Approve this CR?';
+        this.openConfirmationPopUp = true;
+        break;
+      case 'PUBLISH APP':
+        this.header = 'Publish APP';
+        this.content = 'Are you sure you want to Publish App?';
         this.openConfirmationPopUp = true;
         break;
       default:
@@ -237,11 +355,230 @@ export class CrTabsComponent {
       });
   }
 
+  sendEmailNotificationToTheUser(): void {
+    const body = {
+      to: [this.currentUser?.email],
+      cc: ['beta@xnode.ai'],
+      bcc: ['dev.xnode@salientminds.com'],
+      emailTemplateCode: 'PUBLISH_APP_LIMIT_EXCEEDED',
+      params: {
+        username:
+          this.currentUser?.first_name + ' ' + this.currentUser?.last_name,
+      },
+    };
+    this.notifyApi
+      .post('email/notify', body)
+      .then((res: any) => {
+        if (res && res?.data?.detail) {
+          let user_audit_body = {
+            method: 'POST',
+            url: res?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res.data.detail,
+          });
+        }
+      })
+      .catch((err: any) => {
+        let user_audit_body = {
+          method: 'POST',
+          url: err?.request?.responseURL,
+          payload: body,
+        };
+        this.auditUtil.postAudit(
+          'SEND_EMAIL_NOTIFICATION_TO_USER_NOTIFICATION_PANEL',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
+
+  getMeTotalAppsPublishedCount(): void {
+    this.apiService
+      .get('navi/total_apps_published/' + this.currentUser?.account_id)
+      .then((res: any) => {
+        if (res && res.status === 200) {
+          const restriction_max_value = localStorage.getItem(
+            'restriction_max_value'
+          );
+          if (restriction_max_value) {
+            if (res.data.total_apps_published >= restriction_max_value) {
+              this.showLimitReachedPopup = true;
+              this.sendEmailNotificationToTheUser();
+            } else {
+              this.publishApp();
+            }
+          }
+          let user_audit_body = {
+            method: 'GET',
+            url: res?.request?.responseURL,
+          };
+          this.auditUtil.postAudit(
+            'GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+        } else {
+          let user_audit_body = {
+            method: 'GET',
+            url: res?.request?.responseURL,
+          };
+          this.auditUtil.postAudit(
+            'GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res.data.detail,
+            life: 3000,
+          });
+        }
+      })
+      .catch((err: any) => {
+        let user_audit_body = {
+          method: 'GET',
+          url: err?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_ME_TOTAL_APPS_PUBLISHED_COUNT_NOTIFICATION_PANEL',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+          life: 3000,
+        });
+      });
+  }
+
+  publishApp(): void {
+    const body = {
+      repoName: this.product.title,
+      projectName: environment.projectName,
+      email: this.currentUser.email,
+      envName: environment.branchName,
+      productId: this.product?.id,
+    };
+    this.apiService
+      .publishApp(body)
+      .then((response: any) => {
+        if (response) {
+          let user_audit_body = {
+            method: 'POST',
+            url: response?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'PUBLISH_APP_HEADER',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail:
+              'Your app publishing process started. You will get the notifications',
+            life: 3000,
+          });
+        } else {
+          let user_audit_body = {
+            method: 'POST',
+            url: response?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'PUBLISH_APP_HEADER',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: 'Network Error',
+            life: 3000,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        let user_audit_body = {
+          method: 'POST',
+          url: error?.request?.responseURL,
+          payload: body,
+        };
+        this.auditUtil.postAudit(
+          'PUBLISH_APP_HEADER',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+          life: 3000,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
   approveRequest(): void {
     this.utilsService.loadSpinner(true);
+    if (this.selectedStatus === 'PUBLISH APP') {
+      this.getMeTotalAppsPublishedCount();
+      return;
+    }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus,
+      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus,
       userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
@@ -268,7 +605,7 @@ export class CrTabsComponent {
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
             ele.showComment = false;
-          })
+          });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -289,11 +626,15 @@ export class CrTabsComponent {
   }
 
   updateCommentsInfo(crInfo: any) {
-    this.selectedCr['comments'] = crInfo.message
+    this.selectedCr['comments'] = crInfo.message;
     switch (this.selectedStatus) {
       case 'REJECT':
         this.header = 'Reject CR';
         this.content = 'Are you sure you want to Reject this CR?';
+        break;
+      case 'NEEDS WORK':
+        this.header = 'Needs Work';
+        this.content = 'Are you sure you want to  Reject this CR?';
         break;
       default:
         break;

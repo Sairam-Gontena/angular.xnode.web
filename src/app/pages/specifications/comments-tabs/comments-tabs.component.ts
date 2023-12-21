@@ -11,6 +11,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 export class CommentsTabsComponent implements OnInit {
   list: Array<Comment> = [];
   @Input() usersList: any;
+  @Input() swaggerData:any;
   activeIndex: number = 0;
   tabTypes: Array<string> = ['Comments', 'Tasks'];
   constructor(public specUtils: SpecUtilsService) {
@@ -28,6 +29,6 @@ export class CommentsTabsComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    this.activeIndex = event.index;   
+    this.activeIndex = event.index;
   }
 }

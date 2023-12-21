@@ -48,7 +48,7 @@
       <div class="col-4">
         <label>Version</label>
         <div class="p-inputgroup mt-1">
-          <p-dropdown [(ngModel)]="crForm.value.version" (ngModelChange)="onDropdownChange($event)"
+          <p-dropdown [(ngModel)]="crForm.value.version" appendTo="body" (ngModelChange)="onDropdownChange($event)"
             formControlName="version" [options]="versionList" [ngClass]="{
               'is-invalid': submitted && crFormControl['version'].errors
             }" placeholder="Select"></p-dropdown>
@@ -62,7 +62,7 @@
       <div class="col-4">
         <label>Prioriry</label>
         <div class="p-inputgroup mt-1">
-          <p-dropdown formControlName="priority" [ngClass]="{
+          <p-dropdown formControlName="priority" appendTo="body" [ngClass]="{
               'is-invalid': submitted && crFormControl['priority'].errors
             }" placeholder="Select" [options]="priorityList"></p-dropdown>
         </div>
@@ -76,7 +76,7 @@
         <label>Due Date</label>
         <div class="p-inputgroup mt-1">
           <p-calendar (onSelect)="onDateSelect($event)" formControlName="duedate" [showClear]="showClearDueDate"
-            [ngClass]="{
+            appendTo="body" [ngClass]="{
               'is-invalid': submitted && crFormControl['duedate'].errors
             }" [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"></p-calendar>
         </div>
@@ -94,7 +94,7 @@
       <div class="col-12">
         <div class="p-inputgroup mt-1">
           <span class="p-inputgroup-addon"> L1 </span>
-          <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers"
+          <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers" appendTo="body"
             formControlName="reviewersLOne" [ngClass]="{
               'is-invalid': submitted && crFormControl['reviewersLOne'].errors
             }" (completeMethod)="filteredReveiwer($event, 'L1')" field="name" [multiple]="true" styleClass="w-full">

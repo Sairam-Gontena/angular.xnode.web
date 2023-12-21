@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      if (event) {
+      if (event && this.router.url!='/dashboard') {
         this.spinner.show();
       } else {
         this.spinner.hide();
@@ -136,6 +136,9 @@ export class AppComponent implements OnInit {
         this.makeTrustedUrl(data.email);
       }
     });
+    this.utilsService.openDockedNavi.subscribe((data:any)=>{
+      this.isSideWindowOpen = data;
+    })
   }
 
 
@@ -356,7 +359,7 @@ export class AppComponent implements OnInit {
 
   getMeComponent() {
     let comp = '';
-    switch (this.router.url) { 
+    switch (this.router.url) {
       case '/dashboard':
         comp = 'dashboard';
         break;
@@ -443,7 +446,7 @@ export class AppComponent implements OnInit {
 
   showSideMenu() {
     const hashWithoutParams = window.location.hash.split('?')[0];
-  
+
     return (
       hashWithoutParams === '#/configuration/data-model/overview' ||
       hashWithoutParams === '#/usecases' ||

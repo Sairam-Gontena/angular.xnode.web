@@ -91,4 +91,8 @@ export class CommentsService extends BaseApiService {
   reviewerListByAccountId(body: any) {
     return this.get('review-policy/policies/' + body.accountId + '/' + body.phase);
   }
+
+  getCrList(body: any) {
+    return this.get('change-request', body);
+  }
 }

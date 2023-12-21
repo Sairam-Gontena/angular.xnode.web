@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, INJECTOR, Input, OnInit, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
@@ -16,6 +16,7 @@ export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
   @Input() activeIndex: any;
+  @Input() swaggerData:any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
@@ -37,24 +38,20 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
-      if(res){
-        if(this.activeIndex == 0){
-          this.getMeCommentsList();
-        }
-      }
-    })
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     const activeIndexChange = changes['activeIndex'] as SimpleChange;
     if (activeIndexChange && activeIndexChange.currentValue === 0) {
       this.utils.loadSpinner(true);
+      let specData = localStorage.getItem('selectedSpec');
+      if(specData)
       this.getMeCommentsList();
     }
   }
 
   getMeCommentsList() {
+    this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
     if (specData) {
@@ -73,6 +70,7 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   filterList(data: any): void {
+    this.filteredList =[]
     switch (this.selectedFilter.value) {
       case 'LINKED':
         this.filteredList = data.filter((item: any) => item.status === 'LINKED');

@@ -21,6 +21,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -51,7 +52,6 @@ export class SpecificationsContentComponent implements OnInit {
   bodyData: any[] = [];
   dataQualityData: any[] = [];
   userInterfaceheaders: string[] = [];
-  isCommentPanelOpened: boolean = false;
   isOpenSmallCommentBox: boolean = false;
   smallCommentContent: string = '';
   product: any;
@@ -61,6 +61,10 @@ export class SpecificationsContentComponent implements OnInit {
   currentUser: any;
   usersList: any = null;
   reveiwerList: any;
+  isSpecSideMenuOpened: boolean = false;
+  isDockedNaviOpended: boolean = false;
+  expandView: any = null;
+  swaggerData: any;
 
   constructor(
     private utils: UtilsService,
@@ -88,6 +92,22 @@ export class SpecificationsContentComponent implements OnInit {
     this.specUtils.openCommentsPanel.subscribe((event: any) => {
       this.isCommnetsPanelOpened = event;
     });
+    this.utils.openSpecSubMenu.subscribe((event: any) => {
+      this.isSpecSideMenuOpened = event;
+    })
+    this.utils.openDockedNavi.subscribe((event: any) => {
+      this.isDockedNaviOpended = event
+    })
+  }
+
+  onChildLoaded(isLoaded: boolean) {
+    if (isLoaded) {
+      of(([])).pipe(
+        delay(500)
+      ).subscribe((results) => {
+        this.fetchOpenAPISpec();
+      })
+    }
   }
 
   ngOnInit(): void {
@@ -111,6 +131,7 @@ export class SpecificationsContentComponent implements OnInit {
       this.currentUser.id;
     this.fetchOpenAPISpec();
     this.getUserByAccountId();
+    // this.fetchOpenAPISpec();
   }
 
   getDeepLinkInfo(key: string) {
@@ -125,7 +146,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.specUtils._openCommentsPanel(false);
+    // this.specUtils._openCommentsPanel(false);
     this.utils.EnableSpecSubMenu()
   }
   ngOnChanges() {
@@ -237,6 +258,8 @@ export class SpecificationsContentComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
+    let swaggerUrl = environment.uigenApiUrl + 'openapi-spec/' +
+      localStorage.getItem('app_name') + '/' + email + '/' + record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -244,23 +267,23 @@ export class SpecificationsContentComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url:
-        environment.uigenApiUrl +
-        'openapi-spec/' +
-        localStorage.getItem('app_name') +
-        '/' +
-        email +
-        '/' +
-        record_id,
+      url: swaggerUrl,
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
+    fetch(swaggerUrl)
+      .then(response => response.json())
+      .then(data => this.swaggerData = data)
+      .catch(error => console.error('Error:', error));
   }
 
   _expandComponent(val: any): void {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
+      this.specUtils._openCommentsPanel(false)
+      this.utils.disableDockedNavi()
+      this.utils.EnableSpecSubMenu()
       this.specExpanded = true;
     } else {
       this.specExpanded = false;
@@ -271,6 +294,7 @@ export class SpecificationsContentComponent implements OnInit {
     this.scrollToItem();
   }
   closeFullScreenView(): void {
+    this.expandView = true;
     this.specExpanded = false;
     this.fetchOpenAPISpec();
     this.scrollToItem();
