@@ -49,7 +49,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specService: SpecService
   ) {
     this.specUtils.getMeSpecVersion.subscribe((event) => {
-      if(event){
+      if(event && this.versions.length > 0){
         this.versions.forEach((element: any) => {
           if(event.versionId === element.id)
           this.selectedVersion = element;
