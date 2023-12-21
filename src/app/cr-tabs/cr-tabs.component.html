@@ -64,7 +64,7 @@
                         (click)="onClickViewChanges(data)">View Changes</a>
                     </p>
                   </div>
-                  <div class="w-full pl-7">
+                  <div class="w-full pl-7" [ngClass]="{'mt-3': data.status !=='DRAFT'}">
                     <div class="flex align-items-center justify-content-between">
                       <div class="flex">
                         <img src="../../assets/todo.svg" alt="todo" />
