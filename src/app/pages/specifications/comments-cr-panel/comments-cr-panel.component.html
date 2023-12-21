@@ -2,7 +2,7 @@
     <img src="../assets/comments-cr-close.svg" class="pointer comments-cr-close" alt="close" (click)="onClickClose()">
     <p-tabView [(activeIndex)]="activeIndex"  class="comments-cr-tabs" (onChange)="switchHeaders($event);">
         <p-tabPanel header="Conversations">
-            <xnode-comments-tabs [usersList]="usersList"></xnode-comments-tabs>
+            <xnode-comments-tabs [swaggerData]="swaggerData" [usersList]="usersList"></xnode-comments-tabs>
         </p-tabPanel>
         <p-tabPanel header="Change Request">
             <xnode-cr-tabs [swaggerData]="swaggerData" [usersList]="usersList" [activeIndex]="activeIndex" ></xnode-cr-tabs>

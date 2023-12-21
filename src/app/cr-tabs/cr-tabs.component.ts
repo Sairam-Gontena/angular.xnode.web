@@ -139,7 +139,6 @@ export class CrTabsComponent {
 
 
   fetchOpenSpecAPI(crId:any){
-    setTimeout(() => {
       const ui = SwaggerUIBundle({
         domNode: document.getElementById('openapi-ui-spec'+crId),
         layout: 'BaseLayout',
@@ -151,8 +150,6 @@ export class CrTabsComponent {
         docExpansion: 'none',
         operationsSorter: 'alpha',
       });
-    },);
-
   }
 
   getCRList() {

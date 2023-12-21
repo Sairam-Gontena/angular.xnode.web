@@ -15,6 +15,8 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
+declare const SwaggerUIBundle: any;
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -28,6 +30,7 @@ export class SpecConversationComponent {
   @Input() activeIndex: any;
   @Input() parentEntity: any;
   @Input() parentId: any;
+  @Input() swaggerData:any;
   @Output() onClickClose = new EventEmitter<any>();
   @ViewChild(SpecChildConversationComponent)
   child!: SpecChildConversationComponent;
@@ -85,6 +88,33 @@ export class SpecConversationComponent {
   ngOnInit() {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
+    this.checkSwaggerItem();
+  }
+
+  checkSwaggerItem(){
+    this.list.forEach((item:any)=>{
+      if(item.referenceContent.title=='OpenAPI Spec'){
+        of(([])).pipe(
+          delay(500)
+         ).subscribe((results) => {
+          this.fetchOpenSpecApi(item.id)
+        });
+      }
+    })
+  }
+
+  fetchOpenSpecApi(id:any){
+    const ui = SwaggerUIBundle({
+      domNode: document.getElementById('openapi-ui-spec'+id),
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
+      ],
+      spec: this.swaggerData,
+      docExpansion: 'none',
+      operationsSorter: 'alpha',
+    });
   }
 
   makeTrustedUrl(): void {
