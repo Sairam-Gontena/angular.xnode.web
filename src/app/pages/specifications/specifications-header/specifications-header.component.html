@@ -10,7 +10,6 @@
             <p-dropdown [options]="versions" [(ngModel)]="selectedVersion" optionLabel="label"
                 (onChange)="onVersionChange($event)" placeholder="Select a version"
                 class="ml-3 app-dropdown-version"></p-dropdown>
-            <p class="text-xs status ml-6" *ngIf="specVersion">{{specVersion}}</p>
         </div>
         <div class="flex align-items-center">
             <img src="../assets/fav.svg " class="pr-3 pointer" alt="Logo">

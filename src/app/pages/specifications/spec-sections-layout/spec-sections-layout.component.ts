@@ -5,7 +5,9 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { environment } from 'src/environments/environment';
 
+declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-spec-sections-layout',
   templateUrl: './spec-sections-layout.component.html',
@@ -20,9 +22,9 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() usersList: any = [];
-  // @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
   @Input() specItemList: any;
+  @Input() expandView: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
@@ -36,7 +38,6 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
   selectedContent: any;
   smallCommentContent: any;
   showMoreContent: any;
-  specExpanded: any;
   checked: boolean = false;
   currentUser: any;
   product: any;
@@ -122,6 +123,15 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
       this.isCommnetsPanelOpened = event;
     });
     this.makeTrustedUrl();
+    // this.fetchOpenAPISpec()
+  }
+
+  ngOnChanges() {
+  if(this.expandView){
+     setTimeout(()=>{
+      // this.fetchOpenAPISpec()
+     },500)
+  }
   }
 
   ngAfterViewInit() {
@@ -198,5 +208,30 @@ export class SpecSectionsLayoutComponent implements OnInit,AfterViewInit  {
 
   saveSecInLocal() {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
+
+  async fetchOpenAPISpec() {
+    const record_id = localStorage.getItem('record_id');
+    let userData: any;
+    userData = localStorage.getItem('currentUser');
+    let email = JSON.parse(userData).email;
+    const ui = SwaggerUIBundle({
+      domNode: document.getElementById('openapi-ui-spec'),
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
+      ],
+      url:
+        environment.uigenApiUrl +
+        'openapi-spec/' +
+        localStorage.getItem('app_name') +
+        '/' +
+        email +
+        '/' +
+        record_id,
+      docExpansion: 'none',
+      operationsSorter: 'alpha',
+    });
   }
 }

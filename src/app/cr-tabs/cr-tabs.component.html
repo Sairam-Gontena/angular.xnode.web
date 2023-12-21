@@ -71,9 +71,9 @@
                         <div class="flex align-items-center">
                           <p class="text-sm half-white pl-2">{{ data?.title }}</p>
                           <div [ngClass]="{
-                          'border-green-500': data.status === 'SUBMITTED',
+                          'border-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
                           'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
-                          'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED',
+                          'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK',
                           'border-yellow-500': data.status === 'DRAFT',
                           }" class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl">
                             <div class="border-circle text-xs">
@@ -83,7 +83,7 @@
                               <ng-container *ngIf="data.status === 'ARCHIVED' || data.status === 'REJECTED'">
                                 <i class="pi pi-times-circle text-red-500"></i>
                               </ng-container>
-                              <ng-container *ngIf="data.status === 'UPDATED' || data.status ==='REVIEWED'">
+                              <ng-container *ngIf="data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK'">
                                 <i class="pi pi-check-circle text-orange-500"></i>
                               </ng-container>
                               <ng-container *ngIf="data.status === 'DRAFT'">
@@ -91,9 +91,9 @@
                               </ng-container>
                             </div>
                             <div class="text-xs ml-2" [ngClass]="{
-                              'text-green-500': data.status === 'SUBMITTED',
+                              'text-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
                               'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
-                              'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' ,
+                              'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK' ,
                               'text-yellow-500': data.status == 'DRAFT'
                             }">{{data.status | uppercase}}
                             </div>
@@ -355,10 +355,10 @@
         <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
           (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
-            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'bg-green-500' : 'bg-red-500'"
+            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' || action.value === 'PUBLISH_APP' ? 'bg-green-500' : 'bg-red-500'"
             [ngStyle]="{ padding: '3px' }"></i>
           <p class="text-sm font-normal ml-1"
-            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT' ? 'text-green-500' : 'text-red-500'">
+            [ngClass]="action.value === 'ARCHIVE' ? '' : action.value === 'SUBMIT'  || action.value === 'PUBLISH_APP' ? 'text-green-500' : 'text-red-500'">
             {{action.label}}</p>
         </div>
       </div>
@@ -371,3 +371,7 @@
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR" [versions]="[]"
   (close)="showNewCrPopup = false;">
 </xnode-create-new-cr-version>
+
+<xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
+    [limitReachedContent]="true"
+    (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
