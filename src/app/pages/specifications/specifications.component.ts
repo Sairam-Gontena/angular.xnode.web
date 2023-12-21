@@ -60,6 +60,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
         let info = JSON.parse(res);
         if (info) {
           this.getMeSpecList({ productId: info.product_id, versionId: '' });
@@ -130,7 +131,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   getVersions() {
     this.versions = [];
     this.utils.loadSpinner(true);
-    // alert("got here")
     this.specService
       .getVersionIds(this.product?.id)
       .then((response) => {
@@ -309,10 +309,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.isTheSpecGenerated = true;
           this.handleData(response, '');
-        } else {
-          // this.isTheSpecGenerated = false;
-
-        }
+        } 
         this.utils.loadSpinner(false);
       })
       .catch((error) => {
@@ -564,7 +561,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('specData');
+    localStorage.removeItem('SPEC_DATA');
+    localStorage.removeItem('selectedSpec');
+    localStorage.removeItem('SPEC_VERISON');
+    this.utils.saveProductDetails({})
   }
 
   _openAndGetComments(contendata: SpecContent) {
@@ -572,6 +572,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   onChangeProduct(obj: any): void {
+    // localStorage.removeItem('selectedSpec');
     this.showSpecGenaretePopup = false;
     this.specData = [];
     let products = localStorage.getItem('meta_data');
@@ -580,17 +581,20 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       if(allProducts.length > 0){
         let product = allProducts.find((x: any) => x.id === obj.id);
         if( product && product.has_insights){
-          localStorage.setItem('record_id', obj?.id);
-          localStorage.setItem('app_name', obj.title);
+          localStorage.setItem('product_email', product.email);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('product', JSON.stringify(product));
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
           localStorage.setItem(
             'product_url',
             obj.url && obj.url !== '' ? obj.url : ''
           );
-          localStorage.setItem('product', JSON.stringify(obj));
-          this.getMeStorageData();
           this.product = this.localStorageService.getItem(StorageKeys.Product);
-          this.utils.loadSpinner(true);
+          // this.getMeStorageData();
           this.getVersions();
+          this.utils.loadSpinner(true);
+
         }else{
           this.showGenerateSpecPopup(product)
         }
