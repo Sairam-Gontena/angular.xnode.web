@@ -62,11 +62,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((res: any) => {
         let info = JSON.parse(res);
         if (info) {
-          console.log("info here",info)
           this.getMeSpecList({ productId: info.product_id, versionId: '' });
         } else {
           this.getVersions();
-          console.log("called here")
         }
       })
       .catch((err: any) => {
@@ -313,7 +311,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.handleData(response, '');
         } else {
           // this.isTheSpecGenerated = false;
-        
+
         }
         this.utils.loadSpinner(false);
       })
@@ -599,6 +597,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     }
 
-   
+
   }
 }

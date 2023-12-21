@@ -7,9 +7,13 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { DatePipe } from '@angular/common';
 import { SpecUtilsService } from '../components/services/spec-utils.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { SECTION_VIEW_CONFIG } from '../pages/specifications/section-view-config';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
+declare const SwaggerUIBundle: any;
+import { delay, of } from 'rxjs';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -20,6 +24,7 @@ import { NotifyApiService } from '../api/notify.service';
 export class CrTabsComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
+  @Input() swaggerData:any;
   filters: any;
   currentUser: any;
   crData: any;
@@ -38,6 +43,13 @@ export class CrTabsComponent {
   showNewCrPopup: boolean = false;
   crActions: any;
   comments: string = 'test';
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
+  userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
+  targetUrl: string = '';
+  bpmnFrom: string ='SPEC';//;  'Comments'
+  iframeSrc: SafeResourceUrl = '';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
   specVersion: any;
@@ -47,11 +59,11 @@ export class CrTabsComponent {
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
+    private sanitizer: DomSanitizer,
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
-
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
     });
@@ -77,6 +89,67 @@ export class CrTabsComponent {
         this.getCRList();
       }
     });
+    this.makeTrustedUrl();
+  }
+
+  makeTrustedUrl(): void {
+    let target =localStorage.getItem('targetUrl');
+    if(target){
+      this.targetUrl = target;
+      this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.targetUrl
+      );
+    }
+  }
+
+  checkParaViewSections(title: string,parentTitle?:string) {
+    if(parentTitle=='Technical Specifications'){
+      return;
+    }
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserRoleSections(title: string) {
+    return (
+      this.userRolesViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkUserPersonaSections(title:string){
+    return (
+      this.userPersonaViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+
+  fetchOpenSpecAPI(crId:any){
+      const ui = SwaggerUIBundle({
+        domNode: document.getElementById('openapi-ui-spec'+crId),
+        layout: 'BaseLayout',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        spec: this.swaggerData,
+        docExpansion: 'none',
+        operationsSorter: 'alpha',
+      });
   }
 
   getCRList() {
@@ -124,6 +197,28 @@ export class CrTabsComponent {
       .then((res: any) => {
         if (res) {
           this.crList[index] = res.data;
+          this.crList.forEach((item:any)=>{
+            item.forEach((subItem:any)=>{
+              if(subItem.comment){
+                if(subItem.comment.referenceContent.title==='OpenAPI Spec'){
+                  of(([])).pipe(
+                    delay(500)
+                   ).subscribe((results) => {
+                    this.fetchOpenSpecAPI(subItem.crId)
+                  });
+                }
+              }else{
+                if(subItem.task.referenceContent.title==='OpenAPI Spec'){
+                  of(([])).pipe(
+                    delay(500)
+                   ).subscribe((results) => {
+                    this.fetchOpenSpecAPI(subItem.crId)
+                  });
+                }
+              }
+            })
+
+          })
         } else {
           this.utilsService.loadToaster({
             severity: 'error',

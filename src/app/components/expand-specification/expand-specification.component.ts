@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -9,11 +9,11 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./expand-specification.component.scss']
 })
 
-export class ExpandSpecificationComponent {
+export class ExpandSpecificationComponent implements AfterViewInit {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
   @Output() closeFullScreenView = new EventEmitter<any>();
-
+  @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
   targetUrl: string = environment.naviAppUrl;
   product: any;
@@ -21,7 +21,6 @@ export class ExpandSpecificationComponent {
   isDockedNaviOpended: boolean = false;
   constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
   }
-
 
   ngOnInit() {
     const record_id = localStorage.getItem('record_id');
@@ -46,7 +45,13 @@ export class ExpandSpecificationComponent {
   }
 
   ngAfterViewInit() {
-    this.fetchOpenAPISpec()
+    this.fetchOpenAPISpec();
+  }
+
+  ngOnDestroy(){
+    if(this.dataToExpand.title === 'OpenAPI Spec'){
+      this.childLoaded.emit(true);
+    }
   }
 
   async fetchOpenAPISpec() {

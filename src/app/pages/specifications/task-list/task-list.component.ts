@@ -7,7 +7,8 @@ import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-
+declare const SwaggerUIBundle: any;
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-task-list',
   templateUrl: './task-list.component.html',
@@ -18,6 +19,7 @@ export class TaskListComponent {
   @Input() usersList: any;
   @Input() topParentId: any;
   @Input() activeIndex: any;
+  @Input() swaggerData:any;
   @Output() onClickClose = new EventEmitter<any>();
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
@@ -64,6 +66,33 @@ export class TaskListComponent {
   ngOnInit() {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
+    this.checkSwaggerItem();
+  }
+
+  checkSwaggerItem(){
+    this.list.forEach((item:any)=>{
+      if(item.referenceContent.title=='OpenAPI Spec'){
+        of(([])).pipe(
+          delay(500)
+         ).subscribe((results) => {
+          this.fetchOpenSpecApi(item.id)
+        });
+      }
+    })
+  }
+
+  fetchOpenSpecApi(id:any){
+    const ui = SwaggerUIBundle({
+      domNode: document.getElementById('openapi-ui-spec'+id),
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
+      ],
+      spec: this.swaggerData,
+      docExpansion: 'none',
+      operationsSorter: 'alpha',
+    });
   }
 
   makeTrustedUrl(): void {

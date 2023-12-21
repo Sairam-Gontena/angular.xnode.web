@@ -17,6 +17,7 @@ export class TasksPanelComponent {
   @Input() commenttasksList: any;
   @Input() usersList: any;
   @Input() activeIndex: any;
+  @Input() swaggerData:any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
