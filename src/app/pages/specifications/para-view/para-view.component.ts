@@ -17,17 +17,17 @@ export class ParaViewComponent {
   @Input() selectedContent!: string;
   @Input() id: any;
   @Input() specId: any;
-  @Input() visible: any;
   @Input() reveiwerList: any;
   selectedText: string = '';
   @Input() specItem: any;
   showCommentIcon: boolean = false;
   @ViewChild('op') overlayPanel: OverlayPanel | any;
+  // @ViewChild('1') overlayPanel: OverlayPanel | any;
+
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   selectedWordIndices: number[] = [];
   currentUser: any;
   @Input() showComments: any;
-  showAddTask: boolean = false;
 
   constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils: SpecUtilsService) {
   }
@@ -145,7 +145,5 @@ export class ParaViewComponent {
       this.specUtils._openCommentsPanel(true);
     },);
   }
-  toggleAddTask() {
-    this.showAddTask = !this.showAddTask;
-  }
+
 }

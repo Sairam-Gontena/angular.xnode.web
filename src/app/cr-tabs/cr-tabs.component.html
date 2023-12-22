@@ -118,7 +118,7 @@
                   </div>
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
                     <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
-                      placeHolder="Reason for your actions"
+                      placeHolder="Reason for your actions" [component]="'crTabs'"
                       (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>
@@ -129,7 +129,7 @@
               <div class="pl-7 pr-4">
                 <div class="card m-0 p-0 mb-2" *ngIf="showComment">
                   <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
-                    placeHolder="Reason for your actions"
+                    placeHolder="Reason for your actions" [component]="'crTabs'"
                     (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                 </div>
                 <div class="border-bottom-1 pt-2"
@@ -206,7 +206,7 @@
                               </div>
                             </div>
                             <div *ngIf="subData?.task?.referenceContent?.title==='Workflows'">
-                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom" [referenceId]="subData?.task?.id"
                               [item]="subData?.task?.referenceContent"></xnode-bpmn-common>
                             </div>
                             <div *ngIf="subData?.task?.referenceContent?.title==='Data Model'">
@@ -306,7 +306,7 @@
                               </div>
                             </div>
                             <div *ngIf="subData?.comment?.referenceContent?.title==='Workflows'">
-                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom" [referenceId]="subData?.comment?.id"
                               [item]="subData?.comment?.referenceContent"></xnode-bpmn-common>
                             </div>
                             <div *ngIf="subData?.comment?.referenceContent?.title==='Data Model'">

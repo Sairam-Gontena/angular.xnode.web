@@ -57,7 +57,8 @@
                                 <p-overlayPanel #op1 appendTo="body">
                                     <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="item"
                                         [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-                                        [parentTitle]="parentTitle" [specItem]="specItem"></xnode-add-task>
+                                        [parentTitle]="parentTitle" [specItem]="specItem"
+                                        [reveiwerList]="reveiwerList"></xnode-add-task>
                                 </p-overlayPanel>
                             </div>
                         </div>

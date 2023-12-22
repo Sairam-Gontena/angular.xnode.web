@@ -8,7 +8,7 @@
                 <div class="grid p-0 flex add-comment-panel-body border-round-md ">
                     <div class="col-12 p-0 align-items-center flex">
                         <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" [placeholder]="placeHolder"
-                            [mention]="users" [mentionConfig]="config" (input)="onChangeComment()" class="col-12"
+                            [mention]="users" [mentionConfig]="config" (keydown)="handleKeydown($event)" (input)="onChangeComment()" class="col-12"
                             style="min-height: 80px;"></textarea>
                     </div>
                     <div class="col-12 flex align-items-end justify-content-between">

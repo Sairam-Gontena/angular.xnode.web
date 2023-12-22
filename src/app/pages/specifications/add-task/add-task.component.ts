@@ -146,6 +146,7 @@ export class AddTaskComponent {
       deadline: this.addTaskForm.value.duedate
     };
     this.saveAsTask(body);
+    this.addTaskForm.reset();
   }
   setTemplateTypeInRefs(): string {
     let productId = localStorage.getItem('record_id');
@@ -287,6 +288,7 @@ export class AddTaskComponent {
         this.specUtils._tabToActive('TASK');
         this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
         this.uploadedFiles = [];
+        this.files = [];
       } else {
         this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
       }
