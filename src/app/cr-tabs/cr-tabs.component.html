@@ -206,7 +206,7 @@
                               </div>
                             </div>
                             <div *ngIf="subData?.task?.referenceContent?.title==='Workflows'">
-                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom" [referenceId]="subData?.task?.id"
                               [item]="subData?.task?.referenceContent"></xnode-bpmn-common>
                             </div>
                             <div *ngIf="subData?.task?.referenceContent?.title==='Data Model'">
@@ -306,7 +306,7 @@
                               </div>
                             </div>
                             <div *ngIf="subData?.comment?.referenceContent?.title==='Workflows'">
-                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom"
+                              <xnode-bpmn-common  [bpmnFrom]="bpmnFrom" [referenceId]="subData?.comment?.id"
                               [item]="subData?.comment?.referenceContent"></xnode-bpmn-common>
                             </div>
                             <div *ngIf="subData?.comment?.referenceContent?.title==='Data Model'">

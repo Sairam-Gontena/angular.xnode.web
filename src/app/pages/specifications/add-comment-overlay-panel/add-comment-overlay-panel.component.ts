@@ -203,7 +203,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
-    console.log(this.parentTitle, '7777777777777')
 
     if (this.parentTitle != '' && this.parentTitle != undefined) {
       body.referenceContent.parentTitle = this.parentTitle
