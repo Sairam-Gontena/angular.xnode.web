@@ -19,6 +19,7 @@ export class ListViewComponent {
   @Input() specId: any;
   @Input() specItem: any;
   @Input() visible: any;
+  @Input() reveiwerList: any;
 
   showCommentIcon: boolean = false;
   selectedIndex?: number;
