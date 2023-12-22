@@ -557,19 +557,15 @@
       " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
             [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
-        <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
-          (click)="op1.toggle($event);historicalDataPanelOpened = true;saveSecInLocal();"
-          (mouseleave)="historicalDatashowCommentIcon = false" [ngClass]="
-        historicalDatashowCommentIcon || historicalDataPanelOpened
-            ? 'opacity-100'
-            : 'opacity-0'
-        ">
+        <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6" (click)="
+        op1.toggle($event); historicalDataPanelOpened = true;saveSecInLocal();
+        " (mouseleave)="historicalDatashowCommentIcon = false"
+          *ngIf="historicalDatashowCommentIcon || historicalDataPanelOpened">
         <p-overlayPanel #op1 appendTo="body"
           (onHide)="historicalDataPanelOpened = false; historicalDatashowCommentIcon = false">
-          <xnode-add-task *ngIf="historicalDataPanelOpened"
-            (closeOverlay)="op1.toggle(false); historicalDataPanelOpened = false" [selectedContent]="content"
-            [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+          <xnode-add-task (closeOverlay)="op1.toggle(false); historicalDataPanelOpened = false"
+            [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div
@@ -1037,7 +1033,7 @@
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="openAPIShowCommentIcon || openAPIPanelOpened"
             (click)="openCommentSection()"></i>
           <img src="../assets/add-task.svg" class="pointer ml-2"
-            (click)="openAPIop.toggle($event); openAPIPanelOpened = true;saveSecInLocal();"
+            (click)="op1.toggle($event); openAPIPanelOpened = true;saveSecInLocal();"
             (mouseleave)="openAPIShowCommentIcon = false" [ngClass]="
           openAPIShowCommentIcon || openAPIPanelOpened
             ? 'opacity-100'
@@ -1068,9 +1064,9 @@
     </div>
 
     <div *ngIf="checkParaViewSections(content.title)" [id]="content.id">
-      <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-        [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)" [content]="content"
-        [selectedContent]="selectedContent"></xnode-para-view>
+      <xnode-para-view [content]="content.content" [reveiwerList]="reveiwerList" [searchTerm]="searchTerm"
+        [users]="usersList" [specItem]="specItem" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
+        [content]="content" [selectedContent]="selectedContent"></xnode-para-view>
     </div>
 
     <div class="gradientback" *ngIf="!content?.collapsed"></div>
