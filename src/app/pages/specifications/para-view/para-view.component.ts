@@ -5,6 +5,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-para-view',
   templateUrl: './para-view.component.html',
@@ -19,6 +20,7 @@ export class ParaViewComponent {
   @Input() specId: any;
   @Input() visible: any;
   @Input() reveiwerList: any;
+  openOverlayPanel:boolean=false;
   selectedText: string = '';
   @Input() specItem: any;
   showCommentIcon: boolean = false;
@@ -40,6 +42,21 @@ export class ParaViewComponent {
       }
     })
     this.showComments = this.showComments;
+  }
+
+  onOverlayHide(){
+    this.openOverlayPanel=false;
+    of(([])).pipe(delay(1000)).subscribe((results) => {
+        if (this.overlayPanel.overlayVisible) {
+        } else {
+          this.checkOverlay();
+        }
+    });
+  }
+  checkOverlay(){
+      if(this.openOverlayPanel==false){
+        this.deSelect();
+      }
   }
 
   getWords(subitem: any): string[] {
