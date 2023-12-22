@@ -202,7 +202,7 @@ export class CrTabsComponent {
               if (subItem.comment) {
                 if (subItem.comment.referenceContent.title === 'OpenAPI Spec') {
                   of(([])).pipe(
-                    delay(500)
+                    delay(1000)
                   ).subscribe((results) => {
                     this.fetchOpenSpecAPI(subItem.id)
                   });
@@ -210,7 +210,7 @@ export class CrTabsComponent {
               } else {
                 if (subItem.task.referenceContent.title === 'OpenAPI Spec') {
                   of(([])).pipe(
-                    delay(500)
+                    delay(1000)
                   ).subscribe((results) => {
                     this.fetchOpenSpecAPI(subItem.id)
                   });
