@@ -57,14 +57,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
-    this.getDeepLinkInfo('deep_link_info')
-      .then((res: any) => {
-        this.product = this.localStorageService.getItem(StorageKeys.Product);
-        this.getVersions();
-      })
-      .catch((err: any) => {
-        console.log('got error:', err);
-      });
+    // this.specData.loadActiveTab.subscribe((event: any) => {
+    //   if (event) {
+    //     this.getVersions();
+    //   }
+    // })
+
     if (this.product) {
       this.getMeStorageData();
     }
@@ -122,7 +120,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.utils.loadSpinner(true);
   }
 
-  getVersions() {
+  getVersions(obj?: any) {
     this.versions = [];
     this.utils.loadSpinner(true);
     this.specService
@@ -166,7 +164,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0];
-          localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
@@ -175,7 +172,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -190,12 +187,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getDeepLinkDetails(val: any) {
+    console.log('val', val);
+
     this.getAllProductsInfo('meta_data')
       .then((result: any) => {
         if (result) {
           let products = JSON.parse(result);
-          let product = products.find((x: any) => x.id === val.product_id);
-          localStorage.setItem('product_email', product.email);
+          let product = products.find((x: any) => (x.id === val.product_id || x.id === val.productId));
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
@@ -237,6 +235,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
+    this.getVersions();
+
   }
 
   searchText(keyword: any) {
@@ -578,7 +578,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       if (allProducts.length > 0) {
         let product = allProducts.find((x: any) => x.id === obj.id);
         if (product && product.has_insights) {
-          localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);

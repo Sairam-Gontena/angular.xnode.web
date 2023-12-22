@@ -9,12 +9,14 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 })
 export class UserRolesComponent implements OnInit {
   @Input() content: any;
-  @Input() parentTitle:any;
+  @Input() parentTitle: any;
   @Input() searchTerm: any;
   @Input() selectedContent!: string;
   @Input() users: any = [];
   @Input() specId: any;
   @Input() specItem: any;
+  @Input() reveiwerList: any;
+
   showCommentIcon: boolean = false
   seletedMainIndex?: number;
   selecteedSubIndex?: number;
@@ -24,7 +26,7 @@ export class UserRolesComponent implements OnInit {
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   selectedIndex: any;
 
-  constructor(private specUtils: SpecUtilsService,private utilsService:UtilsService) { }
+  constructor(private specUtils: SpecUtilsService, private utilsService: UtilsService) { }
 
   ngOnInit(): void {
   }
@@ -87,7 +89,7 @@ export class UserRolesComponent implements OnInit {
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
   }
 
-  openCommentSection(){
+  openCommentSection() {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));

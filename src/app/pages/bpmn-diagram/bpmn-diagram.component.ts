@@ -1,5 +1,5 @@
 
-import { AfterContentInit, Component, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterContentInit, Component, ElementRef, ViewChild, OnDestroy, OnInit, Renderer2, Input } from '@angular/core';
 import {
   BpmnPropertiesPanelModule, BpmnPropertiesProviderModule, CamundaPlatformPropertiesProviderModule
 } from 'bpmn-js-properties-panel';
@@ -34,6 +34,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   bpmnJS: any;
+  @Input() referenceId:any;
   pallete_classes: any;
   selected_classes: any;
   xml: string = "";

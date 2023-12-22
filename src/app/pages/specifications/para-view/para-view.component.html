@@ -35,12 +35,12 @@
                 (mouseleave)="showCommentIcon = false" *ngIf="showCommentIcon">
             <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon"
                 (click)="openCommentSection()"></i>
-            <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon"
-                (click)="op1.toggle($event);toggleAddTask()">
+            <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
+                (click)="op1.toggle($event);saveSecInLocal()" (mouseleave)="showCommentIcon = false"
+                *ngIf="showCommentIcon">
             <p-overlayPanel #op1 appendTo="body" (onHide)="showCommentIcon=false">
-                <xnode-add-task *ngIf="showAddTask" [reveiwerList]="reveiwerList"
-                    (closeOverlay)="op1.toggle(false);emptySelectedContent()" [selectedContent]="content"
-                    [users]="users" placeHolder="Add a Task" [visible]="showAddTask" [parentEntity]="'SPEC'"
+                <xnode-add-task [reveiwerList]="reveiwerList" (closeOverlay)="op1.toggle(false);emptySelectedContent()"
+                    [selectedContent]="content" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                     [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
             </p-overlayPanel>
 

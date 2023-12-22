@@ -16,6 +16,9 @@ export class SpecUtilsService {
   private commentsCrActiveTab: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeCommentsCrActiveTab: Observable<boolean> = this.commentsCrActiveTab.asObservable();
 
+  private activateMainTab: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public loadActiveTab: Observable<any> = this.activateMainTab.asObservable();
+
   private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeSpecVersion: Observable<any> = this.saveSpecVersion.asObservable();
 
@@ -53,5 +56,9 @@ export class SpecUtilsService {
 
   _getLatestCrList(event: any): void {
     this.getLatestCrList.next(event);
+  }
+
+  _loadActiveTab(event: any): void {
+    this.activateMainTab.next(event);
   }
 }

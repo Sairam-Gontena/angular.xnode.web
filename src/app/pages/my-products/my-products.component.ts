@@ -143,7 +143,6 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.utils.hasProductPermission(false)
     }
-    localStorage.setItem('product_email', data.email);
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
@@ -172,10 +171,11 @@ export class MyProductsComponent implements OnInit {
       if (restrictionMaxValue && filteredApps.length >= parseInt(restrictionMaxValue)) {
         this.utils.showLimitReachedPopup(true);
         localStorage.setItem('show-upload-panel', 'false');
+      } else {
+        this.router.navigate(['/x-pilot'])
+        localStorage.setItem('show-upload-panel', 'true');
+        this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
       }
-      this.router.navigate(['/x-pilot'])
-      localStorage.setItem('show-upload-panel', 'true');
-      this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
     }
   }
 

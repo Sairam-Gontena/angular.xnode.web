@@ -20,7 +20,7 @@ export class CommentsCrPanelComponent implements OnInit {
   tabView!: TabView;
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
-  @Input() swaggerData:any;
+  @Input() swaggerData: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -40,12 +40,13 @@ export class CommentsCrPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.specUtils.getMeCommentsCrActiveTab.subscribe((res)=>{
-      if(res){
-        this.activeIndex =1;
+    this.specUtils.loadActiveTab.subscribe((res: any) => {
+      if (res) {
+        console.log('res', res);
+        this.activeIndex = res.activeIndex;
         this.child.getCRList();
-      }else{
-        this.activeIndex =0;
+      } else {
+        this.activeIndex = 0;
       }
     });
   }
@@ -75,9 +76,9 @@ export class CommentsCrPanelComponent implements OnInit {
 
   switchHeaders(event: any) {
     this.activeIndex = event.index
-    if(event.index == 0){
+    if (event.index == 0) {
       let specData = localStorage.getItem('SPEC_DATA');
-      if(specData){
+      if (specData) {
         let data = JSON.parse(specData);
         // localStorage.setItem('selectedSpec', JSON.stringify(data[0])); // uncomment this onnly if it is necessary
       }
@@ -86,7 +87,7 @@ export class CommentsCrPanelComponent implements OnInit {
     const header = tabs[event.index].header;
     if (header == 'Change Request') {
       this.child.getCRList();
-    }else{
+    } else {
       this.specUtils._commentsCrActiveTab(false);
       this.specUtils._tabToActive('COMMENT');
     }

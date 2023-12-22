@@ -180,7 +180,9 @@ export class AppHeaderComponent implements OnInit {
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      this.allNotifications.unshift(data);
+      console.log('notif', data);
+      
+            this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
       if (data.product_status === 'completed') {

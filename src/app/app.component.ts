@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
-      if (event && this.router.url!='/dashboard') {
+      if (event && this.router.url != '/dashboard') {
         this.spinner.show();
       } else {
         this.spinner.hide();
@@ -136,7 +136,7 @@ export class AppComponent implements OnInit {
         this.makeTrustedUrl(data.email);
       }
     });
-    this.utilsService.openDockedNavi.subscribe((data:any)=>{
+    this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
     })
   }
@@ -261,7 +261,6 @@ export class AppComponent implements OnInit {
       }
       if (event.data.message === 'change-app') {
         this.utilsService.saveProductId(event.data.id);
-        localStorage.setItem('product_email', event.data.product_user_email);
         if (this.currentUser?.email == event.data.product_user_email) {
           this.utilsService.hasProductPermission(true);
         } else {
