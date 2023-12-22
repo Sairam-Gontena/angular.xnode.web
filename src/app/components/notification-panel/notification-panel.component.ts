@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecUtilsService } from '../services/spec-utils.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -40,7 +41,8 @@ export class NotificationPanelComponent {
     private auditUtil: AuditutilsService,
     public utils: UtilsService,
     private notifyApi: NotifyApiService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private specUtils: SpecUtilsService
   ) {
     let user = localStorage.getItem('currentUser');
     if (user) {
@@ -158,13 +160,22 @@ export class NotificationPanelComponent {
       });
   }
 
+  goToCr(obj: any) {
+    this.storeProductInfoForDeepLink('deep_link_info', obj)
+      .then(() => {
+        this.router.navigate(['/specification']);
+      })
+      .catch((error) => {
+        console.error('Error storing data:', error);
+      });
+  }
+
   goToSpec(obj: any) {
     let specData = localStorage.getItem('meta_data')
     if (specData) {
       let products = JSON.parse(specData);
       let product = products.find((x: any) => x.id === obj.product_id);
       if (product) {
-        localStorage.setItem('product_email', product.email);
         localStorage.setItem('record_id', product.id);
         localStorage.setItem('product', JSON.stringify(product));
         localStorage.setItem('app_name', product.title);
@@ -188,7 +199,6 @@ export class NotificationPanelComponent {
               let products = response.data.data;
               let product = products.find((x: any) => x.id === obj.product_id);
               if (product) {
-                localStorage.setItem('product_email', product.email);
                 localStorage.setItem('record_id', product.id);
                 localStorage.setItem('product', JSON.stringify(product));
                 localStorage.setItem('app_name', product.title);
@@ -456,8 +466,7 @@ export class NotificationPanelComponent {
       .then((result: any) => {
         if (result) {
           let products = JSON.parse(result);
-          let product = products.find((x: any) => x.id === val.product_id);
-          localStorage.setItem('product_email', product.email);
+          let product = products.find((x: any) => (x.id === val.product_id || x.id === val.productId));
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
@@ -465,7 +474,13 @@ export class NotificationPanelComponent {
           this.closeNotificationPanel.emit(true);
           this.storeProductInfoForDeepLink('deep_link_info', val)
             .then(() => {
-              this.router.navigate(['/specification']);
+              if (!window.location.hash.includes('#/specification')) {
+                this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+                this.router.navigate(['/specification']);
+              } else {
+                this.specUtils._openCommentsPanel(true);
+                this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+              }
             })
             .catch((error) => {
               console.error('Error storing data:', error);

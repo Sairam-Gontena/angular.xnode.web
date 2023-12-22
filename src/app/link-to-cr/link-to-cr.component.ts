@@ -224,7 +224,7 @@ export class LinkToCrComponent implements OnInit {
             summary: 'SUCCESS',
             detail: 'CR has been successfully linked',
           });
-          this.specUtils._commentsCrActiveTab(true);
+          this.specUtils._loadActiveTab({ activeIndex: 1 });
           this.close.emit();
         } else {
           this.utilsService.loadToaster({

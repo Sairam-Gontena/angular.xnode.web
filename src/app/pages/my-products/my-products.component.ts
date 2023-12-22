@@ -143,7 +143,6 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.utils.hasProductPermission(false)
     }
-    localStorage.setItem('product_email', data.email);
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
