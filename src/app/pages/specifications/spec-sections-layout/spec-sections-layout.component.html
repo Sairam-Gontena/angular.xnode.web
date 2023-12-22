@@ -698,8 +698,6 @@
             [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
         </p-overlayPanel>
       </div>
-      <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
-        [specItem]="specItem"></xnode-common-spec-table>
       <div
         [ngClass]="{'common-spec-table':isSideMenuOpened, 'common-spec-table-navi ':!isSideMenuOpened && isDockedNaviOpened, 'common-spec-table-navi-menu':isSideMenuOpened && isDockedNaviOpened,'common-spec-table-menu-comments':isSideMenuOpened && isCommnetsPanelOpened}">
         <xnode-common-spec-table [searchTerm]="searchTerm" [content]="content.content" [users]="usersList"
