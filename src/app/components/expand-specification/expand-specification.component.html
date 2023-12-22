@@ -40,7 +40,7 @@
   <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Model'" (dataFlowEmitter)="closeFullScreenView.emit()"
     [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-data-model-common>
     <div class="h-full expand-spec">
-      <xnode-bpmn-common *ngIf="dataToExpand.title === 'Workflows'" (dataFlowEmitter)="closeFullScreenView.emit()"
+      <xnode-bpmn-common *ngIf="dataToExpand.title === 'Workflows'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
       [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
     </div>
   <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="surface-900 p-4">
