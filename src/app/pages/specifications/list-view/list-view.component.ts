@@ -3,6 +3,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 import { Section } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { delay, of } from 'rxjs';
 
 @Component({
   selector: 'xnode-list-view',
@@ -21,6 +22,7 @@ export class ListViewComponent {
   @Input() visible: any;
   @Input() reveiwerList: any;
 
+  openOverlayPanel:boolean=false;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
   selectedText: string = '';
@@ -110,6 +112,21 @@ export class ListViewComponent {
         }
       });
     }
+  }
+
+  onOverlayHide(){
+    this.openOverlayPanel=false;
+    of(([])).pipe(delay(1000)).subscribe((results) => {
+        if (this.overlayPanel.overlayVisible) {
+        } else {
+          this.checkOverlay();
+        }
+    });
+  }
+  checkOverlay(){
+      if(this.openOverlayPanel==false){
+        this.deSelect();
+      }
   }
 
   async handleSelectionText(event: any, type: string) {
