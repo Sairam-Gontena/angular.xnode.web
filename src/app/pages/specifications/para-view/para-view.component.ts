@@ -22,6 +22,8 @@ export class ParaViewComponent {
   @Input() specItem: any;
   showCommentIcon: boolean = false;
   @ViewChild('op') overlayPanel: OverlayPanel | any;
+  // @ViewChild('1') overlayPanel: OverlayPanel | any;
+
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   selectedWordIndices: number[] = [];
   currentUser: any;
