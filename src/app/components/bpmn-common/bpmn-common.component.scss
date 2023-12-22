@@ -7,7 +7,8 @@
 
 .disable-height{
   height: 0vh;
-  cursor: none;
+  cursor: default;
+  pointer-events: none;
 }
 
 .bpmn-component {

@@ -1,7 +1,7 @@
 <div class="surface-900 overflow-hidden"
     [ngClass]="{'spec-er-body':currentUrl == '/specification','er-body':currentUrl != '/specification'}">
     <span *ngIf="bpmnSubUrl; else elseBlock">
-        <xnode-bpmn-diagram [referenceId]="referenceId"></xnode-bpmn-diagram>
+        <xnode-bpmn-diagram ></xnode-bpmn-diagram>
     </span>
     <ng-template #elseBlock>
         <div [ngClass]="{'modal-view-header':currentUrl == '/specification'}">

@@ -799,13 +799,6 @@ export class BpmnCommonComponent
     // var ele = document.getElementById('graph') as HTMLElement;
     // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
-    console.log('bpmn cmn', svgNode, ele);
-    // if(this.referenceId){
-    //   ele.innerHTML=svgNode;
-    // }else{
-    //   ele?.appendChild(svgNode);
-    // }
-
     ele?.appendChild(svgNode);
     ele.classList.add('overflow-y-auto');
 
