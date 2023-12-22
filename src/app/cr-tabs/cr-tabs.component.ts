@@ -64,6 +64,7 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService
   ) {
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
     });
@@ -77,7 +78,6 @@ export class CrTabsComponent {
 
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.product = this.storageService.getItem(StorageKeys.Product);
     this.filters = [
       { title: 'Filters', code: 'F' },
       { title: 'All', code: 'A' },
@@ -161,8 +161,8 @@ export class CrTabsComponent {
     this.commentsService
       .getCrList(body)
       .then((res: any) => {
-        if (res) {
-          let data: any[] = res.data.map((item: any) => {
+        if (res && res.data) {
+          let data: any[] = res?.data?.map((item: any) => {
             return { ...item, checked: false };
           });
           this.crData = data;
@@ -498,7 +498,7 @@ export class CrTabsComponent {
     this.commentsService
       .publishApp(body)
       .then((response: any) => {
-        if (response) {
+        if (response && response.status ! === 'disaster') {
           let user_audit_body = {
             method: 'POST',
             url: response?.request?.responseURL,
@@ -537,7 +537,7 @@ export class CrTabsComponent {
           );
           this.utilsService.loadToaster({
             severity: 'error',
-            summary: 'ERROR',
+            summary: response.status,
             detail: 'Network Error',
             life: 3000,
           });

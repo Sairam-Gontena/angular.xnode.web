@@ -59,7 +59,14 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.getDeepLinkInfo('deep_link_info')
       .then((res: any) => {
+        console.log('res', res);
         this.product = this.localStorageService.getItem(StorageKeys.Product);
+        const notif = JSON.parse(res);
+        if (notif && notif.entity === 'WORKFLOW') {
+          this.getVersions(notif);
+          this.specUtils._commentsCrActiveTab(true);
+          return;
+        }
         this.getVersions();
       })
       .catch((err: any) => {
@@ -122,7 +129,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.utils.loadSpinner(true);
   }
 
-  getVersions() {
+  getVersions(obj?: any) {
     this.versions = [];
     this.utils.loadSpinner(true);
     this.specService
@@ -132,7 +139,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.versions = response.data;
           this.getMeSpecList({
             productId: this.product?.id,
-            versionId: this.versions[0].id,
+            versionId: obj?.versionId ? obj?.versionId : this.versions[0].id,
           });
         } else {
           this.utils.loadToaster({
@@ -190,11 +197,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getDeepLinkDetails(val: any) {
+    console.log('val', val);
+    
     this.getAllProductsInfo('meta_data')
       .then((result: any) => {
         if (result) {
           let products = JSON.parse(result);
-          let product = products.find((x: any) => x.id === val.product_id);
+          let product = products.find((x: any) =>( x.id === val.product_id|| x.id === val.productId));
           localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));

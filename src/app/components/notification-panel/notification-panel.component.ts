@@ -159,7 +159,13 @@ export class NotificationPanelComponent {
   }
 
   goToCr(obj: any) {
-    
+    this.storeProductInfoForDeepLink('deep_link_info', obj)
+    .then(() => {
+      this.router.navigate(['/specification']);
+    })
+    .catch((error) => {
+      console.error('Error storing data:', error);
+    });
   }
 
   goToSpec(obj: any) {
@@ -460,7 +466,7 @@ export class NotificationPanelComponent {
       .then((result: any) => {
         if (result) {
           let products = JSON.parse(result);
-          let product = products.find((x: any) => x.id === val.product_id);
+          let product = products.find((x: any) => (x.id === val.product_id ||x.id === val.productId ));
           localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
@@ -469,7 +475,11 @@ export class NotificationPanelComponent {
           this.closeNotificationPanel.emit(true);
           this.storeProductInfoForDeepLink('deep_link_info', val)
             .then(() => {
-              this.router.navigate(['/specification']);
+              if (!window.location.hash.includes('#/specification')) {
+                this.router.navigate(['/specification']);
+              }else {
+                
+              }
             })
             .catch((error) => {
               console.error('Error storing data:', error);
