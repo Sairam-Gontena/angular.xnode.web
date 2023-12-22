@@ -26,6 +26,7 @@ export class DataModelCommonComponent {
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
+  @Input() referenceId:any;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   data: Data | any;
   bpmnSubUrl: boolean = false;

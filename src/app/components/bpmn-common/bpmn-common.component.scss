@@ -5,6 +5,11 @@
     border-width: 0;
 }
 
+.disable-height{
+  height: 0vh;
+  cursor: none;
+}
+
 .bpmn-component {
     display: flex;
     height: 100vh;
@@ -21,7 +26,7 @@
     background-color: #ffffff;
 }
 
-#graph {
+.graphViewBpmnCommon{
     height: 80vh;
 }
 
@@ -129,16 +134,16 @@ img.highlighted {
     background-color: #02ADEE !important;
 }
 
-#graph::-webkit-scrollbar {
+.graphViewBpmnCommon::-webkit-scrollbar {
     width: 8px;
 }
 
-#graph::-webkit-scrollbar-track {
+.graphViewBpmnCommon::-webkit-scrollbar-track {
     background-color: #3A3942;
     border-radius: 100px;
 }
 
-#graph::-webkit-scrollbar-thumb {
+.graphViewBpmnCommon::-webkit-scrollbar-thumb {
     background-color: #F5F5F5;
     border-radius: 100px;
 }

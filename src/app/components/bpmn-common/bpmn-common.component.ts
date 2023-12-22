@@ -20,7 +20,7 @@ import BpmnPalletteModule from 'bpmn-js/lib/features/palette';
 import * as custom from '../../pages/bpmn-diagram/custom.json';
 import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
-import { Observable } from 'rxjs';
+import { Observable, delay, of } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json';
 import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
@@ -45,6 +45,7 @@ export class BpmnCommonComponent
     | undefined;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   @Input() specExpanded?: boolean;
+  @Input() referenceId:any;
   @Input() dataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
@@ -106,7 +107,14 @@ export class BpmnCommonComponent
       var bpmnWindow = document.getElementById('diagramRef');
       if (bpmnWindow) bpmnWindow.style.display = 'None';
       this.graphRedirection = false;
-      var graphWindow = document.getElementById('sc');
+      var graphWindow;
+      if(this.referenceId){
+        of(([])).pipe(delay(1000)).subscribe((results) => {
+          graphWindow = document.getElementById('sc'+this.referenceId);
+        });
+      }else{
+        graphWindow = document.getElementById('sc');
+      }
       if (graphWindow) graphWindow.style.display = '';
     }, 0);
     this.items = [
@@ -782,16 +790,36 @@ export class BpmnCommonComponent
       title: this.product.title,
       children: mod_data,
     };
-
-    var ele = document.getElementById('graph') as HTMLElement;
+    var ele;
+    if(this.referenceId){
+        ele = document.getElementById('graph'+this.referenceId) as HTMLElement;
+    }else{
+      ele = document.getElementById('graph') as HTMLElement;
+    }
+    // var ele = document.getElementById('graph') as HTMLElement;
     // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
+    console.log('bpmn cmn', svgNode, ele);
+    // if(this.referenceId){
+    //   ele.innerHTML=svgNode;
+    // }else{
+    //   ele?.appendChild(svgNode);
+    // }
+
     ele?.appendChild(svgNode);
     ele.classList.add('overflow-y-auto');
 
     let nodes: NodeListOf<SVGGElement> | undefined;
     nodes = svgNode?.querySelectorAll('g');
-    var svg_ele = document.getElementById('graph');
+    var svg_ele;
+    if(this.referenceId){
+      of(([])).pipe(delay(1000)).subscribe((results) => {
+        svg_ele = document.getElementById('graph'+this.referenceId);
+      });
+    }else{
+      svg_ele = document.getElementById('graph');
+    }
+    // var svg_ele = document.getElementById('graph');
 
     if (svg_ele) {
       svg_ele.addEventListener('click', (event: any) => {
@@ -803,7 +831,14 @@ export class BpmnCommonComponent
           var bpmnWindow = document.getElementById('diagramRef');
           if (bpmnWindow) bpmnWindow.style.display = '';
           this.graphRedirection = true;
-          var graphWindow = document.getElementById('sc');
+          var graphWindow;
+          if(this.referenceId){
+            of(([])).pipe(delay(500)).subscribe((results) => {
+              graphWindow = document.getElementById('sc'+this.referenceId);
+            });
+          }else{
+            graphWindow = document.getElementById('sc');
+          }
           if (graphWindow) graphWindow.style.display = 'None';
           this.getFlow(flow);
           this.centerAndFitViewport(this.bpmnJS);
