@@ -176,7 +176,6 @@ export class NotificationPanelComponent {
       let products = JSON.parse(specData);
       let product = products.find((x: any) => x.id === obj.product_id);
       if (product) {
-        localStorage.setItem('product_email', product.email);
         localStorage.setItem('record_id', product.id);
         localStorage.setItem('product', JSON.stringify(product));
         localStorage.setItem('app_name', product.title);
@@ -200,7 +199,6 @@ export class NotificationPanelComponent {
               let products = response.data.data;
               let product = products.find((x: any) => x.id === obj.product_id);
               if (product) {
-                localStorage.setItem('product_email', product.email);
                 localStorage.setItem('record_id', product.id);
                 localStorage.setItem('product', JSON.stringify(product));
                 localStorage.setItem('app_name', product.title);
@@ -469,7 +467,6 @@ export class NotificationPanelComponent {
         if (result) {
           let products = JSON.parse(result);
           let product = products.find((x: any) => (x.id === val.product_id || x.id === val.productId));
-          localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);

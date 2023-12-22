@@ -164,7 +164,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0];
-          localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
@@ -195,7 +194,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         if (result) {
           let products = JSON.parse(result);
           let product = products.find((x: any) => (x.id === val.product_id || x.id === val.productId));
-          localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
@@ -580,7 +578,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       if (allProducts.length > 0) {
         let product = allProducts.find((x: any) => x.id === obj.id);
         if (product && product.has_insights) {
-          localStorage.setItem('product_email', product.email);
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);

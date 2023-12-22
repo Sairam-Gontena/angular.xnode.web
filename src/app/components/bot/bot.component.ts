@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Output, EventEmitter, Input } from '@angular/core';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-bot',
@@ -9,10 +11,11 @@ import { Output, EventEmitter, Input } from '@angular/core';
 })
 
 export class BotComponent implements OnInit {
-
-  constructor(private elementRef: ElementRef, private router: Router) {
+  constructor(
+    private elementRef: ElementRef,
+    private storageService: LocalStorageService
+  ) {
   }
-  // @Output() chatBotFlag = new EventEmitter<boolean>();
   @Output() valueChange = new EventEmitter<any>();
   @Input() botDisplayFlag: boolean = true;
 
@@ -25,9 +28,8 @@ export class BotComponent implements OnInit {
 
 
   onClickContinue(): void {
-    let productEmail = localStorage.getItem('product_email')
-    let productContext = localStorage.getItem('record_id');
-    this.valueChange.emit({ 'productContext': productContext, 'cbFlag': true, 'productEmail': productEmail });
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    this.valueChange.emit({ 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email });
   }
   ngOnInit(): void {
     this.botContainer = this.elementRef.nativeElement.querySelector('#botContainer');
