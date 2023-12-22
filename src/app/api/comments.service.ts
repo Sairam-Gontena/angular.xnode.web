@@ -97,6 +97,6 @@ export class CommentsService extends BaseApiService {
   }
 
   publishApp(body: any) {
-    return this.get('product-spec/publish', body);
+    return this.post('product-spec/publish', body);
   }
 }

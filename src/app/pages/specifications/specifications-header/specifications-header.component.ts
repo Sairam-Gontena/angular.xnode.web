@@ -49,14 +49,14 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specService: SpecService
   ) {
     this.specUtils.getMeSpecVersion.subscribe((event) => {
-      if(event && this.versions.length > 0){
+      if (event && this.versions?.length > 0) {
         this.versions.forEach((element: any) => {
-          if(event.versionId === element.id)
-          this.selectedVersion = element;
+          if (event.versionId === element.id)
+            this.selectedVersion = element;
         });
       }
     })
-   }
+  }
 
   ngOnInit(): void {
     if (this.versions && this.versions.length > 0) {
@@ -181,8 +181,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    // this.utils.openOrClosePanel(SidePanel.Comments);
-    // this.utils.updateConversationList(null);
     this.utils.disableDockedNavi()
     this.specUtils._openCommentsPanel(true);
   }

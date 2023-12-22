@@ -24,7 +24,7 @@ import { delay, of } from 'rxjs';
 export class CrTabsComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
-  @Input() swaggerData:any;
+  @Input() swaggerData: any;
   filters: any;
   currentUser: any;
   crData: any;
@@ -48,7 +48,7 @@ export class CrTabsComponent {
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
   userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   targetUrl: string = '';
-  bpmnFrom: string ='SPEC';//;  'Comments'
+  bpmnFrom: string = 'SPEC';//;  'Comments'
   iframeSrc: SafeResourceUrl = '';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
@@ -93,8 +93,8 @@ export class CrTabsComponent {
   }
 
   makeTrustedUrl(): void {
-    let target =localStorage.getItem('targetUrl');
-    if(target){
+    let target = localStorage.getItem('targetUrl');
+    if (target) {
       this.targetUrl = target;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.targetUrl
@@ -102,8 +102,8 @@ export class CrTabsComponent {
     }
   }
 
-  checkParaViewSections(title: string,parentTitle?:string) {
-    if(parentTitle=='Technical Specifications'){
+  checkParaViewSections(title: string, parentTitle?: string) {
+    if (parentTitle == 'Technical Specifications') {
       return;
     }
     return (
@@ -129,7 +129,7 @@ export class CrTabsComponent {
     );
   }
 
-  checkUserPersonaSections(title:string){
+  checkUserPersonaSections(title: string) {
     return (
       this.userPersonaViewSections.filter((secTitle) => {
         return secTitle === title;
@@ -138,18 +138,18 @@ export class CrTabsComponent {
   }
 
 
-  fetchOpenSpecAPI(id:any){
-      const ui = SwaggerUIBundle({
-        domNode: document.getElementById('openapi-ui-spec'+id),
-        layout: 'BaseLayout',
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIBundle.SwaggerUIStandalonePreset,
-        ],
-        spec: this.swaggerData,
-        docExpansion: 'none',
-        operationsSorter: 'alpha',
-      });
+  fetchOpenSpecAPI(id: any) {
+    const ui = SwaggerUIBundle({
+      domNode: document.getElementById('openapi-ui-spec' + id),
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
+      ],
+      spec: this.swaggerData,
+      docExpansion: 'none',
+      operationsSorter: 'alpha',
+    });
   }
 
   getCRList() {
@@ -197,21 +197,21 @@ export class CrTabsComponent {
       .then((res: any) => {
         if (res) {
           this.crList[index] = res.data;
-          this.crList.forEach((item:any)=>{
-            item.forEach((subItem:any)=>{
-              if(subItem.comment){
-                if(subItem.comment.referenceContent.title==='OpenAPI Spec'){
+          this.crList.forEach((item: any) => {
+            item.forEach((subItem: any) => {
+              if (subItem.comment) {
+                if (subItem.comment.referenceContent.title === 'OpenAPI Spec') {
                   of(([])).pipe(
                     delay(500)
-                   ).subscribe((results) => {
+                  ).subscribe((results) => {
                     this.fetchOpenSpecAPI(subItem.id)
                   });
                 }
-              }else{
-                if(subItem.task.referenceContent.title==='OpenAPI Spec'){
+              } else {
+                if (subItem.task.referenceContent.title === 'OpenAPI Spec') {
                   of(([])).pipe(
                     delay(500)
-                   ).subscribe((results) => {
+                  ).subscribe((results) => {
                     this.fetchOpenSpecAPI(subItem.id)
                   });
                 }
@@ -498,7 +498,9 @@ export class CrTabsComponent {
     this.commentsService
       .publishApp(body)
       .then((response: any) => {
-        if (response && response.status ! === 'disaster') {
+        console.log('response', response);
+
+        if (response) {
           let user_audit_body = {
             method: 'POST',
             url: response?.request?.responseURL,
