@@ -101,19 +101,14 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                      *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
+                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
                       op.toggle($event);
                       updateSelectedCr(data);
                       $event.stopPropagation();
                       getMeActions(data)
-                    "></i> -->
-                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200" (click)="
-                        op.toggle($event);
-                        updateSelectedCr(data);
-                        $event.stopPropagation();
-                        getMeActions(data)
-                      "></i>
+                    "></i>
+
                     </div>
                     <div class="flex align-items-center pl-4" style="margin-top: -15px">
                       <p class="text-xs shaded-color normal-font-weight">
