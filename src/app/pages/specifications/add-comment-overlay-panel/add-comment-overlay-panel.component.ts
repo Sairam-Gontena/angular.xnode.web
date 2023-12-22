@@ -37,6 +37,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() specId: any;
   @Input() activeIndex: any;
   @Input() from: any;
+  @Input() component:any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -83,6 +84,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       labelKey: 'name',
       mentionSelect: this.format.bind(this),
     };
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === ' ' && this.component=='crTabs') {
+      event.stopPropagation();
+    }
   }
 
   format(item: any) {
