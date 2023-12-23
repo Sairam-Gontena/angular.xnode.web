@@ -62,6 +62,7 @@
     .empty-card {
         height: 200px;
         border-radius: 10px;
+        border: 1px dashed;
     }
 
     .card-title {
@@ -187,7 +188,7 @@
     }
 
     :host ::ng-deep .p-card {
-        height: 260px !important;
+        height: 130px !important;
         position: relative;
     }
 
@@ -297,30 +298,30 @@
 }
 
 :host ::ng-deep .p-tabview .p-tabview-nav {
-    background: #3A3942 !important;
+    background: #343541  !important;
     color: #ffffff !important;
     border: none !important;
 }
 
 :host ::ng-deep.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    background: #3A3942;
+    background: #343541;
     border-color: #02ADEE;
     color: #02ADEE;
 }
 
 :host ::ng-deep.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
-    background: #3A3942;
+    background: #343541;
     border-color: #02ADEE;
     color: #02ADEE;
 }
 
 :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    background: #3A3942;
+    background: #343541;
     color: #ffffff;
 }
 
 :host ::ng-deep .p-tabview .p-tabview-panels {
-    background: #3A3942 !important;
+    background: #343541 !important;
     color: #ffffff !important;
     padding: 0px !important;
 }
@@ -401,7 +402,12 @@
 .empty-card1 {
     border-radius: 10px;
     margin-top: 10px;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    border: 3px dashed;
+    background-color: #343541 !important;
+    .card-title{
+        background-color: #343541 !important;
+    }
 }
 
 :host ::ng-deep .navi-btn.p-button {
@@ -428,4 +434,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: calc(100% - 30px);
+}
+.grid > [class*=col],.grid > .empty-card1 {
+    margin: 1em;
 }
