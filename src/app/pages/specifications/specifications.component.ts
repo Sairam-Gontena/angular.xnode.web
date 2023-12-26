@@ -557,7 +557,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('SPEC_DATA');
+    // Don't remove this commented code
+    // localStorage.removeItem('SPEC_DATA');
     localStorage.removeItem('selectedSpec');
     localStorage.removeItem('SPEC_VERISON');
     this.utils.saveProductDetails({});
