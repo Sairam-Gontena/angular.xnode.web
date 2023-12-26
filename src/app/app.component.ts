@@ -113,11 +113,13 @@ export class AppComponent implements OnInit {
     let templateId = params.get('template_id');
     let templateType = params.get('template_type');
     let productId = params.get('product_id');
+    let versionId = params.get('version_id');
     if(templateId && templateType){
       let deepLinkInfo = {
         product_id: productId,
         template_id: templateId,
         template_type: templateType,
+        version_id:versionId
       };
       await this.setDeepLinkInStorage(deepLinkInfo)
       this.router.navigateByUrl('specification');

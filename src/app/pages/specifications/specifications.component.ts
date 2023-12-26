@@ -119,7 +119,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  getVersions(obj?: any) {
+  getVersions(versionId?: any) {
     this.versions = [];
     this.utils.loadSpinner(true);
     this.specService
@@ -127,10 +127,17 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((response) => {
         if (response.status === 200 && response.data) {
           this.versions = response.data;
-          this.getMeSpecList({
-            productId: this.product?.id,
-            versionId: this.versions[0].id,
-          });
+          if(versionId){
+            this.getMeSpecList({
+              productId: this.product?.id,
+              versionId: versionId,
+            });
+          }else{
+            this.getMeSpecList({
+              productId: this.product?.id,
+              versionId: this.versions[0].id,
+            });
+          }
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -196,7 +203,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);
           this.product = product;
-          // this.getVersions();
+          let deeplinkInfo = localStorage.getItem('deep_link_info');
+          let version_id;
+          if(deeplinkInfo){
+            let deeplinkdata=JSON.parse(deeplinkInfo)
+            version_id = deeplinkdata.version_id;
+          }
+          this.getVersions(version_id);
           this.specUtils._openCommentsPanel(true);
           this.specUtils._tabToActive(val.template_type);
         } else {
