@@ -117,7 +117,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       deep_link_info = JSON.parse(deep_link_info);
       this.getDeepLinkDetails(deep_link_info);
     }
-    this.utils.loadSpinner(true);
   }
 
   getVersions(obj?: any) {
@@ -187,8 +186,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getDeepLinkDetails(val: any) {
-    console.log('val', val);
-
     this.getAllProductsInfo('meta_data')
       .then((result: any) => {
         if (result) {
@@ -198,6 +195,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);
+          this.product = product;
+          // this.getVersions();
           this.specUtils._openCommentsPanel(true);
           this.specUtils._tabToActive(val.template_type);
         } else {
