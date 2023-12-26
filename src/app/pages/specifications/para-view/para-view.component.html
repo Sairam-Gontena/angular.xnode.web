@@ -17,7 +17,7 @@
                     <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true" (onHide)="onOverlayHide()">
                         <xnode-add-comment-overlay-panel [users]="users" [selectedText]="selectedText"
                             [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
-                            [parentId]="specItem.id" *ngIf="selectedText.length>0" [position]="'absolute'"
+                            [parentId]="specItem.id" [specItem]="specItem" *ngIf="selectedText.length>0" [position]="'absolute'"
                             [selectedContent]="content" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                     </p-overlayPanel>
                 </span>

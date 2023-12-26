@@ -284,6 +284,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
+    console.log(this.specItem)
     if (this.parentTitle != '' && this.parentTitle != undefined) {
       body.referenceContent.parentTitle = this.parentTitle
     } else {
