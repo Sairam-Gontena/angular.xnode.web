@@ -275,8 +275,8 @@ export class TaskListComponent {
     if (cmt)
       this.selectedComment = cmt;
 
-    this.utils.loadSpinner(true);
-    this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
+    this.utils.loadSpinner(true); //  parentId
+    this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
         this.replies = response.data;
         response.data.forEach((element: any) => {

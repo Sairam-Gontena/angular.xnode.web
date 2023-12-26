@@ -151,11 +151,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
 
   onClickSend(): void {
+    console.log('commentType',this.commentType)
     if (this.from == 'cr-tabs') {
       this.commentInfo.emit({ message: this.comment, attachments: this.uploadedFiles, referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {}, parentId: this.parentId });
       return
     }
-    this.utils.loadSpinner(true);
+    // this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
       this.commentType = 'comment';
@@ -164,6 +165,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.action === 'EDIT') {
       body = this.selectedComment;
       body.message = this.comment;
+      console.log('hi 1')
     } else {
       body = {
         "createdBy": this.currentUser.user_id,
@@ -177,12 +179,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "followers": [],
         "feedback": {},
       }
+      console.log('hi 2')
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
+
+      console.log('hi 3')
       if (this.action === 'REPLY') {
         body = {
           "createdBy": this.currentUser.user_id,
-          "topParentId": this.parentId, // For new comment it is 'null' and reply level this should be top comment id.
+          "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
           "parentEntity": this.parentEntity,
           "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
           "message": this.comment,
@@ -192,12 +197,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           "followers": [],
           "feedback": {},
         }
+        console.log('hi 4')
         this.saveComment(body);
       }
       else {
+        console.log('hi 5')
         this.prepareDataToSaveAsTask()
       }
     } else {
+      console.log('hi 6')
       this.saveComment(body);
     }
   }
@@ -207,6 +215,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.parentTitle != '' && this.parentTitle != undefined) {
       body.referenceContent.parentTitle = this.parentTitle
     }
+    console.log(body)
     this.commentsService.addComments(body).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
         this.prepareDataToDisplayOnCommentsPanel();
@@ -280,7 +289,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "deadline": ""
       }
     }
-    this.saveAsTask(body);
+    console.log(body)
+    // this.saveAsTask(body);
   }
 
   saveAsTask(body: any): void {
