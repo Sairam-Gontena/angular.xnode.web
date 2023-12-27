@@ -100,18 +100,6 @@ export class ListViewComponent {
   highlightSelectedText() {
     const selection = window.getSelection();
     this.selectedWordIndices = [];
-    // if (selection) {
-    //   if (!selection.rangeCount) return;
-    //   const range = selection.getRangeAt(0);
-    //   const elements = range.cloneContents().querySelectorAll('span');
-    //   elements.forEach(element => {
-    //     const id = element.id;
-    //     let index = id;
-    //     if (!this.selectedWordIndices.includes(index)) {
-    //       this.selectedWordIndices.push(index);
-    //     }
-    //   });
-    // }
     if (selection) {
       if (!selection.rangeCount) return;
       const range = selection.getRangeAt(0);
