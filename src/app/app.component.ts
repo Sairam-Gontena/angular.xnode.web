@@ -17,6 +17,12 @@ import { AuthApiService } from './api/auth.service';
 import { debounce } from 'rxjs/operators';
 import { interval } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { ThemeService } from './theme.service';
+
+interface City {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -46,6 +52,10 @@ export class AppComponent implements OnInit {
   screenWidth: number;
   screenHeight: number;
 
+  cities: City[] | undefined;
+
+  selectedCity: City | undefined;
+
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
@@ -57,7 +67,8 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private themeService:ThemeService
   ) {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
@@ -99,7 +110,31 @@ export class AppComponent implements OnInit {
     });
   }
 
+  changeTheme(event: any) {
+    // Your logic to change the theme based on the selected city
+    // alert(event.value.code);
+    this.themeService.switchTheme(event.value.code);
+    // Add your theme-changing logic here
+  }
+
   ngOnInit(): void {
+    this.cities = [
+      { name: 'New York', code: 'lara-light-blue' },
+      { name: 'aga-blue', code: 'saga-blue' },
+      { name: 'md-light-indigo', code: 'md-light-indigo' },
+      { name: 'Romd-dark-indigome3', code: 'md-dark-indigo' },
+      { name: 'bootstrap4-light-blue', code: 'bootstrap4-light-blue' },
+      { name: 'arya-green', code: 'arya-green' },
+      { name: 'arya-orange', code: 'arya-orange' },
+      { name: 'arya-purple', code: 'arya-purple' },
+      { name: 'nova', code: 'nova' },
+      { name: 'nova-alt', code: 'nova-alt' },
+      { name: 'nova-accent', code: 'nova-accent' },
+      { name: 'luna-amber', code: 'luna-amber' },
+      { name: 'luna-blue', code: 'luna-blue' },
+      { name: 'luna-green', code: 'luna-green' },
+      { name: 'rhea', code: 'rhea' },
+  ];
     const currentUser = localStorage.getItem('currentUser');
 
     if (currentUser) {

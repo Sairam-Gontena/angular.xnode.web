@@ -13,8 +13,12 @@ import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
+import {ThemeService} from '../../theme.service';
 
-
+interface City {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -59,6 +63,14 @@ export class AppHeaderComponent implements OnInit {
   productId: any;
   userImage: any;
   limitReachedContent: boolean = false;
+  colorPallet :any;
+  isDarkTheme: boolean = false;
+
+  cities: City[] | undefined;
+
+  selectedCity: City | undefined;
+
+
 
 
   constructor(
@@ -70,7 +82,7 @@ export class AppHeaderComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private captureService: NgxCaptureService,
     private auth: AuthApiService,
-    private auditUtil: AuditutilsService) {
+    private auditUtil: AuditutilsService, private themeService:ThemeService) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -82,7 +94,52 @@ export class AppHeaderComponent implements OnInit {
     }
   }
 
+  changeTheme(selectedColor: any) {
+    // Your logic to change the theme based on the selected city
+    // alert(event.value.code);
+    // this.themeService.switchTheme(event);
+    this.themeService.setPrimaryColor(selectedColor);
+    // Add your theme-changing logic here
+  }
+
+  toggleDarkTheme(){
+    this.isDarkTheme = !this.isDarkTheme;
+        this.themeService.switchTheme(this.isDarkTheme ? 'nova-alt' : 'arya-green');
+    // alert(this.isDarkTheme)
+  }
   ngOnInit(): void {
+    this.cities = [
+      { name: 'New York', code: 'NY' },
+      { name: 'Rome', code: 'RM' },
+      { name: 'London', code: 'LDN' },
+      { name: 'Istanbul', code: 'IST' },
+      { name: 'Paris', code: 'PRS' }
+  ];
+    this.colorPallet = [
+      { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#42A5F5',secondary:'#E3F2FD',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#311B92',secondary:'#9FA8DA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#0D47A1',secondary:'#90CAF9',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#01579B',secondary:'#81D4FA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#004D40',secondary:'#80CBC4',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+  ];
+
+  // { name: 'aga-blue', code: 'saga-blue',color:'blue' },
+  // { name: 'md-light-indigo', code: 'md-light-indigo',color:'indigo' },
+  // { name: 'Romd-dark-indigome3', code: 'md-dark-indigo',color:'indigo' },
+  // { name: 'bootstrap4-light-blue', code: 'bootstrap4-light-blue',color:'skyblue' },
+  // { name: 'arya-green', code: 'arya-green',color:'green' },
+  // { name: 'arya-orange', code: 'arya-orange',color:'orange' },
+  // { name: 'arya-purple', code: 'arya-purple',color:'pruple' },
+  // { name: 'nova', code: 'nova',color:'pink' },
+  // { name: 'nova-alt', code: 'nova-alt',color:'green' },
+  // { name: 'nova-accent', code: 'nova-accent',color:'green'  },
+  // { name: 'luna-amber', code: 'luna-amber',color:'green'  },
+  // { name: 'luna-blue', code: 'luna-blue',color:'green'  },
+  // { name: 'luna-green', code: 'luna-green',color:'green'  },
+  // { name: 'rhea', code: 'rhea',color:'green'  },
+
+
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
       this.selectedPopup = '';
       if (res) {

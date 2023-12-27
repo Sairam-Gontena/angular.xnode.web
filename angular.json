@@ -30,7 +30,76 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              {
+                "input":"src/themes/saga-blue.css",
+                "bundleName": "sage-blue",
+                "inject": false
+              },
+              {
+                "input":"src/themes/lara-light-blue.css",
+                "bundleName": "lara-light-blue",
+                "inject": false
+              },
+              {
+                "input":"src/themes/bootstrap4-light-blue.css",
+                "bundleName": "bootstrap4-light-blue",
+                "inject": false
+              },
+              {
+                "input":"src/themes/md-dark-indigo.css",
+                "bundleName": "md-dark-indigo",
+                "inject": false
+              },
+              {
+                "input":"src/themes/md-light-indigo.css",
+                "bundleName": "md-light-indigo",
+                "inject": false
+              },
+              {
+                "input":"src/themes/arya-green.css",
+                "bundleName": "arya-green",
+                "inject": false
+              },
+              {
+                "input":"src/themes/arya-orange.css",
+                "bundleName": "arya-orange",
+                "inject": false
+              },
+              {
+                "input":"src/themes/arya-purple.css",
+                "bundleName": "arya-purple",
+                "inject": false
+              },
+              {
+                "input":"src/themes/nova-alt.css",
+                "bundleName": "nova-alt",
+                "inject": false
+              },
+              {
+                "input":"src/themes/nova-accent.css",
+                "bundleName": "nova-accent",
+                "inject": false
+              },
+              {
+                "input":"src/themes/luna-amber.css",
+                "bundleName": "luna-amber",
+                "inject": false
+              },
+              {
+                "input":"src/themes/luna-blue.css",
+                "bundleName": "luna-blue",
+                "inject": false
+              },
+              {
+                "input":"src/themes/luna-green.css",
+                "bundleName": "luna-green",
+                "inject": false
+              },
+              {
+                "input":"src/themes/rhea.css",
+                "bundleName": "rhea",
+                "inject": false
+              },
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
               "node_modules/bpmn-js/dist/assets/diagram-js.css",
