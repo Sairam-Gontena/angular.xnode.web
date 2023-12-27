@@ -151,12 +151,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
 
   onClickSend(): void {
-    console.log('commentType',this.commentType)
     if (this.from == 'cr-tabs') {
       this.commentInfo.emit({ message: this.comment, attachments: this.uploadedFiles, referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {}, parentId: this.parentId });
       return
     }
-    // this.utils.loadSpinner(true);
+    this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
       this.commentType = 'comment';
@@ -165,7 +164,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.action === 'EDIT') {
       body = this.selectedComment;
       body.message = this.comment;
-      console.log('hi 1')
     } else {
       body = {
         "createdBy": this.currentUser.user_id,
@@ -179,11 +177,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         "followers": [],
         "feedback": {},
       }
-      console.log('hi 2')
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
-
-      console.log('hi 3')
       if (this.action === 'REPLY') {
         body = {
           "createdBy": this.currentUser.user_id,
@@ -197,15 +192,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           "followers": [],
           "feedback": {},
         }
-        console.log('hi 4')
         this.saveComment(body);
       }
       else {
-        console.log('hi 5')
         this.prepareDataToSaveAsTask()
       }
     } else {
-      console.log('hi 6')
       this.saveComment(body);
     }
   }
