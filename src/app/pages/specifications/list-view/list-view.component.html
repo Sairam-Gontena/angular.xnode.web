@@ -10,13 +10,14 @@
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'title');saveSecInLocal()">
                 <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
-                  <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
+                  <xnode-add-comment-overlay-panel  [width]="'w-30rem'"[users]="users" *ngIf="selectedText.length>0"
                     [parentTitle]="parentTitle" [position]="'absolute'" [selectedContent]="subItem"
                     [selectedText]="selectedText" [parentEntity]="'SPEC'"
                     (closeOverlay)="selectionText.toggle(false);emptySelectedContent()" [specItem]="specItem"
                     [parentId]="specItem.id" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                 </p-overlayPanel>
-              </span><span *ngIf="subItem?.title || subItem?.content"> <br /></span>
+              </span>
+              <span *ngIf="subItem?.title || subItem?.content"> <br /></span>
             </span>
 
             <span class="flex flex-wrap sub-content font-normal text-base">
@@ -25,9 +26,9 @@
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i+j) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'content');saveSecInLocal();openOverlayPanel=true">
                 <p-overlayPanel #selectionContent (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
-                  <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
+                  <xnode-add-comment-overlay-panel  [width]="'w-30rem'" [users]="users" *ngIf="selectedText.length>0 && selectedIndex"
                     [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'"
-                    [parentId]="specItem.id" [parentTitle]="parentTitle" [selectedContent]="subItem"
+                    [parentId]="specItem.id" [parentTitle]="parentTitle" [selectedContent]="content[selectedIndex]"
                     placeHolder="Add a Comment" [specItem]="specItem"
                     (closeOverlay)="selectionContent.toggle(false);emptySelectedContent()"></xnode-add-comment-overlay-panel>
                 </p-overlayPanel>
