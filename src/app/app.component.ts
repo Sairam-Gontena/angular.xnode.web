@@ -14,8 +14,8 @@ import { AuditutilsService } from './api/auditutils.service';
 import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
-import { debounce } from 'rxjs/operators';
-import { interval } from 'rxjs';
+import { debounce, delay } from 'rxjs/operators';
+import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { ThemeService } from './theme.service';
 
@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
   showCommentIcon?: boolean;
   screenWidth: number;
   screenHeight: number;
+  deepLink:boolean=false;
 
   cities: City[] | undefined;
 
@@ -70,9 +71,15 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private themeService:ThemeService
   ) {
+    let winUrl = window.location.href;
+    if(winUrl.includes('template_id')|| winUrl.includes('template_type')){
+      this.deepLink = true;
+      this.setDeepLinkInfo(winUrl);
+    }else{
+      this.deepLink=false;
+    }
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         if (event.navigationTrigger === 'popstate') {
@@ -117,6 +124,38 @@ export class AppComponent implements OnInit {
     // Add your theme-changing logic here
   }
 
+  async setDeepLinkInfo(winUrl:any){
+    let urlObj = new URL(winUrl);
+    let hash = urlObj.hash;
+    let [path, queryString] = hash.substr(1).split('?');
+    let params = new URLSearchParams(queryString);
+    let templateId = params.get('template_id');
+    let templateType = params.get('template_type');
+    let productId = params.get('product_id');
+    let versionId = params.get('version_id');
+    if(templateId && templateType){
+      let deepLinkInfo = {
+        product_id: productId,
+        template_id: templateId,
+        template_type: templateType,
+        version_id:versionId
+      };
+      await this.setDeepLinkInStorage(deepLinkInfo)
+      this.router.navigateByUrl('specification');
+    }
+  }
+
+  setDeepLinkInStorage(deepLinkInfo:any):Promise<void>{
+    return new Promise<void>((resolve, reject) => {
+      try {
+        localStorage.setItem('deep_link_info',JSON.stringify(deepLinkInfo));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.cities = [
       { name: 'New York', code: 'lara-light-blue' },
@@ -136,7 +175,6 @@ export class AppComponent implements OnInit {
       { name: 'rhea', code: 'rhea' },
   ];
     const currentUser = localStorage.getItem('currentUser');
-
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
       this.getMeTotalOnboardedApps(JSON.parse(currentUser));
@@ -176,7 +214,6 @@ export class AppComponent implements OnInit {
     })
   }
 
-
   getAllProductsInfo(key: string) {
     return new Promise((resolve, reject) => {
       try {
@@ -203,7 +240,11 @@ export class AppComponent implements OnInit {
     const previousUrl = localStorage.getItem('previousUrl');
     if (previousUrl) {
       localStorage.removeItem('previousUrl');
-      this.router.navigateByUrl(previousUrl);
+        if(this.deepLink){
+          this.router.navigateByUrl('specification');
+        }else{
+          this.router.navigateByUrl(previousUrl);
+        }
     }
   }
 

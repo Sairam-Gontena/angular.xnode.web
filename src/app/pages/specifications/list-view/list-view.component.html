@@ -6,8 +6,8 @@
           <div class="m-0 pb-1 line-height-3">
             <span class="flex flex-wrap sub-title text-base font-medium">
               <span *ngFor="let word of subItem?.title?.split(' '); index as i" class="pr-1"
-                [innerHTML]="word | highlight: searchTerm"
-                [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}"
+                [innerHTML]="word | highlight: searchTerm" [attr.id]="'word'+word+'^^'+i"
+                [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'title');saveSecInLocal()">
                 <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
                   <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
