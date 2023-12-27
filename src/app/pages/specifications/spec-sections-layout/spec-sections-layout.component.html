@@ -1061,7 +1061,7 @@
         [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-list-view>
     </div>
 
-    <div *ngIf="checkParaViewSections(content.title)" [id]="content.id">
+    <div *ngIf="checkParaViewSections(content.title) &&  content.title != 'Data Model' " [id]="content.id">
       <xnode-para-view [content]="content.content" [reveiwerList]="reveiwerList" [searchTerm]="searchTerm"
         [users]="usersList" [specItem]="specItem" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
         [content]="content" [selectedContent]="selectedContent"></xnode-para-view>
