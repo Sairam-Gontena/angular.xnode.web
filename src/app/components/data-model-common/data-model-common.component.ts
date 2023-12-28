@@ -48,6 +48,8 @@ export class DataModelCommonComponent {
     private utilsService: UtilsService,
   ) {
     this.data = this.dataService.data;
+    console.log(' this.data',  this.data);
+    
     this.router.events.subscribe((data: any) => {
       this.router.url == '/configuration/data-model/x-bpmn'
         ? (this.bpmnSubUrl = true)
@@ -56,6 +58,8 @@ export class DataModelCommonComponent {
   }
 
   ngOnInit(): void {
+    console.log('dataModelData',this.dataModelData);
+    
     this.currentUrl = this.router.url;
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
