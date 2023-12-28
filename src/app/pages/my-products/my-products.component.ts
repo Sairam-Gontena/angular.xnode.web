@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
+import { sortBy } from 'lodash';
 
 @Component({
   selector: 'xnode-my-products',
@@ -34,6 +35,10 @@ export class MyProductsComponent implements OnInit {
   timeAgo: any;
   isTitleHovered: any;
   userImage: any;
+  end = 2;
+  filteredProductsLength= 0;
+  activeIndexRecentActivity: number = 0;
+  isViewLess = true;
 
 
   constructor(private RefreshListService: RefreshListService,
@@ -198,7 +203,8 @@ export class MyProductsComponent implements OnInit {
             return dataItem;
           });
 
-          this.filteredProducts = this.templateCard;
+          this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
+          this.filteredProductsLength = this.filteredProducts.length? this.filteredProducts.length + 1:0;
           this.filteredProductsByEmail = this.templateCard;
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
@@ -223,11 +229,13 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickcreatedByYou(): void {
-    this.filteredProducts = this.filteredProducts.filter(obj => { return obj?.user_id === this.currentUser.user_id });
+    this.filteredProducts = sortBy(this.filteredProducts.filter(obj => { return obj?.user_id === this.currentUser.user_id }), ['created_on']).reverse();
+    this.filteredProductsLength = this.filteredProducts.length? this.filteredProducts.length + 1:0;
   }
 
   onClickAllProducts(): void {
-    this.filteredProducts = [...this.templateCard];
+    this.filteredProducts = sortBy([...this.templateCard], ['created_on']).reverse();
+    this.filteredProductsLength = this.filteredProducts.length? this.filteredProducts.length + 1:0;
   }
 
   search() {
@@ -280,5 +288,16 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(true);
       });
   }
+  
+  onViewAll(){
+    this.isViewLess = false;
+    this.end = this.filteredProductsLength;
+  }
+
+  onViewLess(){
+    this.isViewLess = true;
+    this.end = 2;
+  }
+  
 
 }
