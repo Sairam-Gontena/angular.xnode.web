@@ -48,8 +48,8 @@ export class DataModelCommonComponent {
     private utilsService: UtilsService,
   ) {
     this.data = this.dataService.data;
-    console.log(' this.data',  this.data);
-    
+    console.log(' this.data', this.data);
+
     this.router.events.subscribe((data: any) => {
       this.router.url == '/configuration/data-model/x-bpmn'
         ? (this.bpmnSubUrl = true)
@@ -58,8 +58,8 @@ export class DataModelCommonComponent {
   }
 
   ngOnInit(): void {
-    console.log('dataModelData',this.dataModelData);
-    
+    console.log('dataModelData', this.dataModelData);
+
     this.currentUrl = this.router.url;
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -67,12 +67,12 @@ export class DataModelCommonComponent {
       this.utilsService.showProductStatusPopup(true);
       return;
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       const list: any = this.storageService.getItem(StorageKeys.SpecData);
-      this.dataModel = list[3].content[9].content;
+      this.dataModel = this.dataModelData.content;
       this.jsPlumbService.init();
       this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
-    },100)
+    }, 100)
   }
 
   toggleMenu() {

@@ -92,11 +92,14 @@
       </div>
       <div *ngSwitchCase="'DATA_MODEL'" [id]="content.id">
         <xnode-data-model-common *ngIf="content" (dataFlowEmitter)="expandComponent.emit(content)"
-            [dataModelData]="content"></xnode-data-model-common>
+          [dataModelData]="content"></xnode-data-model-common>
       </div>
       <div *ngSwitchCase="'DASHBOARD'" [id]="content.id">
         <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
         </iframe>
+      </div>
+      <div *ngSwitchCase="'SWAGGER'" [id]="content.id">
+        <div id="openapi-ui-spec" class="openapi-spec"></div>
       </div>
     </div>
     <div class="gradientback" *ngIf="!content?.collapsed"></div>
