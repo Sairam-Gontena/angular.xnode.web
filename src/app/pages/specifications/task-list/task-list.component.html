@@ -189,9 +189,12 @@
         </div>
       </div>
     </div>
-    <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened">
-      <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">See
-          More{{cmt?.replyCount}}</span>
+    <!-- <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened"> -->
+    <div class="col-12 pb-0">
+      <div class="view-replies">
+        <span class="pointer text-xs" (click)="viewReplies(cmt)">
+          See More
+        </span>
       </div>
     </div>
     <div class="col-12"
@@ -200,7 +203,7 @@
         (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
         [topParentId]="cmt.id"></xnode-task-child-conversation>
     </div>
-    <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
+    <div class="col-12 pb-0" >
       <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">See Less</span>
       </div>
     </div>
@@ -211,7 +214,7 @@
       <div class="w-full">
         <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment" [action]="action"
           [users]="usersList" [parentEntity]="
-                     'TASK'" [activeIndex]="1" [parentId]="cmt.id" [topParentId]="topParentId"
+                     'TASK'" [AssignedFrom]="From == 'Child' ? 'AssignedFromTaskAsChild' : 'AssignedFromTask'" [activeIndex]="1" [parentId]="cmt.id" [topParentId]="topParentId"
           [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'" [width]="'w-full'"
           (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
       </div>

@@ -68,6 +68,20 @@ export class TaskChildConversationComponent {
 
   }
 
+  receiveMsg(event: any) {
+    if (event) {
+      this.list.forEach((item: any) => {
+        if (item.comments) {
+          item.comments.forEach((comment: any) => {
+            if (comment.id == event) {
+              item.repliesOpened = false;
+            }
+          });
+        }
+      });
+    }
+  }
+
   loadComments(change: string) {
     if (change === 'increment') {
       const startIndex = this.specList.length;
@@ -201,7 +215,7 @@ export class TaskChildConversationComponent {
     if (cmt)
       this.selectedComment = cmt;
     this.utils.loadSpinner(true);
-    this.commentsService.getTasks({ parentId: this.selectedComment.id }).then((response: any) => {
+    this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
         this.replies = response.data;
         response.data.forEach((element: any) => {
@@ -227,12 +241,13 @@ export class TaskChildConversationComponent {
   }
 
   hideReplies(cmt?: any) {
-    this.list.forEach((obj: any) => {
-      if (obj.id === this.selectedComment.id) {
-        obj.comments = this.replies;
-        obj.repliesOpened = false
-      }
-    })
+    // this.list.forEach((obj: any) => {
+    //   if (obj.id === this.selectedComment.id) {
+    //     obj.comments = this.replies;
+    //     obj.repliesOpened = false
+    //   }
+    // })
+    this.replies =[]
   }
 
 

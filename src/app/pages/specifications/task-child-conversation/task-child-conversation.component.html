@@ -44,12 +44,17 @@
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
         </div>
-        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
+        <!-- <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened" >  getting reply count as -1 always  -->
+        <div class="col-12 pb-0" >
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
                     Replies</span>
             </div>
         </div>
-        <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
+        <xnode-task-child-conversation [activeIndex]="activeIndex" [usersList]="usersList"
+        (childEvent)="receiveMsg($event)" [list]="replies"
+        [topParentId]="cmt.id"></xnode-task-child-conversation>
+
+        <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened" >
             <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
                     Replies</span>
             </div>
@@ -59,9 +64,9 @@
                 <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
             </div>
             <div class="w-full">
-                <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
+                <xnode-add-comment-overlay-panel AssignedFrom="AssignedFromTaskChild" placeHolder="Reply" [selectedComment]="selectedComment"
                     [action]="action" [users]="usersList" [parentEntity]="activeIndex == 0 ? 'COMMENT' : 'TASK'"
-                    [activeIndex]="activeIndex" [parentId]="cmt.parentId" [topParentId]="topParentId"
+                    [activeIndex]="activeIndex" [parentId]="cmt.id" [topParentId]="topParentId"
                     [comment]="action === 'EDIT' ? activeIndex == 0 ? cmt.message : cmt.description : ''"
                     [commentType]="'reply'" [width]="'w-full'"
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>

@@ -20,6 +20,7 @@ export class TaskListComponent {
   @Input() topParentId: any;
   @Input() activeIndex: any;
   @Input() swaggerData:any;
+  @Input() From:any;
   @Output() onClickClose = new EventEmitter<any>();
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
