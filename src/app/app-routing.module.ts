@@ -74,6 +74,15 @@ const routes: Routes = [
 
   },
   {
+    path: 'conversation-hub',
+    loadChildren: () =>
+      import('./pages/conversation-hub/conversation-hub.module').then(
+        (m) => m.ConversationHubModule
+      ),
+    canActivate: [authGuard]
+
+  },
+  {
     path: 'acitvity',
     loadChildren: () =>
       import('./pages/activity-logs/activity-logs.module').then(
