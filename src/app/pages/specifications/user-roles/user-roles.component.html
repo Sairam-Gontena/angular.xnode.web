@@ -105,8 +105,8 @@
             </div>
         </div>
         <ng-template #obj>
-            <p [ngClass]="{'my-3 text-xl':isArray(content)==false}">{{content.title}}</p>
-            <div class="array" *ngIf="isArray(content.content)">
+            <p [ngClass]="{'my-3 text-xl':isArray(content)==false}">{{content?.title}}</p>
+            <div class="array" *ngIf="isArray(content?.content)">
                 <div *ngFor="let subItem of content.content; let i=index " class="pl-4">
                     <div class="flex col-12 p-0 ">
                         <div class="col-10 p-0">
@@ -125,7 +125,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="isString(content.content)">
+            <div *ngIf="isString(content?.content)">
                 <div class="flex col-12 p-0">
                     <div class="col-10 p-0">
                         <p class="m-0 pb-1 line-height-3">
