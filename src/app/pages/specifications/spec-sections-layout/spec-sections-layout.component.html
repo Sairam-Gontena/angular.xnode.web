@@ -779,10 +779,8 @@
     <div *ngIf="content.title === 'Test Cases'">
       <div *ngFor="let item of content.content">
         <div class="mt-2">
-
-
           <div (mouseenter)="testCaseshowCommentIcon = true" (mouseleave)="testCaseshowCommentIcon = false">
-            <div class="flex justify-content-between align-items-center">
+            <div class="flex justify-content-between align-items-center col-12">
               <h3>
                 {{item.Usecase}}
               </h3>
