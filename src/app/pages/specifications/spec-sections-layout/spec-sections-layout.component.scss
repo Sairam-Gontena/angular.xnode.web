@@ -168,3 +168,20 @@ pre {
     width: 300px;
   }
 }
+@media (max-width: 1920px) {
+  .common-spec-table{
+    width: 900px;
+  }
+  .common-spec-table-sidemenu {
+    width: 700px;
+  }
+  .common-spec-table-navi {
+    width: 770px;
+  }
+  .common-spec-table-navi-menu {
+    width: 300px;
+  }
+  .common-spec-table-menu-comments {
+    width: 550px;
+  }
+}

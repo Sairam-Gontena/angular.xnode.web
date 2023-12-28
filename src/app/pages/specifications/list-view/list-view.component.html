@@ -5,18 +5,19 @@
         <div class="col-11 p-0 ">
           <div class="m-0 pb-1 line-height-3">
             <span class="flex flex-wrap sub-title text-base font-medium">
-              <span *ngFor="let word of subItem?.title?.split(' '); index as i" class="pr-1"
-                [innerHTML]="word | highlight: searchTerm"
-                [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}"
+              <span *ngFor="let word of subItem?.title?.split(' '); index as subItemindex" class="pr-1"
+                [innerHTML]="word | highlight: searchTerm" [attr.id]="'word'+word+'^^'+subItemindex+i"
+                [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+subItemindex+i) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'title');saveSecInLocal()">
                 <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
-                  <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
+                  <xnode-add-comment-overlay-panel  [width]="'w-30rem'"[users]="users" *ngIf="selectedText.length>0"
                     [parentTitle]="parentTitle" [position]="'absolute'" [selectedContent]="subItem"
                     [selectedText]="selectedText" [parentEntity]="'SPEC'"
                     (closeOverlay)="selectionText.toggle(false);emptySelectedContent()" [specItem]="specItem"
                     [parentId]="specItem.id" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                 </p-overlayPanel>
-              </span><span *ngIf="subItem?.title || subItem?.content"> <br /></span>
+              </span>
+              <span *ngIf="subItem?.title || subItem?.content"> <br /></span>
             </span>
 
             <span class="flex flex-wrap sub-content font-normal text-base">
@@ -25,9 +26,9 @@
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i+j) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'content');saveSecInLocal();openOverlayPanel=true">
                 <p-overlayPanel #selectionContent (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
-                  <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users" *ngIf="selectedText.length>0"
+                  <xnode-add-comment-overlay-panel  [width]="'w-30rem'" [users]="users" *ngIf="selectedText.length>0 && (selectedIndex!=undefined && (selectedIndex>=0))"
                     [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'"
-                    [parentId]="specItem.id" [parentTitle]="parentTitle" [selectedContent]="subItem"
+                    [parentId]="specItem.id" [parentTitle]="parentTitle" [selectedContent]="content[selectedIndex]"
                     placeHolder="Add a Comment" [specItem]="specItem"
                     (closeOverlay)="selectionContent.toggle(false);emptySelectedContent()"></xnode-add-comment-overlay-panel>
                 </p-overlayPanel>

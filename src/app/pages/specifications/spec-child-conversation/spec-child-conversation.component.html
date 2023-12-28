@@ -70,7 +70,7 @@
                 <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
             </div>
             <div class="w-full">
-                <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
+                <xnode-add-comment-overlay-panel placeHolder="Reply"  [selectedComment]="selectedComment"
                     [action]="action" [users]="usersList" [parentEntity]="activeIndex == 0 ? 'COMMENT' : 'TASK'"
                     [activeIndex]="activeIndex" [parentId]="cmt.id" [topParentId]="topParentId"
                     [comment]="action === 'EDIT' ? activeIndex == 0 ? cmt.message : cmt.description : ''"

@@ -389,14 +389,15 @@
         <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
           (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs" [ngClass]="{
-        'bg-red-500': action.value === 'ARCHIVE',
-        'bg-green-500': action.value === 'PUBLISH_APP',
-        'bg-orange-500': action.value === 'SUBMIT'}" [ngStyle]="{ 'padding': '3px' }"></i>
+            'bg-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+            'bg-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+            'bg-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+            'border-yellow-500': action.value === 'DRAFT'}" [ngStyle]="{ 'padding': '3px' }"></i>
           <p class="text-sm font-normal ml-1" [ngClass]="{
-            'text-red-500': action.value === 'ARCHIVE',
-            'text-green-500': action.value === 'PUBLISH_APP',
-            'text-orange-500': action.value === 'SUBMIT'
-        }">
+            'text-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+            'text-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+            'text-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+            'text-yellow-500': action.value === 'DRAFT'}">
             {{action.label}}
           </p>
 

@@ -650,7 +650,9 @@ export class BpmnCommonComponent
   }
 
   ngOnDestroy(): void {
-    this.bpmnJS.destroy();
+    if(this.bpmnJS){
+      this.bpmnJS.destroy();
+    }
   }
 
   private importDiagram(xml: string): Observable<{ warnings: Array<any> }> {
