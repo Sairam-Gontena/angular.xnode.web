@@ -38,12 +38,17 @@
         <i class="pi pi-user text-base mx-1 light-grey"></i>
       </div>
     </div>
-    <div class="flex pl-4 pr-4 justify-content-between p-0">
-      <p class="text-base light-grey text-sm">Today</p>
-      <div class="flex align-items-center p-0">
-        <i class="pi pi-arrow-up text-base mx-1 text-gray-200"></i>
+    <div class="flex pl-4 pr-4 justify-content-between align-items-center p-0 h-4rem">
+      <div class="">
+        <p class="flex align-items-center text-base light-grey text-sm"
+          *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'">Today</p>
+      </div>
+      <div class="flex align-items-center p-0 pointer" (click)="sortCrList('dueDate')">
+        <i class="pi pi-arrow-up text-base mx-1 text-gray-200"
+          *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'"></i>
+        <i class="pi pi-arrow-down text-base mx-1 text-gray-200"
+          *ngIf="sortColumn === 'dueDate' && sortDirection === 'asc'"></i>
         <p class="my-0 text-gray-200 text-sm">Date Created</p>
-        <i class="pi pi-chevron-down text-base mx-1 text-gray-200"></i>
       </div>
     </div>
     <div>
@@ -169,7 +174,7 @@
 
                             <div
                               *ngIf="checkParaViewSections(subData?.task?.referenceContent?.title,subData?.task?.referenceContent?.parentTitle)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-para-view [showComments]="false"
                                 [content]="subData?.task?.referenceContent?.content"
                                 [searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList"
@@ -177,19 +182,19 @@
                                 [id]="subData?.task?.referenceContent?.id"></xnode-para-view>
                             </div>
                             <div *ngIf="checkListViewSections(subData?.task?.referenceContent?.parentTitle)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-list-view [content]="subData?.task?.referenceContent"
                                 [searchTerm]="subData?.task?.referenceContent?.commentedtext"
                                 [users]="usersList"></xnode-list-view>
                             </div>
                             <div *ngIf="checkUserRoleSections(subData?.task?.referenceContent?.parentTitle)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-user-roles [searchTerm]="subData?.task?.referenceContent?.commentedtext"
                                 [content]="subData?.task?.referenceContent" [users]="usersList"
                                 [specItem]="subData?.task?.referenceContent?.content"></xnode-user-roles>
                             </div>
                             <div *ngIf="checkUserPersonaSections(subData?.task?.referenceContent?.title)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-user-persona [searchTerm]="subData?.task?.referenceContent?.commentedtext"
                                 [content]="subData?.task?.referenceContent?.content"></xnode-user-persona>
                             </div>
@@ -290,7 +295,7 @@
 
                             <div
                               *ngIf="checkParaViewSections(subData?.comment?.referenceContent?.title,subData?.comment?.referenceContent?.parentTitle)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-para-view [showComments]="false"
                                 [content]="subData?.comment?.referenceContent?.content"
                                 [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList"
@@ -298,19 +303,19 @@
                                 [id]="subData?.comment?.referenceContent?.id"></xnode-para-view>
                             </div>
                             <div *ngIf="checkListViewSections(subData?.comment?.referenceContent?.parentTitle)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-list-view [content]="subData?.comment?.referenceContent"
                                 [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
                                 [users]="usersList"></xnode-list-view>
                             </div>
                             <div *ngIf="checkUserRoleSections(subData?.comment?.referenceContent?.parentTitle)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-user-roles [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
                                 [content]="subData?.comment?.referenceContent" [users]="usersList"
                                 [specItem]="subData?.comment?.referenceContent?.content"></xnode-user-roles>
                             </div>
                             <div *ngIf="checkUserPersonaSections(subData?.comment?.referenceContent?.title)"
-                              class="h-8rem">
+                              class="h-auto">
                               <xnode-user-persona [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
                                 [content]="subData?.comment?.referenceContent?.content"></xnode-user-persona>
                             </div>
