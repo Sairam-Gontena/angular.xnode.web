@@ -22,10 +22,8 @@
                             <div (click)="changeTheme(color)" style="height: 20px;width: 20px;"  [style.background]="color.primary"></div>
                         </div>
                         <div class="py-3 flex  justify-content-between align-content-center">
-                            <div  class="text-xs" >Light</div>
-                            <!-- <div (click)="toggleDarkTheme()" >{{isDarkTheme ? 'Dark ':'Light'}}</div> -->
-                            <p-inputSwitch [style]="{ 'height': '20px','marginLeft':'5px' }"[(ngModel)]="isDarkTheme" (onChange)="toggleDarkTheme()" ></p-inputSwitch>
-                            <div class="text-xs" >Dark</div>
+                            <div  class="text-xs" (click)="changeTheme('lara-light-blue')"   >Light</div>
+                            <div class="text-xs" (click)="changeTheme('lara-dark-blue')"  >Dark</div>
                         </div>
                     </div>
                  </div>

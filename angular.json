@@ -41,6 +41,11 @@
                 "inject": false
               },
               {
+                "input":"src/themes/lara-dark-blue.css",
+                "bundleName": "lara-dark-blue",
+                "inject": false
+              },
+              {
                 "input":"src/themes/bootstrap4-light-blue.css",
                 "bundleName": "bootstrap4-light-blue",
                 "inject": false

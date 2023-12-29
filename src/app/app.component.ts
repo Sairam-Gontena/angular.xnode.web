@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
   screenWidth: number;
   screenHeight: number;
   deepLink:boolean=false;
+  colorPallet :any;
 
   cities: City[] | undefined;
 
@@ -117,13 +118,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  changeTheme(event: any) {
-    // Your logic to change the theme based on the selected city
-    // alert(event.value.code);
-    this.themeService.switchTheme(event.value.code);
-    // Add your theme-changing logic here
-  }
-
   async setDeepLinkInfo(winUrl:any){
     let urlObj = new URL(winUrl);
     let hash = urlObj.hash;
@@ -157,8 +151,17 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.colorPallet = [
+      { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#42A5F5',secondary:'#E3F2FD',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#311B92',secondary:'#9FA8DA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#0D47A1',secondary:'#90CAF9',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#01579B',secondary:'#81D4FA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+      { primary:'#004D40',secondary:'#80CBC4',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
+  ];
     this.cities = [
       { name: 'New York', code: 'lara-light-blue' },
+      { name: 'lara-dark-blue', code: 'lara-dark-blue' },
       { name: 'aga-blue', code: 'saga-blue' },
       { name: 'md-light-indigo', code: 'md-light-indigo' },
       { name: 'Romd-dark-indigome3', code: 'md-dark-indigo' },

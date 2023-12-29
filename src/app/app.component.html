@@ -1,13 +1,9 @@
- <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
+<ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
         <span (click)="submenuFunc()">
             <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
                 (click)="botOnClick()"></xnode-bot>
         </span>
-      
         <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
-        <!-- <div class="card flex justify-content-center">
-            <p-dropdown [options]="cities" [(ngModel)]="selectedCity" (onChange)="changeTheme($event)" optionLabel="name" [showClear]="true" placeholder="Select a City"></p-dropdown>
-        </div> -->
         <div class="flex" >
             <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen }" class="flex-column">
                 <div class="flex">
