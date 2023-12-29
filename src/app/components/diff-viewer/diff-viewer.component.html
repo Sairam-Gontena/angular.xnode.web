@@ -1,4 +1,5 @@
-<div class='bg-white' *ngFor="let item of content">
-  <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(content2,item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
+<div class='bg-white' *ngFor="let item of content;let i = index">
+  <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj(content2,item, onDiff)"
+    [onDiff]="onDiff"></xnode-diff-comp>
 </div>
 <xnode-diff-list [srcList]="content" [targetList]="content2" [onDiff]="onDiff"></xnode-diff-list>

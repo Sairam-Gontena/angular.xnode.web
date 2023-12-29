@@ -9,10 +9,11 @@ export class DiffCompComponent implements OnInit {
   @Input() contentObj: any;
   @Input() diffObj: any;
   @Input() onDiff: boolean = false;
+  @Input() index: any;
   ngOnInit(): void {
     // console.log('contentObj', this.contentObj);
     // console.log('diffObj', this.diffObj);
-    console.log('onDiff',this.onDiff)
+    console.log('onDiff', this.onDiff)
   }
   getType(content: any): string {
     return Array.isArray(content) ? 'array' : typeof content;
