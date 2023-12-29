@@ -1,35 +1,41 @@
-<div [ngSwitch]="contentObj.type">
+<div [ngSwitch]="contentObj.content_data_type">
   <div *ngSwitchCase="'title'" [class]="getClass()">
     <h1>Title: {{contentObj.content}}</h1>
   </div>
   <div *ngSwitchCase="'section'">
     <div [ngSwitch]="getType(contentObj.content)">
       <div *ngSwitchCase="'object'" [class]="getClass()">
-        <h2> <Section> obj</Section> {{contentObj.content.title }} : {{contentObj.content.content }}  </h2>
+        <h2>
+          <Section> obj</Section> {{contentObj.content.title }} : {{contentObj.content.content }}
+        </h2>
       </div>
       <div *ngSwitchCase="'array'">
         <div *ngFor="let item of contentObj.content">
-          <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
+          <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
+            [onDiff]="onDiff"></xnode-diff-comp>
         </div>
       </div>
     </div>
   </div>
-  <div *ngSwitchCase="'bullet'" [class]="getClass()">
+  <div *ngSwitchCase="'PARA'" [class]="getClass()">
     <p> Bullet {{contentObj.title }} :
-      <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content" [onDiff] = "onDiff"></xnode-diff-generator>
-   </p>
+      <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
+        [onDiff]="onDiff"></xnode-diff-generator>
+    </p>
   </div>
-  <div *ngSwitchCase="'section2'">
+  <div *ngSwitchCase="'BANNER'">
     <div [ngSwitch]="getType(contentObj.content)">
       <div *ngSwitchCase="'string'" [class]="getClass()">
-        <p> Sec2 {{contentObj.title }} : {{contentObj.content }}  </p>
+        <p> Sec2 {{contentObj.title }} : {{contentObj.content }} </p>
       </div>
       <div *ngSwitchCase="'array'">
         <p> Sec2 {{contentObj.title }} </p>
         <div *ngFor="let item of contentObj.content">
-          <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
+          <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
+            [onDiff]="onDiff"></xnode-diff-comp>
         </div>
-        <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content" [targetList]="contentObj.content"></xnode-diff-list>
+        <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content"
+          [targetList]="contentObj.content"></xnode-diff-list>
       </div>
     </div>
   </div>

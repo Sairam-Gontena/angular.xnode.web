@@ -3880,8 +3880,8 @@ export const OLDLIST = [
         "content": [
             {
                 "title": "Purpose",
-                "content": "The purpose of this application is to provide school teachers with a platform to manage the curriculum they are teaching to their students. It aims to streamline the onboarding process for teachers, facilitate class setup and management, enable communication between teachers and students, and allow students to submit and receive grades.",
-                "id": "3a1bdf90-a57f-47af-9f56-3e00cdb68eab",
+                "content": "The purpose of tde school teachers with a platform to manage the curriculum they are teaching to their students. It aims to streamline the onboarding process for teachers, facilitate class setup and management, enable communication between teachers and students, and allow students to submit and receive grades.",
+                "id": "31bdf90-a57f-47af-9f56-3e00cdb68eab",
                 "created_on": "2023-12-27 13:13:12",
                 "modified_on": "2023-12-27 13:13:12",
                 "version": 1,
