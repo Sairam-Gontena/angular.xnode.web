@@ -1,31 +1,68 @@
-<div class="lg:p-5 p-3 overflow-auto body-container">
-    <div class="text-white txt-heading lg:mt-3 lg:ml-3 md:ml-3 md:mt-3 ml-2 mt-3">Hi, Good Morning!</div>
-    <div class="flex sm:col-8 md:col-7 lg:col-4 p-input-icon-left mt-3 lg:mt-6">
-        <i class="pi pi-search text-white sm:ml-3  md:ml-3"></i>
-        <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
-            class="text-white" />
+<div class="lg:p-5 p-3 overflow-auto body-container ">
+     
+    <div class="flex">
+        <div class="col-4">
+            <div class="text-white txt-heading mb-3">Hi, Good Morning!</div>  
+            <p-button label="New with Navi AI" styleClass="mr-2 navi-btn" [rounded]="true"
+                (click)="onClickNewWithNavi()"></p-button>
+            <p-button styleClass="p-button-secondary mr-4" [rounded]="true">
+                <img alt="bot-btn-icon" src="./assets/import.svg" />
+                <span class="import-btn ml-2" (click)="importNavi()">Import</span>
+            </p-button>
+        </div>
+        <div class="col-8">
+            <div class="flex col-6 p-input-icon-left">
+                <i class="pi pi-search text-white sm:ml-3  md:ml-3" style="top:30px"></i>
+                <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
+                    class="text-white" />
+            </div>
+            <div class="col-8 flex" style="padding: .5em 0 1em 0">
+                <p-button class="align-items-center justify-content-center" [ngClass]="{'nonActive': activeIndex != 0}" label=" All Products" [link]="true" (click)="activeIndex = 0;onClickAllProducts()">
+                    <img src="./assets/all-products.svg" class="tab-view-img"
+                        [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
+                </p-button>
+                <p-button class="align-items-center justify-content-center" [ngClass]="{'nonActive': activeIndex != 1}" label=" Recently Viewed" [link]="true" (click)="activeIndex = 1">
+                    <img src="./assets/recent.svg" class="tab-view-img"
+                        [src]="tabRecent || activeIndex === 1  ? './assets/recent-hover.svg' : './assets/recent.svg'" />
+                </p-button>
+                <p-button class="align-items-center justify-content-center"  [ngClass]="{'nonActive': activeIndex != 2}"  label=" My Products" [link]="true" (click)="activeIndex = 2;onClickcreatedByYou()" >
+                    <img src="./assets/user.svg" class="tab-view-img"
+                        [src]="tabCreated || activeIndex === 2 ? './assets/user-hover.svg' : './assets/user.svg'" />
+                </p-button>
+            </div>
+        </div>
     </div>
-    <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3  lg:mt-4">
-        <p-button label="New with Navi AI" styleClass="mr-2 navi-btn" [rounded]="true"
-            (click)="onClickNewWithNavi()"></p-button>
-        <p-button styleClass="p-button-secondary mr-4" [rounded]="true">
-            <img alt="bot-btn-icon" src="./assets/import.svg" />
-            <span class="import-btn ml-2" (click)="importNavi()">Import</span>
-        </p-button>
-    </div>
-    <p-tabView>
-        <p-tabPanel>
-            <ng-template pTemplate="header">
+    <p-tabView [(activeIndex)]="activeIndex">
+        <p-tabPanel styleClass="">
+            <!-- <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabAllProducts = true"
                     (mouseleave)="tabAllProducts = false" (click)="activeIndex = 0;onClickAllProducts()">
                     <img src="./assets/all-products.svg" class="tab-view-img"
                         [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
                     <p class="m-0 pl-2 tabview-header-txt">All Products</p>
                 </div>
-            </ng-template>
-            <div class="grid">
+            </ng-template> -->
+            <div class="grid" >
+                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 mt-2 card-color justify-content-center align-items-center empty-card"
+                    *ngIf="filteredProducts.length == 0">
+                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                        <div class="title">
+                            New Product
+                        </div>
+                    </div>
+                </div>
+                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
+                    *ngIf="filteredProducts.length > 0">
+                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                        <div class="title">
+                            New Product
+                        </div>
+                    </div>
+                </div>
                 <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
-                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
+                    *ngFor="let data of filteredProducts |  slice:0:end ; let i = index" (click)="onClickProductCard(data)">
                     <div class="card-color relative">
                         <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
                         <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
@@ -43,51 +80,50 @@
                         <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                             styleClass="mr-2" shape="circle" *ngIf="!currentUser"
                             [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                        <p-avatar [label]="getMeMyAvatar(data.created_by)" *ngIf="currentUser" styleClass="mr-2"
+                        <!-- <p-avatar [label]="getMeMyAvatar(data.created_by)" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
-                            shape="circle"></p-avatar>
+                            shape="circle"></p-avatar> -->
                         <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">{{data.created_by}}</p>
-                            <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
-                            <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
-                                |
-                                date:'medium'}}</p>
+                            <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on | date:'medium'}}</p>
                         </div>
                     </div>
                 </div>
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
-                    *ngIf="filteredProducts.length > 0">
-                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                </div>
+                
             </div>
-            <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 mt-2 card-color justify-content-center align-items-center empty-card"
-                *ngIf="filteredProducts.length == 0">
-                <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-            </div>
+            
         </p-tabPanel>
         <p-tabPanel>
-            <ng-template pTemplate="header">
+            <!-- <ng-template pTemplate="header">
                 <div class="flex align-items-center justify-content-center" (mouseenter)="tabRecent = true"
                     (mouseleave)="tabRecent = false" (click)="activeIndex = 1">
                     <img src="./assets/recent.svg" class="tab-view-img"
                         [src]="tabRecent || activeIndex === 1  ? './assets/recent-hover.svg' : './assets/recent.svg'" />
                     <p class="m-0 pl-2 tabview-header-txt">Recently Viewed</p>
                 </div>
-            </ng-template>
+            </ng-template> -->
             <div class="col-12 flex justify-content-center text-xl mt-4 text-white font-font-medium">
                 No Recently Viewed Products
             </div>
         </p-tabPanel>
         <p-tabPanel>
-            <ng-template pTemplate="header">
+            <!-- <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabCreated = true"
                     (mouseleave)="tabCreated = false" (click)="activeIndex = 2;onClickcreatedByYou()">
                     <img src="./assets/user.svg" class="tab-view-img"
                         [src]="tabCreated || activeIndex === 2 ? './assets/user-hover.svg' : './assets/user.svg'" />
                     <p class="m-0 pl-2 tabview-header-txt">Created by you</p>
                 </div>
-            </ng-template>
-            <div class="grid">
+            </ng-template> -->
+            <div class="grid"  >
+                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
+                    *ngIf="filteredProducts.length > 0">
+                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                        <div class="title">
+                            New Product
+                        </div>
+                    </div>
+                </div>
                 <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
                     *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
                     <div class="card-color relative">
@@ -107,23 +143,44 @@
                         <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
                             styleClass="mr-2" shape="circle" *ngIf="!currentUser"
                             [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                        <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
+                        <!-- <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
-                            shape="circle"></p-avatar>
+                            shape="circle"></p-avatar> -->
                         <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">{{data.created_by}}</p>
-                            <!-- <p class="m-0 card-normal-txt mt-1 ">Last viewed {{data.timeAgo }} ago</p> -->
-                            <p class="m-0 card-normal-txt mt-1">Created on: {{data.created_on
-                                |
-                                date:'medium'}}</p>
+                            <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on | date:'medium'}}</p>
                         </div>
                     </div>
                 </div>
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
-                    *ngIf="filteredProducts.length > 0">
-                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                </div>
+                
             </div>
+        </p-tabPanel>
+    </p-tabView>
+    <div class="col-12 flex justify-content-center flex-wrap" *ngIf="filteredProducts.length > 0">
+        <p-button class="flex align-items-center justify-content-center" *ngIf="isViewLess" icon="pi pi-arrow-right" label="View All" [link]="true" (click)="onViewAll()">
+        </p-button>
+
+        <p-button class="flex align-items-center justify-content-center" *ngIf="!isViewLess" icon="pi pi-arrow-right" label="View Less" [link]="true" (click)="onViewLess()">
+        </p-button>
+    </div>
+    <div class="col-12">
+        <h3 class="text-white">Recent Activity</h3>
+    </div>
+
+        
+    
+    <p-tabView [(activeIndex)]="activeIndexRecentActivity" styleClass="">
+        <p-tabPanel header="All Conversations" class="home-conversations-card" styleClass="" >
+            <p-card header="Budget Tracking">
+                <p class="m-0 text-white">
+                    #CN201 in Finbuddy
+                </p>
+            </p-card>
+            <br>
+            <p-card header="Business and Campaign Strategies">
+                <p class="m-0 text-white">
+                    #CN202 in FinTeach
+                </p>
+            </p-card>
         </p-tabPanel>
     </p-tabView>
 </div>

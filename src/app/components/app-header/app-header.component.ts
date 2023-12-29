@@ -98,9 +98,9 @@ export class AppHeaderComponent implements OnInit {
     this.themeService.switchTheme(event);
     let selectedColor;
     if(event == 'lara-light-blue'){
-      selectedColor =  { primary:'#42A5F5',secondary:'#E3F2FD',success:'#11CF46',error:'#CC3514',warning:'#FF6847'}
+      selectedColor =  { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847',surface_900:'#343541'}
     }else{
-       selectedColor = { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847' } 
+       selectedColor = { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847',surface_900:'#000000' } 
     }
     this.themeService.setPrimaryColor(selectedColor)
   }
@@ -219,9 +219,7 @@ export class AppHeaderComponent implements OnInit {
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('notif', data);
-      
-            this.allNotifications.unshift(data);
+      this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length
       if (data.product_status === 'completed') {

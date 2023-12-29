@@ -29,7 +29,7 @@
                  </div>
                 </p-overlayPanel>
                 
-            <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
+            <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
                     (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>

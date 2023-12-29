@@ -21,7 +21,7 @@
 :host ::ng-deep.p-dialog .p-dialog-header,
 :host ::ng-deep.p-dialog .p-dialog-content,
 :host ::ng-deep.p-dialog .p-dialog-footer {
-    background-color: #23222B !important;
+    // background-color: #23222B !important;
     color: #FFFFFF !important;
 }
 
@@ -141,7 +141,7 @@ textarea {
 
 :host::ng-deep.browseFiles .p-button {
     border-radius: 2rem;
-    background-color: #23222B !important;
+    // background-color: #23222B !important;
     color: #2C91FD !important;
     border: solid 1px #2C91FD;
 }
@@ -173,7 +173,7 @@ textarea {
 :host::ng-deep .p-dialog .p-dialog-content,
 :host::ng-deep .p-dialog .p-dialog-header,
 :host::ng-deep .p-dialog .p-dialog-footer {
-    background: #23222B;
+    // background: #23222B;
     color: #fff;
 }
 

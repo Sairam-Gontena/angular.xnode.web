@@ -8,6 +8,7 @@ export class ThemeService {
   private renderer: Renderer2;
   private primaryColor = '--primary-color';
   private secondaryColor = '--primary-color-text';
+  private surface_900 = '--surface-900';
 
   constructor(@Inject(DOCUMENT) private document: Document,rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
@@ -21,6 +22,7 @@ export class ThemeService {
     // primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847'
     this.document.documentElement.style.setProperty(this.primaryColor, selectedColor.primary);
     this.document.documentElement.style.setProperty(this.secondaryColor, selectedColor.secondary);
+    this.document.documentElement.style.setProperty(this.surface_900, selectedColor.surface_900);
   }
 
   switchTheme(theme: string) {

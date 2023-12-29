@@ -161,9 +161,9 @@ export class ListViewComponent {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    setTimeout(() => {
+    of(([])).pipe(delay(500)).subscribe((results) => {
       this.specUtils._openCommentsPanel(true);
-    },);
+    });
   }
   toggleAddTask() {
     this.showAddTask = !this.showAddTask;

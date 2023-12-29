@@ -6,6 +6,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { ApiService } from 'src/app/api/api.service';
 
 @Component({
   selector: 'xnode-tasks-panel',
@@ -46,7 +47,8 @@ export class TasksPanelComponent {
     private commentsService: CommentsService,
     private specUtils: SpecUtilsService,
     private localStorageService: LocalStorageService,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private apiService:ApiService) {
     this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
 
     this.specUtils.tabToActive.subscribe((res: any) => {
@@ -57,6 +59,25 @@ export class TasksPanelComponent {
   }
 
   ngOnInit(): void {
+    if(this.specUtils.specConversationPanelFrom == 'spec_header'){
+      let spec_version = localStorage.getItem('SPEC_VERISON');
+      if(spec_version){
+      let data = JSON.parse(spec_version);
+      let id;
+      data.id ? id=data.id : id=data.versionId ;
+      this.utils.loadSpinner(true);
+      this.apiService.getComments('task/tasks-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
+          if (res.status === 200 && res.data) {
+            this.list = res.data;
+            this.filterList(res.data);
+          }
+          this.utils.loadSpinner(false);
+        }).catch((err)=>{
+          console.log(err);
+          this.utils.loadSpinner(false);
+        })
+      }
+    }
     this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
       if(res){
         if(this.activeIndex == 1){
@@ -68,10 +89,12 @@ export class TasksPanelComponent {
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    const activeIndexChange = changes['activeIndex'] as SimpleChange;
-    if (activeIndexChange && activeIndexChange.currentValue === 1) {
-      this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
-      this.getMeTasksList();
+    if(this.specUtils.specConversationPanelFrom == ''){
+      const activeIndexChange = changes['activeIndex'] as SimpleChange;
+      if (activeIndexChange && activeIndexChange.currentValue === 1) {
+        this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
+        this.getMeTasksList();
+      }
     }
   }
 
