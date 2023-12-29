@@ -22,6 +22,10 @@ export class CommentsPanelComponent implements OnInit {
   @Input() activeIndex: any;
   @Input() swaggerData:any;
   showInput = false;
+  filter={
+    text:false,
+    users:false
+  }
   searchIconKeyword:string='';
   selectedUsers:any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
@@ -49,6 +53,17 @@ export class CommentsPanelComponent implements OnInit {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
       this.child.filterListBySearch();
     });
+  }
+
+  filterDisplay(entity:any){
+    if(entity=='text'){
+      this.filter.text=true;
+      this.filter.users=false;
+    }
+    if(entity=='users'){
+      this.filter.text=false;
+       this.filter.users=true;
+    }
   }
 
   userFilter(event:any){

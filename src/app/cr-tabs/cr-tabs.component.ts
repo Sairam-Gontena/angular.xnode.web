@@ -59,6 +59,10 @@ export class CrTabsComponent {
   showLimitReachedPopup: boolean = false;
   specVersion: any;
   crDataCopy: any;
+  filter={
+    text:false,
+    users:false
+  }
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -99,6 +103,17 @@ export class CrTabsComponent {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
       this.filterListBySearch();
     });
+  }
+
+  filterDisplay(entity:any){
+    if(entity=='text'){
+      this.filter.text=true;
+      this.filter.users=false;
+    }
+    if(entity=='users'){
+      this.filter.text=false;
+       this.filter.users=true;
+    }
   }
 
   filterListBySearch(){

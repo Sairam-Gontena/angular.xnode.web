@@ -515,7 +515,13 @@ body {
   margin-left: 6px;
 }
 
-:host ::ng-deep #comment-panel-user-filter .p-multiselect-header,:host ::ng-deep #comment-panel-user-filter .p-multiselect-items-wrapper{
-  color: #EFEEEE;
-  background: linear-gradient(0deg, #23222B, #23222B),  linear-gradient(0deg, #535354, #535354);
+#comment-panel-user-filter .p-component,#comment-panel-user-filter .p-multiselect,#comment-panel-user-filter .p-multiselect-header,#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
+  width: 100%!important;
+  background: #24232c !important;
+  color: white !important;
+}
+
+#comment-panel-user-filter .p-checkbox .p-checkbox-box{
+  background: #24232c !important;
+  color: white !important;
 }

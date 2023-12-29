@@ -13,15 +13,13 @@
             <div class="flex justify-content-end">
                 <div class="flex flex-row justify-content-end align-items-center search-grid">
                     <div class="p-inputgroup">
-                      <p-overlayPanel #inputText class="p-2">
-                        <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation($event)"/>
-                      </p-overlayPanel>
-                        <button (click)="inputText.toggle($event)" type="button" pButton icon="pi pi-search w-4" styleClass="p-button-warn"></button>
+                      <span class="mr-2">
+                        <input type="text" *ngIf="filter.text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation($event)" class="w-full"/>
+                        <p-multiSelect *ngIf="filter.users" id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter($event)" [showClear]="true" placeholder="Select a user" ></p-multiSelect>
+                      </span>
+                        <i (click)="filterDisplay('text')" class="pi pi-search text-white pointer pt-2 mr-2 w-auto"></i>
                     </div>
-                    <img src="./assets/user.svg"  (click)="searchUser.toggle($event);" alt="user" class="pointer"/>
-                    <p-overlayPanel  #searchUser class="p-2">
-                      <p-multiSelect id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter($event)" [showClear]="true" placeholder="Select a user" [ngClass]="{'layout-dark': 'darkMode'}"></p-multiSelect>
-                    </p-overlayPanel>
+                    <img src="./assets/user.svg"  (click)="filterDisplay('users')" alt="user" class="pointer"/>
                 </div>
             </div>
         </div>
