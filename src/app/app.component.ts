@@ -483,10 +483,6 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = false;
   }
 
-  showHomePageMenu(){
-    console.log(this.router)
-  }
-
   showSideMenu() {
     const hashWithoutParams = window.location.hash.split('?')[0];
 
