@@ -575,6 +575,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     localStorage.removeItem('selectedSpec');
     localStorage.removeItem('SPEC_VERISON');
     this.utils.saveProductDetails({});
+    this.specUtils._openCommentsPanel(false);
   }
 
   _openAndGetComments(contendata: SpecContent) {

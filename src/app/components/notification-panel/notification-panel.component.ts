@@ -475,11 +475,27 @@ export class NotificationPanelComponent {
           this.storeProductInfoForDeepLink('deep_link_info', val)
             .then(() => {
               if (!window.location.hash.includes('#/specification')) {
-                this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
-                this.router.navigate(['/specification']);
+                if(val.template_type == 'COMMENT' || val.template_type == 'TASK'){
+                  this.specUtils._openCommentsPanel(true);
+                  this.specUtils._loadActiveTab({ activeIndex: 0, productId: val.productId, versionId: val.versionId });
+                  this.specUtils._tabToActive(val.template_type);
+                  this.router.navigate(['/specification']);
+                }else{
+                  this.specUtils._openCommentsPanel(true);
+                  this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+                  this.router.navigate(['/specification']);
+                }
               } else {
-                this.specUtils._openCommentsPanel(true);
-                this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+                if(val.template_type == 'COMMENT' || val.template_type == 'TASK'){
+                  this.specUtils._openCommentsPanel(true);
+                  this.specUtils._loadActiveTab({ activeIndex: 0, productId: val.productId, versionId: val.versionId });
+                  this.specUtils._tabToActive(val.template_type);
+                  this.router.navigate(['/specification']);
+                }else{
+                  this.specUtils._openCommentsPanel(true);
+                  this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+                  this.router.navigate(['/specification']);
+                }
               }
             })
             .catch((error) => {
