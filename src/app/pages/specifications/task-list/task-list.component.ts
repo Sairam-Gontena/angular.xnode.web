@@ -20,6 +20,7 @@ export class TaskListComponent {
   @Input() topParentId: any;
   @Input() activeIndex: any;
   @Input() swaggerData:any;
+  @Input() searchIconKeyword:any;
   @Output() onClickClose = new EventEmitter<any>();
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
@@ -67,6 +68,23 @@ export class TaskListComponent {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
+  }
+
+  filterListBySearch(){
+    if(this.searchIconKeyword.length>0){
+      this.list = this.list.filter((item: any) => item.title.includes(this.searchIconKeyword));
+    }else{
+      this.list = this.specListCopy;
+    }
+  }
+
+  filterListByUsersFilter(users:any){
+    this.list = this.specListCopy;
+    if(users.length>0){
+      this.list = this.list.filter((item: any) => users.includes(item.assignee.userId));
+    }else{
+      this.list = this.specListCopy;
+    }
   }
 
   checkSwaggerItem(){

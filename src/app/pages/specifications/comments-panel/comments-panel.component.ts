@@ -1,4 +1,4 @@
-import { Component, INJECTOR, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, INJECTOR, Input, OnInit, SimpleChange, ViewChild } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -6,6 +6,9 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecConversationComponent } from '../spec-conversation/spec-conversation.component';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'xnode-comments-panel',
@@ -18,12 +21,18 @@ export class CommentsPanelComponent implements OnInit {
   @Input() usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData:any;
+  showInput = false;
+  searchIconKeyword:string='';
+  selectedUsers:any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
   list: any = [];
   filteredList: any = []
   product: any;
+  @ViewChild(SpecConversationComponent)
+  child!: SpecConversationComponent;
+  searchUpdated: Subject<string> = new Subject<string>();
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -37,6 +46,17 @@ export class CommentsPanelComponent implements OnInit {
         this.getMeCommentsList();
       }
     });
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
+      this.child.filterListBySearch();
+    });
+  }
+
+  userFilter(event:any){
+    this.child.filterListByUsersFilter(this.selectedUsers);
+  }
+
+  searchConversation(event:any){
+    this.searchUpdated.next(this.searchIconKeyword);
   }
 
   ngOnInit(): void {

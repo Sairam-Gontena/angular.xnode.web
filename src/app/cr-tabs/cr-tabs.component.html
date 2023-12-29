@@ -18,7 +18,7 @@
           [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
     </div>
-    <div class="flex align-items-center justify-content-between w-full pt-2 pl-4 pr-4">
+    <div class="flex align-items-center justify-content-between w-full pt-2 px-4">
       <div class="flex align-items-center">
         <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
           class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
@@ -34,8 +34,14 @@
           (click)="createNewCr()"></p-button>
       </div>
       <div>
-        <i class="pi pi-search text-base mx-1 light-grey"></i>
-        <i class="pi pi-user text-base mx-1 light-grey"></i>
+        <p-overlayPanel #inputText class="p-2">
+          <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()"/>
+        </p-overlayPanel>
+        <i class="pi pi-search text-base mx-1 light-grey pointer" (click)="inputText.toggle($event)"></i>
+        <i class="pi pi-user text-base mx-1 light-grey pointer"  (click)="searchUser.toggle($event);"></i>
+        <p-overlayPanel  #searchUser class="p-2">
+          <p-multiSelect id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="filterListByUsersFilter($event)" [showClear]="true" placeholder="Select a user" [ngClass]="{'layout-dark': 'darkMode'}"></p-multiSelect>
+        </p-overlayPanel>
       </div>
     </div>
     <div class="flex pl-4 pr-4 justify-content-between p-0">

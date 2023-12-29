@@ -509,8 +509,13 @@ body {
 
 .nonActive .p-button-link {
   color: #fff !important;
-} 
+}
 
 .p-button-link span {
   margin-left: 6px;
+}
+
+:host ::ng-deep #comment-panel-user-filter .p-multiselect-header,:host ::ng-deep #comment-panel-user-filter .p-multiselect-items-wrapper{
+  color: #EFEEEE;
+  background: linear-gradient(0deg, #23222B, #23222B),  linear-gradient(0deg, #535354, #535354);
 }

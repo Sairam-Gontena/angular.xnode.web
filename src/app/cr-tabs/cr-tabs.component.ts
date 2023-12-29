@@ -14,6 +14,8 @@ import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
 declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -43,6 +45,8 @@ export class CrTabsComponent {
   showNewCrPopup: boolean = false;
   crActions: any;
   comments: string = 'test';
+  searchIconKeyword:string='';
+  selectedUsers:any;
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
@@ -50,9 +54,11 @@ export class CrTabsComponent {
   targetUrl: string = '';
   bpmnFrom: string = 'SPEC';//;  'Comments'
   iframeSrc: SafeResourceUrl = '';
+  searchUpdated: Subject<string> = new Subject<string>();
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
   specVersion: any;
+  crDataCopy: any;
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -90,6 +96,32 @@ export class CrTabsComponent {
       }
     });
     this.makeTrustedUrl();
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
+      this.filterListBySearch();
+    });
+  }
+
+  filterListBySearch(){
+    let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
+    if(this.searchIconKeyword.length>0){
+      this.crData = this.crData.filter((item: any) =>   (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
+      (item.crId.toLowerCase().includes(searchKeywordLowercase)) );
+    }else{
+      this.crData = this.crDataCopy;
+    }
+  }
+
+  filterListByUsersFilter(users:any){
+    this.crData = this.crDataCopy;
+    if(this.selectedUsers.length>0){
+      this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
+    }else{
+      this.crData = this.crDataCopy;
+    }
+  }
+
+  searchConversation(){
+    this.searchUpdated.next(this.searchIconKeyword);
   }
 
   makeTrustedUrl(): void {
@@ -166,6 +198,7 @@ export class CrTabsComponent {
             return { ...item, checked: false };
           });
           this.crData = data;
+          this.crDataCopy = this.crData;
           this.crList = Array.from({ length: this.crData.length }, () => []);
         } else {
           this.utilsService.loadToaster({

@@ -2,27 +2,31 @@
     [content]="'No open comments yet'"></xnode-no-comments>
 <ng-template #conversationComments>
     <div class="p-4">
-        <div class="grid">
-            <div class="col-6">
+        <div class="flex flex-row justify-content-between">
+            <div class="">
                 <div class="flex align-items-center filter-grid ">
                     <p class="m-0 pl-2">Filters:</p>
                     <p-dropdown class="filter w-full ml-2 " [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
                         optionLabel="label" (onChange)="filterList(list)" ></p-dropdown>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="flex align-items-center search-grid">
+            <div class="flex justify-content-end">
+                <div class="flex flex-row justify-content-end align-items-center search-grid">
                     <div class="p-inputgroup">
-                        <input type="text" pInputText />
-                        <button type="button" pButton icon="pi pi-search" styleClass="p-button-warn"></button>
+                      <p-overlayPanel #inputText class="p-2">
+                        <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation($event)"/>
+                      </p-overlayPanel>
+                        <button (click)="inputText.toggle($event)" type="button" pButton icon="pi pi-search w-4" styleClass="p-button-warn"></button>
                     </div>
-                    <img src="./assets/user.svg" alt="user" />
+                    <img src="./assets/user.svg"  (click)="searchUser.toggle($event);" alt="user" class="pointer"/>
+                    <p-overlayPanel  #searchUser class="p-2">
+                      <p-multiSelect id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter($event)" [showClear]="true" placeholder="Select a user" [ngClass]="{'layout-dark': 'darkMode'}"></p-multiSelect>
+                    </p-overlayPanel>
                 </div>
             </div>
         </div>
         <div class='comments-grid'>
-            <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList"
-                [topParentId]="selectedComment?.id"></xnode-spec-conversation>
+            <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList" [searchIconKeyword]="searchIconKeyword" [topParentId]="selectedComment?.id"></xnode-spec-conversation>
         </div>
     </div>
 </ng-template>

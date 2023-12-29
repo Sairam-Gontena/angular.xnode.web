@@ -31,6 +31,7 @@ export class SpecConversationComponent {
   @Input() parentEntity: any;
   @Input() parentId: any;
   @Input() swaggerData:any;
+  @Input() searchIconKeyword:any;
   @Output() onClickClose = new EventEmitter<any>();
   @ViewChild(SpecChildConversationComponent)
   child!: SpecChildConversationComponent;
@@ -89,6 +90,23 @@ export class SpecConversationComponent {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
+  }
+
+  filterListBySearch(){
+    if(this.searchIconKeyword.length>0){
+      this.list = this.list.filter((item: any) => item.message.includes(this.searchIconKeyword));
+    }else{
+      this.list = this.specListCopy;
+    }
+  }
+
+  filterListByUsersFilter(users:any){
+    this.list = this.specListCopy;
+    if(users.length>0){
+      this.list = this.list.filter((item: any) => users.includes(item.createdBy.userId));
+    }else{
+      this.list = this.specListCopy;
+    }
   }
 
   checkSwaggerItem(){
