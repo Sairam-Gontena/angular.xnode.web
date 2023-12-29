@@ -180,9 +180,9 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
   }
   viewPublishedApp() {
-    let product_url = localStorage.getItem('product_url')
-    if (product_url) {
-      window.open(product_url, '_blank');
+    let productUrl = localStorage.getItem('product_url')
+    if (productUrl) {
+      window.open(productUrl, '_blank');
     } else {
       alert('URL not found');
     }
