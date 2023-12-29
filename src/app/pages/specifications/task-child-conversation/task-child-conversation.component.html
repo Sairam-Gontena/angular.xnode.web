@@ -36,15 +36,9 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-12" *ngIf="cmt.referenceContent?.content">
-            <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
-                {{cmt?.referenceContent?.content }} </p>
-        </div> -->
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
         </div>
-        <!-- <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened"> getting reply count as -1 always -->
         <div class="col-12 pb-0" *ngIf="!cmt?.repliesOpened && !cmt.topParentId">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
                     Replies</span>
