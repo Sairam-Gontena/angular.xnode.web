@@ -10,7 +10,7 @@ export class ApiService {
   apiPoint = environment.apiUrl;
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
-  commentsEndPoint = environment.specApiUrl;
+  commentsEndPoint = environment.commentsApiUrl;
 
   constructor() {
   }

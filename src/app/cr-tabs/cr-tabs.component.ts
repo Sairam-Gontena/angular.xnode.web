@@ -63,6 +63,9 @@ export class CrTabsComponent {
     text:false,
     users:false
   }
+  sortColumn: string = 'dueDate';
+  sortDirection: string = 'desc';
+
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -72,7 +75,8 @@ export class CrTabsComponent {
     private sanitizer: DomSanitizer,
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
-    private notifyApi: NotifyApiService
+    private notifyApi: NotifyApiService,
+
   ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
@@ -199,6 +203,26 @@ export class CrTabsComponent {
     });
   }
 
+  sortCrList(column: string): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    // Perform the sorting logic on your crData array
+    this.crData.sort((a: any, b: any) => {
+      const aValue = new Date(a.duedate).getTime();
+      const bValue = new Date(b.duedate).getTime();
+
+      if (this.sortDirection === 'asc') {
+        return aValue - bValue;
+      } else {
+        return bValue - aValue;
+      }
+    });
+  }
   getCRList() {
     let body: any = {
       productId: this.product?.id,
@@ -209,11 +233,25 @@ export class CrTabsComponent {
       .getCrList(body)
       .then((res: any) => {
         if (res && res.data) {
+          // let data: any[] = res?.data?.map((item: any) => {
+          //   return { ...item, checked: false };
+          // });
           let data: any[] = res?.data?.map((item: any) => {
-            return { ...item, checked: false };
+            const currentDate = new Date().toISOString().split('T')[0];
+            const isOldDate = new Date(item.duedate).getFullYear() === 1970;
+
+            const updatedItem = {
+              ...item,
+              checked: false,
+              duedate: isOldDate ? currentDate : item.duedate
+            };
+
+            return updatedItem;
           });
+
           this.crData = data;
           this.crDataCopy = this.crData;
+
           this.crList = Array.from({ length: this.crData.length }, () => []);
         } else {
           this.utilsService.loadToaster({
@@ -361,6 +399,7 @@ export class CrTabsComponent {
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
   }
+
 
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
