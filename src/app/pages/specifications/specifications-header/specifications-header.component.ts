@@ -181,7 +181,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    this.utils.disableDockedNavi()
+    this.utils.disableDockedNavi();
+    this.specUtils.changeSpecConversationPanelFrom('spec_header');
     this.specUtils._openCommentsPanel(true);
   }
 

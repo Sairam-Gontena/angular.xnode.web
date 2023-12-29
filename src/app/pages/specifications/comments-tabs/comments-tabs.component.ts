@@ -28,6 +28,10 @@ export class CommentsTabsComponent implements OnInit {
 
   }
 
+  ngOnDestroy(){
+    this.specUtils.changeSpecConversationPanelFrom('');
+  }
+
   onTabChange(event: any) {
     this.activeIndex = event.index;
   }
