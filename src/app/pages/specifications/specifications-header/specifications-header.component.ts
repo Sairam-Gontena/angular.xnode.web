@@ -179,7 +179,14 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.enabledGeneratespec = false;
     }
   }
-
+  viewPublishedApp() {
+    let product_url = localStorage.getItem('product_url')
+    if (product_url) {
+      window.open(product_url, '_blank');
+    } else {
+      alert('URL not found');
+    }
+  }
   openComments() {
     this.utils.disableDockedNavi();
     this.specUtils.changeSpecConversationPanelFrom('spec_header');
