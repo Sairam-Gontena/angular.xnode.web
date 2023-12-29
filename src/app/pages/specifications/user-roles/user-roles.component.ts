@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-user-roles',
   templateUrl: './user-roles.component.html',
@@ -93,9 +94,9 @@ export class UserRolesComponent implements OnInit {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    setTimeout(() => {
+    of(([])).pipe(delay(500)).subscribe((results) => {
       this.specUtils._openCommentsPanel(true);
-    },);
+    });
   }
 
 }

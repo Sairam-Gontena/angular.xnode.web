@@ -1,5 +1,6 @@
 import { Component, INJECTOR, Input, OnInit, SimpleChange } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
+import { ApiService } from 'src/app/api/api.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
@@ -27,7 +28,8 @@ export class CommentsPanelComponent implements OnInit {
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService,
-    private storageService: LocalStorageService) {
+    private storageService: LocalStorageService,
+    private apiService:ApiService) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'COMMENT') {
@@ -38,15 +40,36 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.specUtils.specConversationPanelFrom == 'spec_header'){
+      let spec_version = localStorage.getItem('SPEC_VERISON');
+      if(spec_version){
+      let data = JSON.parse(spec_version);
+      let id;
+      data.id ? id=data.id : id=data.versionId ;
+      this.utils.loadSpinner(true);
+      this.apiService.getComments('comment/comments-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
+          if (res.status === 200 && res.data) {
+            this.list = res.data;
+            this.filterList(res.data);
+          }
+          this.utils.loadSpinner(false);
+        }).catch((err)=>{
+          console.log(err);
+          this.utils.loadSpinner(false);
+        })
+      }
+    }
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    const activeIndexChange = changes['activeIndex'] as SimpleChange;
-    if (activeIndexChange && activeIndexChange.currentValue === 0) {
-      this.utils.loadSpinner(true);
-      let specData = localStorage.getItem('selectedSpec');
-      if(specData)
-      this.getMeCommentsList();
+    if(this.specUtils.specConversationPanelFrom == ''){
+      const activeIndexChange = changes['activeIndex'] as SimpleChange;
+      if (activeIndexChange && activeIndexChange.currentValue === 0) {
+        this.utils.loadSpinner(true);
+        let specData = localStorage.getItem('selectedSpec');
+        if(specData)
+        this.getMeCommentsList();
+      }
     }
   }
 
