@@ -53,6 +53,10 @@ export class CrTabsComponent {
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
   specVersion: any;
+  // Add these properties to your component
+  sortColumn: string = 'dueDate'; // default sorting column
+  sortDirection: string = 'desc'; // default sorting direction
+
   constructor(
     private api: ApiService,
     private utilsService: UtilsService,
@@ -152,6 +156,28 @@ export class CrTabsComponent {
     });
   }
 
+  sortCrList(column: string): void {
+    if (this.sortColumn === column) {
+      // If the same column is clicked, reverse the sort direction
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // If a different column is clicked, set it as the new sorting column
+      this.sortColumn = column;
+      this.sortDirection = 'asc'; // set default sorting direction
+    }
+
+    // Perform the sorting logic on your crData array
+    this.crData.sort((a: any, b: any) => {
+      const aValue = new Date(a.duedate).getTime();
+      const bValue = new Date(b.duedate).getTime();
+
+      if (this.sortDirection === 'asc') {
+        return aValue - bValue;
+      } else {
+        return bValue - aValue;
+      }
+    });
+  }
   getCRList() {
     let body: any = {
       productId: this.product?.id,
