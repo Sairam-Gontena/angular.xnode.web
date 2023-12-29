@@ -37,7 +37,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() specId: any;
   @Input() activeIndex: any;
   @Input() from: any;
-  @Input() component:any;
+  @Input() AssignedFrom: any;
+  @Input() component: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -87,7 +88,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   handleKeydown(event: KeyboardEvent) {
-    if (event.key === ' ' && this.component=='crTabs') {
+    if (event.key === ' ' && this.component == 'crTabs') {
       event.stopPropagation();
     }
   }
@@ -182,7 +183,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       if (this.action === 'REPLY') {
         body = {
           "createdBy": this.currentUser.user_id,
-          "topParentId": this.parentId, // For new comment it is 'null' and reply level this should be top comment id.
+          "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
           "parentEntity": this.parentEntity,
           "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
           "message": this.comment,
@@ -192,6 +193,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           "followers": [],
           "feedback": {},
         }
+        console.log('body', body);
+        // return
+
         this.saveComment(body);
       }
       else {
@@ -238,7 +242,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     } else {
       this.specUtils._tabToActive('COMMENT');
     }
-
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
