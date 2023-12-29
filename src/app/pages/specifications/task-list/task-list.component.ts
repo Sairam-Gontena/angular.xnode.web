@@ -66,6 +66,9 @@ export class TaskListComponent {
   }
 
   ngOnInit() {
+    this.list.forEach((element: any) => {
+      element.repliesOpened = false;
+    });
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
@@ -284,7 +287,7 @@ export class TaskListComponent {
           element.parentUser = this.list.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
         });
         this.list.forEach((obj: any) => {
-          if (obj.id === this.selectedComment.id) {
+          if (obj.id === cmt.id) {
             obj.comments = response.data;
             obj.repliesOpened = true
           }

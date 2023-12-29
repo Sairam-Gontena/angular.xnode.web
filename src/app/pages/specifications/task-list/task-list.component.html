@@ -191,7 +191,7 @@
       </div>
     </div>
     <!-- <div class="col-12 pb-0" *ngIf="cmt.commentCount && cmt.commentCount !== -1 && !cmt.repliesOpened"> -->
-    <div class="col-12 pb-0">
+    <div class="col-12 pb-0" *ngIf="!cmt.repliesOpened">
       <div class="view-replies">
         <span class="pointer text-xs" (click)="viewReplies(cmt)">
           See More
@@ -204,7 +204,7 @@
         (childEvent)="receiveMsg($event)" [list]="cmt?.comments?.slice().reverse()"
         [topParentId]="cmt.id"></xnode-task-child-conversation>
     </div>
-    <div class="col-12 pb-0">
+    <div class="col-12 pb-0" *ngIf="cmt.repliesOpened">
       <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">See Less</span>
       </div>
     </div>
