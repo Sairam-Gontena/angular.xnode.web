@@ -14,10 +14,9 @@ import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxCaptureModule } from 'ngx-capture';
-import { HomepageAppSideMenuComponent } from './components/homepage-app-side-menu/homepage-app-side-menu.component';
 
 @NgModule({
-  declarations: [	AppComponent, HomepageAppSideMenuComponent],
+  declarations: [	AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
