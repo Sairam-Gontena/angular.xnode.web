@@ -8,9 +8,9 @@ import { NEWLIST, OLDLIST } from './mock'
 })
 export class DiffViewerComponent {
   onDiff: boolean = true;
-  content: any = NEWLIST;
+  content: any = OLDLIST;
 
-  content2: any = OLDLIST;
+  content2: any = NEWLIST;
 
   constructor() {
     console.log(DiffGen.diff(this.content, this.content2));
