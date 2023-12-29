@@ -38,18 +38,16 @@
         <i class="pi pi-user text-base mx-1 light-grey"></i>
       </div>
     </div>
-    <div class="flex pl-4 pr-4 justify-content-between p-0">
-      <p class="text-base light-grey text-sm" *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'">Today</p>
-      <!-- <div class="flex align-items-center p-0">
-        <i class="pi pi-arrow-up text-base mx-1 text-gray-200" ></i>
-        <p class="my-0 text-gray-200 text-sm" >Date Created</p>
-        <i class="pi pi-chevron-down text-base mx-1 text-gray-200"></i>
-      </div> -->
-      <div class="flex align-items-center p-0" (click)="sortCrList('dueDate')">
+    <div class="flex pl-4 pr-4 justify-content-between align-items-center p-0 h-4rem">
+      <div class="">
+        <p class="flex align-items-center text-base light-grey text-sm"
+          *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'">Today</p>
+      </div>
+      <div class="flex align-items-center p-0 pointer" (click)="sortCrList('dueDate')">
         <i class="pi pi-arrow-up text-base mx-1 text-gray-200"
-          *ngIf="sortColumn === 'dueDate' && sortDirection === 'asc'"></i>
-        <i class="pi pi-arrow-down text-base mx-1 text-gray-200"
           *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'"></i>
+        <i class="pi pi-arrow-down text-base mx-1 text-gray-200"
+          *ngIf="sortColumn === 'dueDate' && sortDirection === 'asc'"></i>
         <p class="my-0 text-gray-200 text-sm">Date Created</p>
       </div>
     </div>
