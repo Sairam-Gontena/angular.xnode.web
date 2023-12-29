@@ -19,8 +19,8 @@ export class TaskListComponent {
   @Input() usersList: any;
   @Input() topParentId: any;
   @Input() activeIndex: any;
-  @Input() swaggerData:any;
-  @Input() From:any;
+  @Input() swaggerData: any;
+  @Input() From: any;
   @Output() onClickClose = new EventEmitter<any>();
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
@@ -50,6 +50,7 @@ export class TaskListComponent {
   fileIndex: any;
   targetUrl: string = '';
   iframeSrc: SafeResourceUrl = '';
+  parentId: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -70,21 +71,21 @@ export class TaskListComponent {
     this.checkSwaggerItem();
   }
 
-  checkSwaggerItem(){
-    this.list.forEach((item:any)=>{
-      if(item.referenceContent.title=='OpenAPI Spec'){
+  checkSwaggerItem() {
+    this.list.forEach((item: any) => {
+      if (item.referenceContent.title == 'OpenAPI Spec') {
         of(([])).pipe(
           delay(500)
-         ).subscribe((results) => {
+        ).subscribe((results) => {
           this.fetchOpenSpecApi(item.id)
         });
       }
     })
   }
 
-  fetchOpenSpecApi(id:any){
+  fetchOpenSpecApi(id: any) {
     const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'+id),
+      domNode: document.getElementById('openapi-ui-spec' + id),
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
@@ -97,8 +98,8 @@ export class TaskListComponent {
   }
 
   makeTrustedUrl(): void {
-    let target =localStorage.getItem('targetUrl');
-    if(target){
+    let target = localStorage.getItem('targetUrl');
+    if (target) {
       this.targetUrl = target;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.targetUrl
@@ -106,8 +107,8 @@ export class TaskListComponent {
     }
   }
 
-  checkParaViewSections(title: string,parentTitle?:string) {
-    if(parentTitle=='Technical Specifications'){
+  checkParaViewSections(title: string, parentTitle?: string) {
+    if (parentTitle == 'Technical Specifications') {
       return;
     }
     return (
@@ -133,7 +134,7 @@ export class TaskListComponent {
     );
   }
 
-  checkUserPersonaSections(title:string){
+  checkUserPersonaSections(title: string) {
     return (
       this.userPersonaViewSections.filter((secTitle) => {
         return secTitle === title;
@@ -192,9 +193,8 @@ export class TaskListComponent {
   }
 
   onClickReply(cmt: any): void {
-    if (!cmt.topParentId) {
-      this.topParentId = cmt.id
-    }
+    this.parentId = cmt.id;
+    this.topParentId = null;
     this.selectedComment = cmt;
     this.showCommentInput = true;
     this.action = 'REPLY';
