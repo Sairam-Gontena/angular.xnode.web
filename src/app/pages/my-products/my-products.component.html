@@ -170,17 +170,30 @@
     
     <p-tabView [(activeIndex)]="activeIndexRecentActivity">
         <p-tabPanel header="All Conversations" class="home-conversations-card">
-            <p-card header="Budget Tracking">
-                <p class="m-0 text-white">
-                    #CN201 in Finbuddy
-                </p>
+            <p-card header={{conversation?.title}} class="conversations-card" *ngFor="let conversation of AllConversations">
+                <div class="flex">
+                    <p class="m-0 text-white col-8">
+                        #{{conversation?.cId}} in {{conversation?.productName}}
+                    </p>
+                    <p class="m-0 text-white col-4">
+                        Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
+                    </p>
+                </div>
             </p-card>
-            <br>
-            <p-card header="Business and Campaign Strategies">
-                <p class="m-0 text-white">
-                    #CN202 in FinTeach
-                </p>
+           
+        </p-tabPanel>
+        <p-tabPanel header="My Conversations" class="home-conversations-card">
+            <p-card header={{conversation?.title}} class="conversations-card" *ngFor="let conversation of mineConversations">
+                <div class="flex">
+                    <p class="m-0 text-white col-8">
+                        #{{conversation?.cId}} in {{conversation?.productName}}
+                    </p>
+                    <p class="m-0 text-white col-4">
+                        Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
+                    </p>
+                </div>
             </p-card>
+           
         </p-tabPanel>
     </p-tabView>
 </div>

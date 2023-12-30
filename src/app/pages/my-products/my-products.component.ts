@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
-import { sortBy } from 'lodash';
+import { find, orderBy, sortBy } from 'lodash';
 
 @Component({
   selector: 'xnode-my-products',
@@ -39,7 +39,8 @@ export class MyProductsComponent implements OnInit {
   filteredProductsLength= 0;
   activeIndexRecentActivity: number = 0;
   isViewLess = true;
-
+  AllConversations: any = [];
+  mineConversations: any = [];
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -79,7 +80,6 @@ export class MyProductsComponent implements OnInit {
       this.removeParamFromRoute()
     }, 2000);
     this.filterProductsByUserEmail();
-
   }
 
   getMeMyAvatar(userAvatar?: any) {
@@ -215,6 +215,7 @@ export class MyProductsComponent implements OnInit {
           this.auditUtil.postAudit('GET_METADATA_MY_PRODUCTS', 1, 'FAILED', 'user-audit', user_audit_body, this.email, this.id);
           this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
         }
+        this.getAllConversations();
         this.utils.loadSpinner(false);
       })
       .catch(error => {
@@ -299,5 +300,31 @@ export class MyProductsComponent implements OnInit {
     this.end = 2;
   }
   
+  getAllConversations() {
+    this.apiService.getAllConversations('conversation')
+      .then((response) => {
+        this.AllConversations = this.mapProductNameToConversations(response.data); 
+      })
+    if (this.currentUser && this.currentUser.user_id) {
+
+      this.apiService.getConversationsByContributor('conversation/conversations-by-contributor?contributors=' + this.currentUser?.user_id)
+        .then((response) => {
+          if (response && response.status == 200 && response.data) {
+            this.mineConversations = this.mapProductNameToConversations(response.data);         
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+        })
+    }
+  }
+
+  mapProductNameToConversations(_conversations:any){
+    _conversations.forEach((conversation: any, i: any) => {
+      let product = find(this.filteredProducts, { id: conversation.productId });
+      _conversations[i]['productName'] = product && product.title ? product.title : '';
+    });
+    return orderBy(_conversations, ['modifiedOn']);
+  }
 
 }

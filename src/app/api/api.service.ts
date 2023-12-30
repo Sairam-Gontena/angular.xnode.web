@@ -11,6 +11,7 @@ export class ApiService {
   workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
   authEndPoint = environment.authApiUrl;
   commentsEndPoint = environment.specApiUrl;
+  conversationEndPoint = environment.conversationApiUrl;
 
   constructor() {
   }
@@ -70,5 +71,13 @@ export class ApiService {
 
   deleteComment(url: string) {
     return axios.delete(this.commentsEndPoint + url, this.config);
+  }
+
+  getAllConversations(url: string){
+    return axios.get(this.conversationEndPoint + url, this.config);
+  }
+
+  getConversationsByContributor(url: string){
+    return axios.get(this.conversationEndPoint + url, this.config);
   }
 }
