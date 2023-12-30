@@ -42,13 +42,13 @@
   !contentObj?.collapsed
     ? 'sctions-grid relative'
     : 'sctions-grid-full relative'
-" id="{{ contentObj?.id }}" #contentContainer class="mt-4">
+" id="{{ contentObj?.id }}" #contentContainer class="mt-4" *ngIf="contentObj.content_data_type !== 'BANNER'">
     <div *ngSwitchCase="'BULLETS_WITH_TITLE'">
-      <p class="m-0"> {{contentObj.title }}: </p>
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <div [ngSwitch]="getType(contentObj.content)">
         <div *ngSwitchCase="'object'" [class]="getClass()">
           <h2>
-            <Section> obj</Section> {{contentObj.content.title }} : {{contentObj.content.content }}
+            {{contentObj.content.title }} : {{contentObj.content.content }}
           </h2>
         </div>
         <div *ngSwitchCase="'array'">
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'BULLETS'">
-      <p class="m-0"> {{contentObj.title }}: </p>
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <div [ngSwitch]="getType(contentObj.content)">
         <div *ngSwitchCase="'object'" [class]="getClass()">
           <h2>
@@ -76,13 +76,12 @@
       </div>
     </div>
     <div *ngSwitchCase="'USER_PERSONAS'">
-      <p class="m-0"> {{contentObj.title }}: </p>
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <p>User personas component</p>
     </div>
 
     <div *ngSwitchCase="'PARA'" [class]="getClass()">
-      <p class="m-0">{{contentObj.title }} :
-      </p>
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
         [onDiff]="onDiff"></xnode-diff-generator>
     </div>
