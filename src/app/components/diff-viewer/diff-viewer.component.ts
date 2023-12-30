@@ -6,10 +6,10 @@ import { NEWLIST, OLDLIST } from './mock'
   templateUrl: './diff-viewer.component.html',
   styleUrls: ['./diff-viewer.component.scss'],
 })
-export class DiffViewerComponent {
-  onDiff: boolean = true;
-  content: any = OLDLIST;
 
+export class DiffViewerComponent {
+  onDiff: boolean = false;
+  content: any = OLDLIST;
   content2: any = NEWLIST;
 
   constructor() {

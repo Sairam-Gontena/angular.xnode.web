@@ -10,3 +10,27 @@
   background: #d4d63f !important;
 }
 
+.intro-grid {
+  background: #24232C;
+  padding: 30px;
+  color: #dfdfdf;
+  border-radius: 6px;
+}
+
+.version-badge {
+  font-size: 14px;
+  background: #02ADEE66;
+  padding: 5px;
+  border-radius: 20px;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.sctions-grid {
+  background: #24232C;
+  padding: 30px;
+  color: #dfdfdf;
+  // max-height: 200px;
+  border-radius: 6px;
+  overflow: hidden;
+}

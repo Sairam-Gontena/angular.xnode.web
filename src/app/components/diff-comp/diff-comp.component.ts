@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -6,15 +8,20 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./diff-comp.component.scss']
 })
 export class DiffCompComponent implements OnInit {
+  product: any;
   @Input() contentObj: any;
   @Input() diffObj: any;
   @Input() onDiff: boolean = false;
   @Input() index: any;
-  ngOnInit(): void {
-    // console.log('contentObj', this.contentObj);
-    // console.log('diffObj', this.diffObj);
-    console.log('onDiff', this.onDiff)
+
+  constructor(private storageService: LocalStorageService) {
+
   }
+
+  ngOnInit(): void {
+    this.product = this.storageService.getItem(StorageKeys.Product);
+  }
+
   getType(content: any): string {
     return Array.isArray(content) ? 'array' : typeof content;
   }
@@ -68,6 +75,14 @@ export class DiffCompComponent implements OnInit {
       }
     }
     return undefined;
+  }
+
+  getMeBanner(event: any) {
+    console.log('event', event);
+
+    return (
+      './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg'
+    );
   }
 
 }

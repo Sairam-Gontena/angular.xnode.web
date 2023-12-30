@@ -1,4 +1,4 @@
-<div class='bg-white' *ngFor="let item of content;let i = index">
+<div class='m-4' *ngFor="let item of content;let i = index">
   <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj(content2,item, onDiff)"
     [onDiff]="onDiff"></xnode-diff-comp>
 </div>
