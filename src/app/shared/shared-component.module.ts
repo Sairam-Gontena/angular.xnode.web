@@ -42,6 +42,10 @@ import { ProductDropdownComponent } from '../components/product-dropdown/product
 import { AddCommentOverlayPanelComponent } from '../pages/specifications/add-comment-overlay-panel/add-comment-overlay-panel.component';
 import { ConfirmationPopupNewComponent } from '../confirmation-popup-new/confirmation-popup-new.component';
 import { AddCrVersionComponent } from '../components/add-cr-version/add-cr-version.component';
+import { UserPersonaComponent } from '../pages/specifications/user-persona/user-persona.component';
+// import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
+// import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
+// import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
 
 @NgModule({
@@ -85,7 +89,11 @@ import { AddCrVersionComponent } from '../components/add-cr-version/add-cr-versi
                 ProductDropdownComponent,
                 AddCommentOverlayPanelComponent,
                 ConfirmationPopupNewComponent,
-                AddCrVersionComponent
+                AddCrVersionComponent,
+                // DiffCompComponent,
+                // DiffGeneratorComponent,
+                // DiffListComponent,
+                UserPersonaComponent
         ],
         imports: [
                 CommonModule,
@@ -133,7 +141,11 @@ import { AddCrVersionComponent } from '../components/add-cr-version/add-cr-versi
                 SharedPipesModule,
                 AddCommentOverlayPanelComponent,
                 ConfirmationPopupNewComponent,
-                AddCrVersionComponent
+                AddCrVersionComponent,
+                // DiffCompComponent,
+                // DiffGeneratorComponent,
+                // DiffListComponent,
+                UserPersonaComponent
         ]
 })
 export class SharedComponentModule { }

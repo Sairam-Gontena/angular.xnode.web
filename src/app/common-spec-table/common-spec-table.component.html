@@ -13,8 +13,8 @@
           [ngClass]="showCommentIcon || commentOverlayPanelOpened?'opacity-100':'opacity-0'">
     </div> -->
         <div class="col-12">
-            <p-table #dt [value]="content" [columns]="columns" [resizableColumns]="true"
-                [scrollable]="true" scrollDirection="horizontal">
+            <p-table #dt [value]="content" [columns]="columns" [resizableColumns]="true" [scrollable]="true"
+                scrollDirection="horizontal">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th pResizableColumn *ngFor="let col of columns" [ngClass]="'tableheader'">

@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 import { authGuard } from './auth.guard';
-import { DiffViewerComponent } from './components/diff-viewer/diff-viewer.component';
 
 const routes: Routes = [
   {
@@ -215,12 +214,15 @@ const routes: Routes = [
     canActivate: [authGuard]
 
   },
-  { path: 'diff', component: DiffViewerComponent },
+  {
+    path: 'diff',
+    loadChildren: () => import('./pages/diff-viewer/diff-viewer.module').then((m) => m.DiffViewerModule),
+    canActivate: [authGuard]
+  },
   {
     path: 'help-center',
     loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule),
     canActivate: [authGuard]
-
   },
   {
     path: 'feedback-list',

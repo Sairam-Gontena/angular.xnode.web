@@ -35,6 +35,7 @@ import { DataViewModule } from "primeng/dataview";
 import { MentionModule } from 'angular-mentions';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { InlineDiffComponent } from 'ngx-diff';
 @NgModule({
   declarations: [
   ],
@@ -70,6 +71,7 @@ import { CalendarModule } from 'primeng/calendar';
     MentionModule,
     AutoCompleteModule,
     CalendarModule,
+    InlineDiffComponent,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -105,7 +107,8 @@ import { CalendarModule } from 'primeng/calendar';
     FieldsetModule,
     MentionModule,
     CalendarModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    InlineDiffComponent
   ],
   providers: [
     DataService

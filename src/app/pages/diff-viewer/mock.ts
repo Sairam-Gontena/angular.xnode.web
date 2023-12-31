@@ -2135,6 +2135,7 @@ export const NEWLIST = [
                 },
                 "id": "461f1084-61e2-4d69-932b-ec5e5236c699",
                 "product_id": "b92a5d74-fb30-4fd6-a24f-e5ba580ab150",
+                "content_data_type": "TABLE",
                 "account_id": "2a57e931-c2a9-486e-aa6e-57c82b2b64d5"
             },
             {
@@ -4459,7 +4460,7 @@ export const OLDLIST = [
                 "account_id": "2a57e931-c2a9-486e-aa6e-57c82b2b64d5"
             },
             {
-                "title": "User Roles",
+                "title": "User Roles1",
                 "content": [
                     {
                         "title": "Regular User",
@@ -6007,6 +6008,7 @@ export const OLDLIST = [
                 },
                 "id": "461f1084-61e2-4d69-932b-ec5e5236c699",
                 "product_id": "b92a5d74-fb30-4fd6-a24f-e5ba580ab150",
+                "content_data_type": "TABLE",
                 "account_id": "2a57e931-c2a9-486e-aa6e-57c82b2b64d5"
             },
             {

@@ -45,39 +45,54 @@
 " id="{{ contentObj?.id }}" #contentContainer class="mt-4" *ngIf="contentObj.content_data_type !== 'BANNER'">
     <div *ngSwitchCase="'BULLETS_WITH_TITLE'">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <div [ngSwitch]="getType(contentObj.content)">
-        <div *ngSwitchCase="'object'" [class]="getClass()">
-          <h2>
-            {{contentObj.content.title }} : {{contentObj.content.content }}
-          </h2>
-        </div>
-        <div *ngSwitchCase="'array'">
-          <div *ngFor="let item of contentObj.content">
-            <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
-              [onDiff]="onDiff"></xnode-diff-comp>
-          </div>
-        </div>
-      </div>
+      <ul *ngFor="let item of contentObj.content">
+        <li>
+          <b>{{item.title}}</b>
+          <p>{{item.content}}</p>
+        </li>
+      </ul>
     </div>
     <div *ngSwitchCase="'BULLETS'">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <div [ngSwitch]="getType(contentObj.content)">
-        <div *ngSwitchCase="'object'" [class]="getClass()">
-          <h2>
-            <Section> obj</Section> {{contentObj.content.title }} : {{contentObj.content.content }}
-          </h2>
-        </div>
-        <div *ngSwitchCase="'array'">
-          <div *ngFor="let item of contentObj.content">
-            <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
-              [onDiff]="onDiff"></xnode-diff-comp>
-          </div>
-        </div>
+      <ul *ngFor="let item of contentObj.content">
+        <li>{{item}}</li>
+      </ul>
+    </div>
+    <div *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <div *ngFor="let persona of contentObj.content" class="pb-3">
+        <xnode-user-persona [content]="persona"></xnode-user-persona>
       </div>
     </div>
-    <div *ngSwitchCase="'USER_PERSONAS'">
+    <div *ngSwitchCase="'USECASES'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <p>User personas component</p>
+      <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
+    </div>
+    <div *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <xnode-bpmn-common [item]="contentObj"></xnode-bpmn-common>
+    </div>
+    <div *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <p>In Progress</p>
+    </div>
+    <div *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"></pre>
+    </div>
+    <div *ngSwitchCase="'TABLE'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
+    </div>
+    <div *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <p>In Progress</p>
+      <!-- <xnode-data-model-common *ngIf="content" (dataFlowEmitter)="expandComponent.emit(content)"
+        [dataModelData]="content"></xnode-data-model-common> -->
+    </div>
+    <div *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">SWAGGER</h3>
+      <div id="openapi-ui-spec" class="openapi-spec"></div>
     </div>
 
     <div *ngSwitchCase="'PARA'" [class]="getClass()">
@@ -85,5 +100,19 @@
       <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
         [onDiff]="onDiff"></xnode-diff-generator>
     </div>
+    <div *ngSwitchCase="'USER_ROLES'" [class]="getClass()">
+      <div [ngSwitch]="getType(contentObj.content)">
+        <div *ngSwitchCase="'array'">
+          <div *ngFor="let item of contentObj.content">
+            <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
+              [onDiff]="onDiff"></xnode-diff-comp>
+          </div>
+          <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content"
+            [targetList]="contentObj.content"></xnode-diff-list>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>
