@@ -31,6 +31,12 @@ export class SpecUtilsService {
   private onProductDropdownChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductDropdownChange: Observable<boolean> = this.onProductDropdownChange.asObservable();
 
+  specConversationPanelFrom:string='';
+
+  changeSpecConversationPanelFrom(event:string){
+    this.specConversationPanelFrom=event;
+  }
+
   _openCommentsPanel(event: boolean): void {
     this.openPanel.next(event);
   }

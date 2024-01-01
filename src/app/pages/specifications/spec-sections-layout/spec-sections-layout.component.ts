@@ -6,6 +6,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { environment } from 'src/environments/environment';
+import { delay, of } from 'rxjs';
 
 declare const SwaggerUIBundle: any;
 @Component({
@@ -148,9 +149,9 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    setTimeout(() => {
+    of(([])).pipe(delay(500)).subscribe((results) => {
       this.specUtils._openCommentsPanel(true);
-    },);
+    });
   }
 
   checkExpandSpecSections(spec: string) {
