@@ -34,14 +34,37 @@
           (click)="createNewCr()"></p-button>
       </div>
       <div class="flex justify-content-center">
-
-          <input type="text" pInputText *ngIf="filter.text" [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" class="w-10"/>
-          <p-multiSelect *ngIf="filter.users" id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="filterListByUsersFilter($event)" [showClear]="true" placeholder="Select a user"  class="w-8"></p-multiSelect>
-
-          <i class="pi pi-search text-base mx-1 light-grey pointer" (click)="filterDisplay('text')"></i>
-          <i class="pi pi-user text-base mx-1 light-grey pointer"  (click)="filterDisplay('users')"></i>
-
+          <!-- <input type="text" pInputText *ngIf="filter.text" [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" class="w-10"/>
+          <p-multiSelect *ngIf="filter.users" id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="filterListByUsersFilter($event)" [showClear]="true" placeholder="Select a user"  class="w-8"></p-multiSelect><i class="pi pi-search text-base mx-1 light-grey pointer" (click)="filterDisplay('text')"></i>
+          <i class="pi pi-user text-base mx-1 light-grey pointer"  (click)="filterDisplay('users')"></i> -->
+          <div class="p-inputgroup">
+            <span class="">
+              <p-overlayPanel #op (onHide)="filter.users=false">
+                <div class="h-15rem w-15rem overflow-y-auto">
+                  <i class="pi pi-search absolute"  [ngClass]="{'hidden':hideSearch}" [ngStyle]="{top: '10px', left: '5px',color:'#949292'}"></i>
+                  <textarea  pInputTextarea [autoResize]="true" placeholder="     Search users..." [mention]="usersList" [mentionConfig]="config"  (keydown)="handleKeydown($event)" class="col-12 h-2rem"   [ngStyle]="{ 'border-top': 'transparent', 'border-right': 'transparent', 'border-left': 'transparent', 'border-bottom': '1px solid #535354' }"  (focus)="hideSearch=true" (blur)="hideSearch=false"></textarea>
+                  <span class="grid p-1" *ngFor="let user of selectedUserNames" >
+                    <span class="col-10" [ngStyle]="{'white-space':'pre'}">
+                      <p-avatar [label]="user.avatar" class="text-xs" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff', fontSize: '10px' }"></p-avatar>
+                      {{user.name}}
+                    </span>
+                    <span class="col-2">
+                      <i class="pi pi-times mt-2 pointer" (click)="deleteUserId(user.id);$event.stopPropagation()"></i>
+                    </span>
+                    <br/>
+                  </span>
+                </div>
+            </p-overlayPanel>
+            </span>
+            <i (click)="filterDisplay('text')" class="pi pi-search pointer pt-2 mr-3 w-auto" [ngClass]="filter.text?'p-button-link':'text-white'"></i>
+          </div>
+          <i class="pi pi-user pointer pt-1" [ngClass]="filter.users?'p-button-link':'text-white'" (click)="op.toggle($event);filterDisplay('users')" style="font-size: 1.25rem"></i>
       </div>
+    </div>
+    <div class="px-2 my-4" *ngIf="filter.text">
+      <i class="pi pi-search relative" [ngStyle]="{top: '32px', left: '10px',color:'#A2A2A3'}" [ngClass]="{'hidden':searchIconKeyword.length>0}"></i>
+      <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" placeholder="     Search for Keywords"
+      class="w-full border-round-3xl font-family-inter text-sm font-normal"/>
     </div>
     <div class="flex pl-4 pr-4 justify-content-between align-items-center p-0 h-4rem">
       <div class="">

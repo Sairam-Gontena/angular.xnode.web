@@ -9,7 +9,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecConversationComponent } from '../spec-conversation/spec-conversation.component';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-
+import { MentionConfig } from 'angular-mentions';
 @Component({
   selector: 'xnode-comments-panel',
   templateUrl: './comments-panel.component.html',
@@ -26,17 +26,23 @@ export class CommentsPanelComponent implements OnInit {
     text:false,
     users:false
   }
+  config: MentionConfig = {};
+  hideSearch:boolean=false;
   searchIconKeyword:string='';
-  selectedUsers:any;
+  selectedUsers:any=[];
+  usersInTextArea:any=[];
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
   list: any = [];
+  searchUsersTextArea:any;
+  references:any;
   filteredList: any = []
   product: any;
   @ViewChild(SpecConversationComponent)
   child!: SpecConversationComponent;
   searchUpdated: Subject<string> = new Subject<string>();
+  selectedUserNames: any =[];
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -53,6 +59,44 @@ export class CommentsPanelComponent implements OnInit {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
       this.child.filterListBySearch();
     });
+    this.references = [];
+    this.config = {
+      labelKey: 'name',
+      mentionSelect: this.format.bind(this),
+    };
+  }
+
+  format(item: any) {
+    const entityId = item.user_id;
+    const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
+    if (!isDuplicate) {
+      this.references.push({ entity_type: "User", entity_id: entityId, product_id: this.product?.id || null });
+    }
+    let firstLetter = item.first_name.substring(0, 1);
+    let lastLetter = item.last_name.substring(0, 1);
+    if(this.selectedUserNames.length>0){
+      this.selectedUserNames.forEach((elem:any)=>{
+        if(elem.name != item.name ){ this.usersInTextArea+=`${item.first_name} ${item.last_name},` }
+      });
+    }else{
+      this.usersInTextArea+=`${item.first_name} ${item.last_name},`;
+    }
+    this.selectedUserNames.push({avatar:firstLetter+lastLetter, name: item.name,id:item.user_id});
+    this.userFilter(item.user_id)
+    return '';
+
+  }
+
+  deleteUserId(id:any){
+    this.selectedUsers?.forEach((element:any,index:any) => {
+      if(element.includes(id)) {  this.selectedUsers.splice(index, 1); }
+    });
+    this.selectedUserNames?.forEach((user:any,index:any)=>{
+      if(user.id == id){  this.selectedUserNames.splice(index, 1); }
+    });
+    if(this.selectedUserNames.length==0){
+      this.child.list = this.child.specListCopy;
+    }
   }
 
   filterDisplay(entity:any){
@@ -66,7 +110,14 @@ export class CommentsPanelComponent implements OnInit {
     }
   }
 
-  userFilter(event:any){
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      event.stopPropagation();
+    }
+  }
+
+  userFilter(elementId:any){
+    this.selectedUsers.push(elementId)
     this.child.filterListByUsersFilter(this.selectedUsers);
   }
 

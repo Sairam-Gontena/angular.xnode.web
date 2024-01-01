@@ -11,6 +11,7 @@ import { SpecConversationComponent } from '../spec-conversation/spec-conversatio
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { TaskListComponent } from '../task-list/task-list.component';
+import { MentionConfig } from 'angular-mentions';
 @Component({
   selector: 'xnode-tasks-panel',
   templateUrl: './tasks-panel.component.html',
@@ -23,7 +24,7 @@ export class TasksPanelComponent {
   @Input() activeIndex: any;
   @Input() swaggerData:any;
   searchIconKeyword:string='';
-  selectedUsers:any;
+  selectedUsers:any=[];
   @ViewChild(TaskListComponent)
   child!: TaskListComponent;
   userImage?: any = "DC";
@@ -35,6 +36,13 @@ export class TasksPanelComponent {
     role: '',
     user_id: ''
   };
+  config: MentionConfig = {};
+  selectedUserNames: any =[];
+  searchUsersTextArea:any;
+  references:any;
+  hideSearch:boolean=false;
+  usersInTextArea:any=[];
+  product: any;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -61,7 +69,7 @@ export class TasksPanelComponent {
     private sanitizer: DomSanitizer,
     private apiService:ApiService) {
     this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
-
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'TASK') {
         this.getMeTasksList();
@@ -100,6 +108,44 @@ export class TasksPanelComponent {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
       this.child.filterListBySearch();
     });
+    this.references = [];
+    this.config = {
+      labelKey: 'name',
+      mentionSelect: this.format.bind(this),
+    };
+  }
+
+  format(item: any) {
+    const entityId = item.user_id;
+    const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
+    if (!isDuplicate) {
+      this.references.push({ entity_type: "User", entity_id: entityId, product_id: this.product?.id || null });
+    }
+    let firstLetter = item.first_name.substring(0, 1);
+    let lastLetter = item.last_name.substring(0, 1);
+    if(this.selectedUserNames.length>0){
+      this.selectedUserNames.forEach((elem:any)=>{
+        if(elem.name != item.name ){ this.usersInTextArea+=`${item.first_name} ${item.last_name},` }
+      });
+    }else{
+      this.usersInTextArea+=`${item.first_name} ${item.last_name},`;
+    }
+    this.selectedUserNames.push({avatar:firstLetter+lastLetter, name: item.name,id:item.user_id});
+    this.userFilter(item.user_id)
+    return '';
+
+  }
+
+  deleteUserId(id:any){
+    this.selectedUsers?.forEach((element:any,index:any) => {
+      if(element.includes(id)) {  this.selectedUsers.splice(index, 1); }
+    });
+    this.selectedUserNames?.forEach((user:any,index:any)=>{
+      if(user.id == id){  this.selectedUserNames.splice(index, 1); }
+    });
+    if(this.selectedUserNames.length==0){
+      this.child.list = this.child.specListCopy;
+    }
   }
 
   filterDisplay(entity:any){
@@ -113,7 +159,14 @@ export class TasksPanelComponent {
     }
   }
 
-  userFilter(event:any){
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      event.stopPropagation();
+    }
+  }
+
+  userFilter(elementId:any){
+    this.selectedUsers.push(elementId)
     this.child.filterListByUsersFilter(this.selectedUsers);
   }
 
