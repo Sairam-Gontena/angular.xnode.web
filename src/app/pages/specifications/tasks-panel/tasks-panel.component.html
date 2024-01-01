@@ -12,28 +12,11 @@
             </div>
             <div class="flex justify-content-end">
                 <div class="flex flex-row justify-content-end align-items-center search-grid">
-                  <div class="p-inputgroup">
-                    <span class="">
-                      <p-overlayPanel #op (onHide)="filter.users=false">
-                        <div class="h-15rem w-15rem overflow-y-auto">
-                          <i class="pi pi-search absolute" [ngClass]="{'hidden':hideSearch}" [ngStyle]="{top: '10px', left: '5px',color:'#949292'}"></i>
-                          <textarea  pInputTextarea [autoResize]="true" placeholder="     Search users..." [mention]="usersList" [mentionConfig]="config"  (keydown)="handleKeydown($event)" class="col-12 h-2rem" [ngStyle]="{ 'border-top': 'transparent', 'border-right': 'transparent', 'border-left': 'transparent', 'border-bottom': '1px solid #535354' }"  (focus)="hideSearch=true" (blur)="hideSearch=false"></textarea>
-                          <span class="grid p-1" *ngFor="let user of selectedUserNames" >
-                            <span class="col-10" [ngStyle]="{'white-space':'pre'}">
-                              <p-avatar [label]="user.avatar" class="text-xs" shape="circle" [style]="{ 'background-color': '#9c27b0', color: '#ffffff', fontSize: '10px' }"></p-avatar>
-                              {{user.name}}
-                            </span>
-                            <span class="col-2">
-                              <i class="pi pi-times mt-2 pointer" (click)="deleteUserId(user.id);$event.stopPropagation()"></i>
-                            </span>
-                            <br/>
-                          </span>
-                        </div>
-                    </p-overlayPanel>
-                    </span>
-                    <i (click)="filterDisplay('text')" class="pi pi-search pointer pt-2 mr-3 w-auto" [ngClass]="filter.text?'p-button-link':'text-white'"></i>
-                  </div>
-                  <i class="pi pi-user pointer pt-1" [ngClass]="filter.users?'p-button-link':'text-white'" (click)="op.toggle($event);filterDisplay('users')" style="font-size: 1.25rem"></i>
+                  <i (click)="filterDisplay('text')" class="pi pi-search pointer pt-2 w-auto" [ngClass]="filter.text?'p-button-link':'text-white'"></i>
+
+                     <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none" id="dropdown-user" [ngClass]="filter.users?'p-button-link':'text-white'" (click)="filterDisplay('users');customInput.onClick" style="font-size: 1.25rem"></i>
+
+                    <p-multiSelect #customInput id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" (click)="filterDisplay('users')" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter($event)" [showClear]="true" placeholder="" ></p-multiSelect>
                 </div>
             </div>
         </div>

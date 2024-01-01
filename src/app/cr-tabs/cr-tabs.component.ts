@@ -16,7 +16,6 @@ declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { MentionConfig } from 'angular-mentions';
 
 @Component({
   selector: 'xnode-cr-tabs',
@@ -43,12 +42,6 @@ export class CrTabsComponent {
   updateSpecBtnTriggered: boolean = false;
   product: any;
   crList: any = [];
-  config: MentionConfig = {};
-  selectedUserNames: any =[];
-  searchUsersTextArea:any;
-  references:any;
-  usersInTextArea:any=[];
-  hideSearch:boolean=false;
   showNewCrPopup: boolean = false;
   crActions: any;
   comments: string = 'test';
@@ -114,50 +107,6 @@ export class CrTabsComponent {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
       this.filterListBySearch();
     });
-    this.references = [];
-    this.config = {
-      labelKey: 'name',
-      mentionSelect: this.format.bind(this),
-    };
-  }
-
-  handleKeydown(event: KeyboardEvent) {
-    if (event.key === ' ') {
-      event.stopPropagation();
-    }
-  }
-
-  format(item: any) {
-    const entityId = item.user_id;
-    const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
-    if (!isDuplicate) {
-      this.references.push({ entity_type: "User", entity_id: entityId, product_id: this.product?.id || null });
-    }
-    let firstLetter = item.first_name.substring(0, 1);
-    let lastLetter = item.last_name.substring(0, 1);
-    if(this.selectedUserNames.length>0){
-      this.selectedUserNames.forEach((elem:any)=>{
-        if(elem.name != item.name ){ this.usersInTextArea+=`${item.first_name} ${item.last_name},` }
-      });
-    }else{
-      this.usersInTextArea+=`${item.first_name} ${item.last_name},`;
-    }
-    this.selectedUserNames.push({avatar:firstLetter+lastLetter, name: item.name,id:item.user_id});
-    this.filterListByUsersFilter(item.user_id)
-    return '';
-
-  }
-
-  deleteUserId(id:any){
-    this.selectedUsers?.forEach((element:any,index:any) => {
-      if(element.includes(id)) {  this.selectedUsers.splice(index, 1); }
-    });
-    this.selectedUserNames?.forEach((user:any,index:any)=>{
-      if(user.id == id){  this.selectedUserNames.splice(index, 1); }
-    });
-    if(this.selectedUserNames.length==0){
-      this.crData = this.crDataCopy;
-    }
   }
 
   filterDisplay(entity:any){
@@ -182,14 +131,9 @@ export class CrTabsComponent {
   }
 
   filterListByUsersFilter(users:any){
-    this.selectedUsers.push(users)
     this.crData = this.crDataCopy;
     if(this.selectedUsers.length>0){
       this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
-      if(this.crData.length==0){
-          this.utilsService.loadToaster({ severity: 'info', summary: 'Info', detail: 'No records based on selected user'});
-          this.crData = this.crDataCopy;
-      }
     }else{
       this.crData = this.crDataCopy;
     }
