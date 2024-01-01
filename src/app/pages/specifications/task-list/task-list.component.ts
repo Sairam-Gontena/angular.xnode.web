@@ -77,7 +77,8 @@ export class TaskListComponent {
 
   filterListBySearch(){
     if(this.searchIconKeyword.length>0){
-      this.list = this.list.filter((item: any) => item.title.includes(this.searchIconKeyword));
+      this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
+      this.list = this.list.filter((item: any) => item.title.toLowerCase().includes(this.searchIconKeyword));
     }else{
       this.list = this.specListCopy;
     }
