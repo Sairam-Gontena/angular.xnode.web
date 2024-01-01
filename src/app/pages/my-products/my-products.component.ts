@@ -9,12 +9,13 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
 import { find, orderBy, sortBy } from 'lodash';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
   styleUrls: ['./my-products.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, DropdownModule]
 })
 
 export class MyProductsComponent implements OnInit {
@@ -36,11 +37,19 @@ export class MyProductsComponent implements OnInit {
   isTitleHovered: any;
   userImage: any;
   end = 2;
-  filteredProductsLength= 0;
+  filteredProductsLength = 0;
   activeIndexRecentActivity: number = 0;
   isViewLess = true;
-  AllConversations: any = [];
-  mineConversations: any = [];
+  AllConversations: any[] = [];
+  filteredConversation: any[] = [];
+  mineConversations: any[] = [];
+  Conversations: any = [
+    { name: 'All', value: 'All' },
+    { name: 'Mine', value: 'Mine' }
+  ];
+  selectedConversation: any = { name: 'All', value: 'All' };
+  enableSearch: boolean =false;
+  searchTextConversation:any;
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -204,7 +213,7 @@ export class MyProductsComponent implements OnInit {
           });
 
           this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
-          this.filteredProductsLength = this.filteredProducts.length? this.filteredProducts.length + 1:0;
+          this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
           this.filteredProductsByEmail = this.templateCard;
           localStorage.setItem('meta_data', JSON.stringify(response.data.data))
         } else if (response?.status !== 200) {
@@ -231,12 +240,12 @@ export class MyProductsComponent implements OnInit {
 
   onClickcreatedByYou(): void {
     this.filteredProducts = sortBy(this.filteredProducts.filter(obj => { return obj?.user_id === this.currentUser.user_id }), ['created_on']).reverse();
-    this.filteredProductsLength = this.filteredProducts.length? this.filteredProducts.length + 1:0;
+    this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
   }
 
   onClickAllProducts(): void {
     this.filteredProducts = sortBy([...this.templateCard], ['created_on']).reverse();
-    this.filteredProductsLength = this.filteredProducts.length? this.filteredProducts.length + 1:0;
+    this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
   }
 
   search() {
@@ -245,6 +254,22 @@ export class MyProductsComponent implements OnInit {
       : this.templateCard.filter((element) => {
         return element.title?.toLowerCase().includes(this.searchText.toLowerCase());
       });
+  }
+
+  searchConversation() {
+    this.filteredConversation = this.searchTextConversation === ""
+      ? this.AllConversations
+      : this.AllConversations.filter((element) => {
+        return element.title?.toLowerCase().includes(this.searchTextConversation.toLowerCase());
+      });
+  }
+
+  toggleSearch(){
+    if(this.enableSearch){
+      this.enableSearch = false;
+    }else{
+    this.enableSearch = true;
+    }
   }
 
   filterProductsByUserEmail() {
@@ -289,28 +314,29 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(true);
       });
   }
-  
-  onViewAll(){
+
+  onViewAll() {
     this.isViewLess = false;
     this.end = this.filteredProductsLength;
   }
 
-  onViewLess(){
+  onViewLess() {
     this.isViewLess = true;
     this.end = 2;
   }
-  
+
   getAllConversations() {
     this.apiService.getAllConversations('conversation')
       .then((response) => {
-        this.AllConversations = this.mapProductNameToConversations(response.data); 
+        this.AllConversations = this.mapProductNameToConversations(response.data);
+        this.filteredConversation = this.AllConversations;
       })
     if (this.currentUser && this.currentUser.user_id) {
 
       this.apiService.getConversationsByContributor('conversation/conversations-by-contributor?contributors=' + this.currentUser?.user_id)
         .then((response) => {
           if (response && response.status == 200 && response.data) {
-            this.mineConversations = this.mapProductNameToConversations(response.data);         
+            this.mineConversations = this.mapProductNameToConversations(response.data);
           }
         })
         .catch((error: any) => {
@@ -319,7 +345,7 @@ export class MyProductsComponent implements OnInit {
     }
   }
 
-  mapProductNameToConversations(_conversations:any){
+  mapProductNameToConversations(_conversations: any) {
     _conversations.forEach((conversation: any, i: any) => {
       let product = find(this.filteredProducts, { id: conversation.productId });
       _conversations[i]['productName'] = product && product.title ? product.title : '';
