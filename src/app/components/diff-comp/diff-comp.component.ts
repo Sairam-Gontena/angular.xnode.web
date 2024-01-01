@@ -78,11 +78,14 @@ export class DiffCompComponent implements OnInit {
   }
 
   getMeBanner(event: any) {
-    console.log('event', event);
-
     return (
       './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg'
     );
+  }
+
+  changeView(specItem: any): void {
+    console.log('specItem', this.contentObj, specItem);
+    this.contentObj.showTable = true
   }
 
 }

@@ -78,7 +78,13 @@
     </div>
     <div *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"></pre>
+      <div class="flex justify-content-end align-items-center my-2 mr-2">
+        <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.showTable = false;"></i>
+        <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="contentObj.showTable = true;"></i>
+      </div>
+      <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"
+        *ngIf="!contentObj?.showTable"></pre>
+      <xnode-common-spec-table [content]="contentObj.content" *ngIf="contentObj?.showTable"></xnode-common-spec-table>
     </div>
     <div *ngSwitchCase="'TABLE'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
@@ -113,6 +119,16 @@
       </div>
     </div>
 
+    <p-button label="See More" styleClass="p-button-outlined see-more-button" [rounded]="true"
+      (click)="contentObj.collapsed = true;" class="absolute bottom-0 right-0 mr-2 mb-2 z-5"
+      *ngIf="!contentObj?.collapsed"></p-button>
+    <p-button label="See Less" styleClass="p-button-outlined see-more-button" [rounded]="true"
+      (click)="contentObj.collapsed = false;" class="absolute bottom-0 right-0 mr-2 mb-2"
+      *ngIf="contentObj?.collapsed"></p-button>
 
   </div>
+
+  <!-- <p-button (click)="onClickSeeLess.emit({ item: specItem, content: content })" label="See Less"
+    *ngIf="content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
+    class="absolute bottom-0 right-0 mr-2 mb-2"></p-button> -->
 </div>
