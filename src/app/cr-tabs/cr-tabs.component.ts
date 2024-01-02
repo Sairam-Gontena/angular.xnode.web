@@ -43,6 +43,7 @@ export class CrTabsComponent {
   product: any;
   crList: any = [];
   showNewCrPopup: boolean = false;
+  usingFilter:boolean = false;
   crActions: any;
   comments: string = 'test';
   searchIconKeyword:string='';
@@ -73,7 +74,6 @@ export class CrTabsComponent {
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
-
   ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
@@ -107,13 +107,10 @@ export class CrTabsComponent {
   }
 
   changeSearchIconColor(entity:any){
+    this.usingFilter = true
     this.filter = entity;
     if(entity=='users'){
       this.searchIconKeyword = '';
-      this.filterListBySearch()
-    }else{
-      this.selectedUsers=[];
-      this.filterListByUsersFilter()
     }
   }
 
@@ -123,13 +120,14 @@ export class CrTabsComponent {
       this.crData = this.crData.filter((item: any) =>   (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
       (item.crId.toLowerCase().includes(searchKeywordLowercase)) );
     }else{
+      this.selectedUsers = [];
       this.crData = this.crDataCopy;
     }
   }
 
   filterListByUsersFilter(){
-    this.crData = this.crDataCopy;
     if(this.selectedUsers.length>0){
+      this.crData = this.crDataCopy;
       this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
     }else{
       this.crData = this.crDataCopy;

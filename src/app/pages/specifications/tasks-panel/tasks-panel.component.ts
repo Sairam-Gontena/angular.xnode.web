@@ -102,7 +102,7 @@ export class TasksPanelComponent {
 
   changeSearchIconColor(entity:any){
     this.filter = entity;
-    entity=='users'? this.searchIconKeyword = '':this.selectedUsers=[];
+    entity=='users'? this.searchIconKeyword = '':null;
   }
 
   userFilter(){
