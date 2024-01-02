@@ -332,6 +332,11 @@ export class CrTabsComponent {
         this.content = 'Are you sure you want to Publish App?';
         this.openConfirmationPopUp = true;
         break;
+      case 'UNLINK':
+        this.header = 'Unlink CR';
+        this.content = 'Are you sure you want to Unlink this CR?';
+        this.openConfirmationPopUp = true;
+        break;
       default:
         break;
     }

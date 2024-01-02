@@ -1,7 +1,8 @@
 <div class="cr-tabs-div">
   <xnode-no-comments *ngIf="crData?.length === 0" [content]="'No open CRs yet'"></xnode-no-comments>
   <div *ngIf="crData?.length > 0">
-    <div class="h-3rem p-0 m-0 w-full submit-cr-window grid align-items-center px-4 justify-content-between">
+    <div class="h-3rem p-0 m-0 w-full submit-cr-window grid align-items-center px-4 justify-content-between"
+      *ngIf="checkedCrList?.length > 0">
       <div class="p-0 m-0 flex col-5">
         <img src="../../assets/checkbox.svg" class="" alt="high" />
         <p class="text-xs ml-2 text-white">
@@ -9,11 +10,13 @@
         </p>
       </div>
       <div class="p-0 m-0 flex justify-content-between col-7 align-items-center">
-        <img src="../../assets/archive.svg" class="submit-cr-window-icon" alt="archive" />
+        <img src="../../assets/archive.svg" class="submit-cr-window-icon" alt="archive"
+          (click)="updateChagneRequestStatus('ARCHIVE')" />
         <img src="../../assets/newuser.svg" class="submit-cr-window-icon" alt="adduser" />
         <img src="../../assets/status.svg" class="submit-cr-window-icon" alt="status" />
         <img src="../../assets/calender.svg" class="submit-cr-window-icon" alt="calender" />
-        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon" alt="link" />
+        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon" alt="link"
+          (click)="updateChagneRequestStatus('UNLINK')" />
         <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
           [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
