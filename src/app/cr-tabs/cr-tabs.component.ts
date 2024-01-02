@@ -59,10 +59,7 @@ export class CrTabsComponent {
   showLimitReachedPopup: boolean = false;
   specVersion: any;
   crDataCopy: any;
-  filter={
-    text:false,
-    users:false
-  }
+  filter:any;
   sortColumn: string = 'dueDate';
   sortDirection: string = 'desc';
 
@@ -109,14 +106,14 @@ export class CrTabsComponent {
     });
   }
 
-  filterDisplay(entity:any){
-    if(entity=='text'){
-      this.filter.text=true;
-      this.filter.users=false;
-    }
+  changeSearchIconColor(entity:any){
+    this.filter = entity;
     if(entity=='users'){
-      this.filter.text=false;
-       this.filter.users=true;
+      this.searchIconKeyword = '';
+      this.filterListBySearch()
+    }else{
+      this.selectedUsers=[];
+      this.filterListByUsersFilter()
     }
   }
 
@@ -130,7 +127,7 @@ export class CrTabsComponent {
     }
   }
 
-  filterListByUsersFilter(users:any){
+  filterListByUsersFilter(){
     this.crData = this.crDataCopy;
     if(this.selectedUsers.length>0){
       this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));

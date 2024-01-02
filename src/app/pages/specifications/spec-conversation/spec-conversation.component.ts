@@ -93,6 +93,7 @@ export class SpecConversationComponent {
   }
 
   filterListBySearch(){
+    this.list = this.specListCopy;
     if(this.searchIconKeyword.length>0){
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
       this.list = this.list.filter((item: any) => item.message.toLowerCase().includes(this.searchIconKeyword));

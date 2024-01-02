@@ -51,10 +51,7 @@ export class TasksPanelComponent {
   users: any = [];
   originalBackgroundColor: string = 'blue';
   searchUpdated: Subject<string> = new Subject<string>();
-  filter={
-    text:false,
-    users:false
-  }
+  filter:any;
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private specUtils: SpecUtilsService,
@@ -103,22 +100,16 @@ export class TasksPanelComponent {
     });
   }
 
-  filterDisplay(entity:any){
-    if(entity=='text'){
-      this.filter.text=true;
-      this.filter.users=false;
-    }
-    if(entity=='users'){
-      this.filter.text=false;
-       this.filter.users=true;
-    }
+  changeSearchIconColor(entity:any){
+    this.filter = entity;
+    entity=='users'? this.searchIconKeyword = '':this.selectedUsers=[];
   }
 
-  userFilter(event:any){
+  userFilter(){
     this.child.filterListByUsersFilter(this.selectedUsers);
   }
 
-  searchConversation(event:any){
+  searchConversation(){
     this.searchUpdated.next(this.searchIconKeyword);
   }
 

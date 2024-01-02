@@ -12,18 +12,19 @@
             </div>
             <div class="flex justify-content-end">
                 <div class="flex flex-row justify-content-end align-items-center search-grid">
-                  <i (click)="filterDisplay('text')" class="pi pi-search pointer pt-2 w-auto" [ngClass]="filter.text?'p-button-link':'text-white'"></i>
+                  <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto" [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
 
-                     <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none" id="dropdown-user" [ngClass]="filter.users?'p-button-link':'text-white'" (click)="filterDisplay('users');customInput.onClick" style="font-size: 1.25rem"></i>
+                     <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none" id="dropdown-user" [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
 
-                    <p-multiSelect #customInput id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" (click)="filterDisplay('users')" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter($event)" [showClear]="true" placeholder="" ></p-multiSelect>
+                    <p-multiSelect id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter()" [showClear]="true" placeholder="" ></p-multiSelect>
                 </div>
             </div>
         </div>
-        <div class="my-4" *ngIf="filter.text">
+        <div class="my-2" *ngIf="filter=='text'">
           <i class="pi pi-search relative" [ngStyle]="{top: '32px', left: '10px',color:'#A2A2A3'}" [ngClass]="{'hidden':searchIconKeyword.length>0}"></i>
-          <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation($event)" placeholder="    Search for Keywords"
+          <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" placeholder="    Search for Keywords"
           class="w-full border-round-3xl font-family-inter text-sm font-normal"/>
+          <hr class="mt-3" [ngStyle]="{border:'1px solid #535354'}"/>
         </div>
         <div class='comments-grid'>
             <xnode-task-list [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList"

@@ -21,10 +21,7 @@ export class CommentsPanelComponent implements OnInit {
   @Input() activeIndex: any;
   @Input() swaggerData:any;
   showInput = false;
-  filter={
-    text:false,
-    users:false
-  }
+  filter:any;
   searchIconKeyword:string='';
   selectedUsers:any=[];
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
@@ -55,22 +52,16 @@ export class CommentsPanelComponent implements OnInit {
     });
   }
 
-  filterDisplay(entity:any){
-    if(entity=='text'){
-      this.filter.text=true;
-      this.filter.users=false;
-    }
-    if(entity=='users'){
-      this.filter.text=false;
-       this.filter.users=true;
-    }
+  changeSearchIconColor(entity:any){
+    this.filter = entity;
+    entity=='users'? this.searchIconKeyword = '':this.selectedUsers=[];
   }
 
-  userFilter(event:any){
+  userFilter(){
     this.child.filterListByUsersFilter(this.selectedUsers);
   }
 
-  searchConversation(event:any){
+  searchConversation(){
     this.searchUpdated.next(this.searchIconKeyword);
   }
 
