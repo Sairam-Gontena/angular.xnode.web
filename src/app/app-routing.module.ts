@@ -215,7 +215,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'diff',
+    path: 'specification',
     loadChildren: () => import('./pages/diff-viewer/diff-viewer.module').then((m) => m.DiffViewerModule),
     canActivate: [authGuard]
   },
@@ -229,7 +229,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
   },
   {
-    path: 'specification',
+    path: 'specification1',
     loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
   },
   {

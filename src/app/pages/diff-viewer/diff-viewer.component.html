@@ -1,5 +1,10 @@
-<div class='m-4' *ngFor="let item of content;let i = index">
-  <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj(content2,item, onDiff)"
-    [onDiff]="onDiff"></xnode-diff-comp>
+<xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
+           (specDataChange)="onSpecDataChange($event)"
+            (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+<div class="diff-view">
+  <div class='m-4' *ngFor="let item of specList;let i = index">
+    <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj([],item, onDiff)"
+      [onDiff]="onDiff"></xnode-diff-comp>
+  </div>
+  <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
 </div>
-<xnode-diff-list [srcList]="content" [targetList]="content2" [onDiff]="onDiff"></xnode-diff-list>

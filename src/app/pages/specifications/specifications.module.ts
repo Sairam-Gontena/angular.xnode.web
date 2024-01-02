@@ -5,7 +5,7 @@ import { SpecificationsRoutingModule } from './specifications-routing.module';
 import { SpecificationsComponent } from './specifications.component';
 import { SpecificationsMenuComponent } from './specifications-menu/specifications-menu.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { SpecificationsHeaderComponent } from './specifications-header/specifications-header.component';
+// import { SpecificationsHeaderComponent } from './specifications-header/specifications-header.component';
 import { SpecificationsContentComponent } from 'src/app/pages/specifications/specifications-content/specifications-content.component';
 import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
@@ -37,7 +37,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
   declarations: [
     SpecificationsComponent,
     SpecificationsMenuComponent,
-    SpecificationsHeaderComponent,
+    // SpecificationsHeaderComponent,
     SpecificationsContentComponent,
     CommentsPanelComponent,
     CommentsCrPanelComponent,

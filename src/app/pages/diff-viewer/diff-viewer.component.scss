@@ -1,3 +1,4 @@
-body {
-  background: #fff !important;
+.diff-view {
+  height: calc(100vh - 70px);
+  overflow: auto;
 }

@@ -43,6 +43,7 @@ import { AddCommentOverlayPanelComponent } from '../pages/specifications/add-com
 import { ConfirmationPopupNewComponent } from '../confirmation-popup-new/confirmation-popup-new.component';
 import { AddCrVersionComponent } from '../components/add-cr-version/add-cr-version.component';
 import { UserPersonaComponent } from '../pages/specifications/user-persona/user-persona.component';
+import { SpecificationsHeaderComponent } from '../pages/specifications/specifications-header/specifications-header.component';
 // import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
@@ -93,7 +94,8 @@ import { UserPersonaComponent } from '../pages/specifications/user-persona/user-
                 // DiffCompComponent,
                 // DiffGeneratorComponent,
                 // DiffListComponent,
-                UserPersonaComponent
+                UserPersonaComponent,
+                SpecificationsHeaderComponent
         ],
         imports: [
                 CommonModule,
@@ -145,7 +147,8 @@ import { UserPersonaComponent } from '../pages/specifications/user-persona/user-
                 // DiffCompComponent,
                 // DiffGeneratorComponent,
                 // DiffListComponent,
-                UserPersonaComponent
+                UserPersonaComponent,
+                SpecificationsHeaderComponent
         ]
 })
 export class SharedComponentModule { }
