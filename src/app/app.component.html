@@ -5,11 +5,8 @@
         </span>
         <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
         <div class="flex" >
-            <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen }" class="flex-column">
+            <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen,'main-component-expand-navi': isNaviExpanded}" class="flex-column">
                 <div class="flex">
-                    <div class="app-side-menu-wrapper" *ngIf="!showSideMenu()">
-                        <xnode-homepage-app-side-menu></xnode-homepage-app-side-menu>
-                    </div>
                     <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                         <xnode-app-side-menu></xnode-app-side-menu>
                     </div>
@@ -18,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="isSideWindowOpen" [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen }">
+            <div *ngIf="isSideWindowOpen" [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
                 <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                 class="w-full h-full pl-0 pr-0 ifram-navi">
             </iframe>

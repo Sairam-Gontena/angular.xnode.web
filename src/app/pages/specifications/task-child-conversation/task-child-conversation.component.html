@@ -36,20 +36,19 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-12" *ngIf="cmt.referenceContent?.content">
-            <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-            <p class="text-sm content-title m-0 pb-1 pt-1 pl-4 border-left-1 border-50">
-                {{cmt?.referenceContent?.content }} </p>
-        </div> -->
         <div class="col-12 text-base flex align-items-center" *ngIf="action !=='EDIT' ">
             <span *ngIf="selectedIndex !== i " [innerHTML]="highlightMatch(cmt.message)"></span>
         </div>
-        <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
+        <div class="col-12 pb-0" *ngIf="!cmt?.repliesOpened && !cmt.topParentId">
             <div class="view-replies"> <span class="pointer text-xs" (click)="viewReplies(cmt)">View All
                     Replies</span>
             </div>
         </div>
-        <div class="col-12 pb-0" *ngIf="cmt?.replyCount !== -1 && cmt?.repliesOpened">
+        <xnode-task-child-conversation *ngIf="cmt?.comments?.length>0 && cmt?.repliesOpened" [activeIndex]="activeIndex"
+            [usersList]="usersList" (childEvent)="receiveMsg($event)" [list]="cmt.comments"
+            [topParentId]="cmt.id"></xnode-task-child-conversation>
+
+        <div class="col-12 pb-0" *ngIf="cmt?.repliesOpened">
             <div class="view-replies"> <span class="pointer text-xs" (click)="hideReplies(cmt)">Hide
                     Replies</span>
             </div>
@@ -59,9 +58,10 @@
                 <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
             </div>
             <div class="w-full">
-                <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment"
-                    [action]="action" [users]="usersList" [parentEntity]="activeIndex == 0 ? 'COMMENT' : 'TASK'"
-                    [activeIndex]="activeIndex" [parentId]="cmt.parentId" [topParentId]="topParentId"
+                <xnode-add-comment-overlay-panel AssignedFrom="AssignedFromTaskChild" placeHolder="Reply"
+                    [selectedComment]="selectedComment" [action]="action" [users]="usersList"
+                    [parentEntity]="activeIndex == 0 ? 'COMMENT' : 'TASK'" [activeIndex]="activeIndex"
+                    [parentId]="cmt.id" [topParentId]="topParentId" [parentId]="parentId"
                     [comment]="action === 'EDIT' ? activeIndex == 0 ? cmt.message : cmt.description : ''"
                     [commentType]="'reply'" [width]="'w-full'"
                     (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>

@@ -95,6 +95,13 @@
     width: 70%;
     height: calc(100vh - 42px);
   }
+  .main-component-expand-navi {
+    transition: all 0.5s ease-in-out;
+    width: 0%;
+    height: calc(100vh - 42px);
+    display: none;
+
+  }
 }
 @media (min-width: 768px) {
   .main-component {
@@ -106,8 +113,13 @@
 
 @media (min-width: 768px) {
   .docked-navi {
-    transition: all 0.5s ease-in-out;
+    // transition: all 0.5s ease-in-out;
     width: 30%;
+    height: calc(100vh - 42px);
+  }
+  .expand-docked-navi{
+    // transition: all 0.5s ease-in-out;
+    width: 100vw;
     height: calc(100vh - 42px);
   }
 }

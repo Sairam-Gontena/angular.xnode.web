@@ -115,13 +115,21 @@ export class ParaViewComponent {
       if (!selection.rangeCount) return;
       const range = selection.getRangeAt(0);
       const elements = range.cloneContents().querySelectorAll('span');
-      elements.forEach(element => {
-        const id = element.id;
-        const index = parseInt(id.replace('word', ''));
-        if (!this.selectedWordIndices.includes(index)) {
-          this.selectedWordIndices.push(index);
-        }
-      });
+      if (elements.length === 0) {
+          const element = range.startContainer.parentElement;
+          if (element && element.id.startsWith('word')) {
+              const index = parseInt(element.id.replace('word', ''));
+              this.selectedWordIndices.push(index);
+          }
+      } else {
+          elements.forEach(element => {
+              const id = element.id;
+              const index = parseInt(id.replace('word', ''));
+              if (!this.selectedWordIndices.includes(index)) {
+                  this.selectedWordIndices.push(index);
+              }
+          });
+      }
     }
   }
 
@@ -158,9 +166,9 @@ export class ParaViewComponent {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    setTimeout(() => {
+    of(([])).pipe(delay(500)).subscribe((results) => {
       this.specUtils._openCommentsPanel(true);
-    },);
+    });
   }
 
 }

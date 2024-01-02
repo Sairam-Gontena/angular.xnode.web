@@ -41,6 +41,7 @@ export class TaskChildConversationComponent {
   fileIndex: any;
   confirmarionContent: string = '';
   confirmarionHeader: string = '';
+  parentId: any;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -64,8 +65,25 @@ export class TaskChildConversationComponent {
     } else {
       this.specList = this.list;
     }
+    this.specList.forEach((element: any) => {
+      element.repliesOpened = false;
+    });
     this.childEvent.emit(this.specList.length)
 
+  }
+
+  receiveMsg(event: any) {
+    if (event) {
+      this.list.forEach((item: any) => {
+        if (item.comments) {
+          item.comments.forEach((comment: any) => {
+            if (comment.id == event) {
+              item.repliesOpened = false;
+            }
+          });
+        }
+      });
+    }
   }
 
   loadComments(change: string) {
@@ -105,6 +123,8 @@ export class TaskChildConversationComponent {
   }
 
   onClickReply(cmt: any): void {
+    this.topParentId = cmt.topParentId ? cmt.topParentId : cmt.id;
+    this.parentId = cmt.id;
     this.selectedComment = cmt;
     this.showCommentInput = true;
     this.action = 'REPLY';
@@ -194,21 +214,19 @@ export class TaskChildConversationComponent {
   }
 
   viewReplies(cmt?: any) {
-    // if (!cmt.topParentId || cmt.topParentId !== null) {
-    //   this.topParentId = cmt.id;
-    // }
+    this.topParentId = cmt.topParentId;
     this.showReplies = true;
     if (cmt)
       this.selectedComment = cmt;
     this.utils.loadSpinner(true);
-    this.commentsService.getTasks({ parentId: this.selectedComment.id }).then((response: any) => {
+    this.commentsService.getComments({ topParentId: this.selectedComment.id }).then((response: any) => {
       if (response && response.data) {
         this.replies = response.data;
         response.data.forEach((element: any) => {
-          element.parentUser = this.list.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
+          element.parentUser = this.specList.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
         });
-        this.list.forEach((obj: any) => {
-          if (obj.id === this.selectedComment.id) {
+        this.specList.forEach((obj: any) => {
+          if (obj.id === cmt.id) {
             obj.comments = response.data;
             obj.repliesOpened = true
           }
@@ -227,9 +245,8 @@ export class TaskChildConversationComponent {
   }
 
   hideReplies(cmt?: any) {
-    this.list.forEach((obj: any) => {
-      if (obj.id === this.selectedComment.id) {
-        obj.comments = this.replies;
+    this.specList.forEach((obj: any) => {
+      if (obj.id === cmt.id) {
         obj.repliesOpened = false
       }
     })

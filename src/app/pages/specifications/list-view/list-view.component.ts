@@ -104,14 +104,22 @@ export class ListViewComponent {
       if (!selection.rangeCount) return;
       const range = selection.getRangeAt(0);
       const elements = range.cloneContents().querySelectorAll('span');
-      elements.forEach(element => {
-        const id = element.id;
-        let index = id;
-        if (!this.selectedWordIndices.includes(index)) {
-          this.selectedWordIndices.push(index);
-        }
-      });
-    }
+      if (elements.length === 0) {
+          const element = range.startContainer.parentElement;
+          if (element && element.id.startsWith('word')) {
+              const index = element.id; // change this line to get the correct index
+              this.selectedWordIndices.push(index);
+          }
+      } else {
+          elements.forEach(element => {
+              const id = element.id;
+              let index = id; // change this line to get the correct index
+              if (!this.selectedWordIndices.includes(index)) {
+                  this.selectedWordIndices.push(index);
+              }
+          });
+      }
+  }
   }
 
   onOverlayHide(){
@@ -153,9 +161,9 @@ export class ListViewComponent {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    setTimeout(() => {
+    of(([])).pipe(delay(500)).subscribe((results) => {
       this.specUtils._openCommentsPanel(true);
-    },);
+    });
   }
   toggleAddTask() {
     this.showAddTask = !this.showAddTask;
