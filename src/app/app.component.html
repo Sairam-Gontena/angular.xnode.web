@@ -7,9 +7,6 @@
         <div class="flex" >
             <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen }" class="flex-column">
                 <div class="flex">
-                    <div class="app-side-menu-wrapper" *ngIf="!showSideMenu()">
-                        <xnode-homepage-app-side-menu></xnode-homepage-app-side-menu>
-                    </div>
                     <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                         <xnode-app-side-menu></xnode-app-side-menu>
                     </div>

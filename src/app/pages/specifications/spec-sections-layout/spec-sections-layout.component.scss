@@ -154,6 +154,10 @@ pre {
     overflow: auto;
   }
 
+  .spec-table::-webkit-scrollbar {
+    display: none;
+  }
+
 
 // ================= Don't remove =================
 
