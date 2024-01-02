@@ -14,7 +14,11 @@ import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
 declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
-
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'xnode-cr-tabs',
   templateUrl: './cr-tabs.component.html',
@@ -25,6 +29,10 @@ export class CrTabsComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData: any;
+  @Input() reveiwerList: any;
+
+  addReviewerForm: FormGroup;
+  addDateForm: FormGroup;
   filters: any;
   currentUser: any;
   crData: any;
@@ -55,6 +63,16 @@ export class CrTabsComponent {
   specVersion: any;
   sortColumn: string = 'dueDate';
   sortDirection: string = 'desc';
+  filteredReveiwers: any = [];
+  suggestions: any;
+  priorityList: any = [
+    { label: 'High', value: 'HIGH' },
+    { label: 'Medium', value: 'MEDIUM' },
+    { label: 'Low', value: 'LOW' },
+  ];
+  showDropdown: boolean = false;
+  selectedDateLabel: any;
+  minDate: Date;
 
   constructor(
     private api: ApiService,
@@ -66,8 +84,17 @@ export class CrTabsComponent {
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
+    private fb: FormBuilder,
+    private datePipe: DatePipe,
 
   ) {
+    this.minDate = new Date();
+    this.addReviewerForm = this.fb.group({
+      reviewersLOne: ['']
+    });
+    this.addDateForm = this.fb.group({
+      duedate: ['']
+    });
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
@@ -79,7 +106,14 @@ export class CrTabsComponent {
       }
     });
   }
+  onSelectPriority(selectedPriority: any) {
+    console.log(selectedPriority, '999999999');
+    this.showDropdown = false;
+  }
 
+  toggleDropdown() {
+    this.showDropdown = true;
+  }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
@@ -356,8 +390,67 @@ export class CrTabsComponent {
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
   }
+  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
+    let filtered: any[] = [];
+    let query = event.query;
+    const selectedReviewers = Array.isArray(this.addReviewerForm.value.reviewersLOne)
+      ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase())
+      : [];
+    // const selectedReviewers = this.addReviewerForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
 
+    filtered = this.reveiwerList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
+    );
+    this.filteredReveiwers = filtered;
+  }
+  search(event: AutoCompleteCompleteEvent) {
+    this.suggestions = [...Array(10).keys()].map(
+      (item) => event.query + '-' + item
+    );
+  }
 
+  reduceToInitials(fullName: string): string {
+    const nameParts = fullName.split(' ');
+    const initials = nameParts.map((part) => part.charAt(0));
+    const reducedName = initials.join('').toUpperCase();
+    return reducedName;
+  }
+  updateReviewer(event: any) {
+    // this.utils.loadSpinner(true);
+    console.log(event, this.addReviewerForm.value, '000000000')
+
+  }
+  updateDueDate(event: any) {
+    console.log(event, this.addDateForm.value, '000000000')
+
+  }
+  onDateSelect(event: any): void {
+    const selectedDate: Date = event;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const formattedSelectedDate = this.datePipe.transform(selectedDate, 'shortDate');
+    const formattedToday = this.datePipe.transform(today, 'shortDate');
+    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
+
+    let label: any;
+
+    if (formattedSelectedDate === formattedToday) {
+      label = 'Today';
+    } else if (formattedSelectedDate === formattedTomorrow) {
+      label = 'Tomorrow';
+    } else {
+      label = formattedSelectedDate;
+    }
+
+    this.selectedDateLabel = label;
+  }
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);

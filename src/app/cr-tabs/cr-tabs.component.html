@@ -12,9 +12,13 @@
       <div class="p-0 m-0 flex justify-content-between col-7 align-items-center">
         <img src="../../assets/archive.svg" class="submit-cr-window-icon" alt="archive"
           (click)="updateChagneRequestStatus('ARCHIVE')" />
-        <img src="../../assets/newuser.svg" class="submit-cr-window-icon" alt="adduser" />
-        <img src="../../assets/status.svg" class="submit-cr-window-icon" alt="status" />
-        <img src="../../assets/calender.svg" class="submit-cr-window-icon" alt="calender" />
+        <img src="../../assets/newuser.svg" class="submit-cr-window-icon" alt="adduser"
+          (click)="addUser.toggle($event); $event.stopPropagation()" />
+        <p-dropdown formControlName="priority" placeholder="Select Priority" [options]="priorityList"
+          (onChange)="onSelectPriority($event)" class="priority-dropdown">
+        </p-dropdown>
+        <img src="../../assets/calender.svg" class="submit-cr-window-icon" alt="calender"
+          (click)="duedate.toggle($event); $event.stopPropagation()" />
         <img src="../../assets/link-cr.svg" class="submit-cr-window-icon" alt="link"
           (click)="updateChagneRequestStatus('UNLINK')" />
         <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
@@ -409,6 +413,52 @@
             {{action.label}}
           </p>
 
+        </div>
+      </div>
+    </p-overlayPanel>
+    <p-overlayPanel #addUser>
+      <div class="p-3 pt-4 border-1  border-round-md add-reviewer-panel">
+        <div class=" p-0 flex add-reviewer-panel-header">
+          <form [formGroup]="addReviewerForm">
+            <div class="p-0 add-comment-panel-body border-round-md ">
+              <div class="col-12 p-0 m-0 ">
+                <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers"
+                  formControlName="reviewersLOne" (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
+                  [multiple]="true" styleClass="w-full" class="add-reviewer">
+                  <ng-template let-reviewer pTemplate="selectedItem">
+                    <div class="flex align-items-center">
+                      <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                        {{ reduceToInitials(reviewer.name) }}
+                      </div>
+                      <span class="ml-2">{{ reviewer.name }}</span>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+              </div>
+              <div class="col-12 m-0 p-0 flex justify-content-end mt-3">
+                <p-button label="Update" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
+                  (click)="updateReviewer($event)"></p-button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </p-overlayPanel>
+    <p-overlayPanel #duedate>
+      <div class="p-3 pt-4 border-1  border-round-md add-reviewer-panel">
+        <div class=" p-0 flex add-reviewer-panel-header">
+          <form [formGroup]="addDateForm">
+            <div class="p-0 add-comment-panel-body border-round-md ">
+              <div class="col-12 p-0 m-0">
+                <p-calendar class="dueDate" (onSelect)="onDateSelect($event)" formControlName="duedate"
+                  [showIcon]="true" icon="pi pi-calendar-plus" [minDate]="minDate" styleClass="due-date"></p-calendar>
+              </div>
+              <div class="col-12 m-0 p-0 flex justify-content-end flex-wrap gap-3 mt-4">
+                <p-button label="Update" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
+                  (click)="updateDueDate($event)"></p-button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </p-overlayPanel>
