@@ -48,7 +48,7 @@ export class CrTabsComponent {
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
   userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   targetUrl: string = '';
-  bpmnFrom: string = 'SPEC';//;  'Comments'
+  bpmnFrom: string = 'SPEC'; //;  'Comments'
   iframeSrc: SafeResourceUrl = '';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
@@ -65,8 +65,7 @@ export class CrTabsComponent {
     private sanitizer: DomSanitizer,
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
-    private notifyApi: NotifyApiService,
-
+    private notifyApi: NotifyApiService
   ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
@@ -141,7 +140,6 @@ export class CrTabsComponent {
     );
   }
 
-
   fetchOpenSpecAPI(id: any) {
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec' + id),
@@ -180,7 +178,7 @@ export class CrTabsComponent {
     let body: any = {
       productId: this.product?.id,
       // baseVersionId: this.specVersion.id
-    }
+    };
     this.utilsService.loadSpinner(true);
     this.commentsService
       .getCrList(body)
@@ -196,7 +194,7 @@ export class CrTabsComponent {
             const updatedItem = {
               ...item,
               checked: false,
-              duedate: isOldDate ? currentDate : item.duedate
+              duedate: isOldDate ? currentDate : item.duedate,
             };
 
             return updatedItem;
@@ -239,24 +237,23 @@ export class CrTabsComponent {
             item.forEach((subItem: any) => {
               if (subItem.comment) {
                 if (subItem.comment.referenceContent.title === 'OpenAPI Spec') {
-                  of(([])).pipe(
-                    delay(1000)
-                  ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.id)
-                  });
+                  of([])
+                    .pipe(delay(1000))
+                    .subscribe((results) => {
+                      this.fetchOpenSpecAPI(subItem.id);
+                    });
                 }
               } else {
                 if (subItem.task.referenceContent.title === 'OpenAPI Spec') {
-                  of(([])).pipe(
-                    delay(1000)
-                  ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.id)
-                  });
+                  of([])
+                    .pipe(delay(1000))
+                    .subscribe((results) => {
+                      this.fetchOpenSpecAPI(subItem.id);
+                    });
                 }
               }
-            })
-
-          })
+            });
+          });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -351,7 +348,6 @@ export class CrTabsComponent {
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
   }
-
 
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
@@ -532,7 +528,7 @@ export class CrTabsComponent {
       repoName: this.product.title,
       projectName: environment.projectName,
       email: this.currentUser.email,
-      crId: this.selectedCr.id
+      crId: this.selectedCr.id,
     };
     this.commentsService
       .publishApp(body)
@@ -618,7 +614,10 @@ export class CrTabsComponent {
     }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus,
+      action:
+        this.selectedStatus === 'NEEDS WORK'
+          ? 'NEEDS_WORK'
+          : this.selectedStatus,
       userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
@@ -635,12 +634,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
