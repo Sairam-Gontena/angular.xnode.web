@@ -199,7 +199,7 @@ export class LinkToCrComponent implements OnInit {
       if (isDraftCrExist) {
         this.openConfirmationPopUp = true;
         this.header = 'Confirmation';
-        this.content = 'Do you want to add a New Change Request?';
+        this.content = 'There are already some active draft CRs. Are you sure you want to create a new CR?';
       } else {
         this.showNewCrPopup = true;
       }
