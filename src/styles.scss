@@ -403,6 +403,37 @@ body {
   background-color: #2E2D36;
 }
 
+//auto complete css
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  color: #fff;
+}
+
+
+.p-autocomplete-panel .p-autocomplete-items {
+  background-color: #2E2D36;
+  color: white;
+}
+
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  color: white;
+}
+
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
+  color: black;
+}
+
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
+  color: black;
+}
+
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-token {
+  background: #535354;
+  font-size: 14px;
+  border-radius: 20px;
+  padding: 5px;
+  color: #fff;
+}
+
 .video-modal .p-dialog .p-dialog-header,
 .video-modal .p-dialog .p-dialog-content {
   background-color: #2E2D36 !important;

@@ -66,8 +66,8 @@
         </div>
         <div *ngIf="isCommnetsPanelOpened"
             [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
-            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData"
-                [usersList]="usersList"></xnode-comments-cr-panel>
+            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData" [usersList]="usersList"
+                [reveiwerList]="reveiwerList"></xnode-comments-cr-panel>
         </div>
     </div>
 </div>
