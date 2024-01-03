@@ -32,7 +32,6 @@ export class CrTabsComponent {
   @Input() reveiwerList: any;
 
   addReviewerForm: FormGroup;
-  addDateForm: FormGroup;
   filters: any;
   currentUser: any;
   crData: any;
@@ -73,6 +72,7 @@ export class CrTabsComponent {
   showDropdown: boolean = false;
   selectedDateLabel: any;
   minDate: Date;
+  dueDate: Date | undefined;
 
   constructor(
     private api: ApiService,
@@ -92,9 +92,7 @@ export class CrTabsComponent {
     this.addReviewerForm = this.fb.group({
       reviewersLOne: ['']
     });
-    this.addDateForm = this.fb.group({
-      duedate: ['']
-    });
+
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
@@ -396,8 +394,6 @@ export class CrTabsComponent {
     const selectedReviewers = Array.isArray(this.addReviewerForm.value.reviewersLOne)
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase())
       : [];
-    // const selectedReviewers = this.addReviewerForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
-
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
@@ -422,7 +418,7 @@ export class CrTabsComponent {
 
   }
   updateDueDate(event: any) {
-    console.log(event, this.addDateForm.value, '000000000')
+    console.log(event, '000000000')
 
   }
   onDateSelect(event: any): void {

@@ -10,17 +10,17 @@
         </p>
       </div>
       <div class="p-0 m-0 flex justify-content-between col-7 align-items-center">
-        <img src="../../assets/archive.svg" class="submit-cr-window-icon" alt="archive"
-          (click)="updateChagneRequestStatus('ARCHIVE')" />
-        <img src="../../assets/newuser.svg" class="submit-cr-window-icon" alt="adduser"
-          (click)="addUser.toggle($event); $event.stopPropagation()" />
+        <img src="../../assets/archive.svg" class="submit-cr-window-icon pointer" alt="archive"
+          (click)="updateChagneRequestStatus('ARCHIVE')" pTooltip="Archive" />
+        <img src="../../assets/newuser.svg" class="submit-cr-window-icon pointer" alt="adduser"
+          (click)="addUser.toggle($event); $event.stopPropagation()" pTooltip="Add Reviewer" />
         <p-dropdown formControlName="priority" placeholder="Select Priority" [options]="priorityList"
-          (onChange)="onSelectPriority($event)" class="priority-dropdown">
+          (onChange)="onSelectPriority($event)" class="priority-dropdown pointer" pTooltip="Priority">
         </p-dropdown>
-        <img src="../../assets/calender.svg" class="submit-cr-window-icon" alt="calender"
-          (click)="duedate.toggle($event); $event.stopPropagation()" />
-        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon" alt="link"
-          (click)="updateChagneRequestStatus('UNLINK')" />
+        <p-calendar [(ngModel)]="dueDate" inputId="date" class="dueDate" [showIcon]="true"
+          (onSelect)="updateDueDate($event)" pTooltip="Due Date"></p-calendar>
+        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon pointer" alt="link"
+          (click)="updateChagneRequestStatus('UNLINK')" pTooltip="Unlink" />
         <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
           [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
@@ -436,26 +436,8 @@
                 </p-autoComplete>
               </div>
               <div class="col-12 m-0 p-0 flex justify-content-end mt-3">
-                <p-button label="Update" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
+                <p-button label="Add" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
                   (click)="updateReviewer($event)"></p-button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </p-overlayPanel>
-    <p-overlayPanel #duedate>
-      <div class="p-3 pt-4 border-1  border-round-md add-reviewer-panel">
-        <div class=" p-0 flex add-reviewer-panel-header">
-          <form [formGroup]="addDateForm">
-            <div class="p-0 add-comment-panel-body border-round-md ">
-              <div class="col-12 p-0 m-0">
-                <p-calendar class="dueDate" (onSelect)="onDateSelect($event)" formControlName="duedate"
-                  [showIcon]="true" icon="pi pi-calendar-plus" [minDate]="minDate" styleClass="due-date"></p-calendar>
-              </div>
-              <div class="col-12 m-0 p-0 flex justify-content-end flex-wrap gap-3 mt-4">
-                <p-button label="Update" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
-                  (click)="updateDueDate($event)"></p-button>
               </div>
             </div>
           </form>
