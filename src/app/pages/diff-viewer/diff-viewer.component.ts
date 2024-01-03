@@ -23,6 +23,7 @@ export class DiffViewerComponent implements OnInit {
   versions: any;
   specList: any;
   currentUser: any;
+  keyword: any;
 
   constructor(
     private utils: UtilsService,
@@ -191,4 +192,33 @@ export class DiffViewerComponent implements OnInit {
       this.router.navigate([currentUrl]);
     });
   }
+
+  searchText(keyword: any) {
+  //   if (keyword === '') {
+  //     this.clearSearchText();
+  //     this.noResults = false;
+  //     return;
+  //   } else {
+  //     this.keyword = keyword;
+  //     this.specData = [];
+  //     this.foundObjects = [];
+  //     this.filteredSpecData = [];
+  //     this.wantedIndexes = [];
+  //     this.removableIndexes = [];
+  //     this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
+  //     this.searchSpec
+  //       .searchSpec(this.specData, keyword)
+  //       .subscribe((returnData: any) => {
+  //         if (returnData) {
+  //           this.specData = returnData.specData;
+  //           this.foundObjects = returnData.foundObjects;
+  //           this.noResults = returnData.noResults;
+  //           this.filteredSpecData = returnData.filteredSpecData;
+  //           this.wantedIndexes = returnData.wantedIndexes;
+  //           this.removableIndexes = returnData.removableIndexes;
+  //           this.utils.passSelectedSpecItem(this.specData);
+  //         }
+  //       });
+  //   }
+   }
 }

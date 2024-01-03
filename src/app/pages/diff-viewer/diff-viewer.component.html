@@ -1,10 +1,17 @@
-<xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
-           (specDataChange)="onSpecDataChange($event)"
-            (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-<div class="diff-view">
-  <div class='m-4' *ngFor="let item of specList;let i = index">
-    <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj([],item, onDiff)"
-      [onDiff]="onDiff"></xnode-diff-comp>
-  </div>
-  <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
+<div class="flex">
+  <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
+    [specData]="specList"></xnode-specifications-menu>
+    <div class="w-full">
+      <xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
+        (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+      <div class="diff-view flex justify-content-center">
+        <div class="w-8">
+          <div class='m-4' *ngFor="let item of specList;let i = index">
+            <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj([],item, onDiff)"
+              [onDiff]="onDiff"></xnode-diff-comp>
+          </div>
+          <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
+        </div>
+      </div>
+    </div>
 </div>

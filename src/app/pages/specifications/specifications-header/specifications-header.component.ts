@@ -41,6 +41,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   versionSelected: any;
   selectedVersion: Version | undefined;
   enabledGeneratespec: boolean = true;
+  diffView: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -51,17 +52,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.specUtils.getMeSpecVersion.subscribe((event) => {
       if (event && this.versions?.length > 0) {
         this.versions.forEach((element: any) => {
-          if (event.versionId === element.id)
-            this.selectedVersion = element;
+          if (event.versionId === element.id) this.selectedVersion = element;
         });
       }
-    })
+    });
   }
 
   ngOnInit(): void {
     if (this.versions && this.versions.length > 0) {
       this.versions.forEach((element: any) => {
-        element['label'] = element.specStatus + "-" + element.version;
+        element['label'] = element.specStatus + '-' + element.version;
         element['value'] = element.id;
       });
       this.selectedVersion = this.versions[0];
@@ -180,7 +180,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
   }
   viewPublishedApp() {
-    let productUrl = localStorage.getItem('product_url')
+    let productUrl = localStorage.getItem('product_url');
     if (productUrl) {
       window.open(productUrl, '_blank');
     } else {
@@ -217,5 +217,10 @@ export class SpecificationsHeaderComponent implements OnInit {
     localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
     this.specUtils._saveSpecVersion(event.value);
     this.specDataChange.emit(data);
+  }
+
+  toggleDiffView(ele: any): void {
+    console.log('ele', ele);
+    console.log('change', this.diffView);
   }
 }

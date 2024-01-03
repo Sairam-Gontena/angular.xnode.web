@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SpecificationsRoutingModule } from './specifications-routing.module';
 import { SpecificationsComponent } from './specifications.component';
-import { SpecificationsMenuComponent } from './specifications-menu/specifications-menu.component';
+// import { SpecificationsMenuComponent } from './specifications-menu/specifications-menu.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 // import { SpecificationsHeaderComponent } from './specifications-header/specifications-header.component';
 import { SpecificationsContentComponent } from 'src/app/pages/specifications/specifications-content/specifications-content.component';
@@ -36,7 +36,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
 @NgModule({
   declarations: [
     SpecificationsComponent,
-    SpecificationsMenuComponent,
+    // SpecificationsMenuComponent,
     // SpecificationsHeaderComponent,
     SpecificationsContentComponent,
     CommentsPanelComponent,
