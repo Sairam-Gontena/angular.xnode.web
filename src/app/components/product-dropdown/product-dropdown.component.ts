@@ -3,14 +3,11 @@ import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-
-
 @Component({
   selector: 'xnode-product-dropdown',
   templateUrl: './product-dropdown.component.html',
-  styleUrls: ['./product-dropdown.component.scss']
+  styleUrls: ['./product-dropdown.component.scss'],
 })
-
 export class ProductDropdownComponent implements OnInit {
   @Output() _onChangeProduct = new EventEmitter<object>();
   selectedProduct: Product | undefined;
@@ -19,10 +16,7 @@ export class ProductDropdownComponent implements OnInit {
   email: string = '';
   myForm: FormGroup;
 
-  constructor(
-    private utilsService: UtilsService,
-    private fb: FormBuilder,
-  ) {
+  constructor(private utilsService: UtilsService, private fb: FormBuilder) {
     this.myForm = this.fb.group({
       selectedProduct: [null],
     });
@@ -35,7 +29,6 @@ export class ProductDropdownComponent implements OnInit {
       this.utilsService.saveProductDetails(value.selectedProduct);
     });
   }
-
 
   getMeDataFromStorage(): void {
     const metaData = localStorage.getItem('meta_data');
@@ -50,4 +43,3 @@ export class ProductDropdownComponent implements OnInit {
     }
   }
 }
-
