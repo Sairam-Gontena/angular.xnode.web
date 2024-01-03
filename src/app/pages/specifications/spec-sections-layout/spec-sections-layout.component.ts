@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -111,7 +118,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     private storageService: LocalStorageService,
     private utilsService: UtilsService,
     private specUtils: SpecUtilsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -133,7 +140,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     if (this.expandView) {
       setTimeout(() => {
         // this.fetchOpenAPISpec()
-      }, 500)
+      }, 500);
     }
   }
 
@@ -149,9 +156,11 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    of(([])).pipe(delay(500)).subscribe((results) => {
-      this.specUtils._openCommentsPanel(true);
-    });
+    of([])
+      .pipe(delay(500))
+      .subscribe((results) => {
+        this.specUtils._openCommentsPanel(true);
+      });
   }
 
   checkExpandSpecSections(spec: string) {
@@ -166,7 +175,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
       this.targetUrl
     );
-    localStorage.setItem('targetUrl', this.targetUrl)
+    localStorage.setItem('targetUrl', this.targetUrl);
   }
 
   onClickAddComment(obj: any): void {

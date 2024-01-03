@@ -64,7 +64,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     });
     this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
       if (data) {
-        this.getVersions(data);
+        this.getDeepLinkDetails(data);
       }
     });
   }
@@ -143,9 +143,11 @@ export class SpecificationsHeaderComponent implements OnInit {
             let deeplinkdata = JSON.parse(deeplinkInfo);
             version_id = deeplinkdata.version_id;
           }
-          // this.getVersions(version_id);
+          this.getVersions(version_id);
           this.specUtils._openCommentsPanel(true);
           this.specUtils._tabToActive(val.template_type);
+          this.specUtils._updatedSelectedProduct(true);
+          localStorage.removeItem('deep_link_info');
         } else {
           console.log('not able to fetch product details');
         }

@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { SpecUtilsService } from '../services/spec-utils.service';
 
 @Component({
   selector: 'xnode-product-dropdown',
@@ -16,9 +17,18 @@ export class ProductDropdownComponent implements OnInit {
   email: string = '';
   myForm: FormGroup;
 
-  constructor(private utilsService: UtilsService, private fb: FormBuilder) {
+  constructor(
+    private utilsService: UtilsService,
+    private fb: FormBuilder,
+    private specUtils: SpecUtilsService
+  ) {
     this.myForm = this.fb.group({
       selectedProduct: [null],
+    });
+    this.specUtils.getMeUpdatedProduct.subscribe((data: any) => {
+      if (data) {
+        this.getMeDataFromStorage();
+      }
     });
   }
 
