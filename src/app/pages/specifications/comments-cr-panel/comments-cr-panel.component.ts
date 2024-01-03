@@ -21,6 +21,7 @@ export class CommentsCrPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
   @Input() swaggerData: any;
+  @Input() reveiwerList: any;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
@@ -37,6 +38,7 @@ export class CommentsCrPanelComponent implements OnInit {
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService) {
+
   }
 
   ngOnInit(): void {

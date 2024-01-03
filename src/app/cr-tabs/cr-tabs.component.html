@@ -1,7 +1,8 @@
 <div class="cr-tabs-div">
   <xnode-no-comments *ngIf="crData?.length === 0" [content]="'No open CRs yet'"></xnode-no-comments>
   <div *ngIf="crData?.length > 0">
-    <div class="h-3rem p-0 m-0 w-full submit-cr-window grid align-items-center px-4 justify-content-between">
+    <div class="h-3rem p-0 m-0 w-full submit-cr-window grid align-items-center px-4 justify-content-between"
+      *ngIf="checkedCrList?.length > 0">
       <div class="p-0 m-0 flex col-5">
         <img src="../../assets/checkbox.svg" class="" alt="high" />
         <p class="text-xs ml-2 text-white">
@@ -9,11 +10,17 @@
         </p>
       </div>
       <div class="p-0 m-0 flex justify-content-between col-7 align-items-center">
-        <img src="../../assets/archive.svg" class="submit-cr-window-icon" alt="archive" />
-        <img src="../../assets/newuser.svg" class="submit-cr-window-icon" alt="adduser" />
-        <img src="../../assets/status.svg" class="submit-cr-window-icon" alt="status" />
-        <img src="../../assets/calender.svg" class="submit-cr-window-icon" alt="calender" />
-        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon" alt="link" />
+        <img src="../../assets/archive.svg" class="submit-cr-window-icon pointer" alt="archive"
+          (click)="updateChagneRequestStatus('ARCHIVE')" pTooltip="Archive" />
+        <img src="../../assets/newuser.svg" class="submit-cr-window-icon pointer" alt="adduser"
+          (click)="addUser.toggle($event); $event.stopPropagation()" pTooltip="Add Reviewer" />
+        <p-dropdown formControlName="priority" placeholder="Select Priority" [options]="priorityList"
+          (onChange)="onSelectPriority($event)" class="priority-dropdown pointer" pTooltip="Priority">
+        </p-dropdown>
+        <p-calendar [(ngModel)]="dueDate" inputId="date" class="dueDate" [showIcon]="true"
+          (onSelect)="updateDueDate($event)" pTooltip="Due Date"></p-calendar>
+        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon pointer" alt="link"
+          (click)="updateChagneRequestStatus('UNLINK')" pTooltip="Unlink" />
         <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
           [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
@@ -66,7 +73,7 @@
                     <p class="p-0 m-0 text-xs ml-2">
                       <a href="" class="text-primary-500"># {{ data.crId }}</a>
                       <a href="" class="text-primary-500 ml-2" *ngIf="data.status !=='DRAFT'"
-                        (click)="onClickViewChanges(data)">View Changes</a>
+                        (click)="onClickViewChanges(data);">View Changes</a>
                     </p>
                   </div>
                   <div class="w-full pl-7" [ngClass]="{'mt-3': data.status !=='DRAFT'}">
@@ -406,6 +413,34 @@
             {{action.label}}
           </p>
 
+        </div>
+      </div>
+    </p-overlayPanel>
+    <p-overlayPanel #addUser>
+      <div class="p-3 pt-4 border-1  border-round-md add-reviewer-panel">
+        <div class=" p-0 flex add-reviewer-panel-header">
+          <form [formGroup]="addReviewerForm">
+            <div class="p-0 add-comment-panel-body border-round-md ">
+              <div class="col-12 p-0 m-0 ">
+                <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers"
+                  formControlName="reviewersLOne" (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
+                  [multiple]="true" styleClass="w-full" class="add-reviewer">
+                  <ng-template let-reviewer pTemplate="selectedItem">
+                    <div class="flex align-items-center">
+                      <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                        {{ reduceToInitials(reviewer.name) }}
+                      </div>
+                      <span class="ml-2">{{ reviewer.name }}</span>
+                    </div>
+                  </ng-template>
+                </p-autoComplete>
+              </div>
+              <div class="col-12 m-0 p-0 flex justify-content-end mt-3">
+                <p-button label="Add" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
+                  (click)="updateReviewer($event)"></p-button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </p-overlayPanel>
