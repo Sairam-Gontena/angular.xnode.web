@@ -16,7 +16,12 @@ declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -60,7 +65,7 @@ export class CrTabsComponent {
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
   userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   targetUrl: string = '';
-  bpmnFrom: string = 'SPEC';//;  'Comments'
+  bpmnFrom: string = 'SPEC'; //;  'Comments'
   iframeSrc: SafeResourceUrl = '';
   searchUpdated: Subject<string> = new Subject<string>();
   @ViewChild('op') overlayPanel: OverlayPanel | any;
@@ -97,7 +102,7 @@ export class CrTabsComponent {
   ) {
     this.minDate = new Date();
     this.addReviewerForm = this.fb.group({
-      reviewersLOne: ['']
+      reviewersLOne: [''],
     });
 
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -112,7 +117,6 @@ export class CrTabsComponent {
     });
   }
   onSelectPriority(selectedPriority: any) {
-    console.log(selectedPriority, '999999999');
     this.showDropdown = false;
   }
 
@@ -221,7 +225,6 @@ export class CrTabsComponent {
     );
   }
 
-
   fetchOpenSpecAPI(id: any) {
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec' + id),
@@ -259,16 +262,12 @@ export class CrTabsComponent {
   getCRList() {
     let body: any = {
       productId: this.product?.id,
-      // baseVersionId: this.specVersion.id
-    }
+    };
     this.utilsService.loadSpinner(true);
     this.commentsService
       .getCrList(body)
       .then((res: any) => {
         if (res && res.data) {
-          // let data: any[] = res?.data?.map((item: any) => {
-          //   return { ...item, checked: false };
-          // });
           let data: any[] = res?.data?.map((item: any) => {
             const currentDate = new Date().toISOString().split('T')[0];
             const isOldDate = new Date(item.duedate).getFullYear() === 1970;
@@ -276,7 +275,7 @@ export class CrTabsComponent {
             const updatedItem = {
               ...item,
               checked: false,
-              duedate: isOldDate ? currentDate : item.duedate
+              duedate: isOldDate ? currentDate : item.duedate,
             };
 
             return updatedItem;
@@ -320,24 +319,23 @@ export class CrTabsComponent {
             item.forEach((subItem: any) => {
               if (subItem.comment) {
                 if (subItem.comment.referenceContent.title === 'OpenAPI Spec') {
-                  of(([])).pipe(
-                    delay(1000)
-                  ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.id)
-                  });
+                  of([])
+                    .pipe(delay(1000))
+                    .subscribe((results) => {
+                      this.fetchOpenSpecAPI(subItem.id);
+                    });
                 }
               } else {
                 if (subItem.task.referenceContent.title === 'OpenAPI Spec') {
-                  of(([])).pipe(
-                    delay(1000)
-                  ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.id)
-                  });
+                  of([])
+                    .pipe(delay(1000))
+                    .subscribe((results) => {
+                      this.fetchOpenSpecAPI(subItem.id);
+                    });
                 }
               }
-            })
-
-          })
+            });
+          });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -440,12 +438,17 @@ export class CrTabsComponent {
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-    const selectedReviewers = Array.isArray(this.addReviewerForm.value.reviewersLOne)
-      ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase())
+    const selectedReviewers = Array.isArray(
+      this.addReviewerForm.value.reviewersLOne
+    )
+      ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
+          reviewer.name.toLowerCase()
+        )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;
   }
@@ -461,15 +464,10 @@ export class CrTabsComponent {
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
-  updateReviewer(event: any) {
-    // this.utils.loadSpinner(true);
-    console.log(event, this.addReviewerForm.value, '000000000')
+  updateReviewer(event: any) {}
 
-  }
-  updateDueDate(event: any) {
-    console.log(event, '000000000')
+  updateDueDate(event: any) {}
 
-  }
   onDateSelect(event: any): void {
     const selectedDate: Date = event;
 
@@ -480,7 +478,10 @@ export class CrTabsComponent {
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(0, 0, 0, 0);
 
-    const formattedSelectedDate = this.datePipe.transform(selectedDate, 'shortDate');
+    const formattedSelectedDate = this.datePipe.transform(
+      selectedDate,
+      'shortDate'
+    );
     const formattedToday = this.datePipe.transform(today, 'shortDate');
     const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
 
@@ -675,7 +676,7 @@ export class CrTabsComponent {
       repoName: this.product.title,
       projectName: environment.projectName,
       email: this.currentUser.email,
-      crId: this.selectedCr.id
+      crId: this.selectedCr.id,
     };
     this.commentsService
       .publishApp(body)
@@ -761,7 +762,10 @@ export class CrTabsComponent {
     }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus,
+      action:
+        this.selectedStatus === 'NEEDS WORK'
+          ? 'NEEDS_WORK'
+          : this.selectedStatus,
       userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
@@ -778,12 +782,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {

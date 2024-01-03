@@ -1,19 +1,14 @@
-<div class="flex" *ngIf="specData else showHeader">
+<div class="flex">
     <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
         [specData]="specData"></xnode-specifications-menu>
-    <div class="w-full" *ngIf="versions?.length">
-        <xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
-            [currentSpecVersionId]="currentSpecVersionId" (specDataChange)="onSpecDataChange($event)"
+    <div class="w-full" >
+        <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="generateSpec()"
+            [currentSpecVersionId]="currentSpecVersionId" (getMeSpecList)="getMeSpecList($event)" (specDataChange)="onSpecDataChange($event)"
             (generateSpec)="checkUserEmail()"></xnode-specifications-header>
         <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
         </xnode-specifications-content>
     </div>
 </div>
-
-<ng-template #showHeader>
-    <xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
-        (generateSpec)="checkUserEmail()" (changeProduct)="onChangeProduct($event)"></xnode-specifications-header>
-</ng-template>
 
 <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
     [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"

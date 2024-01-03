@@ -13,30 +13,44 @@ export class SpecUtilsService {
   private activeTab: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public tabToActive: Observable<string> = this.activeTab.asObservable();
 
-  private commentsCrActiveTab: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public getMeCommentsCrActiveTab: Observable<boolean> = this.commentsCrActiveTab.asObservable();
+  private commentsCrActiveTab: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeCommentsCrActiveTab: Observable<boolean> =
+    this.commentsCrActiveTab.asObservable();
 
-  private activateMainTab: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  private activateMainTab: BehaviorSubject<any> = new BehaviorSubject<any>(
+    false
+  );
   public loadActiveTab: Observable<any> = this.activateMainTab.asObservable();
 
-  private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public getMeSpecVersion: Observable<any> = this.saveSpecVersion.asObservable();
+  private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>(
+    false
+  );
+  public getMeSpecVersion: Observable<any> =
+    this.saveSpecVersion.asObservable();
 
   private getLatestCrList: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getMeCrList: Observable<string> = this.getLatestCrList.asObservable();
 
-  private getMeSpec: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  public getSpecBasedOnVersionID: Observable<any> = this.getMeSpec.asObservable();
+  private updateProduct: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeUpdatedProduct: Observable<string> =
+    this.updateProduct.asObservable();
 
-  private onProductDropdownChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public getMeProductDropdownChange: Observable<boolean> = this.onProductDropdownChange.asObservable();
+  private getMeSpec: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  public getSpecBasedOnVersionID: Observable<any> =
+    this.getMeSpec.asObservable();
+
+  private onProductDropdownChange: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeProductDropdownChange: Observable<boolean> =
+    this.onProductDropdownChange.asObservable();
 
   private commentPaneltoSpecConversation = new Subject<any>();
 
   specConversationPanelFrom:string='';
 
-  changeSpecConversationPanelFrom(event:string){
-    this.specConversationPanelFrom=event;
+  changeSpecConversationPanelFrom(event: string) {
+    this.specConversationPanelFrom = event;
   }
 
   _openCommentsPanel(event: boolean): void {
@@ -56,6 +70,10 @@ export class SpecUtilsService {
 
   _getSpecBasedOnVersionID(event: string): void {
     this.getMeSpec.next(event);
+  }
+
+  _updatedSelectedProduct(event: any): void {
+    this.updateProduct.next(event);
   }
 
   _saveSpecVersion(event: any): void {
