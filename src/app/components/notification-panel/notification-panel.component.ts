@@ -171,7 +171,7 @@ export class NotificationPanelComponent {
   }
 
   goToSpec(obj: any) {
-    let specData = localStorage.getItem('meta_data')
+    let specData = localStorage.getItem('meta_data');
     if (specData) {
       let products = JSON.parse(specData);
       let product = products.find((x: any) => x.id === obj.product_id);
@@ -190,12 +190,15 @@ export class NotificationPanelComponent {
         }
         this.closeNotificationPanel.emit(true);
       } else {
-        this.utils.loadSpinner(true)
+        this.utils.loadSpinner(true);
         this.apiService
           .get('navi/get_metadata/' + this.currentUser?.email)
           .then((response) => {
             if (response?.status === 200 && response.data.data?.length) {
-              localStorage.setItem('meta_data', JSON.stringify(response.data.data));
+              localStorage.setItem(
+                'meta_data',
+                JSON.stringify(response.data.data)
+              );
               let products = response.data.data;
               let product = products.find((x: any) => x.id === obj.product_id);
               if (product) {
@@ -206,11 +209,16 @@ export class NotificationPanelComponent {
                 if (obj.component && obj.component !== '') {
                   this.utils.toggleSpecPage(true);
                   this.router.navigate(['/specification']);
-                  this.auditUtil.postAudit(obj.component, 1, 'SUCCESS', 'user-audit');
+                  this.auditUtil.postAudit(
+                    obj.component,
+                    1,
+                    'SUCCESS',
+                    'user-audit'
+                  );
                 }
               }
               this.closeNotificationPanel.emit(true);
-              this.utils.loadSpinner(false)
+              this.utils.loadSpinner(false);
             } else if (response?.status !== 200) {
               this.utils.loadToaster({
                 severity: 'error',
@@ -462,11 +470,15 @@ export class NotificationPanelComponent {
   }
 
   navigateToConversation(val: any) {
+    console.log('val', val);
+
     this.getAllProductsInfo('meta_data')
       .then((result: any) => {
         if (result) {
           let products = JSON.parse(result);
-          let product = products.find((x: any) => (x.id === val.product_id || x.id === val.productId));
+          let product = products.find(
+            (x: any) => x.id === val.product_id || x.id === val.productId
+          );
           localStorage.setItem('record_id', product.id);
           localStorage.setItem('product', JSON.stringify(product));
           localStorage.setItem('app_name', product.title);
@@ -475,25 +487,49 @@ export class NotificationPanelComponent {
           this.storeProductInfoForDeepLink('deep_link_info', val)
             .then(() => {
               if (!window.location.hash.includes('#/specification')) {
-                if(val.template_type == 'COMMENT' || val.template_type == 'TASK'){
+                if (
+                  val.template_type == 'COMMENT' ||
+                  val.template_type == 'TASK'
+                ) {
                   this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({ activeIndex: 0, productId: val.productId, versionId: val.versionId });
+                  this.specUtils._loadActiveTab({
+                    activeIndex: 0,
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
+                  this.specUtils._getSpecBasedOnVersionID(val);
                   this.specUtils._tabToActive(val.template_type);
                   this.router.navigate(['/specification']);
-                }else{
+                } else {
                   this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+                  this.specUtils._loadActiveTab({
+                    activeIndex: 1,
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
                   this.router.navigate(['/specification']);
                 }
               } else {
-                if(val.template_type == 'COMMENT' || val.template_type == 'TASK'){
+                if (
+                  val.template_type == 'COMMENT' ||
+                  val.template_type == 'TASK'
+                ) {
                   this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({ activeIndex: 0, productId: val.productId, versionId: val.versionId });
+                  this.specUtils._loadActiveTab({
+                    activeIndex: 0,
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
                   this.specUtils._tabToActive(val.template_type);
                   this.router.navigate(['/specification']);
-                }else{
+                } else {
                   this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({ activeIndex: 1, productId: val.productId, versionId: val.versionId });
+                  this.specUtils._loadActiveTab({
+                    activeIndex: 1,
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
+                  this.specUtils._getSpecBasedOnVersionID(val);
                   this.router.navigate(['/specification']);
                 }
               }
