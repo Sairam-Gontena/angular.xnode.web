@@ -18,7 +18,7 @@ export class CommentsPanelComponent implements OnInit {
   @Input() usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData:any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
+  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'New', value: 'NEW' }, { label: 'Linked', value: 'LINKED' }, { label: 'UnLinked', value: 'UNLINKED' }, { label: 'Closed', value: 'CLOSED' } ];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
   list: any = [];
@@ -43,20 +43,11 @@ export class CommentsPanelComponent implements OnInit {
     if(this.specUtils.specConversationPanelFrom == 'spec_header'){
       let spec_version = localStorage.getItem('SPEC_VERISON');
       if(spec_version){
-      let data = JSON.parse(spec_version);
-      let id;
-      data.id ? id=data.id : id=data.versionId ;
-      this.utils.loadSpinner(true);
-      this.apiService.getComments('comment/comments-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            this.list = res.data;
-            this.filterList(res.data);
-          }
-          this.utils.loadSpinner(false);
-        }).catch((err)=>{
-          console.log(err);
-          this.utils.loadSpinner(false);
-        })
+        let data = JSON.parse(spec_version);
+        let id;
+        data.id ? id=data.id : id=data.versionId ;
+        this.utils.loadSpinner(true);
+        this.getAllStatusComments(data,id);
       }
     }
   }
@@ -71,6 +62,20 @@ export class CommentsPanelComponent implements OnInit {
         this.getMeCommentsList();
       }
     }
+  }
+
+  getAllStatusComments(data:any,id:any){
+    this.apiService.getComments('comment/comments-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
+      if (res.status === 200 && res.data) {
+        this.list = res.data;
+        this.filterList(res.data);
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err)=>{
+      console.log(err);
+      this.utils.loadSpinner(false);
+    })
+
   }
 
   getMeCommentsList() {
@@ -93,10 +98,13 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   filterList(data: any): void {
-    this.filteredList =[]
+    this.filteredList =[];
     switch (this.selectedFilter.value) {
       case 'LINKED':
         this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        break;
+      case 'UNLINKED':
+        this.filteredList = data.filter((item: any) => item.status === 'UNLINKED');
         break;
       case 'NEW':
         this.filteredList = data.filter((item: any) => item.status === 'NEW');
@@ -107,6 +115,32 @@ export class CommentsPanelComponent implements OnInit {
       default:
         this.filteredList = data;
         break;
+    }
+  }
+
+  filterListData(){
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if(specData)
+      selectedSpec = JSON.parse(specData);
+    if(this.selectedFilter.value=="ALL"){
+      let id;
+      id=selectedSpec.versionId ;
+      this.getAllStatusComments(selectedSpec,id);
+    }else{
+      if (specData) {
+        this.utils.loadSpinner(true);
+        this.apiService.getComments('comment?parentId='+ selectedSpec.id+'&status='+this.selectedFilter.value).then((res:any)=>{
+          if (res.status === 200 && res.data) {
+            this.list = res.data;
+            this.filterList(res.data);
+          }
+        this.utils.loadSpinner(false);
+        }).catch((err:any)=>{
+          console.log(err);
+          this.utils.loadSpinner(false);
+        })
+      }
     }
   }
 

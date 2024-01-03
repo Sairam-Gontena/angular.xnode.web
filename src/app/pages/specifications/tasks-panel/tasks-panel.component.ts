@@ -21,7 +21,7 @@ export class TasksPanelComponent {
   @Input() swaggerData:any;
   userImage?: any = "DC";
   username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
+  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'New', value: 'NEW' }, { label: 'Linked', value: 'LINKED' }, { label: 'UnLinked', value: 'UNLINKED' }, { label: 'Closed', value: 'CLOSED' } ];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   commentObj: any = {
     comment: '',
@@ -66,16 +66,7 @@ export class TasksPanelComponent {
       let id;
       data.id ? id=data.id : id=data.versionId ;
       this.utils.loadSpinner(true);
-      this.apiService.getComments('task/tasks-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            this.list = res.data;
-            this.filterList(res.data);
-          }
-          this.utils.loadSpinner(false);
-        }).catch((err)=>{
-          console.log(err);
-          this.utils.loadSpinner(false);
-        })
+      this.getAllStatusComments(data,id);
       }
     }
     this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
@@ -85,6 +76,19 @@ export class TasksPanelComponent {
           this.getMeTasksList();
         }
       }
+    })
+  }
+
+  getAllStatusComments(data:any,id:any){
+    this.apiService.getComments('task/tasks-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
+      if (res.status === 200 && res.data) {
+        this.list = res.data;
+        this.filterList(res.data);
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err)=>{
+      console.log(err);
+      this.utils.loadSpinner(false);
     })
   }
 
@@ -119,6 +123,9 @@ export class TasksPanelComponent {
     switch (this.selectedFilter.value) {
       case 'LINKED':
         this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        break;
+      case 'UNLINKED':
+        this.filteredList = data.filter((item: any) => item.status === 'UNLINKED');
         break;
       case 'NEW':
         this.filteredList = data.filter((item: any) => item.status === 'NEW');
@@ -196,6 +203,32 @@ export class TasksPanelComponent {
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
 
     });
+  }
+
+  filterListData(){
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if(specData)
+      selectedSpec = JSON.parse(specData);
+    if(this.selectedFilter.value=="ALL"){
+      let id;
+      id=selectedSpec.versionId ;
+      this.getAllStatusComments(selectedSpec,id);
+    }else{
+      if (specData) {
+        this.utils.loadSpinner(true);
+        this.apiService.getComments('task?parentId='+ selectedSpec.id+'&status='+this.selectedFilter.value).then((res:any)=>{
+          if (res.status === 200 && res.data) {
+            this.list = res.data;
+            this.filterList(res.data);
+          }
+        this.utils.loadSpinner(false);
+        }).catch((err:any)=>{
+          console.log(err);
+          this.utils.loadSpinner(false);
+        })
+      }
+    }
   }
 
 }

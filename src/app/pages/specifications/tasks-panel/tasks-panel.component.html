@@ -7,7 +7,7 @@
                 <div class="flex align-items-center filter-grid ">
                     <p class="m-0 pl-2">Filters:</p>
                     <p-dropdown class="w-full" [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
-                        optionLabel="label" (onChange)="filterList(list)"></p-dropdown>
+                        optionLabel="label" (onChange)=" filterListData()"></p-dropdown> <!--filterList(list)-->
                 </div>
             </div>
             <div class="col-6">
