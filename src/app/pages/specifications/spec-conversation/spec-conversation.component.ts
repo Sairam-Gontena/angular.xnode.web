@@ -16,7 +16,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 declare const SwaggerUIBundle: any;
-import { delay, of } from 'rxjs';
+import { Subscription, delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -67,7 +67,7 @@ export class SpecConversationComponent {
   fileIndex: any;
   targetUrl: string = '';
   bpmnFrom: string ='SPEC';//;  'Comments'
-
+  private searchKeywordSubscription: Subscription = new Subscription;
 
   constructor(
     private utils: UtilsService,
@@ -90,6 +90,10 @@ export class SpecConversationComponent {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
+    this.searchKeywordSubscription = this.specUtils.getCommentSearchByKeywordListData().subscribe((data:any) => {
+      console.log(data)
+      this.filterListBySearch(data);
+    });
   }
 
   filterListBySearch(users?:any){

@@ -48,7 +48,8 @@ export class CommentsPanelComponent implements OnInit {
       }
     });
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
-      this.child.filterListBySearch(this.selectedUsers);
+      // this.child.filterListBySearch(this.selectedUsers);
+      this.specUtils.sendCommentSearchByKeywordListData(this.selectedUsers)
     });
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +30,8 @@ export class SpecUtilsService {
 
   private onProductDropdownChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public getMeProductDropdownChange: Observable<boolean> = this.onProductDropdownChange.asObservable();
+
+  private commentPaneltoSpecConversation = new Subject<any>();
 
   specConversationPanelFrom:string='';
 
@@ -66,5 +68,13 @@ export class SpecUtilsService {
 
   _loadActiveTab(event: any): void {
     this.activateMainTab.next(event);
+  }
+
+  sendCommentSearchByKeywordListData(data: any) {
+    this.commentPaneltoSpecConversation.next(data);
+  }
+
+  getCommentSearchByKeywordListData(): Observable<any> {
+    return this.commentPaneltoSpecConversation.asObservable();
   }
 }
