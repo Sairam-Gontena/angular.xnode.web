@@ -57,27 +57,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
-    // this.specData.loadActiveTab.subscribe((event: any) => {
-    //   if (event) {
-    //     this.getVersions();
-    //   }
-    // })
 
     if (this.product) {
       this.getMeStorageData();
     }
-    this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
-      if (data) {
-        this.getMeSpecList({
-          versionId: data.versionId,
-          productId: data.productId,
-        });
-        this.specUtils._saveSpecVersion({
-          versionId: data.versionId,
-          productId: data.productId,
-        });
-      }
-    });
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     });
@@ -85,11 +68,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       if (data) {
         this.utils.disableSpecSubMenu();
         this.isNaviOpened = true;
-      }
-    });
-    this.utils.getMeProductDetails.subscribe((res: any) => {
-      if (res && res?.id) {
-        this.onChangeProduct(res);
       }
     });
   }
@@ -111,49 +89,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.navigateToConversation(deepLinkInfo);
       }
     });
-
-    let deep_link_info = localStorage.getItem('deep_link_info');
-    if (deep_link_info) {
-      deep_link_info = JSON.parse(deep_link_info);
-      this.getDeepLinkDetails(deep_link_info);
-    }
-  }
-
-  getVersions(versionId?: any) {
-    this.versions = [];
-    this.utils.loadSpinner(true);
-    this.specService
-      .getVersionIds(this.product?.id)
-      .then((response) => {
-        if (response.status === 200 && response.data) {
-          this.versions = response.data;
-          if(versionId){
-            this.getMeSpecList({
-              productId: this.product?.id,
-              versionId: versionId,
-            });
-          }else{
-            this.getMeSpecList({
-              productId: this.product?.id,
-              versionId: this.versions[0].id,
-            });
-          }
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Network Error',
-          });
-        }
-      })
-      .catch((err: any) => {
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: err,
-        });
-      });
   }
 
   navigateToConversation(val: any) {
@@ -178,7 +113,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => { });
+      .catch((error) => {});
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -190,35 +125,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         reject(error);
       }
     });
-  }
-
-  getDeepLinkDetails(val: any) {
-    this.getAllProductsInfo('meta_data')
-      .then((result: any) => {
-        if (result) {
-          let products = JSON.parse(result);
-          let product = products.find((x: any) => (x.id === val.product_id || x.id === val.productId));
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.product = product;
-          let deeplinkInfo = localStorage.getItem('deep_link_info');
-          let version_id;
-          if(deeplinkInfo){
-            let deeplinkdata=JSON.parse(deeplinkInfo)
-            version_id = deeplinkdata.version_id;
-          }
-          this.getVersions(version_id);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
-        } else {
-          console.log('not able to fetch product details');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data from localStorage:', error);
-      });
   }
 
   getAllProductsInfo(key: string) {
@@ -247,8 +153,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.getVersions();
-
   }
 
   searchText(keyword: any) {
@@ -580,34 +484,5 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   _openAndGetComments(contendata: SpecContent) {
     this.contentData = { ...contendata };
-  }
-
-  onChangeProduct(obj: any): void {
-    // localStorage.removeItem('selectedSpec');
-    this.showSpecGenaretePopup = false;
-    this.specData = [];
-    let products = localStorage.getItem('meta_data');
-    if (products) {
-      let allProducts = JSON.parse(products);
-      if (allProducts.length > 0) {
-        let product = allProducts.find((x: any) => x.id === obj.id);
-        if (product && product.has_insights) {
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          localStorage.setItem(
-            'product_url',
-            obj.url && obj.url !== '' ? obj.url : ''
-          );
-          this.product = this.localStorageService.getItem(StorageKeys.Product);
-          // this.getMeStorageData();
-          this.getVersions();
-          this.utils.loadSpinner(true);
-        } else {
-          this.showGenerateSpecPopup(product);
-        }
-      }
-    }
   }
 }

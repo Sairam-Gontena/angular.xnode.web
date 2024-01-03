@@ -36,3 +36,8 @@
     <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
         [header]="'Update Spec'" [content]="'Are you sure, do you want to update this Spec?'" (onClickAction)="
         onClickAction($event)"></xnode-confirmation-popup-new>
+    <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+        [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
+        [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generate()">
+    </xnode-spec-gen-popup>
+</div>
