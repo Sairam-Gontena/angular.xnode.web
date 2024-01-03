@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="my-2" *ngIf="filter=='text'">
+        <div class="mb-2" *ngIf="filter=='text'">
           <i class="pi pi-search relative" [ngStyle]="{top: '32px', left: '10px',color:'#A2A2A3'}" [ngClass]="{'opacity-0':searchIconKeyword.length>0}"></i>
           <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" placeholder="     Search for Keywords"
           class="w-full border-round-3xl mb-1 font-family-inter text-sm font-normal"/>
