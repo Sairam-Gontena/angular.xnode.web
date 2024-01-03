@@ -98,6 +98,7 @@ export class TasksPanelComponent {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
       this.child.filterListBySearch();
     });
+    this.filter = '';
   }
 
   changeSearchIconColor(entity:any){
@@ -121,6 +122,7 @@ export class TasksPanelComponent {
         this.getMeTasksList();
       }
     }
+    this.filter = '';
   }
 
   getMeTasksList() {

@@ -540,10 +540,16 @@ body {
   box-shadow: none!important;
 }
 
+#comment-panel-user-filter .p-multiselect-panel{
+  border: 1px solid #535354;
+}
+
 #comment-panel-user-filter .p-component,#comment-panel-user-filter .p-multiselect,#comment-panel-user-filter .p-multiselect-header,#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover,#comment-panel-user-filter .p-checkbox .p-checkbox-box,#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
   background: #24232c !important;
   color: white !important;
 }
+
+
 
 #dropdown-user{
   left: 30px!important;

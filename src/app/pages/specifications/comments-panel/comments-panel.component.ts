@@ -97,6 +97,7 @@ export class CommentsPanelComponent implements OnInit {
         this.getMeCommentsList();
       }
     }
+    this.filter = '';
   }
 
   getMeCommentsList() {
