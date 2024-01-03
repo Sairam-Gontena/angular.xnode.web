@@ -18,12 +18,13 @@
                 </div>
             </div>
         </div>
-        <div class="grid relative" *ngIf="filter=='text'">
-          <i class="pi pi-search relative" [ngStyle]="{top: '28px', left: '15px',color:'#A2A2A3'}" [ngClass]="{'opacity-0':searchIconKeyword.length>0}"></i>
-          <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" placeholder="     Search for Keywords"
-          class="w-full border-round-3xl mb-1 font-family-inter text-sm font-normal"/>
-          <i class="pi pi-times absolute opacity-0 pointer" (click)="searchIconKeyword='';searchConversation()" [ngStyle]="{top: '30px', right: '20px',color:'#A2A2A3'}" [ngClass]="{'opacity-100':searchIconKeyword.length}"></i>
-        </div>
+        <span class="p-input-icon-left mt-2 w-full" *ngIf="filter=='text'">
+          <i class="pi pi-search text-white" [ngStyle]="{top: '22px'}"></i>
+          <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()" placeholder="Search for Keywords"
+          class="w-full border-round-3xl mb-1 font-family-inter text-sm font-normal" />
+          <i class="pi pi-times reset-search text-white cursor-pointer" [ngStyle]="{top: '22px', right: '20px',color:'#A2A2A3'}" *ngIf="searchIconKeyword"
+              (click)="searchIconKeyword='';searchConversation()"></i>
+        </span>
         <hr class="mt-2" [ngStyle]="{border:'1px solid #535354'}"/>
         <div class='comments-grid'>
             <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList" [searchIconKeyword]="searchIconKeyword" [topParentId]="selectedComment?.id"></xnode-spec-conversation>

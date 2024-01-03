@@ -75,21 +75,29 @@ export class TaskListComponent {
     this.checkSwaggerItem();
   }
 
-  filterListBySearch(){
-    this.list = this.specListCopy;
+  filterListBySearch(users?:any){
     if(this.searchIconKeyword.length>0){
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
       this.list = this.list.filter((item: any) => item.title.toLowerCase().includes(this.searchIconKeyword));
     }else{
+      if(users){
+        this.list = this.specListCopy;
+        this.filterListByUsersFilter(users);
+        return
+      }
       this.list = this.specListCopy;
     }
   }
 
   filterListByUsersFilter(users:any){
-    this.list = this.specListCopy;
     if(users.length>0){
       this.list = this.list.filter((item: any) => users.includes(item.assignee.userId));
     }else{
+      if(this.searchIconKeyword.length>0){
+        this.list = this.specListCopy;
+        this.filterListBySearch();
+        return
+      }
       this.list = this.specListCopy;
     }
   }

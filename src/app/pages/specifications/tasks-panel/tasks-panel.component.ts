@@ -96,14 +96,12 @@ export class TasksPanelComponent {
       }
     })
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
-      this.child.filterListBySearch();
+      this.child.filterListBySearch(this.selectedUsers);
     });
-    this.filter = '';
   }
 
   changeSearchIconColor(entity:any){
     this.filter = entity;
-    entity=='users'? this.searchIconKeyword = '':null;
   }
 
   userFilter(){

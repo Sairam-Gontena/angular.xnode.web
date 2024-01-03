@@ -109,9 +109,6 @@ export class CrTabsComponent {
   changeSearchIconColor(entity:any){
     this.usingFilter = true
     this.filter = entity;
-    if(entity=='users'){
-      this.searchIconKeyword = '';
-    }
   }
 
   filterListBySearch(){
@@ -120,16 +117,25 @@ export class CrTabsComponent {
       this.crData = this.crData.filter((item: any) =>   (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
       (item.crId.toLowerCase().includes(searchKeywordLowercase)) );
     }else{
-      this.selectedUsers = [];
+      if(this.selectedUsers.length>0){
+        this.crData = this.crDataCopy;
+        this.filterListByUsersFilter();
+        return
+      }
       this.crData = this.crDataCopy;
     }
   }
 
   filterListByUsersFilter(){
     if(this.selectedUsers.length>0){
-      this.crData = this.crDataCopy;
+      // this.crData = this.crDataCopy;
       this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
     }else{
+      if(this.searchIconKeyword.length>0){
+        this.crData = this.crDataCopy;
+        this.filterListBySearch();
+        return
+      }
       this.crData = this.crDataCopy;
     }
   }

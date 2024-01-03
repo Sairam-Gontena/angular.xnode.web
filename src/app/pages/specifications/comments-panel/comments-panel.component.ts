@@ -48,13 +48,12 @@ export class CommentsPanelComponent implements OnInit {
       }
     });
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
-      this.child.filterListBySearch();
+      this.child.filterListBySearch(this.selectedUsers);
     });
   }
 
   changeSearchIconColor(entity:any){
     this.filter = entity;
-    entity=='users'? this.searchIconKeyword = '':null;
   }
 
   userFilter(){
@@ -62,7 +61,7 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   searchConversation(){
-    this.searchUpdated.next(this.searchIconKeyword);
+      this.searchUpdated.next(this.searchIconKeyword);
   }
 
   ngOnInit(): void {
