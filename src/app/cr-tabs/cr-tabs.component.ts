@@ -14,6 +14,8 @@ import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
 declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import {
   FormBuilder,
   Validators,
@@ -53,8 +55,11 @@ export class CrTabsComponent {
   product: any;
   crList: any = [];
   showNewCrPopup: boolean = false;
+  usingFilter:boolean = false;
   crActions: any;
   comments: string = 'test';
+  searchIconKeyword:string='';
+  selectedUsers:any=[];
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
@@ -62,9 +67,12 @@ export class CrTabsComponent {
   targetUrl: string = '';
   bpmnFrom: string = 'SPEC'; //;  'Comments'
   iframeSrc: SafeResourceUrl = '';
+  searchUpdated: Subject<string> = new Subject<string>();
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
   specVersion: any;
+  crDataCopy: any;
+  filter:any;
   sortColumn: string = 'dueDate';
   sortDirection: string = 'desc';
   filteredReveiwers: any = [];
@@ -90,7 +98,7 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     this.minDate = new Date();
     this.addReviewerForm = this.fb.group({
@@ -129,6 +137,53 @@ export class CrTabsComponent {
       }
     });
     this.makeTrustedUrl();
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
+      this.filterListBySearch();
+    });
+  }
+
+  ngOnChanges(){
+    this.filter = '';
+  }
+
+  changeSearchIconColor(entity:any){
+    this.usingFilter = true
+    this.filter = entity;
+  }
+
+  filterListBySearch(){
+    let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
+    if(this.searchIconKeyword.length>0){
+      this.crData = this.crData.filter((item: any) => (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
+      (item.crId.toLowerCase().includes(searchKeywordLowercase)) );
+    }else{
+      this.crData = this.crDataCopy;
+    }
+  }
+
+  filterListByUsersFilter(){
+    if(this.selectedUsers.length>0){
+      this.checkUserKeywordSearchCombination()
+      this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
+    }else{
+      this.crData = this.crDataCopy;
+    }
+  }
+
+  checkUserKeywordSearchCombination(){
+    if(this.selectedUsers.length>1){
+      this.crData = this.crDataCopy;
+      if(this.searchIconKeyword.length>0){
+        let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
+        this.crData = this.crData.filter((item: any) => {
+          return (item.reason.toLowerCase().includes(searchKeywordLowercase))
+        });
+      }
+    }
+  }
+
+  searchConversation(){
+    this.searchUpdated.next(this.searchIconKeyword);
   }
 
   makeTrustedUrl(): void {
@@ -233,6 +288,7 @@ export class CrTabsComponent {
           });
 
           this.crData = data;
+          this.crDataCopy = this.crData;
 
           this.crList = Array.from({ length: this.crData.length }, () => []);
         } else {

@@ -82,3 +82,5 @@
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR"
   [versions]="versionList" (close)="closePopUp($event)">
 </xnode-create-new-cr-version>
+<xnode-confirmation-popup-new [header]="header" [content]="content" [visible]="openConfirmationPopUp"
+  (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>

@@ -1,3 +1,6 @@
+<xnode-no-comments *ngIf="list?.length === 0; else conversationComments"
+    [content]="'No open comments yet'"></xnode-no-comments>
+<ng-template #conversationComments>
 <div class="w-full" [id]="cmt.id" *ngFor="let cmt of list;let i = index;let isLast = last">
     <div class="grid m-0 p-2" [ngClass]="{'border-gray-800 border-bottom-1': !cmt.topParentId}">
         <div class="col-12 flex justify-content-between">
@@ -137,3 +140,4 @@
 <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
     [header]="confirmarionHeader" [content]="confirmarionContent" (onClickAction)="
     onClickConfirmationAction($event)"></xnode-confirmation-popup-new>
+</ng-template>
