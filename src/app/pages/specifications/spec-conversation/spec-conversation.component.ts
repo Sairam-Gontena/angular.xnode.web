@@ -68,6 +68,7 @@ export class SpecConversationComponent {
   targetUrl: string = '';
   bpmnFrom: string ='SPEC';//;  'Comments'
   private searchKeywordSubscription: Subscription = new Subscription;
+  private searchByUserSubscription: Subscription = new Subscription;
 
   constructor(
     private utils: UtilsService,
@@ -91,8 +92,10 @@ export class SpecConversationComponent {
     this.makeTrustedUrl();
     this.checkSwaggerItem();
     this.searchKeywordSubscription = this.specUtils.getCommentSearchByKeywordListData().subscribe((data:any) => {
-      console.log(data)
       this.filterListBySearch(data);
+    });
+    this.searchByUserSubscription = this.specUtils.getCommentSearchByUsersListData().subscribe((data:any) => {
+      this.filterListByUsersFilter(data);
     });
   }
 
@@ -101,25 +104,24 @@ export class SpecConversationComponent {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
       this.list = this.list.filter((item: any) => item.message.toLowerCase().includes(this.searchIconKeyword));
     }else{
-      if(users){
-        this.list = this.specListCopy;
-        this.filterListByUsersFilter(users);
-        return
-      }
       this.list = this.specListCopy;
+    }
+    if(users){
+      this.filterListByUsersFilter(users);
+      return
     }
   }
 
   filterListByUsersFilter(users:any){
     if(users.length>0){
+      this.list = this.specListCopy;
       this.list = this.list.filter((item: any) => users.includes(item.createdBy.userId));
     }else{
-      if(this.searchIconKeyword.length>0){
-        this.list = this.specListCopy;
-        this.filterListBySearch();
-        return
-      }
       this.list = this.specListCopy;
+    }
+    if(this.searchIconKeyword.length>0){
+      this.filterListBySearch();
+      return
     }
   }
 

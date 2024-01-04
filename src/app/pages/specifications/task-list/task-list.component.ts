@@ -8,7 +8,7 @@ import { MessagingService } from '../../../components/services/messaging.service
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
-import { delay, of } from 'rxjs';
+import { Subscription, delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-task-list',
   templateUrl: './task-list.component.html',
@@ -52,6 +52,8 @@ export class TaskListComponent {
   targetUrl: string = '';
   iframeSrc: SafeResourceUrl = '';
   parentId: any;
+  private searchKeywordSubscription: Subscription = new Subscription;
+  private searchByUserSubscription: Subscription = new Subscription;
 
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
@@ -73,6 +75,12 @@ export class TaskListComponent {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
+    this.searchKeywordSubscription=this.specUtils.getTaskPanelSearchByKeywordTaskList().subscribe((data:any)=>{
+      this.filterListBySearch(data);
+    });
+    this.searchByUserSubscription = this.specUtils.getTaskPanelSearchByUsersListData().subscribe((data:any) => {
+      this.filterListByUsersFilter(data);
+    });
   }
 
   filterListBySearch(users?:any){
@@ -80,12 +88,11 @@ export class TaskListComponent {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
       this.list = this.list.filter((item: any) => item.title.toLowerCase().includes(this.searchIconKeyword));
     }else{
-      if(users){
-        this.list = this.specListCopy;
-        this.filterListByUsersFilter(users);
-        return
-      }
       this.list = this.specListCopy;
+    }
+    if(users){
+      this.filterListByUsersFilter(users);
+      return
     }
   }
 
@@ -93,12 +100,11 @@ export class TaskListComponent {
     if(users.length>0){
       this.list = this.list.filter((item: any) => users.includes(item.assignee.userId));
     }else{
-      if(this.searchIconKeyword.length>0){
-        this.list = this.specListCopy;
-        this.filterListBySearch();
-        return
-      }
       this.list = this.specListCopy;
+    }
+    if(this.searchIconKeyword.length>0){
+      this.filterListBySearch();
+      return
     }
   }
 

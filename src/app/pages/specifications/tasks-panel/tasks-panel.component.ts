@@ -7,10 +7,8 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { ApiService } from 'src/app/api/api.service';
-import { SpecConversationComponent } from '../spec-conversation/spec-conversation.component';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { TaskListComponent } from '../task-list/task-list.component';
 @Component({
   selector: 'xnode-tasks-panel',
   templateUrl: './tasks-panel.component.html',
@@ -24,8 +22,6 @@ export class TasksPanelComponent {
   @Input() swaggerData:any;
   searchIconKeyword:string='';
   selectedUsers:any=[];
-  @ViewChild(TaskListComponent)
-  child!: TaskListComponent;
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
@@ -96,7 +92,7 @@ export class TasksPanelComponent {
       }
     })
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
-      this.child.filterListBySearch(this.selectedUsers);
+      this.specUtils.sendTaskPanelSearchByKeywordTaskList(this.selectedUsers)
     });
   }
 
@@ -105,7 +101,7 @@ export class TasksPanelComponent {
   }
 
   userFilter(){
-    this.child.filterListByUsersFilter(this.selectedUsers);
+    this.specUtils.sendTaskPanelSearchByUsersListData(this.selectedUsers)
   }
 
   searchConversation(){

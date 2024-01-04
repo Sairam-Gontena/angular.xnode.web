@@ -6,7 +6,6 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { SpecConversationComponent } from '../spec-conversation/spec-conversation.component';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 @Component({
@@ -30,8 +29,6 @@ export class CommentsPanelComponent implements OnInit {
   list: any = [];
   filteredList: any = []
   product: any;
-  @ViewChild(SpecConversationComponent)
-  child!: SpecConversationComponent;
   searchUpdated: Subject<string> = new Subject<string>();
   selectedUserNames: any =[];
 
@@ -48,7 +45,6 @@ export class CommentsPanelComponent implements OnInit {
       }
     });
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
-      // this.child.filterListBySearch(this.selectedUsers);
       this.specUtils.sendCommentSearchByKeywordListData(this.selectedUsers)
     });
   }
@@ -58,7 +54,7 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   userFilter(){
-    this.child.filterListByUsersFilter(this.selectedUsers);
+    this.specUtils.sendCommentSearchByUsersListData(this.selectedUsers)
   }
 
   searchConversation(){

@@ -46,6 +46,10 @@ export class SpecUtilsService {
     this.onProductDropdownChange.asObservable();
 
   private commentPaneltoSpecConversation = new Subject<any>();
+  private commentPaneltoSpecConversationByUsers = new Subject<any>();
+
+  private taskPaneltoTaskList = new Subject<any>();
+  private taskPaneltoTaskListByUsers = new Subject<any>();
 
   specConversationPanelFrom:string='';
 
@@ -95,4 +99,29 @@ export class SpecUtilsService {
   getCommentSearchByKeywordListData(): Observable<any> {
     return this.commentPaneltoSpecConversation.asObservable();
   }
+
+  sendCommentSearchByUsersListData(data: any) {
+    this.commentPaneltoSpecConversationByUsers.next(data);
+  }
+
+  getCommentSearchByUsersListData(): Observable<any> {
+    return this.commentPaneltoSpecConversationByUsers.asObservable();
+  }
+
+  sendTaskPanelSearchByKeywordTaskList(data: any) {
+    this.taskPaneltoTaskList.next(data);
+  }
+
+  getTaskPanelSearchByKeywordTaskList(): Observable<any> {
+    return this.taskPaneltoTaskList.asObservable();
+  }
+
+  sendTaskPanelSearchByUsersListData(data: any) {
+    this.taskPaneltoTaskListByUsers.next(data);
+  }
+
+  getTaskPanelSearchByUsersListData(): Observable<any> {
+    return this.taskPaneltoTaskListByUsers.asObservable();
+  }
+
 }
