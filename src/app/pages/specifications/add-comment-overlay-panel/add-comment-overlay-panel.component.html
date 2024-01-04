@@ -35,11 +35,12 @@
                             <div class="pointer flex align-items-center justify-content-center">
                                 @
                             </div>
+                            <p-divider class="overlay-panel-divider" layout="vertical"></p-divider>
+                            <i class="pi pi-times text-white border-circle surface-500" ></i>
                             <img src="../assets/send-gray.svg"
                                 [src]="isCommentEmpty ? '../assets/send-gray.svg' : '../assets/send-blue.svg'"
                                 class="pointer flex align-items-center justify-content-center" alt="comment send"
                                 (click)="onClickSend()" />
-
                         </div>
                     </div>
                 </div>
