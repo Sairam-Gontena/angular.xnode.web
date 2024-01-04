@@ -71,9 +71,13 @@
     color: #ffffff !important;
 }
 
-:host ::ng-deep .p-dropdown-item {
+:host ::ng-deep .p-dropdown-item{
     border: 1px solid #535354;
     color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover{
+  background: #2E2D36 !important;
 }
 
 :host ::ng-deep .p-dropdown .p-dropdown-items {
