@@ -494,6 +494,8 @@ export class CrTabsComponent {
       .postApi({ product_id: this.product?.id, cr_id: cr_ids }, 'specs/update')
       .then((res: any) => {
         if (res && res.status === 200) {
+          this.crData.map((item: any) => item.checked === false)
+          this.checkedCrList = [];
           if (typeof res.data !== 'string') {
             this.utilsService.loadToaster({
               severity: 'success',
