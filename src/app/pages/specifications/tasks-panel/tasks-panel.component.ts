@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input, SimpleChange,ViewChild } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
@@ -7,7 +7,8 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { ApiService } from 'src/app/api/api.service';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'xnode-tasks-panel',
   templateUrl: './tasks-panel.component.html',
@@ -19,6 +20,8 @@ export class TasksPanelComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData:any;
+  searchIconKeyword:string='';
+  selectedUsers:any=[];
   userImage?: any = "DC";
   username?: any;
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'New', value: 'NEW' }, { label: 'Linked', value: 'LINKED' }, { label: 'UnLinked', value: 'UNLINKED' }, { label: 'Closed', value: 'CLOSED' } ];
@@ -28,6 +31,7 @@ export class TasksPanelComponent {
     role: '',
     user_id: ''
   };
+  product: any;
   comment: any;
   currentUser: any;
   selectedSection: any;
@@ -42,7 +46,8 @@ export class TasksPanelComponent {
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
-
+  searchUpdated: Subject<string> = new Subject<string>();
+  filter:any;
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private specUtils: SpecUtilsService,
@@ -50,7 +55,7 @@ export class TasksPanelComponent {
     private sanitizer: DomSanitizer,
     private apiService:ApiService) {
     this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
-
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'TASK') {
         this.specUtils.specConversationPanelFrom == 'spec_header'?this.ngOnInit():this.getMeTasksList();
@@ -77,6 +82,21 @@ export class TasksPanelComponent {
         }
       }
     })
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
+      this.specUtils.sendTaskPanelSearchByKeywordTaskList(this.selectedUsers)
+    });
+  }
+
+  changeSearchIconColor(entity:any){
+    this.filter = entity;
+  }
+
+  userFilter(){
+    this.specUtils.sendTaskPanelSearchByUsersListData(this.selectedUsers)
+  }
+
+  searchConversation(){
+    this.searchUpdated.next(this.searchIconKeyword);
   }
 
   getAllStatusComments(data:any,id:any){
@@ -100,6 +120,7 @@ export class TasksPanelComponent {
         this.getMeTasksList();
       }
     }
+    this.filter = '';
   }
 
   getMeTasksList() {

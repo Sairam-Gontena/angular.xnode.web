@@ -532,5 +532,53 @@ body {
 }
 
 .p-overlaypanel {
-  margin-top: 0px !important;
+  margin-top:  0px !important;
+}
+.p-button-link{
+  color: #02adee;
+}
+
+.nonActive .p-button-link {
+  color: #fff !important;
+}
+
+.p-button-link span {
+  margin-left: 6px;
+}
+
+.comment-panel-user-filter .p-multiselect-label-container{
+  width: 40px!important;
+  padding-right: 0px!important;
+  background: #24232c !important;
+  color: transparent !important;
+  border: none!important;
+}
+
+:host ::ng-deep .comment-panel-user-filter .ui-multiselect-label {
+  visibility: collapse;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.comment-panel-user-filter .p-multiselect-clear-icon,.comment-panel-user-filter  .p-multiselect-trigger{
+  display: none!important;
+}
+.comment-panel-user-filter .p-multiselect-label-container:hover,.comment-panel-user-filter .p-multiselect,.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
+  border: none!important;
+}
+
+.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus{
+  box-shadow: none!important;
+}
+
+.comment-panel-user-filter .p-multiselect-panel{
+  border: 1px solid #535354;
+}
+
+.comment-panel-user-filter .p-component,.comment-panel-user-filter .p-multiselect,.comment-panel-user-filter .p-multiselect-header,.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover,.comment-panel-user-filter .p-checkbox .p-checkbox-box,.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+  background: #24232c !important;
+  color: white !important;
+}
+.search-dropdown-user{
+  left: 30px!important;
 }
