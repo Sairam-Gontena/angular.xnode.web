@@ -41,7 +41,7 @@ export class CommentsPanelComponent implements OnInit {
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'COMMENT') {
         this.utils.loadSpinner(true);
-        this.getMeCommentsList();
+        this.specUtils.specConversationPanelFrom == 'spec_header'?this.ngOnInit():this.getMeCommentsList();
       }
     });
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {

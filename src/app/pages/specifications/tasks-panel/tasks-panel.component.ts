@@ -58,7 +58,7 @@ export class TasksPanelComponent {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'TASK') {
-        this.getMeTasksList();
+        this.specUtils.specConversationPanelFrom == 'spec_header'?this.ngOnInit():this.getMeTasksList();
       }
     });
   }
