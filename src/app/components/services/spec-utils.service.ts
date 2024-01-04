@@ -72,7 +72,7 @@ export class SpecUtilsService {
     this.onProductDropdownChange.next(event);
   }
 
-  _getSpecBasedOnVersionID(event: string): void {
+  _getSpecBasedOnVersionID(event: any): void {
     this.getMeSpec.next(event);
   }
 

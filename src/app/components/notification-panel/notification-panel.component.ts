@@ -545,6 +545,9 @@ export class NotificationPanelComponent {
         console.error('Error fetching data from localStorage:', error);
       });
   }
+  ngOnDestroy(): void {
+    this.specUtils._getSpecBasedOnVersionID(null);
+  }
 
   getAllProductsInfo(key: string) {
     return new Promise((resolve, reject) => {
