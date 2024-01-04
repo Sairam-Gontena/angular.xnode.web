@@ -295,7 +295,9 @@ export class AddTaskComponent {
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
-
+  cancelTask() {
+    this.closeOverlay.emit();
+  }
   saveAsTask(body: any): void {
     if (this.parentTitle !== '' && this.parentTitle !== undefined) {
       body.referenceContent.parentTitle = this.parentTitle;
