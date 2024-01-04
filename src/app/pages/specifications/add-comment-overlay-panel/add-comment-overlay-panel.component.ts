@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { MentionConfig } from 'angular-mentions';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { DatePipe } from '@angular/common';
@@ -12,10 +12,8 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
   styleUrls: ['./add-comment-overlay-panel.component.scss'],
-  providers: [DatePipe]
-
+  providers: [DatePipe],
 })
-
 export class AddCommentOverlayPanelComponent implements OnInit {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Output() closeOverlay = new EventEmitter<any>();
@@ -56,7 +54,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   isCommentEmpty: boolean = true;
   minDate!: Date;
 
-  constructor(public utils: UtilsService,
+  constructor(
+    public utils: UtilsService,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
@@ -78,7 +77,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     if (this.users) {
       this.users.forEach((element: any) => {
-        element.name = element?.first_name + " " + element?.last_name;
+        element.name = element?.first_name + ' ' + element?.last_name;
       });
     }
     this.config = {
@@ -95,9 +94,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
   format(item: any) {
     const entityId = item.user_id;
-    const isDuplicate = this.references.some((reference: any) => reference.entity_id === entityId);
+    const isDuplicate = this.references.some(
+      (reference: any) => reference.entity_id === entityId
+    );
     if (!isDuplicate) {
-      this.references.push({ entity_type: "User", entity_id: entityId, product_id: this.product?.id || null });
+      this.references.push({
+        entity_type: 'User',
+        entity_id: entityId,
+        product_id: this.product?.id || null,
+      });
     }
     return `@${item.first_name} ${item.last_name},`;
   }
@@ -108,17 +113,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.references.forEach((obj: any) => {
         obj.template_type = 'TASK';
         obj.product_id = productId;
-      })
+      });
     } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
       this.references.forEach((obj: any) => {
         obj.template_type = 'COMMENT';
         obj.product_id = productId;
-      })
+      });
     } else {
       this.references.forEach((obj: any) => {
         obj.template_type = this.parentEntity;
         obj.product_id = productId;
-      })
+      });
     }
     return this.references;
   }
@@ -133,7 +138,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(0, 0, 0, 0);
 
-    const formattedSelectedDate = this.datePipe.transform(selectedDate, 'shortDate');
+    const formattedSelectedDate = this.datePipe.transform(
+      selectedDate,
+      'shortDate'
+    );
     const formattedToday = this.datePipe.transform(today, 'shortDate');
     const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
 
@@ -150,11 +158,16 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.selectedDateLabel = label;
   }
 
-
   onClickSend(): void {
     if (this.from == 'cr-tabs') {
-      this.commentInfo.emit({ message: this.comment, attachments: this.uploadedFiles, referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {}, parentId: this.parentId });
-      return
+      this.commentInfo.emit({
+        message: this.comment,
+        attachments: this.uploadedFiles,
+        referenceContent:
+          this.parentEntity === 'SPEC' ? this.selectedContent : {},
+        parentId: this.parentId,
+      });
+      return;
     }
     this.utils.loadSpinner(true);
     if (this.selectedText) {
@@ -167,39 +180,40 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       body.message = this.comment;
     } else {
       body = {
-        "createdBy": this.currentUser.user_id,
-        "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
-        "parentEntity": this.parentEntity,
-        "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
-        "message": this.comment,
-        "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        "attachments": this.uploadedFiles,
-        "references": this.setTemplateTypeInRefs(),
-        "followers": [],
-        "feedback": {},
-      }
+        createdBy: this.currentUser.user_id,
+        topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
+        parentEntity: this.parentEntity,
+        parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+        message: this.comment,
+        referenceContent:
+          this.parentEntity === 'SPEC' ? this.selectedContent : {},
+        attachments: this.uploadedFiles,
+        references: this.setTemplateTypeInRefs(),
+        followers: [],
+        feedback: {},
+      };
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         body = {
-          "createdBy": this.currentUser.user_id,
-          "topParentId": this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
-          "parentEntity": this.parentEntity,
-          "parentId": this.parentId, // It should be spec id at New comment level and parent commment id at reply level
-          "message": this.comment,
-          "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
-          "attachments": this.uploadedFiles,
-          "references": this.setTemplateTypeInRefs(),
-          "followers": [],
-          "feedback": {},
-        }
+          createdBy: this.currentUser.user_id,
+          topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
+          parentEntity: this.parentEntity,
+          parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+          message: this.comment,
+          referenceContent:
+            this.parentEntity === 'SPEC' ? this.selectedContent : {},
+          attachments: this.uploadedFiles,
+          references: this.setTemplateTypeInRefs(),
+          followers: [],
+          feedback: {},
+        };
         console.log('body', body);
         // return
 
         this.saveComment(body);
-      }
-      else {
-        this.prepareDataToSaveAsTask()
+      } else {
+        this.prepareDataToSaveAsTask();
       }
     } else {
       this.saveComment(body);
@@ -207,21 +221,31 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveComment(body: any): void {
-
     if (this.parentTitle != '' && this.parentTitle != undefined) {
-      body.referenceContent.parentTitle = this.parentTitle
+      body.referenceContent.parentTitle = this.parentTitle;
     }
-    this.commentsService.addComments(body).then((commentsReponse: any) => {
-      if (commentsReponse.statusText === 'Created') {
-        this.prepareDataToDisplayOnCommentsPanel();
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
+    this.commentsService
+      .addComments(body)
+      .then((commentsReponse: any) => {
+        if (commentsReponse.statusText === 'Created') {
+          this.prepareDataToDisplayOnCommentsPanel();
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: commentsReponse?.data?.common?.status,
+          });
+          this.utils.loadSpinner(false);
+        }
+      })
+      .catch((err) => {
         this.utils.loadSpinner(false);
-      }
-    }).catch(err => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    })
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 
   prepareDataToDisplayOnCommentsPanel(): void {
@@ -251,67 +275,84 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     let body;
     if (this.action === 'EDIT') {
       body = {
-        "createdBy": this.currentUser.user_id,
-        "id": this.selectedComment.id,
-        "parentEntity": this.parentEntity,
-        "parentId": this.selectedComment.parentId,
-        "priority": '1',
-        "title": this.comment,
-        "description": this.comment,
-        "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        "attachments": [],
-        "references": this.setTemplateTypeInRefs(),
-        "followers": [],
-        "feedback": {},
-        "assignee": this.selectedComment.assignee.userId,
-        "deadline": ""
-      }
+        createdBy: this.currentUser.user_id,
+        id: this.selectedComment.id,
+        parentEntity: this.parentEntity,
+        parentId: this.selectedComment.parentId,
+        priority: '1',
+        title: this.comment,
+        description: this.comment,
+        referenceContent:
+          this.parentEntity === 'SPEC' ? this.selectedContent : {},
+        attachments: [],
+        references: this.setTemplateTypeInRefs(),
+        followers: [],
+        feedback: {},
+        assignee: this.selectedComment.assignee.userId,
+        deadline: '',
+      };
     } else if (this.action !== 'EDIT') {
       body = {
-        "createdBy": this.currentUser.user_id,
-        "parentEntity": this.parentEntity,
-        "parentId": this.parentId,
-        "priority": '1',
-        "title": this.comment,
-        "description": this.comment,
-        "referenceContent": this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        "attachments": this.uploadedFiles,
-        "references": this.setTemplateTypeInRefs(),
-        "followers": [],
-        "feedback": {},
-        "assignee": this.currentUser.user_id,
-        "deadline": ""
-      }
+        createdBy: this.currentUser.user_id,
+        parentEntity: this.parentEntity,
+        parentId: this.parentId,
+        priority: '1',
+        title: this.comment,
+        description: this.comment,
+        referenceContent:
+          this.parentEntity === 'SPEC' ? this.selectedContent : {},
+        attachments: this.uploadedFiles,
+        references: this.setTemplateTypeInRefs(),
+        followers: [],
+        feedback: {},
+        assignee: this.currentUser.user_id,
+        deadline: '',
+      };
     }
     this.saveAsTask(body);
   }
 
   saveAsTask(body: any): void {
     if (this.parentTitle != '' && this.parentTitle != undefined) {
-      body.referenceContent.parentTitle = this.parentTitle
+      body.referenceContent.parentTitle = this.parentTitle;
     } else {
       body.referenceContent.parentTitle = this.specItem.title;
     }
-    this.commentsService.addTask(body).then((commentsReponse: any) => {
-      if (commentsReponse.statusText === 'Created') {
-        if (!this.isCommnetsPanelOpened)
-          this.specUtils._openCommentsPanel(true);
-        this.comment = '';
-        this.closeOverlay.emit();
-        this.specUtils._commentsCrActiveTab(false);
-        this.specUtils._tabToActive('TASK');
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
-        this.uploadedFiles = [];
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
-      }
-      this.utils.loadSpinner(false);
-      this.assignAsaTask = false;
-    }).catch(err => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-      this.assignAsaTask = false;
-    })
+    this.commentsService
+      .addTask(body)
+      .then((commentsReponse: any) => {
+        if (commentsReponse.statusText === 'Created') {
+          if (!this.isCommnetsPanelOpened)
+            this.specUtils._openCommentsPanel(true);
+          this.comment = '';
+          this.closeOverlay.emit();
+          this.specUtils._commentsCrActiveTab(false);
+          this.specUtils._tabToActive('TASK');
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'Task added successfully',
+          });
+          this.uploadedFiles = [];
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: commentsReponse?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+        this.assignAsaTask = false;
+      })
+      .catch((err) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.assignAsaTask = false;
+      });
   }
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
@@ -332,7 +373,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         if (files[i].size > maxSizeInBytes) {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: 'File size should not exceed 5mb',
+          });
         } else {
           this.prepareFilesList(event.target.files);
         }
@@ -379,16 +424,29 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.postFile('file-azure/upload', formData, { headers });
+      const res = await this.commonApi.postFile('file-azure/upload', formData, {
+        headers,
+      });
       if (res.statusText === 'Created') {
         this.uploadedFiles.push(res.data.id);
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File uploaded successfully' });
+        this.utils.loadToaster({
+          severity: 'success',
+          summary: 'SUCCESS',
+          detail: 'File uploaded successfully',
+        });
       } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: res?.data,
+        });
       }
     } catch (error) {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Error' });
-
+      this.utils.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error',
+      });
     } finally {
       this.utils.loadSpinner(false);
     }

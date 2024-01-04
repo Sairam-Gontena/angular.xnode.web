@@ -73,7 +73,7 @@ export class SpecificationsContentComponent implements OnInit {
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private route: ActivatedRoute,
-    private authApiService: AuthApiService,
+    private authApiService: AuthApiService
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -94,19 +94,19 @@ export class SpecificationsContentComponent implements OnInit {
     });
     this.utils.openSpecSubMenu.subscribe((event: any) => {
       this.isSpecSideMenuOpened = event;
-    })
+    });
     this.utils.openDockedNavi.subscribe((event: any) => {
-      this.isDockedNaviOpended = event
-    })
+      this.isDockedNaviOpended = event;
+    });
   }
 
   onChildLoaded(isLoaded: boolean) {
     if (isLoaded) {
-      of(([])).pipe(
-        delay(500)
-      ).subscribe((results) => {
-        this.fetchOpenAPISpec();
-      })
+      of([])
+        .pipe(delay(500))
+        .subscribe((results) => {
+          this.fetchOpenAPISpec();
+        });
     }
   }
 
@@ -147,7 +147,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   ngOnDestroy() {
     // this.specUtils._openCommentsPanel(false);
-    this.utils.EnableSpecSubMenu()
+    this.utils.EnableSpecSubMenu();
   }
   ngOnChanges() {
     this.specItemList = this.specData;
@@ -258,8 +258,14 @@ export class SpecificationsContentComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
-    let swaggerUrl = environment.uigenApiUrl + 'openapi-spec/' +
-      localStorage.getItem('app_name') + '/' + email + '/' + record_id;
+    let swaggerUrl =
+      environment.uigenApiUrl +
+      'openapi-spec/' +
+      localStorage.getItem('app_name') +
+      '/' +
+      email +
+      '/' +
+      record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -272,18 +278,18 @@ export class SpecificationsContentComponent implements OnInit {
       operationsSorter: 'alpha',
     });
     fetch(swaggerUrl)
-      .then(response => response.json())
-      .then(data => this.swaggerData = data)
-      .catch(error => console.error('Error:', error));
+      .then((response) => response.json())
+      .then((data) => (this.swaggerData = data))
+      .catch((error) => console.error('Error:', error));
   }
 
   _expandComponent(val: any): void {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
-      this.specUtils._openCommentsPanel(false)
-      this.utils.disableDockedNavi()
-      this.utils.EnableSpecSubMenu()
+      this.specUtils._openCommentsPanel(false);
+      this.utils.disableDockedNavi();
+      this.utils.EnableSpecSubMenu();
       this.specExpanded = true;
     } else {
       this.specExpanded = false;

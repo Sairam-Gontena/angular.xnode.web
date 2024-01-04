@@ -14,7 +14,16 @@ import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
 declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
-
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'xnode-cr-tabs',
   templateUrl: './cr-tabs.component.html',
@@ -25,6 +34,9 @@ export class CrTabsComponent {
   @Input() usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData: any;
+  @Input() reveiwerList: any;
+
+  addReviewerForm: FormGroup;
   filters: any;
   selectedFilter:any;
   currentUser: any;
@@ -49,13 +61,24 @@ export class CrTabsComponent {
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
   userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   targetUrl: string = '';
-  bpmnFrom: string = 'SPEC';//;  'Comments'
+  bpmnFrom: string = 'SPEC'; //;  'Comments'
   iframeSrc: SafeResourceUrl = '';
   @ViewChild('op') overlayPanel: OverlayPanel | any;
   showLimitReachedPopup: boolean = false;
   specVersion: any;
   sortColumn: string = 'dueDate';
   sortDirection: string = 'desc';
+  filteredReveiwers: any = [];
+  suggestions: any;
+  priorityList: any = [
+    { label: 'High', value: 'HIGH' },
+    { label: 'Medium', value: 'MEDIUM' },
+    { label: 'Low', value: 'LOW' },
+  ];
+  showDropdown: boolean = false;
+  selectedDateLabel: any;
+  minDate: Date;
+  dueDate: Date | undefined;
 
   constructor(
     private api: ApiService,
@@ -67,8 +90,14 @@ export class CrTabsComponent {
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
-
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
+    this.minDate = new Date();
+    this.addReviewerForm = this.fb.group({
+      reviewersLOne: [''],
+    });
+
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
@@ -80,7 +109,13 @@ export class CrTabsComponent {
       }
     });
   }
+  onSelectPriority(selectedPriority: any) {
+    this.showDropdown = false;
+  }
 
+  toggleDropdown() {
+    this.showDropdown = true;
+  }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
@@ -209,16 +244,12 @@ export class CrTabsComponent {
   getCRList() {
     let body: any = {
       productId: this.product?.id,
-      // baseVersionId: this.specVersion.id
-    }
+    };
     this.utilsService.loadSpinner(true);
     this.commentsService
       .getCrList(body)
       .then((res: any) => {
         if (res && res.data) {
-          // let data: any[] = res?.data?.map((item: any) => {
-          //   return { ...item, checked: false };
-          // });
           let data: any[] = res?.data?.map((item: any) => {
             const currentDate = new Date().toISOString().split('T')[0];
             const isOldDate = new Date(item.duedate).getFullYear() === 1970;
@@ -226,7 +257,7 @@ export class CrTabsComponent {
             const updatedItem = {
               ...item,
               checked: false,
-              duedate: isOldDate ? currentDate : item.duedate
+              duedate: isOldDate ? currentDate : item.duedate,
             };
 
             return updatedItem;
@@ -269,24 +300,23 @@ export class CrTabsComponent {
             item.forEach((subItem: any) => {
               if (subItem.comment) {
                 if (subItem.comment.referenceContent.title === 'OpenAPI Spec') {
-                  of(([])).pipe(
-                    delay(1000)
-                  ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.id)
-                  });
+                  of([])
+                    .pipe(delay(1000))
+                    .subscribe((results) => {
+                      this.fetchOpenSpecAPI(subItem.id);
+                    });
                 }
               } else {
                 if (subItem.task.referenceContent.title === 'OpenAPI Spec') {
-                  of(([])).pipe(
-                    delay(1000)
-                  ).subscribe((results) => {
-                    this.fetchOpenSpecAPI(subItem.id)
-                  });
+                  of([])
+                    .pipe(delay(1000))
+                    .subscribe((results) => {
+                      this.fetchOpenSpecAPI(subItem.id);
+                    });
                 }
               }
-            })
-
-          })
+            });
+          });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -362,6 +392,11 @@ export class CrTabsComponent {
         this.content = 'Are you sure you want to Publish App?';
         this.openConfirmationPopUp = true;
         break;
+      case 'UNLINK':
+        this.header = 'Unlink CR';
+        this.content = 'Are you sure you want to Unlink this CR?';
+        this.openConfirmationPopUp = true;
+        break;
       default:
         break;
     }
@@ -381,8 +416,68 @@ export class CrTabsComponent {
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
   }
+  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
+    let filtered: any[] = [];
+    let query = event.query;
+    const selectedReviewers = Array.isArray(
+      this.addReviewerForm.value.reviewersLOne
+    )
+      ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
+          reviewer.name.toLowerCase()
+        )
+      : [];
+    filtered = this.reveiwerList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase())
+    );
+    this.filteredReveiwers = filtered;
+  }
+  search(event: AutoCompleteCompleteEvent) {
+    this.suggestions = [...Array(10).keys()].map(
+      (item) => event.query + '-' + item
+    );
+  }
 
+  reduceToInitials(fullName: string): string {
+    const nameParts = fullName.split(' ');
+    const initials = nameParts.map((part) => part.charAt(0));
+    const reducedName = initials.join('').toUpperCase();
+    return reducedName;
+  }
+  updateReviewer(event: any) {}
 
+  updateDueDate(event: any) {}
+
+  onDateSelect(event: any): void {
+    const selectedDate: Date = event;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const formattedSelectedDate = this.datePipe.transform(
+      selectedDate,
+      'shortDate'
+    );
+    const formattedToday = this.datePipe.transform(today, 'shortDate');
+    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
+
+    let label: any;
+
+    if (formattedSelectedDate === formattedToday) {
+      label = 'Today';
+    } else if (formattedSelectedDate === formattedTomorrow) {
+      label = 'Tomorrow';
+    } else {
+      label = formattedSelectedDate;
+    }
+
+    this.selectedDateLabel = label;
+  }
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);
@@ -562,7 +657,7 @@ export class CrTabsComponent {
       repoName: this.product.title,
       projectName: environment.projectName,
       email: this.currentUser.email,
-      crId: this.selectedCr.id
+      crId: this.selectedCr.id,
     };
     this.commentsService
       .publishApp(body)
@@ -648,7 +743,10 @@ export class CrTabsComponent {
     }
     const body = {
       entityId: this.selectedCr.id,
-      action: this.selectedStatus === 'NEEDS WORK' ? 'NEEDS_WORK' : this.selectedStatus,
+      action:
+        this.selectedStatus === 'NEEDS WORK'
+          ? 'NEEDS_WORK'
+          : this.selectedStatus,
       userId: this.currentUser.user_id,
       comments: this.selectedCr.comments,
     };
@@ -665,12 +763,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
