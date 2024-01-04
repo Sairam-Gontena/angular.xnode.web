@@ -142,6 +142,10 @@ export class CrTabsComponent {
     });
   }
 
+  ngOnChanges(){
+    this.filter = '';
+  }
+
   changeSearchIconColor(entity:any){
     this.usingFilter = true
     this.filter = entity;
@@ -150,29 +154,31 @@ export class CrTabsComponent {
   filterListBySearch(){
     let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
     if(this.searchIconKeyword.length>0){
-      this.crData = this.crData.filter((item: any) =>   (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
+      this.crData = this.crData.filter((item: any) => (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
       (item.crId.toLowerCase().includes(searchKeywordLowercase)) );
     }else{
-      if(this.selectedUsers.length>0){
-        this.crData = this.crDataCopy;
-        this.filterListByUsersFilter();
-        return
-      }
       this.crData = this.crDataCopy;
     }
   }
 
   filterListByUsersFilter(){
     if(this.selectedUsers.length>0){
-      // this.crData = this.crDataCopy;
+      this.checkUserKeywordSearchCombination()
       this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
     }else{
-      if(this.searchIconKeyword.length>0){
-        this.crData = this.crDataCopy;
-        this.filterListBySearch();
-        return
-      }
       this.crData = this.crDataCopy;
+    }
+  }
+
+  checkUserKeywordSearchCombination(){
+    if(this.selectedUsers.length>1){
+      this.crData = this.crDataCopy;
+      if(this.searchIconKeyword.length>0){
+        let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
+        this.crData = this.crData.filter((item: any) => {
+          return (item.reason.toLowerCase().includes(searchKeywordLowercase))
+        });
+      }
     }
   }
 

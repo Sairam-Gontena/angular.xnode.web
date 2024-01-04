@@ -98,6 +98,7 @@ export class TaskListComponent {
 
   filterListByUsersFilter(users:any){
     if(users.length>0){
+      this.list = this.specListCopy;
       this.list = this.list.filter((item: any) => users.includes(item.assignee.userId));
     }else{
       this.list = this.specListCopy;
