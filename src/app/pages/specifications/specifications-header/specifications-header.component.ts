@@ -189,6 +189,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               versionId: this.versions[0].id,
             });
           }
+          this.specUtils._productDropdownChanged(true);
         } else {
           this.utils.loadToaster({
             severity: 'error',
