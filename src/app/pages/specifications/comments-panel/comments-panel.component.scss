@@ -106,8 +106,8 @@
 
 :host ::ng-deep .search-grid .p-inputtext {
     box-shadow: none !important;
-    border: 0;
-    padding: 0 5px;
+    // border: 0;
+    padding: 5px 5px;
     color: #EFEEEE;
     background: linear-gradient(0deg, #23222B, #23222B),
         linear-gradient(0deg, #535354, #535354);
