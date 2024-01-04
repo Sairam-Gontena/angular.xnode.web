@@ -297,26 +297,26 @@
 }
 
 :host ::ng-deep .p-tabview .p-tabview-nav {
-    background: #3A3942 !important;
+    // background: #3A3942 !important;
     color: #ffffff !important;
     border: none !important;
 }
 
 :host ::ng-deep.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    background: #3A3942;
-    border-color: #02ADEE;
-    color: #02ADEE;
+    // background: #3A3942;
+    // border-color: #02ADEE;
+    // color: #02ADEE;
 }
 
 :host ::ng-deep.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
-    background: #3A3942;
-    border-color: #02ADEE;
-    color: #02ADEE;
+    // background: #3A3942;
+    // border-color: #02ADEE;
+    // color: #02ADEE;
 }
 
 :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    background: #3A3942;
-    color: #ffffff;
+    // background: #3A3942;
+    // color: #ffffff;
 }
 
 :host ::ng-deep .p-tabview .p-tabview-panels {

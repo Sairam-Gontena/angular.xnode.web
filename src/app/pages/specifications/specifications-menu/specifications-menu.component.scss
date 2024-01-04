@@ -75,13 +75,15 @@
 }
 
 .section:hover {
-    background: #464748;
-    color: #dedede;
+    // background: #464748;
+    background-color: var(--hover-color);
+    // color: #dedede;
     border-radius: 6px;
 }
 
 .active-section {
-    background-color: #464748 !important;
+    // background-color: #464748 !important;
+    background-color: var(--highlight-color);
     color: #dedede !important;
     border-radius: 6px;
 }
@@ -101,7 +103,7 @@
 
 :host ::ng-deep .p-inputtext {
     border-width: 0px;
-    color: #DEDEDE;
+    // color: #DEDEDE;
 }
 
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {

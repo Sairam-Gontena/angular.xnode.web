@@ -3,7 +3,7 @@
 @import "primeicons/primeicons.css";
 // @import './themes/viva-dark/theme.css';
 @import './theme.scss';
-// @import './app/styles/overrides.scss';
+@import './app/styles/overrides.scss';
 // @import './app/styles/utils.scss';
 @import 'node_modules/bpmn-js/dist/assets/diagram-js.css';
 @import 'node_modules/bpmn-js/dist/assets/bpmn-js.css';
@@ -444,7 +444,7 @@ body {
 .p-overlaypanel,
 .p-overlaypanel-content {
   // padding: 10px !important;
-  // background-color: #2E2D36 !important;
+  background-color:var(--body-color);
   // color: white;
   // border: 1px solid #535354;
   border-radius: 6px;
@@ -504,8 +504,4 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0089fff1', endColorstr='#000000', GradientType=0);
   /* IE6-9 */
 
-}
-
-.p-overlaypanel {
-  margin-top:  0px !important;
 }
