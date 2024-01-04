@@ -138,6 +138,7 @@ export class CrTabsComponent {
   }
 
   ngOnInit() {
+    this.specUtils._getSpecBasedOnVersionID(null);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
       { title: 'Filters', code: 'F' },

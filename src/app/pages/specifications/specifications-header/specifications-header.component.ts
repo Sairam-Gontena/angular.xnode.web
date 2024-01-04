@@ -66,6 +66,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       if (data) {
         this.getDeepLinkDetails(data);
       }
+      this.specUtils._getSpecBasedOnVersionID(null);
     });
   }
 
