@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, Output, ViewChild } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -37,6 +37,8 @@ export class CrTabsComponent {
   @Input() activeIndex: any;
   @Input() swaggerData: any;
   @Input() reveiwerList: any;
+  @ViewChild('myCalendar') datePicker: any;
+  @ViewChild('addUser') addUser: any;
 
   addReviewerForm: FormGroup;
   filters: any;
@@ -55,11 +57,11 @@ export class CrTabsComponent {
   product: any;
   crList: any = [];
   showNewCrPopup: boolean = false;
-  usingFilter:boolean = false;
+  usingFilter: boolean = false;
   crActions: any;
   comments: string = 'test';
-  searchIconKeyword:string='';
-  selectedUsers:any=[];
+  searchIconKeyword: string = '';
+  selectedUsers: any = [];
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
@@ -72,7 +74,7 @@ export class CrTabsComponent {
   showLimitReachedPopup: boolean = false;
   specVersion: any;
   crDataCopy: any;
-  filter:any;
+  filter: any;
   sortColumn: string = 'dueDate';
   sortDirection: string = 'desc';
   filteredReveiwers: any = [];
@@ -104,25 +106,37 @@ export class CrTabsComponent {
     this.addReviewerForm = this.fb.group({
       reviewersLOne: [''],
     });
-
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.getMeCrList.subscribe((event: any) => {
       if (event) this.getCRList();
-    });
-    this.specUtils.getMeSpecVersion.subscribe((res) => {
-      if (res) {
-        this.specVersion = res;
-        this.getCRList();
-      }
     });
   }
   onSelectPriority(selectedPriority: any) {
     this.showDropdown = false;
   }
+  closeDatePicker() {
+    this.datePicker.overlayVisible = false;
+  }
+  closeAddUser() {
+    if (this.addUser) {
+      this.addUser.hide();
+    }
+  }
+  onDateSelect(event: any) {
+    this.datePicker.overlayVisible = true;
+    event.stopPropagation();
 
+  }
   toggleDropdown() {
     this.showDropdown = true;
   }
+  updateReviewer(event: any) { }
+
+  updateDueDate(event: any) {
+    console.log(this.dueDate)
+    this.datePicker.overlayVisible = false;
+  }
+
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
@@ -132,7 +146,10 @@ export class CrTabsComponent {
     ];
     this.overlayPanel?.toggle(true);
     this.specUtils.getMeProductDropdownChange.subscribe((res) => {
-      if (this.activeIndex) {
+      if (res && this.activeIndex) {
+        this.product = this.storageService.getItem(StorageKeys.Product);
+        console.log('sub');
+
         this.getCRList();
       }
     });
@@ -142,38 +159,38 @@ export class CrTabsComponent {
     });
   }
 
-  ngOnChanges(){
+  ngOnChanges() {
     this.filter = '';
   }
 
-  changeSearchIconColor(entity:any){
+  changeSearchIconColor(entity: any) {
     this.usingFilter = true
     this.filter = entity;
   }
 
-  filterListBySearch(){
+  filterListBySearch() {
     let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
-    if(this.searchIconKeyword.length>0){
+    if (this.searchIconKeyword.length > 0) {
       this.crData = this.crData.filter((item: any) => (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
-      (item.crId.toLowerCase().includes(searchKeywordLowercase)) );
-    }else{
+        (item.crId.toLowerCase().includes(searchKeywordLowercase)));
+    } else {
       this.crData = this.crDataCopy;
     }
   }
 
-  filterListByUsersFilter(){
-    if(this.selectedUsers.length>0){
+  filterListByUsersFilter() {
+    if (this.selectedUsers.length > 0) {
       this.checkUserKeywordSearchCombination()
       this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
-    }else{
+    } else {
       this.crData = this.crDataCopy;
     }
   }
 
-  checkUserKeywordSearchCombination(){
-    if(this.selectedUsers.length>1){
+  checkUserKeywordSearchCombination() {
+    if (this.selectedUsers.length > 1) {
       this.crData = this.crDataCopy;
-      if(this.searchIconKeyword.length>0){
+      if (this.searchIconKeyword.length > 0) {
         let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
         this.crData = this.crData.filter((item: any) => {
           return (item.reason.toLowerCase().includes(searchKeywordLowercase))
@@ -182,7 +199,7 @@ export class CrTabsComponent {
     }
   }
 
-  searchConversation(){
+  searchConversation() {
     this.searchUpdated.next(this.searchIconKeyword);
   }
 
@@ -448,8 +465,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-          reviewer.name.toLowerCase()
-        )
+        reviewer.name.toLowerCase()
+      )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -469,39 +486,6 @@ export class CrTabsComponent {
     const initials = nameParts.map((part) => part.charAt(0));
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
-  }
-  updateReviewer(event: any) {}
-
-  updateDueDate(event: any) {}
-
-  onDateSelect(event: any): void {
-    const selectedDate: Date = event;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const formattedSelectedDate = this.datePipe.transform(
-      selectedDate,
-      'shortDate'
-    );
-    const formattedToday = this.datePipe.transform(today, 'shortDate');
-    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
-
-    let label: any;
-
-    if (formattedSelectedDate === formattedToday) {
-      label = 'Today';
-    } else if (formattedSelectedDate === formattedTomorrow) {
-      label = 'Tomorrow';
-    } else {
-      label = formattedSelectedDate;
-    }
-
-    this.selectedDateLabel = label;
   }
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
@@ -788,12 +772,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {

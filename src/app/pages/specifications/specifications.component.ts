@@ -113,7 +113,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -335,9 +335,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.specDataCopy = list;
     localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
-    if (isDropdownChannge == 'DropdownChange') {
-      this.specUtils._productDropdownChanged(true);
-    }
     this.localStorageService.saveItem(StorageKeys.SpecData, list);
     this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
