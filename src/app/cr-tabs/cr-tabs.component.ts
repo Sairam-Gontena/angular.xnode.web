@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, Output, ViewChild } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -37,6 +37,8 @@ export class CrTabsComponent {
   @Input() activeIndex: any;
   @Input() swaggerData: any;
   @Input() reveiwerList: any;
+  @ViewChild('myCalendar') datePicker: any;
+  @ViewChild('addUser') addUser: any;
 
   addReviewerForm: FormGroup;
   filters: any;
@@ -112,10 +114,29 @@ export class CrTabsComponent {
   onSelectPriority(selectedPriority: any) {
     this.showDropdown = false;
   }
+  closeDatePicker() {
+    this.datePicker.overlayVisible = false;
+  }
+  closeAddUser() {
+    if (this.addUser) {
+      this.addUser.hide();
+    }
+  }
+  onDateSelect(event: any) {
+    this.datePicker.overlayVisible = true;
+    event.stopPropagation();
 
+  }
   toggleDropdown() {
     this.showDropdown = true;
   }
+  updateReviewer(event: any) { }
+
+  updateDueDate(event: any) {
+    console.log(this.dueDate)
+    this.datePicker.overlayVisible = false;
+  }
+
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
@@ -465,39 +486,6 @@ export class CrTabsComponent {
     const initials = nameParts.map((part) => part.charAt(0));
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
-  }
-  updateReviewer(event: any) { }
-
-  updateDueDate(event: any) { }
-
-  onDateSelect(event: any): void {
-    const selectedDate: Date = event;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const formattedSelectedDate = this.datePipe.transform(
-      selectedDate,
-      'shortDate'
-    );
-    const formattedToday = this.datePipe.transform(today, 'shortDate');
-    const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
-
-    let label: any;
-
-    if (formattedSelectedDate === formattedToday) {
-      label = 'Today';
-    } else if (formattedSelectedDate === formattedTomorrow) {
-      label = 'Tomorrow';
-    } else {
-      label = formattedSelectedDate;
-    }
-
-    this.selectedDateLabel = label;
   }
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
