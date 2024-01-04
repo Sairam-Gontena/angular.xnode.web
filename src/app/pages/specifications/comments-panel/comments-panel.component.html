@@ -13,8 +13,8 @@
             <div class="flex justify-content-end">
                 <div class="flex flex-row justify-content-end align-items-center search-grid">
                     <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto" [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
-                     <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none" id="dropdown-user" [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
-                    <p-multiSelect id="comment-panel-user-filter" optionValue="user_id" optionLabel="name" (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter()" [showClear]="true" placeholder="" ></p-multiSelect>
+                     <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none search-dropdown-user" [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
+                    <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name" (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList" (onChange)="userFilter()" [showClear]="true" placeholder="" ></p-multiSelect>
                 </div>
             </div>
         </div>

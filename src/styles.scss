@@ -546,42 +546,39 @@ body {
   margin-left: 6px;
 }
 
-#comment-panel-user-filter .p-multiselect-label-container{
+.comment-panel-user-filter .p-multiselect-label-container{
   width: 40px!important;
   padding-right: 0px!important;
   background: #24232c !important;
-  color: transparent !important;//white
+  color: transparent !important;
   border: none!important;
 }
 
-:host ::ng-deep #comment-panel-user-filter .ui-multiselect-label {
+:host ::ng-deep .comment-panel-user-filter .ui-multiselect-label {
   visibility: collapse;
   overflow: hidden;
   white-space: nowrap;
 }
 
-#comment-panel-user-filter .p-multiselect-clear-icon,#comment-panel-user-filter  .p-multiselect-trigger{
+.comment-panel-user-filter .p-multiselect-clear-icon,.comment-panel-user-filter  .p-multiselect-trigger{
   display: none!important;
 }
-#comment-panel-user-filter .p-multiselect-label-container:hover,#comment-panel-user-filter .p-multiselect,#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
+.comment-panel-user-filter .p-multiselect-label-container:hover,.comment-panel-user-filter .p-multiselect,.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover{
   border: none!important;
 }
 
-#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus{
+.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus{
   box-shadow: none!important;
 }
 
-#comment-panel-user-filter .p-multiselect-panel{
+.comment-panel-user-filter .p-multiselect-panel{
   border: 1px solid #535354;
 }
 
-#comment-panel-user-filter .p-component,#comment-panel-user-filter .p-multiselect,#comment-panel-user-filter .p-multiselect-header,#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover,#comment-panel-user-filter .p-checkbox .p-checkbox-box,#comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+.comment-panel-user-filter .p-component,.comment-panel-user-filter .p-multiselect,.comment-panel-user-filter .p-multiselect-header,.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover,.comment-panel-user-filter .p-checkbox .p-checkbox-box,.comment-panel-user-filter .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
   background: #24232c !important;
   color: white !important;
 }
-
-
-
-#dropdown-user{
+.search-dropdown-user{
   left: 30px!important;
 }
