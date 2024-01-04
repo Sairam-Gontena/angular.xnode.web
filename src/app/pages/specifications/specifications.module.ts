@@ -11,7 +11,7 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { CamelToTitlePipe } from 'src/app/pipes/camelToTitleCase.pipe';
 import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 // import { UserPersonaComponent } from './user-persona/user-persona.component';
-import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
+// import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
 import { CompleteTextHighlightPipe } from 'src/app/pipes/completeTextHighlight.pipe';
@@ -42,7 +42,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
     CommentsPanelComponent,
     CommentsCrPanelComponent,
     // UserPersonaComponent,
-    SpecGenPopupComponent,
+    // SpecGenPopupComponent,
     UserRolesComponent,
     ListViewComponent,
     ParaViewComponent,
@@ -61,15 +61,15 @@ import { AddTaskComponent } from './add-task/add-task.component';
     TasksPanelComponent,
     TaskListComponent,
     TaskChildConversationComponent,
-    AddTaskComponent
+    AddTaskComponent,
   ],
   imports: [
     CommonModule,
     InputSwitchModule,
     SpecificationsRoutingModule,
     SharedModule,
-    SharedComponentModule
+    SharedComponentModule,
   ],
-  providers: [HighlightPipe, CompleteTextHighlightPipe]
+  providers: [HighlightPipe, CompleteTextHighlightPipe],
 })
-export class SpecificationsModule { }
+export class SpecificationsModule {}
