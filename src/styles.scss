@@ -591,3 +591,12 @@ body {
 .search-dropdown-user{
   left: 30px!important;
 }
+.overlay-panel-divider .p-divider.p-divider-vertical{
+  margin: 0px !important;
+}
+
+.overlay-panel-divider .p-divider-vertical:before{
+  top:unset!important;
+  height: 50% !important;
+  border-left: 1px solid #535354;
+}
