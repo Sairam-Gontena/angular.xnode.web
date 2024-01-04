@@ -11,6 +11,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -54,22 +55,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private auditUtil: AuditutilsService,
     private searchSpec: SearchspecService,
     private localStorageService: LocalStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthApiService
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
-
-    // if (this.product) {
-    //   this.getMeStorageData();
-    // }
-    // this.utils.openSpecSubMenu.subscribe((data: any) => {
-    //   this.isSideMenuOpened = data;
-    // });
-    // this.utils.openDockedNavi.subscribe((data: any) => {
-    //   if (data) {
-    //     this.utils.disableSpecSubMenu();
-    //     this.isNaviOpened = true;
-    //   }
-    // });
   }
 
   ngOnInit(): void {
@@ -90,6 +79,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.getMetaData(deepLinkInfo);
       }
     });
+    this.getUsersByAccountId();
   }
 
 
@@ -211,7 +201,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         ) {
           this.handleSpecData(response);
         }
-        this.utils.loadSpinner(false);
         this.loading = false;
       })
       .catch((error) => {
@@ -224,6 +213,35 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
   }
+
+  getUsersByAccountId() {
+    this.authService
+      .getUsersByAccountId(
+        { account_id: this.currentUser?.account_id }
+      )
+      .then((resp: any) => {
+        this.utils.loadSpinner(true);
+        if (resp?.status === 200) {
+          this.localStorageService.saveItem(StorageKeys.USERLIST, resp.data)
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: resp.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
+        console.error(error);
+      });
+  }
+
 
   showGenerateSpecPopup(product: any) {
     if (this.currentUser.email === product?.email) {
@@ -322,12 +340,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         });
       }
     });
-    // this.specDataCopy = list;
-    // localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
-    // this.localStorageService.saveItem(StorageKeys.SpecData, list);
-    // this.utils.passSelectedSpecItem(list);
-    this.utils.loadSpinner(false);
+    this.utils.loadSpinner(false)
   }
 
   checkUserEmail(): void {

@@ -6,4 +6,5 @@ export enum StorageKeys {
     Product = "product",
     ProductId = "PRODUCT_ID",
     SpecVersion = "SPEC_VERISON",
+    USERLIST = "USERLIST",
 }

@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -22,7 +23,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() placeHolder?: string;
   @Input() selectedContent: any;
   @Input() width?: string;
-  @Input() users: any;
   @Input() comment: string = '';
   @Input() specItem: any;
   @Input() parentEntity: any;
@@ -53,6 +53,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   selectedDateLabel: any;
   isCommentEmpty: boolean = true;
   minDate!: Date;
+  @Input() users: any;
 
   constructor(
     public utils: UtilsService,
@@ -72,6 +73,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
+    this.users = this.storageService.getItem(StorageKeys.USERLIST);
+    console.log('this.users', this.users);
+
     if (this.from == 'cr-tabs') {
       this.assignAsaTask = true;
     }
