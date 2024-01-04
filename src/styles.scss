@@ -588,5 +588,6 @@ body {
 
 .overlay-panel-divider .p-divider-vertical:before{
   top:unset!important;
-  height: 60% !important;
+  height: 50% !important;
+  border-left: 1px solid #535354;
 }
