@@ -1,4 +1,4 @@
-import { Component, INJECTOR, Input, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnInit, SimpleChange, ViewChild } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { ApiService } from 'src/app/api/api.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -6,7 +6,8 @@ import { DropdownOptions } from 'src/models/dropdownOptions';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'xnode-comments-panel',
   templateUrl: './comments-panel.component.html',
@@ -18,12 +19,18 @@ export class CommentsPanelComponent implements OnInit {
   @Input() usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData:any;
+  showInput = false;
+  filter:any;
+  searchIconKeyword:string='';
+  selectedUsers:any=[];
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
   list: any = [];
   filteredList: any = []
   product: any;
+  searchUpdated: Subject<string> = new Subject<string>();
+  selectedUserNames: any =[];
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -37,6 +44,21 @@ export class CommentsPanelComponent implements OnInit {
         this.specUtils.specConversationPanelFrom == 'spec_header'?this.ngOnInit():this.getMeCommentsList();
       }
     });
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
+      this.specUtils.sendCommentSearchByKeywordListData(this.selectedUsers)
+    });
+  }
+
+  changeSearchIconColor(entity:any){
+    this.filter = entity;
+  }
+
+  userFilter(){
+    this.specUtils.sendCommentSearchByUsersListData(this.selectedUsers)
+  }
+
+  searchConversation(){
+      this.searchUpdated.next(this.searchIconKeyword);
   }
 
   ngOnInit(): void {
@@ -71,6 +93,7 @@ export class CommentsPanelComponent implements OnInit {
         this.getMeCommentsList();
       }
     }
+    this.filter = '';
   }
 
   getMeCommentsList() {

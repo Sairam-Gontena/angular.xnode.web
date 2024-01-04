@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,13 @@ export class SpecUtilsService {
   public getMeProductDropdownChange: Observable<boolean> =
     this.onProductDropdownChange.asObservable();
 
-  specConversationPanelFrom: string = '';
+  private commentPaneltoSpecConversation = new Subject<any>();
+  private commentPaneltoSpecConversationByUsers = new Subject<any>();
+
+  private taskPaneltoTaskList = new Subject<any>();
+  private taskPaneltoTaskListByUsers = new Subject<any>();
+
+  specConversationPanelFrom:string='';
 
   changeSpecConversationPanelFrom(event: string) {
     this.specConversationPanelFrom = event;
@@ -85,4 +91,37 @@ export class SpecUtilsService {
   _loadActiveTab(event: any): void {
     this.activateMainTab.next(event);
   }
+
+  sendCommentSearchByKeywordListData(data: any) {
+    this.commentPaneltoSpecConversation.next(data);
+  }
+
+  getCommentSearchByKeywordListData(): Observable<any> {
+    return this.commentPaneltoSpecConversation.asObservable();
+  }
+
+  sendCommentSearchByUsersListData(data: any) {
+    this.commentPaneltoSpecConversationByUsers.next(data);
+  }
+
+  getCommentSearchByUsersListData(): Observable<any> {
+    return this.commentPaneltoSpecConversationByUsers.asObservable();
+  }
+
+  sendTaskPanelSearchByKeywordTaskList(data: any) {
+    this.taskPaneltoTaskList.next(data);
+  }
+
+  getTaskPanelSearchByKeywordTaskList(): Observable<any> {
+    return this.taskPaneltoTaskList.asObservable();
+  }
+
+  sendTaskPanelSearchByUsersListData(data: any) {
+    this.taskPaneltoTaskListByUsers.next(data);
+  }
+
+  getTaskPanelSearchByUsersListData(): Observable<any> {
+    return this.taskPaneltoTaskListByUsers.asObservable();
+  }
+
 }
