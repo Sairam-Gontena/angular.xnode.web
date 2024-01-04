@@ -51,7 +51,7 @@ export class SpecUtilsService {
   private taskPaneltoTaskList = new Subject<any>();
   private taskPaneltoTaskListByUsers = new Subject<any>();
 
-  specConversationPanelFrom:string='';
+  specConversationPanelFrom: string = '';
 
   changeSpecConversationPanelFrom(event: string) {
     this.specConversationPanelFrom = event;
