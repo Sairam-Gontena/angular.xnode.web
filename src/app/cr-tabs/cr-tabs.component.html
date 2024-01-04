@@ -17,8 +17,17 @@
         <p-dropdown formControlName="priority" placeholder="Select Priority" [options]="priorityList"
           (onChange)="onSelectPriority($event)" class="priority-dropdown pointer" pTooltip="Priority">
         </p-dropdown>
-        <p-calendar [(ngModel)]="dueDate" inputId="date" class="dueDate" [showIcon]="true"
-          (onSelect)="updateDueDate($event)" pTooltip="Due Date"></p-calendar>
+        <p-calendar #myCalendar [(ngModel)]="dueDate" inputId="date" class="dueDate" [showIcon]="true"
+          pTooltip="Due Date" (onSelect)="onDateSelect($event)" [hideOnDateTimeSelect]="false">
+          <ng-template pTemplate="footer">
+            <div class="col-12 m-0 p-0 flex justify-content-end gap-2">
+              <p-button label="Cancel" [rounded]="true" class="border-round-sm	cancel-button"
+                (click)="closeDatePicker();$event.stopPropagation()"></p-button>
+              <p-button label="Update" styleClass="p-button-primary" class="border-round-sm	send-feedback-btn"
+                [rounded]="true" (click)="updateDueDate($event)"></p-button>
+            </div>
+          </ng-template>
+        </p-calendar>
         <img src="../../assets/link-cr.svg" class="submit-cr-window-icon pointer" alt="link"
           (click)="updateChagneRequestStatus('UNLINK')" pTooltip="Unlink" />
         <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
@@ -435,7 +444,8 @@
                   </ng-template>
                 </p-autoComplete>
               </div>
-              <div class="col-12 m-0 p-0 flex justify-content-end mt-3">
+              <div class="col-12 m-0 p-0 flex justify-content-end gap-2 mt-3">
+                <p-button label="Close" [rounded]="true" class="cancel-button" (click)="closeAddUser()"></p-button>
                 <p-button label="Add" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
                   (click)="updateReviewer($event)"></p-button>
               </div>

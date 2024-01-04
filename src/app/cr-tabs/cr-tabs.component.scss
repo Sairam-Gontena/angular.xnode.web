@@ -206,3 +206,27 @@
 :host ::ng-deep .dueDate .p-button.p-button-icon-only {
   width: 1.5rem;
 }
+
+:host::ng-deep .cancel-button .p-button {
+  color: #23222B !important;
+  // background: #2E2D36;
+  background: #ffffff !important;
+  font-size: 1rem !important;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px solid #23222B;
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+
+}
+
+:host ::ng-deep .send-feedback-btn .p-button {
+  background: #2563eb;
+  font-size: 1rem !important;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px solid #2563eb;
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+
+}
