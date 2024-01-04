@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-my-products',
@@ -43,6 +45,7 @@ export class MyProductsComponent implements OnInit {
     private utils: UtilsService,
     private authApiService: AuthApiService,
     private auditUtil: AuditutilsService,
+    private storageService: LocalStorageService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
 
@@ -66,6 +69,9 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('product_url');
     localStorage.removeItem('SPEC_DATA');
     localStorage.removeItem('targetUrl');
+    this.storageService.removeItem(StorageKeys.SpecVersion);
+    this.storageService.removeItem(StorageKeys.SelectedSpec);
+
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {

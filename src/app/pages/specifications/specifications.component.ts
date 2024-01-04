@@ -35,7 +35,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   isSideMenuOpened = true;
   product: any;
   isTheCurrentUserOwner: boolean = false;
-  isTheSpecGenerated?: boolean;
   consversationList: any;
   contentData: any;
   noResults: boolean = false;
@@ -44,7 +43,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   versions: any;
   currentSpecVersionId: string = '';
   isDataManagementPersistence: boolean = false;
-
+  loading: boolean = true;
+  metaData: any;
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
@@ -58,21 +58,22 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
 
-    if (this.product) {
-      this.getMeStorageData();
-    }
-    this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isSideMenuOpened = data;
-    });
-    this.utils.openDockedNavi.subscribe((data: any) => {
-      if (data) {
-        this.utils.disableSpecSubMenu();
-        this.isNaviOpened = true;
-      }
-    });
+    // if (this.product) {
+    //   this.getMeStorageData();
+    // }
+    // this.utils.openSpecSubMenu.subscribe((data: any) => {
+    //   this.isSideMenuOpened = data;
+    // });
+    // this.utils.openDockedNavi.subscribe((data: any) => {
+    //   if (data) {
+    //     this.utils.disableSpecSubMenu();
+    //     this.isNaviOpened = true;
+    //   }
+    // });
   }
 
   ngOnInit(): void {
+    this.getMeStorageData();
     this.route.queryParams.subscribe((params) => {
       const productId = params['product_id'];
       const templateId = params['template_id'];
@@ -86,22 +87,15 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         templateType &&
         (templateType == 'COMMENT' || templateType == 'TASK')
       ) {
-        this.navigateToConversation(deepLinkInfo);
+        this.getMetaData(deepLinkInfo);
       }
     });
   }
 
-  navigateToConversation(val: any) {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      let user = JSON.parse(currentUser);
-      this.getMetaData(user?.email, val);
-    }
-  }
 
-  getMetaData(userEmail: string, val: any) {
+  getMetaData(val: any) {
     this.apiService
-      .get('navi/get_metadata/' + userEmail + '?product_id=' + val.product_id)
+      .get('navi/get_metadata/' + this.currentUser?.email + '?product_id=' + val.product_id)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0];
@@ -153,6 +147,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
+    this.metaData = this.localStorageService.getItem(
+      StorageKeys.MetaData
+    );
   }
 
   searchText(keyword: any) {
@@ -193,24 +190,16 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getMeSpecList(body?: any): void {
-    let products = localStorage.getItem('meta_data');
-    if (products) {
-      let allProducts = JSON.parse(products);
-      if (allProducts.length > 0) {
-        let product = allProducts.find((x: any) => x.id === body.productId);
-        if (product.has_insights) {
-          this.getMeSpecInfo(body);
-        } else {
-          this.showGenerateSpecPopup(product);
-        }
-      }
+    this.utils.loadSpinner(true);
+    let product = this.metaData.find((x: any) => x.id === body.productId);
+    if (product.has_insights) {
+      this.getMeSpecInfo(body);
+    } else {
+      this.showGenerateSpecPopup(product);
     }
   }
 
   getMeSpecInfo(body?: any) {
-    if (!body) {
-      body = { productId: localStorage.getItem('record_id') };
-    }
     this.utils.loadSpinner(true);
     this.specService
       .getSpec(body)
@@ -220,10 +209,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data &&
           response.data.length > 0
         ) {
-          this.isTheSpecGenerated = true;
-          this.handleData(response, '');
+          this.handleSpecData(response);
         }
         this.utils.loadSpinner(false);
+        this.loading = false;
       })
       .catch((error) => {
         this.utils.loadSpinner(false);
@@ -232,6 +221,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           summary: 'Error',
           detail: error,
         });
+        this.loading = false;
       });
   }
 
@@ -280,9 +270,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleData(response: any, isDropdownChannge: string): void {
+  handleSpecData(response: any): void {
     const list = response.data;
-    list.forEach((obj: any, index: any) => {
+    list.forEach((obj: any) => {
       if (obj?.title == 'Functional Specifications') {
         obj.content.forEach((ele: any, idx: any) => {
           if (ele.title === 'Data Management Persistence') {
@@ -332,11 +322,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.specDataCopy = list;
-    localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
+    // this.specDataCopy = list;
+    // localStorage.setItem('selectedSpec', JSON.stringify(list[0]));
     this.specData = list;
-    this.localStorageService.saveItem(StorageKeys.SpecData, list);
-    this.utils.passSelectedSpecItem(list);
+    // this.localStorageService.saveItem(StorageKeys.SpecData, list);
+    // this.utils.passSelectedSpecItem(list);
     this.utils.loadSpinner(false);
   }
 

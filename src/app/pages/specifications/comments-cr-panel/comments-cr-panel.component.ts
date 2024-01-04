@@ -1,6 +1,4 @@
 import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { SidePanel } from 'src/models/side-panel.enum';
-import { CommentsService } from 'src/app/api/comments.service';
 import { Comment } from 'src/models/comment';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -44,7 +42,6 @@ export class CommentsCrPanelComponent implements OnInit {
   ngOnInit(): void {
     this.specUtils.loadActiveTab.subscribe((res: any) => {
       if (res) {
-        console.log('res', res);
         this.activeIndex = res.activeIndex;
         this.child.getCRList();
       } else {
@@ -53,9 +50,11 @@ export class CommentsCrPanelComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     localStorage.removeItem('deep_link_info');
     this.specUtils._productDropdownChanged(false)
+    this.specUtils.changeSpecConversationPanelFrom('');
+    this.specUtils._tabToActive(null);
   }
 
   onClickClose() {

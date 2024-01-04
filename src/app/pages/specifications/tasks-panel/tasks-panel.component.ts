@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange,ViewChild } from '@angular/core';
+import { Component, Input, SimpleChange, ViewChild } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { DropdownOptions } from 'src/models/dropdownOptions';
@@ -19,12 +19,13 @@ export class TasksPanelComponent {
   @Input() commenttasksList: any;
   @Input() usersList: any;
   @Input() activeIndex: any;
-  @Input() swaggerData:any;
-  searchIconKeyword:string='';
-  selectedUsers:any=[];
+  @Input() swaggerData: any;
+  @Input() list: any;
+  searchIconKeyword: string = '';
+  selectedUsers: any = [];
   userImage?: any = "DC";
   username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
+  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   commentObj: any = {
     comment: '',
@@ -41,51 +42,33 @@ export class TasksPanelComponent {
   selectedIndex?: number;
   enableDeletePrompt: boolean = false;
   action?: string;
-  list: any = [];
-  filteredList:any=[]
+  filteredList: any = []
   usersData: any;
   users: any = [];
   originalBackgroundColor: string = 'blue';
   searchUpdated: Subject<string> = new Subject<string>();
-  filter:any;
+  filter: any;
   constructor(private utils: UtilsService,
     private commentsService: CommentsService,
     private specUtils: SpecUtilsService,
     private localStorageService: LocalStorageService,
     private sanitizer: DomSanitizer,
-    private apiService:ApiService) {
+    private apiService: ApiService) {
     this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'TASK') {
-        this.specUtils.specConversationPanelFrom == 'spec_header'?this.ngOnInit():this.getMeTasksList();
+        this.specUtils.specConversationPanelFrom == 'spec_header' ? this.ngOnInit() : this.getMeTasksList();
       }
     });
   }
 
   ngOnInit(): void {
-    if(this.specUtils.specConversationPanelFrom == 'spec_header'){
-      let spec_version = localStorage.getItem('SPEC_VERISON');
-      if(spec_version){
-      let data = JSON.parse(spec_version);
-      let id;
-      data.id ? id=data.id : id=data.versionId ;
-      this.utils.loadSpinner(true);
-      this.apiService.getComments('task/tasks-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            this.list = res.data;
-            this.filterList(res.data);
-          }
-          this.utils.loadSpinner(false);
-        }).catch((err)=>{
-          console.log(err);
-          this.utils.loadSpinner(false);
-        })
-      }
-    }
-    this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
-      if(res){
-        if(this.activeIndex == 1){
+    this.filterList();
+
+    this.specUtils.getMeProductDropdownChange.subscribe((res) => {
+      if (res) {
+        if (this.activeIndex == 1) {
           this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
           this.getMeTasksList();
         }
@@ -96,27 +79,25 @@ export class TasksPanelComponent {
     });
   }
 
-  changeSearchIconColor(entity:any){
+
+  changeSearchIconColor(entity: any) {
     this.filter = entity;
   }
 
-  userFilter(){
+  userFilter() {
     this.specUtils.sendTaskPanelSearchByUsersListData(this.selectedUsers)
   }
 
-  searchConversation(){
+  searchConversation() {
     this.searchUpdated.next(this.searchIconKeyword);
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    if(this.specUtils.specConversationPanelFrom == ''){
-      const activeIndexChange = changes['activeIndex'] as SimpleChange;
-      if (activeIndexChange && activeIndexChange.currentValue === 1) {
-        this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
-        this.getMeTasksList();
-      }
+    if (changes['list']?.currentValue) {
+      this.filteredList = []
+      this.list = changes['list'].currentValue;
+      this.filterList()
     }
-    this.filter = '';
   }
 
   getMeTasksList() {
@@ -136,19 +117,19 @@ export class TasksPanelComponent {
     });
   }
 
-  filterList(data: any): void {
+  filterList(data?: any): void {
     switch (this.selectedFilter.value) {
       case 'LINKED':
-        this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        this.filteredList = this.list.filter((item: any) => item.status === 'LINKED');
         break;
       case 'NEW':
-        this.filteredList = data.filter((item: any) => item.status === 'NEW');
+        this.filteredList = this.list.filter((item: any) => item.status === 'NEW');
         break;
       case 'CLOSED':
-        this.filteredList = data.filter((item: any) => item.status === 'CLOSED');
+        this.filteredList = this.list.filter((item: any) => item.status === 'CLOSED');
         break;
       default:
-        this.filteredList = data;
+        this.filteredList = this.list;
         break;
     }
   }

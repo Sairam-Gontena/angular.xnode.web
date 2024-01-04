@@ -19,7 +19,7 @@ export class ParaViewComponent {
   @Input() id: any;
   @Input() specId: any;
   @Input() reveiwerList: any;
-  openOverlayPanel:boolean=false;
+  openOverlayPanel: boolean = false;
   selectedText: string = '';
   @Input() specItem: any;
   showCommentIcon: boolean = false;
@@ -44,19 +44,19 @@ export class ParaViewComponent {
     this.showComments = this.showComments;
   }
 
-  onOverlayHide(){
-    this.openOverlayPanel=false;
+  onOverlayHide() {
+    this.openOverlayPanel = false;
     of(([])).pipe(delay(1000)).subscribe((results) => {
-        if (this.overlayPanel.overlayVisible) {
-        } else {
-          this.checkOverlay();
-        }
+      if (this.overlayPanel.overlayVisible) {
+      } else {
+        this.checkOverlay();
+      }
     });
   }
-  checkOverlay(){
-      if(this.openOverlayPanel==false){
-        this.deSelect();
-      }
+  checkOverlay() {
+    if (this.openOverlayPanel == false) {
+      this.deSelect();
+    }
   }
 
   getWords(subitem: any): string[] {
@@ -116,19 +116,19 @@ export class ParaViewComponent {
       const range = selection.getRangeAt(0);
       const elements = range.cloneContents().querySelectorAll('span');
       if (elements.length === 0) {
-          const element = range.startContainer.parentElement;
-          if (element && element.id.startsWith('word')) {
-              const index = parseInt(element.id.replace('word', ''));
-              this.selectedWordIndices.push(index);
-          }
+        const element = range.startContainer.parentElement;
+        if (element && element.id.startsWith('word')) {
+          const index = parseInt(element.id.replace('word', ''));
+          this.selectedWordIndices.push(index);
+        }
       } else {
-          elements.forEach(element => {
-              const id = element.id;
-              const index = parseInt(id.replace('word', ''));
-              if (!this.selectedWordIndices.includes(index)) {
-                  this.selectedWordIndices.push(index);
-              }
-          });
+        elements.forEach(element => {
+          const id = element.id;
+          const index = parseInt(id.replace('word', ''));
+          if (!this.selectedWordIndices.includes(index)) {
+            this.selectedWordIndices.push(index);
+          }
+        });
       }
     }
   }
@@ -163,12 +163,7 @@ export class ParaViewComponent {
   }
 
   openCommentSection() {
-    this.specUtils._openCommentsPanel(false);
-    this.utils.saveSelectedSection(null);
-    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    of(([])).pipe(delay(500)).subscribe((results) => {
-      this.specUtils._openCommentsPanel(true);
-    });
+    this.specUtils._openCommentsPanel(true);
   }
 
 }

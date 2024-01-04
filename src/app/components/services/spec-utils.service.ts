@@ -10,8 +10,8 @@ export class SpecUtilsService {
   );
   public openCommentsPanel: Observable<boolean> = this.openPanel.asObservable();
 
-  private activeTab: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public tabToActive: Observable<string> = this.activeTab.asObservable();
+  private activeTab: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  public tabToActive: Observable<any> = this.activeTab.asObservable();
 
   private commentsCrActiveTab: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -51,6 +51,11 @@ export class SpecUtilsService {
   private taskPaneltoTaskList = new Subject<any>();
   private taskPaneltoTaskListByUsers = new Subject<any>();
 
+  private specVersionChanged: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public isSpecVersionChanged: Observable<boolean> =
+    this.specVersionChanged.asObservable();
+
   specConversationPanelFrom: string = '';
 
   changeSpecConversationPanelFrom(event: string) {
@@ -61,7 +66,7 @@ export class SpecUtilsService {
     this.openPanel.next(event);
   }
 
-  _tabToActive(event: string): void {
+  _tabToActive(event: any): void {
     this.activeTab.next(event);
   }
 
@@ -91,6 +96,12 @@ export class SpecUtilsService {
   _loadActiveTab(event: any): void {
     this.activateMainTab.next(event);
   }
+
+  _isTheSpecVersionChanged(event: boolean): void {
+    this.specVersionChanged.next(event);
+  }
+
+
 
   sendCommentSearchByKeywordListData(data: any) {
     this.commentPaneltoSpecConversation.next(data);

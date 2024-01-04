@@ -17,31 +17,33 @@ import { debounceTime } from 'rxjs/operators';
 export class CommentsPanelComponent implements OnInit {
   @Input() specData?: Array<[]>;
   @Input() usersList: any;
+  @Input() list: any;
   @Input() activeIndex: any;
-  @Input() swaggerData:any;
+  @Input() swaggerData: any;
   showInput = false;
-  filter:any;
-  searchIconKeyword:string='';
-  selectedUsers:any=[];
+  filter: any;
+  searchIconKeyword: string = '';
+  selectedUsers: any = [];
   filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'Linked', value: 'LINKED' }, { label: 'New', value: 'NEW' }, { label: 'Closed', value: 'CLOSED' }];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   selectedComment: any;
-  list: any = [];
   filteredList: any = []
   product: any;
   searchUpdated: Subject<string> = new Subject<string>();
-  selectedUserNames: any =[];
+  selectedUserNames: any = [];
 
   constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
-    private apiService:ApiService) {
+    private apiService: ApiService) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.tabToActive.subscribe((res: any) => {
       if (res == 'COMMENT') {
+        console.log('@@@@@@@@@@@');
+
         this.utils.loadSpinner(true);
-        this.specUtils.specConversationPanelFrom == 'spec_header'?this.ngOnInit():this.getMeCommentsList();
+        // this.specUtils.specConversationPanelFrom == 'spec_header' ? this.ngOnInit() : this.getMeCommentsList();
       }
     });
     this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
@@ -49,51 +51,48 @@ export class CommentsPanelComponent implements OnInit {
     });
   }
 
-  changeSearchIconColor(entity:any){
+  changeSearchIconColor(entity: any) {
     this.filter = entity;
   }
 
-  userFilter(){
+  userFilter() {
     this.specUtils.sendCommentSearchByUsersListData(this.selectedUsers)
   }
 
-  searchConversation(){
-      this.searchUpdated.next(this.searchIconKeyword);
+  searchConversation() {
+    this.searchUpdated.next(this.searchIconKeyword);
   }
 
   ngOnInit(): void {
-    if(this.specUtils.specConversationPanelFrom == 'spec_header'){
-      let spec_version = localStorage.getItem('SPEC_VERISON');
-      if(spec_version){
-      let data = JSON.parse(spec_version);
-      let id;
-      data.id ? id=data.id : id=data.versionId ;
-      this.utils.loadSpinner(true);
-      this.apiService.getComments('comment/comments-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            this.list = res.data;
-            this.filterList(res.data);
-          }
-          this.utils.loadSpinner(false);
-        }).catch((err)=>{
-          console.log(err);
-          this.utils.loadSpinner(false);
-        })
-      }
-    }
+    console.log('list', this.list);
+    this.filterList()
+    // if (this.specUtils.specConversationPanelFrom == 'spec_header') {
+    //   let spec_version = localStorage.getItem('SPEC_VERISON');
+    //   if (spec_version) {
+    //     let data = JSON.parse(spec_version);
+    //     let id;
+    //     data.id ? id = data.id : id = data.versionId;
+    //     this.utils.loadSpinner(true);
+    //     this.apiService.getComments('comment/comments-by-productId?productId=' + data.productId + '&verisonId=' + id).then((res: any) => {
+    //       if (res.status === 200 && res.data) {
+    //         this.list = res.data;
+    //         this.filterList(res.data);
+    //       }
+    //       this.utils.loadSpinner(false);
+    //     }).catch((err) => {
+    //       console.log(err);
+    //       this.utils.loadSpinner(false);
+    //     })
+    //   }
+    // }
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    if(this.specUtils.specConversationPanelFrom == ''){
-      const activeIndexChange = changes['activeIndex'] as SimpleChange;
-      if (activeIndexChange && activeIndexChange.currentValue === 0) {
-        this.utils.loadSpinner(true);
-        let specData = localStorage.getItem('selectedSpec');
-        if(specData)
-        this.getMeCommentsList();
-      }
+    if (changes['list']?.currentValue) {
+      this.filteredList = []
+      this.list = changes['list'].currentValue;
+      this.filterList()
     }
-    this.filter = '';
   }
 
   getMeCommentsList() {
@@ -115,20 +114,20 @@ export class CommentsPanelComponent implements OnInit {
     }
   }
 
-  filterList(data: any): void {
-    this.filteredList =[]
+  filterList(data?: any): void {
+    this.filteredList = []
     switch (this.selectedFilter.value) {
       case 'LINKED':
-        this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        this.filteredList = this.list.filter((item: any) => item.status === 'LINKED');
         break;
       case 'NEW':
-        this.filteredList = data.filter((item: any) => item.status === 'NEW');
+        this.filteredList = this.list.filter((item: any) => item.status === 'NEW');
         break;
       case 'CLOSED':
-        this.filteredList = data.filter((item: any) => item.status === 'CLOSED');
+        this.filteredList = this.list.filter((item: any) => item.status === 'CLOSED');
         break;
       default:
-        this.filteredList = data;
+        this.filteredList = this.list;
         break;
     }
   }

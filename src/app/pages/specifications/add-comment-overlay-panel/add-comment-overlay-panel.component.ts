@@ -260,7 +260,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     this.comment = '';
     this.closeOverlay.emit();
-    this.specUtils._commentsCrActiveTab(false);
     if (this.assignAsaTask || this.activeIndex === 1) {
       this.specUtils._tabToActive('TASK');
     } else {
