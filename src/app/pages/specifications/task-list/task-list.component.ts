@@ -19,8 +19,8 @@ export class TaskListComponent {
   @Input() usersList: any;
   @Input() topParentId: any;
   @Input() activeIndex: any;
-  @Input() swaggerData:any;
-  @Input() searchIconKeyword:any;
+  @Input() swaggerData: any;
+  @Input() searchIconKeyword: any;
   @Input() From: any;
   @Output() onClickClose = new EventEmitter<any>();
   paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
@@ -75,35 +75,35 @@ export class TaskListComponent {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
-    this.searchKeywordSubscription=this.specUtils.getTaskPanelSearchByKeywordTaskList().subscribe((data:any)=>{
+    this.searchKeywordSubscription = this.specUtils.getTaskPanelSearchByKeywordTaskList().subscribe((data: any) => {
       this.filterListBySearch(data);
     });
-    this.searchByUserSubscription = this.specUtils.getTaskPanelSearchByUsersListData().subscribe((data:any) => {
+    this.searchByUserSubscription = this.specUtils.getTaskPanelSearchByUsersListData().subscribe((data: any) => {
       this.filterListByUsersFilter(data);
     });
   }
 
-  filterListBySearch(users?:any){
-    if(this.searchIconKeyword.length>0){
+  filterListBySearch(users?: any) {
+    if (this.searchIconKeyword.length > 0) {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
       this.list = this.list.filter((item: any) => item.title.toLowerCase().includes(this.searchIconKeyword));
-    }else{
+    } else {
       this.list = this.specListCopy;
     }
-    if(users){
+    if (users) {
       this.filterListByUsersFilter(users);
       return
     }
   }
 
-  filterListByUsersFilter(users:any){
-    if(users.length>0){
+  filterListByUsersFilter(users: any) {
+    if (users.length > 0) {
       this.list = this.specListCopy;
       this.list = this.list.filter((item: any) => users.includes(item.assignee.userId));
-    }else{
+    } else {
       this.list = this.specListCopy;
     }
-    if(this.searchIconKeyword.length>0){
+    if (this.searchIconKeyword.length > 0) {
       this.filterListBySearch();
       return
     }
@@ -221,12 +221,14 @@ export class TaskListComponent {
     this.action = data.action;
     if (data.action === 'REPLY') {
       this.onClickReply(data.cmt);
-    } if (data.action === 'EDIT') {
+    } else if (data.action === 'EDIT') {
       this.editComment(data.cmt);
-    } if (data.action === 'LINK_TO_CR') {
+    } else if (data.action === 'LINK_TO_CR') {
       this.linkToCr(data.cmt);
-    } if (data.action === 'DELETE') {
+    } else if (data.action === 'DELETE') {
       this.onClickDeleteTask(data.cmt);
+    } else {
+      this.unLinkToCr(data.cmt);
     }
   }
 
@@ -362,6 +364,14 @@ export class TaskListComponent {
     }
 
   }
+  unLinkToCr(cmt?: any) {
+    this.selectedComment = cmt;
+    this.showConfirmationPopup = true;
+    this.confirmarionContent =
+      'Are you sure, Do you want to Unlink this Task from CR?';
+    this.confirmarionHeader = 'UnLink Task';
+    this.action = 'UNLINK_CR';
+  }
   deleteAttachment(cmt: any, index: number): void {
     this.fileIndex = index;
     this.showConfirmationPopup = true;
@@ -383,6 +393,8 @@ export class TaskListComponent {
       this.deleteTask()
     } else if (this.action === 'DELETE_ATTACHMENT') {
       this.deleteFile(this.selectedComment);
+    } else if (this.action === 'UNLINK_CR') {
+      this.deleteCrEntity();
     }
   }
   deleteFile(cmt: any) {
@@ -396,7 +408,35 @@ export class TaskListComponent {
     cmt.assignee = cmt.assignee.userId;
     this.saveAsTask(cmt);
   }
-
+  deleteCrEntity(): void {
+    this.commentsService
+      .deleteCrEntity({ entityType: 'TASK', id: this.selectedComment.id })
+      .then((res: any) => {
+        if (res && res.status === 200) {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'Task has been unlinked from CR successfully',
+          });
+          this.specUtils._tabToActive('TASK');
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
   saveAsTask(cmt: any): void {
     this.commentsService.addTask(cmt).then((commentsReponse: any) => {
       if (commentsReponse.statusText === 'Created') {
