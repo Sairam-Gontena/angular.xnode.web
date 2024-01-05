@@ -111,11 +111,11 @@
                       <div class="flex align-items-center">
                         <p class="text-sm half-white pl-2">{{ data?.title }}</p>
                         <div [ngClass]="{
-                          'border-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
-                          'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
-                          'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK',
-                          'border-yellow-500': data.status === 'DRAFT',
-                          }" class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl">
+                        'border-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
+                        'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
+                        'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK',
+                        'border-yellow-500': data.status === 'DRAFT',
+                        }" class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl">
                           <div class="border-circle text-xs">
                             <ng-container *ngIf="data.status === 'SUBMITTED'">
                               <i class="pi pi-circle-fill text-green-500"></i>
@@ -132,34 +132,34 @@
                             </ng-container>
                           </div>
                           <div class="text-xs ml-2" [ngClass]="{
-                              'text-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
-                              'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
-                              'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK' ,
-                              'text-yellow-500': data.status == 'DRAFT'
-                            }">{{data.status | uppercase}}
+                            'text-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
+                            'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
+                            'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK' ,
+                            'text-yellow-500': data.status == 'DRAFT'
+                          }">{{data.status | uppercase}}
                           </div>
                         </div>
                       </div>
-                      <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
-                        *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
-                        op.toggle($event);
-                        updateSelectedCr(data);
-                        $event.stopPropagation();
-                        getMeActions(data)
-                      "></i>
+                    </div>
+                    <i class="pi pi-ellipsis-v text-base mx-1 py-1 text-gray-200"
+                      *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
+                    op.toggle($event);
+                    updateSelectedCr(data);
+                    $event.stopPropagation();
+                    getMeActions(data)
+                  "></i>
 
-                    </div>
-                    <div class="flex align-items-center pl-4" style="margin-top: -15px">
-                      <p class="text-xs shaded-color normal-font-weight">
-                        Due by : {{data.duedate | date}}
-                      </p>
-                      <img src="../../assets/Group.svg" class="ml-4" alt="CR" />
-                      <span class="shaded-color ml-1 normal-font-weight">3</span>
-                    </div>
+                  </div>
+                  <div class="flex align-items-center pl-4" style="margin-top: -15px">
+                    <p class="text-xs shaded-color normal-font-weight">
+                      Due by : {{data.duedate | date}}
+                    </p>
+                    <img src="../../assets/Group.svg" class="ml-4" alt="CR" />
+                    <span class="shaded-color ml-1 normal-font-weight">3</span>
                   </div>
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
-                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
-                      placeHolder="Reason for your actions" [component]="'crTabs'"
+                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'" (closeOverlay)="data.showComment=false"
+                      placeHolder="Reason for your actions" [component]="'crTabs'" (closeOverlay)="showComment=false"
                       (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>
@@ -171,7 +171,7 @@
             <div class="pl-7 pr-4">
               <div class="card m-0 p-0 mb-2" *ngIf="showComment">
                 <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
-                  placeHolder="Reason for your actions" [component]="'crTabs'"
+                  placeHolder="Reason for your actions" [component]="'crTabs'" (closeOverlay)="showComment=false"
                   (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
               </div>
               <div class="border-bottom-1 pt-2" *ngFor="let subData of crList?.[i]; ">
@@ -189,7 +189,7 @@
                                 color: '#ffffff', fontSize: '10px'
                               }"></p-avatar>
                         </span>
-                        <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        <i class="pi pi-ellipsis-v text-base mx-1 py-1 text-gray-200"
                           (click)="op.toggle($event); $event.stopPropagation()"></i>
                       </div>
                     </div>
@@ -306,7 +306,7 @@
                                 color: '#ffffff', fontSize: '10px'
                               }"></p-avatar>
                         </span>
-                        <i class="pi pi-ellipsis-v text-base mx-1 text-gray-200"
+                        <i class="pi pi-ellipsis-v text-base mx-1 py-1 text-gray-200"
                           (click)="op.toggle($event); $event.stopPropagation()"></i>
                       </div>
                     </div>
