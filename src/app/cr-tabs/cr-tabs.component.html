@@ -36,7 +36,7 @@
     <div class="flex align-items-center justify-content-between w-full pt-4 px-4">
       <div class="flex align-items-center mr-2">
         <p-dropdown class="w-full" [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter"
-        optionLabel="title" (onChange)="filterListData()"></p-dropdown>
+          optionLabel="title" (onChange)="filterListData()"></p-dropdown>
         <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
           (click)="createNewCr()"></p-button>
       </div>
@@ -150,8 +150,9 @@
                     <span class="shaded-color ml-1 normal-font-weight">3</span>
                   </div>
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
-                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'" (closeOverlay)="data.showComment=false"
-                      placeHolder="Reason for your actions" [component]="'crTabs'" (closeOverlay)="showComment=false"
+                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
+                      (closeOverlay)="data.showComment=false" placeHolder="Reason for your actions"
+                      [component]="'crTabs'" (closeOverlay)="showComment=false"
                       (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>
@@ -452,7 +453,7 @@
                 </ng-template>
               </p-autoComplete>
             </div>
-            <div class="col-12 m-0 p-0 flex justify-content-end mt-3">
+            <div class="col-12 m-0 p-0 flex justify-content-end mt-3 gap-2">
               <p-button label="Close" [rounded]="true" class="cancel-button" (click)="closeAddUser()"></p-button>
               <p-button label="Add" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
                 (click)="updateReviewer($event)"></p-button>
@@ -464,7 +465,7 @@
   </p-overlayPanel>
 </div>
 <xnode-confirmation-popup-new [header]="header" [content]="content"
-  [visible]="openConfirmationPopUp || updateSpecBtnTriggered"
+  [visible]="openConfirmationPopUp || updateSpecBtnTriggered "
   (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR" [versions]="[]"
   (close)="showNewCrPopup = false;">

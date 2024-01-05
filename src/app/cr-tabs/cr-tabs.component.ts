@@ -42,7 +42,7 @@ export class CrTabsComponent {
 
   addReviewerForm: FormGroup;
   filters: any;
-  selectedFilter:any;
+  selectedFilter: any;
   currentUser: any;
   crData: any;
   showComment: boolean = false;
@@ -89,6 +89,10 @@ export class CrTabsComponent {
   selectedDateLabel: any;
   minDate: Date;
   dueDate: Date | undefined;
+  crIds: any = [];
+  reviewer: any;
+  archiveCRPopup: boolean = false;
+  unlinkCRPopup: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -114,6 +118,12 @@ export class CrTabsComponent {
   }
   onSelectPriority(selectedPriority: any) {
     this.showDropdown = false;
+    let body = {
+      crIds: this.crIds,
+      priority: selectedPriority.value
+    }
+    this.updateCRActions(body);
+
   }
   closeDatePicker() {
     this.datePicker.overlayVisible = false;
@@ -122,21 +132,56 @@ export class CrTabsComponent {
     if (this.addUser) {
       this.addUser.hide();
     }
+
   }
   onDateSelect(event: any) {
     this.datePicker.overlayVisible = true;
     event.stopPropagation();
 
   }
+  archiveCR() {
+    let body = {
+      crIds: this.crIds
+    };
+    this.updateCRActions(body);
+  }
+  unlinkCRHeader() {
+    let body = {
+      crIds: this.crIds
+    };
+    this.unLinkCR(body);
+  }
   toggleDropdown() {
     this.showDropdown = true;
   }
-  updateReviewer(event: any) { }
-
-  updateDueDate(event: any) {
-    this.datePicker.overlayVisible = false;
+  updateReviewer(event: any) {
+    let body = {
+      crIds: this.crIds,
+      reviewers: this.getMeReviewerIds()
+    };
+    this.updateCRActions(body);
+    this.addUser.hide();
   }
 
+  updateDueDate(event: any) {
+    let body = {
+      crIds: this.crIds,
+      duedate: this.dueDate
+    };
+    this.updateCRActions(body);
+    this.datePicker.overlayVisible = false;
+
+  }
+  getMeReviewerIds() {
+    return {
+      reviewers: [
+        {
+          level: 'L1',
+          users: this.addReviewerForm.value.reviewersLOne.map((obj: any) => obj.user_id)
+        }
+      ]
+    }
+  }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
@@ -248,9 +293,9 @@ export class CrTabsComponent {
     );
   }
 
-  filterListData(){
+  filterListData() {
     let filterWithStatus = true;
-    this.selectedFilter.code=="ALL"?this.getCRList():this.getCRList(filterWithStatus);
+    this.selectedFilter.code == "ALL" ? this.getCRList() : this.getCRList(filterWithStatus);
   }
 
   fetchOpenSpecAPI(id: any) {
@@ -288,41 +333,41 @@ export class CrTabsComponent {
     });
   }
 
-  getCRList(filterWithStatus?:boolean) {
+  getCRList(filterWithStatus?: boolean) {
     let body: any;
-    body = {  productId: this.product?.id };
-    if(filterWithStatus){
-      body = {  productId: this.product?.id,status:this.selectedFilter.code };
+    body = { productId: this.product?.id };
+    if (filterWithStatus) {
+      body = { productId: this.product?.id, status: this.selectedFilter.code };
     }
     this.utilsService.loadSpinner(true);
     this.commentsService.getCrList(body).then((res: any) => {
-        if (res && res.data) {
-          let data: any[] = res?.data?.map((item: any) => {
-            const currentDate = new Date().toISOString().split('T')[0];
-            const isOldDate = new Date(item.duedate).getFullYear() === 1970;
+      if (res && res.data) {
+        let data: any[] = res?.data?.map((item: any) => {
+          const currentDate = new Date().toISOString().split('T')[0];
+          const isOldDate = new Date(item.duedate).getFullYear() === 1970;
 
-            const updatedItem = {
-              ...item,
-              checked: false,
-              duedate: isOldDate ? currentDate : item.duedate,
-            };
+          const updatedItem = {
+            ...item,
+            checked: false,
+            duedate: isOldDate ? currentDate : item.duedate,
+          };
 
-            return updatedItem;
-          });
+          return updatedItem;
+        });
 
-          this.crData = data;
-          this.crDataCopy = this.crData;
+        this.crData = data;
+        this.crDataCopy = this.crData;
 
-          this.crList = Array.from({ length: this.crData.length }, () => []);
-        } else {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: res?.data?.common?.status,
-          });
-        }
-        this.utilsService.loadSpinner(false);
-      })
+        this.crList = Array.from({ length: this.crData.length }, () => []);
+      } else {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: res?.data?.common?.status,
+        });
+      }
+      this.utilsService.loadSpinner(false);
+    })
       .catch((err: any) => {
         this.utilsService.loadToaster({
           severity: 'error',
@@ -336,7 +381,36 @@ export class CrTabsComponent {
   onAccordionOpen(obj: any, index: number): void {
     this.getCRDetails(obj?.id, index);
   }
+  updateCRActions(body: any) {
+    this.utilsService.loadSpinner(true);
 
+    this.commentsService
+      .updateCRActios(body)
+      .then((response: any) => {
+        if (response && response.status === 201) {
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'CR Updated successfully',
+            detail: response?.data?.common?.status,
+          });
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err.message,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
   getCRDetails(crId: any, index: number): void {
     this.utilsService.loadSpinner(true);
     this.api
@@ -444,6 +518,7 @@ export class CrTabsComponent {
         this.header = 'Unlink CR';
         this.content = 'Are you sure you want to Unlink this CR?';
         this.openConfirmationPopUp = true;
+        this.unlinkCRPopup = true;
         break;
       default:
         break;
@@ -454,8 +529,11 @@ export class CrTabsComponent {
     if (action == 'Yes') {
       if (this.updateSpecBtnTriggered) {
         this.updateSpec();
+      } else if (this.unlinkCRPopup) {
+        this.unlinkCRHeader();
       } else {
         this.approveRequest();
+
       }
     } else if (action == 'No') {
       this.header = '';
@@ -463,6 +541,7 @@ export class CrTabsComponent {
     }
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
+    this.unlinkCRPopup = false;
   }
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
@@ -535,7 +614,36 @@ export class CrTabsComponent {
         this.utilsService.loadSpinner(false);
       });
   }
+  unLinkCR(body: any): void {
 
+    this.commentsService
+      .unLinkCr(body)
+      .then((response: any) => {
+        if (response) {
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'CR has been successfully UnLinked',
+          });
+          this.specUtils._loadActiveTab({ activeIndex: 1 });
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utilsService.toggleTaskAssign(false);
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
   sendEmailNotificationToTheUser(): void {
     const body = {
       to: [this.currentUser?.email],
@@ -826,8 +934,8 @@ export class CrTabsComponent {
   }
 
   onCheckCheckbox(event: any): void {
-    // event.stopPropagation();
     this.checkedCrList = this.crData.filter((cr: any) => cr.checked);
+    this.crIds = this.checkedCrList.map((cr: any) => cr.id);
   }
 
   onClickUpdateSpec(): void {
