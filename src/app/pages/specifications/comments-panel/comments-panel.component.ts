@@ -87,8 +87,12 @@ export class CommentsPanelComponent implements OnInit {
     this.filter = '';
   }
 
-  getAllStatusComments(data:any,id:any){
-    this.apiService.getComments('comment/comments-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
+  getAllStatusComments(data:any,id:any,status?:any){
+    let query = 'comment/comments-by-productId?productId='+data.productId+'&verisonId='+id;
+    if(status){
+      query = 'comment/comments-by-productId?productId='+data.productId+'&verisonId='+id+'&status='+status;
+    }
+    this.apiService.getComments(query).then((res:any)=>{
       if (res.status === 200 && res.data) {
         this.list = res.data;
         this.filterList(res.data);
@@ -144,26 +148,11 @@ export class CommentsPanelComponent implements OnInit {
   filterListData(){
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
-    if(specData)
+    if(specData){
       selectedSpec = JSON.parse(specData);
-    if(this.selectedFilter.value=="ALL"){
       let id;
       id=selectedSpec.versionId ;
-      this.getAllStatusComments(selectedSpec,id);
-    }else{
-      if (specData) {
-        this.utils.loadSpinner(true);
-        this.apiService.getComments('comment?parentId='+ selectedSpec.id+'&status='+this.selectedFilter.value).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            this.list = res.data;
-            this.filterList(res.data);
-          }
-        this.utils.loadSpinner(false);
-        }).catch((err:any)=>{
-          console.log(err);
-          this.utils.loadSpinner(false);
-        })
-      }
+      this.selectedFilter.value=="ALL"?this.getAllStatusComments(selectedSpec,id):this.getAllStatusComments(selectedSpec,id,this.selectedFilter.value);
     }
   }
 

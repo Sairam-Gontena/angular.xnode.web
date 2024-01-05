@@ -1,7 +1,4 @@
-<xnode-no-comments *ngIf="list?.length === 0; else conversationComments"
-    [content]="'No open comments yet'"></xnode-no-comments>
-<ng-template #conversationComments>
-    <div class="p-4">
+ <div class="p-4">
         <div class="flex flex-row justify-content-between">
             <div class="">
                 <div class="flex align-items-center filter-grid ">
@@ -26,8 +23,11 @@
               (click)="searchIconKeyword='';searchConversation()"></i>
         </span>
         <hr class="mt-2" [ngStyle]="{border:'1px solid #535354'}"/>
-        <div class='comments-grid'>
-            <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList" [searchIconKeyword]="searchIconKeyword" [topParentId]="selectedComment?.id"></xnode-spec-conversation>
-        </div>
+        <xnode-no-comments *ngIf="list?.length === 0; else conversationComments"
+    [content]="'No open comments yet'"></xnode-no-comments>
+        <ng-template #conversationComments>
+                <div class='comments-grid'>
+                    <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList" [searchIconKeyword]="searchIconKeyword" [topParentId]="selectedComment?.id"></xnode-spec-conversation>
+                </div>
+          </ng-template>
     </div>
-</ng-template>

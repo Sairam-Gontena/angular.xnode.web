@@ -252,7 +252,7 @@ export class CrTabsComponent {
   }
 
   filterListData(){
-    if(this.selectedFilter.value=="ALL"){
+    if(this.selectedFilter.code=="ALL"){
       this.getCRList();
     }else{
         this.utilsService.loadSpinner(true);
