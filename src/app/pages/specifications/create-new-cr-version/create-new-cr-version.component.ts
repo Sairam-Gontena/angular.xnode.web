@@ -26,6 +26,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   @Input() visible: boolean = false;
   @Input() header: string = '';
   @Input() versions?: any;
+  @Input() selectedCR:any;
   @Output() close = new EventEmitter<any>();
 
   formGroup: FormGroup | undefined;
@@ -93,7 +94,29 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
+    this.header=='Add New CR'?this.selectedCR='':this.selectedCR = this.selectedCR;
+    if(this.selectedCR){
+      console.log(this.selectedCR)
+      this.updateCRForm();
+    }
     this.getUserByAccountId();
+  }
+
+  updateCRForm(){
+    this.crForm.patchValue({
+      title: this.selectedCR.title,
+      description: this.selectedCR.description,
+      reason: this.selectedCR.reason,
+      version: this.selectedCR.version.productVersionId,
+      priority:this.selectedCR.priority,
+      duedate:this.selectedCR.duedate,
+      reviewersLOne: this.selectedCR.reviewers.reviewers
+    });
+    this.versionForm.patchValue({
+      major: this.selectedCR.version.productVersion.major,
+      minor: this.selectedCR.version.productVersion.minor,
+      build: this.selectedCR.version.productVersion.build,
+    });
   }
 
   onMajorInputChange(event: Event) {
@@ -268,13 +291,13 @@ export class CreateNewCrVersionComponent implements OnInit {
         });
       });
   }
- 
+
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-    
+
     const selectedReviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
-  
+
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())

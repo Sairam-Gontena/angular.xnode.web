@@ -68,6 +68,7 @@ export class CrTabsComponent {
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
   userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   targetUrl: string = '';
+  crHeader:string='Add New CR';
   bpmnFrom: string = 'SPEC'; //;  'Comments'
   iframeSrc: SafeResourceUrl = '';
   searchUpdated: Subject<string> = new Subject<string>();
@@ -444,6 +445,10 @@ export class CrTabsComponent {
         this.header = 'Unlink CR';
         this.content = 'Are you sure you want to Unlink this CR?';
         this.openConfirmationPopUp = true;
+        break;
+      case 'EDIT':
+        this.showNewCrPopup = true;
+        this.crHeader = 'Edit CR';
         break;
       default:
         break;
@@ -851,6 +856,7 @@ export class CrTabsComponent {
   }
 
   createNewCr(): void {
+    this.crHeader='Add New CR';
     this.showNewCrPopup = true;
   }
 
