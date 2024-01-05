@@ -35,16 +35,8 @@
     </div>
     <div class="flex align-items-center justify-content-between w-full pt-4 px-4">
       <div class="flex align-items-center mr-2">
-        <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
-          class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
-          <ng-template let-item pTemplate="item">
-            <div class="col-12 flex align-items-center justify-content-between">
-              <div class="title-container" [title]="item.title">
-                {{ item.title }}
-              </div>
-            </div>
-          </ng-template>
-        </p-dropdown>
+        <p-dropdown class="w-full" [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter"
+        optionLabel="title" (onChange)="filterListData()"></p-dropdown>
         <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
           (click)="createNewCr()"></p-button>
       </div>

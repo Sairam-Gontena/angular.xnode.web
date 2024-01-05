@@ -42,6 +42,7 @@ export class CrTabsComponent {
 
   addReviewerForm: FormGroup;
   filters: any;
+  selectedFilter:any;
   currentUser: any;
   crData: any;
   showComment: boolean = false;
@@ -133,23 +134,22 @@ export class CrTabsComponent {
   updateReviewer(event: any) { }
 
   updateDueDate(event: any) {
-    console.log(this.dueDate)
     this.datePicker.overlayVisible = false;
   }
 
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
-      { title: 'Filters', code: 'F' },
-      { title: 'All', code: 'A' },
-      { title: 'None', code: 'N' },
+      { title: 'All', code: 'ALL' },
+      { title: 'Draft', code: 'DRAFT' },
+      { title: 'Updated', code: 'UPDATED' },
+      { title: 'Submitted', code: 'SUBMITTED' },
+      { title: 'Approved', code: 'APPROVED' },
     ];
     this.overlayPanel?.toggle(true);
     this.specUtils.getMeProductDropdownChange.subscribe((res) => {
       if (res && this.activeIndex) {
         this.product = this.storageService.getItem(StorageKeys.Product);
-        console.log('sub');
-
         this.getCRList();
       }
     });
@@ -248,6 +248,11 @@ export class CrTabsComponent {
     );
   }
 
+  filterListData(){
+    let filterWithStatus = true;
+    this.selectedFilter.code=="ALL"?this.getCRList():this.getCRList(filterWithStatus);
+  }
+
   fetchOpenSpecAPI(id: any) {
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec' + id),
@@ -282,14 +287,15 @@ export class CrTabsComponent {
       }
     });
   }
-  getCRList() {
-    let body: any = {
-      productId: this.product?.id,
-    };
+
+  getCRList(filterWithStatus?:boolean) {
+    let body: any;
+    body = {  productId: this.product?.id };
+    if(filterWithStatus){
+      body = {  productId: this.product?.id,status:this.selectedFilter.code };
+    }
     this.utilsService.loadSpinner(true);
-    this.commentsService
-      .getCrList(body)
-      .then((res: any) => {
+    this.commentsService.getCrList(body).then((res: any) => {
         if (res && res.data) {
           let data: any[] = res?.data?.map((item: any) => {
             const currentDate = new Date().toISOString().split('T')[0];
@@ -673,8 +679,6 @@ export class CrTabsComponent {
     this.commentsService
       .publishApp(body)
       .then((response: any) => {
-        console.log('response', response);
-
         if (response) {
           let user_audit_body = {
             method: 'POST',

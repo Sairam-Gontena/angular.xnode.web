@@ -1,13 +1,10 @@
-<xnode-no-comments *ngIf="list?.length === 0; else conversationComments"
-    [content]="'No open tasks yet'"></xnode-no-comments>
-<ng-template #conversationComments>
     <div class="p-4">
         <div class="flex flex-row justify-content-between">
             <div class="">
                 <div class="flex align-items-center filter-grid ">
                     <p class="m-0 pl-2">Filters:</p>
                     <p-dropdown class="w-full" [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
-                        optionLabel="label" (onChange)="filterList(list)"></p-dropdown>
+                        optionLabel="label" (onChange)="filterListData()"></p-dropdown> <!--filterList(list)-->
                 </div>
             </div>
             <div class="flex justify-content-end">
@@ -28,9 +25,12 @@
               (click)="searchIconKeyword='';searchConversation()"></i>
         </span>
         <hr class="mt-2" [ngStyle]="{border:'1px solid #535354'}"/>
+        <xnode-no-comments *ngIf="list?.length === 0; else conversationComments"
+    [content]="'No open tasks yet'"></xnode-no-comments>
+      <ng-template #conversationComments>
         <div class='comments-grid'>
-            <xnode-task-list [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList"
-                [topParentId]="selectedComment?.id" [searchIconKeyword]="searchIconKeyword"></xnode-task-list>
-        </div>
+          <xnode-task-list [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList"
+              [topParentId]="selectedComment?.id" [searchIconKeyword]="searchIconKeyword"></xnode-task-list>
+      </div>
+      </ng-template>
     </div>
-</ng-template>

@@ -24,7 +24,7 @@ export class TasksPanelComponent {
   selectedUsers:any=[];
   userImage?: any = "DC";
   username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' },{ label: 'Linked', value: 'LINKED' },{ label: 'New', value: 'NEW' },{ label: 'Closed', value: 'CLOSED' }];
+  filterOptions: Array<DropdownOptions> = [{ label: 'All', value: 'ALL' }, { label: 'New', value: 'NEW' }, { label: 'Linked', value: 'LINKED' }, { label: 'UnLinked', value: 'UNLINKED' }, { label: 'Closed', value: 'CLOSED' } ];
   selectedFilter: { label: string; value: string } = { label: 'All', value: 'ALL' };
   commentObj: any = {
     comment: '',
@@ -71,16 +71,7 @@ export class TasksPanelComponent {
       let id;
       data.id ? id=data.id : id=data.versionId ;
       this.utils.loadSpinner(true);
-      this.apiService.getComments('task/tasks-by-productId?productId='+data.productId+'&verisonId='+id).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            this.list = res.data;
-            this.filterList(res.data);
-          }
-          this.utils.loadSpinner(false);
-        }).catch((err)=>{
-          console.log(err);
-          this.utils.loadSpinner(false);
-        })
+      this.getAllStatusComments(data,id);
       }
     }
     this.specUtils.getMeProductDropdownChange.subscribe((res)=>{
@@ -106,6 +97,23 @@ export class TasksPanelComponent {
 
   searchConversation(){
     this.searchUpdated.next(this.searchIconKeyword);
+  }
+
+  getAllStatusComments(data:any,id:any,status?:any){
+    let query = 'task/tasks-by-productId?productId='+data.productId+'&verisonId='+id;
+    if(status){
+      query = 'task/tasks-by-productId?productId='+data.productId+'&verisonId='+id+'&status='+status;
+    }
+    this.apiService.getComments(query).then((res:any)=>{
+      if (res.status === 200 && res.data) {
+        this.list = res.data;
+        this.filterList(res.data);
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err)=>{
+      console.log(err);
+      this.utils.loadSpinner(false);
+    })
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -140,6 +148,9 @@ export class TasksPanelComponent {
     switch (this.selectedFilter.value) {
       case 'LINKED':
         this.filteredList = data.filter((item: any) => item.status === 'LINKED');
+        break;
+      case 'UNLINKED':
+        this.filteredList = data.filter((item: any) => item.status === 'UNLINKED');
         break;
       case 'NEW':
         this.filteredList = data.filter((item: any) => item.status === 'NEW');
@@ -215,8 +226,18 @@ export class TasksPanelComponent {
       console.log(err);
       this.utils.loadSpinner(false);
       this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-
     });
+  }
+
+  filterListData(){
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if(specData){
+      selectedSpec = JSON.parse(specData);
+      let id;
+      id=selectedSpec.versionId ;
+      this.selectedFilter.value=="ALL"?this.getAllStatusComments(selectedSpec,id):this.getAllStatusComments(selectedSpec,id,this.selectedFilter.value);
+    }
   }
 
 }
