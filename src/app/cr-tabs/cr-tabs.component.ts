@@ -249,31 +249,8 @@ export class CrTabsComponent {
   }
 
   filterListData(){
-    if(this.selectedFilter.code=="ALL"){
-      this.getCRList();
-    }else{
-        this.utilsService.loadSpinner(true);
-        this.apiService.getComments('change-request?productId='+ this.product.id+'&status='+this.selectedFilter.code).then((res:any)=>{
-          if (res.status === 200 && res.data) {
-            let data: any[] = res?.data?.map((item: any) => {
-              const currentDate = new Date().toISOString().split('T')[0];
-              const isOldDate = new Date(item.duedate).getFullYear() === 1970;
-              const updatedItem = {
-                ...item,
-                checked: false,
-                duedate: isOldDate ? currentDate : item.duedate
-              };
-              return updatedItem;
-            });
-            this.crData = data;
-            this.crList = Array.from({ length: this.crData.length }, () => []);
-          }
-        this.utilsService.loadSpinner(false);
-        }).catch((err:any)=>{
-          console.log(err);
-          this.utilsService.loadSpinner(false);
-        })
-    }
+    let filterWithStatus = true;
+    this.selectedFilter.code=="ALL"?this.getCRList():this.getCRList(filterWithStatus);
   }
 
   fetchOpenSpecAPI(id: any) {
@@ -310,14 +287,15 @@ export class CrTabsComponent {
       }
     });
   }
-  getCRList() {
-    let body: any = {
-      productId: this.product?.id,
-    };
+
+  getCRList(filterWithStatus?:boolean) {
+    let body: any;
+    body = {  productId: this.product?.id };
+    if(filterWithStatus){
+      body = {  productId: this.product?.id,status:this.selectedFilter.code };
+    }
     this.utilsService.loadSpinner(true);
-    this.commentsService
-      .getCrList(body)
-      .then((res: any) => {
+    this.commentsService.getCrList(body).then((res: any) => {
         if (res && res.data) {
           let data: any[] = res?.data?.map((item: any) => {
             const currentDate = new Date().toISOString().split('T')[0];
