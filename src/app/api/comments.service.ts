@@ -59,7 +59,7 @@ export class CommentsService extends BaseApiService {
   getChangeRequestList(body: any) {
     return this.get('change-request', body);
   }
-  updateCRActios(body: any) {
+  updateCRActions(body: any) {
     return this.post('change-request/update-many-crs', body);
 
   }

@@ -385,7 +385,7 @@ export class CrTabsComponent {
     this.utilsService.loadSpinner(true);
 
     this.commentsService
-      .updateCRActios(body)
+      .updateCRActions(body)
       .then((response: any) => {
         if (response && response.status === 201) {
           this.utilsService.loadToaster({
