@@ -403,6 +403,15 @@ body {
   background-color: #2E2D36;
 }
 
+.cancel-button .p-button {
+  color: #23222B !important;
+  background: #ffffff !important;
+  font-size: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px solid #23222B;
+}
+
 //auto complete css
 .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
   color: #fff;
@@ -581,4 +590,13 @@ body {
 }
 .search-dropdown-user{
   left: 30px!important;
+}
+.overlay-panel-divider .p-divider.p-divider-vertical{
+  margin: 0px !important;
+}
+
+.overlay-panel-divider .p-divider-vertical:before{
+  top:unset!important;
+  height: 50% !important;
+  border-left: 1px solid #535354;
 }

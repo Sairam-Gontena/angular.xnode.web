@@ -32,9 +32,10 @@
   margin-top: 2px;
 }
 
-.search-input{
-  border: revert-layer!important;
+.search-input {
+  border: revert-layer !important;
 }
+
 // :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
 //   border-width: 0px;
 //   border-color: #ffff;
@@ -256,4 +257,27 @@
 :host ::ng-deep .p-dropdown-filter-container {
   border: 1px solid transparent !important;
   background: transparent;
+}
+:host::ng-deep .cancel-button .p-button {
+  color: #23222B !important;
+  // background: #2E2D36;
+  background: #ffffff !important;
+  font-size: 1rem !important;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px solid #23222B;
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+
+}
+
+:host ::ng-deep .send-feedback-btn .p-button {
+  background: #2563eb;
+  font-size: 1rem !important;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border: 1px solid #2563eb;
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+
 }
