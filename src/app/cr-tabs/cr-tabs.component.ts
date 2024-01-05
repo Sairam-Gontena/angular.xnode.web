@@ -134,7 +134,6 @@ export class CrTabsComponent {
   updateReviewer(event: any) { }
 
   updateDueDate(event: any) {
-    console.log(this.dueDate)
     this.datePicker.overlayVisible = false;
   }
 
@@ -151,8 +150,6 @@ export class CrTabsComponent {
     this.specUtils.getMeProductDropdownChange.subscribe((res) => {
       if (res && this.activeIndex) {
         this.product = this.storageService.getItem(StorageKeys.Product);
-        console.log('sub');
-
         this.getCRList();
       }
     });
@@ -704,8 +701,6 @@ export class CrTabsComponent {
     this.commentsService
       .publishApp(body)
       .then((response: any) => {
-        console.log('response', response);
-
         if (response) {
           let user_audit_body = {
             method: 'POST',
