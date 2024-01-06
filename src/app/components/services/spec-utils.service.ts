@@ -27,6 +27,11 @@ export class SpecUtilsService {
   private shareNewTasks: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeUpdatedTasks: Observable<any> = this.shareNewTasks.asObservable();
 
+  private enableSpecLevelCmtsTasks: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public specLevelCommentsTasks: Observable<any> =
+    this.enableSpecLevelCmtsTasks.asObservable();
+
   private shareNewCrs: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeUpdatedCrs: Observable<any> = this.shareNewCrs.asObservable();
 
@@ -89,6 +94,10 @@ export class SpecUtilsService {
 
   _getMeUpdatedTasks(event: any): void {
     this.shareNewTasks.next(event);
+  }
+
+  _specLevelCommentsTasks(event: any): void {
+    this.enableSpecLevelCmtsTasks.next(event);
   }
 
   _getMeUpdatedCrs(event: any): void {

@@ -35,13 +35,13 @@ export class CommentsTabsComponent implements OnInit {
         this.activeIndex = 1;
       }
     });
+    this.specUtils.specLevelCommentsTasks.subscribe((event: any) => {
+      this.showSpecLevelComments = event;
+    });
     this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
       if (event) {
         this.activeIndex = 0;
         this.list = event;
-        this.showSpecLevelComments = true;
-      } else {
-        this.showSpecLevelComments = false;
       }
     });
     this.specUtils.getMeUpdatedTasks.subscribe((event: any) => {
@@ -69,9 +69,13 @@ export class CommentsTabsComponent implements OnInit {
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
     this.activeIndex = event.index;
     if (event.index === 0) {
-      this.getMeAllCommentsList();
+      if (this.showSpecLevelComments) {
+        this.getMeSpecLevelCommentsList();
+      } else this.getMeAllCommentsList();
     } else {
-      this.getMeAllTaskList();
+      if (this.showSpecLevelComments) {
+        this.getMeSpecLevelTaskList();
+      } else this.getMeAllTaskList();
     }
     this.specUtils.saveActivatedTab(event.index === 1 ? 'TASKS' : 'COMMENTS');
   }
@@ -117,8 +121,6 @@ export class CommentsTabsComponent implements OnInit {
   }
 
   getMeSpecLevelTaskList() {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-
     this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;

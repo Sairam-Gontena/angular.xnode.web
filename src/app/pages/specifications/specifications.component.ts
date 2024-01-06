@@ -348,8 +348,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
-    console.log('this.activeConversationTab', this.activeConversationTab);
-
     if (this.activeConversationTab === 'COMMENTS') {
       this.getMeAllCommentsList(productId);
     } else if (this.activeConversationTab === 'TASKS') {

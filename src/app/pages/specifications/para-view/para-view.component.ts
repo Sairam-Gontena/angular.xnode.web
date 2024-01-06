@@ -37,7 +37,7 @@ export class ParaViewComponent {
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -185,9 +185,10 @@ export class ParaViewComponent {
         .then((response: any) => {
           if (response.status === 200 && response.data) {
             this.specUtils._openCommentsPanel(true);
+            this.specUtils._loadActiveTab(0);
             this.specUtils._tabToActive('COMMENT');
-            if (response.data.length > 0)
-              this.specUtils._getMeUpdatedComments(response.data);
+            this.specUtils._specLevelCommentsTasks(true);
+            this.specUtils._getMeUpdatedComments(response.data);
           }
           this.utils.loadSpinner(false);
         })

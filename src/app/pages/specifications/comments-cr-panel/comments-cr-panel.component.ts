@@ -40,13 +40,18 @@ export class CommentsCrPanelComponent implements OnInit {
   activeIndex: number = 0;
   crData: any = [];
   product: any;
+  showSpecLevelComments: any;
 
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService
-  ) {}
+  ) {
+    this.specUtils.specLevelCommentsTasks.subscribe((event: any) => {
+      this.showSpecLevelComments = event;
+    });
+  }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -73,6 +78,8 @@ export class CommentsCrPanelComponent implements OnInit {
     this.specUtils._getMeUpdatedComments(null);
     this.specUtils._getMeUpdatedCrs(null);
     this.specUtils._getMeUpdatedTasks(null);
+    this.specUtils._specLevelCommentsTasks(null);
+    this.specUtils._loadActiveTab(null);
   }
 
   onClickClose() {
@@ -83,6 +90,8 @@ export class CommentsCrPanelComponent implements OnInit {
     this.specUtils._getMeUpdatedComments(null);
     this.specUtils._getMeUpdatedCrs(null);
     this.specUtils._getMeUpdatedTasks(null);
+    this.specUtils._specLevelCommentsTasks(null);
+    this.specUtils._loadActiveTab(null);
   }
 
   onClickEnter(event: KeyboardEventInit) {
@@ -104,8 +113,13 @@ export class CommentsCrPanelComponent implements OnInit {
       this.specUtils.saveActivatedTab('CR');
       this.getCRList();
     } else {
-      this.specUtils.saveActivatedTab('COMMENTS');
-      this.getMeAllCommentsList();
+      if (this.showSpecLevelComments) {
+        this.specUtils.saveActivatedTab('COMMENTS');
+        this.getMeSpecLevelCommentsList();
+      } else {
+        this.specUtils.saveActivatedTab('COMMENTS');
+        this.getMeAllCommentsList();
+      }
     }
   }
 
@@ -160,5 +174,26 @@ export class CommentsCrPanelComponent implements OnInit {
         });
         this.utils.loadSpinner(false);
       });
+  }
+
+  getMeSpecLevelCommentsList() {
+    this.utils.loadSpinner(true);
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService
+        .getComments({ parentId: selectedSpec.id, isReplyCountRequired: true })
+        .then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.list = response.data;
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
+    }
   }
 }

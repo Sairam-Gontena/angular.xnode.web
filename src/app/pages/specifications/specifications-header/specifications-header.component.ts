@@ -196,6 +196,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   onChangeProduct(obj: any): void {
+    this.specUtils._specLevelCommentsTasks(null);
     this.showSpecGenaretePopup = false;
     let product = this.metaDeta.find((x: any) => x.id === obj.id);
     if (product && product.has_insights) {
@@ -242,6 +243,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   onVersionChange(event: any): void {
+    this.specUtils._specLevelCommentsTasks(null);
     this.versions.forEach((element: any) => {
       if (element.id === event.value.value) {
         this.storageService.saveItem(StorageKeys.SpecVersion, element);
