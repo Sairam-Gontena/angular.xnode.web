@@ -18,10 +18,17 @@ export class SpecUtilsService {
   public getMeSpecLevelCommentsTask: Observable<any> =
     this.showSpecLevelCommentsTask.asObservable();
 
-  private shareNewComments: BehaviorSubject<any> =
-    new BehaviorSubject<any>(false);
+  private shareNewComments: BehaviorSubject<any> = new BehaviorSubject<any>(
+    false
+  );
   public getMeUpdatedComments: Observable<any> =
     this.shareNewComments.asObservable();
+
+  private shareNewTasks: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeUpdatedTasks: Observable<any> = this.shareNewTasks.asObservable();
+
+  private shareNewCrs: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public getMeUpdatedCrs: Observable<any> = this.shareNewCrs.asObservable();
 
   private activateMainTab: BehaviorSubject<any> = new BehaviorSubject<any>(
     false
@@ -55,10 +62,8 @@ export class SpecUtilsService {
   public isSpecVersionChanged: Observable<boolean> =
     this.specVersionChanged.asObservable();
 
-  private saveTab: BehaviorSubject<string> =
-    new BehaviorSubject<string>('');
-  public subscribeAtivatedTab: Observable<string> =
-    this.saveTab.asObservable();
+  private saveTab: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public subscribeAtivatedTab: Observable<string> = this.saveTab.asObservable();
 
   specConversationPanelFrom: string = '';
 
@@ -80,6 +85,14 @@ export class SpecUtilsService {
 
   _getMeUpdatedComments(event: any): void {
     this.shareNewComments.next(event);
+  }
+
+  _getMeUpdatedTasks(event: any): void {
+    this.shareNewTasks.next(event);
+  }
+
+  _getMeUpdatedCrs(event: any): void {
+    this.shareNewCrs.next(event);
   }
 
   _productDropdownChanged(event: boolean): void {

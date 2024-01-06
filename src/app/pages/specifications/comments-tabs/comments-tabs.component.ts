@@ -21,7 +21,7 @@ export class CommentsTabsComponent implements OnInit {
   specVersion: any;
   commentsAdded: boolean = false;
   taskssAdded: boolean = false;
-  showSpecLevelCommentsTasks: boolean = false;
+  showSpecLevelComments: boolean = false;
   constructor(
     public specUtils: SpecUtilsService,
     private utils: UtilsService,
@@ -38,34 +38,40 @@ export class CommentsTabsComponent implements OnInit {
     this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
       if (event) {
         this.activeIndex = 0;
-        this.specUtils.saveActivatedTab('COMMENTS');
         this.list = event;
-        this.showSpecLevelCommentsTasks = true;
+        this.showSpecLevelComments = true;
       } else {
-        this.showSpecLevelCommentsTasks = false;
+        this.showSpecLevelComments = false;
+      }
+    });
+    this.specUtils.getMeUpdatedTasks.subscribe((event: any) => {
+      if (event) {
+        this.activeIndex = 1;
+        this.list = event;
       }
     });
   }
 
   ngOnInit(): void {
+    this.specUtils.saveActivatedTab('COMMENTS');
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
   }
 
   ngOnDestroy() {
-    this.specUtils.changeSpecConversationPanelFrom('');
     this.specUtils._tabToActive(null);
-    this.specUtils._getMeSpecLevelCommentsTask(null);
+    this.specUtils._getMeUpdatedComments(null);
+    this.specUtils._getMeUpdatedTasks(null);
   }
 
   onTabChange(event: any) {
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
     this.activeIndex = event.index;
     if (event.index === 0) {
-      if (this.showSpecLevelCommentsTasks) this.getMeSpecLevelCommentsList();
-      else this.getMeAllCommentsList();
+      this.getMeAllCommentsList();
     } else {
-      if (this.showSpecLevelCommentsTasks) this.getMeSpecLevelTaskList();
-      else this.getMeAllTaskList();
+      this.getMeAllTaskList();
     }
     this.specUtils.saveActivatedTab(event.index === 1 ? 'TASKS' : 'COMMENTS');
   }
@@ -111,6 +117,8 @@ export class CommentsTabsComponent implements OnInit {
   }
 
   getMeSpecLevelTaskList() {
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+
     this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;

@@ -46,10 +46,10 @@ export class CommentsCrPanelComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.product = this.storageService.getItem(StorageKeys.Product)
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.specUtils.loadActiveTab.subscribe((res: any) => {
       if (res) {
         this.activeIndex = res.activeIndex;
@@ -66,11 +66,13 @@ export class CommentsCrPanelComponent implements OnInit {
 
   ngOnDestroy() {
     localStorage.removeItem('deep_link_info');
-    this.specUtils._productDropdownChanged(false);
-    this.specUtils.changeSpecConversationPanelFrom('');
+    this.specUtils._openCommentsPanel(false);
+    this.utils.saveSelectedSection(null);
     this.specUtils._tabToActive(null);
     this.specUtils._getMeSpecLevelCommentsTask(null);
-    this.specUtils._openCommentsPanel(false);
+    this.specUtils._getMeUpdatedComments(null);
+    this.specUtils._getMeUpdatedCrs(null);
+    this.specUtils._getMeUpdatedTasks(null);
   }
 
   onClickClose() {
@@ -78,6 +80,9 @@ export class CommentsCrPanelComponent implements OnInit {
     this.utils.saveSelectedSection(null);
     this.specUtils._tabToActive(null);
     this.specUtils._getMeSpecLevelCommentsTask(null);
+    this.specUtils._getMeUpdatedComments(null);
+    this.specUtils._getMeUpdatedCrs(null);
+    this.specUtils._getMeUpdatedTasks(null);
   }
 
   onClickEnter(event: KeyboardEventInit) {
@@ -95,11 +100,40 @@ export class CommentsCrPanelComponent implements OnInit {
 
   switchHeaders(event: any) {
     this.activeIndex = event.index;
-    if (event.index === 1) this.getCRList();
-    this.specUtils.saveActivatedTab(event.index === 1 ? 'CR' : '');
+    if (event.index === 1) {
+      this.specUtils.saveActivatedTab('CR');
+      this.getCRList();
+    } else {
+      this.specUtils.saveActivatedTab('COMMENTS');
+      this.getMeAllCommentsList();
+    }
+  }
+
+  getMeAllCommentsList() {
+    this.utils.loadSpinner(true);
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    this.commentsService
+      .getCommentsByProductId({
+        productId: this.product?.id,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 
   getCRList() {
+    this.product = this.storageService.getItem(StorageKeys.Product);
     let body: any = {
       productId: this.product?.id,
     };

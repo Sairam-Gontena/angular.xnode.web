@@ -66,7 +66,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
       this.activeConversationTab = event;
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -90,10 +90,14 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.getUsersByAccountId();
   }
 
-
   getMetaData(val: any) {
     this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email + '?product_id=' + val.product_id)
+      .get(
+        'navi/get_metadata/' +
+          this.currentUser?.email +
+          '?product_id=' +
+          val.product_id
+      )
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0];
@@ -105,7 +109,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => { });
+      .catch((error) => {});
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -145,9 +149,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.metaData = this.localStorageService.getItem(
-      StorageKeys.MetaData
-    );
+    this.metaData = this.localStorageService.getItem(StorageKeys.MetaData);
   }
 
   searchText(keyword: any) {
@@ -224,13 +226,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getUsersByAccountId() {
     this.authService
-      .getUsersByAccountId(
-        { account_id: this.currentUser?.account_id }
-      )
+      .getUsersByAccountId({ account_id: this.currentUser?.account_id })
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
-          this.localStorageService.saveItem(StorageKeys.USERLIST, resp.data)
+          this.localStorageService.saveItem(StorageKeys.USERLIST, resp.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -249,7 +249,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         console.error(error);
       });
   }
-
 
   showGenerateSpecPopup(product: any) {
     if (this.currentUser.email === product?.email) {
@@ -349,21 +348,53 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
+    console.log('this.activeConversationTab', this.activeConversationTab);
+
     if (this.activeConversationTab === 'COMMENTS') {
-      this.getMeAllCommentsList(productId)
-    } else if (this.activeConversationTab === 'COMMENTS') {
-
-    } else if (this.activeConversationTab === 'COMMENTS') {
-
+      this.getMeAllCommentsList(productId);
+    } else if (this.activeConversationTab === 'TASKS') {
+      this.getMeAllTaskList(productId);
+    } else if (this.activeConversationTab === 'CR') {
+      this.getMeCrList(productId);
     } else {
       this.utils.loadSpinner(false);
     }
+  }
 
+  getMeCrList(productId: string) {
+    let body: any = {
+      productId: productId,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._getMeUpdatedCrs(res.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
   }
 
   getMeAllCommentsList(productId: string) {
     this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
     this.commentsService
       .getCommentsByProductId({
         productId: productId,
@@ -371,8 +402,29 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
           this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+
+  getMeAllTaskList(productId: string) {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    this.commentsService
+      .getTasksByProductId({
+        productId: productId,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._getMeUpdatedTasks(response.data);
         }
         this.utils.loadSpinner(false);
       })

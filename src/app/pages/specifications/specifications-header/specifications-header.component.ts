@@ -37,8 +37,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specService: SpecService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     // To display toggle icon of side spec menu
@@ -170,7 +169,9 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   getMeAllCommentsList() {
     this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
     this.commentsService
       .getCommentsByProductId({
         productId: this.product?.id,
@@ -246,10 +247,9 @@ export class SpecificationsHeaderComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.SpecVersion, element);
       }
     });
-    this.specUtils._isTheSpecVersionChanged(true);
     this.getMeSpecList.emit({
       productId: this.product?.id,
-      versionId: event.value.value
+      versionId: event.value.value,
     });
   }
 }

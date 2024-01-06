@@ -1,4 +1,10 @@
-import { Component, Input, Output, SimpleChange, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  SimpleChange,
+  ViewChild,
+} from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -100,13 +106,20 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {
     this.minDate = new Date();
     this.addReviewerForm = this.fb.group({
       reviewersLOne: [''],
     });
     this.product = this.storageService.getItem(StorageKeys.Product);
+    this.specUtils.getMeUpdatedCrs.subscribe((event: any) => {
+      if (event) {
+        this.activeIndex = 0;
+        this.crData = event;
+        this.prepareDataToDisplay();
+      }
+    });
   }
 
   onSelectPriority(selectedPriority: any) {
@@ -123,15 +136,13 @@ export class CrTabsComponent {
   onDateSelect(event: any) {
     this.datePicker.overlayVisible = true;
     event.stopPropagation();
-
   }
   toggleDropdown() {
     this.showDropdown = true;
   }
-  updateReviewer(event: any) { }
+  updateReviewer(event: any) {}
 
   updateDueDate(event: any) {
-    console.log(this.dueDate)
     this.datePicker.overlayVisible = false;
   }
 
@@ -143,7 +154,7 @@ export class CrTabsComponent {
       { title: 'None', code: 'N' },
     ];
     this.makeTrustedUrl();
-    this.searchUpdated.pipe(debounceTime(1000)).subscribe(search => {
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
       this.filterListBySearch();
     });
   }
@@ -152,20 +163,23 @@ export class CrTabsComponent {
     this.filter = '';
     if (changes['crData']?.currentValue) {
       this.crData = changes['crData']?.currentValue;
-      this.prepareDataToDisplay()
+      this.prepareDataToDisplay();
     }
   }
 
   changeSearchIconColor(entity: any) {
-    this.usingFilter = true
+    this.usingFilter = true;
     this.filter = entity;
   }
 
   filterListBySearch() {
     let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
     if (this.searchIconKeyword.length > 0) {
-      this.crData = this.crData.filter((item: any) => (item.reason.toLowerCase().includes(searchKeywordLowercase)) ||
-        (item.crId.toLowerCase().includes(searchKeywordLowercase)));
+      this.crData = this.crData.filter(
+        (item: any) =>
+          item.reason.toLowerCase().includes(searchKeywordLowercase) ||
+          item.crId.toLowerCase().includes(searchKeywordLowercase)
+      );
     } else {
       this.crData = this.crDataCopy;
     }
@@ -173,8 +187,10 @@ export class CrTabsComponent {
 
   filterListByUsersFilter() {
     if (this.selectedUsers.length > 0) {
-      this.checkUserKeywordSearchCombination()
-      this.crData = this.crData.filter((item: any) => this.selectedUsers.includes(item.author.userId));
+      this.checkUserKeywordSearchCombination();
+      this.crData = this.crData.filter((item: any) =>
+        this.selectedUsers.includes(item.author.userId)
+      );
     } else {
       this.crData = this.crDataCopy;
     }
@@ -186,7 +202,7 @@ export class CrTabsComponent {
       if (this.searchIconKeyword.length > 0) {
         let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
         this.crData = this.crData.filter((item: any) => {
-          return (item.reason.toLowerCase().includes(searchKeywordLowercase))
+          return item.reason.toLowerCase().includes(searchKeywordLowercase);
         });
       }
     }
@@ -274,7 +290,7 @@ export class CrTabsComponent {
         return bValue - aValue;
       }
     });
-  };
+  }
 
   prepareDataToDisplay(): void {
     let data: any[] = this.crData?.map((item: any) => {
@@ -431,8 +447,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-        reviewer.name.toLowerCase()
-      )
+          reviewer.name.toLowerCase()
+        )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -460,7 +476,7 @@ export class CrTabsComponent {
       .postApi({ product_id: this.product?.id, cr_id: cr_ids }, 'specs/update')
       .then((res: any) => {
         if (res && res.status === 200) {
-          this.crData.map((item: any) => item.checked === false)
+          this.crData.map((item: any) => item.checked === false);
           this.checkedCrList = [];
           if (typeof res.data !== 'string') {
             this.utilsService.loadToaster({
@@ -740,12 +756,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           // this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
