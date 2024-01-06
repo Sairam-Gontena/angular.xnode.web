@@ -28,6 +28,7 @@ import {
   FormGroup,
   FormControl,
 } from '@angular/forms';
+import { SpecService } from '../api/spec.service';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -106,6 +107,7 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
+    private specService: SpecService,
     private datePipe: DatePipe
   ) {
     this.minDate = new Date();
@@ -140,7 +142,7 @@ export class CrTabsComponent {
   toggleDropdown() {
     this.showDropdown = true;
   }
-  updateReviewer(event: any) {}
+  updateReviewer(event: any) { }
 
   updateDueDate(event: any) {
     this.datePicker.overlayVisible = false;
@@ -447,8 +449,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-          reviewer.name.toLowerCase()
-        )
+        reviewer.name.toLowerCase()
+      )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -756,12 +758,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           // this.specUtils._getLatestCrList(true);
           this.crData.forEach((ele: any) => {
@@ -815,7 +817,33 @@ export class CrTabsComponent {
   }
 
   onClickViewChanges(data: any): void {
-    this.specUtils._getSpecBasedOnVersionID(data);
+    console.log('data', data);
+    // this.specUtils._getSpecBasedOnVersionID(data);
+    this.getMeSpecInfo(data);
+  }
+
+  getMeSpecInfo(body?: any) {
+    this.utilsService.loadSpinner(true);
+    this.specService
+      .getSpec({ productId: body.productId, versionId: body.versionId })
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data &&
+          response.data.length > 0
+        ) {
+          this.specUtils._getLatestSpecVersions({ versions: body.versions, specData: response.data, productId: body.productId, versionId: body.versionId })
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+        this.utilsService.loadSpinner(false);
+      });
   }
 
   checktableJsonSection(title: string): boolean {

@@ -39,13 +39,18 @@ export class SpecificationsHeaderComponent implements OnInit {
     private commentsService: CommentsService
   ) {
     this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
-      if (data) {
+      if (data && data.versions) {
         this.versions = data.versions;
         this.versions.forEach((element: any) => {
           element['label'] = element.specStatus + '-' + element.version;
           element['value'] = element.id;
         });
         this.selectedVersion = data.versions.filter((event: any) => {
+          return event.id === data.versionId
+        })[0]
+      }
+      if (data && !data.versions) {
+        this.selectedVersion = this.versions.filter((event: any) => {
           return event.id === data.versionId
         })[0]
       }
