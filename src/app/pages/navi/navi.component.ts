@@ -56,9 +56,7 @@ export class NaviComponent implements OnInit {
     }
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     this.targetUrl = this.targetUrl + '?email=' + email + '&xnode_flag=' + data.flag + '&targetUrl=' + environment.xnodeAppUrl + '&user_id=' + this.currentUser.user_id;
-    if (localStorage.getItem('record_id')) {
-      this.targetUrl = this.targetUrl + '&productContext=' + localStorage.getItem('record_id');
-    }
+    this.targetUrl = this.targetUrl + '&productContext=' + (localStorage.getItem('record_id')? localStorage.getItem('record_id') : 'new_product');
     if (localStorage.getItem('show-upload-panel')) {
       this.targetUrl = this.targetUrl + '&import=true';
     }
