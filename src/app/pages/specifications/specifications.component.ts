@@ -68,6 +68,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
       this.activeConversationTab = event;
     });
+    this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
+      if (data) {
+        this.handleSpecData(data.specData, data.productId)
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -219,7 +224,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data &&
           response.data.length > 0
         ) {
-          this.handleSpecData(response, body.productId);
+          this.handleSpecData(response.data, body.productId);
         }
         this.loading = false;
       })
@@ -306,7 +311,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   handleSpecData(response: any, productId: string): void {
-    const list = response.data;
+    const list = response;
     list.forEach((obj: any) => {
       if (obj?.title == 'Functional Specifications') {
         obj.content.forEach((ele: any, idx: any) => {
@@ -358,6 +363,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
+    this.storageService.saveItem(StorageKeys.SpecData, list)
     if (this.activeConversationTab === 'COMMENTS') {
       this.getMeAllCommentsList(productId);
     } else if (this.activeConversationTab === 'TASKS') {

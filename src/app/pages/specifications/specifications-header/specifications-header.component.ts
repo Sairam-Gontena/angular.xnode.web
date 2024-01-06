@@ -37,7 +37,20 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specService: SpecService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService
-  ) {}
+  ) {
+    this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
+      if (data) {
+        this.versions = data.versions;
+        this.versions.forEach((element: any) => {
+          element['label'] = element.specStatus + '-' + element.version;
+          element['value'] = element.id;
+        });
+        this.selectedVersion = data.versions.filter((event: any) => {
+          return event.id === data.versionId
+        })[0]
+      }
+    });
+  }
 
   ngOnInit(): void {
     // To display toggle icon of side spec menu

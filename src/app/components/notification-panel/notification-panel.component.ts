@@ -9,6 +9,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from '../services/spec-utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
+import { SpecService } from 'src/app/api/spec.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -44,7 +45,8 @@ export class NotificationPanelComponent {
     private notifyApi: NotifyApiService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
-    private commentsService: CommentsService
+    private commentsService: CommentsService,
+    private specService: SpecService
   ) {
     let user = localStorage.getItem('currentUser');
     if (user) {
@@ -173,10 +175,9 @@ export class NotificationPanelComponent {
   }
 
   goToSpec(obj: any) {
-    let specData = localStorage.getItem('meta_data');
-    if (specData) {
-      let products = JSON.parse(specData);
-      let product = products.find((x: any) => x.id === obj.product_id);
+    if (!window.location.hash.includes('#/specification')) {
+      const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
+      let product = metaData.find((x: any) => x.id === obj.product_id);
       if (product) {
         localStorage.setItem('record_id', product.id);
         localStorage.setItem('product', JSON.stringify(product));
@@ -239,8 +240,64 @@ export class NotificationPanelComponent {
             });
           });
       }
+      this.closeNotificationPanel.emit(true);
+    } else {
+      if (obj.entity === 'UPDATE_SPEC') {
+        this.getVersions(obj)
+        return
+      }
     }
-    this.closeNotificationPanel.emit(true);
+  }
+
+  getVersions(obj: any) {
+    this.utils.loadSpinner(true);
+    this.specService
+      .getVersionIds(obj.product_id)
+      .then((response) => {
+        if (response.status === 200 && response.data) {
+          this.getMeSpecInfo({ versions: response.data, productId: obj.product_id, versionId: obj.versionId });
+          this.getMeCrList({ productId: obj.product_id })
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Network Error',
+          });
+        }
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
+      });
+  }
+
+  getMeSpecInfo(body?: any) {
+    this.specService
+      .getSpec({ productId: body.productId, versionId: body.versionId })
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data &&
+          response.data.length > 0
+        ) {
+          this.specUtils._getLatestSpecVersions({ versions: body.versions, specData: response.data, productId: body.productId, versionId: body.versionId })
+        }
+        this.utils.loadSpinner(false);
+        this.closeNotificationPanel.emit(true);
+      })
+      .catch((error) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+        this.utils.loadSpinner(false);
+        this.closeNotificationPanel.emit(true);
+      });
   }
 
   getMeLabel(obj: any) {
@@ -496,6 +553,9 @@ export class NotificationPanelComponent {
       if (val.template_type === 'COMMENT') {
         this.getMeAllCommentsTasks(notifInfo);
       }
+      if (val.template_type === 'CR') {
+        this.getMeCrList(notifInfo);
+      }
     }
     this.closeNotificationPanel.emit(true);
     return;
@@ -549,6 +609,37 @@ export class NotificationPanelComponent {
       })
       .catch((error) => {
         console.error('Error fetching data from localStorage:', error);
+      });
+  }
+
+  getMeCrList(notifInfo: any) {
+    let body: any = {
+      productId: notifInfo.productId,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._loadActiveTab(1);
+          this.specUtils._getMeUpdatedCrs(res.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
       });
   }
 

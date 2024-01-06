@@ -51,6 +51,10 @@ export class SpecUtilsService {
   public getSpecBasedOnVersionID: Observable<any> =
     this.getMeSpec.asObservable();
 
+  private updateLatestVersions: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  public getLatestSpecVersions: Observable<any> =
+    this.updateLatestVersions.asObservable();
+
   private onProductDropdownChange: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public getMeProductDropdownChange: Observable<boolean> =
@@ -126,6 +130,10 @@ export class SpecUtilsService {
 
   _isTheSpecVersionChanged(event: boolean): void {
     this.specVersionChanged.next(event);
+  }
+
+  _getLatestSpecVersions(event: any): void {
+    this.updateLatestVersions.next(event);
   }
 
   sendCommentSearchByKeywordListData(data: any) {
