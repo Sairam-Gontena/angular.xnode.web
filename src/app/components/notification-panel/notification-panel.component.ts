@@ -8,6 +8,7 @@ import { NotifyApiService } from 'src/app/api/notify.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from '../services/spec-utils.service';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -42,7 +43,8 @@ export class NotificationPanelComponent {
     public utils: UtilsService,
     private notifyApi: NotifyApiService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private commentsService: CommentsService
   ) {
     let user = localStorage.getItem('currentUser');
     if (user) {
@@ -471,7 +473,17 @@ export class NotificationPanelComponent {
 
   navigateToConversation(val: any) {
     console.log('val', val);
-
+    const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
+    let product = metaData.find(
+      (x: any) => x.id === val.product_id || x.id === val.productId
+    );
+    this.storageService.saveItem(StorageKeys.Product, JSON.stringify(product));
+    localStorage.setItem('record_id', product.id);
+    localStorage.setItem('product', JSON.stringify(product));
+    localStorage.setItem('app_name', product.title);
+    localStorage.setItem('has_insights', product.has_insights);
+    this.router.navigate(['/specification']);
+    return;
     this.getAllProductsInfo('meta_data')
       .then((result: any) => {
         if (result) {
@@ -487,28 +499,7 @@ export class NotificationPanelComponent {
           this.storeProductInfoForDeepLink('deep_link_info', val)
             .then(() => {
               if (!window.location.hash.includes('#/specification')) {
-                if (
-                  val.template_type == 'COMMENT' ||
-                  val.template_type == 'TASK'
-                ) {
-                  this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({
-                    activeIndex: 0,
-                    productId: val.productId,
-                    versionId: val.versionId,
-                  });
-                  this.specUtils._getSpecBasedOnVersionID(val);
-                  this.specUtils._tabToActive(val.template_type);
-                  this.router.navigate(['/specification']);
-                } else {
-                  this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({
-                    activeIndex: 1,
-                    productId: val.productId,
-                    versionId: val.versionId,
-                  });
-                  this.router.navigate(['/specification']);
-                }
+                this.handleNotification(val);
               } else {
                 if (
                   val.template_type == 'COMMENT' ||
@@ -545,6 +536,44 @@ export class NotificationPanelComponent {
         console.error('Error fetching data from localStorage:', error);
       });
   }
+
+  handleNotification(val: any) {
+    if (val.template_type === 'TASK') {
+      this.getMeAllTaskList(val);
+    } else {
+      this.specUtils._openCommentsPanel(true);
+      this.specUtils._loadActiveTab({
+        activeIndex: 1,
+        productId: val.product_id,
+        versionId: val.version_id,
+      });
+      this.router.navigate(['/specification']);
+    }
+  }
+
+  getMeAllTaskList(obj: any) {
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getTasksByProductId({
+        productId: obj.productId,
+        versionId: obj.versionId,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._getMeUpdatedTasks(response.data);
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._getSpecBasedOnVersionID(obj);
+          this.specUtils._tabToActive(obj.template_type);
+          this.router.navigate(['/specification']);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+
   ngOnDestroy(): void {
     this.specUtils._getSpecBasedOnVersionID(null);
   }
