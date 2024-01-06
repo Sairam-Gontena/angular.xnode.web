@@ -288,6 +288,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   getMeSpecLevelTaskList() {
+    console.log('MMM');
+
     this.utils.loadSpinner(true);
     this.commentsService
       .getTasks({ parentId: this.parentId, isReplyCountRequired: true })

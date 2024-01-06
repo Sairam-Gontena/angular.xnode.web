@@ -56,16 +56,15 @@ export class TasksPanelComponent {
     private apiService: ApiService) {
     this.specData = this.localStorageService.getItem(StorageKeys.SelectedSpec);
     this.product = this.localStorageService.getItem(StorageKeys.Product);
-    this.specUtils.tabToActive.subscribe((res: any) => {
-      if (res == 'TASK') {
-        this.specUtils.specConversationPanelFrom == 'spec_header' ? this.ngOnInit() : this.getMeTasksList();
-      }
-    });
+    // this.specUtils.tabToActive.subscribe((res: any) => {
+    //   if (res == 'TASK') {
+    //     this.specUtils.specConversationPanelFrom == 'spec_header' ? this.ngOnInit() : this.getMeTasksList();
+    //   }
+    // });
   }
 
   ngOnInit(): void {
     this.filterList();
-
     this.specUtils.getMeProductDropdownChange.subscribe((res) => {
       if (res) {
         if (this.activeIndex == 1) {
@@ -101,6 +100,8 @@ export class TasksPanelComponent {
   }
 
   getMeTasksList() {
+    console.log('@@@');
+
     this.utils.loadSpinner(true);
     this.commentsService.getTasks({ parentId: this.specData?.id }).then((response: any) => {
       if (response && response.data?.common?.status !== 'fail') {

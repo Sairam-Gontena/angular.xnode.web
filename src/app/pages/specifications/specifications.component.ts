@@ -48,6 +48,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   metaData: any;
   activeConversationTab: any = '';
+  notifInfo: any;
 
   constructor(
     private utils: UtilsService,
@@ -87,16 +88,15 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.getMetaData(deepLinkInfo);
       }
     });
-    this.getUsersByAccountId();
   }
 
   getMetaData(val: any) {
     this.apiService
       .get(
         'navi/get_metadata/' +
-          this.currentUser?.email +
-          '?product_id=' +
-          val.product_id
+        this.currentUser?.email +
+        '?product_id=' +
+        val.product_id
       )
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
@@ -109,7 +109,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -150,6 +150,16 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       StorageKeys.CurrentUser
     );
     this.metaData = this.localStorageService.getItem(StorageKeys.MetaData);
+    this.notifInfo = this.localStorageService.getItem(StorageKeys.NOTIF_INFO);
+    if (this.notifInfo?.template_type === 'TASK') {
+      this.getMeAllTaskList(this.notifInfo.product_id);
+    }
+    if (this.notifInfo?.template_type === 'COMMENT') {
+      this.getMeAllCommentsList(this.notifInfo.product_id);
+    }
+
+    this.getUsersByAccountId();
+
   }
 
   searchText(keyword: any) {
@@ -396,11 +406,17 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.commentsService
       .getCommentsByProductId({
         productId: productId,
-        versionId: specVersion.id,
+        versionId: specVersion?.id,
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
+          if (this.notifInfo) {
+            this.specUtils._openCommentsPanel(true);
+            this.specUtils._tabToActive('COMMENT');
+          }
           this.specUtils._getMeUpdatedComments(response.data);
+          this.storageService.removeItem(StorageKeys.NOTIF_INFO);
+          this.notifInfo = undefined;
         }
         this.utils.loadSpinner(false);
       })
@@ -412,24 +428,33 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getMeAllTaskList(productId: string) {
     this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(
+    let specVersion: any = this.storageService.getItem(
       StorageKeys.SpecVersion
     );
     this.commentsService
       .getTasksByProductId({
         productId: productId,
-        versionId: specVersion.id,
+        versionId: specVersion?.id,
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
+          if (this.notifInfo) {
+            this.specUtils._openCommentsPanel(true);
+            this.specUtils._tabToActive('TASK');
+          }
           this.specUtils._getMeUpdatedTasks(response.data);
+          this.storageService.removeItem(StorageKeys.NOTIF_INFO);
+          this.notifInfo = undefined;
         }
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
         console.log(err);
         this.utils.loadSpinner(false);
+        this.storageService.removeItem(StorageKeys.NOTIF_INFO);
+        this.notifInfo = undefined;
       });
+
   }
 
   checkUserEmail(): void {

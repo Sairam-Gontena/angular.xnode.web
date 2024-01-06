@@ -473,16 +473,31 @@ export class NotificationPanelComponent {
 
   navigateToConversation(val: any) {
     console.log('val', val);
-    const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
-    let product = metaData.find(
-      (x: any) => x.id === val.product_id || x.id === val.productId
-    );
-    this.storageService.saveItem(StorageKeys.Product, JSON.stringify(product));
-    localStorage.setItem('record_id', product.id);
-    localStorage.setItem('product', JSON.stringify(product));
-    localStorage.setItem('app_name', product.title);
-    localStorage.setItem('has_insights', product.has_insights);
-    this.router.navigate(['/specification']);
+    let notifInfo: any = val;
+    notifInfo.productId = val.product_id ? val.product_id : val.productId;
+    notifInfo.versionId = val.version_id ? val.version_id : val.versionId;
+
+    if (!window.location.hash.includes('#/specification')) {
+      const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
+      let product = metaData.find(
+        (x: any) => x.id === val.product_id || x.id === val.productId
+      );
+      this.storageService.saveItem(StorageKeys.Product, JSON.stringify(product));
+      localStorage.setItem('record_id', product.id);
+      localStorage.setItem('product', JSON.stringify(product));
+      localStorage.setItem('app_name', product.title);
+      localStorage.setItem('has_insights', product.has_insights);
+      this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
+      this.router.navigate(['/specification']);
+    } else {
+      if (val.template_type === 'TASK') {
+        this.getMeAllTaskList(notifInfo);
+      }
+      if (val.template_type === 'COMMENT') {
+        this.getMeAllCommentsTasks(notifInfo);
+      }
+    }
+    this.closeNotificationPanel.emit(true);
     return;
     this.getAllProductsInfo('meta_data')
       .then((result: any) => {
@@ -561,6 +576,28 @@ export class NotificationPanelComponent {
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._getMeUpdatedTasks(response.data);
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._getSpecBasedOnVersionID(obj);
+          this.specUtils._tabToActive(obj.template_type);
+          this.router.navigate(['/specification']);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+  getMeAllCommentsTasks(obj: any) {
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCommentsByProductId({
+        productId: obj.productId,
+        versionId: obj.versionId,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._getMeUpdatedComments(response.data);
           this.specUtils._openCommentsPanel(true);
           this.specUtils._getSpecBasedOnVersionID(obj);
           this.specUtils._tabToActive(obj.template_type);
