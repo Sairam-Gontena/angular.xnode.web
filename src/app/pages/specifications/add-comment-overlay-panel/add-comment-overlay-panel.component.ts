@@ -260,24 +260,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.comment = '';
     this.closeOverlay.emit();
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.specUtils._tabToActive('TASK');
+      this.getMeSpecLevelTaskList();
     } else {
-      this.getMeAllCommentsList()
+      this.getMeSpecLevelCommentsList();
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
   }
 
-
-  getMeAllCommentsList() {
+  getMeSpecLevelCommentsList() {
     this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.commentsService
-      .getCommentsByProductId({
-        productId: this.product?.id,
-        versionId: specVersion.id,
-      })
+      .getComments({ parentId: this.parentId, isReplyCountRequired: true })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._openCommentsPanel(true);
@@ -292,15 +287,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       });
   }
 
-
-  getMeAllTaskList() {
+  getMeSpecLevelTaskList() {
     this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.commentsService
-      .getTasksByProductId({
-        productId: this.product?.id,
-        versionId: specVersion.id,
-      })
+      .getTasks({ parentId: this.parentId, isReplyCountRequired: true })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._openCommentsPanel(true);
@@ -314,7 +304,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.loadSpinner(false);
       });
   }
-
   prepareDataToSaveAsTask(): void {
     let body;
     if (this.action === 'EDIT') {
