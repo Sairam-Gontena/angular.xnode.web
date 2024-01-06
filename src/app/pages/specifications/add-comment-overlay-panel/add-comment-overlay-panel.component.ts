@@ -329,7 +329,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
             this.specUtils._openCommentsPanel(true);
           this.comment = '';
           this.closeOverlay.emit();
-          this.specUtils._commentsCrActiveTab(false);
           this.specUtils._tabToActive('TASK');
           this.utils.loadToaster({
             severity: 'success',

@@ -13,21 +13,15 @@ export class SpecUtilsService {
   private activeTab: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public tabToActive: Observable<any> = this.activeTab.asObservable();
 
-  private commentsCrActiveTab: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-  public getMeCommentsCrActiveTab: Observable<boolean> =
-    this.commentsCrActiveTab.asObservable();
+  private showSpecLevelCommentsTask: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public getMeSpecLevelCommentsTask: Observable<any> =
+    this.showSpecLevelCommentsTask.asObservable();
 
   private activateMainTab: BehaviorSubject<any> = new BehaviorSubject<any>(
     false
   );
   public loadActiveTab: Observable<any> = this.activateMainTab.asObservable();
-
-  private saveSpecVersion: BehaviorSubject<any> = new BehaviorSubject<any>(
-    false
-  );
-  public getMeSpecVersion: Observable<any> =
-    this.saveSpecVersion.asObservable();
 
   private getLatestCrList: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getMeCrList: Observable<string> = this.getLatestCrList.asObservable();
@@ -70,9 +64,10 @@ export class SpecUtilsService {
     this.activeTab.next(event);
   }
 
-  _commentsCrActiveTab(event: boolean): void {
-    this.commentsCrActiveTab.next(event);
+  _getMeSpecLevelCommentsTask(event: any): void {
+    this.showSpecLevelCommentsTask.next(event);
   }
+
   _productDropdownChanged(event: boolean): void {
     this.onProductDropdownChange.next(event);
   }
@@ -83,10 +78,6 @@ export class SpecUtilsService {
 
   _updatedSelectedProduct(event: any): void {
     this.updateProduct.next(event);
-  }
-
-  _saveSpecVersion(event: any): void {
-    this.saveSpecVersion.next(event);
   }
 
   _getLatestCrList(event: any): void {
@@ -100,8 +91,6 @@ export class SpecUtilsService {
   _isTheSpecVersionChanged(event: boolean): void {
     this.specVersionChanged.next(event);
   }
-
-
 
   sendCommentSearchByKeywordListData(data: any) {
     this.commentPaneltoSpecConversation.next(data);
@@ -134,5 +123,4 @@ export class SpecUtilsService {
   getTaskPanelSearchByUsersListData(): Observable<any> {
     return this.taskPaneltoTaskListByUsers.asObservable();
   }
-
 }

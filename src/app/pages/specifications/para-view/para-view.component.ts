@@ -6,10 +6,11 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { delay, of } from 'rxjs';
+import { CommentsService } from 'src/app/api/comments.service';
 @Component({
   selector: 'xnode-para-view',
   templateUrl: './para-view.component.html',
-  styleUrls: ['./para-view.component.scss']
+  styleUrls: ['./para-view.component.scss'],
 })
 export class ParaViewComponent {
   @Input() searchTerm!: string;
@@ -31,27 +32,33 @@ export class ParaViewComponent {
   currentUser: any;
   @Input() showComments: any;
 
-  constructor(public utils: UtilsService, private storageService: LocalStorageService, private specUtils: SpecUtilsService) {
-  }
+  constructor(
+    public utils: UtilsService,
+    private storageService: LocalStorageService,
+    private specUtils: SpecUtilsService,
+    private commentsService: CommentsService
+  ) {}
 
   ngOnInit() {
-    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.utils.clearSelectedContent.subscribe((res: boolean) => {
       if (res) {
         this.emptySelectedContent();
       }
-    })
+    });
     this.showComments = this.showComments;
   }
 
   onOverlayHide() {
     this.openOverlayPanel = false;
-    of(([])).pipe(delay(1000)).subscribe((results) => {
-      if (this.overlayPanel.overlayVisible) {
-      } else {
-        this.checkOverlay();
-      }
-    });
+    of([])
+      .pipe(delay(1000))
+      .subscribe((results) => {
+        if (this.overlayPanel.overlayVisible) {
+        } else {
+          this.checkOverlay();
+        }
+      });
   }
   checkOverlay() {
     if (this.openOverlayPanel == false) {
@@ -94,14 +101,14 @@ export class ParaViewComponent {
 
   contentSelected(event: any) {
     this.showCommentIcon = true;
-    this.utils.changeSelectContentChange(true)
+    this.utils.changeSelectContentChange(true);
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
       return;
     }
     if (selectedText && selectedText.length > 0) {
-      this.selectedText = selectedText.replace(/\n/g, ' ')
+      this.selectedText = selectedText.replace(/\n/g, ' ');
     } else {
       this.selectedText = '';
     }
@@ -122,7 +129,7 @@ export class ParaViewComponent {
           this.selectedWordIndices.push(index);
         }
       } else {
-        elements.forEach(element => {
+        elements.forEach((element) => {
           const id = element.id;
           const index = parseInt(id.replace('word', ''));
           if (!this.selectedWordIndices.includes(index)) {
@@ -163,7 +170,32 @@ export class ParaViewComponent {
   }
 
   openCommentSection() {
+    console.log('on click view');
+
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
     this.specUtils._openCommentsPanel(true);
+    this.specUtils._tabToActive('COMMENT');
+    this.getMeSpecLevelCommentsList();
   }
 
+  getMeSpecLevelCommentsList() {
+    this.utils.loadSpinner(true);
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService
+        .getComments({ parentId: selectedSpec.id, isReplyCountRequired: true })
+        .then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.specUtils._getMeSpecLevelCommentsTask(response.data);
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
+    }
+  }
 }

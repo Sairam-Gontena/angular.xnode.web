@@ -9,20 +9,19 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-comments-tabs',
   templateUrl: './comments-tabs.component.html',
-  styleUrls: ['./comments-tabs.component.scss']
+  styleUrls: ['./comments-tabs.component.scss'],
 })
-
 export class CommentsTabsComponent implements OnInit {
   list: Array<Comment> = [];
   @Input() usersList: any;
   @Input() swaggerData: any;
-  activeIndex: number = 0;
+  activeIndex: any = null;
   tabTypes: Array<string> = ['Comments', 'Tasks'];
   product: any;
   specVersion: any;
   commentsAdded: boolean = false;
   taskssAdded: boolean = false;
-
+  showSpecLevelCommentsTasks: boolean = false;
   constructor(
     public specUtils: SpecUtilsService,
     private utils: UtilsService,
@@ -32,18 +31,19 @@ export class CommentsTabsComponent implements OnInit {
     this.specUtils.tabToActive.subscribe((event: any) => {
       if (event === 'COMMENT') {
         this.activeIndex = 0;
-        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.getMeSpecLevelCommentsList();
       } else if (event === 'TASK') {
         this.activeIndex = 1;
-        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.getMeSpecLevelTaskList();
       }
-    })
+    });
+    this.specUtils.getMeSpecLevelCommentsTask.subscribe((event: any) => {
+      console.log('event', event);
+
+      if (event) {
+        this.list = event;
+      }
+    });
 
     this.specUtils.isSpecVersionChanged.subscribe((event: any) => {
-      console.log('event', event, this.activeIndex);
-
       if (event && this.activeIndex === 0) {
         this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
         this.getMeAllCommentsList();
@@ -52,42 +52,59 @@ export class CommentsTabsComponent implements OnInit {
         this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
         this.getMeAllTaskList();
       }
-    })
+    });
   }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-    this.getMeAllCommentsList();
+    if (this.showSpecLevelCommentsTasks) {
+      if (this.activeIndex === 0) {
+        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
+        this.getMeSpecLevelCommentsList();
+      } else if (this.activeIndex === 1) {
+        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
+        this.getMeSpecLevelTaskList();
+      }
+    } else {
+      if (this.activeIndex === null) this.getMeAllCommentsList();
+    }
   }
 
   ngOnDestroy() {
     this.specUtils.changeSpecConversationPanelFrom('');
     this.specUtils._tabToActive(null);
+    this.specUtils._getMeSpecLevelCommentsTask(null);
   }
 
   onTabChange(event: any) {
     this.activeIndex = event.index;
     if (event.index === 0) {
-      this.getMeAllCommentsList();
+      if (this.showSpecLevelCommentsTasks) this.getMeSpecLevelCommentsList();
+      else this.getMeAllCommentsList();
     } else {
-      this.getMeAllTaskList();
+      if (this.showSpecLevelCommentsTasks) this.getMeSpecLevelTaskList();
+      else this.getMeAllTaskList();
     }
   }
 
-
   getMeAllCommentsList() {
     this.utils.loadSpinner(true);
-    this.commentsService.getCommentsByProductId({ productId: this.product?.id, versionId: this.specVersion.id }).then((response: any) => {
-      if (response.status === 200 && response.data) {
-        this.list = response.data;
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(false);
-    });
-
+    this.commentsService
+      .getCommentsByProductId({
+        productId: this.product?.id,
+        versionId: this.specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.list = response.data;
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 
   getMeSpecLevelCommentsList() {
@@ -96,15 +113,18 @@ export class CommentsTabsComponent implements OnInit {
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getComments({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.list = response.data;
-        }
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
+      this.commentsService
+        .getComments({ parentId: selectedSpec.id, isReplyCountRequired: true })
+        .then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.list = response.data;
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
     }
   }
 
@@ -114,28 +134,37 @@ export class CommentsTabsComponent implements OnInit {
     let selectedSpec: any;
     if (specData) {
       selectedSpec = JSON.parse(specData);
-      this.commentsService.getTasks({ parentId: selectedSpec.id, isReplyCountRequired: true }).then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.list = response.data;
-        }
-        this.utils.loadSpinner(false);
-      }).catch(err => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
+      this.commentsService
+        .getTasks({ parentId: selectedSpec.id, isReplyCountRequired: true })
+        .then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.list = response.data;
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
     }
   }
 
   getMeAllTaskList() {
     this.utils.loadSpinner(true);
-    this.commentsService.getTasksByProductId({ productId: this.product?.id, versionId: this.specVersion.id }).then((response: any) => {
-      if (response.status === 200 && response.data) {
-        this.list = response.data;
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(false);
-    });
+    this.commentsService
+      .getTasksByProductId({
+        productId: this.product?.id,
+        versionId: this.specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.list = response.data;
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 }
