@@ -158,8 +158,9 @@
                     <span class="shaded-color ml-1 normal-font-weight">3</span>
                   </div>
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
-                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'" (closeOverlay)="data.showComment=false"
-                      placeHolder="Reason for your actions" [component]="'crTabs'" (closeOverlay)="showComment=false"
+                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
+                      (closeOverlay)="data.showComment=false" placeHolder="Reason for your actions"
+                      [component]="'crTabs'" (closeOverlay)="showComment=false"
                       (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>

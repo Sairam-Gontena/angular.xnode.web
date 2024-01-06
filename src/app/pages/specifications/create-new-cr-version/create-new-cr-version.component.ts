@@ -247,9 +247,6 @@ export class CreateNewCrVersionComponent implements OnInit {
             detail: 'Change Request created successfully',
           });
           this.close.emit(response.data);
-
-
-          this.specUtils._getLatestCrList(true)
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -268,13 +265,13 @@ export class CreateNewCrVersionComponent implements OnInit {
         });
       });
   }
- 
+
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-    
+
     const selectedReviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
-  
+
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())

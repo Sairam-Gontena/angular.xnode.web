@@ -29,7 +29,7 @@ export class SpecUtilsService {
   public loadActiveTab: Observable<any> = this.activateMainTab.asObservable();
 
   private getLatestCrList: BehaviorSubject<any> = new BehaviorSubject<any>('');
-  public getMeCrList: Observable<string> = this.getLatestCrList.asObservable();
+  public getMeCrList: Observable<any> = this.getLatestCrList.asObservable();
 
   private updateProduct: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeUpdatedProduct: Observable<string> =
@@ -54,6 +54,11 @@ export class SpecUtilsService {
     new BehaviorSubject<boolean>(false);
   public isSpecVersionChanged: Observable<boolean> =
     this.specVersionChanged.asObservable();
+
+  private saveTab: BehaviorSubject<string> =
+    new BehaviorSubject<string>('');
+  public subscribeAtivatedTab: Observable<string> =
+    this.saveTab.asObservable();
 
   specConversationPanelFrom: string = '';
 
@@ -131,5 +136,9 @@ export class SpecUtilsService {
 
   getTaskPanelSearchByUsersListData(): Observable<any> {
     return this.taskPaneltoTaskListByUsers.asObservable();
+  }
+
+  saveActivatedTab(data: any) {
+    this.saveTab.next(data);
   }
 }

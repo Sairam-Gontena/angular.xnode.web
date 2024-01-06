@@ -5,6 +5,9 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { CrTabsComponent } from 'src/app/cr-tabs/cr-tabs.component';
 import { TabView } from 'primeng/tabview';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-comments-cr-panel',
@@ -35,25 +38,30 @@ export class CommentsCrPanelComponent implements OnInit {
   comment: any;
   currentUser: any;
   activeIndex: number = 0;
+  crData: any = [];
+  product: any;
 
   constructor(
     private utils: UtilsService,
-    private specUtils: SpecUtilsService
-  ) {}
+    private specUtils: SpecUtilsService,
+    private storageService: LocalStorageService,
+    private commentsService: CommentsService
+  ) { }
 
   ngOnInit(): void {
+    this.product = this.storageService.getItem(StorageKeys.Product)
     this.specUtils.loadActiveTab.subscribe((res: any) => {
       if (res) {
         this.activeIndex = res.activeIndex;
-        this.child.getCRList();
       } else {
         this.activeIndex = 0;
       }
     });
-    // this.specUtils._openCommentsPanel(false);
-    // this.utils.saveSelectedSection(null);
-    this.specUtils._tabToActive(null);
-    // this.specUtils._getMeSpecLevelCommentsTask(null);
+    this.specUtils.getMeCrList.subscribe((res: any) => {
+      if (res) {
+        this.crData = res;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -87,19 +95,36 @@ export class CommentsCrPanelComponent implements OnInit {
 
   switchHeaders(event: any) {
     this.activeIndex = event.index;
-    if (event.index == 0) {
-      let specData = localStorage.getItem('SPEC_DATA');
-      if (specData) {
-        let data = JSON.parse(specData);
-        // localStorage.setItem('selectedSpec', JSON.stringify(data[0])); // uncomment this onnly if it is necessary
-      }
-    }
-    const tabs = this.tabView.tabs;
-    const header = tabs[event.index].header;
-    if (header == 'Change Request') {
-      this.child.getCRList();
-    } else {
-      this.specUtils._tabToActive('COMMENT');
-    }
+    if (event.index === 1) this.getCRList();
+    this.specUtils.saveActivatedTab(event.index === 1 ? 'CR' : '');
+  }
+
+  getCRList() {
+    let body: any = {
+      productId: this.product?.id,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.crData = res.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
   }
 }

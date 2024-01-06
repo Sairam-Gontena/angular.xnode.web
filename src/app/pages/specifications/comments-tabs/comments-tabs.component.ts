@@ -35,25 +35,14 @@ export class CommentsTabsComponent implements OnInit {
         this.activeIndex = 1;
       }
     });
-
     this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
       if (event) {
         this.activeIndex = 0;
+        this.specUtils.saveActivatedTab('COMMENTS');
         this.list = event;
         this.showSpecLevelCommentsTasks = true;
       } else {
         this.showSpecLevelCommentsTasks = false;
-      }
-    });
-
-    this.specUtils.isSpecVersionChanged.subscribe((event: any) => {
-      if (event && this.activeIndex === 0) {
-        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.getMeAllCommentsList();
-      }
-      if (event && this.activeIndex === 1) {
-        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.getMeAllTaskList();
       }
     });
   }
@@ -78,6 +67,7 @@ export class CommentsTabsComponent implements OnInit {
       if (this.showSpecLevelCommentsTasks) this.getMeSpecLevelTaskList();
       else this.getMeAllTaskList();
     }
+    this.specUtils.saveActivatedTab(event.index === 1 ? 'TASKS' : 'COMMENTS');
   }
 
   getMeAllCommentsList() {

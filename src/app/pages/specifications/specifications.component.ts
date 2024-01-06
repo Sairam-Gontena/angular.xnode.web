@@ -12,6 +12,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { ActivatedRoute } from '@angular/router';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -46,6 +47,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   isDataManagementPersistence: boolean = false;
   loading: boolean = true;
   metaData: any;
+  activeConversationTab: any = '';
+
   constructor(
     private utils: UtilsService,
     private apiService: ApiService,
@@ -56,9 +59,14 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private searchSpec: SearchspecService,
     private localStorageService: LocalStorageService,
     private route: ActivatedRoute,
-    private authService: AuthApiService
+    private authService: AuthApiService,
+    private storageService: LocalStorageService,
+    private commentsService: CommentsService
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
+      this.activeConversationTab = event;
+    })
   }
 
   ngOnInit(): void {
@@ -199,7 +207,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           response.data &&
           response.data.length > 0
         ) {
-          this.handleSpecData(response);
+          this.handleSpecData(response, body.productId);
         }
         this.loading = false;
       })
@@ -288,7 +296,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleSpecData(response: any): void {
+  handleSpecData(response: any, productId: string): void {
     const list = response.data;
     list.forEach((obj: any) => {
       if (obj?.title == 'Functional Specifications') {
@@ -341,7 +349,37 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
-    this.utils.loadSpinner(false)
+    if (this.activeConversationTab === 'COMMENTS') {
+      this.getMeAllCommentsList(productId)
+    } else if (this.activeConversationTab === 'COMMENTS') {
+
+    } else if (this.activeConversationTab === 'COMMENTS') {
+
+    } else {
+      this.utils.loadSpinner(false);
+    }
+
+  }
+
+  getMeAllCommentsList(productId: string) {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    this.commentsService
+      .getCommentsByProductId({
+        productId: productId,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 
   checkUserEmail(): void {
