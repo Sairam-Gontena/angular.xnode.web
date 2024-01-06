@@ -9,7 +9,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 @Component({
   selector: 'xnode-comments-cr-panel',
   templateUrl: './comments-cr-panel.component.html',
-  styleUrls: ['./comments-cr-panel.component.scss']
+  styleUrls: ['./comments-cr-panel.component.scss'],
 })
 export class CommentsCrPanelComponent implements OnInit {
   @ViewChild(CrTabsComponent, { static: true })
@@ -20,24 +20,26 @@ export class CommentsCrPanelComponent implements OnInit {
   @Input() usersList: any;
   @Input() swaggerData: any;
   @Input() reveiwerList: any;
-  userImage?: any = "DC";
+  userImage?: any = 'DC';
   username?: any;
-  filterOptions: Array<DropdownOptions> = [{ label: 'All Comments', value: 'all' }];
+  filterOptions: Array<DropdownOptions> = [
+    { label: 'All Comments', value: 'all' },
+  ];
   selectedFilter: string = 'All Comments';
   @Input() list: Array<Comment> = [];
   commentObj: any = {
     comment: '',
     role: '',
-    user_id: ''
+    user_id: '',
   };
   comment: any;
   currentUser: any;
   activeIndex: number = 0;
 
-  constructor(private utils: UtilsService,
-    private specUtils: SpecUtilsService) {
-
-  }
+  constructor(
+    private utils: UtilsService,
+    private specUtils: SpecUtilsService
+  ) {}
 
   ngOnInit(): void {
     this.specUtils.loadActiveTab.subscribe((res: any) => {
@@ -48,23 +50,31 @@ export class CommentsCrPanelComponent implements OnInit {
         this.activeIndex = 0;
       }
     });
+    // this.specUtils._openCommentsPanel(false);
+    // this.utils.saveSelectedSection(null);
+    this.specUtils._tabToActive(null);
+    // this.specUtils._getMeSpecLevelCommentsTask(null);
   }
 
   ngOnDestroy() {
     localStorage.removeItem('deep_link_info');
-    this.specUtils._productDropdownChanged(false)
+    this.specUtils._productDropdownChanged(false);
     this.specUtils.changeSpecConversationPanelFrom('');
     this.specUtils._tabToActive(null);
+    this.specUtils._getMeSpecLevelCommentsTask(null);
+    this.specUtils._openCommentsPanel(false);
   }
 
   onClickClose() {
     this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
+    this.specUtils._tabToActive(null);
+    this.specUtils._getMeSpecLevelCommentsTask(null);
   }
 
   onClickEnter(event: KeyboardEventInit) {
     if (event.key === 'Enter' && this.comment.trim().length !== 0) {
-      this.onClickSend()
+      this.onClickSend();
     }
   }
 
@@ -76,7 +86,7 @@ export class CommentsCrPanelComponent implements OnInit {
   }
 
   switchHeaders(event: any) {
-    this.activeIndex = event.index
+    this.activeIndex = event.index;
     if (event.index == 0) {
       let specData = localStorage.getItem('SPEC_DATA');
       if (specData) {
@@ -89,7 +99,6 @@ export class CommentsCrPanelComponent implements OnInit {
     if (header == 'Change Request') {
       this.child.getCRList();
     } else {
-      this.specUtils._commentsCrActiveTab(false);
       this.specUtils._tabToActive('COMMENT');
     }
   }
