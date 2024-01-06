@@ -218,8 +218,16 @@
   display: none;
 }
 
-:host ::ng-deep .menu-list-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon{
+:host ::ng-deep  .menu-list-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon{
   display: none;
+}
+
+:host ::ng-deep .menu-list-dropdown .p-dropdown{
+  background-color: transparent!important;
+}
+
+:host ::ng-deep .menu-list-dropdown .p-overlay{
+  left: -150px!important;
 }
 
 :host ::ng-deep .dueDate .p-button.p-button-icon-only {
