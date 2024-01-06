@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommentsService } from 'src/app/api/comments.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
@@ -34,7 +35,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private specService: SpecService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private commentsService: CommentsService
   ) {
   }
 
@@ -163,8 +165,29 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   openComments() {
     this.utils.disableDockedNavi();
-    this.specUtils.changeSpecConversationPanelFrom('spec_header');
-    this.specUtils._openCommentsPanel(true);
+    this.getMeAllCommentsList();
+  }
+
+  getMeAllCommentsList() {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    this.commentsService
+      .getCommentsByProductId({
+        productId: this.product?.id,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          if (response.data.length > 0)
+            this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 
   generate() {

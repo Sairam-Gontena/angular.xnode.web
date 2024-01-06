@@ -35,11 +35,14 @@ export class CommentsTabsComponent implements OnInit {
         this.activeIndex = 1;
       }
     });
-    this.specUtils.getMeSpecLevelCommentsTask.subscribe((event: any) => {
-      console.log('event', event);
 
+    this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
       if (event) {
+        this.activeIndex = 0;
         this.list = event;
+        this.showSpecLevelCommentsTasks = true;
+      } else {
+        this.showSpecLevelCommentsTasks = false;
       }
     });
 
@@ -58,17 +61,6 @@ export class CommentsTabsComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-    if (this.showSpecLevelCommentsTasks) {
-      if (this.activeIndex === 0) {
-        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.getMeSpecLevelCommentsList();
-      } else if (this.activeIndex === 1) {
-        this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.getMeSpecLevelTaskList();
-      }
-    } else {
-      if (this.activeIndex === null) this.getMeAllCommentsList();
-    }
   }
 
   ngOnDestroy() {

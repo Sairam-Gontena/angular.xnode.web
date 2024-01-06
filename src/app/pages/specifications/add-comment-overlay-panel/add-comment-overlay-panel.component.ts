@@ -74,8 +74,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.users = this.storageService.getItem(StorageKeys.USERLIST);
-    console.log('this.users', this.users);
-
     if (this.from == 'cr-tabs') {
       this.assignAsaTask = true;
     }
@@ -212,9 +210,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           followers: [],
           feedback: {},
         };
-        console.log('body', body);
-        // return
-
         this.saveComment(body);
       } else {
         this.prepareDataToSaveAsTask();
@@ -267,11 +262,57 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.assignAsaTask || this.activeIndex === 1) {
       this.specUtils._tabToActive('TASK');
     } else {
-      this.specUtils._tabToActive('COMMENT');
+      this.getMeAllCommentsList()
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
+  }
+
+
+  getMeAllCommentsList() {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    this.commentsService
+      .getCommentsByProductId({
+        productId: this.product?.id,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive('COMMENT');
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+
+
+  getMeAllTaskList() {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    this.commentsService
+      .getTasksByProductId({
+        productId: this.product?.id,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive('TASK');
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
   }
 
   prepareDataToSaveAsTask(): void {

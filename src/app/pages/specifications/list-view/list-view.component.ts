@@ -4,6 +4,7 @@ import { Section } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { delay, of } from 'rxjs';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-list-view',
@@ -35,8 +36,9 @@ export class ListViewComponent {
 
   constructor(
     private utils: UtilsService,
-    private specUtils: SpecUtilsService
-  ) {}
+    private specUtils: SpecUtilsService,
+    private commentsService: CommentsService
+  ) { }
 
   ngOnInit(): void {
     this.utils.clearSelectedContent.subscribe((res: boolean) => {
@@ -169,9 +171,30 @@ export class ListViewComponent {
         this.specUtils._openCommentsPanel(true);
       });
     this.specUtils._tabToActive('COMMENT');
-    this.specUtils._getMeSpecLevelCommentsTask(true);
+    this.getMeSpecLevelCommentsList()
   }
   toggleAddTask() {
     this.showAddTask = !this.showAddTask;
+  }
+
+  getMeSpecLevelCommentsList() {
+    this.utils.loadSpinner(true);
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService
+        .getComments({ parentId: selectedSpec.id, isReplyCountRequired: true })
+        .then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.specUtils._getMeUpdatedComments(response.data);
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
+    }
   }
 }

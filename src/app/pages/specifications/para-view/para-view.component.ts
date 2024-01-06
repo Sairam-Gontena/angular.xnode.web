@@ -37,7 +37,7 @@ export class ParaViewComponent {
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -170,11 +170,7 @@ export class ParaViewComponent {
   }
 
   openCommentSection() {
-    console.log('on click view');
-
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    this.specUtils._openCommentsPanel(true);
-    this.specUtils._tabToActive('COMMENT');
     this.getMeSpecLevelCommentsList();
   }
 
@@ -188,7 +184,10 @@ export class ParaViewComponent {
         .getComments({ parentId: selectedSpec.id, isReplyCountRequired: true })
         .then((response: any) => {
           if (response.status === 200 && response.data) {
-            this.specUtils._getMeSpecLevelCommentsTask(response.data);
+            this.specUtils._openCommentsPanel(true);
+            this.specUtils._tabToActive('COMMENT');
+            if (response.data.length > 0)
+              this.specUtils._getMeUpdatedComments(response.data);
           }
           this.utils.loadSpinner(false);
         })

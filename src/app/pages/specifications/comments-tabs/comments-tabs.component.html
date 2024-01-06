@@ -1,7 +1,7 @@
 <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
   <p-tabPanel [header]="'Comments'">
-    <xnode-comments-panel [list]="list" [swaggerData]="swaggerData" [usersList]="usersList" [activeIndex]="activeIndex"
-      *ngIf="list && list.length > 0"></xnode-comments-panel>
+    <xnode-comments-panel [list]="list" [swaggerData]="swaggerData" [usersList]="usersList"
+      [activeIndex]="activeIndex"></xnode-comments-panel>
   </p-tabPanel>
   <p-tabPanel [header]="'Tasks'">
     <xnode-tasks-panel [list]="list" [swaggerData]="swaggerData" [usersList]="usersList"

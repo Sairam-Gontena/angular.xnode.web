@@ -1,11 +1,11 @@
-<xnode-no-comments *ngIf="filterList.length === 0; else conversationComments"
+<xnode-no-comments *ngIf="filteredList.length === 0; else conversationComments"
     [content]="'No open tasks yet'"></xnode-no-comments>
 <ng-template #conversationComments>
     <div class="p-4">
         <div class="flex flex-row justify-content-between">
             <div class="">
                 <div class="flex align-items-center filter-grid ">
-                    <p class="m-0 pl-2">Filters:</p>
+                    <p class="m-0 pl-2">Filters1:</p>
                     <p-dropdown class="w-full" [options]="filterOptions" placeholder="Select "
                         [(ngModel)]="selectedFilter" optionLabel="label" (onChange)="filterList(list)"></p-dropdown>
                 </div>

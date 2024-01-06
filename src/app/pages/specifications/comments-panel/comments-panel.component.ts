@@ -71,27 +71,7 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('list', this.list);
     this.filterList();
-    // if (this.specUtils.specConversationPanelFrom == 'spec_header') {
-    //   let spec_version = localStorage.getItem('SPEC_VERISON');
-    //   if (spec_version) {
-    //     let data = JSON.parse(spec_version);
-    //     let id;
-    //     data.id ? id = data.id : id = data.versionId;
-    //     this.utils.loadSpinner(true);
-    //     this.apiService.getComments('comment/comments-by-productId?productId=' + data.productId + '&verisonId=' + id).then((res: any) => {
-    //       if (res.status === 200 && res.data) {
-    //         this.list = res.data;
-    //         this.filterList(res.data);
-    //       }
-    //       this.utils.loadSpinner(false);
-    //     }).catch((err) => {
-    //       console.log(err);
-    //       this.utils.loadSpinner(false);
-    //     })
-    //   }
-    // }
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {

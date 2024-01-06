@@ -18,6 +18,11 @@ export class SpecUtilsService {
   public getMeSpecLevelCommentsTask: Observable<any> =
     this.showSpecLevelCommentsTask.asObservable();
 
+  private shareNewComments: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public getMeUpdatedComments: Observable<any> =
+    this.shareNewComments.asObservable();
+
   private activateMainTab: BehaviorSubject<any> = new BehaviorSubject<any>(
     false
   );
@@ -66,6 +71,10 @@ export class SpecUtilsService {
 
   _getMeSpecLevelCommentsTask(event: any): void {
     this.showSpecLevelCommentsTask.next(event);
+  }
+
+  _getMeUpdatedComments(event: any): void {
+    this.shareNewComments.next(event);
   }
 
   _productDropdownChanged(event: boolean): void {
