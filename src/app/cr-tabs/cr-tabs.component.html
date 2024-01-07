@@ -133,11 +133,12 @@
                         </div>
                       </div>
                     </div>
-                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation;getMeActions(data)" [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
+                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation;getMeActions(data)"
+                      [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
                       <ng-template let-action pTemplate="item">
                         <span class="flex" (click)="updateChagneRequestStatus(action.label)">
                           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
-                          [ngStyle]="{width:'fit-content'}" [ngClass]="{
+                            [ngStyle]="{width:'fit-content'}" [ngClass]="{
                             'bg-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
                             'bg-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
                             'bg-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
@@ -194,8 +195,7 @@
                               }"></p-avatar>
                         </span>
                         <i class="pi pi-ellipsis-v text-base
-                         text-gray-200" #icon
-                          (click)="op.toggle($event, icon); $event.stopPropagation()"></i>
+                         text-gray-200" #icon (click)="op.toggle($event, icon); $event.stopPropagation()"></i>
                       </div>
                     </div>
                   </div>
@@ -236,7 +236,7 @@
                             <xnode-user-persona [searchTerm]="subData?.task?.referenceContent?.commentedtext"
                               [content]="subData?.task?.referenceContent?.content"></xnode-user-persona>
                           </div>
-                          <div *ngIf="subData?.task?.referenceContent.title === 'Dashboards'">
+                          <div *ngIf="subData?.task?.referenceContent?.title === 'Dashboards'">
                             <div class="flex justify-content-between align-items-center">
                               <h1 class="my-1">Dashboard</h1>
                             </div>
@@ -278,7 +278,7 @@
                               [users]="usersList"
                               [useCases]="subData?.task?.referenceContent.content"></xnode-common-usecases>
                           </div>
-                          <div *ngIf="subData?.task?.referenceContent.title === 'OpenAPI Spec'">
+                          <div *ngIf="subData?.task?.referenceContent?.title === 'OpenAPI Spec'">
                             <div class="flex col-12 justify-content-between align-items-center">
                               <h4 class="m-0">Swagger API</h4>
                             </div>

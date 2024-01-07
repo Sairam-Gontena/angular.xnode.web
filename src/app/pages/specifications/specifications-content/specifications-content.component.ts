@@ -77,7 +77,7 @@ export class SpecificationsContentComponent implements OnInit {
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.getUsersData();
+    // this.getUsersData();
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         this.specItemList = event;
@@ -105,7 +105,7 @@ export class SpecificationsContentComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          this.fetchOpenAPISpec();
+          // this.fetchOpenAPISpec();
         });
     }
   }
@@ -129,8 +129,8 @@ export class SpecificationsContentComponent implements OnInit {
       '&isVerified=true' +
       '&userId=' +
       this.currentUser.id;
-    this.fetchOpenAPISpec();
-    this.getUserByAccountId();
+    // this.fetchOpenAPISpec();
+    // this.getUserByAccountId();
     // this.fetchOpenAPISpec();
   }
 
@@ -302,7 +302,7 @@ export class SpecificationsContentComponent implements OnInit {
   closeFullScreenView(): void {
     this.expandView = true;
     this.specExpanded = false;
-    this.fetchOpenAPISpec();
+    // this.fetchOpenAPISpec();
     this.scrollToItem();
   }
 

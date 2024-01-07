@@ -18,9 +18,15 @@ export class CommentsService extends BaseApiService {
     let url = 'comment';
     return this.get(url, params);
   }
+
   getCommentsByProductId(params?: any) {
-    let url = 'comments-by-productId';
-    return this.get(url, params);
+    let url = 'comment/comments-by-productId?productId=' + params.productId + '&verisonId=' + params.versionId;
+    return this.get(url);
+  }
+
+  getTasksByProductId(params?: any) {
+    let url = 'task/tasks-by-productId?productId=' + params.productId + '&verisonId=' + params.versionId;
+    return this.get(url);
   }
 
   getTasks(params?: any) {
@@ -106,4 +112,5 @@ export class CommentsService extends BaseApiService {
   publishApp(body: any) {
     return this.post('product-spec/publish', body);
   }
+
 }
