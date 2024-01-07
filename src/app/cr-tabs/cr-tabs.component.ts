@@ -40,7 +40,7 @@ interface AutoCompleteCompleteEvent {
   providers: [DatePipe],
 })
 export class CrTabsComponent {
-  @Input() usersList: any;
+  usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData: any;
   @Input() crData: any;
@@ -196,6 +196,9 @@ export class CrTabsComponent {
   }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.usersList.forEach((element: any) => {
+      element.name = element.first_name + " " + element.last_name
+    });
     this.filters = [
       { title: 'All', code: 'ALL' },
       { title: 'Draft', code: 'DRAFT' },
@@ -207,6 +210,12 @@ export class CrTabsComponent {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
       this.filterListBySearch();
     });
+  }
+
+  getMefullname(event: any) {
+    console.log('eventeventevent', event);
+
+    return 'Test'
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
