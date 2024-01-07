@@ -962,8 +962,6 @@ export class CrTabsComponent {
   }
 
   onClickViewChanges(data: any): void {
-    console.log('data', data);
-    // this.specUtils._getSpecBasedOnVersionID(data);
     this.getMeSpecInfo(data);
   }
 

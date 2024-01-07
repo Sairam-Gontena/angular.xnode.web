@@ -126,8 +126,6 @@ export class TasksPanelComponent {
   }
 
   getMeTasksList() {
-    console.log('@@@');
-
     this.utils.loadSpinner(true);
     this.commentsService.getTasks({ parentId: this.specData?.id }).then((response: any) => {
       if (response && response.data?.common?.status !== 'fail') {

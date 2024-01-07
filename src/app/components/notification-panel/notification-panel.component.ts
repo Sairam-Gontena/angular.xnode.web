@@ -477,11 +477,9 @@ export class NotificationPanelComponent {
   }
 
   navigateToConversation(val: any) {
-    console.log('val', val);
     let notifInfo: any = val;
     notifInfo.productId = val.product_id ? val.product_id : val.productId;
     notifInfo.versionId = val.version_id ? val.version_id : val.versionId;
-
     if (!window.location.hash.includes('#/specification')) {
       const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
       let product = metaData.find(
@@ -567,8 +565,6 @@ export class NotificationPanelComponent {
   }
 
   getMeCrList(notifInfo: any) {
-    console.log('no');
-
     let body: any = {
       productId: notifInfo.productId,
     };
