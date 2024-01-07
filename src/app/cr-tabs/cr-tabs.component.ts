@@ -50,6 +50,7 @@ export class CrTabsComponent {
 
   addReviewerForm: FormGroup;
   filters: any;
+  selectedFilter: any;
   currentUser: any;
   showComment: boolean = false;
   header: string = '';
@@ -95,6 +96,10 @@ export class CrTabsComponent {
   selectedDateLabel: any;
   minDate: Date;
   dueDate: Date | undefined;
+  crIds: any = [];
+  reviewer: any;
+  archiveCRPopup: boolean = false;
+  unlinkCRPopup: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -126,6 +131,12 @@ export class CrTabsComponent {
 
   onSelectPriority(selectedPriority: any) {
     this.showDropdown = false;
+    let body = {
+      crIds: this.crIds,
+      priority: selectedPriority.value
+    }
+    this.updateCRActions(body);
+
   }
   closeDatePicker() {
     this.datePicker.overlayVisible = false;
@@ -134,26 +145,63 @@ export class CrTabsComponent {
     if (this.addUser) {
       this.addUser.hide();
     }
+
   }
   onDateSelect(event: any) {
     this.datePicker.overlayVisible = true;
     event.stopPropagation();
   }
+  archiveCR() {
+    let body = {
+      crIds: this.crIds
+    };
+    this.updateCRActions(body);
+  }
+  unlinkCRHeader() {
+    let body = {
+      crIds: this.crIds
+    };
+    this.unLinkCR(body);
+  }
   toggleDropdown() {
     this.showDropdown = true;
   }
-  updateReviewer(event: any) { }
-
-  updateDueDate(event: any) {
-    this.datePicker.overlayVisible = false;
+  updateReviewer(event: any) {
+    let body = {
+      crIds: this.crIds,
+      reviewers: this.getMeReviewerIds()
+    };
+    this.updateCRActions(body);
+    this.addUser.hide();
   }
 
+  updateDueDate(event: any) {
+    let body = {
+      crIds: this.crIds,
+      duedate: this.dueDate
+    };
+    this.updateCRActions(body);
+    this.datePicker.overlayVisible = false;
+
+  }
+  getMeReviewerIds() {
+    return {
+      reviewers: [
+        {
+          level: 'L1',
+          users: this.addReviewerForm.value.reviewersLOne.map((obj: any) => obj.user_id)
+        }
+      ]
+    }
+  }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filters = [
-      { title: 'Filters', code: 'F' },
-      { title: 'All', code: 'A' },
-      { title: 'None', code: 'N' },
+      { title: 'All', code: 'ALL' },
+      { title: 'Draft', code: 'DRAFT' },
+      { title: 'Updated', code: 'UPDATED' },
+      { title: 'Submitted', code: 'SUBMITTED' },
+      { title: 'Approved', code: 'APPROVED' },
     ];
     this.makeTrustedUrl();
     this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
@@ -259,6 +307,11 @@ export class CrTabsComponent {
     );
   }
 
+  filterListData() {
+    let filterWithStatus = true;
+    // this.selectedFilter.code == "ALL" ? this.getCRList() : this.getCRList(filterWithStatus);
+  }
+
   fetchOpenSpecAPI(id: any) {
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec' + id),
@@ -314,7 +367,36 @@ export class CrTabsComponent {
   onAccordionOpen(obj: any, index: number): void {
     this.getCRDetails(obj?.id, index);
   }
+  updateCRActions(body: any) {
+    this.utilsService.loadSpinner(true);
 
+    this.commentsService
+      .updateCRActions(body)
+      .then((response: any) => {
+        if (response && response.status === 201) {
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'CR Updated successfully',
+            detail: response?.data?.common?.status,
+          });
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err.message,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
   getCRDetails(crId: any, index: number): void {
     this.utilsService.loadSpinner(true);
     this.api
@@ -422,6 +504,7 @@ export class CrTabsComponent {
         this.header = 'Unlink CR';
         this.content = 'Are you sure you want to Unlink this CR?';
         this.openConfirmationPopUp = true;
+        this.unlinkCRPopup = true;
         break;
       default:
         break;
@@ -432,6 +515,8 @@ export class CrTabsComponent {
     if (action == 'Yes') {
       if (this.updateSpecBtnTriggered) {
         this.updateSpec();
+      } else if (this.unlinkCRPopup) {
+        this.unlinkCRHeader();
       } else {
         this.approveRequest();
       }
@@ -441,6 +526,7 @@ export class CrTabsComponent {
     }
     this.openConfirmationPopUp = false;
     this.updateSpecBtnTriggered = false;
+    this.unlinkCRPopup = false;
   }
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
@@ -513,7 +599,36 @@ export class CrTabsComponent {
         this.utilsService.loadSpinner(false);
       });
   }
+  unLinkCR(body: any): void {
 
+    this.commentsService
+      .unLinkCr(body)
+      .then((response: any) => {
+        if (response) {
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'CR has been successfully UnLinked',
+          });
+          this.specUtils._loadActiveTab({ activeIndex: 1 });
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utilsService.toggleTaskAssign(false);
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
   sendEmailNotificationToTheUser(): void {
     const body = {
       to: [this.currentUser?.email],
@@ -657,8 +772,6 @@ export class CrTabsComponent {
     this.commentsService
       .publishApp(body)
       .then((response: any) => {
-        console.log('response', response);
-
         if (response) {
           let user_audit_body = {
             method: 'POST',
@@ -766,6 +879,7 @@ export class CrTabsComponent {
                       : '' + ' ' + 'successfully',
           });
           // this.specUtils._getLatestCrList(true);
+          this.getMeCrList()
           this.crData.forEach((ele: any) => {
             ele.showComment = false;
           });
@@ -788,6 +902,37 @@ export class CrTabsComponent {
       });
   }
 
+  getMeCrList() {
+    let body: any = {
+      productId: this.product?.id,
+    };
+    this.utilsService.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          // this.specUtils._openCommentsPanel(true);
+          // this.specUtils._loadActiveTab(1);
+          this.specUtils._getMeUpdatedCrs(res.data);
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
   updateCommentsInfo(crInfo: any) {
     this.selectedCr['comments'] = crInfo.message;
     switch (this.selectedStatus) {
@@ -806,8 +951,8 @@ export class CrTabsComponent {
   }
 
   onCheckCheckbox(event: any): void {
-    // event.stopPropagation();
     this.checkedCrList = this.crData.filter((cr: any) => cr.checked);
+    this.crIds = this.checkedCrList.map((cr: any) => cr.id);
   }
 
   onClickUpdateSpec(): void {

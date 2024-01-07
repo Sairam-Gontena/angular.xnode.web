@@ -192,11 +192,11 @@
   border-radius: 6px;
 }
 
-:host ::ng-deep .priority-dropdown .p-dropdown-label {
+:host ::ng-deep .priority-dropdown .p-dropdown-label{
   display: none;
 }
 
-:host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
+:host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon{
   display: none;
 }
 
@@ -207,10 +207,80 @@
   width: 18px;
 }
 
+:host ::ng-deep .menu-list-dropdown .p-dropdown-trigger{
+  background: url('../../assets/kebab-menu.svg') no-repeat;
+  background-size: contain;
+  display: inline-block;
+  width: 18px;
+}
+
+:host ::ng-deep .menu-list-dropdown .p-dropdown-label{
+  display: none;
+}
+
+:host ::ng-deep  .menu-list-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon{
+  display: none;
+}
+
+:host ::ng-deep .menu-list-dropdown .p-dropdown{
+  background-color: transparent!important;
+}
+
+:host ::ng-deep .menu-list-dropdown .p-overlay{
+  left: -150px!important;
+}
+
 :host ::ng-deep .dueDate .p-button.p-button-icon-only {
   width: 1.5rem;
 }
 
+:host ::ng-deep .p-dropdown .p-dropdown-label {
+  background-color: #2E2D36 !important;
+  color: #ffffff !important;
+  width: 100%;
+}
+
+.filter-grid {
+  background: #2E2D36;
+  color: #EFEEEE;
+  width: 100% !important;
+}
+
+:host ::ng-deep .p-dropdown {
+  border: 1px solid #535354;
+  background-color: #2E2D36 !important;
+  color: #ffffff !important;
+  width: 100% !important;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-items-wrapper {
+  background-color: #2E2D36 !important;
+  max-height: 180px !important;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: #2E2D36 !important;
+  color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-item {
+  border: 1px solid #535354;
+  color: #ffffff !important;
+}
+
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover{
+  background: #2E2D36 !important;
+}
+
+:host ::ng-deep .p-dropdown .p-dropdown-items {
+  padding: 0;
+}
+
+:host ::ng-deep .p-dropdown-filter-container {
+  border: 1px solid transparent !important;
+  background: transparent;
+}
 :host::ng-deep .cancel-button .p-button {
   color: #23222B !important;
   // background: #2E2D36;

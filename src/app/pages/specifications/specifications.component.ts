@@ -162,9 +162,47 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     if (this.notifInfo?.template_type === 'COMMENT') {
       this.getMeAllCommentsList(this.notifInfo.product_id);
     }
+    if (this.notifInfo?.entity === 'WORKFLOW') {
+      this.getCRList();
+    }
 
     this.getUsersByAccountId();
 
+  }
+
+  getCRList() {
+    let body: any = {
+      productId: this.notifInfo?.product_id ? this.notifInfo?.product_id : this.notifInfo?.productId,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._loadActiveTab(1);
+          this.specUtils._getLatestCrList(res.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+        this.localStorageService.removeItem(StorageKeys.NOTIF_INFO);
+        this.notifInfo = undefined;
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+        this.localStorageService.removeItem(StorageKeys.NOTIF_INFO);
+        this.notifInfo = undefined;
+      });
   }
 
   searchText(keyword: any) {

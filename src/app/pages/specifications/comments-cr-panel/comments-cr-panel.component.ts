@@ -55,16 +55,16 @@ export class CommentsCrPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
-    this.specUtils.loadActiveTab.subscribe((res: any) => {
-      if (res) {
-        this.activeIndex = res.activeIndex;
-      } else {
-        this.activeIndex = 0;
-      }
-    });
-    this.specUtils.getMeCrList.subscribe((res: any) => {
+    this.specUtils.getMeUpdatedCrs.subscribe((res: any) => {
       if (res) {
         this.crData = res;
+      }
+    });
+    this.specUtils.loadActiveTab.subscribe((res: any) => {
+      if (res) {
+        this.activeIndex = res?.activeIndex ? res.activeIndex : res;
+      } else {
+        this.activeIndex = 0;
       }
     });
   }
@@ -80,6 +80,7 @@ export class CommentsCrPanelComponent implements OnInit {
     this.specUtils._getMeUpdatedTasks(null);
     this.specUtils._specLevelCommentsTasks(null);
     this.specUtils._loadActiveTab(null);
+    this.specUtils.saveActivatedTab(null);
   }
 
   onClickClose() {
@@ -92,6 +93,7 @@ export class CommentsCrPanelComponent implements OnInit {
     this.specUtils._getMeUpdatedTasks(null);
     this.specUtils._specLevelCommentsTasks(null);
     this.specUtils._loadActiveTab(null);
+    this.specUtils.saveActivatedTab(null);
   }
 
   onClickEnter(event: KeyboardEventInit) {

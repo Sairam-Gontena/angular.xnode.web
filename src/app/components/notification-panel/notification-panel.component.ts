@@ -203,8 +203,8 @@ export class NotificationPanelComponent {
       .getVersionIds(obj.product_id)
       .then((response) => {
         if (response.status === 200 && response.data) {
-          this.getMeSpecInfo({ versions: response.data, productId: obj.product_id, versionId: obj.versionId });
-          this.getMeCrList({ productId: obj.product_id })
+          this.getMeSpecInfo({ versions: response.data, productId: obj.product_id ? obj.product_id : obj.productId, versionId: obj.versionId });
+          this.getMeCrList({ productId: obj.product_id ? obj.product_id : obj.productId })
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -493,6 +493,9 @@ export class NotificationPanelComponent {
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('has_insights', product.has_insights);
       this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
+      if (val.entity === 'WORKFLOW') {
+        this.specUtils.saveActivatedTab('CR')
+      }
       this.router.navigate(['/specification']);
     } else {
       if (val.template_type === 'TASK') {
@@ -503,6 +506,9 @@ export class NotificationPanelComponent {
       }
       if (val.template_type === 'CR') {
         this.getMeCrList(notifInfo);
+      }
+      if (val.entity === 'WORKFLOW') {
+        this.getVersions(notifInfo)
       }
     }
     this.closeNotificationPanel.emit(true);
@@ -561,6 +567,8 @@ export class NotificationPanelComponent {
   }
 
   getMeCrList(notifInfo: any) {
+    console.log('no');
+
     let body: any = {
       productId: notifInfo.productId,
     };

@@ -90,6 +90,9 @@ export class CommentsPanelComponent implements OnInit {
           (item: any) => item.status === 'LINKED'
         );
         break;
+      case 'UNLINKED':
+        this.filteredList = data.filter((item: any) => item.status === 'UNLINKED');
+        break;
       case 'NEW':
         this.filteredList = this.list.filter(
           (item: any) => item.status === 'NEW'

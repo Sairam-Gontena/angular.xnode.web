@@ -35,16 +35,8 @@
     </div>
     <div class="flex align-items-center justify-content-between w-full pt-4 px-4">
       <div class="flex align-items-center mr-2">
-        <p-dropdown formControlName="product" [options]="filters" placeholder="Filter: All" optionLabel="title"
-          class="custom-dropdown" [filter]="true" filterBy="title" filterPlaceholder="Search">
-          <ng-template let-item pTemplate="item">
-            <div class="col-12 flex align-items-center justify-content-between">
-              <div class="title-container" [title]="item.title">
-                {{ item.title }}
-              </div>
-            </div>
-          </ng-template>
-        </p-dropdown>
+        <p-dropdown class="w-full" [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter"
+          optionLabel="title" (onChange)="filterListData()"></p-dropdown>
         <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
           (click)="createNewCr()"></p-button>
       </div>
@@ -141,14 +133,26 @@
                         </div>
                       </div>
                     </div>
-                    <i class="pi pi-ellipsis-v text-base mx-1 py-1 text-gray-200"
-                      *ngIf="data.status !== 'SUBMITTED' || data.status !== 'ARCHIVED'" (click)="
-                    op.toggle($event);
-                    updateSelectedCr(data);
-                    $event.stopPropagation();
-                    getMeActions(data)
-                  "></i>
-
+                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation;getMeActions(data)"
+                      [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
+                      <ng-template let-action pTemplate="item">
+                        <span class="flex" (click)="updateChagneRequestStatus(action.label)">
+                          <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
+                            [ngStyle]="{width:'fit-content'}" [ngClass]="{
+                            'bg-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+                            'bg-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+                            'bg-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+                            'border-yellow-500': action.value === 'DRAFT'}" [ngStyle]="{ 'padding': '3px' }"></i>
+                          <span class="text-sm font-normal ml-1" [ngClass]="{
+                                'text-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+                                'text-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+                                'text-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+                                'text-yellow-500': action.value === 'DRAFT'}">
+                            {{action.label}}
+                          </span>
+                        </span>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
                   <div class="flex align-items-center pl-4" style="margin-top: -15px">
                     <p class="text-xs shaded-color normal-font-weight">
@@ -190,8 +194,8 @@
                                 color: '#ffffff', fontSize: '10px'
                               }"></p-avatar>
                         </span>
-                        <i class="pi pi-ellipsis-v text-base mx-1 py-1 text-gray-200"
-                          (click)="op.toggle($event); $event.stopPropagation()"></i>
+                        <i class="pi pi-ellipsis-v text-base
+                         text-gray-200" #icon (click)="op.toggle($event, icon); $event.stopPropagation()"></i>
                       </div>
                     </div>
                   </div>
@@ -232,7 +236,7 @@
                             <xnode-user-persona [searchTerm]="subData?.task?.referenceContent?.commentedtext"
                               [content]="subData?.task?.referenceContent?.content"></xnode-user-persona>
                           </div>
-                          <div *ngIf="subData?.task?.referenceContent.title === 'Dashboards'">
+                          <div *ngIf="subData?.task?.referenceContent?.title === 'Dashboards'">
                             <div class="flex justify-content-between align-items-center">
                               <h1 class="my-1">Dashboard</h1>
                             </div>
@@ -274,7 +278,7 @@
                               [users]="usersList"
                               [useCases]="subData?.task?.referenceContent.content"></xnode-common-usecases>
                           </div>
-                          <div *ngIf="subData?.task?.referenceContent.title === 'OpenAPI Spec'">
+                          <div *ngIf="subData?.task?.referenceContent?.title === 'OpenAPI Spec'">
                             <div class="flex col-12 justify-content-between align-items-center">
                               <h4 class="m-0">Swagger API</h4>
                             </div>
@@ -307,8 +311,8 @@
                                 color: '#ffffff', fontSize: '10px'
                               }"></p-avatar>
                         </span>
-                        <i class="pi pi-ellipsis-v text-base mx-1 py-1 text-gray-200"
-                          (click)="op.toggle($event); $event.stopPropagation()"></i>
+                        <i class="pi pi-ellipsis-v text-base mr-3 ml-0 py-1 text-gray-200" #icon
+                          (click)="op.toggle($event,icon); $event.stopPropagation()"></i>
                       </div>
                     </div>
                   </div>
@@ -423,7 +427,7 @@
     <xnode-no-comments *ngIf="crData?.length === 0" [content]="'No open CRs yet'"></xnode-no-comments>
   </div>
 
-  <p-overlayPanel #op>
+  <p-overlayPanel #op my="left top" at="right top">
     <div class="card p-0 m-0" *ngFor="let action of crActions">
       <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
         (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
@@ -461,7 +465,7 @@
                 </ng-template>
               </p-autoComplete>
             </div>
-            <div class="col-12 m-0 p-0 flex justify-content-end mt-3">
+            <div class="col-12 m-0 p-0 flex justify-content-end mt-3 gap-2">
               <p-button label="Close" [rounded]="true" class="cancel-button" (click)="closeAddUser()"></p-button>
               <p-button label="Add" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
                 (click)="updateReviewer($event)"></p-button>
@@ -473,7 +477,7 @@
   </p-overlayPanel>
 </div>
 <xnode-confirmation-popup-new [header]="header" [content]="content"
-  [visible]="openConfirmationPopUp || updateSpecBtnTriggered"
+  [visible]="openConfirmationPopUp || updateSpecBtnTriggered "
   (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR" [versions]="[]"
   (close)="showNewCrPopup = false;">

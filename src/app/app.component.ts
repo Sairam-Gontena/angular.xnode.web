@@ -17,6 +17,7 @@ import { AuthApiService } from './api/auth.service';
 import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { SpecUtilsService } from './components/services/spec-utils.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -58,9 +59,10 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
+    private specUtils:SpecUtilsService
   ) {
     let winUrl = window.location.href;
-    if(winUrl.includes('template_id')|| winUrl.includes('template_type')){
+    if((winUrl.includes('template_id')|| winUrl.includes('template_type'))||(winUrl.includes('crId')|| winUrl.includes('versionId'))){
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
     }else{
@@ -110,17 +112,39 @@ export class AppComponent implements OnInit {
     let hash = urlObj.hash;
     let [path, queryString] = hash.substr(1).split('?');
     let params = new URLSearchParams(queryString);
+    this.navigateByDeepLink(params);
+  }
+
+  async navigateByDeepLink(params:any){
     let templateId = params.get('template_id');
     let templateType = params.get('template_type');
     let productId = params.get('product_id');
     let versionId = params.get('version_id');
-    if(templateId && templateType){
-      let deepLinkInfo = {
-        product_id: productId,
-        template_id: templateId,
-        template_type: templateType,
-        version_id:versionId
-      };
+
+    let crId = params.get('crId');
+    let entity = params.get('entity');
+    if((templateId && templateType) || (crId && entity)){
+      let deepLinkInfo;
+      if((templateId && templateType)){
+        deepLinkInfo= {
+          product_id: productId,
+          template_id: templateId,
+          template_type: templateType,
+          version_id:versionId
+        };
+      }
+      if((crId && entity)){
+        versionId = params.get('versionId');
+        productId =  params.get('productId');
+        deepLinkInfo = {
+          product_id: productId,
+          entity: entity,
+          cr_id: crId,
+          version_id:versionId
+        };
+        this.specUtils._openCommentsPanel(true);
+        this.specUtils._loadActiveTab({activeIndex: 1, productId: deepLinkInfo.product_id, versionId: deepLinkInfo.version_id});
+      }
       await this.setDeepLinkInStorage(deepLinkInfo)
       this.router.navigateByUrl('specification');
     }
