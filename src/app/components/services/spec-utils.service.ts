@@ -43,6 +43,9 @@ export class SpecUtilsService {
   private getLatestCrList: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getMeCrList: Observable<any> = this.getLatestCrList.asObservable();
 
+  private closeNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public closeNaviWindow: Observable<boolean> = this.closeNavi.asObservable();
+
   private updateProduct: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeUpdatedProduct: Observable<string> =
     this.updateProduct.asObservable();
@@ -122,6 +125,10 @@ export class SpecUtilsService {
 
   _getLatestCrList(event: any): void {
     this.getLatestCrList.next(event);
+  }
+
+  _closeNaviWindow(event: boolean): void {
+    this.closeNavi.next(event);
   }
 
   _loadActiveTab(event: any): void {

@@ -37,7 +37,7 @@ export class ParaViewComponent {
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
