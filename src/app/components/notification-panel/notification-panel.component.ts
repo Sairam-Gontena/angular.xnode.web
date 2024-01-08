@@ -178,18 +178,21 @@ export class NotificationPanelComponent {
     const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
     let product = metaData.find((x: any) => x.id === obj.product_id);
     if (!window.location.hash.includes('#/specification')) {
-      this.setProductDetailsInThStore(product)
+      this.setProductDetailsInThStore(product);
       this.closeNotificationPanel.emit(true);
     } else {
       if (obj.entity === 'UPDATE_SPEC') {
-        this.getVersions(obj)
+        this.getVersions(obj);
       } else {
-        this.setProductDetailsInThStore(product)
+        this.setProductDetailsInThStore(product);
       }
     }
   }
   setProductDetailsInThStore(product: any): void {
-    localStorage.setItem('record_id', product.id);
+    product.productId = product.product_id
+      ? product.product_id
+      : product.productId;
+    localStorage.setItem('record_id', product.productId);
     localStorage.setItem('product', JSON.stringify(product));
     localStorage.setItem('app_name', product.title);
     localStorage.setItem('has_insights', product.has_insights);
@@ -203,8 +206,14 @@ export class NotificationPanelComponent {
       .getVersionIds(obj.product_id)
       .then((response) => {
         if (response.status === 200 && response.data) {
-          this.getMeSpecInfo({ versions: response.data, productId: obj.product_id ? obj.product_id : obj.productId, versionId: obj.versionId });
-          this.getMeCrList({ productId: obj.product_id ? obj.product_id : obj.productId })
+          this.getMeSpecInfo({
+            versions: response.data,
+            productId: obj.product_id ? obj.product_id : obj.productId,
+            versionId: obj.versionId,
+          });
+          this.getMeCrList({
+            productId: obj.product_id ? obj.product_id : obj.productId,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -232,7 +241,12 @@ export class NotificationPanelComponent {
           response.data &&
           response.data.length > 0
         ) {
-          this.specUtils._getLatestSpecVersions({ versions: body.versions, specData: response.data, productId: body.productId, versionId: body.versionId })
+          this.specUtils._getLatestSpecVersions({
+            versions: body.versions,
+            specData: response.data,
+            productId: body.productId,
+            versionId: body.versionId,
+          });
         }
         this.utils.loadSpinner(false);
         this.closeNotificationPanel.emit(true);
@@ -485,14 +499,17 @@ export class NotificationPanelComponent {
       let product = metaData.find(
         (x: any) => x.id === val.product_id || x.id === val.productId
       );
-      this.storageService.saveItem(StorageKeys.Product, JSON.stringify(product));
+      this.storageService.saveItem(
+        StorageKeys.Product,
+        JSON.stringify(product)
+      );
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('product', JSON.stringify(product));
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('has_insights', product.has_insights);
       this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
       if (val.entity === 'WORKFLOW') {
-        this.specUtils.saveActivatedTab('CR')
+        this.specUtils.saveActivatedTab('CR');
       }
       this.router.navigate(['/specification']);
     } else {
@@ -506,7 +523,7 @@ export class NotificationPanelComponent {
         this.getMeCrList(notifInfo);
       }
       if (val.entity === 'WORKFLOW') {
-        this.getVersions(notifInfo)
+        this.getVersions(notifInfo);
       }
     }
     this.closeNotificationPanel.emit(true);
