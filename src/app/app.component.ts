@@ -17,17 +17,13 @@ import { AuthApiService } from './api/auth.service';
 import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
-<<<<<<< HEAD
 import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json'
-
+import { SpecUtilsService } from './components/services/spec-utils.service';
 interface City {
   name: string;
   code: string;
 }
-=======
-import { SpecUtilsService } from './components/services/spec-utils.service';
->>>>>>> 7e0406f59923347f8a84c324df068f57f5d188dd
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -56,16 +52,12 @@ export class AppComponent implements OnInit {
   showCommentIcon?: boolean;
   screenWidth: number;
   screenHeight: number;
-<<<<<<< HEAD
   deepLink:boolean=false;
   colorPallet :any;
 
   cities: City[] | undefined;
 
   selectedCity: City | undefined;
-=======
-  deepLink: boolean = false;
->>>>>>> 7e0406f59923347f8a84c324df068f57f5d188dd
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -78,12 +70,9 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
-<<<<<<< HEAD
     private route: ActivatedRoute,
-    private themeService:ThemeService
-=======
+    private themeService:ThemeService,
     private specUtils: SpecUtilsService
->>>>>>> 7e0406f59923347f8a84c324df068f57f5d188dd
   ) {
     let winUrl = window.location.href;
     if ((winUrl.includes('template_id') || winUrl.includes('template_type')) || (winUrl.includes('crId') || winUrl.includes('versionId'))) {
