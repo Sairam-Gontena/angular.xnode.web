@@ -8,7 +8,6 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
-import { delay, of } from 'rxjs';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -95,14 +94,13 @@ export class CreateNewCrVersionComponent implements OnInit {
       StorageKeys.CurrentUser
     );
     this.getUserByAccountId();
-    this.header=='Add New CR'?this.selectedCR='':this.selectedCR = this.selectedCR;
+    this.selectedCR = this.header === 'Add New CR' ? '' : this.selectedCR;
     if(this.selectedCR && this.header=='Edit CR'){
       this.updateCRForm();
     }
   }
 
   updateCRForm(){
-    of(([])).pipe(delay(1000)).subscribe((results) => {
       this.crForm.patchValue({
         title: this.selectedCR.title,
         description: this.selectedCR.description,
@@ -116,7 +114,6 @@ export class CreateNewCrVersionComponent implements OnInit {
         minor: this.selectedCR.version.productVersion.minor,
         build: this.selectedCR.version.productVersion.build,
       });
-    });
   }
 
   onMajorInputChange(event: Event) {
