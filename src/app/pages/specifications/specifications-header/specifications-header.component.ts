@@ -30,6 +30,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   showSpecGenaretePopup: any;
   isTheCurrentUserOwner: any;
   productStatusPopupContent: any;
+  specData: any;
 
   constructor(
     private utils: UtilsService,
@@ -38,6 +39,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private storageService: LocalStorageService,
     private commentsService: CommentsService
   ) {
+    this.specData = this.storageService.getItem(StorageKeys.SpecData);
     this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
       if (data && data.versions) {
         this.versions = data.versions;
@@ -170,7 +172,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.enabledGeneratespec = false;
     }
   }
-
   viewPublishedApp() {
     let productUrl = localStorage.getItem('product_url');
     if (productUrl) {

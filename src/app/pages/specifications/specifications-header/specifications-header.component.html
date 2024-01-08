@@ -20,7 +20,8 @@
             <p-overlayPanel class="overlay-class" #op>
                 <div class="confirm-overlay p-2 cursor-pointer" (keyup)="askConfirmationOnClickGenerate()"
                     (keydown)="op.hide()" (keypress)="askConfirmationOnClickGenerate()"
-                    (click)="askConfirmationOnClickGenerate();op.hide()">Generate Spec</div>
+                    (click)="askConfirmationOnClickGenerate();op.hide()" *ngIf="!specData">
+                    Generate Spec</div>
                 <div class="confirm-overlay p-2 cursor-pointer" (keyup)="viewPublishedApp()" (keydown)="op.hide()"
                     (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
                     Published App</div>
