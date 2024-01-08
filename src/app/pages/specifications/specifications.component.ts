@@ -554,6 +554,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       email: this?.product.email,
       conversation_history: this.consversationList,
       product_id: this.product.id,
+      user_id: this.currentUser.user_id
     };
     let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;
