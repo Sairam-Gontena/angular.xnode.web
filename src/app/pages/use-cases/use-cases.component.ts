@@ -18,6 +18,7 @@ export class UseCasesComponent implements OnInit {
   currentUser?: User;
   useCases: any;
   specData: any;
+  productChanged: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -39,6 +40,7 @@ export class UseCasesComponent implements OnInit {
     );
     localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
+    this.productChanged = true;
     this.getMeStorageData();
   }
 
@@ -53,26 +55,30 @@ export class UseCasesComponent implements OnInit {
   }
 
   getMeUsecases(): void {
-    this.apiService.get("navi/get_usecases/" + localStorage.getItem('record_id'))
-      .then((response: any) => {
-        if (response?.status === 200) {
-          this.useCases = response.data;
-          this.auditUtil.postAudit("RETRIEVE_USECASES", 1, 'SUCCESS', 'user-audit');
-        } else {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
-          this.auditUtil.postAudit("RETRIEVE_USECASES" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
-        }
-        this.utils.loadSpinner(false);
-      }).catch(error => {
-        let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
-        this.utils.loadSpinner(false);
-        this.auditUtil.postAudit("RETRIEVE_USECASES" + error, 1, 'FAILURE', 'user-audit');
-      });
-    // const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    // this.useCases = list[2].content[0].content;
+    if (this.productChanged) {
+      this.apiService.get("navi/get_usecases/" + localStorage.getItem('record_id'))
+        .then((response: any) => {
+          if (response?.status === 200) {
+            this.useCases = response.data;
+            this.auditUtil.postAudit("RETRIEVE_USECASES", 1, 'SUCCESS', 'user-audit');
+          } else {
+            this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+            this.auditUtil.postAudit("RETRIEVE_USECASES" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
+          }
+          this.utils.loadSpinner(false);
+        }).catch(error => {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': error?.request?.responseURL
+          }
+          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+          this.utils.loadSpinner(false);
+          this.auditUtil.postAudit("RETRIEVE_USECASES" + error, 1, 'FAILURE', 'user-audit');
+          this.productChanged = false;
+        });
+    } else {
+      const list: any = this.storageService.getItem(StorageKeys.SpecData);
+      this.useCases = list[2].content[0].content;
+    }
   }
 }
