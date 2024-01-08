@@ -480,7 +480,7 @@
   [visible]="openConfirmationPopUp || updateSpecBtnTriggered "
   (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" [header]="crHeader " [versions]="[]"
-  (close)="showNewCrPopup = false;" [selectedCR]="selectedCr">
+  (close)="showNewCrPopup = false;emitData($event)" [selectedCR]="selectedCr">
 </xnode-create-new-cr-version>
 
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup" [limitReachedContent]="true"

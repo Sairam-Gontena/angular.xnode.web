@@ -148,6 +148,13 @@ export class CrTabsComponent {
     }
 
   }
+
+  emitData(event:any){
+    if(event){
+      this.getMeCrList();
+    }
+  }
+
   onDateSelect(event: any) {
     this.datePicker.overlayVisible = true;
     event.stopPropagation();
@@ -503,8 +510,10 @@ export class CrTabsComponent {
         this.unlinkCRPopup = true;
         break;
       case 'EDIT':
-        this.showNewCrPopup = true;
-        this.crHeader = 'Edit CR';
+        if(this.selectedCr?.status=='DRAFT'||this.selectedCr?.status=='GENERATED'){
+          this.showNewCrPopup = true;
+          this.crHeader = 'Edit CR';
+        }
         break;
       default:
         break;
