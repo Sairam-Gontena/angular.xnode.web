@@ -454,7 +454,7 @@
             <div class="col-12 p-0 m-0 ">
               <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers" formControlName="reviewersLOne"
                 (completeMethod)="filteredReveiwer($event, 'L1')" field="name" [multiple]="true" styleClass="w-full"
-                class="add-reviewer">
+                class="add-reviewer" (click)="$event.stopPropagation()">
                 <ng-template let-reviewer pTemplate="selectedItem">
                   <div class="flex align-items-center">
                     <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
