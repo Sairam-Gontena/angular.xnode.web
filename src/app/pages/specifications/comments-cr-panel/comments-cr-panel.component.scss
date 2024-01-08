@@ -42,25 +42,25 @@
     color: #EFEEEE;
 }
 
-:host ::ng-deep .p-tabview .p-tabview-nav,
-:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link,
-:host ::ng-deep .p-tabview .p-tabview-panels {
-    background: linear-gradient(0deg, #23222B, #23222B),
-        linear-gradient(0deg, #535354, #535354);
-}
+// :host ::ng-deep .p-tabview .p-tabview-nav,
+// :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link,
+// :host ::ng-deep .p-tabview .p-tabview-panels {
+//     background: linear-gradient(0deg, #23222B, #23222B),
+//         linear-gradient(0deg, #535354, #535354);
+// }
 
-:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    border-color: #02ADEE;
-    color: #02ADEE;
-    padding: 1.5rem 1.25rem;
-    font-weight: 500;
-}
+// :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+//     border-color: #02ADEE;
+//     color: #02ADEE;
+//     padding: 1.5rem 1.25rem;
+//     font-weight: 500;
+// }
 
-:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    padding: 1.5rem 1.25rem;
-    color: #949292;
-    font-weight: 500;
-}
+// :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+//     padding: 1.5rem 1.25rem;
+//     color: #949292;
+//     font-weight: 500;
+// }
 
 .comments-cr-close {
     position: absolute;

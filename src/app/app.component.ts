@@ -18,6 +18,7 @@ import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { ThemeService } from './theme.service';
+import themeing from '../themes/customized-themes.json'
 
 interface City {
   name: string;
@@ -150,33 +151,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  changeTheme(event: any) {
+    this.themeService.changeColorTheme(event);
+  }
+
   ngOnInit(): void {
-    this.colorPallet = [
-      { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-      { primary:'#42A5F5',secondary:'#E3F2FD',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-      { primary:'#311B92',secondary:'#9FA8DA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-      { primary:'#0D47A1',secondary:'#90CAF9',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-      { primary:'#01579B',secondary:'#81D4FA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-      { primary:'#004D40',secondary:'#80CBC4',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  ];
-    this.cities = [
-      { name: 'New York', code: 'lara-light-blue' },
-      { name: 'lara-dark-blue', code: 'lara-dark-blue' },
-      { name: 'aga-blue', code: 'saga-blue' },
-      { name: 'md-light-indigo', code: 'md-light-indigo' },
-      { name: 'Romd-dark-indigome3', code: 'md-dark-indigo' },
-      { name: 'bootstrap4-light-blue', code: 'bootstrap4-light-blue' },
-      { name: 'arya-green', code: 'arya-green' },
-      { name: 'arya-orange', code: 'arya-orange' },
-      { name: 'arya-purple', code: 'arya-purple' },
-      { name: 'nova', code: 'nova' },
-      { name: 'nova-alt', code: 'nova-alt' },
-      { name: 'nova-accent', code: 'nova-accent' },
-      { name: 'luna-amber', code: 'luna-amber' },
-      { name: 'luna-blue', code: 'luna-blue' },
-      { name: 'luna-green', code: 'luna-green' },
-      { name: 'rhea', code: 'rhea' },
-  ];
+    this.colorPallet = themeing.theme;
+
+    setTimeout(()=>{
+      this.changeTheme(this.colorPallet[6])
+    },1000)
+
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);

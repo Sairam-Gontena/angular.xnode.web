@@ -1,21 +1,25 @@
+:host ::ng-deep .p-inputtext.p-inputtext-sm{
+    border-radius: 30px;
+}
+
 @media (max-width: 767px) {
     :host ::ng-deep .p-tabview {
         width: 100% !important;
     }
 
-    :host ::ng-deep .p-button.p-button-secondary {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    // :host ::ng-deep .p-button.p-button-secondary {
+    //     padding-left: 10px;
+    //     padding-right: 10px;
+    // }
 
-    :host ::ng-deep .p-inputtext {
-        background-color: #4F4E55;
-        width: 100%;
-        border-width: 0;
-        border-radius: 50px;
-        height: 40px;
-        margin-left: 5px;
-    }
+    // :host ::ng-deep .p-inputtext {
+    //     background-color: #4F4E55;
+    //     width: 100%;
+    //     border-width: 0;
+    //     border-radius: 50px;
+    //     height: 40px;
+    //     margin-left: 5px;
+    // }
 
     .txt-heading {
         font-size: 36px;
@@ -89,24 +93,24 @@
 
 /* Tablets (768px to 991px width) */
 @media (min-width: 768px) and (max-width: 991px) {
-    :host ::ng-deep .p-button {
-        padding-left: 0px;
-        padding-right: 0px;
-    }
+    // :host ::ng-deep .p-button {
+    //     padding-left: 0px;
+    //     padding-right: 0px;
+    // }
 
-    :host ::ng-deep .p-button.p-button-secondary {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    // :host ::ng-deep .p-button.p-button-secondary {
+    //     padding-left: 10px;
+    //     padding-right: 10px;
+    // }
 
-    :host ::ng-deep .p-inputtext {
-        background-color: #4F4E55;
-        width: 100%;
-        border-width: 0;
-        border-radius: 50px;
-        height: 40px;
-        margin-left: 5px
-    }
+    // :host ::ng-deep .p-inputtext {
+    //     background-color: #4F4E55;
+    //     width: 100%;
+    //     border-width: 0;
+    //     border-radius: 50px;
+    //     height: 40px;
+    //     margin-left: 5px
+    // }
 
     .txt-heading {
         font-size: 48px;
@@ -160,19 +164,19 @@
 }
 
 @media (min-width: 992px) {
-    :host ::ng-deep .p-button.p-button-secondary {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    // :host ::ng-deep .p-button.p-button-secondary {
+    //     padding-left: 10px;
+    //     padding-right: 10px;
+    // }
 
-    :host ::ng-deep .p-inputtext {
-        background-color: #4F4E55;
-        width: 100%;
-        border-width: 0;
-        border-radius: 50px;
-        height: 40px;
-        margin-left: 5px
-    }
+    // :host ::ng-deep .p-inputtext {
+    //     background-color: #4F4E55;
+    //     width: 100%;
+    //     border-width: 0;
+    //     border-radius: 50px;
+    //     height: 40px;
+    //     margin-left: 5px
+    // }
 
     .txt-heading {
         font-size: 36px;
@@ -230,13 +234,13 @@
     }
 }
 
-:host ::ng-deep .p-inputtext:enabled:focus {
-    box-shadow: none;
-}
+// :host ::ng-deep .p-inputtext:enabled:focus {
+//     box-shadow: none;
+// }
 
-:host ::ng-deep .p-inputtext ::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
+// :host ::ng-deep .p-inputtext ::placeholder {
+//     color: rgba(255, 255, 255, 0.5);
+// }
 
 :host ::ng-deep .p-card {
     background: #4E4D55;
@@ -326,9 +330,9 @@
 }
 
 @media screen and (max-width: 600px) {
-    .search .p-inputtext {
-        width: 95%;
-    }
+    // .search .p-inputtext {
+    //     width: 95%;
+    // }
 }
 
 .tmp-page-height {
@@ -347,6 +351,7 @@
 .body-container {
     height: 100%;
     width: 100%;
+    background-color: #3A3942;
 }
 
 ::placeholder {
@@ -404,19 +409,19 @@
     margin-bottom: 10px
 }
 
-:host ::ng-deep .navi-btn.p-button {
-    background: var(--primary-color);
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border: 1px solid var(--primary-color);
-}
+// :host ::ng-deep .navi-btn.p-button {
+//     background: var(--primary-color);
+//     border: 1px solid var(--primary-color);
+// }
+// :host ::ng-deep .p-button .p-button-label{
+//     color : var(--primary-button-text-color)
+// }
 
-.p-button:enabled:hover {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-}
+// .p-button:enabled:hover {
+//     background: var(--primary-color);
+//     border-color: var(--primary-color);
+//     border: 1px solid var(--primary-color);
+// }
 
 :host::ng-deep.p-avatar .p-avatar-text {
     font-size: 11px;

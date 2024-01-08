@@ -2,7 +2,7 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "primeicons/primeicons.css";
 // @import './themes/viva-dark/theme.css';
-@import './theme.scss';
+// @import './theme.scss';
 @import './app/styles/overrides.scss';
 // @import './app/styles/utils.scss';
 @import 'node_modules/bpmn-js/dist/assets/diagram-js.css';
@@ -360,15 +360,7 @@ body {
   height: 330px;
 }
 
-// .p-column-filter-overlay-menu .p-column-filter-operator {
-//   background-color: #23222B;
-//   border-bottom: 1px solid #2E2D36;
-
-// }
-
 .p-column-filter-overlay-menu .p-column-filter-constraint {
-  // background-color: #23222B;
-  // border-bottom: 1px solid #2E2D36;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
@@ -376,44 +368,48 @@ body {
 .p-column-filter-overlay-menu .p-column-filter-add-rule {
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
-  // color: #fff;
 }
 
-// .p-button.p-button-text {
-//   color: #fff;
-// }
+.p-button {
+  // height: 10px;
+}
 
-// .p-button.p-button-outlined {
-//   border: 1px solid white;
-//   color: #fff
-// }
+//auto complete css
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  color: #fff;
+}
 
-// .p-dropdown {
-//   background-color: #2E2D36;
-// }
 
-// .p-dropdown {
-//   background-color: #2E2D36;
-// }
+.p-autocomplete-panel .p-autocomplete-items {
+  background-color: #2E2D36;
+  color: white;
+}
 
-// .p-inputtext {
-//   background-color: #2E2D36;
-//   color: #ffffff;
-// }
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  color: white;
+}
 
-// .template-builder-wrapper .p-inputtext {
-//   color: black;
-// }
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
+  color: black;
+}
 
-// .p-column-filter-menu-button {
-//   background-color: #2E2D36;
-// }
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
+  color: black;
+}
 
-// .video-modal .p-dialog .p-dialog-header,
-// .video-modal .p-dialog .p-dialog-content {
-//   background-color: #2E2D36 !important;
-//   color: white !important;
-// }
+.p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-token {
+  background: #535354;
+  font-size: 14px;
+  border-radius: 20px;
+  padding: 5px;
+  color: #fff;
+}
+
+.video-modal .p-dialog .p-dialog-header,
+.video-modal .p-dialog .p-dialog-content {
+  background-color: #2E2D36 !important;
+  color: white !important;
+}
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -441,24 +437,7 @@ body {
 //   color: #02ADEE !important;
 // }
 
-.p-overlaypanel,
-.p-overlaypanel-content {
-  // padding: 10px !important;
-  background-color:var(--body-color);
-  // color: white;
-  // border: 1px solid #535354;
-  border-radius: 6px;
-}
 
-// .p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
-//   background-color: #393843;
-//   color: #ffffff !important
-// }
-
-.p-overlaypanel .p-overlaypanel-content {
-  // padding: 0px !important;
-  border-width: 0px;
-}
 
 .cr-tabs .p-accordion .p-accordion-header .p-accordion-header-link {
   background: transparent !important;
@@ -505,3 +484,7 @@ body {
   /* IE6-9 */
 
 }
+
+// .p-overlaypanel {
+//   margin-top: 0px !important;
+// }

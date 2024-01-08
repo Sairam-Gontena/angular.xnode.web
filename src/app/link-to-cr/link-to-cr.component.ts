@@ -37,7 +37,7 @@ export class LinkToCrComponent implements OnInit {
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
-  @Input() entityType?= '';
+  @Input() entityType? = '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -67,6 +67,9 @@ export class LinkToCrComponent implements OnInit {
   selectedPriority: string = '';
   selectedVersion: string = '';
   selectedDueDate: any;
+  content: any;
+  header: any;
+  openConfirmationPopUp: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -74,7 +77,8 @@ export class LinkToCrComponent implements OnInit {
     private messagingService: MessagingService,
     private commentsService: CommentsService,
     private utilsService: UtilsService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+
   ) {
     this.crForm = this.fb.group({
       crToAdd: new FormControl(
@@ -178,11 +182,27 @@ export class LinkToCrComponent implements OnInit {
         });
       });
   }
+  onClickAction(action: string) {
 
+    if (action === 'Yes') {
+      this.showNewCrPopup = true;
+    }
+    this.openConfirmationPopUp = false;
+  }
 
   onDropdownChange(event: any): void {
     if (event?.value === 'ADD_NEW') {
-      this.showNewCrPopup = true;
+      let isDraftCrExist = this.crList.some((item: any) => {
+        return item.status === "DRAFT";
+      });
+
+      if (isDraftCrExist) {
+        this.openConfirmationPopUp = true;
+        this.header = 'Confirmation';
+        this.content = 'There are already some active draft CRs. Are you sure you want to create a new CR?';
+      } else {
+        this.showNewCrPopup = true;
+      }
     } else if (event && event?.value !== '' && event?.value !== 'ADD_NEW') {
       this.selectedPriority = event.priority;
       this.selectedVersion = event.version.productVersion.version;

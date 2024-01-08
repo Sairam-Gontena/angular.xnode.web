@@ -15,13 +15,12 @@
     </span>
   </div>
   <div class="flex justify-content-end mt-6">
-    <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
-      (click)="onReject()"></p-button>
+    <p-button label="Cancel" size="small" severity="secondary" [rounded]="true" class="mr-3"
+      (click)="onReject()"></p-button> 
     <span class="invite">
-      <p-button *ngIf="notUserRelated; else userRelatedBtn" (click)="confirmDelete()" label="Confirm"
-        styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"></p-button>
+      <p-button *ngIf="notUserRelated; else userRelatedBtn" (click)="confirmDelete()" size="small" label="Confirm" [rounded]="true"></p-button>
       <ng-template #userRelatedBtn>
-        <p-button [label]="data?.type" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+        <p-button [label]="data?.type" size="small" [rounded]="true"
           (click)="onSuccess()"></p-button>
       </ng-template>
     </span>

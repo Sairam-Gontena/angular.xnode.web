@@ -18,7 +18,7 @@
                 <p-overlayPanel #op1>
                  <div class="">
                     <div class="col-12 flex w-9rem flex-wrap">
-                        <div *ngFor="let color of colorPallet" class="ml-2 mt-2" >
+                        <div *ngFor="let color of colorPallet" class="ml-2 mt-2">
                             <div (click)="changeTheme(color)" style="height: 20px;width: 20px;"  [style.background]="color.primary"></div>
                         </div>
                         <div class="py-3 flex  justify-content-between align-content-center">
@@ -39,9 +39,6 @@
             <p-avatar [label]="userImage" *ngIf="username" styleClass="mr-2"
                 [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
                 shape="circle"></p-avatar>
-                <!-- <div class="card flex justify-content-center">
-                    <p-dropdown [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [showClear]="true" placeholder="Select a City"></p-dropdown>
-                </div> -->
             <p-splitButton [label]="username" [model]="logoutDropdown"
                 styleClass="p-button-raised logout-split-btn"></p-splitButton>
         </div>

@@ -1,0 +1,135 @@
+// --dropdown-background-color:#011a03,
+// --dropdown-border-color:#023006,
+// --dropdown-label-placeholder-color:#eeeee,
+// --dropdown-label-placeholder-focus-color:#011202,
+// --dropdown-panel-background-color:#011a03,
+// --dropdown-item-hightlight-color:#044409,
+// --dropdown-item-focus-color:#011202,
+// --dropdown-item-hover-color:#0f160f,
+// --dropdown-text-color:#fff,
+.p-dropdown {
+    background: var(--dropdown-background-color);
+    border: 1px solid var(--dropdown-border-color);
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+  }
+  .p-dropdown:not(.p-disabled):hover {
+    // border-color: #3B82F6;
+  }
+  .p-dropdown:not(.p-disabled).p-focus {
+    // outline: 0 none;
+    // outline-offset: 0;
+    // box-shadow: 0 0 0 0.2rem #BFDBFE;
+    // border-color: #3B82F6;
+  }
+  .p-dropdown.p-dropdown-clearable .p-dropdown-label {
+    padding-right: 1.75rem;
+  }
+  .p-dropdown .p-dropdown-label {
+    background: transparent;
+    border: 0 none;
+  }
+  .p-dropdown .p-dropdown-label.p-placeholder {
+    color: var(--dropdown-text-color);
+  }
+  .p-dropdown .p-dropdown-label:focus, .p-dropdown .p-dropdown-label:enabled:focus {
+    outline: 0 none;
+    box-shadow: none;
+    background-color: var(--dropdown-item-focus-color);
+  }
+
+  .p-dropdown-panel {
+    background: var(--dropdown-panel-background-color);
+    color: var(--dropdown-text-color);
+    border: 0 none;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
+  .p-dropdown-panel .p-dropdown-header {
+    padding: 0px;
+    border-bottom: 1px solid #6f6f6f;
+    color: var(--dropdown-text-color);
+    background: var(--dropdown-background-color);
+    margin: 0;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+  .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    // padding-right: 1.75rem;
+    // margin-right: -1.75rem;
+  }
+  .p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {
+    right: 0.75rem;
+    color: #6b7280;
+  }
+  .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
+  }
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    border: 0 none;
+    background: transparent;
+    transition: box-shadow 0.2s;
+    border-radius: 0;
+  }
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    color: #fff;
+    background: var(--dropdown-item-hightlight-color);
+  }
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight.p-focus {
+    background: var(--dropdown-item-focus-color);
+  }
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled).p-focus {
+    // color: #4b5563;
+    background: var(--dropdown-item-focus-color);
+  }
+  .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+    // color: #4b5563;
+    background: var(--dropdown-item-hover-color);
+  }
+
+  //   .p-dropdown .p-dropdown-trigger {
+//     background: transparent;
+//     color: #6b7280;
+//     width: 3rem;
+//     border-top-right-radius: 6px;
+//     border-bottom-right-radius: 6px;
+//   }
+//   .p-dropdown .p-dropdown-clear-icon {
+//     color: #6b7280;
+//     right: 3rem;
+//   }
+//   .p-dropdown.p-invalid.p-component {
+//     border-color: #e24c4c;
+//   }
+
+//   .p-dropdown-panel .p-dropdown-items .p-dropdown-item-group {
+//     margin: 0;
+//     padding: 0.75rem 1.25rem;
+//     color: #374151;
+//     background: #ffffff;
+//     font-weight: 700;
+//   }
+//   .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
+//     padding: 0.75rem 1.25rem;
+//     color: #4b5563;
+//     background: transparent;
+//   }
+
+//   .p-input-filled .p-dropdown {
+//     background: #f3f4f6;
+//   }
+//   .p-input-filled .p-dropdown:not(.p-disabled):hover {
+//     background-color: #f3f4f6;
+//   }
+//   .p-input-filled .p-dropdown:not(.p-disabled).p-focus {
+//     background-color: #ffffff;
+//   }
+//   .p-input-filled .p-dropdown:not(.p-disabled).p-focus .p-inputtext {
+//     background-color: transparent;
+//   }
+
+//   p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
+//     border-color: #e24c4c;
+//   }

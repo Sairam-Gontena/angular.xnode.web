@@ -15,11 +15,6 @@ import { AuditutilsService } from 'src/app/api/auditutils.service'
 import { AuthApiService } from 'src/app/api/auth.service';
 import {ThemeService} from '../../theme.service';
 import themeing from '../../../themes/customized-themes.json'
-
-interface City {
-  name: string;
-  code: string;
-}
 @Component({
   selector: 'xnode-app-header',
   templateUrl: './app-header.component.html',
@@ -67,13 +62,6 @@ export class AppHeaderComponent implements OnInit {
   colorPallet :any;
   isDarkTheme: boolean = false;
 
-  cities: City[] | undefined;
-
-  selectedCity: City | undefined;
-
-
-
-
   constructor(
     private RefreshListService: RefreshListService,
     private apiService: ApiService,
@@ -96,34 +84,11 @@ export class AppHeaderComponent implements OnInit {
   }
 
   changeTheme(event: any) {
-    this.themeService.changeColorTheme(event)
-    // this.themeService.switchTheme(event);
-    // let selectedColor;
-    // if(event == 'lara-light-blue'){
-    //   selectedColor =  { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847',surface_900:'#343541'}
-    // }else{
-    //    selectedColor = { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847',surface_900:'#000000' } 
-    // }
-    // this.themeService.changeColorTheme(selectedColor)
+    this.themeService.changeColorTheme(event);
   }
 
   ngOnInit(): void {
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-  ];
     this.colorPallet = themeing.theme;
-  //   [
-  //     { primary:'#EF018F',secondary:'#fff',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  //     { primary:'#42A5F5',secondary:'#E3F2FD',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  //     { primary:'#311B92',secondary:'#9FA8DA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  //     { primary:'#0D47A1',secondary:'#90CAF9',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  //     { primary:'#01579B',secondary:'#81D4FA',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  //     { primary:'#004D40',secondary:'#80CBC4',success:'#11CF46',error:'#CC3514',warning:'#FF6847' },
-  // ];
 
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
       this.selectedPopup = '';

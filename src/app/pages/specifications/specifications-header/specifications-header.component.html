@@ -31,7 +31,7 @@
                     (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
                     Published App</div>
             </p-overlayPanel>
-            <p-button label="Share" styleClass="bg-primary border-none" [rounded]="true"></p-button>
+            <p-button label="Share" size="small" [rounded]="true"></p-button>
         </div>
     </div>
     <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
@@ -40,3 +40,8 @@
     <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
         [header]="'Update Spec'" [content]="'Are you sure, do you want to update this Spec?'" (onClickAction)="
         onClickAction($event)"></xnode-confirmation-popup-new>
+    <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+        [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
+        [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generate()">
+    </xnode-spec-gen-popup>
+</div>
