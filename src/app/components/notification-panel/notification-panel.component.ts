@@ -175,18 +175,40 @@ export class NotificationPanelComponent {
   }
 
   goToSpec(obj: any) {
-    const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
-    let product = metaData.find((x: any) => x.id === obj.product_id);
-    if (!window.location.hash.includes('#/specification')) {
-      this.setProductDetailsInThStore(product);
-      this.closeNotificationPanel.emit(true);
-    } else {
-      if (obj.entity === 'UPDATE_SPEC') {
-        this.getVersions(obj);
-      } else {
-        this.setProductDetailsInThStore(product);
-      }
-    }
+    this.apiService
+      .get('navi/get_metadata/' + this.currentUser?.email)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
+          const metaData: any = response.data.data;
+          let product = metaData.find((x: any) => x.id === obj.product_id);
+          if (!window.location.hash.includes('#/specification')) {
+            this.setProductDetailsInThStore(product);
+            this.closeNotificationPanel.emit(true);
+          } else {
+            if (obj.entity === 'UPDATE_SPEC') {
+              this.getVersions(obj);
+            } else {
+              this.setProductDetailsInThStore(product);
+            }
+          }
+        } else if (response?.status !== 200) {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+      });
   }
   setProductDetailsInThStore(product: any): void {
     product.productId = product.product_id
