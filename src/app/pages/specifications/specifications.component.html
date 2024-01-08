@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 <div class="flex body-container">
     <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
         [specData]="specData"></xnode-specifications-menu>
     <div class="w-full" >
+=======
+<div class="flex">
+    <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword" [specData]="specData"
+        *ngIf="!loading"></xnode-specifications-menu>
+    <div class="w-full">
+>>>>>>> 7e0406f59923347f8a84c324df068f57f5d188dd
         <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="generateSpec()"
-            [currentSpecVersionId]="currentSpecVersionId" (getMeSpecList)="getMeSpecList($event)" (specDataChange)="onSpecDataChange($event)"
+            (getMeSpecList)="getMeSpecList($event)" (specDataChange)="onSpecDataChange($event)"
             (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-        <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
+        <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword"
+            *ngIf="!loading">
         </xnode-specifications-content>
     </div>
 </div>

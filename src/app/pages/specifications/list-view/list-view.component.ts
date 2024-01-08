@@ -4,11 +4,12 @@ import { Section } from 'src/models/section';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { delay, of } from 'rxjs';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-list-view',
   templateUrl: './list-view.component.html',
-  styleUrls: ['./list-view.component.scss']
+  styleUrls: ['./list-view.component.scss'],
 })
 export class ListViewComponent {
   @Input() parentTitle: any;
@@ -22,7 +23,7 @@ export class ListViewComponent {
   @Input() visible: any;
   @Input() reveiwerList: any;
 
-  openOverlayPanel:boolean=false;
+  openOverlayPanel: boolean = false;
   showCommentIcon: boolean = false;
   selectedIndex?: number;
   selectedText: string = '';
@@ -33,16 +34,18 @@ export class ListViewComponent {
   selectedWordIndices: any[] = [];
   showAddTask: boolean = false;
 
-  constructor(private utils: UtilsService, private specUtils: SpecUtilsService) {
-
-  }
+  constructor(
+    private utils: UtilsService,
+    private specUtils: SpecUtilsService,
+    private commentsService: CommentsService
+  ) { }
 
   ngOnInit(): void {
     this.utils.clearSelectedContent.subscribe((res: boolean) => {
       if (res) {
         this.emptySelectedContent();
       }
-    })
+    });
   }
 
   isArray(obj: any): boolean {
@@ -60,9 +63,9 @@ export class ListViewComponent {
       }
     } else if (typeof subitem === 'object') {
       if (subitem.hasOwnProperty('content')) {
-        return subitem.content
+        return subitem.content;
       } else {
-        return subitem
+        return subitem;
       }
     } else {
       return [];
@@ -83,14 +86,14 @@ export class ListViewComponent {
   }
 
   contentSelected(event: any, type: string) {
-    this.utils.changeSelectContentChange(true)
+    this.utils.changeSelectContentChange(true);
     this.highlightSelectedText();
     const selectedText = this.getSelectedText();
     if (selectedText === undefined) {
       return;
     }
     if (selectedText && selectedText.length > 0) {
-      this.selectedText = selectedText.replace(/\n/g, ' ')
+      this.selectedText = selectedText.replace(/\n/g, ' ');
     } else {
       this.selectedText = '';
     }
@@ -105,36 +108,38 @@ export class ListViewComponent {
       const range = selection.getRangeAt(0);
       const elements = range.cloneContents().querySelectorAll('span');
       if (elements.length === 0) {
-          const element = range.startContainer.parentElement;
-          if (element && element.id.startsWith('word')) {
-              const index = element.id; // change this line to get the correct index
-              this.selectedWordIndices.push(index);
-          }
+        const element = range.startContainer.parentElement;
+        if (element && element.id.startsWith('word')) {
+          const index = element.id; // change this line to get the correct index
+          this.selectedWordIndices.push(index);
+        }
       } else {
-          elements.forEach(element => {
-              const id = element.id;
-              let index = id; // change this line to get the correct index
-              if (!this.selectedWordIndices.includes(index)) {
-                  this.selectedWordIndices.push(index);
-              }
-          });
+        elements.forEach((element) => {
+          const id = element.id;
+          let index = id; // change this line to get the correct index
+          if (!this.selectedWordIndices.includes(index)) {
+            this.selectedWordIndices.push(index);
+          }
+        });
       }
-  }
+    }
   }
 
-  onOverlayHide(){
-    this.openOverlayPanel=false;
-    of(([])).pipe(delay(1000)).subscribe((results) => {
+  onOverlayHide() {
+    this.openOverlayPanel = false;
+    of([])
+      .pipe(delay(1000))
+      .subscribe((results) => {
         if (this.overlayPanel.overlayVisible) {
         } else {
           this.checkOverlay();
         }
-    });
+      });
   }
-  checkOverlay(){
-      if(this.openOverlayPanel==false){
-        this.deSelect();
-      }
+  checkOverlay() {
+    if (this.openOverlayPanel == false) {
+      this.deSelect();
+    }
   }
 
   async handleSelectionText(event: any, type: string) {
@@ -150,7 +155,7 @@ export class ListViewComponent {
 
   private getSelectedText() {
     const text = window.getSelection()?.toString();
-    return text // ? text.trim() : null;
+    return text; // ? text.trim() : null;
   }
 
   saveSecInLocal() {
@@ -158,16 +163,38 @@ export class ListViewComponent {
   }
 
   openCommentSection() {
-    this.specUtils._openCommentsPanel(false);
     this.utils.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    of(([])).pipe(delay(500)).subscribe((results) => {
-      this.specUtils._openCommentsPanel(true);
-    });
+    of([])
+      .pipe(delay(500))
+      .subscribe((results) => {
+        this.specUtils._openCommentsPanel(true);
+      });
+    this.specUtils._tabToActive('COMMENT');
+    this.getMeSpecLevelCommentsList()
   }
   toggleAddTask() {
     this.showAddTask = !this.showAddTask;
   }
+
+  getMeSpecLevelCommentsList() {
+    this.utils.loadSpinner(true);
+    let specData = localStorage.getItem('selectedSpec');
+    let selectedSpec: any;
+    if (specData) {
+      selectedSpec = JSON.parse(specData);
+      this.commentsService
+        .getComments({ parentId: selectedSpec.id, isReplyCountRequired: true })
+        .then((response: any) => {
+          if (response.status === 200 && response.data) {
+            this.specUtils._getMeUpdatedComments(response.data);
+          }
+          this.utils.loadSpinner(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.utils.loadSpinner(false);
+        });
+    }
+  }
 }
-
-

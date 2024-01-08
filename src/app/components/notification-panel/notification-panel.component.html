@@ -108,10 +108,16 @@
             {{ getMeLabel(notification) }}
           </div>
         </div>
-        <div class="flex mt-2" *ngIf="notification?.spec_status === 'Completed'">
+        <div class="flex mt-2" *ngIf="notification?.spec_status === 'Completed' && !notification?.entity">
           <div (click)="goToSpec(notification)"
             class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Specification
+          </div>
+        </div>
+        <div class="flex mt-2" *ngIf="notification?.entity === 'UPDATE_SPEC'">
+          <div (click)="goToSpec(notification)"
+            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            View Updates
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'WORKFLOW'">

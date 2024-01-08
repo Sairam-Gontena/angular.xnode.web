@@ -77,7 +77,7 @@
                 </p-autoComplete>
             </div>
             <div class="col-12 m-0 p-0 flex justify-content-end flex-wrap gap-3 mt-4">
-                <p-button label="Cancel" [rounded]="true" class="cancel-button"></p-button>
+                <p-button label="Cancel" [rounded]="true" class="cancel-button" (click)="cancelTask()"></p-button>
                 <p-button label="Create" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
                     (click)="createTask($event)"></p-button>
             </div>

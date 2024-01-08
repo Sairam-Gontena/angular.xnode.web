@@ -295,7 +295,9 @@ export class AddTaskComponent {
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
-
+  cancelTask() {
+    this.closeOverlay.emit();
+  }
   saveAsTask(body: any): void {
     if (this.parentTitle !== '' && this.parentTitle !== undefined) {
       body.referenceContent.parentTitle = this.parentTitle;
@@ -310,7 +312,6 @@ export class AddTaskComponent {
             this.specUtils._openCommentsPanel(true);
           this.comment = '';
           this.closeOverlay.emit();
-          this.specUtils._commentsCrActiveTab(false);
           this.specUtils._tabToActive('TASK');
           this.utils.loadToaster({
             severity: 'success',
