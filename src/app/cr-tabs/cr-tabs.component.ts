@@ -210,12 +210,6 @@ export class CrTabsComponent {
     });
   }
 
-  getMefullname(event: any) {
-    console.log('eventeventevent', event);
-
-    return 'Test'
-  }
-
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     this.filter = '';
     if (changes['crData']?.currentValue) {
@@ -230,39 +224,33 @@ export class CrTabsComponent {
   }
 
   filterListBySearch() {
+    this.crData = this.crDataCopy;
     let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
     if (this.searchIconKeyword.length > 0) {
-      this.crData = this.crData.filter(
-        (item: any) =>
-          item.reason.toLowerCase().includes(searchKeywordLowercase) ||
-          item.crId.toLowerCase().includes(searchKeywordLowercase)
-      );
-    } else {
-      this.crData = this.crDataCopy;
-    }
+        this.crData = this.crData.filter((item: any) =>
+            item.reason.toLowerCase().includes(searchKeywordLowercase) ||
+            item.crId.toLowerCase().includes(searchKeywordLowercase)
+        );
+      }
+      if (this.selectedUsers.length > 0) {
+        this.crData = this.crData.filter((item: any) =>
+          this.selectedUsers.includes(item.author.userId)
+        );
+      }
   }
 
   filterListByUsersFilter() {
+    this.crData = this.crDataCopy;
     if (this.selectedUsers.length > 0) {
-      this.checkUserKeywordSearchCombination();
-      this.crData = this.crData.filter((item: any) =>
-        this.selectedUsers.includes(item.author.userId)
-      );
-    } else {
-      this.crData = this.crDataCopy;
-    }
-  }
-
-  checkUserKeywordSearchCombination() {
-    if (this.selectedUsers.length > 1) {
-      this.crData = this.crDataCopy;
-      if (this.searchIconKeyword.length > 0) {
-        let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
-        this.crData = this.crData.filter((item: any) => {
-          return item.reason.toLowerCase().includes(searchKeywordLowercase);
-        });
+        this.crData = this.crData.filter((item: any) =>
+          this.selectedUsers.includes(item.author.userId)
+        );
       }
-    }
+      if(this.searchIconKeyword.length){
+        this.crData = this.crData.filter((item: any) =>
+          item.reason.toLowerCase().includes(this.searchIconKeyword.toLowerCase()) || item.crId.toLowerCase().includes(this.searchIconKeyword.toLowerCase())
+        );
+      }
   }
 
   searchConversation() {
