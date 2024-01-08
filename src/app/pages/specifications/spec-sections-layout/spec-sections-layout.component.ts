@@ -133,7 +133,11 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
       this.isCommnetsPanelOpened = event;
     });
     this.makeTrustedUrl();
-    // this.fetchOpenAPISpec()
+    this.content.forEach((element: any) => {
+      if (element.title === 'OpenAPI Spec') {
+        // this.fetchOpenAPISpec();
+      }
+    });
   }
 
   ngOnChanges() {
