@@ -95,28 +95,30 @@ export class CreateNewCrVersionComponent implements OnInit {
       StorageKeys.CurrentUser
     );
     this.header=='Add New CR'?this.selectedCR='':this.selectedCR = this.selectedCR;
+    this.getUserByAccountId();
     if(this.selectedCR){
-      console.log(this.selectedCR)
       this.updateCRForm();
     }
-    this.getUserByAccountId();
   }
 
   updateCRForm(){
-    this.crForm.patchValue({
-      title: this.selectedCR.title,
-      description: this.selectedCR.description,
-      reason: this.selectedCR.reason,
-      version: this.selectedCR.version.productVersionId,
-      priority:this.selectedCR.priority,
-      duedate:this.selectedCR.duedate,
-      reviewersLOne: this.selectedCR.reviewers.reviewers
-    });
-    this.versionForm.patchValue({
-      major: this.selectedCR.version.productVersion.major,
-      minor: this.selectedCR.version.productVersion.minor,
-      build: this.selectedCR.version.productVersion.build,
-    });
+    setTimeout(() => {
+      this.crForm.patchValue({
+        title: this.selectedCR.title,
+        description: this.selectedCR.description,
+        reason: this.selectedCR.reason,
+        version: this.selectedCR.versionId,
+        priority:this.selectedCR.priority,
+        duedate:new Date(this.selectedCR.duedate),
+        reviewersLOne: this.selectedCR.reviewers.reviewers[0].users
+      });
+      this.versionForm.patchValue({
+        major: this.selectedCR.version.productVersion.major,
+        minor: this.selectedCR.version.productVersion.minor,
+        build: this.selectedCR.version.productVersion.build,
+      });
+      console.log('updatecrver',this.crForm, this.selectedCR)
+    }, 500);
   }
 
   onMajorInputChange(event: Event) {
@@ -294,7 +296,6 @@ export class CreateNewCrVersionComponent implements OnInit {
     let query = event.query;
 
     const selectedReviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
-
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
