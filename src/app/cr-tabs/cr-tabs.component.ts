@@ -40,13 +40,13 @@ interface AutoCompleteCompleteEvent {
   providers: [DatePipe],
 })
 export class CrTabsComponent {
-  usersList: any;
   @Input() activeIndex: any;
   @Input() swaggerData: any;
   @Input() crData: any;
   @Input() reveiwerList: any;
   @ViewChild('myCalendar') datePicker: any;
   @ViewChild('addUser') addUser: any;
+  usersList: any ;
 
   addReviewerForm: FormGroup;
   filters: any;
@@ -196,9 +196,7 @@ export class CrTabsComponent {
   }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.usersList.forEach((element: any) => {
-      element.name = element.first_name + " " + element.last_name
-    });
+    this.usersList = this.reveiwerList;
     this.filters = [
       { title: 'All', code: 'ALL' },
       { title: 'Draft', code: 'DRAFT' },
@@ -207,7 +205,7 @@ export class CrTabsComponent {
       { title: 'Approved', code: 'APPROVED' },
     ];
     this.makeTrustedUrl();
-    this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe((search:any) => {
       this.filterListBySearch();
     });
   }
@@ -318,7 +316,7 @@ export class CrTabsComponent {
 
   filterListData() {
     let filterWithStatus = true;
-    // this.selectedFilter.code == "ALL" ? this.getCRList() : this.getCRList(filterWithStatus);
+    this.selectedFilter.code == "ALL" ? this.getMeCrList() : this.getMeCrList(filterWithStatus);
   }
 
   fetchOpenSpecAPI(id: any) {
@@ -911,14 +909,14 @@ export class CrTabsComponent {
       });
   }
 
-  getMeCrList() {
-    let body: any = {
-      productId: this.product?.id,
-    };
+  getMeCrList(filterWithStatus?:boolean) {
+    let body: any;
+    body = {  productId: this.product?.id };
+    if(filterWithStatus){
+      body = {  productId: this.product?.id,status:this.selectedFilter.code };
+    }
     this.utilsService.loadSpinner(true);
-    this.commentsService
-      .getCrList(body)
-      .then((res: any) => {
+    this.commentsService.getCrList(body).then((res: any) => {
         if (res && res.data) {
           // this.specUtils._openCommentsPanel(true);
           // this.specUtils._loadActiveTab(1);
