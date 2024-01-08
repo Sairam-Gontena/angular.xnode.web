@@ -102,12 +102,10 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   updateCRForm(){
-    setTimeout(() => {
       this.crForm.patchValue({
         title: this.selectedCR.title,
         description: this.selectedCR.description,
         reason: this.selectedCR.reason,
-        version: this.selectedCR.versionId,
         priority:this.selectedCR.priority,
         duedate:new Date(this.selectedCR.duedate),
         reviewersLOne: this.selectedCR.reviewers.reviewers[0].users
@@ -117,8 +115,6 @@ export class CreateNewCrVersionComponent implements OnInit {
         minor: this.selectedCR.version.productVersion.minor,
         build: this.selectedCR.version.productVersion.build,
       });
-      console.log('updatecrver',this.crForm, this.selectedCR)
-    }, 500);
   }
 
   onMajorInputChange(event: Event) {
@@ -164,7 +160,9 @@ export class CreateNewCrVersionComponent implements OnInit {
           } else {
             this.utilsService.loadSpinner(false);
           }
-
+          if(this.selectedCR && this.header=='Edit CR'){
+            this.crForm.value.version = this.selectedCR.versionId;
+          }
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
