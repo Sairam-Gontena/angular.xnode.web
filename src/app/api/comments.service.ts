@@ -20,12 +20,20 @@ export class CommentsService extends BaseApiService {
   }
 
   getCommentsByProductId(params?: any) {
-    let url = 'comment/comments-by-productId?productId=' + params.productId + '&verisonId=' + params.versionId;
+    let url =
+      'comment/comments-by-productId?productId=' +
+      params.productId +
+      '&verisonId=' +
+      params.versionId;
     return this.get(url);
   }
 
   getTasksByProductId(params?: any) {
-    let url = 'task/tasks-by-productId?productId=' + params.productId + '&verisonId=' + params.versionId;
+    let url =
+      'task/tasks-by-productId?productId=' +
+      params.productId +
+      '&verisonId=' +
+      params.versionId;
     return this.get(url);
   }
 
@@ -67,7 +75,6 @@ export class CommentsService extends BaseApiService {
   }
   updateCRActions(body: any) {
     return this.post('change-request/update-many-crs', body);
-
   }
   createCr(body: any) {
     return this.post('change-request', body);
@@ -94,7 +101,9 @@ export class CommentsService extends BaseApiService {
   }
 
   getCrActions(body: any) {
-    return this.get('workflow-instance/actions/' + body.entityId + '/' + body.userId);
+    return this.get(
+      'workflow-instance/actions/' + body.entityId + '/' + body.userId
+    );
   }
 
   performCrActions(body: any) {
@@ -102,7 +111,9 @@ export class CommentsService extends BaseApiService {
   }
 
   reviewerListByAccountId(body: any) {
-    return this.get('review-policy/policies/' + body.accountId + '/' + body.phase);
+    return this.get(
+      'review-policy/policies/' + body.accountId + '/' + body.phase
+    );
   }
 
   getCrList(body: any) {
@@ -112,5 +123,4 @@ export class CommentsService extends BaseApiService {
   publishApp(body: any) {
     return this.post('product-spec/publish', body);
   }
-
 }

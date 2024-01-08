@@ -18,6 +18,11 @@ import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecUtilsService } from './components/services/spec-utils.service';
+import { jwtDecode } from 'jwt-decode';
+
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZDllMjBhMzctYThiZi00NGZjLTg5YzgtN2QzMDYyMGUzMjRhIiwiZmlyc3RfbmFtZSI6ImRpbGlwIiwibGFzdF9uYW1lIjoiY2hhbmRyYSIsImVtYWlsIjoiZGlsaXBjaGFuZHJhQHNhbGllbnRtaW5kcy5jb20iLCJlbnRpdHlfaWQiOiI0MDQ1NmRhNC0wYWQ1LTQ3ZmEtYWE2MC1hNTJlYjhlMGNiOGIiLCJlbnRpdHlfbmFtZSI6Inhub2RlLXRlY2giLCJhY2NvdW50X2lkIjoiMmE1N2U5MzEtYzJhOS00ODZlLWFhNmUtNTdjODJiMmI2NGQ1IiwiYWNjb3VudF9uYW1lIjoieG5vZGUtdGVjaCIsImFjY291bnRfdHlwZSI6InBlcnNvbmFsIiwicHJvZHVjdF90aWVyX2lkIjoiOGZhNTI5NWQtNDhjYy0xMWVlLWE3MTAtMzQ0MTVkOGI5MDFjIiwicHJvZHVjdF90aWVyX25hbWUiOiJCZXRhIiwiYWNjb3VudF9vd25lciI6IkZhbHNlIiwicm9sZV9pZCI6IjNhMDdmODExLTU4YjItNDQxMy1hMzY3LThlNWM4YjdjZTg3ZiIsInJvbGVfbmFtZSI6Ilhub2RlIEVudGl0eSBVc2VyIiwicGhvbmUiOiI2NTQ1NDIzMzQyMyJ9.CbyjBSRMqqGKvU9zpoD7iMIXq6pHK3RgjW2hp2bkaPg';
+const decoded = jwtDecode(token);
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -62,7 +67,12 @@ export class AppComponent implements OnInit {
     private specUtils: SpecUtilsService
   ) {
     let winUrl = window.location.href;
-    if ((winUrl.includes('template_id') || winUrl.includes('template_type')) || (winUrl.includes('crId') || winUrl.includes('versionId'))) {
+    if (
+      winUrl.includes('template_id') ||
+      winUrl.includes('template_type') ||
+      winUrl.includes('crId') ||
+      winUrl.includes('versionId')
+    ) {
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
     } else {
@@ -110,7 +120,7 @@ export class AppComponent implements OnInit {
       if (event) {
         this.isSideWindowOpen = false;
       }
-    })
+    });
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -131,27 +141,31 @@ export class AppComponent implements OnInit {
     let entity = params.get('entity');
     if ((templateId && templateType) || (crId && entity)) {
       let deepLinkInfo;
-      if ((templateId && templateType)) {
+      if (templateId && templateType) {
         deepLinkInfo = {
           product_id: productId,
           template_id: templateId,
           template_type: templateType,
-          version_id: versionId
+          version_id: versionId,
         };
       }
-      if ((crId && entity)) {
+      if (crId && entity) {
         versionId = params.get('versionId');
         productId = params.get('productId');
         deepLinkInfo = {
           product_id: productId,
           entity: entity,
           cr_id: crId,
-          version_id: versionId
+          version_id: versionId,
         };
         this.specUtils._openCommentsPanel(true);
-        this.specUtils._loadActiveTab({ activeIndex: 1, productId: deepLinkInfo.product_id, versionId: deepLinkInfo.version_id });
+        this.specUtils._loadActiveTab({
+          activeIndex: 1,
+          productId: deepLinkInfo.product_id,
+          versionId: deepLinkInfo.version_id,
+        });
       }
-      await this.setDeepLinkInStorage(deepLinkInfo)
+      await this.setDeepLinkInStorage(deepLinkInfo);
       this.router.navigateByUrl('specification');
     }
   }
@@ -168,6 +182,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('decoded', decoded);
+
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
@@ -205,7 +221,7 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
-    })
+    });
   }
 
   getAllProductsInfo(key: string) {
@@ -218,7 +234,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
   botOnClick() {
     this.isNaviExpanded = false;
