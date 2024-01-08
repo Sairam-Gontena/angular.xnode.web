@@ -37,7 +37,7 @@ export class LinkToCrComponent implements OnInit {
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
-  @Input() entityType? = '';
+  @Input() entityType?= '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -244,8 +244,7 @@ export class LinkToCrComponent implements OnInit {
             summary: 'SUCCESS',
             detail: 'CR has been successfully linked',
           });
-          this.specUtils._loadActiveTab({ activeIndex: 1 });
-          this.close.emit();
+          this.getCRList();
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -253,7 +252,6 @@ export class LinkToCrComponent implements OnInit {
             detail: response?.data?.common?.status,
           });
         }
-        this.utilsService.loadSpinner(false);
       })
       .catch((err) => {
         this.utilsService.toggleTaskAssign(false);
@@ -264,6 +262,38 @@ export class LinkToCrComponent implements OnInit {
         });
       });
   }
+
+  getCRList() {
+    let body: any = {
+      productId: this.product?.id,
+    };
+    this.utilsService.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._loadActiveTab({ activeIndex: 1 });
+          this.specUtils._getLatestCrList(res.data);
+          this.close.emit();
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
   setAvatar(userObj: any): string {
     return (
       userObj.firstName.charAt(0).toUpperCase() +

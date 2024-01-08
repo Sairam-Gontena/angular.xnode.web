@@ -270,9 +270,6 @@ export class CreateNewCrVersionComponent implements OnInit {
             detail: 'Change Request created successfully',
           });
           this.close.emit(response.data);
-
-
-          this.specUtils._getLatestCrList(true)
         } else {
           this.utilsService.loadToaster({
             severity: 'error',

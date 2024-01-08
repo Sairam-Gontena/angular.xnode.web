@@ -153,7 +153,6 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   }
 
   openCommentSection() {
-    this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
     of([])
