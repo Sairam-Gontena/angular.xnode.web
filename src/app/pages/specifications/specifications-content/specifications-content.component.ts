@@ -105,7 +105,7 @@ export class SpecificationsContentComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          // this.fetchOpenAPISpec();
+          this.fetchOpenAPISpec();
         });
     }
   }
@@ -299,10 +299,11 @@ export class SpecificationsContentComponent implements OnInit {
   onSelectMenuItem(): void {
     this.scrollToItem();
   }
+
   closeFullScreenView(): void {
     this.expandView = true;
     this.specExpanded = false;
-    // this.fetchOpenAPISpec();
+    this.fetchOpenAPISpec();
     this.scrollToItem();
   }
 
