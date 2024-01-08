@@ -33,6 +33,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword: any;
   @Input() noResults: any;
+  @Input() reveiwerList: any;
   // @Input() useCases: any[] = [];
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
@@ -60,7 +61,6 @@ export class SpecificationsContentComponent implements OnInit {
   list: any;
   currentUser: any;
   usersList: any = null;
-  reveiwerList: any;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
