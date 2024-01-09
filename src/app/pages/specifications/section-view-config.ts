@@ -4,7 +4,6 @@ export const SECTION_VIEW_CONFIG = {
     'Purpose',
     'Audience',
     'Scope',
-    'Data Model',
     'Relationships',
   ],
   listViewSections: [
@@ -36,10 +35,10 @@ export const SECTION_VIEW_CONFIG = {
     'Hardware Interfaces',
     'Software Interfaces',
   ],
-  userRoleSection:[
+  userRoleSection: [
     'User Roles'
   ],
-  userPersonaSection:[
+  userPersonaSection: [
     'User Personas'
   ]
 };
