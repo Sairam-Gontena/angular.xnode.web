@@ -73,7 +73,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     // To display toggle icon of side spec menu
     this.utils.openSpecSubMenu.subscribe((data: any) => {
-      if (data) this.isSideMenuOpened = data;
+      this.isSideMenuOpened = data;
     });
     this.getStorageData();
   }
