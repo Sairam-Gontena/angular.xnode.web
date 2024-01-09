@@ -214,6 +214,10 @@
   // width: 18px;
 }
 
+:host ::ng-deep .update-spec .p-button {
+  background: #02ADEE;
+}
+
 :host ::ng-deep .menu-list-dropdown .p-dropdown-label {
   display: none;
 }

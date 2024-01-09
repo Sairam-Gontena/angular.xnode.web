@@ -30,7 +30,7 @@
         <img src="../../assets/link-cr.svg" class="submit-cr-window-icon pointer" alt="link"
           (click)="updateChagneRequestStatus('UNLINK')" pTooltip="Unlink" />
         <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
-          [disabled]="checkedCrList?.length ===0"></p-button>
+          [disabled]="checkedCrList?.length ===0" class="update-spec"></p-button>
       </div>
     </div>
     <div class="flex align-items-center justify-content-between w-full pt-4 px-4">
@@ -86,8 +86,8 @@
           <ng-template pTemplate="header">
             <div class="w-full">
               <div class="grid col-12 flex-column">
-                <p-checkbox (click)="$event.stopPropagation()" (onChange)="onCheckCheckbox($event)" [binary]="true" inputId="binary"
-                  [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
+                <p-checkbox (click)="$event.stopPropagation()" (onChange)="onCheckCheckbox($event)" [binary]="true"
+                  inputId="binary" [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
                 <div class="flex flex-row align-items-center" style="position: absolute; margin-left: 13%">
                   <img src="../../assets/high.svg" class="" alt="high" />
                   <p class="p-0 m-0 text-xs ml-2">
