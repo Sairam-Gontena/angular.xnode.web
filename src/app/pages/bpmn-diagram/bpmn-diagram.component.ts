@@ -13,6 +13,7 @@ import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { from, Observable } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json'
 import { ApiService } from 'src/app/api/api.service';
+import { SpecService } from 'src/app/api/spec.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
@@ -69,12 +70,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   currentUrl: string = '';
   showBpmn: boolean = false;
   productChanged = false;
+  specData: any;
+  isDataManagementPersistence: boolean = false;
 
   constructor(private api: ApiService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
-    private router: Router) {
+    private router: Router,
+    private specService: SpecService) {
   }
 
   ngOnInit(): void {
@@ -227,7 +231,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   getFlow(flow: String) {
     this.currentUser = UserUtil.getCurrentUser();
     this.api.get('navi/get_xflows/' + this.product?.email + '/' + this.product?.id).then(async (response: any) => {
-      // this.api.get('navi/get_xflows/' + this.product?.id).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
@@ -985,7 +988,131 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
     this.productChanged = true;
-    this.getMeStorageData();
+    var versionDataString = localStorage.getItem('SPEC_DATA');
+    let versionData;
+    if (versionDataString) {
+      versionData = JSON.parse(versionDataString);
+      if (versionData)
+        versionData = versionData[0]?.versionId;
+    }
+    console.log(versionData)
+    let productId = localStorage.getItem('record_id');
+    this.utilsService.getProductChangeXflows().subscribe((data: any) => {
+      console.log(data, 'data')
+      if (data) {
+        this.product = data;
+      }
+    });
+    // if (versionData && productId) {
+    //   let body = {
+    //     versionId: versionData,
+    //     productId: productId,
+    //   };
+    let body = this.product
+    console.log(body); // This will show the body object with the versionId and productId
 
+    this.specService
+      .getSpec(body)
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data &&
+          response.data.length > 0
+        ) {
+          this.handleSpecData(response.data, body.productId);
+          this.ngOnDestroy()
+          this.getMeStorageData();
+        }
+      })
+      .catch((error) => {
+        // this.utils.loadSpinner(false);
+        // this.utils.loadToaster({
+        //   severity: 'error',
+        //   summary: 'Error',
+        //   detail: error,
+        // });
+      });
+
+    // this.ngOnDestroy()
+    // setTimeout(() => {
+    //   this.ngOnInit()
+    // }, 1000)
+    // }
+
+  }
+  handleSpecData(response: any, productId: string): void {
+    const list = response;
+    list.forEach((obj: any) => {
+      if (obj?.title == 'Functional Specifications') {
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Management Persistence') {
+            this.isDataManagementPersistence = true;
+          }
+        });
+      }
+      if (obj?.title == 'Technical Specifications') {
+        if (!Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Model Table Data') {
+            obj.content.splice(idx, 1);
+          }
+          if (ele.title === 'Data Model') {
+            this.deleteDataManagementPersistence(list);
+          }
+        });
+        obj.content.push({
+          title: 'OpenAPI Spec',
+          content: [],
+          id: 'open-api-spec',
+        });
+      }
+      if (obj?.title == 'Quality Assurance') {
+        let content = obj.content;
+        content.forEach((useCase: any) => {
+          if (useCase['Test Cases']) {
+            useCase.TestCases = useCase['Test Cases'];
+            delete useCase['Test Cases'];
+            useCase.TestCases.forEach((testCase: any) => {
+              testCase.TestCases = testCase['Test Cases'];
+              delete testCase['Test Cases'];
+            });
+          }
+        });
+
+        if (Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+
+        obj.content.push({
+          title: 'Test Cases',
+          content: content,
+          id: obj.id,
+        });
+      }
+    });
+    // this.specData = list;
+    this.storageService.saveItem(StorageKeys.SpecData, list)
+    // if (this.activeConversationTab === 'COMMENTS') {
+    //   this.getMeAllCommentsList(productId);
+    // } else if (this.activeConversationTab === 'TASKS') {
+    //   this.getMeAllTaskList(productId);
+    // } else if (this.activeConversationTab === 'CR') {
+    //   this.getMeCrList(productId);
+    // } else {
+    //   this.utils.loadSpinner(false);
+    // }
+  }
+  deleteDataManagementPersistence(list: any) {
+    if (this.isDataManagementPersistence) {
+      list.forEach((obj: any, index: any) => {
+        obj.content.forEach((elem: any, idx: any) => {
+          if (elem.title === 'Data Management Persistence') {
+            obj.content.splice(idx, 1);
+          }
+        });
+      });
+    }
   }
 }

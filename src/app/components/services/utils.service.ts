@@ -119,7 +119,7 @@ export class UtilsService {
   public clearSelectedContent: Observable<boolean> =
     this.selectedContent.asObservable();
   private productChangeBPMN = new Subject<any>();
-
+  private productChangeXflows = new Subject<any>();
 
   constructor() { }
 
@@ -224,6 +224,13 @@ export class UtilsService {
 
   getProductChangeBPMN(): Observable<any> {
     return this.productChangeBPMN.asObservable();
+  }
+  sendProductChangeXflows(data: any) {
+    this.productChangeXflows.next(data);
+  }
+
+  getProductChangeXflows(): Observable<any> {
+    return this.productChangeXflows.asObservable();
   }
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);
