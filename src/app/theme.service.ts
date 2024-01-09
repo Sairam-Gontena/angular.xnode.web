@@ -75,7 +75,25 @@ export class ThemeService {
     overlay_background_color: '--overlay-background-color',
     overlay_hover_background_color: '--overlay-hover-background-color:',
     overlay_text_color:'--overlay-text-color',
-    overlay_border_color:'--overlay-border-color'
+    overlay_border_color:'--overlay-border-color',
+
+    // DATA TABLE
+    datatable_border_color:'--datatable-border-color',
+    datatable_header_background_color: '--datatable-header-background-color',
+    datatable_header_text_color:'--datatable-header-text-color',
+    datatable_header_border_color:'--datatable-header-border-color',
+    datatable_header_row_background_color:'--datatable-header-row-background-color',
+    datatable_header_row_text_color:'--datatable-header-row-text-color',
+    datatable_footer_background_color:"--datatable-footer-background-color",
+    datatable_footer_text_color:'--datatable-footer-text-color',
+    datatable_body_row_background_color:'--datatable-body-row-background-color',
+
+    // TIDERMENU 
+    tierdermenu_overlay_background_color:'--tieredmenu-overlay-background-color',
+    tieredmenu_menuitem_focus_background_color:'--tieredmenu-menuitem-focus-background-color',
+    tieredmenu_menuitem_hover_background_color:'--tieredmenu-menuitem-hover-background-color',
+    tieredmenu_menuitem_text_color:'--tieredmenu-menuitem-text-color'
+
   };
 
   constructor(@Inject(DOCUMENT) private document: Document,rendererFactory: RendererFactory2) {

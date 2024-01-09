@@ -122,7 +122,7 @@ export class AppHeaderComponent implements OnInit {
             this.router.navigate(['/']);
           }, 1000);
         }
-      },
+      }
     ];
     this.initializeWebsocket();
   }

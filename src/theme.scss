@@ -167,60 +167,77 @@
     --hover-color: #0f1b2d;
     --highlight-color:#183462;
     --focused-color:#030d19;
-    --border-color:#030d19,
+    --border-color:#030d19;
 
     // BUTTON 
-    --primary-button-color:#EF018F,
-    --primary-button-text-color:#FFFFFF,
-    --primary-button-inactive:#824E6D,
-    --secondary-button-color:#02ADEE,
-    --secondary-button-text-color:#FFFFFF,
-    --secondary-button-inactive:#824E6D,
+    --primary-button-color:#EF018F;
+    --primary-button-text-color:#FFFFFF;
+    --primary-button-inactive:#824E6D;
+    --secondary-button-color:#02ADEE;
+    --secondary-button-text-color:#FFFFFF;
+    --secondary-button-inactive:#824E6D;
 
     // INPUT TEXT
-    --inputtext-background-color:#EF018F,
-    --inputtext-focused-color:#EF018F,
-    --inputtext-border-color:#EF018F,
-    --inputtext-text-color:#EF018F,
-    --inputtext-placeholder-text-color:#EF018F,
+    --inputtext-background-color:#EF018F;
+    --inputtext-focused-color:#EF018F;
+    --inputtext-border-color:#EF018F;
+    --inputtext-text-color:#EF018F;
+    --inputtext-placeholder-text-color:#EF018F;
 
     // DROPDOWN 
-    --dropdown-background-color:#011a03,
-    --dropdown-border-color:#023006,
-    --dropdown-label-placeholder-color:#a5a5a5,
-    --dropdown-label-placeholder-focus-color:#011202,
-    --dropdown-panel-background-color:#011a03,
-    --dropdown-item-hightlight-color:#044409,
-    --dropdown-item-focus-color:#011202,
-    --dropdown-item-hover-color:#0f160f,
-    --dropdown-text-color:#fff,
+    --dropdown-background-color:#011a03;
+    --dropdown-border-color:#023006;
+    --dropdown-label-placeholder-color:#a5a5a5;
+    --dropdown-label-placeholder-focus-color:#011202;
+    --dropdown-panel-background-color:#011a03;
+    --dropdown-item-hightlight-color:#044409;
+    --dropdown-item-focus-color:#011202;
+    --dropdown-item-hover-color:#0f160f;
+    --dropdown-text-color:#fff;
 
     // TABVIEW CSS
-    --tabview-nav-background-color:#011a03,
-    --tabview-nav-border-color:#023006,
-    --tabview-nav-link-background-color:#030d19,
-    --tabview-nav-link-hover-color:#0f160f,
-    --tabview-nav-link-highlight-color:#044409,
-    --tabview-text-color:#fff,
+    --tabview-nav-background-color:#011a03;
+    --tabview-nav-border-color:#023006;
+    --tabview-nav-link-background-color:#030d19;
+    --tabview-nav-link-hover-color:#0f160f;
+    --tabview-nav-link-highlight-color:#044409;
+    --tabview-text-color:#fff;
 
     // ACCORDION CSS
     --accordion-background-color:#0c59a5
-    --accordion-border-color:#4b2f02
-    --accordion-header-text-color:#fff
-    --accordion-header-highlight-color:#086f20
-    --accordion-header-highlight-link-border-color:#570462
-    --accordion-header-link-highlight-text-color:#374151
-    --accordion-header-link-hover-color:#39055e
-    --accordion-header-link-hover-border-color:#39055e
-    --accordion-header-link-hover-text-color:#39055e
-    --accordion-content-background-color:#0c59a5
-    --accordion-content-border-color:#4b2f02
-    --accordion-content-text-color:#fff,
+    --accordion-border-color:#4b2f02;
+    --accordion-header-text-color:#fff;
+    --accordion-header-highlight-color:#086f20;
+    --accordion-header-highlight-link-border-color:#570462;
+    --accordion-header-link-highlight-text-color:#374151;
+    --accordion-header-link-hover-color:#39055e;
+    --accordion-header-link-hover-border-color:#39055e;
+    --accordion-header-link-hover-text-color:#39055e;
+    --accordion-content-background-color:#0c59a5;
+    --accordion-content-border-color:#4b2f02;
+    --accordion-content-text-color:#fff;
 
     // OVERLAY PANEL
-    --overlay-background-color:#011a03,
-    --overlay-hover-background-color:#0f160f,
-    --overlay-text-color:#0f160f,
-    --overlay-border-color:#023006
+    --overlay-background-color:#011a03;
+    --overlay-hover-background-color:#0f160f;
+    --overlay-text-color:#0f160f;
+    --overlay-border-color:#023006;
+
+    // DATA TABLE
+    --datatable-border-color:#595959;
+    --datatable-header-background-color:#302E38;
+    --datatable-header-text-color:#fff;
+    --datatable-header-border-color:#595959;
+    --datatable-header-row-background-color:#3A3942;
+    --datatable-header-row-text-color:#fff;
+    --datatable-footer-background-color:#302E38;
+    --datatable-footer-text-color:#fff;
+    --datatable-body-row-background-color:#312e38;
+
+    // TIDERMENU
+    --tieredmenu-overlay-background-color:#011a03;
+    --tieredmenu-menuitem-focus-background-color:#011202;
+    --tieredmenu-menuitem-hover-background-color:#0f160f;
+    --tieredmenu-menuitem-text-color:#0f160f;
 
 }

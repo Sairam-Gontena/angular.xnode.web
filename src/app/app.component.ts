@@ -56,7 +56,6 @@ export class AppComponent implements OnInit {
   colorPallet :any;
 
   cities: City[] | undefined;
-
   selectedCity: City | undefined;
 
   constructor(
