@@ -211,7 +211,7 @@
   background: url('../../assets/kebab-menu.svg') no-repeat;
   background-size: contain;
   display: inline-block;
-  width: 18px;
+  // width: 18px;
 }
 
 :host ::ng-deep .menu-list-dropdown .p-dropdown-label{
@@ -227,7 +227,8 @@
 }
 
 :host ::ng-deep .menu-list-dropdown .p-overlay{
-  left: -150px!important;
+  left: -120px !important;
+  width: 165px!important;
 }
 
 :host ::ng-deep .dueDate .p-button.p-button-icon-only {
@@ -235,9 +236,9 @@
 }
 
 :host ::ng-deep .p-dropdown .p-dropdown-label {
-  background-color: #2E2D36 !important;
-  color: #ffffff !important;
-  width: 100%;
+  // background-color: #2E2D36 !important;
+  // color: #ffffff !important;
+  // width: 100%;
 }
 
 .filter-grid {
