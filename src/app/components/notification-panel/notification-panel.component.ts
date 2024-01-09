@@ -175,21 +175,46 @@ export class NotificationPanelComponent {
   }
 
   goToSpec(obj: any) {
-    const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
-    let product = metaData.find((x: any) => x.id === obj.product_id);
-    if (!window.location.hash.includes('#/specification')) {
-      this.setProductDetailsInThStore(product)
-      this.closeNotificationPanel.emit(true);
-    } else {
-      if (obj.entity === 'UPDATE_SPEC') {
-        this.getVersions(obj)
-      } else {
-        this.setProductDetailsInThStore(product)
-      }
-    }
+    this.apiService
+      .get('navi/get_metadata/' + this.currentUser?.email)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
+          const metaData: any = response.data.data;
+          let product = metaData.find((x: any) => x.id === obj.product_id);
+          if (!window.location.hash.includes('#/specification')) {
+            this.setProductDetailsInThStore(product);
+            this.closeNotificationPanel.emit(true);
+          } else {
+            if (obj.entity === 'UPDATE_SPEC') {
+              this.getVersions(obj);
+            } else {
+              this.setProductDetailsInThStore(product);
+            }
+          }
+        } else if (response?.status !== 200) {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+      });
   }
   setProductDetailsInThStore(product: any): void {
-    localStorage.setItem('record_id', product.id);
+    product.productId = product.product_id
+      ? product.product_id
+      : product.productId;
+    localStorage.setItem('record_id', product.productId);
     localStorage.setItem('product', JSON.stringify(product));
     localStorage.setItem('app_name', product.title);
     localStorage.setItem('has_insights', product.has_insights);
@@ -200,11 +225,18 @@ export class NotificationPanelComponent {
   getVersions(obj: any) {
     this.utils.loadSpinner(true);
     this.specService
-      .getVersionIds(obj.product_id)
+      .getVersionIds(obj?.product_id ? obj.product_id : obj.productId)
       .then((response) => {
         if (response.status === 200 && response.data) {
-          this.getMeSpecInfo({ versions: response.data, productId: obj.product_id ? obj.product_id : obj.productId, versionId: obj.versionId });
-          this.getMeCrList({ productId: obj.product_id ? obj.product_id : obj.productId })
+          this.getMeSpecInfo({
+            versions: response.data,
+            productId: obj.product_id ? obj.product_id : obj.productId,
+            versionId: obj.versionId,
+          });
+          this.getMeCrList({
+            productId: obj.product_id ? obj.product_id : obj.productId,
+          });
+          this.specUtils._updatedSelectedProduct(true);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -232,7 +264,12 @@ export class NotificationPanelComponent {
           response.data &&
           response.data.length > 0
         ) {
-          this.specUtils._getLatestSpecVersions({ versions: body.versions, specData: response.data, productId: body.productId, versionId: body.versionId })
+          this.specUtils._getLatestSpecVersions({
+            versions: body.versions,
+            specData: response.data,
+            productId: body.productId,
+            versionId: body.versionId,
+          });
         }
         this.utils.loadSpinner(false);
         this.closeNotificationPanel.emit(true);
@@ -476,7 +513,35 @@ export class NotificationPanelComponent {
     }
   }
 
+  getMeMetaDataAndStoreTheProduct(product_id: any) {
+    this.apiService
+      .get('navi/get_metadata/' + this.currentUser?.email)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const product = response.data.data?.filter((item: any) => {
+            return item.id === product_id;
+          })[0];
+          localStorage.setItem('product', JSON.stringify(product));
+        }
+      });
+  }
+
   navigateToConversation(val: any) {
+    this.utils.loadSpinner(true);
+    this.apiService
+      .get('navi/get_metadata/' + this.currentUser?.email)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          const product = response.data.data?.filter((item: any) => {
+            return item.id === val.product_id ? val.product_id : val.productId;
+          })[0];
+          this.storageService.saveItem(StorageKeys.Product, product);
+          this.goToConversation(val);
+        }
+      });
+  }
+
+  goToConversation(val: any) {
     let notifInfo: any = val;
     notifInfo.productId = val.product_id ? val.product_id : val.productId;
     notifInfo.versionId = val.version_id ? val.version_id : val.versionId;
@@ -485,14 +550,17 @@ export class NotificationPanelComponent {
       let product = metaData.find(
         (x: any) => x.id === val.product_id || x.id === val.productId
       );
-      this.storageService.saveItem(StorageKeys.Product, JSON.stringify(product));
+      this.storageService.saveItem(
+        StorageKeys.Product,
+        JSON.stringify(product)
+      );
       localStorage.setItem('record_id', product.id);
       localStorage.setItem('product', JSON.stringify(product));
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('has_insights', product.has_insights);
       this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
       if (val.entity === 'WORKFLOW') {
-        this.specUtils.saveActivatedTab('CR')
+        this.specUtils.saveActivatedTab('CR');
       }
       this.router.navigate(['/specification']);
     } else {
@@ -506,62 +574,10 @@ export class NotificationPanelComponent {
         this.getMeCrList(notifInfo);
       }
       if (val.entity === 'WORKFLOW') {
-        this.getVersions(notifInfo)
+        this.getVersions(notifInfo);
       }
     }
     this.closeNotificationPanel.emit(true);
-    return;
-    this.getAllProductsInfo('meta_data')
-      .then((result: any) => {
-        if (result) {
-          let products = JSON.parse(result);
-          let product = products.find(
-            (x: any) => x.id === val.product_id || x.id === val.productId
-          );
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.closeNotificationPanel.emit(true);
-          this.storeProductInfoForDeepLink('deep_link_info', val)
-            .then(() => {
-              if (!window.location.hash.includes('#/specification')) {
-                this.handleNotification(val);
-              } else {
-                if (
-                  val.template_type == 'COMMENT' ||
-                  val.template_type == 'TASK'
-                ) {
-                  this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({
-                    activeIndex: 0,
-                    productId: val.productId,
-                    versionId: val.versionId,
-                  });
-                  this.specUtils._tabToActive(val.template_type);
-                  this.router.navigate(['/specification']);
-                } else {
-                  this.specUtils._openCommentsPanel(true);
-                  this.specUtils._loadActiveTab({
-                    activeIndex: 1,
-                    productId: val.productId,
-                    versionId: val.versionId,
-                  });
-                  this.specUtils._getSpecBasedOnVersionID(val);
-                  this.router.navigate(['/specification']);
-                }
-              }
-            })
-            .catch((error) => {
-              console.error('Error storing data:', error);
-            });
-        } else {
-          console.log('not able to fetch product details');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data from localStorage:', error);
-      });
   }
 
   getMeCrList(notifInfo: any) {
