@@ -106,8 +106,6 @@ export class DataModelCommonComponent {
           console.log(this.dataModel)
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
-
-          // Redraw connections after updating dataModel
           this.jsPlumbService.repaintEverything();
         } else {
           let user_audit_body = {
