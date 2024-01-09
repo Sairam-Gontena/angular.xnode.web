@@ -101,9 +101,9 @@
             <ng-template let-reviewer pTemplate="selectedItem">
               <div class="flex align-items-center">
                 <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
-                  {{ reduceToInitials(reviewer.name) }}
+                  {{ reduceToInitials(reviewer.name?reviewer.name:reviewer.displayName) }}
                 </div>
-                <span class="ml-2">{{ reviewer.name }}</span>
+                <span class="ml-2">{{ reviewer.name?reviewer.name:reviewer.displayName }}</span>
               </div>
             </ng-template>
           </p-autoComplete>
