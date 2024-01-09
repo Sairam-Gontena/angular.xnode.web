@@ -30,7 +30,9 @@ export class SpecificationsHeaderComponent implements OnInit {
   showSpecGenaretePopup: any;
   isTheCurrentUserOwner: any;
   productStatusPopupContent: any;
-
+  specData: any;
+  isCommentsPanelOpened: any;
+  showingCRList: any;
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -38,6 +40,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private storageService: LocalStorageService,
     private commentsService: CommentsService
   ) {
+    this.specData = this.storageService.getItem(StorageKeys.SpecData);
     this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
       if (data && data.versions) {
         this.versions = data.versions;
@@ -46,13 +49,23 @@ export class SpecificationsHeaderComponent implements OnInit {
           element['value'] = element.id;
         });
         this.selectedVersion = data.versions.filter((event: any) => {
-          return event.id === data.versionId
-        })[0]
+          return event.id === data.versionId;
+        })[0];
       }
       if (data && !data.versions) {
         this.selectedVersion = this.versions.filter((event: any) => {
-          return event.id === data.versionId
-        })[0]
+          return event.id === data.versionId;
+        })[0];
+      }
+    });
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommentsPanelOpened = event;
+    });
+    this.specUtils.loadActiveTab.subscribe((event) => {
+      if (event === 1) {
+        this.showingCRList = true;
+      } else {
+        this.showingCRList = false;
       }
     });
   }
@@ -60,7 +73,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     // To display toggle icon of side spec menu
     this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isSideMenuOpened = data;
+      if (data) this.isSideMenuOpened = data;
     });
     this.getStorageData();
   }
@@ -158,6 +171,38 @@ export class SpecificationsHeaderComponent implements OnInit {
       productId: this.product?.id,
       versionId: this.versions[0].id,
     });
+    if (this.isCommentsPanelOpened && this.showingCRList) this.getMeCrList();
+  }
+
+  getMeCrList() {
+    let body: any = {
+      productId: this.product.id,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._loadActiveTab(1);
+          this.specUtils._getMeUpdatedCrs(res.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
   }
 
   toggleSideMenu() {
@@ -170,7 +215,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.enabledGeneratespec = false;
     }
   }
-
   viewPublishedApp() {
     let productUrl = localStorage.getItem('product_url');
     if (productUrl) {

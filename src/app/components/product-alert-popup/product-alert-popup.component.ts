@@ -52,7 +52,9 @@ export class ProductAlertPopupComponent implements OnInit {
       setTimeout(() => {
         this.contentdata = event?.data;
         this.dataPopulate();
-        this.showProductStatusPopup = event?.popup;
+        if (event.data.length || event.popup == true) {
+          this.showProductStatusPopup = event?.popup;
+        }
       },);
     });
   }

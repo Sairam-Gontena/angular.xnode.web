@@ -3,7 +3,6 @@
         <div class="overflow-auto"
             [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommnetsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommnetsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommnetsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommnetsPanelOpened}">
             <div *ngIf="specExpanded && noResults==false">
-
                 <xnode-expand-specification *ngIf="specExpanded && noResults==false" [dataToExpand]="selectedSpecItem"
                     (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
                     [specExpanded]="specExpanded"></xnode-expand-specification>

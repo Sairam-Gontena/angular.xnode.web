@@ -49,6 +49,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   metaData: any;
   activeConversationTab: any = '';
   notifInfo: any;
+  reveiwerList: any;
 
   constructor(
     private utils: UtilsService,
@@ -283,6 +284,10 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
+          resp.data.forEach((element: any) => {
+            element.name = element.first_name + ' ' + element.last_name;
+          });
+          this.reveiwerList = resp.data;
           this.localStorageService.saveItem(StorageKeys.USERLIST, resp.data);
         } else {
           this.utils.loadToaster({

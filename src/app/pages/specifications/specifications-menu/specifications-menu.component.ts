@@ -31,7 +31,8 @@ export class SpecificationsMenuComponent implements OnInit {
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
-        this.menuList = resp.filter((item: any) => item !== null);
+        if(resp)
+          this.menuList = resp?.filter((item: any) => item !== null);
       },);
     });
     this.specUtils.openCommentsPanel.subscribe((event: boolean) => {

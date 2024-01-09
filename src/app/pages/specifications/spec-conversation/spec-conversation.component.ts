@@ -7,7 +7,11 @@ import {
 } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
-import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeHtml,
+  SafeResourceUrl,
+} from '@angular/platform-browser';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecChildConversationComponent } from '../spec-child-conversation/spec-child-conversation.component';
@@ -22,7 +26,6 @@ import { Subscription, delay, of } from 'rxjs';
   templateUrl: './spec-conversation.component.html',
   styleUrls: ['./spec-conversation.component.scss'],
 })
-
 export class SpecConversationComponent {
   @Input() list: any;
   @Input() usersList: any;
@@ -30,8 +33,8 @@ export class SpecConversationComponent {
   @Input() activeIndex: any;
   @Input() parentEntity: any;
   @Input() parentId: any;
-  @Input() swaggerData:any;
-  @Input() searchIconKeyword:any;
+  @Input() swaggerData: any;
+  @Input() searchIconKeyword: any;
   @Output() onClickClose = new EventEmitter<any>();
   @ViewChild(SpecChildConversationComponent)
   child!: SpecChildConversationComponent;
@@ -66,9 +69,9 @@ export class SpecConversationComponent {
   confirmarionHeader: string = '';
   fileIndex: any;
   targetUrl: string = '';
-  bpmnFrom: string ='SPEC';//;  'Comments'
-  private searchKeywordSubscription: Subscription = new Subscription;
-  private searchByUserSubscription: Subscription = new Subscription;
+  bpmnFrom: string = 'SPEC'; //;  'Comments'
+  private searchKeywordSubscription: Subscription = new Subscription();
+  private searchByUserSubscription: Subscription = new Subscription();
 
   constructor(
     private utils: UtilsService,
@@ -91,55 +94,63 @@ export class SpecConversationComponent {
     this.specListCopy = this.list;
     this.makeTrustedUrl();
     this.checkSwaggerItem();
-    this.searchKeywordSubscription = this.specUtils.getCommentSearchByKeywordListData().subscribe((data:any) => {
-      this.filterListBySearch(data);
-    });
-    this.searchByUserSubscription = this.specUtils.getCommentSearchByUsersListData().subscribe((data:any) => {
-      this.filterListByUsersFilter(data);
-    });
+    this.searchKeywordSubscription = this.specUtils
+      .getCommentSearchByKeywordListData()
+      .subscribe((data: any) => {
+        this.filterListBySearch(data);
+      });
+    this.searchByUserSubscription = this.specUtils
+      .getCommentSearchByUsersListData()
+      .subscribe((data: any) => {
+        this.filterListByUsersFilter(data);
+      });
   }
 
-  filterListBySearch(users?:any){
-    if(this.searchIconKeyword.length>0){
-      this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
-      this.list = this.list.filter((item: any) => item.message.toLowerCase().includes(this.searchIconKeyword));
-    }else{
+  filterListBySearch(users?: any) {
+    if (this.searchIconKeyword.length > 0) {
+      this.searchIconKeyword = this.searchIconKeyword.toLowerCase();
+      this.list = this.list.filter((item: any) =>
+        item.message.toLowerCase().includes(this.searchIconKeyword)
+      );
+    } else {
       this.list = this.specListCopy;
     }
-    if(users){
+    if (users) {
       this.filterListByUsersFilter(users);
-      return
+      return;
     }
   }
 
-  filterListByUsersFilter(users:any){
-    if(users.length>0){
+  filterListByUsersFilter(users: any) {
+    if (users.length > 0) {
       this.list = this.specListCopy;
-      this.list = this.list.filter((item: any) => users.includes(item.createdBy.userId));
-    }else{
+      this.list = this.list.filter((item: any) =>
+        users.includes(item.createdBy.userId)
+      );
+    } else {
       this.list = this.specListCopy;
     }
-    if(this.searchIconKeyword.length>0){
+    if (this.searchIconKeyword.length > 0) {
       this.filterListBySearch();
-      return
+      return;
     }
   }
 
-  checkSwaggerItem(){
-    this.list.forEach((item:any)=>{
-      if(item.referenceContent.title=='OpenAPI Spec'){
-        of(([])).pipe(
-          delay(500)
-         ).subscribe((results) => {
-          this.fetchOpenSpecApi(item.id)
-        });
+  checkSwaggerItem() {
+    this.list.forEach((item: any) => {
+      if (item.referenceContent.title == 'OpenAPI Spec') {
+        of([])
+          .pipe(delay(500))
+          .subscribe((results) => {
+            this.fetchOpenSpecApi(item.id);
+          });
       }
-    })
+    });
   }
 
-  fetchOpenSpecApi(id:any){
+  fetchOpenSpecApi(id: any) {
     const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'+id),
+      domNode: document.getElementById('openapi-ui-spec' + id),
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
@@ -152,8 +163,8 @@ export class SpecConversationComponent {
   }
 
   makeTrustedUrl(): void {
-    let target =localStorage.getItem('targetUrl');
-    if(target){
+    let target = localStorage.getItem('targetUrl');
+    if (target) {
       this.targetUrl = target;
       this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(
         this.targetUrl
@@ -161,8 +172,8 @@ export class SpecConversationComponent {
     }
   }
 
-  checkParaViewSections(title: string,parentTitle?:string) {
-    if(parentTitle=='Technical Specifications'){
+  checkParaViewSections(title: string, parentTitle?: string) {
+    if (parentTitle == 'Technical Specifications') {
       return;
     }
     return (
@@ -188,7 +199,7 @@ export class SpecConversationComponent {
     );
   }
 
-  checkUserPersonaSections(title:string){
+  checkUserPersonaSections(title: string) {
     return (
       this.userPersonaViewSections.filter((secTitle) => {
         return secTitle === title;
@@ -481,7 +492,7 @@ export class SpecConversationComponent {
             summary: 'SUCCESS',
             detail: 'Comment has been unlinked from CR successfully',
           });
-          this.specUtils._tabToActive('COMMENT');
+          this.getMeAllCommentsList();
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -498,6 +509,29 @@ export class SpecConversationComponent {
           summary: 'ERROR',
           detail: err,
         });
+      });
+  }
+
+  getMeAllCommentsList() {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    const product: any = this.storageService.getItem(StorageKeys.Product);
+    this.commentsService
+      .getCommentsByProductId({
+        productId: product.id,
+        versionId: specVersion?.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
       });
   }
   deleteFile(cmt: any) {
@@ -549,6 +583,12 @@ export class SpecConversationComponent {
   }
 
   checktableJsonSection(title: string): boolean {
-    return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
+    return (
+      title === 'Business Rules' ||
+      title === 'Functional Dependencies' ||
+      title === 'Data Dictionary' ||
+      title === 'User Interfaces' ||
+      title === 'Annexures'
+    );
   }
 }

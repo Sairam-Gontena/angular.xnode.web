@@ -31,13 +31,12 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './link-to-cr.component.html',
   styleUrls: ['./link-to-cr.component.css'],
 })
-
 export class LinkToCrComponent implements OnInit {
   @ViewChild('dropdown') dropdown?: Dropdown;
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
-  @Input() entityType?= '';
+  @Input() entityType? = '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -77,8 +76,7 @@ export class LinkToCrComponent implements OnInit {
     private messagingService: MessagingService,
     private commentsService: CommentsService,
     private utilsService: UtilsService,
-    private specUtils: SpecUtilsService,
-
+    private specUtils: SpecUtilsService
   ) {
     this.crForm = this.fb.group({
       crToAdd: new FormControl(
@@ -183,7 +181,6 @@ export class LinkToCrComponent implements OnInit {
       });
   }
   onClickAction(action: string) {
-
     if (action === 'Yes') {
       this.showNewCrPopup = true;
     }
@@ -193,13 +190,14 @@ export class LinkToCrComponent implements OnInit {
   onDropdownChange(event: any): void {
     if (event?.value === 'ADD_NEW') {
       let isDraftCrExist = this.crList.some((item: any) => {
-        return item.status === "DRAFT";
+        return item.status === 'DRAFT';
       });
 
       if (isDraftCrExist) {
         this.openConfirmationPopUp = true;
         this.header = 'Confirmation';
-        this.content = 'There are already some active draft CRs. Are you sure you want to create a new CR?';
+        this.content =
+          'There are already some active draft CRs. Are you sure you want to create a new CR?';
       } else {
         this.showNewCrPopup = true;
       }
@@ -273,7 +271,7 @@ export class LinkToCrComponent implements OnInit {
       .then((res: any) => {
         if (res && res.data) {
           this.specUtils._loadActiveTab({ activeIndex: 1 });
-          this.specUtils._getLatestCrList(res.data);
+          this.specUtils._getMeUpdatedCrs(res.data);
           this.close.emit();
         } else {
           this.utilsService.loadToaster({

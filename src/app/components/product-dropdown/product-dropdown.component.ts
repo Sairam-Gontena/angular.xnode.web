@@ -11,7 +11,7 @@ import { SpecUtilsService } from '../services/spec-utils.service';
 })
 export class ProductDropdownComponent implements OnInit {
   @Output() _onChangeProduct = new EventEmitter<object>();
-  selectedProduct: Product | undefined;
+  selectedProduct: any;
   products: Array<Product> = [];
   currentUser: any;
   email: string = '';
