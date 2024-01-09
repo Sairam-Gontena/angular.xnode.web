@@ -1,4 +1,6 @@
 <div [ngClass]="{'spec-menu': isOpen, 'hide-spec-menu': !isOpen}">
+  <img src="../assets/Close-toggle.svg" class="flex relative text-white cursor-pointer close-toggle-icon" alt="Logo"
+                *ngIf="!isOpen" (click)="toggleMenu()">
     <div *ngIf="isOpen">
         <div class="flex justify-content-center">
             <span class="p-input-icon-left w-full">
