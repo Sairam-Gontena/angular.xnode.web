@@ -34,7 +34,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef: ElementRef | undefined;
   bpmnJS: any;
-  @Input() referenceId:any;
+  @Input() referenceId: any;
   pallete_classes: any;
   selected_classes: any;
   xml: string = "";
@@ -68,6 +68,7 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   email: any;
   currentUrl: string = '';
   showBpmn: boolean = false;
+  productChanged = false;
 
   constructor(private api: ApiService,
     private utilsService: UtilsService,
@@ -87,8 +88,13 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.utilsService.showProductStatusPopup(true);
       return;
     }
-    const list: any = this.storageService.getItem(StorageKeys.SpecData);
-    this.useCases = list[2].content[0].content;
+    if (this.productChanged) {
+      this.getXflowsData();
+    } else {
+      const list: any = this.storageService.getItem(StorageKeys.SpecData);
+      this.useCases = list[2].content[0].content;
+    }
+
     var element = document.getElementById('graph');
     while (element?.firstChild) {
       element.removeChild(element.firstChild);
@@ -169,11 +175,59 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
       this.bpmnJS.attachTo(document.getElementById('diagramRef') as HTMLElement);
     }, 500);
   }
+  getXflowsData() {
+    let flow: string;
+    this.api.get('navi/get_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
+      if (response) {
+        console.log(response, 'response')
+        let user_audit_body = {
+          'method': 'GET',
+          'url': response?.request?.responseURL
+        }
+        this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.product?.id);
+        let xflowJson = {
+          'Flows': response.data.Flows.filter((f: any) => {
+            const selectedFlow = flow.toLowerCase();
+            const flowFromJson = (f.Name || f.workflow_name || '').toLowerCase();
+            const trimmedSelectedFlow = selectedFlow.replace(/\s/g, "");
+            return (selectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(selectedFlow) != -1) || (trimmedSelectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(trimmedSelectedFlow) != -1)
+          }),
+          'Product': this.product?.title
+        };
+        this.xflowData = response.data;
+        this.loadXFlows(this.xflowData);
+        this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
+        this.jsonWorkflowToShow = JSON.parse(this.jsonWorkflow);
 
+        this.auditUtil.postAudit('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
+      } else {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': response?.request?.responseURL
+        }
+        this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
+        this.loadXFlows(workflow);
+        this.jsonWorkflow = JSON.stringify(workflow, null, 2);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'Network Error' });
+        this.auditUtil.postAudit('BPMN_FLOWS', 1, 'FAILURE', 'user-audit');
+      }
+    }).catch(error => {
+      let user_audit_body = {
+        'method': 'GET',
+        'url': error?.request?.responseURL
+      }
+      this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
+      this.loadXFlows(workflow);
+      this.jsonWorkflow = JSON.stringify(workflow, null, 2);
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+      this.auditUtil.postAudit('BPMN_FLOWS_' + error, 1, 'FAILURE', 'user-audit');
+    });
+  }
 
   getFlow(flow: String) {
     this.currentUser = UserUtil.getCurrentUser();
     this.api.get('navi/get_xflows/' + this.product?.email + '/' + this.product?.id).then(async (response: any) => {
+      // this.api.get('navi/get_xflows/' + this.product?.id).then(async (response: any) => {
       if (response) {
         let user_audit_body = {
           'method': 'GET',
@@ -928,7 +982,10 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     localStorage.setItem('record_id', obj?.id);
     localStorage.setItem('app_name', obj.title);
     localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
+    this.productChanged = true;
     this.getMeStorageData();
+
   }
 }

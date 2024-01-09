@@ -3,6 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Data } from '../../pages/er-modeller/class/data';
 import { Router } from '@angular/router';
@@ -13,6 +14,9 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { MessageService } from 'primeng/api';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { ApiService } from 'src/app/api/api.service';
+import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'xnode-data-model-common',
@@ -26,6 +30,7 @@ export class DataModelCommonComponent {
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
+  @Input() specData: string = '';
   @Output() dataFlowEmitter = new EventEmitter<any>();
   data: Data | any;
   bpmnSubUrl: boolean = false;
@@ -35,9 +40,11 @@ export class DataModelCommonComponent {
   highlightedIndex: string | null = null;
   isOpen = true;
   currentUser?: any;
-  dataModel: any;
+  dataModel: any = [];
   product: any;
   currentUrl: string = '';
+  productChanged = false;
+  private productChangedBPMN: Subscription = new Subscription;
 
   constructor(
     private dataService: DataService,
@@ -46,6 +53,10 @@ export class DataModelCommonComponent {
     private router: Router,
     private storageService: LocalStorageService,
     private utilsService: UtilsService,
+    private apiService: ApiService,
+    private auditUtil: AuditutilsService,
+    private changeDetectorRef: ChangeDetectorRef
+
   ) {
     this.data = this.dataService.data;
     this.router.events.subscribe((data: any) => {
@@ -63,14 +74,62 @@ export class DataModelCommonComponent {
       this.utilsService.showProductStatusPopup(true);
       return;
     }
-    setTimeout(()=>{
-      const list: any = this.storageService.getItem(StorageKeys.SpecData);
-      this.dataModel = list[3].content[9].content;
-      this.jsPlumbService.init();
-      this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
-    },100)
-  }
+    this.utilsService.getProductChangeBPMN().subscribe((data: any) => {
+      if (data) {
+        this.product = data;
+        this.getDataModel();
+      }
+    });
+    setTimeout(() => {
+      if (this.specData === 'spec') {
+        const list: any = this.storageService.getItem(StorageKeys.SpecData);
+        this.dataModel = list[3].content[10].content;
+        this.jsPlumbService.init();
+        this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+      } else {
+        this.getDataModel();
+      }
+    }, 100)
 
+  }
+  getDataModel() {
+    this.dataModel = [];
+    this.apiService.get("navi/get_datamodels/" + this.product.id)
+      .then(response => {
+        if (response?.status === 200) {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
+          this.dataModel = response.data;
+          console.log(this.dataModel)
+          this.jsPlumbService.init();
+          this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+
+          // Redraw connections after updating dataModel
+          this.jsPlumbService.repaintEverything();
+        } else {
+          let user_audit_body = {
+            'method': 'GET',
+            'url': response?.request?.responseURL
+          }
+          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
+          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+          this.utilsService.showProductStatusPopup(true);
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        let user_audit_body = {
+          'method': 'GET',
+          'url': error?.request?.responseURL
+        }
+        this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
+        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utilsService.loadSpinner(false);
+      });
+  }
   toggleMenu() {
     this.isOpen = !this.isOpen;
   }

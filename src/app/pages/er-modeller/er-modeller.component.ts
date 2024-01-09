@@ -33,6 +33,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
   product: any;
   product_id: any;
   @Input() erModelInput: any;
+  productChanged: boolean = false;
 
   constructor(private apiService: ApiService,
     private dataService: DataService, private jsPlumbService: JsPlumbService,
@@ -62,7 +63,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.dataModel = undefined;
     this.dataService.loadData(this.utilService.ToModelerSchema([]));
     // this.utilsService.loadSpinner(true);
-    // this.getMeDataModel();
+    // if (this.productChanged) {
+    //   this.getMeDataModel();
+    // }
   }
 
   toggleMenu() {
@@ -83,7 +86,8 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
 
   getMeDataModel() {
     this.dataModel = null;
-    this.apiService.get("navi/get_insights/" + this.product.email + "/" + this.product.id)
+    // this.apiService.get("navi/get_insights/" + this.product.email + "/" + this.product.id)
+    this.apiService.get("navi/get_datamodels/" + this.product.id)
       .then(response => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -91,8 +95,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
             'url': response?.request?.responseURL
           }
           this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
-          const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
-          this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
+          // const data = Array.isArray(response?.data) ? response?.data[0] : response?.data;
+          // this.dataModel = Array.isArray(data.data_model) ? data.data_model[0] : data.data_model;
+          this.dataModel = response.data;
           this.jsPlumbService.init();
           this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
         } else {
@@ -121,6 +126,9 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     localStorage.setItem('app_name', obj.title);
     localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
     localStorage.setItem('product', JSON.stringify(obj));
+    localStorage.setItem('has_insights', obj.has_insights);
+    this.utilsService.sendProductChangeBPMN(obj);
     this.getMeStorageData();
+
   }
 }
