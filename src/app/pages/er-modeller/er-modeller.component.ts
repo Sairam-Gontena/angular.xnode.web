@@ -63,9 +63,7 @@ export class ErModellerComponent implements AfterViewChecked, OnInit {
     this.dataModel = undefined;
     this.dataService.loadData(this.utilService.ToModelerSchema([]));
     // this.utilsService.loadSpinner(true);
-    // if (this.productChanged) {
-    //   this.getMeDataModel();
-    // }
+
   }
 
   toggleMenu() {
