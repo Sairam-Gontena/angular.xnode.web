@@ -174,27 +174,7 @@ export class NotificationPanelComponent {
       });
   }
 
-  // goToSpecobj(){ delete
-  //   let obj = {
-  //     "email": "arun.ragam@salientminds.com",
-  //     "product_id": "5e7fdb61-75ab-48c9-a5db-420280202c8e",
-  //     "component": "Update Product Specifications",
-  //     "description": "Product Specifications generation completed and saved!",
-  //     "spec_status": "Completed",
-  //     "type": "Navi",
-  //     "read": "false",
-  //     "important": "true",
-  //     "pinned": "true",
-  //     "recent": "true",
-  //     "entity": "UPDATE_SPEC",
-  //     "versionId": "9ca5bc1c-33e2-4855-b81a-310e1eedb350",
-  //     "crId": "175be538-9a66-4c1b-910f-a51298b7f5d5"
-  // }
-  // this.goToSpec(obj)
-  // }
-
   goToSpec(obj: any) {
-    console.log(obj)
     this.apiService
       .get('navi/get_metadata/' + this.currentUser?.email)
       .then((response) => {
