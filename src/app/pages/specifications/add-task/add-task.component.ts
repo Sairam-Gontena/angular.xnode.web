@@ -65,7 +65,6 @@ export class AddTaskComponent {
   product: any;
   isCommnetsPanelOpened: boolean = false;
   references: any;
-  assignAsaTask: boolean = false;
 
   constructor(
     public utils: UtilsService,
@@ -131,7 +130,6 @@ export class AddTaskComponent {
     this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
-      this.commentType = 'comment';
     }
     let body = {
       createdBy: this.currentUser.user_id,
@@ -154,14 +152,17 @@ export class AddTaskComponent {
   }
   setTemplateTypeInRefs(): string {
     let productId = localStorage.getItem('record_id');
-    if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
+    this.addTaskForm.value.reviewersLOne.forEach((item:any)=>{
+      this.references.push({
+            entity_type: 'User',
+            entity_id: item.user_id,
+        });
+    })
+    if(this.references.length==0)
+      this.references = [{}];
+    if (this.parentEntity === 'SPEC'){
       this.references.forEach((obj: any) => {
         obj.template_type = 'TASK';
-        obj.product_id = productId;
-      });
-    } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
-      this.references.forEach((obj: any) => {
-        obj.template_type = 'COMMENT';
         obj.product_id = productId;
       });
     } else {
@@ -275,7 +276,6 @@ export class AddTaskComponent {
     const selectedReviewers = this.addTaskForm.value.reviewersLOne.map(
       (reviewer: any) => reviewer.name.toLowerCase()
     );
-
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
