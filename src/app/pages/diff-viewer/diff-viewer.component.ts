@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as DiffGen from '../../../app/utils/diff-generator';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { Router } from '@angular/router';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -15,6 +16,11 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./diff-viewer.component.scss'],
 })
 export class DiffViewerComponent implements OnInit {
+  // @Input() versions: any;
+  @Output() specDataChange = new EventEmitter<{
+    productId: any;
+    versionId: any;
+  }>();
   onDiff: boolean = false;
   content: any = NEWLIST;
   content2: any = OLDLIST;
@@ -24,12 +30,19 @@ export class DiffViewerComponent implements OnInit {
   specList: any;
   currentUser: any;
   keyword: any;
+  selectedVersion1: any;
+  selectedVersion2: any;
+  latestVersion: any;
+  versionList1: any = [];
+  versionList2: any = [];
+
 
   constructor(
     private utils: UtilsService,
     private specService: SpecService,
     private storageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private specUtils: SpecUtilsService
   ) {
     this.utils.startSpinner.subscribe((event: boolean) => {
       this.loading = true;
@@ -47,19 +60,43 @@ export class DiffViewerComponent implements OnInit {
   getVersions(versionId?: any) {
     this.versions = [];
     console.log('this.product', this.product);
-    
+
     this.utils.loadSpinner(true);
     this.specService
       .getVersionIds(this.product?.id)
       .then((response) => {
         if (response.status === 200 && response.data) {
           this.versions = response.data;
-          if(versionId){
+          this.versions.forEach((element: any, index: any) => {
+            if (index === 0) {
+              this.latestVersion = {
+                major: element.major,
+                minor: element.minor,
+                build: element.build,
+              };
+            }
+            this.versionList1.push({
+              label: element.major + '.' + element.minor + '.' + element.build,
+              value: element.id,
+            });
+            this.versionList2.push({
+              label: element.major + '.' + element.minor + '.' + element.build,
+              value: element.id,
+            });
+          });
+          this.selectedVersion1 = this.versions.filter((ele: any) => {
+            return ele.id === versionId;
+          })[0];
+          this.selectedVersion2 = this.versions.filter((ele: any) => {
+            return ele.id === versionId;
+          })[0];
+          if (versionId) {
             this.getMeSpecInfo({
               productId: this.product?.id,
               versionId: versionId,
             });
-          }else{
+
+          } else {
             this.getMeSpecInfo({
               productId: this.product?.id,
               versionId: this.versions[0].id,
@@ -170,7 +207,18 @@ export class DiffViewerComponent implements OnInit {
       productId: data.productId,
     });
   }
-
+  onVersionChange1(event: any) {
+    let data = { productId: this.product?.id, versionId: event.value.value };
+    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
+    // this.specUtils._saveSpecVersion(event.value);
+    this.specDataChange.emit(data);
+  }
+  onVersionChange2(event: any) {
+    let data = { productId: this.product?.id, versionId: event.value.value };
+    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
+    // this.specUtils._saveSpecVersion(event.value);
+    this.specDataChange.emit(data);
+  }
   checkUserEmail(): void {
     // if (this.currentUser.email === this.product.email) {
     //   // this.showSpecGenaretePopup = true;
@@ -185,7 +233,7 @@ export class DiffViewerComponent implements OnInit {
     // }
   }
 
-  
+
   refreshCurrentRoute(): void {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -194,31 +242,31 @@ export class DiffViewerComponent implements OnInit {
   }
 
   searchText(keyword: any) {
-  //   if (keyword === '') {
-  //     this.clearSearchText();
-  //     this.noResults = false;
-  //     return;
-  //   } else {
-  //     this.keyword = keyword;
-  //     this.specData = [];
-  //     this.foundObjects = [];
-  //     this.filteredSpecData = [];
-  //     this.wantedIndexes = [];
-  //     this.removableIndexes = [];
-  //     this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
-  //     this.searchSpec
-  //       .searchSpec(this.specData, keyword)
-  //       .subscribe((returnData: any) => {
-  //         if (returnData) {
-  //           this.specData = returnData.specData;
-  //           this.foundObjects = returnData.foundObjects;
-  //           this.noResults = returnData.noResults;
-  //           this.filteredSpecData = returnData.filteredSpecData;
-  //           this.wantedIndexes = returnData.wantedIndexes;
-  //           this.removableIndexes = returnData.removableIndexes;
-  //           this.utils.passSelectedSpecItem(this.specData);
-  //         }
-  //       });
-  //   }
-   }
+    //   if (keyword === '') {
+    //     this.clearSearchText();
+    //     this.noResults = false;
+    //     return;
+    //   } else {
+    //     this.keyword = keyword;
+    //     this.specData = [];
+    //     this.foundObjects = [];
+    //     this.filteredSpecData = [];
+    //     this.wantedIndexes = [];
+    //     this.removableIndexes = [];
+    //     this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
+    //     this.searchSpec
+    //       .searchSpec(this.specData, keyword)
+    //       .subscribe((returnData: any) => {
+    //         if (returnData) {
+    //           this.specData = returnData.specData;
+    //           this.foundObjects = returnData.foundObjects;
+    //           this.noResults = returnData.noResults;
+    //           this.filteredSpecData = returnData.filteredSpecData;
+    //           this.wantedIndexes = returnData.wantedIndexes;
+    //           this.removableIndexes = returnData.removableIndexes;
+    //           this.utils.passSelectedSpecItem(this.specData);
+    //         }
+    //       });
+    //   }
+  }
 }

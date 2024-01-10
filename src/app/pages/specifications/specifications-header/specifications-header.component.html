@@ -12,8 +12,12 @@
                 class="ml-3 app-dropdown-version"></p-dropdown>
         </div>
         <div class="flex align-items-center">
-            <p-inputSwitch [(ngModel)]="diffView" (onChange)="toggleDiffView($event)"></p-inputSwitch> <label for="" class="ml-2">Diff View</label>
+            <p-inputSwitch [(ngModel)]="diffView" (onChange)="toggleDiffView($event)"></p-inputSwitch>
+            <label for="" class="ml-2">Diff View</label>
+            <p-dropdown *ngIf="diffView" [options]="viewList" [(ngModel)]="selectedView" optionLabel="label"
+                (onChange)="onViewChange($event)" placeholder="Select a view" class="ml-3 view-dropdown"></p-dropdown>
         </div>
+
         <div class="flex align-items-center">
             <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
                 (click)="openComments()">
