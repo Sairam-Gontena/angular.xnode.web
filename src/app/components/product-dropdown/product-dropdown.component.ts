@@ -3,7 +3,6 @@ import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecUtilsService } from '../services/spec-utils.service';
-
 @Component({
   selector: 'xnode-product-dropdown',
   templateUrl: './product-dropdown.component.html',
@@ -22,9 +21,7 @@ export class ProductDropdownComponent implements OnInit {
     private fb: FormBuilder,
     private specUtils: SpecUtilsService
   ) {
-    this.myForm = this.fb.group({
-      selectedProduct: [null],
-    });
+    this.myForm = this.fb.group({  selectedProduct: [null], });
     this.specUtils.getMeUpdatedProduct.subscribe((data: any) => {
       if (data) {
         this.getMeDataFromStorage();
@@ -34,21 +31,26 @@ export class ProductDropdownComponent implements OnInit {
 
   ngOnInit() {
     this.getMeDataFromStorage();
+    const metaData = localStorage.getItem('meta_data');
+    if (metaData) {
+      this.products = JSON.parse(metaData);
+    }
     this.myForm.valueChanges.subscribe((value: any) => {
-      this._onChangeProduct.emit(value.selectedProduct);
-      this.utilsService.saveProductDetails(value.selectedProduct);
+      value.selectedProduct = this.selectedProduct;
+      this._onChangeProduct.emit(this.selectedProduct);
+      this.utilsService.saveProductDetails(this.selectedProduct);
     });
   }
 
   getMeDataFromStorage(): void {
-    const metaData = localStorage.getItem('meta_data');
     const product = localStorage.getItem('product');
-    if (metaData) {
-      this.products = JSON.parse(metaData);
+    if (this.products) {
       if (product) {
-        this.myForm.get('selectedProduct')?.patchValue(JSON.parse(product));
+        this.selectedProduct = JSON.parse(product);
+        this.myForm.patchValue({'selectedProduct':this.products.find((item: any) => item.id == this.selectedProduct.id)})
       } else {
-        this.myForm.get('selectedProduct')?.patchValue(JSON.parse(metaData)[0]);
+        this.selectedProduct = this.products[0];
+        this.myForm.patchValue({'selectedProduct':this.selectedProduct})
       }
     }
   }
