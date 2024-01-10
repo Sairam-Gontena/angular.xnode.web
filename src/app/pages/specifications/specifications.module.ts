@@ -33,6 +33,7 @@ import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskChildConversationComponent } from 'src/app/pages/specifications/task-child-conversation/task-child-conversation.component';
 import { AddTaskComponent } from './add-task/add-task.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -67,6 +68,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
     CommonModule,
     InputSwitchModule,
     SpecificationsRoutingModule,
+    MultiSelectModule,
     SharedModule,
     SharedComponentModule,
   ],

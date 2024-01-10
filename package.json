@@ -33,6 +33,7 @@
     "@angular/platform-browser-dynamic": "^16.0.1",
     "@angular/platform-server": "^16.0.1",
     "@angular/router": "^16.0.1",
+    "@auth0/angular-jwt": "^5.2.0",
     "@bpmn-io/properties-panel": "^0.19.0",
     "@katoid/angular-grid-layout": "^2.1.0",
     "@ng-select/ng-select": "^10.0.4",

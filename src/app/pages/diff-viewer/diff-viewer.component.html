@@ -2,7 +2,7 @@
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList"></xnode-specifications-menu>
     <div class="w-full">
-      <xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
+      <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
         (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
       <div class="diff-view flex justify-content-center">
         <div class="w-8">

@@ -61,4 +61,9 @@ export class AuthApiService extends BaseApiService {
     return this.userLoggedIn;
   }
 
+  getUsersByAccountId(params?: any) {
+    let url = 'user/get_all_users?account_id=' + params.account_id
+    return this.get(url);
+  }
+
 }

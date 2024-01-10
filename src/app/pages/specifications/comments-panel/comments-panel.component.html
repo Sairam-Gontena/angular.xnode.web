@@ -1,27 +1,40 @@
-<xnode-no-comments *ngIf="list?.length === 0; else conversationComments"
+<xnode-no-comments *ngIf="filteredList?.length === 0; else conversationComments"
     [content]="'No open comments yet'"></xnode-no-comments>
 <ng-template #conversationComments>
     <div class="p-4">
-        <div class="grid">
-            <div class="col-6">
+        <div class="flex flex-row justify-content-between">
+            <div class="">
                 <div class="flex align-items-center filter-grid ">
                     <p class="m-0 pl-2">Filters:</p>
-                    <p-dropdown class="filter w-full ml-2 " [options]="filterOptions" placeholder="Select " [(ngModel)]="selectedFilter"
-                        optionLabel="label" (onChange)="filterList(list)" ></p-dropdown>
+                    <p-dropdown class="filter w-full ml-2 " [options]="filterOptions" placeholder="Select "
+                        [(ngModel)]="selectedFilter" optionLabel="label" (onChange)="filterList(list)"></p-dropdown>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="flex align-items-center search-grid">
-                    <div class="p-inputgroup">
-                        <input type="text" pInputText />
-                        <button type="button" pButton icon="pi pi-search" styleClass="p-button-warn"></button>
-                    </div>
-                    <img src="./assets/user.svg" alt="user" />
+            <div class="flex justify-content-end">
+                <div class="flex flex-row justify-content-end align-items-center search-grid">
+                    <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto"
+                        [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
+                    <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none search-dropdown-user"
+                        [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
+                    <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name"
+                        (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
+                        (onChange)="userFilter()" [showClear]="true" placeholder=""></p-multiSelect>
                 </div>
             </div>
         </div>
+        <span class="p-input-icon-left mt-2 w-full" *ngIf="filter=='text'">
+            <i class="pi pi-search text-white" [ngStyle]="{top: '22px'}"></i>
+            <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()"
+                placeholder="Search for Keywords"
+                class="w-full border-round-3xl mb-1 font-family-inter text-sm font-normal" />
+            <i class="pi pi-times reset-search text-white cursor-pointer"
+                [ngStyle]="{top: '22px', right: '20px',color:'#A2A2A3'}" *ngIf="searchIconKeyword"
+                (click)="searchIconKeyword='';searchConversation()"></i>
+        </span>
+        <hr class="mt-2" [ngStyle]="{border:'1px solid #535354'}" />
         <div class='comments-grid'>
-            <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList" [usersList]="usersList"
+            <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList"
+                [usersList]="usersList" [searchIconKeyword]="searchIconKeyword"
                 [topParentId]="selectedComment?.id"></xnode-spec-conversation>
         </div>
     </div>

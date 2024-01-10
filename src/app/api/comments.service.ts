@@ -18,9 +18,15 @@ export class CommentsService extends BaseApiService {
     let url = 'comment';
     return this.get(url, params);
   }
+
   getCommentsByProductId(params?: any) {
-    let url = 'comments-by-productId';
-    return this.get(url, params);
+    let url = 'comment/comments-by-productId?productId=' + params.productId + '&verisonId=' + params.versionId;
+    return this.get(url);
+  }
+
+  getTasksByProductId(params?: any) {
+    let url = 'task/tasks-by-productId?productId=' + params.productId + '&verisonId=' + params.versionId;
+    return this.get(url);
   }
 
   getTasks(params?: any) {
@@ -59,13 +65,20 @@ export class CommentsService extends BaseApiService {
   getChangeRequestList(body: any) {
     return this.get('change-request', body);
   }
+  updateCRActions(body: any) {
+    return this.post('change-request/update-many-crs', body);
 
+  }
   createCr(body: any) {
     return this.post('change-request', body);
   }
 
   linkCr(body: any) {
     return this.post('cr-entity-mapping', body);
+  }
+
+  unLinkCr(body: any) {
+    return this.post('cr-entity-mapping/unlink-crs', body);
   }
 
   approveCr(body: any) {
@@ -99,4 +112,5 @@ export class CommentsService extends BaseApiService {
   publishApp(body: any) {
     return this.post('product-spec/publish', body);
   }
+
 }

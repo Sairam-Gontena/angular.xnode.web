@@ -76,6 +76,10 @@
     color: #ffffff !important;
 }
 
+:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover{
+  background: #2E2D36 !important;
+}
+
 :host ::ng-deep .p-dropdown .p-dropdown-items {
     padding: 0;
 
@@ -106,8 +110,7 @@
 
 :host ::ng-deep .search-grid .p-inputtext {
     box-shadow: none !important;
-    border: 0;
-    padding: 0 5px;
+    padding: 5px 5px;
     color: #EFEEEE;
     background: linear-gradient(0deg, #23222B, #23222B),
         linear-gradient(0deg, #535354, #535354);
