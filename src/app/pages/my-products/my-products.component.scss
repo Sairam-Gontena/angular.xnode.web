@@ -3,23 +3,6 @@
 }
 
 @media (max-width: 767px) {
-    :host ::ng-deep .p-tabview {
-        width: 100% !important;
-    }
-
-    // :host ::ng-deep .p-button.p-button-secondary {
-    //     padding-left: 10px;
-    //     padding-right: 10px;
-    // }
-
-    // :host ::ng-deep .p-inputtext {
-    //     background-color: #4F4E55;
-    //     width: 100%;
-    //     border-width: 0;
-    //     border-radius: 50px;
-    //     height: 40px;
-    //     margin-left: 5px;
-    // }
 
     .txt-heading {
         font-size: 36px;
@@ -93,24 +76,6 @@
 
 /* Tablets (768px to 991px width) */
 @media (min-width: 768px) and (max-width: 991px) {
-    // :host ::ng-deep .p-button {
-    //     padding-left: 0px;
-    //     padding-right: 0px;
-    // }
-
-    // :host ::ng-deep .p-button.p-button-secondary {
-    //     padding-left: 10px;
-    //     padding-right: 10px;
-    // }
-
-    // :host ::ng-deep .p-inputtext {
-    //     background-color: #4F4E55;
-    //     width: 100%;
-    //     border-width: 0;
-    //     border-radius: 50px;
-    //     height: 40px;
-    //     margin-left: 5px
-    // }
 
     .txt-heading {
         font-size: 48px;
@@ -164,19 +129,6 @@
 }
 
 @media (min-width: 992px) {
-    // :host ::ng-deep .p-button.p-button-secondary {
-    //     padding-left: 10px;
-    //     padding-right: 10px;
-    // }
-
-    // :host ::ng-deep .p-inputtext {
-    //     background-color: #4F4E55;
-    //     width: 100%;
-    //     border-width: 0;
-    //     border-radius: 50px;
-    //     height: 40px;
-    //     margin-left: 5px
-    // }
 
     .txt-heading {
         font-size: 36px;
@@ -298,41 +250,6 @@
         justify-content: center;
         /* 1 card for mobile */
     }
-}
-
-:host ::ng-deep .p-tabview .p-tabview-nav {
-    // background: #3A3942 !important;
-    color: #ffffff !important;
-    border: none !important;
-}
-
-:host ::ng-deep.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    // background: #3A3942;
-    // border-color: #02ADEE;
-    // color: #02ADEE;
-}
-
-:host ::ng-deep.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
-    // background: #3A3942;
-    // border-color: #02ADEE;
-    // color: #02ADEE;
-}
-
-:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-    // background: #3A3942;
-    // color: #ffffff;
-}
-
-:host ::ng-deep .p-tabview .p-tabview-panels {
-    background: #3A3942 !important;
-    color: #ffffff !important;
-    padding: 0px !important;
-}
-
-@media screen and (max-width: 600px) {
-    // .search .p-inputtext {
-    //     width: 95%;
-    // }
 }
 
 .tmp-page-height {

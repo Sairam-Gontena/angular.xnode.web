@@ -188,7 +188,7 @@ export class AppComponent implements OnInit {
 
     setTimeout(()=>{
       this.changeTheme(this.colorPallet[6])
-    },1000)
+    },100)
 
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {

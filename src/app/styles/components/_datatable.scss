@@ -27,22 +27,17 @@
     background: var(--datatable-header-background-color);
     color: var(--datatable-header-text-color);
     border: 1px solid var(--datatable-header-border-color);
-    // border-width: 1px 1px 1px 1px;
     border-width: 0px;
     padding: 1rem 1rem;
     font-weight: 700;
   }
   .p-datatable .p-datatable-thead > tr > th {
     text-align: left;
-    // padding: 1rem 1rem;
-    // padding: 12px, 19px, 12px, 19px;
-    // border: 1px solid #e5e7eb;
     border-width: 0 0 0px 0;
     font-weight: 700;
     color: var(--datatable-header-text-color);
     background: var(--datatable-header-row-background-color);
     transition: box-shadow 0.2s;
-    // height: 43px;
     align-items: center;
     padding: 0px;
     padding-left:20px ;
@@ -70,15 +65,6 @@
     color: #374151;
     margin-left: 0.5rem;
   }
-  // .p-datatable .p-sortable-column .p-sortable-column-badge {
-  //   border-radius: 50%;
-  //   height: 1.143rem;
-  //   min-width: 1.143rem;
-  //   line-height: 1.143rem;
-  //   color: #1D4ED8;
-  //   background: #EFF6FF;
-  //   margin-left: 0.5rem;
-  // }
   .p-datatable .p-sortable-column:not(.p-highlight):hover {
     background: #f3f4f6;
     color: #374151;

@@ -30,6 +30,8 @@ export class ThemeService {
     primary_button_inactive:'--primary-button-inactive',
     secondary_button_color:'--secondary-button-color',
     secondary_button_text_color:'--secondary-button-text-color',
+    teritory_button_text_color:'--teritory-button-text-color',
+    teritory_button_border_color:'--teritory-button-border-color',
 
     // INPUT TEXT
     inputtext_background_color:'--inputtext-background-color',
@@ -42,19 +44,27 @@ export class ThemeService {
     dropdown_background_color:'--dropdown-background-color',
     dropdown_border_color:'--dropdown-border-color',
     dropdown_label_placeholder_color:'--dropdown-label-placeholder-color',
+    dropdown_label_text_color:'--dropdown-label-text-color',
     dropdown_label_placeholder_focus_color:'--dropdown-label-placeholder-focus-color',
     dropdown_panel_background_color:'--dropdown-panel-background-color',
+    dropdown_panel_border_color:'--dropdown-panel-border-color',
+    dropdown_item_inactive_text_color:'--dropdown-item-inactive-text-color',
+    dropdown_item_highlight_text_color:'--dropdown-item-hightlight-text-color',
     dropdown_item_hightlight_color:'--dropdown-item-hightlight-color',
     dropdown_item_focus_color:'--dropdown-item-focus-color',
     dropdown_item_hover_color:'--dropdown-item-hover-color',
     dropdown_text_color:'--dropdown-text-color',
 
     // TABVIEW
+    tabview_panels_background_color:'--tabview-panels-background-color',
     tabview_nav_background_color:'--tabview-nav-background-color',
-    tabview_nav_border_color:'--tabview-nav-border-color:',
+    tabview_nav_border_color:'--tabview-nav-border-color',
     tabview_nav_link_background_color:'--tabview-nav-link-background-color',
     tabview_nav_link_hover_color:'--tabview-nav-link-hover-color',
+    tabview_nav_link_hover_text_color:'--tabview-nav-link-hover-text-color',
+    tabview_nav_link_hover_border_color:'--tabview-nav-link-hover-border-color',
     tabview_nav_link_hightlight_color:'--tabview-nav-link-highlight-color',
+    tabview_nav_link_hightlight_text_color:'--tabview-nav-link-highlight-text-color',
     tabview_text_color:'--tabview-text-color',
 
     // ACCORDION
@@ -92,7 +102,31 @@ export class ThemeService {
     tierdermenu_overlay_background_color:'--tieredmenu-overlay-background-color',
     tieredmenu_menuitem_focus_background_color:'--tieredmenu-menuitem-focus-background-color',
     tieredmenu_menuitem_hover_background_color:'--tieredmenu-menuitem-hover-background-color',
-    tieredmenu_menuitem_text_color:'--tieredmenu-menuitem-text-color'
+    tieredmenu_menuitem_text_color:'--tieredmenu-menuitem-text-color',
+
+    // MULTISELECT
+    multiselect_label_container_background_color:"--multiselect-label-container-background-color",
+    multiselect_pannel_backgrounnd_color:"--multiselect-pannel-background-color",
+    multiselect_pannel_border_color:"--multiselect-pannel-border-color",
+    multiselect_pannel_header_border_color:"--multiselect-pannel-header-border-color",
+    multiselect_filter_container_background_color:"--multiselect-filter-container-background-color",
+    multiselect_filter_icon_color:"--multiselect-filter-icon-color",
+    multiselect_item_inactive_text_color:"--multiselect-item-inactive-text-color",
+    multiselect_item_highlight_text_color:"--multiselect-item-highlight-text-color",
+    multiselect_item_focus_background_color:"--multiselect-item-focus-background-color",
+    multiselect_item_hover_text_color:"--multiselect-item-hover-text-color",
+    multiselect_item_hover_background_color:"--multiselect-item-hover-background-color",
+    multiselect_checkbox_inactive_color:"--multiselect-checkbox-inactive-color",
+    multiselect_checkbox_highlight_color:"--multiselect-checkbox-highlight-color",
+
+    // DIALOG
+    diaglog_container_background_color:"--dialog-container-background-color",
+    dialog_container_border_color:"--dialog-container-border-color",
+    dialog_header_background_color:"--dialog-header-background-color",
+    dialog_header_text_color:"--dialog-header-text-color",
+    dialog_content_text_color:"--dialog-content-text-color",
+    dialog_content_background_color:"--dialog-content-background-color",
+    dialog_footer_background_color:"--dialog-footer-background-color"
 
   };
 

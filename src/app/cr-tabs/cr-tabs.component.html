@@ -33,21 +33,18 @@
           [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
     </div>
-    <div class="flex align-items-center justify-content-between w-full pt-4 px-4">
+    <div class="flex align-items-center justify-content-between w-full mt-4  px-4">
       <div class="flex align-items-center mr-2">
-        <p-dropdown class="w-full" [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter"
+        <p-dropdown [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter"
           optionLabel="title" (onChange)="filterListData()"></p-dropdown>
-        <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
+        <p-button label="Create New" size="small" severity="secondary"  [rounded]="true"
           (click)="createNewCr()"></p-button>
       </div>
-      <div class="flex justify-content-center">
-
-        <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto"
+      <div class="flex justify-content-center align-items-center" >
+        <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer w-auto"
           [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
-
-        <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none search-dropdown-user"
+        <i class="pi pi-user pointer relative z-1 opacity-100 pointer-events-none search-dropdown-user"
           [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
-
         <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name"
           (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
           (onChange)="filterListByUsersFilter()" [showClear]="true" placeholder=""></p-multiSelect>
@@ -135,7 +132,7 @@
                     </div>
                     <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation;getMeActions(data)"
                       [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
-                      <ng-template let-action pTemplate="item">
+                      <ng-template let-action pTemplate="item" [appendTo]="body">
                         <span class="flex" (click)="updateChagneRequestStatus(action.label)">
                           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
                             [ngStyle]="{width:'fit-content'}" [ngClass]="{
@@ -479,8 +476,8 @@
 <xnode-confirmation-popup-new [header]="header" [content]="content"
   [visible]="openConfirmationPopUp || updateSpecBtnTriggered "
   (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
-<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" header="Add New CR" [versions]="[]"
-  (close)="showNewCrPopup = false;">
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" [header]="crHeader " [versions]="[]"
+  (close)="showNewCrPopup = false;emitData($event)" [selectedCR]="selectedCr">
 </xnode-create-new-cr-version>
 
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup" [limitReachedContent]="true"

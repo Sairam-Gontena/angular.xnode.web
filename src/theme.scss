@@ -171,11 +171,13 @@
 
     // BUTTON 
     --primary-button-color:#EF018F;
-    --primary-button-text-color:#FFFFFF;
+    --primary-button-text-color:#A2A2A3;
     --primary-button-inactive:#824E6D;
     --secondary-button-color:#02ADEE;
-    --secondary-button-text-color:#FFFFFF;
+    --secondary-button-text-color:#A2A2A3;
     --secondary-button-inactive:#824E6D;
+    --teritory-button-text-color:#A2A2A3;
+    --teritory-button-border-color:#A2A2A3;
 
     // INPUT TEXT
     --inputtext-background-color:#EF018F;
@@ -188,19 +190,27 @@
     --dropdown-background-color:#011a03;
     --dropdown-border-color:#023006;
     --dropdown-label-placeholder-color:#a5a5a5;
+    --dropdown-label-text-color:#EFEEEE;
     --dropdown-label-placeholder-focus-color:#011202;
     --dropdown-panel-background-color:#011a03;
+    --dropdown-panel-border-color:#535354;
+    --dropdown-item-inactive-text-color: #A2A2A3;
+    --dropdown-item-hightlight-text-color: #EFEEEE;
     --dropdown-item-hightlight-color:#044409;
     --dropdown-item-focus-color:#011202;
     --dropdown-item-hover-color:#0f160f;
     --dropdown-text-color:#fff;
 
     // TABVIEW CSS
+    --tabview-panels-background-color:'#23222B';
     --tabview-nav-background-color:#011a03;
     --tabview-nav-border-color:#023006;
     --tabview-nav-link-background-color:#030d19;
-    --tabview-nav-link-hover-color:#0f160f;
+    --tabview-nav-link-hover-color:#9ca3af;
+    --tabview-nav-link-hover-text-color:#0f160f;
+    --tabview-nav-link-hover-border-color:#0f160f;
     --tabview-nav-link-highlight-color:#044409;
+    --tabview-nav-link-highlight-text-color:#044409;
     --tabview-text-color:#fff;
 
     // ACCORDION CSS
@@ -239,5 +249,29 @@
     --tieredmenu-menuitem-focus-background-color:#011202;
     --tieredmenu-menuitem-hover-background-color:#0f160f;
     --tieredmenu-menuitem-text-color:#0f160f;
+
+    // MULTISELECT 
+    --multiselect-label-container-background-color:"#23222B",
+    --multiselect-pannel-background-color:#2e2d36;
+    --multiselect-pannel-border-color:#535354;
+    --multiselect-pannel-header-border-color:#535354;
+    --multiselect-filter-container-background-color:#23222B;
+    --multiselect-filter-icon-color:#6b7280;
+    --multiselect-item-inactive-text-color:#A2A2A3;
+    --multiselect-item-highlight-text-color:#EFEEEE;
+    --multiselect-item-focus-background-color:#3a3e45;
+    --multiselect-item-hover-text-color:#A2A2A3;
+    --multiselect-item-hover-background-color:#393843;
+    --multiselect-checkbox-inactive-color:#A2A2A3;
+    --multiselect-checkbox-highlight-color:#EFEEEE;
+
+    // DIALOG
+    --dialog-container-background-color:#23222B
+    --dialog-container-border-color:#535354
+    --dialog-header-background-color:#23222B
+    --dialog-header-text-color:#EFEEEE
+    --dialog-content-text-color:#A2A2A3
+    --dialog-content-background-color:#23222B
+    --dialog-footer-background-color:#23222B
 
 }

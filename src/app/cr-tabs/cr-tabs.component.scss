@@ -32,26 +32,6 @@
   margin-top: 2px;
 }
 
-.search-input {
-  border: revert-layer !important;
-}
-
-// :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
-//   border-width: 0px;
-//   border-color: #ffff;
-// }
-// :host ::ng-deep .p-checkbox .p-checkbox-box:hover {
-//   border-color: #ffff;
-// }
-// :host ::ng-deep .p-checkbox .p-checkbox-box:active {
-//   border-color: #fff;
-//   border-width: 0px;
-// }
-// :host ::ng-deep .p-checkbox .p-checkbox-box:focus {
-//   border-color: #fff;
-//   border-width: 0px;
-// }
-
 :host ::ng-deep .cr-tabs .p-accordion .p-accordion-header .p-accordion-header-link {
   position: relative;
 }
@@ -115,16 +95,6 @@
   display: block !important;
 }
 
-:host ::ng-deep .p-autocomplete .p-inputtext {
-  border: none;
-  width: 100% !important;
-  color: white;
-}
-
-:host ::ng-deep .p-inputtext {
-  border: none;
-}
-
 :host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
   color: #fff;
 }
@@ -172,135 +142,8 @@
   justify-content: center;
 }
 
-
-:host ::ng-deep .dueDate .p-inputtext {
-  background-color: #302E38;
-  color: #fff;
-  border: none;
-  box-shadow: none;
-  font-weight: normal;
-  padding: 0;
-  width: 0;
-}
-
-:host ::ng-deep .dueDate .p-button {
-  color: #ffffff;
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 0;
-  font-size: 1.5rem !important;
-  border-radius: 6px;
-}
-
-:host ::ng-deep .priority-dropdown .p-dropdown-label{
-  display: none;
-}
-
-:host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon{
-  display: none;
-}
-
-:host ::ng-deep .priority-dropdown .p-dropdown-trigger {
-  background: url('../../assets/status.svg') no-repeat;
-  background-size: contain;
-  display: inline-block;
-  width: 18px;
-}
-
-:host ::ng-deep .menu-list-dropdown .p-dropdown-trigger{
-  background: url('../../assets/kebab-menu.svg') no-repeat;
-  background-size: contain;
-  display: inline-block;
-  width: 18px;
-}
-
-:host ::ng-deep .menu-list-dropdown .p-dropdown-label{
-  display: none;
-}
-
-:host ::ng-deep  .menu-list-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon{
-  display: none;
-}
-
-:host ::ng-deep .menu-list-dropdown .p-dropdown{
-  background-color: transparent!important;
-}
-
-:host ::ng-deep .menu-list-dropdown .p-overlay{
-  left: -150px!important;
-}
-
-:host ::ng-deep .dueDate .p-button.p-button-icon-only {
-  width: 1.5rem;
-}
-
-:host ::ng-deep .p-dropdown .p-dropdown-label {
-  background-color: #2E2D36 !important;
-  color: #ffffff !important;
-  width: 100%;
-}
-
 .filter-grid {
   background: #2E2D36;
   color: #EFEEEE;
   width: 100% !important;
-}
-
-:host ::ng-deep .p-dropdown {
-  border: 1px solid #535354;
-  background-color: #2E2D36 !important;
-  color: #ffffff !important;
-  width: 100% !important;
-  box-shadow: none !important;
-}
-
-:host ::ng-deep .p-dropdown .p-dropdown-items-wrapper {
-  background-color: #2E2D36 !important;
-  max-height: 180px !important;
-}
-
-:host ::ng-deep .p-dropdown .p-dropdown-items .p-dropdown-item.p-highlight {
-  background: #2E2D36 !important;
-  color: #ffffff !important;
-}
-
-:host ::ng-deep .p-dropdown-item {
-  border: 1px solid #535354;
-  color: #ffffff !important;
-}
-
-:host ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover{
-  background: #2E2D36 !important;
-}
-
-:host ::ng-deep .p-dropdown .p-dropdown-items {
-  padding: 0;
-}
-
-:host ::ng-deep .p-dropdown-filter-container {
-  border: 1px solid transparent !important;
-  background: transparent;
-}
-:host::ng-deep .cancel-button .p-button {
-  color: #23222B !important;
-  // background: #2E2D36;
-  background: #ffffff !important;
-  font-size: 1rem !important;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  border: 1px solid #23222B;
-  border-radius: 1.5rem;
-  padding: 0.5rem;
-
-}
-
-:host ::ng-deep .send-feedback-btn .p-button {
-  background: #2563eb;
-  font-size: 1rem !important;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  border: 1px solid #2563eb;
-  border-radius: 1.5rem;
-  padding: 0.5rem;
-
 }

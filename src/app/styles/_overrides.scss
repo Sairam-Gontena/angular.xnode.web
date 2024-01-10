@@ -7,21 +7,10 @@
 @import "./components/datatable";
 @import "./components/splitbutton";
 @import "./components/tidermenu";
+@import "./components/multiselect";
+@import "./components/dialog";
 
-.p-dialog .p-dialog-header {
-    background: var(--body-color) !important;
-    color: var(--text-color) !important;
-  }
-  
-  .p-dialog .p-dialog-content {
-    background: var(--body-color) !important;
-    color: var(--text-color) !important;
-  }
 
-  .p-dialog .p-dialog-footer {
-    background: var(--body-color) !important;
-    color: var(--text-color) !important;
-  }
 
   // accordian here
   // .p-accordion .p-accordion-content {
