@@ -3,7 +3,8 @@ import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecUtilsService } from '../services/spec-utils.service';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'xnode-product-dropdown',
   templateUrl: './product-dropdown.component.html',
@@ -16,6 +17,8 @@ export class ProductDropdownComponent implements OnInit {
   currentUser: any;
   email: string = '';
   myForm: FormGroup;
+  getMeDataFromStoragesubject: Subject<boolean> = new Subject<boolean>();
+  myFormValueChanges: Subject<any> = new Subject<any>();
 
   constructor(
     private utilsService: UtilsService,
@@ -27,16 +30,24 @@ export class ProductDropdownComponent implements OnInit {
     });
     this.specUtils.getMeUpdatedProduct.subscribe((data: any) => {
       if (data) {
-        this.getMeDataFromStorage();
+        this.getMeDataFromStoragesubject.next(true);
+        // this.getMeDataFromStorage();
       }
+    });
+    // reason in spec header product is setting in localstorage 1st item this._onChangeProduct.emit(value.selectedProduct) because this is emitting first obj here this.specUtils.getMeUpdatedProduct.subscribe calling multiple times dont know from where
+    this.getMeDataFromStoragesubject.pipe(debounceTime(1000)).subscribe((search) => {
+      this.getMeDataFromStorage();
+    });
+    this.myFormValueChanges.pipe(debounceTime(1000)).subscribe((value:any) => {
+      this._onChangeProduct.emit(value.selectedProduct);
+      this.utilsService.saveProductDetails(value.selectedProduct);
     });
   }
 
   ngOnInit() {
     this.getMeDataFromStorage();
     this.myForm.valueChanges.subscribe((value: any) => {
-      this._onChangeProduct.emit(value.selectedProduct);
-      this.utilsService.saveProductDetails(value.selectedProduct);
+      this.myFormValueChanges.next(value)
     });
   }
 
