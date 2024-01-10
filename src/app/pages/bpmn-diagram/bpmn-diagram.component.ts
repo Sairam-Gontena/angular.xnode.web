@@ -94,11 +94,15 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     }
     if (this.productChanged) {
       this.getXflowsData();
+
     } else {
       const list: any = this.storageService.getItem(StorageKeys.SpecData);
       this.useCases = list[2].content[0].content;
     }
+    this.loadGraph();
 
+  }
+  loadGraph() {
     var element = document.getElementById('graph');
     while (element?.firstChild) {
       element.removeChild(element.firstChild);
@@ -118,7 +122,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     this.home = { icon: 'pi pi-home', routerLink: '/configuration/workflow/overview' };
     this.graph();
   }
-
   switchWindow() {
     var bpmnWindow = document.getElementById("diagramRef");
     if (bpmnWindow) bpmnWindow.style.display = 'None';
@@ -182,27 +185,14 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
   getXflowsData() {
     let flow: string;
     this.api.get('navi/get_xflows/' + localStorage.getItem('record_id')).then(async (response: any) => {
-      if (response) {
-        console.log(response, 'response')
+      if (response?.status === 200) {
         let user_audit_body = {
           'method': 'GET',
           'url': response?.request?.responseURL
         }
         this.auditUtil.postAudit('GET_FLOW_RETRIEVE_XFLOWS_BPMN', 1, 'SUCCESS', 'user-audit', user_audit_body, this.product?.id);
-        let xflowJson = {
-          'Flows': response.data.Flows.filter((f: any) => {
-            const selectedFlow = flow.toLowerCase();
-            const flowFromJson = (f.Name || f.workflow_name || '').toLowerCase();
-            const trimmedSelectedFlow = selectedFlow.replace(/\s/g, "");
-            return (selectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(selectedFlow) != -1) || (trimmedSelectedFlow.indexOf(flowFromJson) != -1) || (flowFromJson.indexOf(trimmedSelectedFlow) != -1)
-          }),
-          'Product': this.product?.title
-        };
-        this.xflowData = response.data;
-        this.loadXFlows(this.xflowData);
-        this.jsonWorkflow = JSON.stringify(xflowJson, null, 2);
-        this.jsonWorkflowToShow = JSON.parse(this.jsonWorkflow);
-
+        this.useCases = response.data.Flows;
+        this.loadGraph();
         this.auditUtil.postAudit('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
       } else {
         let user_audit_body = {
@@ -988,5 +978,6 @@ export class BpmnDiagramComponent implements AfterContentInit, OnDestroy, OnInit
     localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
     this.productChanged = true;
+    this.getMeStorageData();
   }
 }
