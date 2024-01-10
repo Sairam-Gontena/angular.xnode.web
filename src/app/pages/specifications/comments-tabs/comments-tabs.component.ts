@@ -35,9 +35,6 @@ export class CommentsTabsComponent implements OnInit {
         this.activeIndex = 1;
       }
     });
-    this.specUtils.specLevelCommentsTasks.subscribe((event: any) => {
-      this.showSpecLevelComments = event;
-    });
     this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
       if (event) {
         this.activeIndex = 0;

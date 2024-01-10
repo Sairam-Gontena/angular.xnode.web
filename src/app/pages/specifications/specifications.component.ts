@@ -71,7 +71,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     });
     this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
       if (data) {
-        this.handleSpecData(data.specData, data.productId)
+        this.handleSpecData(data.specData, data.productId);
       }
     });
   }
@@ -100,9 +100,9 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     this.apiService
       .get(
         'navi/get_metadata/' +
-        this.currentUser?.email +
-        '?product_id=' +
-        val.product_id
+          this.currentUser?.email +
+          '?product_id=' +
+          val.product_id
       )
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
@@ -115,7 +115,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => { });
+      .catch((error) => {});
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -168,12 +168,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
 
     this.getUsersByAccountId();
-
   }
 
   getCRList() {
     let body: any = {
-      productId: this.notifInfo?.product_id ? this.notifInfo?.product_id : this.notifInfo?.productId,
+      productId: this.notifInfo?.product_id
+        ? this.notifInfo?.product_id
+        : this.notifInfo?.productId,
     };
     this.utils.loadSpinner(true);
     this.commentsService
@@ -218,7 +219,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.filteredSpecData = [];
       this.wantedIndexes = [];
       this.removableIndexes = [];
-      this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
+      this.specData = this.localStorageService.getItem(StorageKeys.SPEC_DATA);
       this.searchSpec
         .searchSpec(this.specData, keyword)
         .subscribe((returnData: any) => {
@@ -406,7 +407,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
-    this.storageService.saveItem(StorageKeys.SpecData, list)
+    this.storageService.saveItem(StorageKeys.SPEC_DATA, list);
     if (this.activeConversationTab === 'COMMENTS') {
       this.getMeAllCommentsList(productId);
     } else if (this.activeConversationTab === 'TASKS') {
@@ -477,9 +478,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getMeAllTaskList(productId: string) {
     this.utils.loadSpinner(true);
-    let specVersion: any = this.storageService.getItem(
-      StorageKeys.SpecVersion
-    );
+    let specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.commentsService
       .getTasksByProductId({
         productId: productId,
@@ -503,7 +502,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.storageService.removeItem(StorageKeys.NOTIF_INFO);
         this.notifInfo = undefined;
       });
-
   }
 
   checkUserEmail(): void {
@@ -559,7 +557,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       email: this?.product.email,
       conversation_history: this.consversationList,
       product_id: this.product.id,
-      user_id: this.currentUser.user_id
+      user_id: this.currentUser.user_id,
     };
     let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;

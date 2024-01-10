@@ -27,11 +27,6 @@ export class SpecUtilsService {
   private shareNewTasks: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeUpdatedTasks: Observable<any> = this.shareNewTasks.asObservable();
 
-  private enableSpecLevelCmtsTasks: BehaviorSubject<any> =
-    new BehaviorSubject<any>(false);
-  public specLevelCommentsTasks: Observable<any> =
-    this.enableSpecLevelCmtsTasks.asObservable();
-
   private shareNewCrs: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public getMeUpdatedCrs: Observable<any> = this.shareNewCrs.asObservable();
 
@@ -43,7 +38,9 @@ export class SpecUtilsService {
   private getLatestCrList: BehaviorSubject<any> = new BehaviorSubject<any>('');
   public getMeCrList: Observable<any> = this.getLatestCrList.asObservable();
 
-  private closeNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private closeNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   public closeNaviWindow: Observable<boolean> = this.closeNavi.asObservable();
 
   private updateProduct: BehaviorSubject<any> = new BehaviorSubject<any>(false);
@@ -54,7 +51,9 @@ export class SpecUtilsService {
   public getSpecBasedOnVersionID: Observable<any> =
     this.getMeSpec.asObservable();
 
-  private updateLatestVersions: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  private updateLatestVersions: BehaviorSubject<any> = new BehaviorSubject<any>(
+    ''
+  );
   public getLatestSpecVersions: Observable<any> =
     this.updateLatestVersions.asObservable();
 
@@ -101,10 +100,6 @@ export class SpecUtilsService {
 
   _getMeUpdatedTasks(event: any): void {
     this.shareNewTasks.next(event);
-  }
-
-  _specLevelCommentsTasks(event: any): void {
-    this.enableSpecLevelCmtsTasks.next(event);
   }
 
   _getMeUpdatedCrs(event: any): void {

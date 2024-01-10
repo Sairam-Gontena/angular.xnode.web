@@ -47,11 +47,7 @@ export class CommentsCrPanelComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService
-  ) {
-    this.specUtils.specLevelCommentsTasks.subscribe((event: any) => {
-      this.showSpecLevelComments = event;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -78,7 +74,6 @@ export class CommentsCrPanelComponent implements OnInit {
     this.specUtils._getMeUpdatedComments(null);
     this.specUtils._getMeUpdatedCrs(null);
     this.specUtils._getMeUpdatedTasks(null);
-    this.specUtils._specLevelCommentsTasks(null);
     this.specUtils._loadActiveTab(null);
     this.specUtils.saveActivatedTab(null);
   }
@@ -91,7 +86,6 @@ export class CommentsCrPanelComponent implements OnInit {
     this.specUtils._getMeUpdatedComments(null);
     this.specUtils._getMeUpdatedCrs(null);
     this.specUtils._getMeUpdatedTasks(null);
-    this.specUtils._specLevelCommentsTasks(null);
     this.specUtils._loadActiveTab(null);
     this.specUtils.saveActivatedTab(null);
   }

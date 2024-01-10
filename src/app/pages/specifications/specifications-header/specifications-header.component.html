@@ -8,7 +8,7 @@
         <div class="flex align-items-center">
             <xnode-product-dropdown (_onChangeProduct)="onChangeProduct($event)"></xnode-product-dropdown>
             <p-dropdown [options]="versions" [(ngModel)]="selectedVersion" optionLabel="label"
-                (onChange)="onVersionChange($event)" placeholder="Select a version"
+                (onChange)="onChangeVersion($event)" placeholder="Select a version"
                 class="ml-3 app-dropdown-version"></p-dropdown>
         </div>
         <div class="flex align-items-center">
@@ -32,9 +32,6 @@
             <p-button label="Share" styleClass="bg-primary border-none" [rounded]="true"></p-button>
         </div>
     </div>
-    <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
-        [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
-
     <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
         [header]="'Update Spec'" [content]="'Are you sure, do you want to update this Spec?'" (onClickAction)="
         onClickConfirmPopupAction($event)"></xnode-confirmation-popup-new>

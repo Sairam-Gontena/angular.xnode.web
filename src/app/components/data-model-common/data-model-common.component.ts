@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Data } from '../../pages/er-modeller/class/data';
 import { Router } from '@angular/router';
 import { DataService } from '../../pages/er-modeller/service/data.service';
@@ -20,7 +15,6 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   styleUrls: ['./data-model-common.component.scss'],
   providers: [DataService, JsPlumbService, UtilService, MessageService],
 })
-
 export class DataModelCommonComponent {
   @Input() dataModelData: any;
   @Input() erModelInput: any;
@@ -45,7 +39,7 @@ export class DataModelCommonComponent {
     private utilService: UtilService,
     private router: Router,
     private storageService: LocalStorageService,
-    private utilsService: UtilsService,
+    private utilsService: UtilsService
   ) {
     this.data = this.dataService.data;
     console.log(' this.data', this.data);
@@ -68,11 +62,13 @@ export class DataModelCommonComponent {
       return;
     }
     setTimeout(() => {
-      const list: any = this.storageService.getItem(StorageKeys.SpecData);
+      const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
       this.dataModel = this.dataModelData.content;
       this.jsPlumbService.init();
-      this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
-    }, 100)
+      this.dataService.loadData(
+        this.utilService.ToModelerSchema(this.dataModel)
+      );
+    }, 100);
   }
 
   toggleMenu() {
