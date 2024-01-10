@@ -1,11 +1,11 @@
 <form [formGroup]="myForm">
-    <p-dropdown [options]="products" formControlName="selectedProduct" class="dropdown" optionLabel="title"
-        [filter]="true" filterBy="title" filterPlaceholder="Search">
+    <p-dropdown [options]="products" [(ngModel)]="selectedProduct" formControlName="selectedProduct" class="app-dropdown" optionLabel="title"
+        [filter]="true" filterBy="title" filterPlaceholder="Search" value="selectedProduct">
         <ng-template let-item pTemplate="item">
             <div class="item-container">
                 {{ item.title }}
                 <i class="pi pi-check check-mark"
-                    *ngIf="myForm.value.selectedProduct && myForm.value.selectedProduct.id === item.id"></i>
+                    *ngIf="selectedProduct && selectedProduct.id === item.id"></i>
             </div>
         </ng-template>
     </p-dropdown>

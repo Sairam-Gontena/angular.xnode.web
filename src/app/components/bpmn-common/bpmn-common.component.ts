@@ -766,7 +766,7 @@ export class BpmnCommonComponent
     data.forEach((d: any) => {
       let temp_title;
       d.children = [];
-      for (let i = 0; i < d.xflows.length; i++) {
+      for (let i = 0; i < d.xflows?.length; i++) {
         temp_title = d.xflows[i].name;
         // d.xflows[i] = {};
         // d.xflows[i] =

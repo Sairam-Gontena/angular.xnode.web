@@ -187,6 +187,10 @@ export class NotificationPanelComponent {
             this.closeNotificationPanel.emit(true);
           } else {
             if (obj.entity === 'UPDATE_SPEC') {
+              localStorage.setItem('record_id', product.productId);
+              localStorage.setItem('product', JSON.stringify(product));
+              localStorage.setItem('app_name', product.title);
+              localStorage.setItem('has_insights', product.has_insights);
               this.getVersions(obj);
             } else {
               this.setProductDetailsInThStore(product);

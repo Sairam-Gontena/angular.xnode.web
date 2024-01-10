@@ -83,14 +83,14 @@
           <ng-template pTemplate="header">
             <div class="w-full">
               <div class="grid col-12 flex-column">
-                <p-checkbox (onChange)="onCheckCheckbox($event)" [binary]="true" inputId="binary"
+                <p-checkbox (click)="$event.stopPropagation()" (onChange)="onCheckCheckbox($event)" [binary]="true" inputId="binary"
                   [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
                 <div class="flex flex-row align-items-center" style="position: absolute; margin-left: 13%">
                   <img src="../../assets/high.svg" class="" alt="high" />
                   <p class="p-0 m-0 text-xs ml-2">
-                    <a href="" class="text-primary-500"># {{ data.crId }}</a>
+                    <a href="" class="text-primary-500" (click)="$event.stopPropagation();"># {{ data.crId }}</a>
                     <a href="" class="text-primary-500 ml-2" *ngIf="data.status !=='DRAFT'"
-                      (click)="onClickViewChanges(data);">View Changes</a>
+                      (click)="$event.stopPropagation();onClickViewChanges(data);">View Changes</a>
                   </p>
                 </div>
                 <div class="w-full pl-7" [ngClass]="{'mt-3': data.status !=='DRAFT'}">
@@ -130,9 +130,9 @@
                         </div>
                       </div>
                     </div>
-                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation;getMeActions(data)"
+                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)"
                       [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
-                      <ng-template let-action pTemplate="item" [appendTo]="body">
+                      <ng-template let-action pTemplate="item">
                         <span class="flex" (click)="updateChagneRequestStatus(action.label)">
                           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
                             [ngStyle]="{width:'fit-content'}" [ngClass]="{
@@ -479,6 +479,5 @@
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" [header]="crHeader " [versions]="[]"
   (close)="showNewCrPopup = false;emitData($event)" [selectedCR]="selectedCr">
 </xnode-create-new-cr-version>
-
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup" [limitReachedContent]="true"
   (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
