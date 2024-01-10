@@ -2,23 +2,23 @@
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList"></xnode-specifications-menu>
   <div class="w-full">
-    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+    <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" (refreshCurrentRoute)="refreshCurrentRoute()"
       (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-    <div class="justify-content-start gap-4 mt-4">
-      <p-dropdown [options]="versionList1" [(ngModel)]="selectedVersion1" optionLabel="label"
-        (onChange)="onVersionChange1($event)" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
-      <p-dropdown [options]="versionList2" [(ngModel)]="selectedVersion2" optionLabel="label"
-        (onChange)="onVersionChange2($event)" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
+    <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">  
+      <p-dropdown [options]="versionListOne" [(ngModel)]="selectedVersionOne" optionLabel="label"
+        (onChange)="onVersionChange($event, 'one')" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
+      <p-dropdown [options]="versionListTwo" [(ngModel)]="selectedVersionTwo" optionLabel="label"
+        (onChange)="onVersionChange($event, 'two')" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
     </div>
     <div class="diff-view flex justify-content-center">
       <div class="w-8">
-        <div class='m-4' *ngFor="let item of specList;let i = index">
-          <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj([],item, onDiff)"
-            [onDiff]="onDiff"></xnode-diff-comp>
+        <div class='m-4' *ngFor="let item of specList.slice(0,2);let i = index">
+          <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj(specTwoList.slice(0,2),item, specList.length!==0&& specTwoList.length!==0)"
+            [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
         </div>
-        <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
+        <xnode-diff-list [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
       </div>
-      <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
+      <xnode-diff-list [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
     </div>
   </div>
 </div>

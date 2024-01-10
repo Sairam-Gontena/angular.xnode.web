@@ -16,6 +16,8 @@ import { SpecVersion } from 'src/models/spec-versions';
 export class SpecificationsHeaderComponent implements OnInit {
   @Output() getMeSpecList = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
+  @Output() onDiffViewChange = new EventEmitter<any>();
+
   versions: SpecVersion[] = [];
   selectedVersion: SpecVersion | undefined;
   currentUser: any;
@@ -56,6 +58,7 @@ export class SpecificationsHeaderComponent implements OnInit {
           element['value'] = element.id;
         });
         this.selectedVersion = versions[0];
+        console.log('this.selectedVersion', this.selectedVersion);
       }
     );
     // this.specUtils.openCommentsPanel.subscribe((event: any) => {
@@ -286,19 +289,19 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
   onViewChange(event: any) {
     if (event.value.value === 'INLINE VIEW') {
-      console.log(event.value)
+      console.log(event.value);
     } else if (event.value.value === 'EXIT') {
       this.diffView = false;
     }
   }
   toggleDiffView(ele: any): void {
-    console.log('ele', ele);
-    console.log('change', this.diffView);
     if (this.diffView) {
-      this.selectedView = this.viewList.find((view: any) => view.value === 'INLINE VIEW');
+      this.selectedView = this.viewList.find(
+        (view: any) => view.value === 'INLINE VIEW'
+      );
     } else {
       this.selectedView = null; // Set to null or any other default value when the switch is off
     }
-
+    this.onDiffViewChange.emit(this.diffView);
   }
 }

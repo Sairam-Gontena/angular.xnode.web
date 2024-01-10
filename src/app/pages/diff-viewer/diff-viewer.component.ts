@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from './specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -30,14 +29,17 @@ export class DiffViewerComponent implements OnInit {
   loading: boolean = true;
   product: any;
   versions: any;
-  specList: any;
+  specList: any = [];
   currentUser: any;
   keyword: any;
-  selectedVersion1: any;
-  selectedVersion2: any;
+  selectedVersionOne: any;
+  selectedVersionTwo: any;
   latestVersion: any;
-  versionList1: any = [];
-  versionList2: any = [];
+  versionListOne: any = [];
+  versionListTwo: any = [];
+  showVersionToDiff: boolean = false;
+  specOneList: any = [];
+  specTwoList: any = [];
 
   constructor(
     private utils: UtilsService,
@@ -45,11 +47,10 @@ export class DiffViewerComponent implements OnInit {
     private storageService: LocalStorageService,
     private router: Router,
     private specService: SpecificationsService,
-    private specificationUtils: SpecificationUtilsService,
-    private specUtils: SpecUtilsService
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.utils.startSpinner.subscribe((event: boolean) => {
-      this.loading = true;
+      this.loading = event;
     });
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
       list.forEach((element: any) => {
@@ -57,27 +58,25 @@ export class DiffViewerComponent implements OnInit {
       });
       this.specList = list;
     });
+    this.specificationUtils.getMeVersions.subscribe(
+      (versions: SpecVersion[]) => {
+        if (versions) {
+          versions.forEach((element: any) => {
+            element['label'] = element.specStatus + '-' + element.version;
+            element['value'] = element.id;
+          });
+          this.versionListOne = versions;
+          this.versionListTwo = versions;
+
+          console.log('this.versionListOne', this.versionListOne);
+        }
+      }
+    );
   }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-  }
-
-  getVersions(versionId?: any) {
-    this.specService.getVersions(this.product.id, (data) => {
-      if (versionId) {
-        this.getMeSpecInfo({
-          productId: this.product?.id,
-          versionId: versionId,
-        });
-      } else {
-        this.getMeSpecInfo({
-          productId: this.product?.id,
-          versionId: data[0].id,
-        });
-      }
-    });
   }
 
   getDiffObj(fromArray: any[], srcObj: any, isOnDiff: boolean = false) {
@@ -108,7 +107,7 @@ export class DiffViewerComponent implements OnInit {
   getMeSpecInfo(params: any) {
     this.specApiService
       .getSpec({
-        productId: params.productId,
+        productId: this.product?.id,
         versionId: params.versionId,
       })
       .then((response) => {
@@ -120,7 +119,12 @@ export class DiffViewerComponent implements OnInit {
           response.data.forEach((element: any) => {
             element.content_data_type = 'BANNER';
           });
-          this.specList = response.data;
+          if (params.type === 'one') {
+            this.specList = response.data;
+          } else {
+            this.specTwoList = response.data;
+            console.log('  this.specTwoList', this.specTwoList);
+          }
         }
         this.utils.loadSpinner(false);
       })
@@ -166,18 +170,11 @@ export class DiffViewerComponent implements OnInit {
       productId: data.productId,
     });
   }
-  onVersionChange1(event: any) {
-    let data = { productId: this.product?.id, versionId: event.value.value };
-    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
-    // this.specUtils._saveSpecVersion(event.value);
-    this.specDataChange.emit(data);
+  onVersionChange(event: any, type: string) {
+    console.log('event', event);
+    this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
-  onVersionChange2(event: any) {
-    let data = { productId: this.product?.id, versionId: event.value.value };
-    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
-    // this.specUtils._saveSpecVersion(event.value);
-    this.specDataChange.emit(data);
-  }
+
   checkUserEmail(): void {
     // if (this.currentUser.email === this.product.email) {
     //   // this.showSpecGenaretePopup = true;
@@ -226,5 +223,13 @@ export class DiffViewerComponent implements OnInit {
     //         }
     //       });
     //   }
+  }
+
+  diffViewChangeEmiter(event: any) {
+    this.showVersionToDiff = event;
+    this.selectedVersionOne = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    console.log('this.selectedVersionOne', this.selectedVersionOne);
   }
 }
