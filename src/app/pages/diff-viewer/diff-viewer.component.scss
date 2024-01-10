@@ -2,3 +2,18 @@
   height: calc(100vh - 70px);
   overflow: auto;
 }
+
+:host ::ng-deep .app-dropdown .p-dropdown {
+  border-radius: 25px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: 0;
+  color: #ffffff !important;
+  background: transparent;
+}
+
+:host ::ng-deep .app-dropdown .p-inputtext {
+  background: transparent !important;
+  color: #ffffff !important;
+  padding: 10px !important;
+}

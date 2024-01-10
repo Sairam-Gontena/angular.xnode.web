@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as DiffGen from '../../../app/utils/diff-generator';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from './specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -18,6 +19,11 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./diff-viewer.component.scss'],
 })
 export class DiffViewerComponent implements OnInit {
+  // @Input() versions: any;
+  @Output() specDataChange = new EventEmitter<{
+    productId: any;
+    versionId: any;
+  }>();
   onDiff: boolean = false;
   content: any = NEWLIST;
   content2: any = OLDLIST;
@@ -27,6 +33,11 @@ export class DiffViewerComponent implements OnInit {
   specList: any;
   currentUser: any;
   keyword: any;
+  selectedVersion1: any;
+  selectedVersion2: any;
+  latestVersion: any;
+  versionList1: any = [];
+  versionList2: any = [];
 
   constructor(
     private utils: UtilsService,
@@ -34,7 +45,8 @@ export class DiffViewerComponent implements OnInit {
     private storageService: LocalStorageService,
     private router: Router,
     private specService: SpecificationsService,
-    private specificationUtils: SpecificationUtilsService
+    private specificationUtils: SpecificationUtilsService,
+    private specUtils: SpecUtilsService
   ) {
     this.utils.startSpinner.subscribe((event: boolean) => {
       this.loading = true;
@@ -154,7 +166,18 @@ export class DiffViewerComponent implements OnInit {
       productId: data.productId,
     });
   }
-
+  onVersionChange1(event: any) {
+    let data = { productId: this.product?.id, versionId: event.value.value };
+    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
+    // this.specUtils._saveSpecVersion(event.value);
+    this.specDataChange.emit(data);
+  }
+  onVersionChange2(event: any) {
+    let data = { productId: this.product?.id, versionId: event.value.value };
+    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
+    // this.specUtils._saveSpecVersion(event.value);
+    this.specDataChange.emit(data);
+  }
   checkUserEmail(): void {
     // if (this.currentUser.email === this.product.email) {
     //   // this.showSpecGenaretePopup = true;

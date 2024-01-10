@@ -28,6 +28,13 @@ export class SpecificationsHeaderComponent implements OnInit {
   showSpecGenaretePopup: any;
   isTheCurrentUserOwner: any;
   productStatusPopupContent: any;
+  viewList: any = [
+    { label: 'Inline View', value: 'INLINE VIEW' },
+    { label: 'Side By Side View', value: 'SIDE BY SIDE VIEW' },
+    { label: 'Exit', value: 'EXIT' },
+  ];
+  selectedView: any;
+
   specData: any;
   isCommentsPanelOpened: any;
   showingCRList: any;
@@ -277,9 +284,21 @@ export class SpecificationsHeaderComponent implements OnInit {
       versionId: event.value.value,
     });
   }
-
+  onViewChange(event: any) {
+    if (event.value.value === 'INLINE VIEW') {
+      console.log(event.value)
+    } else if (event.value.value === 'EXIT') {
+      this.diffView = false;
+    }
+  }
   toggleDiffView(ele: any): void {
     console.log('ele', ele);
     console.log('change', this.diffView);
+    if (this.diffView) {
+      this.selectedView = this.viewList.find((view: any) => view.value === 'INLINE VIEW');
+    } else {
+      this.selectedView = null; // Set to null or any other default value when the switch is off
+    }
+
   }
 }

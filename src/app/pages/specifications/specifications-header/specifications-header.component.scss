@@ -14,11 +14,11 @@
     border: 0;
     width: 100%;
     color: #ffffff !important;
-    background: #4F4E55;
+    background: transparent;
 }
 
 :host ::ng-deep .app-dropdown .p-inputtext {
-    background: #4F4E55 !important;
+    background: transparent !important;
     color: #ffffff !important;
     padding: 10px !important;
 }
@@ -100,5 +100,32 @@
 }
 
 :host ::ng-deep .app-dropdown-version .p-dropdown-panel {
-    position: absolute; 
+    position: absolute;
+}
+
+:host :ng-deep .view-dropdown .p-inputtext {
+    background-color: transparent !important;
+    border: 1px solid transparent !important;
+}
+
+:host ::ng-deep .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background: var(--primary-color);
+}
+
+
+:host ::ng-deep .p-inputswitch.p-inputswitch-checked:not(.p-disabled):hover .p-inputswitch-slider {
+    background: var(--primary-color);
+}
+
+:host ::ng-deep .view-dropdown .p-dropdown-label {
+    display: none;
+}
+
+:host ::ng-deep .view-dropdown .p-dropdown {
+    border: none;
+}
+
+:host ::ng-deep .view-dropdown .p-dropdown-trigger {
+    width: 0;
+    margin-top: 0.5rem;
 }

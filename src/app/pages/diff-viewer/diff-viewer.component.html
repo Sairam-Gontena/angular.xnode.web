@@ -1,17 +1,24 @@
 <div class="flex">
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList"></xnode-specifications-menu>
-    <div class="w-full">
-      <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-        (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-      <div class="diff-view flex justify-content-center">
-        <div class="w-8">
-          <div class='m-4' *ngFor="let item of specList;let i = index">
-            <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj([],item, onDiff)"
-              [onDiff]="onDiff"></xnode-diff-comp>
-          </div>
-          <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
-        </div>
-      </div>
+  <div class="w-full">
+    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
+      (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+    <div class="justify-content-start gap-4 mt-4">
+      <p-dropdown [options]="versionList1" [(ngModel)]="selectedVersion1" optionLabel="label"
+        (onChange)="onVersionChange1($event)" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
+      <p-dropdown [options]="versionList2" [(ngModel)]="selectedVersion2" optionLabel="label"
+        (onChange)="onVersionChange2($event)" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
     </div>
+    <div class="diff-view flex justify-content-center">
+      <div class="w-8">
+        <div class='m-4' *ngFor="let item of specList;let i = index">
+          <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj([],item, onDiff)"
+            [onDiff]="onDiff"></xnode-diff-comp>
+        </div>
+        <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
+      </div>
+      <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
+    </div>
+  </div>
 </div>
