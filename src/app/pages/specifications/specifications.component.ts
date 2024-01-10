@@ -335,8 +335,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       versionId: data.versionId,
       productId: data.productId,
     });
-    this.utilsService.sendProductChangeXflows(data);
-
   }
 
   deleteDataManagementPersistence(list: any) {
