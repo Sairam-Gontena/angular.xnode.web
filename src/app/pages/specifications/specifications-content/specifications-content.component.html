@@ -1,4 +1,4 @@
-<div class="flex" *ngIf="usersList">
+<div class="flex">
     <div class="w-full  flex">
         <div class="overflow-auto"
             [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommnetsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommnetsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommnetsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommnetsPanelOpened}">

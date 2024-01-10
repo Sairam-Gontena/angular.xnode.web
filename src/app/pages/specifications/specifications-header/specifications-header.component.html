@@ -25,9 +25,10 @@
             <p-button [disabled]="!enabledGeneratespec" (click)="op.toggle($event)" class="ellipsis-btn "
                 icon="pi pi-ellipsis-v"></p-button>
             <p-overlayPanel class="overlay-class" #op>
-                <div class="confirm-overlay p-2 cursor-pointer" (keyup)="openPopup('Spec Generation')"
-                    (keydown)="op.hide()" (keypress)="openPopup('Spec Generation')"
-                    (click)="openPopup('Spec Generation');op.hide()">Generate Spec</div>
+                <div class="confirm-overlay p-2 cursor-pointer" (keyup)="askConfirmationOnClickGenerate()"
+                    (keydown)="op.hide()" (keypress)="askConfirmationOnClickGenerate()"
+                    (click)="askConfirmationOnClickGenerate();op.hide()" *ngIf="!specData">
+                    Generate Spec</div>
                 <div class="confirm-overlay p-2 cursor-pointer" (keyup)="viewPublishedApp()" (keydown)="op.hide()"
                     (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
                     Published App</div>
@@ -36,10 +37,11 @@
         </div>
     </div>
     <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"
-        [contentdata]="data" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
+        [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>
+
     <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
         [header]="'Update Spec'" [content]="'Are you sure, do you want to update this Spec?'" (onClickAction)="
-        onClickAction($event)"></xnode-confirmation-popup-new>
+        onClickConfirmPopupAction($event)"></xnode-confirmation-popup-new>
     <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
         [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
         [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generate()">

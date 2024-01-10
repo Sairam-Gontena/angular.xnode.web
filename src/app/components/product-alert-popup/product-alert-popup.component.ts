@@ -52,7 +52,9 @@ export class ProductAlertPopupComponent implements OnInit {
       setTimeout(() => {
         this.contentdata = event?.data;
         this.dataPopulate();
-        this.showProductStatusPopup = event?.popup;
+        if (event.data.length || event.popup == true) {
+          this.showProductStatusPopup = event?.popup;
+        }
       },);
     });
   }
@@ -84,7 +86,7 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      if(this.contentdata?.conversation)
+      if (this.contentdata?.conversation)
         this.consversationList = JSON.parse(this.contentdata?.conversation);
     }
   }
@@ -201,7 +203,8 @@ export class ProductAlertPopupComponent implements OnInit {
     const body = {
       email: this.currentUser?.email,
       conversation_history: this.consversationList,
-      product_id: this.product_id
+      product_id: this.product_id,
+      user_id: this.currentUser?.user_id
     }
     let detail = "Generating spec for this app process is started.";
     this.closePopup.emit(true);

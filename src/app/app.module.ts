@@ -12,8 +12,9 @@ import { SharedModule } from './shared/shared.module';
 import { SidebarModule } from 'primeng/sidebar';
 import { RefreshListService } from './RefreshList.service';
 import { FormBuilderModule } from './components/form-builder/form-builder.module';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxCaptureModule } from 'ngx-capture';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,9 +31,18 @@ import { NgxCaptureModule } from 'ngx-capture';
     SidebarModule,
     FormBuilderModule,
     NgxSpinnerModule,
-    NgxCaptureModule
+    NgxCaptureModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
+        },
+        allowedDomains: ['your-api-domain.com'],
+        disallowedRoutes: ['your-api-domain.com/login'],
+      },
+    }),
   ],
   providers: [RefreshListService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

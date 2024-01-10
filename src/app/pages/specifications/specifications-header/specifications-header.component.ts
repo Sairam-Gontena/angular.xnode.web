@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ApiService } from 'src/app/api/api.service';
+import { CommentsService } from 'src/app/api/comments.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
@@ -16,32 +16,15 @@ interface Version {
   styleUrls: ['./specifications-header.component.scss'],
 })
 export class SpecificationsHeaderComponent implements OnInit {
-  @Output() refreshCurrentRoute = new EventEmitter<any>();
   @Output() getMeSpecList = new EventEmitter<any>();
-  @Output() changeProduct = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
-  @Output() specDataChange = new EventEmitter<{
-    productId: any;
-    versionId: any;
-  }>();
-  @Input() currentSpecVersionId: any;
-  @Input() versions: any;
+  versions: any;
   currentUser: any;
-  templates: any;
-  selectedTemplate: any;
-  product_url: any;
-  utilsService: any;
-  auditUtil: any;
+  metaDeta: any;
   product: any;
   isSideMenuOpened: any;
-  productId: any;
   showProductStatusPopup: boolean = false;
-  data: any;
-  productDetails: any;
-  userHasPermissionToEditProduct = true;
   showConfirmationPopup: boolean = false;
-  version: any;
-  versionSelected: any;
   selectedVersion: Version | undefined;
   enabledGeneratespec: boolean = true;
   diffView: boolean = false;
@@ -55,64 +38,58 @@ export class SpecificationsHeaderComponent implements OnInit {
   ];
   selectedView: any;
 
+  specData: any;
+  isCommentsPanelOpened: any;
+  showingCRList: any;
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private apiService: ApiService,
     private specService: SpecService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private commentsService: CommentsService
   ) {
-    this.specUtils.getMeSpecVersion.subscribe((event) => {
-      if (event && this.versions?.length > 0) {
+    this.specData = this.storageService.getItem(StorageKeys.SpecData);
+    this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
+      if (data && data.versions) {
+        this.versions = data.versions;
         this.versions.forEach((element: any) => {
-          if (event.versionId === element.id) this.selectedVersion = element;
+          element['label'] = element.specStatus + '-' + element.version;
+          element['value'] = element.id;
         });
+        this.selectedVersion = data.versions.filter((event: any) => {
+          return event.id === data.versionId;
+        })[0];
+      }
+      if (data && !data.versions) {
+        this.selectedVersion = this.versions.filter((event: any) => {
+          return event.id === data.versionId;
+        })[0];
       }
     });
-    this.specUtils.getSpecBasedOnVersionID.subscribe((data: any) => {
-      if (data) {
-        this.getDeepLinkDetails(data);
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommentsPanelOpened = event;
+    });
+    this.specUtils.loadActiveTab.subscribe((event) => {
+      if (event === 1) {
+        this.showingCRList = true;
+      } else {
+        this.showingCRList = false;
       }
     });
   }
 
   ngOnInit(): void {
-    if (this.versions && this.versions.length > 0) {
-      this.versions.forEach((element: any) => {
-        element['label'] = element.specStatus + '-' + element.version;
-        element['value'] = element.id;
-      });
-      this.selectedVersion = this.versions[0];
-      localStorage.setItem('SPEC_VERISON', JSON.stringify(this.versions[0]));
-      this.specUtils._saveSpecVersion(this.versions[0]);
-    }
+    // To display toggle icon of side spec menu
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isSideMenuOpened = data;
     });
-    let user = localStorage.getItem('currentUser');
-    if (user) {
-      this.currentUser = JSON.parse(user);
-    }
-    const metaData = localStorage.getItem('meta_data');
-    const product = localStorage.getItem('product');
-    this.productId = localStorage.getItem('record_id');
-    if (product) {
-      this.product = JSON.parse(product);
-      this.productDetails = JSON.parse(product);
-    }
-    if (metaData) {
-      this.templates = JSON.parse(metaData);
-      setTimeout(() => {
-        this.selectedTemplate = this.productId;
-      }, 100);
-      if (product) {
-        this.selectedTemplate = JSON.parse(product).id;
-        this.product_url = JSON.parse(product).product_url;
-      }
-    }
-    this.utils.hasProductEditPermission.subscribe((result: boolean) => {
-      this.userHasPermissionToEditProduct = result;
-    });
+    this.getStorageData();
+  }
+
+  getStorageData() {
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);
+    this.product = this.storageService.getItem(StorageKeys.Product);
     let deep_link_info = localStorage.getItem('deep_link_info');
     if (deep_link_info) {
       deep_link_info = JSON.parse(deep_link_info);
@@ -171,31 +148,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       .getVersionIds(this.product?.id)
       .then((response) => {
         if (response.status === 200 && response.data) {
-          this.versions = response.data;
-          this.versions.forEach((element: any) => {
-            element['label'] = element.specStatus + '-' + element.version;
-            element['value'] = element.id;
-          });
-          localStorage.setItem(
-            'SPEC_VERISON',
-            JSON.stringify(this.versions[0])
-          );
-          this.specUtils._saveSpecVersion(this.versions[0]);
-          if (versionObj?.versionId) {
-            this.getMeSpecList.emit({
-              productId: this.product?.id,
-              versionId: versionObj?.versionId,
-            });
-            this.selectedVersion = this.versions.filter((ele: any) => {
-              return ele.id === versionObj.versionId;
-            })[0];
-          } else {
-            this.selectedVersion = this.versions[0];
-            this.getMeSpecList.emit({
-              productId: this.product?.id,
-              versionId: this.versions[0].id,
-            });
-          }
+          this.handleVersions(response);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -214,83 +167,57 @@ export class SpecificationsHeaderComponent implements OnInit {
       });
   }
 
-  getMeUserAvatar() {
-    var firstLetterOfFirstWord =
-      this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
-    var firstLetterOfSecondWord =
-      this.currentUser.last_name[0][0].toUpperCase(); // Get the first letter of the second word
-    return firstLetterOfFirstWord + firstLetterOfSecondWord;
+  handleVersions(response: any) {
+    this.versions = response.data;
+    this.versions.forEach((element: any) => {
+      element['label'] = element.specStatus + '-' + element.version;
+      element['value'] = element.id;
+    });
+    localStorage.setItem('SPEC_VERISON', JSON.stringify(this.versions[0]));
+    this.selectedVersion = this.versions[0];
+    this.getMeSpecList.emit({
+      productId: this.product?.id,
+      versionId: this.versions[0].id,
+    });
+    if (this.isCommentsPanelOpened && this.showingCRList) this.getMeCrList();
   }
-  selectedProduct(data: any): void {
-    const product = this.templates?.filter((obj: any) => {
-      return obj.id === data.value;
-    })[0];
-    if (this.currentUser?.email == product.email) {
-      this.utils.hasProductPermission(true);
-    } else {
-      this.utils.hasProductPermission(false);
-    }
-    if (product) {
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem(
-        'product_url',
-        product.url && product.url !== '' ? product.url : ''
-      );
-      localStorage.setItem('product', JSON.stringify(product));
-      this.selectedTemplate = product.id;
-      this.product_url = product.product_url;
-    }
-    this.refreshCurrentRoute.emit();
-    this.auditUtil.postAudit(
-      'SPECIFICATIONS_PRODUCT_DROPDOWN_CHANGE',
-      1,
-      'SUCCESS',
-      'user-audit'
-    );
-  }
-  toggleSideMenu() {
-    this.utils.EnableSpecSubMenu();
-  }
-  getConversationHistory() {
-    let productEmail =
-      this.productDetails.email == this.currentUser.email
-        ? this.currentUser.email
-        : this.productDetails.email;
-    this.apiService
-      .get('navi/get_conversation/' + productEmail + '/' + this.product.id)
+
+  getMeCrList() {
+    let body: any = {
+      productId: this.product.id,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
       .then((res: any) => {
-        if (res.status === 200 && res.data) {
-          this.getPopupInfo(res.data?.conversation_history);
-          this.utils.loadSpinner(false);
+        if (res && res.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._loadActiveTab(1);
+          this.specUtils._getMeUpdatedCrs(res.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
-            summary: 'Error',
-            detail: 'Network Error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
           });
         }
         this.utils.loadSpinner(false);
       })
       .catch((err: any) => {
-        this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
-          summary: 'Error',
+          summary: 'ERROR',
           detail: err,
         });
+        this.utils.loadSpinner(false);
       });
   }
-  getPopupInfo(conversation_history: any) {
-    this.data = {
-      content: 'Spec Generation',
-      product_id: this.product.id,
-      conversation: JSON.stringify(conversation_history),
-    };
-    this.showProductStatusPopup = true;
-    this.utils.toggleProductAlertPopup(true);
+
+  toggleSideMenu() {
+    this.utils.EnableSpecSubMenu();
   }
-  openPopup(content: any) {
+
+  askConfirmationOnClickGenerate() {
     if (this.product?.id) {
       this.generateSpec.emit();
       this.enabledGeneratespec = false;
@@ -304,45 +231,61 @@ export class SpecificationsHeaderComponent implements OnInit {
       alert('URL not found');
     }
   }
+
   openComments() {
     this.utils.disableDockedNavi();
-    this.specUtils.changeSpecConversationPanelFrom('spec_header');
-    this.specUtils._openCommentsPanel(true);
+    this.getMeAllCommentsList();
   }
+
+  getMeAllCommentsList() {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    this.commentsService
+      .getCommentsByProductId({
+        productId: this.product?.id,
+        versionId: specVersion.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          if (response.data.length > 0)
+            this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+
   generate() {
     this.generateSpec.emit();
   }
 
-  openCRs() {
-    // this.utils.openOrClosePanel(SidePanel.ChangeRequests);
-  }
-
   onChangeProduct(obj: any): void {
+    this.specUtils._specLevelCommentsTasks(null);
     this.showSpecGenaretePopup = false;
-    let products = localStorage.getItem('meta_data');
-    if (products) {
-      let allProducts = JSON.parse(products);
-      if (allProducts.length > 0) {
-        let product = allProducts.find((x: any) => x.id === obj.id);
-        if (product && product.has_insights) {
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          localStorage.setItem(
-            'product_url',
-            obj.url && obj.url !== '' ? obj.url : ''
-          );
-          this.product = this.storageService.getItem(StorageKeys.Product);
-          // this.getMeStorageData();
-          this.getVersions();
-          this.utils.loadSpinner(true);
-        } else {
-          this.showGenerateSpecPopup(product);
-        }
-      }
+    let product = this.metaDeta.find((x: any) => x.id === obj.id);
+    if (product && product.has_insights) {
+      localStorage.setItem('record_id', product.id);
+      localStorage.setItem('product', JSON.stringify(product));
+      localStorage.setItem('app_name', product.title);
+      localStorage.setItem('has_insights', product.has_insights);
+      localStorage.setItem(
+        'product_url',
+        obj.url && obj.url !== '' ? obj.url : ''
+      );
+      this.product = product;
+      this.utils.loadSpinner(true);
+      this.getVersions();
+    } else {
+      this.showGenerateSpecPopup(product);
     }
   }
+
   showGenerateSpecPopup(product: any) {
     if (this.currentUser.email === product?.email) {
       this.showSpecGenaretePopup = true;
@@ -361,18 +304,25 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.showConfirmationPopup = true;
   }
 
-  onClickAction(event: any): void {
+  onClickConfirmPopupAction(event: any): void {
     if (event === 'Yes') {
       this.showConfirmationPopup = false;
     } else {
       this.showConfirmationPopup = false;
     }
   }
+
   onVersionChange(event: any): void {
-    let data = { productId: this.productId, versionId: event.value.value };
-    localStorage.setItem('SPEC_VERISON', JSON.stringify(data));
-    this.specUtils._saveSpecVersion(event.value);
-    this.specDataChange.emit(data);
+    this.specUtils._specLevelCommentsTasks(null);
+    this.versions.forEach((element: any) => {
+      if (element.id === event.value.value) {
+        this.storageService.saveItem(StorageKeys.SpecVersion, element);
+      }
+    });
+    this.getMeSpecList.emit({
+      productId: this.product?.id,
+      versionId: event.value.value,
+    });
   }
   onViewChange(event: any) {
     if (event.value.value === 'INLINE VIEW') {

@@ -31,13 +31,12 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './link-to-cr.component.html',
   styleUrls: ['./link-to-cr.component.css'],
 })
-
 export class LinkToCrComponent implements OnInit {
   @ViewChild('dropdown') dropdown?: Dropdown;
   @Input() comment: any;
   @Output() close = new EventEmitter<any>();
   @Input() showCrPopup: boolean = false;
-  @Input() entityType?= '';
+  @Input() entityType? = '';
   items: MenuItem[] | undefined;
   specData: any;
   product: any;
@@ -67,6 +66,9 @@ export class LinkToCrComponent implements OnInit {
   selectedPriority: string = '';
   selectedVersion: string = '';
   selectedDueDate: any;
+  content: any;
+  header: any;
+  openConfirmationPopUp: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -178,11 +180,27 @@ export class LinkToCrComponent implements OnInit {
         });
       });
   }
-
+  onClickAction(action: string) {
+    if (action === 'Yes') {
+      this.showNewCrPopup = true;
+    }
+    this.openConfirmationPopUp = false;
+  }
 
   onDropdownChange(event: any): void {
     if (event?.value === 'ADD_NEW') {
-      this.showNewCrPopup = true;
+      let isDraftCrExist = this.crList.some((item: any) => {
+        return item.status === 'DRAFT';
+      });
+
+      if (isDraftCrExist) {
+        this.openConfirmationPopUp = true;
+        this.header = 'Confirmation';
+        this.content =
+          'There are already some active draft CRs. Are you sure you want to create a new CR?';
+      } else {
+        this.showNewCrPopup = true;
+      }
     } else if (event && event?.value !== '' && event?.value !== 'ADD_NEW') {
       this.selectedPriority = event.priority;
       this.selectedVersion = event.version.productVersion.version;
@@ -224,8 +242,7 @@ export class LinkToCrComponent implements OnInit {
             summary: 'SUCCESS',
             detail: 'CR has been successfully linked',
           });
-          this.specUtils._loadActiveTab({ activeIndex: 1 });
-          this.close.emit();
+          this.getCRList();
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -233,7 +250,6 @@ export class LinkToCrComponent implements OnInit {
             detail: response?.data?.common?.status,
           });
         }
-        this.utilsService.loadSpinner(false);
       })
       .catch((err) => {
         this.utilsService.toggleTaskAssign(false);
@@ -244,6 +260,38 @@ export class LinkToCrComponent implements OnInit {
         });
       });
   }
+
+  getCRList() {
+    let body: any = {
+      productId: this.product?.id,
+    };
+    this.utilsService.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._loadActiveTab({ activeIndex: 1 });
+          this.specUtils._getMeUpdatedCrs(res.data);
+          this.close.emit();
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
   setAvatar(userObj: any): string {
     return (
       userObj.firstName.charAt(0).toUpperCase() +

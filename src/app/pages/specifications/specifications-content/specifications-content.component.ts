@@ -30,6 +30,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword: any;
   @Input() noResults: any;
+  @Input() reveiwerList: any;
   // @Input() useCases: any[] = [];
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
@@ -57,7 +58,6 @@ export class SpecificationsContentComponent implements OnInit {
   list: any;
   currentUser: any;
   usersList: any = null;
-  reveiwerList: any;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
@@ -75,7 +75,7 @@ export class SpecificationsContentComponent implements OnInit {
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.getUsersData();
+    // this.getUsersData();
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         this.specItemList = event;
@@ -127,8 +127,8 @@ export class SpecificationsContentComponent implements OnInit {
       '&isVerified=true' +
       '&userId=' +
       this.currentUser.id;
-    this.fetchOpenAPISpec();
-    this.getUserByAccountId();
+    // this.fetchOpenAPISpec();
+    // this.getUserByAccountId();
     // this.fetchOpenAPISpec();
   }
 
@@ -297,6 +297,7 @@ export class SpecificationsContentComponent implements OnInit {
   onSelectMenuItem(): void {
     this.scrollToItem();
   }
+
   closeFullScreenView(): void {
     this.expandView = true;
     this.specExpanded = false;

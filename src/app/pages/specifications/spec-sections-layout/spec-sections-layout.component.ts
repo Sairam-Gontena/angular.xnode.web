@@ -133,7 +133,11 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
       this.isCommnetsPanelOpened = event;
     });
     this.makeTrustedUrl();
-    // this.fetchOpenAPISpec()
+    this.content.forEach((element: any) => {
+      if (element.title === 'OpenAPI Spec') {
+        // this.fetchOpenAPISpec();
+      }
+    });
   }
 
   ngOnChanges() {
@@ -153,7 +157,6 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   }
 
   openCommentSection() {
-    this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
     of([])

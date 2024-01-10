@@ -2,7 +2,7 @@
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList"></xnode-specifications-menu>
   <div class="w-full">
-    <xnode-specifications-header [versions]="versions" (refreshCurrentRoute)="refreshCurrentRoute()"
+    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
       (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
     <div class="justify-content-start gap-4 mt-4">
       <p-dropdown [options]="versionList1" [(ngModel)]="selectedVersion1" optionLabel="label"
@@ -18,6 +18,8 @@
         </div>
         <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
       </div>
+      <xnode-diff-list [srcList]="specList" [targetList]="[]" [onDiff]="onDiff"></xnode-diff-list>
     </div>
   </div>
+</div>
 </div>
