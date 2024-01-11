@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { ApiService } from 'src/app/api/api.service';
+import { PublishAppApiService } from 'src/app/api/publish-app-api.service';
 import { environment } from 'src/environments/environment';
 import { MenuItem } from 'primeng/api';
 import { UtilsService } from '../services/utils.service';
@@ -35,7 +35,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   showLimitReachedPopup: boolean = false;
 
   constructor(
-    private apiService: ApiService,
+    private publishAppApiService: PublishAppApiService,
     private router: Router,
     private confirmationService: ConfirmationService,
     private utilsService: UtilsService,
@@ -236,7 +236,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res && res?.data?.detail) {
           this.utilsService.loadToaster({
@@ -309,7 +309,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   publishProduct(body: any): void {
     let detail =
       'Your app publishing process started. You will get the notifications';
-    this.apiService
+    this.publishAppApiService
       .publishApp(body)
       .then((response: any) => {
         if (response) {

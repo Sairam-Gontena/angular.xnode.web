@@ -5,7 +5,6 @@ import {
   ViewChild,
   OnDestroy,
   OnInit,
-  Renderer2,
   Input,
 } from '@angular/core';
 import {
@@ -20,21 +19,20 @@ import BpmnPalletteModule from 'bpmn-js/lib/features/palette';
 import * as custom from './custom.json';
 import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json';
-import { ApiService } from 'src/app/api/api.service';
-import { SpecService } from 'src/app/api/spec.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { Product } from 'src/models/product';
+import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -87,13 +85,12 @@ export class BpmnDiagramComponent
   isDataManagementPersistence: boolean = false;
 
   constructor(
-    private api: ApiService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private router: Router,
     private naviApiService: NaviApiService,
-    private specService: SpecService
+    private workflowApiService: WorkflowApiService
   ) {}
 
   ngOnInit(): void {
@@ -772,8 +769,8 @@ export class BpmnDiagramComponent
   }
 
   loadXFlows(xFlowJson: any): void {
-    this.api
-      .postWorkFlow(xFlowJson)
+    this.workflowApiService
+      .workflow(xFlowJson)
       .then(async (response: any) => {
         let xFlowJsonCopy = xFlowJson;
         xFlowJsonCopy.Flows = 'xflows data';
@@ -818,7 +815,7 @@ export class BpmnDiagramComponent
         }
         this.utilsService.loadSpinner(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log('err', error);
         let xFlowJsonCopy = xFlowJson;
         xFlowJsonCopy.Flows = 'xflows data';

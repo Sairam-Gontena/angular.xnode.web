@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import {
-  Router,
-  NavigationStart,
-  NavigationEnd,
-  ActivatedRoute,
-} from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuditutilsService } from './api/auditutils.service';
-import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
 import { debounce, delay } from 'rxjs/operators';
@@ -555,7 +549,7 @@ export class AppComponent implements OnInit {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res?.data?.detail) {
           this.utilsService.loadToaster({

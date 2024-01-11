@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserUtil } from '../../utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from '../services/utils.service';
-import { ApiService } from 'src/app/api/api.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -442,7 +441,7 @@ export class NotificationPanelComponent {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res && res?.data?.detail) {
           let user_audit_body = {

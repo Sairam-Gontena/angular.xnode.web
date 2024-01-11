@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  SimpleChange,
-  ViewChild,
-} from '@angular/core';
-import { ApiService } from '../api/api.service';
+import { Component, Input, SimpleChange, ViewChild } from '@angular/core';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from '../components/services/local-storage.service';
@@ -22,12 +15,7 @@ declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecService } from '../api/spec.service';
 import { NaviApiService } from '../api/navi-api.service';
 interface AutoCompleteCompleteEvent {
@@ -104,7 +92,6 @@ export class CrTabsComponent {
   unlinkCRPopup: boolean = false;
 
   constructor(
-    private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
@@ -114,7 +101,6 @@ export class CrTabsComponent {
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
     private specService: SpecService,
-    private datePipe: DatePipe,
     private naviApiService: NaviApiService
   ) {
     this.minDate = new Date();
@@ -409,8 +395,8 @@ export class CrTabsComponent {
   }
   getCRDetails(crId: any, index: number): void {
     this.utilsService.loadSpinner(true);
-    this.api
-      .getComments('cr-entity-mapping?crId=' + crId)
+    this.commentsService
+      .getLinkedCrs({ crId: crId })
       .then((res: any) => {
         if (res) {
           this.crList[index] = res.data;
@@ -579,8 +565,8 @@ export class CrTabsComponent {
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);
-    this.api
-      .postApi({ product_id: this.product?.id, cr_id: cr_ids }, 'specs/update')
+    this.specService
+      .updateSpec({ product_id: this.product?.id, cr_id: cr_ids })
       .then((res: any) => {
         if (res && res.status === 200) {
           this.crData.map((item: any) => item.checked === false);
@@ -659,7 +645,7 @@ export class CrTabsComponent {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res && res?.data?.detail) {
           let user_audit_body = {

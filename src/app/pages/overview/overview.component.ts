@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import * as data from '../../constants/overview.json';
-import { ApiService } from 'src/app/api/api.service';
 import { UserUtil } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';

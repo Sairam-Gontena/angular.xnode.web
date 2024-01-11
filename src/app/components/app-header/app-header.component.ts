@@ -1,13 +1,12 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
-import { ApiService } from '../../api/api.service';
+import { PublishAppApiService } from '../../api/publish-app-api.service';
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
@@ -61,7 +60,6 @@ export class AppHeaderComponent implements OnInit {
 
   constructor(
     private RefreshListService: RefreshListService,
-    private apiService: ApiService,
     private utilsService: UtilsService,
     private router: Router,
     private webSocketService: WebSocketService,
@@ -69,7 +67,8 @@ export class AppHeaderComponent implements OnInit {
     private captureService: NgxCaptureService,
     private auth: AuthApiService,
     private naviApiService: NaviApiService,
-    private auditUtil: AuditutilsService
+    private auditUtil: AuditutilsService,
+    private publishAppApiService: PublishAppApiService
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -295,7 +294,7 @@ export class AppHeaderComponent implements OnInit {
       envName: environment.branchName,
       productId: obj.product_id,
     };
-    this.apiService
+    this.publishAppApiService
       .publishApp(body)
       .then((response: any) => {
         if (response) {

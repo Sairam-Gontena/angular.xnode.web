@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/api/api.service';
-import { User, UserUtil } from 'src/app/utils/user-util';
+import { User } from 'src/app/utils/user-util';
 import { UtilsService } from '../../services/utils.service';
 import { BuilderService } from '../builder.service';
 import { FormComponent } from '../form-component';

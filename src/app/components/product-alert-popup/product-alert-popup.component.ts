@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/api/api.service';
+import { PublishAppApiService } from 'src/app/api/publish-app-api.service';
 import { UtilsService } from '../services/utils.service';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
@@ -33,7 +33,7 @@ export class ProductAlertPopupComponent implements OnInit {
   showLimitReachedPopup: boolean = false;
 
   constructor(
-    private apiService: ApiService,
+    private publishAppApiService: PublishAppApiService,
     private naviApiService: NaviApiService,
     private utils: UtilsService,
     private auditUtil: AuditutilsService,
@@ -208,7 +208,7 @@ export class ProductAlertPopupComponent implements OnInit {
     };
     let detail =
       'Your app publishing process started. You will get the notifications';
-    this.apiService
+    this.publishAppApiService
       .publishApp(body)
       .then((response: any) => {
         if (response) {
@@ -540,7 +540,7 @@ export class ProductAlertPopupComponent implements OnInit {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res && res?.data?.detail) {
           this.utils.loadToaster({

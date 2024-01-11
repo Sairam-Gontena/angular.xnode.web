@@ -458,7 +458,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.postFile('file-azure/upload', formData, {
+      const res = await this.commonApi.uploadFile(formData, {
         headers,
       });
       if (res.statusText === 'Created') {

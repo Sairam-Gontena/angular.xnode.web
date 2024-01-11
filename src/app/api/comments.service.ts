@@ -87,6 +87,10 @@ export class CommentsService extends BaseApiService {
     return this.post('cr-entity-mapping', body);
   }
 
+  getLinkedCrs(params: any) {
+    return this.get('cr-entity-mapping?crId=' + params.crId);
+  }
+
   unLinkCr(body: any) {
     return this.post('cr-entity-mapping/unlink-crs', body);
   }

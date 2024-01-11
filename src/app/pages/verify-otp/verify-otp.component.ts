@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
@@ -68,10 +66,7 @@ export class VerifyOtpComponent implements OnInit {
     this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
     this.authApiService
-      .login(
-        { email: this.route.snapshot.params['email'] },
-        'mfa/resendverfication'
-      )
+      .login({ email: this.route.snapshot.params['email'] })
       .then((response: any) => {
         if (response?.status === 200) {
           this.startResendTimer();
@@ -102,10 +97,7 @@ export class VerifyOtpComponent implements OnInit {
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService
-      .login(
-        { email: this.route.snapshot.params['email'], otp: this.otp },
-        'mfa/verifyOTP'
-      )
+      .login({ email: this.route.snapshot.params['email'], otp: this.otp })
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
           this.handleResponse(response.data);

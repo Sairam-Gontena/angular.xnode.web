@@ -5,16 +5,15 @@ import { BaseApiService } from './base-api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class NotifyApiService extends BaseApiService {
+export class WorkflowApiService extends BaseApiService {
   override get apiUrl(): string {
-    return environment.notifyApiUrl;
+    return environment.workFlowApiUrl;
   }
   constructor() {
     super();
   }
 
-  emailNotify(body?: any) {
-    let url = 'email/notify';
-    return this.post(url, body);
+  workflow(body: any) {
+    return this.post('api/json-bpmn', body);
   }
 }

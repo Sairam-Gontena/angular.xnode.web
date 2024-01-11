@@ -22,7 +22,6 @@ import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { Observable, delay, of } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json';
-import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
@@ -33,6 +32,7 @@ import { Router } from '@angular/router';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 
 @Component({
   selector: 'xnode-bpmn-common',
@@ -83,12 +83,12 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   showBpmn: boolean = false;
 
   constructor(
-    private api: ApiService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private router: Router,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private workflowApiService: WorkflowApiService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -689,8 +689,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   loadXFlows(xFlowJson: any): void {
-    this.api
-      .postWorkFlow(xFlowJson)
+    this.workflowApiService
+      .workflow(xFlowJson)
       .then(async (response: any) => {
         let xFlowJsonCopy = xFlowJson;
         xFlowJsonCopy.Flows = 'xflows data';

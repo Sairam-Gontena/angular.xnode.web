@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import TableData from '../../../assets/json/table_columns.json';
-import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Logs } from 'src/models/logs';

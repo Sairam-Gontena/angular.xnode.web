@@ -33,4 +33,9 @@ export class SpecService extends BaseApiService {
     let url = 'specs/generate';
     return this.get(url);
   }
+
+  updateSpec(body?: any) {
+    let url = 'specs/update';
+    return this.post(url, body);
+  }
 }

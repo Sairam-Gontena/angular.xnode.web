@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { UserUtil, User } from '../../utils/user-util';
+import { User } from '../../utils/user-util';
 import { Product } from 'src/models/product';
-import { ApiService } from 'src/app/api/api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
