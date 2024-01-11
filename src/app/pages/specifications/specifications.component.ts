@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -53,7 +54,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private utils: UtilsService,
-    private apiService: ApiService,
     private specService: SpecService,
     private specUtils: SpecUtilsService,
     private router: Router,
@@ -64,7 +64,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private authService: AuthApiService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
-    private utilsService: UtilsService,
+    private naviApiService: NaviApiService
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
@@ -72,7 +72,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     });
     this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
       if (data) {
-        this.handleSpecData(data.specData, data.productId)
+        this.handleSpecData(data.specData, data.productId);
       }
     });
   }
@@ -98,13 +98,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getMetaData(val: any) {
-    this.apiService
-      .get(
-        'navi/get_metadata/' +
-        this.currentUser?.email +
-        '?product_id=' +
-        val.product_id
-      )
+    this.naviApiService
+      .getMetaData(this.currentUser?.email, val.product_id)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0];
@@ -116,7 +111,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => { });
+      .catch((error) => {});
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -169,12 +164,13 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     }
 
     this.getUsersByAccountId();
-
   }
 
   getCRList() {
     let body: any = {
-      productId: this.notifInfo?.product_id ? this.notifInfo?.product_id : this.notifInfo?.productId,
+      productId: this.notifInfo?.product_id
+        ? this.notifInfo?.product_id
+        : this.notifInfo?.productId,
     };
     this.utils.loadSpinner(true);
     this.commentsService
@@ -407,7 +403,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
-    this.storageService.saveItem(StorageKeys.SpecData, list)
+    this.storageService.saveItem(StorageKeys.SpecData, list);
     if (this.activeConversationTab === 'COMMENTS') {
       this.getMeAllCommentsList(productId);
     } else if (this.activeConversationTab === 'TASKS') {
@@ -478,9 +474,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getMeAllTaskList(productId: string) {
     this.utils.loadSpinner(true);
-    let specVersion: any = this.storageService.getItem(
-      StorageKeys.SpecVersion
-    );
+    let specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.commentsService
       .getTasksByProductId({
         productId: productId,
@@ -504,7 +498,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.storageService.removeItem(StorageKeys.NOTIF_INFO);
         this.notifInfo = undefined;
       });
-
   }
 
   checkUserEmail(): void {
@@ -527,10 +520,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
-    this.apiService
-      .get(
-        'navi/get_conversation/' + this.product.email + '/' + this.product.id
-      )
+    this.naviApiService
+      .getConversation(this.product.email, this.product.id)
       .then((res: any) => {
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
@@ -560,12 +551,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       email: this?.product.email,
       conversation_history: this.consversationList,
       product_id: this.product.id,
-      user_id: this.currentUser.user_id
+      user_id: this.currentUser.user_id,
     };
     let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;
-    this.apiService
-      .postApi(body, 'specs/generate')
+    this.specService
+      .generateSpec(body)
       .then((response: any) => {
         if (response) {
           let user_audit_body = {

@@ -46,11 +46,8 @@ export class CommentsPanelComponent implements OnInit {
   selectedUserNames: any = [];
 
   constructor(
-    private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private commentsService: CommentsService,
-    private storageService: LocalStorageService,
-    private apiService: ApiService
+    private storageService: LocalStorageService
   ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
@@ -91,7 +88,9 @@ export class CommentsPanelComponent implements OnInit {
         );
         break;
       case 'UNLINKED':
-        this.filteredList = data.filter((item: any) => item.status === 'UNLINKED');
+        this.filteredList = data.filter(
+          (item: any) => item.status === 'UNLINKED'
+        );
         break;
       case 'NEW':
         this.filteredList = this.list.filter(

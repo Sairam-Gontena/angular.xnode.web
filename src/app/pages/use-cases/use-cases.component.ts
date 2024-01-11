@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 @Component({
   selector: 'xnode-use-cases',
   templateUrl: './use-cases.component.html',
@@ -23,9 +24,9 @@ export class UseCasesComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private storageService: LocalStorageService,
-    private apiService: ApiService,
-    private auditUtil: AuditutilsService
-  ) { }
+    private auditUtil: AuditutilsService,
+    private naviApiService: NaviApiService
+  ) {}
 
   ngOnInit(): void {
     this.getMeStorageData();
@@ -50,30 +51,54 @@ export class UseCasesComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
       return;
     }
-
     this.getMeUsecases();
   }
 
   getMeUsecases(): void {
     if (this.productChanged) {
-      this.apiService.get("navi/get_usecases/" + localStorage.getItem('record_id'))
+      this.naviApiService
+        .getUsecases(this.product?.id)
         .then((response: any) => {
           if (response?.status === 200) {
             this.useCases = response.data;
-            this.auditUtil.postAudit("RETRIEVE_USECASES", 1, 'SUCCESS', 'user-audit');
+            this.auditUtil.postAudit(
+              'RETRIEVE_USECASES',
+              1,
+              'SUCCESS',
+              'user-audit'
+            );
           } else {
-            this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
-            this.auditUtil.postAudit("RETRIEVE_USECASES" + response?.data?.detail, 1, 'FAILURE', 'user-audit');
+            this.utils.loadToaster({
+              severity: 'error',
+              summary: 'ERROR',
+              detail: response?.data?.detail,
+            });
+            this.auditUtil.postAudit(
+              'RETRIEVE_USECASES' + response?.data?.detail,
+              1,
+              'FAILURE',
+              'user-audit'
+            );
           }
           this.utils.loadSpinner(false);
-        }).catch(error => {
+        })
+        .catch((error) => {
           let user_audit_body = {
-            'method': 'GET',
-            'url': error?.request?.responseURL
-          }
-          this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+            method: 'GET',
+            url: error?.request?.responseURL,
+          };
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: error,
+          });
           this.utils.loadSpinner(false);
-          this.auditUtil.postAudit("RETRIEVE_USECASES" + error, 1, 'FAILURE', 'user-audit');
+          this.auditUtil.postAudit(
+            'RETRIEVE_USECASES' + error,
+            1,
+            'FAILURE',
+            'user-audit'
+          );
           this.productChanged = false;
         });
     } else {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   endPoint = environment.apiUrl;
@@ -12,12 +12,11 @@ export class ApiService {
   authEndPoint = environment.authApiUrl;
   commentsEndPoint = environment.commentsApiUrl;
 
-  constructor() {
-  }
+  constructor() {}
   config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
   // Temporary
   publishApp(body: any) {
@@ -29,18 +28,15 @@ export class ApiService {
   }
 
   get(url: string) {
-    return axios.get(this.endPoint + url, {
-    });
+    return axios.get(this.endPoint + url, {});
   }
 
   getAuthApi(url: string) {
-    return axios.get(this.authEndPoint + url, {
-    });
+    return axios.get(this.authEndPoint + url, {});
   }
 
   getApi(url: string) {
-    return axios.get(this.apiPoint + url, {
-    });
+    return axios.get(this.apiPoint + url, {});
   }
 
   postApi(body: any, url: string) {
@@ -50,7 +46,6 @@ export class ApiService {
   post(body: any, url: string) {
     return axios.post(this.endPoint + url, body, this.config);
   }
-
 
   patch(body: any, url: string) {
     return axios.patch(this.endPoint + url, body, this.config);

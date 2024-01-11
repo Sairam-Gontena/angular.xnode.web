@@ -8,6 +8,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 @Component({
   selector: 'xnode-verify-otp',
   templateUrl: './verify-otp.component.html',
@@ -26,11 +27,11 @@ export class VerifyOtpComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private apiService: ApiService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private authApiService: AuthApiService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private naviAPiService: NaviApiService
   ) {}
 
   ngOnInit(): void {
@@ -168,8 +169,8 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.apiService
-      .get('navi/get_metadata/' + currentUser?.email)
+    this.naviAPiService
+      .getMetaData(currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           this.authApiService.setUser(true);

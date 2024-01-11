@@ -32,24 +32,24 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-bpmn-common',
   templateUrl: './bpmn-common.component.html',
   styleUrls: ['./bpmn-common.component.scss'],
 })
-export class BpmnCommonComponent
-  implements OnDestroy, OnInit {
+export class BpmnCommonComponent implements OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
     | undefined;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   @Input() specExpanded?: boolean;
-  @Input() referenceId:any;
+  @Input() referenceId: any;
   @Input() dataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
-  @Input() fromExpandSpec:any;
+  @Input() fromExpandSpec: any;
   bpmnJS: any;
   pallete_classes: any;
   selected_classes: any;
@@ -87,7 +87,8 @@ export class BpmnCommonComponent
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private naviApiService: NaviApiService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -109,11 +110,13 @@ export class BpmnCommonComponent
       if (bpmnWindow) bpmnWindow.style.display = 'None';
       this.graphRedirection = false;
       var graphWindow;
-      if(this.referenceId){
-        of(([])).pipe(delay(1000)).subscribe((results) => {
-          graphWindow = document.getElementById('sc'+this.referenceId);
-        });
-      }else{
+      if (this.referenceId) {
+        of([])
+          .pipe(delay(1000))
+          .subscribe((results) => {
+            graphWindow = document.getElementById('sc' + this.referenceId);
+          });
+      } else {
         graphWindow = document.getElementById('sc');
       }
       if (graphWindow) graphWindow.style.display = '';
@@ -132,7 +135,7 @@ export class BpmnCommonComponent
     setTimeout(() => {
       this.initializeBpmn();
       this.graph();
-    },);
+    });
   }
 
   switchWindow() {
@@ -211,8 +214,8 @@ export class BpmnCommonComponent
 
   getFlow(flow: String) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api
-      .get('navi/get_xflows/' + this.product?.email + '/' + this.product?.id)
+    this.naviApiService
+      .getXflows(this.product?.email, this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -306,8 +309,8 @@ export class BpmnCommonComponent
 
   getOnboardingFlow() {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api
-      .get('navi/get_xflows/' + this.product?.email + '/' + this.product?.id)
+    this.naviApiService
+      .getXflows(this.product?.email, this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -395,10 +398,9 @@ export class BpmnCommonComponent
     if (layout) this.dashboard = this.layoutColumns[layout];
   }
 
-
   getOverview() {
-    this.api
-      .get('navi/get_overview/' + this.product?.email + '/' + this.product?.id)
+    this.naviApiService
+      .getOverview(this.product?.email, this.product?.id)
       .then((response) => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -650,7 +652,7 @@ export class BpmnCommonComponent
   }
 
   ngOnDestroy(): void {
-    if(this.bpmnJS){
+    if (this.bpmnJS) {
       this.bpmnJS.destroy();
     }
   }
@@ -794,9 +796,9 @@ export class BpmnCommonComponent
       children: mod_data,
     };
     var ele;
-    if(this.referenceId){
-        ele = document.getElementById('graph'+this.referenceId) as HTMLElement;
-    }else{
+    if (this.referenceId) {
+      ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
+    } else {
       ele = document.getElementById('graph') as HTMLElement;
     }
     // var ele = document.getElementById('graph') as HTMLElement;
@@ -808,11 +810,13 @@ export class BpmnCommonComponent
     let nodes: NodeListOf<SVGGElement> | undefined;
     nodes = svgNode?.querySelectorAll('g');
     var svg_ele;
-    if(this.referenceId){
-      of(([])).pipe(delay(1000)).subscribe((results) => {
-        svg_ele = document.getElementById('graph'+this.referenceId);
-      });
-    }else{
+    if (this.referenceId) {
+      of([])
+        .pipe(delay(1000))
+        .subscribe((results) => {
+          svg_ele = document.getElementById('graph' + this.referenceId);
+        });
+    } else {
       svg_ele = document.getElementById('graph');
     }
     // var svg_ele = document.getElementById('graph');
@@ -828,11 +832,13 @@ export class BpmnCommonComponent
           if (bpmnWindow) bpmnWindow.style.display = '';
           this.graphRedirection = true;
           var graphWindow;
-          if(this.referenceId){
-            of(([])).pipe(delay(500)).subscribe((results) => {
-              graphWindow = document.getElementById('sc'+this.referenceId);
-            });
-          }else{
+          if (this.referenceId) {
+            of([])
+              .pipe(delay(500))
+              .subscribe((results) => {
+                graphWindow = document.getElementById('sc' + this.referenceId);
+              });
+          } else {
             graphWindow = document.getElementById('sc');
           }
           if (graphWindow) graphWindow.style.display = 'None';

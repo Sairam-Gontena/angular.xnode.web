@@ -10,6 +10,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from '../services/spec-utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { SpecService } from 'src/app/api/spec.service';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -39,14 +40,14 @@ export class NotificationPanelComponent {
 
   constructor(
     private router: Router,
-    private apiService: ApiService,
     private auditUtil: AuditutilsService,
     public utils: UtilsService,
     private notifyApi: NotifyApiService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService,
-    private specService: SpecService
+    private specService: SpecService,
+    private naviApiService: NaviApiService
   ) {
     let user = localStorage.getItem('currentUser');
     if (user) {
@@ -97,8 +98,8 @@ export class NotificationPanelComponent {
   }
 
   navigateToProduct(obj: any): void {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           const product = response.data.data?.filter((item: any) => {
@@ -129,8 +130,8 @@ export class NotificationPanelComponent {
   }
 
   getMeListOfProducts(): void {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           localStorage.setItem('meta_data', JSON.stringify(response.data.data));
@@ -138,8 +139,8 @@ export class NotificationPanelComponent {
       });
   }
   getMeMetaData() {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           localStorage.setItem('meta_data', JSON.stringify(response.data.data));
@@ -175,8 +176,8 @@ export class NotificationPanelComponent {
   }
 
   goToSpec(obj: any) {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           localStorage.setItem('meta_data', JSON.stringify(response.data.data));
@@ -356,8 +357,8 @@ export class NotificationPanelComponent {
   }
 
   getMeTotalAppsPublishedCount(obj: any): void {
-    this.apiService
-      .get('navi/total_apps_published/' + this.currentUser?.account_id)
+    this.naviApiService
+      .getTotalPublishedApps(this.currentUser?.account_id)
       .then((res: any) => {
         if (res && res.status === 200) {
           const restriction_max_value = localStorage.getItem(
@@ -518,8 +519,8 @@ export class NotificationPanelComponent {
   }
 
   getMeMetaDataAndStoreTheProduct(product_id: any) {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           const product = response.data.data?.filter((item: any) => {
@@ -532,8 +533,8 @@ export class NotificationPanelComponent {
 
   navigateToConversation(val: any) {
     this.utils.loadSpinner(true);
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           const product = response.data.data?.filter((item: any) => {
