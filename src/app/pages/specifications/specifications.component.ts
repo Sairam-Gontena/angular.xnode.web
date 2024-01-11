@@ -63,7 +63,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private authService: AuthApiService,
     private storageService: LocalStorageService,
-    private commentsService: CommentsService
+    private commentsService: CommentsService,
+    private utilsService: UtilsService,
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
