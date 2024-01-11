@@ -166,3 +166,22 @@
   font-size: 1.5rem !important;
   border-radius: 6px;
 }
+
+:host ::ng-deep .dueDate .p-button-icon-only {
+  width: 18px !important;
+}
+
+:host ::ng-deep .priority-dropdown .p-dropdown-label {
+  display: none;
+}
+
+:host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
+  display: none;
+}
+
+:host ::ng-deep .priority-dropdown .p-dropdown-trigger {
+  background: url('../../assets/status.svg') no-repeat;
+  background-size: contain;
+  display: inline-block;
+  width: 18px;
+}
