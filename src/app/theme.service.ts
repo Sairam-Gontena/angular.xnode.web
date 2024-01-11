@@ -9,20 +9,16 @@ export class ThemeService {
   private renderer: Renderer2;
 
   private colorVariables:any = {
-    primary: '--primary-color',
-    secondary: '--primary-color-text',
-    surface_900: '--surface-900',
-    primary_color_text: '--primary-color-text',
-    body_color: '--body-color',
-    text_color: '--text-color',
-    hover_color:'--hover-color',
-    highlight_color:'--highlight-color',
-    focused_color:'--focused-color',
-    border_color:'--border-color',
-    
-    
-    
-    
+    // primary: '--primary-color',
+    // secondary: '--primary-color-text',
+    // surface_900: '--surface-900',
+    // primary_color_text: '--primary-color-text',
+    // body_color: '--body-color',
+    // text_color: '--text-color',
+    // hover_color:'--hover-color',
+    // highlight_color:'--highlight-color',
+    // focused_color:'--focused-color',
+    // border_color:'--border-color',
 
     // BUTTON
     primary_button_color:'--primary-button-color',

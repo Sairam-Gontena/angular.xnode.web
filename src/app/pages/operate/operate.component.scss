@@ -73,6 +73,7 @@
     width: calc(100% - 50px);
     height: calc(100vh - 42px);
     overflow-y: hidden;
+    background-color: #3A3942;
 }
 
 :host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
@@ -131,4 +132,5 @@ img.highlighted {
 .operate-body {
     height: calc(100vh - 150px);
     overflow: auto;
+    background-color: #212121 !important;
 }

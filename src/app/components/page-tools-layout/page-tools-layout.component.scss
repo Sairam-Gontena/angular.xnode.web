@@ -1,5 +1,5 @@
 .template-builder-body-wrapper {
-     background: #24232C;
+     background: #202123;
      transition: width 0.5s ease;
      height: calc(100vh - 42px);
 }
@@ -27,6 +27,7 @@
      // background: #4F4E55;
      border: 1px solid #24232C !important;
      cursor: pointer;
+     background-color: #4F4E55;
 }
 
 .layout-item {
@@ -43,4 +44,32 @@
 
 .accordian-values {
      height: calc(100vh - 110px);
+     background-color: #202123;
+}
+
+:host ::ng-deep .p-accordion-header-text {
+     line-height: 1;
+     font-size: 12px;
+     font-weight: 400;
+ }
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link{
+      border-bottom: 1px solid #39383F;
+      border-radius: 0px;
+}
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link {
+     border-bottom: 1px solid #39383F;
+     border-radius: 0px;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+     border-bottom: 1px solid #39383F;
+     border-radius: 0px;
+   }
+
+:host ::ng-deep .p-accordion .p-accordion-content {
+     padding: 1.25rem;
+     border: 1px solid var(--accordion-content-border-color);
+     background: var(--accordion-content-background-color);
+     color: var(--accordion-content-text-color);
 }
