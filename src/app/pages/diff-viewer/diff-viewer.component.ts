@@ -111,7 +111,11 @@ export class DiffViewerComponent implements OnInit {
     if (!isOnDiff) return undefined;
     if (isArray(fromArray))
       for (const item of fromArray) {
+        console.log('srcObjsrcObjsrcObjsrcObj', srcObj.id, item.id);
+
         if (srcObj.id === item.id) {
+          console.log('###############3', item);
+
           return item;
         }
       }
@@ -151,8 +155,20 @@ export class DiffViewerComponent implements OnInit {
           });
           if (params.type === 'one') {
             this.specList = response.data;
+            this.specTwoList.forEach((element1: any) => {
+              this.specList.forEach((element2: any) => {
+                if (element2.title === element1.title)
+                  element2.id = element1.id;
+              });
+            });
           } else {
             this.specTwoList = response.data;
+            this.specList.forEach((element1: any) => {
+              this.specTwoList.forEach((element2: any) => {
+                if (element2.title === element1.title)
+                  element2.id = element1.id;
+              });
+            });
           }
         }
         this.utils.loadSpinner(false);
