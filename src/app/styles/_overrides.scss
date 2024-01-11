@@ -9,51 +9,50 @@
 @import "./components/tidermenu";
 @import "./components/multiselect";
 @import "./components/dialog";
+@import "./components/card";
 
 
 
-  // accordian here
-  // .p-accordion .p-accordion-content {
-  //   background: var(--body-color) !important;
-  // }
+// accordian here
+// .p-accordion .p-accordion-content {
+//   background: var(--body-color) !important;
+// }
 
-  // .p-accordion .p-accordion-header .p-accordion-header-link{
-  //   background: var(--body-color) !important;
-  // }
- 
-  // .p-datatable{
-  //   background: var(--body-color) !important;
-  // }
+// .p-accordion .p-accordion-header .p-accordion-header-link{
+//   background: var(--body-color) !important;
+// }
 
-  // .p-datatable .p-datatable-header{
-  //   background: var(--body-color) !important;
-  // }
+// .p-datatable{
+//   background: var(--body-color) !important;
+// }
 
-  // .p-datatable .p-datatable-thead > tr > th{
-  //   background: var(--body-color) !important;
-  // }
+// .p-datatable .p-datatable-header{
+//   background: var(--body-color) !important;
+// }
 
-  // accordion end
+// .p-datatable .p-datatable-thead > tr > th{
+//   background: var(--body-color) !important;
+// }
 
-  // overlay here
+// accordion end
 
-  // .p-overlaypanel {   
-  //   color: var(--primary-color-text);
-  //   border-width: 1px;
-  //   border-color: var(--border-color) !important;
-  //   background-color: var(--body-color);
-  // }
+// overlay here
 
-  .p-overlaypanel.p-overlaypanel-content {
+// .p-overlaypanel {   
+//   color: var(--primary-color-text);
+//   border-width: 1px;
+//   border-color: var(--border-color) !important;
+//   background-color: var(--body-color);
+// }
+
+.p-overlaypanel.p-overlaypanel-content {
   // background-color:var(--body-color);
   // border-radius: 6px;
-  }
-
-.p-overlaypanel .p-overlaypanel-content {
 }
 
-.p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
-}
+.p-overlaypanel .p-overlaypanel-content {}
+
+.p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {}
 
 // overlay end here
 

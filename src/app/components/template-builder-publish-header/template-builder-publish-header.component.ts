@@ -89,8 +89,6 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   changeTheProduct(event: any): void {
     this.product = event;
     this.onChangeProduct.emit(event)
-
-
   }
 
   storeProductData(id: string) {
