@@ -13,12 +13,12 @@
     <div class="diff-view flex justify-content-center">
       <div class="w-8">
         <div class='m-4' *ngFor="let item of specList.slice(0,2);let i = index">
-          <xnode-diff-comp [users]="usersList" [contentObj]="item" [index]="i" [diffObj]="getDiffObj(specTwoList.slice(0,2),item, specList.length!==0&& specTwoList.length!==0)"
+          <xnode-diff-comp [reveiwerList]="reveiwerList" [users]="usersList" [contentObj]="item" [index]="i" [diffObj]="getDiffObj(specTwoList.slice(0,2),item, specList.length!==0&& specTwoList.length!==0)"
             [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
         </div>
-        <xnode-diff-list [users]="usersList" [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
+        <xnode-diff-list [reveiwerList]="reveiwerList" [users]="usersList" [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
       </div>
-      <xnode-diff-list [users]="usersList" [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
+      <xnode-diff-list [reveiwerList]="reveiwerList" [users]="usersList" [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
     </div>
   </div>
 </div>

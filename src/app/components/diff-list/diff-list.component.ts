@@ -8,7 +8,11 @@ export class DiffListComponent {
   @Input() onDiff: boolean = false;
   @Input() srcList: any[] = [];
   @Input() targetList: any[] = [];
-  @Input() users:any;
+  @Input() users:any=[];
+  @Input() reveiwerList:any=[];
+
+  constructor() {
+  }
 
   getListNotInSource(fromArray: any[], toArray: any[], isOnDiff: boolean = false) {
     if (!isOnDiff) return undefined;

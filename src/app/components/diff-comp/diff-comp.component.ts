@@ -13,7 +13,10 @@ export class DiffCompComponent implements OnInit {
   @Input() diffObj: any;
   @Input() onDiff: boolean = false;
   @Input() index: any;
-  @Input() users:any;
+  @Input() users:any=[];
+  @Input() reveiwerList:any=[];
+  @Input() specItemId:any;
+  @Input() parentTitle:any;
 
   constructor(private storageService: LocalStorageService) {
   }

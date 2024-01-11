@@ -42,7 +42,7 @@ export class AddTaskComponent {
   @Input() specId: any;
   @Input() activeIndex: any;
   @Input() from: any;
-  @Input() reveiwerList: any;
+  @Input() reveiwerList: any=[];
   minDate!: Date;
   assinedUsers: string[] = [];
   isCommentEmpty: boolean = true;
@@ -90,11 +90,16 @@ export class AddTaskComponent {
       if (event) this.isCommnetsPanelOpened = event;
     });
   }
-  ngOnInit(): void {
+  ngOnInit() {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
+    this.specUtils.getreviewerListChange.subscribe((data: any) => {
+      if (data) {
+        this.reveiwerList =data;
+      }
+    });
   }
 
   onDateSelect(event: any): void {
@@ -272,7 +277,6 @@ export class AddTaskComponent {
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-
     const selectedReviewers = this.addTaskForm.value.reviewersLOne.map(
       (reviewer: any) => reviewer.name.toLowerCase()
     );
