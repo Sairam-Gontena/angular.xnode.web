@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
 import { UserUtil } from '../../utils/user-util';
 import { MessageService } from 'primeng/api';
 import { RefreshListService } from '../../RefreshList.service';
@@ -10,6 +9,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-my-products',
@@ -39,12 +39,12 @@ export class MyProductsComponent implements OnInit {
   constructor(
     private RefreshListService: RefreshListService,
     public router: Router,
-    private apiService: ApiService,
     private route: ActivatedRoute,
     private utils: UtilsService,
     private authApiService: AuthApiService,
     private auditUtil: AuditutilsService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private naviApiService: NaviApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
 
@@ -113,8 +113,8 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService
-      .get('navi/total_apps_onboarded/' + user?.email)
+    this.naviApiService
+      .getTotalOnboardedApps(user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem(
@@ -244,8 +244,8 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMetaData() {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           this.id = response.data.data[0].id;

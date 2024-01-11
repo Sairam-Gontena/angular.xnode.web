@@ -22,7 +22,7 @@ export class ConversationActionsComponent {
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private specUtils: SpecUtilsService
-  ) { }
+  ) {}
   onClickReply(cmt: any): void {
     this.updateAction.emit({
       action: 'REPLY',
@@ -109,7 +109,7 @@ export class ConversationActionsComponent {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.postFile('file-azure/upload', formData, {
+      const res = await this.commonApi.uploadFile(formData, {
         headers,
       });
       if (res.statusText === 'Created') {
@@ -148,7 +148,10 @@ export class ConversationActionsComponent {
 
   saveComment(): void {
     let cmt = this.selectedComment;
-    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
+    const concatenatedFiles = [
+      ...this.uploadedFiles,
+      ...(cmt.attachments || []),
+    ];
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
     this.commentsService
       .addComments(cmt)
@@ -183,7 +186,10 @@ export class ConversationActionsComponent {
     let cmt = this.selectedComment;
     cmt.assignee = cmt.assignee.userId;
 
-    const concatenatedFiles = [...this.uploadedFiles, ...(cmt.attachments || [])];
+    const concatenatedFiles = [
+      ...this.uploadedFiles,
+      ...(cmt.attachments || []),
+    ];
 
     cmt.attachments = concatenatedFiles.map((file) => file.fileId);
     cmt.deadline = '';

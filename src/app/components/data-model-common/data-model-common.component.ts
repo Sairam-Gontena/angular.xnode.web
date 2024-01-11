@@ -14,9 +14,9 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { MessageService } from 'primeng/api';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { ApiService } from 'src/app/api/api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Subscription } from 'rxjs';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-data-model-common',
@@ -52,9 +52,9 @@ export class DataModelCommonComponent {
     private router: Router,
     private storageService: LocalStorageService,
     private utilsService: UtilsService,
-    private apiService: ApiService,
     private auditUtil: AuditutilsService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private naviApiService: NaviApiService
   ) {
     this.data = this.dataService.data;
     this.router.events.subscribe((data: any) => {
@@ -93,8 +93,8 @@ export class DataModelCommonComponent {
   }
   getDataModel() {
     this.dataModel = [];
-    this.apiService
-      .get('navi/get_datamodels/' + this.product.id)
+    this.naviApiService
+      .getDataModels(this.product.id)
       .then((response) => {
         if (response?.status === 200) {
           let user_audit_body = {

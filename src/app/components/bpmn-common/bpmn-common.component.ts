@@ -22,7 +22,6 @@ import Modeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { Observable, delay, of } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json';
-import { ApiService } from 'src/app/api/api.service';
 import { layoutProcess } from 'bpmn-auto-layout';
 import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
@@ -32,6 +31,8 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
+import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 
 @Component({
   selector: 'xnode-bpmn-common',
@@ -82,11 +83,12 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   showBpmn: boolean = false;
 
   constructor(
-    private api: ApiService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private naviApiService: NaviApiService,
+    private workflowApiService: WorkflowApiService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -212,8 +214,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   getFlow(flow: String) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api
-      .get('navi/get_xflows/' + this.product?.email + '/' + this.product?.id)
+    this.naviApiService
+      .getXflows(this.product?.email, this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -307,8 +309,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   getOnboardingFlow() {
     this.currentUser = UserUtil.getCurrentUser();
-    this.api
-      .get('navi/get_xflows/' + this.product?.email + '/' + this.product?.id)
+    this.naviApiService
+      .getXflows(this.product?.email, this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -397,8 +399,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getOverview() {
-    this.api
-      .get('navi/get_overview/' + this.product?.email + '/' + this.product?.id)
+    this.naviApiService
+      .getOverview(this.product?.email, this.product?.id)
       .then((response) => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -687,8 +689,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   loadXFlows(xFlowJson: any): void {
-    this.api
-      .postWorkFlow(xFlowJson)
+    this.workflowApiService
+      .workflow(xFlowJson)
       .then(async (response: any) => {
         let xFlowJsonCopy = xFlowJson;
         xFlowJsonCopy.Flows = 'xflows data';

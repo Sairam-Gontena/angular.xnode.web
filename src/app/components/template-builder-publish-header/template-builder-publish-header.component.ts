@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { ApiService } from 'src/app/api/api.service';
+import { PublishAppApiService } from 'src/app/api/publish-app-api.service';
 import { environment } from 'src/environments/environment';
 import { MenuItem } from 'primeng/api';
 import { UtilsService } from '../services/utils.service';
@@ -9,6 +9,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-template-builder-publish-header',
@@ -34,13 +35,14 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   showLimitReachedPopup: boolean = false;
 
   constructor(
-    private apiService: ApiService,
+    private publishAppApiService: PublishAppApiService,
     private router: Router,
     private confirmationService: ConfirmationService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private naviApiService: NaviApiService
   ) {
     this.utilsService.getMeProductId.subscribe((event: any) => {
       if (event) {
@@ -149,8 +151,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   getMeTotalAppsPublishedCount(): void {
-    this.apiService
-      .get('navi/total_apps_published/' + this.currentUser?.account_id)
+    this.naviApiService
+      .getTotalPublishedApps(this.currentUser?.account_id)
       .then((res: any) => {
         if (res && res.status === 200) {
           const restriction_max_value = localStorage.getItem(
@@ -234,7 +236,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res && res?.data?.detail) {
           this.utilsService.loadToaster({
@@ -307,7 +309,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   publishProduct(body: any): void {
     let detail =
       'Your app publishing process started. You will get the notifications';
-    this.apiService
+    this.publishAppApiService
       .publishApp(body)
       .then((response: any) => {
         if (response) {
@@ -385,8 +387,8 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
   //get calls
   getAllProducts(): void {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser?.email)
+    this.naviApiService
+      .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           this.templates = response.data.data;

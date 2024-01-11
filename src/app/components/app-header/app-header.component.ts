@@ -1,18 +1,18 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { WebSocketService } from 'src/app/web-socket.service';
-import { ApiService } from '../../api/api.service';
+import { PublishAppApiService } from '../../api/publish-app-api.service';
 import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { FormBuilder } from '@angular/forms';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-app-header',
@@ -60,14 +60,15 @@ export class AppHeaderComponent implements OnInit {
 
   constructor(
     private RefreshListService: RefreshListService,
-    private apiService: ApiService,
     private utilsService: UtilsService,
     private router: Router,
     private webSocketService: WebSocketService,
     private confirmationService: ConfirmationService,
     private captureService: NgxCaptureService,
     private auth: AuthApiService,
-    private auditUtil: AuditutilsService
+    private naviApiService: NaviApiService,
+    private auditUtil: AuditutilsService,
+    private publishAppApiService: PublishAppApiService
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -125,8 +126,8 @@ export class AppHeaderComponent implements OnInit {
 
   //get calls
   getAllProducts(): void {
-    this.apiService
-      .get('navi/get_metadata/' + this.currentUser.email)
+    this.naviApiService
+      .getMetaData(this.currentUser.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let user_audit_body = {
@@ -220,8 +221,8 @@ export class AppHeaderComponent implements OnInit {
           product_url:
             data.product_url + '/login?product_id=' + data.product_id,
         };
-        this.apiService
-          .patch(body, 'navi/update_product_url')
+        this.naviApiService
+          .updateProductUrl(body)
           .then((response) => {
             if (!response) {
               this.utilsService.loadToaster({
@@ -293,7 +294,7 @@ export class AppHeaderComponent implements OnInit {
       envName: environment.branchName,
       productId: obj.product_id,
     };
-    this.apiService
+    this.publishAppApiService
       .publishApp(body)
       .then((response: any) => {
         if (response) {
