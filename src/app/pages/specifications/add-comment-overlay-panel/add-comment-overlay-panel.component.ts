@@ -182,7 +182,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       body.message = this.comment;
     } else {
       body = {
-        createdBy: this.currentUser.user_id,
+        // createdBy: this.currentUser.user_id,
         topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
         parentEntity: this.parentEntity,
         parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
@@ -198,7 +198,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.assignAsaTask || this.activeIndex === 1) {
       if (this.action === 'REPLY') {
         body = {
-          createdBy: this.currentUser.user_id,
+          // createdBy: this.currentUser.user_id,
           topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
           parentEntity: this.parentEntity,
           parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
@@ -310,7 +310,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     let body;
     if (this.action === 'EDIT') {
       body = {
-        createdBy: this.currentUser.user_id,
+        // createdBy: this.currentUser.user_id,
         id: this.selectedComment.id,
         parentEntity: this.parentEntity,
         parentId: this.selectedComment.parentId,
@@ -328,7 +328,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       };
     } else if (this.action !== 'EDIT') {
       body = {
-        createdBy: this.currentUser.user_id,
+        // createdBy: this.currentUser.user_id,
         parentEntity: this.parentEntity,
         parentId: this.parentId,
         priority: '1',
