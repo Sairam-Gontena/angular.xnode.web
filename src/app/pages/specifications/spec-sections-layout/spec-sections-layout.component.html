@@ -175,7 +175,7 @@
           </p-overlayPanel>
         </div>
         <div class="col-12" *ngIf="content">
-          <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
+          <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)" specData="spec"
             [dataModelData]="content"></xnode-data-model-common>
         </div>
       </div>
@@ -769,9 +769,9 @@
               [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
           </p-overlayPanel>
         </div>
-        <div class="spec-table" >
+        <div class="spec-table">
           <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-          [content]="content.content[0].content"></xnode-common-spec-table>
+            [content]="content.content[0].content"></xnode-common-spec-table>
         </div>
       </div>
     </div>
