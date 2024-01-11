@@ -11,6 +11,8 @@ import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from './specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
 import { ApiService } from 'src/app/api/api.service';
+import { isArray } from 'lodash';
+import { FormArray } from '@angular/forms';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -50,8 +52,17 @@ export class DiffViewerComponent implements OnInit {
     private router: Router,
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
-    private apiservice:ApiService
+    private apiservice: ApiService
   ) {
+    this.specificationUtils.getMeVersions.subscribe(
+      (versions: SpecVersion[]) => {
+        this.versions = versions;
+        this.versions.forEach((element: any) => {
+          element['label'] = element.specStatus + '-' + element.version;
+          element['value'] = element.id;
+        });
+      }
+    );
     this.utils.startSpinner.subscribe((event: boolean) => {
       this.loading = event;
     });
@@ -70,8 +81,6 @@ export class DiffViewerComponent implements OnInit {
           });
           this.versionListOne = versions;
           this.versionListTwo = versions;
-
-          console.log('this.versionListOne', this.versionListOne);
         }
       }
     );
@@ -82,14 +91,24 @@ export class DiffViewerComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.getUsersData();
   }
+  getVersions() {
+    this.utils.loadSpinner(true);
+    this.specService.getVersions(this.product.id, (data) => {
+      this.specService.getMeSpecInfo({
+        productId: this.product?.id,
+        versionId: data[0].id,
+      });
+    });
+  }
 
-  getDiffObj(fromArray: any[], srcObj: any, isOnDiff: boolean = false) {
+  getDiffObj(fromArray: any, srcObj: any, isOnDiff: boolean = false) {
     if (!isOnDiff) return undefined;
-    for (const item of fromArray) {
-      if (srcObj.id === item.id) {
-        return item;
+    if (isArray(fromArray))
+      for (const item of fromArray) {
+        if (srcObj.id === item.id) {
+          return item;
+        }
       }
-    }
   }
 
   getRemovedItems(fromArray: any[], toArray: any[], isOnDiff: boolean = false) {
@@ -109,6 +128,7 @@ export class DiffViewerComponent implements OnInit {
   }
 
   getMeSpecInfo(params: any) {
+    this.product = this.storageService.getItem(StorageKeys.Product);
     this.specApiService
       .getSpec({
         productId: this.product?.id,
@@ -127,7 +147,6 @@ export class DiffViewerComponent implements OnInit {
             this.specList = response.data;
           } else {
             this.specTwoList = response.data;
-            console.log('  this.specTwoList', this.specTwoList);
           }
         }
         this.utils.loadSpinner(false);
@@ -175,7 +194,12 @@ export class DiffViewerComponent implements OnInit {
     });
   }
   onVersionChange(event: any, type: string) {
-    console.log('event', event);
+    type === 'one' && event.value.id === this.selectedVersionTwo.id
+      ? (this.selectedVersionTwo = undefined)
+      : type === 'two' && event.value.id === this.selectedVersionOne.id
+      ? (this.selectedVersionOne = undefined)
+      : null;
+    this.utils.loadSpinner(true);
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
 
@@ -202,14 +226,15 @@ export class DiffViewerComponent implements OnInit {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
           this.usersList = resp.data;
+          this.getVersions();
         } else {
           this.utils.loadToaster({
             severity: 'error',
             summary: '',
             detail: resp.data?.detail,
           });
+          this.utils.loadSpinner(false);
         }
-        this.utils.loadSpinner(false);
       })
       .catch((error) => {
         this.utils.loadToaster({
@@ -259,9 +284,18 @@ export class DiffViewerComponent implements OnInit {
 
   diffViewChangeEmiter(event: any) {
     this.showVersionToDiff = event;
-    this.selectedVersionOne = this.storageService.getItem(
-      StorageKeys.SpecVersion
-    );
-    console.log('this.selectedVersionOne', this.selectedVersionOne);
+    if (event) {
+      this.selectedVersionOne = this.versions[0];
+      this.selectedVersionTwo = this.versions[1];
+      this.utils.loadSpinner(true);
+      this.getMeSpecInfo({
+        versionId: this.selectedVersionTwo.id,
+        type: 'two',
+      });
+    } else {
+      this.selectedVersionOne = undefined;
+      this.selectedVersionTwo = undefined;
+      this.specTwoList = [];
+    }
   }
 }

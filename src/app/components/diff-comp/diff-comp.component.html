@@ -101,10 +101,10 @@
       <div id="openapi-ui-spec" class="openapi-spec"></div>
     </div>
 
-    <div *ngSwitchCase="'str'" [class]="getClass()">
+    <div *ngSwitchCase="'str'" >
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <div class="grid" (mouseover)="contentObj.showCommentIcon = true"
-        (mouseleave)="contentObj.showCommentIcon = false">
+        (mouseleave)="contentObj.showCommentIcon = false" >
         <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="[]" (closeOverlay)="op.toggle(false);"
             [position]="'absolute'" [users]="users" [selectedContent]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'"
@@ -124,7 +124,7 @@
               [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel> -->
         </div>
-        <div class="col-12 py-0">
+        <div class="col-12 py-0" [class]="getClass()">
           <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
             [onDiff]="onDiff"></xnode-diff-generator>
         </div>

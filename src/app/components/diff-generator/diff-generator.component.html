@@ -1,6 +1,6 @@
 <ng-container *ngIf="!onDiff || newContent === oldContent ; then ifblock else elseblock"></ng-container>
 <ng-template #ifblock>
-{{oldContent}}
+  {{oldContent}}
 </ng-template>
 <ng-template #elseblock>
   <inline-diff [oldText]="newContent" [newText]="oldContent" [lineContextSize]="4" />

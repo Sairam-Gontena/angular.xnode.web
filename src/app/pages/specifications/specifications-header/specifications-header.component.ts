@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { SpecService } from 'src/app/api/spec.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -17,8 +25,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() getMeSpecList = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
-
-  versions: SpecVersion[] = [];
+  @Input() versions: SpecVersion[] = [];
   selectedVersion: SpecVersion | undefined;
   currentUser: any;
   metaDeta: any;
@@ -50,17 +57,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService
   ) {
-    this.specificationUtils.getMeVersions.subscribe(
-      (versions: SpecVersion[]) => {
-        this.versions = versions;
-        this.versions.forEach((element: any) => {
-          element['label'] = element.specStatus + '-' + element.version;
-          element['value'] = element.id;
-        });
-        this.selectedVersion = versions[0];
-        console.log('this.selectedVersion', this.selectedVersion);
-      }
-    );
     // this.specUtils.openCommentsPanel.subscribe((event: any) => {
     //   this.isCommentsPanelOpened = event;
     // });
@@ -80,16 +76,20 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.getStorageData();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.versions = changes['versions'].currentValue;
+    this.selectedVersion = changes['versions'].currentValue[0];
+  }
 
   getStorageData() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    let deep_link_info = localStorage.getItem('deep_link_info');
-    if (deep_link_info) {
-      deep_link_info = JSON.parse(deep_link_info);
-      this.getDeepLinkDetails(deep_link_info);
-    } else this.getVersions();
+    // let deep_link_info = localStorage.getItem('deep_link_info');
+    // if (deep_link_info) {
+    //   deep_link_info = JSON.parse(deep_link_info);
+    //   this.getDeepLinkDetails(deep_link_info);
+    // } else this.getVersions();
   }
 
   getAllProductsInfo(key: string) {
@@ -122,7 +122,6 @@ export class SpecificationsHeaderComponent implements OnInit {
             let deeplinkdata = JSON.parse(deeplinkInfo);
             version_id = deeplinkdata.version_id;
           }
-          this.getVersions();
           this.specUtils._openCommentsPanel(true);
           this.specUtils._tabToActive(val.template_type);
           this.specUtils._updatedSelectedProduct(true);
@@ -134,16 +133,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       .catch((error) => {
         console.error('Error fetching data from localStorage:', error);
       });
-  }
-
-  getVersions() {
-    this.utils.loadSpinner(true);
-    this.specService.getVersions(this.product.id, (data) => {
-      this.specService.getMeSpecInfo({
-        productId: this.product?.id,
-        versionId: data[0].id,
-      });
-    });
   }
 
   getMeCrList() {
@@ -243,7 +232,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       );
       this.product = product;
       this.utils.loadSpinner(true);
-      this.getVersions();
+      // this.getVersions();
     } else {
       this.showGenerateSpecPopup(product);
     }
