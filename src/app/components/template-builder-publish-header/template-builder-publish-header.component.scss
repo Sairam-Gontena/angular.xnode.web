@@ -88,20 +88,7 @@ img.highlighted {
     border-radius: 30px;
 }
 
-:host ::ng-deep .p-splitbutton {
-    height: 2rem;
-}
 
-:host ::ng-deep .p-button.p-button-icon-only,
-:host ::ng-deep .p-splitbutton .p-splitbutton-defaultbutton,
-.p-splitbutton.p-button-rounded>.p-splitbutton-defaultbutton.p-button,
-.p-splitbutton.p-button-outlined>.p-splitbutton-defaultbutton.p-button {
-    background: var(--primary-color);
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border: 1px solid var(--primary-color);
-}
 
 
 .p-button:enabled:hover {
