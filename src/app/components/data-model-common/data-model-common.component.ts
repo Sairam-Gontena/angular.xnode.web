@@ -24,7 +24,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./data-model-common.component.scss'],
   providers: [DataService, JsPlumbService, UtilService, MessageService],
 })
-
 export class DataModelCommonComponent {
   @Input() dataModelData: any;
   @Input() erModelInput: any;
@@ -44,7 +43,7 @@ export class DataModelCommonComponent {
   product: any;
   currentUrl: string = '';
   productChanged = false;
-  private productChangedBPMN: Subscription = new Subscription;
+  private productChangedBPMN: Subscription = new Subscription();
 
   constructor(
     private dataService: DataService,
@@ -56,7 +55,6 @@ export class DataModelCommonComponent {
     private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private changeDetectorRef: ChangeDetectorRef
-
   ) {
     this.data = this.dataService.data;
     this.router.events.subscribe((data: any) => {
@@ -85,46 +83,81 @@ export class DataModelCommonComponent {
         const list: any = this.storageService.getItem(StorageKeys.SpecData);
         this.dataModel = list[3].content[10].content;
         this.jsPlumbService.init();
-        this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+        this.dataService.loadData(
+          this.utilService.ToModelerSchema(this.dataModel)
+        );
       } else {
         this.getDataModel();
       }
-    }, 100)
-
+    }, 100);
   }
   getDataModel() {
     this.dataModel = [];
-    this.apiService.get("navi/get_datamodels/" + this.product.id)
-      .then(response => {
+    this.apiService
+      .get('navi/get_datamodels/' + this.product.id)
+      .then((response) => {
         if (response?.status === 200) {
           let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
+            method: 'GET',
+            url: response?.request?.responseURL,
+          };
+          this.auditUtil.postAudit(
+            'GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser?.email,
+            this.product?.id
+          );
           this.dataModel = response.data;
-          console.log(this.dataModel)
           this.jsPlumbService.init();
-          this.dataService.loadData(this.utilService.ToModelerSchema(this.dataModel));
+          this.dataService.loadData(
+            this.utilService.ToModelerSchema(this.dataModel)
+          );
           this.jsPlumbService.repaintEverything();
         } else {
           let user_audit_body = {
-            'method': 'GET',
-            'url': response?.request?.responseURL
-          }
-          this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response?.data?.detail });
+            method: 'GET',
+            url: response?.request?.responseURL,
+          };
+          this.auditUtil.postAudit(
+            'GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body,
+            this.currentUser?.email,
+            this.product?.id
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
           this.utilsService.showProductStatusPopup(true);
         }
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
         let user_audit_body = {
-          'method': 'GET',
-          'url': error?.request?.responseURL
-        }
-        this.auditUtil.postAudit('GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser?.email, this.product?.id);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+          method: 'GET',
+          url: error?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_DATA_MODEL_RETRIEVE_INSIGHTS_ER_MODELLER',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser?.email,
+          this.product?.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
         this.utilsService.loadSpinner(false);
       });
   }

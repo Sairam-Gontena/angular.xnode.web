@@ -121,8 +121,6 @@ export class CommentsTabsComponent implements OnInit {
   }
 
   getMeSpecLevelTaskList() {
-    console.log('####');
-
     this.utils.loadSpinner(true);
     let specData = localStorage.getItem('selectedSpec');
     let selectedSpec: any;
