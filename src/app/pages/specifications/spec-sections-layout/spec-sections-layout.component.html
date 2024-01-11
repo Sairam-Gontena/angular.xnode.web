@@ -776,13 +776,13 @@
       </div>
     </div>
 
-    <div *ngIf="content.title === 'Test Cases'">
+    <div *ngIf="content.title === 'Quality Assurance'">
       <div *ngFor="let item of content.content">
         <div class="mt-2">
           <div (mouseenter)="testCaseshowCommentIcon = true" (mouseleave)="testCaseshowCommentIcon = false">
             <div class="flex justify-content-between align-items-center col-12">
               <h3>
-                {{item.title}} <!-- Usecase -->
+                {{item.title}}
               </h3>
               <div class="flex justify-content-end align-items-center">
                 <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
@@ -821,7 +821,7 @@
             </div>
             <div class="spec-table">
               <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
-                [content]="item.TestCases"></xnode-common-spec-table>
+                [content]="item.content"></xnode-common-spec-table>
             </div>
           </div>
         </div>

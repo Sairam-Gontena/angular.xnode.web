@@ -384,16 +384,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
       if (obj?.title == 'Quality Assurance') {
         let content = obj.content;
-        content.forEach((useCase: any) => {
-          useCase.TestCases=useCase.content;
-        });
-
         if (Array.isArray(obj.content)) {
           obj.content = [];
         }
-
         obj.content.push({
-          title: 'Test Cases',
+          title: 'Quality Assurance',
           content: content,
           id: obj.id,
         });
