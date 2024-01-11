@@ -13,7 +13,7 @@ export abstract class BaseApiService {
     this.axiosInstance.interceptors.request.use((config) => {
       const token = localStorage.getItem('ACCESS_TOKEN');
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
       }
       return config;
     });
