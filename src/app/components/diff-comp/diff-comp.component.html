@@ -30,7 +30,7 @@
     <div [ngSwitch]="getType(contentObj.content)">
       <div *ngSwitchCase="'array'">
         <div *ngFor="let item of contentObj.content">
-          <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
+          <xnode-diff-comp [specItemId]='contentObj.id' [parentTitle]="contentObj.title" [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
             [onDiff]="onDiff"></xnode-diff-comp>
         </div>
         <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content"
@@ -106,23 +106,23 @@
       <div class="grid" (mouseover)="contentObj.showCommentIcon = true"
         (mouseleave)="contentObj.showCommentIcon = false" >
         <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
-          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="[]" (closeOverlay)="op.toggle(false);"
-            [position]="'absolute'" [users]="users" [selectedContent]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'"
-            [parentEntity]="'SPEC'" [parentId]="contentObj.id"></xnode-add-comment-overlay-panel>
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);"
+            [position]="'absolute'" [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj" [specItem]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'"
+            [parentEntity]="'SPEC'" [parentId]="specItemId"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end">
           <img src="../assets/comment.svg" class="pointer pt-2" alt="comment" *ngIf="contentObj.showCommentIcon"
-            (click)="op.toggle($event)">
+          (click)="op.toggle($event)">
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6"  *ngIf="contentObj.showCommentIcon"
            ></i>
-          <img src="../assets/add-task.svg" class="pointer ml-2"  *ngIf="contentObj.showCommentIcon"
+          <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2"  *ngIf="contentObj.showCommentIcon"
             >
-          <!-- <p-overlayPanel #op1 appendTo="body" (onShow)="openOverlayPanel=true"
-            (onHide)="showCommentIcon=false;onOverlayHide()">
-            <xnode-add-task [reveiwerList]="reveiwerList" (closeOverlay)="op1.toggle(false);emptySelectedContent()"
-              [selectedContent]="content" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-              [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
-          </p-overlayPanel> -->
+          <p-overlayPanel #op1 appendTo="body"
+            (onHide)="op1.toggle(false);">
+            <xnode-add-task [reveiwerList]="reveiwerList" (closeOverlay)="op1.toggle(false)"
+              [selectedContent]="contentObj" [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+              [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
+          </p-overlayPanel>
         </div>
         <div class="col-12 py-0" [class]="getClass()">
           <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"

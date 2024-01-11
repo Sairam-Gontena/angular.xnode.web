@@ -3,6 +3,7 @@ import * as DiffGen from '../../../app/utils/diff-generator';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecService } from 'src/app/api/spec.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { environment } from 'src/environments/environment';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -14,6 +15,7 @@ import { ApiService } from 'src/app/api/api.service';
 import { isArray } from 'lodash';
 import { FormArray } from '@angular/forms';
 declare const SwaggerUIBundle: any;
+import { AuthApiService } from 'src/app/api/auth.service';
 
 @Component({
   selector: 'xnode-diff-viewer',
@@ -44,6 +46,7 @@ export class DiffViewerComponent implements OnInit {
   specOneList: any = [];
   specTwoList: any = [];
   usersList: any;
+  reveiwerList: any;
 
   constructor(
     private utils: UtilsService,
@@ -52,7 +55,9 @@ export class DiffViewerComponent implements OnInit {
     private router: Router,
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
-    private apiservice: ApiService
+    private apiservice: ApiService,
+    private authApiService: AuthApiService,
+    private specUtils: SpecUtilsService
   ) {
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
@@ -90,6 +95,7 @@ export class DiffViewerComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.getUsersData();
+    this.getUserByAccountId();
   }
   getVersions() {
     this.utils.loadSpinner(true);
@@ -297,5 +303,37 @@ export class DiffViewerComponent implements OnInit {
       this.selectedVersionTwo = undefined;
       this.specTwoList = [];
     }
+  }
+
+  getUserByAccountId() {
+    this.authApiService
+      .getAllUsers(
+        'user/get_all_users?account_id=' + this.currentUser?.account_id
+      )
+      .then((response: any) => {
+        if (response.status === 200 && response?.data) {
+          response.data.forEach((element: any) => {
+            element.name = element.first_name + ' ' + element.last_name;
+          });
+          this.reveiwerList = response.data;
+          this.specUtils._updatereviewerListChange(response.data);
+          console.log('response', this.reveiwerList);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
+          this.utils.loadSpinner(false);
+        }
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 }

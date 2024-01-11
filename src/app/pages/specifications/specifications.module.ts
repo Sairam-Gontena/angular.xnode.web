@@ -32,7 +32,6 @@ import { SpecChildConversationComponent } from './spec-child-conversation/spec-c
 import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskChildConversationComponent } from 'src/app/pages/specifications/task-child-conversation/task-child-conversation.component';
-import { AddTaskComponent } from './add-task/add-task.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
   declarations: [
@@ -62,7 +61,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
     TasksPanelComponent,
     TaskListComponent,
     TaskChildConversationComponent,
-    AddTaskComponent,
   ],
   imports: [
     CommonModule,

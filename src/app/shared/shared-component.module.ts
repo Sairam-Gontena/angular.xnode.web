@@ -46,6 +46,7 @@ import { UserPersonaComponent } from '../pages/specifications/user-persona/user-
 import { SpecificationsHeaderComponent } from '../pages/specifications/specifications-header/specifications-header.component';
 import { SpecificationsMenuComponent } from '../pages/specifications/specifications-menu/specifications-menu.component';
 import { SpecGenPopupComponent } from '../pages/specifications/spec-gen-popup/spec-gen-popup.component';
+import { AddTaskComponent } from '../pages/specifications/add-task/add-task.component';
 // import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
@@ -99,6 +100,7 @@ import { SpecGenPopupComponent } from '../pages/specifications/spec-gen-popup/sp
     SpecificationsHeaderComponent,
     SpecificationsMenuComponent,
     SpecGenPopupComponent,
+    AddTaskComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -150,6 +152,7 @@ import { SpecGenPopupComponent } from '../pages/specifications/spec-gen-popup/sp
     SpecificationsHeaderComponent,
     SpecificationsMenuComponent,
     SpecGenPopupComponent,
+    AddTaskComponent
   ],
 })
 export class SharedComponentModule {}

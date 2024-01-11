@@ -51,6 +51,9 @@ export class SpecUtilsService {
   public getSpecBasedOnVersionID: Observable<any> =
     this.getMeSpec.asObservable();
 
+  private reviewerListChange: BehaviorSubject<any> = new BehaviorSubject<any>('');
+  public getreviewerListChange: Observable<any> =this.reviewerListChange.asObservable();
+
   private updateLatestVersions: BehaviorSubject<any> = new BehaviorSubject<any>(
     ''
   );
@@ -112,6 +115,10 @@ export class SpecUtilsService {
 
   _getSpecBasedOnVersionID(event: any): void {
     this.getMeSpec.next(event);
+  }
+
+  _updatereviewerListChange(event: any): void {
+    this.reviewerListChange.next(event);
   }
 
   _updatedSelectedProduct(event: any): void {
