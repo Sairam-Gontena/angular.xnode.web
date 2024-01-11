@@ -39,6 +39,13 @@ export class AuthApiService extends BaseApiService {
     return this.post('auth/signup', body);
   }
 
+  verifyOtp(body?: any) {
+    return this.post('mfa/verifyOTP', body);
+  }
+  resendOtp(body?: any) {
+    return this.post('mfa/resendverfication', body);
+  }
+
   resetPassword(body?: any) {
     return this.patch(
       'auth/prospect/resetpassword/',

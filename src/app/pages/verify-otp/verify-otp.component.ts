@@ -66,7 +66,7 @@ export class VerifyOtpComponent implements OnInit {
     this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
     this.authApiService
-      .login({ email: this.route.snapshot.params['email'] })
+      .resendOtp({ email: this.route.snapshot.params['email'] })
       .then((response: any) => {
         if (response?.status === 200) {
           this.startResendTimer();
@@ -97,7 +97,7 @@ export class VerifyOtpComponent implements OnInit {
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService
-      .login({ email: this.route.snapshot.params['email'], otp: this.otp })
+      .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
           this.handleResponse(response.data);
@@ -142,11 +142,6 @@ export class VerifyOtpComponent implements OnInit {
         'user-audit'
       );
     } else {
-      this.utilsService.loadToaster({
-        severity: 'success',
-        summary: 'SUCCESS',
-        detail: 'OTP verified successfully',
-      });
       this.getAllProducts();
       this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
     }
