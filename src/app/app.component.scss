@@ -86,7 +86,11 @@
 
 .ifram-navi {
   border-width: 0px;
-  border-color: white;
+  border-radius: 10px;
+}
+.docked-navi {
+  border: 1px solid #89888e;
+  border-radius: 10px;
 }
 
 @media (min-width: 768px) {

@@ -166,6 +166,7 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/specification']);
     }
+    this.utils.disableDockedNavi();
   }
 
   onClickgotoxPilot() {
