@@ -1,5 +1,5 @@
 <div *ngIf="onDiff">
   <div *ngFor="let item of getListNotInSource(srcList, targetList, onDiff)">
-    <xnode-diff-comp [contentObj]="item" [diffObj]="'REMOVED'" [onDiff]="onDiff" ></xnode-diff-comp>
+    <xnode-diff-comp [contentObj]="item" [diffObj]="'REMOVED'" [users]="users" [onDiff]="onDiff" ></xnode-diff-comp>
   </div>
 </div>

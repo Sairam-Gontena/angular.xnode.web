@@ -13,9 +13,9 @@ export class DiffCompComponent implements OnInit {
   @Input() diffObj: any;
   @Input() onDiff: boolean = false;
   @Input() index: any;
+  @Input() users:any;
 
   constructor(private storageService: LocalStorageService) {
-
   }
 
   ngOnInit(): void {

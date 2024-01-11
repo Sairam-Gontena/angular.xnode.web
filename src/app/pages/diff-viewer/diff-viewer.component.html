@@ -4,7 +4,7 @@
   <div class="w-full">
     <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" (refreshCurrentRoute)="refreshCurrentRoute()"
       (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-    <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">  
+    <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">
       <p-dropdown [options]="versionListOne" [(ngModel)]="selectedVersionOne" optionLabel="label"
         (onChange)="onVersionChange($event, 'one')" placeholder="Select a version" class="ml-3 app-dropdown"></p-dropdown>
       <p-dropdown [options]="versionListTwo" [(ngModel)]="selectedVersionTwo" optionLabel="label"
@@ -13,12 +13,12 @@
     <div class="diff-view flex justify-content-center">
       <div class="w-8">
         <div class='m-4' *ngFor="let item of specList.slice(0,2);let i = index">
-          <xnode-diff-comp [contentObj]="item" [index]="i" [diffObj]="getDiffObj(specTwoList.slice(0,2),item, specList.length!==0&& specTwoList.length!==0)"
+          <xnode-diff-comp [users]="usersList" [contentObj]="item" [index]="i" [diffObj]="getDiffObj(specTwoList.slice(0,2),item, specList.length!==0&& specTwoList.length!==0)"
             [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
         </div>
-        <xnode-diff-list [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
+        <xnode-diff-list [users]="usersList" [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
       </div>
-      <xnode-diff-list [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
+      <xnode-diff-list [users]="usersList" [srcList]="specList.slice(0,2)" [targetList]="specTwoList.slice(0,2)" [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
     </div>
   </div>
 </div>
