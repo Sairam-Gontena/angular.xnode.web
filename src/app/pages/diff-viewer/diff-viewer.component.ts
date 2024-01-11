@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from './specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
+import { ApiService } from 'src/app/api/api.service';
 declare const SwaggerUIBundle: any;
 
 @Component({
@@ -40,6 +41,7 @@ export class DiffViewerComponent implements OnInit {
   showVersionToDiff: boolean = false;
   specOneList: any = [];
   specTwoList: any = [];
+  usersList: any;
 
   constructor(
     private utils: UtilsService,
@@ -47,7 +49,8 @@ export class DiffViewerComponent implements OnInit {
     private storageService: LocalStorageService,
     private router: Router,
     private specService: SpecificationsService,
-    private specificationUtils: SpecificationUtilsService
+    private specificationUtils: SpecificationUtilsService,
+    private apiservice:ApiService
   ) {
     this.utils.startSpinner.subscribe((event: boolean) => {
       this.loading = event;
@@ -77,6 +80,7 @@ export class DiffViewerComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.getUsersData();
   }
 
   getDiffObj(fromArray: any[], srcObj: any, isOnDiff: boolean = false) {
@@ -187,6 +191,34 @@ export class DiffViewerComponent implements OnInit {
     //   this.productStatusPopupContent =
     //     'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
     // }
+  }
+
+  getUsersData() {
+    this.apiservice
+      .getAuthApi(
+        'user/get_all_users?account_id=' + this.currentUser?.account_id
+      )
+      .then((resp: any) => {
+        this.utils.loadSpinner(true);
+        if (resp?.status === 200) {
+          this.usersList = resp.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: resp.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
+        console.error(error);
+      });
   }
 
   refreshCurrentRoute(): void {

@@ -107,7 +107,7 @@
         (mouseleave)="contentObj.showCommentIcon = false">
         <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="[]" (closeOverlay)="op.toggle(false);"
-            [position]="'absolute'" [selectedContent]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'"
+            [position]="'absolute'" [users]="users" [selectedContent]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'"
             [parentEntity]="'SPEC'" [parentId]="contentObj.id"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end">

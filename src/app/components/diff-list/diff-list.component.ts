@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-
 @Component({
   selector: 'xnode-diff-list',
   templateUrl: './diff-list.component.html',
@@ -9,6 +8,7 @@ export class DiffListComponent {
   @Input() onDiff: boolean = false;
   @Input() srcList: any[] = [];
   @Input() targetList: any[] = [];
+  @Input() users:any;
 
   getListNotInSource(fromArray: any[], toArray: any[], isOnDiff: boolean = false) {
     if (!isOnDiff) return undefined;
