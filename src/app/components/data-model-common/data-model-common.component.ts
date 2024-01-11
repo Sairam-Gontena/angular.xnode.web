@@ -111,7 +111,6 @@ export class DataModelCommonComponent {
             this.product?.id
           );
           this.dataModel = response.data;
-          console.log(this.dataModel);
           this.jsPlumbService.init();
           this.dataService.loadData(
             this.utilService.ToModelerSchema(this.dataModel)
