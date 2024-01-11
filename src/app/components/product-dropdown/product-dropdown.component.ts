@@ -21,7 +21,7 @@ export class ProductDropdownComponent implements OnInit {
     private fb: FormBuilder,
     private specUtils: SpecUtilsService
   ) {
-    this.myForm = this.fb.group({  selectedProduct: [null], });
+    this.myForm = this.fb.group({ selectedProduct: [null], });
     this.specUtils.getMeUpdatedProduct.subscribe((data: any) => {
       if (data) {
         this.getMeDataFromStorage();
@@ -36,7 +36,7 @@ export class ProductDropdownComponent implements OnInit {
       this.products = JSON.parse(metaData);
     }
     this.myForm.valueChanges.subscribe((value: any) => {
-      value.selectedProduct = this.selectedProduct;
+      this.selectedProduct = value.selectedProduct;
       this._onChangeProduct.emit(this.selectedProduct);
       this.utilsService.saveProductDetails(this.selectedProduct);
     });
@@ -47,10 +47,10 @@ export class ProductDropdownComponent implements OnInit {
     if (this.products) {
       if (product) {
         this.selectedProduct = JSON.parse(product);
-        this.myForm.patchValue({'selectedProduct':this.products.find((item: any) => item.id == this.selectedProduct.id)})
+        this.myForm.patchValue({ 'selectedProduct': this.products.find((item: any) => item.id == this.selectedProduct.id) })
       } else {
         this.selectedProduct = this.products[0];
-        this.myForm.patchValue({'selectedProduct':this.selectedProduct})
+        this.myForm.patchValue({ 'selectedProduct': this.selectedProduct })
       }
     }
   }
