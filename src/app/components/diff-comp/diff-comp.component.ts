@@ -22,8 +22,8 @@ export class DiffCompComponent implements OnInit {
   constructor(private storageService: LocalStorageService) {}
 
   ngOnInit(): void {
-    console.log('contentObj============', this.contentObj);
-    console.log('diffObj===========', this.diffObj);
+    // console.log('contentObj============', this.contentObj);
+    // console.log('diffObj===========', this.diffObj);
 
     this.product = this.storageService.getItem(StorageKeys.Product);
   }

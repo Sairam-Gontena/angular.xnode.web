@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import * as _ from 'lodash';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
@@ -13,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -53,7 +53,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private utils: UtilsService,
-    private apiService: ApiService,
     private specService: SpecService,
     private specUtils: SpecUtilsService,
     private router: Router,
@@ -64,7 +63,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private authService: AuthApiService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
-    private utilsService: UtilsService,
+    private naviApiService: NaviApiService
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
@@ -98,13 +97,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getMetaData(val: any) {
-    this.apiService
-      .get(
-        'navi/get_metadata/' +
-          this.currentUser?.email +
-          '?product_id=' +
-          val.product_id
-      )
+    this.naviApiService
+      .getMetaData(this.currentUser?.email, val.product_id)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           let product = response.data.data[0];
@@ -385,23 +379,11 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
       if (obj?.title == 'Quality Assurance') {
         let content = obj.content;
-        content.forEach((useCase: any) => {
-          if (useCase['Test Cases']) {
-            useCase.TestCases = useCase['Test Cases'];
-            delete useCase['Test Cases'];
-            useCase.TestCases.forEach((testCase: any) => {
-              testCase.TestCases = testCase['Test Cases'];
-              delete testCase['Test Cases'];
-            });
-          }
-        });
-
         if (Array.isArray(obj.content)) {
           obj.content = [];
         }
-
         obj.content.push({
-          title: 'Test Cases',
+          title: 'Quality Assurance',
           content: content,
           id: obj.id,
         });
@@ -525,10 +507,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
-    this.apiService
-      .get(
-        'navi/get_conversation/' + this.product.email + '/' + this.product.id
-      )
+    this.naviApiService
+      .getConversation(this.product.email, this.product.id)
       .then((res: any) => {
         if (res.status === 200 && res.data) {
           this.consversationList = res.data?.conversation_history;
@@ -562,8 +542,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     };
     let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;
-    this.apiService
-      .postApi(body, 'specs/generate')
+    this.specService
+      .generateSpec(body)
       .then((response: any) => {
         if (response) {
           let user_audit_body = {

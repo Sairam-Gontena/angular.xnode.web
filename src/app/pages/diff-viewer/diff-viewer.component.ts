@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as DiffGen from '../../../app/utils/diff-generator';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecService } from 'src/app/api/spec.service';
@@ -11,9 +10,7 @@ import { Router } from '@angular/router';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from './specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
-import { ApiService } from 'src/app/api/api.service';
 import { isArray } from 'lodash';
-import { FormArray } from '@angular/forms';
 declare const SwaggerUIBundle: any;
 import { AuthApiService } from 'src/app/api/auth.service';
 
@@ -55,7 +52,6 @@ export class DiffViewerComponent implements OnInit {
     private router: Router,
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
-    private apiservice: ApiService,
     private authApiService: AuthApiService,
     private specUtils: SpecUtilsService
   ) {
@@ -95,8 +91,8 @@ export class DiffViewerComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.getUsersData();
-    this.getUserByAccountId();
   }
+
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersions(this.product.id, (data) => {
@@ -111,11 +107,7 @@ export class DiffViewerComponent implements OnInit {
     if (!isOnDiff) return undefined;
     if (isArray(fromArray))
       for (const item of fromArray) {
-        console.log('srcObjsrcObjsrcObjsrcObj', srcObj.id, item.id);
-
         if (srcObj.id === item.id) {
-          console.log('###############3', item);
-
           return item;
         }
       }
@@ -154,6 +146,8 @@ export class DiffViewerComponent implements OnInit {
             element.content_data_type = 'BANNER';
           });
           if (params.type === 'one') {
+            console.log('one');
+
             this.specList = response.data;
             this.specTwoList.forEach((element1: any) => {
               this.specList.forEach((element2: any) => {
@@ -162,6 +156,8 @@ export class DiffViewerComponent implements OnInit {
               });
             });
           } else {
+            console.log('two');
+
             this.specTwoList = response.data;
             this.specList.forEach((element1: any) => {
               this.specTwoList.forEach((element2: any) => {
@@ -169,6 +165,8 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
+            console.log('this.specTwoList', this.specTwoList);
+            console.log('this.specList', this.specList);
           }
         }
         this.utils.loadSpinner(false);
@@ -240,10 +238,8 @@ export class DiffViewerComponent implements OnInit {
   }
 
   getUsersData() {
-    this.apiservice
-      .getAuthApi(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+    this.authApiService
+      .getAllUsers(this.currentUser?.account_id)
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
@@ -258,7 +254,7 @@ export class DiffViewerComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.utils.loadToaster({
           severity: 'error',
           summary: '',
@@ -319,37 +315,5 @@ export class DiffViewerComponent implements OnInit {
       this.selectedVersionTwo = undefined;
       this.specTwoList = [];
     }
-  }
-
-  getUserByAccountId() {
-    this.authApiService
-      .getAllUsers(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
-      .then((response: any) => {
-        if (response.status === 200 && response?.data) {
-          response.data.forEach((element: any) => {
-            element.name = element.first_name + ' ' + element.last_name;
-          });
-          this.reveiwerList = response.data;
-          this.specUtils._updatereviewerListChange(response.data);
-          console.log('response', this.reveiwerList);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data.detail,
-          });
-          this.utils.loadSpinner(false);
-        }
-      })
-      .catch((err: any) => {
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-      });
   }
 }

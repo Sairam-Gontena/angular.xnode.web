@@ -157,15 +157,14 @@ export class AddTaskComponent {
   }
   setTemplateTypeInRefs(): string {
     let productId = localStorage.getItem('record_id');
-    this.addTaskForm.value.reviewersLOne.forEach((item:any)=>{
+    this.addTaskForm.value.reviewersLOne.forEach((item: any) => {
       this.references.push({
-            entity_type: 'User',
-            entity_id: item.user_id,
-        });
-    })
-    if(this.references.length==0)
-      this.references = [{}];
-    if (this.parentEntity === 'SPEC'){
+        entity_type: 'User',
+        entity_id: item.user_id,
+      });
+    });
+    if (this.references.length == 0) this.references = [{}];
+    if (this.parentEntity === 'SPEC') {
       this.references.forEach((obj: any) => {
         obj.template_type = 'TASK';
         obj.product_id = productId;
@@ -247,7 +246,7 @@ export class AddTaskComponent {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.postFile('file-azure/upload', formData, {
+      const res = await this.commonApi.uploadFile(formData, {
         headers,
       });
       if (res.statusText === 'Created') {

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { UserUtil, User } from '../../utils/user-util';
+import { User } from '../../utils/user-util';
 import { Product } from 'src/models/product';
-import { ApiService } from 'src/app/api/api.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 @Component({
   selector: 'xnode-use-cases',
   templateUrl: './use-cases.component.html',
@@ -23,8 +23,8 @@ export class UseCasesComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private storageService: LocalStorageService,
-    private apiService: ApiService,
-    private auditUtil: AuditutilsService
+    private auditUtil: AuditutilsService,
+    private naviApiService: NaviApiService
   ) {}
 
   ngOnInit(): void {
@@ -50,14 +50,13 @@ export class UseCasesComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
       return;
     }
-
     this.getMeUsecases();
   }
 
   getMeUsecases(): void {
     if (this.productChanged) {
-      this.apiService
-        .get('navi/get_usecases/' + localStorage.getItem('record_id'))
+      this.naviApiService
+        .getUsecases(this.product?.id)
         .then((response: any) => {
           if (response?.status === 200) {
             this.useCases = response.data;

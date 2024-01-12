@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 @Component({
   selector: 'xnode-verify-otp',
   templateUrl: './verify-otp.component.html',
@@ -26,11 +25,11 @@ export class VerifyOtpComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private apiService: ApiService,
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private authApiService: AuthApiService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private naviAPiService: NaviApiService
   ) {}
 
   ngOnInit(): void {
@@ -67,10 +66,7 @@ export class VerifyOtpComponent implements OnInit {
     this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
     this.authApiService
-      .login(
-        { email: this.route.snapshot.params['email'] },
-        'mfa/resendverfication'
-      )
+      .resendOtp({ email: this.route.snapshot.params['email'] })
       .then((response: any) => {
         if (response?.status === 200) {
           this.startResendTimer();
@@ -101,10 +97,7 @@ export class VerifyOtpComponent implements OnInit {
   verifyAccount() {
     this.utilsService.loadSpinner(true);
     this.authApiService
-      .login(
-        { email: this.route.snapshot.params['email'], otp: this.otp },
-        'mfa/verifyOTP'
-      )
+      .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
           this.handleResponse(response.data);
@@ -149,11 +142,6 @@ export class VerifyOtpComponent implements OnInit {
         'user-audit'
       );
     } else {
-      this.utilsService.loadToaster({
-        severity: 'success',
-        summary: 'SUCCESS',
-        detail: 'OTP verified successfully',
-      });
       this.getAllProducts();
       this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
     }
@@ -168,8 +156,8 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.apiService
-      .get('navi/get_metadata/' + currentUser?.email)
+    this.naviAPiService
+      .getMetaData(currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           this.authApiService.setUser(true);

@@ -335,9 +335,7 @@ export class CreateNewCrVersionComponent implements OnInit {
 
   getUserByAccountId(): void {
     this.authApiService
-      .getAllUsers(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+      .getAllUsers(this.currentUser?.account_id)
       .then((response: any) => {
         if (response.status === 200 && response?.data) {
           response.data.forEach((element: any) => {

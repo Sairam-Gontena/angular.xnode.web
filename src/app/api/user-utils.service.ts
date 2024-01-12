@@ -5,22 +5,32 @@ import { environment } from 'src/environments/environment';
 import { BaseApiService } from './base-api.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UserUtilsService extends BaseApiService {
+  override get apiUrl(): string {
+    return environment.userUtilsApi;
+  }
+  constructor() {
+    super();
+  }
 
-    override get apiUrl(): string {
-        return environment.userUtilsApi;
-    }
-    constructor() {
-        super();
-    }
-    getData(url: string) {
-        return axios.get(this.apiUrl + url);
-    }
-    login(body: any, url: string) {
-        return this.post(url, body);
-    }
-
+  userFeedback(body: any) {
+    return this.post('user-feedback', body);
+  }
+  userBugReport(body: any) {
+    return this.post('user-bug-report', body);
+  }
+  userConversation(body: any) {
+    return this.post('user-conversation', body);
+  }
+  getUserConversation(id: any) {
+    return this.get('user-conversation/' + id);
+  }
+  getUserBugReport() {
+    return this.get('user-bug-report');
+  }
+  getUserFeedback() {
+    return this.get('user-feedback');
+  }
 }

@@ -11,13 +11,11 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { DataService } from '../../er-modeller/service/data.service';
-import { ApiService } from 'src/app/api/api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-import { ActivatedRoute } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
-import {NEWLIST} from './mock';
+import { NEWLIST } from './mock';
 import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
 
@@ -62,15 +60,13 @@ export class SpecificationsContentComponent implements OnInit {
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
   swaggerData: any;
-  newList = NEWLIST
+  newList = NEWLIST;
 
   constructor(
     private utils: UtilsService,
     private dataService: DataService,
-    private apiservice: ApiService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
-    private route: ActivatedRoute,
     private authApiService: AuthApiService
   ) {
     this.dataModel = this.dataService.data;
@@ -166,10 +162,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getUsersData() {
-    this.apiservice
-      .getAuthApi(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+    this.authApiService
+      .getAllUsers(this.currentUser?.account_id)
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
@@ -183,7 +177,7 @@ export class SpecificationsContentComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.utils.loadToaster({
           severity: 'error',
           summary: '',
@@ -320,9 +314,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
   getUserByAccountId(): void {
     this.authApiService
-      .getAllUsers(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+      .getAllUsers(this.currentUser?.account_id)
       .then((response: any) => {
         if (response.status === 200 && response?.data) {
           response.data.forEach((element: any) => {

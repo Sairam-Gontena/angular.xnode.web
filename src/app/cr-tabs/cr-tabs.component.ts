@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  SimpleChange,
-  ViewChild,
-} from '@angular/core';
-import { ApiService } from '../api/api.service';
+import { Component, Input, SimpleChange, ViewChild } from '@angular/core';
 import { UtilsService } from '../components/services/utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from '../components/services/local-storage.service';
@@ -22,13 +15,9 @@ declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecService } from '../api/spec.service';
+import { NaviApiService } from '../api/navi-api.service';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -46,7 +35,7 @@ export class CrTabsComponent {
   @Input() reveiwerList: any;
   @ViewChild('myCalendar') datePicker: any;
   @ViewChild('addUser') addUser: any;
-  usersList: any ;
+  usersList: any;
 
   addReviewerForm: FormGroup;
   filters: any;
@@ -75,7 +64,7 @@ export class CrTabsComponent {
   userRolesViewSections = SECTION_VIEW_CONFIG.userRoleSection;
   userPersonaViewSections = SECTION_VIEW_CONFIG.userPersonaSection;
   targetUrl: string = '';
-  crHeader:string='Add New CR';
+  crHeader: string = 'Add New CR';
   bpmnFrom: string = 'SPEC'; //;  'Comments'
   iframeSrc: SafeResourceUrl = '';
   searchUpdated: Subject<string> = new Subject<string>();
@@ -103,18 +92,16 @@ export class CrTabsComponent {
   unlinkCRPopup: boolean = false;
 
   constructor(
-    private api: ApiService,
     private utilsService: UtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private sanitizer: DomSanitizer,
-    private apiService: ApiService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
     private specService: SpecService,
-    private datePipe: DatePipe
+    private naviApiService: NaviApiService
   ) {
     this.minDate = new Date();
     this.addReviewerForm = this.fb.group({
@@ -134,10 +121,9 @@ export class CrTabsComponent {
     this.showDropdown = false;
     let body = {
       crIds: this.crIds,
-      priority: selectedPriority.value
-    }
+      priority: selectedPriority.value,
+    };
     this.updateCRActions(body);
-
   }
   closeDatePicker() {
     this.datePicker.overlayVisible = false;
@@ -146,11 +132,10 @@ export class CrTabsComponent {
     if (this.addUser) {
       this.addUser.hide();
     }
-
   }
 
-  emitData(event:any){
-    if(event){
+  emitData(event: any) {
+    if (event) {
       this.getMeCrList();
     }
   }
@@ -161,13 +146,13 @@ export class CrTabsComponent {
   }
   archiveCR() {
     let body = {
-      crIds: this.crIds
+      crIds: this.crIds,
     };
     this.updateCRActions(body);
   }
   unlinkCRHeader() {
     let body = {
-      crIds: this.crIds
+      crIds: this.crIds,
     };
     this.unLinkCR(body);
   }
@@ -177,7 +162,7 @@ export class CrTabsComponent {
   updateReviewer(event: any) {
     let body = {
       crIds: this.crIds,
-      reviewers: this.getMeReviewerIds()
+      reviewers: this.getMeReviewerIds(),
     };
     this.updateCRActions(body);
     this.addUser.hide();
@@ -186,21 +171,22 @@ export class CrTabsComponent {
   updateDueDate(event: any) {
     let body = {
       crIds: this.crIds,
-      duedate: this.dueDate
+      duedate: this.dueDate,
     };
     this.updateCRActions(body);
     this.datePicker.overlayVisible = false;
-
   }
   getMeReviewerIds() {
     return {
       reviewers: [
         {
           level: 'L1',
-          users: this.addReviewerForm.value.reviewersLOne.map((obj: any) => obj.user_id)
-        }
-      ]
-    }
+          users: this.addReviewerForm.value.reviewersLOne.map(
+            (obj: any) => obj.user_id
+          ),
+        },
+      ],
+    };
   }
   ngOnInit() {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -213,7 +199,7 @@ export class CrTabsComponent {
       { title: 'Approved', code: 'APPROVED' },
     ];
     this.makeTrustedUrl();
-    this.searchUpdated.pipe(debounceTime(1000)).subscribe((search:any) => {
+    this.searchUpdated.pipe(debounceTime(1000)).subscribe((search: any) => {
       this.filterListBySearch();
     });
   }
@@ -235,30 +221,35 @@ export class CrTabsComponent {
     this.crData = this.crDataCopy;
     let searchKeywordLowercase = this.searchIconKeyword.toLowerCase();
     if (this.searchIconKeyword.length > 0) {
-        this.crData = this.crData.filter((item: any) =>
-            item.reason.toLowerCase().includes(searchKeywordLowercase) ||
-            item.crId.toLowerCase().includes(searchKeywordLowercase)
-        );
-      }
-      if (this.selectedUsers.length > 0) {
-        this.crData = this.crData.filter((item: any) =>
-          this.selectedUsers.includes(item.author.userId)
-        );
-      }
+      this.crData = this.crData.filter(
+        (item: any) =>
+          item.reason.toLowerCase().includes(searchKeywordLowercase) ||
+          item.crId.toLowerCase().includes(searchKeywordLowercase)
+      );
+    }
+    if (this.selectedUsers.length > 0) {
+      this.crData = this.crData.filter((item: any) =>
+        this.selectedUsers.includes(item.author.userId)
+      );
+    }
   }
 
   filterListByUsersFilter() {
     this.crData = this.crDataCopy;
     if (this.selectedUsers.length > 0) {
-        this.crData = this.crData.filter((item: any) =>
-          this.selectedUsers.includes(item.author.userId)
-        );
-      }
-      if(this.searchIconKeyword.length){
-        this.crData = this.crData.filter((item: any) =>
-          item.reason.toLowerCase().includes(this.searchIconKeyword.toLowerCase()) || item.crId.toLowerCase().includes(this.searchIconKeyword.toLowerCase())
-        );
-      }
+      this.crData = this.crData.filter((item: any) =>
+        this.selectedUsers.includes(item.author.userId)
+      );
+    }
+    if (this.searchIconKeyword.length) {
+      this.crData = this.crData.filter(
+        (item: any) =>
+          item.reason
+            .toLowerCase()
+            .includes(this.searchIconKeyword.toLowerCase()) ||
+          item.crId.toLowerCase().includes(this.searchIconKeyword.toLowerCase())
+      );
+    }
   }
 
   searchConversation() {
@@ -312,7 +303,9 @@ export class CrTabsComponent {
 
   filterListData() {
     let filterWithStatus = true;
-    this.selectedFilter.code == "ALL" ? this.getMeCrList() : this.getMeCrList(filterWithStatus);
+    this.selectedFilter.code == 'ALL'
+      ? this.getMeCrList()
+      : this.getMeCrList(filterWithStatus);
   }
 
   fetchOpenSpecAPI(id: any) {
@@ -402,8 +395,8 @@ export class CrTabsComponent {
   }
   getCRDetails(crId: any, index: number): void {
     this.utilsService.loadSpinner(true);
-    this.api
-      .getComments('cr-entity-mapping?crId=' + crId)
+    this.commentsService
+      .getLinkedCrs({ crId: crId })
       .then((res: any) => {
         if (res) {
           this.crList[index] = res.data;
@@ -510,7 +503,10 @@ export class CrTabsComponent {
         this.unlinkCRPopup = true;
         break;
       case 'EDIT':
-        if(this.selectedCr?.status=='DRAFT'||this.selectedCr?.status=='GENERATED'){
+        if (
+          this.selectedCr?.status == 'DRAFT' ||
+          this.selectedCr?.status == 'GENERATED'
+        ) {
           this.showNewCrPopup = true;
           this.crHeader = 'Edit CR';
         }
@@ -544,8 +540,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-        reviewer.name.toLowerCase()
-      )
+          reviewer.name.toLowerCase()
+        )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -569,8 +565,8 @@ export class CrTabsComponent {
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);
-    this.api
-      .postApi({ product_id: this.product?.id, cr_id: cr_ids }, 'specs/update')
+    this.specService
+      .updateSpec({ product_id: this.product?.id, cr_id: cr_ids })
       .then((res: any) => {
         if (res && res.status === 200) {
           this.crData.map((item: any) => item.checked === false);
@@ -609,7 +605,6 @@ export class CrTabsComponent {
       });
   }
   unLinkCR(body: any): void {
-
     this.commentsService
       .unLinkCr(body)
       .then((response: any) => {
@@ -650,7 +645,7 @@ export class CrTabsComponent {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res && res?.data?.detail) {
           let user_audit_body = {
@@ -698,8 +693,8 @@ export class CrTabsComponent {
   }
 
   getMeTotalAppsPublishedCount(): void {
-    this.apiService
-      .get('navi/total_apps_published/' + this.currentUser?.account_id)
+    this.naviApiService
+      .getTotalPublishedApps(this.currentUser?.account_id)
       .then((res: any) => {
         if (res && res.status === 200) {
           const restriction_max_value = localStorage.getItem(
@@ -880,15 +875,15 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           // this.specUtils._getLatestCrList(true);
-          this.getMeCrList()
+          this.getMeCrList();
           this.crData.forEach((ele: any) => {
             ele.showComment = false;
           });
@@ -911,14 +906,16 @@ export class CrTabsComponent {
       });
   }
 
-  getMeCrList(filterWithStatus?:boolean) {
+  getMeCrList(filterWithStatus?: boolean) {
     let body: any;
-    body = {  productId: this.product?.id };
-    if(filterWithStatus){
-      body = {  productId: this.product?.id,status:this.selectedFilter.code };
+    body = { productId: this.product?.id };
+    if (filterWithStatus) {
+      body = { productId: this.product?.id, status: this.selectedFilter.code };
     }
     this.utilsService.loadSpinner(true);
-    this.commentsService.getCrList(body).then((res: any) => {
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
         if (res && res.data) {
           // this.specUtils._openCommentsPanel(true);
           // this.specUtils._loadActiveTab(1);
@@ -984,7 +981,12 @@ export class CrTabsComponent {
           response.data &&
           response.data.length > 0
         ) {
-          this.specUtils._getLatestSpecVersions({ versions: body.versions, specData: response.data, productId: body.productId, versionId: body.versionId })
+          this.specUtils._getLatestSpecVersions({
+            versions: body.versions,
+            specData: response.data,
+            productId: body.productId,
+            versionId: body.versionId,
+          });
         }
         this.utilsService.loadSpinner(false);
       })
@@ -1009,7 +1011,7 @@ export class CrTabsComponent {
   }
 
   createNewCr(): void {
-    this.crHeader='Add New CR';
+    this.crHeader = 'Add New CR';
     this.showNewCrPopup = true;
   }
 
