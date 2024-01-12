@@ -94,11 +94,6 @@ export class BpmnDiagramComponent
   ) {}
 
   ngOnInit(): void {
-    this.utilsService.getProductChangeBPMN().subscribe((data: any) => {
-      if (data) {
-        this.getUseCases(data);
-      }
-    });
     this.getMeStorageData();
   }
 
@@ -1255,7 +1250,6 @@ export class BpmnDiagramComponent
     );
     localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
-    this.utilsService.sendProductChangeBPMN(obj);
     this.getMeStorageData();
   }
 }
