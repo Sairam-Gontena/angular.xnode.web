@@ -1,6 +1,6 @@
 <xnode-confirmation-popup [data]="userDetails" *ngIf="showConfirmationPopover"></xnode-confirmation-popup>
 <p-overlayPanel #op>
-     <div style="background-color: rgb(36, 35, 44)">
+     <div style="">
           <div class="flex align-items-center pl-3 pr-3 pointer" (click)="dt.exportCSV()">
                <i class="pi pi-file text-white"></i>
                <p class="text-white pl-2 text-sm font-semibold font-family-inter">Export CSV</p>
@@ -21,11 +21,11 @@
                          <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
                     </span>
                     <div class="flex-wrap">
-                         <p-button styleClass="mr-3 t-header-btn" [rounded]="true" *ngIf="tableInfo?.delete_action">
-                              <img src="../../assets/delete.svg" alt="circle-ci-image" class="text-sm ml-1">
+                         <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">
+                              <img src="../../assets/delete.svg" alt="circle-ci-image" size="small" >
                               <span class=" text-sm font-semibold font-family-inter ml-2">Delete</span>
                          </p-button>
-                         <p-button styleClass="mr-3 t-header-btn" [rounded]="true" *ngIf="tableInfo?.export_action"
+                         <p-button styleClass="mr-3" [text]="true" size="small" [rounded]="true" *ngIf="tableInfo?.export_action"
                               (click)="op.toggle($event)">
                               <img src="../../assets/export.svg" alt="circle-ci-image" class="text-sm">
                               <span class=" text-sm font-semibold font-family-inter ml-2">Export</span>

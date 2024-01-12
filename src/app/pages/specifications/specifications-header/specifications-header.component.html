@@ -26,7 +26,7 @@
                     (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
                     Published App</div>
             </p-overlayPanel>
-            <p-button label="Share" styleClass="bg-primary border-none" [rounded]="true"></p-button>
+            <p-button label="Share" size="small" [rounded]="true"></p-button>
         </div>
     </div>
     <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="this.showProductStatusPopup = false"

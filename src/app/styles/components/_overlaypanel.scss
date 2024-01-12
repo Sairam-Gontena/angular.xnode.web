@@ -1,0 +1,11 @@
+// --overlay-background-color:#3EF018F,
+// --overlay-hover-background-color:#0f160f
+// --overlay-text-color:#0f160f
+// --overlay-border-color:#0f160f
+
+.p-overlaypanel {   
+    color: var(--overlay-text-color);
+    border-width: 1px;
+    border-color: var(--overlay-border-color);
+    background-color: var(--overlay-background-color);
+  }

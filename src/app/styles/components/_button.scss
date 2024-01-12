@@ -1,0 +1,51 @@
+// --primary-button-color:#EF018F,
+// --primary-button-text-color:#FFFFFF,
+// --primary-button-inactive:#824E6D,
+// --secondary-button-color:#02ADEE,
+// --secondary-button-text-color:#FFFFFF,
+// --secondary-button-inactive:#824E6D,
+// --teritory-button-text-color:#A2A2A3
+// --teritory-button-border-color:#A2A2A3
+
+.p-button {
+  background: var(--primary-button-color);
+  color: var(--primary-button-text-color);
+  border: 0px;
+}
+
+.p-button.p-button-text {
+  background-color: transparent;
+}
+
+.p-button.p-button-secondary,
+.p-buttonset.p-button-secondary > .p-button,
+.p-splitbutton.p-button-secondary > .p-button {
+    background: var(--secondary-button-color);
+    color : var(--secondary-button-text-color);
+}
+
+.p-button.p-button-sm {
+  font-size: 0.875rem;
+  padding-top:6.5px;
+  padding-bottom: 6.5px;
+}
+
+.p-disabled{
+  cursor: default!important;
+  pointer-events: none;
+  background: var(--primary-button-inactive);
+}
+
+.p-button.p-button-outlined {
+  background-color: transparent;
+  color: var(--teritory-button-text-color);
+  border: 1px solid var(--teritory-button-border-color);
+}
+
+.p-button:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0 rgba(147, 197, 253, 0.5);
+  padding-top:5.5px;
+  padding-bottom: 5.5px;
+}

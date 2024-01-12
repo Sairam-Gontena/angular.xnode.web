@@ -4,8 +4,8 @@
         <div class="flex align-items-center">
             <i class="pi pi-angle-left mr-3 pointer" (click)="utils.showFeedbackPopupByType('customer-feedback')"></i>
             <div>
-                <p class="m-0 font-bold text-2xl heading-color">Report a bug</p>
-                <p class="m-0 text-sm font-medium heading-color">Your feedback will be used to improve xnode</p>
+                <p class="m-0 font-bold text-2xl">Report a bug</p>
+                <p class="m-0 text-sm font-medium">Your feedback will be used to improve xnode</p>
             </div>
         </div>
     </ng-template>
@@ -24,7 +24,7 @@
                 </p-dropdown> -->
                 <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
                     [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
-                    optionValue="id" class="custom-dropdown" [filter]="true" filterBy="title"
+                    optionValue="id"  [filter]="true" filterBy="title"
                     filterPlaceholder="Search">
                     <ng-template let-item pTemplate="item">
                         <div class="col-12 flex align-items-center justify-content-between">
@@ -56,7 +56,7 @@
                 <label class="text-sm font-normal">Choose priority</label>
                 <p-dropdown formControlName="severityId" [options]="priorities" placeholder="Choose priority"
                     [ngClass]="{ 'is-invalid': submitted && feedback['severityId'].errors }" optionLabel="lookupText"
-                    optionValue="lookupCode" class="custom-dropdown">
+                    optionValue="lookupCode" >
                     <ng-template let-item pTemplate="item">
                         <div class="col-12 flex align-items-center justify-content-between">
                             <div
@@ -116,9 +116,8 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel" [rounded]="true" class="cancel-button" (click)="closePopup()"></p-button>
-            <p-button label="Report" styleClass="p-button-primary report-btn" [rounded]="true"
-                (click)="feedbackReport($event)"></p-button>
+            <p-button label="Cancel" [rounded]="true" severity="secondary" size="small" (click)="closePopup()"></p-button>
+            <p-button label="Report" [rounded]="true" size="small" (click)="feedbackReport($event)"></p-button>
         </div>
     </ng-template>
 </p-dialog>

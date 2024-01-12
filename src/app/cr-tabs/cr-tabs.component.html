@@ -8,7 +8,7 @@
           {{ checkedCrList?.length }}/{{ crData?.length }} items selected
         </p>
       </div>
-      <div class="p-0 m-0 flex justify-content-between col-7 align-items-center">
+      <div class="p-0 m-0 flex justify-content-between col-7 align-items-center gap-2">
         <img src="../../assets/archive.svg" class="submit-cr-window-icon pointer" alt="archive"
           (click)="updateChagneRequestStatus('ARCHIVE')" pTooltip="Archive" />
         <img src="../../assets/newuser.svg" class="submit-cr-window-icon pointer" alt="adduser"
@@ -29,25 +29,22 @@
         </p-calendar>
         <img src="../../assets/link-cr.svg" class="submit-cr-window-icon pointer" alt="link"
           (click)="updateChagneRequestStatus('UNLINK')" pTooltip="Unlink" />
-        <p-button label="Update Spec" [rounded]="true" (click)="onClickUpdateSpec()"
+        <p-button label="Update Spec" size="small" severity="secondary" [rounded]="true" (click)="onClickUpdateSpec()"
           [disabled]="checkedCrList?.length ===0"></p-button>
       </div>
     </div>
-    <div class="flex align-items-center justify-content-between w-full pt-4 px-4">
+    <div class="flex align-items-center justify-content-between w-full mt-4  px-4">
       <div class="flex align-items-center mr-2">
-        <p-dropdown class="w-full" [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter"
-          optionLabel="title" (onChange)="filterListData()"></p-dropdown>
-        <p-button label="Create New" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="ml-2"
+        <p-dropdown [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter" optionLabel="title"
+          (onChange)="filterListData()"></p-dropdown>
+        <p-button label="Create New" size="small" severity="secondary" [rounded]="true"
           (click)="createNewCr()"></p-button>
       </div>
-      <div class="flex justify-content-center">
-
-        <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto"
+      <div class="flex justify-content-center align-items-center">
+        <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer w-auto"
           [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
-
-        <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none search-dropdown-user"
+        <i class="pi pi-user pointer relative z-1 opacity-100 pointer-events-none search-dropdown-user"
           [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
-
         <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name"
           (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
           (onChange)="filterListByUsersFilter()" [showClear]="true" placeholder=""></p-multiSelect>
@@ -86,8 +83,8 @@
           <ng-template pTemplate="header">
             <div class="w-full">
               <div class="grid col-12 flex-column">
-                <p-checkbox (click)="$event.stopPropagation()" (onChange)="onCheckCheckbox($event)" [binary]="true" inputId="binary"
-                  [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
+                <p-checkbox (click)="$event.stopPropagation()" (onChange)="onCheckCheckbox($event)" [binary]="true"
+                  inputId="binary" [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
                 <div class="flex flex-row align-items-center" style="position: absolute; margin-left: 13%">
                   <img src="../../assets/high.svg" class="" alt="high" />
                   <p class="p-0 m-0 text-xs ml-2">
@@ -482,6 +479,5 @@
 <xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" [header]="crHeader " [versions]="[]"
   (close)="showNewCrPopup = false;emitData($event)" [selectedCR]="selectedCr">
 </xnode-create-new-cr-version>
-
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup" [limitReachedContent]="true"
   (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>

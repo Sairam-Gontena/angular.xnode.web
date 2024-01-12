@@ -29,11 +29,11 @@
         </div>
       </div>
     </div>
-    <p-button (click)="onClickSeeMore.emit({ item: specItem, content: content })" label="See More"
-      *ngIf="!content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
+    <p-button (click)="onClickSeeMore.emit({ item: specItem, content: content })" size="small" label="See More"
+      *ngIf="!content?.collapsed && !readOnly" [rounded]="true" [outlined]="true"
       class="absolute bottom-0 right-0 mr-2 mb-2 z-5"></p-button>
-    <p-button (click)="onClickSeeLess.emit({ item: specItem, content: content })" label="See Less"
-      *ngIf="content?.collapsed && !readOnly" styleClass="p-button-outlined see-more-button" [rounded]="true"
+    <p-button (click)="onClickSeeLess.emit({ item: specItem, content: content })" size="small" label="See Less"
+      *ngIf="content?.collapsed && !readOnly" [rounded]="true" [outlined]="true"
       class="absolute bottom-0 right-0 mr-2 mb-2"></p-button>
     <div *ngIf="content.title === 'Usecases' || content.title === 'Use Cases'">
       <div class="grid" (mouseover)="usecaseshowCommentIcon = true" (mouseleave)="usecaseshowCommentIcon = false">
