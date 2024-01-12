@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  SimpleChange,
-  ViewChild,
-} from '@angular/core';
-import { UtilsService } from '../../../components/services/utils.service';
-import { ApiService } from 'src/app/api/api.service';
-import { CommentsService } from 'src/app/api/comments.service';
+import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 import { DropdownOptions } from 'src/models/dropdownOptions';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -46,11 +37,8 @@ export class CommentsPanelComponent implements OnInit {
   selectedUserNames: any = [];
 
   constructor(
-    private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private commentsService: CommentsService,
-    private storageService: LocalStorageService,
-    private apiService: ApiService
+    private storageService: LocalStorageService
   ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
@@ -91,7 +79,9 @@ export class CommentsPanelComponent implements OnInit {
         );
         break;
       case 'UNLINKED':
-        this.filteredList = data.filter((item: any) => item.status === 'UNLINKED');
+        this.filteredList = data.filter(
+          (item: any) => item.status === 'UNLINKED'
+        );
         break;
       case 'NEW':
         this.filteredList = this.list.filter(

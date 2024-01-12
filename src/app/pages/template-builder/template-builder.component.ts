@@ -1,12 +1,7 @@
-import {
-  Component,
-  OnInit,
-  Input,
-} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { User, UserUtil } from 'src/app/utils/user-util';
-import { ApiService } from 'src/app/api/api.service';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
@@ -14,9 +9,8 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
   selector: 'xnode-template-builder',
   templateUrl: './template-builder.component.html',
   styleUrls: ['./template-builder.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
-
 export class TemplateBuilderComponent implements OnInit {
   @Input() currentView: string = 'desktop';
   layoutColumns: any;
@@ -27,16 +21,20 @@ export class TemplateBuilderComponent implements OnInit {
   overview: any;
   id: String = '';
   email: any;
-  selectedTemplate = localStorage.getItem("app_name");
+  selectedTemplate = localStorage.getItem('app_name');
   product: any;
   currentUser?: User;
   environment: any;
   userId: any;
   rawUrl: any;
 
-  constructor(private sanitizer: DomSanitizer, private apiService: ApiService, private messageService: MessageService, private utils: UtilsService, private auditUtil: AuditutilsService) {
+  constructor(
+    private sanitizer: DomSanitizer,
+    private utils: UtilsService,
+    private auditUtil: AuditutilsService
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.email = this.currentUser?.email
+    this.email = this.currentUser?.email;
     this.userId = this.currentUser?.user_id;
     this.environment = environment.name;
   }
@@ -49,7 +47,7 @@ export class TemplateBuilderComponent implements OnInit {
     const product = localStorage.getItem('product');
     let productDetails;
     if (product) {
-      productDetails = JSON.parse(product)
+      productDetails = JSON.parse(product);
     }
     if (product) {
       this.product = JSON.parse(product);
@@ -59,16 +57,44 @@ export class TemplateBuilderComponent implements OnInit {
       this.utils.showProductStatusPopup(true);
     }
     if (this.product_id) {
-      let productEmail = this.currentUser?.email == productDetails?.email ? this.currentUser?.email : productDetails?.email;
-      this.rawUrl = environment.designStudioAppUrl + "?email=" + productEmail + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + this.product?.has_insights + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
+      let productEmail =
+        this.currentUser?.email == productDetails?.email
+          ? this.currentUser?.email
+          : productDetails?.email;
+      this.rawUrl =
+        environment.designStudioAppUrl +
+        '?email=' +
+        productEmail +
+        '&id=' +
+        this.product_id +
+        '&targetUrl=' +
+        environment.xnodeAppUrl +
+        '&has_insights=' +
+        this.product?.has_insights +
+        '&isVerified=true' +
+        '&userId=' +
+        this.userId +
+        '&embedded=true';
       this.makeTrustedUrl();
     } else {
       this.product_id = localStorage.getItem('record_id');
-      this.rawUrl = environment.designStudioAppUrl + "?email=" + this.currentUser?.email + "&id=" + this.product_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.userId + "&embedded=true";
+      this.rawUrl =
+        environment.designStudioAppUrl +
+        '?email=' +
+        this.currentUser?.email +
+        '&id=' +
+        this.product_id +
+        '&targetUrl=' +
+        environment.xnodeAppUrl +
+        '&has_insights=' +
+        true +
+        '&isVerified=true' +
+        '&userId=' +
+        this.userId +
+        '&embedded=true';
       this.makeTrustedUrl();
     }
   }
-
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawUrl);
@@ -86,14 +112,25 @@ export class TemplateBuilderComponent implements OnInit {
           }
           if (event.data.message == 'retrive_dashboard_generic_screen') {
             let data = event.data.data;
-            if (!data?.type && data !== 'expand-navi' && data !== 'contract-navi')
-              this.auditUtil.postAudit(data.activityTypeId, data.attemptcount, data.attemptSuccess, 'user-audit', data.user_audit_body, data.userEmail, data.productId);
+            if (
+              !data?.type &&
+              data !== 'expand-navi' &&
+              data !== 'contract-navi'
+            )
+              this.auditUtil.postAudit(
+                data.activityTypeId,
+                data.attemptcount,
+                data.attemptSuccess,
+                'user-audit',
+                data.user_audit_body,
+                data.userEmail,
+                data.productId
+              );
           }
         });
       }
     });
   }
-
 
   onIconClicked(icon: string) {
     // Update the contentToShow property based on the icon clicked
@@ -106,7 +143,10 @@ export class TemplateBuilderComponent implements OnInit {
   onChangeProduct(obj: any): void {
     localStorage.setItem('record_id', obj?.id);
     localStorage.setItem('app_name', obj.title);
-    localStorage.setItem('product_url', obj.url && obj.url !== '' ? obj.url : '');
+    localStorage.setItem(
+      'product_url',
+      obj.url && obj.url !== '' ? obj.url : ''
+    );
     localStorage.setItem('product', JSON.stringify(obj));
     this.getMeStorageData();
   }

@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import {
-  Router,
-  NavigationStart,
-  NavigationEnd,
-  ActivatedRoute,
-} from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuditutilsService } from './api/auditutils.service';
-import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
 import { debounce, delay } from 'rxjs/operators';
@@ -20,10 +14,7 @@ import { SidePanel } from 'src/models/side-panel.enum';
 import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json'
 import { SpecUtilsService } from './components/services/spec-utils.service';
-interface City {
-  name: string;
-  code: string;
-}
+import { NaviApiService } from './api/navi-api.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -55,26 +46,27 @@ export class AppComponent implements OnInit {
   deepLink:boolean=false;
   colorPallet :any;
 
-  cities: City[] | undefined;
-  selectedCity: City | undefined;
-
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
-    private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
-    private route: ActivatedRoute,
     private themeService:ThemeService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private naviApiService: NaviApiService
   ) {
     let winUrl = window.location.href;
-    if ((winUrl.includes('template_id') || winUrl.includes('template_type')) || (winUrl.includes('crId') || winUrl.includes('versionId'))) {
+    if (
+      winUrl.includes('template_id') ||
+      winUrl.includes('template_type') ||
+      winUrl.includes('crId') ||
+      winUrl.includes('versionId')
+    ) {
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
     } else {
@@ -122,7 +114,7 @@ export class AppComponent implements OnInit {
       if (event) {
         this.isSideWindowOpen = false;
       }
-    })
+    });
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -143,27 +135,31 @@ export class AppComponent implements OnInit {
     let entity = params.get('entity');
     if ((templateId && templateType) || (crId && entity)) {
       let deepLinkInfo;
-      if ((templateId && templateType)) {
+      if (templateId && templateType) {
         deepLinkInfo = {
           product_id: productId,
           template_id: templateId,
           template_type: templateType,
-          version_id: versionId
+          version_id: versionId,
         };
       }
-      if ((crId && entity)) {
+      if (crId && entity) {
         versionId = params.get('versionId');
         productId = params.get('productId');
         deepLinkInfo = {
           product_id: productId,
           entity: entity,
           cr_id: crId,
-          version_id: versionId
+          version_id: versionId,
         };
         this.specUtils._openCommentsPanel(true);
-        this.specUtils._loadActiveTab({ activeIndex: 1, productId: deepLinkInfo.product_id, versionId: deepLinkInfo.version_id });
+        this.specUtils._loadActiveTab({
+          activeIndex: 1,
+          productId: deepLinkInfo.product_id,
+          versionId: deepLinkInfo.version_id,
+        });
       }
-      await this.setDeepLinkInStorage(deepLinkInfo)
+      await this.setDeepLinkInStorage(deepLinkInfo);
       this.router.navigateByUrl('specification');
     }
   }
@@ -227,7 +223,7 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
-    })
+    });
   }
 
   getAllProductsInfo(key: string) {
@@ -240,7 +236,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
   botOnClick() {
     this.isNaviExpanded = false;
@@ -296,8 +291,8 @@ export class AppComponent implements OnInit {
     });
   }
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService
-      .get('navi/total_apps_onboarded/' + user?.email)
+    this.naviApiService
+      .getTotalOnboardedApps(user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem(
@@ -568,7 +563,7 @@ export class AppComponent implements OnInit {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res?.data?.detail) {
           this.utilsService.loadToaster({
