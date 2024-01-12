@@ -23,7 +23,7 @@ html {
 body {
   font-family: var(--font-family);
   margin: 0;
-  background: #3A3942;
+  background: #343541;
   overflow: hidden;
 }
 
@@ -519,4 +519,9 @@ body {
     margin-bottom: 10px;
     border-radius: 0px;
     box-shadow: 1px 1px 3px 1px #707070;
+}
+.my-products-tab-view {
+  .p-tabview-nav-container {
+    display: none;
+  }
 }

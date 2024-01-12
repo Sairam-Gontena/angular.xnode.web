@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    <p-tabView [(activeIndex)]="activeIndex">
+    <p-tabView [(activeIndex)]="activeIndex" class="my-products-tab-view">
         <p-tabPanel>
             <!-- <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabAllProducts = true"
@@ -176,7 +176,7 @@
 
 
 
-    <div class="recentActivity">
+    <div class="recentActivity col-8">
         <div class="filterDropdown">
             <i class="pi pi-search text-white sm:ml-3  md:ml-3" (click)="toggleSearch()" style="padding: 0 25px;"></i>
             <input type="text" *ngIf="enableSearch" class="p-inputtext searchConversation" placeholder="Search" [(ngModel)]="searchTextConversation" (input)="searchConversation()"/>
