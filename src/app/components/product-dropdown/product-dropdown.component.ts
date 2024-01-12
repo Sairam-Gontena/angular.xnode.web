@@ -43,6 +43,8 @@ export class ProductDropdownComponent implements OnInit {
   }
   onChangeProduct(event: any): void {
     this.selectedProduct = event.value;
+    localStorage.setItem('record_id',event.value.id);
+    this.utilsService.toggleProductChange(true)
     this._onChangeProduct.emit(event.value);
   }
 

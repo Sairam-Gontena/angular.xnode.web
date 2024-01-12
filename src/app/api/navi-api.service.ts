@@ -33,7 +33,12 @@ export class NaviApiService extends BaseApiService {
     return this.patch(url, body);
   }
   getXflows(email?: string, productId?: string) {
-    let url = 'navi/get_xflows/' + email + '/' + productId;
+    if(!productId){
+      productId = '';
+    }else{
+      productId = '/' + productId
+    }
+    let url = 'navi/get_xflows/' + email + productId;
     return this.get(url);
   }
   getOverview(email?: string, productId?: string) {

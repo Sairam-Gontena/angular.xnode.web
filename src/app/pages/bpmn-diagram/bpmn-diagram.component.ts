@@ -32,7 +32,9 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { Product } from 'src/models/product';
+import { SpecService } from 'src/app/api/spec.service';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
+import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -90,11 +92,18 @@ export class BpmnDiagramComponent
     private storageService: LocalStorageService,
     private router: Router,
     private naviApiService: NaviApiService,
-    private workflowApiService: WorkflowApiService
+    private workflowApiService: WorkflowApiService,
+    private specService:SpecService,
+    private commentsService:CommentsService
   ) {}
 
   ngOnInit(): void {
     this.getMeStorageData();
+    this.utilsService.getMeIfProductChanges.subscribe((data:any)=>{
+      if(data){
+          this.changeLocalStorageData()
+      }
+    })
   }
 
   getMeStorageData(): void {
@@ -105,13 +114,105 @@ export class BpmnDiagramComponent
       return;
     }
     if (this.productChanged) {
-      this.getXflowsData();
+      this.changeLocalStorageData()
     } else {
       const list: any = this.storageService.getItem(StorageKeys.SpecData);
       this.useCases = list[2].content[0].content;
+      this.loadGraph();
     }
-    this.loadGraph();
   }
+
+  changeLocalStorageData(){
+    this.commentsService.getVersions({ productId: localStorage.getItem('record_id')}).then((data:any)=>{
+      if(data){
+        let body = {
+          versionId: data.data[0].id,
+          productId:localStorage.getItem('record_id')
+         }
+         this.changeXflow(body);
+      }
+    })
+  }
+
+  changeXflow(body:any){
+      this.utilsService.loadSpinner(true);
+      this.specService.getSpec(body).then((response:any) => {
+          if (
+            response.status === 200 &&
+            response.data &&
+            response.data.length > 0
+          ) {
+            this.handleSpecData(response.data, body.productId);
+          }
+        })
+        .catch((error:any) => {
+          this.utilsService.loadSpinner(false);
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: error,
+          });
+        });
+  }
+
+  handleSpecData(response: any, productId: string): void {
+    const list = response;
+    list.forEach((obj: any) => {
+      if (obj?.title == 'Functional Specifications') {
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Management Persistence') {
+            this.isDataManagementPersistence = true;
+          }
+        });
+      }
+      if (obj?.title == 'Technical Specifications') {
+        if (!Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Model Table Data') {
+            obj.content.splice(idx, 1);
+          }
+          if (ele.title === 'Data Model') {
+            this.deleteDataManagementPersistence(list);
+          }
+        });
+        obj.content.push({
+          title: 'OpenAPI Spec',
+          content: [],
+          id: 'open-api-spec',
+        });
+      }
+      if (obj?.title == 'Quality Assurance') {
+        let content = obj.content;
+        if (Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+        obj.content.push({
+          title: 'Quality Assurance',
+          content: content,
+          id: obj.id,
+        });
+      }
+    });
+    this.storageService.saveItem(StorageKeys.SpecData, list);
+    this.useCases = list[2].content[0].content;
+    this.loadGraph();
+    this.utilsService.loadSpinner(false);
+  }
+
+  deleteDataManagementPersistence(list: any) {
+    if (this.isDataManagementPersistence) {
+      list.forEach((obj: any, index: any) => {
+        obj.content.forEach((elem: any, idx: any) => {
+          if (elem.title === 'Data Management Persistence') {
+            obj.content.splice(idx, 1);
+          }
+        });
+      });
+    }
+  }
+
   loadGraph() {
     var element = document.getElementById('graph');
     while (element?.firstChild) {
@@ -846,19 +947,20 @@ export class BpmnDiagramComponent
   // graph functions and variables
   /*************************************************************************************************** */
   modifyGraphData(data: any) {
-    data.forEach((d: any) => {
-      let temp_title;
-      d.children = [];
-      for (let i = 0; i < d.xflows.length; i++) {
-        temp_title = d.xflows[i].name;
-        // d.xflows[i] = {};
-        // d.xflows[i] =
-        d.children.push({
-          id: i,
-          title: temp_title,
-        });
-      }
-    });
+    if(data){
+      data.forEach((d: any) => {
+        let temp_title;
+       d.children = [];
+        for (let i = 0; i < d.xflows?.length; i++) {
+          temp_title = d.xflows[i].name;
+          d.children.push({
+            id: i,
+            title: temp_title,
+          });
+        }
+      });
+    }
+
     return data;
   }
 
