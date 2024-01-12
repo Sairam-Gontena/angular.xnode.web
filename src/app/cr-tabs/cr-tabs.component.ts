@@ -540,8 +540,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-          reviewer.name.toLowerCase()
-        )
+        reviewer.name.toLowerCase()
+      )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -565,7 +565,7 @@ export class CrTabsComponent {
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);
-    this.specService
+    this.naviApiService
       .updateSpec({ product_id: this.product?.id, cr_id: cr_ids })
       .then((res: any) => {
         if (res && res.status === 200) {
@@ -875,12 +875,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           // this.specUtils._getLatestCrList(true);
           this.getMeCrList();
