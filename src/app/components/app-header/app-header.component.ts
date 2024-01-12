@@ -12,7 +12,6 @@ import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
-import {ThemeService} from '../../theme.service';
 import themeing from '../../../themes/customized-themes.json'
 import { NaviApiService } from 'src/app/api/navi-api.service';
 
@@ -71,7 +70,6 @@ export class AppHeaderComponent implements OnInit {
     private captureService: NgxCaptureService,
     private auth: AuthApiService,
     private auditUtil: AuditutilsService,
-    private themeService:ThemeService,
     private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService
     ) {
@@ -84,10 +82,6 @@ export class AppHeaderComponent implements OnInit {
       let productObj = JSON.parse(product);
       this.productId = productObj?.id;
     }
-  }
-
-  changeTheme(event: any) {
-    this.themeService.changeColorTheme(event);
   }
 
   ngOnInit(): void {
