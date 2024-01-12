@@ -77,4 +77,14 @@ export class NaviApiService extends BaseApiService {
     let url = 'navi/get_usecases/' + productId;
     return this.get(url);
   }
+
+  generateSpec(body?: any) {
+    let url = 'specs/generate';
+    return this.post(url, body);
+  }
+
+  updateSpec(body?: any) {
+    let url = 'specs/update';
+    return this.post(url, body);
+  }
 }
