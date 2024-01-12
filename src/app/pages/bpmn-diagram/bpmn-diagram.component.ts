@@ -32,9 +32,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { Product } from 'src/models/product';
-import { SpecService } from 'src/app/api/spec.service';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
-import { CommentsService } from 'src/app/api/comments.service';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -93,8 +91,6 @@ export class BpmnDiagramComponent
     private router: Router,
     private naviApiService: NaviApiService,
     private workflowApiService: WorkflowApiService,
-    private specService:SpecService,
-    private commentsService:CommentsService
   ) {}
 
   ngOnInit(): void {
