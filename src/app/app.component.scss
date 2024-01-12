@@ -91,6 +91,7 @@
 .docked-navi {
   border: 1px solid #89888e;
   border-radius: 10px;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -118,12 +119,12 @@
 @media (min-width: 768px) {
   .docked-navi {
     // transition: all 0.5s ease-in-out;
-    width: 30%;
+    width: 100%;
     height: calc(100vh - 42px);
   }
   .expand-docked-navi{
     // transition: all 0.5s ease-in-out;
-    width: 100vw;
+    width: calc(100vw - 80px);
     height: calc(100vh - 42px);
   }
 }
@@ -132,4 +133,10 @@
     transition: all 0.5s ease-in-out;
     width: 0%;
   }
+}
+.navi-frame{
+  width: 30%;
+}
+.navi-ful-frame{
+  width: 100%;
 }

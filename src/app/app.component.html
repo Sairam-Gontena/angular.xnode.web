@@ -15,10 +15,15 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="isSideWindowOpen" [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
-                <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
-                class="w-full h-full pl-0 pr-0 ifram-navi">
-            </iframe>
+            <div *ngIf="isSideWindowOpen" class="flex navi-frame" [ngClass]="{'navi-ful-frame':isNaviExpanded, 'navi-frame':!isNaviExpanded}">
+                <div class="app-side-menu-wrapper" *ngIf="isNaviExpanded && showSideMenu()">
+                    <xnode-app-side-menu></xnode-app-side-menu>
+                </div>
+                <div [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
+                    <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                        class="w-full h-full pl-0 pr-0 ifram-navi">
+                    </iframe>
+                </div>
             </div>
         </div>
     </ng-container>

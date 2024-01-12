@@ -175,6 +175,9 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
+      if(!data){
+        this.isNaviExpanded = false;
+      }
     })
   }
 
