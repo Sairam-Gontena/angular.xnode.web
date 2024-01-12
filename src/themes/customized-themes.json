@@ -133,10 +133,9 @@
                     "accordion_content_text_color":"#EFEEEE"
                 },
                 "overlay_panel":{
-                    "overlay_background_color":"#011a03",
-                    "overlay_hover_background_color": "#0f160f",
-                    "overlay_text_color":"#fff",
-                    "overlay_border_color":"#023006"
+                    "overlay_background_color":"#202123",
+                    "overlay_text_color":"#EFEEEE",
+                    "overlay_border_color":"#535354"
                 },
                 "data_table":{
                     "datatable_border_color":"#595959",

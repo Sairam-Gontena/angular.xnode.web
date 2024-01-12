@@ -5,7 +5,6 @@
 
 .p-overlaypanel {   
     color: var(--overlay-text-color);
-    border-width: 1px;
-    border-color: var(--overlay-border-color);
+    border: 1px solid var(--overlay-border-color);
     background-color: var(--overlay-background-color);
   }

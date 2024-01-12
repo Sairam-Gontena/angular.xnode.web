@@ -12,22 +12,6 @@
                 severity="danger" (click)="overlayToggle($event, op)"></i>
             <i *ngIf="notificationCount == 0" class="pi pi-bell text-base pointer mr-3"
                 (click)="overlayToggle($event, op)"></i>
-            <i  class="pi pi-bell text-base pointer mr-3"
-                (click)="overlayToggle($event, op1)"></i>
-                <p-overlayPanel #op1>
-                 <div class="">
-                    <div class="col-12 flex w-9rem flex-wrap">
-                        <div *ngFor="let color of colorPallet" class="ml-2 mt-2">
-                            <div (click)="changeTheme(color)" style="height: 20px;width: 20px;"  [style.background]="color.primary"></div>
-                        </div>
-                        <div class="py-3 flex  justify-content-between align-content-center">
-                            <div  class="text-xs" (click)="changeTheme('lara-light-blue')"   >Light</div>
-                            <div class="text-xs" (click)="changeTheme('lara-dark-blue')"  >Dark</div>
-                        </div>
-                    </div>
-                 </div>
-                </p-overlayPanel>
-                
             <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
