@@ -56,6 +56,12 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   }
 
   getDiff() {
+    this.oldContent = `The Minister said he explained to his Chinese counterpart that "unless a solution is found at the border, they should not expect other relations to move on normally".
+    "That is impossible. You don't want to fight and do trade at the same time. Meanwhile, diplomacy is going on and sometimes solutions to difficult situations do not come in haste," he asserted.`
+
+    this.newContent = `The Minister said he explained to his Chinese party that "unless a solution is found at the border, they should not expect other relations to move on normally".
+    "That is impossible. You don't want to fight and do trade at the same time. Meanwhile, diplomacy is going on and sometimes solutions to difficult situations do not come in haste," he assured.`
+
     this.diff = this.diffService.getDiff(this.oldContent||'', this.newContent||'', this.filename);
     this.refreshDiffHTML();
     this.diffChange.emit(this.diff);
