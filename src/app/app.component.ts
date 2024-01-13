@@ -11,6 +11,8 @@ import { AuthApiService } from './api/auth.service';
 import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { ThemeService } from './theme.service';
+import themeing from '../themes/customized-themes.json'
 import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
 @Component({
@@ -41,7 +43,8 @@ export class AppComponent implements OnInit {
   showCommentIcon?: boolean;
   screenWidth: number;
   screenHeight: number;
-  deepLink: boolean = false;
+  deepLink:boolean=false;
+  colorPallet :any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -53,6 +56,7 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
+    private themeService:ThemeService,
     private specUtils: SpecUtilsService,
     private naviApiService: NaviApiService
   ) {
@@ -171,7 +175,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  changeTheme(event: any) {
+    this.themeService.changeColorTheme(event);
+  }
+
   ngOnInit(): void {
+    this.colorPallet = themeing.theme;
+
+    setTimeout(()=>{
+      this.changeTheme(this.colorPallet[6])
+    },100)
+
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);

@@ -13,7 +13,7 @@
                     header="{{item.accordianHeader}}" (click)="onClickAccordian(item,i)">
                     <div class="grid">
                          <div class="md:col-4" *ngFor="let submenu of item?.accordianContent; let j = 'index+1'">
-                              <div class="layout-item border-1 border-primary flex flex-wrap align-content-center justify-content-center pointer"
+                              <div class="layout-item flex border-1 border-200 flex-wrap align-content-center justify-content-center pointer menu-item " 
                                    id="{{item.accordianHeader}}{{submenu?.id}}"
                                    (click)="selectedSubMenu(item.accordianHeader+submenu?.id)" draggable="true"
                                    (dragstart)="drag($event)"

@@ -44,33 +44,105 @@
     : 'sctions-grid-full relative'
 " id="{{ contentObj?.id }}" #contentContainer class="mt-4" *ngIf="contentObj.content_data_type !== 'BANNER'">
     <div *ngSwitchCase="'list'">
-      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
+        <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);" [position]="'absolute'"
+          [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj" [specItem]="contentObj"
+          placeHolder="Add a Comment" [commentType]="'comment'" [parentEntity]="'SPEC'"
+          [parentId]="specItemId"></xnode-add-comment-overlay-panel>
+      </p-overlayPanel>
+      <p-overlayPanel #op1 appendTo="body" (onHide)="op1.toggle(false);">
+        <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="contentObj" [parentTitle]="parentTitle"
+          [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
+          [specItem]="contentObj"></xnode-add-task>
+      </p-overlayPanel>
+      <h3 class="m-0 text-2xl font-bold">{{contentObj.title}}</h3>
       <ul *ngFor="let item of contentObj.content">
-        <li>
-          <b>{{item.title}}</b>
-          <p>{{item.content}}</p>
+        <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false">
+          <div class="flex justify-content-between">
+            <div>
+              <b>{{item.title}}</b>
+              <p>{{item.content}}</p>
+            </div>
+            <div class="flex justify-content-end" *ngIf="item.showCommentIcon">
+              <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+              <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+              <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+            </div>
+          </div>
         </li>
-      </ul>
-    </div>
-    <div *ngSwitchCase="'list'">
-      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <ul *ngFor="let item of contentObj.content">
-        <li>{{item}}</li>
       </ul>
     </div>
     <div *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <div *ngFor="let persona of contentObj.content" class="pb-3">
+      <div *ngFor="let persona of contentObj.content" class="pb-3" (mouseover)="persona.showCommentIcon = true"
+        (mouseleave)="persona.showCommentIcon = false">
+        <p-overlayPanel #op (onHide)="persona.showCommentIcon=false">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);"
+            [position]="'absolute'" [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj"
+            [specItem]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'" [parentEntity]="'SPEC'"
+            [parentId]="specItemId"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body" (onHide)="op1.toggle(false);">
+          <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="contentObj" [parentTitle]="parentTitle"
+            [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
+            [specItem]="contentObj"></xnode-add-task>
+        </p-overlayPanel>
+        <div class="flex justify-content-end" *ngIf="persona.showCommentIcon">
+          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+          <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+        </div>
         <xnode-user-persona [content]="persona"></xnode-user-persona>
       </div>
     </div>
     <div *ngSwitchCase="'USECASES'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
+      <div (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
+        <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);"
+            [position]="'absolute'" [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj"
+            [specItem]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'" [parentEntity]="'SPEC'"
+            [parentId]="specItemId"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body" (onHide)="op1.toggle(false);">
+          <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="contentObj" [parentTitle]="parentTitle"
+            [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
+            [specItem]="contentObj"></xnode-add-task>
+        </p-overlayPanel>
+        <div class="flex justify-content-end" *ngIf="contentObj.showCommentIcon">
+          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+          <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+        </div>
+        <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
+      </div>
     </div>
     <div *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <xnode-bpmn-common [item]="contentObj"></xnode-bpmn-common>
+    </div>
+    <div *ngSwitchCase="'USER_ROLES'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <div (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
+        <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);"
+            [position]="'absolute'" [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj"
+            [specItem]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'" [parentEntity]="'SPEC'"
+            [parentId]="specItemId"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body" (onHide)="op1.toggle(false);">
+          <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="contentObj" [parentTitle]="parentTitle"
+            [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
+            [specItem]="contentObj"></xnode-add-task>
+        </p-overlayPanel>
+        <div class="flex justify-content-end" *ngIf="contentObj.showCommentIcon">
+          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+          <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+          <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+        </div>
+        <xnode-user-roles [id]="contentObj.id" [content]="contentObj.content"
+          [parentTitle]="contentObj.title"></xnode-user-roles>
+      </div>
     </div>
     <div *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
@@ -141,12 +213,10 @@
         </div>
       </div>
     </div>
-    <p-button label="See More" styleClass="p-button-outlined see-more-button" [rounded]="true"
-      (click)="contentObj.collapsed = true;" class="absolute bottom-0 right-0 mr-2 mb-2 z-5"
-      *ngIf="!contentObj?.collapsed"></p-button>
-    <p-button label="See Less" styleClass="p-button-outlined see-more-button" [rounded]="true"
-      (click)="contentObj.collapsed = false;" class="absolute bottom-0 right-0 mr-2 mb-2"
-      *ngIf="contentObj?.collapsed"></p-button>
+    <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
+      class="absolute bottom-0 right-0 mr-2 mb-2 z-5" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
+    <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"
+      class="absolute bottom-0 right-0 mr-2 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
     <div class="gradientback" *ngIf="!contentObj?.collapsed"></div>
   </div>
 </div>

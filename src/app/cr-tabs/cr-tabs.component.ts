@@ -567,7 +567,7 @@ export class CrTabsComponent {
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);
-    this.specService
+    this.naviApiService
       .updateSpec({ product_id: this.product?.id, cr_id: cr_ids })
       .then((res: any) => {
         if (res && res.status === 200) {

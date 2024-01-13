@@ -98,10 +98,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    if (this.product && !this.product?.has_insights) {
-      this.utilsService.showProductStatusPopup(true);
-      return;
-    }
     const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.useCases = list[2].content[0].content;
     setTimeout(() => {

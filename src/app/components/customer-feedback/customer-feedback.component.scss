@@ -1,7 +1,3 @@
-.heading-color {
-    color: #DEDEDE;
-}
-
 .circle-container {
     display: flex;
     justify-content: center;
@@ -18,10 +14,6 @@
     background-color: #2E2D36;
     padding: 16p;
     border-radius: 32px;
-}
-
-.feedback-type:hover {
-    background: #2E2D36;
 }
 
 :host::ng-deep .p-dialog .p-dialog-header {

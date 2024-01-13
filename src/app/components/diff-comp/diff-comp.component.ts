@@ -5,6 +5,7 @@ import { isArray } from 'lodash';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificationUtils.service';
+import { SECTION_VIEW_CONFIG } from 'src/app/pages/specifications/section-view-config';
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -22,12 +23,13 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
+  listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
     private storageService: LocalStorageService,
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -41,8 +43,8 @@ export class DiffCompComponent implements OnInit {
     return !this.onDiff
       ? ''
       : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-        ? this.diffObj
-        : this.getObjState();
+      ? this.diffObj
+      : this.getObjState();
   }
 
   getObjState() {
@@ -102,9 +104,24 @@ export class DiffCompComponent implements OnInit {
       StorageKeys.SpecVersion
     );
     if (version) {
-      this.specService.getMeSpecLevelCommentsList({ parentId: this.specItemId })
-      this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 0 })
-
+      this.specService.getMeSpecLevelCommentsList({
+        parentId: this.specItemId,
+      });
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 0,
+      });
     }
+  }
+
+  checkListViewSections(title: string) {
+    console.log('title', title);
+
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
   }
 }

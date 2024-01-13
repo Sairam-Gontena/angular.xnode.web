@@ -12,6 +12,7 @@ import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
+import themeing from '../../../themes/customized-themes.json'
 import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
@@ -57,6 +58,8 @@ export class AppHeaderComponent implements OnInit {
   productId: any;
   userImage: any;
   limitReachedContent: boolean = false;
+  colorPallet :any;
+  isDarkTheme: boolean = false;
 
   constructor(
     private RefreshListService: RefreshListService,
@@ -66,10 +69,10 @@ export class AppHeaderComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private captureService: NgxCaptureService,
     private auth: AuthApiService,
-    private naviApiService: NaviApiService,
     private auditUtil: AuditutilsService,
+    private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService
-  ) {
+    ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -82,6 +85,8 @@ export class AppHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.colorPallet = themeing.theme;
+
     this.utilsService.getMeFeedbackPopupTypeToDisplay.subscribe((res: any) => {
       this.selectedPopup = '';
       if (res) {

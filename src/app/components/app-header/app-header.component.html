@@ -5,28 +5,25 @@
             <img src="./assets/logo-xnode.svg" alt="x-node" (click)="onClickLogo()" class="pointer">
         </div>
     </div>
-    <div class="w-6 flex gap-2 justify-content-end align-content-center">
-        <div class="flex justify-content-center align-content-center">
-            <i class="pi pi-question-circle mr-3 pointer" (click)="onClickHelpCenter()"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="mr-3 -mt-1 pointer" />
-            <i *ngIf="notificationCount > 0" class="pi pi-bell mr-3 mt-1 pointer" pBadge value={{notificationCount}}
+    <div class="w-6 flex justify-content-end align-items-center">
+            <i class="pi pi-question-circle pointer mr-3" (click)="onClickHelpCenter()"></i>
+            <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="pointer mr-3" />
+            <i *ngIf="notificationCount > 0" class="pi pi-bell pointer mr-3 " pBadge value={{notificationCount}}
                 severity="danger" (click)="overlayToggle($event, op)"></i>
-            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base mr-3 pointer"
+            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base pointer mr-3"
                 (click)="overlayToggle($event, op)"></i>
-            <p-overlayPanel #op [style]="{'width': '400px','height':'560px','background-color':'#24232C'}">
+            <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
                 <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
                     (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
                     (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
             </p-overlayPanel>
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2"
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
                 shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
-            <p-avatar [label]="userImage" *ngIf="username" styleClass="mr-2"
+            <p-avatar [label]="userImage" *ngIf="username"
                 [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
                 shape="circle"></p-avatar>
-
             <p-splitButton [label]="username" [model]="logoutDropdown"
                 styleClass="p-button-raised logout-split-btn"></p-splitButton>
-        </div>
     </div>
     <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
         [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>

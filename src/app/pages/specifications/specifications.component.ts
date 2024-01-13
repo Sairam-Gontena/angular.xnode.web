@@ -110,7 +110,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
           this.specUtils._tabToActive(val.template_type);
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
@@ -542,7 +542,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     };
     let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;
-    this.specService
+    this.naviApiService
       .generateSpec(body)
       .then((response: any) => {
         if (response) {

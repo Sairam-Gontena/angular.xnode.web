@@ -41,11 +41,6 @@ export class UtilsService {
   public getMeProductStatus: Observable<boolean> =
     this.productStatus.asObservable();
 
-  private productChanged: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-  public getMeIfProductChanges: Observable<boolean> =
-    this.productChanged.asObservable();
-
   private productAlertPopup: BehaviorSubject<Object> =
     new BehaviorSubject<Object>({ popup: false, data: {} });
   public getMeproductAlertPopup: Observable<Object> =
@@ -160,10 +155,6 @@ export class UtilsService {
 
   toggleProductAlertPopup(event: any): void {
     this.productAlertPopup.next(event);
-  }
-
-  toggleProductChange(event: boolean) {
-    this.productChanged.next(event);
   }
 
   showFeedbackPopupByType(event: any): void {

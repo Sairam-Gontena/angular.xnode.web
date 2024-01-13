@@ -33,20 +33,11 @@
     margin-left: 3rem;
 }
 
-:host ::ng-deep.p-button {
-    color: white;
-    font-weight: 700 !important;
-    height: 2rem;
-    font-size: 10px;
-}
-
 :host ::ng-deep .p-dropdown {
-    background: #3A3942;
     border: 0;
 }
 
 .stepper-card {
-    // width: 566px;
     width: auto;
     margin-left: 4rem;
     background-color: none;
@@ -54,7 +45,6 @@
 }
 
 .stepper-content {
-    // width: 26rem;
     width: auto;
     margin-left: 2rem;
 }
@@ -73,13 +63,8 @@
         width: 10rem !important;
     }
 
-    // :host ::ng-deep .p-button {
-    //     margin: 10px;
-    // }
-
     .stepper-card {
         width: 90%;
-        // margin-left: 49px;
     }
 
     .card-container {
@@ -212,5 +197,4 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #23222B;
-    // margin: 25px;
 }

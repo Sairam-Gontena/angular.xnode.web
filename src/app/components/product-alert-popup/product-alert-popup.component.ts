@@ -291,7 +291,7 @@ export class ProductAlertPopupComponent implements OnInit {
     };
     let detail = 'Generating spec for this app process is started.';
     this.closePopup.emit(true);
-    this.specApiService
+    this.naviApiService
       .generateSpec(body)
       .then((response: any) => {
         if (response) {

@@ -3,6 +3,9 @@ import { UtilsService } from '../components/services/utils.service';
 import { SpecApiService } from '../api/spec-api.service';
 import { SpecificationUtilsService } from '../pages/diff-viewer/specificationUtils.service';
 import { CommentsService } from '../api/comments.service';
+import { isArray } from 'lodash';
+import { LocalStorageService } from '../components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +15,9 @@ export class SpecificationsService {
     private utils: UtilsService,
     private specApiService: SpecApiService,
     private specUtils: SpecificationUtilsService,
-    private commentsService: CommentsService
-  ) { }
+    private commentsService: CommentsService,
+    private storageService: LocalStorageService
+  ) {}
 
   getVersions(
     productId: string,
@@ -44,9 +48,11 @@ export class SpecificationsService {
       });
   }
 
-  getMeSpecInfo(params: any,
+  getMeSpecInfo(
+    params: any,
     successCallback?: (data: any) => void,
-    errorCallback?: (error: any) => void) {
+    errorCallback?: (error: any) => void
+  ) {
     this.specApiService
       .getSpec({
         productId: params.productId,
@@ -56,8 +62,22 @@ export class SpecificationsService {
         if (response.status === 200 && response.data) {
           response.data.forEach((element: any) => {
             element.content_data_type = 'BANNER';
+            if (isArray(element.content)) {
+              element.content.forEach((element: any) => {
+                if (element.title === 'User Personas') {
+                  element.content_data_type = 'USER_PERSONAS';
+                } else if (element.title === 'Usecases') {
+                  element.content_data_type = 'USECASES';
+                } else if (element.title === 'Workflows') {
+                  element.content_data_type = 'WORKFLOWS';
+                } else if (element.title === 'User Roles') {
+                  element.content_data_type = 'USER_ROLES';
+                }
+              });
+            }
           });
           this.specUtils.saveSpecList(response.data);
+          this.storageService.saveItem(StorageKeys.SPEC_DATA, response.data);
           if (successCallback) successCallback(response.data);
         }
         this.utils.loadSpinner(false);
@@ -134,7 +154,7 @@ export class SpecificationsService {
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
-          this.specUtils.saveCommentList(response.data)
+          this.specUtils.saveCommentList(response.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -164,7 +184,7 @@ export class SpecificationsService {
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
-          this.specUtils.saveTaskList(response.data)
+          this.specUtils.saveTaskList(response.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -184,7 +204,6 @@ export class SpecificationsService {
       });
   }
 
-
   getMeCrList(obj: any) {
     this.utils.loadSpinner(true);
     this.commentsService
@@ -193,7 +212,7 @@ export class SpecificationsService {
       })
       .then((res: any) => {
         if (res && res.data) {
-          this.specUtils.saveCrList(res.data)
+          this.specUtils.saveCrList(res.data);
         } else {
           this.utils.loadToaster({
             severity: 'error',
