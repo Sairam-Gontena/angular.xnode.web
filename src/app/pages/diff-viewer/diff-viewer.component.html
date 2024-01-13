@@ -23,9 +23,8 @@
         <xnode-diff-list [users]="usersList" [srcList]="specTwoList" [targetList]="specList"
           [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
       </div>
-      <div >
-        <xnode-comments-cr-panel  [specData]="specList"
-          ></xnode-comments-cr-panel>
+      <div class="w-4" *ngIf="openConversationPanel">
+        <xnode-comments-cr-panel [specData]="specList"></xnode-comments-cr-panel>
       </div>
     </div>
   </div>

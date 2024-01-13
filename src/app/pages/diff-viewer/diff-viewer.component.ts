@@ -44,6 +44,7 @@ export class DiffViewerComponent implements OnInit {
   specTwoList: any = [];
   usersList: any;
   swaggerData: any;
+  openConversationPanel: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -82,6 +83,13 @@ export class DiffViewerComponent implements OnInit {
           });
           this.versionListOne = versions;
           this.versionListTwo = versions;
+        }
+      }
+    );
+    this.specificationUtils._openConversationPanel.subscribe(
+      (data: any) => {
+        if (data) {
+          this.openConversationPanel = data.openConversationPanel
         }
       }
     );
@@ -147,8 +155,6 @@ export class DiffViewerComponent implements OnInit {
             element.content_data_type = 'BANNER';
           });
           if (params.type === 'one') {
-            console.log('one');
-
             this.specList = response.data;
             this.specTwoList.forEach((element1: any) => {
               this.specList.forEach((element2: any) => {
@@ -157,8 +163,6 @@ export class DiffViewerComponent implements OnInit {
               });
             });
           } else {
-            console.log('two');
-
             this.specTwoList = response.data;
             this.specList.forEach((element1: any) => {
               this.specTwoList.forEach((element2: any) => {
@@ -166,8 +170,6 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
-            console.log('this.specTwoList', this.specTwoList);
-            console.log('this.specList', this.specList);
           }
         }
         this.utils.loadSpinner(false);
@@ -218,8 +220,8 @@ export class DiffViewerComponent implements OnInit {
     type === 'one' && event.value.id === this.selectedVersionTwo.id
       ? (this.selectedVersionTwo = undefined)
       : type === 'two' && event.value.id === this.selectedVersionOne.id
-      ? (this.selectedVersionOne = undefined)
-      : null;
+        ? (this.selectedVersionOne = undefined)
+        : null;
     this.utils.loadSpinner(true);
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
@@ -245,6 +247,7 @@ export class DiffViewerComponent implements OnInit {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
           this.usersList = resp.data;
+          this.storageService.saveItem(StorageKeys.USERLIST, resp.data)
           this.getVersions();
         } else {
           this.utils.loadToaster({

@@ -11,13 +11,15 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { AuditutilsService } from '../api/auditutils.service';
 import { NotifyApiService } from '../api/notify.service';
-declare const SwaggerUIBundle: any;
 import { delay, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecApiService } from '../api/spec-api.service';
 import { NaviApiService } from '../api/navi-api.service';
+import { SpecificationUtilsService } from '../pages/diff-viewer/specificationUtils.service';
+declare const SwaggerUIBundle: any;
+
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -36,7 +38,6 @@ export class CrTabsComponent {
   @ViewChild('myCalendar') datePicker: any;
   @ViewChild('addUser') addUser: any;
   usersList: any;
-
   addReviewerForm: FormGroup;
   filters: any;
   selectedFilter: any;
@@ -101,16 +102,16 @@ export class CrTabsComponent {
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
     private specService: SpecApiService,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.minDate = new Date();
     this.addReviewerForm = this.fb.group({
       reviewersLOne: [''],
     });
     this.product = this.storageService.getItem(StorageKeys.Product);
-    this.specUtils.getMeUpdatedCrs.subscribe((event: any) => {
+    this.specificationUtils.getMeCrList.subscribe((event: any) => {
       if (event) {
-        this.activeIndex = 0;
         this.crData = event;
         this.prepareDataToDisplay();
       }
@@ -540,8 +541,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-          reviewer.name.toLowerCase()
-        )
+        reviewer.name.toLowerCase()
+      )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -562,6 +563,7 @@ export class CrTabsComponent {
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
+
   updateSpec(): void {
     this.utilsService.loadSpinner(true);
     const cr_ids = this.checkedCrList.map((item: any) => item.id);
@@ -585,7 +587,6 @@ export class CrTabsComponent {
               detail: res?.data,
             });
           }
-          // this.specUtils._getLatestCrList(true);
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -614,7 +615,6 @@ export class CrTabsComponent {
             summary: 'SUCCESS',
             detail: 'CR has been successfully UnLinked',
           });
-          this.specUtils._loadActiveTab({ activeIndex: 1 });
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -633,6 +633,7 @@ export class CrTabsComponent {
         });
       });
   }
+
   sendEmailNotificationToTheUser(): void {
     const body = {
       to: [this.currentUser?.email],
@@ -875,14 +876,13 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
-          // this.specUtils._getLatestCrList(true);
           this.getMeCrList();
           this.crData.forEach((ele: any) => {
             ele.showComment = false;

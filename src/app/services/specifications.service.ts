@@ -13,7 +13,7 @@ export class SpecificationsService {
     private specApiService: SpecApiService,
     private specUtils: SpecificationUtilsService,
     private commentsService: CommentsService
-  ) {}
+  ) { }
 
   getVersions(
     productId: string,
@@ -44,7 +44,9 @@ export class SpecificationsService {
       });
   }
 
-  getMeSpecInfo(params: any) {
+  getMeSpecInfo(params: any,
+    successCallback?: (data: any) => void,
+    errorCallback?: (error: any) => void) {
     this.specApiService
       .getSpec({
         productId: params.productId,
@@ -55,9 +57,8 @@ export class SpecificationsService {
           response.data.forEach((element: any) => {
             element.content_data_type = 'BANNER';
           });
-          console.log(' response.data', response.data);
-
           this.specUtils.saveSpecList(response.data);
+          if (successCallback) successCallback(response.data);
         }
         this.utils.loadSpinner(false);
       })
@@ -78,11 +79,22 @@ export class SpecificationsService {
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils.saveCommentList(response.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
         }
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
         console.log(err);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
         this.utils.loadSpinner(false);
       });
   }
@@ -94,11 +106,21 @@ export class SpecificationsService {
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils.saveTaskList(response.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
         }
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
-        console.log(err);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
         this.utils.loadSpinner(false);
       });
   }
@@ -112,16 +134,81 @@ export class SpecificationsService {
       })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
-          // this.specUtils._getMeUpdatedComments(response.data);
-          // this.specUtils._openCommentsPanel(true);
-          // this.specUtils._getSpecBasedOnVersionID(obj);
-          // this.specUtils._tabToActive(obj.template_type);
-          // this.router.navigate(['/specification']);
+          this.specUtils.saveCommentList(response.data)
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
         }
         this.utils.loadSpinner(false);
       })
       .catch((err) => {
         console.log(err);
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
+  }
+
+  getMeAllTasks(obj: any) {
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getTasksByProductId({
+        productId: obj.productId,
+        versionId: obj.versionId,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils.saveTaskList(response.data)
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
+  }
+
+
+  getMeCrList(obj: any) {
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList({
+        productId: obj.productId,
+      })
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils.saveCrList(res.data)
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
         this.utils.loadSpinner(false);
       });
   }

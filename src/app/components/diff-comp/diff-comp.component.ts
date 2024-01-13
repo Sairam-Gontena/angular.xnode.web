@@ -4,6 +4,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecVersion } from 'src/models/spec-versions';
+import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificationUtils.service';
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -20,11 +21,13 @@ export class DiffCompComponent implements OnInit {
   @Input() reveiwerList: any = [];
   @Input() specItemId: any;
   @Input() parentTitle: any;
+  @Input() parentId?: string;
 
   constructor(
     private storageService: LocalStorageService,
-    private specService: SpecificationsService
-  ) {}
+    private specService: SpecificationsService,
+    private specificationUtils: SpecificationUtilsService
+  ) { }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -38,8 +41,8 @@ export class DiffCompComponent implements OnInit {
     return !this.onDiff
       ? ''
       : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-      ? this.diffObj
-      : this.getObjState();
+        ? this.diffObj
+        : this.getObjState();
   }
 
   getObjState() {
@@ -58,10 +61,8 @@ export class DiffCompComponent implements OnInit {
 
   // TODO - NEED TO REFACTOR
   getRemovedItems(fromArray: any[], toArray: any[], isOnDiff: boolean = false) {
-    console.log('isOnDiff:', isOnDiff);
     if (!isOnDiff) return undefined;
     const map: any = {};
-    console.log('fromArray:', fromArray, 'toArray:', toArray);
     const removedItems: any[] = [];
     for (const item of toArray) {
       map[item.id] = item;
@@ -72,7 +73,6 @@ export class DiffCompComponent implements OnInit {
         removedItems.push(item);
       }
     }
-    console.log('removedItems:', removedItems);
     return removedItems;
   }
 
@@ -94,7 +94,6 @@ export class DiffCompComponent implements OnInit {
   }
 
   changeView(specItem: any): void {
-    console.log('specItem', this.contentObj, specItem);
     this.contentObj.showTable = true;
   }
 
@@ -102,10 +101,10 @@ export class DiffCompComponent implements OnInit {
     const version: SpecVersion | undefined = this.storageService.getItem(
       StorageKeys.SpecVersion
     );
-    if (version)
-      this.specService.getMeAllComments({
-        productId: specItem.product_id,
-        versionId: version.id,
-      });
+    if (version) {
+      this.specService.getMeSpecLevelCommentsList({ parentId: this.specItemId })
+      this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 0 })
+
+    }
   }
 }

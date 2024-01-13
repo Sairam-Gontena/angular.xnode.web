@@ -9,6 +9,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
@@ -63,7 +64,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     private datePipe: DatePipe,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
-    private specService: SpecificationsService
+    private specService: SpecificationsService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.minDate = new Date();
     this.references = [];
@@ -76,9 +78,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.users = this.storageService.getItem(StorageKeys.USERLIST);
-    this.users.forEach((element: any) => {
-      element.name = element?.first_name + ' ' + element?.last_name;
-    });
+    if (this.users)
+      this.users.forEach((element: any) => {
+        element.name = element?.first_name + ' ' + element?.last_name;
+      });
     this.mentionConfig = {
       labelKey: 'name',
       mentionSelect: this.format.bind(this),
@@ -248,25 +251,24 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   prepareDataToDisplayOnCommentsPanel(): void {
+    this.comment = '';
     let detail = '';
     if (this.action === 'EDIT') {
       detail = 'Comment updated successfully';
     } else {
       detail = 'Comment added successfully';
     }
-    if (!this.isCommnetsPanelOpened) {
-      this.specUtils._openCommentsPanel(true);
-    }
-    this.comment = '';
-    this.closeOverlay.emit();
     if (this.assignAsaTask || this.activeIndex === 1) {
       this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
+      this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 1 })
     } else {
       this.specService.getMeSpecLevelCommentsList({ parentId: this.parentId });
+      this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 0 })
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
+    this.closeOverlay.emit();
   }
 
   prepareDataToSaveAsTask(): void {
@@ -320,17 +322,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       .addTask(body)
       .then((commentsReponse: any) => {
         if (commentsReponse.statusText === 'Created') {
-          if (!this.isCommnetsPanelOpened)
-            this.specUtils._openCommentsPanel(true);
           this.comment = '';
           this.closeOverlay.emit();
-          this.specUtils._tabToActive('TASK');
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
             detail: 'Task added successfully',
           });
           this.uploadedFiles = [];
+          this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
+          this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 1 })
+
         } else {
           this.utils.loadToaster({
             severity: 'error',

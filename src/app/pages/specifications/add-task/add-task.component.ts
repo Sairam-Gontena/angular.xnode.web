@@ -8,6 +8,7 @@ import { MentionConfig } from 'angular-mentions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -72,7 +73,8 @@ export class AddTaskComponent {
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
     private localStorageService: LocalStorageService,
-    private specService: SpecificationsService
+    private specService: SpecificationsService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.minDate = new Date();
     this.addTaskForm = this.fb.group({
@@ -84,21 +86,16 @@ export class AddTaskComponent {
       files: [[]],
     });
     this.references = [];
-    // this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
-    //   if (event) this.isCommnetsPanelOpened = event;
-    // });
   }
   ngOnInit() {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
+    this.userList.forEach((element: any) => {
+      element.name = element.first_name + " " + element.last_name
+    });
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    // this.specUtils.getreviewerListChange.subscribe((data: any) => {
-    //   if (data) {
-    //     this.reveiwerList = data;
-    //   }
-    // });
   }
 
   onDateSelect(event: any): void {
@@ -313,6 +310,7 @@ export class AddTaskComponent {
           this.comment = '';
           this.closeOverlay.emit();
           this.specService.getMeSpecLevelTaskList({ parentId: body.parentId });
+          this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 1 })
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
