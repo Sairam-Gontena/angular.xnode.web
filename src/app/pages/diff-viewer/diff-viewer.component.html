@@ -5,16 +5,16 @@
     <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
       (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (specDataChange)="onSpecDataChange($event)"
       (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-    <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">
-      <p-dropdown [options]="versions" [(ngModel)]="selectedVersionOne" optionLabel="label"
-        (onChange)="onVersionChange($event, 'one')" placeholder="Select a version"
-        class="ml-3 app-dropdown"></p-dropdown>
-      <p-dropdown [options]="versions" [(ngModel)]="selectedVersionTwo" optionLabel="label"
-        (onChange)="onVersionChange($event, 'two')" placeholder="Select a version"
-        class="ml-3 app-dropdown"></p-dropdown>
-    </div>
     <div class="diff-view flex justify-content-center">
       <div class="w-8">
+        <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">
+          <p-dropdown [options]="versions" [(ngModel)]="selectedVersionOne" optionLabel="label"
+            (onChange)="onVersionChange($event, 'one')" placeholder="Select a version"
+            class="ml-3 app-dropdown"></p-dropdown>
+          <p-dropdown [options]="versions" [(ngModel)]="selectedVersionTwo" optionLabel="label"
+            (onChange)="onVersionChange($event, 'two')" placeholder="Select a version"
+            class="ml-3 app-dropdown"></p-dropdown>
+        </div>
         <div class='m-4' *ngFor="let item of specList;let i = index">
           <xnode-diff-comp [users]="usersList" [contentObj]="item" [index]="i"
             [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
