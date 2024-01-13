@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { SpecService } from 'src/app/api/spec.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { environment } from 'src/environments/environment';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -43,11 +43,11 @@ export class DiffViewerComponent implements OnInit {
   specOneList: any = [];
   specTwoList: any = [];
   usersList: any;
-  reveiwerList: any;
+  swaggerData: any;
 
   constructor(
     private utils: UtilsService,
-    private specApiService: SpecService,
+    private specApiService: SpecApiService,
     private storageService: LocalStorageService,
     private router: Router,
     private specService: SpecificationsService,
@@ -100,6 +100,7 @@ export class DiffViewerComponent implements OnInit {
         productId: this.product?.id,
         versionId: data[0].id,
       });
+      this.storageService.saveItem(StorageKeys.SpecVersion, data[0]);
     });
   }
 

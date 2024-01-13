@@ -111,19 +111,19 @@
             [parentEntity]="'SPEC'" [parentId]="specItemId"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end">
-          <img src="../assets/comment.svg" class="pointer pt-2" alt="comment" *ngIf="contentObj.showCommentIcon"
-          (click)="op.toggle($event)">
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6"  *ngIf="contentObj.showCommentIcon"
-           ></i>
-          <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2"  *ngIf="contentObj.showCommentIcon"
-            >
-          <p-overlayPanel #op1 appendTo="body"
-            (onHide)="op1.toggle(false);">
-            <xnode-add-task [reveiwerList]="reveiwerList" (closeOverlay)="op1.toggle(false)"
-              [selectedContent]="contentObj" [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-              [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
-          </p-overlayPanel>
+          <div *ngIf="contentObj.showCommentIcon">
+            <img src="../assets/comment.svg" class="pointer pt-2" alt="comment" 
+            (click)="op.toggle($event)">
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+            <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+          </div>
         </div>
+        <p-overlayPanel #op1 appendTo="body"
+        (onHide)="op1.toggle(false);">
+        <xnode-add-task  (closeOverlay)="op1.toggle(false)"
+          [selectedContent]="contentObj" [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+          [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
+      </p-overlayPanel>
         <div class="col-12 py-0" [class]="getClass()">
           <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
             [onDiff]="onDiff"></xnode-diff-generator>

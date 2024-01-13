@@ -37,6 +37,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { InlineDiffComponent } from 'ngx-diff';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { MultiSelectModule } from 'primeng/multiselect';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -73,6 +75,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     CalendarModule,
     InlineDiffComponent,
     InputSwitchModule,
+    MultiSelectModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -111,6 +114,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     AutoCompleteModule,
     InlineDiffComponent,
     InputSwitchModule,
+    MultiSelectModule,
   ],
   providers: [DataService],
 })

@@ -42,7 +42,7 @@
                             <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem"
                                 [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                                 (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                                [reveiwerList]="reveiwerList" (onClickSeeLess)="_onClickSeeLess($event)"
+                                (onClickSeeLess)="_onClickSeeLess($event)"
                                 (childLoaded)="onChildLoaded($event)"
                                 (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                                 (expandComponent)="_expandComponent($event)" [readOnly]="false"
@@ -65,8 +65,8 @@
         </div>
         <div *ngIf="isCommnetsPanelOpened"
             [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
-            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData" [usersList]="usersList"
-                [reveiwerList]="reveiwerList"></xnode-comments-cr-panel>
+            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData" 
+             ></xnode-comments-cr-panel>
         </div>
     </div>
 </div>

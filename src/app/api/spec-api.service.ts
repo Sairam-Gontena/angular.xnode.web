@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class SpecService extends BaseApiService {
+export class SpecApiService extends BaseApiService {
   override get apiUrl(): string {
     return environment.commentsApiUrl;
   }

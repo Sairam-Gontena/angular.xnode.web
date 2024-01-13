@@ -16,7 +16,7 @@ import { delay, of } from 'rxjs';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SpecService } from '../api/spec.service';
+import { SpecApiService } from '../api/spec-api.service';
 import { NaviApiService } from '../api/navi-api.service';
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -100,7 +100,7 @@ export class CrTabsComponent {
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
     private fb: FormBuilder,
-    private specService: SpecService,
+    private specService: SpecApiService,
     private naviApiService: NaviApiService
   ) {
     this.minDate = new Date();

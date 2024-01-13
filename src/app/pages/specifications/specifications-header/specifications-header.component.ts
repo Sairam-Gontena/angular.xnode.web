@@ -4,18 +4,16 @@ import {
   Input,
   OnInit,
   Output,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
-import { SpecService } from 'src/app/api/spec.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 @Component({
   selector: 'xnode-specifications-header',
   templateUrl: './specifications-header.component.html',
@@ -43,7 +41,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     { label: 'Exit', value: 'EXIT' },
   ];
   selectedView: any;
-
   specData: any;
   isCommentsPanelOpened: any;
   showingCRList: any;
@@ -51,31 +48,17 @@ export class SpecificationsHeaderComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private specApiService: SpecService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService
-  ) {
-    // this.specUtils.openCommentsPanel.subscribe((event: any) => {
-    //   this.isCommentsPanelOpened = event;
-    // });
-    // this.specUtils.loadActiveTab.subscribe((event) => {
-    //   if (event === 1) {
-    //     this.showingCRList = true;
-    //   } else {
-    //     this.showingCRList = false;
-    //   }
-    // });
-    // this.utils.openSpecSubMenu.subscribe((data: any) => {
-    //   this.isSideMenuOpened = data;
-    // });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.getStorageData();
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.versions = changes['versions'].currentValue;
     this.selectedVersion = changes['versions'].currentValue[0];

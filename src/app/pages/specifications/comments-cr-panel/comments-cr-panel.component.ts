@@ -20,9 +20,7 @@ export class CommentsCrPanelComponent implements OnInit {
   @ViewChild(TabView)
   tabView!: TabView;
   @Input() specData?: Array<[]>;
-  @Input() usersList: any;
   @Input() swaggerData: any;
-  @Input() reveiwerList: any;
   userImage?: any = 'DC';
   username?: any;
   filterOptions: Array<DropdownOptions> = [
@@ -41,6 +39,7 @@ export class CommentsCrPanelComponent implements OnInit {
   crData: any = [];
   product: any;
   showSpecLevelComments: any;
+  userList: any;
 
   constructor(
     private utils: UtilsService,
@@ -51,6 +50,7 @@ export class CommentsCrPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
+    this.userList = this.storageService.getItem(StorageKeys.USERLIST);
     this.specUtils.getMeUpdatedCrs.subscribe((res: any) => {
       if (res) {
         this.crData = res;

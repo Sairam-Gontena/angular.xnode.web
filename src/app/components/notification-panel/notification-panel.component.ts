@@ -8,7 +8,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from '../services/spec-utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
-import { SpecService } from 'src/app/api/spec.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class NotificationPanelComponent {
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService,
-    private specService: SpecService,
+    private specService: SpecApiService,
     private naviApiService: NaviApiService
   ) {
     let user = localStorage.getItem('currentUser');

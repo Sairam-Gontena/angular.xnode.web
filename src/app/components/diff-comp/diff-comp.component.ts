@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecVersion } from 'src/models/spec-versions';
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -19,12 +21,12 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
 
-  constructor(private storageService: LocalStorageService) {}
+  constructor(
+    private storageService: LocalStorageService,
+    private specService: SpecificationsService
+  ) {}
 
   ngOnInit(): void {
-    // console.log('contentObj============', this.contentObj);
-    // console.log('diffObj===========', this.diffObj);
-
     this.product = this.storageService.getItem(StorageKeys.Product);
   }
 
@@ -94,5 +96,16 @@ export class DiffCompComponent implements OnInit {
   changeView(specItem: any): void {
     console.log('specItem', this.contentObj, specItem);
     this.contentObj.showTable = true;
+  }
+
+  onClickViewComments(specItem: any): void {
+    const version: SpecVersion | undefined = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    if (version)
+      this.specService.getMeAllComments({
+        productId: specItem.product_id,
+        versionId: version.id,
+      });
   }
 }

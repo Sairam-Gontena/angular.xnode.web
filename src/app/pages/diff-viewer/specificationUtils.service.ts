@@ -15,6 +15,18 @@ export class SpecificationUtilsService {
   private loadSpecList: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeSpecList: Observable<any> = this.loadSpecList.asObservable();
 
+  private loadCommentList: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public getMeCommentList: Observable<any> =
+    this.loadCommentList.asObservable();
+
+  private loadTaskList: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public getMeTaskList: Observable<any> = this.loadTaskList.asObservable();
+
+  private showConversationPanel: BehaviorSubject<any> =
+    new BehaviorSubject<any>(null);
+  public _openConversationPanel: Observable<any> =
+    this.showConversationPanel.asObservable();
+
   constructor() {}
 
   saveVerions(event: SpecVersion[]): void {
@@ -23,5 +35,17 @@ export class SpecificationUtilsService {
 
   saveSpecList(event: any): void {
     this.loadSpecList.next(event);
+  }
+
+  saveCommentList(event: any): void {
+    this.loadCommentList.next(event);
+  }
+
+  saveTaskList(event: any): void {
+    this.loadTaskList.next(event);
+  }
+
+  openConversationPanel(event: any): void {
+    this.showConversationPanel.next(event);
   }
 }

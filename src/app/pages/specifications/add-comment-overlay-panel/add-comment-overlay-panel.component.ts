@@ -8,7 +8,8 @@ import { DatePipe } from '@angular/common';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-import { AuthApiService } from 'src/app/api/auth.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -42,7 +43,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   currentUser: any;
   product: any;
   listToMention: any;
-  config: MentionConfig = {};
+  mentionConfig: MentionConfig = {};
   references: any;
   isCommnetsPanelOpened: boolean = false;
   isUploading: boolean = false;
@@ -61,7 +62,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private specService: SpecificationsService
   ) {
     this.minDate = new Date();
     this.references = [];
@@ -74,18 +76,16 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.users = this.storageService.getItem(StorageKeys.USERLIST);
-    if (this.from == 'cr-tabs') {
-      this.assignAsaTask = true;
-    }
-    if (this.users) {
-      this.users.forEach((element: any) => {
-        element.name = element?.first_name + ' ' + element?.last_name;
-      });
-    }
-    this.config = {
+    this.users.forEach((element: any) => {
+      element.name = element?.first_name + ' ' + element?.last_name;
+    });
+    this.mentionConfig = {
       labelKey: 'name',
       mentionSelect: this.format.bind(this),
     };
+    if (this.from == 'cr-tabs') {
+      this.assignAsaTask = true;
+    }
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -250,7 +250,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   prepareDataToDisplayOnCommentsPanel(): void {
     let detail = '';
     if (this.action === 'EDIT') {
-      detail = 'Comment edited successfully';
+      detail = 'Comment updated successfully';
     } else {
       detail = 'Comment added successfully';
     }
@@ -260,52 +260,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.comment = '';
     this.closeOverlay.emit();
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.getMeSpecLevelTaskList();
+      this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
     } else {
-      this.getMeSpecLevelCommentsList();
+      this.specService.getMeSpecLevelCommentsList({ parentId: this.parentId });
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
   }
 
-  getMeSpecLevelCommentsList() {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getComments({ parentId: this.parentId, isReplyCountRequired: true })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive('COMMENT');
-          this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
-
-  getMeSpecLevelTaskList() {
-    console.log('MMM');
-
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getTasks({ parentId: this.parentId, isReplyCountRequired: true })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive('TASK');
-          this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
   prepareDataToSaveAsTask(): void {
     let body;
     if (this.action === 'EDIT') {
@@ -388,6 +351,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.assignAsaTask = false;
       });
   }
+
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
@@ -401,6 +365,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.assinedUsers.push(match[1]);
     }
   }
+
   fileBrowseHandler(event: any) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
     const files = (event.target as HTMLInputElement).files;
@@ -442,6 +407,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
+
   private async readFileContent(file: File) {
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -455,6 +421,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
     reader.readAsArrayBuffer(file); // Move this line outside the onload function
   }
+
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);

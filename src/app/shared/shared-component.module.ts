@@ -47,6 +47,22 @@ import { SpecificationsHeaderComponent } from '../pages/specifications/specifica
 import { SpecificationsMenuComponent } from '../pages/specifications/specifications-menu/specifications-menu.component';
 import { SpecGenPopupComponent } from '../pages/specifications/spec-gen-popup/spec-gen-popup.component';
 import { AddTaskComponent } from '../pages/specifications/add-task/add-task.component';
+import { CommentsCrPanelComponent } from '../pages/specifications/comments-cr-panel/comments-cr-panel.component';
+import { CommentsTabsComponent } from '../pages/specifications/comments-tabs/comments-tabs.component';
+import { CrTabsComponent } from '../cr-tabs/cr-tabs.component';
+import { TaskListComponent } from '../pages/specifications/task-list/task-list.component';
+import { TaskChildConversationComponent } from '../pages/specifications/task-child-conversation/task-child-conversation.component';
+import { TasksPanelComponent } from '../pages/specifications/tasks-panel/tasks-panel.component';
+import { CommentsPanelComponent } from '../pages/specifications/comments-panel/comments-panel.component';
+import { NoCommentsComponent } from '../no-comments/no-comments.component';
+import { LinkToCrComponent } from '../link-to-cr/link-to-cr.component';
+import { ParaViewComponent } from '../pages/specifications/para-view/para-view.component';
+import { UserRolesComponent } from '../pages/specifications/user-roles/user-roles.component';
+import { ListViewComponent } from '../pages/specifications/list-view/list-view.component';
+import { CreateNewCrVersionComponent } from '../pages/specifications/create-new-cr-version/create-new-cr-version.component';
+import { SpecConversationComponent } from '../pages/specifications/spec-conversation/spec-conversation.component';
+import { ConversationActionsComponent } from '../pages/specifications/conversation-actions/conversation-actions.component';
+import { SpecChildConversationComponent } from '../pages/specifications/spec-child-conversation/spec-child-conversation.component';
 // import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
@@ -100,7 +116,23 @@ import { AddTaskComponent } from '../pages/specifications/add-task/add-task.comp
     SpecificationsHeaderComponent,
     SpecificationsMenuComponent,
     SpecGenPopupComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    CommentsCrPanelComponent,
+    CommentsTabsComponent,
+    CrTabsComponent,
+    TaskListComponent,
+    TaskChildConversationComponent,
+    TasksPanelComponent,
+    CommentsPanelComponent,
+    NoCommentsComponent,
+    LinkToCrComponent,
+    ParaViewComponent,
+    UserRolesComponent,
+    ListViewComponent,
+    CreateNewCrVersionComponent,
+    SpecConversationComponent,
+    ConversationActionsComponent,
+    SpecChildConversationComponent,
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -149,10 +181,26 @@ import { AddTaskComponent } from '../pages/specifications/add-task/add-task.comp
     // DiffGeneratorComponent,
     // DiffListComponent,
     UserPersonaComponent,
+    ConversationActionsComponent,
     SpecificationsHeaderComponent,
     SpecificationsMenuComponent,
     SpecGenPopupComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    CommentsCrPanelComponent,
+    CommentsTabsComponent,
+    CrTabsComponent,
+    TaskListComponent,
+    TaskChildConversationComponent,
+    TasksPanelComponent,
+    CommentsPanelComponent,
+    NoCommentsComponent,
+    LinkToCrComponent,
+    ParaViewComponent,
+    UserRolesComponent,
+    ListViewComponent,
+    CreateNewCrVersionComponent,
+    SpecConversationComponent,
+    SpecChildConversationComponent,
   ],
 })
 export class SharedComponentModule {}
