@@ -1,6 +1,5 @@
 // @import "bootstrap/scss/bootstrap";
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import "~diff2html/bundles/css/diff2html.min.css";
 @import "primeicons/primeicons.css";
 @import './theme.scss';
 @import './app/styles/overrides.scss';
@@ -15,6 +14,7 @@
 @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 @import '~bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css';
 // @import '~bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css';
+@import './diff2.min.css';
 
 html {
   position: relative;

@@ -1,26 +1,3 @@
-// import { Component, Input, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'xnode-diff-generator',
-//   templateUrl: './diff-generator.component.html',
-//   styleUrls: ['./diff-generator.component.scss'],
-// })
-// export class DiffGeneratorComponent implements OnInit {
-//   @Input() newContent: string = '';
-//   @Input() oldContent: string = '';
-//   @Input() onDiff: boolean = false;
-//   constructor() {
-//     // console.log('onDiff constructor',this.onDiff)
-//     // console.log('oldContent',this.oldContent)
-//     // console.log('newContent',this.newContent)
-//   }
-//   ngOnInit(): void {
-//     // console.log('onDiff ngOnInit',this.onDiff)
-//     // console.log('oldContent',this.oldContent)
-//     // console.log('newContent',this.newContent)
-//   }
-// }
-
 import {
   Component,
   OnInit,
@@ -31,8 +8,8 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { NgxDiff2htmlService } from './ngx-diff2html.service';
-import { DiffFormat, DiffStyle } from './ngx-diff2html.model';
+import { DiffToHtmlService } from './diff-to-html.service';
+import { DiffFormat, DiffStyle } from './diff-to-html.model';
 
 @Component({
   selector: 'xnode-diff-generator',
@@ -43,23 +20,20 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   @Input() newContent: string = '';
   @Input() oldContent: string = '';
   @Input() onDiff: boolean = false;
-  @Input() private left: string = '';
-  @Input() private right: string = '';
   @Input() private filename: string = '';
-  @Input() private format: DiffFormat = 'line-by-line';
+  @Input() private format: DiffFormat = 'side-by-side';
   @Input() private style: DiffStyle = 'word';
   @Output() diffChange: EventEmitter<string> = new EventEmitter();
   private diff: string = '';
   diffHTML: string = '';
 
-  constructor(private diffService: NgxDiff2htmlService) {}
+  constructor(private diffService: DiffToHtmlService) {}
 
   ngOnInit() {
     this.getDiff();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    //console.log(changes);
     if (
       this.propHasChanged(changes['left']) ||
       this.propHasChanged(changes['right'])
@@ -82,7 +56,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   }
 
   getDiff() {
-    this.diff = this.diffService.getDiff(this.left, this.right, this.filename);
+    this.diff = this.diffService.getDiff(this.oldContent||'', this.newContent||'', this.filename);
     this.refreshDiffHTML();
     this.diffChange.emit(this.diff);
   }

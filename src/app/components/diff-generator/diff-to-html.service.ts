@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { diff_match_patch } from 'diff-match-patch';
-// import * as Diff2Html from 'diff2html';
-import { DiffFormat, DiffStyle } from './ngx-diff2html.model';
+import * as Diff2Html from 'diff2html';
+import { DiffFormat, DiffStyle } from './diff-to-html.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class NgxDiff2htmlService {
+export class DiffToHtmlService {
   constructor() {}
 
   getDiff(text1: string, text2: string, filename: string = '') {
@@ -46,17 +46,14 @@ export class NgxDiff2htmlService {
 
   diffToHTML(
     diff: string,
-    format: DiffFormat = 'line-by-line',
+    format: DiffFormat = 'side-by-side',
     style: DiffStyle = 'word'
   ) {
-    console.log('diffdiffdiff', diff);
-
-    // return Diff2Html.html(diff, {
-    //   drawFileList: false,
-    //   matching: 'lines',
-    //   outputFormat: format,
-    //   diffStyle: style,
-    // });
-    return '<h1>Testing</h1>';
+    return Diff2Html.html(diff, {
+      drawFileList: false,
+      matching: 'lines',
+      outputFormat: format,
+      diffStyle: style,
+    });
   }
 }
