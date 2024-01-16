@@ -81,8 +81,8 @@
                     "primary_button_inactive":"#824E6D",
                     "primary_button_color":"#EF018F",
                     "primary_button_text_color":"#EFEEEE",
-                    "teritory_button_text_color":"#A2A2A3",
-                    "teritory_button_border_color":"#A2A2A3"
+                    "teritory_button_text_color":"#EFEEEE",
+                    "teritory_button_border_color":"#FFFFFF"
                 },
                 "inputext":{
                     "inputtext_background_color":"#2E2D36",

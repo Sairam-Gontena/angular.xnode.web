@@ -287,6 +287,10 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to publish this product?',
       header: 'Confirmation',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      acceptButtonStyleClass: 'custom-accept-button',
+      rejectButtonStyleClass: 'custom-reject-button', 
       accept: () => {
         this.utilsService.loadSpinner(true);
         const body = {
