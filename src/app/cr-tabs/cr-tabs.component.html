@@ -266,7 +266,7 @@
                               [item]="subData?.task?.referenceContent"></xnode-bpmn-common>
                           </div>
                           <div *ngIf="subData?.task?.referenceContent?.title==='Data Model'">
-                            <xnode-data-model-common></xnode-data-model-common>
+                            <xnode-data-model-common [specData]="'spec'"></xnode-data-model-common>
                           </div>
                           <div
                             *ngIf="subData?.task?.referenceContent?.title === 'Usecases' || subData?.task?.referenceContent?.title === 'Use Cases'">
@@ -386,7 +386,7 @@
                               [item]="subData?.comment?.referenceContent"></xnode-bpmn-common>
                           </div>
                           <div *ngIf="subData?.comment?.referenceContent?.title==='Data Model'">
-                            <xnode-data-model-common></xnode-data-model-common>
+                            <xnode-data-model-common [specData]="'spec'"></xnode-data-model-common>
                           </div>
                           <div
                             *ngIf="subData?.comment?.referenceContent?.title === 'Usecases' || subData?.comment?.referenceContent?.title === 'Use Cases'">
