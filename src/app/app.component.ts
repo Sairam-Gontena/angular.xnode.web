@@ -500,8 +500,10 @@ export class AppComponent implements OnInit {
       const chatbotContainer = document.getElementById(
         'side-window'
       ) as HTMLElement;
-      chatbotContainer.style.display = 'block';
-      chatbotContainer.classList.add('open');
+      if(chatbotContainer && chatbotContainer.style && chatbotContainer.classList){
+        chatbotContainer.style.display = 'block';
+        chatbotContainer.classList.add('open');
+      }      
     }
   }
 
