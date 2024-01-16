@@ -25,7 +25,6 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
   providers: [DataService, JsPlumbService, UtilService, MessageService],
 })
 export class DataModelCommonComponent {
-  @Input() dataModelData: any;
   @Input() erModelInput: any;
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
@@ -56,7 +55,6 @@ export class DataModelCommonComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private naviApiService: NaviApiService
   ) {
-    this.data = this.dataService.data;
     this.router.events.subscribe((data: any) => {
       this.router.url == '/configuration/data-model/x-bpmn'
         ? (this.bpmnSubUrl = true)
@@ -81,7 +79,11 @@ export class DataModelCommonComponent {
     setTimeout(() => {
       if (this.specData === 'spec') {
         const list: any = this.storageService.getItem(StorageKeys.SpecData);
-        this.dataModel = list[3].content[10].content;
+        list[3].content.forEach((item:any)=>{
+          if(item.title=='Data Model'){
+            this.dataModel = item.content;
+          }
+        });
         this.jsPlumbService.init();
         this.dataService.loadData(
           this.utilService.ToModelerSchema(this.dataModel)
@@ -90,6 +92,7 @@ export class DataModelCommonComponent {
         this.getDataModel();
       }
     }, 100);
+    this.data = this.dataService.data;
   }
   getDataModel() {
     this.dataModel = [];

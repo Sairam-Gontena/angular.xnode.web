@@ -86,7 +86,7 @@
               [item]="cmt?.referenceContent"></xnode-bpmn-common>
           </div>
           <div *ngIf="cmt?.referenceContent?.title==='Data Model'">
-            <xnode-data-model-common [dataModelData]="cmt?.referenceContent"></xnode-data-model-common>
+            <xnode-data-model-common></xnode-data-model-common>
           </div>
           <div *ngIf="cmt?.referenceContent?.title === 'Usecases' || cmt?.referenceContent?.title === 'Use Cases'">
             <xnode-common-usecases [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
