@@ -1,1 +1,82 @@
-<h1>hi</h1>
+<div class="pt-4">
+    <div class="mb-2" *ngFor="let item of content; let mainIndex = index;">
+        <p class="text-xl">{{item.title}}</p>
+        <ul *ngFor="let subItem of item.content">
+            <li (mouseover)="subItem.showCommentIcon = true" (mouseleave)="subItem.showCommentIcon = false">
+                <p-overlayPanel #op (onHide)="subItem.showCommentIcon=false">
+                    <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);" [position]="'absolute'"
+                      [parentTitle]="parentTitle" [users]="users" [selectedContent]="specItem" [specItem]="specItem"
+                      placeHolder="Add a Comment" [commentType]="'comment'" [parentEntity]="'SPEC'"
+                      [parentId]="specItem.id"></xnode-add-comment-overlay-panel>
+                  </p-overlayPanel>
+                  <p-overlayPanel #op1 appendTo="body" (onHide)="op1.toggle(false);">
+                    <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="content" [parentTitle]="parentTitle"
+                      [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+                      [specItem]="content"></xnode-add-task>
+                  </p-overlayPanel>
+                <div class="flex justify-content-between">
+                    <div>
+                        <b>{{subItem.title}}</b>
+                        <p>{{subItem.content}}</p>
+                    </div>
+                    <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="subItem.showCommentIcon">
+                        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+                        <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
+                            (click)="onClickViewComments(content)"></i>
+                        <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!-- <div class="flex col-12 p-0 ">
+                <div class="col-10 p-0">
+                    <p class="m-0 flex flex-wrap pb-1 line-height-3">
+                        <span class="sub-title text-base font-medium"
+                            *ngFor="let word of subItem?.title?.split(' '); index as i" class="mr-1"
+                            [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
+                            <p-overlayPanel #selectionText>
+                                <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
+                                    *ngIf="selectedText.length>0" (closeOverlay)="selectionText.toggle(false)"
+                                    [parentEntity]="'SPEC'" [selectedText]="selectedText" [parentTitle]="parentTitle"
+                                    [specId]="specId" [parentId]="specItem.id" [position]="'absolute'"
+                                    [selectedContent]="item"
+                                    placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                            </p-overlayPanel>
+                        </span>
+                        :
+                        <span class="sub-content font-normal text-base"
+                            *ngFor="let word of subItem?.content?.split(' '); index as i" class="mr-1"
+                            [innerHTML]="word | highlight: searchTerm" (mouseup)="contentSelected($event)">
+                            <p-overlayPanel #selectionText>
+                                <xnode-add-comment-overlay-panel [width]="'auto'" [users]="users"
+                                    *ngIf="selectedText.length>0" [parentTitle]="parentTitle"
+                                    (closeOverlay)="selectionText.toggle(false)" [selectedText]="selectedText"
+                                    [parentEntity]="'SPEC'" [parentId]="specItem.id" [position]="'absolute'"
+                                    [selectedContent]="item"
+                                    placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                            </p-overlayPanel>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-1 p-0 flex  align-items-start justify-content-center">
+                    <p-overlayPanel #op>
+                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
+                            (closeOverlay)="op.toggle(false)" [parentTitle]="parentTitle" [parentId]="specItem.id"
+                            [position]="'absolute'" [selectedContent]="item" [commentType]="'comment'"
+                            [parentEntity]="'SPEC'" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                    </p-overlayPanel>
+                    <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)"
+                        [style.display]="showCommentIcon && seletedMainIndex == mainIndex && selecteedSubIndex == i ? 'block' : 'none'">
+                    <i class="pi pi-eye pointer ml-2" style="color:#0991c6" *ngIf="showCommentIcon"
+                        (click)="openCommentSection()"></i>
+                    <img src="../assets/add-task.svg" class="pointer ml-2" (click)="op1.toggle($event)"
+                        [style.display]="showCommentIcon && seletedMainIndex == mainIndex && selecteedSubIndex == i ? 'block' : 'none'">
+                    <p-overlayPanel #op1 appendTo="body">
+                        <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="item" [users]="users"
+                            placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentTitle]="parentTitle"
+                            [specItem]="specItem"></xnode-add-task>
+                    </p-overlayPanel>
+                </div>
+            </div> -->
+    </div>
+</div>

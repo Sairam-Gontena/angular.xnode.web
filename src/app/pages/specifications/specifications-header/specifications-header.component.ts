@@ -52,13 +52,13 @@ export class SpecificationsHeaderComponent implements OnInit {
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
     private specService: SpecificationsService,
-    private SpecificationUtils: SpecificationUtilsService,
+    private SpecificationUtils: SpecificationUtilsService
   ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
       }
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -147,8 +147,15 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   openComments() {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    this.SpecificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 0 });
-    this.specService.getMeAllComments({ productId: this.product.id, versionId: version.id })
+    this.SpecificationUtils.openConversationPanel({
+      openConversationPanel: true,
+      parentTabIndex: 0,
+      childTabIndex: 0,
+    });
+    this.specService.getMeAllComments({
+      productId: this.product.id,
+      versionId: version.id,
+    });
   }
 
   getMeAllCommentsList() {
@@ -181,7 +188,7 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   onChangeProduct(obj: any): void {
     this.showSpecGenaretePopup = false;
-    this.utils.loadSpinner(true)
+    this.utils.loadSpinner(true);
     let product = this.metaDeta.find((x: any) => x.id === obj.id);
     if (product && product.has_insights) {
       localStorage.setItem('record_id', product.id);
@@ -194,22 +201,40 @@ export class SpecificationsHeaderComponent implements OnInit {
       );
       this.product = product;
       this.specService.getVersions(this.product.id, (data) => {
-        this.specService.getMeSpecInfo({
-          productId: this.product?.id,
-          versionId: data[0].id,
-        }, (specData) => {
-          console.log('this.conversationPanelInfothis.conversationPanelInfothis.conversationPanelInfo', this.conversationPanelInfo);
-
-          if (specData) {
-            if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 0 && this.conversationPanelInfo?.childTabIndex === 0) {
-              this.specService.getMeAllComments({ productId: this.product?.id, versionId: data[0].id })
-            } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 0 && this.conversationPanelInfo?.childTabIndex === 1) {
-              this.specService.getMeAllTasks({ productId: this.product?.id, versionId: data[0].id })
-            } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 1) {
-              this.specService.getMeCrList({ productId: this.product?.id })
+        this.specService.getMeSpecInfo(
+          {
+            productId: this.product?.id,
+            versionId: data[0].id,
+          },
+          (specData) => {
+            if (specData) {
+              if (
+                this.conversationPanelInfo?.openConversationPanel &&
+                this.conversationPanelInfo?.parentTabIndex === 0 &&
+                this.conversationPanelInfo?.childTabIndex === 0
+              ) {
+                this.specService.getMeAllComments({
+                  productId: this.product?.id,
+                  versionId: data[0].id,
+                });
+              } else if (
+                this.conversationPanelInfo?.openConversationPanel &&
+                this.conversationPanelInfo?.parentTabIndex === 0 &&
+                this.conversationPanelInfo?.childTabIndex === 1
+              ) {
+                this.specService.getMeAllTasks({
+                  productId: this.product?.id,
+                  versionId: data[0].id,
+                });
+              } else if (
+                this.conversationPanelInfo?.openConversationPanel &&
+                this.conversationPanelInfo?.parentTabIndex === 1
+              ) {
+                this.specService.getMeCrList({ productId: this.product?.id });
+              }
             }
           }
-        });
+        );
         this.storageService.saveItem(StorageKeys.SpecVersion, data[0]);
       });
     } else {
@@ -254,12 +279,29 @@ export class SpecificationsHeaderComponent implements OnInit {
       productId: this.product?.id,
       versionId: event.value.value,
     });
-    if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 0 && this.conversationPanelInfo?.childTabIndex === 0) {
-      this.specService.getMeAllComments({ productId: this.product?.id, versionId: event.value.value })
-    } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 0 && this.conversationPanelInfo?.childTabIndex === 1) {
-      this.specService.getMeAllTasks({ productId: this.product?.id, versionId: event.value.value })
-    } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 1) {
-      this.specService.getMeCrList({ productId: this.product?.id })
+    if (
+      this.conversationPanelInfo?.openConversationPanel &&
+      this.conversationPanelInfo?.parentTabIndex === 0 &&
+      this.conversationPanelInfo?.childTabIndex === 0
+    ) {
+      this.specService.getMeAllComments({
+        productId: this.product?.id,
+        versionId: event.value.value,
+      });
+    } else if (
+      this.conversationPanelInfo?.openConversationPanel &&
+      this.conversationPanelInfo?.parentTabIndex === 0 &&
+      this.conversationPanelInfo?.childTabIndex === 1
+    ) {
+      this.specService.getMeAllTasks({
+        productId: this.product?.id,
+        versionId: event.value.value,
+      });
+    } else if (
+      this.conversationPanelInfo?.openConversationPanel &&
+      this.conversationPanelInfo?.parentTabIndex === 1
+    ) {
+      this.specService.getMeCrList({ productId: this.product?.id });
     }
   }
   onViewChange(event: any) {

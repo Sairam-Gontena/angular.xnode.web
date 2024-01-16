@@ -60,10 +60,31 @@ export class SpecificationsService {
       })
       .then((response) => {
         if (response.status === 200 && response.data) {
-          response.data.forEach((element: any) => {
-            element.content_data_type = 'BANNER';
-            if (isArray(element.content)) {
-              element.content.forEach((element: any) => {
+          response.data.forEach((specObj: any, eleIndex: any) => {
+            specObj.content_data_type = 'BANNER';
+            if (specObj.title === 'Technical Specifications') {
+              specObj.content.push({
+                title: 'Open API Spec',
+                content_data_type: 'SWAGGER',
+                id: eleIndex,
+              });
+            }
+            if (specObj?.title == 'Quality Assurance') {
+              let content = specObj.content;
+              if (Array.isArray(specObj.content)) {
+                specObj.content = [];
+              }
+              specObj.content.push({
+                title: 'Quality Assurance',
+                content: content,
+                id: specObj.id,
+              });
+            }
+            if (isArray(specObj.content)) {
+              specObj.content.forEach((element: any, index: any) => {
+                if (element.title === 'Data Model Table Data') {
+                  specObj.content.slice(index, 1);
+                }
                 if (element.title === 'User Personas') {
                   element.content_data_type = 'USER_PERSONAS';
                 } else if (element.title === 'Usecases') {
@@ -72,11 +93,28 @@ export class SpecificationsService {
                   element.content_data_type = 'WORKFLOWS';
                 } else if (element.title === 'User Roles') {
                   element.content_data_type = 'USER_ROLES';
+                } else if (element.title === 'Dashboards') {
+                  element.content_data_type = 'DASHBOARD';
+                } else if (
+                  element.title === 'Business Rules' ||
+                  element.title === 'Functional Dependencies' ||
+                  element.title === 'Data Dictionary' ||
+                  element.title === 'User Interface'
+                ) {
+                  element.content_data_type = 'JSON_TABLE';
+                } else if (element.title === 'Data Quality Checks') {
+                  element.content_data_type = 'TABLE';
+                } else if (element.title === 'Data Model') {
+                  element.content_data_type = 'DATA_MODEL';
+                } else if (element.title === 'Quality Assurance') {
+                  element.cont;
                 }
               });
             }
           });
           this.specUtils.saveSpecList(response.data);
+          console.log('response.data', response.data);
+
           this.storageService.saveItem(StorageKeys.SPEC_DATA, response.data);
           if (successCallback) successCallback(response.data);
         }

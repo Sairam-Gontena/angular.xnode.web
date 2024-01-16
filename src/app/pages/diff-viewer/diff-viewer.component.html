@@ -1,6 +1,6 @@
 <div class="flex">
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
-    [specData]="specList"></xnode-specifications-menu>
+    [specData]="specList" (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)"></xnode-specifications-menu>
   <div class="w-full">
     <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
       (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (specDataChange)="onSpecDataChange($event)"

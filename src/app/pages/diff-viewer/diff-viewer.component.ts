@@ -86,13 +86,11 @@ export class DiffViewerComponent implements OnInit {
         }
       }
     );
-    this.specificationUtils._openConversationPanel.subscribe(
-      (data: any) => {
-        if (data) {
-          this.openConversationPanel = data.openConversationPanel
-        }
+    this.specificationUtils._openConversationPanel.subscribe((data: any) => {
+      if (data) {
+        this.openConversationPanel = data.openConversationPanel;
       }
-    );
+    });
   }
 
   ngOnInit(): void {
@@ -220,8 +218,8 @@ export class DiffViewerComponent implements OnInit {
     type === 'one' && event.value.id === this.selectedVersionTwo.id
       ? (this.selectedVersionTwo = undefined)
       : type === 'two' && event.value.id === this.selectedVersionOne.id
-        ? (this.selectedVersionOne = undefined)
-        : null;
+      ? (this.selectedVersionOne = undefined)
+      : null;
     this.utils.loadSpinner(true);
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
@@ -247,7 +245,7 @@ export class DiffViewerComponent implements OnInit {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
           this.usersList = resp.data;
-          this.storageService.saveItem(StorageKeys.USERLIST, resp.data)
+          this.storageService.saveItem(StorageKeys.USERLIST, resp.data);
           this.getVersions();
         } else {
           this.utils.loadToaster({
@@ -318,6 +316,15 @@ export class DiffViewerComponent implements OnInit {
       this.selectedVersionOne = undefined;
       this.selectedVersionTwo = undefined;
       this.specTwoList = [];
+    }
+  }
+
+  onSelectSpecMenuItem(item: any): void {
+    console.log('item', item);
+    new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(item.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

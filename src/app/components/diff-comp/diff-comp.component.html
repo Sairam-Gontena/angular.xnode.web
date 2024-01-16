@@ -57,19 +57,34 @@
       </p-overlayPanel>
       <h3 class="m-0 text-2xl font-bold">{{contentObj.title}}</h3>
       <ul *ngFor="let item of contentObj.content">
-        <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false">
+        <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false" *ngIf="!isString(item);else isObject">
           <div class="flex justify-content-between">
             <div>
               <b>{{item.title}}</b>
               <p>{{item.content}}</p>
             </div>
-            <div class="flex justify-content-end" *ngIf="item.showCommentIcon">
+            <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="item.showCommentIcon">
               <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
               <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
               <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
             </div>
           </div>
         </li>
+        <ng-template #isObject>
+          <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false">
+            <div class="flex justify-content-between">
+              <div>
+                <p class="m-0">{{item}}</p>
+              </div>
+              <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="item.showCommentIcon">
+                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+                <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+                <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+              </div>
+            </div>
+          </li>
+        </ng-template>
+
       </ul>
     </div>
     <div *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
@@ -123,6 +138,11 @@
     </div>
     <div *ngSwitchCase="'USER_ROLES'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+      <xnode-user-roles [id]="contentObj.id" [content]="contentObj.content" [parentTitle]="contentObj.title"
+        [specItem]="contentObj"></xnode-user-roles>
+    </div>
+    <div *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
+      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <div (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
         <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
           <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);"
@@ -140,13 +160,9 @@
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
           <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
         </div>
-        <xnode-user-roles [id]="contentObj.id" [content]="contentObj.content"
-          [parentTitle]="contentObj.title"></xnode-user-roles>
+        <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+        </iframe>
       </div>
-    </div>
-    <div *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
-      <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <p>In Progress</p>
     </div>
     <div *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
@@ -164,9 +180,8 @@
     </div>
     <div *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-      <p>In Progress</p>
-      <!-- <xnode-data-model-common *ngIf="content" (dataFlowEmitter)="expandComponent.emit(content)"
-        [dataModelData]="content"></xnode-data-model-common> -->
+      <xnode-data-model-common *ngIf="contentObj"
+        [dataModelData]="contentObj.content"></xnode-data-model-common>
     </div>
     <div *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">SWAGGER</h3>
@@ -201,18 +216,7 @@
         </div>
       </div>
     </div>
-    <div *ngSwitchCase="'USER_ROLES'" [class]="getClass()">
-      <div [ngSwitch]="getType(contentObj.content)">
-        <div *ngSwitchCase="'array'">
-          <div *ngFor="let item of contentObj.content">
-            <xnode-diff-comp [contentObj]="item" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
-              [onDiff]="onDiff"></xnode-diff-comp>
-          </div>
-          <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content"
-            [targetList]="contentObj.content"></xnode-diff-list>
-        </div>
-      </div>
-    </div>
+
     <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
       class="absolute bottom-0 right-0 mr-2 mb-2 z-5" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
     <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"

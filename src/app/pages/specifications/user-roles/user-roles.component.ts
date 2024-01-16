@@ -32,7 +32,9 @@ export class UserRolesComponent implements OnInit {
     private utilsService: UtilsService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('contentcontent', this.content);
+  }
 
   getWords(subitem: any) {
     if (typeof subitem.content === 'string') {
@@ -102,4 +104,6 @@ export class UserRolesComponent implements OnInit {
         this.specUtils._openCommentsPanel(true);
       });
   }
+
+  onClickViewComments(event: any): void {}
 }

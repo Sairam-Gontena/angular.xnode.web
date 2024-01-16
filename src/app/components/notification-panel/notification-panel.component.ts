@@ -10,6 +10,10 @@ import { SpecUtilsService } from '../services/spec-utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { SpecApiService } from 'src/app/api/spec-api.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { Product } from 'src/models/product';
+import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificationUtils.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecVersion } from 'src/models/spec-versions';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -26,15 +30,13 @@ export class NotificationPanelComponent {
   activeFilter: string = '';
   allNotifications: any[] = [];
   currentUser?: any;
-  account_id: any;
   filterTypes: any = {
     recent: false,
     important: false,
     pinned: false,
     all: true,
   };
-  email: string = '';
-  productId: string = '';
+  product?: Product;
   nonProductContextRoutes = ['/my-products', '/feedback-list', '/help-center'];
 
   constructor(
@@ -46,24 +48,16 @@ export class NotificationPanelComponent {
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService,
     private specService: SpecApiService,
-    private naviApiService: NaviApiService
-  ) {
-    let user = localStorage.getItem('currentUser');
-    if (user) {
-      let userObj = JSON.parse(user);
-      this.email = userObj?.email;
-    }
-    let product = localStorage.getItem('product');
-    if (product) {
-      let productObj = JSON.parse(product);
-      this.productId = productObj?.id;
-    }
-  }
+    private naviApiService: NaviApiService,
+    private specificationUtils: SpecificationUtilsService,
+    private specificationService: SpecificationsService
+  ) {}
 
   ngOnInit(): void {
     this.allNotifications = this.data;
     this.notifications = this.allNotifications;
-    this.currentUser = UserUtil.getCurrentUser();
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
   }
 
   getMeComponent(comp: any) {
@@ -175,12 +169,17 @@ export class NotificationPanelComponent {
   }
 
   goToSpec(obj: any) {
+    this.utils.loadSpinner(true);
     this.naviApiService
       .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
-          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
           const metaData: any = response.data.data;
+          this.storageService.saveItem(
+            StorageKeys.MetaData,
+            response.data.data
+          );
+
           let product = metaData.find((x: any) => x.id === obj.product_id);
           if (!window.location.hash.includes('#/specification')) {
             this.setProductDetailsInThStore(product);
@@ -191,7 +190,35 @@ export class NotificationPanelComponent {
               localStorage.setItem('product', JSON.stringify(product));
               localStorage.setItem('app_name', product.title);
               localStorage.setItem('has_insights', product.has_insights);
-              this.getVersions(obj);
+              this.specificationService.getVersions(
+                product?.id,
+                (versions: SpecVersion[]) => {
+                  this.specificationService.getMeSpecInfo(
+                    {
+                      productId: product?.id,
+                      versionId: obj.versionId,
+                    },
+                    (specList) => {
+                      if (specList) {
+                        this.specificationService.getMeCrList({
+                          productId: product.id,
+                        });
+                        this.storageService.saveItem(
+                          StorageKeys.SpecVersion,
+                          versions.filter((version: SpecVersion) => {
+                            return version.id === obj.versionId;
+                          })[0]
+                        );
+                        this.specificationUtils.openConversationPanel({
+                          openConversationPanel: true,
+                          mainTabIndex: 1,
+                          childTabIndex: null,
+                        });
+                      }
+                    }
+                  );
+                }
+              );
             } else {
               this.setProductDetailsInThStore(product);
             }
@@ -381,8 +408,8 @@ export class NotificationPanelComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.productId
+            this.currentUser.emil,
+            this.product?.id
           );
         } else {
           let user_audit_body = {
@@ -395,8 +422,8 @@ export class NotificationPanelComponent {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.productId
+            this.currentUser.emil,
+            this.product?.id
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -417,8 +444,8 @@ export class NotificationPanelComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.productId
+          this.currentUser.emil,
+          this.product?.id
         );
         this.utils.loadToaster({
           severity: 'error',
@@ -455,8 +482,8 @@ export class NotificationPanelComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.productId
+            this.currentUser.emil,
+            this.product?.id
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -477,8 +504,8 @@ export class NotificationPanelComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.productId
+          this.currentUser.emil,
+          this.product?.id
         );
         this.utils.loadToaster({
           severity: 'error',
