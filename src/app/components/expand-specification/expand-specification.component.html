@@ -38,7 +38,7 @@
   <div id="openapi-ui-spec" class="openapi-spec"></div>
 </div>
   <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Model'" (dataFlowEmitter)="closeFullScreenView.emit()"
-    [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-data-model-common>
+    [dataToExpand]="dataToExpand" [specExpanded]="specExpanded" [specData]="'spec'"></xnode-data-model-common>
     <div class="h-full expand-spec">
       <xnode-bpmn-common *ngIf="dataToExpand.title === 'Workflows'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
       [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>

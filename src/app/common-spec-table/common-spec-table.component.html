@@ -14,8 +14,8 @@
     </div> -->
         <div class="col-12">
             <p-table #dt [value]="content" [columns]="columns" [resizableColumns]="true"
-                [scrollable]="true" scrollDirection="horizontal">
-                <ng-template pTemplate="header" let-columns>
+                [scrollable]="true" scrollDirection="horizontal" class="common-spec-table-head">
+                <ng-template  pTemplate="header" let-columns>
                     <tr>
                         <th pResizableColumn *ngFor="let col of columns" [ngClass]="'tableheader'">
                             {{ col.header }}

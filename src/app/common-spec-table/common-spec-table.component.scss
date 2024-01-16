@@ -7,3 +7,6 @@
     width: 550px;
   }
 }
+:host::ng-deep .common-spec-table-head .p-datatable-scrollable-table>.p-datatable-thead {
+  z-index: 0!important;
+}
