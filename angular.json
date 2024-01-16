@@ -31,11 +31,6 @@
             ],
             "styles": [
               {
-                "input":"src/themes/lara-light-blue.css",
-                "bundleName": "lara-light-blue",
-                "inject": false
-              },
-              {
                 "input":"src/themes/lara-dark-blue.css",
                 "bundleName": "lara-dark-blue",
                 "inject": false
