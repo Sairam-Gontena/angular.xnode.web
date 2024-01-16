@@ -1,0 +1,32 @@
+:host ::ng-deep.d2h-wrapper {
+    width: 50% !important;
+}
+:host ::ng-deep .d2h-file-header {
+background: #3A3942;
+color: #DEDEDE;
+}
+
+:host ::ng-deep .d2h-changed-tag {
+    border: none;
+    color: #DEDEDE;
+}
+
+:host ::ng-deep .d2h-code-side-line {
+    width: auto;
+}
+
+:host ::ng-deep .d2h-info {
+    background: #3A3942;
+    color: #ffffff;
+}
+
+
+:host ::ng-deep .d2h-del{
+    background: rgb(230, 106, 106);
+    color: #ffffff;
+}
+
+:host ::ng-deep .d2h-ins{
+    background: rgb(136, 252, 136);
+    color: #ffffff;
+}
