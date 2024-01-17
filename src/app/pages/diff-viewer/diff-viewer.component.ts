@@ -69,10 +69,11 @@ export class DiffViewerComponent implements OnInit {
       this.loading = event;
     });
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
-      list.forEach((element: any) => {
+      list.forEach((element: any, index: number) => {
         element.content_data_type = 'BANNER';
+        element.sNo = index + 1 + '.0';
       });
-      this.specList = list;
+      this.specList = this.changeSpecListFormat(list);
     });
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
@@ -97,6 +98,19 @@ export class DiffViewerComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.getUsersData();
+  }
+
+  changeSpecListFormat(list: any) {
+    let flattenedData = list.flatMap((item: any, itemIndex: number) => [
+      item,
+      ...item.content.map((innerItem: any, innerItemIndex: number) => {
+        innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
+        console.log('innerItem', innerItem);
+
+        return innerItem;
+      }),
+    ]);
+    return flattenedData;
   }
 
   getVersions() {
@@ -160,14 +174,18 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
+            this.specTwoList = this.changeSpecListFormat(this.specTwoList);
           } else {
-            this.specTwoList = response.data;
+            this.specTwoList = this.changeSpecListFormat(response.data);
+            this.specList = this.specList;
             this.specList.forEach((element1: any) => {
               this.specTwoList.forEach((element2: any) => {
                 if (element2.title === element1.title)
                   element2.id = element1.id;
               });
             });
+
+            console.log('this.specTwoList', this.specTwoList);
           }
         }
         this.utils.loadSpinner(false);

@@ -19,10 +19,8 @@
           <xnode-diff-comp [users]="usersList" [contentObj]="item" [index]="i"
             [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
             [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
-           <!-- <h1>Hi</h1> -->
         </div>
-        <xnode-diff-list [users]="usersList" [srcList]="specTwoList" [targetList]="specList"
-          [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
+
       </div>
       <div class="w-4" *ngIf="openConversationPanel">
         <xnode-comments-cr-panel [specData]="specList"></xnode-comments-cr-panel>

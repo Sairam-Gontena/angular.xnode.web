@@ -3,7 +3,6 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
@@ -23,8 +22,9 @@ export class SpecificationsMenuComponent implements OnInit {
   selectedSecIndex: any;
   searchText: any;
   multiAccordion: boolean = false;
-  private textInputSubject = new Subject<string>();
   isOpen = true;
+  private textInputSubject = new Subject<string>();
+
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService

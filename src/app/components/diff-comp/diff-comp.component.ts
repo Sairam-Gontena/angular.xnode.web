@@ -43,7 +43,7 @@ export class DiffCompComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    if (this.contentObj.title === 'Dashboards') {
+    if (this.contentObj?.title === 'Dashboards') {
       this.targetUrl =
         environment.designStudioAppUrl +
         '?email=' +
@@ -59,7 +59,7 @@ export class DiffCompComponent implements OnInit {
         this.currentUser.id;
       this.makeTrustedUrl();
     }
-    if (this.contentObj.content_data_type === 'SWAGGER') {
+    if (this.contentObj?.content_data_type === 'SWAGGER') {
       this.fetchOpenAPISpec();
     }
   }
@@ -117,6 +117,13 @@ export class DiffCompComponent implements OnInit {
       }
     return undefined;
   }
+  getMeContentObj(item: any, contentObj: any) {
+    if (item && typeof item !== 'string') {
+      item['content_data_type'] = 'str';
+      item['parent_data_type'] = 'list';
+    }
+    return item;
+  }
 
   getMeBanner(event: any) {
     return (
@@ -165,11 +172,6 @@ export class DiffCompComponent implements OnInit {
 
   fetchOpenAPISpec(): void {
     document.addEventListener('DOMContentLoaded', () => {
-      console.log(
-        '!!!!!!!!!!!!!!!11',
-        document.getElementById('openapi-ui-spec')
-      );
-
       const ui = SwaggerUIBundle({
         domNode: document.getElementById('openapi-ui-spec'),
         layout: 'BaseLayout',

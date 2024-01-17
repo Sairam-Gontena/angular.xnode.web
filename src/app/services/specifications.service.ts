@@ -113,7 +113,6 @@ export class SpecificationsService {
             }
           });
           this.specUtils.saveSpecList(response.data);
-          console.log('response.data', response.data);
 
           this.storageService.saveItem(StorageKeys.SPEC_DATA, response.data);
           if (successCallback) successCallback(response.data);
