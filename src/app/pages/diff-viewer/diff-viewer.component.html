@@ -1,8 +1,8 @@
 <div class="flex">
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList" (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)"></xnode-specifications-menu>
-  <div class="w-full">
-    <div class="overflow-auto">
+  <div class="w-full h-full">
+    <div class="overflow-auto h-full">
       <div *ngIf="specExpanded">
         <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
             (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
