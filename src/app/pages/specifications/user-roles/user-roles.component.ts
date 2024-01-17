@@ -6,7 +6,7 @@ import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-user-roles',
   templateUrl: './user-roles.component.html',
-  styleUrls: ['./user-roles.component.scss']
+  styleUrls: ['./user-roles.component.scss'],
 })
 export class UserRolesComponent implements OnInit {
   @Input() content: any;
@@ -18,7 +18,7 @@ export class UserRolesComponent implements OnInit {
   @Input() specItem: any;
   @Input() reveiwerList: any;
 
-  showCommentIcon: boolean = false
+  showCommentIcon: boolean = false;
   seletedMainIndex?: number;
   selecteedSubIndex?: number;
   selectedText: string = '';
@@ -27,9 +27,13 @@ export class UserRolesComponent implements OnInit {
   @ViewChild('selectionText') selectionText: OverlayPanel | any;
   selectedIndex: any;
 
-  constructor(private specUtils: SpecUtilsService, private utilsService: UtilsService) { }
+  constructor(
+    private specUtils: SpecUtilsService,
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit(): void {
+    console.log('contentcontent', this.content);
   }
 
   getWords(subitem: any) {
@@ -41,9 +45,9 @@ export class UserRolesComponent implements OnInit {
       }
     } else if (typeof subitem === 'object') {
       if (subitem.hasOwnProperty('content')) {
-        return subitem.content
+        return subitem.content;
       } else {
-        return subitem
+        return subitem;
       }
     } else {
       return [];
@@ -56,7 +60,7 @@ export class UserRolesComponent implements OnInit {
       return;
     }
     if (selectedText && selectedText.length > 0) {
-      this.selectedText = selectedText.replace(/\n/g, ' ')
+      this.selectedText = selectedText.replace(/\n/g, ' ');
     } else {
       this.selectedText = '';
     }
@@ -80,10 +84,10 @@ export class UserRolesComponent implements OnInit {
   }
 
   isString(item: any) {
-    if (typeof (item) == 'string') {
+    if (typeof item == 'string') {
       return true;
     } else {
-      return false
+      return false;
     }
   }
   saveSecInLocal() {
@@ -94,9 +98,12 @@ export class UserRolesComponent implements OnInit {
     this.specUtils._openCommentsPanel(false);
     this.utilsService.saveSelectedSection(null);
     localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
-    of(([])).pipe(delay(500)).subscribe((results) => {
-      this.specUtils._openCommentsPanel(true);
-    });
+    of([])
+      .pipe(delay(500))
+      .subscribe((results) => {
+        this.specUtils._openCommentsPanel(true);
+      });
   }
 
+  onClickViewComments(event: any): void {}
 }

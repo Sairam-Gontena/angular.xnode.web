@@ -5,7 +5,7 @@
         <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="generateSpec()"
             (getMeSpecList)="getMeSpecList($event)" (specDataChange)="onSpecDataChange($event)"
             (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-        <xnode-specifications-content [reveiwerList]="reveiwerList" [noResults]="noResults" [specData]="specData" [keyword]="keyword"
+        <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword"
             *ngIf="!loading">
         </xnode-specifications-content>
     </div>

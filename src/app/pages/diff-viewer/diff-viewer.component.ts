@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NEWLIST, OLDLIST } from './mock';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { SpecService } from 'src/app/api/spec.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { environment } from 'src/environments/environment';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -43,11 +43,12 @@ export class DiffViewerComponent implements OnInit {
   specOneList: any = [];
   specTwoList: any = [];
   usersList: any;
-  reveiwerList: any;
+  swaggerData: any;
+  openConversationPanel: boolean = false;
 
   constructor(
     private utils: UtilsService,
-    private specApiService: SpecService,
+    private specApiService: SpecApiService,
     private storageService: LocalStorageService,
     private router: Router,
     private specService: SpecificationsService,
@@ -85,6 +86,11 @@ export class DiffViewerComponent implements OnInit {
         }
       }
     );
+    this.specificationUtils._openConversationPanel.subscribe((data: any) => {
+      if (data) {
+        this.openConversationPanel = data.openConversationPanel;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -100,6 +106,7 @@ export class DiffViewerComponent implements OnInit {
         productId: this.product?.id,
         versionId: data[0].id,
       });
+      this.storageService.saveItem(StorageKeys.SpecVersion, data[0]);
     });
   }
 
@@ -146,8 +153,6 @@ export class DiffViewerComponent implements OnInit {
             element.content_data_type = 'BANNER';
           });
           if (params.type === 'one') {
-            console.log('one');
-
             this.specList = response.data;
             this.specTwoList.forEach((element1: any) => {
               this.specList.forEach((element2: any) => {
@@ -156,8 +161,6 @@ export class DiffViewerComponent implements OnInit {
               });
             });
           } else {
-            console.log('two');
-
             this.specTwoList = response.data;
             this.specList.forEach((element1: any) => {
               this.specTwoList.forEach((element2: any) => {
@@ -165,8 +168,6 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
-            console.log('this.specTwoList', this.specTwoList);
-            console.log('this.specList', this.specList);
           }
         }
         this.utils.loadSpinner(false);
@@ -244,6 +245,7 @@ export class DiffViewerComponent implements OnInit {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
           this.usersList = resp.data;
+          this.storageService.saveItem(StorageKeys.USERLIST, resp.data);
           this.getVersions();
         } else {
           this.utils.loadToaster({
@@ -314,6 +316,15 @@ export class DiffViewerComponent implements OnInit {
       this.selectedVersionOne = undefined;
       this.selectedVersionTwo = undefined;
       this.specTwoList = [];
+    }
+  }
+
+  onSelectSpecMenuItem(item: any): void {
+    console.log('item', item);
+    new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(item.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

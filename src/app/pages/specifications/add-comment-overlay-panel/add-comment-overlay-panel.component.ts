@@ -8,7 +8,9 @@ import { DatePipe } from '@angular/common';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-import { AuthApiService } from 'src/app/api/auth.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -42,7 +44,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   currentUser: any;
   product: any;
   listToMention: any;
-  config: MentionConfig = {};
+  mentionConfig: MentionConfig = {};
   references: any;
   isCommnetsPanelOpened: boolean = false;
   isUploading: boolean = false;
@@ -61,7 +63,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private specService: SpecificationsService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.minDate = new Date();
     this.references = [];
@@ -73,18 +77,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.users = this.storageService.getItem(StorageKeys.USERLIST);
-    if (this.from == 'cr-tabs') {
-      this.assignAsaTask = true;
-    }
-    if (this.users) {
+    if (this.users)
       this.users.forEach((element: any) => {
         element.name = element?.first_name + ' ' + element?.last_name;
       });
-    }
-    this.config = {
+    this.mentionConfig = {
       labelKey: 'name',
       mentionSelect: this.format.bind(this),
     };
+    if (this.from == 'cr-tabs') {
+      this.assignAsaTask = true;
+    }
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -236,7 +239,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -247,25 +250,32 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   prepareDataToDisplayOnCommentsPanel(): void {
+    this.comment = '';
     let detail = '';
     if (this.action === 'EDIT') {
-      detail = 'Comment edited successfully';
+      detail = 'Comment updated successfully';
     } else {
       detail = 'Comment added successfully';
     }
-    if (!this.isCommnetsPanelOpened) {
-      this.specUtils._openCommentsPanel(true);
-    }
-    this.comment = '';
-    this.closeOverlay.emit();
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.getMeSpecLevelTaskList();
+      this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 1,
+      });
     } else {
-      this.getMeSpecLevelCommentsList();
+      this.specService.getMeSpecLevelCommentsList({ parentId: this.parentId });
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 0,
+      });
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
+    this.closeOverlay.emit();
   }
 
   getMeSpecLevelCommentsList() {
@@ -280,7 +290,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
@@ -300,7 +310,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
@@ -356,17 +366,20 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       .addTask(body)
       .then((commentsReponse: any) => {
         if (commentsReponse.statusText === 'Created') {
-          if (!this.isCommnetsPanelOpened)
-            this.specUtils._openCommentsPanel(true);
           this.comment = '';
           this.closeOverlay.emit();
-          this.specUtils._tabToActive('TASK');
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
             detail: 'Task added successfully',
           });
           this.uploadedFiles = [];
+          this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
+          this.specificationUtils.openConversationPanel({
+            openConversationPanel: true,
+            parentTabIndex: 0,
+            childTabIndex: 1,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -377,7 +390,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.loadSpinner(false);
         this.assignAsaTask = false;
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -387,6 +400,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.assignAsaTask = false;
       });
   }
+
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
@@ -400,6 +414,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.assinedUsers.push(match[1]);
     }
   }
+
   fileBrowseHandler(event: any) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
     const files = (event.target as HTMLInputElement).files;
@@ -441,6 +456,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
+
   private async readFileContent(file: File) {
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -454,6 +470,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
     reader.readAsArrayBuffer(file); // Move this line outside the onload function
   }
+
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);

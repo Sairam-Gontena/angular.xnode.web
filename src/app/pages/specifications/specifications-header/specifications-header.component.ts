@@ -4,18 +4,16 @@ import {
   Input,
   OnInit,
   Output,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
-import { SpecService } from 'src/app/api/spec.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { SpecVersion } from 'src/models/spec-versions';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 @Component({
   selector: 'xnode-specifications-header',
   templateUrl: './specifications-header.component.html',
@@ -43,39 +41,31 @@ export class SpecificationsHeaderComponent implements OnInit {
     { label: 'Exit', value: 'EXIT' },
   ];
   selectedView: any;
-
   specData: any;
   isCommentsPanelOpened: any;
   showingCRList: any;
+  conversationPanelInfo: any;
 
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
-    private specApiService: SpecService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
     private specService: SpecificationsService,
-    private specificationUtils: SpecificationUtilsService
+    private SpecificationUtils: SpecificationUtilsService
   ) {
-    // this.specUtils.openCommentsPanel.subscribe((event: any) => {
-    //   this.isCommentsPanelOpened = event;
-    // });
-    // this.specUtils.loadActiveTab.subscribe((event) => {
-    //   if (event === 1) {
-    //     this.showingCRList = true;
-    //   } else {
-    //     this.showingCRList = false;
-    //   }
-    // });
-    // this.utils.openSpecSubMenu.subscribe((data: any) => {
-    //   this.isSideMenuOpened = data;
-    // });
+    this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
+      if (data) {
+        this.conversationPanelInfo = data;
+      }
+    });
   }
 
   ngOnInit(): void {
     this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.getStorageData();
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.versions = changes['versions'].currentValue;
     this.selectedVersion = changes['versions'].currentValue[0];
@@ -135,37 +125,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       });
   }
 
-  getMeCrList() {
-    let body: any = {
-      productId: this.product.id,
-    };
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getCrList(body)
-      .then((res: any) => {
-        if (res && res.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._loadActiveTab(1);
-          this.specUtils._getMeUpdatedCrs(res.data);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: res?.data?.common?.status,
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-        this.utils.loadSpinner(false);
-      });
-  }
-
   toggleSideMenu() {
     this.utils.EnableSpecSubMenu();
   }
@@ -176,6 +135,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.enabledGeneratespec = false;
     }
   }
+
   viewPublishedApp() {
     let productUrl = localStorage.getItem('product_url');
     if (productUrl) {
@@ -186,8 +146,16 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    this.utils.disableDockedNavi();
-    this.getMeAllCommentsList();
+    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    this.SpecificationUtils.openConversationPanel({
+      openConversationPanel: true,
+      parentTabIndex: 0,
+      childTabIndex: 0,
+    });
+    this.specService.getMeAllComments({
+      productId: this.product.id,
+      versionId: version.id,
+    });
   }
 
   getMeAllCommentsList() {
@@ -220,6 +188,7 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   onChangeProduct(obj: any): void {
     this.showSpecGenaretePopup = false;
+    this.utils.loadSpinner(true);
     let product = this.metaDeta.find((x: any) => x.id === obj.id);
     if (product && product.has_insights) {
       localStorage.setItem('record_id', product.id);
@@ -231,8 +200,43 @@ export class SpecificationsHeaderComponent implements OnInit {
         obj.url && obj.url !== '' ? obj.url : ''
       );
       this.product = product;
-      this.utils.loadSpinner(true);
-      // this.getVersions();
+      this.specService.getVersions(this.product.id, (data) => {
+        this.specService.getMeSpecInfo(
+          {
+            productId: this.product?.id,
+            versionId: data[0].id,
+          },
+          (specData) => {
+            if (specData) {
+              if (
+                this.conversationPanelInfo?.openConversationPanel &&
+                this.conversationPanelInfo?.parentTabIndex === 0 &&
+                this.conversationPanelInfo?.childTabIndex === 0
+              ) {
+                this.specService.getMeAllComments({
+                  productId: this.product?.id,
+                  versionId: data[0].id,
+                });
+              } else if (
+                this.conversationPanelInfo?.openConversationPanel &&
+                this.conversationPanelInfo?.parentTabIndex === 0 &&
+                this.conversationPanelInfo?.childTabIndex === 1
+              ) {
+                this.specService.getMeAllTasks({
+                  productId: this.product?.id,
+                  versionId: data[0].id,
+                });
+              } else if (
+                this.conversationPanelInfo?.openConversationPanel &&
+                this.conversationPanelInfo?.parentTabIndex === 1
+              ) {
+                this.specService.getMeCrList({ productId: this.product?.id });
+              }
+            }
+          }
+        );
+        this.storageService.saveItem(StorageKeys.SpecVersion, data[0]);
+      });
     } else {
       this.showGenerateSpecPopup(product);
     }
@@ -275,6 +279,30 @@ export class SpecificationsHeaderComponent implements OnInit {
       productId: this.product?.id,
       versionId: event.value.value,
     });
+    if (
+      this.conversationPanelInfo?.openConversationPanel &&
+      this.conversationPanelInfo?.parentTabIndex === 0 &&
+      this.conversationPanelInfo?.childTabIndex === 0
+    ) {
+      this.specService.getMeAllComments({
+        productId: this.product?.id,
+        versionId: event.value.value,
+      });
+    } else if (
+      this.conversationPanelInfo?.openConversationPanel &&
+      this.conversationPanelInfo?.parentTabIndex === 0 &&
+      this.conversationPanelInfo?.childTabIndex === 1
+    ) {
+      this.specService.getMeAllTasks({
+        productId: this.product?.id,
+        versionId: event.value.value,
+      });
+    } else if (
+      this.conversationPanelInfo?.openConversationPanel &&
+      this.conversationPanelInfo?.parentTabIndex === 1
+    ) {
+      this.specService.getMeCrList({ productId: this.product?.id });
+    }
   }
   onViewChange(event: any) {
     if (event.value.value === 'INLINE VIEW') {
