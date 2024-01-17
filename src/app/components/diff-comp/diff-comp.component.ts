@@ -27,6 +27,8 @@ export class DiffCompComponent implements OnInit {
   @Input() parentTitle: any;
   @Input() parentId?: string;
   iframeSrc: SafeResourceUrl = '';
+  tableComponentsToExpand=['Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
+  listComponentsToExpand=['User Interface Design','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
   targetUrl: any;
   currentUser: any;
   loadSwagger = false;
