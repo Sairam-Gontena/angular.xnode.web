@@ -66,6 +66,8 @@ export class CommentsCrPanelComponent implements OnInit {
       } else {
         this.activeIndex = 0;
       }
+      let indexObj = { index:this.activeIndex }
+      this.switchHeaders(indexObj)
     });
   }
 

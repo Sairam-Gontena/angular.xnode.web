@@ -34,6 +34,8 @@ export class CommentsTabsComponent implements OnInit {
       } else if (event === 'TASK') {
         this.activeIndex = 1;
       }
+      let indexObj = { index:this.activeIndex }
+      this.onTabChange(indexObj)
     });
     this.specUtils.specLevelCommentsTasks.subscribe((event: any) => {
       this.showSpecLevelComments = event;
