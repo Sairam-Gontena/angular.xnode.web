@@ -32,6 +32,9 @@ export class DiffCompComponent implements OnInit {
   loadSwagger = false;
 
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  showTable: boolean = false;
+  showJson: boolean = false;
+  showView: boolean = false;
 
   constructor(
     private storageService: LocalStorageService,
@@ -129,10 +132,20 @@ export class DiffCompComponent implements OnInit {
 
   }
 
-  toggleListViews() {
-    this.contentObj.showTable = false;
-    this.contentObj.showJson = false;
-    this.contentObj.showView = true;
+  jsonTableViews(event: any) {
+    if (event === 'showJson') {
+      this.contentObj.showJson = true;
+      this.contentObj.showTable = false;
+      this.contentObj.showList = false;
+    } else if (event === 'showTable') {
+      this.contentObj.showTable = true;
+      this.contentObj.showJson = false;
+      this.contentObj.showList = false;
+    } else if (event === 'showList') {
+      this.contentObj.showList = true;
+      this.contentObj.showJson = false;
+      this.contentObj.showTable = false;
+    }
   }
   onClickViewComments(specItem: any): void {
     const version: SpecVersion | undefined = this.storageService.getItem(
