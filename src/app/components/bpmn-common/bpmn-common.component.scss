@@ -5,10 +5,10 @@
     border-width: 0;
 }
 
-.disable-height{
-  height: 0vh;
-  cursor: default;
-  pointer-events: none;
+.disable-height {
+    height: 0vh;
+    cursor: default;
+    pointer-events: none;
 }
 
 .bpmn-component {
@@ -27,18 +27,18 @@
     background-color: #ffffff;
 }
 
-.graphViewBpmnCommon{
+.graphViewBpmnCommon {
     height: 80vh;
 }
 
 
-:host ::ng-deep .back-to-graph{
-  color: #ffffff;
-  background: #23222B;
-  font-size: 12px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  border: 1px solid #ffffff;
+:host ::ng-deep .back-to-graph {
+    color: #ffffff;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
 }
 
 :host ::ng-deep.bjs-breadcrumbs li:last-of-type a {

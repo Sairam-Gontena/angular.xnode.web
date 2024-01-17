@@ -33,7 +33,7 @@
     margin-left: 3rem;
 }
 
-:host ::ng-deep.p-button {
+:host ::ng-deep .p-button {
     color: white;
     font-weight: 700 !important;
     height: 2rem;
@@ -73,13 +73,8 @@
         width: 10rem !important;
     }
 
-    // :host ::ng-deep .p-button {
-    //     margin: 10px;
-    // }
-
     .stepper-card {
         width: 90%;
-        // margin-left: 49px;
     }
 
     .card-container {
@@ -212,5 +207,4 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #23222B;
-    // margin: 25px;
 }
