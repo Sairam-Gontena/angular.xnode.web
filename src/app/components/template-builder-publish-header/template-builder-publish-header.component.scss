@@ -90,10 +90,6 @@ img.highlighted {
     border: 1px solid #595959 !important;
 }
 
-:host::ng-deep .p-dialog .p-dialog-header {
-    border-bottom: 1px solid #ccc;
-}
-
 :host::ng-deep .p-dialog .p-dialog-content,
 :host::ng-deep .p-dialog .p-dialog-header,
 :host::ng-deep .p-dialog .p-dialog-footer {
@@ -139,4 +135,15 @@ img.highlighted {
     border: 1px solid #535354;
     width: 100%;
     padding: 0.15rem 0;
+}
+
+:host ::ng-deep .custom-reject-button{
+    background-color: transparent;
+    border: 1px solid VAR( --teritory-button-border-color);
+    color: var(--teritory-button-text-color);
+    border-radius: 30px;
+}
+
+:host ::ng-deep .custom-accept-button{
+    border-radius: 30px;
 }

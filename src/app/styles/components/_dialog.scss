@@ -26,5 +26,8 @@
     background: var(--dialog-footer-background-color);
   }
 
-
- 
+  .p-dialog .p-dialog-footer button {
+    font-size: 0.875rem;
+    padding-top:6.5px;
+    padding-bottom: 6.5px;
+  }

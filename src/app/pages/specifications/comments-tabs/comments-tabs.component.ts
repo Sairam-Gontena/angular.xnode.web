@@ -32,18 +32,20 @@ export class CommentsTabsComponent implements OnInit {
         this.conversationPanelInfo = data;
         this.activeIndex = data.childTabIndex;
       }
-    })
-
-    this.specificationUtils.getMeCommentList.subscribe((data: any) => {
-      if (data) {
-        this.list = data;
+      let indexObj = { index: this.activeIndex };
+      this.onTabChange(indexObj);
+    });
+    this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
+      if (event) {
+        this.activeIndex = 0;
+        this.list = event;
       }
-    })
+    });
     this.specificationUtils.getMeTaskList.subscribe((data: any) => {
       if (data) {
         this.list = data;
       }
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -51,19 +53,27 @@ export class CommentsTabsComponent implements OnInit {
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
   }
 
-  ngOnDestroy() {
-
-  }
+  ngOnDestroy() {}
 
   onTabChange(event: any) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
     this.activeIndex = event.index;
-    this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: event.index });
+    this.specificationUtils.openConversationPanel({
+      openConversationPanel: true,
+      parentTabIndex: 0,
+      childTabIndex: event.index,
+    });
     if (event.index === 0) {
-      this.specService.getMeAllComments({ productId: this.product.id, versionId: this.specVersion.id })
+      this.specService.getMeAllComments({
+        productId: this.product.id,
+        versionId: this.specVersion.id,
+      });
     } else {
-      this.specService.getMeAllTasks({ productId: this.product.id, versionId: this.specVersion.id })
+      this.specService.getMeAllTasks({
+        productId: this.product.id,
+        versionId: this.specVersion.id,
+      });
     }
   }
 }
