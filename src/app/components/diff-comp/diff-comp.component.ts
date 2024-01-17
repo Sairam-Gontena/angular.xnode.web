@@ -38,7 +38,7 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -72,8 +72,8 @@ export class DiffCompComponent implements OnInit {
     return !this.onDiff
       ? ''
       : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-      ? this.diffObj
-      : this.getObjState();
+        ? this.diffObj
+        : this.getObjState();
   }
 
   getObjState() {
@@ -126,8 +126,27 @@ export class DiffCompComponent implements OnInit {
 
   changeView(specItem: any): void {
     this.contentObj.showTable = true;
-  }
 
+  }
+  toggleJsonViews() {
+    this.contentObj.showTable = false;
+    this.contentObj.showView = false;
+    this.contentObj.showJson = true;
+  }
+  toggleTableViews() {
+    this.contentObj.showTable = true;
+    this.contentObj.showView = false;
+    this.contentObj.showJson = false;
+  }
+  toggleListViews(): void {
+    this.contentObj.showTable = false;
+    this.contentObj.showView = true;
+    this.contentObj.showJson = false;
+  }
+  toggleListView() {
+    this.contentObj.showView = true;
+    this.contentObj.showTable = false;
+  }
   onClickViewComments(specItem: any): void {
     const version: SpecVersion | undefined = this.storageService.getItem(
       StorageKeys.SpecVersion
