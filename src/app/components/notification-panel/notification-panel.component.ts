@@ -174,6 +174,24 @@ export class NotificationPanelComponent {
       });
   }
 
+  view(){
+    let obj = {
+      'component': "Update Product Specifications",
+      'crId': "0481a5b1-8527-4458-85c6-2eb6a89ad457",
+      'description': "Product Specifications generation completed and saved!",
+      'email': "arun.ragam@salientminds.com",
+      'entity': "UPDATE_SPEC",
+      'important': "true",
+      'pinned': "true",
+      'product_id': "0bc6bf62-07fc-4c59-bd39-dad57d708d8a",
+      'read': "false",
+      'recent': "true",
+      'spec_status': "Completed",
+      'type': "Navi",
+      'versionId': "f8046e6b-0612-4220-bdf6-108c8e77816b"
+    }
+    this.goToSpec(obj)
+  }
   goToSpec(obj: any) {
     this.naviApiService
       .getMetaData(this.currentUser?.email)

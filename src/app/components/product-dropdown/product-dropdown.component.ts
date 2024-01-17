@@ -3,6 +3,7 @@ import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecUtilsService } from '../services/spec-utils.service';
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-product-dropdown',
   templateUrl: './product-dropdown.component.html',
@@ -13,6 +14,7 @@ export class ProductDropdownComponent implements OnInit {
   selectedProduct: any;
   products: Array<Product> = [];
   currentUser: any;
+  product:any;
   email: string = '';
   myForm: FormGroup;
 
@@ -24,12 +26,14 @@ export class ProductDropdownComponent implements OnInit {
     this.myForm = this.fb.group({ selectedProduct: [null] });
     this.specUtils.getMeUpdatedProduct.subscribe((data: any) => {
       if (data) {
-        this.getMeDataFromStorage();
+        // this.getMeDataFromStorage();
+        this.ngOnInit()
       }
     });
   }
 
   ngOnInit() {
+    this.product = localStorage.getItem('product');
     this.getMeDataFromStorage();
     const metaData = localStorage.getItem('meta_data');
     if (metaData) {
@@ -47,18 +51,22 @@ export class ProductDropdownComponent implements OnInit {
   }
 
   getMeDataFromStorage(): void {
-    const product = localStorage.getItem('product');
     if (this.products) {
-      if (product) {
-        this.selectedProduct = JSON.parse(product);
-        this.myForm.patchValue({
-          selectedProduct: this.products.find(
-            (item: any) => item.id == this.selectedProduct.id
-          ),
+      if (this.product) {
+        of([]).pipe(delay(500)).subscribe((results) => {
+          this.product = localStorage.getItem('product');
+          this.selectedProduct = JSON.parse(this.product);
+          this.myForm.patchValue({
+            selectedProduct: this.products.find(
+              (item: any) => item.id == this.selectedProduct.id
+            ),
+          });
         });
       } else {
-        this.selectedProduct = this.products[0];
-        this.myForm.patchValue({ selectedProduct: this.selectedProduct });
+        of([]).pipe(delay(500)).subscribe((results) => {
+          this.selectedProduct = this.products[0];
+          this.myForm.patchValue({ selectedProduct: this.selectedProduct });
+        });
       }
     }
   }
