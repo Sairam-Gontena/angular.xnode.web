@@ -30,7 +30,7 @@
     <div [ngSwitch]="getType(contentObj.content)">
       <div *ngSwitchCase="'array'">
         <div *ngFor="let item of contentObj.content">
-          <xnode-diff-comp [specItemId]='contentObj.id' [parentTitle]="contentObj.title" [contentObj]="item"
+          <xnode-diff-comp  (expandComponent)="expandComponent.emit($event)" [specItemId]='contentObj.id' [parentTitle]="contentObj.title" [contentObj]="item"
             [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
         </div>
         <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content"
@@ -57,7 +57,7 @@
       </p-overlayPanel>
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="listComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="listComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
       </div>
       <ul *ngFor="let item of contentObj.content">
         <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false" *ngIf="!isString(item);else isObject">
@@ -116,7 +116,7 @@
     <div *ngSwitchCase="'USECASES'" [id]="contentObj.id" (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
       </div>
       <div >
         <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
@@ -141,7 +141,7 @@
     <div *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)"/>
       </div>
       <xnode-bpmn-common [item]="contentObj"></xnode-bpmn-common>
     </div>
@@ -153,7 +153,7 @@
     <div *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id" (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)"/>
       </div>
       <div >
         <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
@@ -179,7 +179,7 @@
     <div *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" *ngIf="contentObj.title=='Data Dictionary'" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" *ngIf="contentObj.title=='Data Dictionary'" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)"/>
       </div>
       <div class="flex justify-content-end align-items-center my-2 mr-2">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.showTable = false;"></i>
@@ -192,14 +192,14 @@
     <div *ngSwitchCase="'TABLE'" [id]="contentObj.id">
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" *ngIf="tableComponentsToExpand.includes(contentObj.title)" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" *ngIf="tableComponentsToExpand.includes(contentObj.title)" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)"/>
       </div>
       <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
     </div>
     <div *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" *ngIf="contentObj.title=='Data Model'" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" *ngIf="contentObj.title=='Data Model'" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)"/>
       </div>
       <xnode-data-model-common *ngIf="contentObj"
         [dataModelData]="contentObj.content"></xnode-data-model-common>
@@ -208,7 +208,7 @@
       <h3 class="m-0 pb-2 text-2xl font-bold">SWAGGER</h3>
       <div class="flex flex-row justify-content-between">
         <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
-        <img src="./assets/spec-minimize.svg" *ngIf="contentObj.title=='Open API Spec'" alt="expand" class="expnad-icon pointer" />
+        <img src="./assets/spec-minimize.svg" *ngIf="contentObj.title=='Open API Spec'" alt="expand" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)"/>
       </div>
       <div id="openapi-ui-spec" class="openapi-spec"></div>
     </div>

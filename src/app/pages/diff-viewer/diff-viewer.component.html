@@ -2,10 +2,16 @@
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList" (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)"></xnode-specifications-menu>
   <div class="w-full">
-    <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
+    <div class="overflow-auto">
+      <div *ngIf="specExpanded">
+        <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
+            (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
+            [specExpanded]="specExpanded"></xnode-expand-specification>
+    </div>
+    <div *ngIf="!specExpanded">
+      <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
       (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (specDataChange)="onSpecDataChange($event)"
       (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-
 
       <div class="diff-view flex justify-content-center">
         <div class="w-8">
@@ -18,16 +24,19 @@
               class="ml-3 app-dropdown"></p-dropdown>
           </div>
           <div class='m-4' *ngFor="let item of specList;let i = index">
-            <xnode-diff-comp [users]="usersList" [contentObj]="item" [index]="i"
+            <xnode-diff-comp [users]="usersList" (expandComponent)="_expandComponent($event)" [contentObj]="item" [index]="i"
               [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
               [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
           </div>
-          <xnode-diff-list [users]="usersList" [srcList]="specTwoList" [targetList]="specList"
+          <xnode-diff-list [users]="usersList"  [srcList]="specTwoList" [targetList]="specList"
             [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-list>
         </div>
         <div class="w-4" *ngIf="openConversationPanel">
           <xnode-comments-cr-panel [specData]="specList"></xnode-comments-cr-panel>
         </div>
       </div>
+    </div>
+    </div>
+
   </div>
 </div>
