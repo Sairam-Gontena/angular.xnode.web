@@ -175,8 +175,8 @@
           </p-overlayPanel>
         </div>
         <div class="col-12" *ngIf="content">
-          <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)" specData="spec"
-            [dataModelData]="content"></xnode-data-model-common>
+          <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)" [specData]="'spec'"
+            ></xnode-data-model-common>
         </div>
       </div>
     </div>

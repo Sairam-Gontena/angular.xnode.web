@@ -133,7 +133,7 @@ export class TasksPanelComponent {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
@@ -164,7 +164,7 @@ export class TasksPanelComponent {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
@@ -225,7 +225,7 @@ export class TasksPanelComponent {
     this.enableDeletePrompt = event;
     this.commentsService
       .deletComment(this.selectedComment.id)
-      .then((res) => {
+      .then((res:any) => {
         if (res) {
           this.utils.loadToaster({
             severity: 'success',
@@ -236,7 +236,7 @@ export class TasksPanelComponent {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         this.utils.loadToaster({
           severity: 'error',
           summary: 'Error',
@@ -281,7 +281,7 @@ export class TasksPanelComponent {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err);
         this.utils.loadSpinner(false);
         this.utils.loadToaster({

@@ -1,4 +1,4 @@
-<div class="surface-900 overflow-hidden"
+<div class="overflow-hidden"
     [ngClass]="{'spec-er-body':currentUrl == '/specification','er-body':currentUrl != '/specification'}">
     <span *ngIf="bpmnSubUrl; else elseBlock">
         <xnode-bpmn-diagram ></xnode-bpmn-diagram>

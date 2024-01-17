@@ -32,13 +32,13 @@
 </div>
 <div *ngIf="dataToExpand.title === 'OpenAPI Spec'" class="swagger-h overflow-auto">
   <div class="flex col-12 justify-content-between align-items-center p-4">
-    <h4 class="m-0 pb-3">Swagger API</h4>
-    <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
+    <h4 class="m-0 pb-3 text-100">Swagger API</h4>
+    <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>
   </div>
   <div id="openapi-ui-spec" class="openapi-spec"></div>
 </div>
   <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Model'" (dataFlowEmitter)="closeFullScreenView.emit()"
-    [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-data-model-common>
+    [dataToExpand]="dataToExpand" [specExpanded]="specExpanded" [specData]="'spec'"></xnode-data-model-common>
     <div class="h-full expand-spec">
       <xnode-bpmn-common *ngIf="dataToExpand.title === 'Workflows'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
       [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>

@@ -56,36 +56,22 @@
           [specItem]="contentObj"></xnode-add-task>
       </p-overlayPanel>
       <h3 class="m-0 text-2xl font-bold">{{contentObj.title}}</h3>
-      <ul *ngFor="let item of contentObj.content">
-        <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false" *ngIf="!isString(item);else isObject">
-          <div class="flex justify-content-between">
-            <div>
-              <b>{{item.title}}</b>
-              <p>{{item.content}}</p>
-            </div>
-            <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="item.showCommentIcon">
-              <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
-              <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
-              <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
-            </div>
+      <div [ngSwitch]="getType(contentObj.content)">
+        <div *ngSwitchCase="'array'">
+          <div *ngFor="let item of contentObj.content">
+            <xnode-diff-comp [contentObj]="contentObj.content" [diffObj]="getDiffObj(diffObj?.content, item, onDiff)"
+              [onDiff]="onDiff"></xnode-diff-comp>
           </div>
-        </li>
-        <ng-template #isObject>
-          <li (mouseover)="item.showCommentIcon = true" (mouseleave)="item.showCommentIcon = false">
-            <div class="flex justify-content-between">
-              <div>
-                <p class="m-0">{{item}}</p>
-              </div>
-              <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="item.showCommentIcon">
-                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
-                <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
-                <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
-              </div>
-            </div>
-          </li>
-        </ng-template>
-
-      </ul>
+          <xnode-diff-list [onDiff]="onDiff" [srcList]="diffObj?.content"
+            [targetList]="contentObj.content"></xnode-diff-list>
+        </div>
+        <div *ngSwitchCase="'string'">
+          <div class="col-12 py-0" [class]="getClass()">
+            <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
+              [onDiff]="onDiff"></xnode-diff-generator>
+          </div>
+        </div>
+      </div>
     </div>
     <div *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
@@ -181,7 +167,7 @@
     <div *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <xnode-data-model-common *ngIf="contentObj"
-        [dataModelData]="contentObj.content"></xnode-data-model-common>
+       ></xnode-data-model-common>
     </div>
     <div *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">SWAGGER</h3>

@@ -73,7 +73,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.isCommnetsPanelOpened = event;
     });
   }
-
   ngOnInit(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -240,7 +239,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -260,10 +259,18 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
       this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
-      this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 1 })
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 1,
+      });
     } else {
       this.specService.getMeSpecLevelCommentsList({ parentId: this.parentId });
-      this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 0 })
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 0,
+      });
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
@@ -271,6 +278,43 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.closeOverlay.emit();
   }
 
+  getMeSpecLevelCommentsList() {
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getComments({ parentId: this.parentId, isReplyCountRequired: true })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive('COMMENT');
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+
+  getMeSpecLevelTaskList() {
+    console.log('MMM');
+
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getTasks({ parentId: this.parentId, isReplyCountRequired: true })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive('TASK');
+          this.specUtils._getMeUpdatedComments(response.data);
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
   prepareDataToSaveAsTask(): void {
     let body;
     if (this.action === 'EDIT') {
@@ -331,8 +375,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           });
           this.uploadedFiles = [];
           this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
-          this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 1 })
-
+          this.specificationUtils.openConversationPanel({
+            openConversationPanel: true,
+            parentTabIndex: 0,
+            childTabIndex: 1,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -343,7 +390,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.loadSpinner(false);
         this.assignAsaTask = false;
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',

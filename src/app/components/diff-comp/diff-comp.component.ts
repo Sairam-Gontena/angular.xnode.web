@@ -193,4 +193,10 @@ export class DiffCompComponent implements OnInit {
       });
     });
   }
+
+  setContentDataType(item: any, parentType: string) {
+    return parentType === 'list'
+      ? (item.content_data_type = 'list')
+      : parentType;
+  }
 }
