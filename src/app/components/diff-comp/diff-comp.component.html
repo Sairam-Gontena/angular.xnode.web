@@ -55,7 +55,10 @@
           [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
           [specItem]="contentObj"></xnode-add-task>
       </p-overlayPanel>
-      <h3 class="m-0 text-2xl font-bold">{{contentObj.title}}</h3>
+      <div class="flex flex-row justify-content-between">
+        <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
+        <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="listComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
+      </div>
       <div [ngSwitch]="getType(contentObj.content)">
         <div *ngSwitchCase="'array'">
           <div *ngFor="let item of contentObj.content">
