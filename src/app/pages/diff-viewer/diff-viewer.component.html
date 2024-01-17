@@ -2,7 +2,7 @@
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specList" (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)"></xnode-specifications-menu>
   <div class="w-full h-full">
-    <div class="overflow-auto h-full">
+    <div class="overflow-auto" [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommentsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommentsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommentsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommentsPanelOpened}">
       <div *ngIf="specExpanded">
         <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
             (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
