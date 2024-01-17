@@ -34,6 +34,8 @@ export class CommentsTabsComponent implements OnInit {
       } else if (event === 'TASK') {
         this.activeIndex = 1;
       }
+      let indexObj = { index:this.activeIndex }
+      this.onTabChange(indexObj)
     });
     this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
       if (event) {

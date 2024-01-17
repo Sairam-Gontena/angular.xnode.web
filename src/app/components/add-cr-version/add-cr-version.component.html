@@ -37,9 +37,9 @@
         </div>
     </form>
     <ng-template pTemplate="footer">
-        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-2"
+        <p-button label="Cancel"  size="small"  [outlined]="true" [rounded]="true" class="mr-2" 
             (click)="closePopUp()"></p-button>
-        <p-button type="submit" label="Submit" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
+        <p-button type="submit" size="small" label="Submit"  [rounded]="true"
             (click)="saveVersion($event)"></p-button>
     </ng-template>
 </p-dialog>

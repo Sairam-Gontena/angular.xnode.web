@@ -1,0 +1,40 @@
+// --tieredmenu-overlay-background-color:#011a03
+// --tieredmenu-menuitem-focus-background-color:#011202
+// --tieredmenu-menuitem-hover-background-color:#0f160f
+// --tieredmenu-menuitem-text-color:#0f160f
+
+.p-tieredmenu {
+    padding: 0px;
+    background: var(--tieredmenu-overlay-background-color);
+    color: var(--tieredmenu-menuitem-text-color);
+    border: 0px;
+    border-radius: 6px;
+    width: 12.5rem;
+  }
+  .p-tieredmenu.p-tieredmenu-overlay {
+    background: var(--tieredmenu-overlay-background-color);
+    border: 1px solid #0b213f;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+  .p-tieredmenu .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+    color: var(--tieredmenu-menuitem-text-color);
+    background: var(--tieredmenu-menuitem-focus-background-color);
+  }
+  .p-tieredmenu .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover {
+    color: var(--tieredmenu-menuitem-text-color);
+    background-color: var(--tieredmenu-menuitem-hover-background-colo);
+  }
+  .p-tieredmenu .p-tieredmenu-root-list {
+    outline: 0 none;
+  }
+  .p-tieredmenu .p-submenu-list {
+    padding: 0.25rem 0;
+    background: #091a32;
+    border: 1px solid #0b213f;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+  .p-tieredmenu .p-menuitem > .p-menuitem-content {
+    color: var(--tieredmenu-menuitem-text-color);
+    transition: box-shadow 0.2s;
+    border-radius: 0;
+  }

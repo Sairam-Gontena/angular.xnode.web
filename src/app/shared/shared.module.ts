@@ -111,6 +111,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     AutoCompleteModule,
     InlineDiffComponent,
     InputSwitchModule,
+    AutoCompleteModule,
   ],
   providers: [DataService],
 })

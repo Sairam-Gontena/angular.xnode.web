@@ -13,6 +13,8 @@
 
 .app-body-wrapper {
   width: calc(100vw - 80px);
+  background: #3A3942;
+
 }
 
 .app-body-wrapper-full {
@@ -96,6 +98,7 @@
     width: 70%;
     height: calc(100vh - 42px);
   }
+
   .main-component-expand-navi {
     transition: all 0.5s ease-in-out;
     width: 0%;
@@ -119,7 +122,8 @@
     width: 30%;
     height: calc(100vh - 42px);
   }
-  .expand-docked-navi{
+
+  .expand-docked-navi {
     // transition: all 0.5s ease-in-out;
     width: 100vw;
     height: calc(100vh - 42px);

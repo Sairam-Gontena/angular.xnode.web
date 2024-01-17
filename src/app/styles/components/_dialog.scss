@@ -1,0 +1,33 @@
+// --dialog-container-background-color:#23222B
+// --dialog-container-border-color:#535354
+// --dialog-header-background-color:#23222B
+// --dialog-header-text-color:#EFEEEE
+// --dialog-content-text-color:#A2A2A3
+// --dialog-content-background-color:#23222B
+// --dialog-footer-background-color:#23222B
+
+
+.p-dialog {
+    background: var(--dialog-container-background-color);
+    border: 1px solid var(--dialog-container-border-color);
+}
+
+.p-dialog .p-dialog-header {
+    background: var(--dialog-header-background-color);
+    color: var(--dialog-header-text-color);
+  }
+  
+  .p-dialog .p-dialog-content {
+    color: var(--dialog-content-text-color);
+    background-color: var(--dialog-content-background-color)
+  }
+
+  .p-dialog .p-dialog-footer {
+    background: var(--dialog-footer-background-color);
+  }
+
+  .p-dialog .p-dialog-footer button {
+    font-size: 0.875rem;
+    padding-top:6.5px;
+    padding-bottom: 6.5px;
+  }

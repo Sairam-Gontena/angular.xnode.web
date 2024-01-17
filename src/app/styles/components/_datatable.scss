@@ -1,0 +1,70 @@
+// --datatable-border-color:#595959
+// --datatable-header-background-color:#302E38
+// --datatable-header-text-color:#fff
+// --datatable-header-border-color:#595959
+// --datatable-header-row-background-color:#3A3942
+// --datatable-header-row-text-color:#fff
+// --datatable-footer-background-color:#302E38
+// --datatable-footer-text-color:#fff
+// --datatable-body-row-background-color:#312e38
+
+.p-datatable {
+  border-width: 1px;
+  border-radius: 3px;
+  border-color: var(--datatable-border-color);
+}
+
+.p-datatable .p-paginator-top {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+  }
+  .p-datatable .p-paginator-bottom {
+    border-width: 0 0 1px 0;
+    border-radius: 0;
+    background-color: #302E38;
+  }
+  .p-datatable .p-datatable-header {
+    background: var(--datatable-header-background-color);
+    color: var(--datatable-header-text-color);
+    border: 1px solid var(--datatable-header-border-color);
+    border-width: 0px;
+    padding: 1rem 1rem;
+    font-weight: 700;
+  }
+  .p-datatable .p-datatable-thead > tr > th {
+    text-align: left;
+    border-width: 0 0 0px 0;
+    font-weight: 700;
+    color: var(--datatable-header-text-color);
+    background: var(--datatable-header-row-background-color);
+    transition: box-shadow 0.2s;
+    align-items: center;
+    padding: 0px;
+    padding-left:20px ;
+    height: 43px;
+  }
+  .p-datatable .p-datatable-footer {
+    background: var(--datatable-footer-background-color);
+    color: var(--datatable-footer-text-color);
+    border: 1px solid #e5e7eb;
+    border-width: 0 0 1px 0;
+    padding: 1rem 1rem;
+    font-weight: 700;
+  }
+  .p-datatable .p-datatable-tfoot > tr > td {
+    text-align: left;
+    padding: 1rem 1rem;
+    padding: 0px;
+    border: 1px solid #e5e7eb;
+    border-width: 0 0 1px 0;
+    font-weight: 700;
+    color: #374151;
+    background: var(--datatable-footer-background-color);
+  }
+  .p-datatable .p-datatable-tbody > tr {
+    background: var(--datatable-body-row-background-color);
+    color: var(--datatable-body-row-text-color);
+    transition: box-shadow 0.2s;
+  }
+
+  

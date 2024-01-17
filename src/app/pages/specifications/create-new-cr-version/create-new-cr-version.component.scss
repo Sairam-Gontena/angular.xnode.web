@@ -174,33 +174,6 @@
     justify-content: center;
 }
 
-:host ::ng-deep.p-dialog {
-    border: 1px solid #595959 !important;
-
-}
-
-:host ::ng-deep.p-dialog-header {
-    border-top-width: 1px;
-}
-
-:host ::ng-deep.p-dialog .p-dialog-header {
-    background: linear-gradient(0deg, #23222B, #23222B),
-        linear-gradient(0deg, #535354, #535354);
-    border-color: #fff;
-}
-
-:host ::ng-deep .p-dialog .p-dialog-footer {
-    background: linear-gradient(0deg, #23222B, #23222B),
-        linear-gradient(0deg, #535354, #535354);
-    padding: 1.5rem;
-}
-
-:host ::ng-deep.p-dialog .p-dialog-content {
-    background: linear-gradient(0deg, #23222B, #23222B),
-        linear-gradient(0deg, #535354, #535354);
-    color: #fff;
-}
-
 :host ::ng-deep .p-breadcrumb {
     background: linear-gradient(0deg, #23222B, #23222B),
         linear-gradient(0deg, #535354, #535354);
@@ -208,12 +181,6 @@
     color: #A2A2A3;
     border: none;
     font-size: 16px;
-}
-
-:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
-    color: #EFEEEE;
-    font-weight: 700;
-    font-size: 24px;
 }
 
 :host ::ng-deep form label {

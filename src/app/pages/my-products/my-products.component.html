@@ -3,12 +3,11 @@
     <div class="flex sm:col-8 md:col-7 lg:col-4 p-input-icon-left mt-3 lg:mt-6">
         <i class="pi pi-search text-white sm:ml-3  md:ml-3"></i>
         <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
-            class="text-white" />
+            class="p-inputtext-sm" />
     </div>
     <div class="col-12 flex flex-wrap row-gap-4 mt-2 md:mt-3  lg:mt-4">
-        <p-button label="New with Navi AI" styleClass="mr-2 navi-btn" [rounded]="true"
-            (click)="onClickNewWithNavi()"></p-button>
-        <p-button styleClass="p-button-secondary mr-4" [rounded]="true">
+        <p-button label="New with Navi AI" [rounded]="true" size="small" [rounded]="true" (click)="onClickNewWithNavi()"></p-button>
+        <p-button  size="small" severity="secondary" [rounded]="true" styleClass="ml-2" [rounded]="true">
             <img alt="bot-btn-icon" src="./assets/import.svg" />
             <span class="import-btn ml-2" (click)="importNavi()">Import</span>
         </p-button>
@@ -129,3 +128,4 @@
 </div>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
+    <!-- <xnode-confirmation-popup [data]="{type:'Submit'}" *ngIf="true"></xnode-confirmation-popup> -->

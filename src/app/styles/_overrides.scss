@@ -1,85 +1,13 @@
-.p-component {
-    font-family: Font-Regular;
-    letter-spacing: 1px;
-}
-
-.p-button {
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
-.p-button-label {
-    font-weight: normal;
-    letter-spacing: 1px;
-}
-
-.p-button:focus {
-    box-shadow: none;
-}
-
-.p-button.p-button-brand {
-    background: var(--brand-color);
-    border-color: var(--brand-color);
-}
-
-.p-button.p-button-brand:hover {
-    background: var(--brand-color);
-    border-color: var(--brand-color);
-    border: 1px solid var(--brand-color);
-}
-
-.p-button.p-button-secondary,
-.p-buttonset.p-button-secondary>.p-button,
-.p-splitbutton.p-button-secondary>.p-button {
-    background-color: #ffffff;
-    color: #24232C;
-}
-
-.p-button.p-button-secondary:enabled:hover,
-.p-buttonset.p-button-secondary>.p-button:enabled:hover,
-.p-splitbutton.p-button-secondary>.p-button:enabled:hover {
-    background-color: #ffffff;
-    color: #24232C;
-}
-
-.p-button.p-button-secondary:enabled:focus {
-    box-shadow: none;
-}
-
-.p-confirm-dialog-reject {
-    color: #ffffff;
-    background: #23222B;
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border: 1px solid #ffffff;
-    border-radius: 2rem;
-}
-
-.p-confirm-dialog-reject:hover {
-    background: #23222B;
-    color: #ffffff;
-    border: 1px solid #ffffff;
-}
-
-.p-confirm-dialog-accept {
-    background: var(--primary-color);
-    font-size: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    border-radius: 2rem;
-    border: 1px solid var(--primary-color);
-    color: #ffffff !important;
-}
-
-.p-confirm-dialog-accept:hover {
-    background: var(--primary-color) !important;
-    color: #ffffff !important;
-    border: 1px solid var(--primary-color) !important;
-
-}
-
-:host ::ng-deep .p-dropdown-panel .p-dropdown-items :hover {
-    background: #5b5d61 !important;
-}
+@import "./components/inputtext";
+@import "./components/button";
+@import "./components/dropdown";
+@import "./components/tabview";
+@import "./components/accordion";
+@import "./components/overlaypanel";
+@import "./components/datatable";
+@import "./components/splitbutton";
+@import "./components/tidermenu";
+@import "./components/multiselect";
+@import "./components/dialog";
+@import "./components/card";
+@import "./components/checkbox"

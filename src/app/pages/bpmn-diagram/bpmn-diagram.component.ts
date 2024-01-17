@@ -104,14 +104,53 @@ export class BpmnDiagramComponent
       this.utilsService.showProductStatusPopup(true);
       return;
     }
-    if (this.productChanged) {
-      this.getXflowsData();
-    } else {
-      const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
-      this.useCases = list[2].content[0].content;
-    }
-    this.loadGraph();
+    this.getUseCases(this.product);
   }
+
+  getUseCases(data: any) {
+    this.naviApiService
+      .getUsecases(data.id)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          this.useCases = response.data;
+          this.auditUtil.postAudit(
+            'RETRIEVE_USECASES',
+            1,
+            'SUCCESS',
+            'user-audit'
+          );
+          this.loadGraph();
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
+          this.auditUtil.postAudit(
+            'RETRIEVE_USECASES' + response?.data?.detail,
+            1,
+            'FAILURE',
+            'user-audit'
+          );
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+        this.utilsService.loadSpinner(false);
+        this.auditUtil.postAudit(
+          'RETRIEVE_USECASES' + error,
+          1,
+          'FAILURE',
+          'user-audit'
+        );
+      });
+  }
+
   loadGraph() {
     var element = document.getElementById('graph');
     while (element?.firstChild) {
@@ -120,7 +159,6 @@ export class BpmnDiagramComponent
     this.router.url == '/configuration/workflow/overview'
       ? (this.showBpmn = false)
       : (this.showBpmn = true);
-    // this.utilsService.loadSpinner(true);
     setTimeout(() => {
       this.showUsecaseGraph = true;
       var bpmnWindow = document.getElementById('diagramRef');
@@ -212,82 +250,6 @@ export class BpmnDiagramComponent
         document.getElementById('diagramRef') as HTMLElement
       );
     }, 500);
-  }
-  getXflowsData() {
-    const product: Product | undefined = this.storageService.getItem(
-      StorageKeys.Product
-    );
-    this.naviApiService
-      .getXflows(product?.id)
-      .then(async (response: any) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_FLOW_RETRIEVE_XFLOWS_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.product?.id
-          );
-          this.useCases = response.data.Flows;
-          this.loadGraph();
-          this.auditUtil.postAudit('BPMN_FLOWS', 1, 'SUCCESS', 'user-audit');
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_FLOW_RETRIEVE_XFLOWS_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-          this.loadXFlows(workflow);
-          this.jsonWorkflow = JSON.stringify(workflow, null, 2);
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: 'Network Error',
-          });
-          this.auditUtil.postAudit('BPMN_FLOWS', 1, 'FAILURE', 'user-audit');
-        }
-      })
-      .catch((error) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_FLOW_RETRIEVE_XFLOWS_BPMN',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser?.email,
-          this.product?.id
-        );
-        this.loadXFlows(workflow);
-        this.jsonWorkflow = JSON.stringify(workflow, null, 2);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error,
-        });
-        this.auditUtil.postAudit(
-          'BPMN_FLOWS_' + error,
-          1,
-          'FAILURE',
-          'user-audit'
-        );
-      });
   }
 
   getFlow(flow: String) {
@@ -846,19 +808,20 @@ export class BpmnDiagramComponent
   // graph functions and variables
   /*************************************************************************************************** */
   modifyGraphData(data: any) {
-    data.forEach((d: any) => {
-      let temp_title;
-      d.children = [];
-      for (let i = 0; i < d.xflows.length; i++) {
-        temp_title = d.xflows[i].name;
-        // d.xflows[i] = {};
-        // d.xflows[i] =
-        d.children.push({
-          id: i,
-          title: temp_title,
-        });
-      }
-    });
+    if (data) {
+      data.forEach((d: any) => {
+        let temp_title;
+        d.children = [];
+        for (let i = 0; i < d.xflows?.length; i++) {
+          temp_title = d.xflows[i].name;
+          d.children.push({
+            id: i,
+            title: temp_title,
+          });
+        }
+      });
+    }
+
     return data;
   }
 
@@ -1312,7 +1275,6 @@ export class BpmnDiagramComponent
     );
     localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
-    this.productChanged = true;
     this.getMeStorageData();
   }
 }

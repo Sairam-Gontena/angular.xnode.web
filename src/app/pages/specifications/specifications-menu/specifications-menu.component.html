@@ -16,8 +16,8 @@
             <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
             <p-accordion [multiple]="multiAccordion" [activeIndex]="0" (onOpen)="onOpenAccordian($event)">
                 <p-accordionTab [header]="(i + 1) + '. '+ shortTitle(item?.title)"
-                    *ngFor="let item of specData; let i = index;" [ngClass]="{'active-header-text':i === activeIndex }">
-                    <div class="p-2 pointer section text-base font-family-inter font-medium pl-5 pt-3 pb-3 mt-1 "
+                    *ngFor="let item of specData; let i = index;" [ngClass]="{'active-header-text':i === activeIndex }" style="background-color: blue;" >
+                    <div class="p-2 pointer section text-base font-family-inter font-medium pl-6 pt-3 pb-3 mt-1 "
                         [ngClass]="{
                             'active-section': i === activeIndex && ind === selectedSecIndex
                         }" *ngFor="let content of item?.content let ind = index; "

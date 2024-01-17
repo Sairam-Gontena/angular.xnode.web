@@ -69,7 +69,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.isCommnetsPanelOpened = event;
     });
   }
-
   ngOnInit(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -237,7 +236,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       })
-      .catch((err) => {
+      .catch((err:any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -281,7 +280,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
@@ -301,7 +300,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
@@ -378,7 +377,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.loadSpinner(false);
         this.assignAsaTask = false;
       })
-      .catch((err) => {
+      .catch((err:any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
