@@ -168,7 +168,7 @@
     <div *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
       <h3 class="m-0 pb-2 text-2xl font-bold">{{contentObj.title}}</h3>
       <div class="flex justify-content-end align-items-center my-2 mr-2">
-        <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.showTable = false;"></i>
+        <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.showJson = true;"></i>
         <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="contentObj.showTable = true;"></i>
         <i class="pi pi-list pointer ml-2" pTooltip="List view" (click)="toggleListViews()"></i>
 

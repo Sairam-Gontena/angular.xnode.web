@@ -128,24 +128,11 @@ export class DiffCompComponent implements OnInit {
     this.contentObj.showTable = true;
 
   }
-  toggleJsonViews() {
+
+  toggleListViews() {
     this.contentObj.showTable = false;
-    this.contentObj.showView = false;
-    this.contentObj.showJson = true;
-  }
-  toggleTableViews() {
-    this.contentObj.showTable = true;
-    this.contentObj.showView = false;
     this.contentObj.showJson = false;
-  }
-  toggleListViews(): void {
-    this.contentObj.showTable = false;
     this.contentObj.showView = true;
-    this.contentObj.showJson = false;
-  }
-  toggleListView() {
-    this.contentObj.showView = true;
-    this.contentObj.showTable = false;
   }
   onClickViewComments(specItem: any): void {
     const version: SpecVersion | undefined = this.storageService.getItem(
