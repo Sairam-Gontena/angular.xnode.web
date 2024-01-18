@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -62,6 +62,10 @@ export class DiffCompComponent implements OnInit {
     if (this.contentObj?.content_data_type === 'SWAGGER') {
       this.fetchOpenAPISpec();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes', changes);
   }
 
   getType(content: any): string {
