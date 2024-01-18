@@ -54,11 +54,10 @@
           [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
           [specItem]="contentObj"></xnode-add-task>
       </p-overlayPanel>
-
-      <div *ngSwitchCase="'str'">
+      <div  class="col-12 py-0" *ngSwitchCase="'str'"  [id]="contentObj.id">
         <div class="col-12 py-0" *ngIf="contentObj?.parent_data_type">
           <b>
-            <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
+            <xnode-diff-generator [oldContent]="contentObj.title" [newContent]="diffObj?.title"
               [onDiff]="onDiff"></xnode-diff-generator>
           </b>
           <p>
@@ -71,7 +70,7 @@
             [onDiff]="onDiff"></xnode-diff-generator>
         </div>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'list'">
+      <div class="col-12 py-0" *ngSwitchCase="'list'"  [id]="contentObj.id">
         <div [ngSwitch]="getType(contentObj.content)">
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
@@ -81,6 +80,61 @@
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
+        <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
+        <xnode-bpmn-common [item]="contentObj"></xnode-bpmn-common>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'USER_ROLES'" [id]="contentObj.id">
+        <xnode-user-roles [content]="contentObj.content" [parentTitle]="contentObj.title"
+          [specItem]="contentObj"></xnode-user-roles>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
+        <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+        </iframe>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
+        <div class="flex justify-content-end align-items-center my-2 mr-2">
+          <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.showTable = false;"></i>
+          <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="contentObj.showTable = true;"></i>
+        </div>
+        <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"
+          *ngIf="!contentObj?.showTable"></pre>
+        <xnode-common-spec-table [content]="contentObj.content" *ngIf="contentObj?.showTable"></xnode-common-spec-table>
+      </div>
+      <div   class="col-12 py-0" *ngSwitchCase="'TABLE'" [id]="contentObj.id">
+        <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
+        <xnode-data-model-common *ngIf="contentObj"
+         ></xnode-data-model-common>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
+        <div id="openapi-ui-spec" class="openapi-spec"></div>
+      </div>
+      <div  class="col-12 py-0" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
+        <div *ngFor="let persona of contentObj.content" class="pb-3" (mouseover)="persona.showCommentIcon = true"
+          (mouseleave)="persona.showCommentIcon = false">
+          <p-overlayPanel #op (onHide)="persona.showCommentIcon=false">
+            <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);"
+              [position]="'absolute'" [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj"
+              [specItem]="contentObj" placeHolder="Add a Comment" [commentType]="'comment'" [parentEntity]="'SPEC'"
+              [parentId]="specItemId"></xnode-add-comment-overlay-panel>
+          </p-overlayPanel>
+          <p-overlayPanel #op1 appendTo="body" (onHide)="op1.toggle(false);">
+            <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="contentObj" [parentTitle]="parentTitle"
+              [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
+              [specItem]="contentObj"></xnode-add-task>
+          </p-overlayPanel>
+          <div class="flex justify-content-end" *ngIf="persona.showCommentIcon">
+            <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+            <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+            <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+          </div>
+          <xnode-user-persona [content]="persona"></xnode-user-persona>
         </div>
       </div>
     </div>

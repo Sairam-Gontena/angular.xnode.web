@@ -32,6 +32,7 @@ export class DiffViewerComponent implements OnInit {
   product: any;
   versions: any;
   specList: any = [];
+  specListForMenu: any = [];
   currentUser: any;
   keyword: any;
   selectedVersionOne: any;
@@ -74,6 +75,8 @@ export class DiffViewerComponent implements OnInit {
         element.sNo = index + 1 + '.0';
       });
       this.specList = this.changeSpecListFormat(list);
+
+      this.specListForMenu = list;
     });
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
@@ -168,6 +171,7 @@ export class DiffViewerComponent implements OnInit {
           });
           if (params.type === 'one') {
             this.specList = response.data;
+            this.specListForMenu = response.data;
             this.specTwoList.forEach((element1: any) => {
               this.specList.forEach((element2: any) => {
                 if (element2.title === element1.title)

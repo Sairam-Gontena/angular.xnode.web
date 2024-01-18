@@ -43,6 +43,8 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('specData', this.specData);
+
     this.utils.openSpecSubMenu.subscribe((data: any) => {
       this.isOpen = data;
     });
