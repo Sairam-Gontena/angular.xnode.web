@@ -13,7 +13,7 @@ import { SpecVersion } from 'src/models/spec-versions';
 import { isArray } from 'lodash';
 declare const SwaggerUIBundle: any;
 import { AuthApiService } from 'src/app/api/auth.service';
-
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-diff-viewer',
   templateUrl: './diff-viewer.component.html',
@@ -29,6 +29,7 @@ export class DiffViewerComponent implements OnInit {
   content: any = NEWLIST;
   content2: any = OLDLIST;
   loading: boolean = true;
+  specExpanded: boolean = false;
   product: any;
   versions: any;
   specList: any = [];
@@ -46,6 +47,10 @@ export class DiffViewerComponent implements OnInit {
   usersList: any;
   swaggerData: any;
   openConversationPanel: boolean = false;
+  isCommentsPanelOpened: boolean = false;
+  isSpecSideMenuOpened: boolean = false;
+  isDockedNaviOpended: boolean = false;
+  selectedSpecItem:any;
 
   constructor(
     private utils: UtilsService,
@@ -94,6 +99,15 @@ export class DiffViewerComponent implements OnInit {
       if (data) {
         this.openConversationPanel = data.openConversationPanel;
       }
+    });
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommentsPanelOpened = event;
+    });
+    this.utils.openSpecSubMenu.subscribe((event: any) => {
+      this.isSpecSideMenuOpened = event;
+    });
+    this.utils.openDockedNavi.subscribe((event: any) => {
+      this.isDockedNaviOpended = event;
     });
   }
 
@@ -151,6 +165,16 @@ export class DiffViewerComponent implements OnInit {
       }
     }
     return removedItems;
+  }
+
+  onChildLoaded(isLoaded: boolean) {
+    if (isLoaded) {
+      of([])
+        .pipe(delay(500))
+        .subscribe((results) => {
+          this.fetchOpenAPISpec();
+        });
+    }
   }
 
   getMeSpecInfo(params: any) {
@@ -345,6 +369,33 @@ export class DiffViewerComponent implements OnInit {
     console.log('item', item);
     new Promise((resolve) => setTimeout(resolve, 500));
     const element = document.getElementById(item.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  _expandComponent(val: any): void {
+    if (val) {
+      this.selectedSpecItem = val;
+      this.utils.saveSelectedSection(val);
+      this.specUtils._openCommentsPanel(false);
+      this.utils.disableDockedNavi();
+      this.utils.EnableSpecSubMenu();
+      this.specExpanded = true;
+    } else {
+      this.specExpanded = false;
+    }
+  }
+
+  closeFullScreenView(): void {
+    this.specExpanded = false;
+    this.fetchOpenAPISpec();
+    this.scrollToItem();
+  }
+
+  async scrollToItem() {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }

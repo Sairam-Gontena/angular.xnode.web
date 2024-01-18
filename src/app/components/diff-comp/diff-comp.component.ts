@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -26,10 +26,13 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
+  @Output() expandComponent = new EventEmitter<any>();
   iframeSrc: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
   loadSwagger = false;
+ ComponentsToExpand=['Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
+  // listComponentsToExpand=['User Interface Design','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
 
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
