@@ -51,6 +51,26 @@
       </div>
     </div>
   </div>
+  <div *ngIf="dataToExpand.title === 'User Interface Design'" class="h-full">
+    <div class="flex col-12 justify-content-between align-items-center p-4">
+      <h4 class="m-0 pb-3">User Interface Design</h4>
+      <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
+    </div>
+      <ul *ngFor="let subItem of dataToExpand.content;">
+        <li>
+          <div class="flex col-12 p-0 ">
+            <div class="col-11 p-0 ">
+              <div class="m-0 pb-1 line-height-3">
+                <span class="flex flex-wrap sub-title text-base font-medium" [innerHTML]="subItem?.title">
+                </span>
+                <span class="flex flex-wrap sub-content font-normal text-base" [innerHTML]="subItem?.content">
+                </span>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+  </div>
   <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Model'" (dataFlowEmitter)="closeFullScreenView.emit()"
     [dataToExpand]="dataToExpand" [specExpanded]="specExpanded" [specData]="'spec'"></xnode-data-model-common>
     <div class="h-full expand-spec">
