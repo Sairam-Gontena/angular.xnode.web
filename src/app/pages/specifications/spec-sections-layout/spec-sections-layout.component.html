@@ -298,8 +298,7 @@
         dataDictionaryPanelOpened = false;
             dataDictionaryshowCommentIcon = false
           ">
-          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataDictionaryPanelOpened"
-            (closeOverlay)="
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
             dataDictionaryOp.toggle(false);
               dataDictionaryPanelOpened = false
             " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
@@ -307,10 +306,9 @@
         </p-overlayPanel>
         <p-overlayPanel #op1 appendTo="body"
           (onHide)="dataDictionaryPanelOpened = false; dataDictionaryshowCommentIcon = false">
-          <xnode-add-task *ngIf="dataDictionaryPanelOpened"
-            (closeOverlay)="op1.toggle(false); dataDictionaryPanelOpened = false" [selectedContent]="content"
-            [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+          <xnode-add-task (closeOverlay)="op1.toggle(false); dataDictionaryPanelOpened = false"
+            [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
         </p-overlayPanel>
       </div>
 
@@ -390,8 +388,7 @@
               businessRulesPanelOpened = false;
               businessRulesshowCommentIcon = false
             ">
-          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="businessRulesPanelOpened"
-            (closeOverlay)="
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
                 businessRulesop.toggle(false);
                 businessRulesPanelOpened = false
               " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
@@ -400,10 +397,9 @@
         </p-overlayPanel>
         <p-overlayPanel #op1 appendTo="body"
           (onHide)="businessRulesPanelOpened = false; businessRulesshowCommentIcon = false">
-          <xnode-add-task *ngIf="businessRulesPanelOpened"
-            (closeOverlay)="op1.toggle(false); businessRulesPanelOpened = false" [selectedContent]="content"
-            [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+          <xnode-add-task (closeOverlay)="op1.toggle(false); businessRulesPanelOpened = false"
+            [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
         </p-overlayPanel>
       </div>
 
@@ -484,8 +480,7 @@
         functionalDepedencyPanelOpened = false;
             functionalDependenciesshowCommentIcon = false
           ">
-          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-            *ngIf="functionalDepedencyPanelOpened" (closeOverlay)="
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
             functionalDepedencyop.toggle(false);
               functionalDepedencyPanelOpened = false
             " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
@@ -493,7 +488,7 @@
         </p-overlayPanel>
         <p-overlayPanel #op1 appendTo="body" (onHide)="functionalDepedencyPanelOpened = false;
             functionalDependenciesshowCommentIcon = false">
-          <xnode-add-task *ngIf="functionalDepedencyPanelOpened" (closeOverlay)="
+          <xnode-add-task (closeOverlay)="
             functionalDepedencyop.toggle(false);
               functionalDepedencyPanelOpened = false" [selectedContent]="content" [users]="usersList"
             placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
@@ -578,8 +573,7 @@
         userInterfacePanelOpened = false;
         userInterfaceshowCommentIcon = false
           ">
-          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="userInterfacePanelOpened"
-            (closeOverlay)="
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
             userInterfaceop.toggle(false);
             userInterfacePanelOpened = false
             " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment" [commentType]="'comment'"
@@ -587,10 +581,9 @@
         </p-overlayPanel>
         <p-overlayPanel #op1 appendTo="body"
           (onHide)="userInterfacePanelOpened = false; userInterfaceshowCommentIcon = false">
-          <xnode-add-task *ngIf="userInterfacePanelOpened"
-            (closeOverlay)="op1.toggle(false); userInterfacePanelOpened = false" [selectedContent]="content"
-            [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+          <xnode-add-task (closeOverlay)="op1.toggle(false); userInterfacePanelOpened = false"
+            [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
         </p-overlayPanel>
       </div>
     </div>
@@ -668,8 +661,7 @@
           AnnexuresPanelOpened = false;
           AnnexureshowCommentIcon = false
             ">
-          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="AnnexuresPanelOpened"
-            (closeOverlay)="
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
               functionalDepedencyop.toggle(false);
               AnnexuresPanelOpened = false
               " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
@@ -677,9 +669,9 @@
             [specItem]="specItem"></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <p-overlayPanel #op1 appendTo="body" (onHide)="AnnexuresPanelOpened = false; AnnexureshowCommentIcon = false">
-          <xnode-add-task *ngIf="AnnexuresPanelOpened" (closeOverlay)="op1.toggle(false); AnnexuresPanelOpened = false"
-            [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+          <xnode-add-task (closeOverlay)="op1.toggle(false); AnnexuresPanelOpened = false" [selectedContent]="content"
+            [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
         </p-overlayPanel>
       </div>
     </div>

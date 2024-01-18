@@ -59,6 +59,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   isDockedNaviOpened?: boolean = false;
   isSideMenuOpened?: boolean = false;
   isCommnetsPanelOpened?: boolean = false;
+  jsonTypes = ['Business Rules', 'Annexures', 'User Interfaces', 'Functional Dependencies', 'Data Dictionary']
 
   businessRulesPanelOpened: boolean = false;
   businessRulesshowCommentIcon: boolean = false;
@@ -138,8 +139,15 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
         // this.fetchOpenAPISpec();
       }
     });
+    this.makeBusinessRulesJsonTrue();
   }
-
+  makeBusinessRulesJsonTrue() {
+    this.content.forEach((element: any) => {
+      if (this.jsonTypes.includes(element.title)) {
+        element.showJson = true;
+      }
+    });
+  }
   ngOnChanges() {
     if (this.expandView) {
       setTimeout(() => {
