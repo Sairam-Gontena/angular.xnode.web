@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UtilsService } from '../services/utils.service';
 import { Product } from 'src/models/product';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SpecUtilsService } from '../services/spec-utils.service';
@@ -13,33 +12,29 @@ export class ProductDropdownComponent implements OnInit {
   selectedProduct: any;
   products: Array<Product> = [];
   currentUser: any;
+  product:any;
   email: string = '';
   myForm: FormGroup;
 
   constructor(
-    private utilsService: UtilsService,
     private fb: FormBuilder,
     private specUtils: SpecUtilsService
   ) {
     this.myForm = this.fb.group({ selectedProduct: [null] });
     this.specUtils.getMeUpdatedProduct.subscribe((data: any) => {
       if (data) {
-        this.getMeDataFromStorage();
+        this.ngOnInit()
       }
     });
   }
 
   ngOnInit() {
-    this.getMeDataFromStorage();
     const metaData = localStorage.getItem('meta_data');
     if (metaData) {
       this.products = JSON.parse(metaData);
     }
-    // this.myForm.valueChanges.subscribe((value: any) => {
-    //   this.selectedProduct = value.selectedProduct;
-    //   this._onChangeProduct.emit(this.selectedProduct);
-    //   this.utilsService.saveProductDetails(this.selectedProduct);
-    // });
+    this.product = localStorage.getItem('product');
+    this.getMeDataFromStorage();
   }
   onChangeProduct(event: any): void {
     this.selectedProduct = event.value;
@@ -47,18 +42,21 @@ export class ProductDropdownComponent implements OnInit {
   }
 
   getMeDataFromStorage(): void {
-    const product = localStorage.getItem('product');
     if (this.products) {
-      if (product) {
-        this.selectedProduct = JSON.parse(product);
-        this.myForm.patchValue({
-          selectedProduct: this.products.find(
-            (item: any) => item.id == this.selectedProduct.id
-          ),
-        });
+      if (this.product) {
+        setTimeout(() => {
+          this.product = localStorage.getItem('product');
+          this.selectedProduct = JSON.parse(this.product);
+          this.myForm.patchValue({
+            selectedProduct: this.products.find(
+              (item: any) => item.id == this.selectedProduct.id
+            ),});
+        }, 0);
       } else {
-        this.selectedProduct = this.products[0];
-        this.myForm.patchValue({ selectedProduct: this.selectedProduct });
+        setTimeout(() => {
+          this.selectedProduct = this.products[0];
+          this.myForm.patchValue({ selectedProduct: this.selectedProduct });
+        }, 0);
       }
     }
   }
