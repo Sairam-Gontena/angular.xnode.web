@@ -67,14 +67,14 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   }
 
   getDiff() {
-    console.log('newContent', this.newContent);
-    console.log('oldContent', this.oldContent);
     this.diff = this.diffService.getDiff(
       this.oldContent || '',
       this.newContent || '',
       this.filename
     );
     this.refreshDiffHTML();
+    console.log('#####', this.diff, typeof this.diff);
+
     this.diffChange.emit(this.diff);
   }
 
@@ -84,5 +84,6 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
       this.format,
       this.style
     );
+    // console.log('this.diffHTMLthis.diffHTMLthis.diffHTML', this.diffHTML);
   }
 }

@@ -108,8 +108,6 @@ export class DiffViewerComponent implements OnInit {
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
-        console.log('innerItem', innerItem);
-
         return innerItem;
       }),
     ]);
