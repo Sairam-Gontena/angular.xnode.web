@@ -35,11 +35,6 @@ export class ProductDropdownComponent implements OnInit {
     }
     this.product = localStorage.getItem('product');
     this.getMeDataFromStorage();
-    // this.myForm.valueChanges.subscribe((value: any) => {
-    //   this.selectedProduct = value.selectedProduct;
-    //   this._onChangeProduct.emit(this.selectedProduct);
-    //   this.utilsService.saveProductDetails(this.selectedProduct);
-    // });
   }
   onChangeProduct(event: any): void {
     this.selectedProduct = event.value;
