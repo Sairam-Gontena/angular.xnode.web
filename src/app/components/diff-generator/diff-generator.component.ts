@@ -27,7 +27,8 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   private diff: string = '';
   diffHTML: string = '';
 
-  constructor(private diffService: DiffToHtmlService) {}
+  constructor(private diffService: DiffToHtmlService) {
+  }
 
   ngOnInit() {
     // this.getDiff();
@@ -43,7 +44,9 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
     //   'changes>>>>>>>>$$$$$$$$$$>>>>>>>>>>>>>',
     //   changes['newContent']
     // );
-
+    if(this.oldContent && this.newContent && this.oldContent ===this.newContent){
+      this.onDiff = false;
+    }
     if (
       this.propHasChanged(changes['oldContent']) ||
       this.propHasChanged(changes['newContent'])
@@ -73,7 +76,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
       this.filename
     );
     this.refreshDiffHTML();
-    console.log('#####', this.diff, typeof this.diff);
+    // console.log('#####', this.diff, typeof this.diff);
 
     this.diffChange.emit(this.diff);
   }

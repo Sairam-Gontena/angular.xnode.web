@@ -49,7 +49,7 @@ export class DiffToHtmlService {
     format: DiffFormat = 'side-by-side',
     style: DiffStyle = 'word'
   ) {
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', diff);
+    // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', diff);
 
     return Diff2Html.html(diff, {
       drawFileList: false,
