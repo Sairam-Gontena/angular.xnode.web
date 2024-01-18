@@ -65,7 +65,8 @@ export class DiffCompComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log('changes', changes);
+    console.log('changes', changes);
+    this.diffObj = changes['diffObj'].currentValue;
   }
 
   getType(content: any): string {

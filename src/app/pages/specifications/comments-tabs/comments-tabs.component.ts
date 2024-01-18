@@ -35,13 +35,12 @@ export class CommentsTabsComponent implements OnInit {
       let indexObj = { index: this.activeIndex };
       // this.onTabChange(indexObj);
     });
-    this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
-      if (event) {
-        this.activeIndex = 0;
-        this.list = event;
-      }
+    this.specificationUtils.getMeCommentList.subscribe((data: any) => {
+      this.list = [];
+      if (data) this.list = data;
     });
     this.specificationUtils.getMeTaskList.subscribe((data: any) => {
+      this.list = [];
       if (data) {
         this.list = data;
       }

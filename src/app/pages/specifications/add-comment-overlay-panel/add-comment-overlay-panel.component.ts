@@ -74,6 +74,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    console.log('selectedContent', this.selectedContent);
+
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.users = this.storageService.getItem(StorageKeys.USERLIST);

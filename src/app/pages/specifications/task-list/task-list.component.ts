@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
-import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeHtml,
+  SafeResourceUrl,
+} from '@angular/platform-browser';
 import { Comment } from 'src/models/comment';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { MessagingService } from '../../../components/services/messaging.service';
@@ -12,7 +16,7 @@ import { Subscription, delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-task-list',
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
 })
 export class TaskListComponent {
   @Input() list: any;
@@ -52,73 +56,85 @@ export class TaskListComponent {
   targetUrl: string = '';
   iframeSrc: SafeResourceUrl = '';
   parentId: any;
-  private searchKeywordSubscription: Subscription = new Subscription;
-  private searchByUserSubscription: Subscription = new Subscription;
+  private searchKeywordSubscription: Subscription = new Subscription();
+  private searchByUserSubscription: Subscription = new Subscription();
 
-  constructor(private utils: UtilsService,
+  constructor(
+    private utils: UtilsService,
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
-    private messagingService: MessagingService) {
+    private messagingService: MessagingService
+  ) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'REPLY') {
         this.showCommentInput = false;
-        this.action = ''
+        this.action = '';
       }
-    })
+    });
   }
 
   ngOnInit() {
-    this.list.forEach((element: any) => {
-      element.repliesOpened = false;
-    });
-    this.specListCopy = this.list;
+    if (this.list.length) {
+      this.list.forEach((element: any) => {
+        element.repliesOpened = false;
+      });
+      this.specListCopy = this.list;
+    }
     this.makeTrustedUrl();
     this.checkSwaggerItem();
-    this.searchKeywordSubscription = this.specUtils.getTaskPanelSearchByKeywordTaskList().subscribe((data: any) => {
-      this.filterListBySearch(data);
-    });
-    this.searchByUserSubscription = this.specUtils.getTaskPanelSearchByUsersListData().subscribe((data: any) => {
-      this.filterListByUsersFilter(data);
-    });
+    this.searchKeywordSubscription = this.specUtils
+      .getTaskPanelSearchByKeywordTaskList()
+      .subscribe((data: any) => {
+        this.filterListBySearch(data);
+      });
+    this.searchByUserSubscription = this.specUtils
+      .getTaskPanelSearchByUsersListData()
+      .subscribe((data: any) => {
+        this.filterListByUsersFilter(data);
+      });
   }
 
   filterListBySearch(users?: any) {
     if (this.searchIconKeyword.length > 0) {
-      this.searchIconKeyword = this.searchIconKeyword.toLowerCase()
-      this.list = this.list.filter((item: any) => item.title.toLowerCase().includes(this.searchIconKeyword));
+      this.searchIconKeyword = this.searchIconKeyword.toLowerCase();
+      this.list = this.list.filter((item: any) =>
+        item.title.toLowerCase().includes(this.searchIconKeyword)
+      );
     } else {
       this.list = this.specListCopy;
     }
     if (users) {
       this.filterListByUsersFilter(users);
-      return
+      return;
     }
   }
 
   filterListByUsersFilter(users: any) {
     if (users.length > 0) {
       this.list = this.specListCopy;
-      this.list = this.list.filter((item: any) => users.includes(item.assignee.userId));
+      this.list = this.list.filter((item: any) =>
+        users.includes(item.assignee.userId)
+      );
     } else {
       this.list = this.specListCopy;
     }
     if (this.searchIconKeyword.length > 0) {
       this.filterListBySearch();
-      return
+      return;
     }
   }
 
   checkSwaggerItem() {
     this.list.forEach((item: any) => {
       if (item.referenceContent.title == 'OpenAPI Spec') {
-        of(([])).pipe(
-          delay(500)
-        ).subscribe((results) => {
-          this.fetchOpenSpecApi(item.id)
-        });
+        of([])
+          .pipe(delay(500))
+          .subscribe((results) => {
+            this.fetchOpenSpecApi(item.id);
+          });
       }
-    })
+    });
   }
 
   fetchOpenSpecApi(id: any) {
@@ -208,16 +224,20 @@ export class TaskListComponent {
   setAvatar(userObj: any): string {
     let avatar: string = '';
     if (userObj.createdBy && userObj.createdBy?.displayName) {
-      avatar = userObj.createdBy.firstName.charAt(0).toUpperCase() + userObj.createdBy.lastName.charAt(0).toUpperCase();
+      avatar =
+        userObj.createdBy.firstName.charAt(0).toUpperCase() +
+        userObj.createdBy.lastName.charAt(0).toUpperCase();
     } else if (userObj.assignee && userObj.assignee?.displayName) {
-      avatar = userObj.assignee.firstName.charAt(0).toUpperCase() + userObj.assignee.lastName.charAt(0).toUpperCase();
+      avatar =
+        userObj.assignee.firstName.charAt(0).toUpperCase() +
+        userObj.assignee.lastName.charAt(0).toUpperCase();
     } else {
       avatar = '';
     }
     return avatar;
   }
 
-  eventFromConversationAction(data: { action: string, cmt: any }) {
+  eventFromConversationAction(data: { action: string; cmt: any }) {
     this.action = data.action;
     if (data.action === 'REPLY') {
       this.onClickReply(data.cmt);
@@ -249,28 +269,43 @@ export class TaskListComponent {
   onClickDeleteTask(comment: string): void {
     this.selectedComment = comment;
     this.showConfirmationPopup = true;
-    this.confirmarionContent = "Are you sure, Do you want to delete this Task?";
-    this.confirmarionHeader = "Delete Task";
+    this.confirmarionContent = 'Are you sure, Do you want to delete this Task?';
+    this.confirmarionHeader = 'Delete Task';
   }
 
   toggleConfirmPopup(event: boolean) {
-    this.showDeletePopup = event
+    this.showDeletePopup = event;
   }
 
   deleteTask() {
     this.utils.loadSpinner(true);
-    this.commentsService.deletTask(this.selectedComment.id).then(res => {
-      if (res && res.status === 200) {
-        this.utils.loadToaster({ severity: 'success', summary: 'Success', detail: 'Task deleted successfully' });
-        this.specUtils._tabToActive('TASK');
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res.data?.detail });
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-      this.utils.loadSpinner(false);
-    })
+    this.commentsService
+      .deletTask(this.selectedComment.id)
+      .then((res) => {
+        if (res && res.status === 200) {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Task deleted successfully',
+          });
+          this.specUtils._tabToActive('TASK');
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: res.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
   }
 
   highlightMatch(conversation: string): SafeHtml {
@@ -284,7 +319,13 @@ export class TaskListComponent {
   }
 
   checktableJsonSection(title: string): boolean {
-    return title === 'Business Rules' || title === 'Functional Dependencies' || title === 'Data Dictionary' || title === 'User Interfaces' || title === 'Annexures'
+    return (
+      title === 'Business Rules' ||
+      title === 'Functional Dependencies' ||
+      title === 'Data Dictionary' ||
+      title === 'User Interfaces' ||
+      title === 'Annexures'
+    );
   }
 
   modifiedTimeDifference(modifiedOn: Date): string {
@@ -313,45 +354,54 @@ export class TaskListComponent {
       this.topParentId = cmt.id;
     }
     this.showReplies = true;
-    if (cmt)
-      this.selectedComment = cmt;
+    if (cmt) this.selectedComment = cmt;
 
     this.utils.loadSpinner(true);
-    this.commentsService.getComments({ parentId: this.selectedComment.id }).then((response: any) => {
-      if (response && response.data) {
-        this.replies = response.data;
-        response.data.forEach((element: any) => {
-          element.parentUser = this.list.filter((ele: any) => { return ele.id === this.selectedComment.id })[0].createdBy;
+    this.commentsService
+      .getComments({ parentId: this.selectedComment.id })
+      .then((response: any) => {
+        if (response && response.data) {
+          this.replies = response.data;
+          response.data.forEach((element: any) => {
+            element.parentUser = this.list.filter((ele: any) => {
+              return ele.id === this.selectedComment.id;
+            })[0].createdBy;
+          });
+          this.list.forEach((obj: any) => {
+            if (obj.id === cmt.id) {
+              obj.comments = response.data;
+              obj.repliesOpened = true;
+            }
+          });
+          this.replies = response.data;
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: response.data?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
         });
-        this.list.forEach((obj: any) => {
-          if (obj.id === cmt.id) {
-            obj.comments = response.data;
-            obj.repliesOpened = true
-          }
-        })
-        this.replies = response.data;
-
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: response.data?.status });
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-
-    });
+      });
   }
 
   hideReplies(cmt?: any) {
     this.list.forEach((obj: any) => {
       if (obj.id === this.selectedComment.id) {
         obj.comments = this.replies;
-        obj.repliesOpened = false
+        obj.repliesOpened = false;
       }
-    })
+    });
   }
-
 
   linkToCr(cmt?: any) {
     if (cmt) {
@@ -359,10 +409,9 @@ export class TaskListComponent {
       this.showCrPopup = true;
       this.messagingService.sendMessage({
         msgType: MessageTypes.LinkToCR,
-        msgData: cmt
+        msgData: cmt,
       });
     }
-
   }
   unLinkToCr(cmt?: any) {
     this.selectedComment = cmt;
@@ -376,8 +425,9 @@ export class TaskListComponent {
     this.fileIndex = index;
     this.showConfirmationPopup = true;
     this.selectedComment = cmt;
-    this.confirmarionContent = "Are you sure, Do you want to delete this Attachment?";
-    this.confirmarionHeader = "Delete Attachment";
+    this.confirmarionContent =
+      'Are you sure, Do you want to delete this Attachment?';
+    this.confirmarionHeader = 'Delete Attachment';
     this.action = 'DELETE_ATTACHMENT';
   }
 
@@ -390,7 +440,7 @@ export class TaskListComponent {
 
   checkAction(): void {
     if (this.action === 'DELETE') {
-      this.deleteTask()
+      this.deleteTask();
     } else if (this.action === 'DELETE_ATTACHMENT') {
       this.deleteFile(this.selectedComment);
     } else if (this.action === 'UNLINK_CR') {
@@ -401,9 +451,9 @@ export class TaskListComponent {
     let latestFiles: any[] = [];
     cmt?.attachments?.map((res: any, index: number) => {
       if (index !== this.fileIndex) {
-        latestFiles.push(res.fileId)
+        latestFiles.push(res.fileId);
       }
-    })
+    });
     cmt.attachments = latestFiles;
     cmt.assignee = cmt.assignee.userId;
     this.saveAsTask(cmt);
@@ -438,19 +488,34 @@ export class TaskListComponent {
       });
   }
   saveAsTask(cmt: any): void {
-    this.commentsService.addTask(cmt).then((commentsReponse: any) => {
-      if (commentsReponse.statusText === 'Created') {
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File deleted successfully' });
-        this.fileIndex = null;
-        this.specUtils._tabToActive('TASK');
-      } else {
+    this.commentsService
+      .addTask(cmt)
+      .then((commentsReponse: any) => {
+        if (commentsReponse.statusText === 'Created') {
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'File deleted successfully',
+          });
+          this.fileIndex = null;
+          this.specUtils._tabToActive('TASK');
+        } else {
+          this.utils.loadSpinner(false);
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: commentsReponse?.data?.common?.status,
+          });
+        }
         this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    })
+      })
+      .catch((err) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 }

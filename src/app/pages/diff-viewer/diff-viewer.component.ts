@@ -107,6 +107,7 @@ export class DiffViewerComponent implements OnInit {
     let flattenedData = list.flatMap((item: any, itemIndex: number) => [
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
+        innerItem.parentId = item.id;
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
         return innerItem;
       }),
