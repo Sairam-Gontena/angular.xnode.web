@@ -58,16 +58,16 @@
         <div class="col-12 py-0" *ngIf="contentObj?.parent_data_type">
           <b>
             <xnode-diff-generator [oldContent]="contentObj.title" [newContent]="diffObj?.title"
-              [onDiff]="onDiff"></xnode-diff-generator>
+              [onDiff]="onDiff"  [format]="format"></xnode-diff-generator>
           </b>
           <p>
             <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
-              [onDiff]="onDiff"></xnode-diff-generator>
+              [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </p>
         </div>
         <div class="col-12 py-0" *ngIf="!contentObj?.parent_data_type">
           <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
-            [onDiff]="onDiff"></xnode-diff-generator>
+            [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
         </div>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'list'" [id]="contentObj.id">

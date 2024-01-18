@@ -45,6 +45,7 @@ export class DiffViewerComponent implements OnInit {
   specTwoList: any = [];
   usersList: any;
   swaggerData: any;
+  format: any;
   openConversationPanel: boolean = false;
 
   constructor(
@@ -324,8 +325,11 @@ export class DiffViewerComponent implements OnInit {
   }
 
   diffViewChangeEmiter(event: any) {
-    this.showVersionToDiff = event;
-    if (event) {
+    console.log('eventevent', event);
+
+    this.showVersionToDiff = event.diffView;
+    this.format = event.viewType;
+    if (event.viewType !== null) {
       this.selectedVersionOne = this.versions[0];
       this.selectedVersionTwo = this.versions[1];
       this.utils.loadSpinner(true);

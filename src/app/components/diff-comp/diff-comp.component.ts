@@ -18,6 +18,7 @@ declare const SwaggerUIBundle: any;
 export class DiffCompComponent implements OnInit {
   product: any;
   @Input() contentObj: any;
+  @Input() format: any = 'line-by-line';
   @Input() diffObj: any;
   @Input() onDiff: boolean = false;
   @Input() index: any;
@@ -30,7 +31,6 @@ export class DiffCompComponent implements OnInit {
   targetUrl: any;
   currentUser: any;
   loadSwagger = false;
-
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -66,7 +66,10 @@ export class DiffCompComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes', changes);
-    this.diffObj = changes['diffObj'].currentValue;
+    if (changes['diffObj']?.currentValue)
+      this.diffObj = changes['diffObj'].currentValue;
+    if (changes['format']?.currentValue)
+      this.format = changes['format'].currentValue;
   }
 
   getType(content: any): string {

@@ -21,20 +21,21 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   @Input() oldContent: string = '';
   @Input() onDiff: boolean = false;
   @Input() private filename: string = '';
-  @Input() private format: DiffFormat = 'side-by-side';
+  @Input() format?: DiffFormat;
   @Input() private style: DiffStyle = 'word';
   @Output() diffChange: EventEmitter<string> = new EventEmitter();
   private diff: string = '';
   diffHTML: string = '';
 
-  constructor(private diffService: DiffToHtmlService) {
-  }
+  constructor(private diffService: DiffToHtmlService) {}
 
   ngOnInit() {
     // this.getDiff();
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('changes', changes);
+
     // console.log(
     //   'changes>>>>>>>>>>>>>>>>>>>>>',
     //   changes['oldContent'],
@@ -44,7 +45,11 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
     //   'changes>>>>>>>>$$$$$$$$$$>>>>>>>>>>>>>',
     //   changes['newContent']
     // );
-    if(this.oldContent && this.newContent && this.oldContent ===this.newContent){
+    if (
+      this.oldContent &&
+      this.newContent &&
+      this.oldContent === this.newContent
+    ) {
       this.onDiff = false;
     }
     if (

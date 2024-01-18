@@ -32,12 +32,13 @@ export class SpecificationsHeaderComponent implements OnInit {
   showConfirmationPopup: boolean = false;
   enabledGeneratespec: boolean = true;
   diffView: boolean = false;
+  viewType: any;
   showSpecGenaretePopup: any;
   isTheCurrentUserOwner: any;
   productStatusPopupContent: any;
   viewList: any = [
-    { label: 'Inline View', value: 'INLINE VIEW' },
-    { label: 'Side By Side View', value: 'SIDE BY SIDE VIEW' },
+    { label: 'Inline View', value: 'line-by-line' },
+    { label: 'Side By Side View', value: 'side-by-side' },
     { label: 'Exit', value: 'EXIT' },
   ];
   selectedView: any;
@@ -311,20 +312,25 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
   }
   onViewChange(event: any) {
-    if (event.value.value === 'INLINE VIEW') {
-      console.log(event.value);
-    } else if (event.value.value === 'EXIT') {
+    this.viewType = event.value.value;
+    if (event.value.value === 'EXIT') {
       this.diffView = false;
+      this.viewType = undefined;
     }
+    this.onDiffViewChange.emit({
+      diffView: event.value.value === 'EXIT' ? false : this.diffView,
+      viewType: event.value.value === 'EXIT' ? null : event.value.value,
+    });
   }
   toggleDiffView(ele: any): void {
     if (this.diffView) {
-      this.selectedView = this.viewList.find(
-        (view: any) => view.value === 'INLINE VIEW'
-      );
+      this.viewType = 'line-by-line';
     } else {
-      this.selectedView = null; // Set to null or any other default value when the switch is off
+      this.viewType = null; // Set to null or any other default value when the switch is off
     }
-    this.onDiffViewChange.emit(this.diffView);
+    this.onDiffViewChange.emit({
+      diffView: this.diffView,
+      viewType: this.viewType,
+    });
   }
 }
