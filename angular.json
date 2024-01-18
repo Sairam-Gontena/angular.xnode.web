@@ -30,7 +30,11 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              {
+                "input":"src/themes/lara-dark-blue.css",
+                "bundleName": "lara-dark-blue",
+                "inject": false
+              },
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeflex/primeflex.css",
               "node_modules/bpmn-js/dist/assets/diagram-js.css",

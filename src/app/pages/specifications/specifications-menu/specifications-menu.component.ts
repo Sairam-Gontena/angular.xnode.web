@@ -31,7 +31,8 @@ export class SpecificationsMenuComponent implements OnInit {
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
-        this.menuList = resp.filter((item: any) => item !== null);
+        if(resp)
+          this.menuList = resp?.filter((item: any) => item !== null);
       },);
     });
     this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
@@ -60,12 +61,14 @@ export class SpecificationsMenuComponent implements OnInit {
 
   populateMenuList() {
     let list = this.specData;
-    list.forEach((element: any) => {
-      if (element.section) {
-        element.section.splice(0, 1);
-      }
-    });
-    this.menuList = [...list]
+    if (list?.length) {
+      list.forEach((element: any) => {
+        if (element.section) {
+          element.section.splice(0, 1);
+        }
+      });
+      this.menuList = [...list];
+    }
   }
 
   onOpenAccordian(event: any) {
@@ -116,9 +119,10 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   openAccordions() {
-    this.specData.forEach((element: any, index: any) => {
-      this.activeIndex.push(index)
-    });
+    if (this.specData?.length)
+      this.specData.forEach((element: any, index: any) => {
+        this.activeIndex.push(index)
+      });
     if (this.searchText?.length > 0)
       this.multiAccordion = true;
   }

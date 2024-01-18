@@ -1,37 +1,40 @@
- <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
-        <span (click)="submenuFunc()">
-            <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
-                (click)="botOnClick()"></xnode-bot>
-        </span>
-        <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
-        <div class="flex" >
-            <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen,'main-component-expand-navi': isNaviExpanded}" class="flex-column">
-                <div class="flex">
-                    <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
-                        <xnode-app-side-menu></xnode-app-side-menu>
-                    </div>
-                    <div [ngClass]="showSideMenu()  ? 'app-body-wrapper' : 'app-body-wrapper-full'" class="flex-1">
-                        <router-outlet></router-outlet>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="isSideWindowOpen" class="flex navi-frame" [ngClass]="{'navi-ful-frame':isNaviExpanded, 'navi-frame':!isNaviExpanded}">
-                <div class="app-side-menu-wrapper" *ngIf="isNaviExpanded && showSideMenu()">
+<ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
+    <span (click)="submenuFunc()">
+        <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
+            (click)="botOnClick()"></xnode-bot>
+    </span>
+    <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
+    <div class="flex">
+        <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen,'main-component-expand-navi': isNaviExpanded}"
+            class="flex-column">
+            <div class="flex">
+                <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
                     <xnode-app-side-menu></xnode-app-side-menu>
                 </div>
-                <div [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
-                    <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
-                        class="w-full h-full pl-0 pr-0 ifram-navi">
-                    </iframe>
+                <div [ngClass]="showSideMenu()  ? 'app-body-wrapper' : 'app-body-wrapper-full'" class="flex-1">
+                    <router-outlet></router-outlet>
                 </div>
             </div>
         </div>
-    </ng-container>
-    <ng-template #notLoggedIn>
-        <router-outlet></router-outlet>
-    </ng-template>
+        <div *ngIf="isSideWindowOpen" class="flex navi-frame"
+            [ngClass]="{'navi-ful-frame':isNaviExpanded, 'navi-frame':!isNaviExpanded}">
+            <div class="app-side-menu-wrapper" *ngIf="isNaviExpanded && showSideMenu()">
+                <xnode-app-side-menu></xnode-app-side-menu>
+            </div>
+            <div
+                [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
+                <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                    class="w-full h-full pl-0 pr-0 ifram-navi">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #notLoggedIn>
+    <router-outlet></router-outlet>
+</ng-template>
 
-  <p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
+<p-toast [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
 <ngx-spinner size="medium" type="ball-clip-rotate-multiple"></ngx-spinner>
 <xnode-product-alert-popup *ngIf="showProductStatusPopup" (closePopup)="closePopup()" [contentdata]="content"
     (openDockedNavi)="openNavi($event)" [showProductStatusPopup]="showProductStatusPopup"></xnode-product-alert-popup>

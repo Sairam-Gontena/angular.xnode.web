@@ -10,9 +10,9 @@
         </span>
     </div>
     <div class="flex justify-content-end mt-6">
-        <p-button label="No" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
-            (click)="onClickAction.emit('No')"></p-button>
-        <p-button label="Yes" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
-            (click)="onClickAction.emit('Yes')"></p-button>
+        <p-button label="No" size="small" [outlined]="true" [rounded]="true" class="mr-2"  (click)="onClickAction.emit('No')"
+        ></p-button>
+        <p-button label="Yes" size="small"  [rounded]="true" class="mr-2"  (click)="onClickAction.emit('Yes')"
+        ></p-button>
     </div>
 </p-dialog>

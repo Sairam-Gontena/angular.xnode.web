@@ -32,22 +32,6 @@
   margin-top: 2px;
 }
 
-// :host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
-//   border-width: 0px;
-//   border-color: #ffff;
-// }
-// :host ::ng-deep .p-checkbox .p-checkbox-box:hover {
-//   border-color: #ffff;
-// }
-// :host ::ng-deep .p-checkbox .p-checkbox-box:active {
-//   border-color: #fff;
-//   border-width: 0px;
-// }
-// :host ::ng-deep .p-checkbox .p-checkbox-box:focus {
-//   border-color: #fff;
-//   border-width: 0px;
-// }
-
 :host ::ng-deep .cr-tabs .p-accordion .p-accordion-header .p-accordion-header-link {
   position: relative;
 }
@@ -73,7 +57,7 @@
 
 .submit-cr-window {
   height: 0;
-  overflow: hidden;
+  overflow: visible; //hidden;
   transition: height 0.5s ease-in-out;
   background-color: #2E2D36;
 }
@@ -89,4 +73,115 @@
   max-height: 200px;
   overflow: hidden;
   border-radius: 6px;
+}
+
+.add-reviewer-panel {
+  right: 25px;
+  border-color: #02ADEE;
+  background-color: #202123;
+}
+
+.add-reviewer-panel-header {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.add-reviewer-panel-body {
+  background-color: #2E2D36;
+}
+
+:host ::ng-deep .add-reviewer .p-autocomplete {
+  width: 100% !important;
+  display: block !important;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  color: #fff;
+}
+
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items {
+  background-color: #2E2D36;
+  color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  color: white;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item:hover {
+  color: black;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item.p-highlight {
+  color: black;
+}
+
+:host ::ng-deep .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-token {
+  background: #535354;
+  font-size: 14px;
+  border-radius: 20px;
+  padding: 5px;
+  color: #fff;
+}
+
+.autocomplete-label {
+  height: 25px;
+  width: 25px;
+  border-radius: 20px;
+  background-color: #02ADEE;
+}
+
+.avtar {
+  border-radius: 15px;
+  background-color: #02ADEE;
+  font-size: 12px;
+  display: flex;
+  padding: 3px;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-grid {
+  background: #2E2D36;
+  color: #EFEEEE;
+  width: 100% !important;
+}
+
+:host ::ng-deep .dueDate .p-inputtext {
+  background-color: #302E38;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  font-weight: normal;
+  padding: 0;
+  width: 0;
+}
+
+:host ::ng-deep .dueDate .p-button {
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0;
+  font-size: 1.5rem !important;
+  border-radius: 6px;
+}
+
+:host ::ng-deep .dueDate .p-button-icon-only {
+  width: 18px !important;
+}
+
+:host ::ng-deep .priority-dropdown .p-dropdown-label {
+  display: none;
+}
+
+:host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
+  display: none;
+}
+
+:host ::ng-deep .priority-dropdown .p-dropdown-trigger {
+  background: url('../../assets/status.svg') no-repeat;
+  background-size: contain;
+  display: inline-block;
+  width: 18px;
 }

@@ -6,20 +6,14 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  Renderer2,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { DataService } from '../../er-modeller/service/data.service';
-import { SECTION_VIEW_CONFIG } from '../section-view-config';
-import { CommentsService } from 'src/app/api/comments.service';
-import { ApiService } from 'src/app/api/api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-import { ActivatedRoute } from '@angular/router';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
@@ -33,6 +27,7 @@ export class SpecificationsContentComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword: any;
   @Input() noResults: any;
+  @Input() reveiwerList: any;
   // @Input() useCases: any[] = [];
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   @Output() openAndGetComments = new EventEmitter<any>();
@@ -60,7 +55,6 @@ export class SpecificationsContentComponent implements OnInit {
   list: any;
   currentUser: any;
   usersList: any = null;
-  reveiwerList: any;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
@@ -69,15 +63,13 @@ export class SpecificationsContentComponent implements OnInit {
   constructor(
     private utils: UtilsService,
     private dataService: DataService,
-    private apiservice: ApiService,
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
-    private route: ActivatedRoute,
-    private authApiService: AuthApiService,
+    private authApiService: AuthApiService
   ) {
     this.dataModel = this.dataService.data;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.getUsersData();
+    // this.getUsersData();
     this.utils.getMeSpecItem.subscribe((event: any) => {
       if (event) {
         this.specItemList = event;
@@ -94,19 +86,19 @@ export class SpecificationsContentComponent implements OnInit {
     });
     this.utils.openSpecSubMenu.subscribe((event: any) => {
       this.isSpecSideMenuOpened = event;
-    })
+    });
     this.utils.openDockedNavi.subscribe((event: any) => {
-      this.isDockedNaviOpended = event
-    })
+      this.isDockedNaviOpended = event;
+    });
   }
 
   onChildLoaded(isLoaded: boolean) {
     if (isLoaded) {
-      of(([])).pipe(
-        delay(500)
-      ).subscribe((results) => {
-        this.fetchOpenAPISpec();
-      })
+      of([])
+        .pipe(delay(500))
+        .subscribe((results) => {
+          this.fetchOpenAPISpec();
+        });
     }
   }
 
@@ -129,8 +121,8 @@ export class SpecificationsContentComponent implements OnInit {
       '&isVerified=true' +
       '&userId=' +
       this.currentUser.id;
-    this.fetchOpenAPISpec();
-    this.getUserByAccountId();
+    // this.fetchOpenAPISpec();
+    // this.getUserByAccountId();
     // this.fetchOpenAPISpec();
   }
 
@@ -147,7 +139,7 @@ export class SpecificationsContentComponent implements OnInit {
 
   ngOnDestroy() {
     // this.specUtils._openCommentsPanel(false);
-    this.utils.EnableSpecSubMenu()
+    this.utils.EnableSpecSubMenu();
   }
   ngOnChanges() {
     this.specItemList = this.specData;
@@ -168,10 +160,8 @@ export class SpecificationsContentComponent implements OnInit {
   }
 
   getUsersData() {
-    this.apiservice
-      .getAuthApi(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+    this.authApiService
+      .getAllUsers(this.currentUser?.account_id)
       .then((resp: any) => {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
@@ -185,7 +175,7 @@ export class SpecificationsContentComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.utils.loadToaster({
           severity: 'error',
           summary: '',
@@ -258,8 +248,14 @@ export class SpecificationsContentComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
-    let swaggerUrl = environment.uigenApiUrl + 'openapi-spec/' +
-      localStorage.getItem('app_name') + '/' + email + '/' + record_id;
+    let swaggerUrl =
+      environment.uigenApiUrl +
+      'openapi-spec/' +
+      localStorage.getItem('app_name') +
+      '/' +
+      email +
+      '/' +
+      record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -272,18 +268,18 @@ export class SpecificationsContentComponent implements OnInit {
       operationsSorter: 'alpha',
     });
     fetch(swaggerUrl)
-      .then(response => response.json())
-      .then(data => this.swaggerData = data)
-      .catch(error => console.error('Error:', error));
+      .then((response) => response.json())
+      .then((data) => (this.swaggerData = data))
+      .catch((error) => console.error('Error:', error));
   }
 
   _expandComponent(val: any): void {
     if (val) {
       this.selectedSpecItem = val;
       this.utils.saveSelectedSection(val);
-      this.specUtils._openCommentsPanel(false)
-      this.utils.disableDockedNavi()
-      this.utils.EnableSpecSubMenu()
+      this.specUtils._openCommentsPanel(false);
+      this.utils.disableDockedNavi();
+      this.utils.EnableSpecSubMenu();
       this.specExpanded = true;
     } else {
       this.specExpanded = false;
@@ -293,6 +289,7 @@ export class SpecificationsContentComponent implements OnInit {
   onSelectMenuItem(): void {
     this.scrollToItem();
   }
+
   closeFullScreenView(): void {
     this.expandView = true;
     this.specExpanded = false;
@@ -315,9 +312,7 @@ export class SpecificationsContentComponent implements OnInit {
   }
   getUserByAccountId(): void {
     this.authApiService
-      .getAllUsers(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+      .getAllUsers(this.currentUser?.account_id)
       .then((response: any) => {
         if (response.status === 200 && response?.data) {
           response.data.forEach((element: any) => {

@@ -35,6 +35,8 @@ import { DataViewModule } from "primeng/dataview";
 import { MentionModule } from 'angular-mentions';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { InputSwitchModule } from 'primeng/inputswitch';
+
 @NgModule({
   declarations: [
   ],
@@ -70,6 +72,7 @@ import { CalendarModule } from 'primeng/calendar';
     MentionModule,
     AutoCompleteModule,
     CalendarModule,
+    InputSwitchModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -105,6 +108,7 @@ import { CalendarModule } from 'primeng/calendar';
     FieldsetModule,
     MentionModule,
     CalendarModule,
+    InputSwitchModule,
     AutoCompleteModule
   ],
   providers: [

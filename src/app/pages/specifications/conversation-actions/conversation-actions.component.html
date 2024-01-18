@@ -1,9 +1,9 @@
 <div class="flex align-items-center">
     <div class="flex align-items-center comment-btns">
-        <p-button [outlined]="true">
+        <p-button [text]="true"  >
             <img src="./assets/reply.svg" alt="reply" class="pointer" (click)="onClickReply(cmt)" />
         </p-button>
-        <p-button [outlined]="true" (click)="op.toggle($event)">
+        <p-button [text]="true" (click)="op.toggle($event)">
             <img src="./assets/3-dots.svg" alt="3 dots" class="pointer" />
         </p-button>
         <p-overlayPanel #op class="dots-overlay">

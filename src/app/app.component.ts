@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import {
-  Router,
-  NavigationStart,
-  NavigationEnd,
-  ActivatedRoute,
-} from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuditutilsService } from './api/auditutils.service';
-import { ApiService } from './api/api.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
 import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
+import { ThemeService } from './theme.service';
+import themeing from '../themes/customized-themes.json'
+import { SpecUtilsService } from './components/services/spec-utils.service';
+import { NaviApiService } from './api/navi-api.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -46,25 +44,33 @@ export class AppComponent implements OnInit {
   screenWidth: number;
   screenHeight: number;
   deepLink:boolean=false;
+  colorPallet :any;
 
   constructor(
     private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
-    private apiService: ApiService,
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
+    private themeService:ThemeService,
+    private specUtils: SpecUtilsService,
+    private naviApiService: NaviApiService
   ) {
     let winUrl = window.location.href;
-    if(winUrl.includes('template_id')|| winUrl.includes('template_type')){
+    if (
+      winUrl.includes('template_id') ||
+      winUrl.includes('template_type') ||
+      winUrl.includes('crId') ||
+      winUrl.includes('versionId')
+    ) {
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
-    }else{
-      this.deepLink=false;
+    } else {
+      this.deepLink = false;
     }
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
@@ -103,33 +109,65 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
+
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      if (event) {
+        this.isSideWindowOpen = false;
+      }
+    });
   }
 
-  async setDeepLinkInfo(winUrl:any){
+  async setDeepLinkInfo(winUrl: any) {
     let urlObj = new URL(winUrl);
     let hash = urlObj.hash;
     let [path, queryString] = hash.substr(1).split('?');
     let params = new URLSearchParams(queryString);
+    this.navigateByDeepLink(params);
+  }
+
+  async navigateByDeepLink(params: any) {
     let templateId = params.get('template_id');
     let templateType = params.get('template_type');
     let productId = params.get('product_id');
     let versionId = params.get('version_id');
-    if(templateId && templateType){
-      let deepLinkInfo = {
-        product_id: productId,
-        template_id: templateId,
-        template_type: templateType,
-        version_id:versionId
-      };
-      await this.setDeepLinkInStorage(deepLinkInfo)
+
+    let crId = params.get('crId');
+    let entity = params.get('entity');
+    if ((templateId && templateType) || (crId && entity)) {
+      let deepLinkInfo;
+      if (templateId && templateType) {
+        deepLinkInfo = {
+          product_id: productId,
+          template_id: templateId,
+          template_type: templateType,
+          version_id: versionId,
+        };
+      }
+      if (crId && entity) {
+        versionId = params.get('versionId');
+        productId = params.get('productId');
+        deepLinkInfo = {
+          product_id: productId,
+          entity: entity,
+          cr_id: crId,
+          version_id: versionId,
+        };
+        this.specUtils._openCommentsPanel(true);
+        this.specUtils._loadActiveTab({
+          activeIndex: 1,
+          productId: deepLinkInfo.product_id,
+          versionId: deepLinkInfo.version_id,
+        });
+      }
+      await this.setDeepLinkInStorage(deepLinkInfo);
       this.router.navigateByUrl('specification');
     }
   }
 
-  setDeepLinkInStorage(deepLinkInfo:any):Promise<void>{
+  setDeepLinkInStorage(deepLinkInfo: any): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       try {
-        localStorage.setItem('deep_link_info',JSON.stringify(deepLinkInfo));
+        localStorage.setItem('deep_link_info', JSON.stringify(deepLinkInfo));
         resolve();
       } catch (error) {
         reject(error);
@@ -137,7 +175,17 @@ export class AppComponent implements OnInit {
     });
   }
 
+  changeTheme(event: any) {
+    this.themeService.changeColorTheme(event);
+  }
+
   ngOnInit(): void {
+    this.colorPallet = themeing.theme;
+
+    setTimeout(()=>{
+      this.changeTheme(this.colorPallet[6])
+    },100)
+
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
@@ -192,7 +240,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-
   botOnClick() {
     this.isNaviExpanded = false;
     this.subMenuLayoutUtil.EnableDockedNavi();
@@ -207,11 +254,11 @@ export class AppComponent implements OnInit {
     const previousUrl = localStorage.getItem('previousUrl');
     if (previousUrl) {
       localStorage.removeItem('previousUrl');
-        if(this.deepLink){
-          this.router.navigateByUrl('specification');
-        }else{
-          this.router.navigateByUrl(previousUrl);
-        }
+      if (this.deepLink) {
+        this.router.navigateByUrl('specification');
+      } else {
+        this.router.navigateByUrl(previousUrl);
+      }
     }
   }
 
@@ -247,8 +294,8 @@ export class AppComponent implements OnInit {
     });
   }
   getMeTotalOnboardedApps(user: any): void {
-    this.apiService
-      .get('navi/total_apps_onboarded/' + user?.email)
+    this.naviApiService
+      .getTotalOnboardedApps(user?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem(
@@ -544,7 +591,7 @@ export class AppComponent implements OnInit {
       },
     };
     this.notifyApi
-      .post('email/notify', body)
+      .emailNotify(body)
       .then((res: any) => {
         if (res?.data?.detail) {
           this.utilsService.loadToaster({

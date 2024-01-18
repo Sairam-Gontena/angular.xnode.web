@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { User } from 'src/models/user';
 
@@ -40,11 +40,6 @@ export class UtilsService {
     new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> =
     this.productStatus.asObservable();
-
-  private productChanged: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-  public getMeIfProductChanges: Observable<boolean> =
-    this.productChanged.asObservable();
 
   private productAlertPopup: BehaviorSubject<Object> =
     new BehaviorSubject<Object>({ popup: false, data: {} });
@@ -118,7 +113,9 @@ export class UtilsService {
     new BehaviorSubject<boolean>(false);
   public clearSelectedContent: Observable<boolean> =
     this.selectedContent.asObservable();
-  constructor() {}
+  private productChangeBPMN = new Subject<any>();
+
+  constructor() { }
 
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
@@ -158,10 +155,6 @@ export class UtilsService {
 
   toggleProductAlertPopup(event: any): void {
     this.productAlertPopup.next(event);
-  }
-
-  toggleProductChange(event: boolean) {
-    this.productChanged.next(event);
   }
 
   showFeedbackPopupByType(event: any): void {
@@ -214,6 +207,13 @@ export class UtilsService {
 
   changeSelectContentChange(event: boolean): void {
     this.selectedContent.next(event);
+  }
+  sendProductChangeBPMN(data: any) {
+    this.productChangeBPMN.next(data);
+  }
+
+  getProductChangeBPMN(): Observable<any> {
+    return this.productChangeBPMN.asObservable();
   }
 
   calculateTimeAgo(timestamp: string): string {

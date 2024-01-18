@@ -18,7 +18,7 @@ interface AutoCompleteCompleteEvent {
   selector: 'xnode-add-task',
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class AddTaskComponent {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
@@ -65,16 +65,16 @@ export class AddTaskComponent {
   product: any;
   isCommnetsPanelOpened: boolean = false;
   references: any;
-  assignAsaTask: boolean = false;
 
-  constructor(public utils: UtilsService,
+  constructor(
+    public utils: UtilsService,
     private fb: FormBuilder,
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
     private utilsService: UtilsService,
     private specUtils: SpecUtilsService,
-    private localStorageService: LocalStorageService,
+    private localStorageService: LocalStorageService
   ) {
     this.minDate = new Date();
     this.addTaskForm = this.fb.group({
@@ -83,11 +83,11 @@ export class AddTaskComponent {
       priority: ['', [Validators.required]],
       duedate: ['', [Validators.required]],
       reviewersLOne: [[], [Validators.required]],
-      files: [[]]
+      files: [[]],
     });
     this.references = [];
     this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
-      this.isCommnetsPanelOpened = event;
+      if (event) this.isCommnetsPanelOpened = event;
     });
   }
   ngOnInit(): void {
@@ -95,7 +95,6 @@ export class AddTaskComponent {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-
   }
 
   onDateSelect(event: any): void {
@@ -108,7 +107,10 @@ export class AddTaskComponent {
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(0, 0, 0, 0);
 
-    const formattedSelectedDate = this.datePipe.transform(selectedDate, 'shortDate');
+    const formattedSelectedDate = this.datePipe.transform(
+      selectedDate,
+      'shortDate'
+    );
     const formattedToday = this.datePipe.transform(today, 'shortDate');
     const formattedTomorrow = this.datePipe.transform(tomorrow, 'shortDate');
 
@@ -128,7 +130,6 @@ export class AddTaskComponent {
     this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
-      this.commentType = 'comment';
     }
     let body = {
       createdBy: this.currentUser.user_id,
@@ -137,34 +138,37 @@ export class AddTaskComponent {
       priority: '1',
       title: this.addTaskForm.value.title,
       description: this.addTaskForm.value.description,
-      referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {},
+      referenceContent:
+        this.parentEntity === 'SPEC' ? this.selectedContent : {},
       attachments: this.uploadedFiles,
       references: this.setTemplateTypeInRefs(),
       followers: [],
       feedback: {},
       assignee: this.currentUser.user_id,
-      deadline: this.addTaskForm.value.duedate
+      deadline: this.addTaskForm.value.duedate,
     };
     this.saveAsTask(body);
     this.addTaskForm.reset();
   }
   setTemplateTypeInRefs(): string {
     let productId = localStorage.getItem('record_id');
-    if (this.parentEntity === 'SPEC' && this.assignAsaTask) {
+    this.addTaskForm.value.reviewersLOne.forEach((item: any) => {
+      this.references.push({
+        entity_type: 'User',
+        entity_id: item.user_id,
+      });
+    });
+    if (this.references.length == 0) this.references = [{}];
+    if (this.parentEntity === 'SPEC') {
       this.references.forEach((obj: any) => {
         obj.template_type = 'TASK';
         obj.product_id = productId;
-      })
-    } else if (this.parentEntity === 'SPEC' && !this.assignAsaTask) {
-      this.references.forEach((obj: any) => {
-        obj.template_type = 'COMMENT';
-        obj.product_id = productId;
-      })
+      });
     } else {
       this.references.forEach((obj: any) => {
         obj.template_type = this.parentEntity;
         obj.product_id = productId;
-      })
+      });
     }
     return this.references;
   }
@@ -186,7 +190,11 @@ export class AddTaskComponent {
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
         if (files[i].size > maxSizeInBytes) {
-          this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'File size should not exceed 5mb' });
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: 'File size should not exceed 5mb',
+          });
         } else {
           this.prepareFilesList(event.target.files);
           this.addTaskForm.controls['files'].setValue(this.files);
@@ -233,16 +241,29 @@ export class AddTaskComponent {
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
-      const res = await this.commonApi.postFile('file-azure/upload', formData, { headers });
+      const res = await this.commonApi.uploadFile(formData, {
+        headers,
+      });
       if (res.statusText === 'Created') {
         this.uploadedFiles.push(res.data.id);
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'File uploaded successfully' });
+        this.utils.loadToaster({
+          severity: 'success',
+          summary: 'SUCCESS',
+          detail: 'File uploaded successfully',
+        });
       } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: res?.data });
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: res?.data,
+        });
       }
     } catch (error) {
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Error' });
-
+      this.utils.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error',
+      });
     } finally {
       this.utils.loadSpinner(false);
     }
@@ -251,11 +272,13 @@ export class AddTaskComponent {
     let filtered: any[] = [];
     let query = event.query;
 
-    const selectedReviewers = this.addTaskForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
-
+    const selectedReviewers = this.addTaskForm.value.reviewersLOne.map(
+      (reviewer: any) => reviewer.name.toLowerCase()
+    );
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;
   }
@@ -271,31 +294,47 @@ export class AddTaskComponent {
     const reducedName = initials.join('').toUpperCase();
     return reducedName;
   }
-
+  cancelTask() {
+    this.closeOverlay.emit();
+  }
   saveAsTask(body: any): void {
     if (this.parentTitle !== '' && this.parentTitle !== undefined) {
       body.referenceContent.parentTitle = this.parentTitle;
     } else {
       body.referenceContent.parentTitle = this.specItem.title;
     }
-    this.commentsService.addTask(body).then((commentsReponse: any) => {
-      if (commentsReponse.statusText === 'Created') {
-        if (!this.isCommnetsPanelOpened)
-          this.specUtils._openCommentsPanel(true);
-        this.comment = '';
-        this.closeOverlay.emit();
-        this.specUtils._commentsCrActiveTab(false);
-        this.specUtils._tabToActive('TASK');
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'Task added successfully' });
-        this.uploadedFiles = [];
-        this.files = [];
-      } else {
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: commentsReponse?.data?.common?.status });
-      }
-      this.utils.loadSpinner(false);
-    }).catch(err => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: err });
-    })
+    this.commentsService
+      .addTask(body)
+      .then((commentsReponse: any) => {
+        if (commentsReponse.statusText === 'Created') {
+          if (!this.isCommnetsPanelOpened)
+            this.specUtils._openCommentsPanel(true);
+          this.comment = '';
+          this.closeOverlay.emit();
+          this.specUtils._tabToActive('TASK');
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'Task added successfully',
+          });
+          this.uploadedFiles = [];
+          this.files = [];
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: commentsReponse?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+      });
   }
 }

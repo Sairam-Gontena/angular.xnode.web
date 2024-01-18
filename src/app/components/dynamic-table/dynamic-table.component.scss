@@ -4,14 +4,12 @@
 }
 
 :host ::ng-deep.p-datatable {
-  background-color: #3A3942;
   border-color: #595959;
   border-width: 2px;
   border: 1px solid #595959
 }
 
 :host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
-  background-color: #3A3942;
   border-color: #595959;
   color: #fff;
   padding-top: 5px;
@@ -21,10 +19,6 @@
 
 :host ::ng-deep.p-datatable .p-datatable-tbody>tr>td {
   border-bottom-width: 0px;
-}
-
-:host ::ng-deep.p-datatable .p-datatable-thead>tr>th {
-  // border-bottom-width: 0px;
 }
 
 :host ::ng-deep.p-datatable .p-datatable-tbody>tr>td {
@@ -37,12 +31,10 @@
   color: #fff;
   border-color: #595959;
   padding-left: 10px;
-  background-color: #3A3942;
   border-bottom-width: 0px;
 }
 
 .tablerow {
-  background-color: #302E38;
   border-color: #595959;
 }
 
@@ -53,23 +45,9 @@
 :host ::ng-deep.p-datatable .p-datatable-header {
   padding: 0px !important;
   border-width: 0px;
-  background-color: #302E38;
-}
-
-:host ::ng-deep.p-inputtext {
-  background-color: #302E38 !important;
-  border-width: 0px;
-  color: #fff
-}
-
-:host ::ng-deep.t-header-btn {
-  background-color: transparent !important;
-  border-radius: 5px !important;
-  border-width: 0px;
 }
 
 :host ::ng-deep.p-button:enabled:hover {
-  background-color: #23222B !important;
   border-color: transparent !important;
   border-width: 0px;
 }
@@ -159,23 +137,7 @@
   border-radius: 3px;
 }
 
-:host ::ng-deep.p-inputtext {
-  background-color: #888;
-  border-radius: 3px;
-  border-width: 0px;
-}
-
-:host ::ng-deep .p-inputtext:enabled:focus {
-  box-shadow: none;
-}
-
-:host ::ng-deep.p-inputtext:focus-visible {
-  border-color: green !important;
-  border-width: 0px !important;
-}
-
 :host ::ng-deep.p-paginator {
-  background-color: #23222B;
   border-color: transparent;
 }
 

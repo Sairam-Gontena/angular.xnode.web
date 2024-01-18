@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
@@ -26,6 +19,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   @Input() visible: boolean = false;
   @Input() header: string = '';
   @Input() versions?: any;
+  @Input() selectedCR: any;
   @Output() close = new EventEmitter<any>();
 
   formGroup: FormGroup | undefined;
@@ -72,7 +66,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       priority: ['', [Validators.required]],
       duedate: ['', [Validators.required]],
       seqReview: [''],
-      reviewersLOne: [[], [Validators.required]]
+      reviewersLOne: [[], [Validators.required]],
     });
     this.versionForm = this.fb.group({
       major: ['2311', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
@@ -94,6 +88,26 @@ export class CreateNewCrVersionComponent implements OnInit {
       StorageKeys.CurrentUser
     );
     this.getUserByAccountId();
+    this.selectedCR = this.header === 'Add New CR' ? '' : this.selectedCR;
+    if (this.selectedCR && this.header == 'Edit CR') {
+      this.updateCRForm();
+    }
+  }
+
+  updateCRForm() {
+    this.crForm.patchValue({
+      title: this.selectedCR.title,
+      description: this.selectedCR.description,
+      reason: this.selectedCR.reason,
+      priority: this.selectedCR.priority,
+      duedate: new Date(this.selectedCR.duedate),
+      reviewersLOne: this.selectedCR.reviewers.reviewers[0].users,
+    });
+    this.versionForm.patchValue({
+      major: this.selectedCR.version.productVersion.major,
+      minor: this.selectedCR.version.productVersion.minor,
+      build: this.selectedCR.version.productVersion.build,
+    });
   }
 
   onMajorInputChange(event: Event) {
@@ -139,7 +153,9 @@ export class CreateNewCrVersionComponent implements OnInit {
           } else {
             this.utilsService.loadSpinner(false);
           }
-
+          if (this.selectedCR && this.header == 'Edit CR') {
+            this.crForm.patchValue({ version: this.selectedCR.versionId });
+          }
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -168,7 +184,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.saveValue();
   }
-  onSubmit(event: any) { }
+  onSubmit(event: any) {}
 
   closePopup() {
     this.visible = false;
@@ -207,14 +223,22 @@ export class CreateNewCrVersionComponent implements OnInit {
       reviewers: [
         {
           level: 'L1',
-          users: this.crForm.value.reviewersLOne.map((obj: any) => obj.user_id)
-        }
-      ]
-    }
+          users: this.crForm.value.reviewersLOne.map((obj: any) => {
+            if (obj.userId) {
+              return obj.userId;
+            }
+            if (obj.user_id) {
+              return obj.user_id;
+            }
+          }),
+        },
+      ],
+    };
   }
 
   saveValue() {
-    let body = {
+    let body: any;
+    body = {
       author: this.currentUser.user_id,
       title: this.crForm.value.title,
       description: this.crForm.value.description,
@@ -226,8 +250,25 @@ export class CreateNewCrVersionComponent implements OnInit {
       priority: this.crForm.value.priority,
       duedate: this.crForm.value.duedate,
       baseVersionId: null,
-      accountId: this.currentUser.account_id
+      accountId: this.currentUser.account_id,
     };
+    if (this.selectedCR && this.header == 'Edit CR') {
+      body = {
+        id: this.selectedCR.id,
+        author: this.currentUser.user_id,
+        baseVersionId: this.selectedCR.baseVersionId,
+        title: this.crForm.value.title,
+        description: this.crForm.value.description,
+        status: this.selectedCR.status,
+        reason: this.crForm.value.reason,
+        reviewers: this.getMeReviewerIds(),
+        versionId: this.crForm.value.version,
+        productId: this.product.id,
+        accountId: this.currentUser.account_id,
+        priority: this.crForm.value.priority,
+        duedate: this.crForm.value.duedate,
+      };
+    }
     let specData: any[] | undefined = this.localStorageService.getItem(
       StorageKeys.SpecData
     );
@@ -239,7 +280,6 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.commentsService
       .createCr(body)
       .then((response: any) => {
-
         if (response.statusText === 'Created') {
           this.utilsService.loadToaster({
             severity: 'success',
@@ -247,9 +287,6 @@ export class CreateNewCrVersionComponent implements OnInit {
             detail: 'Change Request created successfully',
           });
           this.close.emit(response.data);
-
-
-          this.specUtils._getLatestCrList(true)
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -268,16 +305,18 @@ export class CreateNewCrVersionComponent implements OnInit {
         });
       });
   }
- 
+
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-    
-    const selectedReviewers = this.crForm.value.reviewersLOne.map((reviewer: any) => reviewer.name.toLowerCase());
-  
+
+    const selectedReviewers = this.crForm.value.reviewersLOne.map(
+      (reviewer: any) => reviewer.name.toLowerCase()
+    );
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 && !selectedReviewers.includes(reviewer.name.toLowerCase())
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
     this.filteredReveiwers = filtered;
   }
@@ -288,17 +327,15 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   reduceToInitials(fullName: string): string {
-    const nameParts = fullName.split(' ');
-    const initials = nameParts.map((part) => part.charAt(0));
-    const reducedName = initials.join('').toUpperCase();
+    const nameParts = fullName?.split(' ');
+    const initials = nameParts?.map((part) => part.charAt(0));
+    const reducedName = initials?.join('').toUpperCase();
     return reducedName;
   }
 
   getUserByAccountId(): void {
     this.authApiService
-      .getAllUsers(
-        'user/get_all_users?account_id=' + this.currentUser?.account_id
-      )
+      .getAllUsers(this.currentUser?.account_id)
       .then((response: any) => {
         if (response.status === 200 && response?.data) {
           response.data.forEach((element: any) => {

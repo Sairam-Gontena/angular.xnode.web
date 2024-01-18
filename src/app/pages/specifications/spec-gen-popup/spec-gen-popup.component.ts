@@ -1,12 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ApiService } from 'src/app/api/api.service';
-import { AuditutilsService } from 'src/app/api/auditutils.service';
-import { UtilsService } from 'src/app/components/services/utils.service';
 
 @Component({
   selector: 'xnode-spec-gen-popup',
   templateUrl: './spec-gen-popup.component.html',
-  styleUrls: ['./spec-gen-popup.component.scss']
+  styleUrls: ['./spec-gen-popup.component.scss'],
 })
 export class SpecGenPopupComponent implements OnInit {
   @Input() content: any;
@@ -18,12 +15,9 @@ export class SpecGenPopupComponent implements OnInit {
   userId: any;
   product: any;
   consversationList: any;
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   generate(): void {
     this.generateSpec.emit();

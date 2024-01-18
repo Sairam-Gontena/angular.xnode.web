@@ -2,7 +2,7 @@
     .spec-menu {
         height: 100vh;
         width: 300px;
-        background: #24232C;
+        background: #202123;
         padding: 20px;
         height: calc(100vh - 40px);
         overflow: auto;
@@ -14,7 +14,7 @@
     .spec-menu {
         height: 100vh;
         width: 350px;
-        background: #24232C;
+        background: #202123;
         padding: 20px;
         height: calc(100vh - 40px);
         overflow: auto;
@@ -26,7 +26,7 @@
     .spec-menu {
         height: 100vh;
         width: 375px;
-        background: #24232C;
+        background: #202123;
         padding: 20px;
         height: calc(100vh - 40px);
         overflow: auto;
@@ -41,31 +41,6 @@
     transition: width 0.5s ease;
 }
 
-:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
-:host ::ng-deep .p-accordion .p-accordion-content,
-:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
-    background: #24232C;
-    color: #dfdfdf;
-    border: none;
-    padding: 5px;
-}
-
-:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
-    box-shadow: none;
-}
-
-:host ::ng-deep .p-accordion .p-accordion-header:hover {
-    background: #24232C !important;
-}
-
-:host ::ng-deep .p-accordion .p-accordion-header-text {
-    font-size: 18px;
-    font-family: 'Inter';
-    font-weight: 400;
-    line-height: 21.78px;
-    color: #DEDEDE
-}
-
 .active-header-text {
     color: #02ADEE
 }
@@ -76,12 +51,12 @@
 
 .section:hover {
     background: #464748;
-    color: #dedede;
+    color: #EFEEEE;
     border-radius: 6px;
 }
 
 .active-section {
-    background-color: #464748 !important;
+    background-color: #464748;
     color: #dedede !important;
     border-radius: 6px;
 }
@@ -92,32 +67,6 @@
 
 ::placeholder {
     color: #DEDEDE;
-}
-
-:host ::ng-deep .p-inputtext:enabled:focus {
-    border-width: 0px;
-    box-shadow: none;
-}
-
-:host ::ng-deep .p-inputtext {
-    border-width: 0px;
-    color: #DEDEDE;
-}
-
-:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
-    height: 16px;
-    width: 16px;
-}
-
-:host ::ng-deep .p-accordion .p-accordion-header {
-    margin-top: 20px
-}
-
-:host ::ng-deep .p-button {
-    font-size: 2rem;
-    background: #4F4E55;
-    border: 1px solid #24232C !important;
-    cursor: pointer;
 }
 
 :host ::ng-deep .yellow {

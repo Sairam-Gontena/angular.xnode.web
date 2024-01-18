@@ -15,8 +15,8 @@
             class="image-icon" (click)="deviceIconClicked('mobile')">
     </div>
     <div class="flex align-items-center justify-content-center gap-3">
-        <p-splitButton [label]="selectedOption" [model]="this.productOptions" (onClick)="onSelectOption()"
-            styleClass="p-button-sm p-button-rounded publish-btn"></p-splitButton>
+        <p-splitButton [label]="selectedOption" styleClass="p-button-rounded" [model]="this.productOptions" (onClick)="onSelectOption()"
+            ></p-splitButton>
         <p-confirmDialog [style]="{width: '30vw'}"></p-confirmDialog>
     </div>
 </div>
