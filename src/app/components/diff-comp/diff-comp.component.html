@@ -36,7 +36,7 @@
 <div class="flex flex-row justify-content-between">
   <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
     contentObj?.title}}</h3>
-    <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
+    <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
 </div>
 
 
@@ -80,7 +80,7 @@
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
               <li>
-                <xnode-diff-comp (expandComponent)="expandComponent.emit($event)" [contentObj]="getMeContentObj(item, contentObj)"
+                <xnode-diff-comp (expandComponent)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" [contentObj]="getMeContentObj(item, contentObj)"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
             </ul>

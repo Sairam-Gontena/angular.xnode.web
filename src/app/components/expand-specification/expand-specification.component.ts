@@ -12,6 +12,7 @@ declare const SwaggerUIBundle: any;
 export class ExpandSpecificationComponent implements AfterViewInit {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
+  @Input() diffdataToExpand:any;
   @Output() closeFullScreenView = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';

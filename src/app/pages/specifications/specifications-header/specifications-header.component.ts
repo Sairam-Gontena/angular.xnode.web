@@ -24,6 +24,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
+  @Input() onDiffValue:any;
   selectedVersion: SpecVersion | undefined;
   currentUser: any;
   metaDeta: any;
@@ -65,6 +66,10 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.getStorageData();
+    if(this.onDiffValue){
+      this.diffView = true;
+      this.toggleDiffView(true)
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -26,6 +26,7 @@ export class DiffViewerComponent implements OnInit {
     versionId: any;
   }>();
   onDiff: boolean = false;
+  onDiffValue: boolean = false;
   content: any = NEWLIST;
   content2: any = OLDLIST;
   loading: boolean = true;
@@ -52,6 +53,8 @@ export class DiffViewerComponent implements OnInit {
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   selectedSpecItem:any;
+  fetchApiSpecCall:boolean=true;
+  diffObj:any;
   loadSwagger: boolean= false;
 
   constructor(
@@ -130,6 +133,10 @@ export class DiffViewerComponent implements OnInit {
     return flattenedData;
   }
 
+  ngAfterViewInit(){
+    this.fetchOpenAPISpec()
+  }
+
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersions(this.product.id, (data) => {
@@ -172,7 +179,7 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          this.fetchOpenAPISpec();
+          // this.fetchOpenAPISpec();
         });
     }
   }
@@ -227,27 +234,30 @@ export class DiffViewerComponent implements OnInit {
   }
 
   async fetchOpenAPISpec() {
-    const record_id = localStorage.getItem('record_id');
-    let userData: any;
-    userData = localStorage.getItem('currentUser');
-    let email = JSON.parse(userData).email;
-    let swaggerUrl = environment.uigenApiUrl +'openapi-spec/' +localStorage.getItem('app_name') +'/' + email +'/' +record_id;
-    const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'),
-      layout: 'BaseLayout',
-      presets: [
-        SwaggerUIBundle.presets.apis,
-        SwaggerUIBundle.SwaggerUIStandalonePreset,
-      ],
-      url:swaggerUrl,
-      docExpansion: 'none',
-      operationsSorter: 'alpha',
-    });
-    fetch(swaggerUrl)
-    .then((response) => response.json())
-    .then((data) => (this.swaggerData = data))
-    .catch((error) => console.error('Error:', error));
-    this.utils.loadSpinner(false);
+    if(this.fetchApiSpecCall){
+        const record_id = localStorage.getItem('record_id');
+        let userData: any;
+        userData = localStorage.getItem('currentUser');
+        let email = JSON.parse(userData).email;
+        let swaggerUrl = environment.uigenApiUrl +'openapi-spec/' +localStorage.getItem('app_name') +'/' + email +'/' +record_id;
+        const ui = SwaggerUIBundle({
+          domNode: document.getElementById('openapi-ui-spec'),
+          layout: 'BaseLayout',
+          presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIBundle.SwaggerUIStandalonePreset,
+          ],
+          url:swaggerUrl,
+          docExpansion: 'none',
+          operationsSorter: 'alpha',
+        });
+        fetch(swaggerUrl)
+        .then((response) => response.json())
+        .then((data) => (this.swaggerData = data))
+        .catch((error) => console.error('Error:', error));
+        this.fetchApiSpecCall = false;
+        this.utils.loadSpinner(false);
+    }
   }
 
   onSpecDataChange(data: any): void {
@@ -370,10 +380,12 @@ export class DiffViewerComponent implements OnInit {
     }
   }
 
-  _expandComponent(val: any): void {
-    if (val) {
-      this.selectedSpecItem = val;
-      this.utils.saveSelectedSection(val);
+  _expandComponent(object: any): void {
+    this.onDiffValue = object.onDiff;
+    object.onDiff ? this.diffObj = object.diffObj : this.diffObj = undefined;
+    if (object.contentObj) {
+      this.selectedSpecItem = object.contentObj;
+      this.utils.saveSelectedSection(object.contentObj);
       this.specUtils._openCommentsPanel(false);
       this.utils.disableDockedNavi();
       this.utils.EnableSpecSubMenu();
@@ -385,6 +397,7 @@ export class DiffViewerComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
+    this.fetchApiSpecCall = true;
     this.fetchOpenAPISpec();
     this.scrollToItem();
   }

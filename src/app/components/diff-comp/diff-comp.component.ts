@@ -8,7 +8,6 @@ import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificati
 import { SECTION_VIEW_CONFIG } from 'src/app/pages/specifications/section-view-config';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-declare const SwaggerUIBundle: any;
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -27,12 +26,12 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
-  @Output() expandComponent = new EventEmitter<any>();
+  @Output() expandComponent = new EventEmitter<{contentObj:any, onDiff:boolean, diffObj?:any}>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
- ComponentsToExpand=['Open API Spec','Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
+ ComponentsToExpand=['User Personas','Open API Spec','Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -63,11 +62,11 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(){
-    if (this.contentObj?.content_data_type === 'SWAGGER') {
-      this.childLoaded.emit(true);
-    }
-  }
+  // ngAfterViewInit(){
+  //   if (this.contentObj?.content_data_type === 'SWAGGER') {
+  //     this.childLoaded.emit(true);
+  //   }
+  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['diffObj']?.currentValue)
