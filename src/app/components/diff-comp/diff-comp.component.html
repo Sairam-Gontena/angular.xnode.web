@@ -43,7 +43,7 @@
           [parentId]="contentObj.parentId"></xnode-add-comment-overlay-panel>
       </p-overlayPanel>
       <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end">
-        <div *ngIf="contentObj.showCommentIcon">
+        <div *ngIf="contentObj.showCommentIcon && !onDiff">
           <img src="../assets/comment.svg" class="pointer pt-2" alt="comment" (click)="op.toggle($event)">
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
           <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
