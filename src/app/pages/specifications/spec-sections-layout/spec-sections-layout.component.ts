@@ -31,6 +31,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() usersList: any = [];
   @Input() reveiwerList: any;
+
   // @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
   @Input() specItemList: any;
@@ -97,6 +98,8 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   testCaseshowCommentIcon: boolean = false;
   glossaryPanelOpened: boolean = false;
   glossaryshowCommentIcon: boolean = false;
+  selectedIndex?: number;
+  selectedListItemIndex: number | undefined;
 
   expandSpecSections: any = [
     'Usecases',
@@ -144,10 +147,11 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   makeBusinessRulesJsonTrue() {
     this.content.forEach((element: any) => {
       if (this.jsonTypes.includes(element.title)) {
-        element.showJson = true;
+        element.showList = true;
       }
     });
   }
+
   ngOnChanges() {
     if (this.expandView) {
       setTimeout(() => {
@@ -190,7 +194,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   }
 
   onClickAddComment(obj: any): void {
-    this.selectedContent = obj.content;
+    this.selectedContent = obj;
     this.showAddCommnetOverlay.emit(obj);
   }
   checkedToggle(type: any, item: any, content: any) {
@@ -216,48 +220,6 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
       }
     });
   }
-
-  // checkedToggle(type: any, item: any, content: any) {
-  //   this.specItemList.forEach((obj: any) => {
-  //     if (obj.id === item.id) {
-  //       // obj.content.forEach((conObj: any) => {
-  //       //   if (conObj.id === content.id && type === 'table')
-  //       //     conObj.showTable = true;
-  //       //   else conObj.showTable = false;
-  //       // });
-  //       obj.content.forEach((conObj: any) => {
-  //         if (conObj.id === content.id) {
-  //           if (type === 'table') {
-  //             conObj.showTable = true;
-  //             conObj.showJson = false;
-  //             conObj.showList = false;
-  //           } else if (type === 'json') {
-  //             conObj.showTable = false;
-  //             conObj.showJson = true;
-  //             conObj.showList = false;
-  //           } else if (type === 'list') {
-  //             conObj.showTable = false;
-  //             conObj.showJson = false;
-  //             conObj.showList = true;
-  //           }
-  //         } else {
-  //           // Add an 'else' block to handle any other cases
-  //           conObj.showTable = false;
-  //           conObj.showJson = false;
-  //           conObj.showList = false;
-
-  //           //   conObj.showTable = type === 'table';
-  //           //   conObj.showJson = type === 'json';
-  //           //   conObj.showList = type === 'list';
-  //           // } else {
-  //           //   conObj.showTable = false;
-  //           //   conObj.showJson = false;
-  //           //   conObj.showList = false;
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
 
   checkParaViewSections(title: string) {
     return (
