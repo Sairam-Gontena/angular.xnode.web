@@ -167,7 +167,15 @@
         <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
-        <div id="openapi-ui-spec" id="openapi-ui-spec" class="openapi-spec my-3"></div>
+        <div class="grid" *ngIf="onDiff"  >
+          <div class="col-6">
+            <div id="openapi-ui-spec-1"  class="openapi-spec my-3"></div>
+          </div>
+          <div class="col-6">
+            <div id="openapi-ui-spec-2"  class="openapi-spec my-3"></div>
+          </div>
+        </div>
+        <div id="openapi-ui-spec"  *ngIf="!onDiff" class="openapi-spec my-3"></div>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
         <div *ngFor="let item of contentObj.content">
