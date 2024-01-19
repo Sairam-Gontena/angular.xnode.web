@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -27,10 +27,12 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
+  @Output() expandComponent = new EventEmitter<any>();
+  @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
-  loadSwagger = false;
+ ComponentsToExpand=['Open API Spec','Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -59,8 +61,11 @@ export class DiffCompComponent implements OnInit {
         this.currentUser.id;
       this.makeTrustedUrl();
     }
+  }
+
+  ngAfterViewInit(){
     if (this.contentObj?.content_data_type === 'SWAGGER') {
-      this.fetchOpenAPISpec();
+      this.childLoaded.emit(true);
     }
   }
 
@@ -175,32 +180,6 @@ export class DiffCompComponent implements OnInit {
 
   isString(item: any): boolean {
     return typeof item === 'string';
-  }
-
-  fetchOpenAPISpec(): void {
-    document.addEventListener('DOMContentLoaded', () => {
-      const ui = SwaggerUIBundle({
-        domNode: document.getElementById('openapi-ui-spec'),
-        layout: 'BaseLayout',
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIBundle.SwaggerUIStandalonePreset,
-        ],
-        url:
-          environment.uigenApiUrl +
-          'openapi-spec/' +
-          localStorage.getItem('app_name') +
-          '/' +
-          this.currentUser.email +
-          '/' +
-          this.product?.id,
-        docExpansion: 'none',
-        operationsSorter: 'alpha',
-      });
-      ui.domComplete.then(() => {
-        this.loadSwagger = true;
-      });
-    });
   }
 
   setContentDataType(item: any, parentType: string) {
