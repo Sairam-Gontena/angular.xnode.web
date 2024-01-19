@@ -53,6 +53,7 @@ export class DiffViewerComponent implements OnInit {
   isDockedNaviOpended: boolean = false;
   selectedSpecItem:any;
   loadSwagger: boolean= false;
+  isDiffEnabled: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -172,7 +173,7 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          this.fetchOpenAPISpec();
+          this.fetchOpenAPISpec('openapi-ui-spec');
         });
     }
   }
@@ -226,14 +227,14 @@ export class DiffViewerComponent implements OnInit {
       });
   }
 
-  async fetchOpenAPISpec() {
+  async fetchOpenAPISpec(id:string) {
     const record_id = localStorage.getItem('record_id');
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     let swaggerUrl = environment.uigenApiUrl +'openapi-spec/' +localStorage.getItem('app_name') +'/' + email +'/' +record_id;
     const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'),
+      domNode: document.getElementById(id),
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
@@ -345,6 +346,20 @@ export class DiffViewerComponent implements OnInit {
   }
 
   diffViewChangeEmiter(event: any) {
+    if(event.diffView){
+      this.isDiffEnabled = true;
+    }else{
+      this.isDiffEnabled = false;
+    }
+    setTimeout(() => {
+      if(this.isDiffEnabled){
+        this.fetchOpenAPISpec('openapi-ui-spec-1');
+        this.fetchOpenAPISpec('openapi-ui-spec-2');
+      }else{
+        this.fetchOpenAPISpec('openapi-ui-spec');
+      }
+    },500)
+
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     if (event.viewType !== null) {
@@ -385,7 +400,7 @@ export class DiffViewerComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.fetchOpenAPISpec();
+    this.fetchOpenAPISpec('openapi-ui-spec');
     this.scrollToItem();
   }
 
