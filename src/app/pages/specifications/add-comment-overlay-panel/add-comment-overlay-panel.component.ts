@@ -74,7 +74,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log('selectedContent', this.selectedContent);
 
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -299,8 +298,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   getMeSpecLevelTaskList() {
-    console.log('MMM');
-
     this.utils.loadSpinner(true);
     this.commentsService
       .getTasks({ parentId: this.parentId, isReplyCountRequired: true })

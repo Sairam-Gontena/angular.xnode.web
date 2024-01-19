@@ -52,6 +52,7 @@ export class DiffViewerComponent implements OnInit {
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
   selectedSpecItem:any;
+  loadSwagger: boolean= false;
 
   constructor(
     private utils: UtilsService,
@@ -81,7 +82,6 @@ export class DiffViewerComponent implements OnInit {
         element.sNo = index + 1 + '.0';
       });
       this.specList = this.changeSpecListFormat(list);
-
       this.specListForMenu = list;
     });
     this.specificationUtils.getMeVersions.subscribe(
@@ -212,8 +212,6 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
-
-            console.log('this.specTwoList', this.specTwoList);
           }
         }
         this.utils.loadSpinner(false);
@@ -233,6 +231,7 @@ export class DiffViewerComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
+    let swaggerUrl = environment.uigenApiUrl +'openapi-spec/' +localStorage.getItem('app_name') +'/' + email +'/' +record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -240,17 +239,14 @@ export class DiffViewerComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url:
-        environment.uigenApiUrl +
-        'openapi-spec/' +
-        localStorage.getItem('app_name') +
-        '/' +
-        email +
-        '/' +
-        record_id,
+      url:swaggerUrl,
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
+    fetch(swaggerUrl)
+    .then((response) => response.json())
+    .then((data) => (this.swaggerData = data))
+    .catch((error) => console.error('Error:', error));
     this.utils.loadSpinner(false);
   }
 
@@ -349,8 +345,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   diffViewChangeEmiter(event: any) {
-    console.log('eventevent', event);
-
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     if (event.viewType !== null) {
@@ -369,7 +363,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   onSelectSpecMenuItem(item: any): void {
-    console.log('item', item);
     new Promise((resolve) => setTimeout(resolve, 500));
     const element = document.getElementById(item.id);
     if (element) {
