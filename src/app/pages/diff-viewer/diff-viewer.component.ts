@@ -143,6 +143,8 @@ export class DiffViewerComponent implements OnInit {
         return innerItem;
       }),
     ]);
+    this.fetchApiSpecCall = true;
+    this.ngAfterViewInit();
     return flattenedData;
   }
 
