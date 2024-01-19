@@ -13,7 +13,7 @@ import { SpecVersion } from 'src/models/spec-versions';
 import { isArray } from 'lodash';
 declare const SwaggerUIBundle: any;
 import { AuthApiService } from 'src/app/api/auth.service';
-
+import { delay, of } from 'rxjs';
 @Component({
   selector: 'xnode-diff-viewer',
   templateUrl: './diff-viewer.component.html',
@@ -29,6 +29,7 @@ export class DiffViewerComponent implements OnInit {
   content: any = NEWLIST;
   content2: any = OLDLIST;
   loading: boolean = true;
+  specExpanded: boolean = false;
   product: any;
   versions: any;
   specList: any = [];
@@ -47,6 +48,11 @@ export class DiffViewerComponent implements OnInit {
   swaggerData: any;
   format: any;
   openConversationPanel: boolean = false;
+  isCommentsPanelOpened: boolean = false;
+  isSpecSideMenuOpened: boolean = false;
+  isDockedNaviOpended: boolean = false;
+  selectedSpecItem:any;
+  loadSwagger: boolean= false;
 
   constructor(
     private utils: UtilsService,
@@ -76,7 +82,6 @@ export class DiffViewerComponent implements OnInit {
         element.sNo = index + 1 + '.0';
       });
       this.specList = this.changeSpecListFormat(list);
-
       this.specListForMenu = list;
     });
     this.specificationUtils.getMeVersions.subscribe(
@@ -95,6 +100,15 @@ export class DiffViewerComponent implements OnInit {
       if (data) {
         this.openConversationPanel = data.openConversationPanel;
       }
+    });
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommentsPanelOpened = event;
+    });
+    this.utils.openSpecSubMenu.subscribe((event: any) => {
+      this.isSpecSideMenuOpened = event;
+    });
+    this.utils.openDockedNavi.subscribe((event: any) => {
+      this.isDockedNaviOpended = event;
     });
   }
 
@@ -153,6 +167,16 @@ export class DiffViewerComponent implements OnInit {
     return removedItems;
   }
 
+  onChildLoaded(isLoaded: boolean) {
+    if (isLoaded) {
+      of([])
+        .pipe(delay(500))
+        .subscribe((results) => {
+          this.fetchOpenAPISpec();
+        });
+    }
+  }
+
   getMeSpecInfo(params: any) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specApiService
@@ -207,6 +231,7 @@ export class DiffViewerComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
+    let swaggerUrl = environment.uigenApiUrl +'openapi-spec/' +localStorage.getItem('app_name') +'/' + email +'/' +record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -214,17 +239,14 @@ export class DiffViewerComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url:
-        environment.uigenApiUrl +
-        'openapi-spec/' +
-        localStorage.getItem('app_name') +
-        '/' +
-        email +
-        '/' +
-        record_id,
+      url:swaggerUrl,
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
+    fetch(swaggerUrl)
+    .then((response) => response.json())
+    .then((data) => (this.swaggerData = data))
+    .catch((error) => console.error('Error:', error));
     this.utils.loadSpinner(false);
   }
 
@@ -343,6 +365,33 @@ export class DiffViewerComponent implements OnInit {
   onSelectSpecMenuItem(item: any): void {
     new Promise((resolve) => setTimeout(resolve, 500));
     const element = document.getElementById(item.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  _expandComponent(val: any): void {
+    if (val) {
+      this.selectedSpecItem = val;
+      this.utils.saveSelectedSection(val);
+      this.specUtils._openCommentsPanel(false);
+      this.utils.disableDockedNavi();
+      this.utils.EnableSpecSubMenu();
+      this.specExpanded = true;
+    } else {
+      this.specExpanded = false;
+    }
+  }
+
+  closeFullScreenView(): void {
+    this.specExpanded = false;
+    this.fetchOpenAPISpec();
+    this.scrollToItem();
+  }
+
+  async scrollToItem() {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(this.selectedSpecItem.id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }

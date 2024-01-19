@@ -2,10 +2,18 @@
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
     [specData]="specListForMenu" (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)"></xnode-specifications-menu>
   <div class="w-full">
+    <div class="h-full" >
+      <div class="h-full" *ngIf="specExpanded">
+        <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
+            (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
+            [specExpanded]="specExpanded"></xnode-expand-specification>
+    </div>
+    <div *ngIf="!specExpanded">
     <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
       (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (specDataChange)="onSpecDataChange($event)"
       (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-    <div class="diff-view flex justify-content-center">
+    <div class="overflow-auto flex justify-content-center" [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommentsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommentsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommentsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommentsPanelOpened}">
+      <!-- diff-view  -->
       <div class="w-8">
         <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">
           <p-dropdown [options]="versions" [(ngModel)]="selectedVersionOne" optionLabel="label"
@@ -15,8 +23,8 @@
             (onChange)="onVersionChange($event, 'two')" placeholder="Select a version"
             class="ml-3 app-dropdown"></p-dropdown>
         </div>
-        <div class='m-4' *ngFor="let item of specList;let i = index">
-          <xnode-diff-comp [users]="usersList" [contentObj]="item" [format]="format" [index]="i"
+        <div class='m-4' *ngFor="let item of specList;let i = index" [id]="item.id">
+          <xnode-diff-comp (childLoaded)="onChildLoaded($event)" (expandComponent)="_expandComponent($event)" [users]="usersList" [contentObj]="item" [index]="i" [format]="format"
             [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
             [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
         </div>
@@ -27,4 +35,6 @@
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>

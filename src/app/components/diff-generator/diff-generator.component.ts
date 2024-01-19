@@ -34,6 +34,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+
     // console.log(
     //   'changes>>>>>>>>>>>>>>>>>>>>>',
     //   changes['oldContent'],

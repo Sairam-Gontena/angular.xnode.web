@@ -33,8 +33,13 @@
     ? 'sctions-grid relative'
     : 'sctions-grid-full relative'
 " id="{{ contentObj?.id }}" #contentContainer class="mt-4" *ngIf="contentObj?.content_data_type !=='BANNER'">
-    <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
-      contentObj?.title}}</h3>
+<div class="flex flex-row justify-content-between">
+  <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
+    contentObj?.title}}</h3>
+    <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
+</div>
+
+
     <div class="grid" (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
       <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
         <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);" [position]="'absolute'"
@@ -75,7 +80,7 @@
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
               <li>
-                <xnode-diff-comp [contentObj]="getMeContentObj(item, contentObj)"
+                <xnode-diff-comp (expandComponent)="expandComponent.emit($event)" [contentObj]="getMeContentObj(item, contentObj)"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
             </ul>
@@ -136,7 +141,24 @@
         <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
-        <div id="openapi-ui-spec" class="openapi-spec"></div>
+        <div id="openapi-ui-spec" id="openapi-ui-spec" class="openapi-spec my-3"></div>
+      </div>
+      <div class="col-12 py-0" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
+        <div *ngFor="let item of contentObj.content">
+          <div class="mt-2">
+            <div >
+              <div class="flex justify-content-between align-items-center col-12">
+                <h3>
+                  {{item.title}}
+                </h3>
+              </div>
+              <div class="spec-table">
+                <xnode-common-spec-table [specItem]="contentObj"
+                  [content]="item.content"></xnode-common-spec-table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
