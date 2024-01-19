@@ -33,15 +33,14 @@ export class CommentsTabsComponent implements OnInit {
         this.activeIndex = data.childTabIndex;
       }
       let indexObj = { index: this.activeIndex };
-      this.onTabChange(indexObj);
+      // this.onTabChange(indexObj);
     });
-    this.specUtils.getMeUpdatedComments.subscribe((event: any) => {
-      if (event) {
-        this.activeIndex = 0;
-        this.list = event;
-      }
+    this.specificationUtils.getMeCommentList.subscribe((data: any) => {
+      this.list = [];
+      if (data) this.list = data;
     });
     this.specificationUtils.getMeTaskList.subscribe((data: any) => {
+      this.list = [];
       if (data) {
         this.list = data;
       }
@@ -56,6 +55,8 @@ export class CommentsTabsComponent implements OnInit {
   ngOnDestroy() {}
 
   onTabChange(event: any) {
+    console.log('event', event);
+
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specVersion = this.storageService.getItem(StorageKeys.SpecVersion);
     this.activeIndex = event.index;
@@ -65,6 +66,8 @@ export class CommentsTabsComponent implements OnInit {
       childTabIndex: event.index,
     });
     if (event.index === 0) {
+      console.log('&&^^%%');
+
       this.specService.getMeAllComments({
         productId: this.product.id,
         versionId: this.specVersion.id,

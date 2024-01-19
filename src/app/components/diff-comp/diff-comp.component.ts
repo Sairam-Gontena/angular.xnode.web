@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -18,6 +18,7 @@ declare const SwaggerUIBundle: any;
 export class DiffCompComponent implements OnInit {
   product: any;
   @Input() contentObj: any;
+  @Input() format: any = 'line-by-line';
   @Input() diffObj: any;
   @Input() onDiff: boolean = false;
   @Input() index: any;
@@ -33,7 +34,6 @@ export class DiffCompComponent implements OnInit {
   loadSwagger = false;
  ComponentsToExpand=['Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
   // listComponentsToExpand=['User Interface Design','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
-
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -65,6 +65,14 @@ export class DiffCompComponent implements OnInit {
     if (this.contentObj?.content_data_type === 'SWAGGER') {
       this.fetchOpenAPISpec();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes', changes);
+    if (changes['diffObj']?.currentValue)
+      this.diffObj = changes['diffObj'].currentValue;
+    if (changes['format']?.currentValue)
+      this.format = changes['format'].currentValue;
   }
 
   getType(content: any): string {

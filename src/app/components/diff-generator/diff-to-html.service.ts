@@ -49,6 +49,8 @@ export class DiffToHtmlService {
     format: DiffFormat = 'side-by-side',
     style: DiffStyle = 'word'
   ) {
+    // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', diff);
+
     return Diff2Html.html(diff, {
       drawFileList: false,
       matching: 'lines',

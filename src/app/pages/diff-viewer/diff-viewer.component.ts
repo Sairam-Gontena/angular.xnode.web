@@ -46,6 +46,7 @@ export class DiffViewerComponent implements OnInit {
   specTwoList: any = [];
   usersList: any;
   swaggerData: any;
+  format: any;
   openConversationPanel: boolean = false;
   isCommentsPanelOpened: boolean = false;
   isSpecSideMenuOpened: boolean = false;
@@ -121,9 +122,8 @@ export class DiffViewerComponent implements OnInit {
     let flattenedData = list.flatMap((item: any, itemIndex: number) => [
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
+        innerItem.parentId = item.id;
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
-        console.log('innerItem', innerItem);
-
         return innerItem;
       }),
     ]);
@@ -349,8 +349,11 @@ export class DiffViewerComponent implements OnInit {
   }
 
   diffViewChangeEmiter(event: any) {
-    this.showVersionToDiff = event;
-    if (event) {
+    console.log('eventevent', event);
+
+    this.showVersionToDiff = event.diffView;
+    this.format = event.viewType;
+    if (event.viewType !== null) {
       this.selectedVersionOne = this.versions[0];
       this.selectedVersionTwo = this.versions[1];
       this.utils.loadSpinner(true);

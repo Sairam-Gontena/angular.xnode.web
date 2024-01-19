@@ -67,6 +67,9 @@ body {
 #canvas .model-default-endpoint {
   z-index: 6;
 }
+.pointer {
+  cursor: pointer;
+}
 
 .jtk-overlay {
   display: none;

@@ -42,7 +42,7 @@ export class CommentsCrPanelComponent implements OnInit {
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
     private specService: SpecificationsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -58,8 +58,8 @@ export class CommentsCrPanelComponent implements OnInit {
       } else {
         this.activeIndex = 0;
       }
-      let indexObj = { index:this.activeIndex }
-      this.switchHeaders(indexObj)
+      let indexObj = { index: this.activeIndex };
+      // this.switchHeaders(indexObj);
     });
   }
 
@@ -71,7 +71,9 @@ export class CommentsCrPanelComponent implements OnInit {
   }
 
   onClickClose() {
-    this.specificationUtils.openConversationPanel({ openConversationPanel: false });
+    this.specificationUtils.openConversationPanel({
+      openConversationPanel: false,
+    });
     this.specificationUtils.saveCommentList(null);
     this.utils.saveSelectedSection(null);
   }
@@ -91,13 +93,21 @@ export class CommentsCrPanelComponent implements OnInit {
 
   switchHeaders(event: any) {
     this.activeIndex = event.index;
-    this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: this.activeIndex, childTabIndex: 0 });
-    const version: any = this.storageService.getItem(StorageKeys.SpecVersion)
+    this.specificationUtils.openConversationPanel({
+      openConversationPanel: true,
+      parentTabIndex: this.activeIndex,
+      childTabIndex: 0,
+    });
+    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     if (event.index === 1) {
       this.specService.getMeCrList({ productId: this.product.id });
     } else {
-      this.specService.getMeAllComments({ productId: this.product.id, versionId: version.id });
+      console.log('!@!@!@');
+
+      this.specService.getMeAllComments({
+        productId: this.product.id,
+        versionId: version.id,
+      });
     }
   }
-
 }

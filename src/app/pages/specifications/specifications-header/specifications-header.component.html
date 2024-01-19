@@ -14,7 +14,7 @@
         <div class="flex align-items-center">
             <p-inputSwitch [(ngModel)]="diffView" (onChange)="toggleDiffView($event)"></p-inputSwitch>
             <label for="" class="ml-2">Diff View</label>
-            <p-dropdown *ngIf="diffView" [options]="viewList" [(ngModel)]="selectedView" optionLabel="label"
+            <p-dropdown *ngIf="diffView" [options]="viewList" [(ngModel)]="viewType" optionLabel="label"
                 (onChange)="onViewChange($event)" placeholder="Select a view" class="ml-3 view-dropdown"></p-dropdown>
         </div>
 
