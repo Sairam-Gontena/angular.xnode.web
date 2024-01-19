@@ -39,7 +39,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   viewList: any = [
     { label: 'Inline View', value: 'line-by-line' },
     { label: 'Side By Side View', value: 'side-by-side' },
-    { label: 'Exit', value: 'EXIT' },
+    { label: 'Exit', value: null },
   ];
   selectedView: any;
   specData: any;
@@ -153,8 +153,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       parentTabIndex: 0,
       childTabIndex: 0,
     });
-    console.log('%%%%');
-
     this.specService.getMeAllComments({
       productId: this.product.id,
       versionId: version.id,
@@ -216,8 +214,6 @@ export class SpecificationsHeaderComponent implements OnInit {
                 this.conversationPanelInfo?.parentTabIndex === 0 &&
                 this.conversationPanelInfo?.childTabIndex === 0
               ) {
-                console.log('@@@@');
-
                 this.specService.getMeAllComments({
                   productId: this.product?.id,
                   versionId: data[0].id,
@@ -312,16 +308,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     }
   }
   onViewChange(event: any) {
-    this.viewType = event.value.value;
-    if (event.value.value === 'EXIT') {
+    this.viewType = event.value;
+    if (!event.value) {
       this.diffView = false;
-      this.viewType = undefined;
     }
     this.onDiffViewChange.emit({
-      diffView: event.value.value === 'EXIT' ? false : this.diffView,
-      viewType: event.value.value === 'EXIT' ? null : event.value.value,
+      diffView: !event.value ? false : this.diffView,
+      viewType: event.value,
     });
   }
+
   toggleDiffView(ele: any): void {
     if (this.diffView) {
       this.viewType = 'line-by-line';

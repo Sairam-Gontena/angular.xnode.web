@@ -24,6 +24,7 @@ export class AddTaskComponent {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Input() visible: boolean = false;
   @Input() width?: string;
+  @Input() reveiwerList: any;
   @Output() closeOverlay = new EventEmitter<any>();
   @Input() parentTitle: any;
   @Input() position?: string;
@@ -91,7 +92,7 @@ export class AddTaskComponent {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
     this.userList.forEach((element: any) => {
-      element.name = element.first_name + " " + element.last_name
+      element.name = element.first_name + ' ' + element.last_name;
     });
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
@@ -310,7 +311,11 @@ export class AddTaskComponent {
           this.comment = '';
           this.closeOverlay.emit();
           this.specService.getMeSpecLevelTaskList({ parentId: body.parentId });
-          this.specificationUtils.openConversationPanel({ openConversationPanel: true, parentTabIndex: 0, childTabIndex: 1 })
+          this.specificationUtils.openConversationPanel({
+            openConversationPanel: true,
+            parentTabIndex: 0,
+            childTabIndex: 1,
+          });
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',

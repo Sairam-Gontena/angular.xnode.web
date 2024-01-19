@@ -63,8 +63,6 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-    console.log('changes', changes);
-
     if (changes['list']?.currentValue) {
       this.filteredList = [];
       this.list = changes['list'].currentValue;

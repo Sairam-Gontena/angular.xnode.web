@@ -102,8 +102,6 @@ export class CommentsCrPanelComponent implements OnInit {
     if (event.index === 1) {
       this.specService.getMeCrList({ productId: this.product.id });
     } else {
-      console.log('!@!@!@');
-
       this.specService.getMeAllComments({
         productId: this.product.id,
         versionId: version.id,
