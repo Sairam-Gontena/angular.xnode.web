@@ -166,11 +166,12 @@ export class DiffViewerComponent implements OnInit {
           response.data &&
           response.data.length > 0
         ) {
-          response.data.forEach((element: any) => {
+          response.data.forEach((element: any, index: any) => {
             element.content_data_type = 'BANNER';
+            element.sNo = index + 1 + '.0';
           });
           if (params.type === 'one') {
-            this.specList = response.data;
+            this.specList = this.changeSpecListFormat(response.data);
             this.specListForMenu = response.data;
             this.specTwoList.forEach((element1: any) => {
               this.specList.forEach((element2: any) => {
@@ -178,10 +179,8 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
-            this.specTwoList = this.changeSpecListFormat(this.specTwoList);
           } else {
             this.specTwoList = this.changeSpecListFormat(response.data);
-            this.specList = this.specList;
             this.specList.forEach((element1: any) => {
               this.specTwoList.forEach((element2: any) => {
                 if (element2.title === element1.title)
@@ -234,12 +233,13 @@ export class DiffViewerComponent implements OnInit {
       productId: data.productId,
     });
   }
+
   onVersionChange(event: any, type: string) {
-    type === 'one' && event.value.id === this.selectedVersionTwo.id
-      ? (this.selectedVersionTwo = undefined)
-      : type === 'two' && event.value.id === this.selectedVersionOne.id
-      ? (this.selectedVersionOne = undefined)
-      : null;
+    // type === 'one' && event.value.id === this.selectedVersionTwo.id
+    //   ? (this.selectedVersionTwo = undefined)
+    //   : type === 'two' && event.value.id === this.selectedVersionOne.id
+    //   ? (this.selectedVersionOne = undefined)
+    //   : null;
     this.utils.loadSpinner(true);
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }

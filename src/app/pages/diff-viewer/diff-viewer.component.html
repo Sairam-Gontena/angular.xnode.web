@@ -17,7 +17,7 @@
         </div>
         <div class='m-4' *ngFor="let item of specList;let i = index">
           <xnode-diff-comp [users]="usersList" [contentObj]="item" [format]="format" [index]="i"
-            [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
+            [diffObj]="getDiffObj(specTwoList, item, specList.length!==0&& specTwoList.length!==0)"
             [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
         </div>
 
