@@ -34,35 +34,39 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes['oldContent']?.currentValue) {
+      this.oldContent = changes['oldContent']?.currentValue;
+    }
+    if (changes['format']?.currentValue) {
+      this.format = changes['format']?.currentValue;
+    }
+    if (changes['newContent']?.currentValue) {
+      this.newContent = changes['newContent']?.currentValue;
+    }
 
-    // console.log(
-    //   'changes>>>>>>>>>>>>>>>>>>>>>',
-    //   changes['oldContent'],
-    //   this.oldContent
-    // );
-    // console.log(
-    //   'changes>>>>>>>>$$$$$$$$$$>>>>>>>>>>>>>',
-    //   changes['newContent']
-    // );
     if (
       this.oldContent &&
       this.newContent &&
       this.oldContent === this.newContent
     ) {
       this.onDiff = false;
+    } else {
+      if (this.oldContent && this.newContent) {
+        this.getDiff();
+      }
     }
-    if (
-      this.propHasChanged(changes['oldContent']) ||
-      this.propHasChanged(changes['newContent'])
-    ) {
-      this.newContent = changes['newContent'].currentValue;
-      this.getDiff();
-    } else if (
-      this.propHasChanged(changes['style']) ||
-      this.propHasChanged(changes['format'])
-    ) {
-      this.refreshDiffHTML();
-    }
+    // if (
+    //   this.propHasChanged(changes['oldContent']) ||
+    //   this.propHasChanged(changes['newContent'])
+    // ) {
+    //   this.newContent = changes['newContent'].currentValue;
+    //   this.getDiff();
+    // } else if (
+    //   this.propHasChanged(changes['style']) ||
+    //   this.propHasChanged(changes['format'])
+    // ) {
+    //   this.refreshDiffHTML();
+    // }
   }
 
   private propHasChanged(change: SimpleChange) {
