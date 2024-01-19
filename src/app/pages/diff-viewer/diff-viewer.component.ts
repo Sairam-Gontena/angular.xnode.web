@@ -51,8 +51,8 @@ export class DiffViewerComponent implements OnInit {
   isCommentsPanelOpened: boolean = false;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
-  selectedSpecItem:any;
-  loadSwagger: boolean= false;
+  selectedSpecItem: any;
+  loadSwagger: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -123,7 +123,20 @@ export class DiffViewerComponent implements OnInit {
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
         innerItem.parentId = item.id;
+        innerItem.parentTitle = item.title;
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
+        if (innerItem.content && isArray(innerItem.content)) {
+          innerItem.content.forEach((obj: any) => {
+            if (
+              typeof obj !== 'string' &&
+              innerItem.parentId &&
+              innerItem.parentTitle
+            ) {
+              obj['parentId'] = innerItem.parentId;
+              obj['parentTitle'] = innerItem.title;
+            }
+          });
+        }
         return innerItem;
       }),
     ]);
@@ -230,7 +243,14 @@ export class DiffViewerComponent implements OnInit {
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
-    let swaggerUrl = environment.uigenApiUrl +'openapi-spec/' +localStorage.getItem('app_name') +'/' + email +'/' +record_id;
+    let swaggerUrl =
+      environment.uigenApiUrl +
+      'openapi-spec/' +
+      localStorage.getItem('app_name') +
+      '/' +
+      email +
+      '/' +
+      record_id;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById('openapi-ui-spec'),
       layout: 'BaseLayout',
@@ -238,14 +258,14 @@ export class DiffViewerComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset,
       ],
-      url:swaggerUrl,
+      url: swaggerUrl,
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
     fetch(swaggerUrl)
-    .then((response) => response.json())
-    .then((data) => (this.swaggerData = data))
-    .catch((error) => console.error('Error:', error));
+      .then((response) => response.json())
+      .then((data) => (this.swaggerData = data))
+      .catch((error) => console.error('Error:', error));
     this.utils.loadSpinner(false);
   }
 
@@ -343,13 +363,25 @@ export class DiffViewerComponent implements OnInit {
     //       });
     //   }
   }
+  findIndex(objectToFind: any): number {
+    return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
+  }
 
   diffViewChangeEmiter(event: any) {
+    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    console.log('version', version);
+
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     if (event.viewType !== null) {
-      this.selectedVersionOne = this.versions[0];
-      this.selectedVersionTwo = this.versions[1];
+      this.selectedVersionOne = this.versions.filter((obj: any) => {
+        return obj.id === version.id;
+      })[0];
+      const index = this.findIndex(version);
+      console.log('index', index, index + 1);
+
+      this.selectedVersionTwo =
+        this.versions[index === 0 ? index + 1 : index - 1];
       this.utils.loadSpinner(true);
       this.getMeSpecInfo({
         versionId: this.selectedVersionTwo.id,
