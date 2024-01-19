@@ -5,7 +5,8 @@
         <div class="lg:col-7 md:col-12">
             <div class="flex mt-6 ">
                 <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="w-1 h-1 finbuddy-image">
-                <h1 class="text-white text-4xl font-medium  ml-4" *ngIf="appName !=='undefined' ">{{product?.title}}</h1>
+                <h1 class="text-white text-4xl font-medium  ml-4" *ngIf="appName !=='undefined' ">{{product?.title}}
+                </h1>
                 <h1 class="text-white text-4xl font-medium  ml-4" *ngIf="appName ==='undefined' ">{{product?.id}}</h1>
             </div>
             <p
@@ -67,7 +68,11 @@
         <div class="lg:col-4 md:col-12" *ngIf="jsondata?.length">
             <div class="card-container mt-6 text-white stepper-card">
                 <div class="stepper-content p-1 mt-3">
-                    <p class="text-xl font-normal stepper-text">Hey <span class="font-bold">{{currentUser?.first_name.toUpperCase()}} {{currentUser?.last_name.toUpperCase()}}!</span> You
+                    <p class="text-xl font-normal stepper-text">Hey <span class="font-bold">
+                            {{overview?.username.toUpperCase()}}
+                            <!-- {{currentUser?.first_name.toUpperCase()}}
+                            {{currentUser?.last_name.toUpperCase()}}! -->
+                        </span> You
                         are on the verge of using the app.</p>
                     <p class="text-lg font-medium mb-4">Please see the status
                         below</p>
