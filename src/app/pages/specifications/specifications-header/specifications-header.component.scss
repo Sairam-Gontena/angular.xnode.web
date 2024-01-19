@@ -1,5 +1,6 @@
 .header-items {
     color: #DEDEDE;
+    height: 70px;
 }
 
 .text-color {
@@ -13,23 +14,43 @@
     border: 0;
     width: 100%;
     color: #ffffff !important;
-    background: #4F4E55;
 }
 
 :host ::ng-deep .app-dropdown .p-inputtext {
-    background: #4F4E55 !important;
-    color: #ffffff !important;
     padding: 10px !important;
 }
 
-:host ::ng-deep .app-dropdown .p-dropdown-label {
-    font-size: 12px;
-    border-radius: 30px;
+:host ::ng-deep .app-dropdown-version .p-dropdown {
+    border-radius: 25px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 0;
+    width: 100%;
+    color: #11CF46 !important;
+    background: #CCFFDA;
+}
+:host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-label{
+   border-top-left-radius: 30px;
+   border-bottom-left-radius: 30px;
 }
 
-:host ::ng-deep .p-dropdown .p-dropdown-label,
-:host ::ng-deep .p-dropdown .p-dropdown-trigger {
-    color: #ffffff;
+:host ::ng-deep .app-dropdown-version .p-inputtext {
+    background: #CCFFDA !important;
+    color: #11CF46 !important;
+    padding: 8px 10px !important;
+}
+
+:host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-label,
+:host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-trigger {
+    color: #11CF46;
+}
+
+.status {
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -40,17 +61,32 @@
 }
 
 :host::ng-deep .p-overlaypanel .p-overlaypanel-content {
-    // padding: 10px !important;
     background-color: #2E2D36;
     color: white;
     border: 1px solid #535354;
 }
 
-:host::ng-deep .p-overlaypanel .p-overlaypanel-content .confirm-overlay:hover {
-    background-color: #393843;
-    color: #ffffff;
-}
-
 :host::ng-deep .p-overlaypanel .p-overlaypanel-content {
     padding: 0px !important;
+}
+
+:host ::ng-deep .update-spec-button {
+    color: #ffffff;
+    background: #23222B;
+    font-size: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 1px solid #ffffff;
+}
+
+:host ::ng-deep .app-dropdown-version .p-dropdown-panel {
+    position: absolute; 
+}
+
+:host ::ng-deep .share-btn.p-button {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+:host ::ng-deep .p-button .p-button-label{
+    color : var(--primary-button-text-color)
 }

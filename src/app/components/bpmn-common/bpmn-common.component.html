@@ -1,14 +1,12 @@
-<div class="bpmn-div surface-900 overflow-hidden">
+<div class="bpmn-div overflow-hidden">
     <div class="col-12 flex pr-4 pt-4 pb-4"
         [ngClass]="{'justify-content-between':graphRedirection,'justify-content-end':!graphRedirection}">
-        <img src="./assets/spec-minimize.svg" class="expand-icon pointer" alt="container" *ngIf="!specExpanded"
-            (click)="expandDataFlows()">
         <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm back-to-graph p-button-text"
             *ngIf="graphRedirection" (click)="switchWindow()"></p-button>
         <i class="pi pi-times text-white text-xl pointer" *ngIf="specExpanded" (click)="expandDataFlows()"></i>
     </div>
     <div class="col-12">
-        <div id="diagramRef" class="diagram-container">
+        <div id="diagramRef" class="diagram-container" [ngClass]="{'disable-height':referenceId}">
         </div>
         <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
             styleClass="w-30rem" [modal]="false">
@@ -121,10 +119,18 @@
                 <p-tabPanel header="Comments"> </p-tabPanel>
             </p-tabView>
         </p-sidebar>
-        <div id="sc" class="scrollable-container w-full h-full overflow-auto">
-            <div class="col-12" id="graph">
+        <span *ngIf="referenceId else graphView">
+          <div id="sc{{referenceId}}" class="scrollable-container w-full h-full overflow-auto">
+            <div class="col-12 graphViewBpmnCommon" id="graph{{referenceId}}">
             </div>
-        </div>
+          </div>
+        </span>
+        <ng-template #graphView>
+            <div id="sc" class="scrollable-container w-full h-full overflow-auto">
+              <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}" id="graph">
+              </div>
+            </div>
+        </ng-template>
     </div>
 </div>
 <div class="container bpmn-component m-4" *ngIf="showBpmn">
@@ -238,7 +244,7 @@
         </p-tabView>
     </p-sidebar>
     <div id="sc" class="scrollable-container w-full h-full overflow-auto">
-        <div class="col-12" id="graph">
+        <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}" id="graph">
         </div>
     </div>
 

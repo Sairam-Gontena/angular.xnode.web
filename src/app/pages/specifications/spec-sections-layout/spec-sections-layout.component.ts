@@ -1,18 +1,27 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { CommentsService } from 'src/app/api/comments.service';
-import { UtilsService } from 'src/app/components/services/utils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
-import { ApiService } from 'src/app/api/api.service';
-import { User } from 'src/models/user';
+import { UtilsService } from 'src/app/components/services/utils.service';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { environment } from 'src/environments/environment';
+import { delay, of } from 'rxjs';
 
+declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-spec-sections-layout',
   templateUrl: './spec-sections-layout.component.html',
-  styleUrls: ['./spec-sections-layout.component.scss']
+  styleUrls: ['./spec-sections-layout.component.scss'],
 })
-export class SpecSectionsLayoutComponent implements OnInit {
+export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   @Input() content: any;
   @Input() searchTerm: any;
   @Input() sectionIndex!: number;
@@ -20,175 +29,247 @@ export class SpecSectionsLayoutComponent implements OnInit {
   @Input() readOnly!: boolean;
   @Input() targetUrl: string = '';
   @Input() isOpenSmallCommentBox!: boolean;
-  @Input() commentList: any;
+  @Input() usersList: any = [];
+  @Input() reveiwerList: any;
+
+  // @Input() useCases: any[] = [];
+  @Input() selectedSpecItem: any;
+  @Input() specItemList: any;
+  @Input() expandView: any;
   @Output() getCommentsAfterUpdate = new EventEmitter<any>();
   @Output() onClickSeeMore = new EventEmitter<any>();
   @Output() onClickSeeLess = new EventEmitter<any>();
   @Output() showAddCommnetOverlay = new EventEmitter<any>();
   @Output() expandComponent = new EventEmitter<any>();
+  @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  bpmnFrom: string = 'SPEC';
   iframeSrc: SafeResourceUrl = '';
-  paraViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  paraViewSections = SECTION_VIEW_CONFIG.paraViewSections;
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedContent: any;
-  selectedSpecItem: any;
-  specItemList: any;
   smallCommentContent: any;
   showMoreContent: any;
-  specExpanded: any;
   checked: boolean = false;
   currentUser: any;
-  usersData: any;
-  users: any = [];
   product: any;
   seletedMainIndex?: number;
   selecteedSubIndex?: number;
   selecteedSubSubIndex?: number;
   showCommentIcon?: boolean;
   commentOverlayPanelOpened: boolean = false;
+  isDockedNaviOpened?: boolean = false;
+  isSideMenuOpened?: boolean = false;
+  isCommnetsPanelOpened?: boolean = false;
+  jsonTypes = ['Business Rules', 'Annexures', 'User Interfaces', 'Functional Dependencies', 'Data Dictionary']
 
-  constructor(private utils: UtilsService,
-    private commentsService: CommentsService,
+  businessRulesPanelOpened: boolean = false;
+  businessRulesshowCommentIcon: boolean = false;
+  dataDictionaryshowCommentIcon: boolean = false;
+  dataDictionaryPanelOpened: boolean = false;
+  functionalDependenciesshowCommentIcon: boolean = false;
+  functionalDepedencyPanelOpened: boolean = false;
+  userInterfacePanelOpened: boolean = false;
+  userInterfaceshowCommentIcon: boolean = false;
+  AnnexuresPanelOpened: boolean = false;
+  AnnexureshowCommentIcon: boolean = false;
+  usecasePanelOpened: boolean = false;
+  usecaseshowCommentIcon: boolean = false;
+  dataManagementPanelOpened: boolean = false;
+  dataManagementCommentIcon: boolean = false;
+  workflowPanelOpened: boolean = false;
+  workflowshowCommentIcon: boolean = false;
+  userinterfaceShowCommentIcon: boolean = false;
+  userinterfacePanelOpened: boolean = false;
+  userpersonaShowCommentIcon: boolean = false;
+  usepersonaPanelOpened: boolean = false;
+  qashowCommentIcon: boolean = false;
+  qaPanelOpened: boolean = false;
+  openAPIShowCommentIcon: boolean = false;
+  openAPIPanelOpened: boolean = false;
+  stakeHolderPanelOpened: boolean = false;
+  stakeHoldershowCommentIcon: boolean = false;
+  versionControlPanelOpened: boolean = false;
+  versionControlshowCommentIcon: boolean = false;
+  historicalDataPanelOpened: boolean = false;
+  historicalDatashowCommentIcon: boolean = false;
+  dataQualityPanelOpened: boolean = false;
+  dataQualityshowCommentIcon: boolean = false;
+  testCasePanelOpened: boolean = false;
+  testCaseshowCommentIcon: boolean = false;
+  glossaryPanelOpened: boolean = false;
+  glossaryshowCommentIcon: boolean = false;
+  selectedIndex?: number;
+  selectedListItemIndex: number | undefined;
+
+  expandSpecSections: any = [
+    'Usecases',
+    'Use Cases',
+    'User Interface Design',
+    'Workflows',
+    'Data Dictionary',
+    'Annexures',
+    'Historical Data Load',
+    'Glossary',
+    'Version Control',
+    'Stakeholder Approvals',
+    'OpenAPI Spec',
+    'Data Quality Checks',
+    'Data Model',
+  ];
+
+  constructor(
     private domSanitizer: DomSanitizer,
-    private apiservice: ApiService) {
-  }
+    private storageService: LocalStorageService,
+    private utilsService: UtilsService,
+    private specUtils: SpecUtilsService
+  ) { }
 
   ngOnInit(): void {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.currentUser = JSON.parse(currentUser);
-    }
-    // this.apiservice.getAuthApi('user/get_all_users?account_id=' + this.currentUser?.account_id).then((resp: any) => {
-    //   this.utils.loadSpinner(true);
-    //   if (resp?.status === 200) {
-    //     this.usersData = resp.data;
-    //     this.usersData.map((element: any) => {
-    //       let name: string = element?.first_name;
-    //       this.users.push(name)
-    //     });
-    //   } else {
-    //     this.utils.loadToaster({ severity: 'error', summary: '', detail: resp.data?.detail });
-    //   }
-    //   this.utils.loadSpinner(false);
-    // }).catch((error) => {
-    //   this.utils.loadToaster({ severity: 'error', summary: '', detail: error });
-    //   console.error(error);
-    // })
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product);
-    }
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    this.utilsService.openDockedNavi.subscribe((res) => {
+      this.isDockedNaviOpened = res;
+    });
+    this.utilsService.openSpecSubMenu.subscribe((res: any) => {
+      this.isSideMenuOpened = res;
+    });
+    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+      this.isCommnetsPanelOpened = event;
+    });
     this.makeTrustedUrl();
-  }
-
-  makeTrustedUrl(): void {
-    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
-  }
-
-  getCommentListBasedOnContentId(contentId: string) {
-    this.utils.loadSpinner(true);
-    this.commentsService.getComments({ contentId: contentId }).then((response: any) => {
-      if (response && response.data) {
-        this.utils.saveCommentList(response.data)
-        this.commentList = response.data;
+    this.content.forEach((element: any) => {
+      if (element.title === 'OpenAPI Spec') {
+        // this.fetchOpenAPISpec();
       }
-      this.utils.loadSpinner(true);
-    }).catch(err => {
-      console.log(err);
-      this.utils.loadSpinner(true);
+    });
+    this.makeBusinessRulesJsonTrue();
+  }
+  makeBusinessRulesJsonTrue() {
+    this.content.forEach((element: any) => {
+      if (this.jsonTypes.includes(element.title)) {
+        element.showList = true;
+      }
     });
   }
 
+  ngOnChanges() {
+    if (this.expandView) {
+      setTimeout(() => {
+        // this.fetchOpenAPISpec()
+      }, 500);
+    }
+  }
+
+  ngAfterViewInit() {
+    this.content.forEach((item: any) => {
+      if (item.title === 'OpenAPI Spec') {
+        this.childLoaded.emit(true);
+      }
+    });
+  }
+
+  openCommentSection() {
+    this.utilsService.saveSelectedSection(null);
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+    of([])
+      .pipe(delay(500))
+      .subscribe((results) => {
+        this.specUtils._openCommentsPanel(true);
+      });
+  }
+
+  checkExpandSpecSections(spec: string) {
+    let returnVal: boolean;
+    this.expandSpecSections.includes(spec)
+      ? (returnVal = true)
+      : (returnVal = false);
+    return returnVal;
+  }
+
+  makeTrustedUrl(): void {
+    this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
+      this.targetUrl
+    );
+    localStorage.setItem('targetUrl', this.targetUrl);
+  }
+
   onClickAddComment(obj: any): void {
-    // this.getCommentListBasedOnContentId(obj.content.id)
-    // return
-
-    this.selectedContent = obj.content;
-    this.showAddCommnetOverlay.emit(obj)
+    this.selectedContent = obj;
+    this.showAddCommnetOverlay.emit(obj);
   }
-
-  sendComment(comment: any) {
-    // this.utils.loadSpinner(true);
-    // const body = {
-    //   contentId: this.selectedContent.id,
-    //   productId: this.product.id,
-    //   userId: this.currentUser.user_id,
-    //   message: comment,
-    //   itemType: 'Comment',
-    // }
-    // this.commentsService.addComments(body)
-    //   .then((commentsReponse: any) => {
-    //     console.log('commentsReponse', commentsReponse);
-    //     this.utils.commentAdded(true);
-    //     this.utils.loadSpinner(false);
-    //   }).catch(err => {
-    //     console.log('err', err);
-    //     this.utils.loadSpinner(false);
-    //   })
-    return
-
-    this.utils.openOrClosePanel(SidePanel.Comments);
-    let user_id = localStorage.getItem('product_email') || (localStorage.getItem('product') && JSON.parse(localStorage.getItem('product') || '{}').email)
-    this.isOpenSmallCommentBox = false;
-    this.commentsService.getComments(this.selectedSpecItem)
-      .then((commentsReponse: any) => {
-        let body: any = {
-          product_id: localStorage.getItem('record_id'),
-          content_id: this.selectedSpecItem.id,
-        };
-        if (commentsReponse && commentsReponse.data && commentsReponse.data.comments) {
-          this.isOpenSmallCommentBox = false;
-          body.comments = [
-            ...commentsReponse['data']['comments'],
-            ...[{
-              user_id: user_id,
-              message: comment,
-            }]
-          ]
-        } else {
-          body.comments = [{
-            user_id: user_id,
-            message: comment
-          }]
-        }
-        this.commentsService.updateComments(body)
-          .then((response: any) => {
-            this.smallCommentContent = "";
-            this.getCommentsAfterUpdate.emit(comment);
-            this.utils.openOrClosePanel(SidePanel.Comments);
-          })
-          .catch((error: any) => {
-            this.smallCommentContent = "";
-          });
-      })
-      .catch(res => {
-        console.log("comments get failed");
-      })
-  }
-
   checkedToggle(type: any, item: any, content: any) {
     this.specItemList.forEach((obj: any) => {
       if (obj.id === item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id && type === 'table')
-            conObj.showTable = true;
-          else
-            conObj.showTable = false;
-        })
+          if (conObj.id === content.id) {
+            if (type === 'table') {
+              conObj.showTable = true;
+              conObj.showJson = false;
+              conObj.showList = false;
+            } else if (type === 'list') {
+              conObj.showTable = false;
+              conObj.showJson = false;
+              conObj.showList = true;
+            } else if (type === 'json') {
+              conObj.showTable = false;
+              conObj.showJson = true;
+              conObj.showList = false;
+            }
+          }
+        });
       }
-    })
-  }
-  checkParaViewSections(title: string) {
-    return this.paraViewSections.filter(secTitle => { return secTitle === title }).length > 0;
-  }
-  checkListViewSections(title: string) {
-    return this.listViewSections.filter(secTitle => { return secTitle === title }).length > 0;
+    });
   }
 
+  checkParaViewSections(title: string) {
+    return (
+      this.paraViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
+
+  checkListViewSections(title: string) {
+    return (
+      this.listViewSections.filter((secTitle) => {
+        return secTitle === title;
+      }).length > 0
+    );
+  }
 
   getTestCaseKeys(testCase: any): string[] {
     return Object.keys(testCase);
   }
   isArray(item: any) {
     return Array.isArray(item);
+  }
+
+  saveSecInLocal() {
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specItem));
+  }
+
+  async fetchOpenAPISpec() {
+    const record_id = localStorage.getItem('record_id');
+    let userData: any;
+    userData = localStorage.getItem('currentUser');
+    let email = JSON.parse(userData).email;
+    const ui = SwaggerUIBundle({
+      domNode: document.getElementById('openapi-ui-spec'),
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
+      ],
+      url:
+        environment.uigenApiUrl +
+        'openapi-spec/' +
+        localStorage.getItem('app_name') +
+        '/' +
+        email +
+        '/' +
+        record_id,
+      docExpansion: 'none',
+      operationsSorter: 'alpha',
+    });
   }
 }

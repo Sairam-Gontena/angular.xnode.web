@@ -1,18 +1,19 @@
-<div class="h-full"
-     [ngClass]="{'template-builder-body-wrapper': isOpen, 'hide-template-builder-body-wrapper': !isOpen}">
+<div class="submenu" [style.width]="containerWidth" style="transition: width 0.5s ease;"
+     class="template-builder-body-wrapper">
      <div class="flex justify-content-end">
           <div class="pi pi-angle-left text-white p-2 p-button" [ngClass]="{'hide-icon': !isOpen, 'show-icon': isOpen}"
                (click)="toggleMenu()"></div>
           <div class="pi pi-angle-right text-white p-2 p-button" [ngClass]="{'hide-icon': isOpen, 'show-icon': !isOpen}"
                (click)="toggleMenu()"></div>
      </div>
-     <div class="submenu" *ngIf="isOpen">
-          <p-accordion *ngFor="let item of sideMenuItem.subMenuItems; let i = 'index+1';first as isFirst">
+     <div class="overflow-auto accordian-values" *ngIf="isOpen">
+          <p-accordion *ngFor="let item of sideMenuItem.subMenuItems; let i = 'index+1';first as isFirst"
+               class="overflow-auto">
                <p-accordionTab [selected]="i === activatedAccIndex" class="accordianTab{{item.accordianHeader}}"
                     header="{{item.accordianHeader}}" (click)="onClickAccordian(item,i)">
                     <div class="grid">
                          <div class="md:col-4" *ngFor="let submenu of item?.accordianContent; let j = 'index+1'">
-                              <div class="layout-item border-1 border-primary flex flex-wrap align-content-center justify-content-center pointer"
+                              <div class="layout-item flex border-1 border-200 flex-wrap align-content-center justify-content-center pointer menu-item " 
                                    id="{{item.accordianHeader}}{{submenu?.id}}"
                                    (click)="selectedSubMenu(item.accordianHeader+submenu?.id)" draggable="true"
                                    (dragstart)="drag($event)"

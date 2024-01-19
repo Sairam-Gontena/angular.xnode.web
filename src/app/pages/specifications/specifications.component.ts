@@ -1,88 +1,212 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
-import { SidePanel } from 'src/models/side-panel.enum';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
+import { SpecService } from 'src/app/api/spec.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { ActivatedRoute } from '@angular/router';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { AuthApiService } from 'src/app/api/auth.service';
+import { CommentsService } from 'src/app/api/comments.service';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-specifications',
   templateUrl: './specifications.component.html',
-  styleUrls: ['./specifications.component.scss']
+  styleUrls: ['./specifications.component.scss'],
 })
-export class SpecificationsComponent implements OnInit {
+export class SpecificationsComponent implements OnInit, OnDestroy {
   currentUser: any;
   specData?: any;
   specDataCopy?: any;
   keyword: any;
-  private specDataBool: boolean = true;
   selectedSpec: any;
   selectedSection: any;
-  specId: any
+  specId: any;
   productStatusPopupContent: any;
   showSpecGenaretePopup: boolean = false;
   filteredSpecData: any;
   foundObjects: any[] = [];
   wantedIndexes: any[] = [];
   removableIndexes: any[] = [];
-  isNaviOpened = false
-  isSideMenuOpened = true
+  isNaviOpened = false;
+  isSideMenuOpened = true;
   product: any;
-  isCommnetsPanelOpened?: boolean = false;
-  isCRsPanelOpened: boolean = false;
   isTheCurrentUserOwner: boolean = false;
-  isTheSpecGenerated?: boolean;
   consversationList: any;
   contentData: any;
   noResults: boolean = false;
+  useCases: any;
+  specDataLatest?: any;
+  versions: any;
+  currentSpecVersionId: string = '';
+  isDataManagementPersistence: boolean = false;
+  loading: boolean = true;
+  metaData: any;
+  activeConversationTab: any = '';
+  notifInfo: any;
+  reveiwerList: any;
 
   constructor(
     private utils: UtilsService,
-    private apiService: ApiService,
+    private specService: SpecService,
+    private specUtils: SpecUtilsService,
     private router: Router,
     private auditUtil: AuditutilsService,
-    private searchSpec: SearchspecService
+    private searchSpec: SearchspecService,
+    private localStorageService: LocalStorageService,
+    private route: ActivatedRoute,
+    private authService: AuthApiService,
+    private storageService: LocalStorageService,
+    private commentsService: CommentsService,
+    private naviApiService: NaviApiService
   ) {
-    this.utils.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isCommnetsPanelOpened = pnl === SidePanel.Comments;
-      this.isCRsPanelOpened = pnl === SidePanel.ChangeRequests;
-    })
-    this.utils.isInSameSpecPage.subscribe((res) => {
-      if (res) {
-        this.getMeSpecList();
+    this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
+      this.activeConversationTab = event;
+    });
+    this.specUtils.getLatestSpecVersions.subscribe((data: any) => {
+      if (data) {
+        this.handleSpecData(data.specData, data.productId);
       }
-    })
+    });
   }
 
   ngOnInit(): void {
-    this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isSideMenuOpened = data;
-    })
-    this.utils.openDockedNavi.subscribe((data: any) => {
-      this.isNaviOpened = data;
-      this.isCommnetsPanelOpened = false;
-      if (data) {
-        this.utils.disableSpecSubMenu();
+    this.getMeStorageData();
+    this.route.queryParams.subscribe((params) => {
+      const productId = params['product_id'];
+      const templateId = params['template_id'];
+      const templateType = params['template_type'];
+      let deepLinkInfo = {
+        product_id: productId,
+        template_id: templateId,
+        template_type: templateType,
+      };
+      if (
+        templateType &&
+        (templateType == 'COMMENT' || templateType == 'TASK')
+      ) {
+        this.getMetaData(deepLinkInfo);
       }
-    })
-    this.utils.disableDockedNavi();
-    this.getMeSpecList();
-    let user = localStorage.getItem('currentUser');
-    if (user)
-      this.currentUser = JSON.parse(user);
-    let product = localStorage.getItem('product');
-    if (product)
-      this.product = JSON.parse(product);
+    });
+  }
+
+  getMetaData(val: any) {
+    this.naviApiService
+      .getMetaData(this.currentUser?.email, val.product_id)
+      .then((response) => {
+        if (response?.status === 200 && response.data.data?.length) {
+          let product = response.data.data[0];
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('product', JSON.stringify(product));
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._tabToActive(val.template_type);
+        }
+      })
+      .catch((error) => { });
+  }
+
+  storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getAllProductsInfo(key: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = localStorage.getItem(key);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getDeepLinkInfo(key: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = localStorage.getItem(key);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  getMeStorageData(): void {
+    this.currentUser = this.localStorageService.getItem(
+      StorageKeys.CurrentUser
+    );
+    this.metaData = this.localStorageService.getItem(StorageKeys.MetaData);
+    this.notifInfo = this.localStorageService.getItem(StorageKeys.NOTIF_INFO);
+    if (this.notifInfo?.template_type === 'TASK') {
+      this.getMeAllTaskList(this.notifInfo.product_id);
+    }
+    if (this.notifInfo?.template_type === 'COMMENT') {
+      this.getMeAllCommentsList(this.notifInfo.product_id);
+    }
+    if (this.notifInfo?.entity === 'WORKFLOW') {
+      this.getCRList();
+    }
+
+    this.getUsersByAccountId();
+  }
+
+  getCRList() {
+    let body: any = {
+      productId: this.notifInfo?.product_id
+        ? this.notifInfo?.product_id
+        : this.notifInfo?.productId,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._openCommentsPanel(true);
+          this.specUtils._loadActiveTab(1);
+          this.specUtils._getLatestCrList(res.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+        this.localStorageService.removeItem(StorageKeys.NOTIF_INFO);
+        this.notifInfo = undefined;
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+        this.localStorageService.removeItem(StorageKeys.NOTIF_INFO);
+        this.notifInfo = undefined;
+      });
   }
 
   searchText(keyword: any) {
     if (keyword === '') {
       this.clearSearchText();
       this.noResults = false;
-      return
+      return;
     } else {
       this.keyword = keyword;
       this.specData = [];
@@ -90,55 +214,108 @@ export class SpecificationsComponent implements OnInit {
       this.filteredSpecData = [];
       this.wantedIndexes = [];
       this.removableIndexes = [];
-      let specLocalStorage = localStorage.getItem('specData')
-      if (specLocalStorage) {
-        let parseData = JSON.parse(specLocalStorage);
-        this.specData = parseData;
-      }
-      this.searchSpec.searchSpec(this.specData, keyword).subscribe((returnData: any) => {
-        if (returnData) {
-          this.specData = returnData.specData;
-          this.foundObjects = returnData.foundObjects;
-          this.noResults = returnData.noResults;
-          this.filteredSpecData = returnData.filteredSpecData;
-          this.wantedIndexes = returnData.wantedIndexes;
-          this.removableIndexes = returnData.removableIndexes;
-          this.utils.passSelectedSpecItem(this.specData)
-        }
-      });
+      this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
+      this.searchSpec
+        .searchSpec(this.specData, keyword)
+        .subscribe((returnData: any) => {
+          if (returnData) {
+            this.specData = returnData.specData;
+            this.foundObjects = returnData.foundObjects;
+            this.noResults = returnData.noResults;
+            this.filteredSpecData = returnData.filteredSpecData;
+            this.wantedIndexes = returnData.wantedIndexes;
+            this.removableIndexes = returnData.removableIndexes;
+            this.utils.passSelectedSpecItem(this.specData);
+          }
+        });
     }
   }
 
   getMeUserAvatar() {
-    var firstLetterOfFirstWord = this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
-    var firstLetterOfSecondWord = this.currentUser.last_name[1][0].toUpperCase(); // Get the first letter of the second word
-    return firstLetterOfFirstWord + firstLetterOfSecondWord
+    var firstLetterOfFirstWord =
+      this.currentUser.first_name[0][0].toUpperCase(); // Get the first letter of the first word
+    var firstLetterOfSecondWord =
+      this.currentUser.last_name[1][0].toUpperCase(); // Get the first letter of the second word
+    return firstLetterOfFirstWord + firstLetterOfSecondWord;
   }
 
-  getMeSpecList(): void {
+  getMeSpecList(body?: any): void {
     this.utils.loadSpinner(true);
-    this.apiService.getApi("specs/get/" + localStorage.getItem('record_id'))
-      .then(response => {
-        if (response.data && Array.isArray(response.data?.content)) {
-          this.isTheSpecGenerated = true;
-          this.handleData(response);
-        } else {
-          this.isTheSpecGenerated = false;
-          if (this.currentUser.email === this.product?.email) {
-            this.showSpecGenaretePopup = true;
-            this.isTheCurrentUserOwner = true;
-            this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
-          } else {
-            this.showSpecGenaretePopup = true;
-            this.isTheCurrentUserOwner = false;
-            this.productStatusPopupContent = 'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
-          }
-          this.utils.loadSpinner(false);
+    let product = this.metaData.find((x: any) => x.id === body.productId);
+    if (product.has_insights) {
+      this.getMeSpecInfo(body);
+    } else {
+      this.showGenerateSpecPopup(product);
+    }
+  }
+
+  getMeSpecInfo(body?: any) {
+    this.utils.loadSpinner(true);
+    this.specService
+      .getSpec(body)
+      .then((response) => {
+        if (
+          response.status === 200 &&
+          response.data &&
+          response.data.length > 0
+        ) {
+          this.handleSpecData(response.data, body.productId);
         }
-      }).catch(error => {
+        this.loading = false;
+      })
+      .catch((error) => {
         this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: error });
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+        this.loading = false;
       });
+  }
+
+  getUsersByAccountId() {
+    this.authService
+      .getUsersByAccountId({ account_id: this.currentUser?.account_id })
+      .then((resp: any) => {
+        this.utils.loadSpinner(true);
+        if (resp?.status === 200) {
+          resp.data.forEach((element: any) => {
+            element.name = element.first_name + ' ' + element.last_name;
+          });
+          this.reveiwerList = resp.data;
+          this.localStorageService.saveItem(StorageKeys.USERLIST, resp.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: resp.data?.detail,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
+        console.error(error);
+      });
+  }
+
+  showGenerateSpecPopup(product: any) {
+    if (this.currentUser.email === product?.email) {
+      this.showSpecGenaretePopup = true;
+      this.isTheCurrentUserOwner = true;
+      this.productStatusPopupContent =
+        'No spec generated for this product. Do you want to generate Spec?';
+    } else {
+      this.showSpecGenaretePopup = true;
+      this.isTheCurrentUserOwner = false;
+      this.productStatusPopupContent =
+        'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
+    }
   }
 
   clearSearchText() {
@@ -153,43 +330,174 @@ export class SpecificationsComponent implements OnInit {
     });
   }
 
-  handleData(response: any): void {
-    if (response?.status === 200 && !response.data.detail) {
-      const list = response.data.content;
-      list.forEach((obj: any, index: any) => {
-        if (obj?.title == 'Technical Specifications') {
-          if (!Array.isArray(obj.content)) {
-            obj.content = [];
-          }
-          obj.content.push({ title: 'OpenAPI Spec', content: [], id: "open-api-spec" })
+  onSpecDataChange(data: any): void {
+    this.getMeSpecList({
+      versionId: data.versionId,
+      productId: data.productId,
+    });
+  }
 
-        }
-      })
-      this.specDataCopy = list;
-      this.specData = list;
-      if (this.specDataBool) {
-        let stringList = JSON.stringify([...list])
-        localStorage.setItem('specData', stringList)
-      }
-      this.specDataBool = false;
-      this.utils.passSelectedSpecItem(list);
-    } else {
-      this.productStatusPopupContent = 'No spec generated for this product. Do you want to generate Spec?';
-      this.showSpecGenaretePopup = true;
+  deleteDataManagementPersistence(list: any) {
+    if (this.isDataManagementPersistence) {
+      list.forEach((obj: any, index: any) => {
+        obj.content.forEach((elem: any, idx: any) => {
+          if (elem.title === 'Data Management Persistence') {
+            obj.content.splice(idx, 1);
+          }
+        });
+      });
     }
-    this.utils.loadSpinner(false);
+  }
+
+  handleSpecData(response: any, productId: string): void {
+    const list = response;
+    list.forEach((obj: any) => {
+      if (obj?.title == 'Functional Specifications') {
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Management Persistence') {
+            this.isDataManagementPersistence = true;
+          }
+        });
+      }
+      if (obj?.title == 'Technical Specifications') {
+        if (!Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+        obj.content.forEach((ele: any, idx: any) => {
+          if (ele.title === 'Data Model Table Data') {
+            obj.content.splice(idx, 1);
+          }
+          if (ele.title === 'Data Model') {
+            this.deleteDataManagementPersistence(list);
+          }
+        });
+        obj.content.push({
+          title: 'OpenAPI Spec',
+          content: [],
+          id: 'open-api-spec',
+        });
+      }
+      if (obj?.title == 'Quality Assurance') {
+        let content = obj.content;
+        if (Array.isArray(obj.content)) {
+          obj.content = [];
+        }
+        obj.content.push({
+          title: 'Quality Assurance',
+          content: content,
+          id: obj.id,
+        });
+      }
+    });
+    this.specData = list;
+    this.storageService.saveItem(StorageKeys.SpecData, list);
+    if (this.activeConversationTab === 'COMMENTS') {
+      this.getMeAllCommentsList(productId);
+    } else if (this.activeConversationTab === 'TASKS') {
+      this.getMeAllTaskList(productId);
+    } else if (this.activeConversationTab === 'CR') {
+      this.getMeCrList(productId);
+    } else {
+      this.utils.loadSpinner(false);
+    }
+  }
+
+  getMeCrList(productId: string) {
+    let body: any = {
+      productId: productId,
+    };
+    this.utils.loadSpinner(true);
+    this.commentsService
+      .getCrList(body)
+      .then((res: any) => {
+        if (res && res.data) {
+          this.specUtils._getMeUpdatedCrs(res.data);
+        } else {
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: res?.data?.common?.status,
+          });
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err: any) => {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: err,
+        });
+        this.utils.loadSpinner(false);
+      });
+  }
+
+  getMeAllCommentsList(productId: string) {
+    this.utils.loadSpinner(true);
+    const specVersion: any = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
+    this.commentsService
+      .getCommentsByProductId({
+        productId: productId,
+        versionId: specVersion?.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          if (this.notifInfo) {
+            this.specUtils._openCommentsPanel(true);
+            this.specUtils._tabToActive('COMMENT');
+          }
+          this.specUtils._getMeUpdatedComments(response.data);
+          this.storageService.removeItem(StorageKeys.NOTIF_INFO);
+          this.notifInfo = undefined;
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+      });
+  }
+
+  getMeAllTaskList(productId: string) {
+    this.utils.loadSpinner(true);
+    let specVersion: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    this.commentsService
+      .getTasksByProductId({
+        productId: productId,
+        versionId: specVersion?.id,
+      })
+      .then((response: any) => {
+        if (response.status === 200 && response.data) {
+          if (this.notifInfo) {
+            this.specUtils._openCommentsPanel(true);
+            this.specUtils._tabToActive('TASK');
+          }
+          this.specUtils._getMeUpdatedTasks(response.data);
+          this.storageService.removeItem(StorageKeys.NOTIF_INFO);
+          this.notifInfo = undefined;
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        this.utils.loadSpinner(false);
+        this.storageService.removeItem(StorageKeys.NOTIF_INFO);
+        this.notifInfo = undefined;
+      });
   }
 
   checkUserEmail(): void {
     if (this.currentUser.email === this.product.email) {
-      this.showSpecGenaretePopup = true;
+      // this.showSpecGenaretePopup = true;
       this.isTheCurrentUserOwner = true;
-      this.productStatusPopupContent = ' Do you want to regenerate Spec for this product?';
-
+      this.productStatusPopupContent =
+        ' Do you want to regenerate Spec for this product?';
     } else {
-      this.showSpecGenaretePopup = true;
+      // this.showSpecGenaretePopup = true;
       this.isTheCurrentUserOwner = false;
-      this.productStatusPopupContent = 'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
+      this.productStatusPopupContent =
+        'No spec generated for this product. You don`t have access to create the spec. Product owner can create the spec.';
     }
   }
 
@@ -199,69 +507,125 @@ export class SpecificationsComponent implements OnInit {
 
   getPreviousCoversation(): void {
     this.utils.loadSpinner(true);
-    this.apiService.get('navi/get_conversation/' + this.product.email + '/' + this.product.id).then((res: any) => {
-      if (res.status === 200 && res.data) {
-        this.consversationList = res.data?.conversation_history;
-        this.generate();
-      } else {
+    this.naviApiService
+      .getConversation(this.product.email, this.product.id)
+      .then((res: any) => {
+        if (res.status === 200 && res.data) {
+          this.consversationList = res.data?.conversation_history;
+          this.generate();
+        } else {
+          this.utils.loadSpinner(false);
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Network Error',
+          });
+        }
         this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: 'Network Error' });
-      }
-    }).catch((err: any) => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({ severity: 'error', summary: 'Error', detail: err });
-    })
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: err,
+        });
+      });
   }
 
   generate() {
     const body = {
       email: this?.product.email,
       conversation_history: this.consversationList,
-      product_id: this.product.id
-    }
-    let detail = "Generating spec for this app process is started.";
+      product_id: this.product.id,
+      user_id: this.currentUser.user_id,
+    };
+    let detail = 'Generating spec for this app process is started.';
     this.showSpecGenaretePopup = false;
-    this.apiService.postApi(body, 'specs/generate').then((response: any) => {
-      if (response) {
-        let user_audit_body = {
-          'method': 'POST',
-          'url': response?.request?.responseURL,
-          'payload': body
+    this.naviApiService
+      .generateSpec(body)
+      .then((response: any) => {
+        if (response) {
+          let user_audit_body = {
+            method: 'POST',
+            url: response?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'GENERATE_SPEC_PRODUCT_ALERT_POPUP',
+            1,
+            'SUCCESS',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.utils.loadSpinner(false);
+          this.utils.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: detail,
+          });
+          this.auditUtil.postAudit('GENERATE_SPEC', 1, 'SUCCESS', 'user-audit');
+        } else {
+          let user_audit_body = {
+            method: 'POST',
+            url: response?.request?.responseURL,
+            payload: body,
+          };
+          this.auditUtil.postAudit(
+            'GENERATE_SPEC_PRODUCT_ALERT_POPUP',
+            1,
+            'FAILED',
+            'user-audit',
+            user_audit_body,
+            this.currentUser.email,
+            this.product.id
+          );
+          this.auditUtil.postAudit('GENERATE_SPEC', 1, 'FAILURE', 'user-audit');
+          this.utils.loadSpinner(false);
+          this.utils.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: 'An error occurred while publishing the product.',
+          });
         }
-        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'SUCCESS', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: detail });
-        this.auditUtil.post("GENERATE_SPEC", 1, 'SUCCESS', 'user-audit');
-      } else {
+      })
+      .catch((error) => {
         let user_audit_body = {
-          'method': 'POST',
-          'url': response?.request?.responseURL,
-          'payload': body
-        }
-        this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
-        this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
+          method: 'POST',
+          url: error?.request?.responseURL,
+          payload: body,
+        };
+        this.auditUtil.postAudit(
+          'GENERATE_SPEC_PRODUCT_ALERT_POPUP',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product.id
+        );
         this.utils.loadSpinner(false);
-        this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: 'An error occurred while publishing the product.' });
-      }
-    }).catch(error => {
-      let user_audit_body = {
-        'method': 'POST',
-        'url': error?.request?.responseURL,
-        'payload': body
-      }
-      this.auditUtil.post('GENERATE_SPEC_PRODUCT_ALERT_POPUP', 1, 'FAILED', 'user-audit', user_audit_body, this.currentUser.email, this.product.id);
-      this.utils.loadSpinner(false)
-      this.utils.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
-      this.auditUtil.post("GENERATE_SPEC", 1, 'FAILURE', 'user-audit');
-    });
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
+        this.auditUtil.postAudit('GENERATE_SPEC', 1, 'FAILURE', 'user-audit');
+      });
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('specData')
+    // Don't remove this commented code
+    // localStorage.removeItem('SPEC_DATA');
+    localStorage.removeItem('selectedSpec');
+    localStorage.removeItem('SPEC_VERISON');
+    this.utils.saveProductDetails({});
+    this.specUtils._openCommentsPanel(false);
   }
 
   _openAndGetComments(contendata: SpecContent) {
     this.contentData = { ...contendata };
   }
-
 }

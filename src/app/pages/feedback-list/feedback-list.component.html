@@ -51,8 +51,8 @@
                                     </p>
                                 </div>
                                 <div class="text-sm font-normal border-left-1 border-right-1 pl-2 pr-2">
-                                    {{selectedListItem.modifiedOn | date:'medium'}}
-                                    <!-- {{report.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
+                                    <!-- {{selectedListItem.modifiedOn | date:'medium'}} -->
+                                    {{report.createdOn | date: 'MM/dd/yyyy, hh:mm a'}}
                                 </div>
                                 <p class="m-0 text-sm font-normal pl-2">
                                     Status <span class="text-sm open">
@@ -105,7 +105,7 @@
                                     [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                                 <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                         class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                        {{selectedListItem.modifiedOn | date:'medium'}}
+                                        {{selectedListItem.createdOn | date:'medium'}}
                                         <!-- {{selectedListItem.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                                     </span></p>
                             </div>
@@ -129,7 +129,7 @@
                                 <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name + ' '+
                                     currentUser?.last_name |titlecase}}</p>
                             </div>
-                            <p-button label="Send" styleClass="p-button-outlined send"  [rounded]="true"
+                            <p-button label="Send" styleClass="p-button-outlined send" [rounded]="true"
                                 (click)="onClickSend()"></p-button>
                         </div>
                         <textarea rows="5" cols="30" pInputTextarea class="w-full mt-2" [(ngModel)]="message"
@@ -195,7 +195,7 @@
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff' }"></p-avatar>
                         <p class="m-0 pl-2 font-sm font-medium">{{selectedListItem?.userName|titlecase}}<span
                                 class="text-sm font-normal border-left-1 ml-4 pl-4">
-                                {{selectedListItem?.modifiedOn | date:'medium'}}
+                                {{selectedListItem?.createdOn | date:'medium'}}
                                 <!-- {{selectedListItem?.modifiedOn | date: 'MM/dd/yyyy, hh:mm a'}} -->
                             </span></p>
                     </div>
@@ -218,7 +218,7 @@
                         <p class="m-0 pl-2 font-sm font-medium">{{currentUser?.first_name|titlecase}}
                             {{currentUser?.last_name|titlecase}}</p>
                     </div>
-                    <p-button label="Send" styleClass="p-button-outlined send"  [rounded]="true"
+                    <p-button label="Send" styleClass="p-button-outlined send" [rounded]="true"
                         (click)="onClickSend()"></p-button>
                 </div>
                 <textarea rows="5" (keydown.enter)="onClickSend()" cols="30" pInputTextarea class="w-full"

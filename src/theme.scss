@@ -159,5 +159,122 @@
     --primary-600: #1c80cf;
     --primary-700: #1769aa;
     --primary-800: #125386;
-    --primary-900: #0d3c61;
+    --primary-900: #232d34;
+    // --primary-900: #012604;
+
+    // custom css
+    --body-color: #061426;
+    --hover-color: #0f1b2d;
+    --highlight-color:#183462;
+    --focused-color:#030d19;
+    --border-color:#030d19;
+
+    // BUTTON 
+    --primary-button-color:#EF018F;
+    --primary-button-text-color:#A2A2A3;
+    --primary-button-inactive:#824E6D;
+    --secondary-button-color:#02ADEE;
+    --secondary-button-text-color:#A2A2A3;
+    --secondary-button-inactive:#824E6D;
+    --teritory-button-text-color:#A2A2A3;
+    --teritory-button-border-color:#A2A2A3;
+
+    // INPUT TEXT
+    --inputtext-background-color:#EF018F;
+    --inputtext-focused-color:#EF018F;
+    --inputtext-border-color:#EF018F;
+    --inputtext-text-color:#EF018F;
+    --inputtext-placeholder-text-color:#EF018F;
+
+    // DROPDOWN 
+    --dropdown-background-color:#011a03;
+    --dropdown-border-color:#023006;
+    --dropdown-label-placeholder-color:#a5a5a5;
+    --dropdown-label-text-color:#EFEEEE;
+    --dropdown-label-placeholder-focus-color:#011202;
+    --dropdown-panel-background-color:#011a03;
+    --dropdown-panel-border-color:#535354;
+    --dropdown-item-inactive-text-color: #A2A2A3;
+    --dropdown-item-hightlight-text-color: #EFEEEE;
+    --dropdown-item-hightlight-color:#044409;
+    --dropdown-item-focus-color:#011202;
+    --dropdown-item-hover-color:#0f160f;
+    --dropdown-text-color:#fff;
+
+    // TABVIEW CSS
+    --tabview-panels-background-color:'#23222B';
+    --tabview-nav-background-color:#011a03;
+    --tabview-nav-border-color:#023006;
+    --tabview-nav-link-background-color:#030d19;
+    --tabview-nav-link-hover-color:#9ca3af;
+    --tabview-nav-link-hover-text-color:#0f160f;
+    --tabview-nav-link-hover-border-color:#0f160f;
+    --tabview-nav-link-highlight-color:#044409;
+    --tabview-nav-link-highlight-text-color:#044409;
+    --tabview-text-color:#fff;
+
+    // ACCORDION CSS
+    --accordion-background-color:#0c59a5
+    --accordion-border-color:#4b2f02;
+    --accordion-header-text-color:#fff;
+    --accordion-header-highlight-color:#086f20;
+    --accordion-header-highlight-link-border-color:#570462;
+    --accordion-header-link-highlight-text-color:#374151;
+    --accordion-header-link-hover-color:#39055e;
+    --accordion-header-link-hover-border-color:#39055e;
+    --accordion-header-link-hover-text-color:#39055e;
+    --accordion-content-background-color:#0c59a5;
+    --accordion-content-border-color:#4b2f02;
+    --accordion-content-text-color:#fff;
+
+    // OVERLAY PANEL
+    --overlay-background-color:#011a03;
+    --overlay-hover-background-color:#0f160f;
+    --overlay-text-color:#0f160f;
+    --overlay-border-color:#023006;
+
+    // DATA TABLE
+    --datatable-border-color:#595959;
+    --datatable-header-background-color:#302E38;
+    --datatable-header-text-color:#fff;
+    --datatable-header-border-color:#595959;
+    --datatable-header-row-background-color:#3A3942;
+    --datatable-header-row-text-color:#fff;
+    --datatable-footer-background-color:#302E38;
+    --datatable-footer-text-color:#fff;
+    --datatable-body-row-background-color:#312e38;
+
+    // TIDERMENU
+    --tieredmenu-overlay-background-color:#011a03;
+    --tieredmenu-menuitem-focus-background-color:#011202;
+    --tieredmenu-menuitem-hover-background-color:#0f160f;
+    --tieredmenu-menuitem-text-color:#0f160f;
+
+    // MULTISELECT 
+    --multiselect-label-container-background-color:"#23222B",
+    --multiselect-pannel-background-color:#2e2d36;
+    --multiselect-pannel-border-color:#535354;
+    --multiselect-pannel-header-border-color:#535354;
+    --multiselect-filter-container-background-color:#23222B;
+    --multiselect-filter-icon-color:#6b7280;
+    --multiselect-item-inactive-text-color:#A2A2A3;
+    --multiselect-item-highlight-text-color:#EFEEEE;
+    --multiselect-item-focus-background-color:#3a3e45;
+    --multiselect-item-hover-text-color:#A2A2A3;
+    --multiselect-item-hover-background-color:#393843;
+    --multiselect-checkbox-inactive-color:#A2A2A3;
+    --multiselect-checkbox-highlight-color:#EFEEEE;
+
+    // DIALOG
+    --dialog-container-background-color:#23222B
+    --dialog-container-border-color:#535354
+    --dialog-header-background-color:#23222B
+    --dialog-header-text-color:#EFEEEE
+    --dialog-content-text-color:#A2A2A3
+    --dialog-content-background-color:#23222B
+    --dialog-footer-background-color:#23222B
+
+    // SIDEBAR
+    --sidebar-background-color:#011a03
+
 }

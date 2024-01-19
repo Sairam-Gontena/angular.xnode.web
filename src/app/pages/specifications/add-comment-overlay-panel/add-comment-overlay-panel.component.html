@@ -5,28 +5,63 @@
             class="pt-4 pl-4 pr-2"></p-avatar>
         <div class="p-3 w-full">
             <div [class]="width+ ' border-round-md'">
-                <div class="col-12 p-0 flex add-comment-panel-body border-round-md ">
-                    <div class="col-9 p-0 align-items-center flex">
+                <div class="grid p-0 flex add-comment-panel-body border-round-md ">
+                    <div class="col-12 p-0 align-items-center flex">
                         <textarea pInputTextarea [(ngModel)]="comment" [autoResize]="true" [placeholder]="placeHolder"
-                            [mention]="users" (input)="onChangeComment()" class="col-12"
+                            [mention]="users" [mentionConfig]="config" (keydown)="handleKeydown($event)" (input)="onChangeComment()" class="col-12"
                             style="min-height: 80px;"></textarea>
                     </div>
-                    <div class="col-3 flex align-items-end justify-content-between ">
-                        <div class="flex justify-content-between w-full ">
-                            <img src="../assets/attach.svg" class="pointer" alt="attach">
-                            <div class="pointer">
-                                @
-                            </div>
-                            <img src="../assets/send-blue.svg" [ngClass]="{'disabled': comment.length < 5}"
-                                class="pointer" alt="comment send" (click)="onClickSend()">
-                        </div>
-                    </div>
+                    <div class="flex align-items-end justify-content-between p-2 w-full" [ngClass]="{'flex-wrap':(from=='cr-tabs' && files.length)}">
+                      <div class="p-0 mt-1 ml-2 w-full">
+                          <div class="w-full" *ngFor="let file of files; let i = index"
+                              class="p-0 flex justify-content-between single-file mb-1 w-full">
+                              <div class="mx-1 p-0 flex justify-content-start ">
+                                  <p class="m-0 flex align-items-center justify-content-center">{{ file.name }}</p>
+                              </div>
+                              <div>
+                                <div class="mx-1 p-0 flex align-items-center justify-content-start">
+                                  <p class="size">{{ formatBytes(file.size, 0) }}</p>
+                              </div>
+                              </div>
+                              <div class="mx-1 p-0 flex align-items-center justify-content-center">
+                                  <i class="pi pi-times pointer" (click)="deleteFile(i);$event.stopPropagation()"></i>
+                              </div>
+                              <div></div>
+                          </div>
+                      </div>
+                      <div class="flex align-items-center gap-2" [ngClass]="{'justify-content-end w-full':(from=='cr-tabs' && files.length)}">
+                          <img src="../assets/attach.svg"
+                              class="pointer flex align-items-center justify-content-center" alt="attach"
+                              (click)="selectImage.click()">
+                          <input type="file" accept=".png, .jpeg" #selectImage style="display: none;" id="file"
+                              #fileInput (change)="fileBrowseHandler($event)">
+                          <div class="pointer flex align-items-center justify-content-center">
+                              @
+                          </div>
+                          <p-divider class="overlay-panel-divider" layout="vertical" *ngIf="from=='cr-tabs'"></p-divider>
+                          <img src="../assets/cancel-grey.svg" class="pointer overlay-close" alt="Cancel" (click)="closeOverlay.emit()" *ngIf="from=='cr-tabs'"/>
+                          <img src="../assets/send-gray.svg"
+                              [src]="isCommentEmpty ? '../assets/send-gray.svg' : '../assets/send-blue.svg'"
+                              class="pointer flex align-items-center justify-content-center" alt="comment send"
+                              (click)="onClickSend()" />
+                      </div>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 add-comments-footer align-items-center flex pl-4 pt-3 pb-3 " *ngIf="assinedUsers.length > 0">
-        <p-checkbox name="assign" [value]="true" [(ngModel)]="assignAsaTask" inputId="ny"></p-checkbox>
-        <label class="text-sm font-normal text-200 pl-2">Assign as a Task</label>
+    <div class="col-12 add-comments-footer flex flex-wrap align-items-center  pl-4 pt-3 pb-3 "
+        *ngIf="assinedUsers.length > 0 ">
+        <div class="col-8">
+            <p-checkbox name="assign" value="assignAsaTask" (onChange)="assignAsaTask=!assignAsaTask" (click)="$event.stopPropagation()"></p-checkbox>
+            <label class=" text-sm font-normal text-200 pl-2">Assign as a Task</label>
+        </div>
+        <div class="col-4">
+            <p-calendar [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate" [showIcon]="true"
+                icon="pi pi-calendar-plus" (onSelect)="onDateSelect($event)" [minDate]="minDate"></p-calendar>
+            <span class=" text-sm font-normal text-200" *ngIf="!selectedDateLabel">Due Date</span>
+            <span class=" text-sm font-normal text-200" *ngIf="selectedDateLabel">{{ selectedDateLabel }}</span>
+
+        </div>
     </div>
 </div>

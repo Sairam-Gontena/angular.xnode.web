@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from 'src/app/api/api.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 @Component({
   selector: 'xnode-verify-otp',
   templateUrl: './verify-otp.component.html',
-  styleUrls: ['./verify-otp.component.scss']
+  styleUrls: ['./verify-otp.component.scss'],
 })
 export class VerifyOtpComponent implements OnInit {
   @ViewChild('ngOtpInput') ngOtpInputRef: any;
@@ -21,8 +22,15 @@ export class VerifyOtpComponent implements OnInit {
   total_apps_onboarded: any;
   restriction_max_value: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, private apiService: ApiService, private utilsService: UtilsService,
-    private auditUtil: AuditutilsService, private authApiService: AuthApiService) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private utilsService: UtilsService,
+    private auditUtil: AuditutilsService,
+    private authApiService: AuthApiService,
+    private storageService: LocalStorageService,
+    private naviAPiService: NaviApiService
+  ) {}
 
   ngOnInit(): void {
     this.userEmail = this.maskEmail(this.route.snapshot.params['email']);
@@ -35,7 +43,10 @@ export class VerifyOtpComponent implements OnInit {
   maskEmail(email: string): string {
     const parts = email.split('@');
     const username = parts[0];
-    const maskedUsername = username.charAt(0) + '*'.repeat(username.length - 2) + username.charAt(username.length - 1);
+    const maskedUsername =
+      username.charAt(0) +
+      '*'.repeat(username.length - 2) +
+      username.charAt(username.length - 1);
     return maskedUsername + '@' + parts[1];
   }
   startResendTimer() {
@@ -54,52 +65,99 @@ export class VerifyOtpComponent implements OnInit {
     this.otp = '';
     this.ngOtpInputRef.setValue('');
     this.utilsService.loadSpinner(true);
-    this.authApiService.login({ email: this.route.snapshot.params['email'] }, "mfa/resendverfication")
+    this.authApiService
+      .resendOtp({ email: this.route.snapshot.params['email'] })
       .then((response: any) => {
         if (response?.status === 200) {
           this.startResendTimer();
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: response?.data?.Message });
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: response?.data?.Message,
+          });
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
         }
         this.utilsService.loadSpinner(false);
-      }).catch((error: any) => {
+      })
+      .catch((error: any) => {
         this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
       });
   }
 
   verifyAccount() {
     this.utilsService.loadSpinner(true);
-    this.authApiService.login({ email: this.route.snapshot.params['email'], otp: this.otp }, "mfa/verifyOTP")
+    this.authApiService
+      .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
-          localStorage.setItem('currentUser', JSON.stringify(response?.data));
-          this.authApiService.isOtpVerifiedInprogress(false);
-          if (response?.data?.role_name === 'Xnode Admin') {
-            this.authApiService.setUser(true);
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
-            this.router.navigate(['/admin/user-invitation']);
-            this.auditUtil.post('XNODE_ADMIN_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
-          } else {
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: "OTP verified successfully" });
-            this.getAllProducts(response.data);
-            this.auditUtil.post('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
-          }
+          this.handleResponse(response.data);
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
           this.utilsService.loadSpinner(false);
         }
       })
       .catch((error: any) => {
         this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error?.response?.data?.detail });
-        this.auditUtil.post('VERIFY_OTP_' + error?.response?.data?.detail, 1, 'FAILURE', 'user-audit');
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error?.response?.data?.detail,
+        });
+        this.auditUtil.postAudit(
+          'VERIFY_OTP_' + error?.response?.data?.detail,
+          1,
+          'FAILURE',
+          'user-audit'
+        );
       });
   }
-  //get calls 
-  getAllProducts(user: any): void {
-    this.apiService.get("navi/get_metadata/" + user?.email)
+
+  handleResponse(data: any) {
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(data?.token);
+    this.storageService.saveItem(StorageKeys.CurrentUser, decodedToken);
+    this.storageService.saveItem(StorageKeys.ACCESS_TOKEN, data.token);
+    this.authApiService.isOtpVerifiedInprogress(false);
+    if (data?.role_name === 'Xnode Admin') {
+      this.authApiService.setUser(true);
+      this.router.navigate(['/admin/user-invitation']);
+      this.auditUtil.postAudit(
+        'XNODE_ADMIN_VERIFY_OTP',
+        1,
+        'SUCCESS',
+        'user-audit'
+      );
+    } else {
+      this.getAllProducts();
+      this.auditUtil.postAudit('USER_VERIFY_OTP', 1, 'SUCCESS', 'user-audit');
+    }
+    this.utilsService.loadToaster({
+      severity: 'success',
+      summary: 'SUCCESS',
+      detail: 'OTP verified successfully',
+    });
+  }
+  //get calls
+  getAllProducts(): void {
+    const currentUser: any = this.storageService.getItem(
+      StorageKeys.CurrentUser
+    );
+    this.naviAPiService
+      .getMetaData(currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           this.authApiService.setUser(true);
@@ -107,13 +165,17 @@ export class VerifyOtpComponent implements OnInit {
             this.router.navigate(['/my-products']);
           } else {
             this.router.navigate(['/x-pilot']);
-            this.getMeCreateAppLimit(user);
+            this.getMeCreateAppLimit();
           }
           this.utilsService.loadSpinner(false);
         }
       })
       .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
         this.utilsService.loadSpinner(false);
       });
   }
@@ -121,25 +183,40 @@ export class VerifyOtpComponent implements OnInit {
   onClickLogout(): void {
     localStorage.clear();
     this.router.navigate(['/']);
-    this.auditUtil.post('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
+    this.auditUtil.postAudit('USER_LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
   }
 
-  getMeCreateAppLimit(user: any): void {
-    this.authApiService.get("/user/get_create_app_limit/" + user?.email)
+  getMeCreateAppLimit(): void {
+    const currentUser: any = this.storageService.getItem(
+      StorageKeys.CurrentUser
+    );
+    this.authApiService
+      .get('/user/get_create_app_limit/' + currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200) {
           this.restriction_max_value = response.data[0].restriction_max_value;
-          localStorage.setItem('restriction_max_value', response.data[0].restriction_max_value);
+          localStorage.setItem(
+            'restriction_max_value',
+            response.data[0].restriction_max_value
+          );
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: '',
+            detail: response.data?.detail,
+          });
         }
-      }).catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
+      })
+      .catch((error: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
         this.utilsService.loadSpinner(true);
       });
   }
   backToLogin() {
-    this.router.navigate(['/'])
+    this.router.navigate(['/']);
   }
 }
-

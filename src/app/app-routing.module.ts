@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './src/app/pages/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 import { authGuard } from './auth.guard';
 
@@ -193,7 +193,11 @@ const routes: Routes = [
     path: 'operate/change/history-log',
     loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
     canActivate: [authGuard]
-
+  },
+  {
+    path: 'history-log',
+    loadChildren: () => import('./pages/logs/logs.module').then((m) => m.LogsModule),
+    canActivate: [authGuard]
   },
   {
     path: 'admin/user-approval',

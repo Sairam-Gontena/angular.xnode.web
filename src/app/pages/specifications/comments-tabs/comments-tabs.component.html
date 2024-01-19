@@ -1,11 +1,10 @@
-<p-tabView>
-    <p-tabPanel header="Conversation">
-        <xnode-no-comments *ngIf="commentList?.length === 0;else elseComments"></xnode-no-comments>
-        <ng-template #elseComments>
-            <xnode-comments-panel [commentList]="commentList"></xnode-comments-panel>
-        </ng-template>
-    </p-tabPanel>
-    <p-tabPanel header="Tasks">
-        <p>Tasks</p>
-    </p-tabPanel>
+<p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
+  <p-tabPanel [header]="'Comments'">
+    <xnode-comments-panel [list]="list" [swaggerData]="swaggerData" [usersList]="usersList"
+      [activeIndex]="activeIndex"></xnode-comments-panel>
+  </p-tabPanel>
+  <p-tabPanel [header]="'Tasks'">
+    <xnode-tasks-panel [list]="list" [swaggerData]="swaggerData" [usersList]="usersList"
+      [activeIndex]="activeIndex"></xnode-tasks-panel>
+  </p-tabPanel>
 </p-tabView>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { GridsterItem } from 'angular-gridster2';
 import { Router } from '@angular/router';
 import { LAYOUT_COLUMNS } from 'src/app/constants/LayoutColumns';
@@ -15,6 +15,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
   styleUrls: ['./page-tools-layout.component.scss']
 })
 export class PageToolsLayoutComponent {
+  @Output() openSideMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   isOpen = true;
   sideMenu: any;
   dashboard: Array<GridsterItem> | undefined;
@@ -25,6 +26,7 @@ export class PageToolsLayoutComponent {
   iframeUrl: string = "http://localhost:54809/";
   activatedAccIndex = 1;
   currentUser?: User;
+  containerWidth?: string = (window.innerWidth - 80) + 'px';
 
   constructor(private router: Router, private subMenuLayoutUtil: UtilsService, private auditUtil: AuditutilsService, public utils: UtilsService,) {
     if (environment.name === 'BETA') {
@@ -39,10 +41,21 @@ export class PageToolsLayoutComponent {
     this.dashboard = LAYOUT_COLUMNS.CONTAINER;
     this.subMenuLayoutUtil.openSubmenu.subscribe((data: any) => {
       this.isOpen = data;
+      this.openSideMenu.emit(data);
+      this.calculateContainerWidth()
     })
     this.loadSubMenu();
     if (this.router.url === '/configuration/workflow/overview') {
       this.activatedAccIndex = 6;
+    }
+    this.calculateContainerWidth()
+  }
+
+  calculateContainerWidth(): void {
+    if (this.isOpen) {
+      this.containerWidth = ((window.innerWidth * 20) / 100) + 'px';
+    } else {
+      this.containerWidth = '50px';
     }
   }
 
@@ -50,9 +63,13 @@ export class PageToolsLayoutComponent {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       this.utils.EnablePageToolsLayoutSubMenu()
+      this.openSideMenu.emit(true);
     } else {
       this.utils.disablePageToolsLayoutSubMenu()
+      this.openSideMenu.emit(false);
+
     }
+    this.calculateContainerWidth()
   }
 
   loadSubMenu() {
@@ -124,7 +141,7 @@ export class PageToolsLayoutComponent {
     });
     let idElem = document.getElementById(id) as HTMLElement;
     if (idElem) {
-      this.auditUtil.post(id, 1, 'SUCCESS', 'user-audit');
+      this.auditUtil.postAudit(id, 1, 'SUCCESS', 'user-audit');
       idElem.style.background = '#302e38';
     }
   }

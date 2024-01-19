@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
-export class NotifyApiService {
-    endPoint = environment.notifyApiUrl;
-    constructor() {
-    }
-    config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+export class NotifyApiService extends BaseApiService {
+  override get apiUrl(): string {
+    return environment.notifyApiUrl;
+  }
+  constructor() {
+    super();
+  }
 
-    get(url: string) {
-        return axios.get(this.endPoint + url, {
-        });
-    }
-
-    post(body: any, url: string) {
-        return axios.post(this.endPoint + url, body, this.config);
-    }
+  emailNotify(body?: any) {
+    let url = 'email/notify';
+    return this.post(url, body);
+  }
 }

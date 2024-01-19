@@ -69,31 +69,32 @@
                         Tell us more is required</div>
                 </div>
             </div>
-            <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
-                <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+            <div class="grid col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 flex flex-wrap">
+                <div class="field col-6 sm:col-12 md:col-12 lg:col-12 xl:col-6">
                     <label class="text-sm font-hover">Product</label>
                     <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
                         [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
-                        optionValue="id" class="custom-dropdown" [filter]="true" filterBy="title"
+                        optionValue="id" [filter]="true" filterBy="title"
                         filterPlaceholder="Search">
                         <ng-template let-item pTemplate="item">
-                            <div [ngClass]="{ 'selected-item': item.id === generalFeedbackForm.get('product')?.value }">
-                                {{item.title }}
-                                <i *ngIf="item.id === generalFeedbackForm.get('product')?.value"
-                                    class="pi pi-check check-mark"></i>
+                            <div class="col-12 flex align-items-center justify-content-between">
+                                <div class="title-container" [title]="item.title"
+                                    [ngClass]="{ 'selected-item': item.id === generalFeedbackForm.get('product')?.value }">
+                                    {{item.title }}
+                                </div>
+                                <div>
+                                    <i *ngIf="item.id === generalFeedbackForm.get('product')?.value"
+                                        class="pi pi-check"></i>
+                                </div>
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    <!-- <p-dropdown formControlName="product" [options]="products" placeholder="Choose Product"
-                        [ngClass]="{ 'is-invalid': submitted && feedback['product'].errors }" optionLabel="title"
-                        optionValue="id" class="custom-dropdown">
-                    </p-dropdown> -->
                     <div *ngIf="submitted && feedback['product'].errors" class="invalid-feedback">
                         <div *ngIf="feedback['product'].errors?.['required']">
                             Product is required</div>
                     </div>
                 </div>
-                <div class="field col-6 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+                <div class="field col-6 sm:col-12 md:col-12 lg:col-12 xl:col-6">
                     <label class="text-sm font-hover">Section</label>
                     <input type="text" pInputText formControlName="section" placeholder="e.g., Dashboard"
                         [ngClass]="{ 'is-invalid': submitted && feedback['section'].errors }" class="col-12" />
@@ -130,9 +131,8 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="mt-3">
-            <p-button label="Cancel" [rounded]="true" class="cancel-button" (click)="closePopup()"></p-button>
-            <p-button label="Send Feedback" styleClass="p-button-primary send-feedback-btn" [rounded]="true"
-                (click)="sendFeedback($event)"></p-button>
+            <p-button label="Cancel" [rounded]="true" severity="secondary" size="small" (click)="closePopup()"></p-button>
+            <p-button label="Send Feedback" [rounded]="true" size="small" (click)="sendFeedback($event)"></p-button>
         </div>
     </ng-template>
 </p-dialog>

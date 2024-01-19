@@ -1,101 +1,41 @@
-<xnode-confirmationalert *ngIf="enableDeletePrompt" (confirmationPrompt)="handleConfirmationPrompt($event)"
-    [visible]="enableDeletePrompt"></xnode-confirmationalert>
-<div class="p-4">
-    <div class="grid">
-        <div class="col-6">
-            <div class="flex align-items-center filter-grid ">
-                <p class="m-0 pl-2">Filters:</p>
-                <!-- <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label"></p-dropdown> -->
-                <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter" optionLabel="label">
-                    <ng-template let-item pTemplate="item">
-                        <ng-container [ngClass]="{'selected-item': selectedFilter === item.label}">
-                            {{ item.label }}
-                            <i *ngIf="selectedFilter === item.label" class="pi pi-check check-mark"></i>
-                        </ng-container>
-                    </ng-template>
-                </p-dropdown>
+<xnode-no-comments *ngIf="filteredList?.length === 0; else conversationComments"
+    [content]="'No open comments yet'"></xnode-no-comments>
+<ng-template #conversationComments>
+    <div class="p-4">
+        <div class="flex flex-row justify-content-between">
+            <div class="">
+                <div class="flex align-items-center filter-grid ">
+                    <p class="m-0 pl-2">Filters:</p>
+                    <p-dropdown [options]="filterOptions" placeholder="Select "
+                        [(ngModel)]="selectedFilter" optionLabel="label" (onChange)="filterList(list)"></p-dropdown>
+                </div>
+            </div>
+            <div class="flex justify-content-end">
+                <div class="flex flex-row justify-content-end align-items-center search-grid">
+                    <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto"
+                        [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
+                    <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none search-dropdown-user"
+                        [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
+                    <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name"
+                        (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
+                        (onChange)="userFilter()" [showClear]="true" placeholder=""></p-multiSelect>
+                </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="flex align-items-center search-grid">
-                <div class="p-inputgroup">
-                    <input type="text" pInputText />
-                    <button type="button" pButton icon="pi pi-search" styleClass="p-button-warn"></button>
-                </div>
-                <img src="./assets/user.svg" alt="user" />
-            </div>
-        </div>
-    </div>
-    <div class='comments-grid pt-3' *ngIf="commentList && commentList.length >0">
-        <div class="w-full" *ngFor="let cmt of commentList;let i = index; ">
-            <div class="grid m-0">
-                <div class="col-6">
-                    <div class="flex align-items-center">
-                        <p-avatar [label]=" setAvatar(cmt)" styleClass="mr-2"
-                            [style]="{ 'background-color': '#9c27b0', fontSize: '12px', color: '#ffffff',width:'25px',height:'25px' }"
-                            shape="circle"></p-avatar>
-                        <p>{{cmt.modified_by}}</p>
-                    </div>
-                </div>
-                <div class="col-6  flex justify-content-end flex-wrap">
-                    <xnode-confirmation-popup></xnode-confirmation-popup>
-                    <div class="flex align-items-center">
-                        <div class="flex align-items-center comment-btns">
-                            <p-button [outlined]="true">
-                                <img src="./assets/reply.svg" alt="reply" class="pointer" (click)="onClickReply(cmt)" />
-                            </p-button>
-                            <p-button [outlined]="true" (click)="op.toggle($event)">
-                                <img src="./assets/3-dots.svg" alt="3 dots" class="pointer" />
-                            </p-button>
-                            <p-overlayPanel #op class="dots-overlay">
-                                <div class="">
-                                    <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
-                                        (click)="editComment(cmt);op.hide();" (keydown)="op.hide()">
-                                        <img src="../../../../assets//edit.png" class="confirm-overlay-icon" />
-                                        <div class="pl-2 text-sm ">Edit</div>
-                                    </div>
-                                    <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
-                                    <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
-                                        (keydown)="op.hide()">
-                                        <img src="../../../../assets//linktocr.png" class="confirm-overlay-icon" />
-                                        <div class="pl-2 text-sm ">Link to CR</div>
-                                    </div>
-                                    <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
-                                    <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
-                                        (keydown)="op.hide()">
-                                        <img src="../../../../assets//copy.png" class="confirm-overlay-icon" />
-                                        <div class="pl-2 text-sm ">Copy Link</div>
-                                    </div>
-                                    <div class="border-gray-800 border-bottom-1 col-12 p-0 "></div>
-                                    <div class="confirm-overlay p-2 cursor-pointer border-round-md  flex  align-items-center"
-                                        (keydown)="op.hide()" (click)="deleteCurrentComment(cmt);op.hide();">
-                                        <img src="../../../../assets//delete.png" class="confirm-overlay-icon" />
-                                        <div class="pl-2 text-sm ">Delete</div>
-                                    </div>
-                                </div>
-                            </p-overlayPanel>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12" *ngIf="cmt.content">
-                    <xnode-spec-sections-layout [content]="cmt.content" [sectionIndex]="1"
-                        [readOnly]="true"></xnode-spec-sections-layout>
-                </div>
-                <div class="col-12 text-sm" *ngIf="action !=='EDIT'">
-                    <div *ngIf="selectedIndex !== i ">{{cmt.message}}</div>
-                </div>
-                <div class="col-12 p-0" *ngIf="showCommentInput && selectedComment.id === cmt.id">
-                    <div class="w-full text-end">
-                        <i class="pi pi-times pointer" style="color: #fff;"
-                            (click)="showCommentInput = false;action='';"></i>
-                    </div>
-                    <div class="w-full">
-                        <xnode-add-comment-overlay-panel placeHolder="Reply" [users]="users"
-                            [comment]="action === 'EDIT' ? cmt.message: ''"
-                            [width]="'w-full'"></xnode-add-comment-overlay-panel>
-                    </div>
-                </div>
-            </div>
+        <span class="p-input-icon-left mt-2 w-full" *ngIf="filter=='text'">
+            <i class="pi pi-search text-white" [ngStyle]="{top: '22px'}"></i>
+            <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()"
+                placeholder="Search for Keywords"
+                class="w-full border-round-3xl mb-1 font-family-inter text-sm font-normal" />
+            <i class="pi pi-times reset-search text-white cursor-pointer"
+                [ngStyle]="{top: '22px', right: '20px',color:'#A2A2A3'}" *ngIf="searchIconKeyword"
+                (click)="searchIconKeyword='';searchConversation()"></i>
+        </span>
+        <hr class="mt-2" [ngStyle]="{border:'1px solid #535354'}" />
+        <div class='comments-grid'>
+            <xnode-spec-conversation [swaggerData]="swaggerData" [activeIndex]="activeIndex" [list]="filteredList"
+                [usersList]="usersList" [searchIconKeyword]="searchIconKeyword"
+                [topParentId]="selectedComment?.id"></xnode-spec-conversation>
         </div>
     </div>
-</div>
+</ng-template>

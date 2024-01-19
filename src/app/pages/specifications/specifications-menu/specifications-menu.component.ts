@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
-import { ApiService } from 'src/app/api/api.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from "lodash";
+import { SidePanel } from 'src/models/side-panel.enum';
+import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 
 @Component({
   selector: 'xnode-specifications-menu',
@@ -24,16 +25,22 @@ export class SpecificationsMenuComponent implements OnInit {
   multiAccordion: boolean = false;
   private textInputSubject = new Subject<string>();
   isOpen = true;
-
   constructor(
     private utils: UtilsService,
-    private apiService: ApiService
+    private specUtils: SpecUtilsService
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
-        this.menuList = resp.filter((item: any) => item !== null);
+        if(resp)
+          this.menuList = resp?.filter((item: any) => item !== null);
       },);
-    })
+    });
+    this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
+      if (event) {
+        this.isOpen = false;
+        this.utils.disableSpecSubMenu();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -54,20 +61,27 @@ export class SpecificationsMenuComponent implements OnInit {
 
   populateMenuList() {
     let list = this.specData;
-    list.forEach((element: any) => {
-      if (element.section) {
-        element.section.splice(0, 1);
-      }
-    });
-    this.menuList = [...list]
+    if (list?.length) {
+      list.forEach((element: any) => {
+        if (element.section) {
+          element.section.splice(0, 1);
+        }
+      });
+      this.menuList = [...list];
+    }
   }
 
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
+    localStorage.setItem('selectedSpec', JSON.stringify(this.specData[event.index]))
+    this.selectedSection = this.specData[event.index].content[0];
+    this.selectedSecIndex = 0;
+    this.utils.saveSelectedSection(this.specData[event.index].content[0]);
+    this.utils.updateConversationList('comment');
   }
 
-  onClickSection(event: any, i: any) {
+  onSelectSpec(event: any, i: any) {
     this.selectedSection = event;
     this.selectedSecIndex = i;
     this.utils.saveSelectedSection(event);
@@ -105,9 +119,10 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   openAccordions() {
-    this.specData.forEach((element: any, index: any) => {
-      this.activeIndex.push(index)
-    });
+    if (this.specData?.length)
+      this.specData.forEach((element: any, index: any) => {
+        this.activeIndex.push(index)
+      });
     if (this.searchText?.length > 0)
       this.multiAccordion = true;
   }

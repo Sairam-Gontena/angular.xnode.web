@@ -13,8 +13,8 @@ import { ObjectToArrayPipe } from 'src/app/pipes/objectToArray.pipe';
 import { UserPersonaComponent } from './user-persona/user-persona.component';
 import { SpecGenPopupComponent } from './spec-gen-popup/spec-gen-popup.component';
 import { UserRolesComponent } from './user-roles/user-roles.component';
-import { AddCommentOverlayPanelComponent } from './add-comment-overlay-panel/add-comment-overlay-panel.component';
 import { HighlightPipe } from 'src/app/pipes/highlight.pipe';
+import { CompleteTextHighlightPipe } from 'src/app/pipes/completeTextHighlight.pipe';
 import { ListViewComponent } from './list-view/list-view.component';
 import { ParaViewComponent } from './para-view/para-view.component';
 import { CommentsCrPanelComponent } from './comments-cr-panel/comments-cr-panel.component';
@@ -24,6 +24,16 @@ import { NoCommentsComponent } from 'src/app/no-comments/no-comments.component';
 import { SpecSectionsLayoutComponent } from './spec-sections-layout/spec-sections-layout.component';
 import { CommentsPanelComponent } from './comments-panel/comments-panel.component';
 import { ConfirmationalertComponent } from './confirmationalert/confirmationalert.component';
+import { SpecConversationComponent } from 'src/app/pages/specifications/spec-conversation/spec-conversation.component';
+import { LinkToCrComponent } from 'src/app/link-to-cr/link-to-cr.component';
+import { ConversationActionsComponent } from './conversation-actions/conversation-actions.component';
+import { CreateNewCrVersionComponent } from './create-new-cr-version/create-new-cr-version.component';
+import { SpecChildConversationComponent } from './spec-child-conversation/spec-child-conversation.component';
+import { TasksPanelComponent } from './tasks-panel/tasks-panel.component';
+import { TaskListComponent } from './task-list/task-list.component';
+import { TaskChildConversationComponent } from 'src/app/pages/specifications/task-child-conversation/task-child-conversation.component';
+import { AddTaskComponent } from './add-task/add-task.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
   declarations: [
     SpecificationsComponent,
@@ -35,7 +45,6 @@ import { ConfirmationalertComponent } from './confirmationalert/confirmationaler
     UserPersonaComponent,
     SpecGenPopupComponent,
     UserRolesComponent,
-    AddCommentOverlayPanelComponent,
     ListViewComponent,
     ParaViewComponent,
     CommentsTabsComponent,
@@ -45,14 +54,24 @@ import { ConfirmationalertComponent } from './confirmationalert/confirmationaler
     CamelToTitlePipe,
     ObjectToArrayPipe,
     ConfirmationalertComponent,
+    SpecConversationComponent,
+    LinkToCrComponent,
+    ConversationActionsComponent,
+    CreateNewCrVersionComponent,
+    SpecChildConversationComponent,
+    TasksPanelComponent,
+    TaskListComponent,
+    TaskChildConversationComponent,
+    AddTaskComponent
   ],
   imports: [
     CommonModule,
     InputSwitchModule,
     SpecificationsRoutingModule,
+    MultiSelectModule,
     SharedModule,
     SharedComponentModule
   ],
-  providers: [HighlightPipe]
+  providers: [HighlightPipe, CompleteTextHighlightPipe]
 })
 export class SpecificationsModule { }

@@ -1,13 +1,12 @@
-<div class="main-container">
-  <div class="side-menu">
-    <xnode-page-tools-layout></xnode-page-tools-layout>
-  </div>
-  <div
-    [ngClass]="{'logs-container-menu':isSideMenuOpen && !isDockedNaviOpened, 'logs-container':!isSideMenuOpen && isDockedNaviOpened, 'logs-container-navi':isDockedNaviOpened,'logs-container-navi-menu':isSideMenuOpen && isDockedNaviOpened}">
-    <xnode-template-builder-publish-header></xnode-template-builder-publish-header>
-    <div class="ml-4 mr-4 p-3 "
-      [ngClass]="{'logs-content-menu':isSideMenuOpen,'logs-content':!isSideMenuOpen,'logs-content-navi':isDockedNaviOpened,'logs-content-navi-menu':isDockedNaviOpened && isSideMenuOpen}">
-      <div class="h-full  w-full overflow-auto ">
+<div class="h-full">
+  <div [style.width]="containerWidth" class="flex">
+    <div *ngIf="router.url !=='/history-log'">
+      <xnode-page-tools-layout (openSideMenu)="sideMenuToggle($event)"></xnode-page-tools-layout>
+    </div>
+    <div [style.width]="bodyContainerWidth" style=" transition: width 0.5s ease;">
+      <xnode-template-builder-publish-header
+        (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
+      <div class="col-12  pl-4 pr-4 overflow-auto table-container ">
         <xnode-dynamic-table [inputData]="logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
       </div>
     </div>

@@ -2,66 +2,104 @@
     color: rgba(255, 255, 255, 0.5);
     font-weight: 400rem !important;
     font-size: 1rem;
+    margin-left: 3rem;
 }
 
 .stake-holder {
     background-color: none;
     border: 1px solid #535353;
+    width: 21rem;
 }
 
 .finbuddy-text {
     width: auto;
     color: #FFFFFF;
+    margin-left: 3rem;
 }
 
-:host ::ng-deep.p-button {
-    color: white;
-    font-weight: 700 !important;
-    height: 2rem;
-    font-size: 10px;
+.finbuddy-image {
+    margin-left: 3rem;
+}
+
+.card-gap {
+    margin-left: 5rem;
+}
+
+.card-container {
+    margin-left: 3rem;
+}
+
+.card-grid-container {
+    margin-left: 3rem;
 }
 
 :host ::ng-deep .p-dropdown {
-    background: #3A3942;
     border: 0;
 }
 
 .stepper-card {
-    width: 566px;
+    width: auto;
+    margin-left: 4rem;
+    background-color: none;
+    border: 1px solid #535353;
+}
+
+.stepper-content {
+    width: auto;
+    margin-left: 2rem;
+}
+
+.card-grid {
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 780px) {
     .finbuddy-text {
         width: auto !important;
     }
-}
 
-@media screen and (max-width: 780px) {
-    .nelson-name {
+    .stepper-text {
         width: 10rem !important;
     }
-}
-
-@media (max-width: 780px) {
-    :host ::ng-deep.p-button {
-        margin: 10px;
-
-    }
-}
-
-@media (max-width: 780px) {
 
     .stepper-card {
-        width: 500px;
-        margin-left: 49px;
+        width: 90%;
     }
-}
 
-@media (max-width: 780px) {
+    .card-container {
+        margin-left: 3rem;
+        padding: 1rem;
+    }
 
-    .nelson-name {
+    .stepper-text {
         width: 370px !important;
 
+    }
+
+    .card-gap {
+        margin-left: 1rem;
+    }
+
+    .stake-holder {
+        width: 100%;
+    }
+
+    .card-grid-container {
+        width: 252px;
+        margin-left: 1rem;
+        padding: 1rem;
+    }
+
+    .card-grid {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+    }
+
+    .overview-body {
+        padding-right: 2rem;
     }
 }
 
@@ -93,6 +131,57 @@
     margin-top: 2px;
 }
 
+@media screen and (max-width: 320px) {
+    .overview-body {
+        margin: 10px !important;
+    }
+
+    .finbuddy-text {
+        width: auto !important;
+        margin-left: 0.5rem;
+    }
+
+    .para-text {
+        margin-left: 1rem;
+    }
+
+    .card-container {
+        margin-left: 0.5rem;
+    }
+
+    .card-gap {
+        margin-left: 0rem;
+    }
+
+    .stake-holder {
+        width: 280px;
+    }
+
+    .stepper-card {
+        width: auto;
+        margin-left: 0.5rem;
+    }
+
+    .stepper-content {
+        width: auto;
+        margin-left: 0.5rem;
+    }
+
+    .stepper-text {
+        width: 230px !important;
+
+    }
+
+    .finbuddy-image {
+        margin-left: 0.5rem;
+    }
+
+    .overview-body {
+        padding: 0.5rem;
+    }
+}
+
+
 .feature-value {
     align-items: center;
     width: auto;
@@ -108,6 +197,4 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #23222B;
-    margin: 25px;
-
 }

@@ -1,28 +1,17 @@
-<div class="flex" *ngIf="specData?.length;else showHeader">
-    <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword"
-        [specData]="specData"></xnode-specifications-menu>
-    <div class="w-full flex">
-        <div [ngClass]="{ 
-            'spec-content-sideMenu': isSideMenuOpened, 
-            'spec-content': !isSideMenuOpened,
-            'spec-content-navi':isNaviOpened,
-            'spec-content-sideMenu-navi':isNaviOpened && isSideMenuOpened}">
-            <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-                (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-            <xnode-specifications-content [noResults]="noResults" [specData]="specData" [keyword]="keyword">
-            </xnode-specifications-content>
-        </div>
-        <div [ngClass]="isCRsPanelOpened ? 'block' : 'hidden'">
-            <xnode-change-requests-panel></xnode-change-requests-panel>
-        </div>
+<div class="flex body-container">
+    <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword" [specData]="specData"
+        *ngIf="!loading"></xnode-specifications-menu>
+    <div class="w-full">
+        <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()" (generateSpec)="generateSpec()"
+            (getMeSpecList)="getMeSpecList($event)" (specDataChange)="onSpecDataChange($event)"
+            (generateSpec)="checkUserEmail()"></xnode-specifications-header>
+        <xnode-specifications-content [reveiwerList]="reveiwerList" [noResults]="noResults" [specData]="specData" [keyword]="keyword"
+            *ngIf="!loading">
+        </xnode-specifications-content>
     </div>
 </div>
 
-<ng-template #showHeader>
-    <xnode-specifications-header (refreshCurrentRoute)="refreshCurrentRoute()"
-        (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-</ng-template>
-
 <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
     [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
-    [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generateSpec()"></xnode-spec-gen-popup>
+    [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generateSpec()">
+</xnode-spec-gen-popup>

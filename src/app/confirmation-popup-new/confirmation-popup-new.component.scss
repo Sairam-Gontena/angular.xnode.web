@@ -1,0 +1,17 @@
+:host ::ng-deep.card {
+    background-color: transparent !important;
+}
+
+.user-txt {
+    font-size: 24px;
+    font-family: Inter;
+}
+
+.header {
+    font-size: 24px;
+    font-family: Inter;
+}
+
+:host ::ng-deep.p-dialog {
+    width: '40vw'
+}

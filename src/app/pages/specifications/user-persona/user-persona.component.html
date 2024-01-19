@@ -7,13 +7,13 @@
             <div class="col-5 font-bold">
                 Age
             </div>
-            <div class="col-7 text-right text-sm" [innerHTML]="content.content[0]?.Age | highlight: searchTerm"></div>
+            <div class="col-7 text-right text-sm" [innerHTML]="persona?.['Age'] | highlight: searchTerm"></div>
         </div>
         <div class="grid m-0">
             <div class="col-5 font-bold">
                 Occupation
             </div>
-            <div class="col-7 text-right text-sm" [innerHTML]="content.content[0]?.Occupation | highlight: searchTerm">
+            <div class="col-7 text-right text-sm" [innerHTML]="persona?.['Occupation'] | highlight: searchTerm">
             </div>
         </div>
     </div>
@@ -21,16 +21,16 @@
         <h3 class="mt-0" [innerHTML]="content.name ? content.name : content.title | highlight: searchTerm"></h3>
         <div>
             <h4 class="mb-0">About</h4>
-            <p class="text-sm mt-2" [innerHTML]="content.content[0]?.Backstory | highlight: searchTerm"></p>
+            <p class="text-sm mt-2" [innerHTML]="persona?.['Backstory'] | highlight: searchTerm"></p>
         </div>
         <div class="grid">
             <div class="col-6">
                 <h4 class="mb-0">Needs</h4>
-                <p class="text-sm mt-2" [innerHTML]="content.content[0]?.Needs | highlight: searchTerm"></p>
+                <p class="text-sm mt-2" [innerHTML]="persona?.['Needs'] | highlight: searchTerm"></p>
             </div>
             <div class="col-6">
                 <h4 class="mb-0">Goals</h4>
-                <p class="text-sm mt-2" [innerHTML]="content.content[0]?.Quote | highlight: searchTerm"></p>
+                <p class="text-sm mt-2" [innerHTML]="persona?.['Quote'] | highlight: searchTerm"></p>
             </div>
         </div>
     </div>

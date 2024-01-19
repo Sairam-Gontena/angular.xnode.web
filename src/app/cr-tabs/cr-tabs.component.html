@@ -1,1 +1,481 @@
-<p>Coming soon</p>
+<div class="cr-tabs-div">
+  <div>
+    <div class="h-3rem p-0 m-0 w-full submit-cr-window grid align-items-center px-4 justify-content-between"
+      *ngIf="checkedCrList?.length>0">
+      <div class="p-0 m-0 flex col-5">
+        <img src="../../assets/checkbox.svg" class="" alt="high" />
+        <p class="text-xs ml-2 text-white">
+          {{ checkedCrList?.length }}/{{ crData?.length }} items selected
+        </p>
+      </div>
+      <div class="p-0 m-0 flex justify-content-between col-7 align-items-center gap-2">
+        <img src="../../assets/archive.svg" class="submit-cr-window-icon pointer" alt="archive"
+          (click)="updateChagneRequestStatus('ARCHIVE')" pTooltip="Archive" />
+        <img src="../../assets/newuser.svg" class="submit-cr-window-icon pointer" alt="adduser"
+          (click)="addUser.toggle($event); $event.stopPropagation()" pTooltip="Add Reviewer" />
+        <p-dropdown formControlName="priority" placeholder="Select Priority" [options]="priorityList"
+          (onChange)="onSelectPriority($event)" class="priority-dropdown pointer" pTooltip="Priority">
+        </p-dropdown>
+        <p-calendar #myCalendar [(ngModel)]="dueDate" inputId="date" class="dueDate" [showIcon]="true"
+          pTooltip="Due Date" (onSelect)="onDateSelect($event)" [hideOnDateTimeSelect]="false">
+          <ng-template pTemplate="footer">
+            <div class="col-12 m-0 p-0 flex justify-content-end gap-2">
+              <p-button label="Cancel" [rounded]="true" class="border-round-sm	cancel-button"
+                (click)="closeDatePicker();$event.stopPropagation()"></p-button>
+              <p-button label="Update" styleClass="p-button-primary" class="border-round-sm	send-feedback-btn"
+                [rounded]="true" (click)="updateDueDate($event)"></p-button>
+            </div>
+          </ng-template>
+        </p-calendar>
+        <img src="../../assets/link-cr.svg" class="submit-cr-window-icon pointer" alt="link"
+          (click)="updateChagneRequestStatus('UNLINK')" pTooltip="Unlink" />
+        <p-button label="Update Spec" size="small" severity="secondary" [rounded]="true" (click)="onClickUpdateSpec()"
+          [disabled]="checkedCrList?.length ===0"></p-button>
+      </div>
+    </div>
+    <div class="flex align-items-center justify-content-between w-full mt-4  px-4">
+      <div class="flex align-items-center mr-2">
+        <p-dropdown [options]="filters" placeholder="Filter: All " [(ngModel)]="selectedFilter" optionLabel="title"
+          (onChange)="filterListData()"></p-dropdown>
+        <p-button label="Create New" size="small" severity="secondary" [rounded]="true"
+          (click)="createNewCr()"></p-button>
+      </div>
+      <div class="flex justify-content-center align-items-center">
+        <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer w-auto"
+          [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
+        <i class="pi pi-user pointer relative z-1 opacity-100 pointer-events-none search-dropdown-user"
+          [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
+        <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name"
+          (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
+          (onChange)="filterListByUsersFilter()" [showClear]="true" placeholder=""></p-multiSelect>
+      </div>
+    </div>
+    <span class="p-input-icon-left px-4 mt-3 w-full" *ngIf="filter=='text'">
+      <i class="pi pi-search text-white" [ngStyle]="{top: '22px',left:'40px'}"></i>
+      <input type="text" pInputText [(ngModel)]="searchIconKeyword" (keyup)="searchConversation()"
+        placeholder="Search for Keywords"
+        class="w-full border-round-3xl mb-1 font-family-inter text-sm font-normal search-input" />
+      <i class="pi pi-times reset-search text-white cursor-pointer"
+        [ngStyle]="{top: '22px', right: '40px',color:'#A2A2A3'}" *ngIf="searchIconKeyword"
+        (click)="searchIconKeyword='';searchConversation()"></i>
+    </span>
+    <hr class="mt-3 mx-4" [ngStyle]="{border:'1px solid #535354'}" />
+
+  </div>
+  <div class="flex pl-4 pr-4 justify-content-between align-items-center p-0 h-4rem">
+    <div class="">
+      <p class="flex align-items-center text-base light-grey text-sm"
+        *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'">Today</p>
+    </div>
+    <div class="flex align-items-center p-0 pointer" (click)="sortCrList('dueDate')">
+      <i class="pi pi-arrow-up text-base mx-1 text-gray-200"
+        *ngIf="sortColumn === 'dueDate' && sortDirection === 'desc'"></i>
+      <i class="pi pi-arrow-down text-base mx-1 text-gray-200"
+        *ngIf="sortColumn === 'dueDate' && sortDirection === 'asc'"></i>
+      <p class="my-0 text-gray-200 text-sm">Date Created</p>
+    </div>
+  </div>
+  <div>
+    <div class="w-full pl-4 pr-4">
+      <p-accordion class="cr-tabs" [multiple]="true" *ngFor="let data of crData;let i = index"
+        (onOpen)="onAccordionOpen(data,i)">
+        <p-accordionTab class="border-bottom-1 accordian mt-4">
+          <ng-template pTemplate="header">
+            <div class="w-full">
+              <div class="grid col-12 flex-column">
+                <p-checkbox (click)="$event.stopPropagation()" (onChange)="onCheckCheckbox($event)" [binary]="true"
+                  inputId="binary" [(ngModel)]="data.checked" *ngIf="data.status ==='DRAFT'"></p-checkbox>
+                <div class="flex flex-row align-items-center" style="position: absolute; margin-left: 13%">
+                  <img src="../../assets/high.svg" class="" alt="high" />
+                  <p class="p-0 m-0 text-xs ml-2">
+                    <a href="" class="text-primary-500" (click)="$event.stopPropagation();"># {{ data.crId }}</a>
+                    <a href="" class="text-primary-500 ml-2" *ngIf="data.status !=='DRAFT'"
+                      (click)="$event.stopPropagation();onClickViewChanges(data);">View Changes</a>
+                  </p>
+                </div>
+                <div class="w-full pl-7" [ngClass]="{'mt-3': data.status !=='DRAFT'}">
+                  <div class="flex align-items-center justify-content-between">
+                    <div class="flex">
+                      <img src="../../assets/todo.svg" alt="todo" />
+                      <div class="flex align-items-center">
+                        <p class="text-sm half-white pl-2">{{ data?.title }}</p>
+                        <div [ngClass]="{
+                        'border-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
+                        'border-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
+                        'border-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK',
+                        'border-yellow-500': data.status === 'DRAFT',
+                        }" class="ml-2 flex align-items-center border-1 pl-2 pr-2 border-round-2xl">
+                          <div class="border-circle text-xs">
+                            <ng-container *ngIf="data.status === 'SUBMITTED'">
+                              <i class="pi pi-circle-fill text-green-500"></i>
+                            </ng-container>
+                            <ng-container *ngIf="data.status === 'ARCHIVED' || data.status === 'REJECTED'">
+                              <i class="pi pi-times-circle text-red-500"></i>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK'">
+                              <i class="pi pi-check-circle text-orange-500"></i>
+                            </ng-container>
+                            <ng-container *ngIf="data.status === 'DRAFT'">
+                              <i class="pi pi-clock text-yellow-500"></i>
+                            </ng-container>
+                          </div>
+                          <div class="text-xs ml-2" [ngClass]="{
+                            'text-green-500': data.status === 'SUBMITTED' || data.status === 'APPROVED',
+                            'text-red-500': data.status === 'ARCHIVED' || data.status === 'REJECTED',
+                            'text-orange-500': data.status === 'UPDATED' || data.status ==='REVIEWED' || data.status ==='NEEDS_WORK' ,
+                            'text-yellow-500': data.status == 'DRAFT'
+                          }">{{data.status | uppercase}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)"
+                      [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
+                      <ng-template let-action pTemplate="item">
+                        <span class="flex" (click)="updateChagneRequestStatus(action.label)">
+                          <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
+                            [ngStyle]="{width:'fit-content'}" [ngClass]="{
+                            'bg-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+                            'bg-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+                            'bg-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+                            'border-yellow-500': action.value === 'DRAFT'}" [ngStyle]="{ 'padding': '3px' }"></i>
+                          <span class="text-sm font-normal ml-1" [ngClass]="{
+                                'text-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+                                'text-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+                                'text-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+                                'text-yellow-500': action.value === 'DRAFT'}">
+                            {{action.label}}
+                          </span>
+                        </span>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                  <div class="flex align-items-center pl-4" style="margin-top: -15px">
+                    <p class="text-xs shaded-color normal-font-weight">
+                      Due by : {{data.duedate | date}}
+                    </p>
+                    <img src="../../assets/Group.svg" class="ml-4" alt="CR" />
+                    <span class="shaded-color ml-1 normal-font-weight">3</span>
+                  </div>
+                  <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
+                    <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
+                      (closeOverlay)="data.showComment=false" placeHolder="Reason for your actions"
+                      [component]="'crTabs'" (closeOverlay)="showComment=false"
+                      (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="content">
+            <div class="pl-7 pr-4">
+              <div class="card m-0 p-0 mb-2" *ngIf="showComment">
+                <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
+                  placeHolder="Reason for your actions" [component]="'crTabs'" (closeOverlay)="showComment=false"
+                  (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
+              </div>
+              <div class="border-bottom-1 pt-2" *ngFor="let subData of crList?.[i]; ">
+                <span *ngIf="subData.task else commentSpan">
+                  <div class="flex flex-row justify-content-between align-items-center w-full">
+                    <div class="w-full flex justify-content-between align-items-center">
+                      <p class="my-0 text-gray-200 text-sm font-normal">
+                        {{ subData?.task?.referenceContent?.title }}
+                      </p>
+                      <div class="flex align-items-center ">
+                        <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
+                        <span *ngFor="let reviewers of data?.reviewers">
+                          <p-avatar [label]="getMeUserAvatar(reviewers)" class="text-xs" shape="circle" [style]="{
+                                'background-color': '#9c27b0',
+                                color: '#ffffff', fontSize: '10px'
+                              }"></p-avatar>
+                        </span>
+                        <i class="pi pi-ellipsis-v text-base
+                         text-gray-200" #icon (click)="op.toggle($event, icon); $event.stopPropagation()"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="py-2 border-bottom-1 pr-4">
+                    <div class="flex flex-row justify-content-between">
+                      <div class="sctions-grid w-full">
+                        <div *ngIf="checktableJsonSection(subData?.task?.referenceContent?.title) else normalView">
+                          <pre *ngIf="!subData?.task?.referenceContent?.showTable"
+                            [innerHTML]="subData?.task?.referenceContent?.content | json"
+                            style=" white-space: pre-wrap; overflow: auto"></pre>
+                          <xnode-common-spec-table *ngIf="subData?.task?.referenceContent?.showTable"
+                            [specItem]="subData?.task?.referenceContent?.content?.content"
+                            [content]="subData?.task?.referenceContent?.content"></xnode-common-spec-table>
+                        </div>
+                        <ng-template #normalView>
+
+                          <div
+                            *ngIf="checkParaViewSections(subData?.task?.referenceContent?.title,subData?.task?.referenceContent?.parentTitle)"
+                            class="h-auto">
+                            <xnode-para-view [showComments]="false" [content]="subData?.task?.referenceContent?.content"
+                              [searchTerm]="subData?.task?.referenceContent?.commentedtext" [users]="usersList"
+                              [specItem]="subData?.task?.referenceContent?.content"
+                              [id]="subData?.task?.referenceContent?.id"></xnode-para-view>
+                          </div>
+                          <div *ngIf="checkListViewSections(subData?.task?.referenceContent?.parentTitle)"
+                            class="h-auto">
+                            <xnode-list-view [content]="subData?.task?.referenceContent"
+                              [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                              [users]="usersList"></xnode-list-view>
+                          </div>
+                          <div *ngIf="checkUserRoleSections(subData?.task?.referenceContent?.parentTitle)"
+                            class="h-auto">
+                            <xnode-user-roles [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                              [content]="subData?.task?.referenceContent" [users]="usersList"
+                              [specItem]="subData?.task?.referenceContent?.content"></xnode-user-roles>
+                          </div>
+                          <div *ngIf="checkUserPersonaSections(subData?.task?.referenceContent?.title)" class="h-auto">
+                            <xnode-user-persona [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                              [content]="subData?.task?.referenceContent?.content"></xnode-user-persona>
+                          </div>
+                          <div *ngIf="subData?.task?.referenceContent?.title === 'Dashboards'">
+                            <div class="flex justify-content-between align-items-center">
+                              <h1 class="my-1">Dashboard</h1>
+                            </div>
+                            <div class="grid">
+                              <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                              </iframe>
+                            </div>
+                          </div>
+                          <div
+                            *ngIf="subData?.task?.referenceContent?.title=='Data Quality Checks' || subData?.task?.referenceContent?.title=='Historical Data Load'|| subData?.task?.referenceContent?.title == 'Version Control'|| subData?.task?.referenceContent?.title == 'Stakeholder Approvals' || subData?.task?.referenceContent?.title=='Glossary'">
+                            <xnode-common-spec-table [users]="usersList"
+                              [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                              [content]="subData?.task?.referenceContent?.content"></xnode-common-spec-table>
+                          </div>
+                          <div *ngIf="subData?.task?.referenceContent?.title=='Test Cases'">
+                            <div *ngFor="let itemuc of subData?.task?.referenceContent?.content">
+                              <div class="mt-2">
+                                <h3>
+                                  {{itemuc.Usecase}}
+                                </h3>
+                                <div class="mt-2">
+                                  <xnode-common-spec-table [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                                    [users]="usersList" [content]="itemuc.TestCases"></xnode-common-spec-table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="subData?.task?.referenceContent?.title==='Workflows'">
+                            <xnode-bpmn-common [bpmnFrom]="bpmnFrom" [referenceId]="subData?.task?.id"
+                              [item]="subData?.task?.referenceContent"></xnode-bpmn-common>
+                          </div>
+                          <div *ngIf="subData?.task?.referenceContent?.title==='Data Model'">
+                            <xnode-data-model-common [specData]="'spec'"></xnode-data-model-common>
+                          </div>
+                          <div
+                            *ngIf="subData?.task?.referenceContent?.title === 'Usecases' || subData?.task?.referenceContent?.title === 'Use Cases'">
+                            <xnode-common-usecases [searchTerm]="subData?.task?.referenceContent?.commentedtext"
+                              [users]="usersList"
+                              [useCases]="subData?.task?.referenceContent.content"></xnode-common-usecases>
+                          </div>
+                          <div *ngIf="subData?.task?.referenceContent?.title === 'OpenAPI Spec'">
+                            <div class="flex col-12 justify-content-between align-items-center">
+                              <h4 class="m-0">Swagger API</h4>
+                            </div>
+                            <div class="col-12">
+                              <div id="openapi-ui-spec{{subData?.id}}" class="openapi-spec mt-2"></div>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <div class="gradientback">
+                        </div>
+                      </div>
+                    </div>
+                    <span class="text-xs my-2 text-gray-200 flex align-items-center">
+                      {{ subData?.task?.title }}
+                    </span>
+                  </div>
+                </span>
+
+                <ng-template #commentSpan>
+                  <div class="flex flex-row justify-content-between align-items-center w-full">
+                    <div class="w-full flex justify-content-between align-items-center">
+                      <p class="my-0 text-gray-200 text-sm font-normal">
+                        {{ subData?.comment?.referenceContent?.title }}
+                      </p>
+                      <div class="flex align-items-center ">
+                        <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
+                        <span *ngFor="let reviewers of data?.reviewers">
+                          <p-avatar [label]="getMeUserAvatar(reviewers)" class="text-xs" shape="circle" [style]="{
+                                'background-color': '#9c27b0',
+                                color: '#ffffff', fontSize: '10px'
+                              }"></p-avatar>
+                        </span>
+                        <i class="pi pi-ellipsis-v text-base mr-3 ml-0 py-1 text-gray-200" #icon
+                          (click)="op.toggle($event,icon); $event.stopPropagation()"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="py-2 border-bottom-1 pr-4">
+                    <div class="flex flex-row justify-content-between">
+                      <div class="sctions-grid  w-full">
+                        <div
+                          *ngIf="checktableJsonSection(subData?.comment?.referenceContent?.title) else normalCommentView">
+                          <pre *ngIf="!subData?.comment?.referenceContent?.showTable"
+                            [innerHTML]="subData?.comment?.referenceContent?.content | json"
+                            style=" white-space: pre-wrap; overflow: auto"></pre>
+                          <xnode-common-spec-table *ngIf="subData?.comment?.referenceContent?.showTable"
+                            [specItem]="subData?.comment?.referenceContent?.content?.content"
+                            [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
+                        </div>
+                        <ng-template #normalCommentView>
+
+                          <div
+                            *ngIf="checkParaViewSections(subData?.comment?.referenceContent?.title,subData?.comment?.referenceContent?.parentTitle)"
+                            class="h-auto">
+                            <xnode-para-view [showComments]="false"
+                              [content]="subData?.comment?.referenceContent?.content"
+                              [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList"
+                              [specItem]="subData?.comment?.referenceContent?.content"
+                              [id]="subData?.comment?.referenceContent?.id"></xnode-para-view>
+                          </div>
+                          <div *ngIf="checkListViewSections(subData?.comment?.referenceContent?.parentTitle)"
+                            class="h-auto">
+                            <xnode-list-view [content]="subData?.comment?.referenceContent"
+                              [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
+                              [users]="usersList"></xnode-list-view>
+                          </div>
+                          <div *ngIf="checkUserRoleSections(subData?.comment?.referenceContent?.parentTitle)"
+                            class="h-auto">
+                            <xnode-user-roles [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
+                              [content]="subData?.comment?.referenceContent" [users]="usersList"
+                              [specItem]="subData?.comment?.referenceContent?.content"></xnode-user-roles>
+                          </div>
+                          <div *ngIf="checkUserPersonaSections(subData?.comment?.referenceContent?.title)"
+                            class="h-auto">
+                            <xnode-user-persona [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
+                              [content]="subData?.comment?.referenceContent?.content"></xnode-user-persona>
+                          </div>
+                          <div *ngIf="subData?.comment?.referenceContent.title === 'Dashboards'">
+                            <div class="flex justify-content-between align-items-center">
+                              <h1 class="my-1">Dashboard</h1>
+                            </div>
+                            <div class="grid">
+                              <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+                              </iframe>
+                            </div>
+                          </div>
+                          <div
+                            *ngIf="subData?.comment?.referenceContent?.title=='Data Quality Checks' || subData?.comment?.referenceContent?.title=='Historical Data Load'|| subData?.comment?.referenceContent?.title == 'Version Control'|| subData?.comment?.referenceContent?.title == 'Stakeholder Approvals' || subData?.comment?.referenceContent?.title=='Glossary'">
+                            <xnode-common-spec-table [users]="usersList"
+                              [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
+                              [content]="subData?.comment?.referenceContent?.content"></xnode-common-spec-table>
+                          </div>
+                          <div *ngIf="subData?.comment?.referenceContent?.title=='Test Cases'">
+                            <div *ngFor="let itemuc of subData?.comment?.referenceContent?.content">
+                              <div class="mt-2">
+                                <h3>
+                                  {{itemuc.Usecase}}
+                                </h3>
+                                <div class="mt-2">
+                                  <xnode-common-spec-table
+                                    [searchTerm]="subData?.comment?.referenceContent?.commentedtext" [users]="usersList"
+                                    [content]="itemuc.TestCases"></xnode-common-spec-table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="subData?.comment?.referenceContent?.title==='Workflows'">
+                            <xnode-bpmn-common [bpmnFrom]="bpmnFrom" [referenceId]="subData?.comment?.id"
+                              [item]="subData?.comment?.referenceContent"></xnode-bpmn-common>
+                          </div>
+                          <div *ngIf="subData?.comment?.referenceContent?.title==='Data Model'">
+                            <xnode-data-model-common [specData]="'spec'"></xnode-data-model-common>
+                          </div>
+                          <div
+                            *ngIf="subData?.comment?.referenceContent?.title === 'Usecases' || subData?.comment?.referenceContent?.title === 'Use Cases'">
+                            <xnode-common-usecases [searchTerm]="subData?.comment?.referenceContent?.commentedtext"
+                              [users]="usersList"
+                              [useCases]="subData?.comment?.referenceContent.content"></xnode-common-usecases>
+                          </div>
+                          <div *ngIf="subData?.comment?.referenceContent.title === 'OpenAPI Spec'">
+                            <div class="flex col-12 justify-content-between align-items-center">
+                              <h4 class="m-0">Swagger API</h4>
+                            </div>
+                            <div class="col-12">
+                              <div id="openapi-ui-spec{{subData?.id}}" class="openapi-spec mt-2"></div>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <div class="gradientback">
+                        </div>
+                      </div>
+                    </div>
+                    <span class="text-xs my-2 text-gray-200 flex align-items-center">
+                      {{ subData?.comment?.message }}
+                    </span>
+                  </div>
+                </ng-template>
+
+              </div>
+            </div>
+          </ng-template>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+    <xnode-no-comments *ngIf="crData?.length === 0" [content]="'No open CRs yet'"></xnode-no-comments>
+  </div>
+
+  <p-overlayPanel #op my="left top" at="right top">
+    <div class="card p-0 m-0" *ngFor="let action of crActions">
+      <div class="flex align-items-center border-bottom-1 border-600 pointer pl-2 p-0 m-0"
+        (click)="updateChagneRequestStatus(action.label); op.toggle(false)">
+        <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs" [ngClass]="{
+              'bg-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+              'bg-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+              'bg-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+              'border-yellow-500': action.value === 'DRAFT'}" [ngStyle]="{ 'padding': '3px' }"></i>
+        <p class="text-sm font-normal ml-1" [ngClass]="{
+              'text-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
+              'text-red-500': action.value === 'ARCHIVE' || action.value === 'REJECT',
+              'text-orange-500': action.value === 'UPDATE' || action.value ==='REVIEW' || action.value ==='NEEDS_WORK',
+              'text-yellow-500': action.value === 'DRAFT'}">
+          {{action.label}}
+        </p>
+      </div>
+    </div>
+  </p-overlayPanel>
+  <p-overlayPanel #addUser>
+    <div class="p-3 pt-4 border-1  border-round-md add-reviewer-panel">
+      <div class=" p-0 flex add-reviewer-panel-header">
+        <form [formGroup]="addReviewerForm">
+          <div class="p-0 add-comment-panel-body border-round-md ">
+            <div class="col-12 p-0 m-0 ">
+              <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers" formControlName="reviewersLOne"
+                (completeMethod)="filteredReveiwer($event, 'L1')" field="name" [multiple]="true" styleClass="w-full"
+                class="add-reviewer" (click)="$event.stopPropagation()">
+                <ng-template let-reviewer pTemplate="selectedItem">
+                  <div class="flex align-items-center">
+                    <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                      {{ reduceToInitials(reviewer.name) }}
+                    </div>
+                    <span class="ml-2">{{ reviewer.name }}</span>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+            </div>
+            <div class="col-12 m-0 p-0 flex justify-content-end mt-3 gap-2">
+              <p-button label="Close" [rounded]="true" class="cancel-button" (click)="closeAddUser()"></p-button>
+              <p-button label="Add" styleClass="p-button-primary" class="send-feedback-btn" [rounded]="true"
+                (click)="updateReviewer($event)"></p-button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </p-overlayPanel>
+</div>
+<xnode-confirmation-popup-new [header]="header" [content]="content"
+  [visible]="openConfirmationPopUp || updateSpecBtnTriggered "
+  (onClickAction)="onClickAction($event)"></xnode-confirmation-popup-new>
+<xnode-create-new-cr-version *ngIf="showNewCrPopup" [visible]="showNewCrPopup" [header]="crHeader " [versions]="[]"
+  (close)="showNewCrPopup = false;emitData($event)" [selectedCR]="selectedCr">
+</xnode-create-new-cr-version>
+<xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup" [limitReachedContent]="true"
+  (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>

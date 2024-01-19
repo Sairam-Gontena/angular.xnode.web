@@ -1,0 +1,109 @@
+.no-comments {
+    height: calc(100vh - 280px);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #dedede;
+}
+
+.comments-grid {
+    height: calc(100vh - 320px);
+    overflow: auto;
+    color: #dedede;
+}
+
+
+.title {
+    font-size: 24px;
+}
+
+.sub-title {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+:host ::ng-deep .p-inputtextarea {
+    width: 100% !important;
+    color: #dedede;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+
+.comment-send-icon {
+    bottom: 5px;
+    right: 5px;
+}
+
+.spec-comments-header {
+    padding: 31.5px;
+}
+
+.selected-item {
+    font-weight: bold;
+}
+
+.check-mark {
+    margin-left: 5rem;
+    font-size: 14px;
+    border-radius: 4px;
+    width: max-content;
+}
+
+:host ::ng-deep .filter-grid {
+    .p-inputtext {
+        padding-left: 5px;
+        font-size: 14px;
+    }
+}
+
+:host ::ng-deep .search-grid .p-inputtext {
+    box-shadow: none !important;
+    padding: 5px 5px;
+    color: #EFEEEE;
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+}
+
+:host ::ng-deep .search-grid .p-button {
+    background: linear-gradient(0deg, #23222B, #23222B),
+        linear-gradient(0deg, #535354, #535354);
+    border: 0;
+}
+
+.comment-btns {
+    background: #343541;
+}
+
+:host ::ng-deep .p-button.p-button-outlined {
+    border: 0;
+    border-radius: 4px;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.confirm-overlay {
+    color: #EFEEEE;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-overlay:enabled:hover {
+    background-color: blue;
+}
+
+.confirm-overlay-icon {
+    height: 12px;
+    width: 12px;
+}
+
+.mention-color {
+    color: #02ADEE;
+}
+
+.content-title {
+    color: #A2A2A3;
+}

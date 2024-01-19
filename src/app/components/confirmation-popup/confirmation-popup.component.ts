@@ -1,135 +1,240 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { RefreshListService } from '../../RefreshList.service';
 import { UserUtil } from 'src/app/utils/user-util';
-import { AuditutilsService } from 'src/app/api/auditutils.service'
-
-
+import { AuditutilsService } from 'src/app/api/auditutils.service';
 
 @Component({
   selector: 'xnode-confirmation-popup',
   templateUrl: './confirmation-popup.component.html',
-  styleUrls: ['./confirmation-popup.component.scss']
+  styleUrls: ['./confirmation-popup.component.scss'],
 })
-
 export class ConfirmationPopupComponent implements OnInit {
-  @Input() Data: any;
+  @Input() data: any;
+  @Output() confirmationAction = new EventEmitter<boolean>();
+  @Output() toggleAlert = new EventEmitter<boolean>();
+  @Input() visibleAlert: boolean = false;
+  @Input() activeIndex?: number;
+  notUserRelated: boolean = false;
+  header: any;
   invitationType: string = '';
-  visible: boolean = false;
+  showPopup: boolean = false;
   currentUser?: any;
 
-  constructor(private authApiService: AuthApiService, private utilsService: UtilsService, private refreshListService: RefreshListService, private auditUtil: AuditutilsService) {
+  constructor(
+    private authApiService: AuthApiService,
+    private utilsService: UtilsService,
+    private refreshListService: RefreshListService,
+    private auditUtil: AuditutilsService
+  ) {
     this.currentUser = UserUtil.getCurrentUser();
   }
 
   ngOnInit(): void {
-
+    if (this.data === 'showDeletePopup') {
+      this.notUserRelated = true;
+      this.header = 'Confirmation';
+      this.activeIndex == 0
+        ? (this.invitationType = 'delete this comment')
+        : (this.invitationType = 'delete this task');
+      this.showPopup = true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let data = localStorage.getItem('currentUser')
-    if (data) {
-      let data1 = JSON.parse(data)
-      this.currentUser = data1;
+    let localData = localStorage.getItem('currentUser');
+    if (localData) {
+      let parsedData = JSON.parse(localData);
+      this.currentUser = parsedData;
     }
-    const userData = changes['Data'].currentValue.userData;
-    if (this.Data) {
-      this.invitationType = this.Data.type + ' ' + userData.first_name + ' ' + userData.last_name;
+    const userData = changes['data'].currentValue.userData;
+    if (this.data && this.data != 'showDeletePopup') {
+      this.invitationType =
+        this.data?.type +
+        ' ' +
+        userData?.first_name +
+        ' ' +
+        userData?.last_name;
     }
     this.showDialog();
   }
 
+  confirmDelete() {
+    this.visibleAlert = false;
+    this.confirmationAction.emit(false);
+  }
 
   showDialog() {
-    this.visible = true;
+    this.showPopup = true;
   }
 
   onSuccess(): void {
-    if (this.Data.type === 'Invite') {
-      this.updateUserId(this.Data.userData.id, 'Invited')
-    } else if (this.Data.type === 'Hold') {
-      this.updateUserId(this.Data.userData.id, 'OnHold')
-    } else if (this.Data.type === 'Reject') {
-      this.updateUserId(this.Data.userData.id, 'Rejected')
-    } else if (this.Data.type === 'Delete') {
-      this.deleteUserByEmail(this.Data.userData.email)
+    if (this.data.type === 'Invite') {
+      this.updateUserId(this.data.userData.id, 'Invited');
+    } else if (this.data.type === 'Hold') {
+      this.updateUserId(this.data.userData.id, 'OnHold');
+    } else if (this.data.type === 'Reject') {
+      this.updateUserId(this.data.userData.id, 'Rejected');
+    } else if (this.data.type === 'Delete') {
+      this.deleteUserByEmail(this.data.userData.email);
     }
-    this.visible = false;
+    this.showPopup = false;
   }
+
   onReject(): void {
-    this.visible = false;
+    if (this.data === 'showDeletePopup') {
+      this.toggleAlert.emit(false);
+      this.visibleAlert = false;
+    } else {
+      this.showPopup = false;
+    }
   }
 
   updateUserId(id: string, action: string): void {
-    this.utilsService.loadSpinner(true)
+    this.utilsService.loadSpinner(true);
     let url = 'auth/prospect/prospect_status_update';
     let body = {
-      "id": id,
-      "action": action,
-      "admin_email": this.currentUser?.email
+      id: id,
+      action: action,
+      admin_email: this.currentUser?.email,
     };
-    this.authApiService.patchAuth(body, url)
+    this.authApiService
+      .updateUserId(body)
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
           if (response?.data) {
             this.updateProductTier();
           } else {
-            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+            this.utilsService.loadToaster({
+              severity: 'error',
+              summary: 'ERROR',
+              detail: response.data.detail,
+            });
           }
-          this.auditUtil.post(action, 1, 'SUCCESS', 'user-audit');
+          this.auditUtil.postAudit(action, 1, 'SUCCESS', 'user-audit');
         } else {
-          this.auditUtil.post(action + '_' + response.data.detail, 1, 'FAILURE', 'user-audit');
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.auditUtil.postAudit(
+            action + '_' + response.data.detail,
+            1,
+            'FAILURE',
+            'user-audit'
+          );
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
         }
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
         this.utilsService.loadSpinner(false);
-        this.auditUtil.post(action + '_' + error, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit(
+          action + '_' + error,
+          1,
+          'FAILURE',
+          'user-audit'
+        );
       });
   }
   deleteUserByEmail(email: string): void {
-    this.utilsService.loadSpinner(true)
+    this.utilsService.loadSpinner(true);
     let url = '/user/delete_user/' + email;
-    this.authApiService.delete(url)
+    this.authApiService
+      .delete(url)
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
           this.refreshListService.toggleAdminUserListRefresh();
-          this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been deleted successfully' });
-          this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT', 1, 'SUCCESS', 'user-audit');
+          this.utilsService.loadToaster({
+            severity: 'success',
+            summary: 'SUCCESS',
+            detail: 'User has been deleted successfully',
+          });
+          this.auditUtil.postAudit(
+            'DELETE_USER_FROM_USERMANAGEMENT',
+            1,
+            'SUCCESS',
+            'user-audit'
+          );
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
-          this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT_' + response.data.detail, 1, 'FAILURE', 'user-audit');
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
+          this.auditUtil.postAudit(
+            'DELETE_USER_FROM_USERMANAGEMENT_' + response.data.detail,
+            1,
+            'FAILURE',
+            'user-audit'
+          );
         }
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
         this.utilsService.loadSpinner(false);
-        this.auditUtil.post('DELETE_USER_FROM_USERMANAGEMENT' + '_' + error, 1, 'FAILURE', 'user-audit');
+        this.auditUtil.postAudit(
+          'DELETE_USER_FROM_USERMANAGEMENT' + '_' + error,
+          1,
+          'FAILURE',
+          'user-audit'
+        );
       });
   }
 
   updateProductTier(): void {
-    let url = 'auth/prospect/product_tier_manage/' + this.Data.userData.email;
-    this.authApiService.put(url)
+    let url = 'auth/prospect/product_tier_manage/' + this.data.userData.email;
+    this.authApiService
+      .put(url)
       .then((response: any) => {
         if (response?.status === 200) {
           if (response?.data) {
             this.refreshListService.toggleAdminUserListRefresh();
-            this.utilsService.loadToaster({ severity: 'success', summary: 'SUCCESS', detail: 'User has been invited successfully' });
+            this.utilsService.loadToaster({
+              severity: 'success',
+              summary: 'SUCCESS',
+              detail: 'User has been invited successfully',
+            });
           } else {
-            this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+            this.utilsService.loadToaster({
+              severity: 'error',
+              summary: 'ERROR',
+              detail: response.data.detail,
+            });
           }
         } else {
-          this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: response.data.detail });
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response.data.detail,
+          });
         }
         this.utilsService.loadSpinner(false);
       })
       .catch((error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: error });
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
         this.utilsService.loadSpinner(false);
       });
   }
@@ -137,5 +242,4 @@ export class ConfirmationPopupComponent implements OnInit {
   getMeHeader(header: any) {
     return header.toUppercase();
   }
-
 }

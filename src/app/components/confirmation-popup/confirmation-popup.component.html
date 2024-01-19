@@ -1,20 +1,28 @@
-<p-dialog [(visible)]="visible" [modal]="true">
-    <ng-template pTemplate="header">
-        <p class="header font-bold flex justify-content-center">
-            {{Data?.type + ' User'}}
-        </p>
-    </ng-template>
-    <div class="flex font-medium">
-        <span>
-            Are you sure you want to {{invitationType}}
-        </span>
-    </div>
-    <div class="flex justify-content-end mt-6">
-        <p-button label="Cancel" styleClass="p-button-sm p-button-secondary" [rounded]="true" class="mr-3"
-            (click)="onReject()"></p-button>
-        <span class="invite">
-            <p-button [label]="Data?.type" styleClass="p-button-sm confirm-success btn-primary" [rounded]="true"
-                (click)="onSuccess()"></p-button>
-        </span>
-    </div>
+<p-dialog [(visible)]="showPopup" [modal]="true" (onHide)="onReject()">
+  <ng-template pTemplate="header">
+    <p class="header font-bold flex justify-content-center">
+      <span *ngIf="notUserRelated; else userType">
+        {{header}}
+      </span>
+      <ng-template #userType>
+        {{data?.type + ' User'}}
+      </ng-template>
+    </p>
+  </ng-template>
+  <div class="flex font-medium">
+    <span>
+      Are you sure you want to {{invitationType}}
+    </span>
+  </div>
+  <div class="flex justify-content-end mt-6">
+    <p-button label="Cancel" size="small" severity="secondary" [rounded]="true" class="mr-3"
+      (click)="onReject()"></p-button> 
+    <span class="invite">
+      <p-button *ngIf="notUserRelated; else userRelatedBtn" (click)="confirmDelete()" size="small" label="Confirm" [rounded]="true"></p-button>
+      <ng-template #userRelatedBtn>
+        <p-button [label]="data?.type" size="small" [rounded]="true"
+          (click)="onSuccess()"></p-button>
+      </ng-template>
+    </span>
+  </div>
 </p-dialog>

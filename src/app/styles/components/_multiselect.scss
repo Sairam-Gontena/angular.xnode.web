@@ -1,0 +1,80 @@
+ // --multiselect-label-container-background-color:#23222B
+ // --multiselect-pannel-background-color:#2e2d36
+ // --multiselect-pannel-border-color:#535354
+ // --multiselect-pannel-header-border-color:#535354
+ // multiselect-filter-container-background-color:#23222B
+ // --multiselect-filter-icon-color:#6b7280
+ // --multiselect-item-inactive-text-color:#A2A2A3
+ //--multiselect-item-highlight-text-color:#EFEEEE
+ // --multiselect-item-focus-background-color:#3a3e45
+ //--multiselect-item-hover-text-color:#A2A2A3
+ // --multiselect-item-hover-background-color:#393843
+ // --multiselect-checkbox-inactive-color:#A2A2A3
+ // --multiselect-checkbox-highlight-color:#EFEEEE
+
+
+.p-multiselect-label-container{
+    width: 40px;
+    height: 20px;
+    background-color: var(--multiselect-label-container-background-color);
+  }
+
+  .p-multiselect-clearable{
+    border: 0;
+  }
+
+  .p-multiselect .p-multiselect-trigger{
+    display: none!important;
+
+  }
+
+  .p-multiselect:not(.p-disabled).p-focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0 rgba(147, 197, 253, 0.5);
+    border: 0;
+  }
+
+ .p-multiselect-panel {
+    background: var(--multiselect-pannel-background-color);
+    border-color: var( --multiselect-pannel-border-color);
+  }
+
+  .p-multiselect-panel .p-multiselect-header {
+    border-bottom: 1px solid var(--multiselect-pannel-header-border-color);
+    background: transparent;
+  }
+
+  .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+    background-color: var(--multiselect-filter-container-background-color);
+  }
+
+  .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-multiselect-filter-icon {
+    color: var(--multiselect-filter-icon-color);
+  }
+
+  .p-multiselect-panel .p-multiselect-items{
+    padding: 0;
+  }
+
+ .p-multiselect-panel .p-multiselect-items .p-multiselect-item {
+    color: var(--multiselect-item-inactive-text-color);
+  }
+
+ .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled).p-focus {
+    color: var(--multiselect-item-highlight-text-color);
+    background: var(--multiselect-item-focus-background-color);
+  }
+
+ .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
+    color: var(--multiselect-item-hover-text-color);
+    background: var(--multiselect-item-hover-background-color);
+  }
+
+  .p-checkbox .p-checkbox-box{
+    border-color: var(--multiselect-checkbox-inactive-color);
+  }
+
+  .p-checkbox .p-checkbox-box:hover{
+    border-color: var(--multiselect-checkbox-highlight-color);
+  }

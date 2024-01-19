@@ -1,76 +1,60 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
 import { environment } from 'src/environments/environment';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-export class AuthApiService {
-  workFlow = environment.workFlowApiUrl + 'api/json-bpmn';
-  authEndPoint = environment.authApiUrl;
+export class AuthApiService extends BaseApiService {
+  override get apiUrl(): string {
+    return environment.authApiUrl;
+  }
   userLoggedIn = false;
   otpVerifyInprogress = false;
   restInprogress = false;
 
   constructor() {
+    super();
     const currentUser = localStorage.getItem('currentUser');
-    if (currentUser)
-      this.userLoggedIn = true
+    if (currentUser) this.userLoggedIn = true;
   }
 
-  config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-
-  authPut(body: any, url: string) {
-    return axios.put(this.authEndPoint + url, body);
-  }
-
-  getData(url: string) {
-    return axios.get(this.authEndPoint + url, {
-    });
-  }
-
-  login(body: any, url: string) {
-    return axios.post(this.authEndPoint + url, body, this.config);
-  }
-
-  postAuth(body: any, url: string) {
-    if (body != '') {
-      return axios.post(this.authEndPoint + url, body, this.config);
-    } else {
-      return axios.post(this.authEndPoint + url, {})
-    }
-  }
-
-  patchAuth(body: any, url: string) {
-    if (body != '') {
-      return axios.patch(this.authEndPoint + url, body, this.config);
-    } else {
-      return axios.patch(this.authEndPoint + url, {});
-    }
-  }
-
-  //Temp
-  get(url: string) {
-    return axios.get(this.authEndPoint + url, {
-    });
-  }
-
-  put(url: string) {
-    return axios.put(this.authEndPoint + url, {
-    });
-  }
-
-  delete(url: string) {
-    return axios.delete(this.authEndPoint + url);
+  isUserLoggedIn() {
+    return this.userLoggedIn;
   }
 
   setUser(event: boolean): void {
     this.userLoggedIn = event;
+  }
+
+  login(body: any) {
+    return this.post('auth/prospect/login', body);
+  }
+
+  forgotPassword(email?: string) {
+    return this.post('mfa/forgotpassword?email=' + email);
+  }
+
+  signup(body?: any) {
+    return this.post('auth/signup', body);
+  }
+
+  verifyOtp(body?: any) {
+    return this.post('mfa/verifyOTP', body);
+  }
+  resendOtp(body?: any) {
+    return this.post('mfa/resendverfication', body);
+  }
+
+  resetPassword(body?: any) {
+    return this.patch(
+      'auth/prospect/resetpassword/' +
+      body.email + '?password=' + body.password
+    );
+  }
+
+  updateUserId(body: any) {
+    return this.patch('auth/prospect/prospect_status_update', body);
   }
 
   isOtpVerifiedInprogress(event: boolean) {
@@ -81,8 +65,16 @@ export class AuthApiService {
     this.restInprogress = event;
   }
 
-  isUserLoggedIn() {
-    return this.userLoggedIn;
+  getUsersByAccountId(params?: any) {
+    let url = 'user/get_all_users?account_id=' + params.account_id;
+    return this.get(url);
   }
 
+  getAllUsers(account_id?: string) {
+    return this.get('user/get_all_users?account_id=' + account_id);
+  }
+
+  getUserDetails(email?: string) {
+    return this.get('user/' + email);
+  }
 }
