@@ -769,7 +769,7 @@ export class CrTabsComponent {
 
   publishApp(): void {
     const body = {
-      repoName: this.product.title,
+      repoName: this.product.product_uuid,
       projectName: environment.projectName,
       email: this.currentUser.email,
       crId: this.selectedCr.id,

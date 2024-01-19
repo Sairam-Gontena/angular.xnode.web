@@ -177,6 +177,9 @@
                     "dialog_content_text_color":"#A2A2A3",
                     "dialog_content_background_color":"#23222B",
                     "dialog_footer_background_color":"#23222B"
+                },
+                "sidebar":{
+                    "sidebar_background_color":"#23222B"
                 }
             }
         }

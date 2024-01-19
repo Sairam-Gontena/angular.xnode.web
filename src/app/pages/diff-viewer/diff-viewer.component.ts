@@ -188,8 +188,6 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
-
-            console.log('this.specTwoList', this.specTwoList);
           }
         }
         this.utils.loadSpinner(false);
@@ -325,8 +323,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   diffViewChangeEmiter(event: any) {
-    console.log('eventevent', event);
-
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     if (event.viewType !== null) {
@@ -345,7 +341,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   onSelectSpecMenuItem(item: any): void {
-    console.log('item', item);
     new Promise((resolve) => setTimeout(resolve, 500));
     const element = document.getElementById(item.id);
     if (element) {
