@@ -96,12 +96,9 @@
     </div>
     <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
       <div *ngIf="checktableJsonSection(cmt.referenceContent?.title); else normalView">
-        <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-        <pre *ngIf="!cmt.referenceContent?.showTable" [innerHTML]="cmt.referenceContent?.content | json"
-          style=" white-space: pre-wrap; overflow: auto"></pre>
-        <xnode-common-spec-table *ngIf="cmt.referenceContent?.showTable"
-          [specItem]="cmt.referenceContent?.content.content"
-          [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
+        <xnode-list-view [content]="cmt?.referenceContent" [searchTerm]="cmt?.referenceContent?.commentedtext"
+            [users]="usersList" [id]="cmt?.referenceContent?.id"
+            [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
       </div>
       <ng-template #normalView>
         <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)"
