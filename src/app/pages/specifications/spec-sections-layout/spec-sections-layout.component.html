@@ -288,7 +288,7 @@
               dataDictionaryPanelOpened = false
             " [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
             [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+            [specItem]="specItem" [parentTitle]="content.title" ></xnode-add-comment-overlay-panel>
         </p-overlayPanel>
         <p-overlayPanel #op1 appendTo="body"
           (onHide)="dataDictionaryPanelOpened = false; dataDictionaryshowCommentIcon = false">

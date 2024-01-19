@@ -26,9 +26,11 @@
       </div>
       <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
         <div *ngIf="checktableJsonSection(cmt.referenceContent?.parentTitle); else normalView">
-          <xnode-list-view [content]="[cmt?.referenceContent]" [searchTerm]="cmt?.referenceContent?.commentedtext"
+          <div  class="h-8rem">
+            <xnode-list-view [content]="cmt?.referenceContent" [searchTerm]="cmt?.referenceContent?.commentedtext"
             [users]="usersList" [id]="cmt?.referenceContent?.id"
             [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
+          </div>
         </div>
         <ng-template #normalView>
           <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)"
