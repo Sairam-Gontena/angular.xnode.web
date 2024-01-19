@@ -824,6 +824,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     } else {
       let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
       ele = document.getElementById(graphRefId) as HTMLElement;
+      // ele = this.bpmngraph.nativeElement;
     }
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);

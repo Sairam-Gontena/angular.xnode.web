@@ -1,4 +1,4 @@
-<div  class="content overflow-auto h-full" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
+<div  class="content overflow-auto" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
   <div *ngIf="dataToExpand.title == 'Dashboards'" class="h-full bg-white overflow-auto">
     <div class="h-full expand-spec">
       <div class="flex flex-row col-12 justify-content-end">
@@ -111,17 +111,17 @@
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
             <div class="col-6">
-              <xnode-bpmn-common [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
+              <xnode-bpmn-common [fromExpandSpec]="'true'" [bpmnRefId]="'diagramRef-1'" (dataFlowEmitter)="closeFullScreenView.emit()"
         [dataToExpand]="dataToExpand"></xnode-bpmn-common>
             </div>
             <div class="col-6">
-              <xnode-bpmn-common [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
+              <xnode-bpmn-common [bpmnRefId]="'diagramRef-2'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
         [dataToExpand]="diffdataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
             </div>
           </div>
         </span>
         <ng-template #usecaseData>
-          <xnode-bpmn-common [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
+          <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
         [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
         </ng-template>
     </div>
