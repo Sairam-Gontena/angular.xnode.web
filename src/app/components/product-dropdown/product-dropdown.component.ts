@@ -50,7 +50,7 @@ export class ProductDropdownComponent implements OnInit {
           this.myForm.patchValue({
             selectedProduct: this.products.find(
               (item: any) => item.id == this.selectedProduct.id
-            ),});
+            )});
         }, 0);
       } else {
         setTimeout(() => {

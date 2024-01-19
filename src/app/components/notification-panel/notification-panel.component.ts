@@ -184,6 +184,7 @@ export class NotificationPanelComponent {
           let product = metaData.find((x: any) => x.id === obj.product_id);
           if (!window.location.hash.includes('#/specification')) {
             this.setProductDetailsInThStore(product);
+            this.router.navigate(['/specification']);
             this.closeNotificationPanel.emit(true);
           } else {
             if (obj.entity === 'UPDATE_SPEC') {
@@ -222,7 +223,6 @@ export class NotificationPanelComponent {
     localStorage.setItem('product', JSON.stringify(product));
     localStorage.setItem('app_name', product.title);
     localStorage.setItem('has_insights', product.has_insights);
-    this.router.navigate(['/specification']);
     this.closeNotificationPanel.emit(true);
   }
 
@@ -530,6 +530,38 @@ export class NotificationPanelComponent {
       });
   }
 
+  click(){
+    let obj = {
+      crId: "f93ec929-e9ef-4efb-8de6-2fe63c433cfc",
+      description: "arun ragam has taken 'SUBMIT' action on CR:CR2416",
+      entity: "WORKFLOW",
+      productId: "d661afc1-74c2-4b71-95de-b5af4882a116",
+      status: "SUBMITTED",
+      title: "CR SUBMITTED",
+      versionId: "a6f5a585-a269-4318-ac9c-c7de83108c7e"
+    }
+    this.navigateToConversation(obj)
+  }
+
+  view(){
+    let obj = {
+      component: "Update Product Specifications",
+      crId: "c8d09ee2-c011-4e16-b414-772b808f3dc2",
+      description: "Product Specifications generation completed and saved!",
+      email: "arun.ragam@salientminds.com",
+      entity: "UPDATE_SPEC",
+      important: "true",
+      pinned: "true",
+      product_id: "d661afc1-74c2-4b71-95de-b5af4882a116",
+      read: "false",
+      recent: "true",
+      spec_status: "Completed",
+      type: "Navi",
+      versionId: "b560132b-5d11-4326-88bf-98baa7b43e4a"
+    }
+    this.goToSpec(obj)
+  }
+
   navigateToConversation(val: any) {
     this.utils.loadSpinner(true);
     this.naviApiService
@@ -537,9 +569,9 @@ export class NotificationPanelComponent {
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           const product = response.data.data?.filter((item: any) => {
-            return item.id === val.product_id ? val.product_id : val.productId;
+            return item.id === val.product_id || item.id === val.productId;;
           })[0];
-          this.storageService.saveItem(StorageKeys.Product, product);
+          this.setProductDetailsInThStore(product);
           this.goToConversation(val);
         }
       });
@@ -554,14 +586,6 @@ export class NotificationPanelComponent {
       let product = metaData.find(
         (x: any) => x.id === val.product_id || x.id === val.productId
       );
-      this.storageService.saveItem(
-        StorageKeys.Product,
-        JSON.stringify(product)
-      );
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('product', JSON.stringify(product));
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('has_insights', product.has_insights);
       this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
       if (val.entity === 'WORKFLOW') {
         this.specUtils.saveActivatedTab('CR');

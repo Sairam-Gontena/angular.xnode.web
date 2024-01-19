@@ -1,5 +1,10 @@
 <p-dropdown [options]="products" name="selectedProduct" [(ngModel)]="selectedProduct" class="app-dropdown" optionLabel="title"
 [filter]="true" filterBy="title" filterPlaceholder="Search" value="selectedProduct" (onChange)="onChangeProduct($event)">
+<ng-template pTemplate="selectedItem">
+  <div >
+    <div>{{ selectedProduct.title}}</div>
+  </div>
+</ng-template>
 <ng-template let-item pTemplate="item">
     <div class="item-container" >
         {{ item.title }}
