@@ -103,13 +103,13 @@
       <div class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div class="col-6">
-            <xnode-bpmn-common [item]="contentObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [bpmnRefId]="'diagramRef-1'"  [item]="contentObj"></xnode-bpmn-common>
           </div>
           <div class="col-6">
-            <xnode-bpmn-common [item]="diffObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [bpmnRefId]="'diagramRef-2'" [item]="diffObj"></xnode-bpmn-common>
           </div>
         </div>
-        <xnode-bpmn-common [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
+        <xnode-bpmn-common [bpmnRefId]="'diagramRef'"  [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'USER_ROLES'" [id]="contentObj.id">
         <xnode-user-roles [content]="contentObj.content" [parentTitle]="contentObj.title"
