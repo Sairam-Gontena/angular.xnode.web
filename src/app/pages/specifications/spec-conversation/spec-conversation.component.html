@@ -27,9 +27,16 @@
       <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
         <div *ngIf="checktableJsonSection(cmt.referenceContent?.parentTitle); else normalView">
           <div  class="h-8rem">
-            <xnode-list-view [content]="cmt?.referenceContent" [searchTerm]="cmt?.referenceContent?.commentedtext"
-            [users]="usersList" [id]="cmt?.referenceContent?.id"
-            [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
+            <p>{{cmt?.referenceContent.parentTitle}}</p>
+            <!-- <div *ngIf="cmt?.referenceContent?.content">
+
+            </div> -->
+              <ul >
+                <li>
+                  <b>{{cmt?.referenceContent.title}}</b>
+                  <p>{{cmt?.referenceContent.content}}</p>
+                </li>
+              </ul>
           </div>
         </div>
         <ng-template #normalView>
@@ -39,11 +46,15 @@
               [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
               [specItem]="cmt?.referenceContent?.content" [id]="cmt?.referenceContent?.id"></xnode-para-view>
           </div>
-          <div *ngIf="checkListViewSections(cmt.referenceContent?.title)" class="h-8rem">
-              <ul *ngFor="let item of cmt?.referenceContent?.content">
+          <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
+            <p>{{cmt?.referenceContent.parentTitle}}</p>
+            <!-- <div *ngIf="cmt?.referenceContent?.content">
+
+            </div> -->
+              <ul >
                 <li>
-                  <b>{{item.title}}</b>
-                  <p>{{item.content}}</p>
+                  <b>{{cmt?.referenceContent.title}}</b>
+                  <p>{{cmt?.referenceContent.content}}</p>
                 </li>
               </ul>
           </div>

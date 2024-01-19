@@ -126,7 +126,20 @@ export class DiffViewerComponent implements OnInit {
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
         innerItem.parentId = item.id;
+        innerItem.parentTitle = item.title;
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
+        if (innerItem.content && isArray(innerItem.content)) {
+          innerItem.content.forEach((obj: any) => {
+            if (
+              typeof obj !== 'string' &&
+              innerItem.parentId &&
+              innerItem.parentTitle
+            ) {
+              obj['parentId'] = innerItem.parentId;
+              obj['parentTitle'] = innerItem.title;
+            }
+          });
+        }
         return innerItem;
       }),
     ]);
@@ -197,11 +210,12 @@ export class DiffViewerComponent implements OnInit {
           response.data &&
           response.data.length > 0
         ) {
-          response.data.forEach((element: any) => {
+          response.data.forEach((element: any, index: any) => {
             element.content_data_type = 'BANNER';
+            element.sNo = index + 1 + '.0';
           });
           if (params.type === 'one') {
-            this.specList = response.data;
+            this.specList = this.changeSpecListFormat(response.data);
             this.specListForMenu = response.data;
             this.specTwoList.forEach((element1: any) => {
               this.specList.forEach((element2: any) => {
@@ -209,10 +223,8 @@ export class DiffViewerComponent implements OnInit {
                   element2.id = element1.id;
               });
             });
-            this.specTwoList = this.changeSpecListFormat(this.specTwoList);
           } else {
             this.specTwoList = this.changeSpecListFormat(response.data);
-            this.specList = this.specList;
             this.specList.forEach((element1: any) => {
               this.specTwoList.forEach((element2: any) => {
                 if (element2.title === element1.title)
@@ -266,12 +278,13 @@ export class DiffViewerComponent implements OnInit {
       productId: data.productId,
     });
   }
+
   onVersionChange(event: any, type: string) {
-    type === 'one' && event.value.id === this.selectedVersionTwo.id
-      ? (this.selectedVersionTwo = undefined)
-      : type === 'two' && event.value.id === this.selectedVersionOne.id
-      ? (this.selectedVersionOne = undefined)
-      : null;
+    // type === 'one' && event.value.id === this.selectedVersionTwo.id
+    //   ? (this.selectedVersionTwo = undefined)
+    //   : type === 'two' && event.value.id === this.selectedVersionOne.id
+    //   ? (this.selectedVersionOne = undefined)
+    //   : null;
     this.utils.loadSpinner(true);
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
@@ -353,13 +366,25 @@ export class DiffViewerComponent implements OnInit {
     //       });
     //   }
   }
+  findIndex(objectToFind: any): number {
+    return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
+  }
 
   diffViewChangeEmiter(event: any) {
+    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    console.log('version', version);
+
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     if (event.viewType !== null) {
-      this.selectedVersionOne = this.versions[0];
-      this.selectedVersionTwo = this.versions[1];
+      this.selectedVersionOne = this.versions.filter((obj: any) => {
+        return obj.id === version.id;
+      })[0];
+      const index = this.findIndex(version);
+      console.log('index', index, index + 1);
+
+      this.selectedVersionTwo =
+        this.versions[index === 0 ? index + 1 : index - 1];
       this.utils.loadSpinner(true);
       this.getMeSpecInfo({
         versionId: this.selectedVersionTwo.id,

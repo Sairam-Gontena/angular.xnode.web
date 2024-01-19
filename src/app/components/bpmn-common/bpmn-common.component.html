@@ -6,7 +6,7 @@
         <i class="pi pi-times text-white text-xl pointer" *ngIf="specExpanded" (click)="expandDataFlows()"></i>
     </div>
     <div class="col-12">
-        <div id="diagramRef"  #diagramRefContainer class="diagram-container" [ngClass]="{'disable-height':referenceId}">
+        <div [id]="bpmnRefId ? bpmnRefId : 'diagramRef'" #diagramRefContainer class="diagram-container" [ngClass]="{'disable-height':referenceId}" >
         </div>
         <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
             styleClass="w-30rem" [modal]="false">
@@ -127,7 +127,7 @@
         </span>
         <ng-template #graphView>
             <div id="sc" class="scrollable-container w-full h-full overflow-auto">
-              <div class="col-12 graphViewBpmnCommon" #bpmngraph [ngClass]="{'py-8':fromExpandSpec=='true'}" id="graph">
+              <div class="col-12 graphViewBpmnCommon"  #bpmngraph [ngClass]="{'py-8':fromExpandSpec=='true'}" [id]="bpmnRefId ? bpmnRefId+'-graph' : 'diagramRef-graph'">
               </div>
             </div>
         </ng-template>
@@ -244,8 +244,7 @@
         </p-tabView>
     </p-sidebar>
     <div id="sc" class="scrollable-container w-full h-full overflow-auto">
-        <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}" id="graph">
+        <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}"  [id]="bpmnRefId ? bpmnRefId+'-graph' : 'diagramRef-graph'" >
         </div>
     </div>
-
 </div>

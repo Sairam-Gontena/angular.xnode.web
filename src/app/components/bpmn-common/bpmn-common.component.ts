@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
+  SimpleChanges,
 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule,
@@ -48,6 +49,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   @ViewChild('diagramRefContainer')
   diagramRefContainer!: ElementRef;
   @Output() dataFlowEmitter = new EventEmitter<any>();
+  @Input() bpmnRefId?: string;
+  @Input() onDiff?: boolean;
   @Input() specExpanded?: boolean;
   @Input() referenceId: any;
   @Input() dataToExpand: any;
@@ -160,8 +163,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   initializeBpmn() {
+    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
     this.bpmnJS = new Modeler({
-      container: '#diagramRef',
+      container: '#'+bpmnRefId,
       features: {
         palette: {
           enabled: true,
@@ -214,8 +218,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     ];
 
     setTimeout(() => {
+    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
       this.bpmnJS.attachTo(
-        document.getElementById('diagramRef') as HTMLElement
+        document.getElementById(bpmnRefId) as HTMLElement
       );
       var element = this.bpmnJS.get('elementRegistry')._elements;
       const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
@@ -817,7 +822,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     if (this.referenceId) {
       ele = this.bpmngraph.nativeElement;
     } else {
-      ele = this.bpmngraph.nativeElement;
+      let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
+      ele = document.getElementById(graphRefId) as HTMLElement;
     }
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);
@@ -833,7 +839,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           svg_ele = document.getElementById('graph' + this.referenceId);
         });
     } else {
-      svg_ele = document.getElementById('graph');
+      let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
+      svg_ele = document.getElementById(graphRefId);
     }
     if (svg_ele) {
       svg_ele.addEventListener('click', (event: any) => {
@@ -842,7 +849,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         if (e.depth == 2) {
           // this.utilsService.loadSpinner(true);
           this.showUsecaseGraph = false;
-          var bpmnWindow = document.getElementById('diagramRef');
+          let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+          var bpmnWindow = document.getElementById(bpmnRefId);
           if (bpmnWindow) bpmnWindow.style.display = '';
           this.graphRedirection = true;
           var graphWindow;
