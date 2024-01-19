@@ -18,12 +18,12 @@
         <p class="text-sm font-medium">3 mins read</p>
       </div>
       <div class="flex mt-2">
-        <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-xs font-medium tag-text-color">
+        <div class="p-1 pl-3 pr-3 bg-white mr-2 border-round-2xl text-xs font-medium tag-text-color product-title">
           #{{product?.title}}
         </div>
       </div>
-      <div class="flex mt-3 author align-items-center">
-        <p class="spec-status text-sm font-medium m-0"> By {{contentObj?.content?.[0]?.modified_by}}
+      <div class="flex mt-3  align-items-center">
+        <p class="author text-sm font-medium m-0"> By {{contentObj?.content?.[0]?.modified_by}}
       </div>
       <img [src]="getMeBanner(contentObj)" alt="banner" class="mt-3 w-full">
     </div>
@@ -33,11 +33,12 @@
     ? 'sctions-grid relative'
     : 'sctions-grid-full relative'
 " id="{{ contentObj?.id }}" #contentContainer class="mt-4" *ngIf="contentObj?.content_data_type !=='BANNER'">
-<div class="flex flex-row justify-content-between">
-  <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
-    contentObj?.title}}</h3>
-    <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)" class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
-</div>
+    <div class="flex flex-row justify-content-between">
+      <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
+        contentObj?.title}}</h3>
+      <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)"
+        class="expnad-icon pointer" (click)="expandComponent.emit(contentObj)" />
+    </div>
 
 
     <div class="grid" (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
@@ -62,17 +63,17 @@
       <div class="col-12 py-0" *ngSwitchCase="'str'" [id]="contentObj.id">
         <div class="col-12 py-0" *ngIf="contentObj?.parent_data_type">
           <b>
-            <xnode-diff-generator [oldContent]="contentObj.title" [newContent]="diffObj?.title"
-              [onDiff]="onDiff"  [format]="format"></xnode-diff-generator>
+            <xnode-diff-generator [oldContent]="contentObj.title" [type]="'title'" [newContent]="diffObj?.title"
+              [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </b>
           <p>
-            <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
+            <xnode-diff-generator [oldContent]="contentObj.content" [type]="'content'" [newContent]="diffObj?.content"
               [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </p>
         </div>
         <div class="col-12 py-0" *ngIf="!contentObj?.parent_data_type">
-          <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content"
-            [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
+          <xnode-diff-generator [oldContent]="contentObj.content" [newContent]="diffObj?.content" [onDiff]="onDiff"
+            [format]="format"></xnode-diff-generator>
         </div>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'list'" [id]="contentObj.id">
@@ -80,7 +81,8 @@
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
               <li>
-                <xnode-diff-comp (expandComponent)="expandComponent.emit($event)" [contentObj]="getMeContentObj(item, contentObj)"
+                <xnode-diff-comp (expandComponent)="expandComponent.emit($event)"
+                  [contentObj]="getMeContentObj(item, contentObj)"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
             </ul>
@@ -146,15 +148,14 @@
       <div class="col-12 py-0" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
         <div *ngFor="let item of contentObj.content">
           <div class="mt-2">
-            <div >
+            <div>
               <div class="flex justify-content-between align-items-center col-12">
                 <h3>
                   {{item.title}}
                 </h3>
               </div>
               <div class="spec-table">
-                <xnode-common-spec-table [specItem]="contentObj"
-                  [content]="item.content"></xnode-common-spec-table>
+                <xnode-common-spec-table [specItem]="contentObj" [content]="item.content"></xnode-common-spec-table>
               </div>
             </div>
           </div>
