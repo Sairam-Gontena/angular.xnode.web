@@ -25,9 +25,10 @@
         </div>
       </div>
       <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
-        <div *ngIf="checktableJsonSection(cmt.referenceContent?.parentTitle); else normalView">
+        <div *ngIf="checktableJsonSection(cmt.referenceContent?.specTitle); else normalView">
           <div  class="h-8rem">
             <p>{{cmt?.referenceContent.parentTitle}}</p>
+            <p>{{cmt?.referenceContent.specTitle}}</p>
             <!-- <div *ngIf="cmt?.referenceContent?.content">
 
             </div> -->
@@ -47,8 +48,9 @@
               [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
               [specItem]="cmt?.referenceContent?.content" [id]="cmt?.referenceContent?.id"></xnode-para-view>
           </div>
-          <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
-            <p>{{cmt?.referenceContent.parentTitle}}</p>
+          <div *ngIf="checkListViewSections(cmt.referenceContent?.specTitle)" class="h-8rem">
+            <b class="m-0">{{cmt?.referenceContent.parentTitle}}</b>
+            <p class="m-0">{{cmt?.referenceContent.specTitle}}</p>
             <!-- <div *ngIf="cmt?.referenceContent?.content">
 
             </div> -->
