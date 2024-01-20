@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DiffCompComponent implements OnInit {
   product: any;
+  @Input() selectedVersionTwo: any;
   @Input() contentObj: any;
   @Input() format: any = 'line-by-line';
   @Input() diffObj: any;
@@ -29,6 +30,7 @@ export class DiffCompComponent implements OnInit {
   @Output() expandComponent = new EventEmitter<{contentObj:any, onDiff:boolean, diffObj?:any}>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
+  iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
  ComponentsToExpand=['User Personas','Open API Spec','Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
@@ -44,6 +46,13 @@ export class DiffCompComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    let version = localStorage.getItem('SPEC_VERISON');
+    let versionId:any;
+    if(version){
+      versionId = JSON.parse(version);
+      versionId = versionId.id;
+    }
+
     if (this.contentObj?.title === 'Dashboards') {
       this.targetUrl =
         environment.designStudioAppUrl +
@@ -51,7 +60,9 @@ export class DiffCompComponent implements OnInit {
         this.product?.email +
         '&id=' +
         this.product?.id +
-        '&targetUrl=' +
+        '&version_id=' + 
+        versionId +
+        '&targetUrl=' + 
         environment.xnodeAppUrl +
         '&has_insights=' +
         true +
@@ -73,6 +84,12 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
+      console.log('called here = ',this.selectedVersionTwo)
+
+      if(this.selectedVersionTwo){
+        console.log('called here =')
+      this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
+      }
   }
 
   getType(content: any): string {
@@ -175,6 +192,27 @@ export class DiffCompComponent implements OnInit {
       this.targetUrl
     );
     localStorage.setItem('targetUrl', this.targetUrl);
+  }
+  makeTrustedUrlForDiffView(versionId:any): void {
+
+    let targetUrl =
+    environment.designStudioAppUrl +
+    '?email=' +
+    this.product?.email +
+    '&id=' +
+    this.product?.id +
+    '&version_id=' + 
+    versionId +
+    '&targetUrl=' + 
+    environment.xnodeAppUrl +
+    '&has_insights=' +
+    true +
+    '&isVerified=true' +
+    '&userId=' +
+    this.currentUser.id;
+    this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(
+    targetUrl
+    );
   }
 
   isString(item: any): boolean {

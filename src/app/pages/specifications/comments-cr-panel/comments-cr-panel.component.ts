@@ -42,7 +42,7 @@ export class CommentsCrPanelComponent implements OnInit {
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
     private specService: SpecificationsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -52,14 +52,11 @@ export class CommentsCrPanelComponent implements OnInit {
         this.crData = res;
       }
     });
-    this.specUtils.loadActiveTab.subscribe((res: any) => {
-      if (res) {
-        this.activeIndex = res?.activeIndex ? res.activeIndex : res;
-      } else {
-        this.activeIndex = 0;
+
+    this.specificationUtils._openConversationPanel.subscribe((data: any) => {
+      if (data) {
+        this.activeIndex = data.parentTabIndex;
       }
-      let indexObj = { index: this.activeIndex };
-      // this.switchHeaders(indexObj);
     });
   }
 

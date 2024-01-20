@@ -72,9 +72,10 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('product_url');
     localStorage.removeItem('SPEC_DATA');
     localStorage.removeItem('targetUrl');
+    localStorage.removeItem('NOTIF_INFO');
+    localStorage.removeItem('product_email');
     this.storageService.removeItem(StorageKeys.SpecVersion);
     this.storageService.removeItem(StorageKeys.SelectedSpec);
-
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
@@ -202,8 +203,8 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.utils.hasProductPermission(false);
     }
+    this.storageService.saveItem(StorageKeys.Product, data);
     localStorage.setItem('record_id', data.id);
-    localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     if (!data.has_insights) {
@@ -333,10 +334,10 @@ export class MyProductsComponent implements OnInit {
       this.searchText === ''
         ? this.templateCard
         : this.templateCard.filter((element) => {
-            return element.title
-              ?.toLowerCase()
-              .includes(this.searchText.toLowerCase());
-          });
+          return element.title
+            ?.toLowerCase()
+            .includes(this.searchText.toLowerCase());
+        });
   }
 
   filterProductsByUserEmail() {
