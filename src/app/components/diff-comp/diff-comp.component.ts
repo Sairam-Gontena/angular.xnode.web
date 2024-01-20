@@ -85,8 +85,10 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
+      console.log('called here = ',this.selectedVersionTwo)
 
       if(this.selectedVersionTwo){
+        console.log('called here =')
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
       }
   }

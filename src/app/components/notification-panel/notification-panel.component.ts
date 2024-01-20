@@ -51,7 +51,7 @@ export class NotificationPanelComponent {
     private naviApiService: NaviApiService,
     private specificationUtils: SpecificationUtilsService,
     private specificationService: SpecificationsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.allNotifications = this.data;
@@ -558,15 +558,21 @@ export class NotificationPanelComponent {
   }
 
   navigateToConversation(val: any) {
+    val.productId = val.productId ? val.productId : val.product_id;
+    val.versionId = val.versionId ? val.versionId : val.version_id;
     this.utils.loadSpinner(true);
     this.naviApiService
       .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           const product = response.data.data?.filter((item: any) => {
-            return item.id === val.product_id ? val.product_id : val.productId;
+            return item.id === val.productId;
           })[0];
           this.storageService.saveItem(StorageKeys.Product, product);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
           this.goToConversation(val);
         }
       });
@@ -574,21 +580,7 @@ export class NotificationPanelComponent {
 
   goToConversation(val: any) {
     let notifInfo: any = val;
-    notifInfo.productId = val.product_id ? val.product_id : val.productId;
-    notifInfo.versionId = val.version_id ? val.version_id : val.versionId;
     if (!window.location.hash.includes('#/specification')) {
-      const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
-      let product = metaData.find(
-        (x: any) => x.id === val.product_id || x.id === val.productId
-      );
-      this.storageService.saveItem(
-        StorageKeys.Product,
-        JSON.stringify(product)
-      );
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('has_insights', product.has_insights);
-      this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
       if (val.entity === 'WORKFLOW') {
         this.specUtils.saveActivatedTab('CR');
       }
@@ -596,7 +588,7 @@ export class NotificationPanelComponent {
       const queryParams = {
         productId: val.productId,
         versionId: val.versionId,
-        // Add more parameters as needed
+        template_type: val.template_type
       };
       this.router.navigate(['/specification'], { queryParams });
     } else {

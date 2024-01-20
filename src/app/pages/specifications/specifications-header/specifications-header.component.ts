@@ -24,7 +24,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
-  selectedVersion: SpecVersion | undefined;
+  @Input() selectedVersion: SpecVersion | undefined;
   currentUser: any;
   metaDeta: any;
   product: any;
@@ -63,16 +63,23 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
+
     this.getStorageData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.versions = changes['versions'].currentValue;
-    this.selectedVersion = changes['versions'].currentValue[0];
+    console.log('changeschangeschangeschanges', changes);
+
+    if (changes['versions']?.currentValue) {
+      this.versions = changes['versions'].currentValue;
+    }
+    if (changes['selectedVersion']?.currentValue) {
+      this.selectedVersion = changes['selectedVersion'].currentValue;
+    }
   }
 
   getStorageData() {
+    this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);
     this.product = this.storageService.getItem(StorageKeys.Product);
