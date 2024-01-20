@@ -508,14 +508,11 @@ export class NotificationPanelComponent {
   goToConversation(val: any) {
     let notifInfo: any = val;
     if (!window.location.hash.includes('#/specification')) {
-      if (val.entity === 'WORKFLOW') {
-        this.specUtils.saveActivatedTab('CR');
-      }
       this.closeNotificationPanel.emit(true);
       const queryParams = {
         productId: val.productId,
         versionId: val.versionId,
-        template_type: val.template_type
+        template_type: val.template_type ? val.template_type : val.entity
       };
       this.router.navigate(['/specification'], { queryParams });
     } else {
@@ -541,7 +538,7 @@ export class NotificationPanelComponent {
           versionId: val.versionId,
         });
       }
-      if (val.template_type === 'CR') {
+      if (val.template_type === 'WORKFLOW') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 1,
@@ -549,9 +546,6 @@ export class NotificationPanelComponent {
         this.specificationService.getMeCrList({
           productId: val.productId
         });
-      }
-      if (val.entity === 'WORKFLOW') {
-        // this.getVersions(notifInfo);
       }
     }
     this.closeNotificationPanel.emit(true);

@@ -133,7 +133,7 @@ export class DiffViewerComponent implements OnInit {
           productId: params?.productId ? params?.productId : params?.product_id,
           versionId: params?.versionId ? params.versionId : params.version_id,
         });
-      } else if (params?.template_type === 'CR') {
+      } else if (params?.template_type === 'WORKFLOW') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 1,
