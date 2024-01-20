@@ -17,6 +17,7 @@ declare const SwaggerUIBundle: any;
 })
 export class DiffCompComponent implements OnInit {
   product: any;
+  @Input() type: string = '';
   @Input() contentObj: any;
   @Input() format: any = 'line-by-line';
   @Input() diffObj: any;
@@ -32,7 +33,7 @@ export class DiffCompComponent implements OnInit {
   iframeSrc: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
- ComponentsToExpand=['Open API Spec','Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
+  ComponentsToExpand = ['Open API Spec', 'Data Model', 'Data Dictionary', 'Usecases', 'Workflows', 'Dashboards', 'User Interface Design', 'Data Quality Checks', 'Historical Data Load', 'Glossary', 'Version Control', 'Stakeholder Approvals'];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -40,7 +41,7 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -63,7 +64,7 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     if (this.contentObj?.content_data_type === 'SWAGGER') {
       this.childLoaded.emit(true);
     }
@@ -84,8 +85,8 @@ export class DiffCompComponent implements OnInit {
     return !this.onDiff
       ? ''
       : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-      ? this.diffObj
-      : this.getObjState();
+        ? this.diffObj
+        : this.getObjState();
   }
 
   getObjState() {

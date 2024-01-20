@@ -3,7 +3,7 @@
         <div [innerHtml]="diffHTML"></div>
     </div>
     <ng-template #noDiff>
-        <div [ngStyle]="{'color': type === 'title' ? '#EFEEEE' : '#949292'}">
+        <div class="" [ngStyle]="{'color': type === 'title' ? '#EFEEEE' : '#949292'}">
             {{oldContent}}
         </div>
     </ng-template>
