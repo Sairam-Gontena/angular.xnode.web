@@ -222,7 +222,6 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          this.fetchApiSpecCall = true;
           this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
         });
     }
@@ -277,7 +276,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   async fetchOpenAPISpec(id:string,versionId:string) {
-    if(this.fetchApiSpecCall){
       const record_id = localStorage.getItem('record_id');
       let userData: any;
       userData = localStorage.getItem('currentUser');
@@ -306,9 +304,8 @@ export class DiffViewerComponent implements OnInit {
         .then((response) => response.json())
         .then((data) => (this.swaggerData = data))
         .catch((error) => console.error('Error:', error));
-      this.fetchApiSpecCall= false;
       this.utils.loadSpinner(false);
-    }
+
   }
 
   onSpecDataChange(data: any): void {
@@ -410,12 +407,11 @@ export class DiffViewerComponent implements OnInit {
   }
 
   versionChange(e:any){
-    this.fetchApiSpecCall = true;
     if(e.diffView){
-      // this.fetchOpenAPISpec('openapi-ui-spec-1');
-      // this.fetchOpenAPISpec('openapi-ui-spec-2');
+      this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
+      this.fetchOpenAPISpec('openapi-ui-spec-2',this.selectedVersionTwo.id);
     }else{
-      // this.fetchOpenAPISpec('openapi-ui-spec');
+      this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
     }
   }
 
@@ -434,7 +430,6 @@ export class DiffViewerComponent implements OnInit {
       }else{
         this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
       }
-
     }, 500);
 
 
@@ -486,7 +481,6 @@ export class DiffViewerComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.fetchApiSpecCall = true;
     this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
     this.scrollToItem();
   }
