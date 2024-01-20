@@ -60,9 +60,9 @@ export class DiffCompComponent implements OnInit {
         this.product?.email +
         '&id=' +
         this.product?.id +
-        '&version_id=' + 
+        '&version_id=' +
         versionId +
-        '&targetUrl=' + 
+        '&targetUrl=' +
         environment.xnodeAppUrl +
         '&has_insights=' +
         true +
@@ -73,21 +73,18 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  // ngAfterViewInit(){
-  //   if (this.contentObj?.content_data_type === 'SWAGGER') {
-  //     this.childLoaded.emit(true);
-  //   }
-  // }
+  ngAfterViewInit(){
+    if (this.contentObj?.content_data_type === 'SWAGGER') {
+      this.childLoaded.emit(true);
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['diffObj']?.currentValue)
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-      console.log('called here = ',this.selectedVersionTwo)
-
       if(this.selectedVersionTwo){
-        console.log('called here =')
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
       }
   }
@@ -201,9 +198,9 @@ export class DiffCompComponent implements OnInit {
     this.product?.email +
     '&id=' +
     this.product?.id +
-    '&version_id=' + 
+    '&version_id=' +
     versionId +
-    '&targetUrl=' + 
+    '&targetUrl=' +
     environment.xnodeAppUrl +
     '&has_insights=' +
     true +

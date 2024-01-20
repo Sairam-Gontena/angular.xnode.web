@@ -177,11 +177,6 @@ export class DiffViewerComponent implements OnInit {
     return flattenedData;
   }
 
-  ngAfterViewInit(){
-    // this.fetchApiSpecCall = true;
-    // this.fetchOpenAPISpec('openapi-ui-spec')
-  }
-
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersions(this.product.id, (data) => {
@@ -227,6 +222,7 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
+          this.fetchApiSpecCall = true;
           this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
         });
     }
@@ -430,7 +426,7 @@ export class DiffViewerComponent implements OnInit {
     } else {
       this.isDiffEnabled = false;
     }
-
+    console.log('in diffViewChangeEmiter',this.selectedVersionOne,this.selectedVersionTwo)
     setTimeout(() => {
       if(this.isDiffEnabled){
         this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
@@ -452,8 +448,7 @@ export class DiffViewerComponent implements OnInit {
       const index = this.findIndex(version);
       console.log('index', index, index + 1);
 
-      this.selectedVersionTwo =
-        this.versions[index === 0 ? index + 1 : index - 1];
+      this.selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
       this.utils.loadSpinner(true);
       this.getMeSpecInfo({
         versionId: this.selectedVersionTwo.id,
