@@ -163,13 +163,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   onClickSend(): void {
+    console.log('selectedContent', this.selectedContent);
+
     if (this.from == 'cr-tabs') {
       this.commentInfo.emit({
         message: this.comment,
         attachments: this.uploadedFiles,
         referenceContent:
           this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        parentId: this.parentId,
+        parentId: this.selectedContent.parentId,
       });
       return;
     }
@@ -187,7 +189,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         // createdBy: this.currentUser.user_id,
         topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
         parentEntity: this.parentEntity,
-        parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+        parentId: this.selectedContent.parentId, // It should be spec id at New comment level and parent commment id at reply level
         message: this.comment,
         referenceContent:
           this.parentEntity === 'SPEC' ? this.selectedContent : {},
@@ -203,7 +205,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           // createdBy: this.currentUser.user_id,
           topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
           parentEntity: this.parentEntity,
-          parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+          parentId: this.selectedContent.parentId, // It should be spec id at New comment level and parent commment id at reply level
           message: this.comment,
           referenceContent:
             this.parentEntity === 'SPEC' ? this.selectedContent : {},
@@ -258,14 +260,18 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       detail = 'Comment added successfully';
     }
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
+      this.specService.getMeSpecLevelTaskList({
+        parentId: this.selectedContent.parentId,
+      });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
         parentTabIndex: 0,
         childTabIndex: 1,
       });
     } else {
-      this.specService.getMeSpecLevelCommentsList({ parentId: this.parentId });
+      this.specService.getMeSpecLevelCommentsList({
+        parentId: this.selectedContent.parentId,
+      });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
         parentTabIndex: 0,
@@ -281,7 +287,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   getMeSpecLevelCommentsList() {
     this.utils.loadSpinner(true);
     this.commentsService
-      .getComments({ parentId: this.parentId, isReplyCountRequired: true })
+      .getComments({
+        parentId: this.selectedContent.parentId,
+        isReplyCountRequired: true,
+      })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._openCommentsPanel(true);
@@ -299,7 +308,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   getMeSpecLevelTaskList() {
     this.utils.loadSpinner(true);
     this.commentsService
-      .getTasks({ parentId: this.parentId, isReplyCountRequired: true })
+      .getTasks({
+        parentId: this.selectedContent.parentId,
+        isReplyCountRequired: true,
+      })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._openCommentsPanel(true);
@@ -337,7 +349,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       body = {
         // createdBy: this.currentUser.user_id,
         parentEntity: this.parentEntity,
-        parentId: this.parentId,
+        parentId: this.selectedContent.parentId,
         priority: '1',
         title: this.comment,
         description: this.comment,
@@ -372,7 +384,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
             detail: 'Task added successfully',
           });
           this.uploadedFiles = [];
-          this.specService.getMeSpecLevelTaskList({ parentId: this.parentId });
+          this.specService.getMeSpecLevelTaskList({
+            parentId: this.selectedContent.parentId,
+          });
           this.specificationUtils.openConversationPanel({
             openConversationPanel: true,
             parentTabIndex: 0,
