@@ -94,7 +94,14 @@ export class OverViewComponent {
   setStep2(step: any) {
     this.counter2 = step;
   }
-
+  formatName(fullName: string): string {
+    const names = fullName.split(' ');
+    if (names.length >= 2) {
+      return `${names[0]} ${names[names.length - 1]}`;
+    } else {
+      return fullName;
+    }
+  }
   getMeOverview() {
     this.naviApiService
       .getOverview(this.currentUser?.email, this.product?.id)
