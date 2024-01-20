@@ -29,10 +29,10 @@
     </div>
   </div>
   <div [ngClass]="
-  !contentObj?.collapsed && type !== 'list'
+  !contentObj?.collapsed && contentObj.parent_data_type !== 'list'
     ? 'sctions-grid relative'
-    : type !== 'list' ? 'sctions-grid-full relative' : ''" id="{{ contentObj?.id }}" #contentContainer class="mt-4"
-    *ngIf="contentObj?.content_data_type !=='BANNER'">
+    : contentObj.parent_data_type !== 'list' ? 'sctions-grid-full relative' : ''" id="{{ contentObj?.id }}"
+    #contentContainer class="mt-4" *ngIf="contentObj?.content_data_type !=='BANNER'">
     <div class="flex flex-row justify-content-between">
       <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
         contentObj?.title}}</h3>
@@ -81,7 +81,7 @@
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
               <li>
-                <xnode-diff-comp (expandComponent)="expandComponent.emit($event)" [type]="'list'"
+                <xnode-diff-comp (expandComponent)="expandComponent.emit($event)"
                   [contentObj]="getMeContentObj(item, contentObj)"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
@@ -145,7 +145,7 @@
               <ul *ngFor="let item of contentObj.content">
                 <li>
                   <xnode-diff-comp (expandComponent)="expandComponent.emit($event)"
-                    [contentObj]="getMeContentObj(item, contentObj)" [type]="'list'"
+                    [contentObj]="getMeContentObj(item, contentObj)"
                     [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
                 </li>
               </ul>
