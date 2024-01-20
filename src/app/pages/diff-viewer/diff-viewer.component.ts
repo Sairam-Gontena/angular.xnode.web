@@ -113,7 +113,11 @@ export class DiffViewerComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.selectedVersionOne = this.storageService.getItem(StorageKeys.SpecVersion)
     this.route.queryParams.subscribe((params: any) => {
-      this.specRouteParams = params;
+      let specRouteParams: any = params;
+      specRouteParams.productId = params.productId ? params.productId : params.product_id;
+      specRouteParams.versionId = params.versionId ? params.versionId : params.version_id;
+
+      this.specRouteParams = specRouteParams;
       if (params?.template_type === 'COMMENT') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
@@ -121,26 +125,26 @@ export class DiffViewerComponent implements OnInit {
           childTabIndex: 0,
         });
         this.specService.getMeAllComments({
-          productId: params.productId,
-          versionId: params.versionId,
+          productId: specRouteParams.productId,
+          versionId: specRouteParams.versionId,
         });
-      } else if (params?.template_type === 'TASK') {
+      } else if (specRouteParams?.template_type === 'TASK') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 0,
           childTabIndex: 1,
         });
         this.specService.getMeAllTasks({
-          productId: params.productId,
-          versionId: params.versionId,
+          productId: specRouteParams.productId,
+          versionId: specRouteParams.versionId,
         });
-      } else if (params?.template_type === 'CR') {
+      } else if (specRouteParams?.template_type === 'CR') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 1,
         });
         this.specService.getMeCrList({
-          productId: params.productId,
+          productId: specRouteParams.productId,
         });
       }
       this.getUsersData();
