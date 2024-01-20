@@ -449,15 +449,11 @@ export class CrTabsComponent {
   getMeUserAvatar(report?: any) {
     let words: any;
     if (report) {
-      words = report?.firstName + report?.lastName;
-    } else {
-      words = report?.firstName + report?.lastName;
+      words = report?.firstName?.charAt(0).toUpperCase() + report?.lastName?.charAt(0).toUpperCase()
+    } else{
+      words = null;
     }
-    if (words?.length >= 2) {
-      var firstLetterOfFirstWord = words[0][0].toUpperCase(); // Get the first letter of the first word
-      var firstLetterOfSecondWord = words[1][0].toUpperCase(); // Get the first letter of the second word
-      return firstLetterOfFirstWord + firstLetterOfSecondWord;
-    }
+    return words;
   }
 
   updateSelectedCr(obj: any) {
