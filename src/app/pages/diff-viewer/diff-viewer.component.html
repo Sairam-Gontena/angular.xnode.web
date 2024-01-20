@@ -26,7 +26,7 @@
         <div class='m-4' *ngFor="let item of specList;let i = index" [id]="item.id">
           <xnode-diff-comp (childLoaded)="onChildLoaded($event)" (expandComponent)="_expandComponent($event)" [users]="usersList" [contentObj]="item" [index]="i" [format]="format"
             [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
-            [onDiff]="specList.length!==0&& specTwoList.length!==0"></xnode-diff-comp>
+            [onDiff]="specList.length!==0&& specTwoList.length!==0" [selectedVersionTwo]="selectedVersionTwo" ></xnode-diff-comp>
         </div>
 
       </div>

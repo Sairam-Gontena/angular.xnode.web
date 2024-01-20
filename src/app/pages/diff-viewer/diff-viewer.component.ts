@@ -117,6 +117,10 @@ export class DiffViewerComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.getUsersData();
+    let version = localStorage.getItem('SPEC_VERISON');
+    if(version){
+      this.selectedVersionOne = JSON.parse(version)
+    }
   }
 
   changeSpecListFormat(list: any) {
@@ -186,7 +190,7 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          this.fetchOpenAPISpec('openapi-ui-spec');
+          this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
         });
     }
   }
@@ -239,7 +243,7 @@ export class DiffViewerComponent implements OnInit {
       });
   }
 
-  async fetchOpenAPISpec(id:string) {
+  async fetchOpenAPISpec(id:string,versionId:string) {
     const record_id = localStorage.getItem('record_id');
     let userData: any;
     userData = localStorage.getItem('currentUser');
@@ -251,7 +255,8 @@ export class DiffViewerComponent implements OnInit {
       '/' +
       email +
       '/' +
-      record_id;
+      record_id  +
+      '/'+versionId;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById(id),
       layout: 'BaseLayout',
@@ -377,10 +382,10 @@ export class DiffViewerComponent implements OnInit {
     }
     setTimeout(() => {
       if(this.isDiffEnabled){
-        this.fetchOpenAPISpec('openapi-ui-spec-1');
-        this.fetchOpenAPISpec('openapi-ui-spec-2');
+        this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
+        this.fetchOpenAPISpec('openapi-ui-spec-2',this.selectedVersionTwo.id);
       }else{
-        this.fetchOpenAPISpec('openapi-ui-spec');
+        this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
       }
     },500)
   
@@ -431,7 +436,7 @@ export class DiffViewerComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.fetchOpenAPISpec('openapi-ui-spec');
+    this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
     this.scrollToItem();
   }
 
