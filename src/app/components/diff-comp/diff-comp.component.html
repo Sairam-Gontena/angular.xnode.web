@@ -31,7 +31,7 @@
   <div [ngClass]="
   !contentObj?.collapsed && type !== 'list'
     ? 'sctions-grid relative'
-    : type !== 'list' ? 'sctions-grid-full relative' : 'p-0'" id="{{ contentObj?.id }}" #contentContainer class="mt-4"
+    : type !== 'list' ? 'sctions-grid-full relative' : ''" id="{{ contentObj?.id }}" #contentContainer class="mt-4"
     *ngIf="contentObj?.content_data_type !=='BANNER'">
     <div class="flex flex-row justify-content-between">
       <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
@@ -47,10 +47,10 @@
           [parentTitle]="parentTitle" [users]="users" [selectedContent]="contentObj" placeHolder="Add a Comment"
           [commentType]="'comment'" [parentEntity]="'SPEC'"></xnode-add-comment-overlay-panel>
       </p-overlayPanel>
-      <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end"
+      <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end pb-4"
         *ngIf="contentObj?.content_data_type === 'str'">
-        <div *ngIf="contentObj.showCommentIcon && !onDiff">
-          <img src="../assets/comment.svg" class="pointer pt-2" alt="comment" (click)="op.toggle($event)">
+        <div *ngIf="contentObj.showCommentIcon && !onDiff" class="flex align-items-center justify-content-center">
+          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
           <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
         </div>
@@ -145,7 +145,7 @@
               <ul *ngFor="let item of contentObj.content">
                 <li>
                   <xnode-diff-comp (expandComponent)="expandComponent.emit($event)"
-                    [contentObj]="getMeContentObj(item, contentObj)"
+                    [contentObj]="getMeContentObj(item, contentObj)" [type]="'list'"
                     [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
                 </li>
               </ul>
@@ -210,10 +210,12 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end" *ngIf="persona.showCommentIcon">
-                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
-                <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
-                <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon">
+                <div class="flex align-items-center justify-content-center">
+                  <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+                  <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+                  <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+                </div>
               </div>
               <xnode-user-persona [content]="persona"></xnode-user-persona>
             </div>
@@ -232,10 +234,12 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="diffObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end" *ngIf="persona.showCommentIcon">
-                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
-                <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(diffObj)"></i>
-                <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon">
+                <div class="flex align-items-center justify-content-center">
+                  <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+                  <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(diffObj)"></i>
+                  <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+                </div>
               </div>
               <xnode-user-persona [content]="persona"></xnode-user-persona>
             </div>
@@ -255,10 +259,12 @@
                 [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                 [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
             </p-overlayPanel>
-            <div class="flex justify-content-end" *ngIf="persona.showCommentIcon">
-              <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
-              <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
-              <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+            <div class="flex justify-content-end p-4" *ngIf="persona.showCommentIcon">
+              <div class="flex align-items-center justify-content-center">
+                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+                <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
+                <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+              </div>
             </div>
             <xnode-user-persona [content]="persona"></xnode-user-persona>
           </div>
