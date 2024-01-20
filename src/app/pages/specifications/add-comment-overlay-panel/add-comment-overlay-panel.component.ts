@@ -162,17 +162,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.selectedDateLabel = label;
   }
 
-  onClickSend(): void {
-    console.log('selectedContent', this.selectedContent);
+  handleCrTabs(): void {
+    this.commentInfo.emit({
+      message: this.comment,
+      attachments: this.uploadedFiles,
+      referenceContent:
+        this.parentEntity === 'SPEC' ? this.selectedContent : {},
+      parentId: this.selectedContent.parentId,
+    });
+  }
 
+  onClickSend(): void {
     if (this.from == 'cr-tabs') {
-      this.commentInfo.emit({
-        message: this.comment,
-        attachments: this.uploadedFiles,
-        referenceContent:
-          this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        parentId: this.selectedContent.parentId,
-      });
+      this.handleCrTabs();
       return;
     }
     this.utils.loadSpinner(true);
@@ -214,11 +216,16 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           followers: [],
           feedback: {},
         };
+        console.log('bobdy', body);
+
         this.saveComment(body);
       } else {
         this.prepareDataToSaveAsTask();
       }
     } else {
+      console.log('bobdy', body);
+      console.log('sele', this.selectedContent);
+
       this.saveComment(body);
     }
   }
@@ -367,11 +374,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
-    if (this.parentTitle != '' && this.parentTitle != undefined) {
-      body.referenceContent.parentTitle = this.parentTitle;
-    } else {
-      body.referenceContent.parentTitle = this.specItem.title;
-    }
     this.commentsService
       .addTask(body)
       .then((commentsReponse: any) => {

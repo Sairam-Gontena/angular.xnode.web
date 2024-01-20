@@ -127,6 +127,7 @@ export class DiffViewerComponent implements OnInit {
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
         innerItem.parentId = item.id;
+        innerItem.specTitle = item.title;
         innerItem.parentTitle = item.title;
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
         if (innerItem.content && isArray(innerItem.content)) {
@@ -136,8 +137,9 @@ export class DiffViewerComponent implements OnInit {
               innerItem.parentId &&
               innerItem.parentTitle
             ) {
-              obj['parentId'] = innerItem.parentId;
-              obj['parentTitle'] = innerItem.title;
+              obj['parentId'] = item.id;
+              obj['parentTitle'] = item.title;
+              obj['specTitle'] = innerItem.title;
             }
           });
         }
@@ -387,9 +389,9 @@ export class DiffViewerComponent implements OnInit {
 
   diffViewChangeEmiter(event: any) {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    if(event.diffView){
+    if (event.diffView) {
       this.isDiffEnabled = true;
-    }else{
+    } else {
       this.isDiffEnabled = false;
     }
     setTimeout(() => {
@@ -397,11 +399,10 @@ export class DiffViewerComponent implements OnInit {
       if(this.isDiffEnabled){
         this.fetchOpenAPISpec('openapi-ui-spec-1');
         this.fetchOpenAPISpec('openapi-ui-spec-2');
-      }else{
+      } else {
         this.fetchOpenAPISpec('openapi-ui-spec');
       }
-    },500)
-
+    }, 500);
 
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
