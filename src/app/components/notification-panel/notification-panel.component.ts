@@ -586,14 +586,19 @@ export class NotificationPanelComponent {
         JSON.stringify(product)
       );
       localStorage.setItem('record_id', product.id);
-      localStorage.setItem('product', JSON.stringify(product));
       localStorage.setItem('app_name', product.title);
       localStorage.setItem('has_insights', product.has_insights);
       this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
       if (val.entity === 'WORKFLOW') {
         this.specUtils.saveActivatedTab('CR');
       }
-      this.router.navigate(['/specification']);
+      this.closeNotificationPanel.emit(true);
+      const queryParams = {
+        productId: val.productId,
+        versionId: val.versionId,
+        // Add more parameters as needed
+      };
+      this.router.navigate(['/specification'], { queryParams });
     } else {
       if (val.template_type === 'TASK') {
         this.getMeAllTaskList(notifInfo);

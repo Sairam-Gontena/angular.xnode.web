@@ -161,7 +161,7 @@ export class SpecificationsService {
   getMeSpecLevelTaskList(data: any) {
     this.utils.loadSpinner(true);
     this.commentsService
-      .getTasks({ parentId: data.parentId, isReplyCountRequired: true })
+      .getTasks({ parentId: data.parentId })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils.saveTaskList(response.data);
