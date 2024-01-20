@@ -1,5 +1,5 @@
 <div class="overflow-hidden"
-    [ngClass]="{'spec-er-body':currentUrl == '/specification','er-body':currentUrl != '/specification'}">
+    [ngClass]="{'spec-er-body':currentUrl == '/specification','er-body':currentUrl != '/specification', 'overflow-x-auto pb-2':inExpandSpec==true}">
     <span *ngIf="bpmnSubUrl; else elseBlock">
         <xnode-bpmn-diagram ></xnode-bpmn-diagram>
     </span>

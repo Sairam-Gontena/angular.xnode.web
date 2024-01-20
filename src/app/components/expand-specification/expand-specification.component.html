@@ -1,16 +1,16 @@
 <div  class="content overflow-auto" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
-  <div *ngIf="dataToExpand.title == 'Dashboards'" class="h-full bg-white overflow-auto">
+  <div *ngIf="dataToExpand.title == 'Dashboards'" class="h-full p-4 overflow-auto">
     <div class="h-full expand-spec">
       <div class="flex flex-row col-12 justify-content-end">
-        <i class="pi pi-times text-xl text-color pointer text-white " (click)="closeFullScreenView.emit()"></i>
+        <i class="pi pi-times text-xl text-color pointer text-white mb-2" (click)="closeFullScreenView.emit()"></i>
       </div>
       <span class="h-full" *ngIf="diffdataToExpand else dashboardData">
-        <div class="grid h-full">
-          <div class="col-6 p-6">
+        <div class="grid" [ngStyle]="{'height':'99%'}">
+          <div class="col-6 pb-3">
             <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
-          <div class="col-6 p-6">
+          <div class="col-6 pb-3">
             <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
@@ -22,17 +22,17 @@
       </ng-template>
     </div>
   </div>
-  <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="h-full surface-900 overflow-auto">
+  <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="h-full p-4 overflow-auto">
     <div class="h-full expand-spec">
       <div class="flex flex-row col-12 justify-content-end">
         <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
       </div>
       <span *ngIf="diffdataToExpand else usecaseData">
         <div class="grid">
-          <div class="col-6">
+          <div class="col-6 pb-3">
             <xnode-common-usecases [users]="[]" [useCases]="dataToExpand.content"></xnode-common-usecases>
           </div>
-          <div class="col-6">
+          <div class="col-6 pb-3">
             <xnode-common-usecases [users]="[]" [useCases]="diffdataToExpand.content"></xnode-common-usecases>
           </div>
         </div>
@@ -48,7 +48,7 @@
   dataToExpand.title === 'Version Control' ||
   dataToExpand.title === 'Stakeholder Approvals' ||
   dataToExpand.title === 'Data Quality Checks'
-" class="h-full bg-white overflow-auto">
+" class="h-full p-4 bg-white overflow-auto">
     <div class="h-full expand-spec">
       <div class="flex flex-row col-12 justify-content-end">
         <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
@@ -56,14 +56,14 @@
       <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
     </div>
   </div>
-  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h overflow-auto">
+  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h p-4 overflow-auto">
     <div class="flex col-12 justify-content-between align-items-center p-4">
       <h4 class="m-0 pb-3 text-100">Swagger API</h4>
       <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>
     </div>
     <div id="openapi-ui-spec" class="openapi-spec"></div>
   </div>
-  <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="py-4">
+  <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="p-4">
     <div class="h-full expand-spec">
       <div class="flex flex-row justify-content-end">
         <i class="pi pi-times text-xl pointer text-white" (click)="closeFullScreenView.emit()"></i>
@@ -77,7 +77,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="dataToExpand.title === 'User Interface Design'" class="h-full">
+  <div *ngIf="dataToExpand.title === 'User Interface Design'" class="h-full  expand-spec p-4">
     <div class="flex col-12 justify-content-between align-items-center p-4">
       <h4 class="m-0 pb-3">User Interface Design</h4>
       <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
@@ -97,7 +97,10 @@
         </li>
       </ul>
   </div>
-  <div *ngIf="dataToExpand.title === 'User Personas'" class="h-full p-4">
+  <div *ngIf="dataToExpand.title === 'User Personas'" class="h-full expand-spec p-4">
+    <div class="flex flex-row col-12 justify-content-end">
+      <i class="pi pi-times text-xl text-color pointer text-white " (click)="closeFullScreenView.emit()"></i>
+    </div>
     <span *ngIf="diffdataToExpand else usecaseData">
       <div class="grid">
         <div class="col-6">
@@ -118,17 +121,34 @@
       </div>
     </ng-template>
   </div>
-  <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Model'" (dataFlowEmitter)="closeFullScreenView.emit()"
-    [dataToExpand]="dataToExpand" [specExpanded]="specExpanded" [specData]="'spec'"></xnode-data-model-common>
-    <div class="h-full expand-spec 1">
-    <div *ngIf="dataToExpand.title === 'Workflows'">
+  <div class="h-full expand-spec p-4" *ngIf="dataToExpand.title === 'Data Model'" >
+    <div class="flex flex-row col-12 justify-content-end">
+      <i class="pi pi-times text-xl text-color pointer text-white " (click)="closeFullScreenView.emit()"></i>
+    </div>
+    <span *ngIf="diffdataToExpand else dataModelData">
+    <div class="grid">
+      <div class="col-6 pb-3">
+        <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand" [specData]="'spec'"></xnode-data-model-common>
+      </div>
+      <div class="col-6 pb-3">
+        <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="diffdataToExpand" [specData]="'spec'"></xnode-data-model-common>
+      </div>
+    </div>
+    </span>
+    <ng-template #dataModelData>
+      <xnode-data-model-common
+      [dataToExpand]="dataToExpand" [specData]="'spec'"></xnode-data-model-common>
+    </ng-template>
+  </div>
+  <div class="h-full p-4" *ngIf="dataToExpand.title === 'Workflows'">
+      <div class="h-full expand-spec ">
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
-            <div class="col-6">
+            <div class="col-6 pb-3">
               <xnode-bpmn-common [fromExpandSpec]="'true'" [bpmnRefId]="'diagramRef-1'" (dataFlowEmitter)="closeFullScreenView.emit()"
         [dataToExpand]="dataToExpand"></xnode-bpmn-common>
             </div>
-            <div class="col-6">
+            <div class="col-6 pb-3">
               <xnode-bpmn-common [bpmnRefId]="'diagramRef-2'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
         [dataToExpand]="diffdataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
             </div>
@@ -139,5 +159,5 @@
         [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
         </ng-template>
     </div>
-    </div>
+  </div>
 </div>

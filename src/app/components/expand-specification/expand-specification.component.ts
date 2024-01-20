@@ -2,6 +2,10 @@ import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { LocalStorageService } from '../services/local-storage.service';
+import { ActivatedRoute } from '@angular/router';
+import { SpecificationsService } from 'src/app/services/specifications.service';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-expand-specification',
@@ -20,7 +24,9 @@ export class ExpandSpecificationComponent implements AfterViewInit {
   product: any;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
-  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
+  specRouteParams: any;
+  versions: any;
+  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService,private storageService:LocalStorageService,private route: ActivatedRoute,private specService: SpecificationsService) {
   }
 
   ngOnInit() {
@@ -43,10 +49,38 @@ export class ExpandSpecificationComponent implements AfterViewInit {
       this.utils.openDockedNavi.subscribe((event: any) => {
       this.isDockedNaviOpended = event
       })
+      this.route.queryParams.subscribe((params: any) => {
+        this.specRouteParams = params;
+    })
+  }
+
+  getVersions() {
+    this.utils.loadSpinner(true);
+    this.specService.getVersions(this.product.id, (data:any) => {
+      let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id })[0];
+      this.specService.getMeSpecInfo({
+        productId: this.product?.id,
+        versionId: version ? version.id : data[0].id,
+      });
+      this.versions = data;
+      this.storageService.saveItem(StorageKeys.SpecVersion, version ? version : data[0]);
+    });
+  }
+
+  findIndex(objectToFind: any): number {
+    return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
   }
 
   ngAfterViewInit() {
-    this.fetchOpenAPISpec();
+    const specVersionOne: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    if(this.diffdataToExpand.length){
+      const index = this.findIndex(specVersionOne);
+      let selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
+      this.fetchOpenAPISpec('openapi-ui-spec-1',specVersionOne.id);
+      this.fetchOpenAPISpec('openapi-ui-spec-2',selectedVersionTwo.id);
+    }else{
+      this.fetchOpenAPISpec('openapi-ui-spec',specVersionOne.id);
+    }
   }
 
   ngOnDestroy(){
@@ -55,19 +89,19 @@ export class ExpandSpecificationComponent implements AfterViewInit {
     }
   }
 
-  async fetchOpenAPISpec() {
+  async fetchOpenAPISpec(id:any,versionId:string) {
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'),
+      domNode: document.getElementById(id),
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset
       ],
-      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id,
+      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id + '/'+versionId,
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });

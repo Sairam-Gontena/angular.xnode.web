@@ -14,7 +14,6 @@
           (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
         <div class="overflow-auto flex justify-content-center"
           [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommentsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommentsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommentsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommentsPanelOpened}">
-          <!-- diff-view  -->
           <div class="w-8">
             <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">
               <p-dropdown [options]="versions" [(ngModel)]="selectedVersionOne" optionLabel="label"

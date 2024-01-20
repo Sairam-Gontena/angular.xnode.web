@@ -150,10 +150,10 @@
           </div>
         </div>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'TABLE'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'TABLE'" [id]="contentObj.id">
         <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div class="col-6">
             <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
@@ -164,7 +164,7 @@
         </div>
         <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff"  >
           <div class="col-6">
             <div id="openapi-ui-spec-1"  class="openapi-spec my-3"></div>
@@ -175,7 +175,7 @@
         </div>
         <div id="openapi-ui-spec"  *ngIf="!onDiff" class="openapi-spec my-3"></div>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
         <div *ngFor="let item of contentObj.content">
           <div class="mt-2">
             <div>
@@ -191,7 +191,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
+      <div class="col-12 py-4" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div class="col-6">
             <div *ngFor="let persona of contentObj.content" class="pb-3" (mouseover)="persona.showCommentIcon = true"
