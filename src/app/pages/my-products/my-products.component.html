@@ -1,4 +1,4 @@
-<div class="lg:p-5 p-3 overflow-auto body-container">
+<div class="lg:p-1 p-3 overflow-auto body-container">
  
     <div class="flex">
         <div class="col-4">
@@ -47,7 +47,7 @@
                 </div>
             </ng-template> -->
             <div class="grid">
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 mt-2 card-color justify-content-center align-items-center empty-card"
+                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 mt-2 card-color justify-content-center align-items-center empty-card"
                     *ngIf="filteredProducts.length == 0">
                     <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     <div class=" flex justify-content-between align-items-center card-color card-title p-3">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
+                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
                     *ngIf="filteredProducts.length > 0">
                     <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     <div class=" flex justify-content-between align-items-center card-color card-title p-3">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
+                <div class="col-6 md:col-4 lg:col-3 xl:col-3 pointer"
                     *ngFor="let data of filteredProducts |  slice:0:end ; let i = index"
                     (click)="onClickProductCard(data)">
                     <div class="card-color relative">
@@ -121,7 +121,7 @@
                 </div>
             </ng-template> -->
             <div class="grid">
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-2 card-color justify-content-center align-items-center empty-card1"
+                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
                     *ngIf="filteredProducts.length > 0">
                     <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     <div class=" flex justify-content-between align-items-center card-color card-title p-3">
@@ -130,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 md:col-4 lg:col-3 xl:col-2 pointer"
+                <div class="col-6 md:col-4 lg:col-3 xl:col-3 pointer"
                     *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
                     <div class="card-color relative">
                         <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
@@ -162,22 +162,22 @@
             </div>
         </p-tabPanel>
     </p-tabView>
-    <div class="col-12 flex justify-content-center flex-wrap" *ngIf="filteredProducts.length > 0">
-        <p-button class="flex align-items-center justify-content-center" size="small" [text]="true" *ngIf="isViewLess" icon="pi pi-arrow-right"
+    <div class="col-8 lg:col-12 xs:col-12 flex justify-content-end flex-wrap" *ngIf="filteredProducts.length > 0">
+        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="isViewLess" icon="pi pi-arrow-right"
             label="View All" [link]="true" (click)="onViewAll()">
         </p-button>
  
-        <p-button class="flex align-items-center justify-content-center" size="small" [text]="true" *ngIf="!isViewLess" icon="pi pi-arrow-right"
+        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="!isViewLess" icon="pi pi-arrow-right"
             label="View Less" [link]="true" (click)="onViewLess()">
         </p-button>
     </div>
-    <div class="col-12">
+    <div class="ccol-8 lg:col-12 xs:col-12">
         <h3 class="text-white">Recent Activity</h3>
     </div>
  
  
  
-    <div class="recentActivity col-8">
+    <div class="recentActivity col-8 lg:col-12 xs:col-12">
         <div class="filterDropdown">
             <i class="pi pi-search text-white sm:ml-3  md:ml-3" (click)="toggleSearch()" style="padding: 0 25px;"></i>
             <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search" [(ngModel)]="searchTextConversation" (input)="searchConversation()"/>

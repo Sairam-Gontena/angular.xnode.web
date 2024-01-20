@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
-import { find, orderBy, sortBy } from 'lodash';
+import { cloneDeep, find, orderBy, sortBy } from 'lodash';
 import { DropdownModule } from 'primeng/dropdown';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
@@ -344,11 +344,17 @@ export class MyProductsComponent implements OnInit {
     this.filteredProducts = this.filteredProducts.filter((obj) => {
       return obj?.user_id === this.currentUser.user_id;
     });
+    this.filteredProducts = cloneDeep(this.filteredProducts);
+    this.end = 2;
+    this.isViewLess = true;
   }
 
   onClickAllProducts(): void {
     this.filteredProducts = sortBy([...this.templateCard], ['created_on']).reverse();
     this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
+    this.filteredProducts = cloneDeep(this.filteredProducts);
+    this.end = 2;
+    this.isViewLess = true;
   }
 
   search() {

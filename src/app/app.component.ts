@@ -15,6 +15,8 @@ import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json'
 import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
+import { LocalStorageService } from './components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -58,7 +60,8 @@ export class AppComponent implements OnInit {
     private notifyApi: NotifyApiService,
     private themeService:ThemeService,
     private specUtils: SpecUtilsService,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private storageService : LocalStorageService,
   ) {
     let winUrl = window.location.href;
     if (
@@ -98,7 +101,7 @@ export class AppComponent implements OnInit {
           }
         }
         if (event.url == '/my-products') {
-          this.isSideWindowOpen = false;
+          this.isSideWindowOpen = true;
         }
       }
     });
@@ -209,9 +212,18 @@ export class AppComponent implements OnInit {
     if (!window.location.hash.includes('#/reset-password?email'))
       this.redirectToPreviousUrl();
     this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      this.isSideWindowOpen = false;
-      this.isNaviExpanded = false;
-      this.utilsService.disableDockedNavi();
+      if(window.location.hash.includes('#/my-products')){
+        this.isSideWindowOpen = true;
+        this.isNaviExpanded = false;
+        this.utilsService.EnableDockedNavi();
+        const product: any = this.storageService.getItem(StorageKeys.Product)
+        const newItem = { 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email };
+        this.openNavi(newItem);
+      }else{
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+        this.utilsService.disableDockedNavi();
+      }
     });
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = data.popup;
