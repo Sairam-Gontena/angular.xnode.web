@@ -112,11 +112,7 @@ export class DiffViewerComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.route.queryParams.subscribe((params: any) => {
-      let specRouteParams: any = params;
-      specRouteParams.productId = params.productId ? params.productId : params.product_id;
-      specRouteParams.versionId = params.versionId ? params.versionId : params.version_id;
-
-      this.specRouteParams = specRouteParams;
+      this.specRouteParams = params;
       if (params?.template_type === 'COMMENT') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
@@ -124,26 +120,26 @@ export class DiffViewerComponent implements OnInit {
           childTabIndex: 0,
         });
         this.specService.getMeAllComments({
-          productId: specRouteParams.productId,
-          versionId: specRouteParams.versionId,
+          productId: params?.productId ? params?.productId : params?.product_id,
+          versionId: params?.versionId ? params.versionId : params.version_id,
         });
-      } else if (specRouteParams?.template_type === 'TASK') {
+      } else if (params?.template_type === 'TASK') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 0,
           childTabIndex: 1,
         });
         this.specService.getMeAllTasks({
-          productId: specRouteParams.productId,
-          versionId: specRouteParams.versionId,
+          productId: params?.productId ? params?.productId : params?.product_id,
+          versionId: params?.versionId ? params.versionId : params.version_id,
         });
-      } else if (specRouteParams?.template_type === 'CR') {
+      } else if (params?.template_type === 'CR') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 1,
         });
         this.specService.getMeCrList({
-          productId: specRouteParams.productId,
+          productId: params?.productId ? params?.productId : params?.product_id,
         });
       }
       this.getUsersData();
@@ -180,7 +176,7 @@ export class DiffViewerComponent implements OnInit {
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersions(this.product.id, (data) => {
-      let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId })[0];
+      let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id })[0];
       this.specService.getMeSpecInfo({
         productId: this.product?.id,
         versionId: version ? version.id : data[0].id,
