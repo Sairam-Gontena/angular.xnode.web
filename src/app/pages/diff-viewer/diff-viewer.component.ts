@@ -51,8 +51,9 @@ export class DiffViewerComponent implements OnInit {
   isCommentsPanelOpened: boolean = false;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
-  selectedSpecItem: any;
-  loadSwagger: boolean = false;
+  selectedSpecItem:any;
+  loadSwagger: boolean= false;
+  isDiffEnabled: boolean = false;
 
   constructor(
     private utils: UtilsService,
@@ -185,7 +186,7 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results) => {
-          this.fetchOpenAPISpec();
+          this.fetchOpenAPISpec('openapi-ui-spec');
         });
     }
   }
@@ -238,7 +239,7 @@ export class DiffViewerComponent implements OnInit {
       });
   }
 
-  async fetchOpenAPISpec() {
+  async fetchOpenAPISpec(id:string) {
     const record_id = localStorage.getItem('record_id');
     let userData: any;
     userData = localStorage.getItem('currentUser');
@@ -252,7 +253,7 @@ export class DiffViewerComponent implements OnInit {
       '/' +
       record_id;
     const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'),
+      domNode: document.getElementById(id),
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
@@ -369,7 +370,20 @@ export class DiffViewerComponent implements OnInit {
 
   diffViewChangeEmiter(event: any) {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    console.log('version', version);
+    if(event.diffView){
+      this.isDiffEnabled = true;
+    }else{
+      this.isDiffEnabled = false;
+    }
+    setTimeout(() => {
+      if(this.isDiffEnabled){
+        this.fetchOpenAPISpec('openapi-ui-spec-1');
+        this.fetchOpenAPISpec('openapi-ui-spec-2');
+      }else{
+        this.fetchOpenAPISpec('openapi-ui-spec');
+      }
+    },500)
+  
 
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
@@ -417,7 +431,7 @@ export class DiffViewerComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.fetchOpenAPISpec();
+    this.fetchOpenAPISpec('openapi-ui-spec');
     this.scrollToItem();
   }
 
