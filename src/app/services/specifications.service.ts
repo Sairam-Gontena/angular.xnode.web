@@ -108,6 +108,8 @@ export class SpecificationsService {
                   element.content_data_type = 'DATA_MODEL';
                 } else if (element.title === 'Quality Assurance') {
                   element.content_data_type = 'QUALITY_ASSURANCE';
+                } else if (element.title === 'Data Model Table Data') {
+                  specObj.content.splice(index, 1);
                 }
               });
             }
