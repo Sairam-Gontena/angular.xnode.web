@@ -51,8 +51,8 @@ export class DiffViewerComponent implements OnInit {
   isCommentsPanelOpened: boolean = false;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
-  selectedSpecItem:any;
-  loadSwagger: boolean= false;
+  selectedSpecItem: any;
+  loadSwagger: boolean = false;
   isDiffEnabled: boolean = false;
 
   constructor(
@@ -65,25 +65,18 @@ export class DiffViewerComponent implements OnInit {
     private authApiService: AuthApiService,
     private specUtils: SpecUtilsService
   ) {
-    this.specificationUtils.getMeVersions.subscribe(
-      (versions: SpecVersion[]) => {
-        this.versions = versions;
-        this.versions.forEach((element: any) => {
-          element['label'] = element.specStatus + '-' + element.version;
-          element['value'] = element.id;
-        });
-      }
-    );
     this.utils.startSpinner.subscribe((event: boolean) => {
       this.loading = event;
     });
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
-      list.forEach((element: any, index: number) => {
-        element.content_data_type = 'BANNER';
-        element.sNo = index + 1 + '.0';
-      });
-      this.specList = this.changeSpecListFormat(list);
-      this.specListForMenu = list;
+      if (list && list.length) {
+        list.forEach((element: any, index: number) => {
+          element.content_data_type = 'BANNER';
+          element.sNo = index + 1 + '.0';
+        });
+        this.specList = this.changeSpecListFormat(list);
+        this.specListForMenu = list;
+      }
     });
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
@@ -128,6 +121,7 @@ export class DiffViewerComponent implements OnInit {
       item,
       ...item.content.map((innerItem: any, innerItemIndex: number) => {
         innerItem.parentId = item.id;
+        innerItem.specTitle = item.title;
         innerItem.parentTitle = item.title;
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
         if (innerItem.content && isArray(innerItem.content)) {
@@ -137,8 +131,9 @@ export class DiffViewerComponent implements OnInit {
               innerItem.parentId &&
               innerItem.parentTitle
             ) {
-              obj['parentId'] = innerItem.parentId;
-              obj['parentTitle'] = innerItem.title;
+              obj['parentId'] = item.id;
+              obj['parentTitle'] = item.title;
+              obj['specTitle'] = innerItem.title;
             }
           });
         }
@@ -375,9 +370,9 @@ export class DiffViewerComponent implements OnInit {
 
   diffViewChangeEmiter(event: any) {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    if(event.diffView){
+    if (event.diffView) {
       this.isDiffEnabled = true;
-    }else{
+    } else {
       this.isDiffEnabled = false;
     }
     setTimeout(() => {
@@ -387,8 +382,7 @@ export class DiffViewerComponent implements OnInit {
       }else{
         this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
       }
-    },500)
-  
+    }, 500);
 
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;

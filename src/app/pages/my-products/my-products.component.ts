@@ -72,9 +72,10 @@ export class MyProductsComponent implements OnInit {
     localStorage.removeItem('product_url');
     localStorage.removeItem('SPEC_DATA');
     localStorage.removeItem('targetUrl');
+    localStorage.removeItem('NOTIF_INFO');
+    localStorage.removeItem('product_email');
     this.storageService.removeItem(StorageKeys.SpecVersion);
     this.storageService.removeItem(StorageKeys.SelectedSpec);
-
     this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
