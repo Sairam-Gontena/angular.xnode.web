@@ -148,6 +148,7 @@ export class DiffViewerComponent implements OnInit {
   }
 
   ngAfterViewInit(){
+    this.fetchApiSpecCall = true;
     this.fetchOpenAPISpec('openapi-ui-spec')
   }
 
