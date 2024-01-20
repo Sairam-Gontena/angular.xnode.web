@@ -387,6 +387,16 @@ export class DiffViewerComponent implements OnInit {
     return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
   }
 
+  versionChange(e:any){
+    this.fetchApiSpecCall = true;
+    if(e.diffView){
+      this.fetchOpenAPISpec('openapi-ui-spec-1');
+      this.fetchOpenAPISpec('openapi-ui-spec-2');
+    }else{
+      this.fetchOpenAPISpec('openapi-ui-spec');
+    }
+  }
+
   diffViewChangeEmiter(event: any) {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     if (event.diffView) {
@@ -395,7 +405,6 @@ export class DiffViewerComponent implements OnInit {
       this.isDiffEnabled = false;
     }
     setTimeout(() => {
-      this.fetchApiSpecCall = true;
       if(this.isDiffEnabled){
         this.fetchOpenAPISpec('openapi-ui-spec-1');
         this.fetchOpenAPISpec('openapi-ui-spec-2');

@@ -9,7 +9,7 @@
             [specExpanded]="specExpanded"></xnode-expand-specification>
     </div>
     <div *ngIf="!specExpanded">
-    <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" [onDiffValue]="onDiffValue"
+    <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" [onDiffValue]="onDiffValue" (onVersionChange)="versionChange($event)"
       (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (specDataChange)="onSpecDataChange($event)"
       (generateSpec)="checkUserEmail()"></xnode-specifications-header>
     <div class="overflow-auto flex justify-content-center" [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommentsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommentsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommentsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommentsPanelOpened}">
