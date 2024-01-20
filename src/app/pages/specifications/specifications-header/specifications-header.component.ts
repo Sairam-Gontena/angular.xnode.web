@@ -276,6 +276,10 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   onChangeVersion(event: any): void {
     this.utils.loadSpinner(true);
+    this.onDiffViewChange.emit({
+      diffView: this.diffView,
+      viewType: this.viewType,
+    });
     this.versions.forEach((element: any) => {
       if (element.id === event.value.value) {
         this.storageService.saveItem(StorageKeys.SpecVersion, element);
