@@ -65,25 +65,18 @@ export class DiffViewerComponent implements OnInit {
     private authApiService: AuthApiService,
     private specUtils: SpecUtilsService
   ) {
-    this.specificationUtils.getMeVersions.subscribe(
-      (versions: SpecVersion[]) => {
-        this.versions = versions;
-        this.versions.forEach((element: any) => {
-          element['label'] = element.specStatus + '-' + element.version;
-          element['value'] = element.id;
-        });
-      }
-    );
     this.utils.startSpinner.subscribe((event: boolean) => {
       this.loading = event;
     });
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
-      list.forEach((element: any, index: number) => {
-        element.content_data_type = 'BANNER';
-        element.sNo = index + 1 + '.0';
-      });
-      this.specList = this.changeSpecListFormat(list);
-      this.specListForMenu = list;
+      if (list && list.length) {
+        list.forEach((element: any, index: number) => {
+          element.content_data_type = 'BANNER';
+          element.sNo = index + 1 + '.0';
+        });
+        this.specList = this.changeSpecListFormat(list);
+        this.specListForMenu = list;
+      }
     });
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
