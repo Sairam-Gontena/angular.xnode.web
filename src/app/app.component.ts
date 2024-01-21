@@ -217,7 +217,8 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
         this.utilsService.EnableDockedNavi();
         const product: any = this.storageService.getItem(StorageKeys.Product)
-        const newItem = { 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email };
+        const token: any = this.storageService.getItem(StorageKeys.ACCESS_TOKEN)
+        const newItem = { 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email, token: token };
         this.openNavi(newItem);
       }else{
         this.isSideWindowOpen = false;
@@ -443,7 +444,8 @@ export class AppComponent implements OnInit {
         '&product_user_email=' +
         productEmail +
         '&device_width=' +
-        this.screenWidth;
+        this.screenWidth +
+        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights);
       }
@@ -457,7 +459,8 @@ export class AppComponent implements OnInit {
         environment.naviAppUrl +
         '?email=' +
         this.email +
-        '&productContext=newProduct'
+        '&productContext=newProduct' +
+        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&xnode_flag=' +
