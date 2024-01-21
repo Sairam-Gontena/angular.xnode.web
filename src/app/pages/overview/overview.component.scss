@@ -1,7 +1,7 @@
 .para-text {
     color: rgba(255, 255, 255, 0.5);
     font-weight: 400rem !important;
-    font-size: 1rem;
+    font-size: 0.85rem;
     margin-left: 3rem;
 }
 
@@ -197,4 +197,11 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #23222B;
+}
+
+.text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+    display: inline-block;
 }

@@ -6,24 +6,24 @@
         </div>
     </div>
     <div class="w-6 flex justify-content-end align-items-center">
-            <i class="pi pi-question-circle pointer mr-3" (click)="onClickHelpCenter()"></i>
-            <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="pointer mr-3" />
-            <i *ngIf="notificationCount > 0" class="pi pi-bell pointer mr-3 " pBadge value={{notificationCount}}
-                severity="danger" (click)="overlayToggle($event, op)"></i>
-            <i *ngIf="notificationCount == 0" class="pi pi-bell text-base pointer mr-3"
-                (click)="overlayToggle($event, op)"></i>
-            <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
-                <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
-                    (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
-                    (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
-            </p-overlayPanel>
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
-                shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
-            <p-avatar [label]="userImage" *ngIf="username"
-                [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
-                shape="circle"></p-avatar>
-            <p-splitButton [label]="username" [model]="logoutDropdown"
-                styleClass="p-button-raised logout-split-btn"></p-splitButton>
+        <i class="pi pi-question-circle pointer mr-3" (click)="onClickHelpCenter()"></i>
+        <img src="./assets/Feedback.svg" (click)="toggleFeedbackPopup()" class="pointer mr-3" />
+        <i *ngIf="notificationCount > 0" class="pi pi-bell pointer mr-3 " pBadge value={{notificationCount}}
+            severity="danger" (click)="overlayToggle($event, op)"></i>
+        <i *ngIf="notificationCount == 0" class="pi pi-bell text-base pointer mr-3"
+            (click)="overlayToggle($event, op)"></i>
+        <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
+            <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
+                (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
+                (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
+        </p-overlayPanel>
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
+            shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
+        <p-avatar [label]="userImage" *ngIf="username" styleClass="font-medium mr-2"
+            [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
+            shape="circle"></p-avatar>
+        <p-splitButton [label]="username" [model]="logoutDropdown"
+            styleClass="p-button-raised logout-split-btn"></p-splitButton>
     </div>
     <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
         [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>
