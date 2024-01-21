@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  EventEmitter,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -18,6 +25,7 @@ declare const SwaggerUIBundle: any;
 export class DiffCompComponent implements OnInit {
   product: any;
   @Input() type: string = '';
+  @Input() selectedVersionTwo: any;
   @Input() contentObj: any;
   @Input() format: any = 'line-by-line';
   @Input() diffObj: any;
@@ -31,9 +39,23 @@ export class DiffCompComponent implements OnInit {
   @Output() expandComponent = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
+  iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
-  ComponentsToExpand = ['Open API Spec', 'Data Model', 'Data Dictionary', 'Usecases', 'Workflows', 'Dashboards', 'User Interface Design', 'Data Quality Checks', 'Historical Data Load', 'Glossary', 'Version Control', 'Stakeholder Approvals'];
+  ComponentsToExpand = [
+    'Open API Spec',
+    'Data Model',
+    'Data Dictionary',
+    'Usecases',
+    'Workflows',
+    'Dashboards',
+    'User Interface Design',
+    'Data Quality Checks',
+    'Historical Data Load',
+    'Glossary',
+    'Version Control',
+    'Stakeholder Approvals',
+  ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -41,11 +63,18 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    let version = localStorage.getItem('SPEC_VERISON');
+    let versionId: any;
+    if (version) {
+      versionId = JSON.parse(version);
+      versionId = versionId.id;
+    }
+
     if (this.contentObj?.title === 'Dashboards') {
       this.targetUrl =
         environment.designStudioAppUrl +
@@ -53,6 +82,8 @@ export class DiffCompComponent implements OnInit {
         this.product?.email +
         '&id=' +
         this.product?.id +
+        '&version_id=' +
+        versionId +
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&has_insights=' +
@@ -75,6 +106,12 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
+    console.log('called here = ', this.selectedVersionTwo);
+
+    if (this.selectedVersionTwo) {
+      console.log('called here =');
+      this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
+    }
   }
 
   getType(content: any): string {
@@ -85,8 +122,8 @@ export class DiffCompComponent implements OnInit {
     return !this.onDiff
       ? ''
       : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-        ? this.diffObj
-        : this.getObjState();
+      ? this.diffObj
+      : this.getObjState();
   }
 
   getObjState() {
@@ -177,6 +214,25 @@ export class DiffCompComponent implements OnInit {
       this.targetUrl
     );
     localStorage.setItem('targetUrl', this.targetUrl);
+  }
+  makeTrustedUrlForDiffView(versionId: any): void {
+    let targetUrl =
+      environment.designStudioAppUrl +
+      '?email=' +
+      this.product?.email +
+      '&id=' +
+      this.product?.id +
+      '&version_id=' +
+      versionId +
+      '&targetUrl=' +
+      environment.xnodeAppUrl +
+      '&has_insights=' +
+      true +
+      '&isVerified=true' +
+      '&userId=' +
+      this.currentUser.id;
+    this.iframeSrc1 =
+      this.domSanitizer.bypassSecurityTrustResourceUrl(targetUrl);
   }
 
   isString(item: any): boolean {
