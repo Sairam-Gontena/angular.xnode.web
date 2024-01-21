@@ -66,7 +66,7 @@
             ">
           <p-overlayPanel #op1 appendTo="body" (onHide)="usecasePanelOpened = false; usecaseshowCommentIcon = false">
             <xnode-add-task *ngIf="usecasePanelOpened" (closeOverlay)="op1.toggle(false); usecasePanelOpened = false"
-              [selectedContent]="content" [reveiwerList]="reveiwerList" [users]="usersList" placeHolder="Add a Task"
+              [selectedContent]="content" [users]="usersList" placeHolder="Add a Task"
               [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
@@ -126,7 +126,7 @@
             <xnode-add-task *ngIf="userinterfacePanelOpened"
               (closeOverlay)="op1.toggle(false); userinterfacePanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -171,7 +171,7 @@
             <xnode-add-task *ngIf="dataManagementPanelOpened"
               (closeOverlay)="op1.toggle(false); dataManagementPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem" ></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12" *ngIf="content">
@@ -212,7 +212,7 @@
           <p-overlayPanel #op1 appendTo="body" (onHide)="workflowPanelOpened = false; workflowshowCommentIcon = false">
             <xnode-add-task *ngIf="workflowPanelOpened" (closeOverlay)="op1.toggle(false); workflowPanelOpened = false"
               [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-              [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [parentId]="specItem.id" [specItem]="specItem" ></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -641,7 +641,7 @@
           (onHide)="historicalDataPanelOpened = false; historicalDatashowCommentIcon = false">
           <xnode-add-task (closeOverlay)="op1.toggle(false); historicalDataPanelOpened = false"
             [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+            [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div class="spec-table">
@@ -686,7 +686,7 @@
             <xnode-add-task *ngIf="usepersonaPanelOpened"
               (closeOverlay)="op1.toggle(false); usepersonaPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -726,7 +726,7 @@
         <p-overlayPanel #op1 appendTo="body" (onHide)="glossaryPanelOpened = false; glossaryshowCommentIcon = false">
           <xnode-add-task *ngIf="glossaryPanelOpened" (closeOverlay)="op1.toggle(false); glossaryPanelOpened = false"
             [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+            [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div class="spec-table">
@@ -765,7 +765,7 @@
           <xnode-add-task *ngIf="versionControlPanelOpened"
             (closeOverlay)="op1.toggle(false); versionControlPanelOpened = false" [selectedContent]="content"
             [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+            [specItem]="specItem" ></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div class="spec-table">
@@ -805,7 +805,7 @@
             <xnode-add-task *ngIf="stakeHolderPanelOpened"
               (closeOverlay)="op1.toggle(false); stakeHolderPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="spec-table">
@@ -847,7 +847,7 @@
             <xnode-add-task *ngIf="dataQualityPanelOpened"
               (closeOverlay)="op1.toggle(false); dataQualityPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="spec-table">
@@ -897,7 +897,7 @@
                 <xnode-add-task *ngIf="testCasePanelOpened"
                   (closeOverlay)="op1.toggle(false); testCasePanelOpened = false" [selectedContent]="content"
                   [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                  [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+                  [specItem]="specItem" ></xnode-add-task>
               </p-overlayPanel>
             </div>
             <div class="spec-table">
@@ -934,7 +934,7 @@
           <p-overlayPanel #op1 appendTo="body" (onHide)="qaPanelOpened = false; qashowCommentIcon = false">
             <xnode-add-task *ngIf="qaPanelOpened" (closeOverlay)="op1.toggle(false); qaPanelOpened = false"
               [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-              [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -986,7 +986,7 @@
                         <xnode-add-task *ngIf="commentOverlayPanelOpened" (closeOverlay)="op1.toggle(false)"
                           [selectedContent]="content" [users]="usersList" placeHolder="Add a Task"
                           [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-                          [reveiwerList]="reveiwerList"></xnode-add-task>
+                        ></xnode-add-task>
                       </p-overlayPanel>
                     </div>
                   </div>
@@ -1053,7 +1053,7 @@
                             <xnode-add-task *ngIf="commentOverlayPanelOpened" (closeOverlay)="op1.toggle(false)"
                               [selectedContent]="content" [users]="usersList" placeHolder="Add a Task"
                               [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-                              [reveiwerList]="reveiwerList"></xnode-add-task>
+                             ></xnode-add-task>
                           </p-overlayPanel>
                         </div>
                       </div>
@@ -1110,7 +1110,7 @@
             <xnode-add-task *ngIf="openAPIPanelOpened" (closeOverlay)="
           openAPIop.toggle(false); openAPIPanelOpened = false" [selectedContent]="content" [users]="usersList"
               placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-              [reveiwerList]="reveiwerList"></xnode-add-task>
+             ></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -1121,17 +1121,17 @@
     <div *ngIf="content.title === 'User Roles'">
       <xnode-user-roles [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)" [searchTerm]="searchTerm"
         [content]="content.content" [users]="usersList" [selectedContent]="selectedContent"
-        [parentTitle]="content.title" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-user-roles>
+        [parentTitle]="content.title" [specItem]="specItem" ></xnode-user-roles>
     </div>
 
     <div class="w-full" *ngIf="checkListViewSections(content.title)" [id]="content.id">
       <xnode-list-view [content]="content.content" [parentTitle]="content.title" [selectedContent]="selectedContent"
         [searchTerm]="searchTerm" [users]="usersList" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
-        [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-list-view>
+        [specItem]="specItem"></xnode-list-view>
     </div>
 
     <div *ngIf="checkParaViewSections(content.title) &&  content.title != 'Data Model' " [id]="content.id">
-      <xnode-para-view [content]="content.content" [reveiwerList]="reveiwerList" [searchTerm]="searchTerm"
+      <xnode-para-view [content]="content.content" [searchTerm]="searchTerm"
         [users]="usersList" [specItem]="specItem" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
         [content]="content" [selectedContent]="selectedContent"></xnode-para-view>
     </div>

@@ -90,7 +90,7 @@ export class BpmnDiagramComponent
     private storageService: LocalStorageService,
     private router: Router,
     private naviApiService: NaviApiService,
-    private workflowApiService: WorkflowApiService,
+    private workflowApiService: WorkflowApiService
   ) {}
 
   ngOnInit(): void {
@@ -107,23 +107,48 @@ export class BpmnDiagramComponent
     this.getUseCases(this.product);
   }
 
-  getUseCases(data:any){
-    this.naviApiService.getUsecases(data.id).then((response: any) => {
-          if (response?.status === 200) {
-            this.useCases = response.data;
-            this.auditUtil.postAudit( 'RETRIEVE_USECASES',1,'SUCCESS','user-audit');
-            this.loadGraph();
-          } else {
-            this.utilsService.loadToaster({ severity: 'error',summary: 'ERROR',detail: response?.data?.detail,});
-            this.auditUtil.postAudit('RETRIEVE_USECASES' + response?.data?.detail,1,'FAILURE','user-audit');
-          }
-          this.utilsService.loadSpinner(false);
-        })
-        .catch((error) => {
-          this.utilsService.loadToaster({ severity: 'error',summary: 'Error', detail: error,});
-          this.utilsService.loadSpinner(false);
-          this.auditUtil.postAudit('RETRIEVE_USECASES' + error, 1,'FAILURE','user-audit');
+  getUseCases(data: any) {
+    this.naviApiService
+      .getUsecases(data.id)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          this.useCases = response.data;
+          this.auditUtil.postAudit(
+            'RETRIEVE_USECASES',
+            1,
+            'SUCCESS',
+            'user-audit'
+          );
+          this.loadGraph();
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
+          this.auditUtil.postAudit(
+            'RETRIEVE_USECASES' + response?.data?.detail,
+            1,
+            'FAILURE',
+            'user-audit'
+          );
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
         });
+        this.utilsService.loadSpinner(false);
+        this.auditUtil.postAudit(
+          'RETRIEVE_USECASES' + error,
+          1,
+          'FAILURE',
+          'user-audit'
+        );
+      });
   }
 
   loadGraph() {
@@ -783,10 +808,10 @@ export class BpmnDiagramComponent
   // graph functions and variables
   /*************************************************************************************************** */
   modifyGraphData(data: any) {
-    if(data){
+    if (data) {
       data.forEach((d: any) => {
         let temp_title;
-       d.children = [];
+        d.children = [];
         for (let i = 0; i < d.xflows?.length; i++) {
           temp_title = d.xflows[i].name;
           d.children.push({

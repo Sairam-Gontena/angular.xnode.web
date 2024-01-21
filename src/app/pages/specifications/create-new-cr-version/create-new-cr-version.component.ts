@@ -270,7 +270,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       };
     }
     let specData: any[] | undefined = this.localStorageService.getItem(
-      StorageKeys.SpecData
+      StorageKeys.SPEC_DATA
     );
     if (specData) {
       body.baseVersionId = specData[0].versionId;

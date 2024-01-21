@@ -1,4 +1,4 @@
-<div  class="content overflow-hidden" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
+<div  class="content overflow-hidden h-full" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
   <div *ngIf="dataToExpand.title == 'Dashboards'" class="h-full bg-white overflow-auto">
     <div class="h-full expand-spec">
       <div class="flex flex-row col-12 justify-content-end">
@@ -30,7 +30,7 @@
       <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
     </div>
   </div>
-  <div *ngIf="dataToExpand.title === 'OpenAPI Spec'" class="swagger-h overflow-auto">
+  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h overflow-auto">
     <div class="flex col-12 justify-content-between align-items-center p-4">
       <h4 class="m-0 pb-3 text-100">Swagger API</h4>
       <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>

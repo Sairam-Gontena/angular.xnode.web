@@ -20,6 +20,7 @@
 .app-body-wrapper-full {
   width: 100%;
   height: calc(100vh - 40px);
+  overflow: auto;
 }
 
 @media (min-width: 768px) {

@@ -1,0 +1,73 @@
+// :host ::ng-deep.d2h-wrapper {
+//     width: 50% !important;
+// }
+:host ::ng-deep .d2h-file-header {
+    background: #3A3942;
+    color: #DEDEDE;
+}
+
+:host ::ng-deep .d2h-changed-tag {
+    border: none;
+    background: orange;
+    padding: 3px;
+    border-radius: 4px;
+    color: #000000;
+}
+
+:host ::ng-deep .d2h-code-side-line {
+    width: auto;
+}
+
+:host ::ng-deep .d2h-info {
+    background: #3A3942;
+    color: #ffffff;
+}
+
+
+:host ::ng-deep .d2h-del {
+    background: #fbb5b5;
+    color: #e70000;
+    text-decoration: line-through !important;
+}
+
+:host ::ng-deep .d2h-code-side-line del {
+    color: #fbb5b5;
+    background: #ff3131;
+    text-decoration: line-through !important;
+
+}
+
+:host ::ng-deep .d2h-code-side-line ins {
+    background: green;
+    color: #a5dbb1;
+}
+
+:host ::ng-deep .d2h-ins {
+    background: #a5dbb1;
+    color: green;
+}
+
+:host ::ng-deep .d2h-code-line-ctn {
+    white-space: normal !important
+}
+
+:host ::ng-deep .d2h-file-diff .d2h-ins.d2h-change {
+    background: #a5dbb1;
+    color: green;
+}
+:host ::ng-deep .d2h-code-line ins, .d2h-code-side-line ins{
+    background: green;
+    color: #a5dbb1;
+}
+
+:host ::ng-deep .d2h-file-diff .d2h-del.d2h-change{
+    background: #fbb5b5;
+    color: #e70000;
+    text-decoration: line-through;
+
+}
+:host ::ng-deep .d2h-code-line del, .d2h-code-side-line del{
+    background-color: #ff3131;
+    color: #fbb5b5;
+    text-decoration: line-through !important;
+}

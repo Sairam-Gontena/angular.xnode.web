@@ -8,8 +8,12 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from '../services/spec-utils.service';
 import { CommentsService } from 'src/app/api/comments.service';
-import { SpecService } from 'src/app/api/spec.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { Product } from 'src/models/product';
+import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificationUtils.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecVersion } from 'src/models/spec-versions';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -26,15 +30,13 @@ export class NotificationPanelComponent {
   activeFilter: string = '';
   allNotifications: any[] = [];
   currentUser?: any;
-  account_id: any;
   filterTypes: any = {
     recent: false,
     important: false,
     pinned: false,
     all: true,
   };
-  email: string = '';
-  productId: string = '';
+  product?: Product;
   nonProductContextRoutes = ['/my-products', '/feedback-list', '/help-center'];
 
   constructor(
@@ -45,25 +47,17 @@ export class NotificationPanelComponent {
     private storageService: LocalStorageService,
     private specUtils: SpecUtilsService,
     private commentsService: CommentsService,
-    private specService: SpecService,
-    private naviApiService: NaviApiService
-  ) {
-    let user = localStorage.getItem('currentUser');
-    if (user) {
-      let userObj = JSON.parse(user);
-      this.email = userObj?.email;
-    }
-    let product = localStorage.getItem('product');
-    if (product) {
-      let productObj = JSON.parse(product);
-      this.productId = productObj?.id;
-    }
-  }
+    private specService: SpecApiService,
+    private naviApiService: NaviApiService,
+    private specificationUtils: SpecificationUtilsService,
+    private specificationService: SpecificationsService
+  ) { }
 
   ngOnInit(): void {
     this.allNotifications = this.data;
     this.notifications = this.allNotifications;
-    this.currentUser = UserUtil.getCurrentUser();
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
   }
 
   getMeComponent(comp: any) {
@@ -164,23 +158,18 @@ export class NotificationPanelComponent {
       });
   }
 
-  goToCr(obj: any) {
-    this.storeProductInfoForDeepLink('deep_link_info', obj)
-      .then(() => {
-        this.router.navigate(['/specification']);
-      })
-      .catch((error) => {
-        console.error('Error storing data:', error);
-      });
-  }
 
   goToSpec(obj: any) {
+    this.utils.loadSpinner(true);
     this.naviApiService
       .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
-          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
           const metaData: any = response.data.data;
+          this.storageService.saveItem(
+            StorageKeys.MetaData,
+            response.data.data
+          );
           let product = metaData.find((x: any) => x.id === obj.product_id);
           if (!window.location.hash.includes('#/specification')) {
             this.setProductDetailsInThStore(product);
@@ -191,7 +180,35 @@ export class NotificationPanelComponent {
               localStorage.setItem('product', JSON.stringify(product));
               localStorage.setItem('app_name', product.title);
               localStorage.setItem('has_insights', product.has_insights);
-              this.getVersions(obj);
+              this.specificationService.getVersions(
+                product?.id,
+                (versions: SpecVersion[]) => {
+                  this.specificationService.getMeSpecInfo(
+                    {
+                      productId: product?.id,
+                      versionId: obj.versionId,
+                    },
+                    (specList) => {
+                      if (specList) {
+                        this.specificationService.getMeCrList({
+                          productId: product.id,
+                        });
+                        this.storageService.saveItem(
+                          StorageKeys.SpecVersion,
+                          versions.filter((version: SpecVersion) => {
+                            return version.id === obj.versionId;
+                          })[0]
+                        );
+                        this.specificationUtils.openConversationPanel({
+                          openConversationPanel: true,
+                          mainTabIndex: 1,
+                          childTabIndex: null,
+                        });
+                      }
+                    }
+                  );
+                }
+              );
             } else {
               this.setProductDetailsInThStore(product);
             }
@@ -224,69 +241,6 @@ export class NotificationPanelComponent {
     localStorage.setItem('has_insights', product.has_insights);
     this.router.navigate(['/specification']);
     this.closeNotificationPanel.emit(true);
-  }
-
-  getVersions(obj: any) {
-    this.utils.loadSpinner(true);
-    this.specService
-      .getVersionIds(obj?.product_id ? obj.product_id : obj.productId)
-      .then((response) => {
-        if (response.status === 200 && response.data) {
-          this.getMeSpecInfo({
-            versions: response.data,
-            productId: obj.product_id ? obj.product_id : obj.productId,
-            versionId: obj.versionId,
-          });
-          this.getMeCrList({
-            productId: obj.product_id ? obj.product_id : obj.productId,
-          });
-          this.specUtils._updatedSelectedProduct(true);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Network Error',
-          });
-        }
-      })
-      .catch((err: any) => {
-        this.utils.loadSpinner(false);
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: err,
-        });
-      });
-  }
-
-  getMeSpecInfo(body?: any) {
-    this.specService
-      .getSpec({ productId: body.productId, versionId: body.versionId })
-      .then((response) => {
-        if (
-          response.status === 200 &&
-          response.data &&
-          response.data.length > 0
-        ) {
-          this.specUtils._getLatestSpecVersions({
-            versions: body.versions,
-            specData: response.data,
-            productId: body.productId,
-            versionId: body.versionId,
-          });
-        }
-        this.utils.loadSpinner(false);
-        this.closeNotificationPanel.emit(true);
-      })
-      .catch((error) => {
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'Error',
-          detail: error,
-        });
-        this.utils.loadSpinner(false);
-        this.closeNotificationPanel.emit(true);
-      });
   }
 
   getMeLabel(obj: any) {
@@ -381,8 +335,8 @@ export class NotificationPanelComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.productId
+            this.currentUser.emil,
+            this.product?.id
           );
         } else {
           let user_audit_body = {
@@ -395,8 +349,8 @@ export class NotificationPanelComponent {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.productId
+            this.currentUser.emil,
+            this.product?.id
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -417,8 +371,8 @@ export class NotificationPanelComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.productId
+          this.currentUser.emil,
+          this.product?.id
         );
         this.utils.loadToaster({
           severity: 'error',
@@ -455,8 +409,8 @@ export class NotificationPanelComponent {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.productId
+            this.currentUser.emil,
+            this.product?.id
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -477,8 +431,8 @@ export class NotificationPanelComponent {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.productId
+          this.currentUser.emil,
+          this.product?.id
         );
         this.utils.loadToaster({
           severity: 'error',
@@ -531,15 +485,21 @@ export class NotificationPanelComponent {
   }
 
   navigateToConversation(val: any) {
+    val.productId = val.productId ? val.productId : val.product_id;
+    val.versionId = val.versionId ? val.versionId : val.version_id;
     this.utils.loadSpinner(true);
     this.naviApiService
       .getMetaData(this.currentUser?.email)
       .then((response) => {
         if (response?.status === 200 && response.data.data?.length) {
           const product = response.data.data?.filter((item: any) => {
-            return item.id === val.product_id ? val.product_id : val.productId;
+            return item.id === val.productId;
           })[0];
           this.storageService.saveItem(StorageKeys.Product, product);
+          localStorage.setItem('record_id', product.id);
+          localStorage.setItem('app_name', product.title);
+          localStorage.setItem('has_insights', product.has_insights);
+          this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
           this.goToConversation(val);
         }
       });
@@ -547,147 +507,54 @@ export class NotificationPanelComponent {
 
   goToConversation(val: any) {
     let notifInfo: any = val;
-    notifInfo.productId = val.product_id ? val.product_id : val.productId;
-    notifInfo.versionId = val.version_id ? val.version_id : val.versionId;
     if (!window.location.hash.includes('#/specification')) {
-      const metaData: any = this.storageService.getItem(StorageKeys.MetaData);
-      let product = metaData.find(
-        (x: any) => x.id === val.product_id || x.id === val.productId
-      );
-      this.storageService.saveItem(
-        StorageKeys.Product,
-        JSON.stringify(product)
-      );
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('product', JSON.stringify(product));
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('has_insights', product.has_insights);
-      this.storageService.saveItem(StorageKeys.NOTIF_INFO, val);
-      if (val.entity === 'WORKFLOW') {
-        this.specUtils.saveActivatedTab('CR');
-      }
-      this.router.navigate(['/specification']);
+      this.closeNotificationPanel.emit(true);
+      const queryParams = {
+        productId: val.productId,
+        versionId: val.versionId,
+        template_type: val.template_type ? val.template_type : val.entity
+      };
+      this.router.navigate(['/specification'], { queryParams });
     } else {
       if (val.template_type === 'TASK') {
-        this.getMeAllTaskList(notifInfo);
+        this.specificationUtils.openConversationPanel({
+          openConversationPanel: true,
+          parentTabIndex: 0,
+          childTabIndex: 1,
+        });
+        this.specificationService.getMeAllTasks({
+          productId: val.productId,
+          versionId: val.versionId,
+        });
       }
       if (val.template_type === 'COMMENT') {
-        this.getMeAllCommentsTasks(notifInfo);
+        this.specificationUtils.openConversationPanel({
+          openConversationPanel: true,
+          parentTabIndex: 0,
+          childTabIndex: 0,
+        });
+        this.specificationService.getMeAllComments({
+          productId: val.productId,
+          versionId: val.versionId,
+        });
       }
-      if (val.template_type === 'CR') {
-        this.getMeCrList(notifInfo);
-      }
-      if (val.entity === 'WORKFLOW') {
-        this.getVersions(notifInfo);
+      if (val.template_type === 'WORKFLOW') {
+        this.specificationUtils.openConversationPanel({
+          openConversationPanel: true,
+          parentTabIndex: 1,
+        });
+        this.specificationService.getMeCrList({
+          productId: val.productId
+        });
       }
     }
     this.closeNotificationPanel.emit(true);
   }
 
-  getMeCrList(notifInfo: any) {
-    let body: any = {
-      productId: notifInfo.productId,
-    };
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getCrList(body)
-      .then((res: any) => {
-        if (res && res.data) {
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._loadActiveTab(1);
-          this.specUtils._getMeUpdatedCrs(res.data);
-        } else {
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: res?.data?.common?.status,
-          });
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-        this.utils.loadSpinner(false);
-      });
-  }
-
-  handleNotification(val: any) {
-    if (val.template_type === 'TASK') {
-      this.getMeAllTaskList(val);
-    } else {
-      this.specUtils._openCommentsPanel(true);
-      this.specUtils._loadActiveTab({
-        activeIndex: 1,
-        productId: val.product_id,
-        versionId: val.version_id,
-      });
-      this.router.navigate(['/specification']);
-    }
-  }
-
-  getMeAllTaskList(obj: any) {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getTasksByProductId({
-        productId: obj.productId,
-        versionId: obj.versionId,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._getMeUpdatedTasks(response.data);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._getSpecBasedOnVersionID(obj);
-          this.specUtils._tabToActive(obj.template_type);
-          this.router.navigate(['/specification']);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
-  getMeAllCommentsTasks(obj: any) {
-    this.utils.loadSpinner(true);
-    this.commentsService
-      .getCommentsByProductId({
-        productId: obj.productId,
-        versionId: obj.versionId,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._getMeUpdatedComments(response.data);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._getSpecBasedOnVersionID(obj);
-          this.specUtils._tabToActive(obj.template_type);
-          this.router.navigate(['/specification']);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
 
   ngOnDestroy(): void {
-    this.specUtils._getSpecBasedOnVersionID(null);
   }
 
-  getAllProductsInfo(key: string) {
-    return new Promise((resolve, reject) => {
-      try {
-        const data = localStorage.getItem(key);
-        resolve(data);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
     return new Promise((resolve, reject) => {

@@ -100,7 +100,7 @@ export class LinkToCrComponent implements OnInit {
       if (msg.msgType === MessageTypes.LinkToCR) {
         if (this.comment) {
           this.specData = this.localStorageService.getItem(
-            StorageKeys.SpecData
+            StorageKeys.SPEC_DATA
           );
         }
       }

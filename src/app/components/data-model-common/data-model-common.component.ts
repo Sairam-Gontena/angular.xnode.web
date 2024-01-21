@@ -78,9 +78,9 @@ export class DataModelCommonComponent {
     });
     setTimeout(() => {
       if (this.specData === 'spec') {
-        const list: any = this.storageService.getItem(StorageKeys.SpecData);
-        list[3].content.forEach((item:any)=>{
-          if(item.title=='Data Model'){
+        const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
+        list[3].content.forEach((item: any) => {
+          if (item.title == 'Data Model') {
             this.dataModel = item.content;
           }
         });

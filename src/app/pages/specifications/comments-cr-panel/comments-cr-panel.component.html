@@ -1,12 +1,14 @@
-<div class="relative w-full ">
-    <img src="../assets/comments-cr-close.svg" class="pointer comments-cr-close" alt="close" (click)="onClickClose()">
+<div class="fixed">
+    <div class="relative">
+        <img src="../assets/comments-cr-close.svg" class="pointer comments-cr-close" alt="close"
+            (click)="onClickClose()">
+    </div>
     <p-tabView [(activeIndex)]="activeIndex" class="comments-cr-tabs" (onChange)="switchHeaders($event);">
         <p-tabPanel header="Conversations">
-            <xnode-comments-tabs [swaggerData]="swaggerData" [usersList]="usersList"></xnode-comments-tabs>
+            <xnode-comments-tabs [swaggerData]="swaggerData" [usersList]="userList"></xnode-comments-tabs>
         </p-tabPanel>
         <p-tabPanel header="Change Request">
-            <xnode-cr-tabs [swaggerData]="swaggerData" [crData]="crData" [activeIndex]="activeIndex"
-                [reveiwerList]="reveiwerList"></xnode-cr-tabs>
+            <xnode-cr-tabs [swaggerData]="swaggerData" [crData]="crData" [activeIndex]="activeIndex"></xnode-cr-tabs>
         </p-tabPanel>
     </p-tabView>
 </div>

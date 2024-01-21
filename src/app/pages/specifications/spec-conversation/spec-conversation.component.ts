@@ -137,15 +137,16 @@ export class SpecConversationComponent {
   }
 
   checkSwaggerItem() {
-    this.list.forEach((item: any) => {
-      if (item.referenceContent.title == 'OpenAPI Spec') {
-        of([])
-          .pipe(delay(500))
-          .subscribe((results) => {
-            this.fetchOpenSpecApi(item.id);
-          });
-      }
-    });
+    if (this.list.length)
+      this.list.forEach((item: any) => {
+        if (item.referenceContent.title == 'OpenAPI Spec') {
+          of([])
+            .pipe(delay(500))
+            .subscribe((results) => {
+              this.fetchOpenSpecApi(item.id);
+            });
+        }
+      });
   }
 
   fetchOpenSpecApi(id: any) {

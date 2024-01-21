@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
+  SimpleChanges,
 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule,
@@ -44,7 +45,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     | ElementRef
     | undefined;
   @Output() dataFlowEmitter = new EventEmitter<any>();
-  @Input() specExpanded?: boolean;
+  @Input() bpmnRefId?: string;
+  @Input() onDiff?: boolean; 
+  @Input() specExpanded?: boolean; 
   @Input() referenceId: any;
   @Input() dataToExpand: any;
   @Input() item: any;
@@ -98,15 +101,12 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    if (this.product && !this.product?.has_insights) {
-      this.utilsService.showProductStatusPopup(true);
-      return;
-    }
-    const list: any = this.storageService.getItem(StorageKeys.SpecData);
+    const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.useCases = list[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
-      var bpmnWindow = document.getElementById('diagramRef');
+      let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+      var bpmnWindow = document.getElementById(bpmnRefId)
       if (bpmnWindow) bpmnWindow.style.display = 'None';
       this.graphRedirection = false;
       var graphWindow;
@@ -139,7 +139,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   switchWindow() {
-    var bpmnWindow = document.getElementById('diagramRef');
+    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+    var bpmnWindow = document.getElementById(bpmnRefId);
     if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
     var graphWindow = document.getElementById('sc');
@@ -150,8 +151,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   initializeBpmn() {
+    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
     this.bpmnJS = new Modeler({
-      container: '#diagramRef',
+      container: '#'+bpmnRefId,
       features: {
         palette: {
           enabled: true,
@@ -204,8 +206,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     ];
 
     setTimeout(() => {
+    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
       this.bpmnJS.attachTo(
-        document.getElementById('diagramRef') as HTMLElement
+        document.getElementById(bpmnRefId) as HTMLElement
       );
       var element = this.bpmnJS.get('elementRegistry')._elements;
       const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
@@ -799,7 +802,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     if (this.referenceId) {
       ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
     } else {
-      ele = document.getElementById('graph') as HTMLElement;
+      let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
+      ele = document.getElementById(graphRefId) as HTMLElement;
     }
     // var ele = document.getElementById('graph') as HTMLElement;
     // var svgNode = this.chart2(d3,treeData);
@@ -817,7 +821,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           svg_ele = document.getElementById('graph' + this.referenceId);
         });
     } else {
-      svg_ele = document.getElementById('graph');
+      let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
+      svg_ele = document.getElementById(graphRefId);
     }
     // var svg_ele = document.getElementById('graph');
 
@@ -828,7 +833,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         if (e.depth == 2) {
           // this.utilsService.loadSpinner(true);
           this.showUsecaseGraph = false;
-          var bpmnWindow = document.getElementById('diagramRef');
+          let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+          var bpmnWindow = document.getElementById(bpmnRefId);
           if (bpmnWindow) bpmnWindow.style.display = '';
           this.graphRedirection = true;
           var graphWindow;

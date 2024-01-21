@@ -6,7 +6,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { environment } from 'src/environments/environment';
 import { NotifyApiService } from 'src/app/api/notify.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
-import { SpecService } from 'src/app/api/spec.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 @Component({
   selector: 'xnode-product-alert-popup',
   templateUrl: './product-alert-popup.component.html',
@@ -38,7 +38,7 @@ export class ProductAlertPopupComponent implements OnInit {
     private utils: UtilsService,
     private auditUtil: AuditutilsService,
     private notifyApi: NotifyApiService,
-    private specApiService: SpecService
+    private specApiService: SpecApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
   }

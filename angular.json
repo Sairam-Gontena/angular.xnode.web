@@ -27,7 +27,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/assets/favicon.svg",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*.min.*",
+                "input": "node_modules/diff2html/dist/",
+                "output": "assets/diff2html/"
+              }
             ],
             "styles": [
               {
