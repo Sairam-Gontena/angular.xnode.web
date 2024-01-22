@@ -13,7 +13,8 @@
 .intro-grid {
   background: #24232C;
   padding: 30px;
-  color: #dfdfdf;
+  // color: #dfdfdf;
+  color: #EFEEEE;
   border-radius: 6px;
 }
 
@@ -29,11 +30,12 @@
 .sctions-grid {
   background: #24232C;
   padding: 30px;
-  color: #dfdfdf;
+  color: #EFEEEE;
   max-height: 200px;
   border-radius: 6px;
   overflow: hidden;
 }
+
 .sctions-grid-full {
   background: #24232c;
   padding: 30px;
@@ -41,12 +43,34 @@
   max-height: none;
   border-radius: 6px;
 }
-.expnad-icon{
+
+.expnad-icon {
   width: 25px;
 }
-.openapi-spec{
+
+.openapi-spec {
   background: #fff;
   overflow: hidden;
+}
+
+.spec-status {
+  color: #7E7E7E;
+}
+
+.author {
+  color: #EFEEEE;
+}
+
+.product-title {
+  color: #4B4B4B;
+}
+
+.content-old {
+  color: #949292;
+}
+
+.content-title {
+  color: #A2A2A3;
 }
 .dashbboard-view{
   height: 600px;

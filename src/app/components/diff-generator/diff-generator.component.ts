@@ -17,6 +17,7 @@ import { DiffFormat, DiffStyle } from './diff-to-html.model';
   styleUrls: ['./diff-generator.component.scss'],
 })
 export class DiffGeneratorComponent implements OnInit, OnChanges {
+  @Input() type: string = '';
   @Input() newContent: string = '';
   @Input() oldContent: string = '';
   @Input() onDiff: boolean = false;
@@ -27,7 +28,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   private diff: string = '';
   diffHTML: string = '';
 
-  constructor(private diffService: DiffToHtmlService) {}
+  constructor(private diffService: DiffToHtmlService) { }
 
   ngOnInit() {
     // this.getDiff();
