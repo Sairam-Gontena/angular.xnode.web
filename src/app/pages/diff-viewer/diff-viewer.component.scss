@@ -285,6 +285,7 @@
     display: flex;
     justify-content: center;
 }
+
 .spec-view-body-full {
     width: 100%;
     display: flex;
@@ -294,4 +295,23 @@
 .spec-container {
     height: calc(100vh - 110px);
     overflow: auto;
+}
+
+.slide-down-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out;
+}
+
+.slide-down-container.open {
+    max-height: 300px;
+    transition: max-height 0.5s ease-in;
+    overflow: visible;
+}
+
+.sticky-dropdown {
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }

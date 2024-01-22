@@ -202,7 +202,7 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon">
+              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon && !onDiff">
                 <div class="flex align-items-center justify-content-center">
                   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
                   <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
@@ -226,7 +226,7 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="diffObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon">
+              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon && !onDiff">
                 <div class="flex align-items-center justify-content-center">
                   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
                   <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(diffObj)"></i>
@@ -265,9 +265,9 @@
     </div>
     <div *ngIf="!contentObj?.parent_data_type">
       <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
+        class="absolute bottom-0 right-0 mr-2 z-2 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
       <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
+        class="absolute bottom-0 right-0 mr-2 z-2 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
       <div class="gradientback" *ngIf="!contentObj?.collapsed"></div>
     </div>
   </div>

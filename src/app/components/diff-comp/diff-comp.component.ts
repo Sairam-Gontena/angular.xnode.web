@@ -189,7 +189,7 @@ export class DiffCompComponent implements OnInit {
     );
     if (version) {
       this.specService.getMeSpecLevelCommentsList({
-        parentId: this.specItemId,
+        parentId: specItem.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
