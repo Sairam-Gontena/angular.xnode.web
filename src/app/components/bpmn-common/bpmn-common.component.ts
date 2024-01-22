@@ -58,6 +58,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   @Input() dataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
+  @Input() inSpecView:any;
   @Input() fromExpandSpec: any;
   bpmnJS: any;
   pallete_classes: any;

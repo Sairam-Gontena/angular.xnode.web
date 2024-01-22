@@ -6,11 +6,11 @@
       </div>
       <span class="h-full" *ngIf="diffdataToExpand else dashboardData">
         <div class="grid" [ngStyle]="{'height':'99%'}">
-          <div class="col-6 pb-3">
+          <div class="col-6 px-3 pb-4">
             <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
-          <div class="col-6 pb-3">
+          <div class="col-6 px-3 pb-4">
             <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
@@ -56,17 +56,17 @@
       <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
     </div>
   </div>
-  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h p-4 overflow-auto">
+  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h h-full p-4 overflow-auto">
     <div class="flex col-12 justify-content-between align-items-center p-4">
       <h4 class="m-0 pb-3 text-100">Swagger API</h4>
       <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>
     </div>
-    <span *ngIf="diffdataToExpand else swaggerData">
+    <span *ngIf="diffViewEnabled else swaggerData">
       <div class="grid">
-        <div class="col-6">
+        <div class="col-6 px-3">
           <div id="openapi-ui-spec-1"  class="openapi-spec my-3"></div>
         </div>
-        <div class="col-6">
+        <div class="col-6 px-3">
           <div id="openapi-ui-spec-2"  class="openapi-spec my-3"></div>
         </div>
       </div>
@@ -139,10 +139,10 @@
     </div>
     <span *ngIf="diffdataToExpand else dataModelData">
     <div class="grid">
-      <div class="col-6 pb-3">
+      <div class="col-6 pb-4 px-3">
         <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand"></xnode-data-model-common>
       </div>
-      <div class="col-6 pb-3">
+      <div class="col-6 pb-4 px-3">
         <xnode-data-model-common [inExpandSpec]="true" [inDiffView]="true" [dataToExpand]="diffdataToExpand"></xnode-data-model-common>
       </div>
     </div>

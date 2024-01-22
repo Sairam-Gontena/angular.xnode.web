@@ -5,7 +5,7 @@
     <div class="h-full">
       <div class="h-full" *ngIf="specExpanded">
         <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
-          (childLoaded)="onChildLoaded($event)" [diffdataToExpand]="diffObj"  (closeFullScreenView)="closeFullScreenView()"
+          (childLoaded)="onChildLoaded($event)" [diffViewEnabled]="onDiffValue" [diffdataToExpand]="diffObj"  (closeFullScreenView)="closeFullScreenView()"
           [specExpanded]="specExpanded"></xnode-expand-specification>
       </div>
       <div *ngIf="!specExpanded">

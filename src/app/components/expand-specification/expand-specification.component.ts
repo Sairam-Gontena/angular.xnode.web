@@ -17,6 +17,7 @@ export class ExpandSpecificationComponent implements AfterViewInit {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
   @Input() diffdataToExpand:any;
+  @Input() diffViewEnabled:any;
   @Output() closeFullScreenView = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
@@ -29,7 +30,7 @@ export class ExpandSpecificationComponent implements AfterViewInit {
   constructor(private domSanitizer: DomSanitizer, private utils: UtilsService,private storageService:LocalStorageService,private route: ActivatedRoute,private specService: SpecificationsService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const record_id = localStorage.getItem('record_id');
     const product = localStorage.getItem('product');
     if (product) {
@@ -51,29 +52,15 @@ export class ExpandSpecificationComponent implements AfterViewInit {
       })
       this.route.queryParams.subscribe((params: any) => {
         this.specRouteParams = params;
-    })
-  }
-
-  getVersions() {
-    this.utils.loadSpinner(true);
-    this.specService.getVersions(this.product.id, (data:any) => {
-      let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id })[0];
-      this.specService.getMeSpecInfo({
-        productId: this.product?.id,
-        versionId: version ? version.id : data[0].id,
-      });
-      this.versions = data;
-      this.storageService.saveItem(StorageKeys.SpecVersion, version ? version : data[0]);
     });
+    await this.getVersions()
+    this.fetchSwagger();
   }
 
-  findIndex(objectToFind: any): number {
-    return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
-  }
-
-  ngAfterViewInit() {
+  fetchSwagger(){
     const specVersionOne: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    if(this.diffdataToExpand.length){
+    console.log(this.versions,specVersionOne)
+    if(this.diffViewEnabled){
       const index = this.findIndex(specVersionOne);
       let selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
       this.fetchOpenAPISpec('openapi-ui-spec-1',specVersionOne.id);
@@ -81,6 +68,41 @@ export class ExpandSpecificationComponent implements AfterViewInit {
     }else{
       this.fetchOpenAPISpec('openapi-ui-spec',specVersionOne.id);
     }
+  }
+
+  async getVersions(): Promise<void> {
+    this.utils.loadSpinner(true);
+    return new Promise<void>((resolve, reject) => {
+      this.specService.getVersions(this.product.id, (data: any) => {
+        console.log('get versions', data)
+        let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id })[0];
+        this.specService.getMeSpecInfo({
+          productId: this.product?.id,
+          versionId: version ? version.id : data[0].id,
+        });
+        this.versions = data;
+        this.storageService.saveItem(StorageKeys.SpecVersion, version ? version : data[0]);
+        resolve();
+      });
+    });
+  }
+
+  findIndex(objectToFind: any): number {
+    return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
+  }
+
+  async ngAfterViewInit() {
+    // const specVersionOne: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    // console.log(this.versions,specVersionOne)
+    // if(this.diffViewEnabled){
+    //   await this.getVersions();
+    //   const index = this.findIndex(specVersionOne);
+    //   let selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
+    //   this.fetchOpenAPISpec('openapi-ui-spec-1',specVersionOne.id);
+    //   this.fetchOpenAPISpec('openapi-ui-spec-2',selectedVersionTwo.id);
+    // }else{
+    //   this.fetchOpenAPISpec('openapi-ui-spec',specVersionOne.id);
+    // }
   }
 
   ngOnDestroy(){

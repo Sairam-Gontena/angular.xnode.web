@@ -54,6 +54,7 @@ export class DiffCompComponent implements OnInit {
     'Glossary',
     'Version Control',
     'Stakeholder Approvals',
+    'User Personas'
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 

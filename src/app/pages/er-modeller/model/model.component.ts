@@ -25,6 +25,7 @@ import { Schema } from '../class/schema';
 export class ModelComponent {
   // @ts-ignore
   @Input() myModel: Model;
+  @Input() inDiffView:any;
 
   // @ts-ignore
   public bsModalRef: BsModalRef;
@@ -36,8 +37,12 @@ export class ModelComponent {
     private el: ElementRef
   ) { }
 
+  ngOnInit(){
+    console.log('IN MODEL TS ------------ ',this.myModel)
+  }
+
   ngAfterViewInit() {
-    this.jsPlumbService.initModel(this.myModel);
+    this.jsPlumbService.initModel(this.myModel,this.inDiffView); //,c2c this.inDiffView in params
   }
 
   ngOnDestroy() {
