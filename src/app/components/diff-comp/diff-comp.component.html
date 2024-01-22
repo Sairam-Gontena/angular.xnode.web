@@ -209,7 +209,7 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="contentObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon">
+              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon && !onDiff">
                 <div class="flex align-items-center justify-content-center">
                   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
                   <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
@@ -233,7 +233,7 @@
                   [parentTitle]="parentTitle" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                   [parentId]="specItemId" [specItem]="diffObj"></xnode-add-task>
               </p-overlayPanel>
-              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon">
+              <div class="flex justify-content-end pb-4" *ngIf="persona.showCommentIcon && !onDiff">
                 <div class="flex align-items-center justify-content-center">
                   <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
                   <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(diffObj)"></i>
