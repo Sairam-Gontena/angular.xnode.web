@@ -38,7 +38,7 @@ export class ModelComponent {
   ) { }
 
   ngAfterViewInit() {
-    this.jsPlumbService.initModel(this.myModel); //,c2c this.inDiffView in params
+    this.jsPlumbService.initModel(this.myModel);
   }
 
   ngOnDestroy() {

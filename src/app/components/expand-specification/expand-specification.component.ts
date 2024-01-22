@@ -13,7 +13,7 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./expand-specification.component.scss']
 })
 
-export class ExpandSpecificationComponent implements AfterViewInit {
+export class ExpandSpecificationComponent {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
   @Input() diffdataToExpand:any;
@@ -31,35 +31,18 @@ export class ExpandSpecificationComponent implements AfterViewInit {
   }
 
   async ngOnInit() {
-    const record_id = localStorage.getItem('record_id');
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product)
-    }
-    let userData: any
-    userData = localStorage.getItem('currentUser');
-    let email = JSON.parse(userData).email;
-    let user_id = JSON.parse(userData).id;
-    if (record_id) {
-      this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
-    }
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    const userData:any = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + this.product.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + userData.user_id;
     this.makeTrustedUrl();
-    this.utils.openSpecSubMenu.subscribe((event: any) => {
-      this.isSpecSideMenuOpened = event; 
-      })
-      this.utils.openDockedNavi.subscribe((event: any) => {
-      this.isDockedNaviOpended = event
-      })
-      this.route.queryParams.subscribe((params: any) => {
-        this.specRouteParams = params;
-    });
-    await this.getVersions()
-    this.fetchSwagger();
+    await this.getVersions();
+    if(this.dataToExpand.title=== 'OpenAPI Spec' || this.dataToExpand.title==='Open API Spec'){
+      this.fetchSwagger();
+    }
   }
 
   fetchSwagger(){
     const specVersionOne: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    console.log(this.versions,specVersionOne)
     if(this.diffViewEnabled){
       const index = this.findIndex(specVersionOne);
       let selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
@@ -70,11 +53,10 @@ export class ExpandSpecificationComponent implements AfterViewInit {
     }
   }
 
-  async getVersions(): Promise<void> {
+  getVersions(): Promise<void> {
     this.utils.loadSpinner(true);
     return new Promise<void>((resolve, reject) => {
       this.specService.getVersions(this.product.id, (data: any) => {
-        console.log('get versions', data)
         let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id })[0];
         this.specService.getMeSpecInfo({
           productId: this.product?.id,
@@ -89,20 +71,6 @@ export class ExpandSpecificationComponent implements AfterViewInit {
 
   findIndex(objectToFind: any): number {
     return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
-  }
-
-  async ngAfterViewInit() {
-    // const specVersionOne: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    // console.log(this.versions,specVersionOne)
-    // if(this.diffViewEnabled){
-    //   await this.getVersions();
-    //   const index = this.findIndex(specVersionOne);
-    //   let selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
-    //   this.fetchOpenAPISpec('openapi-ui-spec-1',specVersionOne.id);
-    //   this.fetchOpenAPISpec('openapi-ui-spec-2',selectedVersionTwo.id);
-    // }else{
-    //   this.fetchOpenAPISpec('openapi-ui-spec',specVersionOne.id);
-    // }
   }
 
   ngOnDestroy(){

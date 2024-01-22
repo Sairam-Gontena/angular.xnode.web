@@ -4,7 +4,7 @@
   <div class="w-full">
     <div class="h-full">
       <div class="h-full" *ngIf="specExpanded">
-        <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
+        <xnode-expand-specification [dataToExpand]="selectedSpecItem"
           (childLoaded)="onChildLoaded($event)" [diffViewEnabled]="onDiffValue" [diffdataToExpand]="diffObj"  (closeFullScreenView)="closeFullScreenView()"
           [specExpanded]="specExpanded"></xnode-expand-specification>
       </div>
@@ -12,7 +12,7 @@
         <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" [onDiffValue]="onDiffValue" (onVersionChange)="versionChange($event)"
           (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" [selectedVersion]="selectedVersion"
           (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-        <div class="overflow-auto flex justify-content-center"
+        <div class="overflow-auto flex justify-content-center spec-content-body"
           [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommentsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommentsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommentsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommentsPanelOpened}">
           <div class="w-8">
             <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">

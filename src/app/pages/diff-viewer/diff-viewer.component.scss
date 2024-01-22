@@ -267,3 +267,15 @@
       width: calc(100vw - 1170px);
   }
 }
+
+.overflow-auto::-webkit-scrollbar {
+  width: 5px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background-color: #eee;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}

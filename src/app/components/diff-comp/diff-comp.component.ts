@@ -68,13 +68,7 @@ export class DiffCompComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    let version = localStorage.getItem('SPEC_VERISON');
-    let versionId: any;
-    if (version) {
-      versionId = JSON.parse(version);
-      versionId = versionId.id;
-    }
-
+    const version:any = this.storageService.getItem(StorageKeys.SpecVersion);
     if (this.contentObj?.title === 'Dashboards') {
       this.targetUrl =
         environment.designStudioAppUrl +
@@ -83,7 +77,7 @@ export class DiffCompComponent implements OnInit {
         '&id=' +
         this.product?.id +
         '&version_id=' +
-        versionId +
+        version.id +
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&has_insights=' +

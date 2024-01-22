@@ -30,7 +30,6 @@ export class JsPlumbService {
   public init(obj?:any): void {
     if(obj?.inDiffView){
       obj.ids.forEach((item:any)=>{
-        console.log('check item',item)
         this._instance = jsPlumb.getInstance({
           Container: 'canvas-2',
           Anchor: ['RightMiddle', 'LeftMiddle'],
@@ -38,7 +37,6 @@ export class JsPlumbService {
         });
       })
     }else{
-      console.log('check me on else')
       this._instance = jsPlumb.getInstance({
         Container: 'canvas',
         Anchor: ['RightMiddle', 'LeftMiddle'],

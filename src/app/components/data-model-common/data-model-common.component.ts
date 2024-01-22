@@ -99,7 +99,6 @@ export class DataModelCommonComponent {
       }
     }, 100);
     this.data = this.dataService.data;
-    console.log('data-model-comp',this.data)
   }
   getDataModel() {
     this.dataModel = [];
@@ -122,7 +121,6 @@ export class DataModelCommonComponent {
           );
           this.dataModel = response.data;
           if(this.inDiffView){
-            console.log('in diffview ngonint', this.inDiffView, document.getElementById('canvas-2'))
             let diffObj = { inDiffView:true, ids:[this.canvaDataModel.nativeElement] }
             this.jsPlumbService.init(diffObj);
           }else{

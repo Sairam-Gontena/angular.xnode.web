@@ -62,12 +62,7 @@ export class Model {
     return 'model' + this.id;
   }
 
-  public getElementH2Id(indiff?:true): string { //indiff?:true
-    // if(indiff){   //c2c indiff  return val
-    //   return 'model' + this.id + '-h2-DiffView'
-    // }else{
-    //   return 'model' + this.id + '-h2';
-    // }
+  public getElementH2Id(indiff?:true): string {
     return 'model' + this.id + '-h2';
   }
 

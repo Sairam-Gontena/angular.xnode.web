@@ -463,12 +463,10 @@ export class DiffViewerComponent implements OnInit {
   }
 
   _expandComponent(object: any): void {
-    this.onDiffValue = object.onDiff;
     object.onDiff ? this.diffObj = object.diffObj : this.diffObj = undefined;
     if (object.contentObj) {
       this.selectedSpecItem = object.contentObj;
-      this.utils.saveSelectedSection(object.contentObj);
-      this.specUtils._openCommentsPanel(false);
+      this.specificationUtils.openConversationPanel({openConversationPanel: false})
       this.utils.disableDockedNavi();
       this.utils.EnableSpecSubMenu();
       this.specExpanded = true;
