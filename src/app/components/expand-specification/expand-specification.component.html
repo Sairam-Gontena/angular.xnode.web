@@ -29,10 +29,10 @@
       </div>
       <span *ngIf="diffdataToExpand else usecaseData">
         <div class="grid">
-          <div class="col-6 pb-3">
+          <div class="col-6">
             <xnode-common-usecases [users]="[]" [useCases]="dataToExpand.content"></xnode-common-usecases>
           </div>
-          <div class="col-6 pb-3">
+          <div class="col-6">
             <xnode-common-usecases [users]="[]" [useCases]="diffdataToExpand.content"></xnode-common-usecases>
           </div>
         </div>
@@ -61,7 +61,19 @@
       <h4 class="m-0 pb-3 text-100">Swagger API</h4>
       <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>
     </div>
-    <div id="openapi-ui-spec" class="openapi-spec"></div>
+    <span *ngIf="diffdataToExpand else swaggerData">
+      <div class="grid">
+        <div class="col-6">
+          <div id="openapi-ui-spec-1"  class="openapi-spec my-3"></div>
+        </div>
+        <div class="col-6">
+          <div id="openapi-ui-spec-2"  class="openapi-spec my-3"></div>
+        </div>
+      </div>
+    </span>
+    <ng-template #swaggerData>
+      <div id="openapi-ui-spec" class="openapi-spec my-3"></div>
+    </ng-template>
   </div>
   <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="p-4">
     <div class="h-full expand-spec">

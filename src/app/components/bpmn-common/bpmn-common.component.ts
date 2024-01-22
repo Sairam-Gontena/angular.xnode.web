@@ -46,6 +46,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     | undefined;
   @ViewChild('bpmngraph')
   bpmngraph!: ElementRef;
+  @ViewChild('scgraph')
+  scgraph!: ElementRef;
   @ViewChild('diagramRefContainer')
   diagramRefContainer!: ElementRef;
   @Output() dataFlowEmitter = new EventEmitter<any>();
@@ -155,7 +157,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     // var bpmnWindow = document.getElementById('diagramRef');
     // if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
-    var graphWindow = document.getElementById('sc');
+    // var graphWindow = document.getElementById('sc');
+    var graphWindow = this.scgraph.nativeElement
     if (graphWindow) graphWindow.style.display = '';
 
     if (this.bpmnJS) this.bpmnJS.destroy();
@@ -862,7 +865,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
                 graphWindow = document.getElementById('sc' + this.referenceId);
               });
           } else {
-            graphWindow = document.getElementById('sc');
+            graphWindow = this.scgraph.nativeElement;
           }
           if (graphWindow) graphWindow.style.display = 'None';
           this.getFlow(flow);

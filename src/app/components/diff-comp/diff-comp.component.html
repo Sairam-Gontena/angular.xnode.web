@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
+      <div class="col-12" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div class="col-6">
             <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
@@ -164,7 +164,7 @@
         </div>
         <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
       </div>
-      <div class="col-12 py-4" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
+      <div class="col-12" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff"  >
           <div class="col-6">
             <div id="openapi-ui-spec-1"  class="openapi-spec my-3"></div>
@@ -191,7 +191,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 py-4" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
+      <div class="col-12" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div class="col-6">
             <div *ngFor="let persona of contentObj.content" class="pb-3" (mouseover)="persona.showCommentIcon = true"

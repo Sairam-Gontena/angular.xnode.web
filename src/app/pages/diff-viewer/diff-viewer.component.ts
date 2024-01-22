@@ -430,7 +430,7 @@ export class DiffViewerComponent implements OnInit {
         let specVersionOne:any = this.storageService.getItem(StorageKeys.SpecVersion);
         this.fetchOpenAPISpec('openapi-ui-spec',specVersionOne.id);
       }
-    }, 500);
+    }, 1000);
 
 
 

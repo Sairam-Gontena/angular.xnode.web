@@ -62,6 +62,9 @@ export class SpecificationsHeaderComponent implements OnInit {
         this.conversationPanelInfo = data;
       }
     });
+    this.utils.openSpecSubMenu.subscribe((event: any) => {
+      this.isSideMenuOpened = event;
+    });
   }
 
   ngOnInit(): void {
