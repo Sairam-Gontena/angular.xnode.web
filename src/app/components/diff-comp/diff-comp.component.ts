@@ -106,10 +106,8 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-    console.log('called here = ', this.selectedVersionTwo);
 
     if (this.selectedVersionTwo) {
-      console.log('called here =');
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
     }
   }
@@ -191,7 +189,7 @@ export class DiffCompComponent implements OnInit {
     );
     if (version) {
       this.specService.getMeSpecLevelCommentsList({
-        parentId: this.specItemId,
+        parentId: specItem.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,

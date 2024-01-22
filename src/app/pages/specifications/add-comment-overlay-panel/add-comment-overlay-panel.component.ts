@@ -216,16 +216,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           followers: [],
           feedback: {},
         };
-        console.log('bobdy', body);
-
         this.saveComment(body);
       } else {
         this.prepareDataToSaveAsTask();
       }
     } else {
-      console.log('bobdy', body);
-      console.log('sele', this.selectedContent);
-
       this.saveComment(body);
     }
   }
@@ -238,6 +233,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       .addComments(body)
       .then((commentsReponse: any) => {
         if (commentsReponse.statusText === 'Created') {
+          this.utils.loadSpinner(false);
           this.prepareDataToDisplayOnCommentsPanel();
         } else {
           this.utils.loadToaster({
@@ -377,6 +373,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentsService
       .addTask(body)
       .then((commentsReponse: any) => {
+        this.utils.loadSpinner(false);
         if (commentsReponse.statusText === 'Created') {
           this.comment = '';
           this.closeOverlay.emit();
