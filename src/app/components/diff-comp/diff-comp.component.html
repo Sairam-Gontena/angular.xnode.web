@@ -154,7 +154,7 @@
         </div>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'TABLE'" [id]="contentObj.id">
-        <!-- <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table> -->
+        <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
