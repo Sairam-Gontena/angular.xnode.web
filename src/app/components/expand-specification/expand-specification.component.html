@@ -1,7 +1,7 @@
 <div  class="content overflow-auto" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
   <div *ngIf="dataToExpand.title == 'Dashboards'" class="h-full p-4 overflow-auto">
     <div class="h-full expand-spec">
-      <div class="flex flex-row col-12 justify-content-end">
+      <div class="flex flex-row justify-content-end  px-2">
         <i class="pi pi-times text-xl text-color pointer text-white mb-2" (click)="closeFullScreenView.emit()"></i>
       </div>
       <span class="h-full" *ngIf="diffdataToExpand else dashboardData">
@@ -56,9 +56,9 @@
       <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
     </div>
   </div>
-  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h h-full p-4 overflow-auto">
-    <div class="flex col-12 justify-content-between align-items-center p-4">
-      <h4 class="m-0 pb-3 text-100">Swagger API</h4>
+  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h h-full px-4 py-2 overflow-auto">
+    <div class="flex col-12 justify-content-between align-items-center">
+      <h4 class="m-0 pt-3 text-100">Swagger API</h4>
       <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>
     </div>
     <span *ngIf="diffViewEnabled else swaggerData">
@@ -110,17 +110,17 @@
       </ul>
   </div>
   <div *ngIf="dataToExpand.title === 'User Personas'" class="h-full expand-spec p-4">
-    <div class="flex flex-row col-12 justify-content-end">
+    <div class="flex flex-row justify-content-end  px-2">
       <i class="pi pi-times text-xl text-color pointer text-white " (click)="closeFullScreenView.emit()"></i>
     </div>
     <span *ngIf="diffdataToExpand else usecaseData">
       <div class="grid">
-        <div class="col-6">
+        <div class="col-6 pr-3">
           <div *ngFor="let persona of dataToExpand.content" class="pb-3">
             <xnode-user-persona [content]="persona"></xnode-user-persona>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-6 pl-3">
           <div *ngFor="let persona of diffdataToExpand.content" class="pb-3">
             <xnode-user-persona [content]="persona"></xnode-user-persona>
           </div>
@@ -134,11 +134,11 @@
     </ng-template>
   </div>
   <div class="h-full expand-spec p-4" *ngIf="dataToExpand.title === 'Data Model'" >
-    <div class="flex flex-row col-12 justify-content-end">
-      <i class="pi pi-times text-xl text-color pointer text-white " (click)="closeFullScreenView.emit()"></i>
+    <div class="flex flex-row justify-content-end py-1 px-2">
+      <i class="pi pi-times text-xl text-color pointer text-white" (click)="closeFullScreenView.emit()"></i>
     </div>
     <span *ngIf="diffdataToExpand else dataModelData">
-    <div class="grid">
+    <div class="grid pt-3">
       <div class="col-6 pb-4 px-3">
         <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand"></xnode-data-model-common>
       </div>
@@ -154,6 +154,9 @@
   </div>
   <div class="h-full p-4" *ngIf="dataToExpand.title === 'Workflows'">
       <div class="h-full expand-spec ">
+        <div class="flex flex-row justify-content-end px-2">
+          <i class="pi pi-times text-xl text-color pointer text-white" (click)="closeFullScreenView.emit()"></i>
+        </div>
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
             <div class="col-6 pb-3">
@@ -162,13 +165,13 @@
             </div>
             <div class="col-6 pb-3">
               <xnode-bpmn-common [bpmnRefId]="'diagramRef-2'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
-        [dataToExpand]="diffdataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
+        [dataToExpand]="diffdataToExpand"></xnode-bpmn-common>
             </div>
           </div>
         </span>
         <ng-template #usecaseData>
           <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
-        [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
+        [dataToExpand]="dataToExpand"></xnode-bpmn-common>
         </ng-template>
     </div>
   </div>

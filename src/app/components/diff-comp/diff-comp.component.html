@@ -88,8 +88,8 @@
           </div>
         </div>
       </div>
-      <div class="col-12 pt-0" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
-        <div class="grid" *ngIf="onDiff">
+      <div class="pt-0" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
+        <div class="col-12 grid " *ngIf="onDiff">
           <div class="col-6 pr-2 pb-0">
             <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
           </div>

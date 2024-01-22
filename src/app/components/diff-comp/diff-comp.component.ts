@@ -63,11 +63,12 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
+
+  ngOnInit(): void {
     const version:any = this.storageService.getItem(StorageKeys.SpecVersion);
     if (this.contentObj?.title === 'Dashboards') {
       this.targetUrl =

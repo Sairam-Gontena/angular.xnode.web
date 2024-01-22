@@ -45,7 +45,7 @@ export class JsPlumbService {
     }
   }
 
-  public initModel(model: Model,inDiff?:boolean): void {  //c2c second param
+  public initModel(model: Model): void {
 
     // draggable
     this._instance.draggable(model.getElementId());
@@ -53,14 +53,7 @@ export class JsPlumbService {
 
     // add endpoint
     if (model.is_pivot === false) {
-      let modalPoint:any
-      // if(inDiff){//c2c about indiff
-      //   modalPoint = model.getElementH2Id(true)
-      // }else{
-      //   modalPoint = model.getElementH2Id();
-      // }
-      console.log(model.getElementH2Id())
-      this._instance.addEndpoint(model.getElementH2Id(), { // modalPoint
+      this._instance.addEndpoint(model.getElementH2Id(), {
         isSource: true,
         isTarget: true,
         cssClass: 'model-default-endpoint',
@@ -86,29 +79,23 @@ export class JsPlumbService {
       // @ts-ignore
       for (let j = 0; j < this.dataService.data.models[i].schemas.length; j++) {
         // @ts-ignore
-        this.initSchema(this.dataService.data.models[i].schemas[j], inDiff); // c2c 2nd param
+        this.initSchema(this.dataService.data.models[i].schemas[j]);
       }
     }
   }
 
-  public destroyModel(model: Model, inDiff?:boolean) { // c2c secnd param
+  public destroyModel(model: Model) {
     // delete myself endpoint
-    let modalPoint:any;
-    // if(inDiff){
-    //   modalPoint = model.getElementH2Id(true)
-    // }else{
-    //   modalPoint = model.getElementH2Id();
-    // }
     this._instance
       .selectEndpoints({
         source: model.getElementH2Id(),
       })
-      .delete();//modalPoint model.getElementH2Id(),  c2c
+      .delete();
 
     // check connection exists as destroy-model source
     var connections_to_delete = this._instance.getConnections({
       source:model.getElementH2Id(),
-    });// c2c modalPoint
+    });
 
     for (let i = 0; i < connections_to_delete.length; i++) {
       var schema_to_delete = this.dataService.data?.getSchemaByElementId(

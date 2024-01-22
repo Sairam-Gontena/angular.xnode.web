@@ -5,11 +5,11 @@
     <div class="h-full">
       <div class="h-full" *ngIf="specExpanded">
         <xnode-expand-specification [dataToExpand]="selectedSpecItem"
-          (childLoaded)="onChildLoaded($event)" [diffViewEnabled]="onDiffValue" [diffdataToExpand]="diffObj"  (closeFullScreenView)="closeFullScreenView()"
+          (childLoaded)="onChildLoaded($event)" [diffViewEnabled]="isDiffEnabled" [diffdataToExpand]="diffObj"  (closeFullScreenView)="closeFullScreenView()" [selectedVersionOne]="selectedVersionOne" [selectedVersionTwo]="selectedVersionTwo"
           [specExpanded]="specExpanded"></xnode-expand-specification>
       </div>
       <div *ngIf="!specExpanded">
-        <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" [onDiffValue]="onDiffValue" (onVersionChange)="versionChange($event)"
+        <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"  (onVersionChange)="versionChange($event)" [onDiffValue]="isDiffEnabled"
           (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" [selectedVersion]="selectedVersion"
           (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
         <div class="overflow-auto flex justify-content-center spec-content-body"
@@ -26,8 +26,8 @@
             <div class='m-4' *ngFor="let item of specList;let i = index" [id]="item.id">
               <xnode-diff-comp (childLoaded)="onChildLoaded($event)" (expandComponent)="_expandComponent($event)"
                 [users]="usersList" [contentObj]="item" [index]="i" [format]="format"
-                [diffObj]="getDiffObj(specTwoList,item, specList.length!==0&& specTwoList.length!==0)"
-                [onDiff]="specList.length!==0&& specTwoList.length!==0" [selectedVersionTwo]="selectedVersionTwo" ></xnode-diff-comp>
+                [diffObj]="getDiffObj(specTwoList,item, specList.length!==0 && specTwoList.length!==0)"
+                [onDiff]="specList.length!==0 && specTwoList.length!==0 && isDiffEnabled" [selectedVersionTwo]="selectedVersionTwo" ></xnode-diff-comp>
             </div>
           </div>
           <div class="w-4" *ngIf="openConversationPanel">
