@@ -25,7 +25,7 @@
       <div class="flex mt-3 author align-items-center">
         <p class="spec-status text-sm font-medium m-0"> By {{contentObj?.content?.[0]?.modified_by}}
       </div>
-      <!-- <img [src]="getMeBanner(contentObj)" alt="banner" class="mt-3 w-full"> -->
+      <img [src]="getMeBanner(contentObj)" alt="banner" class="mt-3 w-full">
     </div>
   </div>
   <div [ngClass]="
@@ -137,8 +137,8 @@
         </div>
         <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"
           *ngIf="contentObj?.viewType ==='json'"></pre>
-        <!-- <xnode-common-spec-table [content]="contentObj.content"
-          *ngIf="contentObj?.viewType ==='table'"></xnode-common-spec-table> -->
+        <xnode-common-spec-table [content]="contentObj.content"
+          *ngIf="contentObj?.viewType ==='table'"></xnode-common-spec-table>
         <div *ngIf="!contentObj.viewType ||contentObj.viewType === 'list'">
           <div [ngSwitch]="getType(contentObj.content)">
             <div *ngSwitchCase="'array'">
@@ -183,7 +183,7 @@
           <h3>
             {{item.title}}
           </h3>
-          <!-- <xnode-common-spec-table [specItem]="contentObj" [content]="item.content"></xnode-common-spec-table> -->
+          <xnode-common-spec-table [specItem]="contentObj" [content]="item.content"></xnode-common-spec-table>
         </div>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
