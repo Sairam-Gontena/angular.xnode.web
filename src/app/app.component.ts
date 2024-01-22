@@ -15,6 +15,7 @@ import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json'
 import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
+import { SpecificationUtilsService } from './pages/diff-viewer/specificationUtils.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -43,8 +44,8 @@ export class AppComponent implements OnInit {
   showCommentIcon?: boolean;
   screenWidth: number;
   screenHeight: number;
-  deepLink:boolean=false;
-  colorPallet :any;
+  deepLink: boolean = false;
+  colorPallet: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -56,9 +57,10 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
-    private themeService:ThemeService,
+    private themeService: ThemeService,
     private specUtils: SpecUtilsService,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     let winUrl = window.location.href;
     if (
@@ -110,7 +112,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+    this.specificationUtils._openConversationPanel.subscribe((event: any) => {
       if (event) {
         this.isSideWindowOpen = false;
       }
@@ -182,9 +184,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.colorPallet = themeing.theme;
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.changeTheme(this.colorPallet[6])
-    },100)
+    }, 100)
 
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {

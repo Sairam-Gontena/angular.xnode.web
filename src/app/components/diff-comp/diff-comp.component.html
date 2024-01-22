@@ -115,18 +115,18 @@
         <xnode-user-roles [content]="contentObj.content" [parentTitle]="contentObj.title"
           [specItem]="contentObj"></xnode-user-roles>
       </div>
-      <div class="col-12 py-0" *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
-        <div class="grid" *ngIf="onDiff">
-          <div class="col-6">
-            <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+      <div class="col-12 py-4 dashbboard-view"  *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
+        <div class="grid h-full" *ngIf="onDiff">
+          <div class="col-6 h-full">
+            <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
-          <div class="col-6">
-            <iframe id="myIframe" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+          <div class="col-6 h-full">
+            <iframe id="myIframe" [src]="iframeSrc1" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
         </div>
-        <iframe id="myIframe" *ngIf="!onDiff" [src]="iframeSrc" class="h-vh w-full" title="Template Builder">
+        <iframe id="myIframe" *ngIf="!onDiff" [src]="iframeSrc" class="h-full w-full " title="Template Builder">
         </iframe>
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
