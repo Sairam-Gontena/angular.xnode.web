@@ -27,13 +27,25 @@ export class JsPlumbService {
     private bsModalService: BsModalService
   ) { }
 
-  public init(): void {
+  public init(obj?:any): void {
+    if(obj?.inDiffView){
+      obj.ids.forEach((item:any)=>{
+        console.log('check item',item)
+        this._instance = jsPlumb.getInstance({
+          Container: 'canvas-2',
+          Anchor: ['RightMiddle', 'LeftMiddle'],
+          ConnectionsDetachable: false,
+        });
+      })
+    }else{
 
-    this._instance = jsPlumb.getInstance({
-      Container: 'canvas',
-      Anchor: ['RightMiddle', 'LeftMiddle'],
-      ConnectionsDetachable: false,
-    });
+      console.log('check me on else')
+      this._instance = jsPlumb.getInstance({
+        Container: 'canvas',
+        Anchor: ['RightMiddle', 'LeftMiddle'],
+        ConnectionsDetachable: false,
+      });
+    }
   }
 
   public initModel(model: Model): void {

@@ -140,10 +140,10 @@
     <span *ngIf="diffdataToExpand else dataModelData">
     <div class="grid">
       <div class="col-6 pb-3">
-        <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand" [specData]="'spec'"></xnode-data-model-common>
+        <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand"></xnode-data-model-common>
       </div>
       <div class="col-6 pb-3">
-        <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="diffdataToExpand" [specData]="'spec'"></xnode-data-model-common>
+        <xnode-data-model-common [inExpandSpec]="true" [inDiffView]="true" [dataToExpand]="diffdataToExpand"></xnode-data-model-common>
       </div>
     </div>
     </span>

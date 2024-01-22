@@ -12,9 +12,12 @@
         </div>
         <div class="overflow-auto "
             [ngClass]="{'modal-view-body':currentUrl == '/specification','modal-view-body-full':currentUrl != '/specification'}">
-            <div id="canvas" class="col-sm-10">
-              <model *ngFor="let model of data.models" [myModel]="model"></model>
-            </div>
+              <div id="canvas" class="col-sm-10" *ngIf="!inDiffView">
+                <model *ngFor="let model of data.models" [myModel]="model"></model>
+              </div>
+              <div id="canvas-2" #canvaDataModel class="col-sm-10" *ngIf="inDiffView">
+                <model *ngFor="let model of data.models" [myModel]="model"></model>
+              </div>
         </div>
     </ng-template>
 </div>

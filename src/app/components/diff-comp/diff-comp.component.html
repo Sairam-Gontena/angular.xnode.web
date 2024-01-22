@@ -159,10 +159,10 @@
             <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
           </div>
           <div class="col-6">
-            <xnode-data-model-common *ngIf="diffObj"></xnode-data-model-common>
+            <xnode-data-model-common [inDiffView]="true" *ngIf="diffObj"></xnode-data-model-common>
           </div>
         </div>
-        <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
+        <xnode-data-model-common *ngIf="contentObj && !onDiff"></xnode-data-model-common>
       </div>
       <div class="col-12" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff"  >
