@@ -184,23 +184,33 @@ export class DiffViewerComponent implements OnInit {
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersions(this.product.id, (data) => {
-      if (data && data.length > 0) {
-        let version = data.filter((obj: any) => {
-          return obj.id === this.specRouteParams.versionId
-            ? this.specRouteParams.versionId
-            : this.specRouteParams.version_id;
-        })[0];
-        this.specService.getMeSpecInfo({
-          productId: this.product?.id,
-          versionId: version ? version.id : data[0].id,
-        });
-        this.versions = data;
-        this.selectedVersion = version ? version : data[0];
-        this.storageService.saveItem(
-          StorageKeys.SpecVersion,
-          version ? version : data[0]
-        );
-      }
+      let version = data.filter((obj: any) => {
+        return obj.id === this.specRouteParams.versionId
+          ? this.specRouteParams.versionId
+          : this.specRouteParams.version_id;
+      })[0];
+
+      const uniqueStatuses = [
+        ...new Set(data.map((obj: any) => obj.specStatus)),
+      ];
+      const priorityOrder = uniqueStatuses.sort((a, b) => {
+        if (a === 'LIVE') return -1;
+        if (b === 'LIVE') return 1;
+        return 0;
+      });
+      const firstObjectWithPriority = data.find(
+        (obj: any) => obj.specStatus === priorityOrder[0]
+      );
+      this.specService.getMeSpecInfo({
+        productId: this.product?.id,
+        versionId: version ? version.id : firstObjectWithPriority.id,
+      });
+      this.versions = data;
+      this.selectedVersion = version ? version : firstObjectWithPriority;
+      this.storageService.saveItem(
+        StorageKeys.SpecVersion,
+        version ? version : firstObjectWithPriority
+      );
     });
   }
 
