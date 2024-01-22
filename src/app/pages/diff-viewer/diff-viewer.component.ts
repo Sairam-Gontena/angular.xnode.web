@@ -480,7 +480,9 @@ export class DiffViewerComponent implements OnInit {
   closeFullScreenView(): void {
     this.specExpanded = false;
     this.scrollToItem();
-    this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
+    let obj = { diffView : this.isDiffEnabled };
+    this.diffViewChangeEmiter(obj)
+    // this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
   }
 
   async scrollToItem() {
