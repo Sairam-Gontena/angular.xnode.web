@@ -209,10 +209,19 @@ export class SpecificationsHeaderComponent implements OnInit {
       );
       this.product = product;
       this.specService.getVersions(this.product.id, (data) => {
+        this.versions = data;
+        const uniqueStatuses = [...new Set(data.map((obj:any) => obj.specStatus))];
+        const priorityOrder = uniqueStatuses.sort((a, b) => {
+          if (a === 'LIVE') return -1;
+          if (b === 'LIVE') return 1;
+          return 0;
+        });
+        const firstObjectWithPriority = data.find((obj:any) => obj.specStatus === priorityOrder[0]);
+        this.selectedVersion = firstObjectWithPriority;
         this.specService.getMeSpecInfo(
           {
             productId: this.product?.id,
-            versionId: data[0].id,
+            versionId: firstObjectWithPriority.id,
           },
           (specData) => {
             if (specData) {
@@ -223,7 +232,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllComments({
                   productId: this.product?.id,
-                  versionId: data[0].id,
+                  versionId:firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -232,7 +241,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllTasks({
                   productId: this.product?.id,
-                  versionId: data[0].id,
+                  versionId:firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -243,7 +252,7 @@ export class SpecificationsHeaderComponent implements OnInit {
             }
           }
         );
-        this.storageService.saveItem(StorageKeys.SpecVersion, data[0]);
+        this.storageService.saveItem(StorageKeys.SpecVersion,firstObjectWithPriority);
       });
     } else {
       this.showGenerateSpecPopup(product);
