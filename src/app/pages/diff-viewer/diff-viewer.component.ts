@@ -56,6 +56,7 @@ export class DiffViewerComponent implements OnInit {
   isDiffEnabled: boolean = false;
   specRouteParams: any;
   selectedVersion?: SpecVersion;
+  isSideMenuOpened: boolean = true;
 
   constructor(
     private utils: UtilsService,
@@ -68,7 +69,6 @@ export class DiffViewerComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private route: ActivatedRoute
   ) {
-
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
       if (list && list.length) {
         list.forEach((element: any, index: number) => {
@@ -82,7 +82,7 @@ export class DiffViewerComponent implements OnInit {
 
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
-        if (versions) {
+        if (versions && versions.length > 0) {
           versions.forEach((element: any) => {
             element['label'] = element.specStatus + '-' + element.version;
             element['value'] = element.id;
@@ -99,19 +99,20 @@ export class DiffViewerComponent implements OnInit {
       }
     });
 
-    this.utils.openSpecSubMenu.subscribe((event: any) => {
-      this.isSpecSideMenuOpened = event;
-    });
-
     this.utils.openDockedNavi.subscribe((event: any) => {
-      this.isDockedNaviOpended = event;
+      if (event) {
+        this.isSideMenuOpened = false;
+        this.openConversationPanel = false;
+      }
     });
   }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    this.selectedVersionOne = this.storageService.getItem(StorageKeys.SpecVersion)
+    this.selectedVersionOne = this.storageService.getItem(
+      StorageKeys.SpecVersion
+    );
     this.route.queryParams.subscribe((params: any) => {
       this.specRouteParams = params;
       if (params?.template_type === 'COMMENT') {
@@ -144,7 +145,13 @@ export class DiffViewerComponent implements OnInit {
         });
       }
       this.getUsersData();
-    })
+    });
+  }
+
+  isMeneOpened(event: any) {
+    console.log('event', event);
+
+    this.isSideMenuOpened = event;
   }
 
   changeSpecListFormat(list: any) {
@@ -177,14 +184,23 @@ export class DiffViewerComponent implements OnInit {
   getVersions() {
     this.utils.loadSpinner(true);
     this.specService.getVersions(this.product.id, (data) => {
-      let version = data.filter((obj: any) => { return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id })[0];
-      this.specService.getMeSpecInfo({
-        productId: this.product?.id,
-        versionId: version ? version.id : data[0].id,
-      });
-      this.versions = data;
-      this.selectedVersion = version ? version : data[0];
-      this.storageService.saveItem(StorageKeys.SpecVersion, version ? version : data[0]);
+      if (data && data.length > 0) {
+        let version = data.filter((obj: any) => {
+          return obj.id === this.specRouteParams.versionId
+            ? this.specRouteParams.versionId
+            : this.specRouteParams.version_id;
+        })[0];
+        this.specService.getMeSpecInfo({
+          productId: this.product?.id,
+          versionId: version ? version.id : data[0].id,
+        });
+        this.versions = data;
+        this.selectedVersion = version ? version : data[0];
+        this.storageService.saveItem(
+          StorageKeys.SpecVersion,
+          version ? version : data[0]
+        );
+      }
     });
   }
 
@@ -218,8 +234,8 @@ export class DiffViewerComponent implements OnInit {
     if (isLoaded) {
       of([])
         .pipe(delay(500))
-        .subscribe((results) => {
-          this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
+        .subscribe((results: any) => {
+          this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
         });
     }
   }
@@ -272,7 +288,7 @@ export class DiffViewerComponent implements OnInit {
       });
   }
 
-  async fetchOpenAPISpec(id:string,versionId:string) {
+  async fetchOpenAPISpec(id: string, versionId: string) {
     const record_id = localStorage.getItem('record_id');
     let userData: any;
     userData = localStorage.getItem('currentUser');
@@ -284,8 +300,9 @@ export class DiffViewerComponent implements OnInit {
       '/' +
       email +
       '/' +
-      record_id  +
-      '/'+versionId;
+      record_id +
+      '/' +
+      versionId;
     const ui = SwaggerUIBundle({
       domNode: document.getElementById(id),
       layout: 'BaseLayout',
@@ -411,16 +428,13 @@ export class DiffViewerComponent implements OnInit {
     }
 
     setTimeout(() => {
-      if(this.isDiffEnabled){
-        this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
-        this.fetchOpenAPISpec('openapi-ui-spec-2',this.selectedVersionTwo.id);
-      }else{
-        this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
+      if (this.isDiffEnabled) {
+        this.fetchOpenAPISpec('openapi-ui-spec-1', this.selectedVersionOne.id);
+        this.fetchOpenAPISpec('openapi-ui-spec-2', this.selectedVersionTwo.id);
+      } else {
+        this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
       }
-
     }, 500);
-
-   
 
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
@@ -468,7 +482,7 @@ export class DiffViewerComponent implements OnInit {
 
   closeFullScreenView(): void {
     this.specExpanded = false;
-    this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
+    this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
     this.scrollToItem();
   }
 
