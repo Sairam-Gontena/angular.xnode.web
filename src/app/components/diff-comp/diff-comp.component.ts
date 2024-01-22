@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  EventEmitter,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -17,6 +24,7 @@ declare const SwaggerUIBundle: any;
 })
 export class DiffCompComponent implements OnInit {
   product: any;
+  @Input() type: string = '';
   @Input() selectedVersionTwo: any;
   @Input() contentObj: any;
   @Input() format: any = 'line-by-line';
@@ -34,7 +42,20 @@ export class DiffCompComponent implements OnInit {
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
- ComponentsToExpand=['Open API Spec','Data Model','Data Dictionary','Usecases','Workflows','Dashboards','User Interface Design','Data Quality Checks','Historical Data Load','Glossary','Version Control','Stakeholder Approvals'];
+  ComponentsToExpand = [
+    'Open API Spec',
+    'Data Model',
+    'Data Dictionary',
+    'Usecases',
+    'Workflows',
+    'Dashboards',
+    'User Interface Design',
+    'Data Quality Checks',
+    'Historical Data Load',
+    'Glossary',
+    'Version Control',
+    'Stakeholder Approvals',
+  ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -48,8 +69,8 @@ export class DiffCompComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     let version = localStorage.getItem('SPEC_VERISON');
-    let versionId:any;
-    if(version){
+    let versionId: any;
+    if (version) {
       versionId = JSON.parse(version);
       versionId = versionId.id;
     }
@@ -61,9 +82,9 @@ export class DiffCompComponent implements OnInit {
         this.product?.email +
         '&id=' +
         this.product?.id +
-        '&version_id=' + 
+        '&version_id=' +
         versionId +
-        '&targetUrl=' + 
+        '&targetUrl=' +
         environment.xnodeAppUrl +
         '&has_insights=' +
         true +
@@ -74,7 +95,7 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     if (this.contentObj?.content_data_type === 'SWAGGER') {
       this.childLoaded.emit(true);
     }
@@ -85,12 +106,10 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-      console.log('called here = ',this.selectedVersionTwo)
 
-      if(this.selectedVersionTwo){
-        console.log('called here =')
+    if (this.selectedVersionTwo) {
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
-      }
+    }
   }
 
   getType(content: any): string {
@@ -194,26 +213,24 @@ export class DiffCompComponent implements OnInit {
     );
     localStorage.setItem('targetUrl', this.targetUrl);
   }
-  makeTrustedUrlForDiffView(versionId:any): void {
-
+  makeTrustedUrlForDiffView(versionId: any): void {
     let targetUrl =
-    environment.designStudioAppUrl +
-    '?email=' +
-    this.product?.email +
-    '&id=' +
-    this.product?.id +
-    '&version_id=' + 
-    versionId +
-    '&targetUrl=' + 
-    environment.xnodeAppUrl +
-    '&has_insights=' +
-    true +
-    '&isVerified=true' +
-    '&userId=' +
-    this.currentUser.id;
-    this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(
-    targetUrl
-    );
+      environment.designStudioAppUrl +
+      '?email=' +
+      this.product?.email +
+      '&id=' +
+      this.product?.id +
+      '&version_id=' +
+      versionId +
+      '&targetUrl=' +
+      environment.xnodeAppUrl +
+      '&has_insights=' +
+      true +
+      '&isVerified=true' +
+      '&userId=' +
+      this.currentUser.id;
+    this.iframeSrc1 =
+      this.domSanitizer.bypassSecurityTrustResourceUrl(targetUrl);
   }
 
   isString(item: any): boolean {
