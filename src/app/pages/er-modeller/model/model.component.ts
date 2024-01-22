@@ -37,12 +37,8 @@ export class ModelComponent {
     private el: ElementRef
   ) { }
 
-  ngOnInit(){
-    console.log('IN MODEL TS ------------ ',this.myModel)
-  }
-
   ngAfterViewInit() {
-    this.jsPlumbService.initModel(this.myModel,this.inDiffView); //,c2c this.inDiffView in params
+    this.jsPlumbService.initModel(this.myModel); //,c2c this.inDiffView in params
   }
 
   ngOnDestroy() {

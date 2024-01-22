@@ -124,9 +124,7 @@ export class DataModelCommonComponent {
           if(this.inDiffView){
             console.log('in diffview ngonint', this.inDiffView, document.getElementById('canvas-2'))
             let diffObj = { inDiffView:true, ids:[this.canvaDataModel.nativeElement] }
-            // setTimeout(() => {  }, 1000);
-              this.jsPlumbService.init(diffObj);
-
+            this.jsPlumbService.init(diffObj);
           }else{
             this.jsPlumbService.init();
           }
