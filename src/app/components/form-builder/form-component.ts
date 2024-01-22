@@ -30,3 +30,17 @@ export class FormComponent {
     this.options = options.options || [];
   }
 }
+
+
+export class JSONForm {
+  formName: string;
+  controls: FormComponent[];
+  subForms: JSONForm[];
+  isArray: boolean = false;
+
+  constructor(formName:string, controls:FormComponent[], subForms: JSONForm[]) {
+    this.formName = formName;
+    this.controls = controls;
+    this.subForms = subForms;
+   }
+}

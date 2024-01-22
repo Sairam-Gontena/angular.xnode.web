@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BuilderService } from '../builder.service';
 import { FormComponent } from '../form-component';
 import { FormGroup } from '@angular/forms';
+import { JsonFormBuilderService } from '../json-form-builder.service';
 
 @Component({
   selector: 'xnode-dynamic-form',
@@ -12,7 +13,7 @@ export class DynamicFormComponent implements OnInit {
   @Input() inputControls: FormComponent[] = [];
   formGroup!: FormGroup;
 
-  constructor(private service: BuilderService) {
+  constructor(private service: BuilderService, private jsonFormBuilderService :JsonFormBuilderService) {
     // this.inputControls = [
     //   {
     //     key: 'firstName',
@@ -46,5 +47,6 @@ export class DynamicFormComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.service.getFormGroup(this.inputControls);
+
   }
 }
