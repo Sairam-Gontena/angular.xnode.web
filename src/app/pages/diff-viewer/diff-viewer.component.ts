@@ -135,7 +135,7 @@ export class DiffViewerComponent implements OnInit {
           productId: params?.productId ? params?.productId : params?.product_id,
           versionId: params?.versionId ? params.versionId : params.version_id,
         });
-      } else if (params?.template_type === 'WORKFLOW') {
+      } else if (params?.entity === 'WORKFLOW') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 1,
@@ -149,8 +149,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   isMeneOpened(event: any) {
-    console.log('event', event);
-
     this.isSideMenuOpened = event;
   }
 
@@ -172,6 +170,19 @@ export class DiffViewerComponent implements OnInit {
               obj['parentId'] = item.id;
               obj['parentTitle'] = item.title;
               obj['specTitle'] = innerItem.title;
+            }
+            if (obj.content && isArray(obj.content)) {
+              obj.content.forEach((objItem: any) => {
+                if (
+                  typeof objItem !== 'string' &&
+                  obj.parentId &&
+                  obj.parentTitle
+                ) {
+                  objItem['parentId'] = item.id;
+                  objItem['parentTitle'] = item.title;
+                  objItem['specTitle'] = obj.title;
+                }
+              });
             }
           });
         }
