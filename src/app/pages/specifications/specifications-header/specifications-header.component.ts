@@ -27,10 +27,11 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() versions: SpecVersion[] = [];
   @Input() onDiffValue:any;
   @Input() selectedVersion: SpecVersion | undefined;
+  @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
+  @Input() isSideMenuOpened?: any;
   currentUser: any;
   metaDeta: any;
   product: any;
-  isSideMenuOpened: any;
   showConfirmationPopup: boolean = false;
   enabledGeneratespec: boolean = true;
   diffView: boolean = false;
@@ -43,10 +44,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     { label: 'Side By Side View', value: 'side-by-side' },
     { label: 'Exit', value: null },
   ];
-  selectedView: any;
   specData: any;
-  isCommentsPanelOpened: any;
-  showingCRList: any;
   conversationPanelInfo: any;
 
   constructor(
@@ -73,8 +71,9 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changeschangeschangeschanges', changes);
-
+    if (changes['isSideMenuOpened']?.currentValue) {
+      this.isSideMenuOpened = changes['isSideMenuOpened'].currentValue;
+    }
     if (changes['versions']?.currentValue) {
       this.versions = changes['versions'].currentValue;
     }
@@ -88,11 +87,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    // let deep_link_info = localStorage.getItem('deep_link_info');
-    // if (deep_link_info) {
-    //   deep_link_info = JSON.parse(deep_link_info);
-    //   this.getDeepLinkDetails(deep_link_info);
-    // } else this.getVersions();
   }
 
   getAllProductsInfo(key: string) {
@@ -139,7 +133,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   toggleSideMenu() {
-    this.utils.EnableSpecSubMenu();
+    this.isMeneOpened.emit(true);
   }
 
   askConfirmationOnClickGenerate() {
@@ -160,6 +154,7 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   openComments() {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    // this.isMeneOpened.emit(false);
     this.SpecificationUtils.openConversationPanel({
       openConversationPanel: true,
       parentTabIndex: 0,
@@ -214,10 +209,19 @@ export class SpecificationsHeaderComponent implements OnInit {
       );
       this.product = product;
       this.specService.getVersions(this.product.id, (data) => {
+        this.versions = data;
+        const uniqueStatuses = [...new Set(data.map((obj:any) => obj.specStatus))];
+        const priorityOrder = uniqueStatuses.sort((a, b) => {
+          if (a === 'LIVE') return -1;
+          if (b === 'LIVE') return 1;
+          return 0;
+        });
+        const firstObjectWithPriority = data.find((obj:any) => obj.specStatus === priorityOrder[0]);
+        this.selectedVersion = firstObjectWithPriority;
         this.specService.getMeSpecInfo(
           {
             productId: this.product?.id,
-            versionId: data[0].id,
+            versionId: firstObjectWithPriority.id,
           },
           (specData) => {
             if (specData) {
@@ -228,7 +232,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllComments({
                   productId: this.product?.id,
-                  versionId: data[0].id,
+                  versionId:firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -237,7 +241,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllTasks({
                   productId: this.product?.id,
-                  versionId: data[0].id,
+                  versionId:firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -248,7 +252,7 @@ export class SpecificationsHeaderComponent implements OnInit {
             }
           }
         );
-        this.storageService.saveItem(StorageKeys.SpecVersion, data[0]);
+        this.storageService.saveItem(StorageKeys.SpecVersion,firstObjectWithPriority);
       });
     } else {
       this.showGenerateSpecPopup(product);

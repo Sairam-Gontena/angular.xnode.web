@@ -1,31 +1,27 @@
-<div [ngClass]="{'spec-menu': isOpen, 'hide-spec-menu': !isOpen}">
-    <div *ngIf="isOpen">
-        <div class="flex justify-content-center">
-            <span class="p-input-icon-left w-full">
-                <i class="pi pi-search text-white"></i>
-                <input type="text" pInputText placeholder="Search for docs, Keywords, etc"
-                    class="w-full border-round-3xl font-family-inter text-sm font-normal" [(ngModel)]="searchText"
-                    (input)="onInput()" />
-                <i class="pi pi-times reset-search text-white cursor-pointer" *ngIf="searchText"
-                    (click)="clearInput()"></i>
-            </span>
-            <img src="../assets/spec-chevron-left.svg" class="flex ml-4 text-white cursor-pointer " alt="Logo"
-                *ngIf="isOpen" (click)="toggleMenu()">
-        </div>
-        <div>
-            <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
-            <p-accordion [multiple]="multiAccordion" [activeIndex]="0" (onOpen)="onOpenAccordian($event)">
-                <p-accordionTab [header]="(i + 1) + '. '+ shortTitle(item?.title)"
-                    *ngFor="let item of specData; let i = index;" [ngClass]="{'active-header-text':i === activeIndex }" style="background-color: blue;" >
-                    <div class="p-2 pointer section text-base font-family-inter font-medium pl-6 pt-3 pb-3 mt-1 "
-                        [ngClass]="{
+<div class="spec-menu">
+    <div class="flex justify-content-center">
+        <span class="p-input-icon-left w-full">
+            <i class="pi pi-search text-white"></i>
+            <input type="text" pInputText placeholder="Search for docs, Keywords, etc"
+                class="w-full border-round-3xl font-family-inter text-sm font-normal" [(ngModel)]="searchText"
+                (input)="onInput()" />
+            <i class="pi pi-times reset-search text-white cursor-pointer" *ngIf="searchText" (click)="clearInput()"></i>
+        </span>
+        <img src="../assets/spec-chevron-left.svg" class="flex ml-4 text-white cursor-pointer " alt="Logo"
+            (click)="toggleMenu()">
+    </div>
+    <div>
+        <p class="title font-family-inter font-semibold text-xs mt-4">General</p>
+        <p-accordion [multiple]="multiAccordion" [activeIndex]="0" (onOpen)="onOpenAccordian($event)">
+            <p-accordionTab [header]="(i + 1) + '. '+ shortTitle(item?.title)"
+                *ngFor="let item of specData; let i = index;" [ngClass]="{'active-header-text':i === activeIndex }"
+                style="background-color: blue;">
+                <div class="p-2 pointer section text-base font-family-inter font-medium pl-6 pt-3 pb-3 mt-1 " [ngClass]="{
                             'active-section': i === activeIndex && ind === selectedSecIndex
-                        }" *ngFor="let content of item?.content let ind = index; "
-                        (click)="onSelectSpec(content,ind)"
-                        [innerHTML]="(i + 1) + '.' + (ind + 1) + ' ' + shortTitle(content.title) | Accordionhighlight: keyword">
-                    </div>
-                </p-accordionTab>
-            </p-accordion>
-        </div>
+                        }" *ngFor="let content of item?.content let ind = index; " (click)="onSelectSpec(content,ind)"
+                    [innerHTML]="(i + 1) + '.' + (ind + 1) + ' ' + shortTitle(content.title) | Accordionhighlight: keyword">
+                </div>
+            </p-accordionTab>
+        </p-accordion>
     </div>
 </div>

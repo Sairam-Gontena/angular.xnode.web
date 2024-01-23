@@ -1,24 +1,25 @@
 <div class="flex">
   <xnode-specifications-menu (searchtext)="searchText($event)" [keyword]="keyword" [specData]="specListForMenu"
-    (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)"></xnode-specifications-menu>
-  <div class="w-full">
-    <div class="h-full">
-      <div class="h-full" *ngIf="specExpanded">
-        <xnode-expand-specification [dataToExpand]="selectedSpecItem"
-          (childLoaded)="onChildLoaded($event)" [diffViewEnabled]="isDiffEnabled" [diffdataToExpand]="diffObj"  (closeFullScreenView)="closeFullScreenView()" [selectedVersionOne]="selectedVersionOne" [selectedVersionTwo]="selectedVersionTwo"
-          [specExpanded]="specExpanded"></xnode-expand-specification>
-      </div>
-      <div *ngIf="!specExpanded">
-        <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"  (onVersionChange)="versionChange($event)" [onDiffValue]="isDiffEnabled"
-          (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" [selectedVersion]="selectedVersion"
-          (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"></xnode-specifications-header>
-        <div class="overflow-auto flex justify-content-center spec-content-body"
-          [ngClass]="{ 'spec-content-navi-menu':isSpecSideMenuOpened && isDockedNaviOpended,'spec-content-navi':isDockedNaviOpended,'spec-content':!isSpecSideMenuOpened && !isCommentsPanelOpened,'spec-content-menu':isSpecSideMenuOpened && !isDockedNaviOpended && !isCommentsPanelOpened, 'spec-content-comments':!isSpecSideMenuOpened && isCommentsPanelOpened,'spec-content-comments-menu':isSpecSideMenuOpened && isCommentsPanelOpened}">
-          <div class="w-8">
-            <div class="justify-content-start gap-4 mt-4" *ngIf="showVersionToDiff">
+    (onSelectSpecMenuItem)="onSelectSpecMenuItem($event)" *ngIf="isSideMenuOpened"
+    (isMeneOpened)="isMeneOpened($event)"></xnode-specifications-menu>
+  <div [ngClass]="isSideMenuOpened ? 'spec-main-body' :'spec-main-body-full' ">
+    <div class="h-full" *ngIf="specExpanded">
+      <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
+        (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
+        [specExpanded]="specExpanded" [diffViewEnabled]="isDiffEnabled" [diffdataToExpand]="diffObj" [selectedVersionOne]="selectedVersionOne" [selectedVersionTwo]="selectedVersionTwo"></xnode-expand-specification>
+    </div>
+    <div *ngIf="!specExpanded">
+      <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
+        [isSideMenuOpened]="isSideMenuOpened" (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (onVersionChange)="versionChange($event)" [onDiffValue]="isDiffEnabled"
+        [selectedVersion]="selectedVersion" (specDataChange)="onSpecDataChange($event)"
+        (generateSpec)="checkUserEmail()" (isMeneOpened)="isMeneOpened($event)"></xnode-specifications-header>
+      <div class="flex">
+        <div class="spec-content-body" [ngClass]="openConversationPanel ? 'spec-view-body py-4': 'spec-view-body-full py-4'">
+          <div class="specs w-8">
+            <div class="sticky-dropdown flex justify-content-between flex-wrap pb-2" *ngIf="showVersionToDiff">
               <p-dropdown [options]="versions" [(ngModel)]="selectedVersionOne" optionLabel="label"
                 (onChange)="onVersionChange($event, 'one')" placeholder="Select a version"
-                class="ml-3 app-dropdown"></p-dropdown>
+                class="app-dropdown"></p-dropdown>
               <p-dropdown [options]="versions" [(ngModel)]="selectedVersionTwo" optionLabel="label"
                 (onChange)="onVersionChange($event, 'two')" placeholder="Select a version"
                 class="ml-3 app-dropdown"></p-dropdown>
@@ -30,10 +31,8 @@
                 [onDiff]="specList.length!==0 && specTwoList.length!==0 && isDiffEnabled" [selectedVersionTwo]="selectedVersionTwo" ></xnode-diff-comp>
             </div>
           </div>
-          <div class="w-4" *ngIf="openConversationPanel">
-            <xnode-comments-cr-panel [specData]="specList"></xnode-comments-cr-panel>
-          </div>
         </div>
+        <xnode-comments-cr-panel [specData]="specList" *ngIf="openConversationPanel"></xnode-comments-cr-panel>
       </div>
     </div>
   </div>

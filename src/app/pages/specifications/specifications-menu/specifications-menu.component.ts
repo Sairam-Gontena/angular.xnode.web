@@ -3,7 +3,7 @@ import { UtilsService } from 'src/app/components/services/utils.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 
 @Component({
   selector: 'xnode-specifications-menu',
@@ -15,6 +15,7 @@ export class SpecificationsMenuComponent implements OnInit {
   @Input() keyword?: any;
   @Output() searchtext: EventEmitter<any> = new EventEmitter();
   @Output() onSelectSpecMenuItem: EventEmitter<any> = new EventEmitter();
+  @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   menuList: any;
   selectedSection: any;
@@ -22,32 +23,31 @@ export class SpecificationsMenuComponent implements OnInit {
   selectedSecIndex: any;
   searchText: any;
   multiAccordion: boolean = false;
-  isOpen = true;
   private textInputSubject = new Subject<string>();
 
   constructor(
     private utils: UtilsService,
-    private specUtils: SpecUtilsService
+    private SpecificationUtils: SpecificationUtilsService
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
         if (resp) this.menuList = resp?.filter((item: any) => item !== null);
       });
     });
-    this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
-      if (event) {
-        this.isOpen = false;
-        this.utils.disableSpecSubMenu();
-      }
-    });
+
+    // this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
+    //   console.log('dataaa', data);
+
+    //   if (data) {
+    //     this.isSideMenuOpened = !data.openConversationPanel;
+    //     this.utils.disableSpecSubMenu();
+    //   } else {
+    //     this.isSideMenuOpened = true;
+    //   }
+    // });
   }
 
   ngOnInit(): void {
-    console.log('specData', this.specData);
-
-    this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isOpen = data;
-    });
     this.populateMenuList();
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
@@ -98,12 +98,7 @@ export class SpecificationsMenuComponent implements OnInit {
   }
 
   toggleMenu() {
-    this.isOpen = !this.isOpen;
-    if (this.isOpen) {
-      this.utils.EnableSpecSubMenu();
-    } else {
-      this.utils.disableSpecSubMenu();
-    }
+    this.isMeneOpened.emit(false);
   }
 
   clearInput() {

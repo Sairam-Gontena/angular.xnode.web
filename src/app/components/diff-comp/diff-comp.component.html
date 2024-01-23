@@ -88,12 +88,12 @@
           </div>
         </div>
       </div>
-      <div class="pt-0" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
-        <div class="col-12 grid " *ngIf="onDiff">
-          <div class="col-6 pr-2 pb-0">
+      <div class="col-12 py-0" *ngSwitchCase="'USECASES'" [id]="contentObj.id">
+        <div class="grid" *ngIf="onDiff">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <xnode-common-usecases [users]="[]" [useCases]="contentObj.content"></xnode-common-usecases>
           </div>
-          <div class="col-6 pl-2 pb-0">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <xnode-common-usecases [users]="[]" [useCases]="diffObj.content"></xnode-common-usecases>
           </div>
         </div>
@@ -101,11 +101,11 @@
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
-          <div class="col-6">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [dataToExpand]="contentObj"></xnode-bpmn-common>
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj" [dataToExpand]="contentObj"></xnode-bpmn-common>
           </div>
-          <div class="col-6">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'" [diffdataToExpand]="diffObj"></xnode-bpmn-common>
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'" [diffdataToExpand]="diffObj" [item]="diffObj"></xnode-bpmn-common>
           </div>
         </div>
         <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
@@ -114,13 +114,13 @@
         <xnode-user-roles [content]="contentObj.content" [parentTitle]="contentObj.title"
           [specItem]="contentObj"></xnode-user-roles>
       </div>
-      <div class="col-12 pt-2 mb-2 dashbboard-view"  *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
+      <div class="col-12 py-4 dashbboard-view" *ngSwitchCase="'DASHBOARD'" [id]="contentObj.id">
         <div class="grid h-full" *ngIf="onDiff">
-          <div class="col-6 px-3 h-full">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12 h-full' : 'col-6 h-full'">
             <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
-          <div class="col-6 px-3 h-full">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12 h-full' : 'col-6 h-full'">
             <iframe id="myIframe" [src]="iframeSrc1" class="h-full w-full" title="Template Builder">
             </iframe>
           </div>
@@ -157,10 +157,10 @@
       </div>
       <div class="col-12 py-4" *ngSwitchCase="'DATA_MODEL'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
-          <div class="col-6 px-3">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <xnode-data-model-common *ngIf="contentObj"></xnode-data-model-common>
           </div>
-          <div class="col-6 px-3">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <xnode-data-model-common [inDiffView]="true" *ngIf="diffObj"></xnode-data-model-common>
           </div>
         </div>
@@ -168,10 +168,10 @@
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'SWAGGER'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
-          <div class="col-6 px-3">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <div id="openapi-ui-spec-1" class="openapi-spec my-3"></div>
           </div>
-          <div class="col-6 px-3">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <div id="openapi-ui-spec-2" class="openapi-spec my-3"></div>
           </div>
         </div>
@@ -179,23 +179,15 @@
       </div>
       <div class="col-12 py-4" *ngSwitchCase="'QUALITY_ASSURANCE'" [id]="contentObj.id">
         <div *ngFor="let item of contentObj.content">
-          <div class="mt-2">
-            <div>
-              <div class="flex justify-content-between align-items-center col-12">
-                <h3>
-                  {{item.title}}
-                </h3>
-              </div>
-              <div class="spec-table">
-                <xnode-common-spec-table [specItem]="contentObj" [content]="item.content"></xnode-common-spec-table>
-              </div>
-            </div>
-          </div>
+          <h3>
+            {{item.title}}
+          </h3>
+          <xnode-common-spec-table [specItem]="contentObj" [content]="item.content"></xnode-common-spec-table>
         </div>
       </div>
       <div class="col-12  pt-0" *ngSwitchCase="'USER_PERSONAS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
-          <div class="col-6 pr-3 pt-0">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
             <div *ngFor="let persona of contentObj.content" class="pb-1" (mouseover)="persona.showCommentIcon = true"
               (mouseleave)="persona.showCommentIcon = false">
               <p-overlayPanel #op (onHide)="persona.showCommentIcon=false">
@@ -219,7 +211,7 @@
               <xnode-user-persona [content]="persona"></xnode-user-persona>
             </div>
           </div>
-          <div class="col-6 pl-3 pt-0">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pl-3 pt-0'">
             <div *ngFor="let persona of diffObj.content" class="pb-1" (mouseover)="persona.showCommentIcon = true"
               (mouseleave)="persona.showCommentIcon = false">
               <p-overlayPanel #op (onHide)="persona.showCommentIcon=false">
@@ -272,9 +264,9 @@
     </div>
     <div *ngIf="!contentObj?.parent_data_type">
       <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 mb-2 z-5" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
+        class="absolute bottom-0 right-0 mr-2 z-2 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
       <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
+        class="absolute bottom-0 right-0 mr-2 z-2 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
       <div class="gradientback" *ngIf="!contentObj?.collapsed"></div>
     </div>
   </div>
