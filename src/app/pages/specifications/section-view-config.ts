@@ -11,6 +11,7 @@ export const SECTION_VIEW_CONFIG = {
     'User Roles',
     'Regular User',
     'User Interface Design',
+    'Data Management Persistence',
     'Product Perspective',
     'User Classes Characteristics',
     'Feature Descriptions',
