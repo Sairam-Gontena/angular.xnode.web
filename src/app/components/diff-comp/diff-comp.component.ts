@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, EventEmitter, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  EventEmitter,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { isArray } from 'lodash';
@@ -35,7 +42,20 @@ export class DiffCompComponent implements OnInit {
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
-  ComponentsToExpand = ['Open API Spec', 'Data Model', 'Data Dictionary', 'Usecases', 'Workflows', 'Dashboards', 'User Interface Design', 'Data Quality Checks', 'Historical Data Load', 'Glossary', 'Version Control', 'Stakeholder Approvals'];
+  ComponentsToExpand = [
+    'Open API Spec',
+    'Data Model',
+    'Data Dictionary',
+    'Usecases',
+    'Workflows',
+    'Dashboards',
+    'User Interface Design',
+    'Data Quality Checks',
+    'Historical Data Load',
+    'Glossary',
+    'Version Control',
+    'Stakeholder Approvals',
+  ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
   constructor(
@@ -86,10 +106,8 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-    console.log('called here = ', this.selectedVersionTwo)
 
     if (this.selectedVersionTwo) {
-      console.log('called here =')
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
     }
   }
@@ -171,7 +189,7 @@ export class DiffCompComponent implements OnInit {
     );
     if (version) {
       this.specService.getMeSpecLevelCommentsList({
-        parentId: this.specItemId,
+        parentId: specItem.parentId,
       });
       this.specificationUtils.openConversationPanel({
         openConversationPanel: true,
@@ -196,7 +214,10 @@ export class DiffCompComponent implements OnInit {
     localStorage.setItem('targetUrl', this.targetUrl);
   }
   makeTrustedUrlForDiffView(versionId: any): void {
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
     let targetUrl =
       environment.designStudioAppUrl +
       '?email=' +
@@ -212,9 +233,8 @@ export class DiffCompComponent implements OnInit {
       '&isVerified=true' +
       '&userId=' +
       this.currentUser.id;
-    this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      targetUrl
-    );
+    this.iframeSrc1 =
+      this.domSanitizer.bypassSecurityTrustResourceUrl(targetUrl);
   }
 
   isString(item: any): boolean {

@@ -122,9 +122,6 @@
           <div  class="h-8rem">
             <p>{{cmt?.referenceContent.parentTitle}}</p>
             <p>{{cmt?.referenceContent.specTitle}}</p>
-            <!-- <div *ngIf="cmt?.referenceContent?.content">
-
-            </div> -->
               <ul >
                 <li>
                   <b>{{cmt?.referenceContent.title}}</b>
@@ -132,11 +129,6 @@
                 </li>
               </ul>
           </div>
-        </div>
-        <div *ngIf="checkUserRoleSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
-          <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
-            [content]="cmt?.referenceContent" [users]="usersList"
-            [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
         </div>
         <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem">
           <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext"

@@ -1,269 +1,317 @@
 .diff-view {
-  height: calc(100vh - 70px);
-  overflow: auto;
+    height: calc(100vh - 70px);
+    overflow: auto;
+}
+
+.spec-body {
+    width: calc(100% - 375px);
 }
 
 :host ::ng-deep .app-dropdown .p-dropdown {
-  border-radius: 25px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  border: 0;
-  color: #ffffff !important;
-  background: transparent;
+    border-radius: 25px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border: 0;
+    color: #ffffff !important;
+    background: transparent;
 }
 
 :host ::ng-deep .app-dropdown .p-inputtext {
-  background: transparent !important;
-  color: #ffffff !important;
-  padding: 10px !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    padding: 10px !important;
 }
 
 .expand-spec {
-  height: calc(100vh - 112px);
-  width: 300px;
+    height: calc(100vh - 112px);
+    width: 300px;
 }
 
 @media (min-width: 1024px) {
 
-  .spec-section,
-  .comments-open,
-  .comments-close {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-section,
+    .comments-open,
+    .comments-close {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .comments-open {
-      width: 350px;
-  }
+    .comments-open {
+        width: 350px;
+    }
 
-  .spec-content {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-content {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .spec-content-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 380px);
-  }
+    .spec-content-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 380px);
+    }
 
-  .spec-content-navi {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 650px;
-  }
+    .spec-content-navi {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 650px;
+    }
 
-  .spec-content-navi-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 380px;
-  }
+    .spec-content-navi-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 380px;
+    }
 
-  .spec-content-comments {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 430px);
-  }
+    .spec-content-comments {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 430px);
+    }
 
-  .spec-content-comments-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 730px);
-  }
+    .spec-content-comments-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 730px);
+    }
 }
 
 @media (min-width: 1366px) {
 
-  .spec-section,
-  .comments-open,
-  .comments-close {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-section,
+    .comments-open,
+    .comments-close {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .comments-open {
-      width: 512px;
-  }
+    .comments-open {
+        width: 512px;
+    }
 
-  .spec-content {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-content {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .spec-content-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 430px);
-  }
+    .spec-content-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 430px);
+    }
 
-  .spec-content-navi {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 890px;
-  }
+    .spec-content-navi {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 890px;
+    }
 
-  .spec-content-navi-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 555px;
-  }
+    .spec-content-navi-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 555px;
+    }
 
-  .spec-content-comments {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 592px);
-  }
+    .spec-content-comments {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 592px);
+    }
 
-  .spec-content-comments-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 930px);
-  }
+    .spec-content-comments-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 930px);
+    }
 }
 
 @media (min-width: 1440px) {
 
-  .spec-section,
-  .comments-open,
-  .comments-close {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-section,
+    .comments-open,
+    .comments-close {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .comments-open {
-      width: 512px;
-  }
+    .comments-open {
+        width: 512px;
+    }
 
-  .spec-content {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-content {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .spec-content-navi {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 930px;
-  }
+    .spec-content-navi {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 930px;
+    }
 
-  .spec-content-navi-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 555px;
-  }
+    .spec-content-navi-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 555px;
+    }
 
-  .spec-content-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 455px);
-  }
+    .spec-content-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 455px);
+    }
 
-  .spec-content-comments {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 592px);
-  }
+    .spec-content-comments {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 592px);
+    }
 
-  .spec-content-comments-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 967px);
-  }
+    .spec-content-comments-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 967px);
+    }
 }
 
 @media (min-width: 1920px) {
 
-  .spec-section,
-  .comments-open,
-  .comments-close {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-section,
+    .comments-open,
+    .comments-close {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .comments-open {
-      width: 512px;
-  }
+    .comments-open {
+        width: 512px;
+    }
 
-  .spec-content {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-content {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .spec-content-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 455px);
-  }
+    .spec-content-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 455px);
+    }
 
-  .spec-content-navi {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 1265px;
-  }
+    .spec-content-navi {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 1265px;
+    }
 
-  .spec-content-navi-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 900px;
-  }
+    .spec-content-navi-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 900px;
+    }
 
-  .spec-content-comments {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 592px);
-  }
+    .spec-content-comments {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 592px);
+    }
 
-  .spec-content-comments-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 980px);
-  }
+    .spec-content-comments-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 980px);
+    }
 }
 
 @media (min-width: 2560px) {
 
-  .spec-section,
-  .comments-open,
-  .comments-close {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-section,
+    .comments-open,
+    .comments-close {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .comments-open {
-      width: 712px;
-  }
+    .comments-open {
+        width: 712px;
+    }
 
-  .spec-content {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-  }
+    .spec-content {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+    }
 
-  .spec-content-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 455px);
-  }
+    .spec-content-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 455px);
+    }
 
-  .spec-content-navi {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 100%;
-  }
+    .spec-content-navi {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 100%;
+    }
 
-  .spec-content-navi-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: 1350px;
-  }
+    .spec-content-navi-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: 1350px;
+    }
 
-  .spec-content-comments {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 592px);
-  }
+    .spec-content-comments {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 592px);
+    }
 
-  .spec-content-comments-menu {
-      transition: all 0.5s ease-in-out;
-      height: calc(100vh - 112px);
-      width: calc(100vw - 1170px);
-  }
+    .spec-content-comments-menu {
+        transition: all 0.5s ease-in-out;
+        height: calc(100vh - 112px);
+        width: calc(100vw - 1170px);
+    }
+}
+
+.spec-main-body {
+    width: calc(100% - 375px);
+}
+
+.spec-main-body-full {
+    width: 100%
+}
+
+.spec-view-body {
+    width: calc(100% - 512px);
+    display: flex;
+    justify-content: center;
+}
+
+.spec-view-body-full {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.spec-container {
+    height: calc(100vh - 110px);
+    overflow: auto;
+}
+
+.slide-down-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out;
+}
+
+.slide-down-container.open {
+    max-height: 300px;
+    transition: max-height 0.5s ease-in;
+    overflow: visible;
+}
+
+.sticky-dropdown {
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
