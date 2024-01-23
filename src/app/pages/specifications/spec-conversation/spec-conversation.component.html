@@ -50,21 +50,13 @@
           </div>
           <div *ngIf="checkListViewSections(cmt.referenceContent?.specTitle)" class="h-8rem">
             <b class="m-0">{{cmt?.referenceContent.parentTitle}}</b>
-            <p class="m-0">{{cmt?.referenceContent.specTitle}}</p>
-            <!-- <div *ngIf="cmt?.referenceContent?.content">
-
-            </div> -->
+            <p class="m-0" *ngIf="cmt?.referenceContent.specTitle!==cmt?.referenceContent.parentTitle">{{cmt?.referenceContent.specTitle}}</p>
               <ul >
                 <li>
                   <b>{{cmt?.referenceContent.title}}</b>
                   <p>{{cmt?.referenceContent.content}}</p>
                 </li>
               </ul>
-          </div>
-          <div *ngIf="checkUserRoleSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
-            <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
-              [content]="cmt?.referenceContent" [users]="usersList"
-              [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
           </div>
           <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem">
             <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext"
