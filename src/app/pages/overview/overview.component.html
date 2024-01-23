@@ -5,7 +5,8 @@
         <div class="lg:col-7 md:col-12">
             <div class="flex mt-6 ">
                 <img src="../../assets/finbuddy.png" alt="finbuddy-image" class="w-1 h-1 finbuddy-image">
-                <h1 class="text-white text-4xl font-medium  ml-4" *ngIf="appName !=='undefined' ">{{product?.title}}</h1>
+                <h1 class="text-white text-4xl font-medium  ml-4" *ngIf="appName !=='undefined' ">{{product?.title}}
+                </h1>
                 <h1 class="text-white text-4xl font-medium  ml-4" *ngIf="appName ==='undefined' ">{{product?.id}}</h1>
             </div>
             <p
@@ -17,17 +18,19 @@
                 <div class="col-md-6 h-19rem font-bold text-white m-2 stake-holder">
                     <h6 class="text-xl font-medium mt-4 ml-3 p-2">Primary
                         Stakeholders</h6>
-                    <div class="mt-4" *ngIf="overview?.username">
+                    <div class="mt-4 flex flex-row flex-wrap" *ngIf="overview?.username">
                         <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
-                        <span class="text-white font-medium text-xl ml-3">{{overview?.username}}</span>
+                        <span class="text-white font-medium text-xl ml-3">
+                            {{overview?.username | titlecase}}
+                        </span>
                     </div>
-                    <div class="mt-4 para-text" *ngIf="overview?.email">
-                        <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-4">
-                        <span class=" ml-3">{{overview?.email}}</span>
+                    <div class="mt-4 para-text overflow-hidden" *ngIf="overview?.email">
+                        <img src="../../assets/email-image.png" alt="email-image" class="h-1rem w-1rem ml-2">
+                        <span class="ml-2 text-ellipsis">{{overview?.email}}</span>
                     </div>
                     <!-- This field should not be removed -->
                     <div class="mt-4 para-text" *ngIf="overview?.phone_number && overview?.phone_number !==''">
-                        <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-4">
+                        <img src="../../assets/call-image.png" alt="call-image" class="h-1rem w-1rem ml-2">
                         <span class=" ml-3">{{overview?.phone_number}}</span>
                     </div>
                 </div>
@@ -67,7 +70,8 @@
         <div class="lg:col-4 md:col-12" *ngIf="jsondata?.length">
             <div class="card-container mt-6 text-white stepper-card">
                 <div class="stepper-content p-1 mt-3">
-                    <p class="text-xl font-normal stepper-text">Hey <span class="font-bold">{{currentUser?.first_name.toUpperCase()}} {{currentUser?.last_name.toUpperCase()}}!</span> You
+                    <p class="text-xl font-normal stepper-text">Hey <span class="font-bold">
+                            {{overview?.username.toUpperCase()}}!</span> You
                         are on the verge of using the app.</p>
                     <p class="text-lg font-medium mb-4">Please see the status
                         below</p>
