@@ -20,7 +20,9 @@ import {
 import { CommentsService } from 'src/app/api/comments.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Dropdown } from 'primeng/dropdown';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import { SpecificationsService } from '../services/specifications.service';
+import { SpecVersion } from 'src/models/spec-versions';
+import { SpecificationUtilsService } from '../pages/diff-viewer/specificationUtils.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -69,6 +71,7 @@ export class LinkToCrComponent implements OnInit {
   content: any;
   header: any;
   openConfirmationPopUp: boolean = false;
+  conversationPanelData: any;
 
   constructor(
     private fb: FormBuilder,
@@ -76,13 +79,20 @@ export class LinkToCrComponent implements OnInit {
     private messagingService: MessagingService,
     private commentsService: CommentsService,
     private utilsService: UtilsService,
-    private specUtils: SpecUtilsService
+    private specService: SpecificationsService,
+    private storageService: LocalStorageService,
+    private specUtils: SpecificationUtilsService
   ) {
     this.crForm = this.fb.group({
       crToAdd: new FormControl(
         { value: null, disabled: false },
         Validators.required
       ),
+    });
+    this.specUtils._openConversationPanel.subscribe((event: any) => {
+      if (event) {
+        this.conversationPanelData = event;
+      }
     });
   }
 
@@ -237,12 +247,26 @@ export class LinkToCrComponent implements OnInit {
       .linkCr(body)
       .then((response: any) => {
         if (response) {
+          const specVersion: SpecVersion | undefined =
+            this.storageService.getItem(StorageKeys.SpecVersion);
+          if (specVersion) {
+            if (this.conversationPanelData.childTabIndex === 0)
+              this.specService.getMeAllComments({
+                productId: this.product.id,
+                versionId: specVersion.id,
+              });
+            else
+              this.specService.getMeAllTasks({
+                productId: this.product.id,
+                versionId: specVersion.id,
+              });
+          }
+          this.close.emit();
           this.utilsService.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
             detail: 'CR has been successfully linked',
           });
-          this.getCRList();
         } else {
           this.utilsService.loadToaster({
             severity: 'error',
@@ -258,37 +282,6 @@ export class LinkToCrComponent implements OnInit {
           summary: 'ERROR',
           detail: err,
         });
-      });
-  }
-
-  getCRList() {
-    let body: any = {
-      productId: this.product?.id,
-    };
-    this.utilsService.loadSpinner(true);
-    this.commentsService
-      .getCrList(body)
-      .then((res: any) => {
-        if (res && res.data) {
-          this.specUtils._loadActiveTab({ activeIndex: 1 });
-          this.specUtils._getMeUpdatedCrs(res.data);
-          this.close.emit();
-        } else {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: res?.data?.common?.status,
-          });
-        }
-        this.utilsService.loadSpinner(false);
-      })
-      .catch((err: any) => {
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: err,
-        });
-        this.utilsService.loadSpinner(false);
       });
   }
 
