@@ -23,7 +23,6 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() getMeSpecList = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
-  @Output() onVersionChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
   @Input() onDiffValue:any;
   @Input() selectedVersion: SpecVersion | undefined;
@@ -289,7 +288,6 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   onChangeVersion(event: any): void {
     this.utils.loadSpinner(true);
-    this.onVersionChange.emit({  diffView: this.diffView, });
     this.versions.forEach((element: any) => {
       if (element.id === event.value.value) {
         this.storageService.saveItem(StorageKeys.SpecVersion, element);
