@@ -481,11 +481,17 @@ export class DiffViewerComponent implements OnInit {
   }
 
   onSelectSpecMenuItem(item: any): void {
-    new Promise((resolve) => setTimeout(resolve, 500));
-    const element = document.getElementById(item.id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
+      const element = document.getElementById(item.id);
+      const contentContainer = document.getElementById('content-container');
+      if (element && contentContainer) {
+        const offsetTop = element.offsetTop - contentContainer.offsetTop;
+        contentContainer.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth',
+        });
+      }
+    });
   }
 
   _expandComponent(val: any): void {
