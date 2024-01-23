@@ -56,6 +56,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   @Input() specExpanded?: boolean;
   @Input() referenceId: any;
   @Input() dataToExpand: any;
+  @Input() diffdataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
   @Input() inSpecView:any;

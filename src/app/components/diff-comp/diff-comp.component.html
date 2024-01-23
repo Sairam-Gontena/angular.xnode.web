@@ -102,10 +102,10 @@
       <div class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div class="col-6">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [dataToExpand]="contentObj"></xnode-bpmn-common>
           </div>
           <div class="col-6">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'" [item]="diffObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'" [diffdataToExpand]="diffObj"></xnode-bpmn-common>
           </div>
         </div>
         <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>

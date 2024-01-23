@@ -308,8 +308,6 @@ export class DiffViewerComponent implements OnInit {
         docExpansion: 'none',
         operationsSorter: 'alpha',
       });
-      this.utils.loadSpinner(false);
-
   }
 
   onSpecDataChange(data: any): void {
@@ -439,14 +437,15 @@ export class DiffViewerComponent implements OnInit {
     }, 1000);
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
+    console.log('diffViewChangeEmiter',event)
     if (event.viewType !== null) {
       this.selectedVersionOne = this.versions.filter((obj: any) => {
         return obj.id === version.id;
       })[0];
       const index = this.findIndex(version);
       this.selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
-      this.utils.loadSpinner(true);
       console.log('at 448 line num')
+      this.utils.loadSpinner(true);
       this.getMeSpecInfo({
         versionId: this.selectedVersionTwo.id,
         type: 'two',
@@ -455,6 +454,7 @@ export class DiffViewerComponent implements OnInit {
       this.selectedVersionOne = undefined;
       this.selectedVersionTwo = undefined;
       this.specTwoList = [];
+      this.utils.loadSpinner(false);
     }
   }
 
@@ -467,7 +467,7 @@ export class DiffViewerComponent implements OnInit {
   }
 
   _expandComponent(object: any): void {
-    this.onDiff = object.onDiff;
+    console.log(this.selectedVersionOne)
     object.onDiff ? this.diffObj = object.diffObj : this.diffObj = undefined;
     if (object.contentObj) {
       this.selectedSpecItem = object.contentObj;
@@ -480,11 +480,14 @@ export class DiffViewerComponent implements OnInit {
     }
   }
 
-  closeFullScreenView(): void {
+   closeFullScreenView() {
+   console.log('loadSpinner true')
+   this.utils.loadSpinner(true);
+   console.log('loadSpinner true enable')
+    let obj = { diffView : this.isDiffEnabled };
+    this.diffViewChangeEmiter(obj);
     this.specExpanded = false;
     this.scrollToItem();
-    let obj = { diffView : this.isDiffEnabled };
-    this.diffViewChangeEmiter(obj)
     // this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
   }
 
