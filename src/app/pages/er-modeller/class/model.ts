@@ -62,7 +62,7 @@ export class Model {
     return 'model' + this.id;
   }
 
-  public getElementH2Id(indiff?:true): string {
+  public getElementH2Id(): string {
     return 'model' + this.id + '-h2';
   }
 

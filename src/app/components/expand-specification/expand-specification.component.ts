@@ -37,7 +37,6 @@ export class ExpandSpecificationComponent {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + this.product.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.currentUser.user_id;
     this.makeTrustedUrl();
-    console.log(this.selectedVersionOne, this.selectedVersionTwo)
   }
 
   ngAfterViewInit(){

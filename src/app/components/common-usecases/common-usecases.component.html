@@ -1,6 +1,6 @@
 <div class="relative h-full" [ngClass]="{'ml-4 mr-4' : isInsideUseCases}"><!-- use-case-body-->
     <div *ngIf="useCases?.length > 0" class="pt-3 pb-3 h-full overflow-auto">
-        <div *ngFor="let usecase of useCases;let i = index" [ngClass]="i===useCases.length-1?'pb-0':'pb-3'">
+        <div *ngFor="let usecase of useCases;let i = index">
             <div class="flex justify-content-center flex-wrap card-container">
                 <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">
                     <div class="col-2 md:col-2 lg:col-2">

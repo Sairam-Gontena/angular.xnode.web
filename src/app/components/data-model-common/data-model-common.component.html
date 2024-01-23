@@ -17,7 +17,6 @@
               </div>
               <div id="canvas-2" #canvaDataModel class="col-sm-10" *ngIf="inDiffView">
                 <model *ngFor="let model of data.models" [inDiffView]="inDiffView"  [myModel]="model"></model>
-                <!-- c2c in model component [inDiffView]="inDiffView"  -->
               </div>
         </div>
     </ng-template>

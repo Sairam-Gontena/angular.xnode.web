@@ -25,7 +25,6 @@ import { Schema } from '../class/schema';
 export class ModelComponent {
   // @ts-ignore
   @Input() myModel: Model;
-  @Input() inDiffView:any;
 
   // @ts-ignore
   public bsModalRef: BsModalRef;
