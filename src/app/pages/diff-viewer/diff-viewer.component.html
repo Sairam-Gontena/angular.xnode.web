@@ -9,10 +9,12 @@
         [specExpanded]="specExpanded" [diffViewEnabled]="isDiffEnabled" [format]="format" [diffdataToExpand]="diffObj" [selectedVersionOne]="selectedVersionOne" [selectedVersionTwo]="selectedVersionTwo"></xnode-expand-specification>
     </div>
     <div *ngIf="!specExpanded">
-      <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
+      <span *ngIf="versions?.length>0">
+        <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
         [isSideMenuOpened]="isSideMenuOpened" (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (onVersionChange)="versionChange($event)" [onDiffValue]="{'onDiff':isDiffEnabled, 'viewType':format}"
         [selectedVersion]="selectedVersion" (specDataChange)="onSpecDataChange($event)"
         (generateSpec)="checkUserEmail()" (isMeneOpened)="isMeneOpened($event)"></xnode-specifications-header>
+      </span>
       <div class="flex">
         <div class="spec-content-body" [ngClass]="openConversationPanel ? 'spec-view-body py-4': 'spec-view-body-full py-4'">
           <div class="specs w-8">
