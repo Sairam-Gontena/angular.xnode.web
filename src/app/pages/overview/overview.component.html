@@ -21,9 +21,7 @@
                     <div class="mt-4 flex flex-row flex-wrap" *ngIf="overview?.username">
                         <img src="../../assets/nelson-image.png" alt="nelson-image" class="h-3rem w-3rem ml-3">
                         <span class="text-white font-medium text-xl ml-3">
-                            {{currentUser?.first_name | titlecase}}
-                            {{currentUser?.last_name | titlecase}}
-                            <!-- {{overview?.username}} -->
+                            {{overview?.username | titlecase}}
                         </span>
                     </div>
                     <div class="mt-4 para-text overflow-hidden" *ngIf="overview?.email">
@@ -72,9 +70,8 @@
         <div class="lg:col-4 md:col-12" *ngIf="jsondata?.length">
             <div class="card-container mt-6 text-white stepper-card">
                 <div class="stepper-content p-1 mt-3">
-                    <p class="text-xl font-normal stepper-text">Hey <span
-                            class="font-bold">{{currentUser?.first_name.toUpperCase()}}
-                            {{currentUser?.last_name.toUpperCase()}}!</span> You
+                    <p class="text-xl font-normal stepper-text">Hey <span class="font-bold">
+                            {{overview?.username.toUpperCase()}}!</span> You
                         are on the verge of using the app.</p>
                     <p class="text-lg font-medium mb-4">Please see the status
                         below</p>
