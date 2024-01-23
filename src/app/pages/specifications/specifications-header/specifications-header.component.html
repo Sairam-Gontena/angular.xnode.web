@@ -1,22 +1,22 @@
 <div style="position: relative;">
-  <div class="p-0 m-0 cursor-pointer " style="position: absolute;left: -15px;top:20px">
-      <img src="../assets/spec-chevron-right.svg" class="flex  text-white" alt="Logo" *ngIf="!isSideMenuOpened"
-          (click)="toggleSideMenu()" />
-  </div>
-  <div
-      class="flex justify-content-between align-items-center pl-4 pr-4 flex-wrap border-bottom-1 border-white-alpha-40 header-items">
-      <div class="flex align-items-center">
-          <xnode-product-dropdown (_onChangeProduct)="onChangeProduct($event)"></xnode-product-dropdown>
-          <p-dropdown [options]="versions" [(ngModel)]="selectedVersion" optionLabel="label"
-              (onChange)="onChangeVersion($event)" placeholder="Select a version"
-              class="ml-3 app-dropdown-version" *ngIf="!diffView"></p-dropdown>
-      </div>
-      <div class="flex align-items-center" *ngIf="versions.length>1">
-          <p-inputSwitch [(ngModel)]="diffView" (onChange)="toggleDiffView($event)"></p-inputSwitch>
-          <label *ngIf="!viewType" class="ml-2">Diff View</label>
-          <p-dropdown *ngIf="viewType" [options]="viewList" [(ngModel)]="viewType" (onChange)="onViewChange($event)"
-              placeholder="Select View Type" class="view-dropdown"></p-dropdown>
-      </div>
+    <div class="p-0 m-0 cursor-pointer " style="position: absolute;left: -15px;top:20px">
+        <img src="../assets/spec-chevron-right.svg" class="flex  text-white" alt="Logo" *ngIf="!isSideMenuOpened"
+            (click)="toggleSideMenu()" />
+    </div>
+    <div
+        class="flex justify-content-between align-items-center pl-4 pr-4 flex-wrap border-bottom-1 border-white-alpha-40 header-items">
+        <div class="flex align-items-center">
+            <xnode-product-dropdown (_onChangeProduct)="onChangeProduct($event)"></xnode-product-dropdown>
+            <p-dropdown [options]="versions" [(ngModel)]="selectedVersion" optionLabel="label"
+                (onChange)="onChangeVersion($event)" placeholder="Select a version"
+                class="ml-3 app-dropdown-version" *ngIf="!diffView"></p-dropdown>
+        </div>
+        <div class="flex align-items-center" *ngIf="versions.length>1">
+            <p-inputSwitch [(ngModel)]="diffView" (onChange)="toggleDiffView($event)"></p-inputSwitch>
+            <label *ngIf="!viewType" class="ml-2">Diff View</label>
+            <p-dropdown *ngIf="viewType" [options]="viewList" [(ngModel)]="viewType" (onChange)="onViewChange($event)"
+                placeholder="Select View Type" class="view-dropdown"></p-dropdown>
+        </div>
 
       <div class="flex align-items-center">
           <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
