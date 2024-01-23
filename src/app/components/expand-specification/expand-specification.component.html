@@ -1,14 +1,12 @@
-<div  class="content overflow-auto" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
-  <div class="p-4 overflow-auto" [ngClass]="{'h-full': dataToExpand.title === 'Dashboards'}">
-    <div class="expand-spec" [ngClass]="{'h-full': dataToExpand.title === 'Dashboards'}">
-      <div class="flex flex-row justify-content-between">
-        <span>
-          <h4 class="m-0" *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'">Swagger API</h4>
-          <h4 class="m-0" *ngIf="dataToExpand.title === 'User Interface Design'">User Interface Design</h4>
-        </span>
-        <i class="pi pi-times text-xl text-color pointer text-white" [ngStyle]="{'padding-right':
-        (dataToExpand.title === 'Dashboards' || dataToExpand.title === 'User Interface Design') ? '5px' : ''}" (click)="closeFullScreenView.emit()"></i>
-      </div>
+<div  class="content">
+  <div class="flex flex-row justify-content-between p-4">
+    <div>
+      <h4 class="m-0" *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'">Swagger API</h4>
+      <h4 class="m-0" *ngIf="dataToExpand.title === 'User Interface Design'">User Interface Design</h4>
+    </div>
+    <i class="pi pi-times text-xl text-color pointer text-white" (click)="enableSpinner();closeFullScreenView.emit();"></i>
+  </div>
+  <div class="px-4 expand-spec overflow-auto">
       <div *ngIf="dataToExpand.title == 'Dashboards'" class="my-3 h-full">
           <span class="h-full" *ngIf="diffdataToExpand else dashboardData">
             <div class="grid" [ngStyle]="{'height':'99%'}">
@@ -27,7 +25,7 @@
             </iframe>
         </ng-template>
       </div>
-      <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="my-3">
+      <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="my-3 h-full">
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
             <div class="col-6">
@@ -46,25 +44,25 @@
       dataToExpand.title === 'Historical Data Load' ||
       dataToExpand.title === 'Version Control' ||
       dataToExpand.title === 'Stakeholder Approvals' ||
-      dataToExpand.title === 'Data Quality Checks'" class="my-3">
+      dataToExpand.title === 'Data Quality Checks'" class="my-3 h-full">
         <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
       </div>
-      <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h my-3">
+      <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="my-3 h-full">
         <span *ngIf="diffViewEnabled else swaggerData">
           <div class="grid">
-            <div class="col-6 px-3">
-              <div id="openapi-ui-spec-1"  class="openapi-spec my-3"></div>
+            <div class="col-6 px-3 pb-5">
+              <div id="openapi-ui-spec-1"  class="openapi-spec swagger-h my-3 h-full"></div>
             </div>
-            <div class="col-6 px-3">
-              <div id="openapi-ui-spec-2"  class="openapi-spec my-3"></div>
+            <div class="col-6 px-3 pb-5">
+              <div id="openapi-ui-spec-2"  class="openapi-spec swagger-h my-3 h-full"></div>
             </div>
           </div>
         </span>
         <ng-template #swaggerData>
-          <div id="openapi-ui-spec" class="openapi-spec my-3"></div>
+          <div id="openapi-ui-spec" class="openapi-spec swagger-h my-3 h-full"></div>
         </ng-template>
       </div>
-      <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="my-3">
+      <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="my-3 h-full">
         <div class="data-dictionary">
           <xnode-data-dictionary *ngIf="dataToExpand.showTable; else elsejson"
             [content]="dataToExpand.content"></xnode-data-dictionary>
@@ -73,7 +71,7 @@
           </ng-template>
         </div>
       </div>
-      <div *ngIf="dataToExpand.title === 'User Interface Design'" class="my-3">
+      <div *ngIf="dataToExpand.title === 'User Interface Design'" class="my-3 h-full">
         <ul *ngFor="let subItem of dataToExpand.content;">
           <li>
             <div class="flex col-12 p-0 ">
@@ -89,15 +87,15 @@
           </li>
         </ul>
       </div>
-      <div *ngIf="dataToExpand.title === 'User Personas'" class="my-3">
-        <span *ngIf="diffdataToExpand else usecaseData">
-          <div class="grid">
-            <div class="col-6 pr-3">
+      <div *ngIf="dataToExpand.title === 'User Personas'" class="my-3 h-full">
+        <span class="h-full" *ngIf="diffdataToExpand else usecaseData">
+          <div class="grid" [ngStyle]="{'height': 'auto'}">
+            <div class="col-6 pr-3 pb-4">
               <div *ngFor="let persona of dataToExpand.content" class="pb-2">
                 <xnode-user-persona [content]="persona"></xnode-user-persona>
               </div>
             </div>
-            <div class="col-6 pl-3">
+            <div class="col-6 pl-3 pb-4">
               <div *ngFor="let persona of diffdataToExpand.content" class="pb-2">
                 <xnode-user-persona [content]="persona"></xnode-user-persona>
               </div>
@@ -105,12 +103,12 @@
           </div>
         </span>
         <ng-template #usecaseData>
-          <div *ngFor="let persona of dataToExpand.content" class="pb-3">
+          <div class="h-full" *ngFor="let persona of dataToExpand.content" class="pb-3">
             <xnode-user-persona [content]="persona"></xnode-user-persona>
           </div>
         </ng-template>
       </div>
-      <div *ngIf="dataToExpand.title === 'Data Model'" class="my-3">
+      <div *ngIf="dataToExpand.title === 'Data Model'" class="my-3 h-full">
         <span *ngIf="diffdataToExpand else dataModelData">
           <div class="grid pt-3">
             <div class="col-6 pb-4 px-3">
@@ -126,8 +124,7 @@
             [dataToExpand]="dataToExpand" [specData]="'spec'"></xnode-data-model-common>
           </ng-template>
       </div>
-      </div>
-      <div *ngIf="dataToExpand.title === 'Workflows'" class="my-3">
+      <div *ngIf="dataToExpand.title === 'Workflows'" class="my-3 h-full">
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
             <div class="col-6 pb-3">

@@ -65,8 +65,10 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.getStorageData();
     if(this.onDiffValue){
-      this.diffView = true;
-      this.toggleDiffView(true)
+      if(this.onDiffValue.onDiff)
+        this.diffView = true;
+      if(this.onDiffValue.viewType)
+        this.viewType = this.onDiffValue.viewType
     }
   }
 

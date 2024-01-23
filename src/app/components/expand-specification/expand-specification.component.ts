@@ -20,6 +20,7 @@ export class ExpandSpecificationComponent {
   @Input() diffViewEnabled:any;
   @Input() selectedVersionOne:any;
   @Input() selectedVersionTwo:any;
+  @Input() format:any;
   @Output() closeFullScreenView = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   currentUser:any;
@@ -27,7 +28,8 @@ export class ExpandSpecificationComponent {
   iframeSrc1: SafeResourceUrl | undefined;
   targetUrl: string = environment.naviAppUrl;
   product: any;
-  constructor(private domSanitizer: DomSanitizer,private storageService:LocalStorageService,private specService: SpecificationsService) {
+  firstIteration:boolean = true;
+  constructor(private domSanitizer: DomSanitizer,private storageService:LocalStorageService,private specService: SpecificationsService, private utils:UtilsService) {
   }
 
   ngOnInit() {
@@ -35,12 +37,17 @@ export class ExpandSpecificationComponent {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + this.product.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.currentUser.user_id;
     this.makeTrustedUrl();
+    console.log(this.selectedVersionOne, this.selectedVersionTwo)
   }
 
   ngAfterViewInit(){
     if(this.dataToExpand.title=== 'OpenAPI Spec' || this.dataToExpand.title==='Open API Spec'){
       this.fetchSwagger();
     }
+  }
+
+  enableSpinner(){
+    this.utils.loadSpinner(true)
   }
 
   fetchSwagger(){
@@ -80,8 +87,9 @@ export class ExpandSpecificationComponent {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
   }
 
-  makeTrustedUrlForDiffView(versionId: any) {
-    let Url = environment.designStudioAppUrl +
+  makeTrustedUrlForDiffView(versionId: any):any {
+    if(this.firstIteration){
+      let Url = environment.designStudioAppUrl +
       '?email=' + encodeURIComponent(this.product?.email || '') +
       '&id=' + encodeURIComponent(this.product?.id || '') +
       '&version_id=' + encodeURIComponent(versionId) +
@@ -89,8 +97,10 @@ export class ExpandSpecificationComponent {
       '&has_insights=' + true +
       '&isVerified=true' +
       '&userId=' + encodeURIComponent(this.currentUser.id || '');
-    this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(Url);
-    return this.iframeSrc1;
+      this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(Url);
+      this.firstIteration = false;
+      return this.iframeSrc1;
+    }
   }
 
   setColumnsToTheTable(data: any) {

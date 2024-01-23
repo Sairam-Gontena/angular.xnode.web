@@ -6,11 +6,11 @@
     <div class="h-full" *ngIf="specExpanded">
       <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
         (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
-        [specExpanded]="specExpanded" [diffViewEnabled]="isDiffEnabled" [diffdataToExpand]="diffObj" [selectedVersionOne]="selectedVersionOne" [selectedVersionTwo]="selectedVersionTwo"></xnode-expand-specification>
+        [specExpanded]="specExpanded" [diffViewEnabled]="isDiffEnabled" [format]="format" [diffdataToExpand]="diffObj" [selectedVersionOne]="selectedVersionOne" [selectedVersionTwo]="selectedVersionTwo"></xnode-expand-specification>
     </div>
     <div *ngIf="!specExpanded">
       <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
-        [isSideMenuOpened]="isSideMenuOpened" (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (onVersionChange)="versionChange($event)" [onDiffValue]="isDiffEnabled"
+        [isSideMenuOpened]="isSideMenuOpened" (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions" (onVersionChange)="versionChange($event)" [onDiffValue]="{'onDiff':isDiffEnabled, 'viewType':format}"
         [selectedVersion]="selectedVersion" (specDataChange)="onSpecDataChange($event)"
         (generateSpec)="checkUserEmail()" (isMeneOpened)="isMeneOpened($event)"></xnode-specifications-header>
       <div class="flex">
@@ -24,11 +24,13 @@
                 (onChange)="onVersionChange($event, 'two')" placeholder="Select a version"
                 class="ml-3 app-dropdown"></p-dropdown>
             </div>
-            <div class='m-4' *ngFor="let item of specList;let i = index" [id]="item.id">
-              <xnode-diff-comp (childLoaded)="onChildLoaded($event)" (expandComponent)="_expandComponent($event)"
-                [users]="usersList" [contentObj]="item" [index]="i" [format]="format"
-                [diffObj]="getDiffObj(specTwoList,item, specList.length!==0 && specTwoList.length!==0)"
-                [onDiff]="specList.length!==0 && specTwoList.length!==0 && isDiffEnabled" [selectedVersionTwo]="selectedVersionTwo" ></xnode-diff-comp>
+            <div class="spec-container" id="content-container">
+              <div *ngFor="let item of specList;let i = index" [id]="item.id">
+                <xnode-diff-comp (childLoaded)="onChildLoaded($event)" (expandComponent)="_expandComponent($event)"
+                  [users]="usersList" [contentObj]="item" [index]="i" [format]="format"
+                  [diffObj]="getDiffObj(specTwoList,item, specList.length!==0 && specTwoList.length!==0)"
+                  [onDiff]="specList.length!==0 && specTwoList.length!==0 && isDiffEnabled" [selectedVersionTwo]="selectedVersionTwo" ></xnode-diff-comp>
+              </div>
             </div>
           </div>
         </div>

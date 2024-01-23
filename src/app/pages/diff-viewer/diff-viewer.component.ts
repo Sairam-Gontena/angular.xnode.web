@@ -202,6 +202,7 @@ export class DiffViewerComponent implements OnInit {
           ? this.specRouteParams.versionId
           : this.specRouteParams.version_id;
       })[0];
+
       const uniqueStatuses = [
         ...new Set(data.map((obj: any) => obj.specStatus)),
       ];
@@ -257,13 +258,12 @@ export class DiffViewerComponent implements OnInit {
       of([])
         .pipe(delay(500))
         .subscribe((results: any) => {
-          this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
+          this.fetchSwaggerFunction();
         });
     }
   }
 
   getMeSpecInfo(params: any) {
-    console.log('hi i m in specinfo')
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.specApiService
       .getSpec({
@@ -345,7 +345,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   onSpecDataChange(data: any): void {
-    console.log('at 315 line num')
     this.getMeSpecInfo({
       versionId: data.versionId,
       productId: data.productId,
@@ -359,7 +358,6 @@ export class DiffViewerComponent implements OnInit {
     //   ? (this.selectedVersionOne = undefined)
     //   : null;
     this.utils.loadSpinner(true);
-    console.log('at 330 line num')
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
 
@@ -461,16 +459,8 @@ export class DiffViewerComponent implements OnInit {
       this.isDiffEnabled = false;
     }
     setTimeout(() => {
-      if (this.isDiffEnabled) {
-        this.fetchOpenAPISpec('openapi-ui-spec-1', this.selectedVersionOne.id);
-        this.fetchOpenAPISpec('openapi-ui-spec-2', this.selectedVersionTwo.id);
-      } else {
-        let specVersionOne:any = this.storageService.getItem(StorageKeys.SpecVersion);
-        this.fetchOpenAPISpec('openapi-ui-spec', specVersionOne.id);
-        //this.selectedVersionOne.id
-      }
+      this.fetchSwaggerFunction()
     }, 500);
-
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     console.log('diffViewChangeEmiter',event)
@@ -480,7 +470,6 @@ export class DiffViewerComponent implements OnInit {
       })[0];
       const index = this.findIndex(version);
       this.selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
-      console.log('at 448 line num')
       this.utils.loadSpinner(true);
       this.getMeSpecInfo({
         versionId: this.selectedVersionTwo.id,
@@ -490,7 +479,15 @@ export class DiffViewerComponent implements OnInit {
       this.selectedVersionOne = undefined;
       this.selectedVersionTwo = undefined;
       this.specTwoList = [];
-      this.utils.loadSpinner(false);
+    }
+  }
+
+  fetchSwaggerFunction(){
+    if (this.isDiffEnabled) {
+      this.fetchOpenAPISpec('openapi-ui-spec-1', this.selectedVersionOne.id);
+      this.fetchOpenAPISpec('openapi-ui-spec-2', this.selectedVersionTwo.id);
+    } else {
+      this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
     }
   }
 
@@ -503,7 +500,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   _expandComponent(object: any): void {
-    console.log(this.selectedVersionOne)
     object.onDiff ? this.diffObj = object.diffObj : this.diffObj = undefined;
     if (object.contentObj) {
       this.selectedSpecItem = object.contentObj;
@@ -517,15 +513,11 @@ export class DiffViewerComponent implements OnInit {
   }
 
    closeFullScreenView() {
-   console.log('loadSpinner true')
-   this.utils.loadSpinner(true);
-   console.log('loadSpinner true enable')
-    let obj = { diffView : this.isDiffEnabled };
-    this.diffViewChangeEmiter(obj);
-    this.specExpanded = false;
-    // this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
-    this.scrollToItem();
-    // this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
+    setTimeout(() => {
+      this.specExpanded = false;
+      this.fetchSwaggerFunction();
+      this.scrollToItem();
+    }, 100);
   }
 
   async scrollToItem() {

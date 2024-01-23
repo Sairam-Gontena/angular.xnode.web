@@ -271,18 +271,16 @@
         width: calc(100vw - 1170px);
     }
 }
-
-.overflow-auto::-webkit-scrollbar {
+.spec-content-body::-webkit-scrollbar {
   width: 5px;
 }
-
-.overflow-auto::-webkit-scrollbar-thumb {
+.spec-content-body::-webkit-scrollbar-thumb {
+  background-color: #24232c;
+}
+.spec-content-body::-webkit-scrollbar-thumb:hover {
   background-color: #24232c;
 }
 
-.overflow-auto::-webkit-scrollbar-thumb:hover {
-  background-color: #24232c;
-}
 .spec-main-body {
     width: calc(100% - 375px);
 }
@@ -294,17 +292,20 @@
 .spec-view-body {
     width: calc(100% - 512px);
     display: flex;
+    height: calc(100vh - 110px);
+    overflow: auto;
     justify-content: center;
 }
 
 .spec-view-body-full {
     width: 100%;
+    height: calc(100vh - 110px);
     display: flex;
+    overflow: auto;
     justify-content: center;
 }
 
 .spec-container {
-    height: calc(100vh - 110px);
     overflow: auto;
 }
 
