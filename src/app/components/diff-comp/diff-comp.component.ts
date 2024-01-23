@@ -214,10 +214,6 @@ export class DiffCompComponent implements OnInit {
     localStorage.setItem('targetUrl', this.targetUrl);
   }
   makeTrustedUrlForDiffView(versionId: any): void {
-<<<<<<< HEAD
-
-=======
->>>>>>> develop
     let targetUrl =
       environment.designStudioAppUrl +
       '?email=' +
