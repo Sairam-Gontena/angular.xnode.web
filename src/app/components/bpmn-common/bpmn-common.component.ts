@@ -44,14 +44,22 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
     | undefined;
+  @ViewChild('bpmngraph')
+  bpmngraph!: ElementRef;
+  @ViewChild('scgraph')
+  scgraph!: ElementRef;
+  @ViewChild('diagramRefContainer')
+  diagramRefContainer!: ElementRef;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   @Input() bpmnRefId?: string;
-  @Input() onDiff?: boolean; 
-  @Input() specExpanded?: boolean; 
+  @Input() onDiff?: boolean;
+  @Input() specExpanded?: boolean;
   @Input() referenceId: any;
   @Input() dataToExpand: any;
+  @Input() diffdataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
+  @Input() inSpecView:any;
   @Input() fromExpandSpec: any;
   bpmnJS: any;
   pallete_classes: any;
@@ -105,9 +113,13 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     this.useCases = list[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
-      let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
-      var bpmnWindow = document.getElementById(bpmnRefId)
-      if (bpmnWindow) bpmnWindow.style.display = 'None';
+      var bpmnWindow: HTMLElement;
+      if (this.diagramRefContainer) {
+          bpmnWindow = this.diagramRefContainer.nativeElement;
+          if (bpmnWindow) bpmnWindow.style.display = 'none';
+      }
+      // var bpmnWindow = document.getElementById('diagramRef');
+      // if (bpmnWindow) bpmnWindow.style.display = 'None';
       this.graphRedirection = false;
       var graphWindow;
       if (this.referenceId) {
@@ -139,11 +151,16 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   switchWindow() {
-    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
-    var bpmnWindow = document.getElementById(bpmnRefId);
-    if (bpmnWindow) bpmnWindow.style.display = 'None';
+    var bpmnWindow: HTMLElement;
+      if (this.diagramRefContainer) {
+          bpmnWindow = this.diagramRefContainer.nativeElement;
+          if (bpmnWindow) bpmnWindow.style.display = 'none';
+      }
+    // var bpmnWindow = document.getElementById('diagramRef');
+    // if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
-    var graphWindow = document.getElementById('sc');
+    // var graphWindow = document.getElementById('sc');
+    var graphWindow = this.scgraph.nativeElement
     if (graphWindow) graphWindow.style.display = '';
 
     if (this.bpmnJS) this.bpmnJS.destroy();
@@ -798,15 +815,22 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       title: this.product.title,
       children: mod_data,
     };
-    var ele;
+    // var ele;
+    // if (this.referenceId) {
+    //   ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
+    // } else {
+    //   ele = document.getElementById('graph') as HTMLElement;
+    // }
+    // var svgNode = this._chart(d3, treeData);
+    // ele?.appendChild(svgNode);
+    var ele: HTMLElement;
     if (this.referenceId) {
-      ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
+      ele = this.bpmngraph.nativeElement;
     } else {
       let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
       ele = document.getElementById(graphRefId) as HTMLElement;
+      // ele = this.bpmngraph.nativeElement;
     }
-    // var ele = document.getElementById('graph') as HTMLElement;
-    // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);
     ele.classList.add('overflow-y-auto');
@@ -824,8 +848,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
       svg_ele = document.getElementById(graphRefId);
     }
-    // var svg_ele = document.getElementById('graph');
-
     if (svg_ele) {
       svg_ele.addEventListener('click', (event: any) => {
         let e = event.target.__data__;
@@ -845,7 +867,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
                 graphWindow = document.getElementById('sc' + this.referenceId);
               });
           } else {
-            graphWindow = document.getElementById('sc');
+            graphWindow = this.scgraph.nativeElement;
           }
           if (graphWindow) graphWindow.style.display = 'None';
           this.getFlow(flow);

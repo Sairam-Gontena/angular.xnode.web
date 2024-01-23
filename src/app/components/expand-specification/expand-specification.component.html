@@ -1,81 +1,146 @@
-<div  class="content overflow-hidden h-full" [ngClass]="{ 'bg-white': dataToExpand.swagger }">
-  <div *ngIf="dataToExpand.title == 'Dashboards'" class="h-full bg-white overflow-auto">
-    <div class="h-full expand-spec">
-      <div class="flex flex-row col-12 justify-content-end">
-        <i class="pi pi-times text-xl text-color pointer text-white " (click)="closeFullScreenView.emit()"></i>
-      </div>
-      <iframe id="myIframe" [src]="iframeSrc" class="h-full w-full pl-1 pr-1" title="Template Builder">
-      </iframe>
+<div  class="content">
+  <div class="flex flex-row justify-content-between p-4">
+    <div>
+      <h4 class="m-0" *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'">Swagger API</h4>
+      <h4 class="m-0" *ngIf="dataToExpand.title === 'User Interface Design'">User Interface Design</h4>
     </div>
+    <i class="pi pi-times text-xl text-color pointer text-white" (click)="enableSpinner();closeFullScreenView.emit();"></i>
   </div>
-  <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="h-full surface-900 overflow-auto">
-    <div class="h-full expand-spec">
-      <div class="flex flex-row col-12 justify-content-end">
-        <i class="pi pi-times text-xl pointer text-white " (click)="closeFullScreenView.emit()"></i>
-      </div>
-      <xnode-common-usecases [useCases]="dataToExpand.content"></xnode-common-usecases>
-    </div>
-  </div>
-  <div *ngIf="
-  dataToExpand.title === 'Glossary' ||
-  dataToExpand.title === 'Historical Data Load' ||
-  dataToExpand.title === 'Version Control' ||
-  dataToExpand.title === 'Stakeholder Approvals' ||
-  dataToExpand.title === 'Data Quality Checks'
-" class="h-full bg-white overflow-auto">
-    <div class="h-full expand-spec">
-      <div class="flex flex-row col-12 justify-content-end">
-        <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
-      </div>
-      <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
-    </div>
-  </div>
-  <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="swagger-h overflow-auto">
-    <div class="flex col-12 justify-content-between align-items-center p-4">
-      <h4 class="m-0 pb-3 text-100">Swagger API</h4>
-      <i class="pi pi-times text-xl text-100 pointer" (click)="closeFullScreenView.emit()"></i>
-    </div>
-    <div id="openapi-ui-spec" class="openapi-spec"></div>
-  </div>
-  <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="py-4">
-    <div class="h-full expand-spec">
-      <div class="flex flex-row justify-content-end">
-        <i class="pi pi-times text-xl pointer text-white" (click)="closeFullScreenView.emit()"></i>
-      </div>
-      <div class="p-4 data-dictionary">
-        <xnode-data-dictionary *ngIf="dataToExpand.showTable; else elsejson"
-          [content]="dataToExpand.content"></xnode-data-dictionary>
-        <ng-template #elsejson>
-          <pre>{{ dataToExpand.content | json }}</pre>
+  <div class="px-4 expand-spec overflow-auto">
+      <div *ngIf="dataToExpand.title == 'Dashboards'" class="my-3 h-full">
+          <span class="h-full" *ngIf="diffdataToExpand else dashboardData">
+            <div class="grid" [ngStyle]="{'height':'99%'}">
+              <div class="col-6 h-full px-3 pb-4">
+                <iframe [src]="iframeSrc" class="h-full w-full" title="Template Builder">
+                </iframe>
+              </div>
+              <div class="col-6 h-full px-3 pb-4">
+                <iframe [src]="makeTrustedUrlForDiffView(selectedVersionTwo.id)" class="h-full w-full" title="Template Builder">
+                </iframe>
+              </div>
+            </div>
+          </span>
+          <ng-template class="h-full" #dashboardData>
+            <iframe [src]="iframeSrc" class="h-full w-full" title="Template Builder">
+            </iframe>
         </ng-template>
       </div>
-    </div>
-  </div>
-  <div *ngIf="dataToExpand.title === 'User Interface Design'" class="h-full">
-    <div class="flex col-12 justify-content-between align-items-center p-4">
-      <h4 class="m-0 pb-3">User Interface Design</h4>
-      <i class="pi pi-times text-xl pointer" (click)="closeFullScreenView.emit()"></i>
-    </div>
-      <ul *ngFor="let subItem of dataToExpand.content;">
-        <li>
-          <div class="flex col-12 p-0 ">
-            <div class="col-11 p-0 ">
-              <div class="m-0 pb-1 line-height-3">
-                <span class="flex flex-wrap sub-title text-base font-medium" [innerHTML]="subItem?.title">
-                </span>
-                <span class="flex flex-wrap sub-content font-normal text-base" [innerHTML]="subItem?.content">
-                </span>
+      <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="my-3 h-full">
+        <span *ngIf="diffdataToExpand else usecaseData">
+          <div class="grid">
+            <div class="col-6">
+              <xnode-common-usecases [users]="[]" [useCases]="dataToExpand.content"></xnode-common-usecases>
+            </div>
+            <div class="col-6">
+              <xnode-common-usecases [users]="[]" [useCases]="diffdataToExpand.content"></xnode-common-usecases>
+            </div>
+          </div>
+        </span>
+        <ng-template #usecaseData>
+          <xnode-common-usecases [useCases]="dataToExpand.content"></xnode-common-usecases>
+        </ng-template>
+      </div>
+      <div *ngIf="dataToExpand.title === 'Glossary' ||
+      dataToExpand.title === 'Historical Data Load' ||
+      dataToExpand.title === 'Version Control' ||
+      dataToExpand.title === 'Stakeholder Approvals' ||
+      dataToExpand.title === 'Data Quality Checks'" class="my-3 h-full">
+        <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
+      </div>
+      <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="my-3 h-full">
+        <span *ngIf="diffViewEnabled else swaggerData">
+          <div class="grid">
+            <div class="col-6 px-3 pb-5">
+              <div id="openapi-ui-spec-1"  class="openapi-spec swagger-h my-3 h-full"></div>
+            </div>
+            <div class="col-6 px-3 pb-5">
+              <div id="openapi-ui-spec-2"  class="openapi-spec swagger-h my-3 h-full"></div>
+            </div>
+          </div>
+        </span>
+        <ng-template #swaggerData>
+          <div id="openapi-ui-spec" class="openapi-spec swagger-h my-3 h-full"></div>
+        </ng-template>
+      </div>
+      <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="my-3 h-full">
+        <div class="data-dictionary">
+          <xnode-data-dictionary *ngIf="dataToExpand.showTable; else elsejson"
+            [content]="dataToExpand.content"></xnode-data-dictionary>
+          <ng-template #elsejson>
+            <pre>{{ dataToExpand.content | json }}</pre>
+          </ng-template>
+        </div>
+      </div>
+      <div *ngIf="dataToExpand.title === 'User Interface Design'" class="my-3 h-full">
+        <ul *ngFor="let subItem of dataToExpand.content;">
+          <li>
+            <div class="flex col-12 p-0 ">
+              <div class="col-11 p-0 ">
+                <div class="m-0 pb-1 line-height-3">
+                  <span class="flex flex-wrap sub-title text-base font-medium" [innerHTML]="subItem?.title">
+                  </span>
+                  <span class="flex flex-wrap sub-content font-normal text-base" [innerHTML]="subItem?.content">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="dataToExpand.title === 'User Personas'" class="my-3 h-full">
+        <span class="h-full" *ngIf="diffdataToExpand else usecaseData">
+          <div class="grid" [ngStyle]="{'height': 'auto'}">
+            <div class="col-6 pr-3 pb-4">
+              <div *ngFor="let persona of dataToExpand.content" class="pb-2">
+                <xnode-user-persona [content]="persona"></xnode-user-persona>
+              </div>
+            </div>
+            <div class="col-6 pl-3 pb-4">
+              <div *ngFor="let persona of diffdataToExpand.content" class="pb-2">
+                <xnode-user-persona [content]="persona"></xnode-user-persona>
               </div>
             </div>
           </div>
-        </li>
-      </ul>
+        </span>
+        <ng-template #usecaseData>
+          <div class="h-full" *ngFor="let persona of dataToExpand.content" class="pb-3">
+            <xnode-user-persona [content]="persona"></xnode-user-persona>
+          </div>
+        </ng-template>
+      </div>
+      <div *ngIf="dataToExpand.title === 'Data Model'" class="my-3 h-full">
+        <span *ngIf="diffdataToExpand else dataModelData">
+          <div class="grid pt-3">
+            <div class="col-6 pb-4 px-3">
+              <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand"></xnode-data-model-common>
+            </div>
+            <div class="col-6 pb-4 px-3">
+              <xnode-data-model-common [inExpandSpec]="true" [inDiffView]="true" [dataToExpand]="diffdataToExpand"></xnode-data-model-common>
+            </div>
+          </div>
+          </span>
+          <ng-template #dataModelData>
+            <xnode-data-model-common
+            [dataToExpand]="dataToExpand" [specData]="'spec'"></xnode-data-model-common>
+          </ng-template>
+      </div>
+      <div *ngIf="dataToExpand.title === 'Workflows'" class="my-3 h-full">
+        <span *ngIf="diffdataToExpand else usecaseData">
+          <div class="grid">
+            <div class="col-6 pb-3">
+              <xnode-bpmn-common [fromExpandSpec]="'true'" [bpmnRefId]="'diagramRef-1'"
+        [dataToExpand]="dataToExpand"></xnode-bpmn-common>
+            </div>
+            <div class="col-6 pb-3">
+              <xnode-bpmn-common [bpmnRefId]="'diagramRef-2'" [fromExpandSpec]="'true'"
+        [diffdataToExpand]="diffdataToExpand"></xnode-bpmn-common>
+            </div>
+          </div>
+        </span>
+        <ng-template #usecaseData>
+          <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [fromExpandSpec]="'true'"
+        [dataToExpand]="dataToExpand"></xnode-bpmn-common>
+        </ng-template>
+      </div>
   </div>
-  <xnode-data-model-common *ngIf="dataToExpand.title === 'Data Model'" (dataFlowEmitter)="closeFullScreenView.emit()"
-    [dataToExpand]="dataToExpand" [specExpanded]="specExpanded" [specData]="'spec'"></xnode-data-model-common>
-    <div class="h-full expand-spec">
-      <xnode-bpmn-common *ngIf="dataToExpand.title === 'Workflows'" [fromExpandSpec]="'true'" (dataFlowEmitter)="closeFullScreenView.emit()"
-      [dataToExpand]="dataToExpand" [specExpanded]="specExpanded"></xnode-bpmn-common>
-    </div>
-
 </div>
