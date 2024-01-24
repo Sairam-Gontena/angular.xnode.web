@@ -17,7 +17,7 @@ export class SpecificationsService {
     private specUtils: SpecificationUtilsService,
     private commentsService: CommentsService,
     private storageService: LocalStorageService
-  ) {}
+  ) { }
 
   getVersions(
     productId: string,
@@ -95,6 +95,8 @@ export class SpecificationsService {
                   element.content_data_type = 'USER_ROLES';
                 } else if (element.title === 'Dashboards') {
                   element.content_data_type = 'DASHBOARD';
+                } else if (element.title === 'Version Control') {
+                  element.content_data_type = 'VERSION_CONTROL';
                 } else if (
                   element.title === 'Business Rules' ||
                   element.title === 'Functional Dependencies' ||
