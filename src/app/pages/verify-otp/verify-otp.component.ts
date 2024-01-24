@@ -96,7 +96,8 @@ export class VerifyOtpComponent implements OnInit {
 
   verifyAccount() {
     this.utilsService.loadSpinner(true);
-    this.authApiService
+    if(this.otp?.length>0){
+      this.authApiService
       .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
       .then((response: any) => {
         if (response?.status === 200 && !response?.data?.detail) {
@@ -124,6 +125,10 @@ export class VerifyOtpComponent implements OnInit {
           'user-audit'
         );
       });
+    }else{
+      this.utilsService.loadToaster({severity: 'error',summary: 'ERROR',detail:'Please enter OTP'});
+      this.utilsService.loadSpinner(false);
+    }
   }
 
   handleResponse(data: any) {
