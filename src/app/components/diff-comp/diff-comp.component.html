@@ -1,6 +1,6 @@
 <div [ngSwitch]="contentObj?.content_data_type">
-  <div *ngSwitchCase="'BANNER'">
-    <div class="intro-grid " [id]="contentObj.id">
+  <div *ngSwitchCase="'BANNER'" [ngClass]="{'mt-4': contentObj?.title !== 'Introduction'}">
+    <div class="intro-grid" [id]="contentObj.id">
       <div class="text-4xl font-semibold flex align-items-center">{{contentObj?.sNo + ' ' + contentObj?.title}}
         <span class="version-badge">
           Version: {{contentObj.version?.version}}
@@ -31,13 +31,15 @@
   <div [ngClass]="
   !contentObj?.collapsed && contentObj.parent_data_type !== 'list'
     ? 'sctions-grid relative'
-    : contentObj.parent_data_type !== 'list' ? 'sctions-grid-full relative' : ''" id="{{ contentObj?.id }}"
-    #contentContainer class="mt-4" *ngIf="contentObj?.content_data_type !=='BANNER'">
+    : contentObj.parent_data_type !== 'list' ? 'sctions-grid-full relative' : 'sctions-grid-no-padding relative'"
+    id="{{ contentObj?.id }}" #contentContainer class="mt-4" *ngIf="contentObj?.content_data_type !== 'BANNER'">
     <div class="flex flex-row justify-content-between">
       <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
         contentObj?.title}}</h3>
-      <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)"
-        class="expnad-icon pointer" (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
+      <img src="./assets/spec-minimize.svg" alt="expand"
+        *ngIf="ComponentsToExpand.includes(contentObj.title) && contentObj.parent_data_type !== 'list'"
+        class="expnad-icon pointer"
+        (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
     </div>
 
 
@@ -48,7 +50,7 @@
           [commentType]="'comment'" [parentEntity]="'SPEC'"></xnode-add-comment-overlay-panel>
       </p-overlayPanel>
       <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end pb-4"
-        *ngIf="contentObj?.content_data_type === 'str'">
+        *ngIf="contentObj?.content_data_type === 'str' || contentObj?.content_data_type === 'USECASES'">
         <div *ngIf="contentObj.showCommentIcon && !onDiff" class="flex align-items-center justify-content-center">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
@@ -81,7 +83,9 @@
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
               <li>
-                <xnode-diff-comp (expandComponent)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" [contentObj]="getMeContentObj(item, contentObj)"
+                <xnode-diff-comp
+                  (expandComponent)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})"
+                  [contentObj]="getMeContentObj(item, contentObj)"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
             </ul>
@@ -102,10 +106,12 @@
       <div class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj" [dataToExpand]="contentObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj"
+              [dataToExpand]="contentObj"></xnode-bpmn-common>
           </div>
           <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'" [diffdataToExpand]="diffObj" [item]="diffObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'"
+              [diffdataToExpand]="diffObj" [item]="diffObj"></xnode-bpmn-common>
           </div>
         </div>
         <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
@@ -262,12 +268,12 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!contentObj?.parent_data_type">
+    <div *ngIf="!contentObj?.parent_data_type" [ngClass]="{'gradientback': !contentObj?.collapsed}">
       <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 z-2 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
+        class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
       <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 z-2 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
-      <div class="gradientback" *ngIf="!contentObj?.collapsed"></div>
+        class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
+      <div class="" *ngIf="!contentObj?.collapsed"></div>
     </div>
   </div>
 </div>

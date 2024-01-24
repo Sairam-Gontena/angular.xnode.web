@@ -35,7 +35,7 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
-  @Output() expandComponent = new EventEmitter<{contentObj:any, onDiff:boolean, diffObj?:any}>();
+  @Output() expandComponent = new EventEmitter<{ contentObj: any, onDiff: boolean, diffObj?: any }>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
@@ -69,7 +69,7 @@ export class DiffCompComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const version:any = this.storageService.getItem(StorageKeys.SpecVersion);
+    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     if (this.contentObj?.title === 'Dashboards') {
       this.targetUrl =
         environment.designStudioAppUrl +
@@ -114,8 +114,8 @@ export class DiffCompComponent implements OnInit {
     return !this.onDiff
       ? ''
       : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-      ? this.diffObj
-      : this.getObjState();
+        ? this.diffObj
+        : this.getObjState();
   }
 
   getObjState() {
