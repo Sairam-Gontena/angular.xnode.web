@@ -116,4 +116,9 @@ export class ExpandSpecificationComponent {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['format']?.currentValue)
+      this.format = changes['format'].currentValue;
+  }
+
 }
