@@ -1,14 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserUtil } from '../../utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { UtilsService } from '../services/utils.service';
 import { NotifyApiService } from 'src/app/api/notify.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { SpecUtilsService } from '../services/spec-utils.service';
-import { CommentsService } from 'src/app/api/comments.service';
-import { SpecApiService } from 'src/app/api/spec-api.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { Product } from 'src/models/product';
 import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificationUtils.service';
@@ -45,9 +41,6 @@ export class NotificationPanelComponent {
     public utils: UtilsService,
     private notifyApi: NotifyApiService,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService,
-    private commentsService: CommentsService,
-    private specService: SpecApiService,
     private naviApiService: NaviApiService,
     private specificationUtils: SpecificationUtilsService,
     private specificationService: SpecificationsService
@@ -173,13 +166,17 @@ export class NotificationPanelComponent {
           );
           let product = metaData.find((x: any) => x.id === obj.productId);
           localStorage.setItem('record_id', product.productId);
-          localStorage.setItem('product', JSON.stringify(product));
           this.storageService.saveItem(StorageKeys.Product, product);
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);
           if (!window.location.hash.includes('#/specification')) {
             this.closeNotificationPanel.emit(true);
-            this.router.navigate(['/specification']);
+            const queryParams = {
+              productId: obj.productId,
+              versionId: obj.versionId,
+              template_type: obj.template_type ? obj.template_type : obj.entity,
+            };
+            this.router.navigate(['/specification'], { queryParams });
           } else {
             this.specificationService.getVersions(
               product?.id,
@@ -504,37 +501,63 @@ export class NotificationPanelComponent {
       };
       this.router.navigate(['/specification'], { queryParams });
     } else {
-      if (val.template_type === 'TASK') {
-        this.specificationUtils.openConversationPanel({
-          openConversationPanel: true,
-          parentTabIndex: 0,
-          childTabIndex: 1,
-        });
-        this.specificationService.getMeAllTasks({
-          productId: val.productId,
-          versionId: val.versionId,
-        });
-      }
-      if (val.template_type === 'COMMENT') {
-        this.specificationUtils.openConversationPanel({
-          openConversationPanel: true,
-          parentTabIndex: 0,
-          childTabIndex: 0,
-        });
-        this.specificationService.getMeAllComments({
-          productId: val.productId,
-          versionId: val.versionId,
-        });
-      }
-      if (val.entity === 'WORKFLOW') {
-        this.specificationUtils.openConversationPanel({
-          openConversationPanel: true,
-          parentTabIndex: 1,
-        });
-        this.specificationService.getMeCrList({
-          productId: val.productId,
-        });
-      }
+      this.specificationService.getVersions(
+        val?.productId,
+        (versions: SpecVersion[]) => {
+          this.specificationService.getMeSpecInfo(
+            {
+              productId: val?.productId,
+              versionId: val.versionId,
+            },
+            (specList) => {
+              if (specList) {
+                this.storageService.saveItem(
+                  StorageKeys.SpecVersion,
+                  versions.filter((version: SpecVersion) => {
+                    return version.id === val.versionId;
+                  })[0]
+                );
+                if (val.template_type === 'TASK') {
+                  this.specificationUtils.openConversationPanel({
+                    openConversationPanel: true,
+                    parentTabIndex: 0,
+                    childTabIndex: 1,
+                  });
+
+                  this.specificationService.getMeAllTasks({
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
+                  this.specificationService.getMeAllTasks({
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
+                }
+                if (val.template_type === 'COMMENT') {
+                  this.specificationUtils.openConversationPanel({
+                    openConversationPanel: true,
+                    parentTabIndex: 0,
+                    childTabIndex: 0,
+                  });
+                  this.specificationService.getMeAllComments({
+                    productId: val.productId,
+                    versionId: val.versionId,
+                  });
+                }
+                if (val.entity === 'WORKFLOW') {
+                  this.specificationUtils.openConversationPanel({
+                    openConversationPanel: true,
+                    parentTabIndex: 1,
+                  });
+                  this.specificationService.getMeCrList({
+                    productId: val.productId,
+                  });
+                }
+              }
+            }
+          );
+        }
+      );
     }
     this.closeNotificationPanel.emit(true);
   }

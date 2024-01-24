@@ -24,7 +24,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
-  @Input() onDiffValue:any;
+  @Input() onDiffValue: any;
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
@@ -57,17 +57,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
+        this.product = this.storageService.getItem(StorageKeys.Product);
       }
     });
   }
 
   ngOnInit(): void {
     this.getStorageData();
-    if(this.onDiffValue){
-      if(this.onDiffValue.onDiff)
-        this.diffView = true;
-      if(this.onDiffValue.viewType)
-        this.viewType = this.onDiffValue.viewType
+    if (this.onDiffValue) {
+      if (this.onDiffValue.onDiff) this.diffView = true;
+      if (this.onDiffValue.viewType) this.viewType = this.onDiffValue.viewType;
     }
   }
 
@@ -211,13 +210,17 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.product = product;
       this.specService.getVersions(this.product.id, (data) => {
         this.versions = data;
-        const uniqueStatuses = [...new Set(data.map((obj:any) => obj.specStatus))];
+        const uniqueStatuses = [
+          ...new Set(data.map((obj: any) => obj.specStatus)),
+        ];
         const priorityOrder = uniqueStatuses.sort((a, b) => {
           if (a === 'LIVE') return -1;
           if (b === 'LIVE') return 1;
           return 0;
         });
-        const firstObjectWithPriority = data.find((obj:any) => obj.specStatus === priorityOrder[0]);
+        const firstObjectWithPriority = data.find(
+          (obj: any) => obj.specStatus === priorityOrder[0]
+        );
         this.selectedVersion = firstObjectWithPriority;
         this.specService.getMeSpecInfo(
           {
@@ -233,7 +236,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllComments({
                   productId: this.product?.id,
-                  versionId:firstObjectWithPriority.id,
+                  versionId: firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -242,7 +245,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllTasks({
                   productId: this.product?.id,
-                  versionId:firstObjectWithPriority.id,
+                  versionId: firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -253,7 +256,10 @@ export class SpecificationsHeaderComponent implements OnInit {
             }
           }
         );
-        this.storageService.saveItem(StorageKeys.SpecVersion,firstObjectWithPriority);
+        this.storageService.saveItem(
+          StorageKeys.SpecVersion,
+          firstObjectWithPriority
+        );
       });
     } else {
       this.showGenerateSpecPopup(product);
