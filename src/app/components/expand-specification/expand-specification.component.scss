@@ -1,33 +1,16 @@
-.content {
-  height: calc(100vh - 112px);//100vh
-}
-
-.expand-spec{
+.content{
   background-color: #212121;
 }
 
+.expand-spec {
+  height: calc(100vh - 110px);
+}
+
 .swagger-h {
-  height: calc(100vh - 112px);
   background: #fff;
 }
 
 .data-dictionary {
   overflow: scroll;
   height: calc(100vh - 216px);
-}
-
-@media (min-width: 768px) {
-  .expand-spec {
-    width: calc(100vw - 380px);
-  }
-}
-@media (min-width: 1280px) {
-  .expand-spec {
-    width: calc(100vw - 430px);
-  }
-}
-@media (min-width: 1440px) {
-  .expand-spec {
-    width: calc(100vw - 455px);
-  }
 }

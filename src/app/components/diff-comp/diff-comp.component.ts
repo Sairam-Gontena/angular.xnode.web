@@ -15,7 +15,6 @@ import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificati
 import { SECTION_VIEW_CONFIG } from 'src/app/pages/specifications/section-view-config';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-declare const SwaggerUIBundle: any;
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -36,7 +35,11 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
-  @Output() expandComponent = new EventEmitter<any>();
+  @Output() expandComponent = new EventEmitter<{
+    contentObj: any;
+    onDiff: boolean;
+    diffObj?: any;
+  }>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
@@ -55,6 +58,7 @@ export class DiffCompComponent implements OnInit {
     'Glossary',
     'Version Control',
     'Stakeholder Approvals',
+    'User Personas',
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
@@ -68,7 +72,7 @@ export class DiffCompComponent implements OnInit {
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    let version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     if (this.contentObj?.content_data_type === 'DASHBOARD') {
       this.targetUrl =
         environment.designStudioAppUrl +
@@ -100,7 +104,6 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-
     if (this.selectedVersionTwo) {
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
     }
