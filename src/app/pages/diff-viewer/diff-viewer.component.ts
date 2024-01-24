@@ -337,10 +337,6 @@ export class DiffViewerComponent implements OnInit {
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
-    fetch(swaggerUrl)
-      .then((response) => response.json())
-      .then((data) => (this.swaggerData = data))
-      .catch((error) => console.error('Error:', error));
     this.utils.loadSpinner(false);
   }
 
@@ -449,9 +445,6 @@ export class DiffViewerComponent implements OnInit {
     } else {
       this.isDiffEnabled = false;
     }
-    setTimeout(() => {
-      this.fetchSwaggerFunction()
-    }, 500);
     this.showVersionToDiff = event.diffView;
     this.format = event.viewType;
     if (event.viewType !== null) {
@@ -477,7 +470,8 @@ export class DiffViewerComponent implements OnInit {
       this.fetchOpenAPISpec('openapi-ui-spec-1', this.selectedVersionOne.id);
       this.fetchOpenAPISpec('openapi-ui-spec-2', this.selectedVersionTwo.id);
     } else {
-      this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersionOne.id);
+      if(this.selectedVersion)
+        this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersion.id);
     }
   }
 

@@ -20,6 +20,7 @@ export class ExpandSpecificationComponent {
   @Input() diffViewEnabled:any;
   @Input() selectedVersionOne:any;
   @Input() selectedVersionTwo:any;
+  @Input() selectedVersion:any;
   @Input() format:any;
   @Output() closeFullScreenView = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -54,7 +55,7 @@ export class ExpandSpecificationComponent {
       this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
       this.fetchOpenAPISpec('openapi-ui-spec-2',this.selectedVersionTwo.id);
     }else{
-      this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersionOne.id);
+      this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersion.id);
     }
   }
 
@@ -114,6 +115,11 @@ export class ExpandSpecificationComponent {
       cols = Object.entries(data).map(([field, value]) => ({ field, header: field, value }));
       return cols
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['format']?.currentValue)
+      this.format = changes['format'].currentValue;
   }
 
 }
