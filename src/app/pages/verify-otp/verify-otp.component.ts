@@ -96,7 +96,7 @@ export class VerifyOtpComponent implements OnInit {
 
   verifyAccount() {
     this.utilsService.loadSpinner(true);
-    if(this.otp?.length>0){
+    if(this.otp?.length==6){
       this.authApiService
       .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
       .then((response: any) => {
@@ -126,7 +126,10 @@ export class VerifyOtpComponent implements OnInit {
         );
       });
     }else{
-      this.utilsService.loadToaster({severity: 'error',summary: 'ERROR',detail:'Please enter OTP'});
+      let errMsg='Please enter OTP';
+      if(this.otp?.length>0 && this.otp?.length<6)
+        errMsg = 'Please enter your 6 digit OTP';
+      this.utilsService.loadToaster({severity: 'error',summary: 'ERROR',detail:errMsg});
       this.utilsService.loadSpinner(false);
     }
   }

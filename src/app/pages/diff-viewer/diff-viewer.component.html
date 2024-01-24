@@ -7,7 +7,7 @@
       <xnode-expand-specification *ngIf="specExpanded" [dataToExpand]="selectedSpecItem"
         (childLoaded)="onChildLoaded($event)" (closeFullScreenView)="closeFullScreenView()"
         [specExpanded]="specExpanded" [diffViewEnabled]="isDiffEnabled" [format]="format" [diffdataToExpand]="diffObj"
-        [selectedVersionOne]="selectedVersionOne"
+        [selectedVersionOne]="selectedVersionOne" [selectedVersion]="selectedVersion"
         [selectedVersionTwo]="selectedVersionTwo"></xnode-expand-specification>
     </div>
     <div *ngIf="!specExpanded">
