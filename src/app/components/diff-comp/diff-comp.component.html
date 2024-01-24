@@ -37,7 +37,8 @@
       <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
         contentObj?.title}}</h3>
       <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)"
-        class="expnad-icon pointer" (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
+        class="expnad-icon pointer"
+        (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
     </div>
 
 
@@ -48,7 +49,7 @@
           [commentType]="'comment'" [parentEntity]="'SPEC'"></xnode-add-comment-overlay-panel>
       </p-overlayPanel>
       <div class="col-12 py-0 h-2rem flex align-items-center justify-content-end pb-4"
-        *ngIf="contentObj?.content_data_type === 'str'">
+        *ngIf="contentObj?.content_data_type === 'str' || contentObj?.content_data_type === 'VERSION_CONTROL'">
         <div *ngIf="contentObj.showCommentIcon && !onDiff" class="flex align-items-center justify-content-center">
           <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
           <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="onClickViewComments(contentObj)"></i>
@@ -81,7 +82,9 @@
           <div *ngSwitchCase="'array'">
             <ul *ngFor="let item of contentObj.content">
               <li>
-                <xnode-diff-comp (expandComponent)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" [contentObj]="getMeContentObj(item, contentObj)"
+                <xnode-diff-comp
+                  (expandComponent)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})"
+                  [contentObj]="getMeContentObj(item, contentObj)"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
             </ul>
@@ -102,10 +105,12 @@
       <div class="col-12 py-0" *ngSwitchCase="'WORKFLOWS'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj" [dataToExpand]="contentObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-1'" [item]="contentObj"
+              [dataToExpand]="contentObj"></xnode-bpmn-common>
           </div>
           <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
-            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'" [diffdataToExpand]="diffObj" [item]="diffObj"></xnode-bpmn-common>
+            <xnode-bpmn-common [inSpecView]="true" [onDiff]="true" [bpmnRefId]="'diagramRef-2'"
+              [diffdataToExpand]="diffObj" [item]="diffObj"></xnode-bpmn-common>
           </div>
         </div>
         <xnode-bpmn-common [bpmnRefId]="'diagramRef'" [item]="contentObj" *ngIf="!onDiff"></xnode-bpmn-common>
@@ -261,6 +266,21 @@
           </div>
         </div>
       </div>
+
+      <div class="col-12 py-4" *ngSwitchCase="'VERSION_CONTROL'" [id]="contentObj.id">
+        <div class="grid" *ngIf="onDiff">
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
+            <xnode-common-spec-table [users]="[]" [content]="contentObj.content"></xnode-common-spec-table>
+          </div>
+          <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
+            <xnode-common-spec-table [users]="[]" [content]="diffObj.content"
+              [inDiffView]="true"></xnode-common-spec-table>
+          </div>
+        </div>
+        <xnode-common-spec-table [users]="[]" [content]="contentObj.content"
+          *ngIf="contentObj && !onDiff"></xnode-common-spec-table>
+      </div>
+
     </div>
     <div *ngIf="!contentObj?.parent_data_type">
       <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
