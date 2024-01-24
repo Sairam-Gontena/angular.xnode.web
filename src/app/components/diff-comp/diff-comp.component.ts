@@ -45,6 +45,7 @@ export class DiffCompComponent implements OnInit {
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
+  functionCalled:boolean = false;
   ComponentsToExpand = [
     'Open API Spec',
     'Data Model',
@@ -93,17 +94,17 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-    if (this.contentObj?.content_data_type === 'SWAGGER') {
-      this.childLoaded.emit(true);
-    }
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['diffObj']?.currentValue)
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
+    if(changes['onDiff']?.currentValue==true || changes['onDiff']?.currentValue==false){
+      if (this.contentObj?.content_data_type === 'SWAGGER') {
+        this.childLoaded.emit(true);
+      }
+    }
     if (this.selectedVersionTwo) {
       this.makeTrustedUrlForDiffView(this.selectedVersionTwo);
     }
