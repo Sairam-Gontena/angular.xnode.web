@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="flex align-items-center text-xs text-white-alpha-70">
-            Commented {{ modifiedTimeDifference(cmt.referenceContent.modified_on) }}
+            Commented {{ modifiedTimeDifference(cmt.modifiedOn) }}
           </div>
         </div>
         <div class="flex align-items-center flex-wrap">
@@ -26,18 +26,18 @@
       </div>
       <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
         <div *ngIf="checktableJsonSection(cmt.referenceContent?.specTitle); else normalView">
-          <div  class="h-8rem">
+          <div class="h-8rem">
             <p>{{cmt?.referenceContent.parentTitle}}</p>
             <p>{{cmt?.referenceContent.specTitle}}</p>
             <!-- <div *ngIf="cmt?.referenceContent?.content">
 
             </div> -->
-              <ul >
-                <li>
-                  <b>{{cmt?.referenceContent.title}}</b>
-                  <p>{{cmt?.referenceContent.content}}</p>
-                </li>
-              </ul>
+            <ul>
+              <li>
+                <b>{{cmt?.referenceContent.title}}</b>
+                <p>{{cmt?.referenceContent.content}}</p>
+              </li>
+            </ul>
           </div>
         </div>
         <ng-template #normalView>
@@ -50,13 +50,14 @@
           </div>
           <div *ngIf="checkListViewSections(cmt.referenceContent?.specTitle)" class="h-8rem">
             <b class="m-0">{{cmt?.referenceContent.parentTitle}}</b>
-            <p class="m-0" *ngIf="cmt?.referenceContent.specTitle!==cmt?.referenceContent.parentTitle">{{cmt?.referenceContent.specTitle}}</p>
-              <ul >
-                <li>
-                  <b>{{cmt?.referenceContent.title}}</b>
-                  <p>{{cmt?.referenceContent.content}}</p>
-                </li>
-              </ul>
+            <p class="m-0" *ngIf="cmt?.referenceContent.specTitle!==cmt?.referenceContent.parentTitle">
+              {{cmt?.referenceContent.specTitle}}</p>
+            <ul>
+              <li>
+                <b>{{cmt?.referenceContent.title}}</b>
+                <p>{{cmt?.referenceContent.content}}</p>
+              </li>
+            </ul>
           </div>
           <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem">
             <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext"
