@@ -337,10 +337,6 @@ export class DiffViewerComponent implements OnInit {
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
-    fetch(swaggerUrl)
-      .then((response) => response.json())
-      .then((data) => (this.swaggerData = data))
-      .catch((error) => console.error('Error:', error));
     this.utils.loadSpinner(false);
   }
 

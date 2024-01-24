@@ -51,15 +51,15 @@
         <span *ngIf="diffViewEnabled else swaggerData">
           <div class="grid">
             <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 px-3 pb-5'">
-              <div id="openapi-ui-spec-1"  class="openapi-spec swagger-h my-3 h-full"></div>
+              <div id="openapi-ui-spec-1"  class="openapi-spec swagger-h my-3 h-auto"></div>
             </div>
             <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 px-3 pb-5'">
-              <div id="openapi-ui-spec-2"  class="openapi-spec swagger-h my-3 h-full"></div>
+              <div id="openapi-ui-spec-2"  class="openapi-spec swagger-h my-3 h-auto"></div>
             </div>
           </div>
         </span>
         <ng-template #swaggerData>
-          <div id="openapi-ui-spec" class="openapi-spec swagger-h my-3 h-full"></div>
+          <div id="openapi-ui-spec" class="openapi-spec swagger-h my-3 h-auto"></div>
         </ng-template>
       </div>
       <div *ngIf="dataToExpand.title === 'Data Dictionary'" class="my-3 h-full">
