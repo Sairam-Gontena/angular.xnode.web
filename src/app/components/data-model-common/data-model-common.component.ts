@@ -4,6 +4,8 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  ElementRef,
+  ViewChild,
 } from '@angular/core';
 import { Data } from '../../pages/er-modeller/class/data';
 import { Router } from '@angular/router';
@@ -29,6 +31,8 @@ export class DataModelCommonComponent {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
   @Input() specData: string = '';
+  @Input() inExpandSpec:any;
+  @Input() inDiffView:any;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   data: Data | any;
   bpmnSubUrl: boolean = false;
@@ -43,6 +47,8 @@ export class DataModelCommonComponent {
   currentUrl: string = '';
   productChanged = false;
   private productChangedBPMN: Subscription = new Subscription();
+  @ViewChild('canvaDataModel', { static: false })
+  canvaDataModel!: ElementRef;
 
   constructor(
     private dataService: DataService,
@@ -114,7 +120,12 @@ export class DataModelCommonComponent {
             this.product?.id
           );
           this.dataModel = response.data;
-          this.jsPlumbService.init();
+          if(this.inDiffView){
+            let diffObj = { inDiffView:true, ids:[this.canvaDataModel.nativeElement] }
+            this.jsPlumbService.init(diffObj);
+          }else{
+            this.jsPlumbService.init();
+          }
           this.dataService.loadData(
             this.utilService.ToModelerSchema(this.dataModel)
           );

@@ -24,6 +24,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
+  @Input() onDiffValue:any;
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
@@ -62,6 +63,12 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStorageData();
+    if(this.onDiffValue){
+      if(this.onDiffValue.onDiff)
+        this.diffView = true;
+      if(this.onDiffValue.viewType)
+        this.viewType = this.onDiffValue.viewType
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
