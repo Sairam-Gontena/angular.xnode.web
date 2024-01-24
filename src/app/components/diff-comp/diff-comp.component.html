@@ -1,5 +1,5 @@
 <div [ngSwitch]="contentObj?.content_data_type">
-  <div *ngSwitchCase="'BANNER'" class="mt-4">
+  <div *ngSwitchCase="'BANNER'" [ngClass]="{'mt-4': contentObj?.title !== 'Introduction'}">
     <div class="intro-grid" [id]="contentObj.id">
       <div class="text-4xl font-semibold flex align-items-center">{{contentObj?.sNo + ' ' + contentObj?.title}}
         <span class="version-badge">
