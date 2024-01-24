@@ -10,11 +10,11 @@
       <div *ngIf="dataToExpand.title == 'Dashboards'" class="my-3 h-full">
           <span class="h-full" *ngIf="diffdataToExpand else dashboardData">
             <div class="grid" [ngStyle]="{'height':'99%'}">
-              <div class="col-6 h-full px-3 pb-4">
+              <div class="h-full" [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 px-3 pb-4'">
                 <iframe [src]="iframeSrc" class="h-full w-full" title="Template Builder">
                 </iframe>
               </div>
-              <div class="col-6 h-full px-3 pb-4">
+              <div class="h-full" [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 px-3 pb-4'">
                 <iframe [src]="makeTrustedUrlForDiffView(selectedVersionTwo.id)" class="h-full w-full" title="Template Builder">
                 </iframe>
               </div>
@@ -28,10 +28,10 @@
       <div *ngIf="dataToExpand.title === 'Usecases' || dataToExpand.title === 'Use Cases'" class="my-3 h-full">
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
-            <div class="col-6">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
               <xnode-common-usecases [users]="[]" [useCases]="dataToExpand.content"></xnode-common-usecases>
             </div>
-            <div class="col-6">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
               <xnode-common-usecases [users]="[]" [useCases]="diffdataToExpand.content"></xnode-common-usecases>
             </div>
           </div>
@@ -50,10 +50,10 @@
       <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="my-3 h-full">
         <span *ngIf="diffViewEnabled else swaggerData">
           <div class="grid">
-            <div class="col-6 px-3 pb-5">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 px-3 pb-5'">
               <div id="openapi-ui-spec-1"  class="openapi-spec swagger-h my-3 h-full"></div>
             </div>
-            <div class="col-6 px-3 pb-5">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 px-3 pb-5'">
               <div id="openapi-ui-spec-2"  class="openapi-spec swagger-h my-3 h-full"></div>
             </div>
           </div>
@@ -90,12 +90,12 @@
       <div *ngIf="dataToExpand.title === 'User Personas'" class="my-3 h-full">
         <span class="h-full" *ngIf="diffdataToExpand else usecaseData">
           <div class="grid" [ngStyle]="{'height': 'auto'}">
-            <div class="col-6 pr-3 pb-4">
+            <div  [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pr-3 pb-4'">
               <div *ngFor="let persona of dataToExpand.content" class="pb-2">
                 <xnode-user-persona [content]="persona"></xnode-user-persona>
               </div>
             </div>
-            <div class="col-6 pl-3 pb-4">
+            <div  [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pr-3 pb-4'">
               <div *ngFor="let persona of diffdataToExpand.content" class="pb-2">
                 <xnode-user-persona [content]="persona"></xnode-user-persona>
               </div>
@@ -111,10 +111,10 @@
       <div *ngIf="dataToExpand.title === 'Data Model'" class="my-3 h-full">
         <span *ngIf="diffdataToExpand else dataModelData">
           <div class="grid pt-3">
-            <div class="col-6 pb-4 px-3">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pb-4 px-3'">
               <xnode-data-model-common [inExpandSpec]="true" [dataToExpand]="dataToExpand"></xnode-data-model-common>
             </div>
-            <div class="col-6 pb-4 px-3">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pb-4 px-3'">
               <xnode-data-model-common [inExpandSpec]="true" [inDiffView]="true" [dataToExpand]="diffdataToExpand"></xnode-data-model-common>
             </div>
           </div>
@@ -127,11 +127,11 @@
       <div *ngIf="dataToExpand.title === 'Workflows'" class="my-3 h-full">
         <span *ngIf="diffdataToExpand else usecaseData">
           <div class="grid">
-            <div class="col-6 pb-3">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pb-3'">
               <xnode-bpmn-common [fromExpandSpec]="'true'" [bpmnRefId]="'diagramRef-1'"
         [dataToExpand]="dataToExpand"></xnode-bpmn-common>
             </div>
-            <div class="col-6 pb-3">
+            <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6 pb-3'">
               <xnode-bpmn-common [bpmnRefId]="'diagramRef-2'" [fromExpandSpec]="'true'"
         [diffdataToExpand]="diffdataToExpand"></xnode-bpmn-common>
             </div>
