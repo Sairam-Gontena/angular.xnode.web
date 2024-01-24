@@ -35,7 +35,11 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
-  @Output() expandComponent = new EventEmitter<{ contentObj: any, onDiff: boolean, diffObj?: any }>();
+  @Output() expandComponent = new EventEmitter<{
+    contentObj: any;
+    onDiff: boolean;
+    diffObj?: any;
+  }>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
@@ -54,7 +58,7 @@ export class DiffCompComponent implements OnInit {
     'Glossary',
     'Version Control',
     'Stakeholder Approvals',
-    'User Personas'
+    'User Personas',
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
 
@@ -63,14 +67,13 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) {
-    this.product = this.storageService.getItem(StorageKeys.Product);
-    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    if (this.contentObj?.title === 'Dashboards') {
+    if (this.contentObj?.content_data_type === 'DASHBOARD') {
       this.targetUrl =
         environment.designStudioAppUrl +
         '?email=' +
@@ -78,7 +81,7 @@ export class DiffCompComponent implements OnInit {
         '&id=' +
         this.product?.id +
         '&version_id=' +
-        version.id +
+        version?.id +
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&has_insights=' +
@@ -110,46 +113,10 @@ export class DiffCompComponent implements OnInit {
     return Array.isArray(content) ? 'array' : typeof content;
   }
 
-  getClass() {
-    return !this.onDiff
-      ? ''
-      : this.diffObj == 'REMOVED' || this.diffObj == 'ADDED'
-        ? this.diffObj
-        : this.getObjState();
-  }
-
-  getObjState() {
-    if (this.diffObj == undefined) {
-      return 'ADDED';
-    }
-    if (this.contentObj.id === this.diffObj.id) {
-      if (this.contentObj.content === this.diffObj.content) {
-        return '';
-      }
-      return 'MODIFIED';
-    } else {
-      return 'ADDED';
-    }
-  }
-
-  // TODO - NEED TO REFACTOR
-  getRemovedItems(fromArray: any[], toArray: any[], isOnDiff: boolean = false) {
-    if (!isOnDiff) return undefined;
-    const map: any = {};
-    const removedItems: any[] = [];
-    for (const item of toArray) {
-      map[item.id] = item;
-    }
-
-    for (const item of fromArray) {
-      if (!map[item.id]) {
-        removedItems.push(item);
-      }
-    }
-    return removedItems;
-  }
-
   getDiffObj(fromArray: any[], srcObj: any, isOnDiff: boolean = false) {
+    // console.log('fromArray', fromArray);
+    // console.log('srcObj', srcObj);
+
     if (!isOnDiff) return undefined;
     if (isArray(fromArray))
       for (const item of fromArray) {
@@ -159,7 +126,10 @@ export class DiffCompComponent implements OnInit {
       }
     return undefined;
   }
+
   getMeContentObj(item: any, contentObj: any) {
+    // console.log('<>>>>>>>>>>>>>>>>>>', item);
+
     if (item && typeof item !== 'string') {
       item['content_data_type'] = 'str';
       item['parent_data_type'] = 'list';
@@ -171,10 +141,6 @@ export class DiffCompComponent implements OnInit {
     return (
       './assets/' + event?.title?.toLowerCase()?.replace(/ /g, '') + '.svg'
     );
-  }
-
-  changeView(specItem: any): void {
-    this.contentObj.showTable = true;
   }
 
   onClickViewComments(specItem: any): void {
@@ -193,20 +159,13 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-  checkListViewSections(title: string) {
-    return (
-      this.listViewSections.filter((secTitle) => {
-        return secTitle === title;
-      }).length > 0
-    );
-  }
-
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
       this.targetUrl
     );
     localStorage.setItem('targetUrl', this.targetUrl);
   }
+
   makeTrustedUrlForDiffView(versionId: any): void {
     let targetUrl =
       environment.designStudioAppUrl +
@@ -229,11 +188,5 @@ export class DiffCompComponent implements OnInit {
 
   isString(item: any): boolean {
     return typeof item === 'string';
-  }
-
-  setContentDataType(item: any, parentType: string) {
-    return parentType === 'list'
-      ? (item.content_data_type = 'list')
-      : parentType;
   }
 }

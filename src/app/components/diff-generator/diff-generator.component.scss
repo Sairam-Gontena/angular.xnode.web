@@ -25,8 +25,8 @@
 
 
 :host ::ng-deep .d2h-del {
-    color: #fbb5b5;
-    background: #e70000;
+    background: #482B2B;
+    color: #FF6847;
     text-decoration: line-through !important;
 }
 
@@ -43,8 +43,8 @@
 }
 
 :host ::ng-deep .d2h-ins {
-    background: #FFE047;
-    color: #29422F;
+    background: #29422F;
+    color: #FFE047;
 }
 
 :host ::ng-deep .d2h-code-line-ctn {
