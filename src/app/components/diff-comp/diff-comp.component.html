@@ -266,7 +266,6 @@
           </div>
         </div>
       </div>
-
       <div class="col-12 py-4" *ngSwitchCase="'VERSION_CONTROL'" [id]="contentObj.id">
         <div class="grid" *ngIf="onDiff">
           <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
@@ -280,7 +279,6 @@
         <xnode-common-spec-table [users]="[]" [content]="contentObj.content"
           *ngIf="contentObj && !onDiff"></xnode-common-spec-table>
       </div>
-
     </div>
     <div *ngIf="!contentObj?.parent_data_type">
       <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
