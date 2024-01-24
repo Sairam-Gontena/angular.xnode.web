@@ -18,29 +18,29 @@
                 placeholder="Select View Type" class="view-dropdown"></p-dropdown>
         </div>
 
-      <div class="flex align-items-center">
-          <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
-              (click)="openComments()">
-          <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo">
-          <p-button [disabled]="!enabledGeneratespec" (click)="op.toggle($event)" class="ellipsis-btn "
-              icon="pi pi-ellipsis-v"></p-button>
-          <p-overlayPanel class="overlay-class" #op>
-              <div class="confirm-overlay p-2 cursor-pointer" (keyup)="askConfirmationOnClickGenerate()"
-                  (keydown)="op.hide()" (keypress)="askConfirmationOnClickGenerate()"
-                  (click)="askConfirmationOnClickGenerate();op.hide()" *ngIf="!specData">
-                  Generate Spec</div>
-              <div class="confirm-overlay p-2 cursor-pointer" (keyup)="viewPublishedApp()" (keydown)="op.hide()"
-                  (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
-                  Published App</div>
-          </p-overlayPanel>
-          <p-button label="Share" size="small" [rounded]="true"></p-button>
-      </div>
-  </div>
-  <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
-      [header]="'Update Spec'" [content]="'Are you sure, do you want to update this Spec?'" (onClickAction)="
+        <div class="flex align-items-center">
+            <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
+                (click)="openComments()">
+            <!-- <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo"> -->
+            <p-button [disabled]="!enabledGeneratespec" (click)="op.toggle($event)" class="ellipsis-btn "
+                icon="pi pi-ellipsis-v"></p-button>
+            <p-overlayPanel class="overlay-class" #op>
+                <div class="confirm-overlay p-2 cursor-pointer" (keyup)="askConfirmationOnClickGenerate()"
+                    (keydown)="op.hide()" (keypress)="askConfirmationOnClickGenerate()"
+                    (click)="askConfirmationOnClickGenerate();op.hide()" *ngIf="!specData">
+                    Generate Spec</div>
+                <div class="confirm-overlay p-2 cursor-pointer" (keyup)="viewPublishedApp()" (keydown)="op.hide()"
+                    (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
+                    Published App</div>
+            </p-overlayPanel>
+            <p-button label="Share" size="small" [rounded]="true"></p-button>
+        </div>
+    </div>
+    <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"
+        [header]="'Update Spec'" [content]="'Are you sure, do you want to update this Spec?'" (onClickAction)="
       onClickConfirmPopupAction($event)"></xnode-confirmation-popup-new>
-  <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
-      [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
-      [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generate()">
-  </xnode-spec-gen-popup>
+    <xnode-spec-gen-popup *ngIf="showSpecGenaretePopup" (closePopup)="this.showSpecGenaretePopup = false"
+        [content]="productStatusPopupContent" [showSpecGenaretePopup]="showSpecGenaretePopup"
+        [isTheCurrentUserOwner]="isTheCurrentUserOwner" (generateSpec)="generate()">
+    </xnode-spec-gen-popup>
 </div>
