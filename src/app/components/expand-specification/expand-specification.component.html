@@ -4,7 +4,7 @@
       <h4 class="m-0" *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'">Swagger API</h4>
       <h4 class="m-0" *ngIf="dataToExpand.title === 'User Interface Design'">User Interface Design</h4>
     </div>
-    <i class="pi pi-times text-xl text-color pointer text-white" (click)="enableSpinner();closeFullScreenView.emit();"></i>
+    <i class="pi pi-times text-xl text-color pointer text-white" (click)="enableSpinner();"></i>
   </div>
   <div class="px-4 expand-spec overflow-auto">
       <div *ngIf="dataToExpand.title == 'Dashboards'" class="my-3 h-full">

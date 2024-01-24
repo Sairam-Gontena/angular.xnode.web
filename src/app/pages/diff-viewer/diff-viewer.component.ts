@@ -148,6 +148,7 @@ export class DiffViewerComponent implements OnInit {
       }
       this.getUsersData();
     });
+
   }
 
   isMeneOpened(event: any) {
@@ -337,7 +338,7 @@ export class DiffViewerComponent implements OnInit {
       docExpansion: 'none',
       operationsSorter: 'alpha',
     });
-    this.utils.loadSpinner(false);
+    // this.utils.loadSpinner(false);
   }
 
   onSpecDataChange(data: any): void {
@@ -503,11 +504,12 @@ export class DiffViewerComponent implements OnInit {
   }
 
    closeFullScreenView() {
-    setTimeout(() => {
+    // setTimeout(() => {}, 100);
+      console.log('in closeFullScreenView',new Date().getMilliseconds())
       this.specExpanded = false;
+      console.log('specExpanded = false',new Date().getMilliseconds())
       this.fetchSwaggerFunction();
       this.scrollToItem();
-    }, 100);
   }
 
   async scrollToItem() {

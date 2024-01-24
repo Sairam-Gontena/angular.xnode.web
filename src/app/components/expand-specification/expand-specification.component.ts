@@ -46,8 +46,11 @@ export class ExpandSpecificationComponent {
     }
   }
 
-  enableSpinner(){
-    this.utils.loadSpinner(true)
+ async enableSpinner(){
+    console.log('before spinner',new Date().getMilliseconds())
+    await this.utils.loadSpinner(true);
+    console.log('after spinner',new Date().getMilliseconds())
+    this.closeFullScreenView.emit();
   }
 
   fetchSwagger(){
