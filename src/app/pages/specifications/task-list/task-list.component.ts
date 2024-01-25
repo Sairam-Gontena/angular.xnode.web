@@ -6,13 +6,15 @@ import {
   SafeHtml,
   SafeResourceUrl,
 } from '@angular/platform-browser';
-import { Comment } from 'src/models/comment';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
 import { Subscription, delay, of } from 'rxjs';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-task-list',
   templateUrl: './task-list.component.html',
@@ -64,7 +66,9 @@ export class TaskListComponent {
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private storageService: LocalStorageService,
+    private specService: SpecificationsService
   ) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'REPLY') {
@@ -288,7 +292,14 @@ export class TaskListComponent {
             summary: 'Success',
             detail: 'Task deleted successfully',
           });
-          this.specUtils._tabToActive('TASK');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -468,7 +479,14 @@ export class TaskListComponent {
             summary: 'SUCCESS',
             detail: 'Task has been unlinked from CR successfully',
           });
-          this.specUtils._tabToActive('TASK');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -498,7 +516,14 @@ export class TaskListComponent {
             detail: 'File deleted successfully',
           });
           this.fileIndex = null;
-          this.specUtils._tabToActive('TASK');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadSpinner(false);
           this.utils.loadToaster({

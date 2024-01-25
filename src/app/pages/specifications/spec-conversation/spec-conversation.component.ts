@@ -21,6 +21,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 declare const SwaggerUIBundle: any;
 import { Subscription, delay, of } from 'rxjs';
+import { SpecificationsService } from 'src/app/services/specifications.service';
 @Component({
   selector: 'xnode-spec-conversation',
   templateUrl: './spec-conversation.component.html',
@@ -79,7 +80,8 @@ export class SpecConversationComponent {
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
     private messagingService: MessagingService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private specService: SpecificationsService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.utils.getMeLatestConversation.subscribe((event: any) => {
@@ -302,7 +304,14 @@ export class SpecConversationComponent {
             summary: 'Success',
             detail: 'Comment deleted successfully',
           });
-          this.specUtils._tabToActive('COMMENT');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         }
         this.utils.loadSpinner(false);
       })
@@ -493,7 +502,14 @@ export class SpecConversationComponent {
             summary: 'SUCCESS',
             detail: 'Comment has been unlinked from CR successfully',
           });
-          this.getMeAllCommentsList();
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -556,7 +572,14 @@ export class SpecConversationComponent {
             detail: 'File deleted successfully',
           });
           this.fileIndex = null;
-          this.specUtils._tabToActive('COMMENT');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadSpinner(false);
           this.utils.loadToaster({
