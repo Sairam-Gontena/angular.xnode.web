@@ -48,9 +48,6 @@ export class CommentsPanelComponent implements OnInit {
     });
     if(!this.usersList || this.usersList==undefined){
       this.usersList== this.storageService.getItem(StorageKeys.USERLIST);
-      // this.usersList=userlist.forEach((item:any)=>{
-      //   item.name = item.first_name+' '+item.last_name;
-      // })
     }
   }
 
