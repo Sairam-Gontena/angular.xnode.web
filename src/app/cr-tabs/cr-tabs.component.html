@@ -130,7 +130,7 @@
                         </div>
                       </div>
                     </div>
-                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)"
+                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)" 
                       [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
                       <ng-template let-action pTemplate="item">
                         <span class="flex" (click)="updateChagneRequestStatus(action.label)">
