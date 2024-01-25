@@ -18,9 +18,8 @@
                         <ng-otp-input (onInputChange)="onOtpChange($event)"
                             [config]="{length:6,allowNumbersOnly: true, placeholder:'-'}" #ngOtpInput></ng-otp-input>
                     </div>
-                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-5">
-                        <p-button label="Verify Account" class="flex justify-content-center " type="submit"
-                            styleClass="p-button font-medium text-lg verify-otp-btn"  [rounded]="true"></p-button>
+                    <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-5 flex align-items-center justify-content-center">
+                        <p-button label="Verify Account"  type="submit" [rounded]="true"></p-button>
                     </div>
                     <div *ngIf="resendTimer > 0" class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12 mt-4">
                         <div class="font-medium flex justify-content-center heading-color resend-text">Resend

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
 import {
@@ -78,12 +78,17 @@ export class TaskListComponent {
     });
   }
 
+  ngOnChanges(change:SimpleChanges): void{
+    if (change['list']?.currentValue)
+      this.specListCopy = change['list'].currentValue;
+  }
+
   ngOnInit() {
     if (this.list.length) {
       this.list.forEach((element: any) => {
         element.repliesOpened = false;
       });
-      this.specListCopy = this.list;
+      this.specListCopy = [...this.list];
     }
     this.makeTrustedUrl();
     this.checkSwaggerItem();
@@ -102,28 +107,29 @@ export class TaskListComponent {
   filterListBySearch(users?: any) {
     if (this.searchIconKeyword.length > 0) {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase();
-      this.list = this.list.filter((item: any) =>
-        item.title.toLowerCase().includes(this.searchIconKeyword)
-      );
+      this.list = this.list.filter((item: any) =>{
+        const msg = item.title.toLowerCase();
+        return msg.includes(this.searchIconKeyword)
+      });
     } else {
       this.list = this.specListCopy;
     }
-    if (users) {
+    if (users?.length>0) {
       this.filterListByUsersFilter(users);
       return;
     }
   }
 
   filterListByUsersFilter(users: any) {
-    if (users.length > 0) {
+    if (users?.length > 0) {
       this.list = this.specListCopy;
       this.list = this.list.filter((item: any) =>
-        users.includes(item.assignee.userId)
+        users.includes(item?.assignee?.userId) ||  item.references?.some((ref: any) => users.includes(ref.entity_id))
       );
     } else {
       this.list = this.specListCopy;
     }
-    if (this.searchIconKeyword.length > 0) {
+    if (this.searchIconKeyword?.length > 0) {
       this.filterListBySearch();
       return;
     }
