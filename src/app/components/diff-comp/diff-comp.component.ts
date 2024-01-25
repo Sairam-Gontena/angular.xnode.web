@@ -35,6 +35,7 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
+  @Input() keyword:any;
   @Output() expandComponent = new EventEmitter<{
     contentObj: any;
     onDiff: boolean;
