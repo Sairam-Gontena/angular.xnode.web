@@ -37,16 +37,32 @@
                 <div class="confirm-overlay p-2 cursor-pointer">
                     <p-tabView>
                         <p-tabPanel header="Share">
-                            <div class="col-12 p-0 flex flex-wrap justify-content-center">
-                                <div class="col-9">
-                                    <input type="text" pInputText [(ngModel)]="value"
-                                        placeholder="Add people, groups, or emails" />
+                            <form [formGroup]="addShareForm">
+                                <div class="col-12 p-0 flex flex-wrap justify-content-center">
+                                    <div class="col-9">
+                                        <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers"
+                                            formControlName="reviewersLOne"
+                                            (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
+                                            (click)="$event.stopPropagation()" [multiple]="true" styleClass="w-full">
+                                            <ng-template let-reviewer pTemplate="selectedItem">
+                                                <div class="flex align-items-center">
+                                                    <div
+                                                        class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                                                        {{ reduceToInitials(reviewer.name) }}
+                                                    </div>
+                                                    <span class="ml-2">{{ reviewer.name }}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-autoComplete>
+                                        <!-- <input type="text" pInputText [(ngModel)]="value"
+                                        placeholder="Add people, groups, or emails" /> -->
+                                    </div>
+                                    <div class="col-3">
+                                        <p-button label="Invite" size="small" [outlined]="true" [rounded]="true"
+                                            class="mr-2 mt-2"></p-button>
+                                    </div>
                                 </div>
-                                <div class="col-3">
-                                    <p-button label="Invite" size="small" [outlined]="true" [rounded]="true"
-                                        class="mr-2 mt-2"></p-button>
-                                </div>
-                            </div>
+                            </form>
                         </p-tabPanel>
                         <p-tabPanel header="Publish">
                             <p>

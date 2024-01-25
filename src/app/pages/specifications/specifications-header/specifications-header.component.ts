@@ -14,6 +14,12 @@ import { SpecificationsService } from 'src/app/services/specifications.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'xnode-specifications-header',
   templateUrl: './specifications-header.component.html',
@@ -28,6 +34,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
+  @Input() reveiwerList: any;
+
   currentUser: any;
   metaDeta: any;
   product: any;
@@ -52,6 +60,12 @@ export class SpecificationsHeaderComponent implements OnInit {
   ];
   selectedInvite: any;
   value: any;
+  filteredReveiwers: any = [];
+  references: any;
+  userList: any;
+  suggestions: any;
+  selectedItem: any;
+  addShareForm: FormGroup;
 
   constructor(
     private utils: UtilsService,
@@ -59,13 +73,21 @@ export class SpecificationsHeaderComponent implements OnInit {
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
     private specService: SpecificationsService,
-    private SpecificationUtils: SpecificationUtilsService
+    private SpecificationUtils: SpecificationUtilsService,
+    private fb: FormBuilder,
   ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
       }
     });
+    this.addShareForm = this.fb.group({
+      reviewersLOne: [[], [Validators.required]],
+      files: [[]],
+    });
+    // this.references = [];
+    console.log(this.reveiwerList, '11111111111111')
+
   }
 
   ngOnInit(): void {
@@ -143,7 +165,31 @@ export class SpecificationsHeaderComponent implements OnInit {
   toggleSideMenu() {
     this.isMeneOpened.emit(true);
   }
+  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
+    let filtered: any[] = [];
+    let query = event.query;
+    const selectedReviewers = this.addShareForm.value.reviewersLOne.map(
+      (reviewer: any) => reviewer.name.toLowerCase()
+    );
+    filtered = this.userList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase())
+    );
+    this.filteredReveiwers = filtered;
+  }
+  search(event: AutoCompleteCompleteEvent) {
+    this.suggestions = [...Array(10).keys()].map(
+      (item) => event.query + '-' + item
+    );
+  }
 
+  reduceToInitials(fullName: string): string {
+    const nameParts = fullName.split(' ');
+    const initials = nameParts.map((part) => part.charAt(0));
+    const reducedName = initials.join('').toUpperCase();
+    return reducedName;
+  }
   askConfirmationOnClickGenerate() {
     if (this.product?.id) {
       this.generateSpec.emit();
