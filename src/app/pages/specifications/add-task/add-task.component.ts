@@ -139,7 +139,7 @@ export class AddTaskComponent {
     let body = {
       createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
-      parentId: this.parentId,
+      parentId: this.specItem.parentId,
       priority: '1',
       title: this.addTaskForm.value.title,
       description: this.addTaskForm.value.description,
