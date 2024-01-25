@@ -46,13 +46,13 @@
         <i class="pi pi-user pointer relative z-1 opacity-100 pointer-events-none search-dropdown-user"
           [ngClass]="filter=='users'?'text-blue-400':'text-white'" style="font-size: 1.25rem"></i>
         <p-multiSelect class="comment-panel-user-filter" appendTo="body" optionValue="user_id"
-          (click)="changeSearchIconColor('users')"  [(ngModel)]="selectedUsers" [options]="usersList"
+          (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
           (onChange)="filterListByUsersFilter()" [showClear]="true">
           <ng-template let-item pTemplate="item">
-            <div class="item-container" >
-                {{ item.first_name }} {{item.last_name}}
+            <div class="item-container">
+              {{ item.first_name }} {{item.last_name}}
             </div>
-        </ng-template>
+          </ng-template>
         </p-multiSelect>
       </div>
     </div>
@@ -307,7 +307,8 @@
                       <div class="flex align-items-center ">
                         <div class="text-xs mr-2 text-orange-500">{{subData.status}}</div>
                         <span *ngFor="let reviewers of data?.reviewers?.reviewers">
-                          <p-avatar [label]="getMeUserAvatar(reviewers.users[0])" class="text-xs" shape="circle" [style]="{
+                          <p-avatar [label]="getMeUserAvatar(reviewers.users[0])" class="text-xs" shape="circle"
+                            [style]="{
                                 'background-color': '#9c27b0',
                                 color: '#ffffff', fontSize: '10px'
                               }"></p-avatar>
