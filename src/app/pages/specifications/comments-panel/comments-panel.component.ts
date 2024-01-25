@@ -46,6 +46,12 @@ export class CommentsPanelComponent implements OnInit {
     this.searchUpdated.pipe(debounceTime(1000)).subscribe((search) => {
       this.specUtils.sendCommentSearchByKeywordListData(this.selectedUsers);
     });
+    if(!this.usersList || this.usersList==undefined){
+      this.usersList== this.storageService.getItem(StorageKeys.USERLIST);
+      // this.usersList=userlist.forEach((item:any)=>{
+      //   item.name = item.first_name+' '+item.last_name;
+      // })
+    }
   }
 
   changeSearchIconColor(entity: any) {
@@ -61,22 +67,21 @@ export class CommentsPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.specData = this.storageService.getItem(StorageKeys.SpecVersion);
-    console.log('commentspanelts',this.specData)
-    this.utils.loadSpinner(true);
-    this.getCommentsByStatus();
+    this.filterList();
+    // this.specData = this.storageService.getItem(StorageKeys.SpecVersion);
+    // console.log('commentspanelts',this.specData)
+    // this.utils.loadSpinner(true);
+    // this.getCommentsByStatus();
   }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     if (changes['list']?.currentValue) {
       this.filteredList = [];
       this.list = changes['list'].currentValue;
-      // this.filterList();
+      this.filterList();
     }
   }
-
   getCommentsByStatus(status?:any){
-    console.log(status)
     let query = 'comment/comments-by-productId?productId='+this.specData.productId+'&verisonId='+this.specData.id;
     if(status){
       query = 'comment/comments-by-productId?productId='+this.specData.productId+'&verisonId='+this.specData.id+'&status='+status;
@@ -93,32 +98,32 @@ export class CommentsPanelComponent implements OnInit {
     })
   }
 
-  // filterList(data?: any): void {
-  //   this.filteredList = [];
-  //   switch (this.selectedFilter.value) {
-  //     case 'LINKED':
-  //       this.filteredList = this.list.filter(
-  //         (item: any) => item.status === 'LINKED'
-  //       );
-  //       break;
-  //     case 'UNLINKED':
-  //       this.filteredList = data.filter(
-  //         (item: any) => item.status === 'UNLINKED'
-  //       );
-  //       break;
-  //     case 'NEW':
-  //       this.filteredList = this.list.filter(
-  //         (item: any) => item.status === 'NEW'
-  //       );
-  //       break;
-  //     case 'CLOSED':
-  //       this.filteredList = this.list.filter(
-  //         (item: any) => item.status === 'CLOSED'
-  //       );
-  //       break;
-  //     default:
-  //       this.filteredList = this.list;
-  //       break;
-  //   }
-  // }
+  filterList(data?: any): void {
+    this.filteredList = [];
+    switch (this.selectedFilter.value) {
+      case 'LINKED':
+        this.filteredList = this.list.filter(
+          (item: any) => item.status === 'LINKED'
+        );
+        break;
+      case 'UNLINKED':
+        this.filteredList = data.filter(
+          (item: any) => item.status === 'UNLINKED'
+        );
+        break;
+      case 'NEW':
+        this.filteredList = this.list.filter(
+          (item: any) => item.status === 'NEW'
+        );
+        break;
+      case 'CLOSED':
+        this.filteredList = this.list.filter(
+          (item: any) => item.status === 'CLOSED'
+        );
+        break;
+      default:
+        this.filteredList = this.list;
+        break;
+    }
+  }
 }
