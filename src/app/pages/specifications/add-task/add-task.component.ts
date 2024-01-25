@@ -97,6 +97,9 @@ export class AddTaskComponent {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
+    if(!this.parentId){
+      this.parentId = this.selectedContent.parentId;
+    }
   }
 
   onDateSelect(event: any): void {

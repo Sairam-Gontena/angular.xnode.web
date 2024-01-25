@@ -111,28 +111,29 @@ export class SpecConversationComponent {
   filterListBySearch(users?: any) {
     if (this.searchIconKeyword.length > 0) {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase();
-      this.list = this.list.filter((item: any) =>
-        item.message.toLowerCase().includes(this.searchIconKeyword)
-      );
+      this.list = this.list.filter((item: any) =>{
+        const msg = item.message.toLowerCase();
+        return msg.includes(this.searchIconKeyword)
+      });
     } else {
       this.list = this.specListCopy;
     }
-    if (users) {
+    if (users?.length>0) {
       this.filterListByUsersFilter(users);
       return;
     }
   }
 
   filterListByUsersFilter(users: any) {
-    if (users.length > 0) {
+    if (users?.length > 0) {
       this.list = this.specListCopy;
       this.list = this.list.filter((item: any) =>
-        users.includes(item.createdBy.userId)
+        users.includes(item.createdBy.userId) ||  item.references?.some((ref: any) => users.includes(ref.entity_id))
       );
     } else {
       this.list = this.specListCopy;
     }
-    if (this.searchIconKeyword.length > 0) {
+    if (this.searchIconKeyword?.length > 0) {
       this.filterListBySearch();
       return;
     }
