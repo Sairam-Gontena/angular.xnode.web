@@ -12,7 +12,7 @@
     </div>
     <div *ngIf="!specExpanded">
       <span *ngIf="versions?.length>0">
-        <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)"
+        <xnode-specifications-header (onDiffViewChange)="diffViewChangeEmiter($event)" [users]="usersList"
           [isSideMenuOpened]="isSideMenuOpened" (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions"
           [onDiffValue]="{'onDiff':isDiffEnabled, 'viewType':format}" [selectedVersion]="selectedVersion"
           (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"

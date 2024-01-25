@@ -34,7 +34,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
-  @Input() reveiwerList: any;
+  @Input() reviewersList: any;
+  @Input() users: any = [];
 
   currentUser: any;
   metaDeta: any;
@@ -85,9 +86,14 @@ export class SpecificationsHeaderComponent implements OnInit {
       reviewersLOne: [[], [Validators.required]],
       files: [[]],
     });
-    // this.references = [];
-    console.log(this.reveiwerList, '11111111111111')
-
+    this.references = [];
+    console.log(this.users, '22222222222')
+    this.addShareForm.value.reviewersLOne.forEach((item: any) => {
+      this.references.push({
+        entity_type: 'User',
+        entity_id: item.user_id,
+      });
+    });
   }
 
   ngOnInit(): void {

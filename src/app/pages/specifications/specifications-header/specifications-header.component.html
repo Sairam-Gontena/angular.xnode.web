@@ -40,8 +40,8 @@
                             <form [formGroup]="addShareForm">
                                 <div class="col-12 p-0 flex flex-wrap justify-content-center">
                                     <div class="col-9">
-                                        <p-autoComplete placeholder="Assignees" [suggestions]="filteredReveiwers"
-                                            formControlName="reviewersLOne"
+                                        <p-autoComplete placeholder="Add people, groups, or emails"
+                                            [suggestions]="filteredReveiwers" formControlName="reviewersLOne"
                                             (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
                                             (click)="$event.stopPropagation()" [multiple]="true" styleClass="w-full">
                                             <ng-template let-reviewer pTemplate="selectedItem">
@@ -54,8 +54,6 @@
                                                 </div>
                                             </ng-template>
                                         </p-autoComplete>
-                                        <!-- <input type="text" pInputText [(ngModel)]="value"
-                                        placeholder="Add people, groups, or emails" /> -->
                                     </div>
                                     <div class="col-3">
                                         <p-button label="Invite" size="small" [outlined]="true" [rounded]="true"
@@ -64,11 +62,11 @@
                                 </div>
                             </form>
                         </p-tabPanel>
-                        <p-tabPanel header="Publish">
+                        <!-- <p-tabPanel header="Publish">
                             <p>
                                 Publish
                             </p>
-                        </p-tabPanel>
+                        </p-tabPanel> -->
                     </p-tabView>
                     <hr>
                     <div class="col-12 flex justify-content-between">
@@ -76,16 +74,26 @@
                             placeholder="Select a Invite">
                             <ng-template pTemplate="selectedItem">
                                 <div class="flex align-items-center gap-2" *ngIf="selectedInvite">
-                                    <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                                        [class]="'flag flag-' + selectedInvite.code.toLowerCase()"
-                                        style="width: 18px" />
+                                    <ng-container *ngIf="selectedInvite.code === 'Invite'">
+                                        <img src="../assets/lock.svg" alt="link" class="text-sm" />
+                                    </ng-container>
+                                    <ng-container *ngIf="selectedInvite.code === 'Anyone'">
+                                        <img src="../assets/Link.svg" alt="link" class="text-sm" />
+                                    </ng-container>
+                                    <ng-container *ngIf="selectedInvite.code === 'Everyone'">
+                                        <img src="../assets/publish.svg" alt="link" class="text-sm" />
+                                    </ng-container>
                                     <div>{{ selectedInvite.name }}</div>
                                 </div>
                             </ng-template>
                             <ng-template let-invite pTemplate="item">
                                 <div class="flex align-items-center gap-2">
-                                    <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                                        [class]="'flag flag-' + invite.code.toLowerCase()" style="width: 18px" />
+                                    <img *ngIf="invite?.code === 'Invite'" src="../assets/lock.svg" alt="copy"
+                                        class="text-sm">
+                                    <img *ngIf="invite?.code === 'Anyone'" src="../assets/Link.svg" alt="copy"
+                                        class="text-sm">
+                                    <img *ngIf="invite?.code === 'Everyone'" src="../assets/publish.svg" alt="copy"
+                                        class="text-sm">
                                     <div>{{ invite.name }}</div>
                                 </div>
                             </ng-template>

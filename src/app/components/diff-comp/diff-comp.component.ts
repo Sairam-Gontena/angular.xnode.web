@@ -45,7 +45,7 @@ export class DiffCompComponent implements OnInit {
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
-  functionCalled:boolean = false;
+  functionCalled: boolean = false;
   ComponentsToExpand = [
     'Open API Spec',
     'Data Model',
@@ -68,7 +68,9 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) {}
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -100,7 +102,7 @@ export class DiffCompComponent implements OnInit {
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-    if(changes['onDiff']?.currentValue==true || changes['onDiff']?.currentValue==false){
+    if (changes['onDiff']?.currentValue == true || changes['onDiff']?.currentValue == false) {
       if (this.contentObj?.content_data_type === 'SWAGGER') {
         this.childLoaded.emit(true);
       }

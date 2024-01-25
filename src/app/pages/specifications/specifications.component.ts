@@ -284,7 +284,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
             element.name = element.first_name + ' ' + element.last_name;
           });
           this.reveiwerList = resp.data;
-          console.log(this.reveiwerList, '0000000000')
           this.localStorageService.saveItem(StorageKeys.USERLIST, resp.data);
         } else {
           this.utils.loadToaster({
