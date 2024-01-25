@@ -285,8 +285,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.conversationPanelInfo?.parentTabIndex === 0 &&
       this.conversationPanelInfo?.childTabIndex === 0
     ) {
-      console.log('>>>>>>');
-
       this.specService.getMeAllComments({
         productId: this.product?.id,
         versionId: event.value.value,

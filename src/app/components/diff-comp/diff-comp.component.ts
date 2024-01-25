@@ -45,7 +45,7 @@ export class DiffCompComponent implements OnInit {
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
-  functionCalled:boolean = false;
+  functionCalled: boolean = false;
   ComponentsToExpand = [
     'Open API Spec',
     'Data Model',
@@ -94,13 +94,15 @@ export class DiffCompComponent implements OnInit {
     }
   }
 
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['diffObj']?.currentValue)
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
       this.format = changes['format'].currentValue;
-    if(changes['onDiff']?.currentValue==true || changes['onDiff']?.currentValue==false){
+    if (
+      changes['onDiff']?.currentValue == true ||
+      changes['onDiff']?.currentValue == false
+    ) {
       if (this.contentObj?.content_data_type === 'SWAGGER') {
         this.childLoaded.emit(true);
       }
@@ -115,9 +117,6 @@ export class DiffCompComponent implements OnInit {
   }
 
   getDiffObj(fromArray: any[], srcObj: any, isOnDiff: boolean = false) {
-    // console.log('fromArray', fromArray);
-    // console.log('srcObj', srcObj);
-
     if (!isOnDiff) return undefined;
     if (isArray(fromArray))
       for (const item of fromArray) {
@@ -129,8 +128,6 @@ export class DiffCompComponent implements OnInit {
   }
 
   getMeContentObj(item: any, contentObj: any) {
-    // console.log('<>>>>>>>>>>>>>>>>>>', item);
-
     if (item && typeof item !== 'string') {
       item['content_data_type'] = 'str';
       item['parent_data_type'] = 'list';
