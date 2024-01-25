@@ -185,3 +185,21 @@
   display: inline-block;
   width: 18px;
 }
+
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link {
+  background: transparent;
+  border: 0px;
+}
+
+:host ::ng-deep  .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  background: transparent;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+  background: transparent;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-content {
+  border: 0px;
+  background: transparent;
+}
