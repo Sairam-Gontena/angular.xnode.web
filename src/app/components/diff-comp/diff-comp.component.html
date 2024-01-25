@@ -23,7 +23,8 @@
         </div>
       </div>
       <div class="flex mt-3  align-items-center">
-        <p class="author text-sm font-medium m-0"> By {{contentObj?.content?.[0]?.modified_by}}
+        <p class="author text-sm font-medium m-0"> By
+          {{contentObj?.modifiedBy.displayName | titlecase}}
       </div>
       <img [src]="getMeBanner(contentObj)" alt="banner" class="mt-3 w-full">
     </div>
