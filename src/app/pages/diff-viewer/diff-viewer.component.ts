@@ -51,10 +51,10 @@ export class DiffViewerComponent implements OnInit {
   isCommentsPanelOpened: boolean = false;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
-  selectedSpecItem:any;
-  fetchApiSpecCall:boolean=true;
-  diffObj:any;
-  loadSwagger: boolean= false;
+  selectedSpecItem: any;
+  fetchApiSpecCall: boolean = true;
+  diffObj: any;
+  loadSwagger: boolean = false;
   isDiffEnabled: boolean = false;
   specRouteParams: any;
   selectedVersion?: SpecVersion;
@@ -89,6 +89,10 @@ export class DiffViewerComponent implements OnInit {
             element['label'] = element.specStatus + '-' + element.version;
             element['value'] = element.id;
           });
+          this.versions = versions;
+          this.selectedVersion = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
           this.versionListOne = versions;
           this.versionListTwo = versions;
         }
@@ -137,7 +141,10 @@ export class DiffViewerComponent implements OnInit {
           productId: params?.productId ? params?.productId : params?.product_id,
           versionId: params?.versionId ? params.versionId : params.version_id,
         });
-      } else if (params?.entity === 'WORKFLOW') {
+      } else if (
+        params?.template_type === 'WORKFLOW' ||
+        params?.template_type === 'UPDATE_SPEC'
+      ) {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
           parentTabIndex: 1,
@@ -452,7 +459,8 @@ export class DiffViewerComponent implements OnInit {
         return obj.id === version.id;
       })[0];
       const index = this.findIndex(version);
-      this.selectedVersionTwo = this.versions[index === 0 ? index + 1 : index - 1];
+      this.selectedVersionTwo =
+        this.versions[index === 0 ? index + 1 : index - 1];
       this.utils.loadSpinner(true);
       this.getMeSpecInfo({
         versionId: this.selectedVersionTwo.id,
@@ -465,12 +473,12 @@ export class DiffViewerComponent implements OnInit {
     }
   }
 
-  fetchSwaggerFunction(){
+  fetchSwaggerFunction() {
     if (this.isDiffEnabled) {
       this.fetchOpenAPISpec('openapi-ui-spec-1', this.selectedVersionOne.id);
       this.fetchOpenAPISpec('openapi-ui-spec-2', this.selectedVersionTwo.id);
     } else {
-      if(this.selectedVersion)
+      if (this.selectedVersion)
         this.fetchOpenAPISpec('openapi-ui-spec', this.selectedVersion.id);
     }
   }
@@ -490,10 +498,14 @@ export class DiffViewerComponent implements OnInit {
   }
 
   _expandComponent(object: any): void {
-    object.onDiff ? this.diffObj = object.diffObj : this.diffObj = undefined;
+    object.onDiff
+      ? (this.diffObj = object.diffObj)
+      : (this.diffObj = undefined);
     if (object.contentObj) {
       this.selectedSpecItem = object.contentObj;
-      this.specificationUtils.openConversationPanel({openConversationPanel: false})
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: false,
+      });
       this.utils.disableDockedNavi();
       this.utils.EnableSpecSubMenu(); // this.utils.openOrClosePanel(SidePanel.None);
       this.specExpanded = true;
@@ -502,7 +514,7 @@ export class DiffViewerComponent implements OnInit {
     }
   }
 
-   closeFullScreenView() {
+  closeFullScreenView() {
     setTimeout(() => {
       this.specExpanded = false;
       this.fetchSwaggerFunction();

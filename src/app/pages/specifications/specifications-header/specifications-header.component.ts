@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -24,7 +23,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
-  @Input() onDiffValue:any;
+  @Input() onDiffValue: any;
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
@@ -50,24 +49,25 @@ export class SpecificationsHeaderComponent implements OnInit {
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
-    private commentsService: CommentsService,
     private specService: SpecificationsService,
     private SpecificationUtils: SpecificationUtilsService
   ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
+        this.product = this.storageService.getItem(StorageKeys.Product);
+        this.selectedVersion = this.storageService.getItem(
+          StorageKeys.SpecVersion
+        );
       }
     });
   }
 
   ngOnInit(): void {
     this.getStorageData();
-    if(this.onDiffValue){
-      if(this.onDiffValue.onDiff)
-        this.diffView = true;
-      if(this.onDiffValue.viewType)
-        this.viewType = this.onDiffValue.viewType
+    if (this.onDiffValue) {
+      if (this.onDiffValue.onDiff) this.diffView = true;
+      if (this.onDiffValue.viewType) this.viewType = this.onDiffValue.viewType;
     }
   }
 
@@ -167,30 +167,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     });
   }
 
-  getMeAllCommentsList() {
-    this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(
-      StorageKeys.SpecVersion
-    );
-    this.commentsService
-      .getCommentsByProductId({
-        productId: this.product?.id,
-        versionId: specVersion.id,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          if (response.data.length > 0)
-            this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
-  }
-
   generate() {
     this.generateSpec.emit();
   }
@@ -211,13 +187,17 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.product = product;
       this.specService.getVersions(this.product.id, (data) => {
         this.versions = data;
-        const uniqueStatuses = [...new Set(data.map((obj:any) => obj.specStatus))];
+        const uniqueStatuses = [
+          ...new Set(data.map((obj: any) => obj.specStatus)),
+        ];
         const priorityOrder = uniqueStatuses.sort((a, b) => {
           if (a === 'LIVE') return -1;
           if (b === 'LIVE') return 1;
           return 0;
         });
-        const firstObjectWithPriority = data.find((obj:any) => obj.specStatus === priorityOrder[0]);
+        const firstObjectWithPriority = data.find(
+          (obj: any) => obj.specStatus === priorityOrder[0]
+        );
         this.selectedVersion = firstObjectWithPriority;
         this.specService.getMeSpecInfo(
           {
@@ -233,7 +213,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllComments({
                   productId: this.product?.id,
-                  versionId:firstObjectWithPriority.id,
+                  versionId: firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -242,7 +222,7 @@ export class SpecificationsHeaderComponent implements OnInit {
               ) {
                 this.specService.getMeAllTasks({
                   productId: this.product?.id,
-                  versionId:firstObjectWithPriority.id,
+                  versionId: firstObjectWithPriority.id,
                 });
               } else if (
                 this.conversationPanelInfo?.openConversationPanel &&
@@ -253,7 +233,10 @@ export class SpecificationsHeaderComponent implements OnInit {
             }
           }
         );
-        this.storageService.saveItem(StorageKeys.SpecVersion,firstObjectWithPriority);
+        this.storageService.saveItem(
+          StorageKeys.SpecVersion,
+          firstObjectWithPriority
+        );
       });
     } else {
       this.showGenerateSpecPopup(product);
@@ -302,8 +285,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.conversationPanelInfo?.parentTabIndex === 0 &&
       this.conversationPanelInfo?.childTabIndex === 0
     ) {
-      console.log('>>>>>>');
-
       this.specService.getMeAllComments({
         productId: this.product?.id,
         versionId: event.value.value,
