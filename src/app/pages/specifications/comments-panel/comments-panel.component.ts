@@ -69,7 +69,6 @@ export class CommentsPanelComponent implements OnInit {
   ngOnInit(): void {
     this.filterList();
     // this.specData = this.storageService.getItem(StorageKeys.SpecVersion);
-    // console.log('commentspanelts',this.specData)
     // this.utils.loadSpinner(true);
     // this.getCommentsByStatus();
   }
