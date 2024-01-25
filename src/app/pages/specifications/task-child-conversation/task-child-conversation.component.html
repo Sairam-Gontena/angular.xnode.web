@@ -58,7 +58,7 @@
                 <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
             </div>
             <div class="w-full">
-                <xnode-add-comment-overlay-panel AssignedFrom="AssignedFromTaskChild" placeHolder="Reply"
+                <xnode-add-comment-overlay-panel AssignedFrom="AssignedFromTaskChild" placeHolder="Reply"  [selectedContent]="selectedComment" 
                     [selectedComment]="selectedComment" [action]="action" [users]="usersList"
                     [parentEntity]="activeIndex == 0 ? 'COMMENT' : 'TASK'" [activeIndex]="activeIndex"
                     [parentId]="cmt.id" [topParentId]="topParentId" [parentId]="parentId"

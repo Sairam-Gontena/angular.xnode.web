@@ -121,11 +121,11 @@
           <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
         </div>
         <div class="w-full">
-          <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment" [action]="action"
-            [users]="usersList" [parentEntity]="
+          <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedContent]="selectedComment"
+            [selectedComment]="selectedComment" [action]="action" [users]="usersList" [parentEntity]="
                      'COMMENT'" [activeIndex]="0" [parentId]="cmt.id" [topParentId]="topParentId"
             [comment]="action === 'EDIT' ?  cmt.message  : ''" [commentType]="'reply'" [width]="'w-full'"
-            (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+            (closeOverlay)="showCommentInput=false;action=''"></xnode-add-comment-overlay-panel>
         </div>
       </div>
       <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">
