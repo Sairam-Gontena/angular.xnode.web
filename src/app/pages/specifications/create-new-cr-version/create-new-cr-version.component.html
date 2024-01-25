@@ -76,7 +76,7 @@
         <label>Due Date</label>
         <div class="p-inputgroup mt-1">
           <p-calendar (onSelect)="onDateSelect($event)" formControlName="duedate" [showClear]="showClearDueDate"
-            appendTo="body" [ngClass]="{
+            appendTo="body" [minDate]="minDate" [ngClass]="{
               'is-invalid': submitted && crFormControl['duedate'].errors
             }" [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"></p-calendar>
         </div>
@@ -119,8 +119,7 @@
   <ng-template pTemplate="footer">
     <p-button label="Cancel" size="small" [outlined]="true" [rounded]="true" class="mr-2"
       (click)="closePopup()"></p-button>
-    <p-button label="Save" size="small" [rounded]="true"
-      (click)="save($event)"></p-button>
+    <p-button label="Save" size="small" [rounded]="true" (click)="save($event)"></p-button>
   </ng-template>
 </p-dialog>
 <xnode-add-cr-version [latestVersion]="latestVersion" (closeNewVersionPopUp)="newVersionClosePopup($event)"
