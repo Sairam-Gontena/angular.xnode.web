@@ -6,7 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class BuilderService {
   constructor() {}
 
-  getFormGroup(comps: FormComponent[]): FormGroup {
+  getFormGroup(comps: FormComponent[], parentFormGroup:any = undefined): FormGroup {
     let formGroup: any = {};
 
     comps.forEach((comp) => {
@@ -17,6 +17,9 @@ export class BuilderService {
 
       formGroup[comp.key] = control;
     });
+    if(parentFormGroup){
+      parentFormGroup.child = formGroup;
+    }
     return new FormGroup(formGroup);
   }
 

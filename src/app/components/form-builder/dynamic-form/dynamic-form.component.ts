@@ -10,10 +10,13 @@ import { JsonFormBuilderService } from '../json-form-builder.service';
   styleUrls: ['./dynamic-form.component.scss'],
 })
 export class DynamicFormComponent implements OnInit {
-  @Input() inputControls: FormComponent[] = [];
-  formGroup!: FormGroup;
+  // @Input() inputControls: FormComponent[] = [];
+  @Input() formGroup: FormGroup|any = undefined;
+  @Input() parenFormGroup: FormGroup|any = undefined;
 
-  constructor(private service: BuilderService, private jsonFormBuilderService :JsonFormBuilderService) {
+  @Input() noSQLForm:any;
+
+  constructor(private service: BuilderService) {
     // this.inputControls = [
     //   {
     //     key: 'firstName',
@@ -46,7 +49,11 @@ export class DynamicFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup = this.service.getFormGroup(this.inputControls);
+    // this.formGroup = this.service.getFormGroup(this.inputControls);
+  }
 
+  getFormGroup(){
+    this.formGroup = this.service.getFormGroup(this.noSQLForm.controls, this.parenFormGroup)
+    return this.formGroup;
   }
 }

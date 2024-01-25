@@ -8,6 +8,8 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { Product } from 'src/models/product';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { JsonFormBuilderService } from '../json-form-builder.service';
+import { JSON_DOC } from '../json';
 
 @Component({
   selector: 'xnode-signup-dynamic-form',
@@ -18,17 +20,21 @@ export class SignupDynamicFormComponent implements OnInit {
   currentUser: User | undefined;
   inputControls: FormComponent[] = [];
   product: Product | undefined;
+  noSQLForm: any;
   constructor(
     private utilsService: UtilsService,
     private builderService: BuilderService,
     private auditUtil: AuditutilsService,
     private naviApiService: NaviApiService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private jsonFormBuilderService :JsonFormBuilderService
   ) {}
 
   ngOnInit(): void {
-    this.fetchOnboardingFlow();
-    this.product = this.storageService.getItem(StorageKeys.Product);
+    // this.fetchOnboardingFlow();
+    // this.product = this.storageService.getItem(StorageKeys.Product);
+    this.noSQLForm = this.jsonFormBuilderService.constructJSONForm('NO SQL Dynamic Form', JSON_DOC)
+
   }
 
   fetchOnboardingFlow() {}

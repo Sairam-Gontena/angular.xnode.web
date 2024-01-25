@@ -7,8 +7,8 @@ import { JSON_DOC } from './json';
 })
 export class JsonFormBuilderService {
   constructor() {
-    const formObj = this.constructJSONForm('', JSON_DOC);
-    console.log('formObj:', formObj);
+    // const formObj = this.constructJSONForm('', JSON_DOC);
+    // console.log('formObj:', formObj);
   }
 
   constructJSONForm(formName: string, doc: any) {
