@@ -175,6 +175,10 @@
   display: none;
 }
 
+:host ::ng-deep .menu-list-dropdown .p-dropdown-label {
+  display: none;
+}
+
 :host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
   display: none;
 }

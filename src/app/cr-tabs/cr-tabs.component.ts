@@ -113,6 +113,7 @@ export class CrTabsComponent {
     this.specificationUtils.getMeCrList.subscribe((event: any) => {
       if (event) {
         this.crData = event;
+        this.crActions = [];
         this.prepareDataToDisplay();
       }
     });
@@ -449,8 +450,10 @@ export class CrTabsComponent {
   getMeUserAvatar(report?: any) {
     let words: any;
     if (report) {
-      words = report?.firstName?.charAt(0).toUpperCase() + report?.lastName?.charAt(0).toUpperCase()
-    } else{
+      words =
+        report?.firstName?.charAt(0).toUpperCase() +
+        report?.lastName?.charAt(0).toUpperCase();
+    } else {
       words = null;
     }
     return words;
@@ -537,8 +540,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-        reviewer.name.toLowerCase()
-      )
+          reviewer.name.toLowerCase()
+        )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -872,12 +875,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                  ? 'SUBMITTED'
-                  : this.selectedStatus === 'REJECT'
-                    ? 'REJECTED'
-                    : this.selectedStatus === 'APPROVE'
-                      ? 'APPROVED'
-                      : '' + ' ' + 'successfully',
+                ? 'SUBMITTED'
+                : this.selectedStatus === 'REJECT'
+                ? 'REJECTED'
+                : this.selectedStatus === 'APPROVE'
+                ? 'APPROVED'
+                : '' + ' ' + 'successfully',
           });
           this.getMeCrList();
           this.crData.forEach((ele: any) => {
@@ -1012,6 +1015,7 @@ export class CrTabsComponent {
   }
 
   getMeActions(cr: any): void {
+    this.crActions = [];
     this.utilsService.loadSpinner(true);
     const body = {
       entityId: cr.id,

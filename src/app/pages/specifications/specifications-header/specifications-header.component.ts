@@ -145,9 +145,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   viewPublishedApp() {
-    let productUrl = localStorage.getItem('product_url');
-    if (productUrl) {
-      window.open(productUrl, '_blank');
+    if (this.product.product_url) {
+      window.open(this.product?.product_url, '_blank');
     } else {
       alert('URL not found');
     }
@@ -155,7 +154,6 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   openComments() {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    // this.isMeneOpened.emit(false);
     this.SpecificationUtils.openConversationPanel({
       openConversationPanel: true,
       parentTabIndex: 0,
