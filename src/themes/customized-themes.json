@@ -180,6 +180,13 @@
                 },
                 "sidebar":{
                     "sidebar_background_color":"#23222B"
+                },
+                "datepicker":{
+                    "datepicker_background_color":"#2e2d36",
+                    "datepicker_header_background_color":"#2e2d36",
+                    "datepicker_header_border_color":"#3f4655",
+                    "datepicker_disabked_background_color":"#3f4655",
+                    "datepicker_hightlight_background_color":"#A2A2A3"
                 }
             }
         }
