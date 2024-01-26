@@ -133,9 +133,9 @@
                     "accordion_content_text_color":"#EFEEEE"
                 },
                 "overlay_panel":{
-                    "overlay_background_color":"#202123",
+                    "overlay_background_color":"#242526",
                     "overlay_text_color":"#EFEEEE",
-                    "overlay_border_color":"#535354"
+                    "overlay_border_color":""
                 },
                 "data_table":{
                     "datatable_border_color":"#595959",
