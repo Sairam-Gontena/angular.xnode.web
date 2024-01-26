@@ -69,7 +69,6 @@ export class DiffCompComponent implements OnInit {
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
   ) {
-
   }
 
   ngOnInit(): void {

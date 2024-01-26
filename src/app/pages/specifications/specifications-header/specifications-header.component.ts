@@ -34,8 +34,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
-  @Input() reviewersList: any;
-  @Input() users: any = [];
+
 
   currentUser: any;
   metaDeta: any;
@@ -67,6 +66,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   suggestions: any;
   selectedItem: any;
   addShareForm: FormGroup;
+  // reviewersList: string | null;
 
   constructor(
     private utils: UtilsService,
@@ -75,6 +75,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private commentsService: CommentsService,
     private specService: SpecificationsService,
     private SpecificationUtils: SpecificationUtilsService,
+    private localStorageService: LocalStorageService,
     private fb: FormBuilder,
   ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
@@ -87,7 +88,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       files: [[]],
     });
     this.references = [];
-    console.log(this.users, '22222222222')
+
     this.addShareForm.value.reviewersLOne.forEach((item: any) => {
       this.references.push({
         entity_type: 'User',
@@ -104,6 +105,10 @@ export class SpecificationsHeaderComponent implements OnInit {
       if (this.onDiffValue.viewType)
         this.viewType = this.onDiffValue.viewType
     }
+    this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
+    this.userList.forEach((element: any) => {
+      element.name = element.first_name + ' ' + element.last_name;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
