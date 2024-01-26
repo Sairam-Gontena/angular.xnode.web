@@ -136,9 +136,9 @@
                       </div>
                     </div>
                     <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)"
-                      [options]="crActions" emptyFilterMessage="No actions available"  optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
+                      [options]="crActions" *ngIf="data.status != 'APPROVED'" emptyMessage="No actions available"  optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
                       <ng-template let-action pTemplate="item">
-                        <span class="flex" (click)="updateChagneRequestStatus(action.label)">
+                        <span class="flex abc" (click)="updateChagneRequestStatus(action.label)">
                           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
                             [ngStyle]="{width:'fit-content'}" [ngClass]="{
                             'bg-green-500': action.value === 'SUBMIT' || action.value === 'APPROVE'|| action.value === 'PUBLISH_APP',
