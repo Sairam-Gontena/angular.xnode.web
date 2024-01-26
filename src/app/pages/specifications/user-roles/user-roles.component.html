@@ -16,15 +16,18 @@
                 </p-overlayPanel>
                 <div class="flex justify-content-between">
                     <div>
-                        <b>{{subItem.title}}</b>
-                        <p>{{subItem.content}}</p>
+                        <div class="flex col-12 align-items-center justify-content-between p-0 m-0 " >
+                            <b>{{subItem.title}}</b>
+                            <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="subItem.showCommentIcon">
+                                <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
+                                <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
+                                    (click)="onClickViewComments(content)"></i>
+                                <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
+                            </div>
+                        </div>
+                        <p class="list-content" >{{subItem.content}}</p>
                     </div>
-                    <div class="flex justify-content-end align-items-start flex-wrap" *ngIf="subItem.showCommentIcon">
-                        <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="op.toggle($event)">
-                        <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
-                            (click)="onClickViewComments(content)"></i>
-                        <img src="../assets/add-task.svg" (click)="op1.toggle($event)" class="pointer ml-2">
-                    </div>
+                 
                 </div>
             </li>
         </ul>
