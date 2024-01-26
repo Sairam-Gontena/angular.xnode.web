@@ -5,7 +5,7 @@
                (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
           <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm back-to-graph p-button-text"
                [rounded]="true" *ngIf="graphRedirection" (click)="switchWindow()" class="ml-4"></p-button>
-          <div class="grid bpmn-div">
+          <div class="grid bpmn-div overflow-auto">
                <div class="col-12">
                     <div id="diagramRef" class="diagram-container">
                     </div>
