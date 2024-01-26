@@ -89,24 +89,31 @@
                                 </div>
                             </ng-template>
                             <ng-template let-invite pTemplate="item">
-                                <div class="flex align-items-center gap-2">
-                                    <img *ngIf="invite?.code === 'Invite'" src="../assets/lock.svg" alt="copy"
-                                        class="text-sm">
-                                    <img *ngIf="invite?.code === 'Anyone'" src="../assets/Link.svg" alt="copy"
-                                        class="text-sm">
-                                    <img *ngIf="invite?.code === 'Everyone'" src="../assets/publish.svg" alt="copy"
-                                        class="text-sm">
-                                    <div class="">
-                                        {{ invite.name }}
-                                        <i class="pi pi-check check-mark ml-4"
-                                            *ngIf="selectedInvite && selectedInvite.code === invite.code"></i>
+                                <div class="flex align-items-center">
+                                    <div>
+                                        <img *ngIf="invite?.code === 'Invite'" src="../assets/lock.svg" alt="copy"
+                                            class="text-sm">
+                                        <img *ngIf="invite?.code === 'Anyone'" src="../assets/Link.svg" alt="copy"
+                                            class="text-sm">
+                                        <img *ngIf="invite?.code === 'Everyone'" src="../assets/publish.svg" alt="copy"
+                                            class="text-sm">
                                     </div>
-                                    <!-- <div *ngIf="invite?.code === 'Invite'" class="col-12 text-xs font-normal">Only you
-                                        and people invited can access</div>
-                                    <div *ngIf="invite?.code === 'Anyone'" class="text-xs font-normal">People invited
-                                        and workspace members with link access</div>
-                                    <div *ngIf="invite?.code === 'Everyone'" class="text-xs font-normal">All workspace
-                                        members can search and access</div> -->
+                                    <div>
+                                        <div class="">
+                                            {{ invite.name }}
+                                            <i class="pi pi-check check-mark ml-4"
+                                                *ngIf="selectedInvite && selectedInvite.code === invite.code"></i>
+                                        </div>
+                                        <div *ngIf="invite?.code === 'Invite'" class="text-xs font-normal">Only
+                                            you
+                                            and people invited can access</div>
+                                        <div *ngIf="invite?.code === 'Anyone'" class="text-xs font-normal">People
+                                            invited
+                                            and workspace members with link access</div>
+                                        <div *ngIf="invite?.code === 'Everyone'" class="text-xs font-normal">All
+                                            workspace
+                                            members can search and access</div>
+                                    </div>
                                 </div>
                             </ng-template>
                         </p-dropdown>
