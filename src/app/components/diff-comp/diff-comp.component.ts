@@ -5,9 +5,11 @@ import {
   EventEmitter,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { OverlayPanel } from 'primeng/overlaypanel';
 import { isArray } from 'lodash';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecVersion } from 'src/models/spec-versions';
@@ -15,6 +17,7 @@ import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificati
 import { SECTION_VIEW_CONFIG } from 'src/app/pages/specifications/section-view-config';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { delay, of } from 'rxjs';
 
 @Component({
   selector: 'xnode-diff-comp',
@@ -41,12 +44,16 @@ export class DiffCompComponent implements OnInit {
     onDiff: boolean;
     diffObj?: any;
   }>();
+  selectedText:any;
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('selectionText') selectionText: OverlayPanel | any;
   iframeSrc: SafeResourceUrl = '';
   iframeSrc1: SafeResourceUrl = '';
   targetUrl: any;
   currentUser: any;
+  removeselectedContent:boolean=false;
   functionCalled: boolean = false;
+  openOverlayPanel: boolean = false;
   ComponentsToExpand = [
     'Open API Spec',
     'Data Model',
@@ -63,6 +70,7 @@ export class DiffCompComponent implements OnInit {
     'User Personas',
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
+  selectedWordIndices: any;
 
   constructor(
     private storageService: LocalStorageService,
@@ -188,5 +196,45 @@ export class DiffCompComponent implements OnInit {
 
   isString(item: any): boolean {
     return typeof item === 'string';
+  }
+
+  onOverlayHide() {
+    this.openOverlayPanel = false;
+    of([])
+      .pipe(delay(1000))
+      .subscribe((results) => {
+        if (this.selectionText.overlayVisible) {
+        } else {
+          this.checkOverlay();
+        }
+      });
+  }
+  checkOverlay() {
+    if (this.openOverlayPanel == false) {
+      this.deSelect();
+      this.selectedText = '';
+      this.selectedWordIndices = [];
+      this.removeselectedContent = true;
+    }
+  }
+
+  deSelect() {
+    if (window.getSelection) {
+      window.getSelection()?.empty();
+      window.getSelection()?.removeAllRanges();
+    }
+  }
+
+  async onselect(data:any){
+    if(data){
+      this.selectedText = data.content;
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await this.selectionText.toggle(data.event);
+    }
+  }
+
+  emptySelectedContent() {
+    this.selectedText = '';
+    this.selectedWordIndices = [];
   }
 }
