@@ -14,6 +14,7 @@ import { isArray } from 'lodash';
 declare const SwaggerUIBundle: any;
 import { AuthApiService } from 'src/app/api/auth.service';
 import { delay, of } from 'rxjs';
+import { SearchspecService } from 'src/app/api/searchspec.service';
 @Component({
   selector: 'xnode-diff-viewer',
   templateUrl: './diff-viewer.component.html',
@@ -60,6 +61,14 @@ export class DiffViewerComponent implements OnInit {
   selectedVersion?: SpecVersion;
   isSideMenuOpened: boolean = true;
 
+  filteredSpecData: any;
+  foundObjects: any[] = [];
+  wantedIndexes: any[] = [];
+  removableIndexes: any[] = [];
+  noResults: boolean = false;
+  specData: any;
+  specListCopy: any;
+
   constructor(
     private utils: UtilsService,
     private specApiService: SpecApiService,
@@ -69,7 +78,8 @@ export class DiffViewerComponent implements OnInit {
     private specificationUtils: SpecificationUtilsService,
     private authApiService: AuthApiService,
     private specUtils: SpecUtilsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private searchSpec: SearchspecService,
   ) {
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
       if (list && list.length) {
@@ -78,10 +88,15 @@ export class DiffViewerComponent implements OnInit {
           element.sNo = index + 1 + '.0';
         });
         this.specList = this.changeSpecListFormat(list);
+        this.specListCopy = this.specList;
         this.specListForMenu = list;
       }
     });
-
+    this.utils.getMeSpecItem.subscribe((event: any) => {
+      if (event) {
+        this.specList = this.changeSpecListFormat(event);
+      }
+    });
     this.specificationUtils.getMeVersions.subscribe(
       (versions: SpecVersion[]) => {
         if (versions && versions.length > 0) {
@@ -414,33 +429,39 @@ export class DiffViewerComponent implements OnInit {
   }
 
   searchText(keyword: any) {
-    //   if (keyword === '') {
-    //     this.clearSearchText();
-    //     this.noResults = false;
-    //     return;
-    //   } else {
-    //     this.keyword = keyword;
-    //     this.specData = [];
-    //     this.foundObjects = [];
-    //     this.filteredSpecData = [];
-    //     this.wantedIndexes = [];
-    //     this.removableIndexes = [];
-    //     this.specData = this.localStorageService.getItem(StorageKeys.SPEC_DATA);
-    //     this.searchSpec
-    //       .searchSpec(this.specData, keyword)
-    //       .subscribe((returnData: any) => {
-    //         if (returnData) {
-    //           this.specData = returnData.specData;
-    //           this.foundObjects = returnData.foundObjects;
-    //           this.noResults = returnData.noResults;
-    //           this.filteredSpecData = returnData.filteredSpecData;
-    //           this.wantedIndexes = returnData.wantedIndexes;
-    //           this.removableIndexes = returnData.removableIndexes;
-    //           this.utils.passSelectedSpecItem(this.specData);
-    //         }
-    //       });
-    //   }
+      if (keyword === '') {
+        this.clearSearchText();
+        this.noResults = false;
+        return;
+      } else {
+        this.keyword = keyword;
+        this.specData = [];
+        this.foundObjects = [];
+        this.filteredSpecData = [];
+        this.wantedIndexes = [];
+        this.removableIndexes = [];
+        this.specData = this.storageService.getItem(StorageKeys.SPEC_DATA);
+        this.searchSpec
+          .searchSpec(this.specData, keyword)
+          .subscribe((returnData: any) => {
+            if (returnData) {
+              this.specData = returnData.specData;
+              this.foundObjects = returnData.foundObjects;
+              this.noResults = returnData.noResults;
+              this.filteredSpecData = returnData.filteredSpecData;
+              this.wantedIndexes = returnData.wantedIndexes;
+              this.removableIndexes = returnData.removableIndexes;
+              this.utils.passSelectedSpecItem(this.specData);
+            }
+          });
+      }
   }
+
+  clearSearchText() {
+    this.keyword = '';
+    this.specList = this.specListCopy;
+  }
+
   findIndex(objectToFind: any): number {
     return this.versions.findIndex((obj: any) => obj.id === objectToFind.id);
   }

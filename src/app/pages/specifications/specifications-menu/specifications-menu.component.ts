@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { SearchspecService } from 'src/app/api/searchspec.service';
 
 @Component({
   selector: 'xnode-specifications-menu',
@@ -27,7 +28,8 @@ export class SpecificationsMenuComponent implements OnInit {
 
   constructor(
     private utils: UtilsService,
-    private SpecificationUtils: SpecificationUtilsService
+    private SpecificationUtils: SpecificationUtilsService,
+    private searchSpec:SearchspecService
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
@@ -103,6 +105,7 @@ export class SpecificationsMenuComponent implements OnInit {
 
   clearInput() {
     this.searchtext.emit('');
+    this.searchSpec.keyword = '';
     this.searchText = '';
     this.multiAccordion = false;
     this.activeIndex = [0];
