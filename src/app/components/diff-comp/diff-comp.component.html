@@ -65,16 +65,22 @@
       <div class="col-12 py-0 list-view" *ngSwitchCase="'str'" [id]="contentObj.id">
         <div class="col-12 py-0" *ngIf="contentObj?.parent_data_type">
           <b>
-            <xnode-diff-generator [keyword]="keyword" [oldContent]="contentObj.title" [type]="'title'" [newContent]="diffObj?.title"
+            <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)" [keyword]="keyword" [objId]="contentObj.id" [oldContent]="contentObj.title" [type]="'title'" [newContent]="diffObj?.title"
               [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </b>
           <p>
-            <xnode-diff-generator [oldContent]="contentObj.content" [type]="'content'" [newContent]="diffObj?.content"
+            <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)" [objId]="contentObj.id" [oldContent]="contentObj.content" [type]="'content'" [newContent]="diffObj?.content"
               [onDiff]="onDiff" [keyword]="keyword" [format]="format"></xnode-diff-generator>
           </p>
         </div>
+        <p-overlayPanel #selectionText *ngIf="selectedText?.length>0"  (onShow)="openOverlayPanel=true" (onHide)="onOverlayHide()">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" [selectedText]="selectedText"
+              [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
+              [parentId]="contentObj.id" [position]="'absolute'"
+              [selectedContent]="contentObj" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+      </p-overlayPanel>
         <div class="col-12 py-0" *ngIf="!contentObj?.parent_data_type">
-          <xnode-diff-generator [keyword]="keyword" [oldContent]="contentObj.content" [newContent]="diffObj?.content" [onDiff]="onDiff"
+          <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)" [objId]="contentObj.id" [keyword]="keyword" [oldContent]="contentObj.content" [newContent]="diffObj?.content" [onDiff]="onDiff"
             [format]="format"></xnode-diff-generator>
         </div>
       </div>
