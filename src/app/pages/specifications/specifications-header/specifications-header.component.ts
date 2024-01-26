@@ -13,6 +13,12 @@ import { SpecificationsService } from 'src/app/services/specifications.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 @Component({
   selector: 'xnode-specifications-header',
   templateUrl: './specifications-header.component.html',
@@ -27,6 +33,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
+
+
   currentUser: any;
   metaDeta: any;
   product: any;
@@ -44,13 +52,29 @@ export class SpecificationsHeaderComponent implements OnInit {
   ];
   specData: any;
   conversationPanelInfo: any;
+  invities = [
+    { name: 'Invite only', code: 'Invite' },
+    { name: 'Anyone with link at App’s Spec', code: 'Anyone' },
+    { name: 'Everyone at FinBuddy workspace', code: 'Everyone' }
+  ];
+  selectedInvite: any;
+  value: any;
+  filteredReveiwers: any = [];
+  references: any;
+  userList: any;
+  suggestions: any;
+  selectedItem: any;
+  addShareForm: FormGroup;
+  // reviewersList: string | null;
 
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
     private specService: SpecificationsService,
-    private SpecificationUtils: SpecificationUtilsService
+    private SpecificationUtils: SpecificationUtilsService,
+    private localStorageService: LocalStorageService,
+    private fb: FormBuilder,
   ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
@@ -61,6 +85,18 @@ export class SpecificationsHeaderComponent implements OnInit {
         );
       }
     });
+    this.addShareForm = this.fb.group({
+      reviewersLOne: [[], [Validators.required]],
+      files: [[]],
+    });
+    this.references = [];
+
+    this.addShareForm.value.reviewersLOne.forEach((item: any) => {
+      this.references.push({
+        entity_type: 'User',
+        entity_id: item.user_id,
+      });
+    });
   }
 
   ngOnInit(): void {
@@ -69,6 +105,10 @@ export class SpecificationsHeaderComponent implements OnInit {
       if (this.onDiffValue.onDiff) this.diffView = true;
       if (this.onDiffValue.viewType) this.viewType = this.onDiffValue.viewType;
     }
+    this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
+    this.userList.forEach((element: any) => {
+      element.name = element.first_name + ' ' + element.last_name;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -136,7 +176,31 @@ export class SpecificationsHeaderComponent implements OnInit {
   toggleSideMenu() {
     this.isMeneOpened.emit(true);
   }
+  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
+    let filtered: any[] = [];
+    let query = event.query;
+    const selectedReviewers = this.addShareForm.value.reviewersLOne.map(
+      (reviewer: any) => reviewer.name.toLowerCase()
+    );
+    filtered = this.userList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase())
+    );
+    this.filteredReveiwers = filtered;
+  }
+  search(event: AutoCompleteCompleteEvent) {
+    this.suggestions = [...Array(10).keys()].map(
+      (item) => event.query + '-' + item
+    );
+  }
 
+  reduceToInitials(fullName: string): string {
+    const nameParts = fullName.split(' ');
+    const initials = nameParts.map((part) => part.charAt(0));
+    const reducedName = initials.join('').toUpperCase();
+    return reducedName;
+  }
   askConfirmationOnClickGenerate() {
     if (this.product?.id) {
       this.generateSpec.emit();

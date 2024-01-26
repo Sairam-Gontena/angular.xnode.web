@@ -20,8 +20,7 @@
         </div>
 
         <div class="flex align-items-center">
-            <img src="../assets/feedback-list.svg" class="pr-3 pointer" alt="Logo" title="Comments"
-                (click)="openComments()">
+            <img src="../assets/feedback-list.svg" class="pointer" alt="Logo" title="Comments" (click)="openComments()">
             <!-- <img src="../assets/print.svg" class="pr-3 pointer" alt="Logo"> -->
             <p-button [disabled]="!enabledGeneratespec" (click)="op.toggle($event)" class="ellipsis-btn "
                 icon="pi pi-ellipsis-v"></p-button>
@@ -34,7 +33,91 @@
                     (keypress)="viewPublishedApp()" (click)="viewPublishedApp();op.hide()">View
                     Published App</div>
             </p-overlayPanel>
-            <p-button label="Share" size="small" [rounded]="true"></p-button>
+            <p-button label="Share" size="small" [rounded]="true" (click)="ShareOp.toggle($event)"></p-button>
+            <p-overlayPanel class="overlay-class" #ShareOp>
+                <div class="confirm-overlay p-2 cursor-pointer">
+                    <p-tabView>
+                        <p-tabPanel header="Share">
+                            <form [formGroup]="addShareForm">
+                                <div class="col-12 p-0 flex flex-wrap justify-content-center">
+                                    <div class="col-9">
+                                        <p-autoComplete placeholder="Add people, groups, or emails"
+                                            [suggestions]="filteredReveiwers" formControlName="reviewersLOne"
+                                            (completeMethod)="filteredReveiwer($event, 'L1')" field="name"
+                                            (click)="$event.stopPropagation()" [multiple]="true" styleClass="w-full">
+                                            <ng-template let-reviewer pTemplate="selectedItem">
+                                                <div class="flex align-items-center">
+                                                    <div
+                                                        class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                                                        {{ reduceToInitials(reviewer.name) }}
+                                                    </div>
+                                                    <span class="ml-2">{{ reviewer.name }}</span>
+                                                </div>
+                                            </ng-template>
+                                        </p-autoComplete>
+                                    </div>
+                                    <div class="col-3 mt-2">
+                                        <p-button label="Invite" size="small" [outlined]="true" [rounded]="true"
+                                            class="mr-2 mt-2"></p-button>
+                                    </div>
+                                </div>
+                            </form>
+                        </p-tabPanel>
+                        <!-- <p-tabPanel header="Publish">
+                            <p>
+                                Publish
+                            </p>
+                        </p-tabPanel> -->
+                    </p-tabView>
+                    <hr>
+                    <div class="col-12 flex justify-content-between p-0">
+                        <p-dropdown [(ngModel)]="selectedInvite" [options]="invities" optionLabel="name"
+                            placeholder="Select a Invite">
+                            <ng-template pTemplate="selectedItem">
+                                <div class="flex align-items-center gap-2" *ngIf="selectedInvite">
+                                    <ng-container *ngIf="selectedInvite.code === 'Invite'">
+                                        <img src="../assets/lock.svg" alt="link" class="text-sm" />
+                                    </ng-container>
+                                    <ng-container *ngIf="selectedInvite.code === 'Anyone'">
+                                        <img src="../assets/Link.svg" alt="link" class="text-sm" />
+                                    </ng-container>
+                                    <ng-container *ngIf="selectedInvite.code === 'Everyone'">
+                                        <img src="../assets/publish.svg" alt="link" class="text-sm" />
+                                    </ng-container>
+                                    <div>{{ selectedInvite.name }}</div>
+
+                                </div>
+                            </ng-template>
+                            <ng-template let-invite pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <img *ngIf="invite?.code === 'Invite'" src="../assets/lock.svg" alt="copy"
+                                        class="text-sm">
+                                    <img *ngIf="invite?.code === 'Anyone'" src="../assets/Link.svg" alt="copy"
+                                        class="text-sm">
+                                    <img *ngIf="invite?.code === 'Everyone'" src="../assets/publish.svg" alt="copy"
+                                        class="text-sm">
+                                    <div class="">
+                                        {{ invite.name }}
+                                        <i class="pi pi-check check-mark ml-4"
+                                            *ngIf="selectedInvite && selectedInvite.code === invite.code"></i>
+                                    </div>
+                                    <!-- <div *ngIf="invite?.code === 'Invite'" class="col-12 text-xs font-normal">Only you
+                                        and people invited can access</div>
+                                    <div *ngIf="invite?.code === 'Anyone'" class="text-xs font-normal">People invited
+                                        and workspace members with link access</div>
+                                    <div *ngIf="invite?.code === 'Everyone'" class="text-xs font-normal">All workspace
+                                        members can search and access</div> -->
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                        <div class="justify-content-center align-items-center mt-2 pointer">
+                            <img src="../assets/Link.svg" alt="copy" class="text-sm mt-2">
+                            <span class="font-normal text-xs ml-2">Copy Link</span>
+                        </div>
+
+                    </div>
+                </div>
+            </p-overlayPanel>
         </div>
     </div>
     <xnode-confirmation-popup-new *ngIf="showConfirmationPopup" [visible]="showConfirmationPopup"

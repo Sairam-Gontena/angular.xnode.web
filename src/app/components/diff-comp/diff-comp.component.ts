@@ -35,7 +35,7 @@ export class DiffCompComponent implements OnInit {
   @Input() specItemId: any;
   @Input() parentTitle: any;
   @Input() parentId?: string;
-  @Input() keyword:any;
+  @Input() keyword: any;
   @Output() expandComponent = new EventEmitter<{
     contentObj: any;
     onDiff: boolean;
@@ -69,7 +69,8 @@ export class DiffCompComponent implements OnInit {
     private specService: SpecificationsService,
     private specificationUtils: SpecificationUtilsService,
     private domSanitizer: DomSanitizer
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
