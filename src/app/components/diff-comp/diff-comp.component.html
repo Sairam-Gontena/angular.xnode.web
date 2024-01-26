@@ -37,7 +37,7 @@
     <div class="flex flex-row justify-content-between">
       <h3 class="m-0 pb-2 text-2xl font-bold" *ngIf="!contentObj?.parent_data_type">{{contentObj?.sNo + ' ' +
         contentObj?.title}}</h3>
-      <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title)"
+      <img src="./assets/spec-minimize.svg" alt="expand" *ngIf="ComponentsToExpand.includes(contentObj.title) && !contentObj?.parent_data_type"
         class="expnad-icon pointer"
         (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
     </div>
@@ -62,7 +62,7 @@
           [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItemId"
           [specItem]="contentObj"></xnode-add-task>
       </p-overlayPanel>
-      <div class="col-12 py-0" *ngSwitchCase="'str'" [id]="contentObj.id">
+      <div class="col-12 py-0 list-view" *ngSwitchCase="'str'" [id]="contentObj.id">
         <div class="col-12 py-0" *ngIf="contentObj?.parent_data_type">
           <b>
             <xnode-diff-generator [keyword]="keyword" [oldContent]="contentObj.title" [type]="'title'" [newContent]="diffObj?.title"
