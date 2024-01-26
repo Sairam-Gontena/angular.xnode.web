@@ -135,8 +135,8 @@
                         </div>
                       </div>
                     </div>
-                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)" 
-                      [options]="crActions" optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
+                    <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)"
+                      [options]="crActions" *ngIf="data.status != 'APPROVED'" emptyMessage="No actions available"  optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
                       <ng-template let-action pTemplate="item">
                         <span class="flex" (click)="updateChagneRequestStatus(action.label)">
                           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
