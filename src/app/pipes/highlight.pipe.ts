@@ -14,6 +14,8 @@ export class HighlightPipe implements PipeTransform {
         if(list?.length>0 && searchText?.length>0){
           const value = list?.replace(searchText, `<span class='yellow' style='background-color:yellow'>${searchText}</span>`);
           return value;
+        }else{
+          return list
         }
     }
 }
