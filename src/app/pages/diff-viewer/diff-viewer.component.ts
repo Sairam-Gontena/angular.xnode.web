@@ -382,7 +382,6 @@ export class DiffViewerComponent implements OnInit {
         this.utils.loadSpinner(true);
         if (resp?.status === 200) {
           this.usersList = resp.data;
-          console.log(this.usersList, '777777')
           this.storageService.saveItem(StorageKeys.USERLIST, resp.data);
           this.getVersions();
         } else {

@@ -69,7 +69,7 @@
                         </p-tabPanel> -->
                     </p-tabView>
                     <hr>
-                    <div class="col-12 flex justify-content-between">
+                    <div class="col-12 flex justify-content-between flex-wrap">
                         <p-dropdown [(ngModel)]="selectedInvite" [options]="invities" optionLabel="name"
                             placeholder="Select a Invite">
                             <ng-template pTemplate="selectedItem">
@@ -95,9 +95,9 @@
                                         class="text-sm">
                                     <img *ngIf="invite?.code === 'Everyone'" src="../assets/publish.svg" alt="copy"
                                         class="text-sm">
-                                    <div class="col-12">
+                                    <div class="">
                                         {{ invite.name }}
-                                        <i class="pi pi-check check-mark"
+                                        <i class="pi pi-check check-mark ml-4"
                                             *ngIf="selectedInvite && selectedInvite.code === invite.code"></i>
                                     </div>
                                     <!-- <div *ngIf="invite?.code === 'Invite'" class="col-12 text-xs font-normal">Only you
@@ -106,21 +106,12 @@
                                         and workspace members with link access</div>
                                     <div *ngIf="invite?.code === 'Everyone'" class="text-xs font-normal">All workspace
                                         members can search and access</div> -->
-
-                                    <!-- <div class="col-12 text-xs font-normal">
-                                        <ng-container *ngIf="invite?.code === 'Invite'">Only you and people invited can
-                                            access</ng-container>
-                                        <ng-container *ngIf="invite?.code === 'Anyone'">People invited and workspace
-                                            members with link access</ng-container>
-                                        <ng-container *ngIf="invite?.code === 'Everyone'">All workspace members can
-                                            search and access</ng-container>
-                                    </div> -->
                                 </div>
                             </ng-template>
                         </p-dropdown>
                         <div class="justify-content-center align-items-center mt-2 pointer">
                             <img src="../assets/Link.svg" alt="copy" class="text-sm mt-2">
-                            <span class="font-normal text-xs ml-2 mt-1">Copy Link</span>
+                            <span class="font-normal text-xs ml-2">Copy Link</span>
                         </div>
 
                     </div>
