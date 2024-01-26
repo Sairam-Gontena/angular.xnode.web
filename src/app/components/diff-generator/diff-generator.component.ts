@@ -21,6 +21,7 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
   @Input() newContent: string = '';
   @Input() oldContent: string = '';
   @Input() onDiff: boolean = false;
+  @Input() keyword:any;
   @Input() private filename: string = '';
   @Input() format?: DiffFormat;
   @Input() private style: DiffStyle = 'word';

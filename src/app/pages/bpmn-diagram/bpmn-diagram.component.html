@@ -5,7 +5,6 @@
                (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
           <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm back-to-graph p-button-text"
                [rounded]="true" *ngIf="graphRedirection" (click)="switchWindow()" class="ml-4"></p-button>
-
           <div class="grid bpmn-div">
                <div class="col-12">
                     <div id="diagramRef" class="diagram-container">
@@ -155,8 +154,9 @@
                               <div class="row"><strong class="p-0">{{taskHeader?.task}}</strong></div>
                          </div>
                     </div>
-                    <p-divider></p-divider>
+                    <!-- <p-divider></p-divider> -->
 
+                  <div class="h-full w-full" >
                     <p-tabView>
                          <!-- General Tab -->
                          <p-tabPanel header="General">
@@ -249,6 +249,7 @@
                          <!-- Comments Tab -->
                          <p-tabPanel header="Comments"> </p-tabPanel>
                     </p-tabView>
+                  </div>
                </p-sidebar>
                <div id="sc" class="scrollable-container w-full h-full overflow-auto">
                     <div class="col-12" id="graph">

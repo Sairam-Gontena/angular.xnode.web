@@ -329,3 +329,8 @@
     text-overflow: ellipsis;
     max-width: calc(100% - 30px);
 }
+
+:host ::ng-deep .btn-import .p-button.p-button-secondary{
+    background-color: #EFEEEE;
+    color: #4B4B4B;
+}

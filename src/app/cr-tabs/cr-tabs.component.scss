@@ -175,6 +175,10 @@
   display: none;
 }
 
+:host ::ng-deep .menu-list-dropdown .p-dropdown-label {
+  display: none;
+}
+
 :host ::ng-deep .priority-dropdown .p-dropdown-trigger .p-dropdown-trigger-icon {
   display: none;
 }
@@ -184,4 +188,22 @@
   background-size: contain;
   display: inline-block;
   width: 18px;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link {
+  background: transparent;
+  border: 0px;
+}
+
+:host ::ng-deep  .p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
+  background: transparent;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+  background: transparent;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-content {
+  border: 0px;
+  background: transparent;
 }

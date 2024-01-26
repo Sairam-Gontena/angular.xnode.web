@@ -226,12 +226,12 @@
         <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
       </div>
       <div class="w-full">
-        <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment" [action]="action"
+        <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedContent]="selectedComment" [selectedComment]="selectedComment" [action]="action"
           [users]="usersList" [parentEntity]="
                      'TASK'" [AssignedFrom]="From == 'Child' ? 'AssignedFromTaskAsChild' : 'AssignedFromTask'"
           [activeIndex]="1" [parentId]="parentId" [topParentId]="topParentId"
           [comment]="action === 'EDIT' ?  cmt.description  : ''" [commentType]="'reply'" [width]="'w-full'"
-          (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+          (closeOverlay)="showCommentInput=false;action=''"></xnode-add-comment-overlay-panel>
       </div>
     </div>
   </div>

@@ -1,19 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
+import { SearchspecService } from '../api/searchspec.service';
 @Pipe({
     name: 'highlight'
 })
 export class HighlightPipe implements PipeTransform {
 
-    constructor(private _sanitizer: DomSanitizer) { }
-
+    constructor( private searchSpec:SearchspecService) { }
     transform(list: any, searchText: string): any {
-
         if (!list) { return []; }
-        if (!searchText) { return list; }
-
-        const value = list.replace(searchText, `<span class='yellow' style='background-color:yellow'>${searchText}</span>`);
-        return value;
+        if (!searchText) {
+          if(this.searchSpec.keyword!=''){searchText=this.searchSpec.keyword}else{return list}
+        }
+        if(list?.length>0 && searchText?.length>0){
+          const value = list?.replace(searchText, `<span class='yellow' style='background-color:yellow'>${searchText}</span>`);
+          return value;
+        }
     }
 }

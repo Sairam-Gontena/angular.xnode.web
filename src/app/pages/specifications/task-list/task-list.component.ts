@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { UtilsService } from '../../../components/services/utils.service';
 import { CommentsService } from '../../../api/comments.service';
 import {
@@ -6,13 +6,15 @@ import {
   SafeHtml,
   SafeResourceUrl,
 } from '@angular/platform-browser';
-import { Comment } from 'src/models/comment';
 import { SECTION_VIEW_CONFIG } from '../section-view-config';
 import { MessagingService } from '../../../components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 declare const SwaggerUIBundle: any;
 import { Subscription, delay, of } from 'rxjs';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-task-list',
   templateUrl: './task-list.component.html',
@@ -64,7 +66,9 @@ export class TaskListComponent {
     private commentsService: CommentsService,
     private sanitizer: DomSanitizer,
     private specUtils: SpecUtilsService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private storageService: LocalStorageService,
+    private specService: SpecificationsService
   ) {
     this.utils.getMeLatestConversation.subscribe((event: any) => {
       if (event === 'REPLY') {
@@ -74,12 +78,17 @@ export class TaskListComponent {
     });
   }
 
+  ngOnChanges(change:SimpleChanges): void{
+    if (change['list']?.currentValue)
+      this.specListCopy = change['list'].currentValue;
+  }
+
   ngOnInit() {
     if (this.list.length) {
       this.list.forEach((element: any) => {
         element.repliesOpened = false;
       });
-      this.specListCopy = this.list;
+      this.specListCopy = [...this.list];
     }
     this.makeTrustedUrl();
     this.checkSwaggerItem();
@@ -98,28 +107,29 @@ export class TaskListComponent {
   filterListBySearch(users?: any) {
     if (this.searchIconKeyword.length > 0) {
       this.searchIconKeyword = this.searchIconKeyword.toLowerCase();
-      this.list = this.list.filter((item: any) =>
-        item.title.toLowerCase().includes(this.searchIconKeyword)
-      );
+      this.list = this.list.filter((item: any) =>{
+        const msg = item.title.toLowerCase();
+        return msg.includes(this.searchIconKeyword)
+      });
     } else {
       this.list = this.specListCopy;
     }
-    if (users) {
+    if (users?.length>0) {
       this.filterListByUsersFilter(users);
       return;
     }
   }
 
   filterListByUsersFilter(users: any) {
-    if (users.length > 0) {
+    if (users?.length > 0) {
       this.list = this.specListCopy;
       this.list = this.list.filter((item: any) =>
-        users.includes(item.assignee.userId)
+        users.includes(item?.assignee?.userId) ||  item.references?.some((ref: any) => users.includes(ref.entity_id))
       );
     } else {
       this.list = this.specListCopy;
     }
-    if (this.searchIconKeyword.length > 0) {
+    if (this.searchIconKeyword?.length > 0) {
       this.filterListBySearch();
       return;
     }
@@ -288,7 +298,14 @@ export class TaskListComponent {
             summary: 'Success',
             detail: 'Task deleted successfully',
           });
-          this.specUtils._tabToActive('TASK');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -468,7 +485,14 @@ export class TaskListComponent {
             summary: 'SUCCESS',
             detail: 'Task has been unlinked from CR successfully',
           });
-          this.specUtils._tabToActive('TASK');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -498,7 +522,14 @@ export class TaskListComponent {
             detail: 'File deleted successfully',
           });
           this.fileIndex = null;
-          this.specUtils._tabToActive('TASK');
+          const product: any = this.storageService.getItem(StorageKeys.Product);
+          const specVersion: any = this.storageService.getItem(
+            StorageKeys.SpecVersion
+          );
+          this.specService.getMeAllComments({
+            productId: product?.id,
+            versionId: specVersion?.id,
+          });
         } else {
           this.utils.loadSpinner(false);
           this.utils.loadToaster({

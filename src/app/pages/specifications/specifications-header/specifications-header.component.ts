@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -72,7 +71,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
-    private commentsService: CommentsService,
     private specService: SpecificationsService,
     private SpecificationUtils: SpecificationUtilsService,
     private localStorageService: LocalStorageService,
@@ -81,6 +79,10 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
+        this.product = this.storageService.getItem(StorageKeys.Product);
+        this.selectedVersion = this.storageService.getItem(
+          StorageKeys.SpecVersion
+        );
       }
     });
     this.addShareForm = this.fb.group({
@@ -100,10 +102,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.getStorageData();
     if (this.onDiffValue) {
-      if (this.onDiffValue.onDiff)
-        this.diffView = true;
-      if (this.onDiffValue.viewType)
-        this.viewType = this.onDiffValue.viewType
+      if (this.onDiffValue.onDiff) this.diffView = true;
+      if (this.onDiffValue.viewType) this.viewType = this.onDiffValue.viewType;
     }
     this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
     this.userList.forEach((element: any) => {
@@ -209,9 +209,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   viewPublishedApp() {
-    let productUrl = localStorage.getItem('product_url');
-    if (productUrl) {
-      window.open(productUrl, '_blank');
+    if (this.product.product_url) {
+      window.open(this.product?.product_url, '_blank');
     } else {
       alert('URL not found');
     }
@@ -219,7 +218,6 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   openComments() {
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    // this.isMeneOpened.emit(false);
     this.SpecificationUtils.openConversationPanel({
       openConversationPanel: true,
       parentTabIndex: 0,
@@ -229,30 +227,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       productId: this.product.id,
       versionId: version.id,
     });
-  }
-
-  getMeAllCommentsList() {
-    this.utils.loadSpinner(true);
-    const specVersion: any = this.storageService.getItem(
-      StorageKeys.SpecVersion
-    );
-    this.commentsService
-      .getCommentsByProductId({
-        productId: this.product?.id,
-        versionId: specVersion.id,
-      })
-      .then((response: any) => {
-        if (response.status === 200 && response.data) {
-          this.specUtils._openCommentsPanel(true);
-          if (response.data.length > 0)
-            this.specUtils._getMeUpdatedComments(response.data);
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        this.utils.loadSpinner(false);
-      });
   }
 
   generate() {
@@ -275,13 +249,17 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.product = product;
       this.specService.getVersions(this.product.id, (data) => {
         this.versions = data;
-        const uniqueStatuses = [...new Set(data.map((obj: any) => obj.specStatus))];
+        const uniqueStatuses = [
+          ...new Set(data.map((obj: any) => obj.specStatus)),
+        ];
         const priorityOrder = uniqueStatuses.sort((a, b) => {
           if (a === 'LIVE') return -1;
           if (b === 'LIVE') return 1;
           return 0;
         });
-        const firstObjectWithPriority = data.find((obj: any) => obj.specStatus === priorityOrder[0]);
+        const firstObjectWithPriority = data.find(
+          (obj: any) => obj.specStatus === priorityOrder[0]
+        );
         this.selectedVersion = firstObjectWithPriority;
         this.specService.getMeSpecInfo(
           {
@@ -317,7 +295,10 @@ export class SpecificationsHeaderComponent implements OnInit {
             }
           }
         );
-        this.storageService.saveItem(StorageKeys.SpecVersion, firstObjectWithPriority);
+        this.storageService.saveItem(
+          StorageKeys.SpecVersion,
+          firstObjectWithPriority
+        );
       });
     } else {
       this.showGenerateSpecPopup(product);
@@ -366,8 +347,6 @@ export class SpecificationsHeaderComponent implements OnInit {
       this.conversationPanelInfo?.parentTabIndex === 0 &&
       this.conversationPanelInfo?.childTabIndex === 0
     ) {
-      console.log('>>>>>>');
-
       this.specService.getMeAllComments({
         productId: this.product?.id,
         versionId: event.value.value,
