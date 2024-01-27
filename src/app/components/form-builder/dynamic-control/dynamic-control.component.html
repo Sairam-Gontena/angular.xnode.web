@@ -1,6 +1,6 @@
-<!-- <div [formGroup]="formGroup"> -->
+<div [formGroup]="parentFormGroup">
   <label [attr.for]="control.key">{{control.label}}</label>
-  <xnode-text-box [control]="control"></xnode-text-box>
+  <xnode-text-box [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
 <!--
   <div [ngSwitch]="control.controlType">
 
@@ -12,4 +12,4 @@
   </div> -->
 
   <!-- <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div> -->
-<!-- </div> -->
+</div>

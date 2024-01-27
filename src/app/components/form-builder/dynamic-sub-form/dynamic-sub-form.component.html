@@ -1,0 +1,32 @@
+<div [formGroup]="parenFormGroup">
+  <h1 *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</h1>
+
+  <div *ngIf="!noSQLForm.isArray; else displayformArray" >
+      <div *ngFor="let control of noSQLForm.controls" class="form-row">
+        <xnode-dynamic-control [control]="control" [parentFormGroup]="form"></xnode-dynamic-control>
+      </div>
+
+      <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+      </div>
+  </div>
+
+  <ng-template #displayformArray>
+    <ng-container [formArrayName]="noSQLForm.formName">
+    <ng-container *ngFor="let formC of formList.controls; let i = index">
+      <div [formGroup]="getFormC(i)">
+        <!-- <div [formGroupName]="i"> -->
+          <div *ngFor="let control of noSQLForm.controls" class="form-row">
+            <xnode-dynamic-control [control]="control" [parentFormGroup]="getFormC(i)"></xnode-dynamic-control>
+          </div>
+        <!-- </div> -->
+      </div>
+     <button (click)="remove(i)">Remove</button>
+    </ng-container>
+  </ng-container>
+    <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
+      <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+    </div>
+  <button (click)="add()">Add</button>
+  </ng-template>
+</div>

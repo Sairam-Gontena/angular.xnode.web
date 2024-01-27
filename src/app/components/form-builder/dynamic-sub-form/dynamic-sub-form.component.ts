@@ -10,21 +10,40 @@ export class DynamicSubFormComponent implements OnInit{
   @Input() parenFormGroup!: FormGroup;
   @Input() noSQLForm:any;
   formList: FormArray;
+  form :any = this.fb.group({});
 
   constructor(private service: BuilderService, private fb:FormBuilder) {
     this.formList = this.fb.array([])
   }
 
   ngOnInit(): void {
+    const formGroup = this.service.getFormGroup(this.noSQLForm.controls)
     if(this.noSQLForm.isArray) {
-      this.formList = this.fb.array([])
       this.formList.push(formGroup)
       this.form[this.noSQLForm.formName] = this.formList;
-    } else {
-        this.form = formGroup;
+    } else{
+      this.form = formGroup;
     }
+
     if(this.parenFormGroup){
-        this.parenFormGroup[this.noSQLForm.formName]=this.form;
+        this.parenFormGroup.controls[this.noSQLForm.formName]=this.form;
     }
+  }
+
+  add() {
+    const formGroup = this.service.getFormGroup(this.noSQLForm.controls)
+    if(this.noSQLForm.isArray) {
+      this.formList.push(formGroup)
+    }
+  }
+
+  remove(i:number) {
+    if(this.noSQLForm.isArray) {
+      this.formList.removeAt(i)
+    }
+  }
+
+  getFormC(i:number) {
+      return this.formList.at(i) as FormGroup;
   }
 }

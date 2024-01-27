@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
+import { DynamicSubFormComponent  } from './dynamic-sub-form/dynamic-sub-form.component';
 import { BuilderService } from './builder.service';
 import { TextBoxComponent } from './text-box/text-box.component';
 import { EmailInputComponent } from './email-input/email-input.component';
@@ -16,6 +17,7 @@ import { NumberInputComponent } from './number-input/number-input.component';
   providers: [BuilderService],
   declarations: [
     DynamicFormComponent,
+    DynamicSubFormComponent,
     TextBoxComponent,
     EmailInputComponent,
     DynamicControlComponent,
