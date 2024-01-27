@@ -1,14 +1,15 @@
-<div [formGroup]="formGroup">
+<!-- <div [formGroup]="formGroup"> -->
   <label [attr.for]="control.key">{{control.label}}</label>
-
+  <xnode-text-box [control]="control"></xnode-text-box>
+<!--
   <div [ngSwitch]="control.controlType">
 
-    <xnode-text-box *ngSwitchCase="'textbox'" [control]="control"></xnode-text-box>
-    <xnode-email-input *ngSwitchCase="'email'" [control]="control"></xnode-email-input>
-    <xnode-number-input *ngSwitchCase="'number'" [control]="control"></xnode-number-input>
+    <xnode-text-box *ngSwitchCase="'textbox'" [control]="control"></xnode-text-box> -->
+    <!-- <xnode-email-input *ngSwitchCase="'email'" [control]="control" [fControl]="fControl"></xnode-email-input>
+    <xnode-number-input *ngSwitchCase="'number'" [control]="control" [fControl]="fControl"></xnode-number-input> -->
 
+<!--
+  </div> -->
 
-  </div>
-
-  <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div>
-</div>
+  <!-- <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div> -->
+<!-- </div> -->

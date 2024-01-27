@@ -10,11 +10,7 @@ export const JSON_DOC: any = {
       'Understanding of biology concepts, class participation, and emotional regulation',
     StandardToImprove:
       'Focus on areas LS2.B, LS4.C, LS1.C, and emotional self-awareness',
-    TryThis: [
-      'Regular study sessions on biology topics',
-      'Participation in class discussions to improve engagement',
-      'Mindfulness exercises to manage emotional responses in class',
-    ],
+
     ActionPlan: {
       Steps: [
         {

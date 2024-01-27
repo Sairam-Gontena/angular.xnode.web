@@ -34,7 +34,7 @@ export class SignupDynamicFormComponent implements OnInit {
     // this.fetchOnboardingFlow();
     // this.product = this.storageService.getItem(StorageKeys.Product);
     this.noSQLForm = this.jsonFormBuilderService.constructJSONForm('NO SQL Dynamic Form', JSON_DOC)
-
+console.log('this.noSQLForm:',this.noSQLForm)
   }
 
   fetchOnboardingFlow() {}

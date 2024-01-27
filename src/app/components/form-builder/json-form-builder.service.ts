@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormComponent, JSONForm } from './form-component';
-import { JSON_DOC } from './json';
+
 
 @Injectable({
   providedIn: 'root',
@@ -27,11 +27,10 @@ export class JsonFormBuilderService {
       const keys = Object.keys(doc);
       let orderCnt = 0;
       for (const key of keys) {
-        console.log('key', key);
         const val = doc[key];
-        console.log('val:', typeof val, Array.isArray(val), val);
+        // console.log('val:', typeof val, Array.isArray(val), val);
         if (Array.isArray(val)) {
-          console.log('val[0]', val[0]);
+          // console.log('val[0]', val[0]);
           const subForm = this.constructJSONForm(key, val[0]);
           subForm.isArray = true;
           formJson.subForms.push(subForm);

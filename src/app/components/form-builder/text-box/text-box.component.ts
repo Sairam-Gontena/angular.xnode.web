@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormComponent } from '../form-component';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'xnode-text-box',
@@ -8,4 +9,6 @@ import { FormComponent } from '../form-component';
 })
 export class TextBoxComponent {
   @Input() control!: FormComponent;
+  // @Input() fControl: AbstractControl | undefined;
+
 }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormComponent } from '../form-component';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'xnode-number-input',
@@ -9,4 +10,6 @@ import { FormComponent } from '../form-component';
 
 export class NumberInputComponent {
   @Input() control!: FormComponent;
+  @Input() fControl: AbstractControl | undefined;
+
 }

@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BuilderService } from '../builder.service';
-import { FormComponent } from '../form-component';
-import { FormGroup } from '@angular/forms';
-import { JsonFormBuilderService } from '../json-form-builder.service';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'xnode-dynamic-form',
@@ -10,50 +8,63 @@ import { JsonFormBuilderService } from '../json-form-builder.service';
   styleUrls: ['./dynamic-form.component.scss'],
 })
 export class DynamicFormComponent implements OnInit {
-  // @Input() inputControls: FormComponent[] = [];
-  @Input() formGroup: FormGroup|any = undefined;
-  @Input() parenFormGroup: FormGroup|any = undefined;
 
+  @Input() form:any = this.fb.group({});
+  @Input() parenFormGroup: FormGroup|any = undefined;
   @Input() noSQLForm:any;
 
-  constructor(private service: BuilderService) {
-    // this.inputControls = [
-    //   {
-    //     key: 'firstName',
-    //     label: 'First name',
-    //     value: 'Bombasto',
-    //     required: true,
-    //     order: 1,
-    //     type: 'string',
-    //     controlType: 'textbox',
-    //   },
-    //   {
-    //     key: 'lastName',
-    //     label: 'Last name',
-    //     value: '',
-    //     required: true,
-    //     order: 2,
-    //     type: 'string',
-    //     controlType: 'textbox',
-    //   },
-    //   {
-    //     key: 'email',
-    //     label: 'Email',
-    //     value: '',
-    //     required: true,
-    //     order: 3,
-    //     type: 'string',
-    //     controlType: 'email',
-    //   },
-    // ];
+  formList: FormArray;
+
+  constructor(private service: BuilderService, private fb:FormBuilder) {
+    this.formList = this.fb.array([])
   }
 
   ngOnInit() {
-    // this.formGroup = this.service.getFormGroup(this.inputControls);
+    const formGroup = this.service.getFormGroup(this.noSQLForm.controls)
+    if(this.noSQLForm.isArray) {
+      this.formList = this.fb.array([])
+      this.formList.push(formGroup)
+      this.form[this.noSQLForm.formName] = this.formList;
+    } else {
+        this.form = formGroup;
+    }
+    if(this.parenFormGroup){
+        this.parenFormGroup[this.noSQLForm.formName]=this.form;
+    }
   }
 
-  getFormGroup(){
-    this.formGroup = this.service.getFormGroup(this.noSQLForm.controls, this.parenFormGroup)
-    return this.formGroup;
+  print(f:any){
+    console.log('form final:',f)
   }
+
+  add() {
+    const formGroup = this.service.getFormGroup(this.noSQLForm.controls)
+    if(this.noSQLForm.isArray) {
+      this.formList.push(formGroup)
+    }
+  }
+
+  remove(i:number) {
+    if(this.noSQLForm.isArray) {
+      this.formList.removeAt(i)
+    }
+  }
+
+  getFormC(i:number) {
+    // console.log('this.children.at(i):',i,this.children.at(i))
+      return this.formList.at(i) as FormGroup;
+  }
+
+  get children() {
+    return this.form.controls["children"] as FormArray;
+  }
+
+  getFormControl(){
+
+  }
+
+  // getFormGroup(){
+  //   this.formGroup = this.service.getFormGroup(this.noSQLForm.controls,this.noSQLForm.isArray, this.parenFormGroup)
+  //   return this.formGroup;
+  // }
 }

@@ -19,22 +19,44 @@
 
 <div>
   <h1 *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</h1>
-  <form *ngIf="noSQLForm.controls" [formGroup]="getFormGroup()">
 
-    <div *ngFor="let control of noSQLForm.controls " class="form-row">
-      <xnode-dynamic-control [control]="control" [formGroup]="formGroup"></xnode-dynamic-control>
-    </div>
+  <div>
+    <form *ngIf="noSQLForm.controls" [formGroup]="form">
+      <div *ngFor="let control of noSQLForm.controls " class="form-row">
+        <xnode-dynamic-control [control]="control" [formGroup]="form"></xnode-dynamic-control>
+      </div>
 
-    <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
-      <xnode-dynamic-form [parenFormGroup]="formGroup" [noSQLForm]="subForm"></xnode-dynamic-form>
-    </div>
+      <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+      </div>
+    </form>
+  </div>
 
-    <div class="form-row" *ngIf="parenFormGroup === undefined">
-      <button type="submit" [disabled]="true">Save</button>
-    </div>
-  </form>
+  <!-- <ng-template #displayformArray>
+    <form [formGroup]="form">
+        <ng-container  [formArrayName]="noSQLForm.formName" *ngFor="let formC of formList.controls; let i = index"> -->
+          <!-- <div [formGroup]="getFormC(i)"> -->
+            <!-- <div [formGroupName]="i">
+              <div *ngFor="let control of noSQLForm.controls" class="form-row">
+                <xnode-dynamic-control [control]="control"></xnode-dynamic-control>
+              </div>
+            </div> -->
+          <!-- </div> -->
+          <!-- <button (click)="remove(i)">Remove</button>
+        </ng-container>
+        <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
+          <xnode-dynamic-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-form>
+        </div>
+      <button (click)="add()">Add</button>
+    </form>
+  </ng-template> -->
 
-  <div  class="form-row" *ngIf="parenFormGroup === undefined">
+
+  <div class="form-row" *ngIf="parenFormGroup === undefined">
+    {{print(form)}}
+    <button type="submit" [disabled]="true">Save</button>
+  </div>
+  <div class="form-row" *ngIf="parenFormGroup === undefined">
     <strong>Saved the following values</strong><br>
   </div>
 </div>
