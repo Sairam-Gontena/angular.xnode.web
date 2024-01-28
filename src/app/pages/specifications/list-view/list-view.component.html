@@ -9,9 +9,8 @@
                 [innerHTML]="word | highlight: searchTerm" [attr.id]="'word'+word+'^^'+subItemindex+i"
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+subItemindex+i) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'title');saveSecInLocal()">
-                <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true"
-                  (onHide)="showCommentIcon=false;onOverlayHide()">
-                  <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" *ngIf="selectedText.length>0"
+                <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
+                  <xnode-add-comment-overlay-panel  [width]="'w-30rem'"[users]="users" *ngIf="selectedText.length>0"
                     [parentTitle]="parentTitle" [position]="'absolute'" [selectedContent]="subItem"
                     [selectedText]="selectedText" [parentEntity]="'SPEC'"
                     (closeOverlay)="selectionText.toggle(false);emptySelectedContent()" [specItem]="specItem"
@@ -26,10 +25,8 @@
                 [innerHTML]="word | highlight: searchTerm"
                 [ngClass]="{'content-selection-bg': selectedWordIndices.includes('word'+word+'^^'+i+j) && selectedText.length>0}"
                 (mouseup)="contentSelected($event,'content');saveSecInLocal();openOverlayPanel=true">
-                <p-overlayPanel #selectionContent (onShow)="openOverlayPanel=true"
-                  (onHide)="showCommentIcon=false;onOverlayHide()">
-                  <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
-                    *ngIf="selectedText.length>0 && (selectedIndex!=undefined && (selectedIndex>=0))"
+                <p-overlayPanel #selectionContent (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
+                  <xnode-add-comment-overlay-panel  [width]="'w-30rem'" [users]="users" *ngIf="selectedText.length>0 && (selectedIndex!=undefined && (selectedIndex>=0))"
                     [position]="'absolute'" [selectedText]="selectedText" [parentEntity]="'SPEC'"
                     [parentId]="specItem.id" [parentTitle]="parentTitle" [selectedContent]="content[selectedIndex]"
                     placeHolder="Add a Comment" [specItem]="specItem"
@@ -40,8 +37,7 @@
           </div>
         </div>
         <div class="col-1 p-0 flex  align-items-start justify-content-center">
-          <p-overlayPanel #op (onHide)="showCommentIcon=false;commentOverlayPanelOpened=false;onOverlayHide()"
-            (onShow)="openOverlayPanel=true">
+          <p-overlayPanel #op (onHide)="showCommentIcon=false;commentOverlayPanelOpened=false;onOverlayHide()" (onShow)="openOverlayPanel=true" >
             <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" (closeOverlay)="op.toggle(false)"
               [position]="'absolute'" [parentTitle]="parentTitle" [selectedContent]="subItem"
               placeHolder="Add a Comment" [parentEntity]="'SPEC'" [commentType]="'comment'" [specItem]="specItem"
@@ -56,12 +52,10 @@
           <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
             (click)="op1.toggle($event);commentOverlayPanelOpened=true;saveSecInLocal();openOverlayPanel=true"
             *ngIf="(showCommentIcon || commentOverlayPanelOpened) && selectedIndex == i ">
-          <p-overlayPanel #op1 appendTo="body"
-            (onHide)="showCommentIcon=false;commentOverlayPanelOpened=false;onOverlayHide()"
-            (onShow)="openOverlayPanel=true">
+          <p-overlayPanel #op1 appendTo="body" (onHide)="showCommentIcon=false;commentOverlayPanelOpened=false;onOverlayHide()" (onShow)="openOverlayPanel=true">
             <xnode-add-task (closeOverlay)="op1.toggle(false)" [selectedContent]="subItem" [parentTitle]="parentTitle"
               [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
       </div>

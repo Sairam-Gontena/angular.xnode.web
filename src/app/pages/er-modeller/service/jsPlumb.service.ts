@@ -27,13 +27,22 @@ export class JsPlumbService {
     private bsModalService: BsModalService
   ) { }
 
-  public init(): void {
-
-    this._instance = jsPlumb.getInstance({
-      Container: 'canvas',
-      Anchor: ['RightMiddle', 'LeftMiddle'],
-      ConnectionsDetachable: false,
-    });
+  public init(obj?:any): void {
+    if(obj?.inDiffView){
+      obj.ids.forEach((item:any)=>{
+        this._instance = jsPlumb.getInstance({
+          Container: 'canvas-2',
+          Anchor: ['RightMiddle', 'LeftMiddle'],
+          ConnectionsDetachable: false,
+        });
+      })
+    }else{
+      this._instance = jsPlumb.getInstance({
+        Container: 'canvas',
+        Anchor: ['RightMiddle', 'LeftMiddle'],
+        ConnectionsDetachable: false,
+      });
+    }
   }
 
   public initModel(model: Model): void {
@@ -85,7 +94,7 @@ export class JsPlumbService {
 
     // check connection exists as destroy-model source
     var connections_to_delete = this._instance.getConnections({
-      source: model.getElementH2Id(),
+      source:model.getElementH2Id(),
     });
 
     for (let i = 0; i < connections_to_delete.length; i++) {

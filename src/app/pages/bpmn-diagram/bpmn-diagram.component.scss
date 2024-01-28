@@ -1,7 +1,7 @@
 .diagram-container {
      height: 100%;
      width: 100%;
-     background-color:#23222B;
+     background-color:#fff;
      border-width: 0;
 }
 
@@ -73,28 +73,6 @@
      overflow-y: auto;
 }
 
-:host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
-:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
-:host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link,
-:host ::ng-deep.p-accordion .p-accordion-content {
-     background-color: #24232C;
-     color: #ffffff;
-     border: 0;
-}
-
-:host ::ng-deep .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus {
-     box-shadow: none;
-}
-
-:host ::ng-deep.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
-:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link,
-:host ::ng-deep.p-accordion .p-accordion-header:not(.p-highlight):not(.p-disabled):hover .p-accordion-header-link {
-     font-weight: normal;
-     font-size: 12px;
-     padding: 10px;
-     border-bottom: 1px solid #39383F;
-}
-
 
 //Publish header
 .publish-header {
@@ -135,7 +113,6 @@ img.highlighted {
 }
 
 :host ::ng-deep .p-tabview-panels {
-     height: calc(100vh - 258px);
      overflow: auto;
 }
 
@@ -144,3 +121,32 @@ img.highlighted {
      margin: 10px;
      height: calc(100vh - 190px);
 }
+
+:host ::ng-deep .p-panel.p-panel-toggleable .p-panel-header{
+     background-color: transparent;
+     border: 0px;
+}
+:host ::ng-deep .p-panel .p-panel-content{
+     background-color: transparent;
+     border: 0px;
+}
+:host ::ng-deep .p-tabview .p-tabview-panels{
+     background-color: transparent;
+     border: 0px;
+     // height: 100%;
+}
+:host ::ng-deep .p-sidebar .p-sidebar-footer{
+     background-color: transparent;
+     border: 0px;
+     padding: 0px;
+}
+:host ::ng-deep .p-sidebar .p-sidebar-content{
+     background-color: transparent;
+     border: 0px;
+     padding: 0px;
+}
+
+:host ::ng-deep .djs-context-pad .entry{
+     background-color: var(--breadcrumbs-item-color);
+}
+

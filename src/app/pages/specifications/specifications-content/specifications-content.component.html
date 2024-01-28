@@ -8,12 +8,12 @@
                     [specExpanded]="specExpanded"></xnode-expand-specification>
             </div>
             <div *ngIf="!specExpanded && noResults==false">
-                <div class="flex justify-content-center  mb-3" *ngFor="let item of specItemList;let i = index;">
+                <div class="flex justify-content-center  mb-3" *ngFor="let item of newList;let i = index;">
                     <div class="w-8">
                         <div class="intro-grid " [id]="item.title">
                             <div class="text-4xl font-semibold flex align-items-center">{{i+1+".0" + ' ' + item?.title}}
                                 <span class="version-badge">
-                                    Version: {{item.version?.version}}
+                                    Version: {{item.version.version}}
                                 </span>
                             </div>
                             <div class="flex align-items-center spec-status">
@@ -42,8 +42,9 @@
                             <xnode-spec-sections-layout [expandView]="expandView" [selectedSpecItem]="selectedSpecItem"
                                 [content]="item.content" [searchTerm]="searchTerm" [sectionIndex]="i" [specItem]="item"
                                 (onClickSeeMore)="_onClickSeeMore($event)" [usersList]="usersList"
-                                [reveiwerList]="reveiwerList" (onClickSeeLess)="_onClickSeeLess($event)"
+                                (onClickSeeLess)="_onClickSeeLess($event)"
                                 (childLoaded)="onChildLoaded($event)"
+                                [reveiwerList]="reveiwerList"
                                 (showAddCommnetOverlay)="_showAddCommnetOverlay($event)"
                                 (expandComponent)="_expandComponent($event)" [readOnly]="false"
                                 [isOpenSmallCommentBox]="isOpenSmallCommentBox" [specItemList]="specItemList"
@@ -65,8 +66,8 @@
         </div>
         <div *ngIf="isCommnetsPanelOpened"
             [ngClass]="{'comments-close':!isCommnetsPanelOpened,'comments-open':isCommnetsPanelOpened}">
-            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData" [usersList]="usersList"
-                [reveiwerList]="reveiwerList"></xnode-comments-cr-panel>
+            <xnode-comments-cr-panel [swaggerData]="swaggerData" [specData]="specData" 
+             ></xnode-comments-cr-panel>
         </div>
     </div>
 </div>

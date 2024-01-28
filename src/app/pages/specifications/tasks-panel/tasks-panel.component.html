@@ -13,14 +13,20 @@
             <div class="flex justify-content-end">
                 <div class="flex flex-row justify-content-end align-items-center search-grid">
                     <i (click)="changeSearchIconColor('text')" class="pi pi-search pointer pt-2 w-auto"
-                        [ngClass]="filter=='text'?'p-button-link':'text-white'"></i>
+                        [ngClass]="filter=='text'?'text-blue-400':'text-white'"></i>
 
                     <i class="pi pi-user pointer relative z-1 opacity-100 pt-1 pointer-events-none search-dropdown-user"
-                        [ngClass]="filter=='users'?'p-button-link':'text-white'" style="font-size: 1.25rem"></i>
+                        [ngClass]="filter=='users'?'text-blue-400':'text-white'" style="font-size: 1.25rem"></i>
 
-                    <p-multiSelect class="comment-panel-user-filter" optionValue="user_id" optionLabel="name"
+                    <p-multiSelect class="comment-panel-user-filter" optionValue="user_id"
                         (click)="changeSearchIconColor('users')" [(ngModel)]="selectedUsers" [options]="usersList"
-                        (onChange)="userFilter()" [showClear]="true" placeholder=""></p-multiSelect>
+                        (onChange)="userFilter()" [showClear]="true">
+                        <ng-template let-item pTemplate="item">
+                          <div class="item-container" >
+                              {{ item.first_name }} {{item.last_name}}
+                          </div>
+                      </ng-template>
+                      </p-multiSelect>
                 </div>
             </div>
         </div>

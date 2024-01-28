@@ -15,6 +15,7 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { NEWLIST } from './mock';
 import { delay, of } from 'rxjs';
 declare const SwaggerUIBundle: any;
 
@@ -59,6 +60,7 @@ export class SpecificationsContentComponent implements OnInit {
   isDockedNaviOpended: boolean = false;
   expandView: any = null;
   swaggerData: any;
+  newList = NEWLIST;
 
   constructor(
     private utils: UtilsService,
@@ -188,7 +190,7 @@ export class SpecificationsContentComponent implements OnInit {
   _onClickSeeMore(event: any): void {
     this.selectedContent = event.content;
     this.showMoreContent = !this.showMoreContent;
-    this.specItemList.forEach((obj: any) => {
+    this.newList.forEach((obj: any) => {
       if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
           if (conObj.id === event.content.id) conObj.collapsed = true;
@@ -200,7 +202,7 @@ export class SpecificationsContentComponent implements OnInit {
   _onClickSeeLess(event: any): void {
     this.selectedContent = event.content;
     this.showMoreContent = false;
-    this.specItemList.forEach((obj: any) => {
+    this.newList.forEach((obj: any) => {
       if (obj.id === event.item.id) {
         obj.content.forEach((conObj: any) => {
           if (conObj.id === event.content.id) conObj.collapsed = false;

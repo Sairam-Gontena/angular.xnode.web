@@ -8,7 +8,10 @@ export const SECTION_VIEW_CONFIG = {
   ],
   listViewSections: [
     'Error Handling',
+    'User Roles',
+    'Regular User',
     'User Interface Design',
+    'Data Management Persistence',
     'Product Perspective',
     'User Classes Characteristics',
     'Feature Descriptions',
@@ -35,10 +38,6 @@ export const SECTION_VIEW_CONFIG = {
     'Hardware Interfaces',
     'Software Interfaces',
   ],
-  userRoleSection: [
-    'User Roles'
-  ],
-  userPersonaSection: [
-    'User Personas'
-  ]
+  userRoleSection: ['User Roles'],
+  userPersonaSection: ['User Personas'],
 };

@@ -8,7 +8,9 @@ import { DatePipe } from '@angular/common';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
-import { AuthApiService } from 'src/app/api/auth.service';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+
 @Component({
   selector: 'xnode-add-comment-overlay-panel',
   templateUrl: './add-comment-overlay-panel.component.html',
@@ -42,7 +44,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   currentUser: any;
   product: any;
   listToMention: any;
-  config: MentionConfig = {};
+  mentionConfig: MentionConfig = {};
   references: any;
   isCommnetsPanelOpened: boolean = false;
   isUploading: boolean = false;
@@ -61,7 +63,9 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
     private storageService: LocalStorageService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private specService: SpecificationsService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.minDate = new Date();
     this.references = [];
@@ -73,18 +77,17 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.users = this.storageService.getItem(StorageKeys.USERLIST);
-    if (this.from == 'cr-tabs') {
-      this.assignAsaTask = true;
-    }
-    if (this.users) {
+    if (this.users)
       this.users.forEach((element: any) => {
         element.name = element?.first_name + ' ' + element?.last_name;
       });
-    }
-    this.config = {
+    this.mentionConfig = {
       labelKey: 'name',
       mentionSelect: this.format.bind(this),
     };
+    if (this.from == 'cr-tabs') {
+      this.assignAsaTask = true;
+    }
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -159,15 +162,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.selectedDateLabel = label;
   }
 
+  handleCrTabs(): void {
+    this.commentInfo.emit({
+      message: this.comment,
+      attachments: this.uploadedFiles,
+      referenceContent:
+        this.parentEntity === 'SPEC' ? this.selectedContent : {},
+      parentId: this.selectedContent.parentId,
+    });
+  }
+
   onClickSend(): void {
     if (this.from == 'cr-tabs') {
-      this.commentInfo.emit({
-        message: this.comment,
-        attachments: this.uploadedFiles,
-        referenceContent:
-          this.parentEntity === 'SPEC' ? this.selectedContent : {},
-        parentId: this.parentId,
-      });
+      this.handleCrTabs();
       return;
     }
     this.utils.loadSpinner(true);
@@ -180,11 +187,15 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       body = this.selectedComment;
       body.message = this.comment;
     } else {
+      let parentId =
+        this.action === 'REPLY'
+          ? this.selectedComment.id
+          : this.selectedContent.parentId;
       body = {
         // createdBy: this.currentUser.user_id,
         topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
         parentEntity: this.parentEntity,
-        parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+        parentId: parentId, // It should be spec id at New comment level and parent commment id at reply level
         message: this.comment,
         referenceContent:
           this.parentEntity === 'SPEC' ? this.selectedContent : {},
@@ -200,7 +211,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           // createdBy: this.currentUser.user_id,
           topParentId: this.topParentId, // For new comment it is 'null' and reply level this should be top comment id.
           parentEntity: this.parentEntity,
-          parentId: this.parentId, // It should be spec id at New comment level and parent commment id at reply level
+          parentId: this.selectedComment.id, // It should be spec id at New comment level and parent commment id at reply level
           message: this.comment,
           referenceContent:
             this.parentEntity === 'SPEC' ? this.selectedContent : {},
@@ -226,6 +237,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       .addComments(body)
       .then((commentsReponse: any) => {
         if (commentsReponse.statusText === 'Created') {
+          this.utils.loadSpinner(false);
           this.prepareDataToDisplayOnCommentsPanel();
         } else {
           this.utils.loadToaster({
@@ -236,7 +248,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.utils.loadSpinner(false);
         }
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -247,31 +259,45 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   prepareDataToDisplayOnCommentsPanel(): void {
+    this.comment = '';
     let detail = '';
     if (this.action === 'EDIT') {
-      detail = 'Comment edited successfully';
+      detail = 'Comment updated successfully';
     } else {
       detail = 'Comment added successfully';
     }
-    if (!this.isCommnetsPanelOpened) {
-      this.specUtils._openCommentsPanel(true);
-    }
-    this.comment = '';
-    this.closeOverlay.emit();
     if (this.assignAsaTask || this.activeIndex === 1) {
-      this.getMeSpecLevelTaskList();
+      this.specService.getMeSpecLevelTaskList({
+        parentId: this.selectedContent.parentId,
+      });
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 1,
+      });
     } else {
-      this.getMeSpecLevelCommentsList();
+      this.specService.getMeSpecLevelCommentsList({
+        parentId: this.selectedContent.parentId,
+      });
+      this.specificationUtils.openConversationPanel({
+        openConversationPanel: true,
+        parentTabIndex: 0,
+        childTabIndex: 0,
+      });
     }
     this.utils.loadToaster({ severity: 'success', summary: 'SUCCESS', detail });
     this.uploadedFiles = [];
     this.files = [];
+    this.closeOverlay.emit();
   }
 
   getMeSpecLevelCommentsList() {
     this.utils.loadSpinner(true);
     this.commentsService
-      .getComments({ parentId: this.parentId, isReplyCountRequired: true })
+      .getComments({
+        parentId: this.selectedContent.parentId,
+        isReplyCountRequired: true,
+      })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._openCommentsPanel(true);
@@ -280,18 +306,19 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
   }
 
   getMeSpecLevelTaskList() {
-    console.log('MMM');
-
     this.utils.loadSpinner(true);
     this.commentsService
-      .getTasks({ parentId: this.parentId, isReplyCountRequired: true })
+      .getTasks({
+        parentId: this.selectedContent.parentId,
+        isReplyCountRequired: true,
+      })
       .then((response: any) => {
         if (response.status === 200 && response.data) {
           this.specUtils._openCommentsPanel(true);
@@ -300,7 +327,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         console.log(err);
         this.utils.loadSpinner(false);
       });
@@ -317,7 +344,11 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         title: this.comment,
         description: this.comment,
         referenceContent:
-          this.parentEntity === 'SPEC' ? this.selectedContent : {},
+          this.parentEntity === 'SPEC'
+            ? this.selectedContent
+            : this.selectedComment?.referenceContent
+            ? this.selectedComment.referenceContent
+            : {},
         attachments: [],
         references: this.setTemplateTypeInRefs(),
         followers: [],
@@ -329,7 +360,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       body = {
         // createdBy: this.currentUser.user_id,
         parentEntity: this.parentEntity,
-        parentId: this.parentId,
+        parentId: this.selectedContent.parentId,
         priority: '1',
         title: this.comment,
         description: this.comment,
@@ -347,26 +378,27 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   saveAsTask(body: any): void {
-    if (this.parentTitle != '' && this.parentTitle != undefined) {
-      body.referenceContent.parentTitle = this.parentTitle;
-    } else {
-      body.referenceContent.parentTitle = this.specItem.title;
-    }
     this.commentsService
       .addTask(body)
       .then((commentsReponse: any) => {
+        this.utils.loadSpinner(false);
         if (commentsReponse.statusText === 'Created') {
-          if (!this.isCommnetsPanelOpened)
-            this.specUtils._openCommentsPanel(true);
           this.comment = '';
           this.closeOverlay.emit();
-          this.specUtils._tabToActive('TASK');
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',
             detail: 'Task added successfully',
           });
           this.uploadedFiles = [];
+          this.specService.getMeSpecLevelTaskList({
+            parentId: this.selectedContent.parentId,
+          });
+          this.specificationUtils.openConversationPanel({
+            openConversationPanel: true,
+            parentTabIndex: 0,
+            childTabIndex: 1,
+          });
         } else {
           this.utils.loadToaster({
             severity: 'error',
@@ -377,7 +409,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.utils.loadSpinner(false);
         this.assignAsaTask = false;
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -387,6 +419,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         this.assignAsaTask = false;
       });
   }
+
   onChangeComment() {
     this.isCommentEmpty = this.comment.trim().length === 0;
     this.checkAndGetAssinedUsers();
@@ -400,6 +433,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
       this.assinedUsers.push(match[1]);
     }
   }
+
   fileBrowseHandler(event: any) {
     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB in bytes
     const files = (event.target as HTMLInputElement).files;
@@ -441,6 +475,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
+
   private async readFileContent(file: File) {
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -454,6 +489,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
 
     reader.readAsArrayBuffer(file); // Move this line outside the onload function
   }
+
   async fileUploadCall(formData: any, headers: any) {
     try {
       this.utils.loadSpinner(true);
