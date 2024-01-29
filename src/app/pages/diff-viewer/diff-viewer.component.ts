@@ -60,6 +60,7 @@ export class DiffViewerComponent implements OnInit {
   specRouteParams: any;
   selectedVersion?: SpecVersion;
   isSideMenuOpened: boolean = true;
+  isDockedNaviEnabled: boolean = true;
 
   filteredSpecData: any;
   foundObjects: any[] = [];
@@ -121,6 +122,7 @@ export class DiffViewerComponent implements OnInit {
     });
 
     this.utils.openDockedNavi.subscribe((event: any) => {
+      this.isDockedNaviEnabled = event;
       if (event) {
         this.isSideMenuOpened = false;
         this.openConversationPanel = false;

@@ -3,6 +3,11 @@
     height: 70px;
 }
 
+.menu-content-navi{
+    color: #DEDEDE;
+    height: 100px;
+}
+
 .text-color {
     color: #949292 !important
 }
@@ -29,6 +34,13 @@
     color: #11CF46 !important;
     background: #CCFFDA;
 }
+:host ::ng-deep .version-dropdown .p-dropdown {
+  margin-top:10px
+}
+:host ::ng-deep .view-dropdown .p-dropdown {
+  margin-top:-12px;
+}
+
 :host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-label{
    border-top-left-radius: 30px;
    border-bottom-left-radius: 30px;
