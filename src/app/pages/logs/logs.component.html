@@ -1,14 +1,12 @@
-<div class="h-full">
-  <div [style.width]="containerWidth" class="flex">
-    <div *ngIf="router.url !=='/history-log'">
-      <xnode-page-tools-layout (openSideMenu)="sideMenuToggle($event)"></xnode-page-tools-layout>
-    </div>
-    <div [style.width]="bodyContainerWidth" style=" transition: width 0.5s ease;">
-      <xnode-template-builder-publish-header
-        (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
-      <div class="col-12  pl-4 pr-4 overflow-auto table-container ">
-        <xnode-dynamic-table [inputData]="logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
-      </div>
+<div class="template-builder-wrapper">
+  <div class="template-builder-layout-wrapper" *ngIf="router.url !=='/history-log'">
+    <xnode-page-tools-layout (openSideMenu)="sideMenuToggle($event)"></xnode-page-tools-layout>
+  </div>
+  <div class="w-full overflow-hidden">
+    <xnode-template-builder-publish-header
+      (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
+    <div class="w-full pl-4 pr-4 table-height">
+      <xnode-dynamic-table [inputData]="logsData" [cols]="cols" [tableInfo]="tableInfo"></xnode-dynamic-table>
     </div>
   </div>
 </div>

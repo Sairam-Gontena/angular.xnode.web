@@ -23,10 +23,10 @@
     // transform: rotate(90deg);
 }
 
-.p-inputtext {
-    background-color: #ffffff;
-    color:black;
-}
+// .p-inputtext {
+//     background-color: #ffffff;
+//     color:black;
+// }
 
 .graphViewBpmnCommon{
     height: 80vh;
@@ -166,4 +166,24 @@ img.highlighted {
 
 .expand-icon {
     width: 30px;
+}
+
+:host ::ng-deep .p-sidebar .p-sidebar-footer{
+    display: none;
+}
+:host ::ng-deep .p-sidebar .p-sidebar-content{
+    background-color: transparent;
+    border: 0px;
+    padding: 0px;
+}
+:host ::ng-deep .p-panel.p-panel-toggleable .p-panel-header{
+    background-color: transparent;
+    border: 0px;
+}
+:host ::ng-deep .p-panel .p-panel-content{
+    background-color: transparent;
+    border: 0px;
+}
+:host ::ng-deep .djs-context-pad .entry{
+    background-color: var(--breadcrumbs-item-color);
 }
