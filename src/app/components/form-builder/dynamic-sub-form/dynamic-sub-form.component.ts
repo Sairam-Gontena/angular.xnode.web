@@ -20,13 +20,15 @@ export class DynamicSubFormComponent implements OnInit{
     const formGroup = this.service.getFormGroup(this.noSQLForm.controls)
     if(this.noSQLForm.isArray) {
       this.formList.push(formGroup)
-      this.form[this.noSQLForm.formName] = this.formList;
-    } else{
+      if(this.parenFormGroup){
+        this.parenFormGroup.controls[this.noSQLForm.formName]=this.formList;
+      }
+    } else {
       this.form = formGroup;
-    }
 
-    if(this.parenFormGroup){
+      if(this.parenFormGroup){
         this.parenFormGroup.controls[this.noSQLForm.formName]=this.form;
+      }
     }
   }
 

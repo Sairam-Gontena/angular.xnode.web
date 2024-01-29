@@ -1,4 +1,4 @@
-<div [formGroup]="parenFormGroup">
+<ng-container [formGroup]="parenFormGroup">
   <h1 *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</h1>
 
   <div *ngIf="!noSQLForm.isArray; else displayformArray" >
@@ -14,13 +14,13 @@
   <ng-template #displayformArray>
     <ng-container [formArrayName]="noSQLForm.formName">
     <ng-container *ngFor="let formC of formList.controls; let i = index">
-      <div [formGroup]="getFormC(i)">
+      <!-- <div [formGroup]="getFormC(i)"> -->
         <!-- <div [formGroupName]="i"> -->
           <div *ngFor="let control of noSQLForm.controls" class="form-row">
             <xnode-dynamic-control [control]="control" [parentFormGroup]="getFormC(i)"></xnode-dynamic-control>
           </div>
         <!-- </div> -->
-      </div>
+      <!-- </div> -->
      <button (click)="remove(i)">Remove</button>
     </ng-container>
   </ng-container>
@@ -29,4 +29,4 @@
     </div>
   <button (click)="add()">Add</button>
   </ng-template>
-</div>
+</ng-container>

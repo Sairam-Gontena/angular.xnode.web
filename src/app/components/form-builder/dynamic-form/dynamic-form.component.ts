@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BuilderService } from '../builder.service';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import {  FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'xnode-dynamic-form',
