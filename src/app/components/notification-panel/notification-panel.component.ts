@@ -165,7 +165,7 @@ export class NotificationPanelComponent {
             response.data.data
           );
           let product = metaData.find((x: any) => x.id === obj.productId);
-          localStorage.setItem('record_id', product.productId);
+          localStorage.setItem('record_id', product.id);
           this.storageService.saveItem(StorageKeys.Product, product);
           localStorage.setItem('app_name', product.title);
           localStorage.setItem('has_insights', product.has_insights);

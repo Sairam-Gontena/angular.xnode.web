@@ -17,7 +17,7 @@
             </div>
         </div>
         <div *ngIf="isSideWindowOpen"
-            [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
+            [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen&& !isNaviExpanded,'expand-docked-navi':isNaviExpanded }">
             <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                 class="w-full h-full pl-0 pr-0 ifram-navi">
             </iframe>

@@ -67,12 +67,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
               this.onChangeOption('Preview');
             },
           },
-          {
-            label: 'Publish',
-            command: () => {
-              this.onChangeOption('Publish');
-            },
-          },
+          // {
+          //   label: 'Publish',
+          //   command: () => {
+          //     this.onChangeOption('Publish');
+          //   },
+          // },
         ];
       }
     });
@@ -290,7 +290,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       acceptButtonStyleClass: 'custom-accept-button',
-      rejectButtonStyleClass: 'custom-reject-button', 
+      rejectButtonStyleClass: 'custom-reject-button',
       accept: () => {
         this.utilsService.loadSpinner(true);
         const body = {
