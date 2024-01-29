@@ -17,6 +17,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 export class LogsComponent implements OnInit {
   logsData: Array<Logs> = [];
   product?: Product;
+  isOpen: any;
   products: Product[] | undefined;
   cols: Array<TableColumn> = TableData.notification_list.Columns;
   tableInfo: any;
@@ -143,12 +144,11 @@ export class LogsComponent implements OnInit {
       'product_url',
       obj.url && obj.url !== '' ? obj.url : ''
     );
-    localStorage.setItem('product', JSON.stringify(obj));
+    this.storageService.saveItem(StorageKeys.Product, obj);
     this.getMeStorageData();
   }
 
   sideMenuToggle(val: boolean): void {
-    this.calculateContainerWidth();
-    this.calculateBodyWidth();
+    this.isOpen = val;
   }
 }
