@@ -8,17 +8,16 @@ interface Column {
 @Component({
   selector: 'xnode-dynamic-table',
   templateUrl: './dynamic-table.component.html',
-  styleUrls: ['./dynamic-table.component.scss']
+  styleUrls: ['./dynamic-table.component.scss'],
 })
 export class DynamicTableComponent implements OnInit {
-
   rows: any;
   @Input() dynamicData: any;
   @Input() inputData: any;
   @Input() cols: any[] = [];
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
-  @Input() tableInfo: any
+  @Input() tableInfo: any;
   headers: any;
   editable: boolean = true;
   showDelete: boolean = true;
@@ -26,15 +25,19 @@ export class DynamicTableComponent implements OnInit {
   userDetails: any;
   tableData: any;
   showConfirmationPopover: boolean = false;
-  exportFileName: any
+  exportFileName: any;
 
   products?: any;
 
-
   ngOnChanges(changes: SimpleChanges): void {
-    this.dynamicData = this.inputData;
-    this.tableData = this.inputData;
-    this.exportFileName = this.tableInfo.name + new Date().getTime()
+    if (changes['inputData']?.currentValue) {
+      this.dynamicData = changes['inputData'].currentValue;
+      this.tableData = changes['inputData'].currentValue;
+    }
+    if (changes['tableInfo']?.currentValue) {
+      this.exportFileName =
+        changes['tableInfo']?.currentValue.name + new Date().getTime();
+    }
   }
 
   ngOnInit(): void {
@@ -42,7 +45,6 @@ export class DynamicTableComponent implements OnInit {
   }
 
   private loadTableData(data: any): void {
-
     this.dynamicData = data;
     if (this.dynamicData) {
       this.headers = Object.keys(this.dynamicData[0]);
@@ -57,23 +59,20 @@ export class DynamicTableComponent implements OnInit {
     }
   }
 
-  onCellInputBlur(event: any) {
-  }
+  onCellInputBlur(event: any) {}
 
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
 
   allValuesTrue(values: any): boolean {
-    return Object.values(values).every(value => value === false);
+    return Object.values(values).every((value) => value === false);
   }
   handleDataAndAction(data: any) {
     this.showConfirmationPopover = true;
     this.userDetails = data;
   }
-  onClickAction(action: any): void {
-
-  }
+  onClickAction(action: any): void {}
 
   onInputChange(event: any) {
     const inputValue = event.target.value;
@@ -87,23 +86,26 @@ export class DynamicTableComponent implements OnInit {
       }
       return false;
     });
-
   }
 
   exportExcelData() {
     import('xlsx').then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(this.dynamicData);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const excelBuffer: any = xlsx.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
       this.saveAsExcelFile(excelBuffer, this.tableInfo.name);
     });
   }
 
   saveAsExcelFile(buffer: any, fileName: string): void {
-    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_TYPE =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     let EXCEL_EXTENSION = '.xlsx';
     const data: Blob = new Blob([buffer], {
-      type: EXCEL_TYPE
+      type: EXCEL_TYPE,
     });
     FileSaver.saveAs(data, this.exportFileName);
   }
