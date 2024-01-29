@@ -59,7 +59,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   @Input() diffdataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
-  @Input() inSpecView:any;
+  @Input() inSpecView: any;
   @Input() fromExpandSpec: any;
   bpmnJS: any;
   pallete_classes: any;
@@ -115,8 +115,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       this.showUsecaseGraph = true;
       var bpmnWindow: HTMLElement;
       if (this.diagramRefContainer) {
-          bpmnWindow = this.diagramRefContainer.nativeElement;
-          if (bpmnWindow) bpmnWindow.style.display = 'none';
+        bpmnWindow = this.diagramRefContainer.nativeElement;
+        if (bpmnWindow) bpmnWindow.style.display = 'none';
       }
       // var bpmnWindow = document.getElementById('diagramRef');
       // if (bpmnWindow) bpmnWindow.style.display = 'None';
@@ -152,15 +152,15 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
 
   switchWindow() {
     var bpmnWindow: HTMLElement;
-      if (this.diagramRefContainer) {
-          bpmnWindow = this.diagramRefContainer.nativeElement;
-          if (bpmnWindow) bpmnWindow.style.display = 'none';
-      }
+    if (this.diagramRefContainer) {
+      bpmnWindow = this.diagramRefContainer.nativeElement;
+      if (bpmnWindow) bpmnWindow.style.display = 'none';
+    }
     // var bpmnWindow = document.getElementById('diagramRef');
     // if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
     // var graphWindow = document.getElementById('sc');
-    var graphWindow = this.scgraph.nativeElement
+    var graphWindow = this.scgraph.nativeElement;
     if (graphWindow) graphWindow.style.display = '';
 
     if (this.bpmnJS) this.bpmnJS.destroy();
@@ -170,7 +170,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   initializeBpmn() {
     let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
     this.bpmnJS = new Modeler({
-      container: '#'+bpmnRefId,
+      container: '#' + bpmnRefId,
       features: {
         palette: {
           enabled: true,
@@ -223,10 +223,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     ];
 
     setTimeout(() => {
-    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
-      this.bpmnJS.attachTo(
-        document.getElementById(bpmnRefId) as HTMLElement
-      );
+      let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+      this.bpmnJS.attachTo(document.getElementById(bpmnRefId) as HTMLElement);
       var element = this.bpmnJS.get('elementRegistry')._elements;
       const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
     }, 500);
@@ -253,12 +251,10 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           );
           let xflowJson = {
             Flows: response.data.Flows.filter((f: any) => {
-              const selectedFlow = flow.toLowerCase();
-              const flowFromJson = (
-                f.Name ||
-                f.workflow_name ||
-                ''
-              ).toLowerCase();
+              const selectedFlow = flow.toLowerCase().replace(/[_\s]/g, '');
+              const flowFromJson = (f.Name || f.workflow_name || '')
+                .toLowerCase()
+                .replace(/[_\s]/g, '');
               return (
                 selectedFlow.indexOf(flowFromJson) != -1 ||
                 flowFromJson.indexOf(selectedFlow) != -1
@@ -827,7 +823,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     if (this.referenceId) {
       ele = this.bpmngraph.nativeElement;
     } else {
-      let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
+      let graphRefId = this.bpmnRefId
+        ? this.bpmnRefId + '-graph'
+        : 'diagramRef-graph';
       ele = document.getElementById(graphRefId) as HTMLElement;
       // ele = this.bpmngraph.nativeElement;
     }
@@ -845,7 +843,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           svg_ele = document.getElementById('graph' + this.referenceId);
         });
     } else {
-      let graphRefId = this.bpmnRefId ? this.bpmnRefId+'-graph' : 'diagramRef-graph'
+      let graphRefId = this.bpmnRefId
+        ? this.bpmnRefId + '-graph'
+        : 'diagramRef-graph';
       svg_ele = document.getElementById(graphRefId);
     }
     if (svg_ele) {
@@ -887,7 +887,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     // Create a tree layout.
     const tree = d3.tree().nodeSize([dx, dy]);
     // Sort the tree and apply the layout.
-    root.sort((a: any, b: any) => d3.ascending(a.data.title, b.data.title));
+    root.sort((a: any, b: any) => d3.ascending(a.data.title, b.data.id));
     tree(root);
     // Compute the extent of the tree. Note that x and y are swapped here
     // because in the tree layout, x is the breadth, but when displayed, the
