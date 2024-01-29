@@ -273,12 +273,12 @@ export class BpmnDiagramComponent
           );
           let xflowJson = {
             Flows: response.data.Flows.filter((f: any) => {
-              const selectedFlow = flow.toLowerCase();
+              const selectedFlow = flow.toLowerCase().replace(/[_\s]/g, '');;
               const flowFromJson = (
                 f.Name ||
                 f.workflow_name ||
                 ''
-              ).toLowerCase();
+              ).toLowerCase().replace(/[_\s]/g, '');;
               const trimmedSelectedFlow = selectedFlow.replace(/\s/g, '');
               return (
                 selectedFlow.indexOf(flowFromJson) != -1 ||
