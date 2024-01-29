@@ -33,6 +33,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
+  isDockedNaviEnabled?: boolean = false;
 
 
   currentUser: any;
@@ -109,6 +110,9 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.userList.forEach((element: any) => {
       element.name = element.first_name + ' ' + element.last_name;
     });
+    this.utils.openDockedNavi.subscribe((res:boolean) => {
+      this.isDockedNaviEnabled = res;
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -217,6 +221,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
+    this.utils.disableDockedNavi();
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.SpecificationUtils.openConversationPanel({
       openConversationPanel: true,
