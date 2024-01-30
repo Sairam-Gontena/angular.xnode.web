@@ -22,6 +22,7 @@ export class NotificationPanelComponent {
   @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
   @Input() limitReachedContent: boolean = false;
+
   notifications: any[] = [];
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -44,7 +45,7 @@ export class NotificationPanelComponent {
     private naviApiService: NaviApiService,
     private specificationUtils: SpecificationUtilsService,
     private specificationService: SpecificationsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.allNotifications = this.data;
@@ -209,6 +210,7 @@ export class NotificationPanelComponent {
                 );
               }
             );
+            this.closeNotificationPanel.emit(true);
           }
         } else if (response?.status !== 200) {
           this.utils.loadToaster({
@@ -562,7 +564,7 @@ export class NotificationPanelComponent {
     this.closeNotificationPanel.emit(true);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
     return new Promise((resolve, reject) => {
