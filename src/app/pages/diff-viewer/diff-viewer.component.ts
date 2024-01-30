@@ -52,6 +52,7 @@ export class DiffViewerComponent implements OnInit {
   isCommentsPanelOpened: boolean = false;
   isSpecSideMenuOpened: boolean = false;
   isDockedNaviOpended: boolean = false;
+  conversationPanelInfo: any;
   selectedSpecItem: any;
   fetchApiSpecCall: boolean = true;
   diffObj: any;
@@ -69,6 +70,7 @@ export class DiffViewerComponent implements OnInit {
   noResults: boolean = false;
   specData: any;
   specListCopy: any;
+  metaDeta: any;
 
   constructor(
     private utils: UtilsService,
@@ -132,6 +134,7 @@ export class DiffViewerComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
+    this.metaDeta= this.storageService.getItem(StorageKeys.MetaData);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.selectedVersionOne = this.storageService.getItem(
       StorageKeys.SpecVersion
@@ -218,8 +221,25 @@ export class DiffViewerComponent implements OnInit {
     return flattenedData;
   }
 
-  getVersions() {
+  getVersions(emitObj?:any) {
     this.utils.loadSpinner(true);
+    if(emitObj){
+      let product = this.metaDeta.find((x: any) => x.id === emitObj.id);
+      if (product && product.has_insights) {
+        localStorage.setItem('record_id', product.id);
+        localStorage.setItem('product',JSON.stringify(product))
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        localStorage.setItem(
+          'product_url',
+          emitObj.url && emitObj.url !== '' ? emitObj.url : ''
+        );
+        this.product = product;
+      }
+    }
+    if(typeof this.product === 'string'){
+      this.product = JSON.parse(this.product)
+    }
     this.specService.getVersions(this.product.id, (data) => {
       let version = data.filter((obj: any) => {
         return obj.id === this.specRouteParams.versionId
@@ -241,6 +261,34 @@ export class DiffViewerComponent implements OnInit {
       this.specService.getMeSpecInfo({
         productId: this.product?.id,
         versionId: version ? version.id : firstObjectWithPriority.id,
+      },
+      (specData) => {
+        if (specData) {
+          if (
+            this.conversationPanelInfo?.openConversationPanel &&
+            this.conversationPanelInfo?.parentTabIndex === 0 &&
+            this.conversationPanelInfo?.childTabIndex === 0
+          ) {
+            this.specService.getMeAllComments({
+              productId: this.product?.id,
+              versionId: firstObjectWithPriority.id,
+            });
+          } else if (
+            this.conversationPanelInfo?.openConversationPanel &&
+            this.conversationPanelInfo?.parentTabIndex === 0 &&
+            this.conversationPanelInfo?.childTabIndex === 1
+          ) {
+            this.specService.getMeAllTasks({
+              productId: this.product?.id,
+              versionId: firstObjectWithPriority.id,
+            });
+          } else if (
+            this.conversationPanelInfo?.openConversationPanel &&
+            this.conversationPanelInfo?.parentTabIndex === 1
+          ) {
+            this.specService.getMeCrList({ productId: this.product?.id });
+          }
+        }
       });
       this.versions = data;
       this.selectedVersion = version ? version : firstObjectWithPriority;

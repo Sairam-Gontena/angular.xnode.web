@@ -16,7 +16,7 @@
           [isSideMenuOpened]="isSideMenuOpened" (refreshCurrentRoute)="refreshCurrentRoute()" [versions]="versions"
           [onDiffValue]="{'onDiff':isDiffEnabled, 'viewType':format}" [selectedVersion]="selectedVersion"
           (specDataChange)="onSpecDataChange($event)" (generateSpec)="checkUserEmail()"
-          (isMeneOpened)="isMeneOpened($event)"></xnode-specifications-header>
+          (isMeneOpened)="isMeneOpened($event)" (emitProductChange)="getVersions($event)" [conversationPanelInfo]="conversationPanelInfo"></xnode-specifications-header>
       </span>
       <div class="flex">
         <div class="spec-content-body"
