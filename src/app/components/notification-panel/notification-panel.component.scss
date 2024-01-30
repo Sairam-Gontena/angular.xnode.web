@@ -47,6 +47,11 @@ a:hover {
 }
 
 .accept-btn {
+    background-color: transparent;
+    border: 1px solid #DEDEDE;
+}
+
+.accept-button {
     background-color: #EF018F;
 }
 
@@ -79,9 +84,10 @@ a:hover {
     border: 1px solid var(--primary-color);
 }
 
-.title-fonts{
-    color:#DEDEDE,
+.title-fonts {
+    color: #DEDEDE,
 }
-.half-white-border{
-    border-color:#DEDEDE,
+
+.half-white-border {
+    border-color: #DEDEDE,
 }

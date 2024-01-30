@@ -14,7 +14,7 @@
         filterTypes.all
           ? 'text-base font-semibold border-bottom-1 title-fonts'
           : 'text-base font-medium title-fonts'
-      " (click)="filterNotifications('all')" >
+      " (click)="filterNotifications('all')">
       All
     </div>
   </div>
@@ -60,8 +60,9 @@
 </div>
 <div class="notif-list ml-3 pr-3" *ngIf="allNotifications.length > 0">
   <div *ngFor="let notification of notifications"
-    class="flex p-3 border-50  text-white text-xs justify-content-between border-round-lg mt-2" style="background-color: #3A3942;" >
-    <div class="flex">  
+    class="flex p-3 border-50  text-white text-xs justify-content-between border-round-lg mt-2"
+    style="background-color: #3A3942;">
+    <div class="flex">
       <div>
         <ng-container [ngSwitch]="notification?.status">
           <img *ngSwitchCase="'success'" src="../../../assets/success.svg" />
@@ -90,40 +91,46 @@
           {{ notification?.description }}
         </div>
         <div class="flex mt-2" *ngIf="notification?.type === 'request'">
-          <div class="border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer half-white-border title-fonts">
+          <div
+            class="border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer half-white-border title-fonts">
             Decline
           </div>
-          <div class="border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer title-fonts">
+          <div class="border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-button text-sm font-normal pointer title-fonts">
             Accept
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
-          <div class="border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer title-fonts half-white-border"
+          <div
+            class="border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer title-fonts half-white-border"
             (click)="onClickPublish(notification)">
             Publish
-            <i class="title-fonts pi pi-arrow-right text-xs ml-2"></i>
+            <i class="title-fonts pi pi-arrow-right text-xs ml-3"></i>
           </div>
           <div (click)="navigateToProduct(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             {{ getMeLabel(notification) }}
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.spec_status === 'Completed' && !notification?.entity">
           <div (click)="goToSpec(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Specification
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'UPDATE_SPEC'">
           <div (click)="goToSpec(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Updates
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'WORKFLOW'">
           <div (click)="navigateToConversation(notification)"
             class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View CR
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="
@@ -140,12 +147,14 @@
             ? "Task"
             : null
             }}
+            <span class="pi pi-arrow-right ml-3 title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.conversationID && notification.title">
           <div (click)="navigateToFeedbackList(notification)"
             class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Report
+            <span class="pi pi-arrow-right ml-3 title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">
