@@ -91,7 +91,7 @@
               <li>
                 <xnode-diff-comp
                   (expandComponent)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})"
-                  [contentObj]="getMeContentObj(item, contentObj)"
+                  [contentObj]="getMeContentObj(item, contentObj)" [format]="format"
                   [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
               </li>
             </ul>
@@ -156,7 +156,7 @@
               <ul *ngFor="let item of contentObj.content">
                 <li>
                   <xnode-diff-comp (expandComponent)="expandComponent.emit($event)"
-                    [contentObj]="getMeContentObj(item, contentObj)"
+                    [contentObj]="getMeContentObj(item, contentObj)" [format]="format"
                     [diffObj]="getDiffObj(diffObj?.content, item, onDiff)" [onDiff]="onDiff"></xnode-diff-comp>
                 </li>
               </ul>

@@ -69,32 +69,24 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
     ) {
       this.onDiff = false;
     } else {
-      if (this.oldContent && this.newContent) {
         this.getDiff();
-      }
     }
-    // console.log('new>>', this.newContent);
-    // console.log('old>>', this.oldContent);
-  }
-
-  private propHasChanged(change: SimpleChange) {
-    return (
-      change &&
-      !change.isFirstChange() &&
-      change.currentValue !== change.previousValue
-    );
   }
 
   getDiff() {
+    // ============temporary fix================
+    if(typeof this.oldContent!=='string'){
+      this.oldContent = '';
+    }if(typeof this.newContent!=='string'){
+      this.newContent = '';
+    }
+    // ============================
     this.diff = this.diffService.getDiff(
       this.oldContent || '',
       this.newContent || '',
       this.filename
     );
     this.refreshDiffHTML();
-    // console.log('#####', this.diff, typeof this.diff);
-
-    this.diffChange.emit(this.diff);
   }
 
   refreshDiffHTML() {
@@ -103,7 +95,6 @@ export class DiffGeneratorComponent implements OnInit, OnChanges {
       this.format,
       this.style
     );
-    // console.log('this.diffHTMLthis.diffHTMLthis.diffHTML', this.diffHTML);
   }
 
   getWords(subitem: any): string[] {
