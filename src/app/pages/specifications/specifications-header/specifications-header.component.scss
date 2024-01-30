@@ -2,8 +2,7 @@
     color: #DEDEDE;
     height: 70px;
 }
-
-.menu-content-navi{
+.header-items-two {
     color: #DEDEDE;
     height: 100px;
 }
@@ -34,13 +33,6 @@
     color: #11CF46 !important;
     background: #CCFFDA;
 }
-:host ::ng-deep .version-dropdown .p-dropdown {
-  margin-top:10px
-}
-:host ::ng-deep .view-dropdown .p-dropdown {
-  margin-top:-12px;
-}
-
 :host ::ng-deep .app-dropdown-version .p-dropdown .p-dropdown-label{
    border-top-left-radius: 30px;
    border-bottom-left-radius: 30px;

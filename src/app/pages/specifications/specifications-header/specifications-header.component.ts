@@ -5,6 +5,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  HostListener
 } from '@angular/core';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
@@ -34,6 +35,8 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
   isDockedNaviEnabled?: boolean = false;
+  screenWidth: number=0;
+  screenHeight: number=0;
 
 
   currentUser: any;
@@ -68,6 +71,12 @@ export class SpecificationsHeaderComponent implements OnInit {
   addShareForm: FormGroup;
   // reviewersList: string | null;
 
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
+  }
+
   constructor(
     private utils: UtilsService,
     private specUtils: SpecUtilsService,
@@ -77,6 +86,8 @@ export class SpecificationsHeaderComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
   ) {
+    this.screenWidth = window.innerWidth;
+    this.screenHeight = window.innerHeight;
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
