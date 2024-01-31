@@ -18,20 +18,20 @@
 }
 
 .p-button.p-button-secondary,
-.p-buttonset.p-button-secondary > .p-button,
-.p-splitbutton.p-button-secondary > .p-button {
-    background: var(--secondary-button-color);
-    color : var(--secondary-button-text-color);
+.p-buttonset.p-button-secondary>.p-button,
+.p-splitbutton.p-button-secondary>.p-button {
+  background: var(--secondary-button-color);
+  color: var(--secondary-button-text-color);
 }
 
 .p-button.p-button-sm {
   font-size: 0.875rem;
-  padding-top:6.5px;
+  padding-top: 6.5px;
   padding-bottom: 6.5px;
 }
 
-.p-disabled{
-  cursor: default!important;
+.p-disabled {
+  cursor: default !important;
   pointer-events: none;
   background: var(--primary-button-inactive);
 }
@@ -46,4 +46,17 @@
   outline: 0 none;
   outline-offset: 0;
   box-shadow: 0 0 0 0 rgba(147, 197, 253, 0.5);
+}
+
+.p-button .p-button-label {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.p-button-link {
+  color: #02adee;
+}
+
+.nonActive .p-button-link {
+  color: #DEDEDE;
 }

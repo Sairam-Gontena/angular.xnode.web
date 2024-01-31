@@ -1,6 +1,6 @@
-<div class="p-4 body-container overflow-auto ">
-    <div class="flex justify-content-between gap-8">
-        <div class="col-4">
+<div class="body-container">
+    <div class="p-6 grid flex justify-content-between w-full">
+        <div class="col">
             <div class="text-white text-5xl	font-normal mb-3">Hi, Good Morning!</div>
             <div class="mt-4">
                 <p-button styleClass="mr-2 navi-btn" size="small" [rounded]="true">
@@ -13,13 +13,13 @@
                 </p-button>
             </div>
         </div>
-        <div class="col-8">
-            <div class="flex col-8 p-input-icon-left">
-                <i class="pi pi-search sm:ml-3  md:ml-3" style="top:30px"></i>
+        <div class="col">
+            <div class="flex p-input-icon-left">
+                <i class="pi pi-search sm:ml-3  md:ml-3"></i>
                 <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
                     class="border-round-3xl ml-2" />
             </div>
-            <div class="col-8 flex" style="padding: .5em 0 1em 0">
+            <div class="flex" style="padding: .5em 0 1em 0">
 
                 <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
                     [text]="true" [ngClass]="{'nonActive': activeIndex != 0}" label=" All Products" [link]="true"
@@ -42,9 +42,10 @@
             </div>
         </div>
     </div>
-    <p-tabView [(activeIndex)]="activeIndex" class="my-products-tab-view">
-        <p-tabPanel>
-            <!-- <ng-template pTemplate="header">
+    <div class="overflow-auto my-products-scroll px-6 h-full">
+        <p-tabView [(activeIndex)]="activeIndex" class="my-products-tab-view">
+            <p-tabPanel>
+                <!-- <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabAllProducts = true"
                     (mouseleave)="tabAllProducts = false" (click)="activeIndex = 0;onClickAllProducts()">
                     <img src="./assets/all-products.svg" class="tab-view-img"
@@ -52,61 +53,61 @@
                     <p class="m-0 pl-2 tabview-header-txt">All Products</p>
                 </div>
             </ng-template> -->
-            <div class="grid ml-5 gap-8">
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 mt-2 card-color justify-content-center align-items-center empty-card"
-                    *ngIf="filteredProducts.length == 0">
-                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
-                        <div class="title">
-                            New Product
+                <div class="grid ml-5 gap-8">
+                    <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 mt-2 card-color justify-content-center align-items-center empty-card"
+                        *ngIf="filteredProducts.length == 0">
+                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                        <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                            <div class="title">
+                                New Product
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
-                    *ngIf="filteredProducts.length > 0">
-                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
-                        <div class="title">
-                            New Product
+                    <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
+                        *ngIf="filteredProducts.length > 0">
+                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                        <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                            <div class="title">
+                                New Product
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-6 md:col-4 lg:col-3 xl:col-3 pointer"
-                    *ngFor="let data of filteredProducts |  slice:0:end ; let i = index"
-                    (click)="onClickProductCard(data)">
-                    <div class="card-color relative">
-                        <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
-                        <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
-                        <img alt="Card" src="./assets/d-card.svg" class="w-full" />
-                    </div>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
-                        <div class="title-container" [title]="data.title">
-                            {{ data.title }}
+                    <div class="col-6 md:col-4 lg:col-3 xl:col-3 pointer"
+                        *ngFor="let data of filteredProducts |  slice:0:end ; let i = index"
+                        (click)="onClickProductCard(data)">
+                        <div class="card-color relative">
+                            <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
+                            <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
+                            <img alt="Card" src="./assets/d-card.svg" class="w-full" />
                         </div>
-                        <i class="pi pi-external-link " [title]="data.product_url"
-                            (click)="openExternalLink(data.product_url)"
-                            *ngIf="data.product_url && data.product_url !== ''"></i>
-                    </div>
-                    <div class="card-color p-3 pb-4 flex align-items-start body-card">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            styleClass="mr-2" shape="circle" *ngIf="!currentUser"
-                            [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                        <!-- <p-avatar [label]="getMeMyAvatar(data.created_by)" *ngIf="currentUser" styleClass="mr-2"
+                        <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                            <div class="title-container" [title]="data.title">
+                                {{ data.title }}
+                            </div>
+                            <i class="pi pi-external-link " [title]="data.product_url"
+                                (click)="openExternalLink(data.product_url)"
+                                *ngIf="data.product_url && data.product_url !== ''"></i>
+                        </div>
+                        <div class="card-color p-3 pb-4 flex align-items-start body-card">
+                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                styleClass="mr-2" shape="circle" *ngIf="!currentUser"
+                                [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                            <!-- <p-avatar [label]="getMeMyAvatar(data.created_by)" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar> -->
-                        <div class="ml-2">
-                            <p class="m-0 card-subheading-txt line-height-3">{{data.created_by}} on:
-                                {{data.created_on |
-                                date:'medium'}}</p>
+                            <div class="ml-2">
+                                <p class="m-0 card-subheading-txt line-height-3">{{data.created_by}} on:
+                                    {{data.created_on |
+                                    date:'medium'}}</p>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
-            </div>
-
-        </p-tabPanel>
-        <p-tabPanel>
-            <!-- <ng-template pTemplate="header">
+            </p-tabPanel>
+            <p-tabPanel>
+                <!-- <ng-template pTemplate="header">
                 <div class="flex align-items-center justify-content-center" (mouseenter)="tabRecent = true"
                     (mouseleave)="tabRecent = false" (click)="activeIndex = 1">
                     <img src="./assets/recent.svg" class="tab-view-img"
@@ -114,12 +115,12 @@
                     <p class="m-0 pl-2 tabview-header-txt">Recently Viewed</p>
                 </div>
             </ng-template> -->
-            <div class="col-12 flex justify-content-center text-xl mt-4 font-font-medium">
-                No Recently Viewed Products
-            </div>
-        </p-tabPanel>
-        <p-tabPanel>
-            <!-- <ng-template pTemplate="header">
+                <div class="col-12 flex justify-content-center text-xl mt-4 font-font-medium">
+                    No Recently Viewed Products
+                </div>
+            </p-tabPanel>
+            <p-tabPanel>
+                <!-- <ng-template pTemplate="header">
                 <div class="flex  align-items-center justify-content-center" (mouseenter)="tabCreated = true"
                     (mouseleave)="tabCreated = false" (click)="activeIndex = 2;onClickcreatedByYou()">
                     <img src="./assets/user.svg" class="tab-view-img"
@@ -127,103 +128,103 @@
                     <p class="m-0 pl-2 tabview-header-txt">Created by you</p>
                 </div>
             </ng-template> -->
-            <div class="grid">
-                <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
-                    *ngIf="filteredProducts.length > 0">
-                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
-                        <div class="title">
-                            New Product
+                <div class="grid">
+                    <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
+                        *ngIf="filteredProducts.length > 0">
+                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                        <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                            <div class="title">
+                                New Product
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-6 md:col-4 lg:col-3 xl:col-3 pointer"
-                    *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
-                    <div class="card-color relative">
-                        <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
-                        <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
-                        <img alt="Card" src="./assets/d-card.svg" class="w-full" />
-                    </div>
-                    <div class=" flex justify-content-between align-items-center card-color card-title p-3">
-                        <div class="title-container" [title]="data.title">
-                            {{ data.title }}
+                    <div class="col-6 md:col-4 lg:col-3 xl:col-3 pointer"
+                        *ngFor="let data of filteredProducts ; let i = index" (click)="onClickProductCard(data)">
+                        <div class="card-color relative">
+                            <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
+                            <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
+                            <img alt="Card" src="./assets/d-card.svg" class="w-full" />
                         </div>
-                        <i class="pi pi-external-link " [title]="data.product_url"
-                            (click)="openExternalLink(data.product_url)"
-                            *ngIf="data.product_url && data.product_url !== ''"></i>
-                    </div>
-                    <div class="card-color p-3 pb-4 flex align-items-start body-card">
-                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-                            styleClass="mr-2" shape="circle" *ngIf="!currentUser"
-                            [style]="{ width:'40px',height:'40px' }"></p-avatar>
-                        <!-- <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
+                        <div class=" flex justify-content-between align-items-center card-color card-title p-3">
+                            <div class="title-container" [title]="data.title">
+                                {{ data.title }}
+                            </div>
+                            <i class="pi pi-external-link " [title]="data.product_url"
+                                (click)="openExternalLink(data.product_url)"
+                                *ngIf="data.product_url && data.product_url !== ''"></i>
+                        </div>
+                        <div class="card-color p-3 pb-4 flex align-items-start body-card">
+                            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                styleClass="mr-2" shape="circle" *ngIf="!currentUser"
+                                [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                            <!-- <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar> -->
-                        <div class="ml-2">
-                            <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on |
-                                date:'medium'}}</p>
+                            <div class="ml-2">
+                                <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on |
+                                    date:'medium'}}</p>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-8 lg:col-12 xs:col-12 flex justify-content-end flex-wrap" *ngIf="filteredProducts.length > 0">
+            <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="isViewLess"
+                icon="pi pi-arrow-right" label="View All" [link]="true" iconPos="right" (click)="onViewAll()">
+            </p-button>
 
+            <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="!isViewLess"
+                icon="pi pi-arrow-right" label="View Less" [link]="true" iconPos="right" (click)="onViewLess()">
+            </p-button>
+        </div>
+        <div class="col-8 lg:col-12 xs:col-12">
+            <h3 class="text-2xl font-semibold">Recent Activity</h3>
+            <div class="recentActivity col-8 lg:col-12 xs:col-12 ml-2 p-0 m-0 -mt-6">
+                <div class="filterDropdown">
+                    <i class="pi pi-search sm:ml-3  md:ml-3" (click)="toggleSearch()" style="padding: 0 25px;"></i>
+                    <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search"
+                        [(ngModel)]="searchTextConversation" (input)="searchConversation()" />
+                    <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
+                        optionLabel="name"></p-dropdown>
+                </div>
+                <p-tabView [(activeIndex)]="activeIndexRecentActivity">
+
+                    <p-tabPanel header="All Conversations" class="home-conversations-card"
+                        *ngIf="selectedConversation.value == 'All'">
+                        <p-card header={{conversation?.title}} class="conversations-card"
+                            *ngFor="let conversation of filteredConversation">
+                            <div class="flex">
+                                <p class="m-0 col-8 text-sm font-normal">
+                                    #{{conversation?.cId}} in {{conversation?.productName}}
+                                </p>
+                                <p class="m-0 col-4 text-sm font-normal">
+                                    Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
+                                </p>
+                            </div>
+                        </p-card>
+
+                    </p-tabPanel>
+                    <p-tabPanel header="My Conversations" class="home-conversations-card"
+                        *ngIf="selectedConversation.value == 'Mine'">
+                        <p-card header={{conversation?.title}} class="conversations-card"
+                            *ngFor="let conversation of mineConversations">
+                            <div class="flex">
+                                <p class="m-0 col-8 text-sm font-normal">
+                                    #{{conversation?.cId}} in {{conversation?.productName}}
+                                </p>
+                                <p class="m-0 col-4 text-sm font-normal">
+                                    Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
+                                </p>
+                            </div>
+                        </p-card>
+
+                    </p-tabPanel>
+                </p-tabView>
             </div>
-        </p-tabPanel>
-    </p-tabView>
-    <div class="col-8 lg:col-12 xs:col-12 flex justify-content-end flex-wrap" *ngIf="filteredProducts.length > 0">
-        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="isViewLess"
-            icon="pi pi-arrow-right" label="View All" [link]="true" iconPos="right" (click)="onViewAll()">
-        </p-button>
-
-        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="!isViewLess"
-            icon="pi pi-arrow-right" label="View Less" [link]="true" iconPos="right" (click)="onViewLess()">
-        </p-button>
-    </div>
-    <div class="col-8 lg:col-12 xs:col-12">
-        <h3 class="text-2xl font-semibold">Recent Activity</h3>
-        <div class="recentActivity col-8 lg:col-12 xs:col-12 ml-2 p-0 m-0 -mt-6">
-            <div class="filterDropdown">
-                <i class="pi pi-search sm:ml-3  md:ml-3" (click)="toggleSearch()" style="padding: 0 25px;"></i>
-                <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search"
-                    [(ngModel)]="searchTextConversation" (input)="searchConversation()" />
-                <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
-                    optionLabel="name"></p-dropdown>
-            </div>
-            <p-tabView [(activeIndex)]="activeIndexRecentActivity">
-
-                <p-tabPanel header="All Conversations" class="home-conversations-card"
-                    *ngIf="selectedConversation.value == 'All'">
-                    <p-card header={{conversation?.title}} class="conversations-card"
-                        *ngFor="let conversation of filteredConversation">
-                        <div class="flex">
-                            <p class="m-0 col-8 text-sm font-normal">
-                                #{{conversation?.cId}} in {{conversation?.productName}}
-                            </p>
-                            <p class="m-0 col-4 text-sm font-normal">
-                                Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                            </p>
-                        </div>
-                    </p-card>
-
-                </p-tabPanel>
-                <p-tabPanel header="My Conversations" class="home-conversations-card"
-                    *ngIf="selectedConversation.value == 'Mine'">
-                    <p-card header={{conversation?.title}} class="conversations-card"
-                        *ngFor="let conversation of mineConversations">
-                        <div class="flex">
-                            <p class="m-0 col-8 text-sm font-normal">
-                                #{{conversation?.cId}} in {{conversation?.productName}}
-                            </p>
-                            <p class="m-0 col-4 text-sm font-normal">
-                                Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                            </p>
-                        </div>
-                    </p-card>
-
-                </p-tabPanel>
-            </p-tabView>
         </div>
     </div>
-
 
 
 
