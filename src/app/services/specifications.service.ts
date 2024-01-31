@@ -108,7 +108,7 @@ export class SpecificationsService {
                 } else if (element.title === 'Data Model') {
                   element.content_data_type = 'DATA_MODEL';
                 }else if (element.title === 'Data Dictionary') {
-                  element.content_data_type = 'DATA_DICTIONARY_TABLE';
+                  element.content_data_type = 'DATA_DICTIONARY';
                 } else if (element.title === 'Quality Assurance') {
                   element.content_data_type = 'QUALITY_ASSURANCE';
                 } else if (element.title === 'Data Model Table Data') {

@@ -11,7 +11,6 @@ export class CommonSpecTableComponent {
   @Input() specItem: any
   @Input() users: any;
   @Input() inDiffView: any;
-  @Input() dataDictionaryItem:any;
 
   showCommentIcon: boolean = false;
   commentOverlayPanelOpened: boolean = false;
@@ -40,15 +39,6 @@ export class CommonSpecTableComponent {
     inventoryStatus: 'INSTOCK',
     rating: 5
   },]
-
-  ngOnInit(){
-    if(this.dataDictionaryItem && this.content){
-      this.content.forEach((item:any)=>{
-         item.columnType = Object.entries(item.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
-         item.validators = Object.entries(item.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
-      })
-    }
-  }
 
   ngOnChanges() {
     if (this.content) {
