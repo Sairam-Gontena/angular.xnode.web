@@ -1,36 +1,42 @@
-<div class="lg:p-1 p-3 overflow-auto body-container">
- 
-    <div class="flex">
+<div class="p-4 body-container overflow-auto ">
+    <div class="flex justify-content-between gap-8">
         <div class="col-4">
-            <div class="text-white txt-heading mb-3">Hi, Good Morning!</div>
-            <p-button label="New with Navi AI" styleClass="mr-2 navi-btn" size="small" [rounded]="true"
-                (click)="onClickNewWithNavi()"></p-button>
-            <p-button styleClass="p-button-secondary mr-4" [rounded]="true" size="small" >
-                <img alt="bot-btn-icon" src="./assets/import.svg" />
-                <span class="import-btn ml-2" (click)="importNavi()">Import</span>
-            </p-button>
+            <div class="text-white text-5xl	font-normal mb-3">Hi, Good Morning!</div>
+            <div class="mt-4">
+                <p-button styleClass="mr-2 navi-btn" size="small" [rounded]="true">
+                    <i class="pi pi-plus"></i>
+                    <span class="text-sm ml-2 font-medium" (click)="onClickNewWithNavi()">New with Navi</span>
+                </p-button>
+                <p-button styleClass="import-btn ml-3" [rounded]="true" size="small" severity="secondary">
+                    <img alt="bot-btn-icon" src="./assets/import.svg" />
+                    <span class="text-sm ml-2 font-medium" (click)="importNavi()">Import</span>
+                </p-button>
+            </div>
         </div>
         <div class="col-8">
-            <div class="flex col-6 p-input-icon-left">
-                <i class="pi pi-search text-white sm:ml-3  md:ml-3" style="top:30px"></i>
+            <div class="flex col-8 p-input-icon-left">
+                <i class="pi pi-search sm:ml-3  md:ml-3" style="top:30px"></i>
                 <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
-                    class="text-white" />
+                    class="border-round-3xl ml-2" />
             </div>
             <div class="col-8 flex" style="padding: .5em 0 1em 0">
-           
-                <p-button class="align-items-center justify-content-center" [text]="true" [ngClass]="{'nonActive': activeIndex != 0}"
-                    label=" All Products" [link]="true" (click)="activeIndex = 0;onClickAllProducts()">
-                    <img src="./assets/all-products.svg" class="tab-view-img"
+
+                <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
+                    [text]="true" [ngClass]="{'nonActive': activeIndex != 0}" label=" All Products" [link]="true"
+                    (click)="activeIndex = 0;onClickAllProducts()">
+                    <img src="./assets/all-products.svg" class="text-2xl"
                         [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
                 </p-button>
-                <p-button class="align-items-center justify-content-center" [text]="true" [ngClass]="{'nonActive': activeIndex != 1}"
-                    label=" Recently Viewed" [link]="true" (click)="activeIndex = 1">
-                    <img src="./assets/recent.svg" class="tab-view-img"
+                <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
+                    [text]="true" [ngClass]="{'nonActive': activeIndex != 1}" label=" Recently Viewed" [link]="true"
+                    (click)="activeIndex = 1">
+                    <img src="./assets/recent.svg" class="text-2xl"
                         [src]="tabRecent || activeIndex === 1  ? './assets/recent-hover.svg' : './assets/recent.svg'" />
                 </p-button>
-                <p-button class="align-items-center justify-content-center"  [text]="true" [ngClass]="{'nonActive': activeIndex != 2}"
-                    label=" My Products" [link]="true" (click)="activeIndex = 2;onClickcreatedByYou()">
-                    <img src="./assets/user.svg" class="tab-view-img"
+                <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
+                    [text]="true" [ngClass]="{'nonActive': activeIndex != 2}" label=" My Products" [link]="true"
+                    (click)="activeIndex = 2;onClickcreatedByYou()">
+                    <img src="./assets/user.svg" class="text-2xl"
                         [src]="tabCreated || activeIndex === 2 ? './assets/user-hover.svg' : './assets/user.svg'" />
                 </p-button>
             </div>
@@ -46,10 +52,10 @@
                     <p class="m-0 pl-2 tabview-header-txt">All Products</p>
                 </div>
             </ng-template> -->
-            <div class="grid">
+            <div class="grid ml-5 gap-8">
                 <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 mt-2 card-color justify-content-center align-items-center empty-card"
                     *ngIf="filteredProducts.length == 0">
-                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     <div class=" flex justify-content-between align-items-center card-color card-title p-3">
                         <div class="title">
                             New Product
@@ -58,7 +64,7 @@
                 </div>
                 <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
                     *ngIf="filteredProducts.length > 0">
-                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     <div class=" flex justify-content-between align-items-center card-color card-title p-3">
                         <div class="title">
                             New Product
@@ -88,15 +94,16 @@
                         <!-- <p-avatar [label]="getMeMyAvatar(data.created_by)" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar> -->
-                        <div class="text-white ml-2">
-                            <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on |
+                        <div class="ml-2">
+                            <p class="m-0 card-subheading-txt line-height-3">{{data.created_by}} on:
+                                {{data.created_on |
                                 date:'medium'}}</p>
                         </div>
                     </div>
                 </div>
- 
+
             </div>
- 
+
         </p-tabPanel>
         <p-tabPanel>
             <!-- <ng-template pTemplate="header">
@@ -107,7 +114,7 @@
                     <p class="m-0 pl-2 tabview-header-txt">Recently Viewed</p>
                 </div>
             </ng-template> -->
-            <div class="col-12 flex justify-content-center text-xl mt-4 text-white font-font-medium">
+            <div class="col-12 flex justify-content-center text-xl mt-4 font-font-medium">
                 No Recently Viewed Products
             </div>
         </p-tabPanel>
@@ -123,7 +130,7 @@
             <div class="grid">
                 <div class="flex p-2 col-6 md:col-4 lg:col-3 xl:col-3 card-color justify-content-center align-items-center empty-card1"
                     *ngIf="filteredProducts.length > 0">
-                    <i class="pi pi-plus text-white text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                    <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
                     <div class=" flex justify-content-between align-items-center card-color card-title p-3">
                         <div class="title">
                             New Product
@@ -152,73 +159,75 @@
                         <!-- <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
                             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                             shape="circle"></p-avatar> -->
-                        <div class="text-white ml-2">
+                        <div class="ml-2">
                             <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on |
                                 date:'medium'}}</p>
                         </div>
                     </div>
                 </div>
- 
+
             </div>
         </p-tabPanel>
     </p-tabView>
     <div class="col-8 lg:col-12 xs:col-12 flex justify-content-end flex-wrap" *ngIf="filteredProducts.length > 0">
-        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="isViewLess" icon="pi pi-arrow-right"
-            label="View All" [link]="true" (click)="onViewAll()">
+        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="isViewLess"
+            icon="pi pi-arrow-right" label="View All" [link]="true" iconPos="right" (click)="onViewAll()">
         </p-button>
- 
-        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="!isViewLess" icon="pi pi-arrow-right"
-            label="View Less" [link]="true" (click)="onViewLess()">
+
+        <p-button class="flex align-items-center justify-content-end" size="small" [text]="true" *ngIf="!isViewLess"
+            icon="pi pi-arrow-right" label="View Less" [link]="true" iconPos="right" (click)="onViewLess()">
         </p-button>
     </div>
-    <div class="ccol-8 lg:col-12 xs:col-12">
-        <h3 class="text-white">Recent Activity</h3>
-    </div>
- 
- 
- 
-    <div class="recentActivity col-8 lg:col-12 xs:col-12">
-        <div class="filterDropdown">
-            <i class="pi pi-search text-white sm:ml-3  md:ml-3" (click)="toggleSearch()" style="padding: 0 25px;"></i>
-            <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search" [(ngModel)]="searchTextConversation" (input)="searchConversation()"/>
-            <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
-            optionLabel="name"></p-dropdown>
+    <div class="col-8 lg:col-12 xs:col-12">
+        <h3 class="text-2xl font-semibold">Recent Activity</h3>
+        <div class="recentActivity col-8 lg:col-12 xs:col-12 ml-2 p-0 m-0 -mt-6">
+            <div class="filterDropdown">
+                <i class="pi pi-search sm:ml-3  md:ml-3" (click)="toggleSearch()" style="padding: 0 25px;"></i>
+                <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search"
+                    [(ngModel)]="searchTextConversation" (input)="searchConversation()" />
+                <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
+                    optionLabel="name"></p-dropdown>
+            </div>
+            <p-tabView [(activeIndex)]="activeIndexRecentActivity">
+
+                <p-tabPanel header="All Conversations" class="home-conversations-card"
+                    *ngIf="selectedConversation.value == 'All'">
+                    <p-card header={{conversation?.title}} class="conversations-card"
+                        *ngFor="let conversation of filteredConversation">
+                        <div class="flex">
+                            <p class="m-0 col-8 text-sm font-normal">
+                                #{{conversation?.cId}} in {{conversation?.productName}}
+                            </p>
+                            <p class="m-0 col-4 text-sm font-normal">
+                                Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
+                            </p>
+                        </div>
+                    </p-card>
+
+                </p-tabPanel>
+                <p-tabPanel header="My Conversations" class="home-conversations-card"
+                    *ngIf="selectedConversation.value == 'Mine'">
+                    <p-card header={{conversation?.title}} class="conversations-card"
+                        *ngFor="let conversation of mineConversations">
+                        <div class="flex">
+                            <p class="m-0 col-8 text-sm font-normal">
+                                #{{conversation?.cId}} in {{conversation?.productName}}
+                            </p>
+                            <p class="m-0 col-4 text-sm font-normal">
+                                Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
+                            </p>
+                        </div>
+                    </p-card>
+
+                </p-tabPanel>
+            </p-tabView>
         </div>
-        <p-tabView [(activeIndex)]="activeIndexRecentActivity">
- 
-            <p-tabPanel header="All Conversations" class="home-conversations-card"
-                *ngIf="selectedConversation.value == 'All'">
-                <p-card header={{conversation?.title}} class="conversations-card"
-                    *ngFor="let conversation of filteredConversation">
-                    <div class="flex">
-                        <p class="m-0 text-white col-8">
-                            #{{conversation?.cId}} in {{conversation?.productName}}
-                        </p>
-                        <p class="m-0 text-white col-4">
-                            Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                        </p>
-                    </div>
-                </p-card>
- 
-            </p-tabPanel>
-            <p-tabPanel header="My Conversations" class="home-conversations-card"
-                *ngIf="selectedConversation.value == 'Mine'">
-                <p-card header={{conversation?.title}} class="conversations-card"
-                    *ngFor="let conversation of mineConversations">
-                    <div class="flex">
-                        <p class="m-0 text-white col-8">
-                            #{{conversation?.cId}} in {{conversation?.productName}}
-                        </p>
-                        <p class="m-0 text-white col-4">
-                            Updated : {{conversation?.modifiedOn | date :'MMM d, y, h:mm:ss a'}}
-                        </p>
-                    </div>
-                </p-card>
- 
-            </p-tabPanel>
-        </p-tabView>
     </div>
+
+
+
+
 </div>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
-    <!-- <xnode-confirmation-popup [data]="{type:'Submit'}" *ngIf="true"></xnode-confirmation-popup> -->
+<!-- <xnode-confirmation-popup [data]="{type:'Submit'}" *ngIf="true"></xnode-confirmation-popup> -->

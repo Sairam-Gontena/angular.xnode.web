@@ -1,262 +1,257 @@
-:host ::ng-deep .p-inputtext.p-inputtext-sm{
+:host ::ng-deep .p-inputtext.p-inputtext-sm {
     border-radius: 30px;
 }
- 
+
 @media (max-width: 767px) {
- 
-    :host ::ng-deep .recentActivity{
-        .filterDropdown{
+
+    :host ::ng-deep .recentActivity {
+        .filterDropdown {
             .p-inputtext {
                 width: 20%;
             }
         }
-        p-dropdown{
+
+        p-dropdown {
             .p-inputtext {
                 background-color: unset;
             }
         }
     }
- 
-    .txt-heading {
-        font-size: 36px;
- 
-        font-weight: 500;
-        line-height: 43.57px;
-    }
- 
-    .tabview-header-txt {
-        font-size: 10px;
-    }
- 
+
+
+    // .tabview-header-txt {
+    //     font-size: 10px;
+    // }
+
     :host ::ng-deep .p-card {
         position: relative;
     }
- 
-    .tab-view-img {
-        height: 18px;
-        width: 18px;
-    }
- 
+
     .header-text {
         font-size: 12px
     }
- 
+
     .heading-text {
         font-size: 10px;
     }
- 
+
     .normal-text {
         font-size: 8px;
     }
- 
+
     :host ::ng-deep .p-card .p-card-title {
-        font-size: 12px;
- 
-        font-weight: 700;
+        font-size: 16px;
+
+        font-weight: 400;
     }
- 
+
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
     }
- 
+
     .empty-card {
         height: 200px;
         border-radius: 10px;
         border: 1px dashed;
     }
- 
+
     .card-title {
         font-size: 18px;
- 
+
         font-weight: 700;
         line-height: 21.78px;
     }
- 
+
     .card-subheading-txt {
         font-size: 12px;
- 
+
         font-weight: 600;
         line-height: 14.52px;
         margin-top: 5px;
     }
- 
+
     .card-normal-txt {
         font-size: 12px;
         font-weight: 400;
         line-height: 14.52px;
     }
 }
- 
- 
+
+
 /* Tablets (768px to 991px width) */
 @media (min-width: 768px) and (max-width: 991px) {
- 
-    :host ::ng-deep .recentActivity{
-        .filterDropdown{
+
+    :host ::ng-deep .recentActivity {
+        .filterDropdown {
             .p-inputtext {
                 width: 20%;
             }
         }
-        p-dropdown{
+
+        p-dropdown {
             .p-inputtext {
                 background-color: unset;
             }
         }
     }
- 
+
     .txt-heading {
         font-size: 48px;
     }
- 
+
     .tabview-header-txt {
         font-size: 14px;
     }
- 
+
     :host ::ng-deep .p-card {
         position: relative;
     }
- 
+
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
     }
- 
+
     .heading-text {
         font-size: 14px;
     }
- 
+
     .normal-text {
         font-size: 12px;
     }
- 
+
     .empty-card {
         height: 300px;
         border-radius: 10px;
     }
- 
+
     .card-title {
         font-size: 20px;
         font-weight: 700;
         line-height: 32px;
     }
- 
+
     .card-subheading-txt {
         font-size: 14px;
         font-weight: 600;
         line-height: 16.94px;
         margin-top: 5px;
     }
- 
+
     .card-normal-txt {
         font-size: 14px;
         font-weight: 400;
         line-height: 16.94px;
         margin-top: 5px;
- 
+
     }
 }
- 
+
 @media (min-width: 992px) {
- 
-    :host ::ng-deep .recentActivity{
-        .filterDropdown{
+
+    :host ::ng-deep .recentActivity {
+        .filterDropdown {
             .p-inputtext {
                 width: 20%;
             }
         }
-        p-dropdown{
+
+        p-dropdown {
             .p-inputtext {
                 background-color: unset;
             }
         }
     }
- 
+
     .txt-heading {
         font-size: 36px;
     }
- 
+
     .tabview-header-txt {
         font-size: 16px;
     }
- 
+
     :host ::ng-deep .p-card-header {
         height: 125px;
     }
- 
+
     :host ::ng-deep .p-card {
         position: relative;
     }
- 
+
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
     }
- 
+
     .heading-text {
         font-size: 12px;
     }
- 
+
     .normal-text {
         font-size: 10px;
     }
- 
+
     .empty-card {
         height: 300px;
         border-radius: 10px;
     }
- 
+
     .card-title {
         font-size: 24px;
         font-weight: 700;
         line-height: 32px;
     }
- 
+
     .card-subheading-txt {
         font-size: 16px;
         font-weight: 600;
         line-height: 19.36px;
         margin-top: 5px;
     }
- 
+
     .card-normal-txt {
         font-size: 16px;
         font-weight: 400;
         line-height: 19.36px;
         margin-top: 5px;
- 
+
     }
 }
- 
+
 // :host ::ng-deep .p-inputtext:enabled:focus {
 //     box-shadow: none;
 // }
- 
+
 // :host ::ng-deep .p-inputtext ::placeholder {
 //     color: rgba(255, 255, 255, 0.5);
 // }
- 
+
 :host ::ng-deep .p-card {
     background: transparent;
+    color: #EFEEEE;
 }
- 
+
 :host ::ng-deep .p-card .p-card-body {
     padding: 0.75rem;
 }
- 
+
 :host ::ng-deep .p-card .p-card-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
     position: relative;
-    color: #ffffff;
+    color: #EFEEEE;
+    font-size: 1rem;
+    font-weight: 400;
 }
- 
+
 .external-link-icon {
     position: relative;
     color: white;
     margin-left: 16rem;
     bottom: 118px;
 }
- 
+
 :host ::ng-deep .p-card .p-.card-title:hover {
     content: attr(title);
     position: absolute;
@@ -266,11 +261,11 @@
     padding: 5px;
     z-index: 1;
 }
- 
+
 .letter-space-1 {
     letter-spacing: 1px;
 }
- 
+
 .card-grid {
     display: grid;
     // grid-template-columns: repeat(auto-fit, minmax(314px, 1fr));
@@ -278,67 +273,68 @@
     /* 4 cards for desktop */
     grid-gap: 45px;
     grid-row-gap: 70px;
- 
+
     @media (max-width: 1024px) {
         grid-template-columns: repeat(2, 1fr);
         /* 2 cards for iPad */
     }
- 
+
     @media (max-width: 600px) {
         grid-template-columns: 1fr;
         justify-content: center;
         /* 1 card for mobile */
     }
 }
- 
+
 :host ::ng-deep .p-tabview .p-tabview-nav {
     background: transparent;
     color: #ffffff !important;
     border: none !important;
     margin: 4px 0;
 }
- 
+
 :host ::ng-deep.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
     background: transparent;
 }
- 
+
 :host ::ng-deep .p-tabview .p-tabview-panels {
-    background: transparent ;
+    background: transparent;
 }
- 
+
 @media screen and (max-width: 600px) {
     .search .p-inputtext {
         width: 95%;
     }
 }
- 
+
 .tmp-page-height {
     height: calc(100vh - 40px);
     overflow: auto;
 }
- 
+
 .text-xxs {
     font-size: 8px;
 }
- 
+
 .card-body {
     height: 328px;
 }
- 
+
 .body-container {
     height: 100%;
     width: 100%;
     background-color: #3A3942;
+    color: #EFEEEE;
 }
- 
+
 ::placeholder {
     color: #fff;
 }
- 
+
 .new-layer {
     position: relative;
 }
- 
+
 .new-layer {
     position: relative;
     display: flex;
@@ -346,69 +342,79 @@
     align-items: center;
     height: 100%;
 }
- 
+
 .centered-content {
     text-align: center;
     width: 100%;
     height: 100%;
 }
- 
+
 .new-template {
     background-color: #4E4D55;
     border-radius: 10px;
 }
- 
+
 .overlay-heart {
     color: #EF018F;
     padding: 10px;
 }
- 
+
 .overlay {
     color: #4E4D55;
     font-size: 30px;
     font-weight: 700;
- 
+
     padding: 10px;
 }
- 
+
 .card-color {
     background-color: #4E4D55;
 }
- 
+
 .body-card {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
- 
+
 .empty-card1 {
     border-radius: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
     border: 3px dashed;
     background-color: #343541 !important;
-    .card-title{
+
+    .card-title {
         background-color: #343541 !important;
     }
 }
- 
-// :host ::ng-deep .navi-btn.p-button {
-//     background: var(--primary-color);
-//     border: 1px solid var(--primary-color);
+
+:host ::ng-deep .import-btn {
+    background-color: #EFEEEE;
+    color: #4B4B4B;
+}
+
+// :host ::ng-deep .navi-btn.p-button .p-button-label {
+//     font-weight: 500;
+//     font-size: 0.875rem;
+//     color: #DEDEDE;
 // }
-// :host ::ng-deep .p-button .p-button-label{
-//     color : var(--primary-button-text-color)
-// }
- 
+
+:host ::ng-deep .tabView-label .p-button .p-button-label {
+    color: #DEDEDE;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
 // .p-button:enabled:hover {
 //     background: var(--primary-color);
 //     border-color: var(--primary-color);
 //     border: 1px solid var(--primary-color);
 // }
- 
+
 :host::ng-deep.p-avatar .p-avatar-text {
     font-size: 11px;
 }
- 
+
 .title-container {
     flex: 1;
     white-space: nowrap;
@@ -416,11 +422,13 @@
     text-overflow: ellipsis;
     max-width: calc(100% - 30px);
 }
-.grid > [class*=col],.grid > .empty-card1 {
+
+.grid>[class*=col],
+.grid>.empty-card1 {
     margin: 1em;
 }
- 
-.recentActivity{
+
+.recentActivity {
     .filterDropdown {
         text-align: right;
         display: block;
@@ -428,19 +436,22 @@
         top: 55px;
         z-index: 1;
     }
- 
+
     p-dropdown {
         text-align: left;
     }
- 
-    .pi-search{
+
+    .pi-search {
         cursor: pointer;
     }
- 
+
 }
-.grid > [class*=col],.grid > .empty-card1 {
+
+.grid>[class*=col],
+.grid>.empty-card1 {
     margin: 1em;
 }
+
 .recentActivity {
     .conversations-card {
         height: 130px;
