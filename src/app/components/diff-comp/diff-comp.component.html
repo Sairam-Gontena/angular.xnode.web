@@ -45,10 +45,14 @@
       <div *ngFor="let item of contentObj?.content">
         <span *ngIf="item.tables else directTable">
           <div *ngFor="let subitem of item.tables">
+            <h3 class="mb-1">{{subitem.tableName}}</h3>
+            <p class="mt-1">{{subitem.tableDescription}}</p>
             <xnode-common-spec-table [dataDictionaryItem]="subitem" [content]="subitem.columns"></xnode-common-spec-table>
         </div>
         </span>
         <ng-template #directTable>
+          <h3 class="mb-1">{{item.tableName}}</h3>
+          <p class="mt-1">{{item.tableDescription}}</p>
           <xnode-common-spec-table [dataDictionaryItem]="item" [content]="item.columns"></xnode-common-spec-table>
         </ng-template>
       </div>
