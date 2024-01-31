@@ -235,6 +235,7 @@ export class DiffViewerComponent implements OnInit {
           emitObj.url && emitObj.url !== '' ? emitObj.url : ''
         );
         this.product = product;
+        this.utils.saveProductDetails(product);
       }
     }
     if(typeof this.product === 'string'){
