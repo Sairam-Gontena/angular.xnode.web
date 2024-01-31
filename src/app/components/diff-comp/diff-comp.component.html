@@ -41,8 +41,18 @@
         class="expnad-icon pointer"
         (click)="expandComponent.emit({contentObj:contentObj,onDiff:onDiff,diffObj:diffObj})" />
     </div>
-
-
+    <div *ngIf="contentObj?.content_data_type == 'DATA_DICTIONARY_TABLE'">
+      <div *ngFor="let item of contentObj?.content">
+        <span *ngIf="item.tables else directTable">
+          <div *ngFor="let subitem of item.tables">
+            <xnode-common-spec-table [dataDictionaryItem]="subitem" [content]="subitem.columns"></xnode-common-spec-table>
+        </div>
+        </span>
+        <ng-template #directTable>
+          <xnode-common-spec-table [dataDictionaryItem]="item" [content]="item.columns"></xnode-common-spec-table>
+        </ng-template>
+      </div>
+    </div>
     <div class="grid" (mouseover)="contentObj.showCommentIcon = true" (mouseleave)="contentObj.showCommentIcon = false">
       <p-overlayPanel #op (onHide)="contentObj.showCommentIcon=false">
         <xnode-add-comment-overlay-panel [width]="'w-30rem'" (closeOverlay)="op.toggle(false);" [position]="'absolute'"
@@ -148,8 +158,7 @@
         </div>
         <pre [innerHTML]="contentObj.content | json " style="white-space: pre-wrap; overflow: auto"
           *ngIf="contentObj?.viewType ==='json'"></pre>
-        <xnode-common-spec-table [content]="contentObj.content"
-          *ngIf="contentObj?.viewType ==='table'"></xnode-common-spec-table>
+          <xnode-common-spec-table [content]="contentObj.content" *ngIf="contentObj?.viewType ==='table'"></xnode-common-spec-table>
         <div *ngIf="!contentObj.viewType ||contentObj.viewType === 'list'">
           <div [ngSwitch]="getType(contentObj.content)">
             <div *ngSwitchCase="'array'">

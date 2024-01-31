@@ -12,6 +12,10 @@
           (click)="op.toggle($event);commentOverlayPanelOpened=true" (mouseleave)="showCommentIcon = false"
           [ngClass]="showCommentIcon || commentOverlayPanelOpened?'opacity-100':'opacity-0'">
     </div> -->
+        <div class="col-12" *ngIf="dataDictionaryItem">
+          <h3>{{dataDictionaryItem.tableName}}</h3>
+          <p>{{dataDictionaryItem.tableDescription}}</p>
+        </div>
         <div class="col-12">
             <p-table #dt [value]="content" [columns]="columns" [resizableColumns]="true"
                 [scrollable]="true" scrollDirection="horizontal" class="common-spec-table-head">
@@ -33,8 +37,7 @@
                                     [innerHTML]="data.columnName ? data.columnName : data | highlight: searchTerm">
                                 </div>
                             </div>
-                            <div *ngIf="!isArray(rowData[col.field])"
-                                [innerHTML]="rowData[col.field] | highlight: searchTerm ">
+                            <div *ngIf="!isArray(rowData[col.field])" [innerHTML]="rowData[col.field] | highlight: searchTerm ">
                             </div>
                         </td>
                     </tr>
