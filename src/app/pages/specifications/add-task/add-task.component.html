@@ -56,9 +56,11 @@
                     <span class="text-sm  font-normal text-200" *ngIf="!selectedDateLabel">Due By</span>
                     <span class=" text-sm font-normal text-200" *ngIf="selectedDateLabel">{{
                         selectedDateLabel }}</span>
-                    <p-calendar [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate"
+                    <p-calendar #datePicker [inputStyle]="{'width':'0px', 'border':'0'}" class="dueDate"
                         (onSelect)="onDateSelect($event)" formControlName="duedate" [showIcon]="true"
-                        icon="pi pi-calendar-plus" [minDate]="minDate" styleClass="due-date"></p-calendar>
+                        icon="pi pi-calendar-plus" [minDate]="minDate" styleClass="due-date"
+                        (onMonthChange)="onMonthChange($event)" [hideOnDateTimeSelect]="false">
+                    </p-calendar>
                 </div>
             </div>
             <div class="col-12 p-0 m-0 mt-3">

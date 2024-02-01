@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -21,6 +22,7 @@ interface AutoCompleteCompleteEvent {
   providers: [DatePipe],
 })
 export class AddTaskComponent {
+  @ViewChild('datePicker') datePicker: any;
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Input() visible: boolean = false;
   @Input() width?: string;
@@ -66,6 +68,7 @@ export class AddTaskComponent {
   isCommnetsPanelOpened: boolean = false;
   references: any;
   userList: any;
+  showCalendar: boolean = true;
 
   constructor(
     public utils: UtilsService,
@@ -97,12 +100,13 @@ export class AddTaskComponent {
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
-    if(!this.parentId){
+    if (!this.parentId) {
       this.parentId = this.selectedContent.parentId;
     }
   }
 
   onDateSelect(event: any): void {
+
     const selectedDate: Date = event;
 
     const today = new Date();
@@ -301,6 +305,15 @@ export class AddTaskComponent {
   cancelTask() {
     this.closeOverlay.emit();
   }
+  onMonthChange(event: any): void {
+    console.log("Month changed", event);
+    // event.stopPropagation();
+    this.datePicker.showOverlay();
+    this.datePicker.overlayVisible = true;
+    // alert(event)
+
+  }
+
   saveAsTask(body: any): void {
     if (this.parentTitle !== '' && this.parentTitle !== undefined) {
       body.referenceContent.parentTitle = this.parentTitle;
@@ -335,7 +348,7 @@ export class AddTaskComponent {
         }
         this.utils.loadSpinner(false);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
