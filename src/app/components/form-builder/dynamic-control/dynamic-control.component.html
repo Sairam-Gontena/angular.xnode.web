@@ -3,10 +3,12 @@
   <div [ngSwitch]="control.controlType">
 
     <xnode-text-box *ngSwitchCase="'textbox'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
+    <xnode-dropdown *ngSwitchCase="'dropdown'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-dropdown>
+    <xnode-check-box *ngSwitchCase="'checkbox'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-check-box>
+    <xnode-radio-button *ngSwitchCase="'radio'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-radio-button>
+    <xnode-date-picker *ngSwitchCase="'datepicker'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-date-picker>
     <!-- <xnode-email-input *ngSwitchCase="'email'" [control]="control" [fControl]="fControl"></xnode-email-input>
     <xnode-number-input *ngSwitchCase="'number'" [control]="control" [fControl]="fControl"></xnode-number-input> -->
     <!-- <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div> -->
-
   </div>
-
 </div>

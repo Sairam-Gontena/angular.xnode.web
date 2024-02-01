@@ -38,6 +38,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InlineDiffComponent } from 'ngx-diff';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [],
@@ -76,6 +77,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     InlineDiffComponent,
     InputSwitchModule,
     MultiSelectModule,
+    RadioButtonModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -116,6 +118,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     InputSwitchModule,
     AutoCompleteModule,
     MultiSelectModule,
+    RadioButtonModule
   ],
   providers: [DataService],
 })

@@ -47,3 +47,25 @@
   outline-offset: 0;
   box-shadow: 0 0 0 0 rgba(147, 197, 253, 0.5);
 }
+
+.p-button.p-button-danger{
+  color: #ffffff;
+  background: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.p-button.p-button-warning.p-button-outlined{
+  background-color: transparent;
+  color: #f97316;
+  border: 1px solid;
+}
+.p-button.p-button-primary.p-button-outlined{
+  background-color: transparent;
+  color: #2563eb;
+  border: 1px solid;
+}
+.p-button.p-button-secondary.p-button-outlined{
+  background-color: transparent;
+  color: #64748b;
+  border: 1px solid;
+}

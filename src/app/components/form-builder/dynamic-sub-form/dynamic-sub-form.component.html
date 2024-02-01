@@ -19,7 +19,8 @@
           </div>
         <!-- </div> -->
       </div>
-     <button (click)="remove(i)">Remove</button>
+     <!-- <button (click)="remove(i)">Remove</button> -->
+     <p-button (click)="remove(i)" label="Remove" severity="warning" [outlined]="true" size="small" [rounded]="true"></p-button>
      <!-- <p-button label="Secondary" severity="secondary"></p-button> -->
      <!-- <p-button label="Primary"></p-button>
      <p-button label="Secondary" severity="secondary"></p-button> -->
@@ -28,6 +29,8 @@
     <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
       <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
     </div>
-  <button (click)="add()">Add</button>
+  <!-- <button (click)="add()">Add</button> -->
+  <!-- <p-button (click)="add()"  [rounded]="true" label="Add" [outlined]="true" severity="danger"></p-button> -->
+  <p-button (click)="add()" size="small"  [rounded]="true" label="Add" [outlined]="true" severity="secondary"></p-button>
   </ng-template>
 </div>

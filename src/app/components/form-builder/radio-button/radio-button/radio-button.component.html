@@ -1,0 +1,6 @@
+<form class="flex flex-column gap-3" [formGroup]="parentFormGroup">
+    <div *ngFor="let option of options" class="field-checkbox">
+        <p-radioButton [inputId]="option.label" [value]="option" formControlName="selectedCategory"></p-radioButton>
+        <label [for]="option.key" class="ml-2">{{ option.label }}</label>
+    </div>
+</form>
