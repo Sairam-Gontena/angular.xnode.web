@@ -129,6 +129,9 @@ export class DiffCompComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['contentObj']?.currentValue){
+      this.product = this.storageService.getItem(StorageKeys.Product);
+    }
     if (changes['diffObj']?.currentValue)
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
