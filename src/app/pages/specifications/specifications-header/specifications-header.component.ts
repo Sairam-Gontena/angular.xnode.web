@@ -28,11 +28,14 @@ export class SpecificationsHeaderComponent implements OnInit {
   @Output() getMeSpecList = new EventEmitter<any>();
   @Output() generateSpec = new EventEmitter<any>();
   @Output() onDiffViewChange = new EventEmitter<any>();
+  @Output() emitProductChange = new EventEmitter<any>();
   @Input() versions: SpecVersion[] = [];
   @Input() onDiffValue: any;
   @Input() selectedVersion: SpecVersion | undefined;
   @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   @Input() isSideMenuOpened?: any;
+  @Input() conversationPanelInfo: any;
+  isDockedNaviEnabled?: boolean = false;
 
 
   currentUser: any;
@@ -51,7 +54,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     { label: 'Exit', value: null },
   ];
   specData: any;
-  conversationPanelInfo: any;
   invities = [
     { name: 'Invite only', code: 'Invite' },
     { name: 'Anyone with link at App’s Spec', code: 'Anyone' },
@@ -109,6 +111,9 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.userList.forEach((element: any) => {
       element.name = element.first_name + ' ' + element.last_name;
     });
+    this.utils.openDockedNavi.subscribe((res:boolean) => {
+      this.isDockedNaviEnabled = res;
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -217,6 +222,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
+    this.utils.disableDockedNavi();
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
     this.SpecificationUtils.openConversationPanel({
       openConversationPanel: true,
@@ -238,68 +244,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utils.loadSpinner(true);
     let product = this.metaDeta.find((x: any) => x.id === obj.id);
     if (product && product.has_insights) {
-      localStorage.setItem('record_id', product.id);
-      localStorage.setItem('product', JSON.stringify(product));
-      localStorage.setItem('app_name', product.title);
-      localStorage.setItem('has_insights', product.has_insights);
-      localStorage.setItem(
-        'product_url',
-        obj.url && obj.url !== '' ? obj.url : ''
-      );
-      this.product = product;
-      this.specService.getVersions(this.product.id, (data) => {
-        this.versions = data;
-        const uniqueStatuses = [
-          ...new Set(data.map((obj: any) => obj.specStatus)),
-        ];
-        const priorityOrder = uniqueStatuses.sort((a, b) => {
-          if (a === 'LIVE') return -1;
-          if (b === 'LIVE') return 1;
-          return 0;
-        });
-        const firstObjectWithPriority = data.find(
-          (obj: any) => obj.specStatus === priorityOrder[0]
-        );
-        this.selectedVersion = firstObjectWithPriority;
-        this.specService.getMeSpecInfo(
-          {
-            productId: this.product?.id,
-            versionId: firstObjectWithPriority.id,
-          },
-          (specData) => {
-            if (specData) {
-              if (
-                this.conversationPanelInfo?.openConversationPanel &&
-                this.conversationPanelInfo?.parentTabIndex === 0 &&
-                this.conversationPanelInfo?.childTabIndex === 0
-              ) {
-                this.specService.getMeAllComments({
-                  productId: this.product?.id,
-                  versionId: firstObjectWithPriority.id,
-                });
-              } else if (
-                this.conversationPanelInfo?.openConversationPanel &&
-                this.conversationPanelInfo?.parentTabIndex === 0 &&
-                this.conversationPanelInfo?.childTabIndex === 1
-              ) {
-                this.specService.getMeAllTasks({
-                  productId: this.product?.id,
-                  versionId: firstObjectWithPriority.id,
-                });
-              } else if (
-                this.conversationPanelInfo?.openConversationPanel &&
-                this.conversationPanelInfo?.parentTabIndex === 1
-              ) {
-                this.specService.getMeCrList({ productId: this.product?.id });
-              }
-            }
-          }
-        );
-        this.storageService.saveItem(
-          StorageKeys.SpecVersion,
-          firstObjectWithPriority
-        );
-      });
+      this.emitProductChange.emit(obj)
     } else {
       this.showGenerateSpecPopup(product);
     }

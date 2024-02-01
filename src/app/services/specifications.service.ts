@@ -100,7 +100,6 @@ export class SpecificationsService {
                 } else if (
                   element.title === 'Business Rules' ||
                   element.title === 'Functional Dependencies' ||
-                  element.title === 'Data Dictionary' ||
                   element.title === 'User Interface'
                 ) {
                   element.content_data_type = 'JSON_TABLE';
@@ -108,6 +107,8 @@ export class SpecificationsService {
                   element.content_data_type = 'TABLE';
                 } else if (element.title === 'Data Model') {
                   element.content_data_type = 'DATA_MODEL';
+                }else if (element.title === 'Data Dictionary') {
+                  element.content_data_type = 'DATA_DICTIONARY';
                 } else if (element.title === 'Quality Assurance') {
                   element.content_data_type = 'QUALITY_ASSURANCE';
                 } else if (element.title === 'Data Model Table Data') {

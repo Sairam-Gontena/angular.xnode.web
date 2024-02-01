@@ -540,8 +540,8 @@ export class CrTabsComponent {
       this.addReviewerForm.value.reviewersLOne
     )
       ? this.addReviewerForm.value.reviewersLOne.map((reviewer: any) =>
-          reviewer.name.toLowerCase()
-        )
+        reviewer.name.toLowerCase()
+      )
       : [];
     filtered = this.reveiwerList.filter(
       (reviewer: any) =>
@@ -768,7 +768,8 @@ export class CrTabsComponent {
 
   publishApp(): void {
     const body = {
-      repoName: this.product.product_uuid,
+      repoName: this.product.title,
+      productUuid: this.product.product_uuid,
       projectName: environment.projectName,
       email: this.currentUser.email,
       crId: this.selectedCr.id,
@@ -875,12 +876,12 @@ export class CrTabsComponent {
               'CR has been' + ' ' + this.selectedStatus === 'ARCHIVE'
                 ? 'ARCHIVED'
                 : this.selectedStatus === 'SUBMIT'
-                ? 'SUBMITTED'
-                : this.selectedStatus === 'REJECT'
-                ? 'REJECTED'
-                : this.selectedStatus === 'APPROVE'
-                ? 'APPROVED'
-                : '' + ' ' + 'successfully',
+                  ? 'SUBMITTED'
+                  : this.selectedStatus === 'REJECT'
+                    ? 'REJECTED'
+                    : this.selectedStatus === 'APPROVE'
+                      ? 'APPROVED'
+                      : '' + ' ' + 'successfully',
           });
           this.getMeCrList();
           this.crData.forEach((ele: any) => {

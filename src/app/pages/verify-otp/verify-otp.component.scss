@@ -1,5 +1,5 @@
 .bg-color {
-    background: #343541 !important;
+    background: #343541;
 }
 
 .invalid-feedback {
@@ -60,6 +60,7 @@ label {
 :host ::ng-deep .p-card-body {
     // color: #23222B;
     padding: 40px 100px;
+    padding-bottom: 0px;
 }
 
 .terms-conditions {

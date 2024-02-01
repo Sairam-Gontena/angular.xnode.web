@@ -96,6 +96,9 @@ export class MyProductsComponent implements OnInit {
   }
 
   getMeMyAvatar(userAvatar?: any) {
+    if (!userAvatar) {
+      return '';
+    }
     let parts = userAvatar.split(' ');
     const initials = parts
       .map((part: any) => {
@@ -340,10 +343,10 @@ export class MyProductsComponent implements OnInit {
       this.searchText === ''
         ? this.templateCard
         : this.templateCard.filter((element) => {
-            return element.title
-              ?.toLowerCase()
-              .includes(this.searchText.toLowerCase());
-          });
+          return element.title
+            ?.toLowerCase()
+            .includes(this.searchText.toLowerCase());
+        });
   }
 
   filterProductsByUserEmail() {

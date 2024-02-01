@@ -102,6 +102,30 @@ export class DiffCompComponent implements OnInit {
         this.currentUser.id;
       this.makeTrustedUrl();
     }
+    if (this.contentObj?.content_data_type === 'DATA_DICTIONARY') {
+      this.stringifyDictionaryObject();
+    }
+  }
+
+  stringifyDictionaryObject(){
+    this.contentObj.content.forEach((item:any)=>{
+      if('columns' in item){
+        item.columns.forEach((subitem:any)=>{
+          subitem.columnType = Object.entries(subitem.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+          subitem.validators = Object.entries(subitem.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+        })
+      }
+      if('tables' in item){
+        item.tables.forEach((subitem:any)=>{
+            if('columns' in subitem){
+              subitem.columns.forEach((element:any) => {
+                element.columnType = Object.entries(element.columnType).map(([key, val]) => `${key}: ${val}`).join(', ');
+                element.validators = Object.entries(element.validators).map(([key, val]) => `${key}: ${val}`).join(', ');
+              });
+            }
+        })
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
