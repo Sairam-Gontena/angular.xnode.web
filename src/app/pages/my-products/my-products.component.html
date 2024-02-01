@@ -1,6 +1,6 @@
 <div class="body-container">
     <div class="p-6 grid flex justify-content-between w-full">
-        <div class="col">
+        <div class="col xs:col-12">
             <div class="text-white text-5xl	font-normal mb-3">Hi, Good Morning!</div>
             <div class="mt-4">
                 <p-button styleClass="mr-2 navi-btn" size="small" [rounded]="true">
@@ -13,27 +13,30 @@
                 </p-button>
             </div>
         </div>
-        <div class="col">
+        <div class="col xs:col-12">
             <div class="flex p-input-icon-left">
                 <i class="pi pi-search sm:ml-3  md:ml-3"></i>
                 <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText" (input)="search()"
-                    class="border-round-3xl ml-2" />
+                    class="border-round-3xl ml-2 xs:w-auto lg:w-full" />
             </div>
-            <div class="flex" style="padding: .5em 0 1em 0">
+            <div class="flex overflow-auto " style="padding: .5em 0 1em 0">
 
-                <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
+                <p-button
+                    class="w-full mb-2 md:w-auto md:mr-2 align-items-center justify-content-center text-base font-semibold tabView-label"
                     [text]="true" [ngClass]="{'nonActive': activeIndex != 0}" label=" All Products" [link]="true"
                     (click)="activeIndex = 0;onClickAllProducts()">
                     <img src="./assets/all-products.svg" class="text-2xl"
                         [src]="tabAllProducts || activeIndex === 0 ? './assets/all-products-hover.svg' : './assets/all-products.svg'" />
                 </p-button>
-                <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
+                <p-button
+                    class="w-full mb-2 md:w-auto md:mr-2 align-items-center justify-content-center text-base font-semibold tabView-label"
                     [text]="true" [ngClass]="{'nonActive': activeIndex != 1}" label=" Recently Viewed" [link]="true"
                     (click)="activeIndex = 1">
                     <img src="./assets/recent.svg" class="text-2xl"
                         [src]="tabRecent || activeIndex === 1  ? './assets/recent-hover.svg' : './assets/recent.svg'" />
                 </p-button>
-                <p-button class="align-items-center justify-content-center text-base font-semibold tabView-label"
+                <p-button
+                    class="w-full mb-2 md:w-auto md:mr-2 align-items-center justify-content-center text-base font-semibold tabView-label"
                     [text]="true" [ngClass]="{'nonActive': activeIndex != 2}" label=" My Products" [link]="true"
                     (click)="activeIndex = 2;onClickcreatedByYou()">
                     <img src="./assets/user.svg" class="text-2xl"
@@ -179,7 +182,7 @@
                 icon="pi pi-arrow-right" label="View Less" [link]="true" iconPos="right" (click)="onViewLess()">
             </p-button>
         </div>
-        <div class="col-8 lg:col-12 xs:col-12">
+        <div class="col lg:col-12 xs:col-12">
             <h3 class="text-2xl font-semibold">Recent Activity</h3>
             <div class="recentActivity col-8 lg:col-12 xs:col-12 ml-2 p-0 m-0 -mt-6">
                 <div class="filterDropdown">

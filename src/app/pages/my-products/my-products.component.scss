@@ -2,6 +2,10 @@
     border-radius: 30px;
 }
 
+:host ::ng-deep .p-inputtext {
+    // width: auto !important;
+}
+
 @media (max-width: 767px) {
 
     :host ::ng-deep .recentActivity {
