@@ -2,8 +2,22 @@
     border-radius: 30px;
 }
 
-:host ::ng-deep .search-input .p-inputtext {
-    width: 100% !important;
+.header-txt {
+    padding: 3rem;
+}
+
+.recent-txt {
+    padding: 1.5rem;
+}
+
+.my-products-scroll {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.recent-scroll {
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 @media (max-width: 767px) {
@@ -14,17 +28,36 @@
             }
         }
 
-        .search-input .p-inputtext {
-            width: auto !important;
-        }
-
         p-dropdown {
             .p-inputtext {
                 background-color: unset;
             }
         }
+
+        .tabView-label .p-button .p-button-label {
+            font-size: 0.5rem;
+            font-weight: 600;
+        }
+
     }
 
+    .header-txt {
+        padding: 0.5rem;
+    }
+
+    .my-products-scroll {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .recent-scroll {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .recent-txt {
+        padding: 1rem;
+    }
 
     // .tabview-header-txt {
     //     font-size: 10px;

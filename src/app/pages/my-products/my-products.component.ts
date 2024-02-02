@@ -50,8 +50,8 @@ export class MyProductsComponent implements OnInit {
     { name: 'Mine', value: 'Mine' }
   ];
   selectedConversation: any = { name: 'All', value: 'All' };
-  enableSearch: boolean =false;
-  searchTextConversation:any;
+  enableSearch: boolean = false;
+  searchTextConversation: any;
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -315,7 +315,7 @@ export class MyProductsComponent implements OnInit {
         this.getAllConversations();
         this.utils.loadSpinner(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         let user_audit_body = {
           method: 'GET',
           url: error?.request?.responseURL,
@@ -345,7 +345,7 @@ export class MyProductsComponent implements OnInit {
       return obj?.user_id === this.currentUser.user_id;
     });
     this.filteredProducts = cloneDeep(this.filteredProducts);
-    this.end = 2;
+    this.end = 3;
     this.isViewLess = true;
   }
 
@@ -353,7 +353,7 @@ export class MyProductsComponent implements OnInit {
     this.filteredProducts = sortBy([...this.templateCard], ['created_on']).reverse();
     this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
     this.filteredProducts = cloneDeep(this.filteredProducts);
-    this.end = 2;
+    this.end = 3;
     this.isViewLess = true;
   }
 
@@ -362,10 +362,10 @@ export class MyProductsComponent implements OnInit {
       this.searchText === ''
         ? this.templateCard
         : this.templateCard.filter((element) => {
-            return element.title
-              ?.toLowerCase()
-              .includes(this.searchText.toLowerCase());
-          });
+          return element.title
+            ?.toLowerCase()
+            .includes(this.searchText.toLowerCase());
+        });
   }
 
   searchConversation() {
@@ -376,11 +376,11 @@ export class MyProductsComponent implements OnInit {
       });
   }
 
-  toggleSearch(){
-    if(this.enableSearch){
+  toggleSearch() {
+    if (this.enableSearch) {
       this.enableSearch = false;
-    }else{
-    this.enableSearch = true;
+    } else {
+      this.enableSearch = true;
     }
   }
 
@@ -473,7 +473,7 @@ export class MyProductsComponent implements OnInit {
 
   onViewLess() {
     this.isViewLess = true;
-    this.end = 2;
+    this.end = 3;
   }
 
   getAllConversations() {
