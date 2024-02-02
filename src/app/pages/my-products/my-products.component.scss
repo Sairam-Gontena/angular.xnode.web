@@ -24,7 +24,12 @@
     :host ::ng-deep .recentActivity {
         .filterDropdown {
             .p-inputtext {
-                width: 20%;
+                // width: 20%;
+                width: 0;
+            }
+
+            .search-icon {
+                display: none;
             }
         }
 
@@ -34,11 +39,39 @@
             }
         }
 
-        .tabView-label .p-button .p-button-label {
-            font-size: 0.5rem;
-            font-weight: 600;
+
+
+        .p-tabview .p-tabview-panels {
+            padding: 0;
+            border: 0 none;
         }
 
+        .p-card .p-card-title {
+            white-space: revert;
+            // width: 350px;
+            overflow: auto;
+        }
+    }
+
+    :host ::ng-deep .tabView-label .p-button .p-button-label {
+        display: none;
+    }
+
+    .tab-buttons {
+        width: 350px;
+    }
+
+    :host ::ng-deep .tab-buttons::-webkit-scrollbar-thumb {
+        background-color: #24232c;
+    }
+
+    :host ::ng-deep .tab-buttons::-webkit-scrollbar-thumb:hover {
+        background-color: #24232c;
+    }
+
+    :host ::ng-deep .tab-buttons::-webkit-scrollbar {
+        width: 5px !important;
+        background-color: #24232C !important;
     }
 
     .header-txt {
@@ -481,10 +514,10 @@
     max-width: calc(100% - 30px);
 }
 
-.grid>[class*=col],
-.grid>.empty-card1 {
-    margin: 1em;
-}
+// .grid>[class*=col],
+// .grid>.empty-card1 {
+//     margin: 1em;
+// }
 
 .recentActivity {
     .filterDropdown {
@@ -505,10 +538,10 @@
 
 }
 
-.grid>[class*=col],
-.grid>.empty-card1 {
-    margin: 1em;
-}
+// .grid>[class*=col],
+// .grid>.empty-card1 {
+//     margin: 1em;
+// }
 
 .recentActivity {
     .conversations-card {

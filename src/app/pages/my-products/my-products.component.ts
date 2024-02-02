@@ -38,7 +38,7 @@ export class MyProductsComponent implements OnInit {
   timeAgo: any;
   isTitleHovered: any;
   userImage: any;
-  end = 2;
+  end = 3;
   filteredProductsLength = 0;
   activeIndexRecentActivity: number = 0;
   isViewLess = true;
