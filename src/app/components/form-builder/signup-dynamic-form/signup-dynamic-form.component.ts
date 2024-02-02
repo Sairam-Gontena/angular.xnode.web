@@ -21,6 +21,7 @@ export class SignupDynamicFormComponent implements OnInit {
   inputControls: FormComponent[] = [];
   product: Product | undefined;
   noSQLForm: any;
+  jsonDoc = JSON_DOC
   constructor(
     private utilsService: UtilsService,
     private builderService: BuilderService,
@@ -31,10 +32,8 @@ export class SignupDynamicFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.fetchOnboardingFlow();
-    // this.product = this.storageService.getItem(StorageKeys.Product);
-    this.noSQLForm = this.jsonFormBuilderService.constructJSONForm('NO SQL Dynamic Form', JSON_DOC)
-console.log('this.noSQLForm:',this.noSQLForm)
+    this.noSQLForm = this.jsonFormBuilderService.constructJSONForm('NO SQL Dynamic Form', this.jsonDoc)
+    console.log('this.noSQLForm:',this.noSQLForm)
   }
 
   fetchOnboardingFlow() {}

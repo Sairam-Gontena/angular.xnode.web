@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit,  Component, Input, OnInit } from '@angular/core';
 import { BuilderService } from '../builder.service';
 import {  FormBuilder, FormGroup } from '@angular/forms';
 
@@ -7,10 +7,11 @@ import {  FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, AfterContentChecked {
 
-  @Input() form:any = this.fb.group({});
+  @Input() form = this.fb.group({});
   @Input() noSQLForm:any;
+  @Input() inputDoc:any = {}
 
   constructor(private service: BuilderService, private fb:FormBuilder) {
   }
@@ -20,9 +21,17 @@ export class DynamicFormComponent implements OnInit {
     this.form = formGroup;
   }
 
+  ngAfterContentChecked(): void {
+    this.form.patchValue(this.inputDoc)
+  }
+
+  getInputDoc(formName:string) {
+    this.inputDoc[formName]
+  }
 
   onSubmit(formSubmitted:FormGroup) {
-    console.log(formSubmitted.value)
+    console.log(formSubmitted.getRawValue())
+   console.log(this.form)
   }
 
 }

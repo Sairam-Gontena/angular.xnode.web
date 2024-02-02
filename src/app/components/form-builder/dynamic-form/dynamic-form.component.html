@@ -26,8 +26,8 @@
         <xnode-dynamic-control [control]="control" [parentFormGroup]="form"></xnode-dynamic-control>
       </div>
 
-      <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
-        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+      <div *ngFor="let subForm of noSQLForm.subForms" class="form-row">
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="inputDoc[subForm.formName]" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
       </div>
 
       <div class="form-row">

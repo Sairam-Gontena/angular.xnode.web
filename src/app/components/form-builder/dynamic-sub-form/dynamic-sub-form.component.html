@@ -7,7 +7,7 @@
       </div>
 
       <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
-        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="inputDoc[subForm.formName]" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
       </div>
   </div>
 
@@ -25,7 +25,7 @@
     </ng-container>
   </ng-container>
     <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
-      <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+      <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="getInputDoc(noSQLForm.formName)" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
     </div>
   <button (click)="add()">Add</button>
   </ng-template>

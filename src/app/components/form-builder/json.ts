@@ -35,14 +35,7 @@ export const JSON_DOC: any = {
             'Consult with a counselor for strategies on emotional management',
           Type: 'checkpoint',
           Checked: false,
-        },
-        {
-          Order: 4,
-          Description:
-            'Present a biology topic in class to enhance understanding and confidence',
-          Type: 'assessment',
-          Checked: false,
-        },
+        }
       ],
       Resources: [
         {

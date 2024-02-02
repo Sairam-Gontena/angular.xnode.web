@@ -34,6 +34,7 @@ export class BuilderService {
           order: orderCnt++,
           type: this.dataType(element),
           controlType: this.controlType(element),
+          isArray:false
         })
     }
     return controls;
