@@ -3,12 +3,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 import { authGuard } from './auth.guard';
+import { ConversationHubComponent } from './components/conversation-hub/conversation-hub.component';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
       import('./pages/login/login.module').then((m) => m.LoginModule),
+  },
+  {
+    path: 'graph',
+    component:ConversationHubComponent
   },
   {
     path: 'login',
