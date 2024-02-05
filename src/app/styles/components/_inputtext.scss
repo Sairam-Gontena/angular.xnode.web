@@ -4,107 +4,118 @@
 // --inputtext-border-color:#EF018F,
 // --inputtext-text-color:#EF018F,
 // --inputtext-placeholder-text-color:#EF018F,
-  
-  .p-inputtext {
-    width: 100%;
-    font-family: var(--font-family);
-    font-feature-settings: var(--font-feature-settings, normal);
-    font-size: 1rem;
-    color: var(--inputtext-text-color);
-    background-color: var(--inputtext-background-color);
-    padding: 0.75rem 0.75rem;
-    border: 0px solid #595959;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
-    border-radius: 6px;
 
-  }
-  .p-inputtext:enabled:hover {
-    border: 0px solid var(--inputtext-border-color);
-  }
-  .p-inputtext:enabled:focus {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem transparent;
-  }
-  .p-inputtext.ng-dirty.ng-invalid {
-    border-color: #e24c4c;
-  }
-  .p-inputtext.p-inputtext-sm {
-    font-size: 0.875rem;
-    padding: 0.65625rem 0.65625rem;
-  }
-  .p-inputtext.p-inputtext-lg {
-    font-size: 1.25rem;
-    padding: 0.9375rem 0.9375rem;
-  }
+.p-inputtext {
+  // width: 100%;
+  font-family: var(--font-family);
+  font-feature-settings: var(--font-feature-settings, normal);
+  font-size: 1rem;
+  color: var(--inputtext-text-color);
+  background-color: var(--inputtext-background-color);
+  padding: 0.75rem 0.75rem;
+  border: 0px solid #595959;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  border-radius: 6px;
 
-  .p-float-label > label {
-    left: 0.75rem;
-    color: #6b7280;
-    transition-duration: 0.2s;
-  }
+}
 
-  .p-float-label > .ng-invalid.ng-dirty + label {
-    color: #e24c4c;
-  }
+.p-inputtext:enabled:hover {
+  border: 0px solid var(--inputtext-border-color);
+}
 
-  .p-input-icon-left > .p-icon-wrapper.p-icon,
-.p-input-icon-left > i:first-of-type {
-    left: 0.75rem;
-    color: #6b7280;
-  }
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem transparent;
+}
 
-  .p-input-icon-left > .p-inputtext {
-    padding-left: 2.5rem;
-  }
+.p-inputtext.ng-dirty.ng-invalid {
+  border-color: #e24c4c;
+}
 
-  .p-input-icon-left.p-float-label > label {
-    left: 2.5rem;
-  }
+.p-inputtext.p-inputtext-sm {
+  font-size: 0.875rem;
+  padding: 0.65625rem 0.65625rem;
+}
 
-  .p-input-icon-right > .p-icon-wrapper,
-.p-input-icon-right > i:last-of-type {
-    right: 0.75rem;
-    color: #6b7280;
-  }
+.p-inputtext.p-inputtext-lg {
+  font-size: 1.25rem;
+  padding: 0.9375rem 0.9375rem;
+}
 
-  .p-input-icon-right > .p-inputtext {
-    padding-right: 2.5rem;
-  }
+.p-float-label>label {
+  left: 0.75rem;
+  color: #6b7280;
+  transition-duration: 0.2s;
+}
 
-  ::-webkit-input-placeholder {
-    color: #6b7280;
-  }
+.p-float-label>.ng-invalid.ng-dirty+label {
+  color: #e24c4c;
+}
 
-  :-moz-placeholder {
-    color: #6b7280;
-  }
+.p-input-icon-left>.p-icon-wrapper.p-icon,
+.p-input-icon-left>i:first-of-type {
+  left: 0.75rem;
+  // color: #6b7280;
+  color: #EFEEEE;
 
-  ::-moz-placeholder {
-    color: #6b7280;
-  }
+}
 
-  :-ms-input-placeholder {
-    color: #6b7280;
-  }
+.p-input-icon-left>.p-inputtext {
+  padding-left: 3rem;
+}
 
-  .p-input-filled .p-inputtext {
-    background-color: #f3f4f6;
-  }
-  .p-input-filled .p-inputtext:enabled:hover {
-    background-color: #f3f4f6;
-  }
-  .p-input-filled .p-inputtext:enabled:focus {
-    background-color: #ffffff;
-  }
+.p-input-icon-left.p-float-label>label {
+  left: 2.5rem;
+}
 
-  .p-inputtext-sm .p-inputtext {
-    font-size: 0.875rem;
-    padding: 0.65625rem 0.65625rem;
-  }
+.p-input-icon-right>.p-icon-wrapper,
+.p-input-icon-right>i:last-of-type {
+  right: 0.75rem;
+  // color: #6b7280;
+  color: #EFEEEE;
+}
 
-  .p-inputtext-lg .p-inputtext {
-    font-size: 1.25rem;
-    padding: 0.9375rem 0.9375rem;
-  }
+.p-input-icon-right>.p-inputtext {
+  padding-right: 2.5rem;
+}
+
+::-webkit-input-placeholder {
+  color: #EFEEEE;
+}
+
+:-moz-placeholder {
+  // color: #6b7280;
+  color: #EFEEEE;
+}
+
+::-moz-placeholder {
+  color: #EFEEEE;
+}
+
+:-ms-input-placeholder {
+  color: #EFEEEE;
+}
+
+.p-input-filled .p-inputtext {
+  background-color: #f3f4f6;
+}
+
+.p-input-filled .p-inputtext:enabled:hover {
+  background-color: #f3f4f6;
+}
+
+.p-input-filled .p-inputtext:enabled:focus {
+  background-color: #ffffff;
+}
+
+.p-inputtext-sm .p-inputtext {
+  font-size: 0.875rem;
+  padding: 0.65625rem 0.65625rem;
+}
+
+.p-inputtext-lg .p-inputtext {
+  font-size: 1.25rem;
+  padding: 0.9375rem 0.9375rem;
+}
