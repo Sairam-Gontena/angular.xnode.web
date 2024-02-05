@@ -125,9 +125,12 @@
                         <div class="flex md:justify-content-start justify-content-center flex-wrap card-gap">
                             <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 empty-card1"
                                 *ngIf="filteredProducts.length > 0">
-                                <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
-                                <div class=" flex justify-content-between align-items-center card-color card-title">
-                                    <div class="title">
+                                <div
+                                    class="flex flex-wrap justify-content-center align-items-center card-color card-title">
+                                    <div class="col-12 flex justify-content-center">
+                                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                                    </div>
+                                    <div class="class-12 title flex justify-content-center">
                                         New Product
                                     </div>
                                 </div>
@@ -156,10 +159,14 @@
                                     <!-- <p-avatar [label]="userImage" *ngIf="currentUser" styleClass="mr-2"
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                                         shape="circle"></p-avatar> -->
-                                    <div class="ml-1">
-                                        <p class="m-0 card-subheading-txt">{{data.created_by}} on: {{data.created_on
+                                    <div class="ml-1 card-subheading-txt">
+                                        <p class="m-0 card-subheading ">{{data.created_by}} on:
+                                            {{data.created_on
                                             |
                                             date:'medium'}}</p>
+                                        <div class="mt-4">
+                                            Modified on - NA
+                                        </div>
                                     </div>
                                 </div>
                             </div>

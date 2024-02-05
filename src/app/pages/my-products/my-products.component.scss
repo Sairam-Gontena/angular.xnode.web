@@ -10,10 +10,6 @@
     padding: 1.5rem;
 }
 
-// .my-products-scroll {
-//     padding-left: 3rem;
-//     padding-right: 3rem;
-// }
 .my-products-body {
     padding: 4rem;
 }
@@ -29,7 +25,6 @@
 
         .filterDropdown {
             .p-inputtext {
-                // width: 20%;
                 width: 0;
             }
 
@@ -334,14 +329,6 @@
 
     }
 }
-
-// :host ::ng-deep .p-inputtext:enabled:focus {
-//     box-shadow: none;
-// }
-
-// :host ::ng-deep .p-inputtext ::placeholder {
-//     color: rgba(255, 255, 255, 0.5);
-// }
 
 :host ::ng-deep .p-card {
     background: transparent;
