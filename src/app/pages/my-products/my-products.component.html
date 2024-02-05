@@ -50,7 +50,7 @@
                     <div class="col-12 flex md:justify-content-start justify-content-center">
                         <div
                             class="flex md:justify-content-start sm:justify-content-start justify-content-start flex-wrap card-gap">
-                            <div class="flex product-card card-color justify-content-center align-items-center empty-card"
+                            <div class="flex product-card card-color justify-content-center align-items-center new-card"
                                 *ngIf="filteredProducts.length == 0">
                                 <div
                                     class="flex flex-wrap justify-content-center align-items-center card-color card-title">
@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 empty-card1"
+                            <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 new-card-add"
                                 *ngIf="filteredProducts.length > 0">
                                 <div
                                     class="flex flex-wrap justify-content-center align-items-center card-color card-title">
@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="align-items-center pointer justify-content-center product-card font-bold border-round m-2"
+                            <div class="align-items-center pointer justify-content-center product-card shadow-6 font-bold border-round m-2"
                                 *ngFor="let data of filteredProducts |  slice:0:end ; let i = index"
                                 (click)="onClickProductCard(data)">
                                 <div class="card-color relative">
@@ -123,7 +123,7 @@
                 <div class="grid">
                     <div class="col-12">
                         <div class="flex md:justify-content-start justify-content-center flex-wrap card-gap">
-                            <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 empty-card1"
+                            <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 new-card-add"
                                 *ngIf="filteredProducts.length > 0">
                                 <div
                                     class="flex flex-wrap justify-content-center align-items-center card-color card-title">
@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="align-items-center pointer justify-content-center product-card font-bold border-round m-2"
+                            <div class="align-items-center pointer justify-content-center product-card shadow-6 font-bold border-round m-2"
                                 *ngFor="let data of filteredProducts ; let i = index"
                                 (click)="onClickProductCard(data)">
                                 <div class="card-color relative">

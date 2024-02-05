@@ -141,10 +141,3 @@ textarea {
 :host::ng-deep .p-dialog .p-dialog-header {
     border-bottom: 1px solid #ccc;
 }
-
-@media (max-width: 767px) {
-    :host ::ng-deep .logout-split-btn .p-button {
-        display: none;
-
-    }
-}

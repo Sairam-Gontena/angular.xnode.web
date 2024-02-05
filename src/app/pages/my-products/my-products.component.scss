@@ -33,14 +33,6 @@
             }
         }
 
-        p-dropdown {
-            .p-inputtext {
-                background-color: unset;
-            }
-        }
-
-
-
         .p-tabview .p-tabview-panels {
             padding: 0;
             border: 0 none;
@@ -48,7 +40,6 @@
 
         .p-card .p-card-title {
             white-space: revert;
-            // width: 350px;
             overflow: auto;
         }
     }
@@ -63,23 +54,6 @@
 
     .title {
         display: none !important;
-    }
-
-    .tab-buttons {
-        width: 350px;
-    }
-
-    :host ::ng-deep .tab-buttons::-webkit-scrollbar-thumb {
-        background-color: #24232c;
-    }
-
-    :host ::ng-deep .tab-buttons::-webkit-scrollbar-thumb:hover {
-        background-color: #24232c;
-    }
-
-    :host ::ng-deep .tab-buttons::-webkit-scrollbar {
-        width: 5px !important;
-        background-color: #24232C !important;
     }
 
     .header-txt {
@@ -110,33 +84,14 @@
     .body-card {
         padding: 0.5rem !important;
         margin-top: -1rem !important;
-        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.06), 0px 7px 9px rgba(0, 0, 0, 0.12), 0px 20px 25px -8px rgba(0, 0, 0, 0.18);
-
     }
-
-    // .tabview-header-txt {
-    //     font-size: 10px;
-    // }
 
     :host ::ng-deep .p-card {
         position: relative;
     }
 
-    .header-text {
-        font-size: 12px
-    }
-
-    .heading-text {
-        font-size: 10px;
-    }
-
-    .normal-text {
-        font-size: 8px;
-    }
-
     :host ::ng-deep .p-card .p-card-title {
         font-size: 16px;
-
         font-weight: 400;
     }
 
@@ -145,13 +100,13 @@
         margin-top: -1rem;
     }
 
-    .empty-card {
+    .new-card {
         height: 200px;
         border-radius: 10px;
         border: 1px dashed;
     }
 
-    .empty-card1 {
+    .new-card-add {
         width: 9rem !important;
         height: 14rem !important;
     }
@@ -174,17 +129,11 @@
 
     .card-subheading-txt {
         font-size: 12px;
-
         font-weight: 500;
         line-height: 14.52px;
         margin-top: 5px;
     }
 
-    .card-normal-txt {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 14.52px;
-    }
 }
 
 
@@ -230,7 +179,7 @@
         font-size: 12px;
     }
 
-    .empty-card {
+    .new-card {
         height: 300px;
         border-radius: 10px;
     }
@@ -249,13 +198,6 @@
         margin-top: 5px;
     }
 
-    .card-normal-txt {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 16.94px;
-        margin-top: 5px;
-
-    }
 }
 
 @media (min-width: 992px) {
@@ -303,7 +245,7 @@
         font-size: 10px;
     }
 
-    .empty-card {
+    .new-card {
         height: 300px;
         border-radius: 10px;
     }
@@ -321,13 +263,6 @@
         margin-top: 5px;
     }
 
-    .card-normal-txt {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 19.36px;
-        margin-top: 5px;
-
-    }
 }
 
 :host ::ng-deep .p-card {
@@ -357,44 +292,9 @@
     bottom: 118px;
 }
 
-:host ::ng-deep .p-card .p-.card-title:hover {
-    content: attr(title);
-    position: absolute;
-    white-space: nowrap;
-    background-color: #fff;
-    color: #000;
-    padding: 5px;
-    z-index: 1;
-}
-
-.letter-space-1 {
-    letter-spacing: 1px;
-}
-
-.card-grid {
-    display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(314px, 1fr));
-    grid-template-columns: repeat(4, 1fr);
-    /* 4 cards for desktop */
-    grid-gap: 45px;
-    grid-row-gap: 70px;
-
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 cards for iPad */
-    }
-
-    @media (max-width: 600px) {
-        grid-template-columns: 1fr;
-        justify-content: center;
-        /* 1 card for mobile */
-    }
-}
-
 :host ::ng-deep .p-tabview .p-tabview-nav {
     background: transparent;
     color: #ffffff !important;
-    // border: none !important;
     margin: 4px 0;
 }
 
@@ -428,57 +328,8 @@
     background: transparent;
 }
 
-@media screen and (max-width: 600px) {
-    .search .p-inputtext {
-        width: 95%;
-    }
-}
-
-.tmp-page-height {
-    height: calc(100vh - 40px);
-    overflow: auto;
-}
-
-.text-xxs {
-    font-size: 8px;
-}
-
 .card-body {
     height: 328px;
-}
-
-.body-container {
-    height: 100%;
-    width: 100%;
-    background-color: #3A3942;
-    color: #EFEEEE;
-}
-
-::placeholder {
-    color: #fff;
-}
-
-.new-layer {
-    position: relative;
-}
-
-.new-layer {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.centered-content {
-    text-align: center;
-    width: 100%;
-    height: 100%;
-}
-
-.new-template {
-    background-color: #4E4D55;
-    border-radius: 10px;
 }
 
 .overlay-heart {
@@ -490,7 +341,6 @@
     color: #4E4D55;
     font-size: 30px;
     font-weight: 700;
-
     padding: 10px;
 }
 
@@ -502,12 +352,10 @@
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     padding: 1rem;
-    // padding-bottom: 1rem;
     margin-top: -1rem;
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.06), 0px 7px 9px rgba(0, 0, 0, 0.12), 0px 20px 25px -8px rgba(0, 0, 0, 0.18);
 }
 
-.empty-card1::before {
+.new-card-add::before {
     content: '';
     position: absolute;
     left: -7px;
@@ -519,7 +367,7 @@
     box-sizing: border-box;
 }
 
-.empty-card1 {
+.new-card-add {
     width: 15rem;
     height: 20rem;
     border-radius: 10px;
@@ -552,27 +400,10 @@
     gap: 3rem;
 }
 
-// :host ::ng-deep .navi-btn.p-button .p-button-label {
-//     font-weight: 500;
-//     font-size: 0.875rem;
-//     color: #DEDEDE;
-// }
-
-// :host ::ng-deep .p-button-link {
-//     color: #02adee;
-// }
-
 :host ::ng-deep .tabView-label .p-button .p-button-label {
-    // color: #DEDEDE;
     font-size: 1rem;
     font-weight: 600;
 }
-
-// .p-button:enabled:hover {
-//     background: var(--primary-color);
-//     border-color: var(--primary-color);
-//     border: 1px solid var(--primary-color);
-// }
 
 :host::ng-deep.p-avatar .p-avatar-text {
     font-size: 11px;
@@ -585,11 +416,6 @@
     text-overflow: ellipsis;
     max-width: calc(100% - 30px);
 }
-
-// .grid>[class*=col],
-// .grid>.empty-card1 {
-//     margin: 1em;
-// }
 
 .recentActivity {
     .filterDropdown {
@@ -613,11 +439,6 @@
 .card-subheading {
     min-height: 60px;
 }
-
-// .grid>[class*=col],
-// .grid>.empty-card1 {
-//     margin: 1em;
-// }
 
 .recentActivity {
     margin-top: -4rem;
