@@ -10,9 +10,12 @@
     padding: 1.5rem;
 }
 
-.my-products-scroll {
-    padding-left: 3rem;
-    padding-right: 3rem;
+// .my-products-scroll {
+//     padding-left: 3rem;
+//     padding-right: 3rem;
+// }
+.my-products-body {
+    padding: 4rem;
 }
 
 .recent-scroll {
@@ -22,6 +25,8 @@
 
 @media (max-width: 767px) {
     :host ::ng-deep .recentActivity {
+        margin-top: -5rem !important;
+
         .filterDropdown {
             .p-inputtext {
                 // width: 20%;
@@ -53,8 +58,16 @@
         }
     }
 
+    .card-subheading {
+        min-height: 45px !important;
+    }
+
     :host ::ng-deep .tabView-label .p-button .p-button-label {
         display: none;
+    }
+
+    .title {
+        display: none !important;
     }
 
     .tab-buttons {
@@ -79,8 +92,15 @@
     }
 
     .my-products-scroll {
+        padding: 1rem !important;
+        padding-top: 0;
         padding-left: 0;
         padding-right: 0;
+        margin-top: -2rem !important;
+    }
+
+    .my-products-body {
+        padding: 1rem !important;
     }
 
     .recent-scroll {
@@ -90,6 +110,13 @@
 
     .recent-txt {
         padding: 1rem;
+    }
+
+    .body-card {
+        padding: 0.5rem !important;
+        margin-top: -1rem !important;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.06), 0px 7px 9px rgba(0, 0, 0, 0.12), 0px 20px 25px -8px rgba(0, 0, 0, 0.18);
+
     }
 
     // .tabview-header-txt {
@@ -120,6 +147,7 @@
 
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
+        margin-top: -1rem;
     }
 
     .empty-card {
@@ -128,17 +156,31 @@
         border: 1px dashed;
     }
 
+    .empty-card1 {
+        width: 9rem !important;
+        height: 14rem !important;
+    }
+
+    .product-card {
+        width: 9rem !important;
+        height: 14rem !important;
+    }
+
+    .card-gap {
+        gap: 1rem !important;
+    }
+
     .card-title {
         font-size: 18px;
-
-        font-weight: 700;
+        font-weight: 500;
         line-height: 21.78px;
+        padding: 0.5rem !important;
     }
 
     .card-subheading-txt {
         font-size: 12px;
 
-        font-weight: 600;
+        font-weight: 500;
         line-height: 14.52px;
         margin-top: 5px;
     }
@@ -182,6 +224,7 @@
 
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
+        margin-top: -1rem;
     }
 
     .heading-text {
@@ -197,6 +240,7 @@
         border-radius: 10px;
     }
 
+
     .card-title {
         font-size: 20px;
         font-weight: 700;
@@ -205,7 +249,7 @@
 
     .card-subheading-txt {
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 500;
         line-height: 16.94px;
         margin-top: 5px;
     }
@@ -253,6 +297,7 @@
 
     :host ::ng-deep .p-card .p-card-content {
         padding: 0px;
+        margin-top: -1rem;
     }
 
     .heading-text {
@@ -270,13 +315,13 @@
 
     .card-title {
         font-size: 24px;
-        font-weight: 700;
+        font-weight: 500;
         line-height: 32px;
     }
 
     .card-subheading-txt {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 500;
         line-height: 19.36px;
         margin-top: 5px;
     }
@@ -366,6 +411,14 @@
     margin: 4px 0;
 }
 
+:host ::ng-deep .my-products-tab-view .p-tabview .p-tabview-panels {
+    padding: 0;
+}
+
+.my-products-scroll {
+    padding: 4rem;
+    margin-top: -4rem;
+}
 
 :host ::ng-deep .my-products-scroll::-webkit-scrollbar-thumb {
     background-color: #24232c;
@@ -461,23 +514,55 @@
 .body-card {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    padding: 1rem;
+    // padding-bottom: 1rem;
+    margin-top: -1rem;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.06), 0px 7px 9px rgba(0, 0, 0, 0.12), 0px 20px 25px -8px rgba(0, 0, 0, 0.18);
+}
+
+.empty-card1::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: -7px;
+    right: -7px;
+    bottom: -7px;
+    border: 8px dashed;
+    border-radius: 17px;
+    box-sizing: border-box;
 }
 
 .empty-card1 {
+    width: 15rem;
+    height: 20rem;
     border-radius: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 3px dashed;
     background-color: #343541 !important;
+    position: relative;
+    clip-path: inset(0 round 10px 10px 10px 10px);
 
     .card-title {
         background-color: #343541 !important;
     }
 }
 
+.card-title {
+    padding: 1rem;
+}
+
 :host ::ng-deep .import-btn {
     background-color: #EFEEEE;
     color: #4B4B4B;
+}
+
+.product-card {
+    width: 15rem;
+    height: 21rem;
+}
+
+.card-gap {
+    gap: 3rem;
 }
 
 // :host ::ng-deep .navi-btn.p-button .p-button-label {
@@ -538,12 +623,18 @@
 
 }
 
+.card-subheading {
+    min-height: 60px;
+}
+
 // .grid>[class*=col],
 // .grid>.empty-card1 {
 //     margin: 1em;
 // }
 
 .recentActivity {
+    margin-top: -4rem;
+
     .conversations-card {
         height: 130px;
         max-height: 130px;
