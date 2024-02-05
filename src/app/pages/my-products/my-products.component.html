@@ -121,7 +121,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="align-items-center pointer justify-content-center w-15rem h-15rem font-bold border-round m-2"
+                            <div class="align-items-center pointer justify-content-center w-15rem h-19rem font-bold border-round m-2"
                                 *ngFor="let data of filteredProducts ; let i = index"
                                 (click)="onClickProductCard(data)">
                                 <div class="card-color relative">
@@ -168,14 +168,14 @@
         </div>
         <div class="col-12">
             <h3 class="text-2xl font-semibold">Recent Activity</h3>
-            <div class="recentActivity p-0 m-0">
-                <!-- <div class="filterDropdown">
+            <div class="recentActivity p-0 -mt-7">
+                <div class="filterDropdown">
                     <i class="pi pi-search search-icon" (click)="toggleSearch()"></i>
                     <input type="text" *ngIf="enableSearch" class="p-inputtext " placeholder="Search"
                         [(ngModel)]="searchTextConversation" (input)="searchConversation()" />
                     <p-dropdown [options]="Conversations" [(ngModel)]="selectedConversation" [editable]="true"
                         optionLabel="name"></p-dropdown>
-                </div> -->
+                </div>
                 <p-tabView [(activeIndex)]="activeIndexRecentActivity" class="col-12">
 
                     <p-tabPanel header="All Conversations" class="home-conversations-card"
