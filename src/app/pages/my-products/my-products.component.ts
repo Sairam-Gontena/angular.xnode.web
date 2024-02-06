@@ -12,7 +12,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
-import { ApiService } from 'src/app/api/api.service';
+import { ConversationApiService } from 'src/app/api/conversation-api.service';
 
 @Component({
   selector: 'xnode-my-products',
@@ -61,7 +61,7 @@ export class MyProductsComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private naviApiService: NaviApiService,
-    private apiService: ApiService
+    private conversationApiService: ConversationApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
 
@@ -484,14 +484,13 @@ export class MyProductsComponent implements OnInit {
   }
 
   getAllConversations() {
-    this.apiService.getAllConversations('conversation')
+    this.conversationApiService.getAllConversations()
       .then((response: any) => {
         this.AllConversations = this.mapProductNameToConversations(response.data);
         this.filteredConversation = this.AllConversations;
       })
     if (this.currentUser && this.currentUser.user_id) {
-
-      this.apiService.getConversationsByContributor('conversation/conversations-by-contributor?contributors=' + this.currentUser?.user_id)
+      this.conversationApiService.getConversationsByContributor(this.currentUser?.user_id)
         .then((response: any) => {
           if (response && response.status == 200 && response.data) {
             this.mineConversations = this.mapProductNameToConversations(response.data);
