@@ -14,11 +14,6 @@
     padding: 4rem;
 }
 
-.recent-scroll {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
 @media (max-width: 767px) {
     :host ::ng-deep .recentActivity {
         margin-top: -5rem !important;
@@ -70,11 +65,6 @@
 
     .my-products-body {
         padding: 1rem !important;
-    }
-
-    .recent-scroll {
-        padding-left: 0;
-        padding-right: 0;
     }
 
     .recent-txt {
