@@ -19,11 +19,11 @@
         </p-overlayPanel>
         <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass=""
             shape="circle" *ngIf="!username" [style]="{ width:'23px',height:'23px' }"></p-avatar>
-        <p-avatar [label]="userImage" *ngIf="username" styleClass="font-medium mr-2"
+        <p-avatar [label]="userImage" *ngIf="username"
             [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'23px',height:'23px' }"
             shape="circle"></p-avatar>
-        <p-splitButton [label]="username" [model]="logoutDropdown"
-            styleClass="p-button-raised logout-split-btn"></p-splitButton>
+        <p-splitButton [label]="username" [model]="logoutDropdown" styleClass="p-button-raised logout-split-btn"
+            class="hidden md:block"></p-splitButton>
     </div>
     <xnode-customer-feedback *ngIf="selectedPopup==='customer-feedback'"
         [visible]="selectedPopup==='customer-feedback'"></xnode-customer-feedback>

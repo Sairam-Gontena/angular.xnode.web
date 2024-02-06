@@ -24,8 +24,7 @@ html {
 body {
   font-family: var(--font-family);
   margin: 0;
-  // background: var(--surface-section);
-  // background: #3A3942;
+  background: #343541;
   overflow: hidden;
 }
 
@@ -370,15 +369,37 @@ body {
 
 }
 
-.search-dropdown-user{
-  left: 30px!important;
+.search-dropdown-user {
+  left: 30px !important;
 }
-.overlay-panel-divider .p-divider.p-divider-vertical{
+
+.overlay-panel-divider .p-divider.p-divider-vertical {
   margin: 0px !important;
 }
 
-.overlay-panel-divider .p-divider-vertical:before{
-  top:unset!important;
+.overlay-panel-divider .p-divider-vertical:before {
+  top: unset !important;
   height: 50% !important;
   border-left: 1px solid #535354;
+}
+
+.p-button-link span {
+  margin-left: 6px;
+}
+
+.conversations-card .p-component {
+  margin-bottom: 10px;
+  border-radius: 0px;
+  border-bottom: 1px solid #707070;
+  // box-shadow: 1px 1px 3px 1px #707070;
+}
+
+.my-products-tab-view {
+  .p-tabview-nav-container {
+    display: none;
+  }
+}
+
+#myIframe {
+  background: green;
 }

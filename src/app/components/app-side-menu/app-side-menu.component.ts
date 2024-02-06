@@ -54,6 +54,7 @@ export class AppSideMenuComponent implements OnInit {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path])
     }
+    this.utils.disableDockedNavi();
     this.auditUtil.postAudit(item.path, 1, 'SUCCESS', 'user-audit');
   }
 }

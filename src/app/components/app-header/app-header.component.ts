@@ -71,7 +71,8 @@ export class AppHeaderComponent implements OnInit {
     private auth: AuthApiService,
     private auditUtil: AuditutilsService,
     private naviApiService: NaviApiService,
-    private publishAppApiService: PublishAppApiService
+    private publishAppApiService: PublishAppApiService,
+    private utils: UtilsService
     ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
