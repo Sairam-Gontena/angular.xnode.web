@@ -1,12 +1,13 @@
 <div [formGroup]="parentFormGroup">
   <label [attr.for]="control.key">{{control.label}}</label>
   <div [ngSwitch]="control.controlType">
-
     <xnode-text-box *ngSwitchCase="'textbox'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
+    <!-- <xnode-chips-input *ngSwitchCase="'chips'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-chips-input> -->
+    <xnode-text-box *ngSwitchCase="'chips'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
     <!-- <xnode-email-input *ngSwitchCase="'email'" [control]="control" [fControl]="fControl"></xnode-email-input>
     <xnode-number-input *ngSwitchCase="'number'" [control]="control" [fControl]="fControl"></xnode-number-input> -->
 
-<!--
+
   </div>
 
   <!-- <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div> -->

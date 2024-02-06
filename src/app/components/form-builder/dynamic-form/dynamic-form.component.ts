@@ -9,7 +9,7 @@ import {  FormBuilder, FormGroup } from '@angular/forms';
 })
 export class DynamicFormComponent implements OnInit, AfterContentChecked {
 
-  @Input() form = this.fb.group({});
+  @Input() form:FormGroup = this.fb.group({});
   @Input() noSQLForm:any;
   @Input() inputDoc:any = {}
 

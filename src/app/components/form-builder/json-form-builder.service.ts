@@ -61,9 +61,9 @@ export class JsonFormBuilderService {
     comp.value = '';
     comp.required = true;
     comp.order = orderCnt;
-    comp.isArray = isArray;
-    (comp.type = this.dataType(val)),
-      (comp.controlType = this.controlType(val));
+    comp.isArray = false;
+    comp.type = isArray ? 'string[] ' :this.dataType(val);
+    comp.controlType = isArray ? 'chips' : this.controlType(val);
     return comp;
   }
 

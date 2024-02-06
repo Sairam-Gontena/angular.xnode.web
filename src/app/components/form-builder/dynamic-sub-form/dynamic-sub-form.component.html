@@ -1,4 +1,4 @@
-<ng-container [formGroup]="parenFormGroup">
+<form [formGroup]="parenFormGroup">
   <h1 *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</h1>
 
   <div *ngIf="!noSQLForm.isArray; else displayformArray" >
@@ -29,4 +29,4 @@
     </div>
   <button (click)="add()">Add</button>
   </ng-template>
-</ng-container>
+</form>
