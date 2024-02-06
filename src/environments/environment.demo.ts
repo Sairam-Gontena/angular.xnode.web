@@ -5,6 +5,7 @@ export const environment = {
     authApiUrl: 'https://demo-xnode-auth-api.azurewebsites.net/',
     commentsApiUrl: 'https://demo-spec-api.azurewebsites.net/',
     notifyApiUrl: 'https://demo-notify-api.azurewebsites.net/',
+    conversationApiUrl: 'https://dev-conversation-api.azurewebsites.net/',
     userUtilsApi: 'https://demo-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://demo-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'https://demo-xnode.azurewebsites.net/',
