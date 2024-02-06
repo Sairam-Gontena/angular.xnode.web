@@ -5,6 +5,7 @@ export const environment = {
     authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
     commentsApiUrl: 'https://beta-spec-api.azurewebsites.net/',
     notifyApiUrl: 'https://beta-notify-api.azurewebsites.net/',
+    conversationApiUrl: 'https://beta-conversation-api.azurewebsites.net/',
     userUtilsApi: 'https://beta-user-util-api.azurewebsites.net/',
     commonApiUrl: 'https://beta-cmn-api.azurewebsites.net/',
     xnodeAppUrl: 'https://beta-xnode.azurewebsites.net/',
