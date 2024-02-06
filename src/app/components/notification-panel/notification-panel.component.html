@@ -1,6 +1,6 @@
 <div class="m-3">
   <div class="flex justify-content-between">
-    <div class="text-2xl font-semibold">Notifications</div>
+    <div class="text-2xl font-semibold title-fonts">Notifications</div>
     <div class="flex align-items-center">
       <img src="./assets/mute-notification.svg" alt="bell" class="w-0.3rem h-0.3rem mr-2" />
       <i class="pi pi-ellipsis-h text-lg"></i>
@@ -12,8 +12,8 @@
   <div class="flex align-items-center pointer">
     <div [class]="
         filterTypes.all
-          ? 'text-base font-semibold border-bottom-1'
-          : 'text-base font-medium'
+          ? 'text-base font-semibold border-bottom-1 title-fonts'
+          : 'text-base font-medium title-fonts'
       " (click)="filterNotifications('all')">
       All
     </div>
@@ -21,8 +21,8 @@
   <div class="flex align-items-center ml-3 pointer">
     <div [class]="
         filterTypes.recent
-          ? 'text-base font-semibold border-bottom-1'
-          : 'text-base font-medium'
+          ? 'text-base font-semibold border-bottom-1 title-fonts'
+          : 'text-base font-medium title-fonts'
       " (click)="filterNotifications('recent')">
       Recent
     </div>
@@ -31,8 +31,8 @@
   <div class="flex align-items-center ml-3 pointer">
     <div [class]="
         filterTypes.important
-          ? 'text-base font-semibold border-bottom-1'
-          : 'text-base font-medium'
+          ? 'text-base font-semibold border-bottom-1 title-fonts'
+          : 'text-base font-medium title-fonts'
       " (click)="filterNotifications('important')">
       Important
     </div>
@@ -41,8 +41,8 @@
   <div class="flex align-items-center ml-3 pointer">
     <div [class]="
         filterTypes.pinned
-          ? 'text-base font-semibold border-bottom-1'
-          : 'text-base font-medium'
+          ? 'text-base font-semibold border-bottom-1 title-fonts'
+          : 'text-base font-medium title-fonts'
       " (click)="filterNotifications('pinned')">
       Pinned
     </div>
@@ -50,17 +50,18 @@
 </div>
 <div class="flex justify-content-between mt-4 ml-3 mr-3">
   <div class="flex align-items-center">
-    <div class="text-sm font-medium">Filter</div>
-    <i class="pi pi-sort-amount-up text-xs ml-2 pointer"></i>
+    <div class="text-sm font-medium title-fonts">Filter</div>
+    <i class="pi pi-sort-amount-up text-xs ml-2 pointer title-fonts"></i>
   </div>
   <div class="flex align-items-center pointer" (click)="onClickSeeAll()">
-    <div class="text-sm font-medium">See all in activity logs</div>
-    <i class="pi pi-arrow-right text-xs ml-2"></i>
+    <div class="text-sm font-medium title-fonts">See all in activity logs</div>
+    <i class="pi pi-arrow-right text-xs ml-2 title-fonts"></i>
   </div>
 </div>
 <div class="notif-list ml-3 pr-3" *ngIf="allNotifications.length > 0">
   <div *ngFor="let notification of notifications"
-    class="flex p-2 border-50 notif-card text-white text-xs justify-content-between">
+    class="flex p-3 border-50  text-white text-xs justify-content-between border-round-lg mt-2"
+    style="background-color: #3A3942;">
     <div class="flex">
       <div>
         <ng-container [ngSwitch]="notification?.status">
@@ -80,50 +81,56 @@
         </div>
       </div>
       <div class="ml-2">
-        <div class="text-sm font-medium">
+        <div class="text-sm font-medium title-fonts">
           {{ notification?.title?.toUpperCase().replaceAll("_", " ") }}
         </div>
-        <div class="text-sm font-medium" *ngIf="notification?.component == 'Product Specifications'">
+        <div class="text-sm font-medium title-fonts" *ngIf="notification?.component == 'Product Specifications'">
           {{ notification?.component?.toUpperCase() }}
         </div>
-        <div (click)="navigateToConversation(notification)" class="text-500 mt-2 text-sm font-normal">
+        <div (click)="navigateToConversation(notification)" class="text-500 mt-2 text-sm font-normal title-fonts">
           {{ notification?.description }}
         </div>
         <div class="flex mt-2" *ngIf="notification?.type === 'request'">
-          <div class="text-white border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer">
+          <div
+            class="border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer half-white-border title-fonts">
             Decline
           </div>
-          <div class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+          <div class="border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-button text-sm font-normal pointer title-fonts">
             Accept
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.product_status === 'completed'">
-          <div class="text-500 border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer border-white"
+          <div
+            class="border-round-3xl border-1 pl-4 pr-4 pt-1 pb-1 text-sm font-normal pointer title-fonts half-white-border"
             (click)="onClickPublish(notification)">
             Publish
-            <i class="text-white pi pi-arrow-right text-xs ml-2"></i>
+            <i class="title-fonts pi pi-arrow-right text-xs ml-3"></i>
           </div>
           <div (click)="navigateToProduct(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             {{ getMeLabel(notification) }}
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.spec_status === 'Completed' && !notification?.entity">
           <div (click)="goToSpec(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Specification
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'UPDATE_SPEC'">
           <div (click)="goToSpec(notification)"
-            class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Updates
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'WORKFLOW'">
           <div (click)="navigateToConversation(notification)"
             class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View CR
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="
@@ -140,12 +147,14 @@
             ? "Task"
             : null
             }}
+            <span class="pi pi-arrow-right ml-3 title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.conversationID && notification.title">
           <div (click)="navigateToFeedbackList(notification)"
             class="text-white border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
             View Report
+            <span class="pi pi-arrow-right ml-3 title-fonts"></span>
           </div>
         </div>
         <div class="flex mt-2" *ngIf="notification?.product_status === 'deployed'">

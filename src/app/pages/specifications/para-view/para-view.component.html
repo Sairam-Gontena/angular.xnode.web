@@ -15,11 +15,10 @@
                     [innerHTML]="word | highlight: searchTerm"
                     [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0}">
                     <p-overlayPanel #selectionText (onShow)="openOverlayPanel=true" (onHide)="onOverlayHide()">
-                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users"
-                            [selectedText]="selectedText" [parentEntity]="'SPEC'"
-                            (closeOverlay)="selectionText.toggle(false);emptySelectedContent()" [parentId]="specItem.id"
-                            *ngIf="selectedText.length>0" [position]="'absolute'" [selectedContent]="content"
-                            [specItem]="specItem" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
+                        <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="users" [selectedText]="selectedText"
+                            [parentEntity]="'SPEC'" (closeOverlay)="selectionText.toggle(false);emptySelectedContent()"
+                            [parentId]="specItem.id" *ngIf="selectedText.length>0" [position]="'absolute'"
+                            [selectedContent]="content" placeHolder="Add a Comment"></xnode-add-comment-overlay-panel>
                     </p-overlayPanel>
                 </span>
             </p>
@@ -39,9 +38,8 @@
             <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
                 (click)="op1.toggle($event);saveSecInLocal()" (mouseleave)="showCommentIcon = false"
                 *ngIf="showCommentIcon">
-            <p-overlayPanel #op1 appendTo="body" (onShow)="openOverlayPanel=true"
-                (onHide)="showCommentIcon=false;onOverlayHide()">
-                <xnode-add-task [reveiwerList]="reveiwerList" (closeOverlay)="op1.toggle(false);emptySelectedContent()"
+            <p-overlayPanel #op1 appendTo="body" (onShow)="openOverlayPanel=true" (onHide)="showCommentIcon=false;onOverlayHide()">
+                <xnode-add-task (closeOverlay)="op1.toggle(false);emptySelectedContent()"
                     [selectedContent]="content" [users]="users" placeHolder="Add a Task" [parentEntity]="'SPEC'"
                     [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
             </p-overlayPanel>

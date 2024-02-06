@@ -9,9 +9,11 @@
     color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.use-case-body {
+.usecase-body {
     height: calc(100vh - 154px);
-    overflow: auto;
-    padding: 0px;
     background: #212121 !important;
 }
+
+.expnad-icon{
+    width: 25px;
+  }

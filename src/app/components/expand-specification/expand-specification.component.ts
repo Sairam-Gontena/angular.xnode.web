@@ -1,7 +1,11 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter,AfterViewInit, SimpleChanges } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UtilsService } from 'src/app/components/services/utils.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { LocalStorageService } from '../services/local-storage.service';
+import { ActivatedRoute } from '@angular/router';
+import { SpecificationsService } from 'src/app/services/specifications.service';
 declare const SwaggerUIBundle: any;
 @Component({
   selector: 'xnode-expand-specification',
@@ -9,43 +13,50 @@ declare const SwaggerUIBundle: any;
   styleUrls: ['./expand-specification.component.scss']
 })
 
-export class ExpandSpecificationComponent implements AfterViewInit {
+export class ExpandSpecificationComponent {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
+  @Input() diffdataToExpand:any;
+  @Input() diffViewEnabled:any;
+  @Input() selectedVersionOne:any;
+  @Input() selectedVersionTwo:any;
+  @Input() selectedVersion:any;
+  @Input() format:any;
   @Output() closeFullScreenView = new EventEmitter<any>();
   @Output() childLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  currentUser:any;
   iframeSrc: SafeResourceUrl = '';
+  iframeSrc1: SafeResourceUrl | undefined;
   targetUrl: string = environment.naviAppUrl;
   product: any;
-  isSpecSideMenuOpened: boolean = false;
-  isDockedNaviOpended: boolean = false;
-  constructor(private domSanitizer: DomSanitizer, private utils: UtilsService) {
+  firstIteration:boolean = true;
+  constructor(private domSanitizer: DomSanitizer,private storageService:LocalStorageService,private specService: SpecificationsService, private utils:UtilsService) {
   }
 
   ngOnInit() {
-    const record_id = localStorage.getItem('record_id');
-    const product = localStorage.getItem('product');
-    if (product) {
-      this.product = JSON.parse(product)
-    }
-    let userData: any
-    userData = localStorage.getItem('currentUser');
-    let email = JSON.parse(userData).email;
-    let user_id = JSON.parse(userData).id;
-    if (record_id) {
-      this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + record_id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + user_id;
-    }
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.targetUrl = environment.designStudioAppUrl + "?email=" + this.product.email + "&id=" + this.product.id + "&targetUrl=" + environment.xnodeAppUrl + "&has_insights=" + true + '&isVerified=true' + "&userId=" + this.currentUser.user_id;
     this.makeTrustedUrl();
-    this.utils.openSpecSubMenu.subscribe((event: any) => {
-      this.isSpecSideMenuOpened = event; 
-      })
-      this.utils.openDockedNavi.subscribe((event: any) => {
-      this.isDockedNaviOpended = event
-      })
   }
 
-  ngAfterViewInit() {
-    this.fetchOpenAPISpec();
+  ngAfterViewInit(){
+    if(this.dataToExpand.title=== 'OpenAPI Spec' || this.dataToExpand.title==='Open API Spec'){
+      this.fetchSwagger();
+    }
+  }
+
+  enableSpinner(){
+    this.utils.loadSpinner(true)
+  }
+
+  fetchSwagger(){
+    if(this.diffViewEnabled){
+      this.fetchOpenAPISpec('openapi-ui-spec-1',this.selectedVersionOne.id);
+      this.fetchOpenAPISpec('openapi-ui-spec-2',this.selectedVersionTwo.id);
+    }else{
+      this.fetchOpenAPISpec('openapi-ui-spec',this.selectedVersion.id);
+    }
   }
 
   ngOnDestroy(){
@@ -54,19 +65,19 @@ export class ExpandSpecificationComponent implements AfterViewInit {
     }
   }
 
-  async fetchOpenAPISpec() {
+  async fetchOpenAPISpec(id:any,versionId:string) {
     const record_id = localStorage.getItem('record_id');
     let userData: any
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
     const ui = SwaggerUIBundle({
-      domNode: document.getElementById('openapi-ui-spec'),
+      domNode: document.getElementById(id),
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset
       ],
-      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id,
+      url: environment.uigenApiUrl + 'openapi-spec/' + localStorage.getItem('app_name') + "/" + email + '/' + record_id + '/'+versionId,
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });
@@ -74,6 +85,22 @@ export class ExpandSpecificationComponent implements AfterViewInit {
 
   makeTrustedUrl(): void {
     this.iframeSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(this.targetUrl);
+  }
+
+  makeTrustedUrlForDiffView(versionId: any):any {
+    if(this.firstIteration){
+      let Url = environment.designStudioAppUrl +
+      '?email=' + encodeURIComponent(this.product?.email || '') +
+      '&id=' + encodeURIComponent(this.product?.id || '') +
+      '&version_id=' + encodeURIComponent(versionId) +
+      '&targetUrl=' + encodeURIComponent(environment.xnodeAppUrl) +
+      '&has_insights=' + true +
+      '&isVerified=true' +
+      '&userId=' + encodeURIComponent(this.currentUser.id || '');
+      this.iframeSrc1 = this.domSanitizer.bypassSecurityTrustResourceUrl(Url);
+      this.firstIteration = false;
+      return this.iframeSrc1;
+    }
   }
 
   setColumnsToTheTable(data: any) {
@@ -89,11 +116,10 @@ export class ExpandSpecificationComponent implements AfterViewInit {
       return cols
     }
   }
-  isArray(value: any): boolean {
-    return Array.isArray(value);
-  }
-  isObject(value: any): boolean {
-    return typeof value == 'object' ? true : false
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['format']?.currentValue)
+      this.format = changes['format'].currentValue;
   }
 
 }

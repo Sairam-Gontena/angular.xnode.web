@@ -1,0 +1,10 @@
+<div class="grid">
+    <div class="col-12" *ngIf="onDiff; else noDiff">
+        <div [innerHtml]="diffHTML"></div>
+    </div>
+    <ng-template #noDiff>
+      <div [ngStyle]="{'color': type === 'title' ? '#EFEEEE' : '#949292'}">
+        <span *ngFor="let word of getWords(content); index as i"  (mouseup)="contentSelected($event);saveSecInLocal()" [attr.id]="'word' + i" [innerHTML]="word+' '|highlight:keyword" [ngClass]="{'content-selection-bg': selectedWordIndices.includes(i) && selectedText.length>0,'':selectedWordIndices.length==0 && selectedText.length==0}"></span>
+      </div>
+    </ng-template>
+</div>

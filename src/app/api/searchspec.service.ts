@@ -12,7 +12,7 @@ export class SearchspecService {
   noResults: boolean = false;
   wantedIndexes: any[] = [];
   removableIndexes: any[] = [];
-
+  keyword:any;
   constructor() {}
 
   searchSpec(data: any, keyword: any): Observable<any> {
@@ -20,7 +20,7 @@ export class SearchspecService {
     this.filteredSpecData = [];
     this.wantedIndexes = [];
     this.removableIndexes = [];
-
+    this.keyword = keyword;
     return new Observable((observer) => {
       this.filterSpecbyKeyword(data, keyword).subscribe(() => {
         let returnData = {
@@ -54,6 +54,9 @@ export class SearchspecService {
         }
         if (typeof elem?.content == 'object' && elem?.content.length > 0) {
           elem?.content.forEach((subElem: any) => {
+            if(subElem?.content_data_type=="WORKFLOWS" || subElem?.content_data_type=="DASHBOARD" || subElem?.content_data_type=="DATA_MODEL"){
+              return;
+            }
             if (typeof subElem?.content == 'string') {
               if (
                 subElem?.title.toUpperCase().includes(keyword.toUpperCase()) ||
@@ -149,5 +152,9 @@ export class SearchspecService {
     });
     let wantedArr = _.difference(itemArr, indexes);
     _.pullAt(this.specData[index]?.content, wantedArr);
+  }
+
+  getKeyword(){
+    return this.keyword;
   }
 }

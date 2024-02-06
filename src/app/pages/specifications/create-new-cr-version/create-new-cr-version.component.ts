@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'src/app/api/auth.service';
@@ -14,6 +15,8 @@ interface AutoCompleteCompleteEvent {
   selector: 'xnode-create-new-cr-version',
   templateUrl: './create-new-cr-version.component.html',
   styleUrls: ['./create-new-cr-version.component.scss'],
+  providers: [DatePipe],
+
 })
 export class CreateNewCrVersionComponent implements OnInit {
   @Input() visible: boolean = false;
@@ -49,6 +52,7 @@ export class CreateNewCrVersionComponent implements OnInit {
   latestVersion: object = { major: 0, minor: 0, build: 0 };
   showClearDueDate: boolean = false;
   isLTwoDisabled: boolean = true;
+  minDate!: Date;
 
   constructor(
     private fb: FormBuilder,
@@ -56,7 +60,8 @@ export class CreateNewCrVersionComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private authApiService: AuthApiService,
     private utilsService: UtilsService,
-    private specUtils: SpecUtilsService
+    private specUtils: SpecUtilsService,
+    private datePipe: DatePipe,
   ) {
     this.crForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -73,6 +78,8 @@ export class CreateNewCrVersionComponent implements OnInit {
       minor: ['0', [Validators.required, Validators.pattern(/^[.\d]+$/)]],
       build: ['0', [Validators.required]],
     });
+    this.minDate = new Date();
+
   }
   get crFormControl() {
     return this.crForm.controls;
@@ -184,7 +191,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.utilsService.loadSpinner(true);
     this.saveValue();
   }
-  onSubmit(event: any) {}
+  onSubmit(event: any) { }
 
   closePopup() {
     this.visible = false;
@@ -270,7 +277,7 @@ export class CreateNewCrVersionComponent implements OnInit {
       };
     }
     let specData: any[] | undefined = this.localStorageService.getItem(
-      StorageKeys.SpecData
+      StorageKeys.SPEC_DATA
     );
     if (specData) {
       body.baseVersionId = specData[0].versionId;

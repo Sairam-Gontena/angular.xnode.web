@@ -17,6 +17,7 @@ import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
 import { LocalStorageService } from './components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecificationUtilsService } from './pages/diff-viewer/specificationUtils.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -45,8 +46,8 @@ export class AppComponent implements OnInit {
   showCommentIcon?: boolean;
   screenWidth: number;
   screenHeight: number;
-  deepLink:boolean=false;
-  colorPallet :any;
+  deepLink: boolean = false;
+  colorPallet: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -58,10 +59,11 @@ export class AppComponent implements OnInit {
     private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
-    private themeService:ThemeService,
+    private themeService: ThemeService,
     private specUtils: SpecUtilsService,
     private naviApiService: NaviApiService,
-    private storageService : LocalStorageService,
+    private storageService: LocalStorageService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     let winUrl = window.location.href;
     if (
@@ -113,7 +115,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.specUtils.openCommentsPanel.subscribe((event: any) => {
+    this.specificationUtils._openConversationPanel.subscribe((event: any) => {
       if (event) {
         this.isSideWindowOpen = false;
       }
@@ -185,9 +187,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.colorPallet = themeing.theme;
 
-    setTimeout(()=>{
+    setTimeout(() => {
       this.changeTheme(this.colorPallet[6])
-    },100)
+    }, 100)
 
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -212,7 +214,7 @@ export class AppComponent implements OnInit {
     if (!window.location.hash.includes('#/reset-password?email'))
       this.redirectToPreviousUrl();
     this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      if(window.location.hash.includes('#/my-products')){
+      if (window.location.hash.includes('#/my-products')) {
         this.isSideWindowOpen = true;
         this.isNaviExpanded = false;
         this.utilsService.EnableDockedNavi();
@@ -220,7 +222,7 @@ export class AppComponent implements OnInit {
         const token: any = this.storageService.getItem(StorageKeys.ACCESS_TOKEN)
         const newItem = { 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email, token: token };
         this.openNavi(newItem);
-      }else{
+      } else {
         this.isSideWindowOpen = false;
         this.isNaviExpanded = false;
         this.utilsService.disableDockedNavi();
@@ -236,7 +238,7 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
-      if(!data){
+      if (!data) {
         this.isNaviExpanded = false;
       }
     })
@@ -473,12 +475,12 @@ export class AppComponent implements OnInit {
         localStorage.getItem('product_email') +
         '&device_width=' +
         this.screenWidth;
-        this.isSideWindowOpen = true;
-        setTimeout(() => {
-          this.iframeUrl =
-            this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-          this.loadIframeUrl();
-        }, 2000);
+      this.isSideWindowOpen = true;
+      setTimeout(() => {
+        this.iframeUrl =
+          this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.loadIframeUrl();
+      }, 2000);
     }
   }
 
@@ -562,10 +564,10 @@ export class AppComponent implements OnInit {
       const chatbotContainer = document.getElementById(
         'side-window'
       ) as HTMLElement;
-      if(chatbotContainer && chatbotContainer.style && chatbotContainer.classList){
+      if (chatbotContainer && chatbotContainer.style && chatbotContainer.classList) {
         chatbotContainer.style.display = 'block';
         chatbotContainer.classList.add('open');
-      }      
+      }
     }
   }
 

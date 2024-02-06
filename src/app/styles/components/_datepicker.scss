@@ -1,0 +1,26 @@
+// --datepicker-background-color : #2e2d36
+// --datepicker-header-background-color : #2e2d36
+// --datepicker-header-border-color : #3f4655
+// --datepicker-disabled-background-color : #3f4655
+// --datepicker-hightlight-background-color : #A2A2A3
+
+.p-datepicker:not(.p-datepicker-inline){
+    background-color: var(--datepicker-background-color);
+    border: 0px;
+}
+
+.p-datepicker:not(.p-datepicker-inline) .p-datepicker-header{
+    background-color: var(--datepicker-header-background-color);
+}
+
+// .p-disabled{
+//     background-color: var(--datepicker-disabled-background-color);
+// }
+
+.p-datepicker table td > span.p-highlight{
+    background-color: var(--datepicker-hightlight-background-color);
+}
+
+.p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
+    border-color:var(--datepicker-header-border-color)
+}

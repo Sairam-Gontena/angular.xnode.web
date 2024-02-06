@@ -7,7 +7,7 @@
 }
 
 .search-help {
-    height: 50px !important;
+    height: 35px !important;
     width: 45vw !important;
     padding-left: 40px !important;
 }
@@ -105,4 +105,8 @@
 
 .help-text {
     color: #02ADEE !important;
+}
+
+:host ::ng-deep .p-inputtext {
+        width: 100%;
 }

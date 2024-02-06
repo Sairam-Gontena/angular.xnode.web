@@ -1,12 +1,11 @@
-<div class="bpmn-div overflow-hidden">
+<div class="bpmn-div overflow-hidden" [ngStyle]="{'height':onDiff && inSpecView?'fit-content':'inherit'}">
     <div class="col-12 flex pr-4 pt-4 pb-4"
         [ngClass]="{'justify-content-between':graphRedirection,'justify-content-end':!graphRedirection}">
         <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm back-to-graph p-button-text"
             *ngIf="graphRedirection" (click)="switchWindow()"></p-button>
-        <i class="pi pi-times text-white text-xl pointer" *ngIf="specExpanded" (click)="expandDataFlows()"></i>
     </div>
     <div class="col-12">
-        <div id="diagramRef" class="diagram-container" [ngClass]="{'disable-height':referenceId}">
+        <div [id]="bpmnRefId ? bpmnRefId : 'diagramRef'" #diagramRefContainer class="diagram-container" [ngClass]="{'disable-height':referenceId}" >
         </div>
         <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
             styleClass="w-30rem" [modal]="false">
@@ -27,7 +26,7 @@
                     <div class="row"><strong class="p-0">{{taskHeader?.task}}</strong></div>
                 </div>
             </div>
-            <p-divider></p-divider>
+            <!-- <p-divider></p-divider> -->
 
             <p-tabView>
                 <!-- General Tab -->
@@ -126,8 +125,8 @@
           </div>
         </span>
         <ng-template #graphView>
-            <div id="sc" class="scrollable-container w-full h-full overflow-auto">
-              <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}" id="graph">
+            <div id="sc" #scgraph class="scrollable-container w-full h-full overflow-auto">
+              <div class="col-12 graphViewBpmnCommon"  #bpmngraph [ngClass]="{'py-8':fromExpandSpec=='true'}" [ngStyle]="{'height':onDiff && inSpecView?'fit-content':'inherit'}" [id]="bpmnRefId ? bpmnRefId+'-graph' : 'diagramRef-graph'">
               </div>
             </div>
         </ng-template>
@@ -151,8 +150,8 @@
                 <div class="row"><strong class="p-0">{{taskHeader?.task}}</strong></div>
             </div>
         </div>
-        <p-divider></p-divider>
-
+        <!-- <p-divider></p-divider> -->
+        <div class="h-full w-full" >
         <p-tabView>
             <!-- General Tab -->
             <p-tabPanel header="General">
@@ -242,10 +241,10 @@
             <!-- Comments Tab -->
             <p-tabPanel header="Comments"> </p-tabPanel>
         </p-tabView>
+        </div>
     </p-sidebar>
     <div id="sc" class="scrollable-container w-full h-full overflow-auto">
-        <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}" id="graph">
+        <div class="col-12 graphViewBpmnCommon" [ngClass]="{'py-8':fromExpandSpec=='true'}"  [id]="bpmnRefId ? bpmnRefId+'-graph' : 'diagramRef-graph'" >
         </div>
     </div>
-
 </div>

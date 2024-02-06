@@ -21,9 +21,9 @@ import { ApiService } from 'src/app/api/api.service';
   providers: [MessageService, DropdownModule]
 })
 export class MyProductsComponent implements OnInit {
-  id: String = '';
   templateCard: any[] = [];
   currentUser?: any;
+  productId: any;
   private subscription: Subscription;
   isLoading: boolean = true;
   activeIndex: number = 0;
@@ -81,18 +81,6 @@ export class MyProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.utils.loadSpinner(true);
-    localStorage.removeItem('record_id');
-    localStorage.removeItem('has_insights');
-    localStorage.removeItem('app_name');
-    localStorage.removeItem('show-upload-panel');
-    localStorage.removeItem('product');
-    localStorage.removeItem('product_url');
-    localStorage.removeItem('SPEC_DATA');
-    localStorage.removeItem('targetUrl');
-    this.storageService.removeItem(StorageKeys.SpecVersion);
-    this.storageService.removeItem(StorageKeys.SelectedSpec);
-
-    this.getMetaData();
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
         this.utils.loadToaster({
@@ -104,13 +92,30 @@ export class MyProductsComponent implements OnInit {
         });
       }
     });
-    setTimeout(() => {
-      this.removeParamFromRoute();
-    }, 2000);
+    this.removeProductDetailsFromStorage();
+    this.removeParamFromRoute();
     this.filterProductsByUserEmail();
+  }
+  removeProductDetailsFromStorage(): void {
+    localStorage.removeItem('record_id');
+    localStorage.removeItem('has_insights');
+    localStorage.removeItem('app_name');
+    localStorage.removeItem('show-upload-panel');
+    localStorage.removeItem('product_url');
+    localStorage.removeItem('targetUrl');
+    localStorage.removeItem('NOTIF_INFO');
+    localStorage.removeItem('product_email');
+    this.storageService.removeItem(StorageKeys.Product);
+    this.storageService.removeItem(StorageKeys.SPEC_DATA);
+    this.storageService.removeItem(StorageKeys.SpecVersion);
+    this.storageService.removeItem(StorageKeys.SelectedSpec);
+    this.getMetaData();
   }
 
   getMeMyAvatar(userAvatar?: any) {
+    if (!userAvatar) {
+      return '';
+    }
     let parts = userAvatar.split(' ');
     const initials = parts
       .map((part: any) => {
@@ -148,8 +153,8 @@ export class MyProductsComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.id
+            this.currentUser.email,
+            this.productId
           );
         } else {
           let user_audit_body = {
@@ -162,8 +167,8 @@ export class MyProductsComponent implements OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.id
+            this.currentUser.email,
+            this.productId
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -183,8 +188,8 @@ export class MyProductsComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.id
+          this.currentUser.email,
+          this.productId
         );
         this.utils.loadToaster({
           severity: 'error',
@@ -219,8 +224,10 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.utils.hasProductPermission(false);
     }
+    delete data.created_by;
+    delete data.timeAgo;
+    this.storageService.saveItem(StorageKeys.Product, data);
     localStorage.setItem('record_id', data.id);
-    localStorage.setItem('product', JSON.stringify(data));
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     if (!data.has_insights) {
@@ -266,7 +273,7 @@ export class MyProductsComponent implements OnInit {
       .getMetaData(this.currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200 && response.data.data?.length) {
-          this.id = response.data.data[0].id;
+          this.productId = response.data.data[0].id;
           let user_audit_body = {
             method: 'GET',
             url: response?.request?.responseURL,
@@ -277,8 +284,12 @@ export class MyProductsComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.id
+            this.currentUser.email,
+            this.productId
+          );
+          this.storageService.saveItem(
+            StorageKeys.MetaData,
+            response.data.data
           );
           this.templateCard = response.data.data.map((dataItem: any) => {
             dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
@@ -291,7 +302,6 @@ export class MyProductsComponent implements OnInit {
           this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
           this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
           this.filteredProductsByEmail = this.templateCard;
-          localStorage.setItem('meta_data', JSON.stringify(response.data.data));
         } else if (response?.status !== 200) {
           let user_audit_body = {
             method: 'GET',
@@ -303,8 +313,8 @@ export class MyProductsComponent implements OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.id
+            this.currentUser.email,
+            this.productId
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -326,8 +336,8 @@ export class MyProductsComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.id
+          this.currentUser.email,
+          this.productId
         );
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
@@ -385,12 +395,9 @@ export class MyProductsComponent implements OnInit {
   }
 
   filterProductsByUserEmail() {
-    let currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      this.email = JSON.parse(currentUser).email;
-    }
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.filteredProductsByEmail = this.templateCard.filter(
-      (product) => product.email === this.email
+      (product) => product.email === this.currentUser.email
     );
     this.getMeCreateAppLimit();
   }
@@ -402,7 +409,7 @@ export class MyProductsComponent implements OnInit {
 
   getMeCreateAppLimit(): void {
     this.authApiService
-      .get('/user/get_create_app_limit/' + this.email)
+      .get('/user/get_create_app_limit/' + this.currentUser.email)
       .then((response: any) => {
         if (response?.status === 200) {
           localStorage.setItem(
@@ -419,8 +426,8 @@ export class MyProductsComponent implements OnInit {
             'SUCCESS',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.id
+            this.currentUser.email,
+            this.productId
           );
         } else {
           let user_audit_body = {
@@ -433,8 +440,8 @@ export class MyProductsComponent implements OnInit {
             'FAILED',
             'user-audit',
             user_audit_body,
-            this.email,
-            this.id
+            this.currentUser.email,
+            this.productId
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -454,8 +461,8 @@ export class MyProductsComponent implements OnInit {
           'FAILED',
           'user-audit',
           user_audit_body,
-          this.email,
-          this.id
+          this.currentUser.email,
+          this.productId
         );
         this.utils.loadToaster({
           severity: 'error',
