@@ -1,8 +1,8 @@
-<div class="card p-0 m-0  ">
+<div class="card p-0 m-0 " [style]="{'width':width}">
     <div class="grid" (mouseover)="showCommentIcon = true;" (mouseleave)="showCommentIcon = false;">
         <div class="col-12">
             <p-table #dt [value]="content" [columns]="columns" [resizableColumns]="true"
-                [scrollable]="true" scrollDirection="horizontal" class="common-spec-table-head">
+                [scrollable]="true" scrollDirection="horizontal" class="common-spec-table-head w-auto">
                 <ng-template  pTemplate="header" let-columns>
                     <tr>
                         <th pResizableColumn *ngFor="let col of columns" [ngClass]="'tableheader'">

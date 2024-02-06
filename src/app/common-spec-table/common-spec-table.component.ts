@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { UtilsService } from '../components/services/utils.service';
 
 @Component({
   selector: 'xnode-common-spec-table',
@@ -11,11 +13,17 @@ export class CommonSpecTableComponent {
   @Input() specItem: any
   @Input() users: any;
   @Input() inDiffView: any;
+  @Input() inExpand:any;
 
   showCommentIcon: boolean = false;
   commentOverlayPanelOpened: boolean = false;
   columns: any = []
-  constructor() { }
+  insideSpecification: boolean=false;
+  isSideWindowOpen: boolean=false;
+  width:string='';
+
+  constructor(private router: Router,
+    private utilsService: UtilsService,) { }
   products: any = [{
     id: '1000',
     code: 'f230fh0g3',
@@ -39,6 +47,25 @@ export class CommonSpecTableComponent {
     inventoryStatus: 'INSTOCK',
     rating: 5
   },]
+
+  ngOnInit(){
+    this.router.url === '/specification'? this.insideSpecification = true : this.insideSpecification = false;
+    this.utilsService.openDockedNavi.subscribe((data: any) => {
+      this.isSideWindowOpen = data;
+      this.setWidth()
+    });
+    this.setWidth()
+  }
+
+  setWidth(){
+    if(this.insideSpecification){
+      this.width = '40vw';
+    }if(this.isSideWindowOpen){
+      this.width = '30vw';
+    }if(this.inExpand=='true'){
+      this.width = '100%';
+    }
+  }
 
   ngOnChanges() {
     if (this.content) {

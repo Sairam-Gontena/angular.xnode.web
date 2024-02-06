@@ -2,7 +2,7 @@
     <div *ngIf="useCases?.length > 0" class="usecase-body py-3 overflow-auto">
         <div *ngFor="let usecase of useCases;let i = index">
             <div class="flex justify-content-center flex-wrap card-container">
-                <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid">
+                <div class="flex align-items-center  font-bold text-gray-900 border-round m-2 usecases-card grid" [ngClass]="{'w-auto':!isInsideUseCases}">
                     <div class="col-2 md:col-2 lg:col-2">
                         <img src="../../assets/case-0{{usecase.id}}.svg" alt="usecase-09" class="ml-3 w-7 h-5"
                             *ngIf="i < 10">

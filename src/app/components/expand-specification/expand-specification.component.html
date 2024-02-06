@@ -51,13 +51,13 @@
       <!-- <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table> -->
       <div class="grid" *ngIf="diffViewEnabled">
         <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
-          <xnode-common-spec-table [content]="dataToExpand.content"></xnode-common-spec-table>
+          <xnode-common-spec-table [inExpand]="'true'" [content]="dataToExpand.content"></xnode-common-spec-table>
         </div>
         <div [ngClass]="format === 'line-by-line' ? 'col-12' : 'col-6'">
-          <xnode-common-spec-table [content]="diffdataToExpand.content" [inDiffView]="true"></xnode-common-spec-table>
+          <xnode-common-spec-table [inExpand]="'true'" [content]="diffdataToExpand.content" [inDiffView]="true"></xnode-common-spec-table>
         </div>
       </div>
-      <xnode-common-spec-table [content]="dataToExpand.content" *ngIf="!diffViewEnabled"></xnode-common-spec-table>
+      <xnode-common-spec-table [inExpand]="'true'" [content]="dataToExpand.content" *ngIf="!diffViewEnabled"></xnode-common-spec-table>
 
     </div>
     <div *ngIf="dataToExpand.title === 'OpenAPI Spec' || dataToExpand.title==='Open API Spec'" class="my-3 h-full">
