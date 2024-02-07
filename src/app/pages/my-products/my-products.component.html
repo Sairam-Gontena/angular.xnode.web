@@ -47,9 +47,8 @@
         <p-tabView [(activeIndex)]="activeIndex" class="my-products-tab-view">
             <p-tabPanel>
                 <div class="grid">
-                    <div class="col-12 flex md:justify-content-start justify-content-center">
-                        <div
-                            class="flex md:justify-content-start sm:justify-content-start justify-content-start flex-wrap card-gap">
+                    <div class="col-12 flex flex wrap sm:justify-content-between ">
+                        <div class="flex md:justify-content-start sm:justify-content-between flex-wrap card-gap">
                             <div class="flex product-card card-color justify-content-center align-items-center new-card"
                                 *ngIf="filteredProducts.length == 0">
                                 <div
@@ -74,19 +73,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="align-items-center pointer justify-content-center product-card shadow-6 font-bold border-round m-2"
+                            <div class="align-items-center pointer justify-content-center product-card font-bold border-round m-2"
                                 *ngFor="let data of filteredProducts |  slice:0:end ; let i = index"
                                 (click)="onClickProductCard(data)">
                                 <div class="card-color relative">
-                                    <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
-                                    <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
+                                    <!-- <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
+                                    <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div> -->
                                     <img alt="Card" src="./assets/d-card.svg" class="w-full" />
                                 </div>
                                 <div class=" flex justify-content-between align-items-center card-color card-title">
                                     <div class="title-container" [title]="data.title">
                                         {{ data.title }}
                                     </div>
-                                    <i class="pi pi-external-link " [title]="data.product_url"
+                                    <img alt="Card" src="./assets/star-card.svg" class="text-xl	font-normal" />
+                                    <i class="pi pi-ellipsis-v text-lg font-normal text-white"></i>
+                                    <i class="pi pi-external-link" [title]="data.product_url"
                                         (click)="openExternalLink(data.product_url)"
                                         *ngIf="data.product_url && data.product_url !== ''"></i>
                                 </div>
@@ -99,12 +100,13 @@
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                                         shape="circle"></p-avatar> -->
                                     <div class="ml-1 card-subheading-txt">
-                                        <p class="m-0 card-subheading ">{{data.created_by}} on:
-                                            {{data.created_on
-                                            |
-                                            date:'medium'}}</p>
-                                        <div class="mt-4">
-                                            Modified on - NA
+                                        <p class="m-0 card-subheading ">{{data.created_by}} on
+                                            {{data.created_on | date:'dd/MM/yyyy'}} at
+                                            {{data.created_on | date:'hh:mm a'}}</p>
+                                        <div class="mt-2">
+                                            <p *ngIf="data.update">Modified on - {{data.Updated |
+                                                date:'short' }}</p>
+                                            <p *ngIf="!data.update">Modified on - NA</p>
                                         </div>
                                     </div>
 
@@ -122,7 +124,7 @@
             <p-tabPanel>
                 <div class="grid">
                     <div class="col-12 flex md:justify-content-start justify-content-center">
-                        <div class="flex md:justify-content-start justify-content-start flex-wrap card-gap">
+                        <div class="flex md:justify-content-start sm:justify-content-center flex-wrap card-gap">
                             <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 new-card-add"
                                 *ngIf="filteredProducts.length > 0">
                                 <div
@@ -135,7 +137,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="align-items-center pointer justify-content-center product-card shadow-6 font-bold border-round m-2"
+                            <div class="align-items-center pointer justify-content-center product-card font-bold border-round m-2"
                                 *ngFor="let data of filteredProducts ; let i = index"
                                 (click)="onClickProductCard(data)">
                                 <div class="card-color relative">
@@ -147,6 +149,8 @@
                                     <div class="title-container" [title]="data.title">
                                         {{ data.title }}
                                     </div>
+                                    <img alt="Card" src="./assets/star-card.svg" class="text-xl	font-normal" />
+                                    <i class="pi pi-ellipsis-v text-lg font-normal text-white"></i>
                                     <i class="pi pi-external-link " [title]="data.product_url"
                                         (click)="openExternalLink(data.product_url)"
                                         *ngIf="data.product_url && data.product_url !== ''"></i>
@@ -160,12 +164,13 @@
                                         [style]="{ 'background-color': '#9c27b0', color: '#ffffff',width:'25px',height:'25px' }"
                                         shape="circle"></p-avatar> -->
                                     <div class="ml-1 card-subheading-txt">
-                                        <p class="m-0 card-subheading ">{{data.created_by}} on:
-                                            {{data.created_on
-                                            |
-                                            date:'medium'}}</p>
-                                        <div class="mt-4">
-                                            Modified on - NA
+                                        <p class="m-0 card-subheading ">{{data.created_by}} on
+                                            {{data.created_on | date:'dd/MM/yyyy'}} at
+                                            {{data.created_on | date:'hh:mm a'}}</p>
+                                        <div class="mt-2">
+                                            <p *ngIf="data.update">Modified on - {{data.Updated |
+                                                date:'short' }}</p>
+                                            <p *ngIf="!data.update">Modified on - NA</p>
                                         </div>
                                     </div>
                                 </div>

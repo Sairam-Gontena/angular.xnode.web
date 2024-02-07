@@ -168,7 +168,8 @@
 @media (min-width: 1920px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 500px);
+    width: 100%;
+    // width: calc(100vw - 500px);
     height: calc(100vh - 42px);
   }
 }
@@ -237,10 +238,10 @@
   }
 }
 
-.navi-frame {
-  width: 26%;
+// .navi-frame {
+//   width: 26%;
 
-}
+// }
 
 .navi-ful-frame {
   width: 100%;
