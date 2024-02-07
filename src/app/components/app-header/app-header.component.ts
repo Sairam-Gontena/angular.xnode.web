@@ -12,7 +12,7 @@ import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
-import themeing from '../../../themes/customized-themes.json'
+import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
@@ -22,7 +22,6 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
   providers: [MessageService, ConfirmationService],
 })
 export class AppHeaderComponent implements OnInit {
-  @Input() currentPath: any;
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -58,7 +57,7 @@ export class AppHeaderComponent implements OnInit {
   productId: any;
   userImage: any;
   limitReachedContent: boolean = false;
-  colorPallet :any;
+  colorPallet: any;
   isDarkTheme: boolean = false;
 
   constructor(
@@ -73,7 +72,7 @@ export class AppHeaderComponent implements OnInit {
     private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService,
     private utils: UtilsService
-    ) {
+  ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
