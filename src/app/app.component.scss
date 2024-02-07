@@ -30,6 +30,12 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .app-body-wrapper {
+    width:100% !important
+  }
+}
+
 .chatbot-close {
   cursor: pointer;
 }

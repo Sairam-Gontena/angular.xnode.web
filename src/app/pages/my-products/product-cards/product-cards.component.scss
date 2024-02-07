@@ -96,15 +96,6 @@
         border: 1px dashed;
     }
 
-    .new-card-add {
-        width: 8rem !important;
-        height: 13rem !important;
-    }
-
-    .product-card {
-        width: 8rem !important;
-        height: 13rem !important;
-    }
 
     .card-gap {
         gap: 2rem !important;
@@ -336,6 +327,7 @@
 
 .card-color {
     background-color: #4E4D55;
+    border-radius: 8px;
 }
 
 .body-card {
@@ -358,11 +350,7 @@
 }
 
 .new-card-add {
-    width: 15rem;
-    height: 20rem;
     border-radius: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
     background-color: #343541 !important;
     position: relative;
     clip-path: inset(0 round 10px 10px 10px 10px);
@@ -381,10 +369,6 @@
     color: #4B4B4B;
 }
 
-.product-card {
-    width: 15rem;
-    height: 21rem;
-}
 
 .card-gap {
     gap: 3rem;

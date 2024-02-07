@@ -12,7 +12,7 @@ import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { ThemeService } from './theme.service';
-import themeing from '../themes/customized-themes.json'
+import themeing from '../themes/customized-themes.json';
 import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
 import { LocalStorageService } from './components/services/local-storage.service';
@@ -102,9 +102,9 @@ export class AppComponent implements OnInit {
             }
           }
         }
-        if (event.url == '/my-products') {
-          this.isSideWindowOpen = true;
-        }
+        // if (event.url == '/my-products') {
+        //   this.isSideWindowOpen = true;
+        // }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
@@ -188,8 +188,8 @@ export class AppComponent implements OnInit {
     this.colorPallet = themeing.theme;
 
     setTimeout(() => {
-      this.changeTheme(this.colorPallet[6])
-    }, 100)
+      this.changeTheme(this.colorPallet[6]);
+    }, 100);
 
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -215,12 +215,19 @@ export class AppComponent implements OnInit {
       this.redirectToPreviousUrl();
     this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
       if (window.location.hash.includes('#/my-products')) {
-        this.isSideWindowOpen = true;
+        // this.isSideWindowOpen = true;
         this.isNaviExpanded = false;
         this.utilsService.EnableDockedNavi();
-        const product: any = this.storageService.getItem(StorageKeys.Product)
-        const token: any = this.storageService.getItem(StorageKeys.ACCESS_TOKEN)
-        const newItem = { 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email, token: token };
+        const product: any = this.storageService.getItem(StorageKeys.Product);
+        const token: any = this.storageService.getItem(
+          StorageKeys.ACCESS_TOKEN
+        );
+        const newItem = {
+          productContext: product?.id,
+          cbFlag: true,
+          productEmail: product?.email,
+          token: token,
+        };
         this.openNavi(newItem);
       } else {
         this.isSideWindowOpen = false;
@@ -241,7 +248,7 @@ export class AppComponent implements OnInit {
       if (!data) {
         this.isNaviExpanded = false;
       }
-    })
+    });
   }
 
   getAllProductsInfo(key: string) {
@@ -447,7 +454,8 @@ export class AppComponent implements OnInit {
         productEmail +
         '&device_width=' +
         this.screenWidth +
-        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+        '&token=' +
+        this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights);
       }
@@ -462,7 +470,8 @@ export class AppComponent implements OnInit {
         '?email=' +
         this.email +
         '&productContext=newProduct' +
-        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
+        '&token=' +
+        this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&xnode_flag=' +
@@ -475,7 +484,7 @@ export class AppComponent implements OnInit {
         localStorage.getItem('product_email') +
         '&device_width=' +
         this.screenWidth;
-      this.isSideWindowOpen = true;
+      // this.isSideWindowOpen = true;
       setTimeout(() => {
         this.iframeUrl =
           this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
@@ -559,25 +568,12 @@ export class AppComponent implements OnInit {
     }, 1000);
   }
 
-  submenuFunc() {
-    if (this.isSideWindowOpen) {
-      const chatbotContainer = document.getElementById(
-        'side-window'
-      ) as HTMLElement;
-      if (chatbotContainer && chatbotContainer.style && chatbotContainer.classList) {
-        chatbotContainer.style.display = 'block';
-        chatbotContainer.classList.add('open');
-      }
-    }
-  }
-
   closeSideWindow() {
     this.isSideWindowOpen = false;
   }
 
   showSideMenu() {
     const hashWithoutParams = window.location.hash.split('?')[0];
-
     return (
       hashWithoutParams === '#/configuration/data-model/overview' ||
       hashWithoutParams === '#/usecases' ||
