@@ -1,9 +1,7 @@
 <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
-    <span (click)="submenuFunc()">
-        <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
-            (click)="botOnClick()"></xnode-bot>
-    </span>
-    <xnode-app-header ></xnode-app-header>
+    <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
+        (click)="botOnClick()"></xnode-bot>
+    <xnode-app-header></xnode-app-header>
     <div class="flex">
         <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen,'main-component-expand-navi': isNaviExpanded}"
             class="flex-column">

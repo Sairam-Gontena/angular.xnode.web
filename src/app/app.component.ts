@@ -12,7 +12,7 @@ import { debounce, delay } from 'rxjs/operators';
 import { interval, of } from 'rxjs';
 import { SidePanel } from 'src/models/side-panel.enum';
 import { ThemeService } from './theme.service';
-import themeing from '../themes/customized-themes.json'
+import themeing from '../themes/customized-themes.json';
 import { SpecUtilsService } from './components/services/spec-utils.service';
 import { NaviApiService } from './api/navi-api.service';
 import { LocalStorageService } from './components/services/local-storage.service';
@@ -102,9 +102,9 @@ export class AppComponent implements OnInit {
             }
           }
         }
-        if (event.url == '/my-products') {
-          this.isSideWindowOpen = true;
-        }
+        // if (event.url == '/my-products') {
+        //   this.isSideWindowOpen = true;
+        // }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
@@ -186,10 +186,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.colorPallet = themeing.theme;
-
     setTimeout(() => {
-      this.changeTheme(this.colorPallet[6])
-    }, 100)
+      this.changeTheme(this.colorPallet[6]);
+    }, 100);
 
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -213,21 +212,28 @@ export class AppComponent implements OnInit {
     }
     if (!window.location.hash.includes('#/reset-password?email'))
       this.redirectToPreviousUrl();
-    this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
-      if (window.location.hash.includes('#/my-products')) {
-        this.isSideWindowOpen = true;
-        this.isNaviExpanded = false;
-        this.utilsService.EnableDockedNavi();
-        const product: any = this.storageService.getItem(StorageKeys.Product)
-        const token: any = this.storageService.getItem(StorageKeys.ACCESS_TOKEN)
-        const newItem = { 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email, token: token };
-        this.openNavi(newItem);
-      } else {
-        this.isSideWindowOpen = false;
-        this.isNaviExpanded = false;
-        this.utilsService.disableDockedNavi();
-      }
-    });
+    // this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
+    //   if (window.location.hash.includes('#/my-products')) {
+    //     this.isSideWindowOpen = true;
+    //     this.isNaviExpanded = false;
+    //     this.utilsService.EnableDockedNavi();
+    //     const product: any = this.storageService.getItem(StorageKeys.Product);
+    //     const token: any = this.storageService.getItem(
+    //       StorageKeys.ACCESS_TOKEN
+    //     );
+    //     const newItem = {
+    //       productContext: product?.id,
+    //       cbFlag: true,
+    //       productEmail: product?.email,
+    //       token: token,
+    //     };
+    //     this.openNavi(newItem);
+    //   } else {
+    //     this.isSideWindowOpen = false;
+    //     this.isNaviExpanded = false;
+    //     this.utilsService.disableDockedNavi();
+    //   }
+    // });
     this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
       this.showProductStatusPopup = data.popup;
     });
@@ -241,7 +247,7 @@ export class AppComponent implements OnInit {
       if (!data) {
         this.isNaviExpanded = false;
       }
-    })
+    });
   }
 
   getAllProductsInfo(key: string) {
@@ -447,7 +453,8 @@ export class AppComponent implements OnInit {
         productEmail +
         '&device_width=' +
         this.screenWidth +
-        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+        '&token=' +
+        this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights);
       }
@@ -457,30 +464,30 @@ export class AppComponent implements OnInit {
         this.loadIframeUrl();
       }, 2000);
     } else {
-      let rawUrl =
-        environment.naviAppUrl +
-        '?email=' +
-        this.email +
-        '&productContext=newProduct' +
-        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
-        '&targetUrl=' +
-        environment.xnodeAppUrl +
-        '&xnode_flag=' +
-        'XNODE-APP' +
-        '&component=' +
-        this.getMeComponent() +
-        '&user_id=' +
-        id +
-        '&product_user_email=' +
-        localStorage.getItem('product_email') +
-        '&device_width=' +
-        this.screenWidth;
-      this.isSideWindowOpen = true;
-      setTimeout(() => {
-        this.iframeUrl =
-          this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-        this.loadIframeUrl();
-      }, 2000);
+      // let rawUrl =
+      //   environment.naviAppUrl +
+      //   '?email=' +
+      //   this.email +
+      //   '&productContext=newProduct' +
+      //   '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
+      //   '&targetUrl=' +
+      //   environment.xnodeAppUrl +
+      //   '&xnode_flag=' +
+      //   'XNODE-APP' +
+      //   '&component=' +
+      //   this.getMeComponent() +
+      //   '&user_id=' +
+      //   id +
+      //   '&product_user_email=' +
+      //   localStorage.getItem('product_email') +
+      //   '&device_width=' +
+      //   this.screenWidth;
+      // this.isSideWindowOpen = true;
+      // setTimeout(() => {
+      //   this.iframeUrl =
+      //     this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      //   this.loadIframeUrl();
+      // }, 2000);
     }
   }
 
@@ -531,7 +538,8 @@ export class AppComponent implements OnInit {
   openNavi(newItem: any) {
     if (
       window.location.hash === '#/help-center' ||
-      window.location.hash === '#/history-log'
+      window.location.hash === '#/history-log' ||
+      window.location.hash === '#/my-products'
     ) {
       let currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
@@ -564,7 +572,11 @@ export class AppComponent implements OnInit {
       const chatbotContainer = document.getElementById(
         'side-window'
       ) as HTMLElement;
-      if (chatbotContainer && chatbotContainer.style && chatbotContainer.classList) {
+      if (
+        chatbotContainer &&
+        chatbotContainer.style &&
+        chatbotContainer.classList
+      ) {
         chatbotContainer.style.display = 'block';
         chatbotContainer.classList.add('open');
       }
