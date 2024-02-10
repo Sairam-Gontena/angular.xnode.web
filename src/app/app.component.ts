@@ -186,7 +186,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.colorPallet = themeing.theme;
-
     setTimeout(() => {
       this.changeTheme(this.colorPallet[6]);
     }, 100);
@@ -540,7 +539,8 @@ export class AppComponent implements OnInit {
   openNavi(newItem: any) {
     if (
       window.location.hash === '#/help-center' ||
-      window.location.hash === '#/history-log'
+      window.location.hash === '#/history-log' ||
+      window.location.hash === '#/my-products'
     ) {
       let currentUser = localStorage.getItem('currentUser');
       if (currentUser) {

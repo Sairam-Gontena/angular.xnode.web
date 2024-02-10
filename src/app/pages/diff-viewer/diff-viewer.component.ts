@@ -175,6 +175,11 @@ export class DiffViewerComponent implements OnInit {
       }
       this.getUsersData();
     });
+    this.utils.getMeProductId.subscribe((data)=>{
+      if(data && this.isDockedNaviEnabled){
+        this.getVersions({id:data})
+      }
+    })
   }
 
   isMeneOpened(event: any) {
