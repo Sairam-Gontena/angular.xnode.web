@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
   colorPallet: any;
   firstIteration:boolean = false;
   inXpilotComp: boolean= false;
+  routes:any=['#/dashboard','#/overview','#/usecases','#/configuration/workflow/overview','#/configuration/data-model/overview','#/operate','#/publish','#/specification','#/operate/change/history-log'];
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -108,7 +109,7 @@ export class AppComponent implements OnInit {
         if (event.url == '/my-products') {// in coming back from spec to my prod
           localStorage.removeItem('record_id');
           this.isSideWindowOpen = true;
-          this.firstIteration = false;
+          // this.firstIteration = false;
           this.openNavi();
         }
       }
@@ -249,11 +250,13 @@ export class AppComponent implements OnInit {
     });
     this.getUserData();
     this.utilsService.openDockedNavi.subscribe((data: any) => {
-      if(this.firstIteration || window.location.hash!=='#/my-products'){ //this should not work on constructor so added firstiteration and in refresh if it is in my-products shouldnt be closed and router.url is not working getting '/' so placed window.location.hash
+      if( window.location.hash!=='#/my-products'){ //this should not work on constructor so added firstiteration and in refresh if it is in my-products shouldnt be closed and router.url is not working getting '/' so placed window.location.hash
         this.isSideWindowOpen = data;
         if (!data) {
           this.isNaviExpanded = false;
         }
+       }else{
+        this.isSideWindowOpen = false;
       }
     });
     this.inXpilotComp = window.location.hash.includes('#/x-pilot');
@@ -500,16 +503,16 @@ export class AppComponent implements OnInit {
         '&device_width=' +
         this.screenWidth;
       this.isSideWindowOpen = true;
-      this.iframeUrlLoad(rawUrl);
+        this.iframeUrlLoad(rawUrl);
     }
   }
 
   iframeUrlLoad(rawUrl:any){ // created ths in new method
-    setTimeout(() => {
-      this.iframeUrl =
-        this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-      this.loadIframeUrl();
-    }, 2000);
+      setTimeout(() => {
+        this.iframeUrl =
+          this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+        this.loadIframeUrl();
+      }, 2000);
   }
 
   getMeComponent() {
