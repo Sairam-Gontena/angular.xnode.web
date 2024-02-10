@@ -376,7 +376,7 @@ export class AppHeaderComponent implements OnInit {
   onClickLogo(): void {
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
-    this.utilsService.disableDockedNavi();
+    // this.utilsService.disableDockedNavi();
 
     this.router.navigate(['/my-products']);
   }
