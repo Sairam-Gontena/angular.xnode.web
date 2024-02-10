@@ -87,6 +87,11 @@ export class SpecificationsHeaderComponent implements OnInit {
         );
       }
     });
+    this.utils.getMeProductId.subscribe((data)=>{
+      if(data){
+        this.product = this.storageService.getItem(StorageKeys.Product);
+      }
+    })
     this.addShareForm = this.fb.group({
       reviewersLOne: [[], [Validators.required]],
       files: [[]],
