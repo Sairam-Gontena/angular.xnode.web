@@ -308,9 +308,9 @@
       </div>
     </div>
     <div *ngIf="!contentObj?.parent_data_type" [ngClass]="{'gradientback': !contentObj?.collapsed}">
-      <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;" [outlined]="true"
+      <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;selectedSpecItem=contentObj" [outlined]="true"
         class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
-      <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;" [outlined]="true"
+      <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;scrollToItem()" [outlined]="true"
         class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
       <div class="" *ngIf="!contentObj?.collapsed"></div>
     </div>

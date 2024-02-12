@@ -71,6 +71,7 @@ export class DiffCompComponent implements OnInit {
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedWordIndices: any;
+  selectedSpecItem: any;
 
   constructor(
     private storageService: LocalStorageService,
@@ -199,6 +200,14 @@ export class DiffCompComponent implements OnInit {
       this.targetUrl
     );
     localStorage.setItem('targetUrl', this.targetUrl);
+  }
+
+  async scrollToItem() {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(this.selectedSpecItem.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   makeTrustedUrlForDiffView(versionId: any): void {
