@@ -1,32 +1,39 @@
-<form [formGroup]="parenFormGroup">
-  <h1 *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</h1>
-
-  <div *ngIf="!noSQLForm.isArray; else displayformArray" >
-      <div *ngFor="let control of noSQLForm.controls" class="form-row">
+<form [formGroup]="parenFormGroup" class="mt-4">
+  <div *ngIf="!noSQLForm.isArray; else displayformArray" class="grid ">
+      <div *ngFor="let control of noSQLForm.controls"> 
         <xnode-dynamic-control [control]="control" [parentFormGroup]="form"></xnode-dynamic-control>
       </div>
-
-      <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
-        <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="inputDoc[subForm.formName]" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+      <div *ngFor="let subForm of noSQLForm.subForms" class="col-12">
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
       </div>
   </div>
-
   <ng-template #displayformArray>
     <ng-container [formArrayName]="noSQLForm.formName">
     <ng-container *ngFor="let formC of formList.controls; let i = index">
-      <!-- <div [formGroup]="getFormC(i)"> -->
+      <div class="w-full col-12 flex justify-content-between align-items-center p-0 m-0" [ngClass]="{'border-bottom-1 pb-3':noSQLForm.duplicate}"  style="border-bottom-color: #595959;" >
+        <div class="text-xl" *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</div>
+        <div *ngIf="noSQLForm.duplicate">
+          <i class="pi pi-plus cursor-pointer" style="font-size: 1rem" *ngIf="i == 0"  (click)="add()" ></i>
+          <i class="pi pi-times cursor-pointer" style="font-size: 1rem" *ngIf="i > 0"   (click)="remove(i)" ></i>
+        </div>
+      </div>
+      <div [formGroup]="getFormC(i)" class="grid mt-4" >
         <!-- <div [formGroupName]="i"> -->
-          <div *ngFor="let control of noSQLForm.controls" class="form-row">
+          <div *ngFor="let control of noSQLForm.controls" [ngClass]="control.className"  > <!-- class="col-12 md:col-6 lg:col-4"  -->
             <xnode-dynamic-control [control]="control" [parentFormGroup]="getFormC(i)"></xnode-dynamic-control>
           </div>
         <!-- </div> -->
-      <!-- </div> -->
-     <button (click)="remove(i)">Remove</button>
+      </div>
+     <!-- <p-button (click)="remove(i)" label="Remove" severity="warning" [outlined]="true" size="small" [rounded]="true"></p-button> -->
+     <!-- <p-button label="Secondary" severity="secondary"></p-button> -->
+     <!-- <p-button label="Primary"></p-button>
+     <p-button label="Secondary" severity="secondary"></p-button> -->
     </ng-container>
   </ng-container>
     <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
       <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="getInputDoc(noSQLForm.formName)" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
     </div>
-  <button (click)="add()">Add</button>
+  <!-- <button (click)="add()">Add</button> -->
+  <!-- <p-button (click)="add()"  [rounded]="true" label="Add" [outlined]="true" severity="danger"></p-button> -->
   </ng-template>
 </form>

@@ -10,6 +10,13 @@ import { DynamicControlComponent } from './dynamic-control/dynamic-control.compo
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SignupDynamicFormComponent } from './signup-dynamic-form/signup-dynamic-form.component';
 import { NumberInputComponent } from './number-input/number-input.component';
+import { DropdownComponent } from './dropdown/dropdown/dropdown.component';
+import { CheckBoxComponent } from './check-box/check-box/check-box.component';
+import { RadioButtonComponent } from './radio-button/radio-button/radio-button.component';
+import { DatePickerComponent } from './date-picker/date-picker/date-picker.component';
+import { TextAreaComponent } from './text-area/text-area/text-area.component';
+import { DynamicButtonComponent } from './dynamic-buttons/dynamic-button/dynamic-button.component';
+import { ChipsComponent } from './chips/chips/chips.component';
 import { ChipsInputComponent } from './chips-input/chips-input.component';
 
 @NgModule({
@@ -24,6 +31,13 @@ import { ChipsInputComponent } from './chips-input/chips-input.component';
     DynamicControlComponent,
     SignupDynamicFormComponent,
     NumberInputComponent,
+    DropdownComponent,
+    CheckBoxComponent,
+    RadioButtonComponent,
+    DatePickerComponent,
+    TextAreaComponent,
+    DynamicButtonComponent,
+    ChipsComponent,
     ChipsInputComponent
   ],
 })

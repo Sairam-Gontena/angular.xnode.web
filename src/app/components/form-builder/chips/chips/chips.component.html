@@ -1,0 +1,12 @@
+<div class="card p-fluid">
+    <form [formGroup]="parentFormGroup">
+        <p-chips formControlName="values"></p-chips>
+        <div *ngIf="formGroup.get('values')?.hasError('required')">
+            <span class="error-message">Values are required.</span>
+        </div>
+        <div *ngIf="formGroup.get('values')?.hasError('chipsError')">
+            <span class="error-message">At least one value is required for chips.</span>
+        </div>
+    </form>
+</div>
+

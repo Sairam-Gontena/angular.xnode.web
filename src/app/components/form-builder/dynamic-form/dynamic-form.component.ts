@@ -11,6 +11,7 @@ export class DynamicFormComponent implements OnInit, AfterContentChecked {
 
   @Input() form:FormGroup = this.fb.group({});
   @Input() noSQLForm:any;
+  date3: Date | undefined;
   @Input() inputDoc:any = {}
 
   constructor(private service: BuilderService, private fb:FormBuilder) {

@@ -1,0 +1,212 @@
+{
+  "isArray": false,
+  "duplicate": false,
+  "formName": "Student Registration Form",
+  "controls": [],
+  "subForms": [
+    {
+      "isArray": true,
+      "formName": "Student Name",
+      "controls": [
+        {
+          "value": "",
+          "key": "Name",
+          "label": "First Name",
+          "selectedvalue":"",
+          "required": true,
+          "order": 0,
+          "controlType": "textbox",
+          "type": "string",
+          "options":"",
+          "validatores": [
+            {
+              "validatorName":"required",
+              "required": true,
+              "message": "Firstname is required"
+            }
+          ],
+          "className": "col-12 md:col-6 lg:col-4"
+        },
+        {
+          "value": "",
+          "key": "Name",
+          "label": "Middle Name",
+          "selectedvalue":"",
+          "required": true,
+          "order": 0,
+          "controlType": "textbox",
+          "type": "string",
+          "options":"",
+          "validatores": [
+            {
+              "validatorName":"required",
+              "required": true,
+              "message": "Firstname is required"
+            }
+          ],
+          "className": "col-12 md:col-6 lg:col-4"
+        },
+        {
+          "value": "",
+          "key": "Name",
+          "label": "Last Name",
+          "selectedvalue":"",
+          "required": true,
+          "order": 0,
+          "controlType": "textbox",
+          "type": "string",
+          "options":"",
+          "validatores": [
+            {
+              "validatorName":"required",
+              "required": true,
+              "message": "Firstname is required"
+            }
+          ],
+          "className": "col-12 md:col-6 lg:col-4"
+        },
+        {
+          "value": "",
+          "key": "Name",
+          "label": "Date of birth",
+          "selectedvalue":"",
+          "required": true,
+          "order": 0,
+          "controlType": "datepicker",
+          "type": "string",
+          "options":"",
+          "className": "col-12 md:col-6 lg:col-4"
+        },
+        {
+          "value": "",
+          "key": "Name",
+          "label": "Gender",
+          "selectedvalue":"",
+          "required": true,
+          "order": 0,
+          "controlType": "radio",
+          "type": "string",
+          "options": [
+            { "label": "Male", "value": "M" },
+            { "label": "Female", "value": "FM" },
+            { "label": "Others", "value": "OT" }
+          ],
+          "className": "col-12 md:col-6 lg:col-4"
+        }
+      ]
+  },
+{
+  "isArray": true,
+  "formName": "Address",
+  "duplicate": true,
+  "controls": [
+    {
+      "value": "",
+      "key": "Name",
+      "label": "Street Address",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "textbox",
+      "type": "string",
+      "options":"",
+      "className": "col-12 md:col-6 lg:col-4"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "Street Address Line2",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "textbox",
+      "type": "string",
+      "options":"",
+      "className": "col-12 md:col-6 lg:col-4"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "City",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "dropdown",
+      "type": "string",
+      "options": [
+        { "label": "Male", "value": "M" },
+        { "label": "Female", "value": "FM" },
+        { "label": "Others", "value": "OT" }
+      ],
+      "className": "col-12 md:col-6 lg:col-4"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "state / Province",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "dropdown",
+      "type": "string",
+      "options": [
+        { "label": "Male", "value": "M" },
+        { "label": "Female", "value": "FM" },
+        { "label": "Others", "value": "OT" }
+      ],
+      "className": "col-12 md:col-6 lg:col-4"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "Student Eamil",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "textbox",
+      "type": "string",
+      "options":"",
+      "className": "col-12 md:col-6 lg:col-4"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "Phone Number",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "textbox",
+      "type": "string",
+      "options":"",
+      "className": "col-12 md:col-6 lg:col-4"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "Additional Comments",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "textarea",
+      "type": "string",
+      "options":"",
+      "className": "col-12"
+    },
+    {
+      "value": "",
+      "key": "Name",
+      "label": "Tag Users",
+      "selectedvalue":"",
+      "required": true,
+      "order": 0,
+      "controlType": "chips",
+      "type": "string",
+      "options":"",
+      "className": "col-12 md:col-6 lg:col-4"
+    }
+  ]
+}
+  ]
+}
+
+

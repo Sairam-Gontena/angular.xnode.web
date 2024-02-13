@@ -10,7 +10,7 @@ import { Product } from 'src/models/product';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { JsonFormBuilderService } from '../json-form-builder.service';
 import { JSON_DOC } from '../json';
-
+import SAMPLE_JSON from '../sample.json';
 @Component({
   selector: 'xnode-signup-dynamic-form',
   templateUrl: './signup-dynamic-form.component.html',

@@ -1,3 +1,4 @@
 <div [formGroup]="parentFormGroup">
-  <input type="text" pInputText [formControlName]="control.key" />
+  <input type="text" pInputText [formControlName]="control.key" [placeholder]="control.label" />
+  <!-- <div class="error-message" >{{control.label}} is required*</div> -->
 </div>

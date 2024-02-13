@@ -1,14 +1,17 @@
 <div [formGroup]="parentFormGroup">
-  <label [attr.for]="control.key">{{control.label}}</label>
-  <div [ngSwitch]="control.controlType">
-    <xnode-text-box *ngSwitchCase="'textbox'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
-    <!-- <xnode-chips-input *ngSwitchCase="'chips'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-chips-input> -->
-    <xnode-text-box *ngSwitchCase="'chips'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
+  <label [attr.for]="control.key" *ngIf="control.label && control.controlType !== 'button'" class="text-base"  >{{ control.label }}</label>
+  <div [ngSwitch]="control.controlType" class="mt-2" >
+
+    <xnode-text-box *ngSwitchCase="'textbox'"  [control]="control" [parentFormGroup]="parentFormGroup"></xnode-text-box>
+    <xnode-dropdown *ngSwitchCase="'dropdown'" [control]="control" [parentFormGroup]="parentFormGroup"></xnode-dropdown>
+    <xnode-check-box *ngSwitchCase="'checkbox'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-check-box>
+    <xnode-radio-button *ngSwitchCase="'radio'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-radio-button>
+    <xnode-date-picker *ngSwitchCase="'datepicker'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-date-picker>
+    <xnode-text-area *ngSwitchCase="'textarea'" [control]="control" [parentFormGroup]="parentFormGroup" ></xnode-text-area>
+    <xnode-dynamic-button *ngSwitchCase="'button'"  [control]="control" [parentFormGroup]="parentFormGroup"  ></xnode-dynamic-button>
+    <xnode-chips *ngSwitchCase="'chips'"  [control]="control" [parentFormGroup]="parentFormGroup"  ></xnode-chips>
     <!-- <xnode-email-input *ngSwitchCase="'email'" [control]="control" [fControl]="fControl"></xnode-email-input>
     <xnode-number-input *ngSwitchCase="'number'" [control]="control" [fControl]="fControl"></xnode-number-input> -->
-
-
+    <!-- <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div> -->
   </div>
-
-  <!-- <div class="errorMessage" *ngIf="!isValid">{{control.label}} is required</div> -->
 </div>
