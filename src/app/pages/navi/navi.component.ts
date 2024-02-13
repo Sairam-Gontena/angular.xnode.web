@@ -44,6 +44,7 @@ export class NaviComponent implements OnInit {
     } else {
       this.productEmail = this.productDetails?.email;
     }
+    this.utils.disableDockedNavi()
     localStorage.removeItem('has_insights');
     localStorage.getItem('show-upload-panel');
     let userData: any;
