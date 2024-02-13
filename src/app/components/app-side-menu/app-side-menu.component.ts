@@ -18,22 +18,30 @@ export class AppSideMenuComponent implements OnInit {
   currentUser?: any;
   href: any;
   currentPath: any;
+  isInProductContext: boolean = false;
   constructor(
     private router: Router,
     private utils: UtilsService,
     private auditUtil: AuditutilsService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
+    this.utils.isInProductContext.subscribe((data: any) => {
+      this.isInProductContext = data;
+      this.prepareMenuBasedOnRoute();
+    });
   }
 
   ngOnInit(): void {
-    const hashWithoutParams = window.location.hash.split('?')[0];
-    if (hashWithoutParams === '#/my-products') {
+    this.prepareMenuBasedOnRoute();
+  }
+
+  prepareMenuBasedOnRoute(): void {
+    if (!this.isInProductContext) {
       this.sideMenuItems = [
         {
           label: 'Home',
           icon: './assets/home.svg',
-          path: 'admin/user-invitation',
+          path: 'my-products',
         },
         {
           label: 'Knowledge',
@@ -42,14 +50,14 @@ export class AppSideMenuComponent implements OnInit {
         },
       ];
       this.activateMenuItem();
-      return;
-    }
-    const environmentName = environment.name as keyof typeof AppSideMenuItems;
-    if (this.currentUser?.role_name === 'Xnode Admin') {
-      this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
-      this.selectedMenuIndex = 0;
     } else {
-      this.sideMenuItems = AppSideMenuItems[environmentName].UserSideMenu;
+      const environmentName = environment.name as keyof typeof AppSideMenuItems;
+      if (this.currentUser?.role_name === 'Xnode Admin') {
+        this.sideMenuItems = AppSideMenuItems[environmentName].AdminSideMenu;
+        this.selectedMenuIndex = 0;
+      } else {
+        this.sideMenuItems = AppSideMenuItems[environmentName].UserSideMenu;
+      }
     }
   }
   activateMenuItem() {
@@ -73,7 +81,7 @@ export class AppSideMenuComponent implements OnInit {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path]);
     }
-    this.utils.disableDockedNavi();
+    // this.utils.disableDockedNavi();
     this.auditUtil.postAudit(item.path, 1, 'SUCCESS', 'user-audit');
   }
 }

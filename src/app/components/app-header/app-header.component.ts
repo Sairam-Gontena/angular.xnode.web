@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -22,6 +22,7 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
   providers: [MessageService, ConfirmationService],
 })
 export class AppHeaderComponent implements OnInit {
+  @Output() navigateToHome = new EventEmitter<object>();
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -374,11 +375,8 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onClickLogo(): void {
-    this.utilsService.showLimitReachedPopup(false);
-    this.utilsService.showProductStatusPopup(false);
-    this.utilsService.disableDockedNavi();
-
-    this.router.navigate(['/my-products']);
+    this.navigateToHome.emit();
+    this.utils.productContext(false);
   }
 
   showMeLimitInfoPopup(event: any): void {

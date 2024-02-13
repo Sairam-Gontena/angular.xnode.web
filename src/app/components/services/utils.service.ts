@@ -41,6 +41,12 @@ export class UtilsService {
   public getMeProductStatus: Observable<boolean> =
     this.productStatus.asObservable();
 
+  private activeRoute: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public isInProductContext: Observable<boolean> =
+    this.activeRoute.asObservable();
+
   private productAlertPopup: BehaviorSubject<Object> =
     new BehaviorSubject<Object>({ popup: false, data: {} });
   public getMeproductAlertPopup: Observable<Object> =
@@ -93,6 +99,11 @@ export class UtilsService {
   public getMeLatestConversation: Observable<string> =
     this.updateConversation.asObservable();
 
+  private loadIframeUrl: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getLatestIframeUrl: Observable<boolean> =
+    this.loadIframeUrl.asObservable();
+
   private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeUpdatedCommentList: Observable<any> =
     this.saveComments.asObservable();
@@ -115,7 +126,7 @@ export class UtilsService {
     this.selectedContent.asObservable();
   private productChangeBPMN = new Subject<any>();
 
-  constructor() { }
+  constructor() {}
 
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
@@ -208,12 +219,21 @@ export class UtilsService {
   changeSelectContentChange(event: boolean): void {
     this.selectedContent.next(event);
   }
+
+  productContext(event: boolean): void {
+    this.activeRoute.next(event);
+  }
+
   sendProductChangeBPMN(data: any) {
     this.productChangeBPMN.next(data);
   }
 
   getProductChangeBPMN(): Observable<any> {
     return this.productChangeBPMN.asObservable();
+  }
+
+  prepareIframeUrl(data: any) {
+    this.loadIframeUrl.next(data);
   }
 
   calculateTimeAgo(timestamp: string): string {

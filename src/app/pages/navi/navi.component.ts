@@ -58,8 +58,6 @@ export class NaviComponent implements OnInit {
       this.targetUrl +
       '?email=' +
       email +
-      '&xnode_flag=' +
-      data.flag +
       '&targetUrl=' +
       environment.xnodeAppUrl +
       '&user_id=' +
@@ -99,6 +97,8 @@ export class NaviComponent implements OnInit {
             window.dispatchEvent(customEvent);
           }
           if (event.data.message === 'close-event') {
+            console.log('@@@');
+
             this.utils.showLimitReachedPopup(false);
             window.location.href = this.xnodeAppUrl + '#/my-products';
             const customEvent = new Event('customEvent');

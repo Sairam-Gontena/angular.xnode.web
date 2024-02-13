@@ -23,7 +23,6 @@ import { ConversationApiService } from 'src/app/api/conversation-api.service';
 export class MyProductsComponent implements OnInit {
   templateCard: any[] = [];
   currentUser?: any;
-  productId: any;
   private subscription: Subscription;
   isLoading: boolean = true;
   activeIndex: number = 0;
@@ -38,7 +37,7 @@ export class MyProductsComponent implements OnInit {
   timeAgo: any;
   isTitleHovered: any;
   userImage: any;
-  end = 2;
+  end = 3;
   filteredProductsLength = 0;
   activeIndexRecentActivity: number = 0;
   isViewLess = true;
@@ -79,8 +78,6 @@ export class MyProductsComponent implements OnInit {
       }
     );
     this.utils.startSpinner.subscribe((event: boolean) => {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@2', event);
-
       this.loading = event;
     });
   }
@@ -101,7 +98,9 @@ export class MyProductsComponent implements OnInit {
     this.removeProductDetailsFromStorage();
     this.removeParamFromRoute();
     this.filterProductsByUserEmail();
+    this.utils.prepareIframeUrl(true);
   }
+
   removeProductDetailsFromStorage(): void {
     localStorage.removeItem('record_id');
     localStorage.removeItem('has_insights');
@@ -140,72 +139,6 @@ export class MyProductsComponent implements OnInit {
     return initials;
   }
 
-  getMeTotalOnboardedApps(user: any): void {
-    this.naviApiService
-      .getTotalOnboardedApps(user?.email)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          localStorage.setItem(
-            'total_apps_onboarded',
-            response.data.total_apps_onboarded
-          );
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.productId
-          );
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.productId
-          );
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: '',
-            detail: response.data?.detail,
-          });
-        }
-      })
-      .catch((error: any) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser.email,
-          this.productId
-        );
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
-        this.utils.loadSpinner(true);
-      });
-  }
-
   removeParamFromRoute(): void {
     this.router.navigate([], {
       queryParams: {
@@ -224,6 +157,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickProductCard(data: any): void {
+    this.utils.disableDockedNavi();
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
@@ -241,7 +175,7 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/specification']);
     }
-    this.utils.disableDockedNavi();
+    this.utils.productContext(true);
   }
 
   onClickNew() {
@@ -281,7 +215,6 @@ export class MyProductsComponent implements OnInit {
       .getMetaData(this.currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200 && response.data.data?.length) {
-          this.productId = response.data.data[0].id;
           let user_audit_body = {
             method: 'GET',
             url: response?.request?.responseURL,
@@ -293,7 +226,7 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
           this.storageService.saveItem(
             StorageKeys.MetaData,
@@ -314,6 +247,8 @@ export class MyProductsComponent implements OnInit {
             ? this.filteredProducts.length + 1
             : 0;
           this.filteredProductsByEmail = this.templateCard;
+          this.utils.loadSpinner(false);
+          // this.getAllConversations();
         } else if (response?.status !== 200) {
           let user_audit_body = {
             method: 'GET',
@@ -326,16 +261,15 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
           this.utils.loadToaster({
             severity: 'error',
             summary: 'ERROR',
             detail: response?.data?.detail,
           });
+          this.utils.loadSpinner(false);
         }
-        this.getAllConversations();
-        this.utils.loadSpinner(false);
       })
       .catch((error: any) => {
         let user_audit_body = {
@@ -349,7 +283,7 @@ export class MyProductsComponent implements OnInit {
           'user-audit',
           user_audit_body,
           this.currentUser.email,
-          this.productId
+          ''
         );
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
@@ -454,7 +388,7 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
         } else {
           let user_audit_body = {
@@ -468,7 +402,7 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -489,7 +423,7 @@ export class MyProductsComponent implements OnInit {
           'user-audit',
           user_audit_body,
           this.currentUser.email,
-          this.productId
+          ''
         );
         this.utils.loadToaster({
           severity: 'error',
@@ -511,24 +445,39 @@ export class MyProductsComponent implements OnInit {
   }
 
   getAllConversations() {
-    this.conversationApiService.getAllConversations().then((response: any) => {
-      this.AllConversations = this.mapProductNameToConversations(response.data);
-      this.filteredConversation = this.AllConversations;
-    });
-    if (this.currentUser && this.currentUser.user_id) {
-      this.conversationApiService
-        .getConversationsByContributor(this.currentUser?.user_id)
-        .then((response: any) => {
-          if (response && response.status == 200 && response.data) {
-            this.mineConversations = this.mapProductNameToConversations(
-              response.data
-            );
-          }
-        })
-        .catch((error: any) => {
-          console.log(error);
-        });
-    }
+    this.conversationApiService
+      .getAllConversations()
+      .then((response: any) => {
+        if (response) {
+          this.AllConversations = this.mapProductNameToConversations(
+            response.data
+          );
+          this.filteredConversation = this.AllConversations;
+          this.getMeConversationsByContributers();
+        } else {
+          this.utils.loadSpinner(false);
+        }
+      })
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+      });
+  }
+
+  getMeConversationsByContributers(): void {
+    this.conversationApiService
+      .getConversationsByContributor(this.currentUser?.user_id)
+      .then((response: any) => {
+        if (response && response.status == 200 && response.data) {
+          this.mineConversations = this.mapProductNameToConversations(
+            response.data
+          );
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        this.utils.loadSpinner(false);
+      });
   }
 
   mapProductNameToConversations(_conversations: any) {
