@@ -6,6 +6,7 @@ export class FormComponent {
   controlType: string;
   type: string;
   order: number;
+  isArray: boolean;
   options?: { key: string; value: string }[];
 
   constructor(
@@ -15,6 +16,7 @@ export class FormComponent {
       label?: string;
       required?: boolean;
       order?: number;
+      isArray?: boolean;
       controlType?: string;
       type?: string;
       options?: { key: string; value: string }[];
@@ -28,6 +30,7 @@ export class FormComponent {
     this.controlType = options.controlType || '';
     this.type = options.type || '';
     this.options = options.options || [];
+    this.isArray = options.isArray || false;
   }
 }
 

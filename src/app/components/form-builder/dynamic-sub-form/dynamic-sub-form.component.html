@@ -1,4 +1,4 @@
-<div [formGroup]="parenFormGroup" class="mt-4">
+<form [formGroup]="parenFormGroup" class="mt-4">
   <div *ngIf="!noSQLForm.isArray; else displayformArray" class="grid ">
       <div *ngFor="let control of noSQLForm.controls"> 
         <xnode-dynamic-control [control]="control" [parentFormGroup]="form"></xnode-dynamic-control>
@@ -31,9 +31,9 @@
     </ng-container>
   </ng-container>
     <div *ngFor="let subForm of noSQLForm.subForms " class="form-row">
-      <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+      <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="getInputDoc(noSQLForm.formName)" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
     </div>
   <!-- <button (click)="add()">Add</button> -->
   <!-- <p-button (click)="add()"  [rounded]="true" label="Add" [outlined]="true" severity="danger"></p-button> -->
   </ng-template>
-</div>
+</form>

@@ -10,7 +10,7 @@ export class BuilderService {
     let formGroup: any = {};
 
     comps.forEach((comp) => {
-      let control = new FormControl(comp.value || '');
+      let control = new FormControl(comp.isArray ? [] : comp.value || '');
       if (comp.required) {
         control.addValidators(Validators.required);
       }
@@ -34,6 +34,7 @@ export class BuilderService {
           order: orderCnt++,
           type: this.dataType(element),
           controlType: this.controlType(element),
+          isArray:false
         })
     }
     return controls;

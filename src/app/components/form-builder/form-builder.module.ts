@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, forwardRef } from '@angular/core';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { DynamicSubFormComponent  } from './dynamic-sub-form/dynamic-sub-form.component';
 import { BuilderService } from './builder.service';
 import { TextBoxComponent } from './text-box/text-box.component';
 import { EmailInputComponent } from './email-input/email-input.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { DynamicControlComponent } from './dynamic-control/dynamic-control.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -17,6 +17,7 @@ import { DatePickerComponent } from './date-picker/date-picker/date-picker.compo
 import { TextAreaComponent } from './text-area/text-area/text-area.component';
 import { DynamicButtonComponent } from './dynamic-buttons/dynamic-button/dynamic-button.component';
 import { ChipsComponent } from './chips/chips/chips.component';
+import { ChipsInputComponent } from './chips-input/chips-input.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, SharedModule],
@@ -37,6 +38,7 @@ import { ChipsComponent } from './chips/chips/chips.component';
     TextAreaComponent,
     DynamicButtonComponent,
     ChipsComponent,
+    ChipsInputComponent
   ],
 })
 export class FormBuilderModule {}

@@ -23,8 +23,9 @@
       <div *ngFor="let control of noSQLForm.controls " class="form-row">
         <xnode-dynamic-control [control]="control" [parentFormGroup]="form"  ></xnode-dynamic-control>
       </div>
-      <div *ngFor="let subForm of noSQLForm.subForms " class="">
-        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"  ></xnode-dynamic-sub-form>
+
+      <div *ngFor="let subForm of noSQLForm.subForms" class="form-row">
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [inputDoc]="inputDoc[subForm.formName]" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
       </div>
       <div class="form-row col-12 justify-content-end flex">
         <p-button  (onClick)="onSubmit(form)" size="small" [rounded]="true" label="clear" class="mr-4 clear-btn" ></p-button>
