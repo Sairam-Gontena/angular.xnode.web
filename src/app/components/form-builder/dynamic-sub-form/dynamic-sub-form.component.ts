@@ -11,7 +11,7 @@ export class DynamicSubFormComponent implements OnInit{
   @Input() noSQLForm:any;
   formList: FormArray;
   form :any = this.fb.group({});
-
+  
   constructor(private service: BuilderService, private fb:FormBuilder) {
     this.formList = this.fb.array([])
   }

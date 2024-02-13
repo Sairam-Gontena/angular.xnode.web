@@ -1,6 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { FormComponent } from '../form-component';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+  AbstractControl
+} from '@angular/forms';
 
 @Component({
   selector: 'xnode-text-box',
@@ -10,6 +16,15 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 export class TextBoxComponent {
   @Input() control!: FormComponent;
   @Input() parentFormGroup!: FormGroup;
-  // @Input() fControl: AbstractControl | undefined;
+  @Input() submitted:any;
+  @Input() fControl: AbstractControl | undefined;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    // private router: Router,
+    // private authApiService: AuthApiService,
+    // private utilsService: UtilsService
+  ) {
+  }
 
 }

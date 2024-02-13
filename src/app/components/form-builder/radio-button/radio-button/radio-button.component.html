@@ -1,6 +1,7 @@
-<form class="flex flex-column gap-3" [formGroup]="parentFormGroup">
-    <div *ngFor="let option of options" class="field-checkbox">
-        <p-radioButton [inputId]="option.label" [value]="option" formControlName="selectedCategory"></p-radioButton>
+<div class="flex" >
+    <div *ngFor="let option of options; let i = index" class="field-checkbox" [ngClass]="{'ml-4': i > 0}" >
+        <p-radioButton [inputId]="option.label" [value]="option"></p-radioButton>
         <label [for]="option.key" class="ml-2">{{ option.label }}</label>
     </div>
-</form>
+    <!-- <div class="error-message" >{{control.label}} is required*</div> -->
+</div>

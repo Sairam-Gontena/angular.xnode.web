@@ -11,7 +11,7 @@ export class DynamicFormComponent implements OnInit {
 
   @Input() form:any = this.fb.group({});
   @Input() noSQLForm:any;
-
+  date3: Date | undefined;
   constructor(private service: BuilderService, private fb:FormBuilder) {
   }
 

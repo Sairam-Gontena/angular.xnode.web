@@ -14,6 +14,9 @@ import { DropdownComponent } from './dropdown/dropdown/dropdown.component';
 import { CheckBoxComponent } from './check-box/check-box/check-box.component';
 import { RadioButtonComponent } from './radio-button/radio-button/radio-button.component';
 import { DatePickerComponent } from './date-picker/date-picker/date-picker.component';
+import { TextAreaComponent } from './text-area/text-area/text-area.component';
+import { DynamicButtonComponent } from './dynamic-buttons/dynamic-button/dynamic-button.component';
+import { ChipsComponent } from './chips/chips/chips.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, SharedModule],
@@ -31,6 +34,9 @@ import { DatePickerComponent } from './date-picker/date-picker/date-picker.compo
     CheckBoxComponent,
     RadioButtonComponent,
     DatePickerComponent,
+    TextAreaComponent,
+    DynamicButtonComponent,
+    ChipsComponent,
   ],
 })
 export class FormBuilderModule {}

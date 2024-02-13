@@ -39,6 +39,9 @@ import { InlineDiffComponent } from 'ngx-diff';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TreeTableModule } from 'primeng/treetable';
+import { ChipsModule } from 'primeng/chips';
+
 
 @NgModule({
   declarations: [],
@@ -78,6 +81,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     InputSwitchModule,
     MultiSelectModule,
     RadioButtonModule,
+    TreeTableModule,
+    ChipsModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -118,7 +123,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     InputSwitchModule,
     AutoCompleteModule,
     MultiSelectModule,
-    RadioButtonModule
+    RadioButtonModule,
+    TreeTableModule,
+    ChipsModule
   ],
   providers: [DataService],
 })

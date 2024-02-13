@@ -16,26 +16,20 @@
   </div>
 </div> -->
 
-
-<div class="p-4"  >
-  <h1 *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</h1>
-  <div  class="p-3" >
+<div class="px-4 py-4">
+  <div class="text-2xl" *ngIf="noSQLForm.formName">{{noSQLForm.formName}}</div>
+  <div  class="px-4 py-2">
     <form *ngIf="noSQLForm.controls" [formGroup]="form" (ngSubmit)="onSubmit(form)">
       <div *ngFor="let control of noSQLForm.controls " class="form-row">
-        <xnode-dynamic-control [control]="control" [parentFormGroup]="form"></xnode-dynamic-control>
+        <xnode-dynamic-control [control]="control" [parentFormGroup]="form"  ></xnode-dynamic-control>
       </div>
-
       <div *ngFor="let subForm of noSQLForm.subForms " class="">
-        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"></xnode-dynamic-sub-form>
+        <xnode-dynamic-sub-form [parenFormGroup]="form" [noSQLForm]="subForm"  ></xnode-dynamic-sub-form>
       </div>
-
-      <div class="form-row">
-        <p-button  size="small" [rounded]="true" label="Save" ></p-button>
+      <div class="form-row col-12 justify-content-end flex">
+        <p-button  (onClick)="onSubmit(form)" size="small" [rounded]="true" label="clear" class="mr-4 clear-btn" ></p-button>
+        <p-button  (onClick)="onSubmit(form)" size="small" [rounded]="true" label="Submit" ></p-button>
       </div>
     </form>
-  </div>
-
-  <div class="form-row">
-    <strong>Saved the following values</strong><br>
   </div>
 </div>
