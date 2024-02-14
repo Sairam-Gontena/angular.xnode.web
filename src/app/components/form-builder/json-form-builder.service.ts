@@ -68,23 +68,26 @@ export class JsonFormBuilderService {
   }
 
   dataType(element: any): string {
-    switch (element.type) {
-      case 'integer':
-        return 'number';
-      case 'float':
-        return 'number';
+    if(typeof element === 'number') {
+      return "number"
     }
-    return 'string';
+    if(!isNaN(new Date(element).getDate())) {
+      return "date"
+    }
+    return "string"
   }
 
   controlType(element: any): string {
-    switch (element.type) {
-      case 'integer':
-        return 'number';
-      case 'float':
-        return 'number';
+    if(typeof element === 'number') {
+      return "number"
     }
-    return 'textbox';
+    if(!isNaN(new Date(element).getDate())) {
+      return "calendar"
+    }
+    if(element && typeof element === 'string' && element.length > 150 ) {
+      return "textarea"
+    }
+    return "textbox"
   }
 
   isPrimitive(val:any):boolean {
