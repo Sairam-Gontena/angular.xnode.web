@@ -36,8 +36,6 @@ export class ProductCardsComponent implements OnInit, OnChanges {
   }
 
   onClickNew(): void {
-    console.log('createNewWithNavi');
-
     this.createNewWithNavi.emit();
   }
 }

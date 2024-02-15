@@ -180,9 +180,9 @@ export class MyProductsComponent implements OnInit {
 
   onClickNew() {
     console.log('onClickNew');
-
-    this.router.navigate(['/x-pilot']);
-    this.auditUtil.postAudit('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
+    this.utils.expandNavi$();
+    // this.router.navigate(['/x-pilot']);
+    // this.auditUtil.postAudit('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
 
   openExternalLink(productUrl: string) {
@@ -364,8 +364,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickNewWithNavi(): void {
-    this.router.navigate(['/x-pilot']);
-    this.auditUtil.postAudit('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
+    this.utils.expandNavi$();
   }
 
   getMeCreateAppLimit(): void {

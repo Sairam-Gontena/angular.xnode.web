@@ -6,6 +6,8 @@ import { UserUtil } from '../../utils/user-util';
 import { UtilsService } from '../services/utils.service';
 import { environment } from 'src/environments/environment';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-app-side-menu',
@@ -22,7 +24,8 @@ export class AppSideMenuComponent implements OnInit {
   constructor(
     private router: Router,
     private utils: UtilsService,
-    private auditUtil: AuditutilsService
+    private auditUtil: AuditutilsService,
+    private storageService: LocalStorageService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
     this.utils.isInProductContext.subscribe((data: any) => {
@@ -73,7 +76,11 @@ export class AppSideMenuComponent implements OnInit {
     });
   }
   onClickMenuItem(item: any, i: any): void {
-    this.utils.showProductStatusPopup(false);
+    const product: any = this.storageService.getItem(StorageKeys.Product);
+    if (product && !product.has_insights) {
+      this.utils.showProductStatusPopup(true);
+      return;
+    }
     if (this.currentUser?.role_name === 'Xnode Admin' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path]);

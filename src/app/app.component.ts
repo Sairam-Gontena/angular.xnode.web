@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
   firstIteration: boolean = false;
   inXpilotComp: boolean = false;
   product: any;
+  newWithNavi: boolean = false;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -123,11 +124,18 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
-      console.log('datadatadata', data);
-
       this.isSideWindowOpen = data;
       if (!data) {
         this.isNaviExpanded = false;
+      }
+    });
+    this.utilsService.naviExpand.subscribe((data: any) => {
+      if (data) {
+        this.isNaviExpanded = true;
+        this.newWithNavi = true;
+        this.makeTrustedUrl();
+      } else {
+        this.newWithNavi = false;
       }
     });
   }
@@ -135,6 +143,8 @@ export class AppComponent implements OnInit {
   navigateToHome(): void {
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
+    this.isSideWindowOpen = false;
+    this.isNaviExpanded = false;
     this.router.navigate(['/my-products']);
   }
 
@@ -203,6 +213,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.isSideWindowOpen = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+    this.product = this.storageService.getItem(StorageKeys.Product);
     // if (!window.location.hash.includes('#/reset-password?email'))
     //   this.redirectToPreviousUrl();
     this.handleTheme();
@@ -334,18 +345,11 @@ export class AppComponent implements OnInit {
           this.isNaviExpanded = false;
         }
         if (event.data.message === 'close-docked-navi') {
-          console.log('close-docked-navi');
-
           this.isSideWindowOpen = false;
           this.isNaviExpanded = false;
-          // this.utilsService.disableDockedNavi();
-          this.refreshCurrentRoute();
         }
         if (event.data.message === 'close-event') {
-          console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
-
           //not there to handle the close option in navi in my-prod so added
-          this.utilsService.showLimitReachedPopup(false);
           this.isNaviExpanded = false;
           this.isSideWindowOpen = false;
         }
@@ -364,12 +368,10 @@ export class AppComponent implements OnInit {
           this.utilsService.toggleProductAlertPopup(data);
         }
         if (event.data.message === 'change-app') {
-          this.utilsService.saveProductId(event.data.id);
-          if (this.currentUser?.email == event.data.product_user_email) {
-            this.utilsService.hasProductPermission(true);
-          } else {
-            this.utilsService.hasProductPermission(false);
-          }
+          console.log('?????');
+          this.storageService.saveItem(StorageKeys.Product, event.data.data);
+          this.router.navigate(['/overview']);
+          this.utilsService.productContext(true);
         }
       });
 
@@ -414,7 +416,7 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(productEmail?: string): void {
-    console.log('this.product', this.product);
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
 
     let rawUrl: string =
       environment.naviAppUrl +
@@ -430,9 +432,14 @@ export class AppComponent implements OnInit {
       this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
       '&user_id=' +
       this.currentUser?.user_id;
+    if (restriction_max_value) {
+      rawUrl =
+        rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
+    }
+    if (this.newWithNavi) {
+      rawUrl = rawUrl + '&new_with_navi=' + true;
+    }
     if (this.product && window.location.hash != '#/my-products') {
-      console.log('>>>>>>>>>>>>>>>>>>>>>', this.product);
-
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       rawUrl =
         rawUrl +
@@ -445,12 +452,12 @@ export class AppComponent implements OnInit {
         '&product_id=' +
         this.product.id +
         '&product=' +
-        JSON.stringify(this.product);
+        JSON.stringify(this.product) +
+        '&new_with_navi=' +
+        false;
       this.iframeUrlLoad(rawUrl);
-      console.log('rawUrl', rawUrl);
     } else {
       this.iframeUrlLoad(rawUrl);
-      console.log('rawUrl', rawUrl);
     }
   }
 
@@ -464,8 +471,6 @@ export class AppComponent implements OnInit {
 
   getMeComponent() {
     let comp = '';
-    console.log('this.router.url', this.router.url);
-
     switch (this.router.url) {
       case '/my-products':
       case '/':
@@ -505,6 +510,8 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem?: any) {
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    this.newWithNavi = false;
     if (
       window.location.hash === '#/help-center' ||
       window.location.hash === '#/history-log'

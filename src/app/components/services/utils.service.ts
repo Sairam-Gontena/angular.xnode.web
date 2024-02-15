@@ -26,6 +26,10 @@ export class UtilsService {
   );
   public startSpinner: Observable<boolean> = this.showSpinner.asObservable();
 
+  private expandNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public naviExpand: Observable<boolean> = this.expandNavi.asObservable();
   private showToaster: BehaviorSubject<Object> = new BehaviorSubject<Object>(
     false
   );
@@ -146,6 +150,9 @@ export class UtilsService {
   }
   EnableDockedNavi() {
     this.dockedNavi.next(true);
+  }
+  expandNavi$() {
+    this.expandNavi.next(true);
   }
 
   loadSpinner(event: boolean): void {
