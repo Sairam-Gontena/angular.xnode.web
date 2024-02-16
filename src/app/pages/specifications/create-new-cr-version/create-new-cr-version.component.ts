@@ -82,7 +82,7 @@ export class CreateNewCrVersionComponent implements OnInit {
     this.minDate = new Date();
   }
 
-  handleClick(event: any) {
+  handleClick() {
     this.crForm.patchValue({ reviewersLOne: [..._.uniq(this.crForm.value.reviewersLOne)] });
   }
 

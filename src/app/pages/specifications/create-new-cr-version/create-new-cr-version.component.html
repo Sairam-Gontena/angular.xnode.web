@@ -97,7 +97,7 @@
           <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers" appendTo="body"
             formControlName="reviewersLOne" [ngClass]="{
               'is-invalid': submitted && crFormControl['reviewersLOne'].errors
-            }" (completeMethod)="filteredReveiwer($event, 'L1')" (onSelect)="handleClick($event)" field="name" [unique]="true" [multiple]="true" styleClass="w-full">
+            }" (completeMethod)="filteredReveiwer($event, 'L1')" (onSelect)="handleClick()" field="name" [unique]="true" [multiple]="true" styleClass="w-full">
             <ng-template let-reviewer pTemplate="selectedItem">
               <div class="flex align-items-center">
                 <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
