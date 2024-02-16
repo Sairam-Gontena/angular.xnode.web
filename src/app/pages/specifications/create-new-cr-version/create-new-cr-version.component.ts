@@ -54,7 +54,6 @@ export class CreateNewCrVersionComponent implements OnInit {
   showClearDueDate: boolean = false;
   isLTwoDisabled: boolean = true;
   minDate!: Date;
-  selectedUsers:any=[];
 
   constructor(
     private fb: FormBuilder,
@@ -85,8 +84,6 @@ export class CreateNewCrVersionComponent implements OnInit {
 
   handleClick(event: any) {
     this.crForm.patchValue({ reviewersLOne: [..._.uniq(this.crForm.value.reviewersLOne)] });
-    this.selectedUsers.push(this.crForm.value.reviewersLOne);
-    this.selectedUsers =  [..._.uniq(this.crForm.value.reviewersLOne)];
   }
 
   get crFormControl() {

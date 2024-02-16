@@ -98,14 +98,12 @@
             formControlName="reviewersLOne" [ngClass]="{
               'is-invalid': submitted && crFormControl['reviewersLOne'].errors
             }" (completeMethod)="filteredReveiwer($event, 'L1')" (onSelect)="handleClick($event)" field="name" [unique]="true" [multiple]="true" styleClass="w-full">
-            <ng-template pTemplate="selectedItem">
+            <ng-template let-reviewer pTemplate="selectedItem">
               <div class="flex align-items-center">
-                <div class="flex align-items-center" *ngFor="let user of selectedUsers">
-                  <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
-                    {{ reduceToInitials(user.name?user.name:user.displayName) }}
-                  </div>
-                  <span class="ml-2">{{ user.name }}</span>
+                <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
+                  {{ reduceToInitials(reviewer.name?reviewer.name:reviewer.displayName) }}
                 </div>
+                <span class="ml-2">{{ reviewer.name?reviewer.name:reviewer.displayName }}</span>
               </div>
             </ng-template>
           </p-autoComplete>
