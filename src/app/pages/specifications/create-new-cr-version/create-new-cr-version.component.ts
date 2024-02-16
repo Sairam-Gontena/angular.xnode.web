@@ -84,8 +84,9 @@ export class CreateNewCrVersionComponent implements OnInit {
   }
 
   handleClick(event: any) {
-    this.selectedUsers.push(event.value);
-    this.selectedUsers = _.uniq(this.selectedUsers)
+    this.crForm.patchValue({ reviewersLOne: [..._.uniq(this.crForm.value.reviewersLOne)] });
+    this.selectedUsers.push(this.crForm.value.reviewersLOne);
+    this.selectedUsers =  [..._.uniq(this.crForm.value.reviewersLOne)];
   }
 
   get crFormControl() {

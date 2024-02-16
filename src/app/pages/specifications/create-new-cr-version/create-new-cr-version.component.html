@@ -95,16 +95,16 @@
         <div class="p-inputgroup mt-1">
           <span class="p-inputgroup-addon"> L1 </span>
           <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers" appendTo="body"
-            formControlName="reviewersLOne" [(ngModel)]="selectedUsers" [ngClass]="{
+            formControlName="reviewersLOne" [ngClass]="{
               'is-invalid': submitted && crFormControl['reviewersLOne'].errors
-            }" (completeMethod)="filteredReveiwer($event, 'L1')" (onSelect)="handleClick($event)" field="name" [unique]="true" [multiple]="true" styleClass="w-full">
-            <ng-template let-reviewer pTemplate="selectedItem">
+            }" (completeMethod)="filteredReveiwer($event, 'L1')" showTransitionOptions=".12s ease-out" (onSelect)="handleClick($event)" field="name" [unique]="true" [multiple]="true" styleClass="w-full">
+            <ng-template pTemplate="selectedItem">
               <div class="flex align-items-center">
-                <div class="flex" *ngFor="let user of selectedUsers">
+                <div class="flex align-items-center" *ngFor="let user of selectedUsers">
                   <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
                     {{ reduceToInitials(user.name?user.name:user.displayName) }}
                   </div>
-                  <span>{{ user.name }}</span>
+                  <span class="ml-2">{{ user.name }}</span>
                 </div>
               </div>
             </ng-template>
