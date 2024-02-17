@@ -182,6 +182,7 @@ export class BpmnDiagramComponent
     this.graph();
   }
   switchWindow() {
+    this.sideBar =false;
     var bpmnWindow = document.getElementById('diagramRef');
     if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
@@ -1267,6 +1268,7 @@ export class BpmnDiagramComponent
   }
 
   onChangeProduct(obj: any): void {
+    this.sideBar = false;
     localStorage.setItem('record_id', obj?.id);
     localStorage.setItem('app_name', obj.title);
     localStorage.setItem(

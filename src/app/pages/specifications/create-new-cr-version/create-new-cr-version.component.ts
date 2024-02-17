@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import _ from 'lodash';
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
@@ -79,8 +80,12 @@ export class CreateNewCrVersionComponent implements OnInit {
       build: ['0', [Validators.required]],
     });
     this.minDate = new Date();
-
   }
+
+  handleClick() {
+    this.crForm.patchValue({ reviewersLOne: [..._.uniq(this.crForm.value.reviewersLOne)] });
+  }
+
   get crFormControl() {
     return this.crForm.controls;
   }
@@ -325,7 +330,7 @@ export class CreateNewCrVersionComponent implements OnInit {
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
         !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
-    this.filteredReveiwers = filtered;
+    this.filteredReveiwers = _.uniq(filtered);
   }
   search(event: AutoCompleteCompleteEvent) {
     this.suggestions = [...Array(10).keys()].map(

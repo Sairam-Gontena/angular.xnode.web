@@ -26,9 +26,9 @@
     opacity: 0.8;
 }
 
-:host ::ng-deep.p-button.send{
-  background-color:transparent!important;
-  border:1px solid white!important;
+:host ::ng-deep.p-button.send {
+    background-color: transparent !important;
+    border: 1px solid white !important;
 }
 
 :host ::ng-deep.p-dialog {
@@ -132,9 +132,11 @@
     }
 }
 
-:host::ng-deep .p-selectbutton .p-button.p-highlight {
-    background: #02ADEE;
-    border-color: #02ADEE;
+:host ::ng-deep .p-selectbutton .p-button.p-highlight,
+:host ::ng-deep .p-selectbutton .p-button.p-highlight:active,
+:host ::ng-deep .p-selectbutton .p-button.p-highlight:focus {
+    background-color: #02ADEE !important;
+    border-color: #02ADEE !important;
     padding: 16px 10px;
 }
 
