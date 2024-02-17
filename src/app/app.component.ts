@@ -435,12 +435,19 @@ export class AppComponent implements OnInit {
       if (user) {
         id = JSON.parse(user).user_id;
       }
+      const version = localStorage.getItem('SPEC_VERISON');
+      let versionId;
+      if(version){
+        versionId = JSON.parse(version)
+        versionId = versionId.id
+      }
       let rawUrl =
         environment.naviAppUrl +
         '?email=' +
         this.email +
         '&productContext=' +
-        localStorage.getItem('record_id') +
+        localStorage.getItem('record_id') + '&versionId=' +
+        versionId +
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&xnode_flag=' +
