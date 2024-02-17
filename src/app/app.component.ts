@@ -450,7 +450,7 @@ export class AppComponent implements OnInit {
     let id;
     const has_insights = localStorage.getItem('has_insights');
     let rawUrl:any;
-    if ( (localStorage.getItem('record_id') !== null && this.storageService.getItem(StorageKeys.Product)) && window.location.hash!='#/my-products') {
+    if ( (localStorage.getItem('record_id') !== null || this.storageService.getItem(StorageKeys.Product)) && window.location.hash!='#/my-products') {
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
