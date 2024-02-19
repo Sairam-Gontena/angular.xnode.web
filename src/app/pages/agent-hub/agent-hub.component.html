@@ -1,0 +1,90 @@
+<div class="pr-4 pl-5">
+
+    <div class="flex justify-content-between">
+        <p>Agent Hub</p>
+
+        <!-- <div class="flex gap-2">
+            <p-button label="Create Agent" styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2" [outlined]="true" icon="pi pi-plus" iconPos="right"></p-button>
+        </div> -->
+
+        <div class="flex align-items-center justify-content-between">
+            <!-- Left-aligned content -->
+            <div class="flex align-items-center">
+                <p-button label="Create Agent" styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2" [outlined]="true" icon="pi pi-plus-circle" iconPos="right"></p-button>
+            </div>
+        
+            <div class="separator"></div>
+        
+            <div class="flex align-items-center gap-2">
+                <!-- <button class="p-button p-button-text p-button-plain">
+                    <i class="pi pi-bars"></i> </button> -->
+                <!-- <button class="p-button p-button-text p-button-plain">
+                    <i class="pi pi-user"></i> </button> -->
+
+
+                    <p-button  icon="pi pi-bars"></p-button>
+
+                <p-button  icon="pi pi-user"></p-button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex agent-summary">
+        <!-- Agents Card -->
+        <div class="flex gap-2">
+            <img class="agent-icons" src="../../../assets/agent-hub/agent.png" alt="">
+          <div class="flex flex-column">
+            <div>Agents</div>
+            <div>14</div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+            <img class="agent-icons" src="../../../assets/agent-hub/capabilities.png" alt="">
+          <div class="flex flex-column">
+            <div>Capabilities</div>
+            <div>20</div>
+          </div>
+        </div>
+        
+
+        <div class="flex gap-2">
+            <img class="agent-icons" src="../../../assets/agent-hub/topics.png" alt="">
+          <div class="flex flex-column">
+            <div>Topics</div>
+            <div>40</div>
+          </div>
+        </div>
+        
+
+        <div class="flex gap-2">
+            <img class="agent-icons" src="../../../assets/agent-hub/prompt.png" alt="">
+          <div class="flex flex-column">
+            <div>Prompt</div>
+            <div>60</div>
+          </div>
+        </div>
+        
+
+
+      
+      </div>
+
+    
+    
+    <p-tabView class="relative" [(activeIndex)]="activeIndex">
+      <p-tabPanel *ngFor="let tab of items let i=index" [header]="tab.title" [style]="{color: activeIndex==i && '#fff'}">
+            <!-- <p-dropdown class="absolute top-0 left-0 custom-dropdown" *ngIf="i==0" [options]="dropdownItems" (onChange)="onDropdownChange($event)"></p-dropdown> -->
+
+            <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}" (onClick)="test('test')" (onDropdownClick)="test('dropdown')" [model]="dropdown"></p-splitButton>
+            
+      </p-tabPanel>
+    </p-tabView>
+  
+    <div class="w-full table-height">
+      <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo"></xnode-dynamic-table>
+    </div>
+  
+  </div>
