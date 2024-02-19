@@ -462,6 +462,7 @@ export class AppComponent implements OnInit {
         const productLocalStorage:any = this.storageService.getItem(StorageKeys.Product)
         proId = productLocalStorage.id;
       }
+      const version:any = this.storageService.getItem(StorageKeys.SpecVersion) // version id change
       rawUrl= environment.naviAppUrl +
         '?email=' +
         this.email +
@@ -469,6 +470,7 @@ export class AppComponent implements OnInit {
         proId +
         '&targetUrl=' +
         environment.xnodeAppUrl +
+        '&versionId=' +  version.id +
         '&xnode_flag=' +
         'XNODE-APP' +
         '&component=' +
