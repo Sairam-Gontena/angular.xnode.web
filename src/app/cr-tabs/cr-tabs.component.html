@@ -136,7 +136,8 @@
                       </div>
                     </div>
                     <p-dropdown (click)="updateSelectedCr(data);$event.stopPropagation();getMeActions(data)"
-                      [options]="crActions" emptyMessage="No actions available"  optionLabel="label" optionValue="label" class="menu-list-dropdown pointer">
+                      [options]="crActions" emptyMessage="No actions available" optionLabel="label" optionValue="label"
+                      class="menu-list-dropdown pointer">
                       <ng-template let-action pTemplate="item">
                         <span class="flex" (click)="updateChagneRequestStatus(action.label)">
                           <i class="pi pi-check border-circle flex justify-content-center align-items-center text-xs"
@@ -166,7 +167,7 @@
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
                     <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
                       (closeOverlay)="data.showComment=false" placeHolder="Reason for your actions"
-                      [component]="'crTabs'" (closeOverlay)="showComment=false" [parentId]="data.id"
+                      [component]="'crTabs'" (closeOverlay)="showComment=false" [parentId]="data.id" [crId]="data.crId"
                       (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>
@@ -178,7 +179,8 @@
             <div class="pl-7 pr-4">
               <div class="card m-0 p-0 mb-2" *ngIf="showComment">
                 <xnode-add-comment-overlay-panel [parentId]="data.id" [users]="usersList" [from]="'cr-tabs'"
-                  placeHolder="Reason for your actions" [component]="'crTabs'" (closeOverlay)="showComment=false"
+                  placeHolder="Reason for your actions" [crId]="data.crId" [component]="'crTabs'"
+                  (closeOverlay)="showComment=false"
                   (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
               </div>
               <div class="border-bottom-1 pt-2" *ngFor="let subData of crList?.[i];">
