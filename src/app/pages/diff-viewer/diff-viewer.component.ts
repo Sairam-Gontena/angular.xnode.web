@@ -84,6 +84,12 @@ export class DiffViewerComponent implements OnInit {
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
   ) {
+    this.specificationUtils._openConversationPanel.subscribe((data: any) => {
+      if (data) {
+        this.conversationPanelInfo = data;
+      }
+    });
+
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
       if (list && list.length) {
         list.forEach((element: any, index: number) => {
