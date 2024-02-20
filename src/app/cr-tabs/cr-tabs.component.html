@@ -167,7 +167,8 @@
                   <div class="card m-0 p-0 mb-2" *ngIf="data.showComment" (click)="$event.stopPropagation()">
                     <xnode-add-comment-overlay-panel [users]="usersList" [from]="'cr-tabs'"
                       (closeOverlay)="data.showComment=false" placeHolder="Reason for your actions"
-                      [component]="'crTabs'" (closeOverlay)="showComment=false" [parentId]="data.id" [crId]="data.crId"
+                      [component]="'crTabs'" (closeOverlay)="showComment=false" [parentId]="data.id"
+                      [selectedContent]="data.crId"
                       (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
                   </div>
                 </div>
@@ -179,7 +180,7 @@
             <div class="pl-7 pr-4">
               <div class="card m-0 p-0 mb-2" *ngIf="showComment">
                 <xnode-add-comment-overlay-panel [parentId]="data.id" [users]="usersList" [from]="'cr-tabs'"
-                  placeHolder="Reason for your actions" [crId]="data.crId" [component]="'crTabs'"
+                  placeHolder="Reason for your actions" [selectedContent]="data.crId" [component]="'crTabs'"
                   (closeOverlay)="showComment=false"
                   (commentInfo)="updateCommentsInfo($event)"></xnode-add-comment-overlay-panel>
               </div>

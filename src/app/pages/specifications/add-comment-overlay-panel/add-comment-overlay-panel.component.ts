@@ -39,7 +39,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   @Input() from: any;
   @Input() AssignedFrom: any;
   @Input() component: any;
-  @Input() crId: any;
   assinedUsers: string[] = [];
   assignAsaTask: boolean = false;
   currentUser: any;
@@ -165,10 +164,6 @@ export class AddCommentOverlayPanelComponent implements OnInit {
   }
 
   handleCrTabs(): void {
-    if (!this.selectedContent) {
-      this.selectedContent = {}; // if selectedContent undefined
-    }
-    this.selectedContent.parentId = this.crId;
     this.commentInfo.emit({
       message: this.comment,
       attachments: this.uploadedFiles,
