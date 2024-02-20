@@ -16,14 +16,14 @@ export class AgentHubComponent implements OnInit{
       filter: false,
       header: "Id",
       sortable: true,
-      width: 10
+      width: '10rem'
     },
     {
       field: "agent",
       filter: false,
       header: "Agent Name",
       sortable: true,
-      width: 30
+      width: '10rem'
     },
 
     {
@@ -31,28 +31,36 @@ export class AgentHubComponent implements OnInit{
       filter: false,
       header: "Description",
       sortable: true,
-      width: 50
+      width: '20rem'
     },
     {
       field: "state",
       filter: false,
       header: "State",
       sortable: true,
-      width: 50
+      width: '8rem'
     },
     {
       field: "status",
       filter: false,
       header: "Status",
       sortable: true,
-      width: 50
+      width: '8rem'
     },
     {
       field: "createdBy",
       filter: false,
       header: "Created By",
       sortable: true,
-      width: 50
+      width: '12rem'
+    },
+
+    {
+      field: "action-btn",
+      filter: false,
+      header: "",
+      sortable: true,
+      width: '10rem',
     }
   ];
   
@@ -64,7 +72,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
     {
       id: "AGID002",
@@ -72,7 +81,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
     {
       id: "AGID002",
@@ -80,7 +90,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
     {
       id: "AGID002",
@@ -88,7 +99,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
     {
       id: "AGID002",
@@ -96,7 +108,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
     {
       id: "AGID002",
@@ -104,7 +117,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
     {
       id: "AGID002",
@@ -112,7 +126,8 @@ export class AgentHubComponent implements OnInit{
       description: "Navi is a conversational assistant dedicated to lorem lupsum lorem lupsum",
       state: "live",
       status: "Active",
-      createdBy: "Anurag"
+      createdBy: "Anurag",
+      "action-btn": "..."
     },
   ]
 

@@ -18,6 +18,9 @@ export class DynamicTableComponent implements OnInit {
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
   @Input() tableInfo: any;
+  @Input() columnWidth: string = "18rem";
+  @Input() tableHeaderColor: string = ''
+  @Input() altBgColorRow: string=''
   headers: any;
   editable: boolean = true;
   showDelete: boolean = true;

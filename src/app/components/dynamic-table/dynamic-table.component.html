@@ -36,15 +36,21 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
                <tr>
-                    <th style="min-width:300px"  *ngFor="let col of columns" [ngClass]="'tableheader'">
-                         {{ col.header }}
+                    <th [style]="{'background-color': tableHeaderColor}"  *ngFor="let col of columns" [ngClass]="'tableheader'">
+                         
+                         <ng-container *ngIf="col.width">
+                              <div [style]="{'min-width': col.width}">{{ col.header }}</div>
+                         </ng-container>
+                         <ng-container *ngIf="!col.width">
+                              <div>{{ col.header }}</div>
+                         </ng-container>
                          <p-columnFilter type="text" [field]="col.field" display="menu"
                               *ngIf="col.filter"></p-columnFilter>
                     </th>
                </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
-               <tr class="text-white text-xs" style="background-color:#3A3942;">
+               <tr class="text-white text-xs" [style]="{'background-color': i % 2 === 0 && altBgColorRow ? altBgColorRow : '#3A3942'}">
                     <td *ngFor="let col of columns" style="white-space: normal;border-bottom-width: 0px;"
                          [style.width.px]="col.width">
                          <div *ngIf="col.field !== 'interest_level' && col.field !== 'action' && col.type !== 'datetime'"
