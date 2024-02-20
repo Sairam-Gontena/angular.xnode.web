@@ -140,6 +140,13 @@
     padding: 16px 10px;
 }
 
+:host ::ng-deep .p-selectbutton .p-button:not(.p-disabled):not(.p-highlight):hover {
+    background-color: #02ADEE !important;
+    border-color: #02ADEE !important;
+    padding: 16px 10px;
+}
+
+
 :host::ng-deep .p-buttonset .p-button:last-of-type,
 :host::ng-deep .p-buttonset .p-button:first-of-type {
     padding: 16px 10px;
