@@ -68,7 +68,7 @@
               [keyword]="keyword" [objId]="contentObj.id" [oldContent]="contentObj.title" [type]="'title'"
               [newContent]="diffObj?.title" [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </b>
-          <p>
+          <p [ngClass]="{'mt-3': isArray(contentObj.content) && !onDiff,'m-0': isArray(contentObj.content) && onDiff }">
             <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)"
               [objId]="contentObj.id" [oldContent]="contentObj.content" [type]="'content'"
               [newContent]="diffObj?.content" [onDiff]="onDiff" [keyword]="keyword"
