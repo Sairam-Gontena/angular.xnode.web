@@ -39,13 +39,17 @@
                     <th [style]="{'background-color': tableHeaderColor}"  *ngFor="let col of columns" [ngClass]="'tableheader'">
                          
                          <ng-container *ngIf="col.width">
-                              <div [style]="{'min-width': col.width}">{{ col.header }}</div>
+                              <div [style]="{'min-width': col.width}">
+                                   {{ col.header }}
+                                   <p-columnFilter type="text" [field]="col.field" display="menu"
+                                   *ngIf="col.filter"></p-columnFilter>
+                              </div>
                          </ng-container>
                          <ng-container *ngIf="!col.width">
                               <div>{{ col.header }}</div>
                          </ng-container>
-                         <p-columnFilter type="text" [field]="col.field" display="menu"
-                              *ngIf="col.filter"></p-columnFilter>
+                         <!-- <p-columnFilter type="text" [field]="col.field" display="menu"
+                              *ngIf="col.filter"></p-columnFilter> -->
                     </th>
                </tr>
           </ng-template>
