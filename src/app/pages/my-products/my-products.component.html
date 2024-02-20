@@ -52,10 +52,10 @@
                             class="flex md:justify-content-start sm:justify-content-start justify-content-start flex-wrap card-gap">
                             <div class="flex product-card card-color justify-content-center align-items-center new-card"
                                 *ngIf="filteredProducts.length == 0">
-                                <div
+                                <div (click)="onClickgotoxPilot()"
                                     class="flex flex-wrap justify-content-center align-items-center card-color card-title">
                                     <div class="col-12 flex justify-content-center">
-                                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                                        <i class="pi pi-plus text-4xl pointer"></i>
                                     </div>
                                     <div class="col-12 title flex justify-content-center">
                                         New Product
@@ -64,10 +64,10 @@
                             </div>
                             <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 new-card-add"
                                 *ngIf="filteredProducts.length > 0">
-                                <div
+                                <div (click)="onClickgotoxPilot()"
                                     class="flex flex-wrap justify-content-center align-items-center card-color card-title">
                                     <div class="col-12 flex justify-content-center">
-                                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                                        <i class="pi pi-plus text-4xl pointer"></i>
                                     </div>
                                     <div class="class-12 title flex justify-content-center">
                                         New Product
@@ -125,10 +125,10 @@
                         <div class="flex md:justify-content-start justify-content-start flex-wrap card-gap">
                             <div class="flex align-items-center pointer justify-content-center product-card font-bold border-round m-2 new-card-add"
                                 *ngIf="filteredProducts.length > 0">
-                                <div
+                                <div (click)="onClickgotoxPilot()"
                                     class="flex flex-wrap justify-content-center align-items-center card-color card-title">
                                     <div class="col-12 flex justify-content-center">
-                                        <i class="pi pi-plus text-4xl pointer" (click)="onClickgotoxPilot()"></i>
+                                        <i class="pi pi-plus text-4xl pointer"></i>
                                     </div>
                                     <div class="class-12 title flex justify-content-center">
                                         New Product
