@@ -11,7 +11,9 @@
                 </div>
             </div>
             <div class="flex flex-column justify-content-center">
-                <p-selectButton [options]="areaTypes" [(ngModel)]="selectedArea" optionLabel="label" optionValue="value"
+                <p-selectButton [options]="areaTypes"
+                    [ngStyle]="{'background-color': selectedArea === 'Reported Bug' ? '#02ADEE' : '#535354'}"
+                    [(ngModel)]="selectedArea" optionLabel="label" optionValue="value"
                     class="feedback-header-options ml-4 areaType-mid"
                     (onChange)="onChangeArea($event)"></p-selectButton>
             </div>
