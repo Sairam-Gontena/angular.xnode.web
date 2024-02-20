@@ -132,6 +132,12 @@
     }
 }
 
+:host ::ng-deep .p-selectbutton .p-button {
+    background-color: #535354 !important;
+    border-color: #535354 !important;
+    padding: 16px 10px;
+}
+
 :host ::ng-deep .p-selectbutton .p-button.p-highlight,
 :host ::ng-deep .p-selectbutton .p-button.p-highlight:active,
 :host ::ng-deep .p-selectbutton .p-button.p-highlight:focus {

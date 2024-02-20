@@ -11,8 +11,8 @@
                 </div>
             </div>
             <div class="flex flex-column justify-content-center">
-                <p-selectButton [options]="areaTypes" [(ngModel)]="selectedArea" optionLabel="label" optionValue="value"
-                    class="feedback-header-options ml-4 areaType-mid"
+                <p-selectButton [options]="areaTypes" [unselectable]="true" [(ngModel)]="selectedArea"
+                    optionLabel="label" optionValue="value" class="feedback-header-options ml-4 areaType-mid"
                     (onChange)="onChangeArea($event)"></p-selectButton>
             </div>
             <div class="flex flex-column justify-content-center">
@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="flex justify-content-center">
-            <p-selectButton [options]="areaTypes" [(ngModel)]="selectedArea" optionLabel="label" optionValue="value"
-                class="feedback-header-options ml-4 my-4 hidden areaType-small"
+            <p-selectButton [options]="areaTypes" [unselectable]="true" [(ngModel)]="selectedArea" optionLabel="label"
+                optionValue="value" class="feedback-header-options ml-4 my-4 hidden areaType-small"
                 (onChange)="onChangeArea($event)"></p-selectButton>
         </div>
     </div>
