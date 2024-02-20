@@ -1,0 +1,50 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/prodops/pipelines/languages/javascript
+trigger:
+  - prod
+
+stages:
+  - stage: build
+    displayName: "Build"
+    jobs:
+      - job: build_test
+        displayName: "Build"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSource: 'spec'
+              versionSpec: '18.x'
+            displayName: "Install Node.js"
+
+          - task: Bash@3
+            displayName: "Install Node Packages"
+            inputs:
+              targetType: 'inline'
+              script: 'npm i --force'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+          
+          - task: Bash@3
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/prod'))
+            displayName: "Create Build"
+            inputs:
+              targetType: 'inline'
+              script: 'npm run build:production'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+          - task: AzureRmWebAppDeployment@4
+            condition: and(succeeded(),eq(variables['Build.SourceBranch'], 'refs/heads/prod'))
+            displayName: "Deploy to Azure WebApp"
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'xnode-spn'
+              appType: 'webAppLinux'
+              WebAppName: 'prod-xnode-in'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/dist/xnode'
+
+
+            
+
