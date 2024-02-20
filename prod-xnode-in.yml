@@ -32,7 +32,7 @@ stages:
             displayName: "Create Build"
             inputs:
               targetType: 'inline'
-              script: 'npm run build:production'
+              script: 'npm run build'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - task: AzureRmWebAppDeployment@4
