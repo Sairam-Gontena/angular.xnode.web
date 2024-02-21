@@ -273,4 +273,8 @@ export class DiffCompComponent implements OnInit {
     this.selectedText = '';
     this.selectedWordIndices = [];
   }
+
+  isArray(data: any): boolean {
+    return Array.isArray(data);
+  }
 }

@@ -68,7 +68,7 @@
               [keyword]="keyword" [objId]="contentObj.id" [oldContent]="contentObj.title" [type]="'title'"
               [newContent]="diffObj?.title" [onDiff]="onDiff" [format]="format"></xnode-diff-generator>
           </b>
-          <p>
+          <p [ngClass]="{'mt-3': isArray(contentObj.content) && !onDiff,'m-0': isArray(contentObj.content) && onDiff }">
             <xnode-diff-generator [removeselectedContent]="removeselectedContent" (selectedContent)="onselect($event)"
               [objId]="contentObj.id" [oldContent]="contentObj.content" [type]="'content'"
               [newContent]="diffObj?.content" [onDiff]="onDiff" [keyword]="keyword"
@@ -162,7 +162,7 @@
       </div>
       <div class="col-12 py-0" *ngSwitchCase="'JSON_TABLE'" [id]="contentObj.id">
         <div class="flex justify-content-end align-items-center my-2 mr-2">
-          <i class="pi pi-list pointer mr-2" pTooltip="Json view" (click)="contentObj.viewType = 'list';"></i>
+          <i class="pi pi-list pointer mr-2" pTooltip="List view" (click)="contentObj.viewType = 'list';"></i>
           <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="contentObj.viewType = 'json';"></i>
           <i class="pi pi-table pointer ml-2" pTooltip="Table view" (click)="contentObj.viewType = 'table';"></i>
         </div>
@@ -308,10 +308,12 @@
       </div>
     </div>
     <div *ngIf="!contentObj?.parent_data_type" [ngClass]="{'gradientback': !contentObj?.collapsed}">
-      <p-button label="See More" size="small" [rounded]="true" (click)="contentObj.collapsed = true;selectedSpecItem=contentObj" [outlined]="true"
+      <p-button label="See More" size="small" [rounded]="true"
+        (click)="contentObj.collapsed = true;selectedSpecItem=contentObj" [outlined]="true"
         class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="!contentObj?.collapsed" severity="secondary"></p-button>
-      <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;scrollToItem()" [outlined]="true"
-        class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="contentObj?.collapsed" severity="secondary"></p-button>
+      <p-button label="See Less" [rounded]="true" size="small" (click)="contentObj.collapsed = false;scrollToItem()"
+        [outlined]="true" class="absolute bottom-0 right-0 mr-2 z-0 mb-2" *ngIf="contentObj?.collapsed"
+        severity="secondary"></p-button>
       <div class="" *ngIf="!contentObj?.collapsed"></div>
     </div>
   </div>
