@@ -187,3 +187,7 @@ img.highlighted {
 :host ::ng-deep .djs-context-pad .entry{
     background-color: var(--breadcrumbs-item-color);
 }
+
+:host ::ng-deep.bpmn-table .p-datatable .p-datatable-tbody > tr{
+  background: transparent;
+}
