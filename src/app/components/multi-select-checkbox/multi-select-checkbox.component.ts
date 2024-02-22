@@ -17,4 +17,6 @@ export class MultiSelectCheckboxComponent {
   @Input() filter: boolean = false; // Flag to enable/disable filtering
   @Input() placeholder!: string; // Placeholder text for the input field
   @Input() optionLabel!: string; // Label for the options
+
+  @Input() styleClass!: string
 }

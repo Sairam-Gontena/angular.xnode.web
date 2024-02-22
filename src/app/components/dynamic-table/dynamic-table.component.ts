@@ -21,6 +21,28 @@ export class DynamicTableComponent implements OnInit {
   @Input() columnWidth: string = "18rem";
   @Input() tableHeaderColor: string = ''
   @Input() altBgColorRow: string=''
+
+  @Input() searchFilterOptions = {
+    filter: false,
+    showToggleAll: false,
+    showHeader: false,
+    options: [],
+    placeholder: "All",
+    optionLabel: "name",
+    styleClass: "custom-multiselect"
+  }
+
+  @Input() showColumnFilterOption = {
+    filter: false,
+    showToggleAll: false,
+    showHeader: false,
+    options: [],
+    placeholder: "All",
+    optionLabel: "name",
+    styleClass: "showColumnFilterOption"
+  }
+
+
   headers: any;
   editable: boolean = true;
   showDelete: boolean = true;
