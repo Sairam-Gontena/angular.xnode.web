@@ -344,6 +344,55 @@
           "Notes": "First Revision"
         }
       ]
+    },
+
+    "AgentHub": {
+      "columns": [
+        {
+          "field": "id",
+          "filter": false,
+          "header": "Id",
+          "sortable": true,
+          "width": "10rem"
+        },
+        {
+          "field": "agent",
+          "filter": false,
+          "header": "Agent Name",
+          "sortable": true,
+          "width": "10rem"
+        },
+    
+        {
+          "field": "description",
+          "filter": false,
+          "header": "Description",
+          "sortable": true,
+          "width": "20rem"
+        },
+        {
+          "field": "status",
+          "filter": false,
+          "header": "Status",
+          "sortable": true,
+          "width": "8rem"
+        },
+        {
+          "field": "createdBy",
+          "filter": false,
+          "header": "Created By",
+          "sortable": true,
+          "width": "12rem"
+        },
+    
+        {
+          "field": "action-btn",
+          "filter": false,
+          "header": "",
+          "sortable": true,
+          "width": "10rem"
+        }
+      ]
     }
   }
 }

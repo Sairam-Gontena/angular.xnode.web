@@ -71,17 +71,17 @@
 
     
     
-    <p-tabView class="relative" [(activeIndex)]="activeIndex">
-      <p-tabPanel *ngFor="let tab of items let i=index" [header]="tab.title" [style]="{color: activeIndex==i && '#fff'}">
+    <p-tabView class="relative" [(activeIndex)]="agentHubModel.activeIndex">
+      <p-tabPanel *ngFor="let tab of agentHubModel.items let i=index" [header]="tab.title" [style]="{color: agentHubModel.activeIndex ==i && '#fff'}">
             <!-- <p-dropdown class="absolute top-0 left-0 custom-dropdown" *ngIf="i==0" [options]="dropdownItems" (onChange)="onDropdownChange($event)"></p-dropdown> -->
 
-            <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}" (onClick)="test('test')" (onDropdownClick)="test('dropdown')" [model]="dropdown"></p-splitButton>
+            <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}" (onClick)="agentHubModel.test('test')" (onDropdownClick)="agentHubModel.test('dropdown')" [model]="agentHubModel.agentTabItemDropdown"></p-splitButton>
             
       </p-tabPanel>
     </p-tabView>
   
     <div class="w-full table-height">
-      <xnode-dynamic-table [inputData]="tableData" [cols]="columns" [tableInfo]="tableInfo" columnWidth="13.8rem" altBgColorRow="#2E2D36"></xnode-dynamic-table>
+      <xnode-dynamic-table [inputData]="agentHubModel.tableData" [cols]="agentHubModel.columns" [tableInfo]="agentHubModel.tableInfo" columnWidth="13.8rem" altBgColorRow="#2E2D36"></xnode-dynamic-table>
     </div>
   
   </div>

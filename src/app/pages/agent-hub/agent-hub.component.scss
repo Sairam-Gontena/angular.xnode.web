@@ -46,7 +46,7 @@
 }
 
 /* Change background color of the dropdown panel */
-:host ::ng-deep .p-multiselect-label-container {
+:host ::ng-deep .custom-multiselect .p-multiselect-label-container {
   background-color: transparent;
   // border: none
   // border: 2px solid #595959;
@@ -60,7 +60,7 @@
   border-radius: 0%;
 }
 
-:host ::ng-deep .p-multiselect .p-multiselect-trigger {
+:host ::ng-deep .custom-multiselect .p-multiselect-trigger {
   display: flex !important;
   background-color: transparent;
   align-items: center;
@@ -85,10 +85,25 @@
 :host ::ng-deep .p-inputtext , :host ::ng-deep .p-inputtext:enabled:hover {
   border-radius: 0%;
   background-color: #343541;
-
   border: 2px solid #595959;
   border-left: none;
-
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
+}
+
+:host ::ng-deep .showColumnFilterOption, .p-multiselect-label-container, .p-multiselect {
+  border-radius: 0%;
+  background-color: transparent !important;
+  border: none;
+}
+
+:host ::ng-deep .showColumnFilterOption .p-multiselect-trigger {
+  display: flex !important;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: auto;
+  padding-right: 0.5rem;
+  color: white;
 }
