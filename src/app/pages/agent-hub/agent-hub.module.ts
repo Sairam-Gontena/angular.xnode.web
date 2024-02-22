@@ -9,6 +9,7 @@ import { SharedComponentModule } from 'src/app/shared/shared-component.module';
 import { TabViewModule } from 'primeng/tabview';
 import { DropdownModule } from 'primeng/dropdown';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -20,9 +21,10 @@ import { SplitButtonModule } from 'primeng/splitbutton';
     TabMenuModule,
 
     TabViewModule,
+    MultiSelectModule,
     DropdownModule,
     SplitButtonModule,
-    // SharedModule,
+    SharedModule,
     SharedComponentModule
   ]
 })

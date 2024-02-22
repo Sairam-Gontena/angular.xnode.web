@@ -1,55 +1,36 @@
-// .custom-dropdown .p-dropdown {
-//     /* Example: Decrease right padding to bring the arrow closer */
-//     padding-right: 0.5rem !important; /* Adjust this value as needed */
-//   }
-  
-//   /* Specifically target the dropdown arrow area */
-//   .custom-dropdown .p-dropdown .p-dropdown-trigger {
-//     width: 2rem !important; /* Decrease width to bring the arrow closer to the text */
-//   }
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+  width: auto !important;
+}
 
- 
+:host ::ng-deep .p-button {
 
+  background: none;
+  justify-content: center;
+  padding-left: 1rem;
+}
 
-  :host ::ng-deep .p-dropdown .p-dropdown-trigger {
-    width: auto !important;
-  }
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: #fff !important;
+}
 
 
-  // :host ::ng-deep .p-dropdown .p-element {
-  //   white-space: nowrap; 
-  //   width: 4rem; 
-  //   overflow: hidden;
-  //   text-overflow: ellipsis; 
-  // }
+:host ::ng-deep .p-tabview-panels,
+:host ::ng-deep .p-tabview-nav,
+:host ::ng-deep .p-tabview-nav li,
+:host ::ng-deep .p-tabview-nav li a {
+  background: transparent !important;
+}
 
-  :host ::ng-deep .p-button {
-    
-    background: none;
-    justify-content: center;
-    padding-left: 1rem;
-  }
-
-  :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link  {
-    color: #fff !important;
-  }
-
-
-  :host ::ng-deep .p-tabview-panels,
-  :host ::ng-deep .p-tabview-nav,
-  :host ::ng-deep .p-tabview-nav li,
-  :host ::ng-deep .p-tabview-nav li a {
-      background: transparent !important;
-  }
 .separator {
-    border-left: 1px solid #A2A2A3;
-    margin: 0 1rem;
-    height: 1.8rem; 
+  border-left: 1px solid #A2A2A3;
+  margin: 0 1rem;
+  height: 1.8rem;
 }
 
 .agent-icons {
   width: 2.5rem;
 }
+
 .agent-summary {
   padding: 2.5rem 13rem 2.5rem 5rem;
   justify-content: space-between;
@@ -57,4 +38,57 @@
 
 :host ::ng-deep.p-tabview-nav {
   gap: 2.5rem;
+}
+
+/* Change background color of the dropdown */
+:host ::ng-deep .p-multiselect-panel {
+  background-color: var(--multiselect-pannel-background-color);
+}
+
+/* Change background color of the dropdown panel */
+:host ::ng-deep .p-multiselect-label-container {
+  background-color: transparent;
+  // border: none
+  // border: 2px solid #595959;
+  // border-radius: 0%;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  
+}
+
+:host ::ng-deep .p-multiselect {
+  border-radius: 0%;
+}
+
+:host ::ng-deep .p-multiselect .p-multiselect-trigger {
+  display: flex !important;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: auto;
+  padding-right: 0.5rem;
+  color: white;
+}
+
+:host ::ng-deep .custom-multiselect {
+  background-color: #343541;
+  border: 2px solid #595959;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+ }
+
+:host ::ng-deep .p-placeholder {
+  color: white;
+}
+
+:host ::ng-deep .p-inputtext , :host ::ng-deep .p-inputtext:enabled:hover {
+  border-radius: 0%;
+  background-color: #343541;
+
+  border: 2px solid #595959;
+  border-left: none;
+
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
 }

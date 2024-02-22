@@ -67,6 +67,8 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
+import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbox/multi-select-checkbox.component';
+
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -133,6 +135,7 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     SpecConversationComponent,
     ConversationActionsComponent,
     SpecChildConversationComponent,
+    MultiSelectCheckboxComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -201,6 +204,7 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     CreateNewCrVersionComponent,
     SpecConversationComponent,
     SpecChildConversationComponent,
+    MultiSelectCheckboxComponent
   ],
 })
 export class SharedComponentModule {}

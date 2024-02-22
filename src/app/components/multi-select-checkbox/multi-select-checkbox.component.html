@@ -1,0 +1,21 @@
+<div class="card flex justify-content-center">
+    <p-multiSelect
+     [filter]="filter"
+     [showToggleAll]="showToggleAll"
+     [showHeader]="showHeader"
+     [options]="options"
+     [placeholder]="placeholder"
+     scrollHeight="250px"
+     [optionLabel]="optionLabel"
+
+     
+
+     styleClass="custom-multiselect"
+     >
+        <ng-template let-group pTemplate="group">
+            <div class="inline-flex align-items-center gap-2 px-1">
+                <span>{{ group.name }}</span>
+            </div>
+        </ng-template>
+    </p-multiSelect>
+</div>

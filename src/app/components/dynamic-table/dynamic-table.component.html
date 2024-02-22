@@ -16,10 +16,14 @@
           scrollDirection="horizontal">
           <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
                <div class="flex justify-content-between align-items-center">
-                    <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
-                         <i class="pi pi-search"></i>
-                         <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
-                    </span>
+                    <div class="flex p-3">
+                         <xnode-multi-select-checkbox [filter]="false" [showToggleAll]="false" [showHeader]="false" [options]="[]"  placeholder="All" optionLabel="name"></xnode-multi-select-checkbox>
+     
+                         <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
+                              <i class="pi pi-search"></i>
+                              <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
+                         </span>
+                    </div>
                     <div class="flex-wrap">
                          <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">
                               <img src="../../assets/delete.svg" alt="circle-ci-image" size="small" >
