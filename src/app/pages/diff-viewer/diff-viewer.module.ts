@@ -10,7 +10,7 @@ import { DiffListComponent } from 'src/app/components/diff-list/diff-list.compon
 import { DiffGeneratorComponent } from 'src/app/components/diff-generator/diff-generator.component';
 import { DiffViewerComponent } from './diff-viewer.component';
 // import { UserPersonaComponent } from '../specifications/user-persona/user-persona.component';
-
+import { TextEditorComponent } from 'src/app/components/text-editor/text-editor.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +18,7 @@ import { DiffViewerComponent } from './diff-viewer.component';
     DiffCompComponent,
     DiffListComponent,
     DiffGeneratorComponent,
+    TextEditorComponent
     // UserPersonaComponent
   ],
   imports: [

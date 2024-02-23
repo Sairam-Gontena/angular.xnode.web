@@ -41,6 +41,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TreeTableModule } from 'primeng/treetable';
 import { ChipsModule } from 'primeng/chips';
+import { EditorModule } from 'primeng/editor';
 
 
 @NgModule({
@@ -83,6 +84,7 @@ import { ChipsModule } from 'primeng/chips';
     RadioButtonModule,
     TreeTableModule,
     ChipsModule,
+    EditorModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -125,6 +127,7 @@ import { ChipsModule } from 'primeng/chips';
     MultiSelectModule,
     RadioButtonModule,
     TreeTableModule,
+    EditorModule,
     ChipsModule
   ],
   providers: [DataService],

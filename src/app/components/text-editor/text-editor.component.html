@@ -1,0 +1,12 @@
+<div class="grid">
+  <div class="col-6">
+    <h1>Old Text</h1>
+    <p-editor [(ngModel)]="oldText" (onInit)="initializerEditor1($event)"  [style]="{ height: '120px' }"></p-editor>
+  </div>
+  <div class="col-6">
+    <h1>New Text</h1>
+    <p-editor [(ngModel)]="newText" (onInit)="initializerEditor2($event)"  [style]="{ height: '120px' }"></p-editor>
+  </div>
+</div>
+
+<p-button label="Generate Diff" (onClick)="generateDiff()"></p-button>

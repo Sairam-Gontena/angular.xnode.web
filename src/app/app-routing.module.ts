@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { SignupDynamicFormComponent } from './components/form-builder/signup-dynamic-form/signup-dynamic-form.component';
 import { authGuard } from './auth.guard';
+import { TextEditorComponent } from './components/text-editor/text-editor.component';
 
 const routes: Routes = [
   {
@@ -209,8 +210,8 @@ const routes: Routes = [
 
   },
   {
-    path: 'dynamic-form',
-    component: SignupDynamicFormComponent,
+    path: 'texteditor',
+    component: TextEditorComponent,
     canActivate: [authGuard]
 
   },

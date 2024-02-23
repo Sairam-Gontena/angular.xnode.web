@@ -63,9 +63,6 @@ import { CreateNewCrVersionComponent } from '../pages/specifications/create-new-
 import { SpecConversationComponent } from '../pages/specifications/spec-conversation/spec-conversation.component';
 import { ConversationActionsComponent } from '../pages/specifications/conversation-actions/conversation-actions.component';
 import { SpecChildConversationComponent } from '../pages/specifications/spec-child-conversation/spec-child-conversation.component';
-// import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
-// import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
-// import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
 @NgModule({
   declarations: [
@@ -109,9 +106,6 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     AddCommentOverlayPanelComponent,
     ConfirmationPopupNewComponent,
     AddCrVersionComponent,
-    // DiffCompComponent,
-    // DiffGeneratorComponent,
-    // DiffListComponent,
     UserPersonaComponent,
     SpecificationsHeaderComponent,
     SpecificationsMenuComponent,
@@ -177,9 +171,6 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     AddCommentOverlayPanelComponent,
     ConfirmationPopupNewComponent,
     AddCrVersionComponent,
-    // DiffCompComponent,
-    // DiffGeneratorComponent,
-    // DiffListComponent,
     UserPersonaComponent,
     ConversationActionsComponent,
     SpecificationsHeaderComponent,
