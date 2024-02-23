@@ -17,17 +17,12 @@
                                 <ng-template pTemplate="header">
                                     <div class="col-12 flex justify-content-between">
                                         <div class="font-normal	text-base">{{summary.id}}</div>
-                                        <div class="font-normal	text-base">
+                                        <div class="text-right mb-2 text-500 text-xs p-1 font-italic font-semibold">
                                             {{getMeLocalDateAndTime(summary?.timestamp)}}</div>
                                     </div>
                                 </ng-template>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                    sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    {{summary.content}}
                                 </p>
                             </p-accordionTab>
                         </p-accordion>
