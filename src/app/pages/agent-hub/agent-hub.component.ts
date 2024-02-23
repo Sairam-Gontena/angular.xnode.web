@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AgentHubModel } from './agent-hub.model';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { AgentHubService } from 'src/app/api/agent-hub.service';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -10,9 +12,14 @@ export class AgentHubComponent implements OnInit {
 
   agentHubModel: AgentHubModel;
 
-  ngOnInit() { }
-  constructor() {
-    this.agentHubModel = new AgentHubModel()
+  constructor(
+    private storageService: LocalStorageService,
+    private agentHubService: AgentHubService) {
+    this.agentHubModel = new AgentHubModel(this.storageService, this.agentHubService)
+  }
+
+  ngOnInit() { 
+    this.agentHubModel.getAllAgentList()
   }
 
 }

@@ -349,6 +349,7 @@
     "AgentHub": {
       "columns": [
         {
+          "idx": 0,
           "field": "id",
           "filter": false,
           "header": "Id",
@@ -356,7 +357,8 @@
           "width": "10rem"
         },
         {
-          "field": "agent",
+          "idx": 2,
+          "field": "name",
           "filter": false,
           "header": "Agent Name",
           "sortable": true,
@@ -364,6 +366,7 @@
         },
     
         {
+          "idx": 3,
           "field": "description",
           "filter": false,
           "header": "Description",
@@ -371,6 +374,7 @@
           "width": "20rem"
         },
         {
+          "idx": 4,
           "field": "status",
           "filter": false,
           "header": "Status",
@@ -378,7 +382,8 @@
           "width": "8rem"
         },
         {
-          "field": "createdBy",
+          "idx": 5,
+          "field": "created_by",
           "filter": false,
           "header": "Created By",
           "sortable": true,
@@ -386,6 +391,7 @@
         },
     
         {
+          "idx": 6,
           "field": "action-btn",
           "filter": false,
           "header": "",
