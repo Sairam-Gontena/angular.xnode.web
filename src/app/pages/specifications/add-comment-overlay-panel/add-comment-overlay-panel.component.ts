@@ -88,6 +88,7 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     if (this.from == 'cr-tabs') {
       this.assignAsaTask = true;
     }
+
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -166,12 +167,10 @@ export class AddCommentOverlayPanelComponent implements OnInit {
     this.commentInfo.emit({
       message: this.comment,
       attachments: this.uploadedFiles,
-      referenceContent:
-        this.parentEntity === 'SPEC' ? this.selectedContent : {},
+      referenceContent: this.parentEntity === 'SPEC' ? this.selectedContent : {},
       parentId: this.selectedContent.parentId,
     });
   }
-
   onClickSend(): void {
     if (this.from == 'cr-tabs') {
       this.handleCrTabs();
@@ -347,8 +346,8 @@ export class AddCommentOverlayPanelComponent implements OnInit {
           this.parentEntity === 'SPEC'
             ? this.selectedContent
             : this.selectedComment?.referenceContent
-            ? this.selectedComment.referenceContent
-            : {},
+              ? this.selectedComment.referenceContent
+              : {},
         attachments: [],
         references: this.setTemplateTypeInRefs(),
         followers: [],

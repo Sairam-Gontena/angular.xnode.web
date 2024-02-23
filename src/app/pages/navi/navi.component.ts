@@ -21,7 +21,7 @@ export class NaviComponent implements OnInit {
     private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private storageService: LocalStorageService
-  ) {}
+  ) { }
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
   xnodeAppUrl: string = environment.xnodeAppUrl;
