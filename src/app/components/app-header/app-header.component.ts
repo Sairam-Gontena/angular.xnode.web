@@ -25,6 +25,9 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
+  convSummary: any;
+  showViewSummaryPopup: boolean = false;
+  notifObj: any;
   channel: any;
   email: string = '';
   id: string = '';
@@ -384,5 +387,33 @@ export class AppHeaderComponent implements OnInit {
   showMeLimitInfoPopup(event: any): void {
     this.showLimitReachedPopup = event;
     this.limitReachedContent = true;
+  }
+
+  viewSummaryPopup(notif: any): void {
+    this.notifObj = notif;
+    this.utils.loadSpinner(true);
+    this.getSummary(notif)
+  }
+  getSummary(obj: any): void {
+    this.naviApiService.getSummaryByProductId(obj.product_id).then((res: any) => {
+      if (res && res.status === 200) {
+        this.showViewSummaryPopup = true;
+        this.convSummary = res.data.conv_summary;
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: res.data.message,
+        });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: err,
+      });
+    }))
   }
 }
