@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 
 
@@ -17,6 +17,13 @@ export class MultiSelectCheckboxComponent {
   @Input() filter: boolean = false; // Flag to enable/disable filtering
   @Input() placeholder!: string; // Placeholder text for the input field
   @Input() optionLabel!: string; // Label for the options
-  @Input() displaySelectedLabel: boolean = false
-  @Input() styleClass!: string
+  @Input() displaySelectedLabel: boolean = false;
+  @Input() styleClass!: string;
+
+  @Output() changeEvent = new EventEmitter<{ event: any, val: string }>();
+
+  onChangeHandler(event: any, val: string) {
+    console.log("event", event)
+    this.changeEvent.emit({ event, val });
+  }
 }

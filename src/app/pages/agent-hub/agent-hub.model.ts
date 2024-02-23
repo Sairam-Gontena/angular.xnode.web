@@ -33,7 +33,8 @@ export class AgentHubModel {
         options: [],
         placeholder: "All",
         optionLabel: "header",
-        styleClass: "showColumnFilterOption"
+        styleClass: "showColumnFilterOption",
+        changeHandler: this.test
       }
 
     constructor(

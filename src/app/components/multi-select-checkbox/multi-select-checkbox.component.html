@@ -8,9 +8,11 @@
      scrollHeight="250px"
      [optionLabel]="optionLabel"
      [displaySelectedLabel] = "displaySelectedLabel"
-     
-
      [styleClass]="styleClass"
+
+     (onSelectAllChange)="onChangeHandler($event, 'onSelect')"
+     (onChange)="onChangeHandler($event, 'onChange')"
+ 
      >
         <ng-template let-group pTemplate="group">
             <div class="inline-flex align-items-center gap-2 px-1">

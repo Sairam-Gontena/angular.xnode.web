@@ -39,7 +39,8 @@ export class DynamicTableComponent implements OnInit {
     options: [],
     placeholder: "All",
     optionLabel: "name",
-    styleClass: "showColumnFilterOption"
+    styleClass: "showColumnFilterOption",
+    changeHandler: (val: string) => {console.log('val', val)}
   }
 
 
