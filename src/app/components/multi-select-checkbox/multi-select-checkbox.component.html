@@ -9,9 +9,7 @@
      [optionLabel]="optionLabel"
      [displaySelectedLabel] = "displaySelectedLabel"
      [styleClass]="styleClass"
-
-     (onSelectAllChange)="onChangeHandler($event, 'onSelect')"
-     (onChange)="onChangeHandler($event, 'onChange')"
+     (onChange)="onChangeHandler($event)"
  
      >
         <ng-template let-group pTemplate="group">

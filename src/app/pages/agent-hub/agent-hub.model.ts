@@ -34,7 +34,7 @@ export class AgentHubModel {
         placeholder: "All",
         optionLabel: "header",
         styleClass: "showColumnFilterOption",
-        changeHandler: this.test
+        changeHandler: this.onShowDynamicColumnFilter.bind(this)
       }
 
     constructor(
@@ -97,8 +97,8 @@ export class AgentHubModel {
     /**
      * Methods will be define from here
      */
-    test(s: string): void {
-        console.log("hello", s);
+    test(event: any): void {
+        console.log("hello", event);
         // this.activeIndex = 0;
     }
 
@@ -117,5 +117,9 @@ export class AgentHubModel {
         } catch (error) {
             console.error("Error fetching agent list:", error);
         }
+    }
+
+    onShowDynamicColumnFilter(event: any) {
+      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: {idx: number} )=> valItem.idx === item.idx))
     }
 }

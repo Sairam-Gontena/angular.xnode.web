@@ -22,8 +22,7 @@ export class MultiSelectCheckboxComponent {
 
   @Output() changeEvent = new EventEmitter<{ event: any, val: string }>();
 
-  onChangeHandler(event: any, val: string) {
-    console.log("event", event)
-    this.changeEvent.emit({ event, val });
+  onChangeHandler(event: any) {
+    this.changeEvent.emit(event);
   }
 }
