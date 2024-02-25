@@ -16,7 +16,7 @@
           scrollDirection="horizontal">
           <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
                <div class="flex justify-content-between align-items-center">
-                    <div class="flex p-3">
+                    <div class="flex gap-4 p-3">
                          <xnode-multi-select-checkbox
                          *ngIf="searchFilterOptions?.showFilterOption"
                           [filter]="searchFilterOptions.filter"

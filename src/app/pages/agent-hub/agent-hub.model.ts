@@ -122,6 +122,10 @@ export class AgentHubModel {
     }
 
     onShowDynamicColumnFilter(event: any) {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: {idx: number} )=> valItem.idx === item.idx))
+        if(!event?.value.length) {
+            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns 
+        }else {
+            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: {idx: number} )=> valItem.idx === item.idx))
+        }
     }
 }

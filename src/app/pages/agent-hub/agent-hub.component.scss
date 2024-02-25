@@ -74,8 +74,7 @@
 :host ::ng-deep .custom-multiselect {
   background-color: #343541;
   border: 2px solid #595959;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
+  border-radius: 6px;
  }
 
 :host ::ng-deep .p-placeholder {
@@ -86,9 +85,9 @@
   border-radius: 0%;
   background-color: #343541;
   border: 2px solid #595959;
-  border-left: none;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  // border-left: none;
+  border-radius: 6px;
+  // border-bottom-right-radius: 6px;
 }
 
 :host ::ng-deep .showColumnFilterOption, .p-multiselect-label-container, .p-multiselect {
