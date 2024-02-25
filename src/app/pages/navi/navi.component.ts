@@ -109,6 +109,10 @@ export class NaviComponent implements OnInit {
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
           }
+          if (event.data.message === 'viewSummary') {
+            this.utils.viewSummary({ showViewSummary: true, product_id: event.data.product_id });
+
+          }
           if (event.data.message === 'close-event') {
             this.utils.showLimitReachedPopup(false);
             window.location.href = this.xnodeAppUrl + '#/my-products';

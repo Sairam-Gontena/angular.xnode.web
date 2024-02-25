@@ -86,6 +86,11 @@ export class AppHeaderComponent implements OnInit {
       let productObj = JSON.parse(product);
       this.productId = productObj?.id;
     }
+    this.utils.loadViewSummary.subscribe((event: any) => {
+      if (event) {
+        this.getSummary({ product_id: event.product_id });
+      }
+    })
   }
 
   ngOnInit(): void {
