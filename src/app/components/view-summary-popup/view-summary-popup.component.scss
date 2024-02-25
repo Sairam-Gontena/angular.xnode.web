@@ -12,8 +12,6 @@
 
 :host ::ng-deep .p-tabview .p-tabview-panels {
     background: #23222B;
-    // padding: 1.25rem;
-    padding: 0;
     border: 0 none;
     color: #ffffff;
 }
@@ -67,10 +65,7 @@
 
 :host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link {
     padding: 4px;
-    border: 1px solid transparent;
-    background: #23222B;
     color: #EFEEEE;
-    font-weight: 700;
     border-radius: 6px;
     transition: box-shadow 0.2s;
     font-size: 1rem;

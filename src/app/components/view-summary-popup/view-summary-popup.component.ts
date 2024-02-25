@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { UtilsService } from '../services/utils.service';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { OverallSummary } from 'src/models/view-summary';
 
 @Component({
   selector: 'xnode-view-summary-popup',
@@ -11,16 +13,17 @@ import { DatePipe } from '@angular/common';
 export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   @Input() visible: any;
   @Input() notifObj: any;
-  @Input() convSummary: any
+  @Input() convSummary?: OverallSummary
   @Output() closeSummaryPopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 
-  constructor(private datePipe: DatePipe, private utils: UtilsService) {
+  constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router) {
 
   }
 
   ngOnInit(): void {
+    console.log('convSummary', this.convSummary);
 
   }
 
@@ -35,5 +38,16 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     const offset = utcDate.getTimezoneOffset();
     const localDate = new Date(utcDate.getTime() - (offset * 60 * 1000));
     return this.datePipe.transform(localDate, "MMM dd, yyyy 'at' hh:mm a");
+  }
+
+  onClickViewSummary(): void {
+    if (!window.location.hash.includes('#/x-piot')) {
+      const queryParams = {
+        productId: this.notifObj.product_id,
+        entity: this.notifObj.entity,
+      };
+      this.router.navigate(['/x-pilot'], { queryParams });
+    } else {
+    }
   }
 }

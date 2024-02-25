@@ -14,6 +14,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { OverallSummary } from 'src/models/view-summary';
 
 @Component({
   selector: 'xnode-app-header',
@@ -25,7 +26,7 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
-  convSummary: any;
+  convSummary?: OverallSummary;
   showViewSummaryPopup: boolean = false;
   notifObj: any;
   channel: any;
