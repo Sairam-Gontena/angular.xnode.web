@@ -17,6 +17,7 @@ export class AgentHubModel {
     userInfo: any;
 
     searchFilterOptions = {
+        showFilterOption: true,
         filter: false,
         showToggleAll: false,
         showHeader: false,
@@ -27,6 +28,7 @@ export class AgentHubModel {
       }
 
       showColumnFilterOption = {
+        showFilterOption: true,
         filter: false,
         showToggleAll: false,
         showHeader: false,

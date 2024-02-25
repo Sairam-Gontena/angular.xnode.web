@@ -5,6 +5,17 @@ interface Column {
   field: string;
   header: string;
 }
+interface FilterOptions {
+  showFilterOption?: boolean;
+  filter: boolean;
+  showToggleAll: boolean;
+  showHeader: boolean;
+  options: any[];
+  placeholder: string;
+  optionLabel: string;
+  styleClass: string;
+  changeHandler?: (event: any) => void;
+}
 @Component({
   selector: 'xnode-dynamic-table',
   templateUrl: './dynamic-table.component.html',
@@ -22,7 +33,8 @@ export class DynamicTableComponent implements OnInit {
   @Input() tableHeaderColor: string = ''
   @Input() altBgColorRow: string=''
 
-  @Input() searchFilterOptions = {
+  @Input() searchFilterOptions: FilterOptions = {
+    showFilterOption: false,
     filter: false,
     showToggleAll: false,
     showHeader: false,
@@ -32,7 +44,8 @@ export class DynamicTableComponent implements OnInit {
     styleClass: "custom-multiselect"
   }
 
-  @Input() showColumnFilterOption = {
+  @Input() showColumnFilterOption: FilterOptions = {
+    showFilterOption: false,
     filter: false,
     showToggleAll: false,
     showHeader: false,
