@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ElementRef } from 'jsplumb';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
@@ -17,8 +17,9 @@ export class NaviComponent implements OnInit {
   constructor(
     private router: Router,
     private utils: UtilsService,
-    private domSanitizer: DomSanitizer
-  ) {}
+    private domSanitizer: DomSanitizer,
+    private route: ActivatedRoute
+  ) { }
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
   xnodeAppUrl: string = environment.xnodeAppUrl;
@@ -30,6 +31,12 @@ export class NaviComponent implements OnInit {
   productEmail: any;
 
   ngOnInit(): void {
+    let queryParams: any;
+    this.route.queryParams.subscribe((params: any) => {
+      if (params) {
+        queryParams = params;
+      }
+    })
     this.currentUser = localStorage.getItem('currentUser');
     let product = localStorage.getItem('product');
     if (product) {
@@ -54,6 +61,9 @@ export class NaviComponent implements OnInit {
       email: email,
       flag: 'x-pilot',
     };
+    if (queryParams) {
+
+    }
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     this.targetUrl =
       this.targetUrl +
@@ -67,10 +77,10 @@ export class NaviComponent implements OnInit {
       this.currentUser.user_id;
     this.targetUrl =
       this.targetUrl +
-      '&productContext=' +
-      (localStorage.getItem('record_id')
-        ? localStorage.getItem('record_id')
-        : 'new_product');
+      '&productContext=' + (queryParams?.productId ? queryParams.productId :
+        (localStorage.getItem('record_id')
+          ? localStorage.getItem('record_id')
+          : 'new_product'));
     if (localStorage.getItem('show-upload-panel')) {
       this.targetUrl = this.targetUrl + '&import=true';
     }
@@ -98,6 +108,10 @@ export class NaviComponent implements OnInit {
               this.xnodeAppUrl + '#/my-products?product=created';
             const customEvent = new Event('customEvent');
             window.dispatchEvent(customEvent);
+          }
+          if (event.data.message === 'viewSummary') {
+            this.utils.viewSummary({ showViewSummary: true, product_id: event.data.product_id });
+
           }
           if (event.data.message === 'close-event') {
             this.utils.showLimitReachedPopup(false);

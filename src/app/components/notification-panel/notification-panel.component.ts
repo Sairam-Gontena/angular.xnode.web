@@ -19,10 +19,11 @@ import { SpecVersion } from 'src/models/spec-versions';
 export class NotificationPanelComponent {
   @Input() data: any;
   @Output() preparePublishPopup = new EventEmitter<any>();
+  @Output() viewSummaryPopup = new EventEmitter<any>();
   @Output() showMeLimitInfoPopup = new EventEmitter<any>();
   @Output() closeNotificationPanel = new EventEmitter<any>();
   @Input() limitReachedContent: boolean = false;
-
+  showViewSummaryPopup: boolean = false;
   notifications: any[] = [];
   activeFilter: string = '';
   allNotifications: any[] = [];
@@ -575,5 +576,10 @@ export class NotificationPanelComponent {
         reject(error);
       }
     });
+  }
+
+  viewSummary(notif: any): void {
+    this.showViewSummaryPopup = true;
+    this.viewSummaryPopup.emit(notif)
   }
 }

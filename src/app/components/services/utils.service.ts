@@ -115,6 +115,11 @@ export class UtilsService {
     this.selectedContent.asObservable();
   private productChangeBPMN = new Subject<any>();
 
+  private viewSummary$: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public loadViewSummary: Observable<any> =
+    this.viewSummary$.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -214,6 +219,9 @@ export class UtilsService {
 
   getProductChangeBPMN(): Observable<any> {
     return this.productChangeBPMN.asObservable();
+  }
+  viewSummary(event: any): void {
+    this.viewSummary$.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {

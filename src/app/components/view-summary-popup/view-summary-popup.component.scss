@@ -1,0 +1,128 @@
+:host ::ng-deep .p-button {
+    background: #02ADEE;
+    color: #ffffff;
+    border: 1px solid #02ADEE;
+}
+
+:host ::ng-deep .p-button:enabled:hover {
+    background: #02ADEE;
+    color: #ffffff;
+    border: 1px solid #02ADEE;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-panels {
+    background: #23222B;
+    border: 0 none;
+    color: #ffffff;
+    overflow: auto;
+    max-height: calc(100vh - 500px);
+    padding: 20px 30px;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav {
+    background: #23222B;
+    border: 1px solid #535354;
+    border-width: 0 0 1px 0;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #23222B;
+    border-color: 1px solid #3B82F6;
+    color: #EEEEEE;
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    background: #23222B;
+    border-color: 1px solid #535354;
+    color: #A2A2A3;
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    background: #23222B;
+    border-color: 1px solid #535354 !important;
+    color: #A2A2A3;
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    display: none;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    padding: 0;
+}
+
+.divider {
+    border: 1px solid #535354 !important;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+    border-top: 0 none;
+    padding: 0.5rem;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link {
+    padding: 4px;
+    color: #EFEEEE;
+    border-radius: 6px;
+    transition: box-shadow 0.2s;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+:host ::ng-deep .p-accordion .p-accordion-content {
+    padding: 4px;
+    border: 1px solid transparent;
+    background: #23222B;
+    color: #EFEEEE;
+    border-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.close-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.accordion {
+    height: 400px;
+}
+
+.summary-tab {
+    height: 300px;
+}
+
+.accordion::-webkit-scrollbar {
+    width: 5px;
+}
+
+.accordion::-webkit-scrollbar-thumb {
+    background-color: #535354;
+}
+
+.accordion::-webkit-scrollbar-thumb:hover {
+    background-color: #535354;
+}
+
+.summary-tab ::-webkit-scrollbar {
+    width: 5px;
+}
+
+.summary-tab ::-webkit-scrollbar-thumb {
+    background-color: #535354;
+}
+
+.summary-tab ::-webkit-scrollbar-thumb:hover {
+    background-color: #24232c;
+}
