@@ -62,7 +62,7 @@ export const AppSideMenuItems =
 
         ]
     },
-    QA: {
+    PROD: {
         AdminSideMenu: [
             {
                 label: 'Home',
