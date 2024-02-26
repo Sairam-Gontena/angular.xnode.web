@@ -1,7 +1,7 @@
 <div class="pr-4 pl-5">
 
   <div class="flex justify-content-between">
-    <p>Agent Hub</p>
+    <p-button>Agent Hub</p-button>
 
     <!-- <div class="flex gap-2">
             <p-button label="Create Agent" styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2" [outlined]="true" icon="pi pi-plus" iconPos="right"></p-button>
@@ -36,7 +36,9 @@
   <div class="flex agent-summary">
     <!-- Agents Card -->
     <div class="flex gap-2">
-      <img class="agent-icons" src="../../../assets/agent-hub/agent.png" alt="">
+      <p-button styleClass="p-0">
+        <img class="agent-icons" src="../../../assets/agent-hub/agent.png" alt="">
+      </p-button>
       <div class="flex flex-column">
         <div>Agents</div>
         <div>14</div>
@@ -44,7 +46,9 @@
     </div>
 
     <div class="flex gap-2">
-      <img class="agent-icons" src="../../../assets/agent-hub/capabilities.png" alt="">
+      <button class="agent-icons cursor-pointer p-0 border-none">
+        <img class="agent-icons" src="../../../assets/agent-hub/capabilities.png" alt="">
+      </button>
       <div class="flex flex-column">
         <div>Capabilities</div>
         <div>20</div>
@@ -53,7 +57,9 @@
 
 
     <div class="flex gap-2">
-      <img class="agent-icons" src="../../../assets/agent-hub/topics.png" alt="">
+      <button class="agent-icons cursor-pointer p-0 border-none">
+        <img class="agent-icons" src="../../../assets/agent-hub/topics.png" alt="">
+      </button>
       <div class="flex flex-column">
         <div>Topics</div>
         <div>40</div>
@@ -62,7 +68,9 @@
 
 
     <div class="flex gap-2">
-      <img class="agent-icons" src="../../../assets/agent-hub/prompt.png" alt="">
+      <button class="agent-icons cursor-pointer p-0 border-none">
+        <img class="agent-icons" src="../../../assets/agent-hub/prompt.png" alt="">
+      </button>
       <div class="flex flex-column">
         <div>Prompt</div>
         <div>60</div>
