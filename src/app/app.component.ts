@@ -448,6 +448,7 @@ export class AppComponent implements OnInit {
   makeTrustedUrl(productEmail?: string): void {
     let user = localStorage.getItem('currentUser');
     let id;
+    const currentuser:any  = this.storageService.getItem(StorageKeys.CurrentUser)
     const has_insights = localStorage.getItem('has_insights');
     let rawUrl:any;
     if ( (localStorage.getItem('record_id') !== null || this.storageService.getItem(StorageKeys.Product)) && window.location.hash!='#/my-products') {
@@ -468,6 +469,7 @@ export class AppComponent implements OnInit {
         this.email +
         '&productContext=' +
         proId +
+        '&accountId='+currentuser.account_id+
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&versionId=' +  version.id +
@@ -494,6 +496,7 @@ export class AppComponent implements OnInit {
         this.email +
         '&productContext=newProduct' +
         '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
+        '&accountId='+currentuser.account_id+
         '&targetUrl=' +
         environment.xnodeAppUrl +
         '&xnode_flag=' +
