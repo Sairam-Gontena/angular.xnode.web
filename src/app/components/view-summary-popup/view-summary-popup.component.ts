@@ -50,4 +50,14 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     } else {
     }
   }
+  closePopup(){
+    const currentRoute = this.router.url;
+    if(currentRoute != '/x-pilot'){
+    this.router.navigate(['/x-pilot']);
+    this.utils.updateSummary(this.notifObj);
+    }else{
+      this.utils.updateSummary(this.notifObj);
+    }
+    this.closePopUp.emit();
+  }
 }
