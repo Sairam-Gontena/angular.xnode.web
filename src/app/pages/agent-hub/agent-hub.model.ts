@@ -16,14 +16,19 @@ export class AgentHubModel {
     agentTabItemDropdown: IDropdownItem[];
     userInfo: any;
 
+    breadCrumbsAction = {
+        isBreadCrumbActive: false,
+        activeBreadCrumbsItem: "",
+    }
+
     searchFilterOptions = {
         showFilterOption: true,
         filter: false,
         showToggleAll: false,
         showHeader: false,
-        options: [],
+        options: [] as any[],
         placeholder: "All",
-        optionLabel: "name",
+        optionLabel: "header",
         styleClass: "custom-multiselect"
       }
 
@@ -55,6 +60,14 @@ export class AgentHubModel {
                 header: item.header
             }
         })
+
+        this.searchFilterOptions.options = [{
+            idx: 0,
+            header: "All"
+        }, {
+            idx: 1,
+            header: "My Agents"
+        }]
 
         this.activeIndex = 0;
         this.tabItems = [
@@ -127,5 +140,16 @@ export class AgentHubModel {
         }else {
             this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: {idx: number} )=> valItem.idx === item.idx))
         }
+    }
+
+
+    OnbreabCrumbsClickHandler(val: string) {
+        this.breadCrumbsAction.isBreadCrumbActive = true,
+        this.breadCrumbsAction.activeBreadCrumbsItem = val
+    }
+
+    goBackBreadCrumbsHandler(){
+        this.breadCrumbsAction.activeBreadCrumbsItem = ""
+        this.breadCrumbsAction.isBreadCrumbActive = false
     }
 }

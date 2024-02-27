@@ -28,8 +28,8 @@
 }
 
 .agent-icons {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
 }
 
 .agent-summary {
@@ -106,4 +106,12 @@
   width: auto;
   padding-right: 0.5rem;
   color: white;
+}
+
+:host ::ng-deep .cyan-text-color {
+  color: #02ADEE !important;
+}
+
+.star-dust {
+  color: #A2A2A3;
 }

@@ -1,7 +1,13 @@
 <div class="pr-4 pl-5">
 
   <div class="flex justify-content-between">
-    <p-button>Agent Hub</p-button>
+    <div class="flex gap-2 align-items-center">
+      <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'" (onClick)="agentHubModel.goBackBreadCrumbsHandler()">Agent Hub</p-button>
+      <div class="flex gap-2 align-items-center" *ngIf="agentHubModel.breadCrumbsAction.isBreadCrumbActive">
+        <p class="m-0 flex"><i class="pi pi-angle-right"></i></p>
+        <p>{{agentHubModel.breadCrumbsAction.activeBreadCrumbsItem}}</p>
+      </div>
+    </div>
 
     <!-- <div class="flex gap-2">
             <p-button label="Create Agent" styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2" [outlined]="true" icon="pi pi-plus" iconPos="right"></p-button>
@@ -33,55 +39,55 @@
 
   </div>
 
-  <div class="flex agent-summary">
+  <div class="flex agent-summary" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive">
     <!-- Agents Card -->
     <div class="flex gap-2">
-      <p-button styleClass="p-0">
+      <p-button styleClass="p-0" (onClick)="agentHubModel.OnbreabCrumbsClickHandler('Agent')">
         <img class="agent-icons" src="../../../assets/agent-hub/agent.png" alt="">
       </p-button>
       <div class="flex flex-column">
-        <div>Agents</div>
-        <div>14</div>
+        <div class="font-semibold text-base	 star-dust">Agents</div>
+        <div class="text-4xl font-bold">14</div>
       </div>
     </div>
 
     <div class="flex gap-2">
-      <button class="agent-icons cursor-pointer p-0 border-none">
+      <p-button styleClass="p-0" (onClick)="agentHubModel.OnbreabCrumbsClickHandler('Capabilities')">
         <img class="agent-icons" src="../../../assets/agent-hub/capabilities.png" alt="">
-      </button>
+      </p-button>
       <div class="flex flex-column">
-        <div>Capabilities</div>
-        <div>20</div>
+        <div class="font-semibold text-base	star-dust">Capabilities</div>
+        <div class="text-4xl font-bold">20</div>
       </div>
     </div>
 
 
     <div class="flex gap-2">
-      <button class="agent-icons cursor-pointer p-0 border-none">
+      <p-button styleClass="p-0" (onClick)="agentHubModel.OnbreabCrumbsClickHandler('Topics')">
         <img class="agent-icons" src="../../../assets/agent-hub/topics.png" alt="">
-      </button>
+      </p-button>
       <div class="flex flex-column">
-        <div>Topics</div>
-        <div>40</div>
+        <div class="font-semibold text-base	 star-dust">Topics</div>
+        <div class="text-4xl font-bold">40</div>
       </div>
     </div>
 
 
     <div class="flex gap-2">
-      <button class="agent-icons cursor-pointer p-0 border-none">
+      <p-button styleClass="p-0" (onClick)="agentHubModel.OnbreabCrumbsClickHandler('Prompt')">
         <img class="agent-icons" src="../../../assets/agent-hub/prompt.png" alt="">
-      </button>
+      </p-button>
       <div class="flex flex-column">
-        <div>Prompt</div>
-        <div>60</div>
+        <div class="font-semibold text-base	 star-dust">Prompt</div>
+        <div class="text-4xl font-bold">60</div>
       </div>
     </div>
 
   </div>
 
 
-
-  <p-tabView class="relative" (onChange)="agentHubModel.getAllAgentList()" [(activeIndex)]="agentHubModel.activeIndex">
+<!-- TAB Section -->
+  <p-tabView class="relative" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive" (onChange)="agentHubModel.getAllAgentList()" [(activeIndex)]="agentHubModel.activeIndex">
     <p-tabPanel *ngFor="let tab of agentHubModel.tabItems let i=index" [header]="tab.title"
       [style]="{color: agentHubModel.activeIndex ==i && '#fff'}">
       <!-- <p-dropdown class="absolute top-0 left-0 custom-dropdown" *ngIf="i==0" [options]="dropdownItems" (onChange)="onDropdownChange($event)"></p-dropdown> -->
