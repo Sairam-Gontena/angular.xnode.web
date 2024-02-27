@@ -1,7 +1,7 @@
 export const environment = {
     name: 'PROD',
     production: false,
-    apiUrl: 'https://prod-navi-in.azurewebsites.net/',
+    apiUrl: 'https://prod-navi-api-in.azurewebsites.net/',
     authApiUrl: 'https://prod-xnodeauth-api-in.azurewebsites.net/',
     conversationApiUrl: 'https://prod-conversation-api-in.azurewebsites.net/',
     commentsApiUrl: 'https://prod-spec-api-in.azurewebsites.net/',
