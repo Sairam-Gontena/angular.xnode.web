@@ -75,6 +75,14 @@
   border-radius: 6px;
  }
 
+ :host ::ng-deep .p-multiselect:not(.p-disabled).p-focus {
+  outline: inherit;
+  outline-offset: 0;
+  box-shadow: none;
+  border: 2px solid #595959;
+}
+
+
 :host ::ng-deep .p-placeholder {
   color: white;
 }
