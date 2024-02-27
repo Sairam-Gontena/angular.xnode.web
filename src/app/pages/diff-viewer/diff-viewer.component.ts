@@ -84,6 +84,12 @@ export class DiffViewerComponent implements OnInit {
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
   ) {
+    this.specificationUtils._openConversationPanel.subscribe((data: any) => {
+      if (data) {
+        this.conversationPanelInfo = data;
+      }
+    });
+
     this.specificationUtils.getMeSpecList.subscribe((list: any[]) => {
       if (list && list.length) {
         list.forEach((element: any, index: number) => {
@@ -175,6 +181,11 @@ export class DiffViewerComponent implements OnInit {
       }
       this.getUsersData();
     });
+    this.utils.getMeProductId.subscribe((data)=>{
+      if(data && this.isDockedNaviEnabled){
+        this.getVersions({id:data})
+      }
+    })
   }
 
   isMeneOpened(event: any) {

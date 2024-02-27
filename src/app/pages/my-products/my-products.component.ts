@@ -7,15 +7,18 @@ import { Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { cloneDeep, find, orderBy, sortBy } from 'lodash';
+import { DropdownModule } from 'primeng/dropdown';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { ConversationApiService } from 'src/app/api/conversation-api.service';
 
 @Component({
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
   styleUrls: ['./my-products.component.scss'],
-  providers: [MessageService],
+  providers: [MessageService, DropdownModule]
 })
 export class MyProductsComponent implements OnInit {
   templateCard: any[] = [];
@@ -35,16 +38,30 @@ export class MyProductsComponent implements OnInit {
   timeAgo: any;
   isTitleHovered: any;
   userImage: any;
+  end = 3;
+  filteredProductsLength = 0;
+  activeIndexRecentActivity: number = 0;
+  isViewLess = true;
+  AllConversations: any[] = [];
+  filteredConversation: any[] = [];
+  mineConversations: any[] = [];
+  Conversations: any = [
+    { name: 'All', value: 'All' },
+    { name: 'Mine', value: 'Mine' }
+  ];
+  selectedConversation: any = { name: 'All', value: 'All' };
+  enableSearch: boolean = false;
+  searchTextConversation: any;
 
-  constructor(
-    private RefreshListService: RefreshListService,
+  constructor(private RefreshListService: RefreshListService,
     public router: Router,
     private route: ActivatedRoute,
     private utils: UtilsService,
     private authApiService: AuthApiService,
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private conversationApiService: ConversationApiService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
 
@@ -218,6 +235,7 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/specification']);
     }
+    this.utils.disableDockedNavi();
   }
 
   onClickgotoxPilot() {
@@ -253,7 +271,7 @@ export class MyProductsComponent implements OnInit {
   getMetaData() {
     this.naviApiService
       .getMetaData(this.currentUser?.email)
-      .then((response) => {
+      .then((response: any) => {
         if (response?.status === 200 && response.data.data?.length) {
           this.productId = response.data.data[0].id;
           let user_audit_body = {
@@ -281,7 +299,8 @@ export class MyProductsComponent implements OnInit {
             return dataItem;
           });
 
-          this.filteredProducts = this.templateCard;
+          this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
+          this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
           this.filteredProductsByEmail = this.templateCard;
         } else if (response?.status !== 200) {
           let user_audit_body = {
@@ -303,9 +322,10 @@ export class MyProductsComponent implements OnInit {
             detail: response?.data?.detail,
           });
         }
+        this.getAllConversations();
         this.utils.loadSpinner(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         let user_audit_body = {
           method: 'GET',
           url: error?.request?.responseURL,
@@ -329,13 +349,22 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickcreatedByYou(): void {
+    this.filteredProducts = sortBy(this.filteredProducts.filter(obj => { return obj?.user_id === this.currentUser.user_id }), ['created_on']).reverse();
+    this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
     this.filteredProducts = this.filteredProducts.filter((obj) => {
       return obj?.user_id === this.currentUser.user_id;
     });
+    this.filteredProducts = cloneDeep(this.filteredProducts);
+    this.end = 3;
+    this.isViewLess = true;
   }
 
   onClickAllProducts(): void {
-    this.filteredProducts = [...this.templateCard];
+    this.filteredProducts = sortBy([...this.templateCard], ['created_on']).reverse();
+    this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
+    this.filteredProducts = cloneDeep(this.filteredProducts);
+    this.end = 3;
+    this.isViewLess = true;
   }
 
   search() {
@@ -347,6 +376,22 @@ export class MyProductsComponent implements OnInit {
             ?.toLowerCase()
             .includes(this.searchText.toLowerCase());
         });
+  }
+
+  searchConversation() {
+    this.filteredConversation = this.searchTextConversation === ""
+      ? this.AllConversations
+      : this.AllConversations.filter((element) => {
+        return element.title?.toLowerCase().includes(this.searchTextConversation.toLowerCase());
+      });
+  }
+
+  toggleSearch() {
+    if (this.enableSearch) {
+      this.enableSearch = false;
+    } else {
+      this.enableSearch = true;
+    }
   }
 
   filterProductsByUserEmail() {
@@ -427,4 +472,42 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(true);
       });
   }
+
+  onViewAll() {
+    this.isViewLess = false;
+    this.end = this.filteredProductsLength;
+  }
+
+  onViewLess() {
+    this.isViewLess = true;
+    this.end = 3;
+  }
+
+  getAllConversations() {
+    this.conversationApiService.getAllConversations()
+      .then((response: any) => {
+        this.AllConversations = this.mapProductNameToConversations(response.data);
+        this.filteredConversation = this.AllConversations;
+      })
+    if (this.currentUser && this.currentUser.user_id) {
+      this.conversationApiService.getConversationsByContributor(this.currentUser?.user_id)
+        .then((response: any) => {
+          if (response && response.status == 200 && response.data) {
+            this.mineConversations = this.mapProductNameToConversations(response.data);
+          }
+        })
+        .catch((error: any) => {
+          console.log(error);
+        })
+    }
+  }
+
+  mapProductNameToConversations(_conversations: any) {
+    _conversations.forEach((conversation: any, i: any) => {
+      let product = find(this.filteredProducts, { id: conversation.productId });
+      _conversations[i]['productName'] = product && product.title ? product.title : '';
+    });
+    return orderBy(_conversations, ['modifiedOn']);
+  }
+
 }

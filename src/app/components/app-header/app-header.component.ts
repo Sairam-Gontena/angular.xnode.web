@@ -12,8 +12,9 @@ import { tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
-import themeing from '../../../themes/customized-themes.json'
+import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { OverallSummary } from 'src/models/view-summary';
 
 @Component({
   selector: 'xnode-app-header',
@@ -22,10 +23,12 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
   providers: [MessageService, ConfirmationService],
 })
 export class AppHeaderComponent implements OnInit {
-  @Input() currentPath: any;
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
+  convSummary?: OverallSummary;
+  showViewSummaryPopup: boolean = false;
+  notifObj: any;
   channel: any;
   email: string = '';
   id: string = '';
@@ -58,7 +61,7 @@ export class AppHeaderComponent implements OnInit {
   productId: any;
   userImage: any;
   limitReachedContent: boolean = false;
-  colorPallet :any;
+  colorPallet: any;
   isDarkTheme: boolean = false;
 
   constructor(
@@ -71,8 +74,9 @@ export class AppHeaderComponent implements OnInit {
     private auth: AuthApiService,
     private auditUtil: AuditutilsService,
     private naviApiService: NaviApiService,
-    private publishAppApiService: PublishAppApiService
-    ) {
+    private publishAppApiService: PublishAppApiService,
+    private utils: UtilsService
+  ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.email = JSON.parse(currentUser).email;
@@ -82,6 +86,11 @@ export class AppHeaderComponent implements OnInit {
       let productObj = JSON.parse(product);
       this.productId = productObj?.id;
     }
+    this.utils.loadViewSummary.subscribe((event: any) => {
+      if (event) {
+        this.getSummary({ product_id: event.product_id });
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -376,11 +385,41 @@ export class AppHeaderComponent implements OnInit {
   onClickLogo(): void {
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
+    this.utilsService.disableDockedNavi();
+
     this.router.navigate(['/my-products']);
   }
 
   showMeLimitInfoPopup(event: any): void {
     this.showLimitReachedPopup = event;
     this.limitReachedContent = true;
+  }
+
+  viewSummaryPopup(notif: any): void {
+    this.notifObj = notif;
+    this.utils.loadSpinner(true);
+    this.getSummary(notif)
+  }
+  getSummary(obj: any): void {
+    this.naviApiService.getSummaryByProductId(obj.product_id).then((res: any) => {
+      if (res && res.status === 200) {
+        this.showViewSummaryPopup = true;
+        this.convSummary = res.data.conv_summary;
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: res.data.message,
+        });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: err,
+      });
+    }))
   }
 }

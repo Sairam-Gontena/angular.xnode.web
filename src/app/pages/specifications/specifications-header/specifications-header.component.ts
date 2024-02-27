@@ -87,6 +87,11 @@ export class SpecificationsHeaderComponent implements OnInit {
         );
       }
     });
+    this.utils.getMeProductId.subscribe((data)=>{
+      if(data){
+        this.product = this.storageService.getItem(StorageKeys.Product);
+      }
+    })
     this.addShareForm = this.fb.group({
       reviewersLOne: [[], [Validators.required]],
       files: [[]],
@@ -243,6 +248,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.showSpecGenaretePopup = false;
     this.utils.loadSpinner(true);
     let product = this.metaDeta.find((x: any) => x.id === obj.id);
+    this.specService.getMeCrList({ productId: product?.id });
     if (product && product.has_insights) {
       this.emitProductChange.emit(obj)
     } else {

@@ -21,6 +21,8 @@ import { ThankYouComponent } from '../components/thank-you/thank-you.component';
 import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
 import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
+import { ViewSummaryPopupComponent } from '../components/view-summary-popup/view-summary-popup.component';
+
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 import { LimitReachedPopupComponent } from '../components/limit-reached-popup/limit-reached-popup.component';
 import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.component';
@@ -90,6 +92,7 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     ActionButtonComponent,
     ProductAlertPopupComponent,
     ViewExistingFeedbackComponent,
+    ViewSummaryPopupComponent,
     LimitReachedPopupComponent,
     BpmnCommonComponent,
     DataModelCommonComponent,
@@ -157,6 +160,7 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     ActionButtonComponent,
     ProductAlertPopupComponent,
     ViewExistingFeedbackComponent,
+    ViewSummaryPopupComponent,
     LimitReachedPopupComponent,
     BpmnCommonComponent,
     DataModelCommonComponent,
@@ -203,4 +207,4 @@ import { SpecChildConversationComponent } from '../pages/specifications/spec-chi
     SpecChildConversationComponent,
   ],
 })
-export class SharedComponentModule {}
+export class SharedComponentModule { }

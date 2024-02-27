@@ -71,6 +71,7 @@ export class DiffCompComponent implements OnInit {
   ];
   listViewSections = SECTION_VIEW_CONFIG.listViewSections;
   selectedWordIndices: any;
+  selectedSpecItem: any;
 
   constructor(
     private storageService: LocalStorageService,
@@ -129,6 +130,9 @@ export class DiffCompComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['contentObj']?.currentValue){
+      this.product = this.storageService.getItem(StorageKeys.Product);
+    }
     if (changes['diffObj']?.currentValue)
       this.diffObj = changes['diffObj'].currentValue;
     if (changes['format']?.currentValue)
@@ -198,6 +202,14 @@ export class DiffCompComponent implements OnInit {
     localStorage.setItem('targetUrl', this.targetUrl);
   }
 
+  async scrollToItem() {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const element = document.getElementById(this.selectedSpecItem.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   makeTrustedUrlForDiffView(versionId: any): void {
     let targetUrl =
       environment.designStudioAppUrl +
@@ -260,5 +272,9 @@ export class DiffCompComponent implements OnInit {
   emptySelectedContent() {
     this.selectedText = '';
     this.selectedWordIndices = [];
+  }
+
+  isArray(data: any): boolean {
+    return Array.isArray(data);
   }
 }

@@ -89,7 +89,13 @@
 
 .ifram-navi {
   border-width: 0px;
-  border-color: white;
+  border-radius: 10px;
+}
+
+.docked-navi {
+  border: 1px solid #89888e;
+  border-radius: 10px;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -126,6 +132,7 @@
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1366px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
@@ -133,6 +140,7 @@
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1440px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
@@ -140,6 +148,7 @@
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1536px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
@@ -147,6 +156,7 @@
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1600px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
@@ -154,6 +164,7 @@
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1920px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
@@ -167,12 +178,12 @@
 
 @media (min-width: 768px) {
   .docked-navi {
-    width: 380px;
+    width: 100%;
     height: calc(100vh - 42px);
   }
 
   .expand-docked-navi {
-    width: 100vw;
+    width: calc(100vw - 80px);
     height: calc(100vh - 42px);
   }
 }
@@ -183,30 +194,35 @@
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1366px) {
   .docked-navi {
     width: 420px;
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1440px) {
   .docked-navi {
     width: 440px;
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1536px) {
   .docked-navi {
     width: 460px;
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1600px) {
   .docked-navi {
     width: 480px;
     height: calc(100vh - 42px);
   }
 }
+
 @media (min-width: 1920px) {
   .docked-navi {
     width: 500px;
@@ -219,4 +235,13 @@
     transition: all 0.5s ease-in-out;
     width: 0%;
   }
+}
+
+.navi-frame {
+  width: 26%;
+
+}
+
+.navi-ful-frame {
+  width: 100%;
 }

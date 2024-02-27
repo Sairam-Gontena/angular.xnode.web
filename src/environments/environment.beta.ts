@@ -3,6 +3,7 @@ export const environment = {
     production: false,
     apiUrl: 'https://beta-navi-api.azurewebsites.net/',
     authApiUrl: 'https://beta-xnode-auth-api.azurewebsites.net/',
+    conversationApiUrl: 'https://beta-conversation-api.azurewebsites.net/',
     commentsApiUrl: 'https://beta-spec-api.azurewebsites.net/',
     notifyApiUrl: 'https://beta-notify-api.azurewebsites.net/',
     userUtilsApi: 'https://beta-user-util-api.azurewebsites.net/',

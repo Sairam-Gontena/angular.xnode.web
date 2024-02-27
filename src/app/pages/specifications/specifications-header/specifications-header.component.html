@@ -39,7 +39,7 @@
                         <label *ngIf="!viewType" class="ml-2">Diff View</label>
                         <p-dropdown *ngIf="viewType" [options]="viewList" [(ngModel)]="viewType"
                             (onChange)="onViewChange($event)" placeholder="Select View Type"
-                            class="view-dropdown"></p-dropdown>
+                            class="view-dropdown -mt-2"></p-dropdown>
                     </div>
                 </div>
                 <div class="flex align-items-center justify-content-end ">
