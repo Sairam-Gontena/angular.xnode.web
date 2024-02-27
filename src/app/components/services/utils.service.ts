@@ -120,6 +120,12 @@ export class UtilsService {
   public loadViewSummary: Observable<any> =
     this.viewSummary$.asObservable();
 
+    private summaryObject: BehaviorSubject<Object> =
+    new BehaviorSubject<Object>({ summary : {} });
+
+  public getMeSummaryObject: Observable<Object> =
+    this.summaryObject.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -222,6 +228,10 @@ export class UtilsService {
   }
   viewSummary(event: any): void {
     this.viewSummary$.next(event);
+  }
+
+  updateSummary(event: any): void {
+    this.summaryObject.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {
