@@ -9,10 +9,6 @@
       </div>
     </div>
 
-    <!-- <div class="flex gap-2">
-            <p-button label="Create Agent" styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2" [outlined]="true" icon="pi pi-plus" iconPos="right"></p-button>
-        </div> -->
-
     <div class="flex align-items-center justify-content-between">
       <!-- Left-aligned content -->
       <div class="flex align-items-center">
@@ -24,11 +20,6 @@
       <div class="separator"></div>
 
       <div class="flex align-items-center gap-2">
-        <!-- <button class="p-button p-button-text p-button-plain">
-                    <i class="pi pi-bars"></i> </button> -->
-        <!-- <button class="p-button p-button-text p-button-plain">
-                    <i class="pi pi-user"></i> </button> -->
-
 
         <p-button icon="pi pi-bars"></p-button>
 
@@ -90,7 +81,6 @@
   <p-tabView class="relative" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive" (onChange)="agentHubModel.getAllAgentList()" [(activeIndex)]="agentHubModel.activeIndex">
     <p-tabPanel *ngFor="let tab of agentHubModel.tabItems let i=index" [header]="tab.title"
       [style]="{color: agentHubModel.activeIndex ==i && '#fff'}">
-      <!-- <p-dropdown class="absolute top-0 left-0 custom-dropdown" *ngIf="i==0" [options]="dropdownItems" (onChange)="onDropdownChange($event)"></p-dropdown> -->
 
       <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}"
         (onClick)="agentHubModel.agentTabDropDownHandler()" (onDropdownClick)="agentHubModel.agentTabDropDownHandler()"
