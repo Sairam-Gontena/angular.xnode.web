@@ -26,13 +26,13 @@ import { SpecificationUtilsService } from './pages/diff-viewer/specificationUtil
 })
 export class AppComponent implements OnInit {
   title = 'xnode';
-  isSideWindowOpen: boolean = false;
+  isSideWindowOpen: boolean = true;
   showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
   email: String = '';
   id: String = '';
   loading: boolean = true;
-  isNaviExpanded?: boolean;
+  isNaviExpanded?: boolean=false;
   sideWindow: any = document.getElementById('side-window');
   productContext: string | null = '';
   iframeUrl: SafeResourceUrl = '';
@@ -48,6 +48,9 @@ export class AppComponent implements OnInit {
   screenHeight: number;
   deepLink: boolean = false;
   colorPallet: any;
+  firstIteration:boolean = false;
+  inXpilotComp: boolean= false;
+  routes:any=['#/dashboard','#/overview','#/usecases','#/configuration/workflow/overview','#/configuration/data-model/overview','#/operate','#/publish','#/specification','#/operate/change/history-log'];
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -101,10 +104,14 @@ export class AppComponent implements OnInit {
               this.utilsService.toggleProductAlertPopup(data);
             }
           }
+          this.isSideWindowOpen = false;
         }
-        // if (event.url == '/my-products') {
-        //   this.isSideWindowOpen = true;
-        // }
+        if (event.url == '/my-products') {// in coming back from spec to my prod
+          localStorage.removeItem('record_id');
+          this.isSideWindowOpen = true;
+          // this.firstIteration = false;
+          this.openNavi();
+        }
       }
     });
     this.utilsService.startSpinner.subscribe((event: boolean) => {
@@ -189,7 +196,6 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.changeTheme(this.colorPallet[6]);
     }, 100);
-
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
@@ -242,12 +248,20 @@ export class AppComponent implements OnInit {
         this.makeTrustedUrl(data.email);
       }
     });
+    this.getUserData();
     this.utilsService.openDockedNavi.subscribe((data: any) => {
-      this.isSideWindowOpen = data;
-      if (!data) {
-        this.isNaviExpanded = false;
+      if( window.location.hash!=='#/my-products'){ //this should not work on constructor so added firstiteration and in refresh if it is in my-products shouldnt be closed and router.url is not working getting '/' so placed window.location.hash
+        this.isSideWindowOpen = data;
+        if (!data) {
+          this.isNaviExpanded = false;
+        }
+       }else{
+        this.isSideWindowOpen = false;
       }
     });
+    this.inXpilotComp = window.location.hash.includes('#/x-pilot');
+    this.openNavi();
+    this.firstIteration = true;
   }
 
   getAllProductsInfo(key: string) {
@@ -356,6 +370,11 @@ export class AppComponent implements OnInit {
         this.utilsService.disableDockedNavi();
         this.refreshCurrentRoute();
       }
+      if(event.data.message === 'close-event'){ //not there to handle the close option in navi in my-prod so added
+        this.utilsService.showLimitReachedPopup(false);
+        this.isNaviExpanded = false
+        this.isSideWindowOpen = false
+      }
       if (event.data.message === 'expand-navi') {
         this.isNaviExpanded = true;
       }
@@ -421,28 +440,39 @@ export class AppComponent implements OnInit {
 
   getUserData() {
     let currentUser = localStorage.getItem('currentUser');
-    if (currentUser && localStorage.getItem('record_id')) {
+    if (currentUser) { //&& localStorage.getItem('record_id') commented record id to show in myproducts to populate mail
       this.email = JSON.parse(currentUser).email;
     }
   }
 
-  makeTrustedUrl(productEmail: string): void {
+  makeTrustedUrl(productEmail?: string): void {
     let user = localStorage.getItem('currentUser');
     let id;
+    const currentuser:any  = this.storageService.getItem(StorageKeys.CurrentUser)
     const has_insights = localStorage.getItem('has_insights');
-    if (localStorage.getItem('record_id') !== null) {
+    let rawUrl:any;
+    if ( (localStorage.getItem('record_id') !== null || this.storageService.getItem(StorageKeys.Product)) && window.location.hash!='#/my-products') {
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
       }
-      let rawUrl =
-        environment.naviAppUrl +
+      let proId;
+      if(localStorage.getItem('record_id')){  // in some cases record_id is not there in locastorage thats why in that case getting storagekeys.product --- same reason in if condition and in my products we should not send any record id to iframesrc
+        proId = localStorage.getItem('record_id');
+      }else{
+        const productLocalStorage:any = this.storageService.getItem(StorageKeys.Product)
+        proId = productLocalStorage.id;
+      }
+      const version:any = this.storageService.getItem(StorageKeys.SpecVersion) // version id change
+      rawUrl= environment.naviAppUrl +
         '?email=' +
         this.email +
         '&productContext=' +
-        localStorage.getItem('record_id') +
+        proId +
+        '&accountId='+currentuser.account_id+
         '&targetUrl=' +
         environment.xnodeAppUrl +
+        '&versionId=' +  version.id +
         '&xnode_flag=' +
         'XNODE-APP' +
         '&component=' +
@@ -458,37 +488,36 @@ export class AppComponent implements OnInit {
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights);
       }
+      this.iframeUrlLoad(rawUrl);
+    } else {// uncommente else and changed little bit
+      rawUrl =
+        environment.naviAppUrl +
+        '?email=' +
+        this.email +
+        '&productContext=newProduct' +
+        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
+        '&accountId='+currentuser.account_id+
+        '&targetUrl=' +
+        environment.xnodeAppUrl +
+        '&xnode_flag=' +
+        'XNODE-APP' +
+        '&component=' +
+        this.getMeComponent() +
+        '&user_id=' +
+        id +
+        '&device_width=' +
+        this.screenWidth;
+      this.isSideWindowOpen = true;
+        this.iframeUrlLoad(rawUrl);
+    }
+  }
+
+  iframeUrlLoad(rawUrl:any){ // created ths in new method
       setTimeout(() => {
         this.iframeUrl =
           this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
         this.loadIframeUrl();
       }, 2000);
-    } else {
-      // let rawUrl =
-      //   environment.naviAppUrl +
-      //   '?email=' +
-      //   this.email +
-      //   '&productContext=newProduct' +
-      //   '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
-      //   '&targetUrl=' +
-      //   environment.xnodeAppUrl +
-      //   '&xnode_flag=' +
-      //   'XNODE-APP' +
-      //   '&component=' +
-      //   this.getMeComponent() +
-      //   '&user_id=' +
-      //   id +
-      //   '&product_user_email=' +
-      //   localStorage.getItem('product_email') +
-      //   '&device_width=' +
-      //   this.screenWidth;
-      // this.isSideWindowOpen = true;
-      // setTimeout(() => {
-      //   this.iframeUrl =
-      //     this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-      //   this.loadIframeUrl();
-      // }, 2000);
-    }
   }
 
   getMeComponent() {
@@ -535,22 +564,24 @@ export class AppComponent implements OnInit {
     return currentUser;
   }
 
-  openNavi(newItem: any) {
+  openNavi(newItem?: any) {
     if (
       window.location.hash === '#/help-center' ||
-      window.location.hash === '#/history-log' ||
-      window.location.hash === '#/my-products'
-    ) {
+      window.location.hash === '#/history-log' ) {
       let currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
         this.auditUtil.postAudit('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
       }
-      this.router.navigate(['/x-pilot']);
+      // this.router.navigate(['/x-pilot']); || window.location.hash === '#/my-products' removed myprod location
     } else {
       this.getUserData();
-      this.isSideWindowOpen = newItem.cbFlag;
-      this.productContext = newItem.productContext;
-      this.makeTrustedUrl(newItem.productEmail);
+      if(newItem){   //bcz of new item
+        this.isSideWindowOpen = newItem.cbFlag;
+        this.productContext = newItem.productContext;
+        this.makeTrustedUrl(newItem.productEmail);
+      }else{
+        this.makeTrustedUrl();
+      }
     }
   }
 

@@ -14,14 +14,14 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="isSideWindowOpen" class="flex navi-frame"
+        <div *ngIf="isSideWindowOpen && !inXpilotComp" class="flex navi-frame"
             [ngClass]="{'navi-ful-frame':isNaviExpanded, 'navi-frame':!isNaviExpanded}">
             <div class="app-side-menu-wrapper" *ngIf="isNaviExpanded && showSideMenu()">
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
             <div
                 [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen && !isNaviExpanded,'expand-docked-navi':isNaviExpanded }">
-                <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
+                <iframe id="myIframe" *ngIf="iframeUrl" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                     class="w-full h-full pl-0 pr-0 ifram-navi">
                 </iframe>
             </div>

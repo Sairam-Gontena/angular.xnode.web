@@ -218,6 +218,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickProductCard(data: any): void {
+    this.utils.disableDockedNavi();
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
@@ -235,7 +236,6 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/specification']);
     }
-    this.utils.disableDockedNavi();
   }
 
   onClickgotoxPilot() {
