@@ -14,10 +14,10 @@
                     <div class="" *ngIf="activeIndex === 0">
                         <div class="tabpanel-content">
                             <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-semibold text-lg">
+                                <h4 class="m-0 pb-1 font-semibold text-lg line-height-3">
                                     {{convSummary?.overall_summary?.content?.Title}}
                                 </h4>
-                                <p class="m-0 text-base font-normal">
+                                <p class="m-0 text-base font-normal line-height-2">
                                     {{convSummary?.overall_summary?.content?.Summary}}
                                 </p>
                                 <div class="text-right mb-2 text-500 text-xs p-1 font-italic font-semibold">
@@ -25,30 +25,30 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg">Key Points</h4>
-                                <ol class="m-0 text-base font-normal">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Key Points</h4>
+                                <ol class="m-0 text-base font-normal line-height-2">
                                     <li *ngFor="let keyPoint of convSummary?.overall_summary?.content?.KeyPoints">
                                         {{keyPoint}}
                                     </li>
                                 </ol>
                             </div>
                             <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg">Actions</h4>
-                                <ol class="m-0 text-base font-normal">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Actions</h4>
+                                <ol class="m-0 text-base font-normal line-height-2">
                                     <li *ngFor="let action of convSummary?.overall_summary?.content?.Actions">
                                         {{action}}
                                     </li>
                                 </ol>
                             </div>
                             <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg">Participants</h4>
-                                <p class="m-0 text-base font-normal">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Participants</h4>
+                                <p class="m-0 text-base font-normal line-height-2">
                                     {{convSummary?.overall_summary?.content?.Participants?.join(',') }}
                                 </p>
                             </div>
                             <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg">Tags</h4>
-                                <p class="m-0 text-base font-normal">{{
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Tags</h4>
+                                <p class="m-0 text-base font-normal line-height-2">{{
                                     convSummary?.overall_summary?.content?.Tags?.join(', ') }}
                                 </p>
                             </div>
@@ -60,53 +60,49 @@
                                 <p-accordionTab *ngFor="let summary of convSummary?.incremental_summary?.reverse()">
                                     <ng-template pTemplate="header">
                                         <div class="col-12 p-0 flex justify-content-between">
-                                            <div class="font-normal	text-base">{{summary.content?.Title ?
+                                            <div class="ml-2 font-normal text-base line-height-2">
+                                                {{summary.content?.Title ?
                                                 summary.content?.Title : summary.content?.title}}</div>
                                             <div class="text-right text-500 text-xs pr-4 font-italic font-semibold">
                                                 {{getMeLocalDateAndTime(summary?.timestamp)}}</div>
                                         </div>
                                     </ng-template>
                                     <div>
-                                        <div class="mb-3">
-                                            <h4 class="m-0 pb-1 font-semibold text-lg">
-                                                {{summary?.content?.Title ? summary?.content?.Title :
-                                                summary?.content?.title}}
-                                            </h4>
-                                            <p class="m-0 text-base font-normal">
+                                        <div class="mb-3 ml-4 mt-2">
+                                            <p class="m-0 text-base font-normal line-height-2">
                                                 {{summary?.content?.Summary ? summary?.content?.Summary :
                                                 summary?.content?.summary}}
                                             </p>
-                                            <!-- <div class="text-right mb-2 text-500 text-xs p-1 font-italic font-semibold">
-                                                    {{getMeLocalDateAndTime(summary?.timestamp)}}
-                                                </div> -->
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="m-0 pb-1 font-medium	text-lg">Key Points</h4>
-                                            <ol class="m-0 text-base font-normal">
+                                        <div class="mb-3 ml-4">
+                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Key Points</h4>
+                                            <ol class="m-0 text-base font-normal line-height-2">
                                                 <li
                                                     *ngFor="let keyPoint of summary?.content?.KeyPoints ? summary?.content?.KeyPoints: summary?.content?.keyPoints">
                                                     {{keyPoint}}
                                                 </li>
                                             </ol>
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="m-0 pb-1 font-medium	text-lg">Actions</h4>
-                                            <ol class="m-0 text-base font-normal">
+                                        <div class="mb-3 ml-4">
+                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Actions</h4>
+                                            <ol class="m-0 text-base font-normal line-height-2">
                                                 <li
                                                     *ngFor="let action of summary?.content?.Actions ?summary?.content?.Actions : summary?.content?.actions">
                                                     {{action}}
                                                 </li>
                                             </ol>
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="m-0 m-0 pb-1 font-medium	text-lg">Participants</h4>
-                                            <p class="m-0 text-base font-normal">{{ summary?.content?.Participants ?
+                                        <div class="mb-3 ml-4">
+                                            <h4 class="m-0 m-0 pb-1 font-medium	text-lg line-height-3">Participants</h4>
+                                            <p class="m-0 text-base font-normal line-height-2">{{
+                                                summary?.content?.Participants ?
                                                 summary?.content?.Participants?.join(', ') :
                                                 summary?.content?.participants?.join(', ') }}</p>
                                         </div>
-                                        <div class="mb-3">
-                                            <h4 class="m-0 pb-1 font-medium	text-lg">Tags</h4>
-                                            <p class="m-0 text-base font-normal">{{ summary?.content?.Tags?
+                                        <div class="mb-3 ml-4">
+                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Tags</h4>
+                                            <p class="m-0 text-base font-normal line-height-2">{{
+                                                summary?.content?.Tags?
                                                 summary?.content?.Tags?.join(', ') : summary?.content?.tags?.join(',
                                                 ') }}
                                             </p>
