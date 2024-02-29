@@ -16,6 +16,10 @@ export class AgentHubModel {
     agentTabItemDropdown: IDropdownItem[];
     userInfo: any;
 
+    breadcrumb = [{
+        label: "Agent Hub",
+        index: 0
+    }]
     allAvailableTabItems = [
         { title: 'Agents', value: 'agent' },
         { title: 'Capabilities', value: 'capbility' },
@@ -52,9 +56,9 @@ export class AgentHubModel {
         placeholder: "All",
         optionLabel: "header",
         styleClass: "custom-multiselect"
-      }
+    }
 
-      showColumnFilterOption = {
+    showColumnFilterOption = {
         showFilterOption: true,
         filter: false,
         showToggleAll: false,
@@ -64,7 +68,7 @@ export class AgentHubModel {
         optionLabel: "header",
         styleClass: "showColumnFilterOption",
         changeHandler: this.onShowDynamicColumnFilter.bind(this)
-      }
+    }
 
     constructor(
         private storageService: LocalStorageService,
@@ -102,7 +106,7 @@ export class AgentHubModel {
             name: "Notification List",
             search_input: true
         };
-        
+
         this.agentTabItemDropdown = [
             {
                 label: 'Update',
@@ -152,20 +156,20 @@ export class AgentHubModel {
     }
 
     onShowDynamicColumnFilter(event: any) {
-        if(!event?.value.length) {
-            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns 
-        }else {
-            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: {idx: number} )=> valItem.idx === item.idx))
+        if (!event?.value.length) {
+            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns
+        } else {
+            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx))
         }
     }
 
 
     OnbreabCrumbsClickHandler(val: string) {
         this.breadCrumbsAction.isBreadCrumbActive = true,
-        this.breadCrumbsAction.activeBreadCrumbsItem = val
+            this.breadCrumbsAction.activeBreadCrumbsItem = val
     }
 
-    goBackBreadCrumbsHandler(){
+    goBackBreadCrumbsHandler(event: any) {
         this.breadCrumbsAction.activeBreadCrumbsItem = ""
         this.breadCrumbsAction.isBreadCrumbActive = false
     }

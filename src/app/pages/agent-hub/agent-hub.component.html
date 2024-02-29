@@ -1,13 +1,16 @@
 <div class="pr-4 pl-5">
-
   <div class="flex justify-content-between">
     <div class="flex gap-2 align-items-center">
-      <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'"
+      <!-- <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'"
         (onClick)="agentHubModel.goBackBreadCrumbsHandler()">Agent Hub</p-button>
       <div class="flex gap-2 align-items-center" *ngIf="agentHubModel.breadCrumbsAction.isBreadCrumbActive">
         <p class="m-0 flex"><i class="pi pi-angle-right"></i></p>
         <p>{{agentHubModel.breadCrumbsAction.activeBreadCrumbsItem}}</p>
-      </div>
+      </div> -->
+
+
+      <xnode-breadcrumbs [items]="agentHubModel.breadcrumb" (changeEvent)="agentHubModel.goBackBreadCrumbsHandler($event)"></xnode-breadcrumbs>
+
     </div>
 
     <div class="flex align-items-center justify-content-between">
@@ -88,14 +91,10 @@
 
   <!-- TAB Section -->
   <div class="flex">
-    <xnode-multi-select-checkbox 
-      *ngIf="agentHubModel.tabFilterOptions?.showFilterOption"
-      [filter]="agentHubModel.tabFilterOptions.filter"
-      [showToggleAll]="agentHubModel.tabFilterOptions.showToggleAll"
-      [showHeader]="agentHubModel.tabFilterOptions.showHeader"
-      [options]="agentHubModel.tabFilterOptions.options"
-      placeholder=""
-      [showIconOnly]="agentHubModel.tabFilterOptions.showIconOnly"
+    <xnode-multi-select-checkbox *ngIf="agentHubModel.tabFilterOptions?.showFilterOption"
+      [filter]="agentHubModel.tabFilterOptions.filter" [showToggleAll]="agentHubModel.tabFilterOptions.showToggleAll"
+      [showHeader]="agentHubModel.tabFilterOptions.showHeader" [options]="agentHubModel.tabFilterOptions.options"
+      placeholder="" [showIconOnly]="agentHubModel.tabFilterOptions.showIconOnly"
       [hamburgerIconUrl]="agentHubModel.tabFilterOptions.hamburgerIconUrl"
       [optionLabel]="agentHubModel.tabFilterOptions.optionLabel"
       [styleClass]="agentHubModel.tabFilterOptions.styleClass">

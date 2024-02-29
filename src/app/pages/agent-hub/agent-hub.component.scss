@@ -156,3 +156,8 @@
 .star-dust {
   color: #A2A2A3;
 }
+
+:host ::ng-deep .p-breadcrumb {
+  background-color: transparent;
+  border: none;
+}
