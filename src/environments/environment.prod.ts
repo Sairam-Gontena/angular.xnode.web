@@ -10,7 +10,7 @@ export const environment = {
     commonApiUrl: 'https://prod-cmn-api-in.azurewebsites.net/',
     xnodeAppUrl: 'https://prod-xnode-in.azurewebsites.net/',
     naviAppUrl: 'https://prod-navi-web-in.azurewebsites.net/',
-    designStudioAppUrl: 'https://prod-ui-gen-in.azurewebsites.net/',
+    designStudioAppUrl: 'https://dev-ui-gen.azurewebsites.net/dashboard/',
     publishApiUrl: 'https://prod-frontend-builder-in.azurewebsites.net/ui/angular/',
     uigenApiUrl: 'https://prod-frontend-builder-in.azurewebsites.net/',
     workFlowApiUrl: 'https://prod-xnode-xflows-in.azurewebsites.net/',
