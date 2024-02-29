@@ -23,9 +23,6 @@ export class AgentHubModel {
     userInfo: any;
     statsItem: any;
 
-    breadcrumb = [{
-        label: "Agent Hub"
-    }]
     allAvailableTabItems = [
         { title: 'Agents', value: 'agent' },
         { title: 'Capabilities', value: 'capbility' },
@@ -37,11 +34,15 @@ export class AgentHubModel {
 
     breadCrumbsAction = {
         isBreadCrumbActive: false,
-        activeBreadCrumbsItem: "",
+        breadcrumb: [{
+            label: "Agent Hub",
+            index: 0
+        }]
+        // activeBreadCrumbsItem: "",
     }
 
     tabFilterOptions = {
-        showFilterOption: true,
+        // showFilterOption: true,
         filter: false,
         showToggleAll: false,
         showHeader: false,
@@ -50,7 +51,7 @@ export class AgentHubModel {
         hamburgerIconUrl: '../../../assets/agent-hub/menu-hamnburger.svg',
         placeholder: "",
         optionLabel: "title",
-        styleClass: "menu-hamburger"
+        styleClass: "menu-hamburger mt-1"
     }
 
     searchFilterOptions = {
@@ -166,12 +167,21 @@ export class AgentHubModel {
 
 
     OnbreabCrumbsClickHandler(val: string) {
-        this.breadCrumbsAction.isBreadCrumbActive = true,
-            this.breadCrumbsAction.activeBreadCrumbsItem = val
+        this.breadCrumbsAction.isBreadCrumbActive = true;
+        const newPayload = {
+            label: val,
+            index: this.breadCrumbsAction.breadcrumb.length
+        };
+        this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb, newPayload];
     }
 
     goBackBreadCrumbsHandler(event: any) {
-        this.breadCrumbsAction.activeBreadCrumbsItem = ""
+        // this.breadCrumbsAction.activeBreadCrumbsItem = ""
+        const newItem = this.breadCrumbsAction.breadcrumb
+        const indexToDelete = event.item.index + 1
+        newItem.splice(indexToDelete)
         this.breadCrumbsAction.isBreadCrumbActive = false
+
+        this.breadCrumbsAction.breadcrumb = [...newItem]
     }
 }

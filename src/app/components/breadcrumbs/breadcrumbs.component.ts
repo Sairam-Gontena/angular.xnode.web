@@ -12,6 +12,7 @@ type Breadcrumb = {
 })
 export class BreadcrumbsComponent {
   @Input() items!: Breadcrumb[];
+  @Input() highLightColor: string = ''
 
   @Output() changeEvent = new EventEmitter<{ event: any }>();
 
