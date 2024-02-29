@@ -2,7 +2,8 @@
 
   <div class="flex justify-content-between">
     <div class="flex gap-2 align-items-center">
-      <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'" (onClick)="agentHubModel.goBackBreadCrumbsHandler()">Agent Hub</p-button>
+      <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'"
+        (onClick)="agentHubModel.goBackBreadCrumbsHandler()">Agent Hub</p-button>
       <div class="flex gap-2 align-items-center" *ngIf="agentHubModel.breadCrumbsAction.isBreadCrumbActive">
         <p class="m-0 flex"><i class="pi pi-angle-right"></i></p>
         <p>{{agentHubModel.breadCrumbsAction.activeBreadCrumbsItem}}</p>
@@ -14,7 +15,7 @@
       <div class="flex align-items-center">
         <p-button label="Create Agent"
           styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
-          [outlined]="true" icon="pi pi-plus-circle" iconPos="right"></p-button>      
+          [outlined]="true" icon="pi pi-plus-circle" iconPos="right"></p-button>
       </div>
 
       <div class="separator"></div>
@@ -85,28 +86,40 @@
   </div>
 
 
-<!-- TAB Section -->
-  <p-tabView class="relative" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive" (onChange)="agentHubModel.getAllAgentList()" [(activeIndex)]="agentHubModel.activeIndex">
-    <p-tabPanel *ngFor="let tab of agentHubModel.tabItems let i=index" [header]="tab.title"
-      [style]="{color: agentHubModel.activeIndex ==i && '#fff'}">
+  <!-- TAB Section -->
+  <div class="flex">
+    <xnode-multi-select-checkbox 
+      *ngIf="agentHubModel.tabFilterOptions?.showFilterOption"
+      [filter]="agentHubModel.tabFilterOptions.filter"
+      [showToggleAll]="agentHubModel.tabFilterOptions.showToggleAll"
+      [showHeader]="agentHubModel.tabFilterOptions.showHeader"
+      [options]="agentHubModel.tabFilterOptions.options"
+      placeholder=""
+      [showIconOnly]="agentHubModel.tabFilterOptions.showIconOnly"
+      [hamburgerIconUrl]="agentHubModel.tabFilterOptions.hamburgerIconUrl"
+      [optionLabel]="agentHubModel.tabFilterOptions.optionLabel"
+      [styleClass]="agentHubModel.tabFilterOptions.styleClass">
+    </xnode-multi-select-checkbox>
 
-      <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}"
-        (onClick)="agentHubModel.agentTabDropDownHandler()" (onDropdownClick)="agentHubModel.agentTabDropDownHandler()"
-        [model]="agentHubModel.agentTabItemDropdown"></p-splitButton>
+    <p-tabView class="relative w-100" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive"
+      (onChange)="agentHubModel.getAllAgentList()" [(activeIndex)]="agentHubModel.activeIndex">
+      <p-tabPanel *ngFor="let tab of agentHubModel.tabItems let i=index" [header]="tab.title"
+        [style]="{color: agentHubModel.activeIndex ==i && '#fff'}">
 
-    </p-tabPanel>
-  </p-tabView>
+        <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}"
+          (onClick)="agentHubModel.agentTabDropDownHandler()"
+          (onDropdownClick)="agentHubModel.agentTabDropDownHandler()"
+          [model]="agentHubModel.agentTabItemDropdown"></p-splitButton>
+
+      </p-tabPanel>
+    </p-tabView>
+  </div>
 
   <div class="w-full table-height">
-    <xnode-dynamic-table
-     [inputData]="agentHubModel.tableData"
-     [cols]="agentHubModel.columns"
-     [tableInfo]="agentHubModel.tableInfo"
-     [showColumnFilterOption]="agentHubModel.showColumnFilterOption"
-     [searchFilterOptions]="agentHubModel.searchFilterOptions"
-     columnWidth="13.8rem"
-     altBgColorRow="#2E2D36"
-     ></xnode-dynamic-table>
+    <xnode-dynamic-table [inputData]="agentHubModel.tableData" [cols]="agentHubModel.columns"
+      [tableInfo]="agentHubModel.tableInfo" [showColumnFilterOption]="agentHubModel.showColumnFilterOption"
+      [searchFilterOptions]="agentHubModel.searchFilterOptions" columnWidth="13.8rem"
+      altBgColorRow="#2E2D36"></xnode-dynamic-table>
   </div>
 
 </div>

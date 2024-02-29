@@ -75,7 +75,7 @@
   border-radius: 6px;
  }
 
- :host ::ng-deep .p-multiselect:not(.p-disabled).p-focus {
+ :host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus {
   outline: inherit;
   outline-offset: 0;
   box-shadow: none;
@@ -109,6 +109,44 @@
   width: auto;
   padding-right: 0.5rem;
   color: white;
+}
+
+// Menu Hamburger Style
+:host ::ng-deep .menu-hamburger, .p-multiselect-label-container, .p-multiselect {
+  border-radius: 0%;
+  background-color: transparent !important;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+} 
+
+:host ::ng-deep .menu-hamburger .p-multiselect-label {
+  padding-left: 0;
+  padding-right: 0;
+}
+.menu-hamburger:not(.p-disabled).p-focus {
+  border: none;
+}
+
+// /* Hide the label text */
+// .ui-multiselect-label {
+//   display: none;
+// }
+
+// /* Use a hamburger icon instead of the label text */
+// .ui-multiselect-trigger::after {
+//   content: '';
+//   // background-image: var(--hamburger-icon); /* Use the custom property */
+//   background-repeat:  no-repeat;
+//   background-size: 100%; /* Adjust the size of the icon */
+//   width: 20px; /* Adjust the width of the icon */
+//   height: 20px; /* Adjust the height of the icon */
+//   display: inline-block;
+// }
+
+
+.menu-hamburger .p-multiselect-trigger {
+  display: none;
 }
 
 :host ::ng-deep .cyan-text-color {

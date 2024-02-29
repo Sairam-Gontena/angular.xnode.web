@@ -16,9 +16,31 @@ export class AgentHubModel {
     agentTabItemDropdown: IDropdownItem[];
     userInfo: any;
 
+    allAvailableTabItems = [
+        { title: 'Agents', value: 'agent' },
+        { title: 'Capabilities', value: 'capbility' },
+        { title: 'Prompts', value: 'prompt' },
+        { title: 'Knowledge', value: 'knowledge' },
+        { title: 'Models', value: 'model' },
+        { title: 'Tools', value: 'tools' }
+    ]
+
     breadCrumbsAction = {
         isBreadCrumbActive: false,
         activeBreadCrumbsItem: "",
+    }
+
+    tabFilterOptions = {
+        showFilterOption: true,
+        filter: false,
+        showToggleAll: false,
+        showHeader: false,
+        options: [] as any[],
+        showIconOnly: true,
+        hamburgerIconUrl: '../../../assets/agent-hub/menu-hamnburger.svg',
+        placeholder: "",
+        optionLabel: "title",
+        styleClass: "menu-hamburger"
     }
 
     searchFilterOptions = {
@@ -54,6 +76,11 @@ export class AgentHubModel {
          * Get the column name for filter option 
          */
 
+        this.activeIndex = 0;
+        this.tabItems = this.allAvailableTabItems;
+
+        this.tabFilterOptions.options = this.tabItems
+
         this.showColumnFilterOption.options = this.columns?.map((item: any) => {
             return {
                 idx: item.idx,
@@ -68,16 +95,6 @@ export class AgentHubModel {
             idx: 1,
             header: "My Agents"
         }]
-
-        this.activeIndex = 0;
-        this.tabItems = [
-            { title: 'Agents', value: 'agent' },
-            { title: 'Capabilities', value: 'capbility' },
-            { title: 'Prompts', value: 'prompt' },
-            { title: 'Knowledge', value: 'knowledge' },
-            { title: 'Models', value: 'model' },
-            { title: 'Tools', value: 'tools' }
-        ];
 
         this.tableInfo = {
             delete_action: false,
