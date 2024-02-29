@@ -74,8 +74,9 @@
                                                 summary?.content?.summary}}
                                             </p>
                                         </div>
-                                        <div class="mb-3 ml-4">
-                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Key Points</h4>
+                                        <div class="mb-3 ml-4"
+                                            *ngIf="summary?.content?.KeyPoints?.length || summary?.content?.keyPoints?.length">
+                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Key Points:</h4>
                                             <ol class="m-0 text-base font-normal line-height-2">
                                                 <li
                                                     *ngFor="let keyPoint of summary?.content?.KeyPoints ? summary?.content?.KeyPoints: summary?.content?.keyPoints">
@@ -83,8 +84,9 @@
                                                 </li>
                                             </ol>
                                         </div>
-                                        <div class="mb-3 ml-4">
-                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Actions</h4>
+                                        <div class="mb-3 ml-4"
+                                            *ngIf="summary?.content?.Actions?.length || summary?.content?.actions?.length">
+                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Actions:</h4>
                                             <ol class="m-0 text-base font-normal line-height-2">
                                                 <li
                                                     *ngFor="let action of summary?.content?.Actions ?summary?.content?.Actions : summary?.content?.actions">
@@ -92,15 +94,18 @@
                                                 </li>
                                             </ol>
                                         </div>
-                                        <div class="mb-3 ml-4">
-                                            <h4 class="m-0 m-0 pb-1 font-medium	text-lg line-height-3">Participants</h4>
+                                        <div class="mb-3 ml-4"
+                                            *ngIf="summary?.content?.Participants?.length || summary?.content?.participants?.length">
+                                            <h4 class="m-0 m-0 pb-1 font-medium	text-lg line-height-3">Participants:
+                                            </h4>
                                             <p class="m-0 text-base font-normal line-height-2">{{
                                                 summary?.content?.Participants ?
                                                 summary?.content?.Participants?.join(', ') :
                                                 summary?.content?.participants?.join(', ') }}</p>
                                         </div>
-                                        <div class="mb-3 ml-4">
-                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Tags</h4>
+                                        <div class="mb-3 ml-4"
+                                            *ngIf="summary?.content?.Tags?.length || summary?.content?.tags?.length">
+                                            <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Tags:</h4>
                                             <p class="m-0 text-base font-normal line-height-2">{{
                                                 summary?.content?.Tags?
                                                 summary?.content?.Tags?.join(', ') : summary?.content?.tags?.join(',
