@@ -24,32 +24,43 @@
                                     {{getMeLocalDateAndTime(convSummary?.overall_summary?.timestamp)}}
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Key Points</h4>
+                            <div class="mb-3"
+                                *ngIf="convSummary?.overall_summary?.content?.KeyPoints?.length || convSummary?.overall_summary?.content?.keyPoints?.length">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Key Points:</h4>
                                 <ol class="m-0 text-base font-normal line-height-2">
-                                    <li *ngFor="let keyPoint of convSummary?.overall_summary?.content?.KeyPoints">
+                                    <li
+                                        *ngFor="let keyPoint of convSummary?.overall_summary?.content?.KeyPoints ? convSummary?.overall_summary?.content?.KeyPoints: convSummary?.overall_summary?.content?.keyPoints ">
                                         {{keyPoint}}
                                     </li>
                                 </ol>
                             </div>
-                            <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Actions</h4>
+                            <div class="mb-3"
+                                *ngIf="convSummary?.overall_summary?.content?.Actions?.length || convSummary?.overall_summary?.content?.actions?.length">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Actions:</h4>
                                 <ol class="m-0 text-base font-normal line-height-2">
-                                    <li *ngFor="let action of convSummary?.overall_summary?.content?.Actions">
+                                    <li
+                                        *ngFor="let action of convSummary?.overall_summary?.content?.Actions ? convSummary?.overall_summary?.content?.Actions : convSummary?.overall_summary?.content?.actions">
                                         {{action}}
                                     </li>
                                 </ol>
                             </div>
-                            <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Participants</h4>
+                            <div class="mb-3"
+                                *ngIf="convSummary?.overall_summary?.content?.Participants?.length || convSummary?.overall_summary?.content?.participants?.length">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Participants:</h4>
                                 <p class="m-0 text-base font-normal line-height-2">
-                                    {{convSummary?.overall_summary?.content?.Participants?.join(',') }}
+                                    {{ convSummary?.overall_summary?.content?.Participants ?
+                                    convSummary?.overall_summary?.content?.Participants?.join(',') :
+                                    convSummary?.overall_summary?.content?.participants?.join(',') }}
+
                                 </p>
                             </div>
-                            <div class="mb-3">
-                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Tags</h4>
+                            <div class="mb-3"
+                                *ngIf="convSummary?.overall_summary?.content?.Tags?.length ||convSummary?.overall_summary?.content?.tags?.length">
+                                <h4 class="m-0 pb-1 font-medium	text-lg line-height-3">Tags:</h4>
                                 <p class="m-0 text-base font-normal line-height-2">{{
-                                    convSummary?.overall_summary?.content?.Tags?.join(', ') }}
+                                    convSummary?.overall_summary?.content?.Tags ?
+                                    convSummary?.overall_summary?.content?.Tags?.join(', ') :
+                                    convSummary?.overall_summary?.content?.tags?.join(', ') }}
                                 </p>
                             </div>
                         </div>
