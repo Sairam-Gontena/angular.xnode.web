@@ -16,7 +16,20 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   @Input() convSummary?: OverallSummary
   @Output() closeSummaryPopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  selectedTab: string = 'summary';
+  activeIndex = 0;
+  tabs = [
+    {
+      name: 'Summary',
+      key: 1,
+      active: true
+    },
+    {
+      name: 'History',
+      key: 4,
+      active: false
+    }
+  ];
 
   constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router) {
 
@@ -26,7 +39,9 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     console.log('convSummary', this.convSummary);
 
   }
-
+  onClickTab(index: number) {
+    this.activeIndex = index;
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['notifObj']?.currentValue) {
       this.utils.loadLoginUser(true)
@@ -49,5 +64,14 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
       this.router.navigate(['/x-pilot'], { queryParams });
     } else {
     }
+  }
+  viewChatSummary(){
+    if(this.router.url != '/x-pilot'){
+    this.router.navigate(['/x-pilot']);
+    this.utils.updateSummary(this.notifObj);
+    }else{
+      this.utils.updateSummary(this.notifObj);
+    }
+    this.closePopUp.emit();
   }
 }

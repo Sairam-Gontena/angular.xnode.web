@@ -32,8 +32,16 @@ export class NaviComponent implements OnInit {
   content: any;
   productDetails: any;
   productEmail: any;
+  naviSummaryProduct: any
+  iframeLoaded = false;
 
   ngOnInit(): void {
+    this.utils.getMeSummaryObject.subscribe((data: any) => {
+      this.naviSummaryProduct = data;
+      if (this.iframeLoaded) {
+        this.sendMessageToNavi(this.naviSummaryProduct);
+      }
+    })
     let queryParams: any;
     this.route.queryParams.subscribe((params: any) => {
       if (params) {
@@ -104,6 +112,9 @@ export class NaviComponent implements OnInit {
     }
     if (this.usersList) {
       this.targetUrl = this.targetUrl + '&account_user_list=' + JSON.stringify(this.usersList);
+    }
+    if (this.naviSummaryProduct) {
+      this.targetUrl = this.targetUrl + '&NaviSummaryProducxt=' + JSON.stringify(this.naviSummaryProduct);
     }
 
     iframe.addEventListener('load', () => {
@@ -187,8 +198,23 @@ export class NaviComponent implements OnInit {
         this.constructIframeUrl(queryParams);
       })
     }
-
   }
+
+  onIframeLoad() {
+    this.iframeLoaded = true
+    if (this.naviSummaryProduct) {
+      this.sendMessageToNavi(this.naviSummaryProduct);
+    }
+  }
+
+  sendMessageToNavi(data: any) {
+    if (this.targetUrl && data) {
+      window.frames[0].postMessage({
+        NaviSummaryNotification: data
+      }, this.targetUrl);
+    }
+  }
+
   closePopup() {
     this.showProductStatusPopup = false;
   }
@@ -201,5 +227,11 @@ export class NaviComponent implements OnInit {
 
   onClickContinue(): void {
     this.router.navigate(['/dashboard']);
+  }
+
+  ngOnDestroy(): void {
+    this.naviSummaryProduct = null;
+    this.utils.updateSummary({});
+    this.iframeLoaded = false;
   }
 }
