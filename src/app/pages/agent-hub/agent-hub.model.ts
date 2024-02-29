@@ -6,19 +6,25 @@ import dynamicTableColumnData from "../../../assets/json/dynamictabledata.json";
 import { IDropdownItem, ITableDataEntry, ITableInfo } from "./IAgent-hub";
 import { AgentHubService } from "src/app/api/agent-hub.service";
 import { StorageKeys } from "src/models/storage-keys.enum";
+import { Constant } from "./agent-hub.constant";
 
 export class AgentHubModel {
     columns: any; // Define the type of columns based on the actual data structure
     activeIndex: number;
     tabItems: { title: string, value: string }[];
     tableData!: ITableDataEntry[];
-    tableInfo: ITableInfo;
+    tableInfo: ITableInfo = {
+        delete_action: false,
+        export_action: false,
+        name: "Notification List",
+        search_input: true
+    };
     agentTabItemDropdown: IDropdownItem[];
     userInfo: any;
+    statsItem: any;
 
     breadcrumb = [{
-        label: "Agent Hub",
-        index: 0
+        label: "Agent Hub"
     }]
     allAvailableTabItems = [
         { title: 'Agents', value: 'agent' },
@@ -98,14 +104,9 @@ export class AgentHubModel {
         }, {
             idx: 1,
             header: "My Agents"
-        }]
+        }];
 
-        this.tableInfo = {
-            delete_action: false,
-            export_action: false,
-            name: "Notification List",
-            search_input: true
-        };
+        this.statsItem = Constant.stats
 
         this.agentTabItemDropdown = [
             {
