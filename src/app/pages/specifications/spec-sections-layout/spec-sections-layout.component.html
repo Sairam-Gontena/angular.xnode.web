@@ -66,8 +66,8 @@
             ">
           <p-overlayPanel #op1 appendTo="body" (onHide)="usecasePanelOpened = false; usecaseshowCommentIcon = false">
             <xnode-add-task *ngIf="usecasePanelOpened" (closeOverlay)="op1.toggle(false); usecasePanelOpened = false"
-              [selectedContent]="content" [reveiwerList]="reveiwerList" [users]="usersList" placeHolder="Add a Task"
-              [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
+              [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+              [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div [ngClass]="{
@@ -126,7 +126,7 @@
             <xnode-add-task *ngIf="userinterfacePanelOpened"
               (closeOverlay)="op1.toggle(false); userinterfacePanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -171,12 +171,12 @@
             <xnode-add-task *ngIf="dataManagementPanelOpened"
               (closeOverlay)="op1.toggle(false); dataManagementPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12" *ngIf="content">
-          <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)" [specData]="'spec'"
-            ></xnode-data-model-common>
+          <xnode-data-model-common (dataFlowEmitter)="expandComponent.emit(content)"
+            [specData]="'spec'"></xnode-data-model-common>
         </div>
       </div>
     </div>
@@ -212,7 +212,7 @@
           <p-overlayPanel #op1 appendTo="body" (onHide)="workflowPanelOpened = false; workflowshowCommentIcon = false">
             <xnode-add-task *ngIf="workflowPanelOpened" (closeOverlay)="op1.toggle(false); workflowPanelOpened = false"
               [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-              [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -224,53 +224,52 @@
     <div *ngIf="content.title === 'Data Dictionary'">
       <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle('json', specItem, content)"></i>
-        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+        <i class="pi pi-table pointer mr-2" pTooltip="Table view"
           (click)="checkedToggle('table', specItem, content)"></i>
+        <i class="pi pi-list pointer ml-2" pTooltip="List view" (click)="checkedToggle('list', specItem, content)"></i>
+
       </div>
       <div class="grid" (mouseover)="dataDictionaryshowCommentIcon = true"
         (mouseleave)="dataDictionaryshowCommentIcon = false">
-        <div class="col-12 flex justify-content-end align-items-center h-2rem">
-          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-            businessRulesop.toggle($event); dataDictionaryPanelOpened = true;saveSecInLocal();
-          " (mouseleave)="dataDictionaryshowCommentIcon = false"
-            *ngIf="dataDictionaryshowCommentIcon || dataDictionaryPanelOpened" />
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
-            *ngIf="dataDictionaryshowCommentIcon || dataDictionaryPanelOpened" (click)="openCommentSection()"></i>
-          <p-overlayPanel #businessRulesop (onHide)="
-          dataDictionaryPanelOpened = false;
-              dataDictionaryshowCommentIcon = false
-            ">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="dataDictionaryPanelOpened"
-              (closeOverlay)="
-                businessRulesop.toggle(false);
-                dataDictionaryPanelOpened = false
-              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
-              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel>
-          </p-overlayPanel>
-          <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
-            (click)="op1.toggle($event);dataDictionaryPanelOpened = true;saveSecInLocal();"
-            (mouseleave)="dataDictionaryshowCommentIcon = false" [ngClass]="
-            dataDictionaryshowCommentIcon || dataDictionaryPanelOpened
-                ? 'opacity-100'
-                : 'opacity-0'
-            ">
-          <p-overlayPanel #op1 appendTo="body"
-            (onHide)="dataDictionaryPanelOpened = false; dataDictionaryshowCommentIcon = false">
-            <xnode-add-task *ngIf="dataDictionaryPanelOpened"
-              (closeOverlay)="op1.toggle(false); dataDictionaryPanelOpened = false" [selectedContent]="content"
-              [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
-          </p-overlayPanel>
-        </div>
         <div class="col-12">
-          <div *ngIf="content.showTable; else elsejson">
+          <ng-container *ngIf="content.showTable">
             <div class="spec-table">
               <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                 [content]="content.content"></xnode-common-spec-table>
             </div>
-          </div>
-          <ng-template #elsejson>
+          </ng-container>
+          <ng-container *ngIf="content.showList">
+            <div class="grid">
+              <div class="col-12 p-0 flex flex-wrap justify-content-between" *ngFor="let item of content.content">
+                <div class="col-10 p-0">
+                  <ul>
+                    <li>
+                      <div class="flex justify-content-between">
+                        <div>
+                          <b>{{item.title}}</b>
+                          <p>{{item.content}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-2 p-0 flex align-items-start justify-content-center"
+                  (mouseover)="dataDictionaryshowCommentIcon = true"
+                  (mouseleave)="dataDictionaryshowCommentIcon = false">
+                  <div class="flex justify-content-end align-items-start flex-wrap pt-2"
+                    *ngIf="dataDictionaryshowCommentIcon">
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                      (click)="dataDictionaryOp.toggle($event);businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)">
+                    <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="openCommentSection()"></i>
+                    <img src="../assets/add-task.svg"
+                      (click)="op1.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)"
+                      class="pointer ml-2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="content.showJson">
             <div class="grid" (mouseover)="dataDictionaryshowCommentIcon = true"
               (mouseleave)="dataDictionaryshowCommentIcon = false">
               <div class="col-12">
@@ -278,62 +277,76 @@
                   style="white-space: pre-wrap; overflow: auto"></pre>
               </div>
             </div>
-          </ng-template>
+          </ng-container>
         </div>
+        <p-overlayPanel #dataDictionaryOp (onHide)="
+        dataDictionaryPanelOpened = false;
+            dataDictionaryshowCommentIcon = false
+          ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
+            dataDictionaryOp.toggle(false);
+              dataDictionaryPanelOpened = false
+            " [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
+            [parentTitle]="content.title"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body"
+          (onHide)="dataDictionaryPanelOpened = false; dataDictionaryshowCommentIcon = false">
+          <xnode-add-task (closeOverlay)="op1.toggle(false); dataDictionaryPanelOpened = false"
+            [selectedContent]="selectedContent" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [parentTitle]="content.title" [specItem]="specItem"
+            [reveiwerList]="reveiwerList"></xnode-add-task>
+        </p-overlayPanel>
       </div>
 
     </div>
     <div *ngIf="content.title === 'Business Rules'">
       <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle('json', specItem, content)"></i>
-        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+        <i class="pi pi-table pointer mr-2" pTooltip="Table view"
           (click)="checkedToggle('table', specItem, content)"></i>
+        <i class="pi pi-list pointer ml-2" pTooltip="List view" (click)="checkedToggle('list', specItem, content)"></i>
       </div>
       <div class="grid" (mouseover)="businessRulesshowCommentIcon = true"
         (mouseleave)="businessRulesshowCommentIcon = false">
-        <div class="col-12 flex justify-content-end align-items-center h-2rem">
-          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-            businessRulesop.toggle($event); businessRulesPanelOpened = true;saveSecInLocal();
-          " (mouseleave)="businessRulesshowCommentIcon = false"
-            *ngIf="businessRulesshowCommentIcon || businessRulesPanelOpened" />
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
-            *ngIf="businessRulesshowCommentIcon || businessRulesPanelOpened" (click)="openCommentSection()"></i>
-          <p-overlayPanel #businessRulesop (onHide)="
-              businessRulesPanelOpened = false;
-              businessRulesshowCommentIcon = false
-            ">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="businessRulesPanelOpened"
-              (closeOverlay)="
-                businessRulesop.toggle(false);
-                businessRulesPanelOpened = false
-              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
-              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel>
-          </p-overlayPanel>
-
-          <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
-            (click)="op1.toggle($event);businessRulesPanelOpened = true;saveSecInLocal();"
-            (mouseleave)="businessRulesshowCommentIcon = false" [ngClass]="
-            businessRulesshowCommentIcon || businessRulesPanelOpened
-                ? 'opacity-100'
-                : 'opacity-0'
-            ">
-          <p-overlayPanel #op1 appendTo="body"
-            (onHide)="businessRulesPanelOpened = false; businessRulesshowCommentIcon = false">
-            <xnode-add-task *ngIf="businessRulesPanelOpened"
-              (closeOverlay)="op1.toggle(false); businessRulesPanelOpened = false" [selectedContent]="content"
-              [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
-          </p-overlayPanel>
-        </div>
         <div class="col-12">
-          <div *ngIf="content.showTable; else elsejson">
+          <ng-container *ngIf="content.showTable">
             <div class="spec-table">
               <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                 [content]="content.content"></xnode-common-spec-table>
             </div>
-          </div>
-          <ng-template #elsejson>
+          </ng-container>
+          <ng-container *ngIf="content.showList">
+            <div class="grid">
+              <div class="col-12 p-0 flex flex-wrap justify-content-between" *ngFor="let item of content.content">
+                <div class="col-10 p-0">
+                  <ul>
+                    <li>
+                      <div class="flex justify-content-between">
+                        <div>
+                          <b>{{item.title}}</b>
+                          <p>{{item.content}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-2 p-0 flex align-items-start justify-content-center"
+                  (mouseover)="businessRulesshowCommentIcon = true" (mouseleave)="businessRulesshowCommentIcon = false">
+                  <div class="flex justify-content-end align-items-start flex-wrap pt-2"
+                    *ngIf="businessRulesshowCommentIcon">
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                      (click)="businessRulesop.toggle($event);businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)">
+                    <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="openCommentSection()"></i>
+                    <img src="../assets/add-task.svg"
+                      (click)="op1.toggle($event);businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)"
+                      class="pointer ml-2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="content.showJson">
             <div class="grid" (mouseover)="businessRulesshowCommentIcon = true"
               (mouseleave)="businessRulesshowCommentIcon = false">
               <div class="col-12">
@@ -341,8 +354,26 @@
                   style="white-space: pre-wrap; overflow: auto"></pre>
               </div>
             </div>
-          </ng-template>
+          </ng-container>
         </div>
+        <p-overlayPanel #businessRulesop (onHide)="
+              businessRulesPanelOpened = false;
+              businessRulesshowCommentIcon = false
+            ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
+                businessRulesop.toggle(false);
+                businessRulesPanelOpened = false
+              " [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
+            [parentTitle]="content.title"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body"
+          (onHide)="businessRulesPanelOpened = false; businessRulesshowCommentIcon = false">
+          <xnode-add-task (closeOverlay)="op1.toggle(false); businessRulesPanelOpened = false"
+            [selectedContent]="selectedContent" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [parentTitle]="content.title" [specItem]="specItem"
+            [reveiwerList]="reveiwerList"></xnode-add-task>
+        </p-overlayPanel>
       </div>
 
     </div>
@@ -350,52 +381,53 @@
     <div *ngIf="content.title === 'Functional Dependencies'">
       <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle('json', specItem, content)"></i>
-        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+        <i class="pi pi-table pointer mr-2" pTooltip="Table view"
           (click)="checkedToggle('table', specItem, content)"></i>
+        <i class="pi pi-list pointer ml-2" pTooltip="List view" (click)="checkedToggle('list', specItem, content)"></i>
+
       </div>
       <div class="grid" (mouseover)="functionalDependenciesshowCommentIcon = true"
         (mouseleave)="functionalDependenciesshowCommentIcon = false">
-        <div class="w-full flex justify-content-end align-items-center h-2rem  ">
-          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-          functionalDepedencyop.toggle($event); functionalDepedencyPanelOpened = true;saveSecInLocal();
-          " (mouseleave)="functionalDependenciesshowCommentIcon = false"
-            *ngIf="functionalDependenciesshowCommentIcon || functionalDepedencyPanelOpened" />
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
-            *ngIf="functionalDependenciesshowCommentIcon || functionalDepedencyPanelOpened"
-            (click)="openCommentSection()"></i>
-          <p-overlayPanel #functionalDepedencyop (onHide)="
-          functionalDepedencyPanelOpened = false;
-              functionalDependenciesshowCommentIcon = false
-            ">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList"
-              *ngIf="functionalDepedencyPanelOpened" (closeOverlay)="
-              functionalDepedencyop.toggle(false);
-                functionalDepedencyPanelOpened = false
-              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
-              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel>
-          </p-overlayPanel>
-          <img src="../assets/add-task.svg" class="pointer ml-2" (click)="
-          op1.toggle($event); functionalDepedencyPanelOpened = true;saveSecInLocal();
-          " (mouseleave)="functionalDependenciesshowCommentIcon = false"
-            *ngIf="functionalDependenciesshowCommentIcon || functionalDepedencyPanelOpened">
-          <p-overlayPanel #op1 appendTo="body" (onHide)="functionalDepedencyPanelOpened = false;
-            functionalDependenciesshowCommentIcon = false">
-            <xnode-add-task *ngIf="functionalDepedencyPanelOpened" (closeOverlay)="
-            functionalDepedencyop.toggle(false);
-              functionalDepedencyPanelOpened = false" [selectedContent]="content" [users]="usersList"
-              placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-              [reveiwerList]="reveiwerList"></xnode-add-task>
-          </p-overlayPanel>
-        </div>
         <div class="col-12">
-          <div *ngIf="content.showTable; else elsejson">
+          <ng-container *ngIf="content.showTable">
             <div class="spec-table">
               <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                 [content]="content.content"></xnode-common-spec-table>
             </div>
-          </div>
-          <ng-template #elsejson>
+          </ng-container>
+          <ng-container *ngIf="content.showList">
+            <div class="grid">
+              <div class="col-12 p-0 flex flex-wrap justify-content-between" *ngFor="let item of content.content">
+                <div class="col-10 p-0">
+                  <ul>
+                    <li>
+                      <div class="flex justify-content-between">
+                        <div>
+                          <b>{{item.title}}</b>
+                          <p>{{item.content}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-2 p-0 flex align-items-start justify-content-center"
+                  (mouseover)="functionalDependenciesshowCommentIcon = true"
+                  (mouseleave)="functionalDependenciesshowCommentIcon = false">
+                  <div class="flex justify-content-end align-items-start flex-wrap pt-2"
+                    *ngIf="functionalDependenciesshowCommentIcon">
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                      (click)="functionalDepedencyop.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)">
+                    <i class=" pi pi-eye pointer ml-2" style="color:#0991c6" (click)="openCommentSection()"></i>
+                    <img src="../assets/add-task.svg"
+                      (click)="op1.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)"
+                      class="
+                      pointer ml-2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="content.showJson">
             <div class="grid" (mouseover)="functionalDependenciesshowCommentIcon = true"
               (mouseleave)="functionalDependenciesshowCommentIcon = false">
               <div class="col-12">
@@ -403,62 +435,78 @@
                   style="white-space: pre-wrap; overflow: auto"></pre>
               </div>
             </div>
-          </ng-template>
+          </ng-container>
         </div>
+        <p-overlayPanel #functionalDepedencyop (onHide)="
+        functionalDepedencyPanelOpened = false;
+            functionalDependenciesshowCommentIcon = false
+          ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
+            functionalDepedencyop.toggle(false);
+              functionalDepedencyPanelOpened = false
+            " [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentTitle]="content.title" [parentId]="specItem.id"
+            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body" (onHide)="functionalDepedencyPanelOpened = false;
+            functionalDependenciesshowCommentIcon = false">
+          <xnode-add-task (closeOverlay)="
+            functionalDepedencyop.toggle(false);
+              functionalDepedencyPanelOpened = false" [selectedContent]="selectedContent" [users]="usersList"
+            placeHolder="Add a Task" [parentTitle]="content.title" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+        </p-overlayPanel>
       </div>
-
     </div>
 
     <div *ngIf="content.title === 'User Interfaces'">
       <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle('json', specItem, content)"></i>
-        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+        <i class="pi pi-table pointer mr-2" pTooltip="Table view"
           (click)="checkedToggle('table', specItem, content)"></i>
+        <i class="pi pi-list pointer ml-2" pTooltip="List view" (click)="checkedToggle('list', specItem, content)"></i>
+
       </div>
       <div class="grid" (mouseover)="userInterfaceshowCommentIcon = true"
         (mouseleave)="userInterfaceshowCommentIcon = false">
-        <div class="h-2rem w-full justify-content-end align-items-center flex">
-          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-          functionalDepedencyop.toggle($event); userInterfacePanelOpened = true;saveSecInLocal();
-          " (mouseleave)="userInterfaceshowCommentIcon = false"
-            *ngIf="userInterfaceshowCommentIcon || userInterfacePanelOpened" />
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
-            *ngIf="userInterfaceshowCommentIcon || userInterfacePanelOpened" (click)="openCommentSection()"></i>
-          <p-overlayPanel #functionalDepedencyop (onHide)="
-          userInterfacePanelOpened = false;
-          userInterfaceshowCommentIcon = false
-            ">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="userInterfacePanelOpened"
-              (closeOverlay)="
-              functionalDepedencyop.toggle(false);
-              userInterfacePanelOpened = false
-              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
-              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel>
-          </p-overlayPanel>
-          <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
-            (click)="op1.toggle($event);userInterfacePanelOpened = true;saveSecInLocal();"
-            (mouseleave)="userInterfaceshowCommentIcon = false" [ngClass]="
-          userInterfaceshowCommentIcon || userInterfacePanelOpened
-              ? 'opacity-100'
-              : 'opacity-0'
-          ">
-          <p-overlayPanel #op1 appendTo="body"
-            (onHide)="userInterfacePanelOpened = false; userInterfaceshowCommentIcon = false">
-            <xnode-add-task *ngIf="userInterfacePanelOpened"
-              (closeOverlay)="op1.toggle(false); userInterfacePanelOpened = false" [selectedContent]="content"
-              [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
-          </p-overlayPanel>
-        </div>
         <div class="col-12">
-          <div *ngIf="content.showTable; else elsejson">
+          <ng-container *ngIf="content.showTable">
             <div class="spec-table">
               <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                 [content]="content.content"></xnode-common-spec-table>
             </div>
-          </div>
-          <ng-template #elsejson>
+          </ng-container>
+          <ng-container *ngIf="content.showList">
+            <div class="grid">
+              <div class="col-12 p-0 flex flex-wrap justify-content-between" *ngFor="let item of content.content">
+                <div class="col-10 p-0">
+                  <ul>
+                    <li>
+                      <div class="flex justify-content-between">
+                        <div>
+                          <b>{{item.title}}</b>
+                          <p>{{item.content}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-2 p-0 flex align-items-start justify-content-center"
+                  (mouseover)="userInterfaceshowCommentIcon = true" (mouseleave)="userInterfaceshowCommentIcon = false">
+                  <div class="flex justify-content-end align-items-start flex-wrap pt-2"
+                    *ngIf="userInterfaceshowCommentIcon">
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                      (click)="userInterfaceop.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)">
+                    <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="openCommentSection()"></i>
+                    <img src="../assets/add-task.svg"
+                      (click)="op1.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)"
+                      class="pointer ml-2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="content.showJson">
             <div class="grid" (mouseover)="userInterfaceshowCommentIcon = true"
               (mouseleave)="userInterfaceshowCommentIcon = false">
               <div class="col-12">
@@ -466,59 +514,76 @@
                   style="white-space: pre-wrap; overflow: auto"></pre>
               </div>
             </div>
-          </ng-template>
+          </ng-container>
         </div>
+        <p-overlayPanel #userInterfaceop (onHide)="
+        userInterfacePanelOpened = false;
+        userInterfaceshowCommentIcon = false
+          ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
+            userInterfaceop.toggle(false);
+            userInterfacePanelOpened = false
+            " [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentTitle]="content.title" [parentId]="specItem.id"
+            [specItem]="specItem"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body"
+          (onHide)="userInterfacePanelOpened = false; userInterfaceshowCommentIcon = false">
+          <xnode-add-task (closeOverlay)="op1.toggle(false); userInterfacePanelOpened = false"
+            [selectedContent]="selectedContent" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [parentTitle]="content.title" [specItem]="specItem"
+            [reveiwerList]="reveiwerList"></xnode-add-task>
+        </p-overlayPanel>
       </div>
-
     </div>
 
     <div *ngIf="content.title === 'Annexures'">
       <div class="flex justify-content-end align-items-center my-2 mr-2" *ngIf="!readOnly">
         <i class="pi pi-code pointer mr-2" pTooltip="Json view" (click)="checkedToggle('json', specItem, content)"></i>
-        <i class="pi pi-table pointer ml-2" pTooltip="Table view"
+        <i class="pi pi-table pointer mr-2" pTooltip="Table view"
           (click)="checkedToggle('table', specItem, content)"></i>
+        <i class="pi pi-list pointer ml-2" pTooltip="List view" (click)="checkedToggle('list', specItem, content)"></i>
+
       </div>
       <div class="grid" (mouseover)="AnnexureshowCommentIcon = true" (mouseleave)="AnnexureshowCommentIcon = false">
-        <div class="h-2rem w-full justify-content-end align-items-center flex ">
-          <img src="../assets/comment.svg" class="pointer" alt="comment" (click)="
-          functionalDepedencyop.toggle($event); AnnexuresPanelOpened = true;saveSecInLocal();
-          " (mouseleave)="AnnexureshowCommentIcon = false" *ngIf="AnnexureshowCommentIcon || AnnexuresPanelOpened" />
-          <i class="pi pi-eye pointer ml-2" style="color:#0991c6"
-            *ngIf="AnnexureshowCommentIcon || AnnexuresPanelOpened" (click)="openCommentSection()"></i>
-          <p-overlayPanel #functionalDepedencyop (onHide)="
-          AnnexuresPanelOpened = false;
-          AnnexureshowCommentIcon = false
-            ">
-            <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" *ngIf="AnnexuresPanelOpened"
-              (closeOverlay)="
-              functionalDepedencyop.toggle(false);
-              AnnexuresPanelOpened = false
-              " [position]="'absolute'" [selectedContent]="content" placeHolder="Add a Comment"
-              [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem"></xnode-add-comment-overlay-panel>
-          </p-overlayPanel>
-          <img src="../assets/add-task.svg" class="pointer ml-2" style="color:#0991c6"
-            (click)="op1.toggle($event);AnnexuresPanelOpened = true;saveSecInLocal();"
-            (mouseleave)="AnnexureshowCommentIcon = false" [ngClass]="
-          AnnexureshowCommentIcon || AnnexuresPanelOpened
-              ? 'opacity-100'
-              : 'opacity-0'
-          ">
-          <p-overlayPanel #op1 appendTo="body" (onHide)="AnnexuresPanelOpened = false; AnnexureshowCommentIcon = false">
-            <xnode-add-task *ngIf="AnnexuresPanelOpened"
-              (closeOverlay)="op1.toggle(false); AnnexuresPanelOpened = false" [selectedContent]="content"
-              [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
-          </p-overlayPanel>
-        </div>
         <div class="col-12">
-          <div *ngIf="content.showTable; else elsejson">
+          <ng-container *ngIf="content.showTable">
             <div class="spec-table">
               <xnode-common-spec-table [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
                 [content]="content.content"></xnode-common-spec-table>
             </div>
-          </div>
-          <ng-template #elsejson>
+          </ng-container>
+          <ng-container *ngIf="content.showList">
+            <div class="grid">
+              <div class="col-12 p-0 flex flex-wrap justify-content-between" *ngFor="let item of content.content">
+                <div class="col-10 p-0">
+                  <ul>
+                    <li>
+                      <div class="flex justify-content-between">
+                        <div>
+                          <b>{{item.title}}</b>
+                          <p>{{item.content}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-2 p-0 flex align-items-start justify-content-center"
+                  (mouseover)="AnnexureshowCommentIcon = true" (mouseleave)="AnnexureshowCommentIcon = false">
+                  <div class="flex justify-content-end align-items-start flex-wrap pt-2"
+                    *ngIf="AnnexureshowCommentIcon">
+                    <img src="../assets/comment.svg" class="pointer" alt="comment"
+                      (click)="functionalDepedencyop.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)">
+                    <i class="pi pi-eye pointer ml-2" style="color:#0991c6" (click)="openCommentSection()"></i>
+                    <img src="../assets/add-task.svg"
+                      (click)="op1.toggle($event);;businessRulesPanelOpened=true;saveSecInLocal();onClickAddComment(item)"
+                      class="pointer ml-2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="content.showJson">
             <div class="grid" (mouseover)="AnnexureshowCommentIcon = true"
               (mouseleave)="AnnexureshowCommentIcon = false">
               <div class="col-12">
@@ -526,10 +591,26 @@
                   style="white-space: pre-wrap; overflow: auto"></pre>
               </div>
             </div>
-          </ng-template>
+          </ng-container>
         </div>
+        <p-overlayPanel #functionalDepedencyop (onHide)="
+          AnnexuresPanelOpened = false;
+          AnnexureshowCommentIcon = false
+            ">
+          <xnode-add-comment-overlay-panel [width]="'w-30rem'" [users]="usersList" (closeOverlay)="
+              functionalDepedencyop.toggle(false);
+              AnnexuresPanelOpened = false
+              " [position]="'absolute'" [selectedContent]="selectedContent" placeHolder="Add a Comment"
+            [commentType]="'comment'" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
+            [parentTitle]="content.title"></xnode-add-comment-overlay-panel>
+        </p-overlayPanel>
+        <p-overlayPanel #op1 appendTo="body" (onHide)="AnnexuresPanelOpened = false; AnnexureshowCommentIcon = false">
+          <xnode-add-task (closeOverlay)="op1.toggle(false); AnnexuresPanelOpened = false"
+            [selectedContent]="selectedContent" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
+            [parentId]="specItem.id" [specItem]="specItem" [parentTitle]="content.title"
+            [reveiwerList]="reveiwerList"></xnode-add-task>
+        </p-overlayPanel>
       </div>
-
     </div>
      
     <div *ngIf="content.title === 'Historical Data Load'" (mouseenter)="historicalDataPanelOpened = true"
@@ -560,7 +641,7 @@
           (onHide)="historicalDataPanelOpened = false; historicalDatashowCommentIcon = false">
           <xnode-add-task (closeOverlay)="op1.toggle(false); historicalDataPanelOpened = false"
             [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+            [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div class="spec-table">
@@ -605,7 +686,7 @@
             <xnode-add-task *ngIf="usepersonaPanelOpened"
               (closeOverlay)="op1.toggle(false); usepersonaPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -645,7 +726,7 @@
         <p-overlayPanel #op1 appendTo="body" (onHide)="glossaryPanelOpened = false; glossaryshowCommentIcon = false">
           <xnode-add-task *ngIf="glossaryPanelOpened" (closeOverlay)="op1.toggle(false); glossaryPanelOpened = false"
             [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-            [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+            [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div class="spec-table">
@@ -684,7 +765,7 @@
           <xnode-add-task *ngIf="versionControlPanelOpened"
             (closeOverlay)="op1.toggle(false); versionControlPanelOpened = false" [selectedContent]="content"
             [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-            [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+            [specItem]="specItem"></xnode-add-task>
         </p-overlayPanel>
       </div>
       <div class="spec-table">
@@ -724,7 +805,7 @@
             <xnode-add-task *ngIf="stakeHolderPanelOpened"
               (closeOverlay)="op1.toggle(false); stakeHolderPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="spec-table">
@@ -766,7 +847,7 @@
             <xnode-add-task *ngIf="dataQualityPanelOpened"
               (closeOverlay)="op1.toggle(false); dataQualityPanelOpened = false" [selectedContent]="content"
               [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-              [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="spec-table">
@@ -816,7 +897,7 @@
                 <xnode-add-task *ngIf="testCasePanelOpened"
                   (closeOverlay)="op1.toggle(false); testCasePanelOpened = false" [selectedContent]="content"
                   [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
-                  [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+                  [specItem]="specItem"></xnode-add-task>
               </p-overlayPanel>
             </div>
             <div class="spec-table">
@@ -853,7 +934,7 @@
           <p-overlayPanel #op1 appendTo="body" (onHide)="qaPanelOpened = false; qashowCommentIcon = false">
             <xnode-add-task *ngIf="qaPanelOpened" (closeOverlay)="op1.toggle(false); qaPanelOpened = false"
               [selectedContent]="content" [users]="usersList" placeHolder="Add a Task" [parentEntity]="'SPEC'"
-              [parentId]="specItem.id" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-add-task>
+              [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -904,8 +985,7 @@
                       <p-overlayPanel #op1 appendTo="body" (onHide)="commentOverlayPanelOpened = false">
                         <xnode-add-task *ngIf="commentOverlayPanelOpened" (closeOverlay)="op1.toggle(false)"
                           [selectedContent]="content" [users]="usersList" placeHolder="Add a Task"
-                          [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-                          [reveiwerList]="reveiwerList"></xnode-add-task>
+                          [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
                       </p-overlayPanel>
                     </div>
                   </div>
@@ -971,8 +1051,7 @@
                           <p-overlayPanel #op1 appendTo="body" (onHide)="commentOverlayPanelOpened = false">
                             <xnode-add-task *ngIf="commentOverlayPanelOpened" (closeOverlay)="op1.toggle(false)"
                               [selectedContent]="content" [users]="usersList" placeHolder="Add a Task"
-                              [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-                              [reveiwerList]="reveiwerList"></xnode-add-task>
+                              [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"></xnode-add-task>
                           </p-overlayPanel>
                         </div>
                       </div>
@@ -1028,8 +1107,8 @@
           <p-overlayPanel #op1 appendTo="body" (onHide)=" openAPIPanelOpened = false; openAPIShowCommentIcon = false">
             <xnode-add-task *ngIf="openAPIPanelOpened" (closeOverlay)="
           openAPIop.toggle(false); openAPIPanelOpened = false" [selectedContent]="content" [users]="usersList"
-              placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id" [specItem]="specItem"
-              [reveiwerList]="reveiwerList"></xnode-add-task>
+              placeHolder="Add a Task" [parentEntity]="'SPEC'" [parentId]="specItem.id"
+              [specItem]="specItem"></xnode-add-task>
           </p-overlayPanel>
         </div>
         <div class="col-12">
@@ -1040,19 +1119,19 @@
     <div *ngIf="content.title === 'User Roles'">
       <xnode-user-roles [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)" [searchTerm]="searchTerm"
         [content]="content.content" [users]="usersList" [selectedContent]="selectedContent"
-        [parentTitle]="content.title" [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-user-roles>
+        [parentTitle]="content.title" [specItem]="specItem"></xnode-user-roles>
     </div>
 
     <div class="w-full" *ngIf="checkListViewSections(content.title)" [id]="content.id">
       <xnode-list-view [content]="content.content" [parentTitle]="content.title" [selectedContent]="selectedContent"
         [searchTerm]="searchTerm" [users]="usersList" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
-        [specItem]="specItem" [reveiwerList]="reveiwerList"></xnode-list-view>
+        [specItem]="specItem"></xnode-list-view>
     </div>
 
     <div *ngIf="checkParaViewSections(content.title) &&  content.title != 'Data Model' " [id]="content.id">
-      <xnode-para-view [content]="content.content" [reveiwerList]="reveiwerList" [searchTerm]="searchTerm"
-        [users]="usersList" [specItem]="specItem" [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)"
-        [content]="content" [selectedContent]="selectedContent"></xnode-para-view>
+      <xnode-para-view [content]="content.content" [searchTerm]="searchTerm" [users]="usersList" [specItem]="specItem"
+        [id]="content.id" [specId]="sectionIndex + 1 + '.' + (cIndex + 1)" [content]="content"
+        [selectedContent]="selectedContent"></xnode-para-view>
     </div>
     <div class="gradientback" *ngIf="!content?.collapsed"></div>
     <div class="collapse" *ngIf="content?.collapsed"></div>

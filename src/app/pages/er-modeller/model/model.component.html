@@ -1,7 +1,6 @@
-<div id="{{myModel.getElementId()}}" class="model-node list-group d-inline-flex border-1"
+<div id="{{myModel.getElementId()}}" class="model-node list-group d-inline-flex border-1 overflow-x-auto w-auto"
    style="border-color: #ccc;background-color: white;" [style.left.px]="myModel.pos_x" [style.top.px]="myModel.pos_y">
-
-   <h2 id="{{myModel.getElementH2Id()}}"
+   <h2  id="{{myModel.getElementH2Id()}}"
       class="list-group-item list-group-item-primary d-flex m-0 p-0 card-header-footer"
       style="background-color:#f0efeb" [class.list-group-item-primary]="myModel.is_pivot === false"
       [class.list-group-item-secondary]="myModel.is_pivot === true" (contextmenu)="contextMenu($event)"

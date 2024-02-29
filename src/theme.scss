@@ -266,12 +266,22 @@
     --multiselect-checkbox-highlight-color:#EFEEEE;
 
     // DIALOG
-    --dialog-container-background-color:#23222B
-    --dialog-container-border-color:#535354
-    --dialog-header-background-color:#23222B
-    --dialog-header-text-color:#EFEEEE
-    --dialog-content-text-color:#A2A2A3
-    --dialog-content-background-color:#23222B
-    --dialog-footer-background-color:#23222B
+    --dialog-container-background-color:#23222B;
+    --dialog-container-border-color:#535354;
+    --dialog-header-background-color:#23222B;
+    --dialog-header-text-color:#EFEEEE;
+    --dialog-content-text-color:#A2A2A3;
+    --dialog-content-background-color:#23222B;
+    --dialog-footer-background-color:#23222B;
+
+    // SIDEBAR
+    --sidebar-background-color:#011a03;
+
+    // DATEPICKER
+    --datepicker-background-color : #2e2d36;
+    --datepicker-header-background-color : #2e2d36;
+    --datepicker-header-border-color : #3f4655;
+    --datepicker-disabled-background-color : #3f4655;
+    --datepicker-hightlight-background-color : #A2A2A3;
 
 }

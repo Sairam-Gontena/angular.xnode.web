@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="col-4">
-        <label>Prioriry</label>
+        <label>Priority</label>
         <div class="p-inputgroup mt-1">
           <p-dropdown formControlName="priority" appendTo="body" [ngClass]="{
               'is-invalid': submitted && crFormControl['priority'].errors
@@ -76,7 +76,7 @@
         <label>Due Date</label>
         <div class="p-inputgroup mt-1">
           <p-calendar (onSelect)="onDateSelect($event)" formControlName="duedate" [showClear]="showClearDueDate"
-            appendTo="body" [ngClass]="{
+            appendTo="body" [minDate]="minDate" [ngClass]="{
               'is-invalid': submitted && crFormControl['duedate'].errors
             }" [showIcon]="true" placeholder="DD/MM/YYYY" styleClass="due-date"></p-calendar>
         </div>
@@ -97,7 +97,7 @@
           <p-autoComplete placeholder="Search Reviewer" [suggestions]="filteredReveiwers" appendTo="body"
             formControlName="reviewersLOne" [ngClass]="{
               'is-invalid': submitted && crFormControl['reviewersLOne'].errors
-            }" (completeMethod)="filteredReveiwer($event, 'L1')" field="name" [multiple]="true" styleClass="w-full">
+            }" (completeMethod)="filteredReveiwer($event, 'L1')" (onSelect)="handleClick()" field="name" [unique]="true" [multiple]="true" styleClass="w-full">
             <ng-template let-reviewer pTemplate="selectedItem">
               <div class="flex align-items-center">
                 <div class="autocomplete-label avtar text-xs flex justify-content-center align-items-center">
@@ -119,8 +119,7 @@
   <ng-template pTemplate="footer">
     <p-button label="Cancel" size="small" [outlined]="true" [rounded]="true" class="mr-2"
       (click)="closePopup()"></p-button>
-    <p-button label="Save" size="small" [rounded]="true"
-      (click)="save($event)"></p-button>
+    <p-button label="Save" size="small" [rounded]="true" (click)="save($event)"></p-button>
   </ng-template>
 </p-dialog>
 <xnode-add-cr-version [latestVersion]="latestVersion" (closeNewVersionPopUp)="newVersionClosePopup($event)"

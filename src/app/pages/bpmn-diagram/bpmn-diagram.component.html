@@ -5,8 +5,7 @@
                (onChangeProduct)="onChangeProduct($event)"></xnode-template-builder-publish-header>
           <p-button label="Back to Graph" icon="pi pi-arrow-left" styleClass="p-button-sm back-to-graph p-button-text"
                [rounded]="true" *ngIf="graphRedirection" (click)="switchWindow()" class="ml-4"></p-button>
-
-          <div class="grid bpmn-div">
+          <div class="grid bpmn-div overflow-auto">
                <div class="col-12">
                     <div id="diagramRef" class="diagram-container">
                     </div>
@@ -57,64 +56,41 @@
                               <!-- Properties tab -->
                               <p-tabPanel header="Properties">
                                    <p-panel header={{taskHeader?.pHeader}} [toggleable]="true" [collapsed]="true">
-                                        <p-table [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
-                                             <ng-template pTemplate="body" let-product>
-                                                  <tr *ngIf="product.index%2===0">
-                                                       <td>
-                                                            <label htmlFor="username">{{product.label}}</label>
-                                                            <input pInputText id="username"
-                                                                 aria-describedby="username-help"
-                                                                 [(ngModel)]="product.name" />
-                                                       </td>
-                                                       <td *ngIf="flowInfo[product.index+1]">
-                                                            <label
-                                                                 htmlFor="username">{{flowInfo[product.index+1].label}}</label>
-                                                            <input pInputText id="username"
-                                                                 aria-describedby="username-help"
-                                                                 [(ngModel)]="flowInfo[product.index+1].name" />
-                                                       </td>
-                                                  </tr>
-                                             </ng-template>
-                                        </p-table>
+                                        <div class="col-12" *ngFor="let product of flowInfo">
+                                          <label htmlFor="username">{{product.label}}</label>
+                                          <input pInputText class="my-2" id="username"
+                                               aria-describedby="username-help"
+                                               [(ngModel)]="product.name" />
+                                        </div>
                                    </p-panel>
                                    <a *ngIf="elementList?.type ==='bpmn:ServiceTask'&&!sP" href="/">View DMN Decision
                                         Flow</a>
 
                                    <p-panel *ngIf="sP" header="Userflows" [toggleable]="true" [collapsed]="true"
                                         styleClass="{ 'width': '30rem' }">
-                                        <p-table [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
-                                             <ng-template pTemplate="body" let-product>
-                                                  <tr *ngIf="product.index%2===0">
-                                                       <td>
-                                                            <label>TaskId</label>
-                                                            <input pInputText [(ngModel)]="product.name" />
-                                                       </td>
-                                                       <td *ngIf="userTask[product.index+1]">
-                                                            <label>TaskId</label>
-                                                            <input pInputText
-                                                                 [(ngModel)]="userTask[product.index+1].name" />
-                                                       </td>
-                                                  </tr>
-                                             </ng-template>
-                                        </p-table>
+                                        <div class="col-12" *ngFor="let product of userTask">
+                                          <span *ngIf="product.index%2===0">
+                                            <label>TaskId</label>
+                                            <input pInputText class="my-2" [(ngModel)]="product.name" />
+                                          </span>
+                                          <span *ngIf="userTask[product.index+1]">
+                                            <label>TaskId</label>
+                                            <input pInputText class="my-2" [(ngModel)]="userTask[product.index+1].name" />
+                                          </span>
+                                        </div>
                                    </p-panel>
 
                                    <p-panel *ngIf="sP" header="Backendflows" [toggleable]="true" [collapsed]="true">
-                                        <p-table [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
-                                             <ng-template pTemplate="body" let-product>
-                                                  <tr *ngIf="product.index%2===0">
-                                                       <td>
-                                                            <label>TaskId</label>
-                                                            <input pInputText [(ngModel)]="product.name" />
-                                                       </td>
-                                                       <td *ngIf="serviceTask[product.index+1]">
-                                                            <label>TaskId</label>
-                                                            <input pInputText
-                                                                 [(ngModel)]="serviceTask[product.index+1].name" />
-                                                       </td>
-                                                  </tr>
-                                             </ng-template>
-                                        </p-table>
+                                        <div class="col-12" *ngFor="let product of serviceTask">
+                                          <span *ngIf="product.index%2===0">
+                                            <label>TaskId</label>
+                                            <input pInputText class="my-2" [(ngModel)]="product.name" />
+                                          </span>
+                                          <span *ngIf="serviceTask[product.index+1]">
+                                            <label>TaskId</label>
+                                            <input pInputText class="my-2" [(ngModel)]="serviceTask[product.index+1].name" />
+                                          </span>
+                                        </div>
                                    </p-panel>
                               </p-tabPanel>
 
@@ -155,20 +131,21 @@
                               <div class="row"><strong class="p-0">{{taskHeader?.task}}</strong></div>
                          </div>
                     </div>
-                    <p-divider></p-divider>
+                    <!-- <p-divider></p-divider> -->
 
+                  <div class="h-full w-full" >
                     <p-tabView>
                          <!-- General Tab -->
                          <p-tabPanel header="General">
                               <p-panel header="General" [toggleable]="true">
-                                   <div class="row">
+                                   <div class="row my-2">
                                         <label htmlFor="username">{{generalInfo[0].label}}</label>
-                                        <input pInputText id="username" aria-describedby="username-help"
+                                        <input pInputText id="username" class="mx-2" aria-describedby="username-help"
                                              [(ngModel)]="entity" /> <!--overview.Tag  overview.title -->
                                    </div>
-                                   <div class="row">
+                                   <div class="row my-2">
                                         <label htmlFor="username">{{generalInfo[1].label}}</label>
-                                        <input pInputText id="username" aria-describedby="username-help"
+                                        <input pInputText class="mx-2" id="username" aria-describedby="username-help"
                                              [value]="flowInfo?.[0]?.name" /> <!--[(ngModel)]='overview.title'  -->
                                    </div>
                               </p-panel>
@@ -176,68 +153,60 @@
                                    <label htmlFor="username">{{generalInfo[2].label}}</label>
                                    <textarea rows="5" cols="30" pInputTextarea
                                         [(ngModel)]="overview.Description"></textarea>
-
                               </p-panel>
                          </p-tabPanel>
 
                          <!-- Properties tab -->
                          <p-tabPanel header="Properties">
                               <p-panel header={{taskHeader?.pHeader}} [toggleable]="true" [collapsed]="true">
-                                   <p-table [value]="flowInfo" [tableStyle]="{ 'min-width': '30rem' }">
-                                        <ng-template pTemplate="body" let-product>
-                                             <tr *ngIf="product.index%2===0">
-                                                  <td>
-                                                       <label htmlFor="username">{{product.label}}</label>
-                                                       <input pInputText id="username" aria-describedby="username-help"
-                                                            [(ngModel)]="product.name" />
-                                                  </td>
-                                                  <td *ngIf="flowInfo[product.index+1]">
-                                                       <label
-                                                            htmlFor="username">{{flowInfo[product.index+1].label}}</label>
-                                                       <input pInputText id="username" aria-describedby="username-help"
-                                                            [(ngModel)]="flowInfo[product.index+1].name" />
-                                                  </td>
-                                             </tr>
-                                        </ng-template>
-                                   </p-table>
+                                   <div class="col-12" *ngFor="let product of flowInfo">
+                                    <span *ngIf="product.index%2===0">
+                                      <span>
+                                        <label htmlFor="username">{{product.label}}</label>
+                                      <input pInputText id="username" class="m-2"
+                                           aria-describedby="username-help"
+                                           [(ngModel)]="product.name" />
+                                      </span><br/>
+                                      <span *ngIf="flowInfo[product.index+1]">
+                                            <label htmlFor="username">{{flowInfo[product.index+1].label}}</label>
+                                            <input pInputText id="username" class="m-2" aria-describedby="username-help"
+                                                 [(ngModel)]="flowInfo[product.index+1].name" />
+                                       </span><br/>
+                                    </span>
+                                  </div>
                               </p-panel>
                               <a *ngIf="elementList?.type ==='bpmn:ServiceTask'&&!sP" href="/">View DMN Decision
                                    Flow</a>
 
                               <p-panel *ngIf="sP" header="Userflows" [toggleable]="true" [collapsed]="true"
                                    styleClass="{ 'width': '30rem' }">
-                                   <p-table [value]="userTask" [tableStyle]="{ 'min-width': '30rem' }">
-                                        <ng-template pTemplate="body" let-product>
-                                             <tr *ngIf="product.index%2===0">
-                                                  <td>
-                                                       <label>TaskId</label>
-                                                       <input pInputText [(ngModel)]="product.name" />
-                                                  </td>
-                                                  <td *ngIf="userTask[product.index+1]">
-                                                       <label>TaskId</label>
-                                                       <input pInputText [(ngModel)]="userTask[product.index+1].name" />
-                                                  </td>
-                                             </tr>
-                                        </ng-template>
-                                   </p-table>
+                                   <div class="col-12" *ngFor="let product of userTask">
+                                    <span *ngIf="product.index%2===0">
+                                      <span>
+                                        <label>TaskId</label>
+                                        <input pInputText  class="m-2" [(ngModel)]="product.name" />
+                                      </span><br/>
+                                      <span *ngIf="userTask[product.index+1]">
+                                        <label>TaskId</label>
+                                        <input pInputText  class="m-2" [(ngModel)]="userTask[product.index+1].name" />
+                                       </span><br/>
+                                    </span>
+                                  </div>
                               </p-panel>
 
                               <p-panel *ngIf="sP" header="Backendflows" [toggleable]="true" [collapsed]="true">
-                                   <p-table [value]="serviceTask" [tableStyle]="{ 'min-width': '30rem' }">
-                                        <ng-template pTemplate="body" let-product>
-                                             <tr *ngIf="product.index%2===0">
-                                                  <td>
-                                                       <label>TaskId</label>
-                                                       <input pInputText [(ngModel)]="product.name" />
-                                                  </td>
-                                                  <td *ngIf="serviceTask[product.index+1]">
-                                                       <label>TaskId</label>
-                                                       <input pInputText
-                                                            [(ngModel)]="serviceTask[product.index+1].name" />
-                                                  </td>
-                                             </tr>
-                                        </ng-template>
-                                   </p-table>
+                                   <div class="col-12" *ngFor="let product of serviceTask">
+                                    <span *ngIf="product.index%2===0">
+                                      <span>
+                                        <label>TaskId</label>
+                                        <input pInputText  class="m-2" [(ngModel)]="product.name" />
+                                      </span><br/>
+                                      <span *ngIf="serviceTask[product.index+1]">
+                                        <label>TaskId</label>
+                                        <input pInputText  class="m-2" [(ngModel)]="serviceTask[product.index+1].name" />
+                                       </span><br/>
+                                    </span>
+                                  </div>
                               </p-panel>
                          </p-tabPanel>
 
@@ -249,6 +218,7 @@
                          <!-- Comments Tab -->
                          <p-tabPanel header="Comments"> </p-tabPanel>
                     </p-tabView>
+                  </div>
                </p-sidebar>
                <div id="sc" class="scrollable-container w-full h-full overflow-auto">
                     <div class="col-12" id="graph">

@@ -31,15 +31,17 @@ import { SidebarModule } from 'primeng/sidebar';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DataService } from '../pages/er-modeller/service/data.service';
-import { DataViewModule } from "primeng/dataview";
+import { DataViewModule } from 'primeng/dataview';
 import { MentionModule } from 'angular-mentions';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { InlineDiffComponent } from 'ngx-diff';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { JoinPipe } from '../join.pipe';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [JoinPipe],
   imports: [
     CommonModule,
     FormsModule,
@@ -72,7 +74,9 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     MentionModule,
     AutoCompleteModule,
     CalendarModule,
+    InlineDiffComponent,
     InputSwitchModule,
+    MultiSelectModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -108,11 +112,13 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     FieldsetModule,
     MentionModule,
     CalendarModule,
+    AutoCompleteModule,
+    InlineDiffComponent,
     InputSwitchModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    MultiSelectModule,
+    JoinPipe
   ],
-  providers: [
-    DataService
-  ]
+  providers: [DataService],
 })
 export class SharedModule { }

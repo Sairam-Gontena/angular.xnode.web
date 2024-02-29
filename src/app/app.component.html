@@ -1,9 +1,7 @@
 <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
-    <span (click)="submenuFunc()">
-        <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
-            (click)="botOnClick()"></xnode-bot>
-    </span>
-    <xnode-app-header [currentPath]="getMeComponent()"></xnode-app-header>
+    <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
+        (click)="botOnClick()"></xnode-bot>
+    <xnode-app-header></xnode-app-header>
     <div class="flex">
         <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen,'main-component-expand-navi': isNaviExpanded}"
             class="flex-column">
@@ -22,7 +20,7 @@
                 <xnode-app-side-menu></xnode-app-side-menu>
             </div>
             <div
-                [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen,'expand-docked-navi':isNaviExpanded }">
+                [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen && !isNaviExpanded,'expand-docked-navi':isNaviExpanded }">
                 <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
                     class="w-full h-full pl-0 pr-0 ifram-navi">
                 </iframe>

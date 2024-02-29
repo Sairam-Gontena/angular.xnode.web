@@ -122,7 +122,17 @@ export class ThemeService {
     dialog_header_text_color:"--dialog-header-text-color",
     dialog_content_text_color:"--dialog-content-text-color",
     dialog_content_background_color:"--dialog-content-background-color",
-    dialog_footer_background_color:"--dialog-footer-background-color"
+    dialog_footer_background_color:"--dialog-footer-background-color",
+
+    // SIDEBAR
+    sidebar_background_color:"--sidebar-background-color",
+
+    // DATEPICKER
+    datepicker_background_color:'--datepicker-background-color',
+    datepicker_header_background_color:'--datepicker-header-background-color',
+    datepicker_header_border_color:'--datepicker-header-border-color',
+    datepicker_disabked_background_color:'--datepicker-disabled-background-color',
+    datepicker_hightlight_background_color:'--datepicker-hightlight-background-color'
 
   };
 

@@ -67,12 +67,12 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
               this.onChangeOption('Preview');
             },
           },
-          {
-            label: 'Publish',
-            command: () => {
-              this.onChangeOption('Publish');
-            },
-          },
+          // {
+          //   label: 'Publish',
+          //   command: () => {
+          //     this.onChangeOption('Publish');
+          //   },
+          // },
         ];
       }
     });
@@ -94,9 +94,17 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
     this.checkProductOptions();
   }
 
-  changeTheProduct(event: any): void {
-    this.product = event;
-    this.onChangeProduct.emit(event);
+  changeTheProduct(obj: any): void {
+    this.product = obj;
+    localStorage.setItem('record_id', obj?.id);
+    localStorage.setItem('app_name', obj.title);
+    localStorage.setItem(
+      'product_url',
+      obj.url && obj.url !== '' ? obj.url : ''
+    );
+    localStorage.setItem('product', JSON.stringify(obj));
+    this.utilsService.saveProductDetails(obj);
+    this.onChangeProduct.emit(obj);
   }
 
   storeProductData(id: string) {
@@ -290,7 +298,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       acceptLabel: 'Yes',
       rejectLabel: 'No',
       acceptButtonStyleClass: 'custom-accept-button',
-      rejectButtonStyleClass: 'custom-reject-button', 
+      rejectButtonStyleClass: 'custom-reject-button',
       accept: () => {
         this.utilsService.loadSpinner(true);
         const body = {

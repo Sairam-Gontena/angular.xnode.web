@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
+  SimpleChanges,
 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule,
@@ -43,12 +44,22 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
     | undefined;
+  @ViewChild('bpmngraph')
+  bpmngraph!: ElementRef;
+  @ViewChild('scgraph')
+  scgraph!: ElementRef;
+  @ViewChild('diagramRefContainer')
+  diagramRefContainer!: ElementRef;
   @Output() dataFlowEmitter = new EventEmitter<any>();
+  @Input() bpmnRefId?: string;
+  @Input() onDiff?: boolean;
   @Input() specExpanded?: boolean;
   @Input() referenceId: any;
   @Input() dataToExpand: any;
+  @Input() diffdataToExpand: any;
   @Input() item: any;
   @Input() bpmnFrom: any;
+  @Input() inSpecView: any;
   @Input() fromExpandSpec: any;
   bpmnJS: any;
   pallete_classes: any;
@@ -98,16 +109,17 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    if (this.product && !this.product?.has_insights) {
-      this.utilsService.showProductStatusPopup(true);
-      return;
-    }
-    const list: any = this.storageService.getItem(StorageKeys.SpecData);
+    const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
     this.useCases = list[2].content[0].content;
     setTimeout(() => {
       this.showUsecaseGraph = true;
-      var bpmnWindow = document.getElementById('diagramRef');
-      if (bpmnWindow) bpmnWindow.style.display = 'None';
+      var bpmnWindow: HTMLElement;
+      if (this.diagramRefContainer) {
+        bpmnWindow = this.diagramRefContainer.nativeElement;
+        if (bpmnWindow) bpmnWindow.style.display = 'none';
+      }
+      // var bpmnWindow = document.getElementById('diagramRef');
+      // if (bpmnWindow) bpmnWindow.style.display = 'None';
       this.graphRedirection = false;
       var graphWindow;
       if (this.referenceId) {
@@ -139,10 +151,16 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   switchWindow() {
-    var bpmnWindow = document.getElementById('diagramRef');
-    if (bpmnWindow) bpmnWindow.style.display = 'None';
+    var bpmnWindow: HTMLElement;
+    if (this.diagramRefContainer) {
+      bpmnWindow = this.diagramRefContainer.nativeElement;
+      if (bpmnWindow) bpmnWindow.style.display = 'none';
+    }
+    // var bpmnWindow = document.getElementById('diagramRef');
+    // if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
-    var graphWindow = document.getElementById('sc');
+    // var graphWindow = document.getElementById('sc');
+    var graphWindow = this.scgraph.nativeElement;
     if (graphWindow) graphWindow.style.display = '';
 
     if (this.bpmnJS) this.bpmnJS.destroy();
@@ -150,8 +168,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   initializeBpmn() {
+    let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
     this.bpmnJS = new Modeler({
-      container: '#diagramRef',
+      container: '#' + bpmnRefId,
       features: {
         palette: {
           enabled: true,
@@ -204,9 +223,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     ];
 
     setTimeout(() => {
-      this.bpmnJS.attachTo(
-        document.getElementById('diagramRef') as HTMLElement
-      );
+      let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+      this.bpmnJS.attachTo(document.getElementById(bpmnRefId) as HTMLElement);
       var element = this.bpmnJS.get('elementRegistry')._elements;
       const propertiesPanel = this.bpmnJS.get('propertiesPanel') as HTMLElement;
     }, 500);
@@ -233,12 +251,10 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           );
           let xflowJson = {
             Flows: response.data.Flows.filter((f: any) => {
-              const selectedFlow = flow.toLowerCase();
-              const flowFromJson = (
-                f.Name ||
-                f.workflow_name ||
-                ''
-              ).toLowerCase();
+              const selectedFlow = flow.toLowerCase().replace(/[_\s]/g, '');
+              const flowFromJson = (f.Name || f.workflow_name || '')
+                .toLowerCase()
+                .replace(/[_\s]/g, '');
               return (
                 selectedFlow.indexOf(flowFromJson) != -1 ||
                 flowFromJson.indexOf(selectedFlow) != -1
@@ -795,14 +811,24 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
       title: this.product.title,
       children: mod_data,
     };
-    var ele;
+    // var ele;
+    // if (this.referenceId) {
+    //   ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
+    // } else {
+    //   ele = document.getElementById('graph') as HTMLElement;
+    // }
+    // var svgNode = this._chart(d3, treeData);
+    // ele?.appendChild(svgNode);
+    var ele: HTMLElement;
     if (this.referenceId) {
-      ele = document.getElementById('graph' + this.referenceId) as HTMLElement;
+      ele = this.bpmngraph.nativeElement;
     } else {
-      ele = document.getElementById('graph') as HTMLElement;
+      let graphRefId = this.bpmnRefId
+        ? this.bpmnRefId + '-graph'
+        : 'diagramRef-graph';
+      ele = document.getElementById(graphRefId) as HTMLElement;
+      // ele = this.bpmngraph.nativeElement;
     }
-    // var ele = document.getElementById('graph') as HTMLElement;
-    // var svgNode = this.chart2(d3,treeData);
     var svgNode = this._chart(d3, treeData);
     ele?.appendChild(svgNode);
     ele.classList.add('overflow-y-auto');
@@ -817,10 +843,11 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
           svg_ele = document.getElementById('graph' + this.referenceId);
         });
     } else {
-      svg_ele = document.getElementById('graph');
+      let graphRefId = this.bpmnRefId
+        ? this.bpmnRefId + '-graph'
+        : 'diagramRef-graph';
+      svg_ele = document.getElementById(graphRefId);
     }
-    // var svg_ele = document.getElementById('graph');
-
     if (svg_ele) {
       svg_ele.addEventListener('click', (event: any) => {
         let e = event.target.__data__;
@@ -828,7 +855,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         if (e.depth == 2) {
           // this.utilsService.loadSpinner(true);
           this.showUsecaseGraph = false;
-          var bpmnWindow = document.getElementById('diagramRef');
+          let bpmnRefId = this.bpmnRefId ? this.bpmnRefId : 'diagramRef';
+          var bpmnWindow = document.getElementById(bpmnRefId);
           if (bpmnWindow) bpmnWindow.style.display = '';
           this.graphRedirection = true;
           var graphWindow;
@@ -839,7 +867,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
                 graphWindow = document.getElementById('sc' + this.referenceId);
               });
           } else {
-            graphWindow = document.getElementById('sc');
+            graphWindow = this.scgraph.nativeElement;
           }
           if (graphWindow) graphWindow.style.display = 'None';
           this.getFlow(flow);
@@ -859,7 +887,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     // Create a tree layout.
     const tree = d3.tree().nodeSize([dx, dy]);
     // Sort the tree and apply the layout.
-    root.sort((a: any, b: any) => d3.ascending(a.data.title, b.data.title));
+    root.sort((a: any, b: any) => d3.ascending(a.data.title, b.data.id));
     tree(root);
     // Compute the extent of the tree. Note that x and y are swapped here
     // because in the tree layout, x is the breadth, but when displayed, the

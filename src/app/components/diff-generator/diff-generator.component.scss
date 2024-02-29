@@ -1,0 +1,89 @@
+:host ::ng-deep .d2h-file-header,
+:host ::ng-deep .d2h-info {
+    display: none;
+}
+
+:host ::ng-deep .d2h-file-wrapper {
+    border: none;
+}
+
+:host ::ng-deep .d2h-changed-tag {
+    border: none;
+    background: orange;
+    padding: 3px;
+    border-radius: 4px;
+    color: #000000;
+}
+
+:host ::ng-deep .d2h-code-side-line {
+    width: auto;
+}
+
+:host ::ng-deep .d2h-info {
+    background: #3A3942;
+    color: #ffffff;
+    border: none;
+}
+
+
+:host ::ng-deep .d2h-del {
+    background: #482B2B;
+    color: #FF6847;
+    text-decoration: line-through !important;
+    border: none;
+}
+
+:host ::ng-deep .d2h-code-side-line del {
+    background: #FF6847;
+    color: #482B2B;
+    text-decoration: line-through !important;
+
+}
+
+:host ::ng-deep .d2h-code-side-line ins {
+    color: #29422F;
+    background: #FFE047;
+}
+
+:host ::ng-deep .d2h-ins {
+    background: #29422F;
+    color: #FFE047;
+    border: none;
+}
+
+:host ::ng-deep .d2h-code-line-ctn {
+    white-space: normal !important
+}
+
+:host ::ng-deep .d2h-file-diff .d2h-ins.d2h-change {
+    background: #29422F;
+    color: #FFE047;
+}
+
+:host ::ng-deep .d2h-code-line ins,
+.d2h-code-side-line ins {
+    color: #29422F;
+    background: #FFE047;
+}
+
+:host ::ng-deep .d2h-file-diff .d2h-del.d2h-change {
+    background: #482B2B;
+    color: #FF6847;
+    text-decoration: line-through;
+    border: none;
+
+}
+
+:host ::ng-deep .d2h-code-line del,
+.d2h-code-side-line del {
+    background: #FF6847;
+    color: #482B2B;
+    text-decoration: line-through !important;
+}
+
+:host ::ng-deep .yellow {
+  background: #8C7604 !important;
+  height: 30px !important;
+  color: white !important;
+  border-radius: 2px !important;
+}

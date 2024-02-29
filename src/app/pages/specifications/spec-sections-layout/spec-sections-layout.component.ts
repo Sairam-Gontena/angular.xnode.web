@@ -31,6 +31,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   @Input() isOpenSmallCommentBox!: boolean;
   @Input() usersList: any = [];
   @Input() reveiwerList: any;
+
   // @Input() useCases: any[] = [];
   @Input() selectedSpecItem: any;
   @Input() specItemList: any;
@@ -59,6 +60,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   isDockedNaviOpened?: boolean = false;
   isSideMenuOpened?: boolean = false;
   isCommnetsPanelOpened?: boolean = false;
+  jsonTypes = ['Business Rules', 'Annexures', 'User Interfaces', 'Functional Dependencies', 'Data Dictionary']
 
   businessRulesPanelOpened: boolean = false;
   businessRulesshowCommentIcon: boolean = false;
@@ -96,6 +98,8 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   testCaseshowCommentIcon: boolean = false;
   glossaryPanelOpened: boolean = false;
   glossaryshowCommentIcon: boolean = false;
+  selectedIndex?: number;
+  selectedListItemIndex: number | undefined;
 
   expandSpecSections: any = [
     'Usecases',
@@ -118,7 +122,7 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     private storageService: LocalStorageService,
     private utilsService: UtilsService,
     private specUtils: SpecUtilsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -136,6 +140,14 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
     this.content.forEach((element: any) => {
       if (element.title === 'OpenAPI Spec') {
         // this.fetchOpenAPISpec();
+      }
+    });
+    this.makeBusinessRulesJsonTrue();
+  }
+  makeBusinessRulesJsonTrue() {
+    this.content.forEach((element: any) => {
+      if (this.jsonTypes.includes(element.title)) {
+        element.showList = true;
       }
     });
   }
@@ -182,17 +194,28 @@ export class SpecSectionsLayoutComponent implements OnInit, AfterViewInit {
   }
 
   onClickAddComment(obj: any): void {
-    this.selectedContent = obj.content;
+    this.selectedContent = obj;
     this.showAddCommnetOverlay.emit(obj);
   }
-
   checkedToggle(type: any, item: any, content: any) {
     this.specItemList.forEach((obj: any) => {
       if (obj.id === item.id) {
         obj.content.forEach((conObj: any) => {
-          if (conObj.id === content.id && type === 'table')
-            conObj.showTable = true;
-          else conObj.showTable = false;
+          if (conObj.id === content.id) {
+            if (type === 'table') {
+              conObj.showTable = true;
+              conObj.showJson = false;
+              conObj.showList = false;
+            } else if (type === 'list') {
+              conObj.showTable = false;
+              conObj.showJson = false;
+              conObj.showList = true;
+            } else if (type === 'json') {
+              conObj.showTable = false;
+              conObj.showJson = true;
+              conObj.showList = false;
+            }
+          }
         });
       }
     });

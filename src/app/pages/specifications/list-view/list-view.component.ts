@@ -46,7 +46,7 @@ export class ListViewComponent {
         this.emptySelectedContent();
       }
     });
-  }
+      }
 
   isArray(obj: any): boolean {
     return Array.isArray(obj);

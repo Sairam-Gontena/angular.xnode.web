@@ -14,11 +14,6 @@
     padding: 4rem;
 }
 
-.recent-scroll {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
 @media (max-width: 767px) {
     :host ::ng-deep .recentActivity {
         margin-top: -5rem !important;
@@ -72,11 +67,6 @@
         padding: 1rem !important;
     }
 
-    .recent-scroll {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
     .recent-txt {
         padding: 1rem;
     }
@@ -107,17 +97,17 @@
     }
 
     .new-card-add {
-        width: 9rem !important;
-        height: 14rem !important;
+        width: 8rem !important;
+        height: 13rem !important;
     }
 
     .product-card {
-        width: 9rem !important;
-        height: 14rem !important;
+        width: 8rem !important;
+        height: 13rem !important;
     }
 
     .card-gap {
-        gap: 1rem !important;
+        gap: 2rem !important;
     }
 
     .card-title {
@@ -365,6 +355,7 @@
     border: 8px dashed;
     border-radius: 17px;
     box-sizing: border-box;
+    pointer-events: none;
 }
 
 .new-card-add {

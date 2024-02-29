@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { SpecContent } from 'src/models/spec-content';
 import { SearchspecService } from 'src/app/api/searchspec.service';
-import { SpecService } from 'src/app/api/spec.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { ActivatedRoute } from '@angular/router';
@@ -53,7 +53,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private utils: UtilsService,
-    private specService: SpecService,
+    private specService: SpecApiService,
     private specUtils: SpecUtilsService,
     private router: Router,
     private auditUtil: AuditutilsService,
@@ -214,7 +214,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       this.filteredSpecData = [];
       this.wantedIndexes = [];
       this.removableIndexes = [];
-      this.specData = this.localStorageService.getItem(StorageKeys.SpecData);
+      this.specData = this.localStorageService.getItem(StorageKeys.SPEC_DATA);
       this.searchSpec
         .searchSpec(this.specData, keyword)
         .subscribe((returnData: any) => {
@@ -390,7 +390,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
       }
     });
     this.specData = list;
-    this.storageService.saveItem(StorageKeys.SpecData, list);
+    this.storageService.saveItem(StorageKeys.SPEC_DATA, list);
     if (this.activeConversationTab === 'COMMENTS') {
       this.getMeAllCommentsList(productId);
     } else if (this.activeConversationTab === 'TASKS') {

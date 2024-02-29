@@ -2,20 +2,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import * as _ from "lodash";
-import { SidePanel } from 'src/models/side-panel.enum';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
+import * as _ from 'lodash';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
+import { SearchspecService } from 'src/app/api/searchspec.service';
 
 @Component({
   selector: 'xnode-specifications-menu',
   templateUrl: './specifications-menu.component.html',
-  styleUrls: ['./specifications-menu.component.scss']
+  styleUrls: ['./specifications-menu.component.scss'],
 })
-
 export class SpecificationsMenuComponent implements OnInit {
   @Input() specData?: any;
   @Input() keyword?: any;
   @Output() searchtext: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectSpecMenuItem: EventEmitter<any> = new EventEmitter();
+  @Output() isMeneOpened: EventEmitter<any> = new EventEmitter();
   selectedSpec: any;
   menuList: any;
   selectedSection: any;
@@ -24,29 +25,31 @@ export class SpecificationsMenuComponent implements OnInit {
   searchText: any;
   multiAccordion: boolean = false;
   private textInputSubject = new Subject<string>();
-  isOpen = true;
+
   constructor(
     private utils: UtilsService,
-    private specUtils: SpecUtilsService
+    private SpecificationUtils: SpecificationUtilsService,
+    private searchSpec:SearchspecService
   ) {
     this.utils.getMeSpecItem.subscribe((resp: any) => {
       setTimeout(() => {
-        if(resp)
-          this.menuList = resp?.filter((item: any) => item !== null);
-      },);
+        if (resp) this.menuList = resp?.filter((item: any) => item !== null);
+      });
     });
-    this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
-      if (event) {
-        this.isOpen = false;
-        this.utils.disableSpecSubMenu();
-      }
-    });
+
+    // this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
+    //   console.log('dataaa', data);
+
+    //   if (data) {
+    //     this.isSideMenuOpened = !data.openConversationPanel;
+    //     this.utils.disableSpecSubMenu();
+    //   } else {
+    //     this.isSideMenuOpened = true;
+    //   }
+    // });
   }
 
   ngOnInit(): void {
-    this.utils.openSpecSubMenu.subscribe((data: any) => {
-      this.isOpen = data;
-    })
     this.populateMenuList();
     this.textInputSubject.pipe(debounceTime(1000)).subscribe(() => {
       if (this.searchText.length > 0) {
@@ -74,7 +77,10 @@ export class SpecificationsMenuComponent implements OnInit {
   onOpenAccordian(event: any) {
     this.activeIndex = event.index;
     this.selectedSecIndex = null;
-    localStorage.setItem('selectedSpec', JSON.stringify(this.specData[event.index]))
+    localStorage.setItem(
+      'selectedSpec',
+      JSON.stringify(this.specData[event.index])
+    );
     this.selectedSection = this.specData[event.index].content[0];
     this.selectedSecIndex = 0;
     this.utils.saveSelectedSection(this.specData[event.index].content[0]);
@@ -84,25 +90,22 @@ export class SpecificationsMenuComponent implements OnInit {
   onSelectSpec(event: any, i: any) {
     this.selectedSection = event;
     this.selectedSecIndex = i;
-    this.utils.saveSelectedSection(event);
+    this.onSelectSpecMenuItem.emit(event);
   }
 
   shortTitle(title: string) {
-    let shortTitle = title?.length > 20 ? title.substring(0, 23) + '...' : title
-    return shortTitle
+    let shortTitle =
+      title?.length > 20 ? title.substring(0, 23) + '...' : title;
+    return shortTitle;
   }
 
   toggleMenu() {
-    this.isOpen = !this.isOpen;
-    if (this.isOpen) {
-      this.utils.EnableSpecSubMenu()
-    } else {
-      this.utils.disableSpecSubMenu();
-    }
+    this.isMeneOpened.emit(false);
   }
 
   clearInput() {
     this.searchtext.emit('');
+    this.searchSpec.keyword = '';
     this.searchText = '';
     this.multiAccordion = false;
     this.activeIndex = [0];
@@ -121,9 +124,8 @@ export class SpecificationsMenuComponent implements OnInit {
   openAccordions() {
     if (this.specData?.length)
       this.specData.forEach((element: any, index: any) => {
-        this.activeIndex.push(index)
+        this.activeIndex.push(index);
       });
-    if (this.searchText?.length > 0)
-      this.multiAccordion = true;
+    if (this.searchText?.length > 0) this.multiAccordion = true;
   }
 }

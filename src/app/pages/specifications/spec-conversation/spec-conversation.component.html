@@ -16,7 +16,7 @@
             </div>
           </div>
           <div class="flex align-items-center text-xs text-white-alpha-70">
-            Commented {{ modifiedTimeDifference(cmt.referenceContent.modified_on) }}
+            Commented {{ modifiedTimeDifference(cmt.modifiedOn) }}
           </div>
         </div>
         <div class="flex align-items-center flex-wrap">
@@ -25,30 +25,39 @@
         </div>
       </div>
       <div class="col-12 sctions-grid relative" *ngIf=" cmt.referenceContent?.content">
-        <div *ngIf="checktableJsonSection(cmt.referenceContent?.title); else normalView">
-          <p class="mt-0 content-title text-xs">{{cmt.referenceContent.title }}</p>
-          <pre *ngIf="!cmt.referenceContent?.showTable" [innerHTML]="cmt.referenceContent?.content | json"
-            style=" white-space: pre-wrap; overflow: auto"></pre>
-          <xnode-common-spec-table *ngIf="cmt.referenceContent?.showTable"
-            [specItem]="cmt.referenceContent?.content.content"
-            [content]="cmt.referenceContent?.content"></xnode-common-spec-table>
+        <div *ngIf="checktableJsonSection(cmt.referenceContent?.specTitle); else normalView">
+          <div class="h-8rem">
+            <p>{{cmt?.referenceContent.parentTitle}}</p>
+            <p>{{cmt?.referenceContent.specTitle}}</p>
+            <!-- <div *ngIf="cmt?.referenceContent?.content">
+
+            </div> -->
+            <ul>
+              <li>
+                <b>{{cmt?.referenceContent.title}}</b>
+                <p>{{cmt?.referenceContent.content}}</p>
+              </li>
+            </ul>
+          </div>
         </div>
         <ng-template #normalView>
           <div *ngIf="checkParaViewSections(cmt?.referenceContent?.title,cmt.referenceContent?.parentTitle)"
             class="h-8rem">
+            <p>{{cmt?.referenceContent.parentTitle}}</p>
             <xnode-para-view [showComments]="false" [content]="cmt?.referenceContent?.content"
               [searchTerm]="cmt?.referenceContent?.commentedtext" [users]="usersList"
               [specItem]="cmt?.referenceContent?.content" [id]="cmt?.referenceContent?.id"></xnode-para-view>
           </div>
-          <div *ngIf="checkListViewSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
-            <xnode-list-view [content]="cmt?.referenceContent" [searchTerm]="cmt?.referenceContent?.commentedtext"
-              [users]="usersList" [id]="cmt?.referenceContent?.id"
-              [specItem]="cmt?.referenceContent?.content"></xnode-list-view>
-          </div>
-          <div *ngIf="checkUserRoleSections(cmt.referenceContent?.parentTitle)" class="h-8rem">
-            <xnode-user-roles [id]="cmt?.id" [searchTerm]="cmt?.referenceContent?.commentedtext"
-              [content]="cmt?.referenceContent" [users]="usersList"
-              [specItem]="cmt?.referenceContent?.content"></xnode-user-roles>
+          <div *ngIf="checkListViewSections(cmt.referenceContent?.specTitle)" class="h-8rem">
+            <b class="m-0">{{cmt?.referenceContent.parentTitle}}</b>
+            <p class="m-0" *ngIf="cmt?.referenceContent.specTitle!==cmt?.referenceContent.parentTitle">
+              {{cmt?.referenceContent.specTitle}}</p>
+            <ul>
+              <li>
+                <b>{{cmt?.referenceContent.title}}</b>
+                <p>{{cmt?.referenceContent.content}}</p>
+              </li>
+            </ul>
           </div>
           <div *ngIf="checkUserPersonaSections(cmt.referenceContent?.title)" class="h-8rem">
             <xnode-user-persona [searchTerm]="cmt?.referenceContent?.commentedtext"
@@ -112,11 +121,11 @@
           <i class="pi pi-times pointer" style="color: #fff;" (click)="showCommentInput = false;action='';"></i>
         </div>
         <div class="w-full">
-          <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedComment]="selectedComment" [action]="action"
-            [users]="usersList" [parentEntity]="
+          <xnode-add-comment-overlay-panel placeHolder="Reply" [selectedContent]="selectedComment"
+            [selectedComment]="selectedComment" [action]="action" [users]="usersList" [parentEntity]="
                      'COMMENT'" [activeIndex]="0" [parentId]="cmt.id" [topParentId]="topParentId"
             [comment]="action === 'EDIT' ?  cmt.message  : ''" [commentType]="'reply'" [width]="'w-full'"
-            (closeOverlay)="showCommentInput=false"></xnode-add-comment-overlay-panel>
+            (closeOverlay)="showCommentInput=false;action=''"></xnode-add-comment-overlay-panel>
         </div>
       </div>
       <div class="col-12 pb-0" *ngIf="cmt.replyCount !== -1 && !cmt.repliesOpened  ">

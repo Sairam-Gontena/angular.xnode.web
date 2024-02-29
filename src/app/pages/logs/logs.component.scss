@@ -120,3 +120,55 @@
     height: calc(100vh - 150px);
     background-color: #23222B;
 }
+
+.template-builder-wrapper {
+    width: 100%;
+    display: flex;
+    height: calc(100vh - 42px);
+}
+
+.template-builder-body-wrapper {
+    width: calc(100% - 300px);
+    height: calc(100vh - 42px);
+    overflow-y: hidden;
+}
+
+.another-template-builder-body-wrapper {
+    width: calc(100% - 50px);
+    height: calc(100vh - 50px);
+    background-color: #3A3942;
+}
+
+.beta-template-builder-body-wrapper {
+    width: 100%;
+    height: calc(100vh - 50px);
+}
+
+.desktop {
+    width: 100%;
+    height: 100vh !important;
+    background-color: #f2f2f2;
+}
+
+.mobile {
+    /* Styles for mobile view */
+    width: 375px;
+    height: 100vh;
+    background-color: #f2f2f2;
+}
+
+.tab {
+    /* Styles for tab view */
+    width: 768px;
+    height: 100vh;
+    background-color: #f2f2f2;
+}
+
+.dashboard-body {
+    height: calc(100vh - 176px) !important;
+}
+
+.table-height {
+    height: calc(100vh - 150px);
+    overflow: auto;
+}

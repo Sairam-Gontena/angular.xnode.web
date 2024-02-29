@@ -3,12 +3,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommentsService } from 'src/app/api/comments.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MentionConfig } from 'angular-mentions';
-import { AuthApiService } from 'src/app/api/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { SpecificationsService } from 'src/app/services/specifications.service';
+import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -24,6 +24,7 @@ export class AddTaskComponent {
   @Output() commentInfo: EventEmitter<object> = new EventEmitter<object>();
   @Input() visible: boolean = false;
   @Input() width?: string;
+  @Input() reveiwerList: any;
   @Output() closeOverlay = new EventEmitter<any>();
   @Input() parentTitle: any;
   @Input() position?: string;
@@ -42,7 +43,6 @@ export class AddTaskComponent {
   @Input() specId: any;
   @Input() activeIndex: any;
   @Input() from: any;
-  @Input() reveiwerList: any;
   minDate!: Date;
   assinedUsers: string[] = [];
   isCommentEmpty: boolean = true;
@@ -65,6 +65,7 @@ export class AddTaskComponent {
   product: any;
   isCommnetsPanelOpened: boolean = false;
   references: any;
+  userList: any;
 
   constructor(
     public utils: UtilsService,
@@ -72,9 +73,9 @@ export class AddTaskComponent {
     private commentsService: CommentsService,
     private commonApi: CommonApiService,
     private datePipe: DatePipe,
-    private utilsService: UtilsService,
-    private specUtils: SpecUtilsService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private specService: SpecificationsService,
+    private specificationUtils: SpecificationUtilsService
   ) {
     this.minDate = new Date();
     this.addTaskForm = this.fb.group({
@@ -86,15 +87,19 @@ export class AddTaskComponent {
       files: [[]],
     });
     this.references = [];
-    this.specUtils.openCommentsPanel.subscribe((event: boolean) => {
-      if (event) this.isCommnetsPanelOpened = event;
-    });
   }
-  ngOnInit(): void {
+  ngOnInit() {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
+    this.userList = this.localStorageService.getItem(StorageKeys.USERLIST);
+    this.userList.forEach((element: any) => {
+      element.name = element.first_name + ' ' + element.last_name;
+    });
     this.currentUser = this.localStorageService.getItem(
       StorageKeys.CurrentUser
     );
+    if(!this.parentId){
+      this.parentId = this.selectedContent.parentId;
+    }
   }
 
   onDateSelect(event: any): void {
@@ -126,7 +131,7 @@ export class AddTaskComponent {
 
     this.selectedDateLabel = label;
   }
-  createTask(event: any) {
+  createTask() {
     this.utils.loadSpinner(true);
     if (this.selectedText) {
       this.selectedContent['commentedtext'] = this.selectedText;
@@ -134,7 +139,7 @@ export class AddTaskComponent {
     let body = {
       createdBy: this.currentUser.user_id,
       parentEntity: this.parentEntity,
-      parentId: this.parentId,
+      parentId: this.specItem.parentId,
       priority: '1',
       title: this.addTaskForm.value.title,
       description: this.addTaskForm.value.description,
@@ -271,11 +276,10 @@ export class AddTaskComponent {
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
-
     const selectedReviewers = this.addTaskForm.value.reviewersLOne.map(
       (reviewer: any) => reviewer.name.toLowerCase()
     );
-    filtered = this.reveiwerList.filter(
+    filtered = this.userList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
         !selectedReviewers.includes(reviewer.name.toLowerCase())
@@ -307,11 +311,14 @@ export class AddTaskComponent {
       .addTask(body)
       .then((commentsReponse: any) => {
         if (commentsReponse.statusText === 'Created') {
-          if (!this.isCommnetsPanelOpened)
-            this.specUtils._openCommentsPanel(true);
           this.comment = '';
           this.closeOverlay.emit();
-          this.specUtils._tabToActive('TASK');
+          this.specService.getMeSpecLevelTaskList({ parentId: body.parentId });
+          this.specificationUtils.openConversationPanel({
+            openConversationPanel: true,
+            parentTabIndex: 0,
+            childTabIndex: 1,
+          });
           this.utils.loadToaster({
             severity: 'success',
             summary: 'SUCCESS',

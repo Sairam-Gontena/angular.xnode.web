@@ -215,17 +215,21 @@ const routes: Routes = [
 
   },
   {
+    path: 'specification',
+    loadChildren: () => import('./pages/diff-viewer/diff-viewer.module').then((m) => m.DiffViewerModule),
+    canActivate: [authGuard]
+  },
+  {
     path: 'help-center',
     loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCentreModule),
     canActivate: [authGuard]
-
   },
   {
     path: 'feedback-list',
     loadChildren: () => import('./pages/feedback-list/feedback-list.module').then((m) => m.FeedbackListModule)
   },
   {
-    path: 'specification',
+    path: 'specification1',
     loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
   },
   {

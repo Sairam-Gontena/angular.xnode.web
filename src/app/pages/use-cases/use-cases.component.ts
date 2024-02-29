@@ -101,7 +101,7 @@ export class UseCasesComponent implements OnInit {
           this.productChanged = false;
         });
     } else {
-      const list: any = this.storageService.getItem(StorageKeys.SpecData);
+      const list: any = this.storageService.getItem(StorageKeys.SPEC_DATA);
       this.useCases = list[2].content[0].content;
     }
   }
