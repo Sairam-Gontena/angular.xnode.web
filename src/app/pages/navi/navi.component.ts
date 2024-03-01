@@ -5,6 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { AuthApiService } from 'src/app/api/auth.service';
 
 @Component({
   selector: 'xnode-navi',
@@ -14,11 +15,13 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
   templates: any;
+  usersList: any;
   constructor(
     private router: Router,
     private utils: UtilsService,
     private domSanitizer: DomSanitizer,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private api: AuthApiService
   ) { }
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
@@ -45,14 +48,13 @@ export class NaviComponent implements OnInit {
         queryParams = params;
       }
     })
-    this.currentUser = localStorage.getItem('currentUser');
+    let currentUserDetails = localStorage.getItem('currentUser');
     let product = localStorage.getItem('product');
     if (product) {
       this.productDetails = JSON.parse(product);
     }
-    const restriction_max_value = localStorage.getItem('restriction_max_value');
-    if (this.currentUser) {
-      this.currentUser = JSON.parse(this.currentUser);
+    if (currentUserDetails) {
+      this.currentUser = JSON.parse(currentUserDetails);
     }
     if (this.productDetails?.email == this.currentUser?.email) {
       this.productEmail = this.currentUser?.email;
@@ -62,6 +64,13 @@ export class NaviComponent implements OnInit {
     this.utils.disableDockedNavi()
     localStorage.removeItem('has_insights');
     localStorage.getItem('show-upload-panel');
+    if (queryParams) {
+
+    }
+    this.getAllUsers(queryParams);
+  }
+  constructIframeUrl(queryParams: any) {
+    const restriction_max_value = localStorage.getItem('restriction_max_value');
     let userData: any;
     userData = localStorage.getItem('currentUser');
     let email = JSON.parse(userData).email;
@@ -69,9 +78,6 @@ export class NaviComponent implements OnInit {
       email: email,
       flag: 'x-pilot',
     };
-    if (queryParams) {
-
-    }
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     this.targetUrl =
       this.targetUrl +
@@ -103,6 +109,9 @@ export class NaviComponent implements OnInit {
         this.targetUrl + '&product_user_email=' + this.productEmail;
     } else {
       this.targetUrl = this.targetUrl + '&product_user_email=' + email;
+    }
+    if (this.usersList) {
+      this.targetUrl = this.targetUrl + '&account_user_list=' + JSON.stringify(this.usersList);
     }
     if (this.naviSummaryProduct) {
       this.targetUrl = this.targetUrl + '&NaviSummaryProducxt=' + JSON.stringify(this.naviSummaryProduct);
@@ -179,6 +188,19 @@ export class NaviComponent implements OnInit {
     });
     this.makeTrustedUrl();
     this.utils.loadSpinner(false);
+  }
+  getAllUsers(queryParams: any) {
+    let accountId = this.currentUser.account_id
+    if (accountId) {
+      let params = {
+        account_id: accountId
+      }
+      this.api.getUsersByAccountId(params).then((response: any) => {
+        response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
+        this.usersList = response.data;
+        this.constructIframeUrl(queryParams);
+      })
+    }
   }
 
   onIframeLoad() {
