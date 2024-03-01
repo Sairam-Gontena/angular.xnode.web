@@ -24,12 +24,12 @@ export class AgentHubModel {
     statsItem: any;
 
     allAvailableTabItems = [
-        { title: 'Agents', value: 'agent' },
-        { title: 'Capabilities', value: 'capbility' },
-        { title: 'Prompts', value: 'prompt' },
-        { title: 'Knowledge', value: 'knowledge' },
-        { title: 'Models', value: 'model' },
-        { title: 'Tools', value: 'tools' }
+        { idx: 0, title: 'Agents', value: 'agent' },
+        { idx: 1, title: 'Capabilities', value: 'capbility' },
+        { idx: 2, title: 'Prompts', value: 'prompt' },
+        { idx: 3, title: 'Knowledge', value: 'knowledge' },
+        { idx: 4, title: 'Models', value: 'model' },
+        { idx: 5, title: 'Tools', value: 'tools' }
     ]
 
     breadCrumbsAction = {
@@ -51,7 +51,8 @@ export class AgentHubModel {
         hamburgerIconUrl: '../../../assets/agent-hub/menu-hamnburger.svg',
         placeholder: "",
         optionLabel: "title",
-        styleClass: "menu-hamburger mt-1"
+        styleClass: "menu-hamburger mt-1",
+        changeHandler: this.onFilterTabItem.bind(this)
     }
 
     searchFilterOptions = {
@@ -158,10 +159,18 @@ export class AgentHubModel {
     }
 
     onShowDynamicColumnFilter(event: any) {
-        if (!event?.value.length) {
+        if (!event?.value?.length) {
             this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns
         } else {
             this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx))
+        }
+    }
+
+    onFilterTabItem(event: any) {
+        if(!event?.value?.length) {
+            this.tabItems = this.tabFilterOptions.options
+        }else{
+            this.tabItems = this.tabFilterOptions.options.filter(item => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx))
         }
     }
 
