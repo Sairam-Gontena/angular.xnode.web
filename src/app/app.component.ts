@@ -468,33 +468,32 @@ export class AppComponent implements OnInit {
         this.loadIframeUrl();
       }, 2000);
     } else {
-      let rawUrl =
-        environment.naviAppUrl +
-        '?email=' +
-        this.email +
-        '&productContext=newProduct' +
-        '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
-        '&targetUrl=' +
-        environment.xnodeAppUrl +
-        '&xnode_flag=' +
-        'XNODE-APP' +
-        '&component=' +
-        this.getMeComponent() +
-        '&user_id=' +
-        id +
-        '&product_user_email=' +
-        localStorage.getItem('product_email') +
-        '&account_id=' + 
-        account_id +
-        '&device_width=' +
-        this.screenWidth;
-        this.isSideWindowOpen = true;
-        setTimeout(() => {
-          this.iframeUrl =
-            this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-          this.loadIframeUrl();
-        }, 2000);
-
+      // let rawUrl =
+      //   environment.naviAppUrl +
+      //   '?email=' +
+      //   this.email +
+      //   '&productContext=newProduct' +
+      //   '&token=' + this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
+      //   '&targetUrl=' +
+      //   environment.xnodeAppUrl +
+      //   '&xnode_flag=' +
+      //   'XNODE-APP' +
+      //   '&component=' +
+      //   this.getMeComponent() +
+      //   '&user_id=' +
+      //   id +
+      //   '&product_user_email=' +
+      //   localStorage.getItem('product_email') +
+      //   '&account_id=' + 
+      //   account_id +
+      //   '&device_width=' +
+      //   this.screenWidth;
+      //   this.isSideWindowOpen = true;
+      //   setTimeout(() => {
+      //     this.iframeUrl =
+      //       this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      //     this.loadIframeUrl();
+      //   }, 2000);
     }
   }
 
