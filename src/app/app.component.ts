@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
   screenHeight: number;
   deepLink: boolean = false;
   colorPallet: any;
+  usersList: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -248,6 +249,7 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     });
+    this.getAllUsers();
   }
 
   getAllProductsInfo(key: string) {
@@ -458,6 +460,9 @@ export class AppComponent implements OnInit {
       if (has_insights) {
         rawUrl = rawUrl + '&has_insights=' + JSON.parse(has_insights);
       }
+      if (this.usersList) {
+        this.targetUrl = this.targetUrl + '&account_user_list=' + JSON.stringify(this.usersList);
+      }
       setTimeout(() => {
         this.iframeUrl =
           this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
@@ -529,7 +534,18 @@ export class AppComponent implements OnInit {
     }
     return comp;
   }
-
+  getAllUsers() {
+    let accountId = this.currentUser.account_id
+    if (accountId) {
+      let params = {
+        account_id: accountId
+      }
+      this.auth.getUsersByAccountId(params).then((response: any) => {
+        response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
+        this.usersList = response.data;
+      })
+    }
+  }
   isUserExists() {
     const currentUser = localStorage.getItem('currentUser');
     return currentUser;
