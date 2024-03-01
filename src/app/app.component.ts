@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
   screenHeight: number;
   deepLink: boolean = false;
   colorPallet: any;
+  showImportFilePopup: boolean = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -248,6 +249,11 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     });
+    this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
+      if (data) {
+        this.showImportFilePopup = true;
+      }
+    });
   }
 
   getAllProductsInfo(key: string) {
@@ -401,6 +407,9 @@ export class AppComponent implements OnInit {
           }
           if (event.data.message === 'contract-navi') {
             this.isNaviExpanded = false;
+          }
+          if (event.data.message === 'import-file-popup') {
+            this.utilsService.showImportFilePopup(true);
           }
         });
       }

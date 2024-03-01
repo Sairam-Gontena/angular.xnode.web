@@ -29,13 +29,13 @@ export class NaviComponent implements OnInit {
   content: any;
   productDetails: any;
   productEmail: any;
-  naviSummaryProduct:any
+  naviSummaryProduct: any
   iframeLoaded = false;
 
   ngOnInit(): void {
-    this.utils.getMeSummaryObject.subscribe((data:any) => {
+    this.utils.getMeSummaryObject.subscribe((data: any) => {
       this.naviSummaryProduct = data;
-      if(this.iframeLoaded){
+      if (this.iframeLoaded) {
         this.sendMessageToNavi(this.naviSummaryProduct);
       }
     })
@@ -104,7 +104,7 @@ export class NaviComponent implements OnInit {
     } else {
       this.targetUrl = this.targetUrl + '&product_user_email=' + email;
     }
-    if(this.naviSummaryProduct){
+    if (this.naviSummaryProduct) {
       this.targetUrl = this.targetUrl + '&NaviSummaryProducxt=' + JSON.stringify(this.naviSummaryProduct);
     }
 
@@ -170,6 +170,9 @@ export class NaviComponent implements OnInit {
           if (event.data.message === 'help-center') {
             window.location.href = this.xnodeAppUrl + '#/help-center';
           }
+          if (event.data.message === 'import-file-popup') {
+            this.utils.showImportFilePopup(true);
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
@@ -178,18 +181,18 @@ export class NaviComponent implements OnInit {
     this.utils.loadSpinner(false);
   }
 
-  onIframeLoad(){
+  onIframeLoad() {
     this.iframeLoaded = true
-    if(this.naviSummaryProduct){
+    if (this.naviSummaryProduct) {
       this.sendMessageToNavi(this.naviSummaryProduct);
     }
   }
 
-  sendMessageToNavi(data:any){
-    if(this.targetUrl && data){
+  sendMessageToNavi(data: any) {
+    if (this.targetUrl && data) {
       window.frames[0].postMessage({
-        NaviSummaryNotification:data
-     }, this.targetUrl);
+        NaviSummaryNotification: data
+      }, this.targetUrl);
     }
   }
 

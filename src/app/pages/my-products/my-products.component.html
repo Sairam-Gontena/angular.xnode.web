@@ -233,4 +233,6 @@
 </div>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
+<xnode-import-file-popup [visible]="showImportFilePopup"
+    (closeEventEmitter)="closeEventEmitter()"></xnode-import-file-popup>
 <!-- <xnode-confirmation-popup [data]="{type:'Submit'}" *ngIf="true"></xnode-confirmation-popup> -->
