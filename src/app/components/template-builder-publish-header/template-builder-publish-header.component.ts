@@ -92,6 +92,11 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
       ? this.productId
       : localStorage.getItem('record_id');
     this.checkProductOptions();
+    this.utilsService.getMeProductId.subscribe((data)=>{
+      if(data){
+        this.product = this.localStorageService.getItem(StorageKeys.Product);
+      }
+    })
   }
 
   changeTheProduct(obj: any): void {

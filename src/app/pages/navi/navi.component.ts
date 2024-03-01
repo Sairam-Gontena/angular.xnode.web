@@ -34,6 +34,10 @@ export class NaviComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.utils.disableDockedNavi();
     this.handleStorageData();
+    this.storageService.getItem(StorageKeys.Product)
+    this.utils.getMeProductDetails.subscribe((res)=>{
+      this.handleStorageData();
+    })
   }
 
   handleStorageData(): void {

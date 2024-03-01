@@ -114,6 +114,7 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
+        this.product = this.storageService.getItem(StorageKeys.Product);
         this.makeTrustedUrl(data.email);
       }
     });
@@ -368,8 +369,8 @@ export class AppComponent implements OnInit {
           this.utilsService.toggleProductAlertPopup(data);
         }
         if (event.data.message === 'change-app') {
-          console.log('?????');
           this.storageService.saveItem(StorageKeys.Product, event.data.data);
+          this.utilsService.saveProductId(event.data.id);
           this.router.navigate(['/overview']);
           this.utilsService.productContext(true);
         }
