@@ -130,7 +130,18 @@ export class UtilsService {
     this.selectedContent.asObservable();
   private productChangeBPMN = new Subject<any>();
 
-  constructor() {}
+  private viewSummary$: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public loadViewSummary: Observable<any> =
+    this.viewSummary$.asObservable();
+
+  private summaryObject: BehaviorSubject<Object> =
+    new BehaviorSubject<Object>({ summary: {} });
+
+  public getMeSummaryObject: Observable<Object> =
+    this.summaryObject.asObservable();
+
+  constructor() { }
 
   disablePageToolsLayoutSubMenu() {
     this.showLayoutSubmenu.next(false);
@@ -237,6 +248,13 @@ export class UtilsService {
 
   getProductChangeBPMN(): Observable<any> {
     return this.productChangeBPMN.asObservable();
+  }
+  viewSummary(event: any): void {
+    this.viewSummary$.next(event);
+  }
+
+  updateSummary(event: any): void {
+    this.summaryObject.next(event);
   }
 
   prepareIframeUrl(data: any) {

@@ -14,6 +14,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { OverallSummary } from 'src/models/view-summary';
 
 @Component({
   selector: 'xnode-app-header',
@@ -26,6 +27,9 @@ export class AppHeaderComponent implements OnInit {
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
+  convSummary?: OverallSummary;
+  showViewSummaryPopup: boolean = false;
+  notifObj: any;
   channel: any;
   email: string = '';
   id: string = '';
@@ -83,6 +87,11 @@ export class AppHeaderComponent implements OnInit {
       let productObj = JSON.parse(product);
       this.productId = productObj?.id;
     }
+    this.utils.loadViewSummary.subscribe((event: any) => {
+      if (event) {
+        this.getSummary({ product_id: event.product_id });
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -382,5 +391,33 @@ export class AppHeaderComponent implements OnInit {
   showMeLimitInfoPopup(event: any): void {
     this.showLimitReachedPopup = event;
     this.limitReachedContent = true;
+  }
+
+  viewSummaryPopup(notif: any): void {
+    this.notifObj = notif;
+    this.utils.loadSpinner(true);
+    this.getSummary(notif)
+  }
+  getSummary(obj: any): void {
+    this.naviApiService.getSummaryByProductId(obj.product_id).then((res: any) => {
+      if (res && res.status === 200) {
+        this.showViewSummaryPopup = true;
+        this.convSummary = res.data.conv_summary;
+      } else {
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: res.data.message,
+        });
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err => {
+      this.utils.loadSpinner(false);
+      this.utils.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: err,
+      });
+    }))
   }
 }

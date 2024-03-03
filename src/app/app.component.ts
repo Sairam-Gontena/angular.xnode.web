@@ -63,6 +63,7 @@ export class AppComponent implements OnInit {
     '#/specification',
     '#/operate/change/history-log',
   ];
+  usersList: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -246,6 +247,45 @@ export class AppComponent implements OnInit {
         this.messageService.add(event);
       });
     }
+    if (!window.location.hash.includes('#/reset-password?email'))
+      this.redirectToPreviousUrl();
+    // this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
+    //   if (window.location.hash.includes('#/my-products')) {
+    //     this.isSideWindowOpen = true;
+    //     this.isNaviExpanded = false;
+    //     this.utilsService.EnableDockedNavi();
+    //     const product: any = this.storageService.getItem(StorageKeys.Product);
+    //     const token: any = this.storageService.getItem(
+    //       StorageKeys.ACCESS_TOKEN
+    //     );
+    //     const newItem = {
+    //       productContext: product?.id,
+    //       cbFlag: true,
+    //       productEmail: product?.email,
+    //       token: token,
+    //     };
+    //     this.openNavi(newItem);
+    //   } else {
+    //     this.isSideWindowOpen = false;
+    //     this.isNaviExpanded = false;
+    //     this.utilsService.disableDockedNavi();
+    //   }
+    // });
+    this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
+      this.showProductStatusPopup = data.popup;
+    });
+    this.utilsService.getMeProductDetails.subscribe((data: any) => {
+      if (data && data?.email) {
+        this.makeTrustedUrl(data.email);
+      }
+    });
+    this.utilsService.openDockedNavi.subscribe((data: any) => {
+      this.isSideWindowOpen = data;
+      if (!data) {
+        this.isNaviExpanded = false;
+      }
+    });
+    this.getAllUsers();
   }
 
   getAllProductsInfo(key: string) {
@@ -461,7 +501,6 @@ export class AppComponent implements OnInit {
       this.iframeUrlLoad(rawUrl);
     }
   }
-
   iframeUrlLoad(rawUrl: any) {
     // created ths in new method
     setTimeout(() => {
@@ -528,6 +567,22 @@ export class AppComponent implements OnInit {
         this.makeTrustedUrl();
       }
     }
+  }
+  getAllUsers() {
+    let accountId = this.currentUser.account_id
+    if (accountId) {
+      let params = {
+        account_id: accountId
+      }
+      this.auth.getUsersByAccountId(params).then((response: any) => {
+        response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
+        this.usersList = response.data;
+      })
+    }
+  }
+  isUserExists() {
+    const currentUser = localStorage.getItem('currentUser');
+    return currentUser;
   }
 
   toggleSideWindow() {

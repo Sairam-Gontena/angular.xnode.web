@@ -117,7 +117,7 @@
 }
 
 
-// main content 
+// main content
 
 @media (min-width: 768px) {
   .main-component-navi {
@@ -138,7 +138,7 @@
 @media (min-width: 1280px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 400px);
+    width: calc(100vw - 380px);
     height: calc(100vh - 42px);
   }
 }
@@ -146,7 +146,7 @@
 @media (min-width: 1366px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 420px);
+    width: calc(100vw - 380px);
     height: calc(100vh - 42px);
   }
 }
@@ -154,7 +154,7 @@
 @media (min-width: 1440px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 440px);
+    width: calc(100vw - 380px);
     height: calc(100vh - 42px);
   }
 }
@@ -162,7 +162,7 @@
 @media (min-width: 1536px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 460px);
+    width: calc(100vw - 400px);
     height: calc(100vh - 42px);
   }
 }
@@ -170,7 +170,7 @@
 @media (min-width: 1600px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 480x);
+    width: calc(100vw - 400px);
     height: calc(100vh - 42px);
   }
 }
@@ -178,20 +178,20 @@
 @media (min-width: 1920px) {
   .main-component-navi {
     transition: all 0.5s ease-in-out;
-    width: calc(100vw - 500px);
+    width: calc(100vw - 514px);
     height: calc(100vh - 42px);
   }
 }
 
 // main content end
-
-
 @media (min-width: 768px) {
   .docked-navi {
     width: 100%;
     height: calc(100vh - 42px);
   }
-
+  .navi-frame {
+    width: 380px;
+  }
   .expand-docked-navi {
     width: calc(100vw - 80px);
     height: calc(100vh - 42px);
@@ -200,43 +200,71 @@
 
 @media (min-width: 1280px) {
   .docked-navi {
-    width: 400px;
+    width: 380px;
     height: calc(100vh - 42px);
+  }
+  .navi-frame {
+    width: 380px;
   }
 }
 
 @media (min-width: 1366px) {
   .docked-navi {
-    width: 420px;
+    width: 380px;
     height: calc(100vh - 42px);
   }
 }
 
 @media (min-width: 1440px) {
   .docked-navi {
-    width: 440px;
+    width: 380px;
     height: calc(100vh - 42px);
   }
 }
 
 @media (min-width: 1536px) {
   .docked-navi {
-    width: 460px;
+    width: 400px;
     height: calc(100vh - 42px);
+  }
+  .navi-frame {
+    width: 400px;
   }
 }
 
 @media (min-width: 1600px) {
   .docked-navi {
-    width: 480px;
+    width: 400px;
     height: calc(100vh - 42px);
+  }
+  .navi-frame {
+    width: 400px;
+  }
+}
+
+@media only screen and (min-width:1601px) and (max-width: 1919px) {
+  .docked-navi {
+    width: 420px;
+    height: calc(100vh - 42px);
+  }
+  .main-component-navi {
+    transition: all 0.5s ease-in-out;
+    width: calc(100vw - 420px);
+    height: calc(100vh - 42px);
+  }
+  .navi-frame {
+    width: 420px;
   }
 }
 
 @media (min-width: 1920px) {
   .docked-navi {
-    width: 500px;
+    width: 514px;
     height: calc(100vh - 42px);
+  }
+
+  .navi-frame {
+    width: 514px;
   }
 }
 
