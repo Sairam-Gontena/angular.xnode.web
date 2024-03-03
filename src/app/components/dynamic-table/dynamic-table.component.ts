@@ -31,7 +31,8 @@ export class DynamicTableComponent implements OnInit {
   @Input() tableInfo: any;
   @Input() columnWidth: string = "18rem";
   @Input() tableHeaderColor: string = ''
-  @Input() altBgColorRow: string=''
+  @Input() altBgColorRow: string='';
+  @Input() verticalScrollHeight = "25rem"
 
   @Input() searchFilterOptions: FilterOptions = {
     showFilterOption: false,
