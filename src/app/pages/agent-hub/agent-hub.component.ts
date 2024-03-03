@@ -20,6 +20,8 @@ export class AgentHubComponent implements OnInit {
 
   ngOnInit() { 
     this.agentHubModel.getAllAgentList()
+
+    this.agentHubModel.getAgentCount()
   }
 
 }

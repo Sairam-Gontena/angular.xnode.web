@@ -148,16 +148,6 @@ export class AgentHubModel {
         }
     }
 
-    async getAllAgentList() {
-        this.tableData = []
-        try {
-            const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: this.tabItems[this.activeIndex].value });
-            this.tableData = response.data as ITableDataEntry[];
-        } catch (error) {
-            console.error("Error fetching agent list:", error);
-        }
-    }
-
     onShowDynamicColumnFilter(event: any) {
         if (!event?.value?.length) {
             this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns
@@ -193,4 +183,39 @@ export class AgentHubModel {
 
         this.breadCrumbsAction.breadcrumb = [...newItem]
     }
+
+
+
+
+    /**
+     * NOTE: Async Operation
+     */
+
+    async getAllAgentList() {
+        this.tableData = []
+        try {
+            const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: this.tabItems[this.activeIndex].value });
+            this.tableData = response.data as ITableDataEntry[];
+        } catch (error) {
+            console.error("Error fetching agent list:", error);
+        }
+    }
+
+
+    async getAgentCount() {
+        try{
+            let query = {
+                account_id: this.userInfo.account_id
+            }
+            const response = await this.agentHubService.getAgentCount({endpoint: 'agent', query })
+
+            this.statsItem.forEach((element: any) => {
+                element.count =  response.data[element.key]              
+            });
+
+        }catch(error){
+            console.error("Error fetching agent list:", error);
+        }
+    }
+
 }

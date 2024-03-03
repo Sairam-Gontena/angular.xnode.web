@@ -17,4 +17,11 @@ export class AgentHubService extends BaseApiService{
     let url = `agent/${endpoint}/${accountId}`
     return this.get(url)
   }
+
+  getAgentCount({endpoint, query}: {endpoint: string, query?: Record<string, string>}) {
+    let queryParams = new URLSearchParams(query).toString();
+    let url = `${endpoint}/count?${queryParams ? queryParams : ''}`;
+  
+    return this.get(url);
+  }
 }

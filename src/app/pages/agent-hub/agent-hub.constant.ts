@@ -3,22 +3,26 @@ export const Constant = {
         {
             label: "Agent",
             imgPath: "../../../assets/agent-hub/agent.svg",
-            count: 14
+            key: "agent_count",
+            count: ''
         },
         {
             label: "Capabilities",
             imgPath: "../../../assets/agent-hub/capabilities.svg",
-            count: 20,
+            key: "capability_count",
+            count: '',
         },
         {
             label: "Topics",
             imgPath: "../../../assets/agent-hub/topics.svg",
-            count: 40
+            key: "topic_count",
+            count: ''
         },
         {
             label: "Prompt",
             imgPath: "../../../assets/agent-hub/prompt.svg",
-            count: 60
+            key: "prompt_count",
+            count: ''
         }
     ]
 }
