@@ -119,12 +119,12 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
-        this.makeTrustedUrl(data.email);
+        // this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.getLatestIframeUrl.subscribe((data: any) => {
       if (data) {
-        this.makeTrustedUrl();
+        // this.makeTrustedUrl();
         this.utilsService.EnableDockedNavi();
       }
     });
@@ -136,11 +136,12 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
-        console.log('msg.msgData', msg.msgData);
         this.isSideWindowOpen = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
         this.newWithNavi = !msg.msgData?.product;
-        this.product = msg.msgData?.product
+        this.product = msg.msgData?.product;
+        console.log('@#$%###################', msg.msgData);
+
         this.makeTrustedUrl();
       }
     })
@@ -227,6 +228,7 @@ export class AppComponent implements OnInit {
     // if (!window.location.hash.includes('#/reset-password?email'))
     //   this.redirectToPreviousUrl();
     this.handleTheme();
+    this.makeTrustedUrl()
   }
 
   async handleTheme(): Promise<void> {
@@ -284,7 +286,7 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
-        this.makeTrustedUrl(data.email);
+        // this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
@@ -399,15 +401,14 @@ export class AppComponent implements OnInit {
         }
         if (event.data.message === 'close-event') {
           //not there to handle the close option in navi in my-prod so added
-          console.log('window.location.pathname', window.location.pathname);
-
-          if (window.location.pathname === '/') {
-            this.product = undefined;
-            localStorage.removeItem('product')
-          }
+          this.product = undefined;
           this.isNaviExpanded = false;
           this.isSideWindowOpen = false;
-
+          localStorage.removeItem('product')
+          localStorage.removeItem('has_insights')
+          localStorage.removeItem('IS_NAVI_OPENED')
+          localStorage.removeItem('record_id')
+          localStorage.removeItem('app_name')
           this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.makeTrustedUrl()
         }
@@ -475,7 +476,6 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(productEmail?: string): void {
     const restriction_max_value = localStorage.getItem('restriction_max_value');
-
     let rawUrl: string =
       environment.naviAppUrl +
       '?email=' +
@@ -497,8 +497,6 @@ export class AppComponent implements OnInit {
     if (this.newWithNavi) {
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
-    console.log('this.product', this.product);
-
     if (this.product) {
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       rawUrl =
@@ -515,14 +513,22 @@ export class AppComponent implements OnInit {
         JSON.stringify(this.product) +
         '&new_with_navi=' +
         false;
-      this.iframeUrlLoad(rawUrl);
+      if (this.product && !this.product.has_insights) {
+        rawUrl = rawUrl + '&componentToShow=chat';
+      } else {
+        rawUrl = rawUrl + '&componentToShow=tasks'
+      }
+      // this.iframeUrlLoad(rawUrl);
     } else {
-      this.iframeUrlLoad(rawUrl);
+      rawUrl = rawUrl + '&componentToShow=tasks'
     }
-    console.log('rawUrlrawUrlrawUrl', rawUrl);
+    rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded
+    this.iframeUrlLoad(rawUrl);
 
   }
   iframeUrlLoad(rawUrl: any) {
+    console.log('rawUrl', rawUrl);
+
     // created ths in new method
     setTimeout(() => {
       this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
@@ -573,9 +579,9 @@ export class AppComponent implements OnInit {
   openNavi(newItem?: any) {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.isSideWindowOpen = true;
-    this.makeTrustedUrl();
-
+    // this.makeTrustedUrl();
   }
+
   getAllUsers() {
     let accountId = this.currentUser.account_id
     if (accountId) {

@@ -385,7 +385,7 @@ export class AppHeaderComponent implements OnInit {
 
   onClickLogo(): void {
     this.navigateToHome.emit();
-    this.utils.productContext(false);
+    // this.utils.productContext(false);
   }
 
   showMeLimitInfoPopup(event: any): void {

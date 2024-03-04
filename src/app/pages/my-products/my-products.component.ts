@@ -182,7 +182,7 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/specification']);
     }
-    this.utils.productContext(true);
+    // this.utils.productContext(true);
   }
 
   onClickNew() {
