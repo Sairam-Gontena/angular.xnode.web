@@ -131,6 +131,11 @@ export class UtilsService {
   public getMeSummaryObject: Observable<Object> =
     this.summaryObject.asObservable();
 
+  private importFileObject: BehaviorSubject<Object> =
+    new BehaviorSubject<Object>({ importFile: {} });
+
+  public getMeImportFileObject: Observable<Object> =
+    this.importFileObject.asObservable();
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -241,7 +246,9 @@ export class UtilsService {
   updateSummary(event: any): void {
     this.summaryObject.next(event);
   }
-
+  updateImportFilePopup(event: any): void {
+    this.importFileObject.next(event);
+  }
   calculateTimeAgo(timestamp: string): string {
     const date = new Date(timestamp);
     const now = new Date();

@@ -5,6 +5,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { UtilsService } from '../services/utils.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'xnode-import-file-popup',
@@ -23,6 +24,7 @@ export class ImportFilePopupComponent implements OnInit {
   activeIndex = 0;
   searchText: any;
   checked: boolean = false;
+  targetUrl: string = environment.naviAppUrl;
 
   constructor(
     // private apiService: ApiService,
@@ -134,6 +136,12 @@ export class ImportFilePopupComponent implements OnInit {
   }
 
   async fileUploadCall(formData: any, headers: any) {
+    if (this.targetUrl) {
+      window.frames[0].postMessage({
+        NaviImportFileNotification: 'CONVERSATION'
+      }, this.targetUrl);
+    }
+    return;
     try {
       this.utils.loadSpinner(true);
       const res = await this.commonApi.uploadFile(formData, {
@@ -147,6 +155,13 @@ export class ImportFilePopupComponent implements OnInit {
           summary: 'SUCCESS',
           detail: 'File uploaded successfully',
         });
+        // if (this.targetUrl && res.data) {
+        //   window.frames[0].postMessage({
+        //     NaviImportFileNotification: res.data
+        //   }, this.targetUrl);
+        // }
+
+        // this.utils.updateImportFilePopup(res.data)
         this.triggerETL(res.data);
         this.closeDialog();
 

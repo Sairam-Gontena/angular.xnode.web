@@ -32,8 +32,9 @@ export class NaviComponent implements OnInit {
   content: any;
   productDetails: any;
   productEmail: any;
-  naviSummaryProduct: any
+  naviSummaryProduct: any;
   iframeLoaded = false;
+  naviImportPopup: any;
 
   ngOnInit(): void {
     this.utils.getMeSummaryObject.subscribe((data: any) => {
@@ -42,6 +43,12 @@ export class NaviComponent implements OnInit {
         this.sendMessageToNavi(this.naviSummaryProduct);
       }
     })
+    // this.utils.getMeImportFileObject.subscribe((data: any) => {
+    //   this.naviImportPopup = data;
+    //   if (this.iframeLoaded) {
+    //     this.sendMessageToNavi(this.naviImportPopup);
+    //   }
+    // })
     let queryParams: any;
     this.route.queryParams.subscribe((params: any) => {
       if (params) {
@@ -116,6 +123,9 @@ export class NaviComponent implements OnInit {
     if (this.naviSummaryProduct) {
       this.targetUrl = this.targetUrl + '&NaviSummaryProducxt=' + JSON.stringify(this.naviSummaryProduct);
     }
+    // if (this.naviImportPopup) {
+    //   this.targetUrl = this.targetUrl + '&NaviImportPopup=' + JSON.stringify(this.naviImportPopup);
+    // }
 
     iframe.addEventListener('load', () => {
       const contentWindow = iframe.contentWindow;
@@ -208,6 +218,9 @@ export class NaviComponent implements OnInit {
     if (this.naviSummaryProduct) {
       this.sendMessageToNavi(this.naviSummaryProduct);
     }
+    // if (this.naviImportPopup) {
+    //   this.sendImportMessageToNavi(this.naviImportPopup);
+    // }
   }
 
   sendMessageToNavi(data: any) {
@@ -217,7 +230,13 @@ export class NaviComponent implements OnInit {
       }, this.targetUrl);
     }
   }
-
+  // sendImportMessageToNavi(data: any) {
+  //   if (this.targetUrl && data) {
+  //     window.frames[0].postMessage({
+  //       NaviImportPopupNotification: data
+  //     }, this.targetUrl);
+  //   }
+  // }
   closePopup() {
     this.showProductStatusPopup = false;
   }
@@ -235,6 +254,7 @@ export class NaviComponent implements OnInit {
   ngOnDestroy(): void {
     this.naviSummaryProduct = null;
     this.utils.updateSummary({});
+    // this.utils.updateImportFilePopup({})
     this.iframeLoaded = false;
   }
 }
