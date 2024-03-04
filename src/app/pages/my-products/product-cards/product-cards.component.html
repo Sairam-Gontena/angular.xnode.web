@@ -1,0 +1,86 @@
+<!-- ========Dont remove this code========== -->
+<div class="hidden">
+    <div class="flex md:justify-content-start sm:justify-content-start justify-content-start flex-wrap card-gap">
+        <div
+            class="flex align-items-center justify-content-center product-card font-bold border-round m-2 new-card-add">
+            <div class="flex flex-wrap justify-content-center align-items-center card-color card-title">
+                <div class="col-12 flex justify-content-center">
+                    <i class="pi pi-plus text-4xl pointer" (click)="onClickNew()"></i>
+                </div>
+                <div class="class-12 title flex justify-content-center">
+                    New Product
+                </div>
+            </div>
+        </div>
+        <div class="align-items-center pointer justify-content-center product-card shadow-6 font-bold border-round m-2"
+            *ngFor="let data of filteredProducts | slice:0:end ; let i = index" (click)="onClickProductCard.emit(data)">
+            <div class="card-color relative">
+                <i class="pi pi-heart-fill overlay-heart absolute top-0 right-0 text-2xl"></i>
+                <div class="overlay absolute bottom-0 right-0 text-2xl">{{ i + 1 }}</div>
+                <img alt="Card" src="./assets/d-card.svg" class="w-full" />
+            </div>
+            <div class=" flex justify-content-between align-items-center card-color card-title">
+                <div class="title-container" [title]="data?.title">
+                    {{ data?.title }}
+                </div>
+                <i class="pi pi-external-link " [title]="data.product_url"
+                    (click)="openExternalLink.emit(data.product_url)"
+                    *ngIf="data.product_url && data.product_url !== ''"></i>
+            </div>
+            <div class="card-color flex align-items-start body-card">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2"
+                    shape="circle" *ngIf="!currentUser" [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                <div class="ml-1 card-subheading-txt">
+                    <p class="m-0 card-subheading ">{{data.created_by}} on:
+                        {{data?.created_on |
+                        date:'medium'}}</p>
+                    <div class="mt-4">
+                        Modified on - NA
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================== -->
+<div class="grid">
+    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4">
+        <div
+            class="flex align-items-center justify-content-center product-card font-bold border-round w-full h-full new-card-add pointer"  (click)="onClickNew()">
+            <div class="flex flex-wrap justify-content-center align-items-center card-color card-title">
+                <div class="col-12 flex justify-content-center">
+                    <i class="pi pi-plus text-4xl"></i>
+                </div>
+                <div class="class-12 title flex justify-content-center">
+                    New Product
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 pointer" *ngFor="let data of filteredProducts | slice:0:end ; let i = index"
+        (click)="onClickProductCard.emit(data)">
+        <div class="card-color">
+            <img alt="Card" src="./assets/d-card.svg" class="w-full" />
+            <div class=" flex justify-content-between align-items-center card-color card-title">
+                <div class="title-container" [title]="data?.title">
+                    {{ data?.title }}
+                </div>
+                <i class="pi pi-external-link " [title]="data.product_url"
+                    (click)="openExternalLink.emit(data.product_url)"
+                    *ngIf="data.product_url && data.product_url !== ''"></i>
+            </div>
+            <div class="flex align-items-start body-card">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2"
+                    shape="circle" *ngIf="!currentUser" [style]="{ width:'40px',height:'40px' }"></p-avatar>
+                <div class="ml-1 card-subheading-txt">
+                    <p class="m-0 card-subheading ">{{data.created_by}} on:
+                        {{data?.created_on |
+                        date:'medium'}}</p>
+                    <div class="mt-4">
+                        Modified on - NA
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

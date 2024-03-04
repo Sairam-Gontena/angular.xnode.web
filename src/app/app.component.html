@@ -1,29 +1,23 @@
 <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
-    <xnode-bot *ngIf="isBotIconVisible" [botDisplayFlag]="isSideWindowOpen" (valueChange)="openNavi($event)"
-        (click)="botOnClick()"></xnode-bot>
-    <xnode-app-header></xnode-app-header>
-    <div class="flex">
-        <div [ngClass]="{ 'main-component-navi ': isSideWindowOpen, 'main-component': !isSideWindowOpen,'main-component-expand-navi': isNaviExpanded}"
-            class="flex-column">
+    <div class="relative">
+        <div class="absolute bottom-0 right-0" [class.hidden]="isSideWindowOpen">
+            <xnode-bot (valueChange)="openNavi($event)"></xnode-bot>
+        </div>
+        <xnode-app-header (navigateToHome)="navigateToHome()"></xnode-app-header>
+        <div class="w-full">
             <div class="flex">
-                <div class="app-side-menu-wrapper" *ngIf="showSideMenu()">
+                <div class="app-side-menu-wrapper hidden lg:block">
                     <xnode-app-side-menu></xnode-app-side-menu>
                 </div>
-                <div [ngClass]="showSideMenu()  ? 'app-body-wrapper' : 'app-body-wrapper-full'" class="flex-1">
+                <div [class.app-body-wrapper]="!isSideWindowOpen" [class.app-body-wrapper-navi]="isSideWindowOpen">
                     <router-outlet></router-outlet>
                 </div>
-            </div>
-        </div>
-        <div *ngIf="isSideWindowOpen" class="flex navi-frame"
-            [ngClass]="{'navi-ful-frame':isNaviExpanded, 'navi-frame':!isNaviExpanded}">
-            <div class="app-side-menu-wrapper" *ngIf="isNaviExpanded && showSideMenu()">
-                <xnode-app-side-menu></xnode-app-side-menu>
-            </div>
-            <div
-                [ngClass]="{'docked-navi-component':!isSideWindowOpen, 'docked-navi': isSideWindowOpen && !isNaviExpanded,'expand-docked-navi':isNaviExpanded }">
-                <iframe id="myIframe" [src]="iframeUrl" allow="microphone" Cross-Origin-Opener-Policy="*"
-                    class="w-full h-full pl-0 pr-0 ifram-navi">
-                </iframe>
+                <div [class.hidden]="!isSideWindowOpen" [class.navi-ful-frame]="isNaviExpanded"
+                    [class.navi-frame]="!isNaviExpanded && isSideWindowOpen">
+                    <iframe id="myIframe" *ngIf="iframeUrl" [src]="iframeUrl" allow="microphone"
+                        Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>

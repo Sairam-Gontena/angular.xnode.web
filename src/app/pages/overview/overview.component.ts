@@ -45,6 +45,11 @@ export class OverViewComponent {
 
   ngOnInit(): void {
     this.getMeStorageData();
+    this.utils.getMeProductId.subscribe((data)=>{
+      if(data){
+        this.getMeStorageData();
+      }
+    })
   }
 
   getMeStorageData(): void {

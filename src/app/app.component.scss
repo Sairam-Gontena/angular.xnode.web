@@ -14,7 +14,11 @@
 .app-body-wrapper {
   width: calc(100% - 80px);
   background: #3A3942;
+}
 
+.app-body-wrapper-navi {
+  width: calc(100% - 600px);
+  background: #3A3942;
 }
 
 .app-body-wrapper-full {
@@ -27,6 +31,12 @@
   .side-window {
     transition: all 0.5s ease-in-out;
     width: 30%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-body-wrapper {
+    width:100% !important
   }
 }
 
@@ -265,6 +275,15 @@
   }
 }
 
+.navi-frame {
+  width: 520px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
 .navi-ful-frame {
-  width: 100%;
+  width: calc(100% - 80px);
+  position: absolute;
+  height: 100%;
+  left: 80px;
 }

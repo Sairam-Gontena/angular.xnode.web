@@ -7,18 +7,10 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 @Component({
   selector: 'xnode-bot',
   templateUrl: './bot.component.html',
-  styleUrls: ['./bot.component.scss']
+  styleUrls: ['./bot.component.scss'],
 })
-
 export class BotComponent implements OnInit {
-  constructor(
-    private elementRef: ElementRef,
-    private storageService: LocalStorageService
-  ) {
-  }
   @Output() valueChange = new EventEmitter<any>();
-  @Input() botDisplayFlag: boolean = true;
-
   private isDragging: boolean = false;
   private initialX: number = 0;
   private initialY: number = 0;
@@ -26,14 +18,25 @@ export class BotComponent implements OnInit {
   private offsetY: number = 0;
   private botContainer: HTMLElement | null = null;
 
+  constructor(
+    private elementRef: ElementRef,
+    private storageService: LocalStorageService
+  ) {}
 
   onClickContinue(): void {
-    const product: any = this.storageService.getItem(StorageKeys.Product)
-    this.valueChange.emit({ 'productContext': product?.id, 'cbFlag': true, 'productEmail': product?.email });
+    const product: any = this.storageService.getItem(StorageKeys.Product);
+    this.valueChange.emit({
+      productContext: product?.id,
+      cbFlag: true,
+      productEmail: product?.email,
+    });
   }
+
   ngOnInit(): void {
-    this.botContainer = this.elementRef.nativeElement.querySelector('#botContainer');
+    this.botContainer =
+      this.elementRef.nativeElement.querySelector('#botContainer');
   }
+
   onMouseDown(event: MouseEvent): void {
     this.isDragging = true;
     this.initialX = event.clientX - this.offsetX;
@@ -41,6 +44,7 @@ export class BotComponent implements OnInit {
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
+
   onMouseMove(event: MouseEvent): void {
     if (this.isDragging && this.botContainer) {
       this.offsetX = event.clientX - this.initialX;
@@ -48,9 +52,9 @@ export class BotComponent implements OnInit {
       this.botContainer.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px)`;
     }
   }
+
   onMouseUp(): void {
     this.isDragging = false;
-
     document.removeEventListener('mousemove', this.onMouseMove.bind(this));
     document.removeEventListener('mouseup', this.onMouseUp.bind(this));
   }

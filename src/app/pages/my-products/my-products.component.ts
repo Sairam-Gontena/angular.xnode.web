@@ -18,12 +18,11 @@ import { ConversationApiService } from 'src/app/api/conversation-api.service';
   selector: 'xnode-my-products',
   templateUrl: './my-products.component.html',
   styleUrls: ['./my-products.component.scss'],
-  providers: [MessageService, DropdownModule]
+  providers: [MessageService, DropdownModule],
 })
 export class MyProductsComponent implements OnInit {
   templateCard: any[] = [];
   currentUser?: any;
-  productId: any;
   private subscription: Subscription;
   isLoading: boolean = true;
   activeIndex: number = 0;
@@ -47,14 +46,16 @@ export class MyProductsComponent implements OnInit {
   mineConversations: any[] = [];
   Conversations: any = [
     { name: 'All', value: 'All' },
-    { name: 'Mine', value: 'Mine' }
+    { name: 'Mine', value: 'Mine' },
   ];
   selectedConversation: any = { name: 'All', value: 'All' };
   enableSearch: boolean = false;
   searchTextConversation: any;
   showImportFilePopup: boolean = false;
+  loading: boolean = false;
 
-  constructor(private RefreshListService: RefreshListService,
+  constructor(
+    private RefreshListService: RefreshListService,
     public router: Router,
     private route: ActivatedRoute,
     private utils: UtilsService,
@@ -64,8 +65,7 @@ export class MyProductsComponent implements OnInit {
     private naviApiService: NaviApiService,
     private conversationApiService: ConversationApiService
   ) {
-    this.currentUser = UserUtil.getCurrentUser();
-
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
       this.userImage =
         this.currentUser.first_name.charAt(0).toUpperCase() +
@@ -78,6 +78,9 @@ export class MyProductsComponent implements OnInit {
         }
       }
     );
+    this.utils.startSpinner.subscribe((event: boolean) => {
+      this.loading = event;
+    });
   }
 
   ngOnInit(): void {
@@ -96,7 +99,9 @@ export class MyProductsComponent implements OnInit {
     this.removeProductDetailsFromStorage();
     this.removeParamFromRoute();
     this.filterProductsByUserEmail();
+    this.utils.prepareIframeUrl(true);
   }
+
   removeProductDetailsFromStorage(): void {
     localStorage.removeItem('record_id');
     localStorage.removeItem('has_insights');
@@ -135,72 +140,6 @@ export class MyProductsComponent implements OnInit {
     return initials;
   }
 
-  getMeTotalOnboardedApps(user: any): void {
-    this.naviApiService
-      .getTotalOnboardedApps(user?.email)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          localStorage.setItem(
-            'total_apps_onboarded',
-            response.data.total_apps_onboarded
-          );
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.productId
-          );
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.productId
-          );
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: '',
-            detail: response.data?.detail,
-          });
-        }
-      })
-      .catch((error: any) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_TOTAL_ONBOARDED_APPS_MY_PRODUCTS',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser.email,
-          this.productId
-        );
-        this.utils.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
-        this.utils.loadSpinner(true);
-      });
-  }
-
   removeParamFromRoute(): void {
     this.router.navigate([], {
       queryParams: {
@@ -219,6 +158,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickProductCard(data: any): void {
+    this.utils.disableDockedNavi();
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
@@ -236,12 +176,14 @@ export class MyProductsComponent implements OnInit {
     } else {
       this.router.navigate(['/specification']);
     }
-    this.utils.disableDockedNavi();
+    this.utils.productContext(true);
   }
 
-  onClickgotoxPilot() {
-    this.router.navigate(['/x-pilot']);
-    this.auditUtil.postAudit('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
+  onClickNew() {
+    console.log('onClickNew');
+    this.utils.expandNavi$();
+    // this.router.navigate(['/x-pilot']);
+    // this.auditUtil.postAudit('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
 
   openExternalLink(productUrl: string) {
@@ -278,7 +220,6 @@ export class MyProductsComponent implements OnInit {
       .getMetaData(this.currentUser?.email)
       .then((response: any) => {
         if (response?.status === 200 && response.data.data?.length) {
-          this.productId = response.data.data[0].id;
           let user_audit_body = {
             method: 'GET',
             url: response?.request?.responseURL,
@@ -290,7 +231,7 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
           this.storageService.saveItem(
             StorageKeys.MetaData,
@@ -304,9 +245,15 @@ export class MyProductsComponent implements OnInit {
             return dataItem;
           });
 
-          this.filteredProducts = sortBy(this.templateCard, ['created_on']).reverse();
-          this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
+          this.filteredProducts = sortBy(this.templateCard, [
+            'created_on',
+          ]).reverse();
+          this.filteredProductsLength = this.filteredProducts.length
+            ? this.filteredProducts.length + 1
+            : 0;
           this.filteredProductsByEmail = this.templateCard;
+          this.utils.loadSpinner(false);
+          // this.getAllConversations();
         } else if (response?.status !== 200) {
           let user_audit_body = {
             method: 'GET',
@@ -319,16 +266,15 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
           this.utils.loadToaster({
             severity: 'error',
             summary: 'ERROR',
             detail: response?.data?.detail,
           });
+          this.utils.loadSpinner(false);
         }
-        this.getAllConversations();
-        this.utils.loadSpinner(false);
       })
       .catch((error: any) => {
         let user_audit_body = {
@@ -342,7 +288,7 @@ export class MyProductsComponent implements OnInit {
           'user-audit',
           user_audit_body,
           this.currentUser.email,
-          this.productId
+          ''
         );
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
@@ -354,8 +300,15 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickcreatedByYou(): void {
-    this.filteredProducts = sortBy(this.filteredProducts.filter(obj => { return obj?.user_id === this.currentUser.user_id }), ['created_on']).reverse();
-    this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
+    this.filteredProducts = sortBy(
+      this.filteredProducts.filter((obj) => {
+        return obj?.user_id === this.currentUser.user_id;
+      }),
+      ['created_on']
+    ).reverse();
+    this.filteredProductsLength = this.filteredProducts.length
+      ? this.filteredProducts.length + 1
+      : 0;
     this.filteredProducts = this.filteredProducts.filter((obj) => {
       return obj?.user_id === this.currentUser.user_id;
     });
@@ -365,8 +318,13 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickAllProducts(): void {
-    this.filteredProducts = sortBy([...this.templateCard], ['created_on']).reverse();
-    this.filteredProductsLength = this.filteredProducts.length ? this.filteredProducts.length + 1 : 0;
+    this.filteredProducts = sortBy(
+      [...this.templateCard],
+      ['created_on']
+    ).reverse();
+    this.filteredProductsLength = this.filteredProducts.length
+      ? this.filteredProducts.length + 1
+      : 0;
     this.filteredProducts = cloneDeep(this.filteredProducts);
     this.end = 3;
     this.isViewLess = true;
@@ -384,11 +342,14 @@ export class MyProductsComponent implements OnInit {
   }
 
   searchConversation() {
-    this.filteredConversation = this.searchTextConversation === ""
-      ? this.AllConversations
-      : this.AllConversations.filter((element) => {
-        return element.title?.toLowerCase().includes(this.searchTextConversation.toLowerCase());
-      });
+    this.filteredConversation =
+      this.searchTextConversation === ''
+        ? this.AllConversations
+        : this.AllConversations.filter((element) => {
+          return element.title
+            ?.toLowerCase()
+            .includes(this.searchTextConversation.toLowerCase());
+        });
   }
 
   toggleSearch() {
@@ -408,8 +369,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickNewWithNavi(): void {
-    this.router.navigate(['/x-pilot']);
-    this.auditUtil.postAudit('NEW_WITH_NAVI', 1, 'SUCCESS', 'user-audit');
+    this.utils.expandNavi$();
   }
 
   getMeCreateAppLimit(): void {
@@ -432,7 +392,7 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
         } else {
           let user_audit_body = {
@@ -446,7 +406,7 @@ export class MyProductsComponent implements OnInit {
             'user-audit',
             user_audit_body,
             this.currentUser.email,
-            this.productId
+            ''
           );
           this.utils.loadToaster({
             severity: 'error',
@@ -467,7 +427,7 @@ export class MyProductsComponent implements OnInit {
           'user-audit',
           user_audit_body,
           this.currentUser.email,
-          this.productId
+          ''
         );
         this.utils.loadToaster({
           severity: 'error',
@@ -489,30 +449,47 @@ export class MyProductsComponent implements OnInit {
   }
 
   getAllConversations() {
-    this.conversationApiService.getAllConversations()
+    this.conversationApiService
+      .getAllConversations()
       .then((response: any) => {
-        this.AllConversations = this.mapProductNameToConversations(response.data);
-        this.filteredConversation = this.AllConversations;
+        if (response) {
+          this.AllConversations = this.mapProductNameToConversations(
+            response.data
+          );
+          this.filteredConversation = this.AllConversations;
+          this.getMeConversationsByContributers();
+        } else {
+          this.utils.loadSpinner(false);
+        }
       })
-    if (this.currentUser && this.currentUser.user_id) {
-      this.conversationApiService.getConversationsByContributor(this.currentUser?.user_id)
-        .then((response: any) => {
-          if (response && response.status == 200 && response.data) {
-            this.mineConversations = this.mapProductNameToConversations(response.data);
-          }
-        })
-        .catch((error: any) => {
-          console.log(error);
-        })
-    }
+      .catch((err: any) => {
+        this.utils.loadSpinner(false);
+      });
+  }
+
+  getMeConversationsByContributers(): void {
+    this.conversationApiService
+      .getConversationsByContributor(this.currentUser?.user_id)
+      .then((response: any) => {
+        if (response && response.status == 200 && response.data) {
+          this.mineConversations = this.mapProductNameToConversations(
+            response.data
+          );
+        }
+        this.utils.loadSpinner(false);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        this.utils.loadSpinner(false);
+      });
   }
 
   mapProductNameToConversations(_conversations: any) {
     _conversations.forEach((conversation: any, i: any) => {
       let product = find(this.filteredProducts, { id: conversation.productId });
-      _conversations[i]['productName'] = product && product.title ? product.title : '';
+      _conversations[i]['productName'] =
+        product && product.title ? product.title : '';
     });
     return orderBy(_conversations, ['modifiedOn']);
   }
-
 }

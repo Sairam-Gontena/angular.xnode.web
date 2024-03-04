@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-navi',
@@ -14,6 +16,7 @@ import { AuthApiService } from 'src/app/api/auth.service';
 })
 export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
+  product: any;
   templates: any;
   usersList: any;
   constructor(
@@ -21,7 +24,8 @@ export class NaviComponent implements OnInit {
     private utils: UtilsService,
     private domSanitizer: DomSanitizer,
     private route: ActivatedRoute,
-    private api: AuthApiService
+    private api: AuthApiService,
+    private storageService: LocalStorageService
   ) { }
   targetUrl: string = environment.naviAppUrl;
   safeUrl: SafeResourceUrl = '';
@@ -87,13 +91,13 @@ export class NaviComponent implements OnInit {
     };
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
     this.targetUrl =
-      this.targetUrl +
+      environment.naviAppUrl +
       '?email=' +
-      email +
-      '&xnode_flag=' +
-      data.flag +
+      this.currentUser?.email +
       '&targetUrl=' +
       environment.xnodeAppUrl +
+      '&token=' +
+      this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
       '&user_id=' +
       this.currentUser.user_id;
     this.targetUrl =
@@ -111,11 +115,19 @@ export class NaviComponent implements OnInit {
         '&restriction_max_value=' +
         JSON.parse(restriction_max_value);
     }
-    if (this.productDetails?.email !== this.currentUser?.email) {
+    if (this.product) {
       this.targetUrl =
-        this.targetUrl + '&product_user_email=' + this.productEmail;
-    } else {
-      this.targetUrl = this.targetUrl + '&product_user_email=' + email;
+        this.targetUrl +
+        '&product_user_email=' +
+        this.product.email +
+        +'&has_insights=' +
+        this.product?.has_insights +
+        '&product_context=' +
+        true +
+        '&product_id=' +
+        this.product.id +
+        '&product=' +
+        JSON.stringify(this.product);
     }
     if (this.usersList) {
       this.targetUrl = this.targetUrl + '&account_user_list=' + JSON.stringify(this.usersList);
@@ -230,13 +242,74 @@ export class NaviComponent implements OnInit {
       }, this.targetUrl);
     }
   }
-  // sendImportMessageToNavi(data: any) {
-  //   if (this.targetUrl && data) {
-  //     window.frames[0].postMessage({
-  //       NaviImportPopupNotification: data
-  //     }, this.targetUrl);
-  //   }
-  // }
+
+  emitIframeComponentEvents(event: any): void {
+    console.log('eventevent', event);
+
+    if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
+      return;
+    }
+    if (event.data.message === 'triggerCustomEvent') {
+      window.location.href = this.xnodeAppUrl + '#/my-products?product=created';
+      const customEvent = new Event('customEvent');
+      window.dispatchEvent(customEvent);
+    }
+    if (event.data.message === 'close-event') {
+      this.utils.showLimitReachedPopup(false);
+      window.location.href = this.xnodeAppUrl + '#/my-products';
+      const customEvent = new Event('customEvent');
+      window.dispatchEvent(customEvent);
+    }
+    if (event.data.message === 'close-docked-navi') {
+      this.utils.productContext(false);
+      this.router.navigate(['/my-products']);
+    }
+    if (event.data.message === 'change-app') {
+      console.log('?????');
+      this.storageService.saveItem(StorageKeys.Product, event.data.data);
+      this.utils.productContext(true);
+    }
+    if (event.data.message === 'file-uploaded') {
+      localStorage.removeItem('show-upload-panel');
+    }
+    if (event.data.message === 'app-limit-exceeded') {
+      this.utils.showLimitReachedPopup(true);
+    }
+    if (event.data.message === 'triggerProductPopup') {
+      this.content = event?.data?.data;
+      let data = {
+        popup: true,
+        data: this.content,
+      };
+      this.showProductStatusPopup = true;
+      this.utils.toggleProductAlertPopup(data);
+      event.stopImmediatePropagation();
+    }
+    if (event.data.message === 'triggerRouteToMyProducts') {
+      const itemId = event.data.id;
+      localStorage.setItem('record_id', itemId);
+      this.utils.saveProductId(itemId);
+      const metaData = localStorage.getItem('meta_data');
+      if (metaData) {
+        this.templates = JSON.parse(metaData);
+        const product = this.templates?.filter((obj: any) => {
+          return obj.id === itemId;
+        })[0];
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem(
+          'product_url',
+          product.url && product.url !== '' ? product.url : ''
+        );
+        localStorage.setItem('product', JSON.stringify(product));
+      }
+      const newUrl = this.xnodeAppUrl + '#/dashboard';
+      window.location.href = newUrl;
+    }
+    if (event.data.message === 'help-center') {
+      window.location.href = this.xnodeAppUrl + '#/help-center';
+    }
+  }
+
   closePopup() {
     this.showProductStatusPopup = false;
   }
