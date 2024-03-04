@@ -179,6 +179,9 @@ export class NaviComponent implements OnInit {
           if (event.data.message === 'help-center') {
             window.location.href = this.xnodeAppUrl + '#/help-center';
           }
+          if (event.data.message === 'import-file-popup') {
+            this.utils.showImportFilePopup(true);
+          }
         });
         contentWindow.postMessage(data, this.targetUrl);
       }
