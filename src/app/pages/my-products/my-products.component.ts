@@ -52,6 +52,7 @@ export class MyProductsComponent implements OnInit {
   selectedConversation: any = { name: 'All', value: 'All' };
   enableSearch: boolean = false;
   searchTextConversation: any;
+  showImportFilePopup: boolean = false;
 
   constructor(private RefreshListService: RefreshListService,
     public router: Router,
@@ -261,11 +262,15 @@ export class MyProductsComponent implements OnInit {
         this.utils.showLimitReachedPopup(true);
         localStorage.setItem('show-upload-panel', 'false');
       } else {
+        this.showImportFilePopup = true;
         this.router.navigate(['/x-pilot']);
-        localStorage.setItem('show-upload-panel', 'true');
-        this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
+        // localStorage.setItem('show-upload-panel', 'true');
+        // this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
       }
     }
+  }
+  closeEventEmitter() {
+    this.showImportFilePopup = false;
   }
 
   getMetaData() {

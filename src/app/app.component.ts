@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
   screenHeight: number;
   deepLink: boolean = false;
   colorPallet: any;
+  showImportFilePopup: boolean = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -248,6 +249,11 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     });
+    this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
+      if (data) {
+        this.showImportFilePopup = true;
+      }
+    });
   }
 
   getAllProductsInfo(key: string) {
@@ -402,6 +408,9 @@ export class AppComponent implements OnInit {
           if (event.data.message === 'contract-navi') {
             this.isNaviExpanded = false;
           }
+          if (event.data.message === 'import-file-popup') {
+            this.utilsService.showImportFilePopup(true);
+          }
         });
       }
     });
@@ -429,11 +438,13 @@ export class AppComponent implements OnInit {
   makeTrustedUrl(productEmail: string): void {
     let user = localStorage.getItem('currentUser');
     let id;
+    let account_id;
     const has_insights = localStorage.getItem('has_insights');
     if (localStorage.getItem('record_id') !== null) {
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       if (user) {
         id = JSON.parse(user).user_id;
+        account_id = JSON.parse(user).account_id;
       }
       let rawUrl =
         environment.naviAppUrl +
@@ -451,6 +462,8 @@ export class AppComponent implements OnInit {
         id +
         '&product_user_email=' +
         productEmail +
+        '&account_id=' +
+        account_id +
         '&device_width=' +
         this.screenWidth +
         '&token=' +
@@ -481,14 +494,16 @@ export class AppComponent implements OnInit {
       //   id +
       //   '&product_user_email=' +
       //   localStorage.getItem('product_email') +
+      //   '&account_id=' + 
+      //   account_id +
       //   '&device_width=' +
       //   this.screenWidth;
-      // this.isSideWindowOpen = true;
-      // setTimeout(() => {
-      //   this.iframeUrl =
-      //     this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-      //   this.loadIframeUrl();
-      // }, 2000);
+      //   this.isSideWindowOpen = true;
+      //   setTimeout(() => {
+      //     this.iframeUrl =
+      //       this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+      //     this.loadIframeUrl();
+      //   }, 2000);
     }
   }
 
