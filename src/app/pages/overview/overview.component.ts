@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import * as data from '../../constants/overview.json';
 import { UserUtil } from '../../utils/user-util';
-import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
@@ -11,7 +10,6 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
-  providers: [MessageService],
 })
 export class OverViewComponent {
   @Input() currentStep: number = 2;
@@ -45,8 +43,8 @@ export class OverViewComponent {
 
   ngOnInit(): void {
     this.getMeStorageData();
-    this.utils.getMeProductId.subscribe((data)=>{
-      if(data){
+    this.utils.getMeProductId.subscribe((data) => {
+      if (data) {
         this.getMeStorageData();
       }
     })

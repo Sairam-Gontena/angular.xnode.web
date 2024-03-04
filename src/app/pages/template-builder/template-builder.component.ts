@@ -2,14 +2,12 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { User, UserUtil } from 'src/app/utils/user-util';
-import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 @Component({
   selector: 'xnode-template-builder',
   templateUrl: './template-builder.component.html',
   styleUrls: ['./template-builder.component.scss'],
-  providers: [MessageService],
 })
 export class TemplateBuilderComponent implements OnInit {
   @Input() currentView: string = 'desktop';

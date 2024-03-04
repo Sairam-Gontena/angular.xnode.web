@@ -18,6 +18,8 @@ import { NaviApiService } from './api/navi-api.service';
 import { LocalStorageService } from './components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecificationUtilsService } from './pages/diff-viewer/specificationUtils.service';
+import { MessagingService } from './components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -79,7 +81,8 @@ export class AppComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private naviApiService: NaviApiService,
     private storageService: LocalStorageService,
-    private specificationUtils: SpecificationUtilsService
+    private specificationUtils: SpecificationUtilsService,
+    private messagingService: MessagingService
   ) {
     let winUrl = window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -131,15 +134,16 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     });
-    this.utilsService.naviExpand.subscribe((data: any) => {
-      if (data) {
-        this.isNaviExpanded = true;
-        this.newWithNavi = true;
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
+        console.log('msg.msgData', msg.msgData);
+        this.isSideWindowOpen = true
+        this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
+        this.newWithNavi = !msg.msgData?.product;
+        this.product = msg.msgData?.product
         this.makeTrustedUrl();
-      } else {
-        this.newWithNavi = false;
       }
-    });
+    })
   }
 
   navigateToHome(): void {
@@ -147,6 +151,10 @@ export class AppComponent implements OnInit {
     this.utilsService.showProductStatusPopup(false);
     this.isSideWindowOpen = false;
     this.isNaviExpanded = false;
+    localStorage.removeItem('app_name');
+    localStorage.removeItem('product');
+    localStorage.removeItem('record_id');
+    localStorage.removeItem('has_insights');
     this.router.navigate(['/my-products']);
   }
 
@@ -391,8 +399,17 @@ export class AppComponent implements OnInit {
         }
         if (event.data.message === 'close-event') {
           //not there to handle the close option in navi in my-prod so added
+          console.log('window.location.pathname', window.location.pathname);
+
+          if (window.location.pathname === '/') {
+            this.product = undefined;
+            localStorage.removeItem('product')
+          }
           this.isNaviExpanded = false;
           this.isSideWindowOpen = false;
+
+          this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+          this.makeTrustedUrl()
         }
         if (event.data.message === 'expand-navi') {
           this.isNaviExpanded = true;
@@ -480,7 +497,9 @@ export class AppComponent implements OnInit {
     if (this.newWithNavi) {
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
-    if (this.product && window.location.hash != '#/my-products') {
+    console.log('this.product', this.product);
+
+    if (this.product) {
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       rawUrl =
         rawUrl +
@@ -500,6 +519,8 @@ export class AppComponent implements OnInit {
     } else {
       this.iframeUrlLoad(rawUrl);
     }
+    console.log('rawUrlrawUrlrawUrl', rawUrl);
+
   }
   iframeUrlLoad(rawUrl: any) {
     // created ths in new method
@@ -550,23 +571,10 @@ export class AppComponent implements OnInit {
   }
 
   openNavi(newItem?: any) {
-    this.product = this.storageService.getItem(StorageKeys.Product);
-    this.newWithNavi = false;
-    if (
-      window.location.hash === '#/help-center' ||
-      window.location.hash === '#/history-log'
-    ) {
-      this.auditUtil.postAudit('NAVI_OPENED', 1, 'SUCCESS', 'user-audit');
-    } else {
-      if (newItem) {
-        //bcz of new item
-        this.isSideWindowOpen = newItem.cbFlag;
-        this.productContext = newItem.productContext;
-        this.makeTrustedUrl(newItem.productEmail);
-      } else {
-        this.makeTrustedUrl();
-      }
-    }
+    this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+    this.isSideWindowOpen = true;
+    this.makeTrustedUrl();
+
   }
   getAllUsers() {
     let accountId = this.currentUser.account_id

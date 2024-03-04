@@ -158,13 +158,13 @@ const routes: Routes = [
     canActivate: [authGuard]
 
   },
-  {
-    path: 'x-pilot',
-    loadChildren: () =>
-      import('./pages/navi/navi.module').then((m) => m.NaviModule),
-    canActivate: [authGuard]
+  // {
+  //   path: 'x-pilot',
+  //   loadChildren: () =>
+  //     import('./pages/navi/navi.module').then((m) => m.NaviModule),
+  //   canActivate: [authGuard]
 
-  },
+  // },
   {
     path: 'configuration/workflow/overview',
     loadChildren: () =>

@@ -13,6 +13,8 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { ConversationApiService } from 'src/app/api/conversation-api.service';
+import { MessagingService } from 'src/app/components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
   selector: 'xnode-my-products',
@@ -62,7 +64,8 @@ export class MyProductsComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private naviApiService: NaviApiService,
-    private conversationApiService: ConversationApiService
+    private conversationApiService: ConversationApiService,
+    private messagingService: MessagingService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
@@ -71,7 +74,7 @@ export class MyProductsComponent implements OnInit {
         this.currentUser.last_name.charAt(0).toUpperCase();
     }
     this.subscription = this.RefreshListService.headerData$.subscribe(
-      (data) => {
+      (data: any) => {
         if (data === 'refreshproducts') {
           this.getMetaData();
         }
@@ -157,7 +160,8 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickProductCard(data: any): void {
-    this.utils.disableDockedNavi();
+    console.log('data', data);
+
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
@@ -171,7 +175,10 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     if (!data.has_insights) {
-      this.router.navigate(['/x-pilot']);
+      this.messagingService.sendMessage({
+        msgType: MessageTypes.NAVI_CONTAINER_STATE,
+        msgData: { naviContainerState: 'EXPAND', product: data },
+      });
     } else {
       this.router.navigate(['/specification']);
     }
@@ -330,10 +337,10 @@ export class MyProductsComponent implements OnInit {
       this.searchText === ''
         ? this.templateCard
         : this.templateCard.filter((element) => {
-            return element.title
-              ?.toLowerCase()
-              .includes(this.searchText.toLowerCase());
-          });
+          return element.title
+            ?.toLowerCase()
+            .includes(this.searchText.toLowerCase());
+        });
   }
 
   searchConversation() {
@@ -341,10 +348,10 @@ export class MyProductsComponent implements OnInit {
       this.searchTextConversation === ''
         ? this.AllConversations
         : this.AllConversations.filter((element) => {
-            return element.title
-              ?.toLowerCase()
-              .includes(this.searchTextConversation.toLowerCase());
-          });
+          return element.title
+            ?.toLowerCase()
+            .includes(this.searchTextConversation.toLowerCase());
+        });
   }
 
   toggleSearch() {
@@ -364,7 +371,10 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickNewWithNavi(): void {
-    this.utils.expandNavi$();
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.NAVI_CONTAINER_STATE,
+      msgData: { naviContainerState: 'EXPAND' },
+    });
   }
 
   getMeCreateAppLimit(): void {
