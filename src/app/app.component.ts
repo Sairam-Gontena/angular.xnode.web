@@ -140,8 +140,6 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
-        console.log('@#$%###################', msg.msgData);
-
         this.makeTrustedUrl();
       }
     })
@@ -152,11 +150,14 @@ export class AppComponent implements OnInit {
     this.utilsService.showProductStatusPopup(false);
     this.isSideWindowOpen = false;
     this.isNaviExpanded = false;
-    localStorage.removeItem('app_name');
-    localStorage.removeItem('product');
-    localStorage.removeItem('record_id');
-    localStorage.removeItem('has_insights');
-    this.router.navigate(['/my-products']);
+    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+    this.product = undefined;
+    localStorage.removeItem('product')
+    localStorage.removeItem('has_insights')
+    localStorage.removeItem('IS_NAVI_OPENED')
+    localStorage.removeItem('record_id')
+    localStorage.removeItem('app_name')
+    this.makeTrustedUrl()
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -401,6 +402,7 @@ export class AppComponent implements OnInit {
         }
         if (event.data.message === 'close-event') {
           //not there to handle the close option in navi in my-prod so added
+          this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.product = undefined;
           this.isNaviExpanded = false;
           this.isSideWindowOpen = false;
@@ -409,7 +411,6 @@ export class AppComponent implements OnInit {
           localStorage.removeItem('IS_NAVI_OPENED')
           localStorage.removeItem('record_id')
           localStorage.removeItem('app_name')
-          this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.makeTrustedUrl()
         }
         if (event.data.message === 'expand-navi') {
@@ -579,7 +580,7 @@ export class AppComponent implements OnInit {
   openNavi(newItem?: any) {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.isSideWindowOpen = true;
-    // this.makeTrustedUrl();
+    this.makeTrustedUrl();
   }
 
   getAllUsers() {
