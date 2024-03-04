@@ -15,7 +15,6 @@ import { AuthApiService } from 'src/app/api/auth.service';
 export class NaviComponent implements OnInit {
   @ViewChild('myIframe') iframe?: ElementRef;
   templates: any;
-  usersList: any;
   constructor(
     private router: Router,
     private utils: UtilsService,
@@ -67,7 +66,7 @@ export class NaviComponent implements OnInit {
     if (queryParams) {
 
     }
-    this.getAllUsers(queryParams);
+    this.constructIframeUrl(queryParams);
   }
   constructIframeUrl(queryParams: any) {
     const restriction_max_value = localStorage.getItem('restriction_max_value');
@@ -110,9 +109,7 @@ export class NaviComponent implements OnInit {
     } else {
       this.targetUrl = this.targetUrl + '&product_user_email=' + email;
     }
-    if (this.usersList) {
-      this.targetUrl = this.targetUrl + '&account_user_list=' + JSON.stringify(this.usersList);
-    }
+
     if (this.naviSummaryProduct) {
       this.targetUrl = this.targetUrl + '&NaviSummaryProducxt=' + JSON.stringify(this.naviSummaryProduct);
     }
@@ -185,19 +182,6 @@ export class NaviComponent implements OnInit {
     });
     this.makeTrustedUrl();
     this.utils.loadSpinner(false);
-  }
-  getAllUsers(queryParams: any) {
-    let accountId = this.currentUser.account_id
-    if (accountId) {
-      let params = {
-        account_id: accountId
-      }
-      this.api.getUsersByAccountId(params).then((response: any) => {
-        response.data.forEach((element: any) => { element.name = element.first_name + ' ' + element.last_name });
-        this.usersList = response.data;
-        this.constructIframeUrl(queryParams);
-      })
-    }
   }
 
   onIframeLoad() {
