@@ -233,6 +233,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
   },
   {
+    path: 'agent-hub',
+    loadChildren: () => import('./pages/agent-hub/agent-hub.module').then((m) => m.AgentHubModule)
+  },
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',

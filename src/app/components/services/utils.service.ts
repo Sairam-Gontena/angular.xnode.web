@@ -52,6 +52,11 @@ export class UtilsService {
   public getMeFeedbackPopupTypeToDisplay: Observable<string> =
     this.popupToShow.asObservable();
 
+  private importFilePopupStatus: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeImportFilePopupStatus: Observable<boolean> =
+    this.importFilePopupStatus.asObservable();
+
   private limitReachedPopup: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public handleLimitReachedPopup: Observable<boolean> =
@@ -120,8 +125,8 @@ export class UtilsService {
   public loadViewSummary: Observable<any> =
     this.viewSummary$.asObservable();
 
-    private summaryObject: BehaviorSubject<Object> =
-    new BehaviorSubject<Object>({ summary : {} });
+  private summaryObject: BehaviorSubject<Object> =
+    new BehaviorSubject<Object>({ summary: {} });
 
   public getMeSummaryObject: Observable<Object> =
     this.summaryObject.asObservable();
@@ -174,6 +179,9 @@ export class UtilsService {
 
   showLimitReachedPopup(event: any): void {
     this.limitReachedPopup.next(event);
+  }
+  showImportFilePopup(event: any): void {
+    this.importFilePopupStatus.next(event);
   }
   reloadList(event: any): void {
     this.reload.next(event);

@@ -13,13 +13,26 @@
 </p-overlayPanel>
 <div class="card">
      <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
-          scrollDirection="horizontal">
+     [scrollHeight]="verticalScrollHeight">
           <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
                <div class="flex justify-content-between align-items-center">
-                    <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
-                         <i class="pi pi-search"></i>
-                         <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
-                    </span>
+                    <div class="flex gap-4 p-3">
+                         <xnode-multi-select-checkbox
+                         *ngIf="searchFilterOptions?.showFilterOption"
+                          [filter]="searchFilterOptions.filter"
+                          [showToggleAll]="searchFilterOptions.showToggleAll" 
+                          [showHeader]="searchFilterOptions.showHeader" 
+                          [options]="searchFilterOptions.options"  
+                          [placeholder]="searchFilterOptions.placeholder" 
+                          [optionLabel]="searchFilterOptions.optionLabel" 
+                          [styleClass]="searchFilterOptions.styleClass"
+                          ></xnode-multi-select-checkbox>
+     
+                         <span class="p-input-icon-left" *ngIf="tableInfo?.search_input">
+                              <i class="pi pi-search"></i>
+                              <input pInputText type="text" placeholder="Search " (input)="onInputChange($event)" />
+                         </span>
+                    </div>
                     <div class="flex-wrap">
                          <p-button styleClass="mr-3 t-header-btn" [text]="true" [rounded]="true" *ngIf="tableInfo?.delete_action">
                               <img src="../../assets/delete.svg" alt="circle-ci-image" size="small" >
@@ -32,19 +45,43 @@
                               <i class="pi pi-chevron-down ml-2"></i>
                          </p-button>
                     </div>
+
+                    <div class="flex gap-2 align-items-center px-2" *ngIf="showColumnFilterOption?.showFilterOption">
+                         <span>Columns: </span>
+                         <xnode-multi-select-checkbox
+                          [filter]="showColumnFilterOption.filter"
+                          [showToggleAll]="showColumnFilterOption.showToggleAll"
+                          [showHeader]="showColumnFilterOption.showHeader"
+                          [options]="showColumnFilterOption.options" 
+                          [placeholder]="showColumnFilterOption.placeholder"
+                          [optionLabel]="showColumnFilterOption.optionLabel"
+                          [styleClass]="showColumnFilterOption.styleClass"
+                          (changeEvent)="showColumnFilterOption.changeHandler && showColumnFilterOption.changeHandler($event)"
+                          ></xnode-multi-select-checkbox>
+                    </div>
                </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
                <tr>
-                    <th style="min-width:300px"  *ngFor="let col of columns" [ngClass]="'tableheader'">
-                         {{ col.header }}
-                         <p-columnFilter type="text" [field]="col.field" display="menu"
-                              *ngIf="col.filter"></p-columnFilter>
+                    <th [style]="{'background-color': tableHeaderColor}"  *ngFor="let col of columns" [ngClass]="'tableheader'">
+                         
+                         <ng-container *ngIf="col.width">
+                              <div [style]="{'min-width': col.width}">
+                                   {{ col.header }}
+                                   <p-columnFilter type="text" [field]="col.field" display="menu"
+                                   *ngIf="col.filter"></p-columnFilter>
+                              </div>
+                         </ng-container>
+                         <ng-container *ngIf="!col.width">
+                              <div>{{ col.header }}</div>
+                         </ng-container>
+                         <!-- <p-columnFilter type="text" [field]="col.field" display="menu"
+                              *ngIf="col.filter"></p-columnFilter> -->
                     </th>
                </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex" class="">
-               <tr class="text-white text-xs" style="background-color:#3A3942;">
+               <tr class="text-white text-xs" [style]="{'background-color': i % 2 === 0 && altBgColorRow ? altBgColorRow : '#3A3942'}">
                     <td *ngFor="let col of columns" style="white-space: normal;border-bottom-width: 0px;"
                          [style.width.px]="col.width">
                          <div *ngIf="col.field !== 'interest_level' && col.field !== 'action' && col.type !== 'datetime'"
