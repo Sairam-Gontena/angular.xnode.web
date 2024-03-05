@@ -163,6 +163,8 @@ export class AgentHubModel {
         }else{
             this.tabItems = this.tabFilterOptions.options.filter(item => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx))
         }
+
+        this.getAllAgentList()
     }
 
 
