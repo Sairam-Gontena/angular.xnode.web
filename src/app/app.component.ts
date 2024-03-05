@@ -487,6 +487,8 @@ export class AppComponent implements OnInit {
       this.getMeComponent() +
       '&device_width=' +
       this.screenWidth +
+      '&accountId=' +
+      this.currentUser?.account_id +
       '&token=' +
       this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
       '&user_id=' +
@@ -508,6 +510,8 @@ export class AppComponent implements OnInit {
         this.product?.has_insights +
         '&product_context=' +
         true +
+        '&accountId=' +
+        this.currentUser?.account_id +
         '&product_id=' +
         this.product.id +
         '&product=' +
