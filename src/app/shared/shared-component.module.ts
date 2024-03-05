@@ -21,6 +21,8 @@ import { ThankYouComponent } from '../components/thank-you/thank-you.component';
 import { GeneralFeedbackComponent } from '../components/general-feedback/general-feedback.component';
 import { ActionButtonComponent } from '../components/action-button/action-button.component';
 import { ViewExistingFeedbackComponent } from '../components/view-existing-feedback/view-existing-feedback.component';
+import { ViewSummaryPopupComponent } from '../components/view-summary-popup/view-summary-popup.component';
+
 import { ProductAlertPopupComponent } from '../components/product-alert-popup/product-alert-popup.component';
 import { LimitReachedPopupComponent } from '../components/limit-reached-popup/limit-reached-popup.component';
 import { BpmnCommonComponent } from '../components/bpmn-common/bpmn-common.component';
@@ -63,6 +65,7 @@ import { CreateNewCrVersionComponent } from '../pages/specifications/create-new-
 import { SpecConversationComponent } from '../pages/specifications/spec-conversation/spec-conversation.component';
 import { ConversationActionsComponent } from '../pages/specifications/conversation-actions/conversation-actions.component';
 import { SpecChildConversationComponent } from '../pages/specifications/spec-child-conversation/spec-child-conversation.component';
+import { ImportFilePopupComponent } from '../components/import-file-popup/import-file-popup.component';
 // import { DiffCompComponent } from '../components/diff-comp/diff-comp.component';
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
@@ -92,6 +95,7 @@ import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.comp
     ActionButtonComponent,
     ProductAlertPopupComponent,
     ViewExistingFeedbackComponent,
+    ViewSummaryPopupComponent,
     LimitReachedPopupComponent,
     BpmnCommonComponent,
     DataModelCommonComponent,
@@ -136,7 +140,8 @@ import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.comp
     ConversationActionsComponent,
     SpecChildConversationComponent,
     MultiSelectCheckboxComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    ImportFilePopupComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -161,6 +166,7 @@ import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.comp
     ActionButtonComponent,
     ProductAlertPopupComponent,
     ViewExistingFeedbackComponent,
+    ViewSummaryPopupComponent,
     LimitReachedPopupComponent,
     BpmnCommonComponent,
     DataModelCommonComponent,
@@ -206,7 +212,8 @@ import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.comp
     SpecConversationComponent,
     SpecChildConversationComponent,
     MultiSelectCheckboxComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    ImportFilePopupComponent
   ],
 })
-export class SharedComponentModule {}
+export class SharedComponentModule { }

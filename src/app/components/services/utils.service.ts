@@ -52,6 +52,11 @@ export class UtilsService {
   public getMeFeedbackPopupTypeToDisplay: Observable<string> =
     this.popupToShow.asObservable();
 
+  private importFilePopupStatus: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeImportFilePopupStatus: Observable<boolean> =
+    this.importFilePopupStatus.asObservable();
+
   private limitReachedPopup: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
   public handleLimitReachedPopup: Observable<boolean> =
@@ -115,6 +120,17 @@ export class UtilsService {
     this.selectedContent.asObservable();
   private productChangeBPMN = new Subject<any>();
 
+  private viewSummary$: BehaviorSubject<any> =
+    new BehaviorSubject<any>(false);
+  public loadViewSummary: Observable<any> =
+    this.viewSummary$.asObservable();
+
+  private summaryObject: BehaviorSubject<Object> =
+    new BehaviorSubject<Object>({ summary: {} });
+
+  public getMeSummaryObject: Observable<Object> =
+    this.summaryObject.asObservable();
+
   constructor() { }
 
   disablePageToolsLayoutSubMenu() {
@@ -163,6 +179,9 @@ export class UtilsService {
 
   showLimitReachedPopup(event: any): void {
     this.limitReachedPopup.next(event);
+  }
+  showImportFilePopup(event: any): void {
+    this.importFilePopupStatus.next(event);
   }
   reloadList(event: any): void {
     this.reload.next(event);
@@ -214,6 +233,13 @@ export class UtilsService {
 
   getProductChangeBPMN(): Observable<any> {
     return this.productChangeBPMN.asObservable();
+  }
+  viewSummary(event: any): void {
+    this.viewSummary$.next(event);
+  }
+
+  updateSummary(event: any): void {
+    this.summaryObject.next(event);
   }
 
   calculateTimeAgo(timestamp: string): string {
