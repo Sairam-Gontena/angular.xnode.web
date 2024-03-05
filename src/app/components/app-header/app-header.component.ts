@@ -8,13 +8,14 @@ import { environment } from 'src/environments/environment';
 import { RefreshListService } from '../../RefreshList.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { NgxCaptureService } from 'ngx-capture';
-import { tap } from 'rxjs';
+import { of, tap } from 'rxjs';
 import { UserUtil } from 'src/app/utils/user-util';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { AuthApiService } from 'src/app/api/auth.service';
 import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { OverallSummary } from 'src/models/view-summary';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'xnode-app-header',
@@ -202,18 +203,51 @@ export class AppHeaderComponent implements OnInit {
     this.auditUtil.postAudit('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
   }
 
+  // capture(): void {
+  //   this.captureService
+  //     .getImage(document.body, true)
+  //     .pipe(
+  //       tap((img) => {
+  //         console.log(document.body, 'docuent')
+  //         this.screenshot = img;
+  //         console.log(this.screenshot, 'screenshot')
+  //         this.utilsService.showProductStatusPopup(false);
+  //         this.selectedPopup = 'customer-feedback';
+  //         this.utilsService.loadSpinner(false);
+  //       })
+  //     )
+  //     .subscribe();
+  // }
+
   capture(): void {
-    this.captureService
-      .getImage(document.body, true)
-      .pipe(
-        tap((img) => {
-          this.screenshot = img;
-          this.utilsService.showProductStatusPopup(false);
-          this.selectedPopup = 'customer-feedback';
-          this.utilsService.loadSpinner(false);
-        })
-      )
-      .subscribe();
+    // Get the main window content
+    const mainWindowCapture = this.captureService.getImage(document.body, true);
+
+    // Get the content of each iframe
+    const iframeContents = Array.from(document.querySelectorAll('iframe')).map((iframe: HTMLIFrameElement) => {
+      try {
+        const iframeCapture = this.captureService.getImage(iframe.contentDocument?.body, true);
+        return iframeCapture;
+      } catch (error) {
+        console.error('Error capturing iframe content:', error);
+        return null;
+      }
+    });
+    // Combine captures from the main window and all iframes
+    forkJoin([mainWindowCapture, ...iframeContents]).pipe(
+      tap((captures) => {
+        // Handle captures
+        console.log('Captures:', captures);
+
+        // Assuming the first capture is from the main window
+        this.screenshot = captures[0];
+
+        // Handle the rest of your logic
+        this.utilsService.showProductStatusPopup(false);
+        this.selectedPopup = 'customer-feedback';
+        this.utilsService.loadSpinner(false);
+      })
+    ).subscribe();
   }
 
   initializeWebsocket() {
