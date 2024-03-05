@@ -13,8 +13,8 @@ export class AgentHubService extends BaseApiService{
     super();
   }
 
-  getAllAgent({accountId, endpoint}: {accountId: string, endpoint: string}) {
-    let url = `agent/${endpoint}/${accountId}`
+  getAllAgent({accountId, endpoint, page, page_size}: {accountId: string, endpoint: string, page: number, page_size: number}) {
+    let url = `agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
     return this.get(url)
   }
 

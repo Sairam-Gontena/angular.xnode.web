@@ -24,12 +24,13 @@ export class AgentHubModel {
     statsItem: any;
 
     allAvailableTabItems = [
-        { idx: 0, title: 'Agents', value: 'agent' },
-        { idx: 1, title: 'Capabilities', value: 'capbility' },
-        { idx: 2, title: 'Prompts', value: 'prompt' },
-        { idx: 3, title: 'Knowledge', value: 'knowledge' },
-        { idx: 4, title: 'Models', value: 'model' },
-        { idx: 5, title: 'Tools', value: 'tools' }
+        { idx: 0, title: 'Agents', value: 'agents' },
+        { idx: 1, title: 'Capabilities', value: 'agent_capability' },
+        { idx: 2, title: 'Topics', value: 'topic' },
+        { idx: 3, title: 'Prompts', value: 'prompt' },
+        { idx: 4, title: 'Knowledge', value: 'knowledge' },
+        { idx: 5, title: 'Models', value: 'model' },
+        { idx: 6, title: 'Tools', value: 'tool' }
     ]
 
     breadCrumbsAction = {
@@ -165,13 +166,15 @@ export class AgentHubModel {
     }
 
 
-    OnbreabCrumbsClickHandler(val: string) {
+    OnbreabCrumbsClickHandler(item: any) {
         this.breadCrumbsAction.isBreadCrumbActive = true;
         const newPayload = {
-            label: val,
+            label: item.label,
             index: this.breadCrumbsAction.breadcrumb.length
         };
         this.breadCrumbsAction.breadcrumb = [...this.breadCrumbsAction.breadcrumb, newPayload];
+
+        this.getAllAgentList({endpoint: item.value})
     }
 
     goBackBreadCrumbsHandler(event: any) {
@@ -191,10 +194,11 @@ export class AgentHubModel {
      * NOTE: Async Operation
      */
 
-    async getAllAgentList() {
+    async getAllAgentList({endpoint=''} = {}) {
+        endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value
         this.tableData = []
         try {
-            const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: this.tabItems[this.activeIndex].value });
+            const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: endpoint,page: 1, page_size: 10 });
             this.tableData = response.data as ITableDataEntry[];
         } catch (error) {
             console.error("Error fetching agent list:", error);

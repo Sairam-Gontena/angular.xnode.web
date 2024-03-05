@@ -49,7 +49,7 @@
   <div class="flex agent-summary" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive">
     <!-- Agents Card -->
     <div class="flex gap-2" *ngFor="let item of agentHubModel.statsItem">
-      <p-button styleClass="p-0" (onClick)="agentHubModel.OnbreabCrumbsClickHandler(item.label)">
+      <p-button styleClass="p-0" (onClick)="agentHubModel.OnbreabCrumbsClickHandler(item)">
         <img class="agent-icons" [src]="item.imgPath" alt="">
       </p-button>
       <div class="flex flex-column">
