@@ -11,7 +11,7 @@
           </div>
      </div>
 </p-overlayPanel>
-<div class="card">
+<div class="card flex flex-column">
      <p-table #dt [value]="dynamicData" [columns]="cols" [resizableColumns]="true" [scrollable]="true"
      [scrollHeight]="verticalScrollHeight">
           <ng-template pTemplate="caption" *ngIf="showHeaderMenu">
@@ -120,4 +120,6 @@
                </tr>
           </ng-template>
      </p-table>
+
+     <p-button label="View All" styleClass="align-items-end"></p-button>
 </div>
