@@ -70,6 +70,8 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
 // import { DiffGeneratorComponent } from '../components/diff-generator/diff-generator.component';
 // import { DiffListComponent } from '../components/diff-list/diff-list.component';
 
+import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbox/multi-select-checkbox.component';
+import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -137,6 +139,8 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
     SpecConversationComponent,
     ConversationActionsComponent,
     SpecChildConversationComponent,
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
     ImportFilePopupComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
@@ -207,6 +211,8 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
     CreateNewCrVersionComponent,
     SpecConversationComponent,
     SpecChildConversationComponent,
+    MultiSelectCheckboxComponent,
+    BreadcrumbsComponent,
     ImportFilePopupComponent
   ],
 })

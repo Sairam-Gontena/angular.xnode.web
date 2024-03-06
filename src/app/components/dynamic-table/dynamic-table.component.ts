@@ -5,6 +5,17 @@ interface Column {
   field: string;
   header: string;
 }
+interface FilterOptions {
+  showFilterOption?: boolean;
+  filter: boolean;
+  showToggleAll: boolean;
+  showHeader: boolean;
+  options: any[];
+  placeholder: string;
+  optionLabel: string;
+  styleClass: string;
+  changeHandler?: (event: any) => void;
+}
 @Component({
   selector: 'xnode-dynamic-table',
   templateUrl: './dynamic-table.component.html',
@@ -18,6 +29,35 @@ export class DynamicTableComponent implements OnInit {
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
   @Input() tableInfo: any;
+  @Input() columnWidth: string = "18rem";
+  @Input() tableHeaderColor: string = ''
+  @Input() altBgColorRow: string='';
+  @Input() verticalScrollHeight = "25rem"
+
+  @Input() searchFilterOptions: FilterOptions = {
+    showFilterOption: false,
+    filter: false,
+    showToggleAll: false,
+    showHeader: false,
+    options: [],
+    placeholder: "All",
+    optionLabel: "name",
+    styleClass: "custom-multiselect"
+  }
+
+  @Input() showColumnFilterOption: FilterOptions = {
+    showFilterOption: false,
+    filter: false,
+    showToggleAll: false,
+    showHeader: false,
+    options: [],
+    placeholder: "All",
+    optionLabel: "name",
+    styleClass: "showColumnFilterOption",
+    changeHandler: (event: any): void => {console.log('val')}
+  }
+
+
   headers: any;
   editable: boolean = true;
   showDelete: boolean = true;
