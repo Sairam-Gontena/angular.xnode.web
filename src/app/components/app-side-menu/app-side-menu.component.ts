@@ -8,6 +8,9 @@ import { environment } from 'src/environments/environment';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { MessageService } from 'primeng/api';
+import { MessagingService } from '../services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
   selector: 'xnode-app-side-menu',
@@ -25,16 +28,28 @@ export class AppSideMenuComponent implements OnInit {
     private router: Router,
     private utils: UtilsService,
     private auditUtil: AuditutilsService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private messagingService: MessagingService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
-    this.utils.isInProductContext.subscribe((data: any) => {
-      this.isInProductContext = data;
-      this.prepareMenuBasedOnRoute();
-    });
+    // this.utils.isInProductContext.subscribe((data: any) => {
+    //   this.isInProductContext = data;
+    //   this.prepareMenuBasedOnRoute();
+    // });
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
+        this.isInProductContext = msg.msgData;
+        this.prepareMenuBasedOnRoute();
+      }
+    })
   }
 
   ngOnInit(): void {
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    if (product) {
+      this.isInProductContext = true;
+    } else
+      this.isInProductContext = true;
     this.prepareMenuBasedOnRoute();
   }
 
