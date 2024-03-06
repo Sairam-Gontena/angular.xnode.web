@@ -495,6 +495,8 @@ export class AppComponent implements OnInit {
       this.screenWidth +
       '&accountId=' +
       this.currentUser?.account_id +
+      '&currentUser=' +
+      JSON.stringify(this.currentUser) +
       '&token=' +
       this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
       '&user_id=' +
