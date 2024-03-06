@@ -490,7 +490,9 @@ export class AppComponent implements OnInit {
       '&token=' +
       this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
       '&user_id=' +
-      this.currentUser?.user_id;
+      this.currentUser?.user_id +
+      '&account_id=' +
+      this.currentUser?.account_id;
     if (restriction_max_value) {
       rawUrl =
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
