@@ -49,7 +49,7 @@ export class AppSideMenuComponent implements OnInit {
     if (product) {
       this.isInProductContext = true;
     } else
-      this.isInProductContext = true;
+      this.isInProductContext = false;
     this.prepareMenuBasedOnRoute();
   }
 

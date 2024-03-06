@@ -526,7 +526,7 @@ export class AppComponent implements OnInit {
         JSON.stringify(this.product) +
         '&new_with_navi=' +
         false;
-      if (this.product && !this.product.has_insights) {
+      if (this.product) {
         rawUrl = rawUrl + '&componentToShow=chat';
       } else {
         rawUrl = rawUrl + '&componentToShow=tasks'
