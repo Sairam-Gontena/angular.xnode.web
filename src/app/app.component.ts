@@ -143,6 +143,11 @@ export class AppComponent implements OnInit {
         this.makeTrustedUrl();
       }
     })
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
+        this.isSideWindowOpen = false;
+      }
+    })
   }
 
   navigateToHome(): void {
@@ -157,7 +162,8 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
-    this.makeTrustedUrl()
+    this.makeTrustedUrl();
+    this.router.navigate(['/my-products'])
   }
 
   async setDeepLinkInfo(winUrl: any) {
@@ -494,7 +500,9 @@ export class AppComponent implements OnInit {
       '&token=' +
       this.storageService.getItem(StorageKeys.ACCESS_TOKEN) +
       '&user_id=' +
-      this.currentUser?.user_id;
+      this.currentUser?.user_id +
+      '&account_id=' +
+      this.currentUser?.account_id;
     if (restriction_max_value) {
       rawUrl =
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);

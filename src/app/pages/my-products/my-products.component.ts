@@ -179,7 +179,12 @@ export class MyProductsComponent implements OnInit {
         msgType: MessageTypes.NAVI_CONTAINER_STATE,
         msgData: { naviContainerState: 'EXPAND', product: data },
       });
+
     } else {
+      this.messagingService.sendMessage({
+        msgType: MessageTypes.PRODUCT_CONTEXT,
+        msgData: { naviContainerState: 'EXPAND', product: data },
+      });
       this.router.navigate(['/specification']);
     }
     // this.utils.productContext(true);
