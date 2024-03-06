@@ -15,10 +15,14 @@
                         <div class="tabpanel-content">
                             <div class="mb-3">
                                 <h4 class="m-0 pb-1 font-semibold text-lg line-height-3">
-                                    {{convSummary?.overall_summary?.content?.Title}}
+                                    {{convSummary?.overall_summary?.content?.Title ?
+                                    convSummary?.overall_summary?.content?.Title :
+                                    convSummary?.overall_summary?.content?.title}}
                                 </h4>
                                 <p class="m-0 text-base font-normal line-height-2 tab-text">
-                                    {{convSummary?.overall_summary?.content?.Summary}}
+                                    {{convSummary?.overall_summary?.content?.Summary ?
+                                    convSummary?.overall_summary?.content?.Summary :
+                                    convSummary?.overall_summary?.content?.summary}}
                                 </p>
                                 <div class="text-right mb-2 text-500 text-xs p-1 font-italic font-semibold">
                                     {{getMeLocalDateAndTime(convSummary?.overall_summary?.timestamp)}}
