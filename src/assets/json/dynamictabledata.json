@@ -346,59 +346,418 @@
       ]
     },
 
-    "AgentHub": {
-      "columns": [
-        {
-          "idx": 0,
-          "field": "id",
-          "filter": false,
-          "header": "Id",
-          "sortable": true,
-          "width": "10rem"
-        },
-        {
-          "idx": 2,
-          "field": "name",
-          "filter": false,
-          "header": "Agent Name",
-          "sortable": true,
-          "width": "10rem"
-        },
-    
-        {
-          "idx": 3,
-          "field": "description",
-          "filter": false,
-          "header": "Description",
-          "sortable": true,
-          "width": "20rem"
-        },
-        {
-          "idx": 4,
-          "field": "status",
-          "filter": false,
-          "header": "Status",
-          "sortable": true,
-          "width": "8rem"
-        },
-        {
-          "idx": 5,
-          "field": "created_by",
-          "filter": false,
-          "header": "Created By",
-          "sortable": true,
-          "width": "12rem"
-        },
-    
-        {
-          "idx": 6,
-          "field": "action-btn",
-          "filter": false,
-          "header": "",
-          "sortable": true,
-          "width": "10rem"
-        }
-      ]
-    }
+    "AgentHub": [
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Agent Name",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "description",
+            "filter": false,
+            "header": "Description",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "created_by",
+            "filter": false,
+            "header": "Created By",
+            "sortable": true,
+            "width": "12rem"
+          },
+      
+          {
+            "idx": 6,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Capabilities",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "description",
+            "filter": false,
+            "header": "Description",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "created_by",
+            "filter": false,
+            "header": "Created By",
+            "sortable": true,
+            "width": "12rem"
+          },
+      
+          {
+            "idx": 6,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Topics",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "description",
+            "filter": false,
+            "header": "Description",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "parent",
+            "filter": false,
+            "header": "Parent",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 6,
+            "field": "created_by",
+            "filter": false,
+            "header": "Created By",
+            "sortable": true,
+            "width": "12rem"
+          },
+      
+          {
+            "idx": 7,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Prompt Name",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "description",
+            "filter": false,
+            "header": "Description",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "parent",
+            "filter": false,
+            "header": "Parent",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 6,
+            "field": "created_by",
+            "filter": false,
+            "header": "Created By",
+            "sortable": true,
+            "width": "12rem"
+          },
+      
+          {
+            "idx": 7,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Name",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "source",
+            "filter": false,
+            "header": "Source",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "shared_on",
+            "filter": false,
+            "header": "Shared On",
+            "sortable": true,
+            "width": "8rem"
+          },
+
+          {
+            "idx": 6,
+            "field": "tags",
+            "filter": false,
+            "header": "Tags",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 7,
+            "field": "shared_by",
+            "filter": false,
+            "header": "Shared By",
+            "sortable": true,
+            "width": "12rem"
+          },
+          {
+            "idx": 8,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Model Name",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "description",
+            "filter": false,
+            "header": "Description",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "created_by",
+            "filter": false,
+            "header": "Created By",
+            "sortable": true,
+            "width": "12rem"
+          },
+      
+          {
+            "idx": 6,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "idx": 1,
+            "field": "id",
+            "filter": false,
+            "header": "ID",
+            "sortable": true,
+            "width": "10rem"
+          },
+          {
+            "idx": 2,
+            "field": "name",
+            "filter": false,
+            "header": "Tool Name",
+            "sortable": true,
+            "width": "10rem"
+          },
+      
+          {
+            "idx": 3,
+            "field": "description",
+            "filter": false,
+            "header": "Description",
+            "sortable": true,
+            "width": "20rem"
+          },
+          {
+            "idx": 4,
+            "field": "status",
+            "filter": false,
+            "header": "Status",
+            "sortable": true,
+            "width": "8rem"
+          },
+          {
+            "idx": 5,
+            "field": "created_by",
+            "filter": false,
+            "header": "Created By",
+            "sortable": true,
+            "width": "12rem"
+          },
+      
+          {
+            "idx": 6,
+            "field": "action-btn",
+            "filter": false,
+            "header": "",
+            "sortable": true,
+            "width": "10rem"
+          }
+        ]
+      }
+      
+    ]
   }
 }

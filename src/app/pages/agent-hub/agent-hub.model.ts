@@ -25,7 +25,7 @@ export class AgentHubModel {
 
     allAvailableTabItems = [
         { idx: 0, title: 'Agents', value: 'agents' },
-        { idx: 1, title: 'Capabilities', value: 'agent_capability' },
+        { idx: 1, title: 'Capabilities', value: 'capability' },
         { idx: 2, title: 'Topics', value: 'topic' },
         { idx: 3, title: 'Prompts', value: 'prompt' },
         { idx: 4, title: 'Knowledge', value: 'knowledge' },
@@ -83,13 +83,13 @@ export class AgentHubModel {
         private storageService: LocalStorageService,
         private agentHubService: AgentHubService
     ) {
-        this.columns = dynamicTableColumnData.dynamicTable.AgentHub.columns;
+        this.activeIndex = 0;
+        this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
 
         /**
          * Get the column name for filter option 
          */
 
-        this.activeIndex = 0;
         this.tabItems = this.allAvailableTabItems;
 
         this.tabFilterOptions.options = this.tabItems
@@ -151,9 +151,9 @@ export class AgentHubModel {
 
     onShowDynamicColumnFilter(event: any) {
         if (!event?.value?.length) {
-            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns
+            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns
         } else {
-            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub?.columns?.filter(item => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx))
+            this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(item => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx))
         }
     }
 
@@ -197,6 +197,7 @@ export class AgentHubModel {
      */
 
     async getAllAgentList({endpoint=''} = {}) {
+        this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns
         endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value
         this.tableData = []
         try {
