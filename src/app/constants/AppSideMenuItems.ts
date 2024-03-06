@@ -218,7 +218,7 @@ export const AppSideMenuItems =
 
         ]
     },
-    PROD: {
+    'PROD': {
         AdminSideMenu: [
             {
                 label: 'Home',
