@@ -13,6 +13,8 @@ export class AgentHubModel {
     activeIndex: number;
     tabItems: { title: string, value: string }[];
     tableData!: ITableDataEntry[];
+
+    // tableData!: any;
     tableInfo: ITableInfo = {
         delete_action: false,
         export_action: false,
@@ -25,7 +27,7 @@ export class AgentHubModel {
 
     allAvailableTabItems = [
         { idx: 0, title: 'Agents', value: 'agents' },
-        { idx: 1, title: 'Capabilities', value: 'capability' },
+        { idx: 1, title: 'Capabilities', value: 'capabilities_linked_agents' },
         { idx: 2, title: 'Topics', value: 'topic' },
         { idx: 3, title: 'Prompts', value: 'prompt' },
         { idx: 4, title: 'Knowledge', value: 'knowledge' },
@@ -203,6 +205,80 @@ export class AgentHubModel {
         try {
             const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: endpoint,page: 1, page_size: 10 });
             this.tableData = response.data as ITableDataEntry[];
+
+            // this.tableData = [
+            //     {
+            //       id: 1,
+            //       name: 'Agent 1',
+            //       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            //       status: 'Active',
+            //       created_by: 'John Doe'
+            //     },
+            //     {
+            //       id: 2,
+            //       name: 'Agent 2',
+            //       description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            //       status: 'Inactive',
+            //       created_by: 'Jane Doe'
+            //     },
+            //     {
+            //       id: 3,
+            //       name: 'Agent 3',
+            //       description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+            //       status: 'Active',
+            //       created_by: 'John Smith'
+            //     },
+            //     {
+            //       id: 4,
+            //       name: 'Agent 4',
+            //       description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+            //       status: 'Active',
+            //       created_by: 'Alice Johnson'
+            //     },
+            //     {
+            //       id: 5,
+            //       name: 'Agent 5',
+            //       description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            //       status: 'Inactive',
+            //       created_by: 'Bob Williams'
+            //     },
+            //     {
+            //       id: 6,
+            //       name: 'Agent 6',
+            //       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            //       status: 'Active',
+            //       created_by: 'Emily Davis'
+            //     },
+            //     {
+            //       id: 7,
+            //       name: 'Agent 7',
+            //       description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            //       status: 'Inactive',
+            //       created_by: 'Frank Wilson'
+            //     },
+            //     {
+            //       id: 8,
+            //       name: 'Agent 8',
+            //       description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+            //       status: 'Active',
+            //       created_by: 'Grace Anderson'
+            //     },
+            //     {
+            //       id: 9,
+            //       name: 'Agent 9',
+            //       description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+            //       status: 'Inactive',
+            //       created_by: 'Henry Martinez'
+            //     },
+            //     {
+            //       id: 10,
+            //       name: 'Agent 10',
+            //       description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            //       status: 'Active',
+            //       created_by: 'Isabella Garcia'
+            //     }
+            //   ];
+              
         } catch (error) {
             console.error("Error fetching agent list:", error);
         }

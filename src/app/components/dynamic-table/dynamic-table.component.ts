@@ -34,6 +34,9 @@ export class DynamicTableComponent implements OnInit {
   @Input() altBgColorRow: string='';
   @Input() verticalScrollHeight = "25rem"
 
+  @Input() showRows!: number;
+  @Input() totalRecordsCount!: number;
+
   @Input() searchFilterOptions: FilterOptions = {
     showFilterOption: false,
     filter: false,
@@ -148,5 +151,12 @@ export class DynamicTableComponent implements OnInit {
       type: EXCEL_TYPE,
     });
     FileSaver.saveAs(data, this.exportFileName);
+  }
+
+   // Function to handle lazy loading (pagination)
+   onPageChangeHandler(event: any) {
+    console.log(event, "event")
+
+    // Emit event to parent
   }
 }

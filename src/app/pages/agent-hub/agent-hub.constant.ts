@@ -12,7 +12,7 @@ export const Constant = {
             imgPath: "../../../assets/agent-hub/capabilities.svg",
             key: "capability_count",
             count: '',
-            value: 'capability'
+            value: 'capabilities_linked_agents'
         },
         {
             label: "Topics",

@@ -121,5 +121,14 @@
           </ng-template>
      </p-table>
 
+     <p-paginator
+     *ngIf="showRows && totalRecordsCount"
+     [showFirstLastIcon]="false"
+     (onPageChange)="onPageChangeHandler($event)"
+     [rows]="showRows"
+     [totalRecords]="totalRecordsCount"
+     styleClass="background-none"
+   ></p-paginator>  
+
      <p-button label="View All" styleClass="align-items-end"></p-button>
 </div>
