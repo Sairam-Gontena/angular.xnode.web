@@ -26,7 +26,7 @@ export const Constant = {
             imgPath: "../../../assets/agent-hub/prompt.svg",
             key: "prompt_count",
             count: '',
-            value: 'prompt'
+            value: 'prompt_linked_topic'
         }
     ]
 }

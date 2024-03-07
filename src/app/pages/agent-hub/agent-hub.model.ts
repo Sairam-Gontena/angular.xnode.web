@@ -29,7 +29,7 @@ export class AgentHubModel {
         { idx: 0, title: 'Agents', value: 'agents' },
         { idx: 1, title: 'Capabilities', value: 'capabilities_linked_agents' },
         { idx: 2, title: 'Topics', value: 'topic' },
-        { idx: 3, title: 'Prompts', value: 'prompt' },
+        { idx: 3, title: 'Prompts', value: 'prompt_linked_topic' },
         { idx: 4, title: 'Knowledge', value: 'knowledge' },
         { idx: 5, title: 'Models', value: 'model' },
         { idx: 6, title: 'Tools', value: 'tool' }
