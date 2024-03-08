@@ -542,9 +542,6 @@ export class AppComponent implements OnInit {
 
   }
   iframeUrlLoad(rawUrl: any) {
-    console.log('rawUrl', rawUrl);
-
-    // created ths in new method
     setTimeout(() => {
       this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
       this.loadIframeUrl();

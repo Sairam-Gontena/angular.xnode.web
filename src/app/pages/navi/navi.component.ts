@@ -249,7 +249,6 @@ export class NaviComponent implements OnInit {
       this.router.navigate(['/my-products']);
     }
     if (event.data.message === 'change-app') {
-      console.log('?????');
       this.storageService.saveItem(StorageKeys.Product, event.data.data);
       this.utils.productContext(true);
     }
