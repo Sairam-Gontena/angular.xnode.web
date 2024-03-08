@@ -19,6 +19,7 @@ export class AgentHubModel {
     activeIndex: number;
     tabItems: { title: string, value: string }[];
     tableData!: ITableDataEntry[];
+    tableRowActionOptions: any[] = []
 
     // tableData!: any;
     tableInfo: ITableInfo = {
@@ -138,6 +139,29 @@ export class AgentHubModel {
             },
             // Additional dropdown items...
         ];
+
+        this.tableRowActionOptions = [
+            {
+                label: "View",
+                icon: "",
+                command: () => {}
+            },
+            {
+                label: "Duplicate",
+                icon: "",
+                command: () => {}
+            },
+            {
+                label: "Archieve",
+                icon: "",
+                command: () => {}
+            },
+            {
+                label: "Delete",
+                icon: "",
+                command: () => {}
+            }
+        ]
 
         this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
     }

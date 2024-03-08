@@ -35,6 +35,8 @@ export class DynamicTableComponent implements OnInit {
   @Input() verticalScrollHeight = "25rem"
   @Input() paginatorInfo:any = {}
 
+  @Input() tableRowActionOptions: any[] = [];
+
   @Input() searchFilterOptions: FilterOptions = {
     showFilterOption: false,
     filter: false,

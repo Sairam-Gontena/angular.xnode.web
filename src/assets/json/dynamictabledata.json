@@ -448,7 +448,8 @@
       
           {
             "idx": 6,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,
@@ -510,7 +511,8 @@
       
           {
             "idx": 7,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,
@@ -572,7 +574,8 @@
       
           {
             "idx": 7,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,
@@ -642,7 +645,8 @@
           },
           {
             "idx": 8,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,
@@ -696,7 +700,8 @@
       
           {
             "idx": 6,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,
@@ -750,7 +755,8 @@
       
           {
             "idx": 6,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,
