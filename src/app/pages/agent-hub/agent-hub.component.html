@@ -75,8 +75,7 @@
 
     <p-tabView class="relative w-full"
       (onChange)="agentHubModel.getAllAgentList()" [(activeIndex)]="agentHubModel.activeIndex">
-      <p-tabPanel *ngFor="let tab of agentHubModel.tabItems let i=index" [header]="tab.title"
-        [style]="{color: agentHubModel.activeIndex ==i && '#fff'}">
+      <p-tabPanel *ngFor="let tab of agentHubModel.tabItems let i=index" [header]="tab.title">
 
         <!-- For now Comment below code, uncomment once the functionality is decided -->
         <!-- <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}"

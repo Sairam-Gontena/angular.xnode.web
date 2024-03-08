@@ -111,6 +111,12 @@
                                    </div>
                               </div>
                          </ng-container>
+
+                         <ng-container *ngIf="col.icon">
+
+                              <p-splitButton label="" [icon]="col.icon" styleClass="p-0"></p-splitButton>
+                              <!-- <i [class]="col.icon"></i> -->
+                         </ng-container>
                     </td>
                </tr>
           </ng-template>

@@ -393,7 +393,8 @@
       
           {
             "idx": 6,
-            "field": "action-btn",
+            "field": "",
+            "icon": "pi pi-ellipsis-v",
             "filter": false,
             "header": "",
             "sortable": true,

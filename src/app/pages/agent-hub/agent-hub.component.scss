@@ -170,3 +170,13 @@
   background-color: transparent;
   border: none;
 }
+
+
+// Dynamic Table style
+
+// Column 3 dots action button
+
+
+::ng-deep .p-splitbutton-menubutton{
+  display: none;
+}
