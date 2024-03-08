@@ -74,7 +74,6 @@ export class AppComponent implements OnInit {
     private messageService: MessageService,
     private subMenuLayoutUtil: UtilsService,
     private spinner: NgxSpinnerService,
-    private auditUtil: AuditutilsService,
     public auth: AuthApiService,
     private notifyApi: NotifyApiService,
     private themeService: ThemeService,
@@ -119,12 +118,10 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
-        // this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.getLatestIframeUrl.subscribe((data: any) => {
       if (data) {
-        // this.makeTrustedUrl();
         this.utilsService.EnableDockedNavi();
       }
     });
@@ -137,7 +134,7 @@ export class AppComponent implements OnInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.isSideWindowOpen = true
-        this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
+        // this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.makeTrustedUrl();
@@ -229,6 +226,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
+    if (isNaviExpanded) this.isNaviExpanded = isNaviExpanded;
+    console.log('this.isNaviExpanded', this.isNaviExpanded);
+
     this.isSideWindowOpen = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -298,9 +299,9 @@ export class AppComponent implements OnInit {
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
-      if (!data) {
-        this.isNaviExpanded = false;
-      }
+      // if (!data) {
+      //   this.isNaviExpanded = false;
+      // }
     });
     this.getAllUsers();
   }
@@ -400,30 +401,39 @@ export class AppComponent implements OnInit {
         }
         if (event.data.message === 'triggerCustomEvent') {
           this.isSideWindowOpen = false;
-          this.isNaviExpanded = false;
+          // this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+
         }
         if (event.data.message === 'close-docked-navi') {
           this.isSideWindowOpen = false;
-          this.isNaviExpanded = false;
+          // this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+
         }
         if (event.data.message === 'close-event') {
           //not there to handle the close option in navi in my-prod so added
           this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.product = undefined;
-          this.isNaviExpanded = false;
+          // this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.isSideWindowOpen = false;
           localStorage.removeItem('product')
           localStorage.removeItem('has_insights')
           localStorage.removeItem('IS_NAVI_OPENED')
           localStorage.removeItem('record_id')
           localStorage.removeItem('app_name')
+          this.isNaviExpanded = false;
+          this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
           this.makeTrustedUrl()
         }
         if (event.data.message === 'expand-navi') {
           this.isNaviExpanded = true;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
         }
         if (event.data.message === 'contract-navi') {
           this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         }
         if (event.data.message === 'triggerProductPopup') {
           this.content = event.data.data;
@@ -452,17 +462,23 @@ export class AppComponent implements OnInit {
             }
             if (event.data.message === 'triggerCustomEvent') {
               this.isSideWindowOpen = false;
-              this.isNaviExpanded = false;
+              // this.isNaviExpanded = false;
+              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+
             }
             if (event.data.message === 'close-docked-navi') {
               this.isSideWindowOpen = false;
-              this.isNaviExpanded = false;
+              // this.isNaviExpanded = false;
+              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+
             }
             if (event.data.message === 'expand-navi') {
               this.isNaviExpanded = true;
+              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
             }
             if (event.data.message === 'contract-navi') {
-              this.isNaviExpanded = false;
+              // this.isNaviExpanded = false;
+              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
             }
           });
         }
