@@ -233,8 +233,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/specifications/specifications.module').then((m) => m.SpecificationsModule)
   },
   {
-    path: 'agent-hub',
+    path: 'agent-playground',
     loadChildren: () => import('./pages/agent-hub/agent-hub.module').then((m) => m.AgentHubModule)
+  },
+  {
+    path: 'agent-playground/:agent',
+    loadChildren: () => import('./pages/agent-details/agent-details.module').then((m) => m.AgentDetailsModule)
   },
   {
     path: '',
