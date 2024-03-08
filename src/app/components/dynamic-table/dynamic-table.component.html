@@ -122,11 +122,11 @@
      </p-table>
 
      <p-paginator
-     *ngIf="showRows && totalRecordsCount"
+     *ngIf="paginatorInfo.perPage && paginatorInfo.totalRecords"
      [showFirstLastIcon]="false"
      (onPageChange)="onPageChangeHandler($event)"
-     [rows]="showRows"
-     [totalRecords]="totalRecordsCount"
+     [rows]="paginatorInfo.perPage"
+     [totalRecords]="paginatorInfo.totalRecords"
      styleClass="background-none"
    ></p-paginator>  
 

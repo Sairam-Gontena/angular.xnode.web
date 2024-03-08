@@ -15,6 +15,13 @@ export interface ITableInfo {
     search_input: boolean;
 }
 
+export interface IPaginatorInfo {
+    page: number;
+    totalPages: number;
+    totalRecords: number;
+    perPage: number;
+}
+
 export interface IDropdownItem {
     label: string;
     icon: string;

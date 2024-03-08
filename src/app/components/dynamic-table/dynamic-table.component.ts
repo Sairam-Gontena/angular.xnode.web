@@ -33,9 +33,7 @@ export class DynamicTableComponent implements OnInit {
   @Input() tableHeaderColor: string = ''
   @Input() altBgColorRow: string='';
   @Input() verticalScrollHeight = "25rem"
-
-  @Input() showRows!: number;
-  @Input() totalRecordsCount!: number;
+  @Input() paginatorInfo:any = {}
 
   @Input() searchFilterOptions: FilterOptions = {
     showFilterOption: false,

@@ -3,11 +3,17 @@
  */
 import { LocalStorageService } from "src/app/components/services/local-storage.service";
 import dynamicTableColumnData from "../../../assets/json/dynamictabledata.json";
-import { IDropdownItem, ITableDataEntry, ITableInfo } from "./IAgent-hub";
+import { IDropdownItem, IPaginatorInfo, ITableDataEntry, ITableInfo } from "./IAgent-hub";
 import { AgentHubService } from "src/app/api/agent-hub.service";
 import { StorageKeys } from "src/models/storage-keys.enum";
 import { Constant } from "./agent-hub.constant";
 
+const InitialPaginatorInfo  = {
+    page: 1,
+    perPage:10,
+    totalPages: 0,
+    totalRecords: 0,
+}
 export class AgentHubModel {
     columns: any; // Define the type of columns based on the actual data structure
     activeIndex: number;
@@ -21,6 +27,8 @@ export class AgentHubModel {
         name: "Notification List",
         search_input: true
     };
+
+    paginatorInfo: IPaginatorInfo = {...InitialPaginatorInfo};
     agentTabItemDropdown: IDropdownItem[];
     userInfo: any;
     statsItem: any;
@@ -202,9 +210,14 @@ export class AgentHubModel {
         this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns
         endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value
         this.tableData = []
+        this.paginatorInfo = {...InitialPaginatorInfo}
         try {
-            const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: endpoint,page: 1, page_size: 10 });
-            this.tableData = response.data as ITableDataEntry[];
+            const response = await this.agentHubService.getAllAgent({ accountId: this.userInfo.account_id, endpoint: endpoint,page: this.paginatorInfo.page, page_size: this.paginatorInfo.perPage });
+            this.tableData = response.data.data as ITableDataEntry[];
+            this.paginatorInfo.page = response.data.page
+            this.paginatorInfo.perPage = response.data.per_page
+            this.paginatorInfo.totalRecords = response.data.total_items
+            this.paginatorInfo.totalPages = response.data.total_pages
 
             // this.tableData = [
             //     {
