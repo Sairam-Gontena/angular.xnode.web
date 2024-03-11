@@ -54,6 +54,7 @@ export class MyProductsComponent implements OnInit {
   enableSearch: boolean = false;
   searchTextConversation: any;
   loading: boolean = false;
+  showImportFilePopup: boolean = false;
 
   constructor(
     private RefreshListService: RefreshListService,
@@ -201,6 +202,7 @@ export class MyProductsComponent implements OnInit {
     window.open(productUrl, '_blank');
   }
   importNavi() {
+    this.showImportFilePopup = true;
     const restrictionMaxValue = localStorage.getItem('restriction_max_value');
     let totalApps = localStorage.getItem('meta_data');
     if (totalApps) {
@@ -215,13 +217,16 @@ export class MyProductsComponent implements OnInit {
         this.utils.showLimitReachedPopup(true);
         localStorage.setItem('show-upload-panel', 'false');
       } else {
-        this.router.navigate(['/x-pilot']);
-        localStorage.setItem('show-upload-panel', 'true');
-        this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
+        this.showImportFilePopup = true;
+        // this.router.navigate(['/x-pilot']);
+        // localStorage.setItem('show-upload-panel', 'true');
+        // this.auditUtil.postAudit('CSV_IMPORT', 1, 'SUCCESS', 'user-audit');
       }
     }
   }
-
+  closeEventEmitter() {
+    this.showImportFilePopup = false;
+  }
   getMetaData() {
     this.naviApiService
       .getMetaData(this.currentUser?.email)

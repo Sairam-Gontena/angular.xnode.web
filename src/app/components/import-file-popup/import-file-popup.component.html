@@ -1,0 +1,170 @@
+<p-dialog [(visible)]="visible" [style]="{width: '75vw', height: 'auto'}">
+    <div class="grid p-0 m-0 overflow-hidden">
+        <div class="col-12 vertical-tabs-container p-0 m-0 overflow-hidden">
+            <div class="p-0 m-0 vertical-divider">
+                <div class="flex justify-content-start text-base font-medium mb-3 mt-7 ml-5">Import Source</div>
+                <div class="vertical-tabs">
+                    <div class="vertical-tab" (click)="onClickTab(i)" [ngClass]="{'active': activeIndex === i}"
+                        *ngFor="let tabs of tabs; let i = index">
+                        {{tabs.name}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="vertical-tad-data justify-content-center p-0 m-0">
+                <div class="col-12 flex justify-content-between align-items-center p-4 m-0">
+                    <div class="">
+                        <div class="font-semibold text-lg text-white">Import Data</div>
+                        <div class="text-sm font-medium mt-1">Import data from other apps and files into xnode
+                        </div>
+                    </div>
+                    <div class="flex justify-content-end">
+                        <div class="flex align-items-center">
+                            <img src="../../assets/filter-icon.svg" width="24px" height="24px" class="ml-2 pointer">
+                        </div>
+                        <div class="flex align-items-center p-inputgroup w-14rem h-2rem ml-4 mt-2">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-search search-icon"></i>
+                            </span>
+                            <input type="text" pInputText placeholder="Search" [(ngModel)]="searchText"
+                                (input)="search()" class="search-input w-1rem h-2rem pointer" />
+                        </div>
+                        <div class="flex justify-content-end">
+                            <i class="pi pi-times p-3 pointer" (click)="closeDialog()"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <hr class="horizontal-divider p-0 m-0">
+                <div class="col-12 tab-content p-4">
+
+                    <div class="" *ngIf="activeIndex === 0">
+                        <div class="tabpanel-content overflow-auto">
+                            <div class="col-12 flex content">
+                                <div class="col-4">
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectPdf.click()">
+                                        <img src="../../assets/pdf-icon.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">PDF</span>
+                                        <input type="file" #selectPdf style="display: none;" id="file" accept=".pdf"
+                                            #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectWord.click()">
+                                        <img src="../../assets/word-icon.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Word</span>
+                                        <input type="file" accept=".doc,.docx,.docs" #selectWord style="display: none;"
+                                            id="file" #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectTxt.click()">
+                                        <img src="../../assets/call-transcriptions.svg" width="24px" height="24px"
+                                            class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Call
+                                            Transcripts</span>
+                                        <input type="file" accept=".txt" #selectTxt style="display: none;" id="file"
+                                            #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectXl.click()">
+                                        <img src="../../assets/excel-icon.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Excel</span>
+                                        <input type="file" accept=".xls,.xlsx" #selectXl style="display: none;"
+                                            id="file" #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectMd.click()">
+                                        <img src="../../assets/text-markdown.svg" width="24px" height="24px"
+                                            class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Text &
+                                            Markdown</span>
+                                        <input type="file" accept=".txt,.md" #selectMd style="display: none;" id="file"
+                                            #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectMedia.click()">
+                                        <img src="../../assets/media.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Media</span>
+                                        <input type="file" accept="audio/*,video/*,image/*" #selectMedia
+                                            style="display: none;" id="file" #fileInput
+                                            (change)="fileBrowseHandler($event)">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectCSV.click()">
+                                        <img src="../../assets/csv-icon.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">CSV</span>
+                                        <input type="file" accept=".csv" #selectCSV style="display: none;" id="file"
+                                            #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectEmail.click()">
+                                        <img src="../../assets/email-icon.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Email</span>
+                                        <input type="file" accept=".xls,.xlsx" #selectEmail style="display: none;"
+                                            id="file" #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload"
+                                        (click)="selectHTML.click()">
+                                        <img src="../../assets/html-icon.svg" width="24px" height="24px" class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">HTML</span>
+                                        <input type="file" accept=".html" #selectHTML style="display: none;" id="file"
+                                            #fileInput (change)="fileBrowseHandler($event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="activeIndex === 1">
+                        <div class="tabpanel-content overflow-auto">
+                            <div class="col-12 p-0 m-0 flex content">
+                                <div class="col-4">
+                                    <div class=" card flex justify-content-start border-round-lg file-upload">
+                                        <img src="../../assets/postgress-icon.svg" width="24px" height="24px"
+                                            class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">Postgres</span>
+                                        <p-inputSwitch [(ngModel)]="checked"
+                                            (onChange)="switchChanged()"></p-inputSwitch>
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload">
+                                        <img src="../../assets/mongodb-icon.svg" width="24px" height="24px"
+                                            class="ml-2">
+                                        <span class="ml-3 text-base	font-medium flex align-items-center">MongoDb</span>
+                                        <p-inputSwitch [(ngModel)]="checked"></p-inputSwitch>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card flex justify-content-start border-round-lg file-upload">Postgres
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload">DynamoDb
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload">GraohQL
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card flex justify-content-start border-round-lg file-upload">SQLlite
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload">Cassendra
+                                    </div>
+                                    <div class="card flex justify-content-start border-round-lg file-upload">Oracle
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>-->
+                    <div class="" *ngIf="activeIndex === 1">
+                        <div class="tabpanel-content overflow-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</p-dialog>

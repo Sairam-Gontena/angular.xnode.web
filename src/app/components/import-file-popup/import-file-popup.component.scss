@@ -1,0 +1,171 @@
+.content {
+    padding-left: 0px;
+}
+
+.tabpanel-content {
+    height: 400px;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    padding-bottom: 0px;
+    color: #EFEEEE;
+    background-color: #23222B !important;
+    padding: 0px;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    background-color: #23222B;
+    color: #A2A2A3;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(78, 78, 78, 0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    // background: rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(63, 63, 63, 0.5);
+}
+
+:host ::ng-deep {
+    .orientation-right {
+        display: flex;
+
+        .p-tabview {
+            flex-direction: column;
+            width: 10%;
+        }
+
+        .p-tabview-panel {
+            width: 100%; // to have content take up remainder of space
+        }
+    }
+}
+
+.file-upload {
+    padding: 10px;
+    background-color: #2E2D36;
+    color: #EFEEEE !important;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.vertical-tabs-container {
+    display: flex;
+    height: 100%;
+}
+
+.vertical-tabs {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.vertical-divider {
+    width: 268px;
+    border-right: 2px solid #48484F;
+}
+
+.vertical-tad-data {
+    width: calc(100% - 268px);
+}
+
+.horizontal-divider {
+    border: 1px solid #48484F;
+}
+
+.vertical-tab {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 3rem;
+    // border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.vertical-tab.active {
+    background-color: #48484F;
+    color: #EFEEEE;
+    // font-weight: bold;
+}
+
+.tab-content {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+    display: none;
+}
+
+:host::ng-deep .p-inputgroup-addon:first-child,
+.p-inputgroup button:first-child,
+.p-inputgroup input:first-child,
+.p-inputgroup>.p-inputwrapper:first-child>.p-component,
+.p-inputgroup>.p-inputwrapper:first-child>.p-component>.p-inputtext {
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+}
+
+:host::ng-deep .p-inputgroup-addon:last-child,
+.p-inputgroup button:last-child,
+.p-inputgroup input:last-child,
+.p-inputgroup>.p-inputwrapper:last-child>.p-component,
+.p-inputgroup>.p-inputwrapper:last-child>.p-component>.p-inputtext {
+    border-top-right-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+}
+
+:host::ng-deep .p-inputgroup-addon {
+    background: #2E2D36;
+    color: #6c757d;
+    border: 0px;
+    padding: 0.75rem 0.75rem;
+    width: 3px;
+    height: 2rem;
+}
+
+:host::ng-deep .p-inputtext {
+    border-radius: 0px;
+    border: none;
+    background: #2E2D36;
+}
+
+
+
+@media (max-width: 767px) {
+
+    .vertical-tabs {
+        display: flex;
+        flex-direction: row;
+        background-color: transparent;
+        font-weight: 700;
+        font-size: 12px;
+    }
+
+    .vertical-divider {
+        border-right: none;
+    }
+
+    .vertical-tab {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        // border-bottom: 1px solid #ccc;
+        cursor: pointer;
+    }
+}

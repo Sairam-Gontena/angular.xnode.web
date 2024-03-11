@@ -66,6 +66,7 @@ export class AppComponent implements OnInit {
     '#/operate/change/history-log',
   ];
   usersList: any;
+  showImportFilePopup: boolean = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -303,6 +304,11 @@ export class AppComponent implements OnInit {
       //   this.isNaviExpanded = false;
       // }
     });
+    this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
+      if (data) {
+        this.showImportFilePopup = true;
+      }
+    });
     this.getAllUsers();
   }
 
@@ -479,6 +485,9 @@ export class AppComponent implements OnInit {
             if (event.data.message === 'contract-navi') {
               // this.isNaviExpanded = false;
               this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+            }
+            if (event.data.message === 'import-file-popup') {
+              this.utilsService.showImportFilePopup(true);
             }
           });
         }

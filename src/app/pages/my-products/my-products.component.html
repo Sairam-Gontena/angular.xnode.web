@@ -46,8 +46,8 @@
     <div class="overflow-auto my-products-scroll">
         <div class="grid m-0">
             <div class="col-12">
-                <xnode-product-cards [filteredProducts]="filteredProducts" [end]="end" (createNewWithNavi)="onClickNew()"
-                    (onClickProductCard)="onClickProductCard($event)"
+                <xnode-product-cards [filteredProducts]="filteredProducts" [end]="end"
+                    (createNewWithNavi)="onClickNew()" (onClickProductCard)="onClickProductCard($event)"
                     (openExternalLink)="openExternalLink($event)"></xnode-product-cards>
             </div>
             <div class="col-12 lg:col-12  flex justify-content-end flex-wrap" *ngIf="filteredProducts.length > 0">
@@ -110,3 +110,5 @@
 </div>
 <xnode-limit-reached-popup *ngIf="showLimitReachedPopup" [visible]="showLimitReachedPopup"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
+<xnode-import-file-popup [visible]="showImportFilePopup"
+    (closeEventEmitter)="closeEventEmitter()"></xnode-import-file-popup>
