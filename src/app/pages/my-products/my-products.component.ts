@@ -202,7 +202,6 @@ export class MyProductsComponent implements OnInit {
     window.open(productUrl, '_blank');
   }
   importNavi() {
-    this.showImportFilePopup = true;
     const restrictionMaxValue = localStorage.getItem('restriction_max_value');
     let totalApps = localStorage.getItem('meta_data');
     if (totalApps) {
