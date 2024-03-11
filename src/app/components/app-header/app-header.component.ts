@@ -15,6 +15,8 @@ import { AuthApiService } from 'src/app/api/auth.service';
 import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { OverallSummary } from 'src/models/view-summary';
+import { MessagingService } from '../services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
   selector: 'xnode-app-header',
@@ -76,7 +78,8 @@ export class AppHeaderComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private messagingService: MessagingService
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -383,8 +386,11 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onClickLogo(): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.PRODUCT_CONTEXT,
+      msgData: false,
+    });
     this.navigateToHome.emit();
-    // this.utils.productContext(false);
   }
 
   showMeLimitInfoPopup(event: any): void {

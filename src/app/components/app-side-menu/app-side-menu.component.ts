@@ -32,12 +32,8 @@ export class AppSideMenuComponent implements OnInit {
     private messagingService: MessagingService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
-    // this.utils.isInProductContext.subscribe((data: any) => {
-    //   this.isInProductContext = data;
-    //   this.prepareMenuBasedOnRoute();
-    // });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
+      if (msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
         this.isInProductContext = msg.msgData;
         this.prepareMenuBasedOnRoute();
       }

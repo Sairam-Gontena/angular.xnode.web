@@ -87,6 +87,10 @@ export class MyProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.utils.loadSpinner(true);
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.PRODUCT_CONTEXT,
+      msgData: false,
+    });
     this.route.queryParams.subscribe((params: any) => {
       if (params.product === 'created') {
         this.utils.loadToaster({
@@ -160,8 +164,6 @@ export class MyProductsComponent implements OnInit {
   }
 
   onClickProductCard(data: any): void {
-    console.log('data', data);
-
     this.auditUtil.postAudit('ON_CLICK_PRODUCT', 1, 'SUCCESS', 'user-audit');
     if (this.currentUser?.email == data.email) {
       this.utils.hasProductPermission(true);
@@ -179,15 +181,13 @@ export class MyProductsComponent implements OnInit {
         msgType: MessageTypes.NAVI_CONTAINER_STATE,
         msgData: { naviContainerState: 'EXPAND', product: data },
       });
-
     } else {
       this.messagingService.sendMessage({
         msgType: MessageTypes.PRODUCT_CONTEXT,
-        msgData: { naviContainerState: 'EXPAND', product: data },
+        msgData: true,
       });
       this.router.navigate(['/specification']);
     }
-    // this.utils.productContext(true);
   }
 
   onClickNew() {
