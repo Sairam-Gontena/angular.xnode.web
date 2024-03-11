@@ -134,7 +134,7 @@ export class AppComponent implements OnInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.isSideWindowOpen = true
-        // this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
+        this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.makeTrustedUrl();
