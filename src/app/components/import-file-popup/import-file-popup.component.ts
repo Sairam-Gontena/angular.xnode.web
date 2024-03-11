@@ -5,6 +5,8 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
 import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { UtilsService } from '../services/utils.service';
+import { MessagingService } from '../services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
   selector: 'xnode-import-file-popup',
@@ -32,6 +34,7 @@ export class ImportFilePopupComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private messageService: MessageService,
     private commonApi: CommonApiService,
+    private messagingService: MessagingService
   ) { }
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
@@ -149,7 +152,10 @@ export class ImportFilePopupComponent implements OnInit {
         });
         this.triggerETL(res.data);
         this.closeDialog();
-
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.NAVI_CONTAINER_STATE,
+          msgData: { naviContainerState: 'EXPAND', importFilePopup: true },
+        });
       } else {
         this.utils.loadToaster({
           severity: 'error',

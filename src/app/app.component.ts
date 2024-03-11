@@ -67,6 +67,7 @@ export class AppComponent implements OnInit {
   ];
   usersList: any;
   showImportFilePopup: boolean = false;
+  isFileImported: boolean = false;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -138,6 +139,7 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
+        this.isFileImported = msg.msgData.importFilePopup;
         this.makeTrustedUrl();
       }
     })
@@ -553,18 +555,13 @@ export class AppComponent implements OnInit {
         JSON.stringify(this.product) +
         '&new_with_navi=' +
         false;
-      if (this.product) {
-        rawUrl = rawUrl + '&componentToShow=chat';
-      } else {
-        rawUrl = rawUrl + '&componentToShow=tasks'
-      }
+      rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=chat');
       // this.iframeUrlLoad(rawUrl);
     } else {
-      rawUrl = rawUrl + '&componentToShow=tasks'
+      rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=tasks')
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded
     this.iframeUrlLoad(rawUrl);
-
   }
   iframeUrlLoad(rawUrl: any) {
     setTimeout(() => {
