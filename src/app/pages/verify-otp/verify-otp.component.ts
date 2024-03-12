@@ -16,7 +16,6 @@ import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 export class VerifyOtpComponent implements OnInit {
   @ViewChild('ngOtpInput') ngOtpInputRef: any;
   otp: any;
-  currentUser: any;
   email: any;
   userEmail!: string;
   resendTimer: number = 60;
@@ -166,7 +165,7 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response: any) => {
+    this.conversationService.getMetaData( { accountId: currentUser.account_id}).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
         if (response?.data?.length > 0) {

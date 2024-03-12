@@ -89,7 +89,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.utils.loadSpinner(true);
+    this.utils.loadSpinner(true);
     this.messagingService.sendMessage({
       msgType: MessageTypes.PRODUCT_CONTEXT,
       msgData: false,
