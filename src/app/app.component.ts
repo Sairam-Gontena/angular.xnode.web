@@ -20,6 +20,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecificationUtilsService } from './pages/diff-viewer/specificationUtils.service';
 import { MessagingService } from './components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { OverallSummary } from 'src/models/view-summary';
+import { ConversationHubService } from './api/conversation-hub.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -68,6 +70,13 @@ export class AppComponent implements OnInit {
   usersList: any;
   showImportFilePopup: boolean = false;
   isFileImported: boolean = false;
+  showSummaryPopup: boolean = false;
+  convSummary?: OverallSummary;
+  notifObj: any;
+  copnversations: any;
+  groupConversations: any;
+  oneToOneConversations: any;
+  conversationID: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -83,7 +92,8 @@ export class AppComponent implements OnInit {
     private naviApiService: NaviApiService,
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private conversationHubService: ConversationHubService
   ) {
     let winUrl = window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -236,10 +246,11 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
+
     // if (!window.location.hash.includes('#/reset-password?email'))
     //   this.redirectToPreviousUrl();
     this.handleTheme();
-    this.makeTrustedUrl()
+    this.makeTrustedUrl();
   }
 
   async handleTheme(): Promise<void> {
@@ -309,6 +320,11 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
       if (data) {
         this.showImportFilePopup = true;
+      }
+    });
+    this.utilsService.getMeSummaryPopupStatus.subscribe((data: any) => {
+      if (data) {
+        this.showSummaryPopup = true;
       }
     });
     this.getAllUsers();
@@ -451,6 +467,11 @@ export class AppComponent implements OnInit {
           };
           this.utilsService.toggleProductAlertPopup(data);
         }
+        if (event.data.message === 'view-summary-popup') {
+          console.log(event.data, "VIEW SUMMARY")
+          this.conversationID = event.data.conversation_id;
+          this.getConversation();
+        }
         if (event.data.message === 'change-app') {
           this.storageService.saveItem(StorageKeys.Product, event.data.data);
           this.utilsService.saveProductId(event.data.id);
@@ -491,6 +512,7 @@ export class AppComponent implements OnInit {
             if (event.data.message === 'import-file-popup') {
               this.utilsService.showImportFilePopup(true);
             }
+
           });
         }
       });
@@ -628,6 +650,7 @@ export class AppComponent implements OnInit {
       })
     }
   }
+
   isUserExists() {
     const currentUser = localStorage.getItem('currentUser');
     return currentUser;
@@ -700,4 +723,29 @@ export class AppComponent implements OnInit {
         });
       });
   }
+  getConversation(): void {
+    this.utilsService.loadSpinner(true);
+    this.conversationHubService.getConversations('?id=' + this.conversationID + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
+      if (res && res.status === 200) {
+        this.convSummary = res.data[0].content.conversation_summary;
+        this.showSummaryPopup = true;
+      } else {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: res.data.message,
+        });
+      }
+      this.utilsService.loadSpinner(false);
+    }).catch((err => {
+      this.utilsService.loadSpinner(false);
+      this.utilsService.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: err,
+      });
+    }))
+    this.utilsService.loadSpinner(false);
+  }
+
 }

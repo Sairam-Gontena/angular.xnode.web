@@ -66,6 +66,12 @@ export class UtilsService {
     new BehaviorSubject<boolean>(false);
   public getMeImportFilePopupStatus: Observable<boolean> =
     this.importFilePopupStatus.asObservable();
+
+  private summaryPopupStatus: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeSummaryPopupStatus: Observable<boolean> =
+    this.summaryPopupStatus.asObservable();
+
   private limitReachedPopup: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
 
@@ -202,6 +208,10 @@ export class UtilsService {
   showImportFilePopup(event: any): void {
     this.importFilePopupStatus.next(event);
   }
+  showSummaryPopup(event: any): void {
+    this.summaryPopupStatus.next(event);
+  }
+
 
   reloadList(event: any): void {
     this.reload.next(event);

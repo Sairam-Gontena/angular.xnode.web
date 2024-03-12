@@ -34,3 +34,5 @@
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
 <xnode-import-file-popup [visible]="showImportFilePopup"
     (closeEventEmitter)="this.showImportFilePopup = false;"></xnode-import-file-popup>
+<xnode-view-summary-popup [visible]="showSummaryPopup" [notifObj]="notifObj" [convSummary]="convSummary"
+    [conversationID]="conversationID" (closePopUp)="this.showSummaryPopup = false"></xnode-view-summary-popup>

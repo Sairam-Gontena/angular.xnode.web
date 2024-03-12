@@ -4,6 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { OverallSummary } from 'src/models/view-summary';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-view-summary-popup',
@@ -11,9 +12,10 @@ import { OverallSummary } from 'src/models/view-summary';
   styleUrls: ['./view-summary-popup.component.scss']
 })
 export class ViewSummaryPopupComponent implements OnInit, OnChanges {
+  @Input() conversationID: any;
   @Input() visible: any;
   @Input() notifObj: any;
-  @Input() convSummary?: OverallSummary
+  @Input() convSummary?: OverallSummary;
   @Output() closeSummaryPopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedTab: string = 'summary';
@@ -31,7 +33,8 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     }
   ];
 
-  constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router) {
+  constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
+    private conversationHubService: ConversationHubService) {
 
   }
 
@@ -45,6 +48,9 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['notifObj']?.currentValue) {
       this.utils.loadLoginUser(true)
+    }
+    if (changes['convSummary']?.currentValue) {
+      this.convSummary = changes['convSummary']?.currentValue;
     }
   }
 
@@ -65,13 +71,14 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     } else {
     }
   }
-  viewChatSummary(){
-    if(this.router.url != '/x-pilot'){
-    this.router.navigate(['/x-pilot']);
-    this.utils.updateSummary(this.notifObj);
-    }else{
+  viewChatSummary() {
+    if (this.router.url != '/x-pilot') {
+      this.router.navigate(['/x-pilot']);
+      this.utils.updateSummary(this.notifObj);
+    } else {
       this.utils.updateSummary(this.notifObj);
     }
     this.closePopUp.emit();
   }
+
 }

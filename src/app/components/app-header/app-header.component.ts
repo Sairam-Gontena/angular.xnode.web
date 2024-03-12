@@ -81,7 +81,7 @@ export class AppHeaderComponent implements OnInit {
     private publishAppApiService: PublishAppApiService,
     private utils: UtilsService,
     private messagingService: MessagingService,
-    private conversationService:ConversationHubService
+    private conversationService: ConversationHubService
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -94,7 +94,8 @@ export class AppHeaderComponent implements OnInit {
     }
     this.utils.loadViewSummary.subscribe((event: any) => {
       if (event) {
-        this.getSummary({ product_id: event.product_id });
+        this.getConversation({ conversationId: event.conversationId })
+
       }
     })
   }
@@ -146,7 +147,7 @@ export class AppHeaderComponent implements OnInit {
 
   //get calls
   getAllProducts(): void {
-    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         let user_audit_body = {
           method: 'GET',
@@ -169,26 +170,26 @@ export class AppHeaderComponent implements OnInit {
         this.templates = data;
       }
     })
-    .catch((error) => {
-      let user_audit_body = {
-        method: 'GET',
-        url: error?.request?.responseURL,
-      };
-      this.auditUtil.postAudit(
-        'GET_ALL_PRODUCTS_GET_METADATA',
-        1,
-        'FAILED',
-        'user-audit',
-        user_audit_body,
-        this.email,
-        this.productId
-      );
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: '',
-        detail: error,
+      .catch((error) => {
+        let user_audit_body = {
+          method: 'GET',
+          url: error?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_ALL_PRODUCTS_GET_METADATA',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.email,
+          this.productId
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
       });
-    });
     // this.naviApiService
     //   .getMetaData(this.currentUser.email)
     //   .then((response) => {
@@ -446,13 +447,14 @@ export class AppHeaderComponent implements OnInit {
   viewSummaryPopup(notif: any): void {
     this.notifObj = notif;
     this.utils.loadSpinner(true);
-    this.getSummary(notif)
+    this.getConversation(notif)
   }
-  getSummary(obj: any): void {
-    this.naviApiService.getSummaryByProductId(obj.product_id).then((res: any) => {
+  getConversation(obj: any): void {
+    this.utilsService.loadSpinner(true);
+    this.conversationService.getConversations('?id=' + obj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
-        this.convSummary = res.data.conv_summary;
+        this.convSummary = res.data[0].content.conversation_summary;
       } else {
         this.utils.loadToaster({
           severity: 'error',
@@ -469,5 +471,8 @@ export class AppHeaderComponent implements OnInit {
         detail: err,
       });
     }))
+    this.utilsService.loadSpinner(false);
+
   }
+
 }
