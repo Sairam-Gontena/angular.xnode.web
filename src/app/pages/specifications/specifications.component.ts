@@ -13,6 +13,7 @@ import { SpecUtilsService } from 'src/app/components/services/spec-utils.service
 import { AuthApiService } from 'src/app/api/auth.service';
 import { CommentsService } from 'src/app/api/comments.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-specifications',
@@ -63,7 +64,8 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private authService: AuthApiService,
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private conversationService:ConversationHubService
   ) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
@@ -97,20 +99,32 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getMetaData(val: any) {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email, val.product_id)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          let product = response.data.data[0];
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
-        }
-      })
-      .catch((error) => { });
+    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        let product = response.data[0];
+        localStorage.setItem('record_id', product.id);
+        localStorage.setItem('product', JSON.stringify(product));
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        this.specUtils._openCommentsPanel(true);
+        this.specUtils._tabToActive(val.template_type);
+      }
+    })
+    .catch((error) => { });
+    // this.naviApiService
+    //   .getMetaData(this.currentUser?.email, val.product_id)
+    //   .then((response) => {
+    //     if (response?.status === 200 && response.data.data?.length) {
+    //       let product = response.data.data[0];
+    //       localStorage.setItem('record_id', product.id);
+    //       localStorage.setItem('product', JSON.stringify(product));
+    //       localStorage.setItem('app_name', product.title);
+    //       localStorage.setItem('has_insights', product.has_insights);
+    //       this.specUtils._openCommentsPanel(true);
+    //       this.specUtils._tabToActive(val.template_type);
+    //     }
+    //   })
+    //   .catch((error) => { });
   }
 
   storeProductInfoForDeepLink(key: string, data: string): Promise<void> {
