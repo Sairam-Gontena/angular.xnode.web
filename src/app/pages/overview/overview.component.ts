@@ -6,6 +6,7 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 @Component({
   selector: 'xnode-overview',
   templateUrl: './overview.component.html',
@@ -36,7 +37,8 @@ export class OverViewComponent {
     private utils: UtilsService,
     private auditUtil: AuditutilsService,
     private naviApiService: NaviApiService,
-    private storageService: LocalStorageService
+    private storageService: LocalStorageService,
+    private conversationService:ConversationHubService
   ) {
     this.currentUser = UserUtil.getCurrentUser();
   }
@@ -106,73 +108,44 @@ export class OverViewComponent {
     }
   }
   getMeOverview() {
-    this.naviApiService
-      .getOverview(this.currentUser?.email, this.product?.id)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          this.overview = response.data;
-          this.features = response.data?.Features;
-          this.appName = response?.data?.Title
+    const prodId = this.storageService.getItem(StorageKeys.ProductId)
+    this.conversationService.getMetaData( { id: prodId} ).then((response: any) => {
+      if (response?.status === 200) {
+        this.overview = response.data;
+        this.features = response.data?.Features;
+        this.appName = response?.data?.Title
+          ? response?.data?.Title
+          : response?.data?.title;
+        this.createOn = response?.data?.created_on;
+        localStorage.setItem(
+          'app_name',
+          response?.data?.Title
             ? response?.data?.Title
-            : response?.data?.title;
-          this.createOn = response?.data?.created_on;
-          localStorage.setItem(
-            'app_name',
-            response?.data?.Title
-              ? response?.data?.Title
-              : response?.data?.title
-          );
-          this.auditUtil.postAudit(
-            'RETRIEVE_OVERVIEW',
-            1,
-            'SUCCESS',
-            'user-audit'
-          );
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser?.email,
-            this.product?.id
-          );
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.detail,
-          });
-          this.auditUtil.postAudit(
-            'RETRIEVE_OVERVIEW' + response?.data?.detail,
-            1,
-            'FAILURE',
-            'user-audit'
-          );
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((error) => {
+            : response?.data?.title
+        );
+        this.auditUtil.postAudit(
+          'RETRIEVE_OVERVIEW',
+          1,
+          'SUCCESS',
+          'user-audit'
+        );
         let user_audit_body = {
           method: 'GET',
-          url: error?.request?.responseURL,
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
+          1,
+          'SUCCESS',
+          'user-audit',
+          user_audit_body,
+          this.currentUser?.email,
+          this.product?.id
+        );
+      } else {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
         };
         this.auditUtil.postAudit(
           'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
@@ -185,17 +158,135 @@ export class OverViewComponent {
         );
         this.utils.loadToaster({
           severity: 'error',
-          summary: 'Error',
-          detail: error,
+          summary: 'ERROR',
+          detail: response?.data?.detail,
         });
-        this.utils.loadSpinner(false);
         this.auditUtil.postAudit(
-          'RETRIEVE_OVERVIEW' + error,
+          'RETRIEVE_OVERVIEW' + response?.data?.detail,
           1,
           'FAILURE',
           'user-audit'
         );
+      }
+      this.utils.loadSpinner(false);
+    })
+    .catch((error) => {
+      let user_audit_body = {
+        method: 'GET',
+        url: error?.request?.responseURL,
+      };
+      this.auditUtil.postAudit(
+        'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
+        1,
+        'FAILED',
+        'user-audit',
+        user_audit_body,
+        this.currentUser?.email,
+        this.product?.id
+      );
+      this.utils.loadToaster({
+        severity: 'error',
+        summary: 'Error',
+        detail: error,
       });
+      this.utils.loadSpinner(false);
+      this.auditUtil.postAudit(
+        'RETRIEVE_OVERVIEW' + error,
+        1,
+        'FAILURE',
+        'user-audit'
+      );
+    });
+    // this.naviApiService
+    //   .getOverview(this.currentUser?.email, this.product?.id)
+    //   .then((response: any) => {
+    //     if (response?.status === 200) {
+    //       this.overview = response.data;
+    //       this.features = response.data?.Features;
+    //       this.appName = response?.data?.Title
+    //         ? response?.data?.Title
+    //         : response?.data?.title;
+    //       this.createOn = response?.data?.created_on;
+    //       localStorage.setItem(
+    //         'app_name',
+    //         response?.data?.Title
+    //           ? response?.data?.Title
+    //           : response?.data?.title
+    //       );
+    //       this.auditUtil.postAudit(
+    //         'RETRIEVE_OVERVIEW',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit'
+    //       );
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser?.email,
+    //         this.product?.id
+    //       );
+    //     } else {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
+    //         1,
+    //         'FAILED',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser?.email,
+    //         this.product?.id
+    //       );
+    //       this.utils.loadToaster({
+    //         severity: 'error',
+    //         summary: 'ERROR',
+    //         detail: response?.data?.detail,
+    //       });
+    //       this.auditUtil.postAudit(
+    //         'RETRIEVE_OVERVIEW' + response?.data?.detail,
+    //         1,
+    //         'FAILURE',
+    //         'user-audit'
+    //       );
+    //     }
+    //     this.utils.loadSpinner(false);
+    //   })
+    //   .catch((error) => {
+    //     let user_audit_body = {
+    //       method: 'GET',
+    //       url: error?.request?.responseURL,
+    //     };
+    //     this.auditUtil.postAudit(
+    //       'GET_ME_OVERVIEW_RETRIEVE_OVERVIEW',
+    //       1,
+    //       'FAILED',
+    //       'user-audit',
+    //       user_audit_body,
+    //       this.currentUser?.email,
+    //       this.product?.id
+    //     );
+    //     this.utils.loadToaster({
+    //       severity: 'error',
+    //       summary: 'Error',
+    //       detail: error,
+    //     });
+    //     this.utils.loadSpinner(false);
+    //     this.auditUtil.postAudit(
+    //       'RETRIEVE_OVERVIEW' + error,
+    //       1,
+    //       'FAILURE',
+    //       'user-audit'
+    //     );
+    //   });
   }
 
   onChangeProduct(obj: any): void {
