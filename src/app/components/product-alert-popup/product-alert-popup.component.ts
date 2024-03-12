@@ -31,6 +31,7 @@ export class ProductAlertPopupComponent implements OnInit {
   product: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
   showLimitReachedPopup: boolean = false;
+  conversation_id: any;
 
   constructor(
     private publishAppApiService: PublishAppApiService,
@@ -59,6 +60,7 @@ export class ProductAlertPopupComponent implements OnInit {
     this.utils.getMeproductAlertPopup.subscribe((event: any) => {
       setTimeout(() => {
         this.contentdata = event?.data;
+        this.conversation_id = event?.data?.conversation_id
         this.dataPopulate();
         if (event.data.length || event.popup == true) {
           this.showProductStatusPopup = event?.popup;
@@ -94,8 +96,11 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      if (this.contentdata?.conversation)
+      if (typeof(this.contentdata?.conversation)=='string'){
         this.consversationList = JSON.parse(this.contentdata?.conversation);
+      }else{
+        this.consversationList = this.contentdata?.conversation
+      }
     }
   }
 
@@ -286,6 +291,7 @@ export class ProductAlertPopupComponent implements OnInit {
     const body = {
       email: this.currentUser?.email,
       conversation_history: this.consversationList,
+      conversation_id:this.conversation_id,
       product_id: this.product_id,
       user_id: this.currentUser?.user_id,
     };
