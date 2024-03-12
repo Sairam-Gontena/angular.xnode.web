@@ -17,6 +17,7 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
 import { OverallSummary } from 'src/models/view-summary';
 import { MessagingService } from '../services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-app-header',
@@ -79,7 +80,8 @@ export class AppHeaderComponent implements OnInit {
     private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService,
     private utils: UtilsService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private conversationHubService: ConversationHubService
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -92,7 +94,8 @@ export class AppHeaderComponent implements OnInit {
     }
     this.utils.loadViewSummary.subscribe((event: any) => {
       if (event) {
-        this.getSummary({ product_id: event.product_id });
+        this.getConversation({ conversationId: event.conversationId })
+
       }
     })
   }
@@ -401,13 +404,14 @@ export class AppHeaderComponent implements OnInit {
   viewSummaryPopup(notif: any): void {
     this.notifObj = notif;
     this.utils.loadSpinner(true);
-    this.getSummary(notif)
+    this.getConversation(notif)
   }
-  getSummary(obj: any): void {
-    this.naviApiService.getSummaryByProductId(obj.product_id).then((res: any) => {
+  getConversation(obj: any): void {
+    this.utilsService.loadSpinner(true);
+    this.conversationHubService.getConversations('?id=' + obj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
-        this.convSummary = res.data.conv_summary;
+        this.convSummary = res.data[0].content.conversation_summary;
       } else {
         this.utils.loadToaster({
           severity: 'error',
@@ -424,5 +428,8 @@ export class AppHeaderComponent implements OnInit {
         detail: err,
       });
     }))
+    this.utilsService.loadSpinner(false);
+
   }
+
 }

@@ -14,7 +14,7 @@
             (click)="overlayToggle($event, op)"></i>
         <p-overlayPanel #op [style]="{'width': '400px','height':'560px'}">
             <xnode-notification-panel [data]="allNotifications" (preparePublishPopup)="showMePublishPopup($event)"
-            (viewSummaryPopup)="viewSummaryPopup($event)"
+                (viewSummaryPopup)="viewSummaryPopup($event)"
                 (closeNotificationPanel)="overlayToggleFromNotificationPanel($event)"
                 (showMeLimitInfoPopup)="showMeLimitInfoPopup($event)"></xnode-notification-panel>
         </p-overlayPanel>
@@ -42,4 +42,5 @@
     [limitReachedContent]="limitReachedContent"
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
 
-<xnode-view-summary-popup *ngIf="showViewSummaryPopup" [visible]="showViewSummaryPopup" [notifObj]="notifObj" [convSummary]="convSummary" (closePopUp)="showViewSummaryPopup=false"></xnode-view-summary-popup>
+<xnode-view-summary-popup *ngIf="showViewSummaryPopup" [visible]="showViewSummaryPopup" [notifObj]="notifObj"
+    [convSummary]="convSummary" (closePopUp)="showViewSummaryPopup=false"></xnode-view-summary-popup>
