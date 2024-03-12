@@ -17,6 +17,7 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
 import { OverallSummary } from 'src/models/view-summary';
 import { MessagingService } from '../services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-app-header',
@@ -79,7 +80,8 @@ export class AppHeaderComponent implements OnInit {
     private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService,
     private utils: UtilsService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private conversationService:ConversationHubService
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -144,51 +146,94 @@ export class AppHeaderComponent implements OnInit {
 
   //get calls
   getAllProducts(): void {
-    this.naviApiService
-      .getMetaData(this.currentUser.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ALL_PRODUCTS_GET_METADATA',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.email,
-            this.productId
-          );
-          const data = response.data.data.map((obj: any) => ({
-            name: obj.title,
-            value: obj.id,
-            url: obj.product_url !== undefined ? obj.product_url : '',
-          }));
-          this.templates = data;
-        }
-      })
-      .catch((error) => {
+    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
         let user_audit_body = {
           method: 'GET',
-          url: error?.request?.responseURL,
+          url: response?.request?.responseURL,
         };
         this.auditUtil.postAudit(
           'GET_ALL_PRODUCTS_GET_METADATA',
           1,
-          'FAILED',
+          'SUCCESS',
           'user-audit',
           user_audit_body,
           this.email,
           this.productId
         );
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
+        const data = response.data.map((obj: any) => ({
+          name: obj.title,
+          value: obj.id,
+          url: obj.product_url !== undefined ? obj.product_url : '',
+        }));
+        this.templates = data;
+      }
+    })
+    .catch((error) => {
+      let user_audit_body = {
+        method: 'GET',
+        url: error?.request?.responseURL,
+      };
+      this.auditUtil.postAudit(
+        'GET_ALL_PRODUCTS_GET_METADATA',
+        1,
+        'FAILED',
+        'user-audit',
+        user_audit_body,
+        this.email,
+        this.productId
+      );
+      this.utilsService.loadToaster({
+        severity: 'error',
+        summary: '',
+        detail: error,
       });
+    });
+    // this.naviApiService
+    //   .getMetaData(this.currentUser.email)
+    //   .then((response) => {
+    //     if (response?.status === 200 && response.data.data?.length) {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_ALL_PRODUCTS_GET_METADATA',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.email,
+    //         this.productId
+    //       );
+    //       const data = response.data.data.map((obj: any) => ({
+    //         name: obj.title,
+    //         value: obj.id,
+    //         url: obj.product_url !== undefined ? obj.product_url : '',
+    //       }));
+    //       this.templates = data;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     let user_audit_body = {
+    //       method: 'GET',
+    //       url: error?.request?.responseURL,
+    //     };
+    //     this.auditUtil.postAudit(
+    //       'GET_ALL_PRODUCTS_GET_METADATA',
+    //       1,
+    //       'FAILED',
+    //       'user-audit',
+    //       user_audit_body,
+    //       this.email,
+    //       this.productId
+    //     );
+    //     this.utilsService.loadToaster({
+    //       severity: 'error',
+    //       summary: '',
+    //       detail: error,
+    //     });
+    //   });
   }
 
   toggleFeedbackPopup() {
