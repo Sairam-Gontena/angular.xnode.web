@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
   selector: 'xnode-view-summary-popup',
@@ -20,6 +21,7 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedTab: string = 'summary';
   activeIndex = 0;
+  isCopyIconClicked : boolean = false
   tabs = [
     {
       name: 'Summary',
@@ -34,14 +36,13 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   ];
 
   constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
-    private conversationHubService: ConversationHubService) {
+    private conversationHubService: ConversationHubService,private clipboardService: ClipboardService,) {
 
   }
 
   ngOnInit(): void {
-    console.log('convSummary', this.convSummary);
-
   }
+ 
   onClickTab(index: number) {
     this.activeIndex = index;
   }
@@ -81,4 +82,64 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     this.closePopUp.emit();
   }
 
+  async copyToClipboard(content: any,event:any){
+    let formattedContent = ''
+    if (typeof content === 'string') {
+      formattedContent = content;
+    } else {
+      const summary = content?.Summary ?? content?.summary ?? content;
+      const KeyPoints = content?.KeyPoints ?? content?.keypoints ?? '';
+      const Actions = content?.Actions ?? content?.actions ?? '';
+      const Participants = content?.Participants ?? content?.participants ?? '';
+      const Tags = content?.Tags ?? content?.tags ?? '';
+      formattedContent = `Summary \n\n${summary}\n\nKey Points \n${await this.convertListToStringCount(KeyPoints)}\n\nActions \n${await this.convertListToStringCount(Actions)}\n\nParticipants \n${await this.convertListToString(Participants)}\n\nTags \n${await this.convertListToString(Tags)}`;
+    }
+    this.clipboardService.copyFromContent(formattedContent);
+    this.isCopyIconClicked = true
+    setTimeout(()=>{
+      this.isCopyIconClicked = false
+    },2000);
+    event.stopPropagation();
+  }
+  async convertListToStringCount(data: any): Promise<string> {
+    let string = '';
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      string += '  ' + (index + 1) + '. ' + item + '\n';
+    }
+    return string;
+  }
+
+
+  async sendOnMail(content: any,event:any): Promise<void> {
+    const subject = content.Title ? content.Title : content?.title ? content?.title : '';
+    let formattedContent = ''
+    if (typeof content === 'string') {
+      formattedContent = content;
+    } else {
+      const summary = content?.Summary ?? content?.summary ?? content;
+      const KeyPoints = content?.KeyPoints ?? content?.keypoints ?? '';
+      const Actions = content?.Actions ?? content?.actions ?? '';
+      const Participants = content?.Participants ?? content?.participants ?? '';
+      const Tags = content?.Tags ?? content?.tags ?? '';
+      formattedContent = `Summary \n\n${summary}\n\nKey Points \n${await this.convertListToStringCount(KeyPoints)}\n\nActions \n${await this.convertListToStringCount(Actions)}\n\nParticipants \n${await this.convertListToString(Participants)}\n\nTags \n${await this.convertListToString(Tags)}`;
+    }
+    if (formattedContent.length > 2048) {
+      formattedContent = "The text content exceeds 2048 characters. Please copy and paste the text manually"
+    }
+    const encodedContent = encodeURIComponent(formattedContent);
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodedContent}`;
+    window.open(mailtoLink, '_blank');
+    event.stopPropagation();
+  }
+
+
+  async convertListToString(data: any): Promise<string> {
+    let string = '';
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      string += item + (index === data.length - 1 ? '' : ', ');
+    }
+    return string;
+  }
 }
