@@ -28,19 +28,13 @@ export class ConversationHubService extends BaseApiService {
         // return this.httpClient.get<any[]>(`${this.rootUrl}conversation`, { params: httpParams });
     }
 
-    // getConversationsHttp(productId?: string) {
-    //     return this.httpClient.get(`${this.rootUrl}conversation`)
-    // }
-
-    // getConversationsByAccountId(id: string) {
-    //     return this.httpClient.get(`${this.rootUrl}conversation?accountId=${id}`)
-    // }
-    // // getConversation(id: string): Observable<XnodeConversation> {
-    // //   return this.httpClient.get<XnodeConversation[]>(`${this.rootUrl}/conversation?id=${id}`)
-    // //     .pipe(map(conversations => conversations[0]));
-    // // }
-    // post(url: string, body: unknown) {
-    //     return this.httpClient.post(this.rootUrl + url, body)
-    // }
+    getMetaData(params:any){
+      let httpParams = new HttpParams();
+      Object.keys(params).forEach(key => {
+        httpParams = httpParams.append(key, params[key]);
+      });
+      let url = 'product?' + httpParams;
+      return this.get(url);
+    }
 
 }

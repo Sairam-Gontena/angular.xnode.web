@@ -15,6 +15,7 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
 import { ConversationApiService } from 'src/app/api/conversation-api.service';
 import { MessagingService } from 'src/app/components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-my-products',
@@ -66,7 +67,8 @@ export class MyProductsComponent implements OnInit {
     private storageService: LocalStorageService,
     private naviApiService: NaviApiService,
     private conversationApiService: ConversationApiService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private conversationService:ConversationHubService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
@@ -87,7 +89,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utils.loadSpinner(true);
+    // this.utils.loadSpinner(true);
     this.messagingService.sendMessage({
       msgType: MessageTypes.PRODUCT_CONTEXT,
       msgData: false,
@@ -227,70 +229,48 @@ export class MyProductsComponent implements OnInit {
     this.showImportFilePopup = false;
   }
   getMetaData() {
-    this.naviApiService
-      .getMetaData(this.currentUser?.email)
-      .then((response: any) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_METADATA_MY_PRODUCTS',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            ''
-          );
-          this.storageService.saveItem(
-            StorageKeys.MetaData,
-            response.data.data
-          );
-          this.templateCard = response.data.data.map((dataItem: any) => {
-            dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
-            if (this.currentUser.user_id === dataItem?.user_id)
-              dataItem.created_by = 'Created by you';
-            else dataItem.created_by = 'Created by ' + dataItem?.username;
-            return dataItem;
-          });
-
-          this.filteredProducts = sortBy(this.templateCard, [
-            'created_on',
-          ]).reverse();
-          this.filteredProductsLength = this.filteredProducts.length
-            ? this.filteredProducts.length + 1
-            : 0;
-          this.filteredProductsByEmail = this.templateCard;
-          this.utils.loadSpinner(false);
-          // this.getAllConversations();
-        } else if (response?.status !== 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_METADATA_MY_PRODUCTS',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            ''
-          );
-          this.utils.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response?.data?.detail,
-          });
-          this.utils.loadSpinner(false);
-        }
-      })
-      .catch((error: any) => {
+    //, fieldsRequired: ['id', 'productId', 'title', 'conversationType', 'content','userId','accountId','status','users']
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response:any)=>{
+      console.log(response)
+      if (response?.status === 200 && response.data?.length) {
         let user_audit_body = {
           method: 'GET',
-          url: error?.request?.responseURL,
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_METADATA_MY_PRODUCTS',
+          1,
+          'SUCCESS',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          ''
+        );
+        this.storageService.saveItem(
+          StorageKeys.MetaData,
+          response.data
+        );
+        this.templateCard = response.data.map((dataItem: any) => {
+          dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
+          if (this.currentUser.user_id === dataItem?.user_id)
+            dataItem.created_by = 'Created by you';
+          else dataItem.created_by = 'Created by ' + dataItem?.username;
+          return dataItem;
+        });
+
+        this.filteredProducts = sortBy(this.templateCard, [
+          'created_on',
+        ]).reverse();
+        this.filteredProductsLength = this.filteredProducts.length
+          ? this.filteredProducts.length + 1
+          : 0;
+        this.filteredProductsByEmail = this.templateCard;
+        this.utils.loadSpinner(false);
+        // this.getAllConversations();
+      } else if (response?.status !== 200) {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
         };
         this.auditUtil.postAudit(
           'GET_METADATA_MY_PRODUCTS',
@@ -301,13 +281,115 @@ export class MyProductsComponent implements OnInit {
           this.currentUser.email,
           ''
         );
-        this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
-          summary: 'Error',
-          detail: error,
+          summary: 'ERROR',
+          detail: response?.data?.detail,
         });
-      });
+        this.utils.loadSpinner(false);
+      }
+    }).catch((error: any) => {
+      // let user_audit_body = {
+      //   method: 'GET',
+      //   url: error?.request?.responseURL,
+      // };
+      // this.auditUtil.postAudit(
+      //   'GET_METADATA_MY_PRODUCTS',
+      //   1,
+      //   'FAILED',
+      //   'user-audit',
+      //   user_audit_body,
+      //   this.currentUser.email,
+      //   ''
+      // );
+      // this.utils.loadSpinner(false);
+      // this.utils.loadToaster({
+      //   severity: 'error',
+      //   summary: 'Error',
+      //   detail: error,
+      // });
+    });
+    // this.naviApiService
+    //   .getMetaData(this.currentUser?.email)
+    //   .then((response: any) => {
+    //     if (response?.status === 200 && response.data.data?.length) {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_METADATA_MY_PRODUCTS',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser.email,
+    //         ''
+    //       );
+    //       this.storageService.saveItem(
+    //         StorageKeys.MetaData,
+    //         response.data.data
+    //       );
+    //       this.templateCard = response.data.data.map((dataItem: any) => {
+    //         dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
+    //         if (this.currentUser.user_id === dataItem?.user_id)
+    //           dataItem.created_by = 'Created by you';
+    //         else dataItem.created_by = 'Created by ' + dataItem?.username;
+    //         return dataItem;
+    //       });
+
+    //       this.filteredProducts = sortBy(this.templateCard, [
+    //         'created_on',
+    //       ]).reverse();
+    //       this.filteredProductsLength = this.filteredProducts.length
+    //         ? this.filteredProducts.length + 1
+    //         : 0;
+    //       this.filteredProductsByEmail = this.templateCard;
+    //       this.utils.loadSpinner(false);
+    //       // this.getAllConversations();
+    //     } else if (response?.status !== 200) {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_METADATA_MY_PRODUCTS',
+    //         1,
+    //         'FAILED',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser.email,
+    //         ''
+    //       );
+    //       this.utils.loadToaster({
+    //         severity: 'error',
+    //         summary: 'ERROR',
+    //         detail: response?.data?.detail,
+    //       });
+    //       this.utils.loadSpinner(false);
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     let user_audit_body = {
+    //       method: 'GET',
+    //       url: error?.request?.responseURL,
+    //     };
+    //     this.auditUtil.postAudit(
+    //       'GET_METADATA_MY_PRODUCTS',
+    //       1,
+    //       'FAILED',
+    //       'user-audit',
+    //       user_audit_body,
+    //       this.currentUser.email,
+    //       ''
+    //     );
+    //     this.utils.loadSpinner(false);
+    //     this.utils.loadToaster({
+    //       severity: 'error',
+    //       summary: 'Error',
+    //       detail: error,
+    //     });
+    //   });
   }
 
   onClickcreatedByYou(): void {
