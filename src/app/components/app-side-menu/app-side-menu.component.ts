@@ -87,11 +87,6 @@ export class AppSideMenuComponent implements OnInit {
     });
   }
   onClickMenuItem(item: any, i: any): void {
-    const product: any = this.storageService.getItem(StorageKeys.Product);
-    if (product && !product.has_insights) {
-      this.utils.showProductStatusPopup(true);
-      return;
-    }
     if (this.currentUser?.role_name === 'Xnode Admin' && item.label == 'Home') {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path]);
@@ -99,7 +94,5 @@ export class AppSideMenuComponent implements OnInit {
       this.selectedMenuIndex = i;
       this.router.navigate(['/' + item.path]);
     }
-    // this.utils.disableDockedNavi();
-    this.auditUtil.postAudit(item.path, 1, 'SUCCESS', 'user-audit');
   }
 }
