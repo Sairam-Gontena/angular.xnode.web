@@ -468,9 +468,10 @@ export class AppComponent implements OnInit {
           this.utilsService.toggleProductAlertPopup(data);
         }
         if (event.data.message === 'view-summary-popup') {
-          console.log(event.data, "VIEW SUMMARY")
           this.conversationID = event.data.conversation_id;
           this.getConversation();
+          this.utilsService.loadSpinner(true);
+
         }
         if (event.data.message === 'change-app') {
           this.storageService.saveItem(StorageKeys.Product, event.data.data);
@@ -724,7 +725,6 @@ export class AppComponent implements OnInit {
       });
   }
   getConversation(): void {
-    this.utilsService.loadSpinner(true);
     this.conversationHubService.getConversations('?id=' + this.conversationID + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.convSummary = res.data[0].content.conversation_summary;

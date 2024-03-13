@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="visible" [style]="{ width: '774px'}" (onHide)="closePopUp.emit()">
+<p-dialog [(visible)]="visible" [style]="{ width: '774px'}" (onHide)="closePopup()">
     <div class="col-12 p-0 m-0 flex justify-content-between">
         <div class="flex justify-content-start">
             <div class="col-12 vertical-tabs-container p-0 m-0 overflow-hidden">
@@ -8,23 +8,24 @@
                             *ngFor="let tabs of tabs; let i = index">
                             {{tabs.name}}
                         </div>
-              
+
                     </div>
                 </div>
                 <div class="col-12 tab-content w-full">
                     <div class="" *ngIf="activeIndex === 0">
                         <div class="tabpanel-content">
                             <div class="mb-3">
-                                <div class="flex justify-content-between align-items-center " >
+                                <div class="flex justify-content-between align-items-center ">
                                     <h4 class="m-0 pb-1 font-semibold text-lg line-height-3">
                                         {{convSummary?.overall_summary?.content?.Title ?
                                         convSummary?.overall_summary?.content?.Title :
                                         convSummary?.overall_summary?.content?.title}}
                                     </h4>
                                     <div class="flex  px-2  clip-tooltip">
-                                        <i class="pi pi-copy cursor-pointer mr-2 text-white"  title='Copy to clipboard'
-                                            (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)" *ngIf="!isCopyIconClicked" ></i>
-                                            <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked" ></i>
+                                        <i class="pi pi-copy cursor-pointer mr-2 text-white" title='Copy to clipboard'
+                                            (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)"
+                                            *ngIf="!isCopyIconClicked"></i>
+                                        <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked"></i>
                                         <i class="pi pi-envelope cursor-pointer text-white" title='Send on Email'
                                             (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
                                     </div>
@@ -88,18 +89,22 @@
                                             <div class="ml-2 font-normal text-base line-height-2">
                                                 {{summary?.content?.Title ?
                                                 summary?.content?.Title : summary?.content?.title}}</div>
-                                            <div class="flex align-items-center pr-4 " >
-                                                    <div class="text-right text-500 text-xs  font-italic font-semibold">
-                                                        {{getMeLocalDateAndTime(summary?.timestamp)}}</div>
-                                                    <div class="flex  px-2 ml-2  clip-tooltip">
-                                                        <i class="pi pi-copy cursor-pointer mr-2 text-white"  title='Copy to clipboard'
-                                                            (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)" *ngIf="!isCopyIconClicked" ></i>
-                                                            <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked" ></i>
-                                                        <i class="pi pi-envelope cursor-pointer text-white" title='Send on Email'
-                                                            (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
-                                                    </div>
+                                            <div class="flex align-items-center pr-4 ">
+                                                <div class="text-right text-500 text-xs  font-italic font-semibold">
+                                                    {{getMeLocalDateAndTime(summary?.timestamp)}}</div>
+                                                <div class="flex  px-2 ml-2  clip-tooltip">
+                                                    <i class="pi pi-copy cursor-pointer mr-2 text-white"
+                                                        title='Copy to clipboard'
+                                                        (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)"
+                                                        *ngIf="!isCopyIconClicked"></i>
+                                                    <i class="pi pi-check text-white mr-2"
+                                                        *ngIf="isCopyIconClicked"></i>
+                                                    <i class="pi pi-envelope cursor-pointer text-white"
+                                                        title='Send on Email'
+                                                        (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
+                                                </div>
                                             </div>
-                                            
+
                                         </div>
                                     </ng-template>
                                     <div>
@@ -157,7 +162,7 @@
             </div>
         </div>
         <div class="flex justify-content-end close-icon">
-            <i class="pi pi-times p-3 pointer" (click)="closePopUp.emit()"></i>
+            <i class="pi pi-times p-3 pointer" (click)="closePopup()"></i>
         </div>
     </div>
     <ng-template pTemplate="footer">
