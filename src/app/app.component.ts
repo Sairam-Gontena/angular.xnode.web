@@ -471,7 +471,6 @@ export class AppComponent implements OnInit {
           this.conversationID = event.data.conversation_id;
           this.getConversation();
           this.utilsService.loadSpinner(true);
-
         }
         if (event.data.message === 'change-app') {
           this.storageService.saveItem(StorageKeys.Product, event.data.data);
