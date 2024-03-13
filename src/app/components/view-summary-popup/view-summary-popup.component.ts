@@ -21,7 +21,7 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedTab: string = 'summary';
   activeIndex = 0;
-  isCopyIconClicked : boolean = false
+  isCopyIconClicked: boolean = false
   tabs = [
     {
       name: 'Summary',
@@ -36,13 +36,13 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   ];
 
   constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
-    private conversationHubService: ConversationHubService,private clipboardService: ClipboardService,) {
+    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService,) {
 
   }
 
   ngOnInit(): void {
   }
- 
+
   onClickTab(index: number) {
     this.activeIndex = index;
   }
@@ -79,10 +79,10 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     } else {
       this.utils.updateSummary(this.notifObj);
     }
-    this.closePopUp.emit();
+    this.closePopup();
   }
 
-  async copyToClipboard(content: any,event:any){
+  async copyToClipboard(content: any, event: any) {
     let formattedContent = ''
     if (typeof content === 'string') {
       formattedContent = content;
@@ -96,9 +96,9 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     }
     this.clipboardService.copyFromContent(formattedContent);
     this.isCopyIconClicked = true
-    setTimeout(()=>{
+    setTimeout(() => {
       this.isCopyIconClicked = false
-    },2000);
+    }, 2000);
     event.stopPropagation();
   }
   async convertListToStringCount(data: any): Promise<string> {
@@ -111,7 +111,7 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   }
 
 
-  async sendOnMail(content: any,event:any): Promise<void> {
+  async sendOnMail(content: any, event: any): Promise<void> {
     const subject = content.Title ? content.Title : content?.title ? content?.title : '';
     let formattedContent = ''
     if (typeof content === 'string') {
@@ -141,5 +141,10 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
       string += item + (index === data.length - 1 ? '' : ', ');
     }
     return string;
+  }
+  closePopup(): void {
+    this.closePopUp.emit();
+    this.activeIndex = 0;
+
   }
 }
