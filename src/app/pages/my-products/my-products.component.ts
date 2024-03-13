@@ -179,18 +179,23 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
-    if (!data.has_insights) {
-      this.messagingService.sendMessage({
-        msgType: MessageTypes.NAVI_CONTAINER_STATE,
-        msgData: { naviContainerState: 'EXPAND', product: data },
-      });
-    } else {
-      this.messagingService.sendMessage({
-        msgType: MessageTypes.PRODUCT_CONTEXT,
-        msgData: true,
-      });
-      this.router.navigate(['/specification']);
-    }
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.PRODUCT_CONTEXT,
+      msgData: true,
+    });
+    this.router.navigate(['/specification']);
+    // if ( data.specStatus!="Completed") { //!data.has_insights ||
+    //   this.messagingService.sendMessage({
+    //     msgType: MessageTypes.NAVI_CONTAINER_STATE,
+    //     msgData: { naviContainerState: 'EXPAND', product: data },
+    //   });
+    // } else {
+    //   this.messagingService.sendMessage({
+    //     msgType: MessageTypes.PRODUCT_CONTEXT,
+    //     msgData: true,
+    //   });
+    //   this.router.navigate(['/specification']);
+    // }
   }
 
   onClickNew() {

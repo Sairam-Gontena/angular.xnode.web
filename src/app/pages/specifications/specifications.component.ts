@@ -256,11 +256,12 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   getMeSpecList(body?: any): void {
     this.utils.loadSpinner(true);
     let product = this.metaData.find((x: any) => x.id === body.productId);
-    if (product.has_insights) {
-      this.getMeSpecInfo(body);
-    } else {
-      this.showGenerateSpecPopup(product);
-    }
+    this.getMeSpecInfo(body);
+    // if (product.specStatus=="Completed") { // product.has_insights
+    //   this.getMeSpecInfo(body);
+    // } else {
+    //   this.showGenerateSpecPopup(product);
+    // }
   }
 
   getMeSpecInfo(body?: any) {
