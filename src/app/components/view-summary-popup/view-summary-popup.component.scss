@@ -141,6 +141,14 @@
 
 }
 
+.header-text {
+    color: #EFEEEE;
+}
+
+.content-text {
+    color: #A2A2A3;
+}
+
 .clip-tooltip {
     padding: 2px 8px;
     z-index: 1;
@@ -164,6 +172,7 @@
 .tooltip:hover .clip-tooltip {
     visibility: visible;
 }
+
 .tooltip:hover .clip-tooltip1 {
     visibility: visible;
 }
