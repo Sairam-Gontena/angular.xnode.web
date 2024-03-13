@@ -68,7 +68,7 @@ export class MyProductsComponent implements OnInit {
     private naviApiService: NaviApiService,
     private conversationApiService: ConversationApiService,
     private messagingService: MessagingService,
-    private conversationService:ConversationHubService
+    private conversationService: ConversationHubService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     if (this.currentUser.first_name && this.currentUser.last_name) {
@@ -235,7 +235,7 @@ export class MyProductsComponent implements OnInit {
   }
   getMetaData() {
     //, fieldsRequired: ['id', 'productId', 'title', 'conversationType', 'content','userId','accountId','status','users']
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response:any)=>{
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response: any) => {
       console.log(response)
       if (response?.status === 200 && response.data?.length) {
         let user_audit_body = {
@@ -400,17 +400,17 @@ export class MyProductsComponent implements OnInit {
   onClickcreatedByYou(): void {
     this.filteredProducts = sortBy(
       this.filteredProducts.filter((obj) => {
-        return obj?.user_id === this.currentUser.user_id;
-      }),
-      ['created_on']
-    ).reverse();
+        console.log('obj', obj?.createdBy?.userId);
+        console.log('obj', this.currentUser.user_id);
+
+        return obj?.createdBy?.userId === this.currentUser.user_id;
+      })
+    )
     this.filteredProductsLength = this.filteredProducts.length
       ? this.filteredProducts.length + 1
       : 0;
-    this.filteredProducts = this.filteredProducts.filter((obj) => {
-      return obj?.user_id === this.currentUser.user_id;
-    });
-    this.filteredProducts = cloneDeep(this.filteredProducts);
+
+    // this.filteredProducts = cloneDeep(this.filteredProducts);
     this.end = 3;
     this.isViewLess = true;
   }
