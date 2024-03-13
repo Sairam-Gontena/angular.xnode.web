@@ -18,6 +18,8 @@ import { OverallSummary } from 'src/models/view-summary';
 import { MessagingService } from '../services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-app-header',
@@ -81,7 +83,9 @@ export class AppHeaderComponent implements OnInit {
     private publishAppApiService: PublishAppApiService,
     private utils: UtilsService,
     private messagingService: MessagingService,
-    private conversationService: ConversationHubService
+    private conversationService: ConversationHubService,
+    private storageService: LocalStorageService
+
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -436,6 +440,7 @@ export class AppHeaderComponent implements OnInit {
       msgType: MessageTypes.PRODUCT_CONTEXT,
       msgData: false,
     });
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     this.navigateToHome.emit();
   }
 

@@ -47,7 +47,7 @@ export class NotificationPanelComponent {
     private naviApiService: NaviApiService,
     private specificationUtils: SpecificationUtilsService,
     private specificationService: SpecificationsService,
-    private conversationService:ConversationHubService
+    private conversationService: ConversationHubService
   ) { }
 
   ngOnInit(): void {
@@ -88,7 +88,7 @@ export class NotificationPanelComponent {
   }
 
   navigateToProduct(obj: any): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === obj.product_id;
@@ -129,7 +129,7 @@ export class NotificationPanelComponent {
   }
 
   getMeListOfProducts(): void {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
       }
@@ -143,7 +143,7 @@ export class NotificationPanelComponent {
     //   });
   }
   getMeMetaData() {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
         this.router.navigate(['/dashboard']);
@@ -157,14 +157,14 @@ export class NotificationPanelComponent {
       }
       this.utils.loadSpinner(false);
     })
-    .catch((error) => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({
-        severity: 'error',
-        summary: 'Error',
-        detail: error,
+      .catch((error) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
       });
-    });
     // this.naviApiService
     //   .getMetaData(this.currentUser?.email)
     //   .then((response) => {
@@ -195,7 +195,7 @@ export class NotificationPanelComponent {
     obj.productId = obj.productId ? obj.productId : obj.product_id;
     obj.versionId = obj.versionId ? obj.versionId : obj.version_id;
     this.utils.loadSpinner(true);
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response: any) => {
       if (response?.status === 200 && response.data?.length) {
         const metaData: any = response.data;
         this.storageService.saveItem(
@@ -258,14 +258,14 @@ export class NotificationPanelComponent {
       }
       this.utils.loadSpinner(false);
     })
-    .catch((error) => {
-      this.utils.loadSpinner(false);
-      this.utils.loadToaster({
-        severity: 'error',
-        summary: 'Error',
-        detail: error,
+      .catch((error) => {
+        this.utils.loadSpinner(false);
+        this.utils.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
       });
-    });
     // this.naviApiService
     //   .getMetaData(this.currentUser?.email)
     //   .then((response) => {
@@ -570,7 +570,7 @@ export class NotificationPanelComponent {
   }
 
   getMeMetaDataAndStoreTheProduct(product_id: any) {
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === product_id;
@@ -594,7 +594,7 @@ export class NotificationPanelComponent {
     val.productId = val.productId ? val.productId : val.product_id;
     val.versionId = val.versionId ? val.versionId : val.version_id;
     this.utils.loadSpinner(true);
-    this.conversationService.getMetaData({ accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         const product = response.data?.filter((item: any) => {
           return item.id === val.productId;
