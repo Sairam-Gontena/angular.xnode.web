@@ -184,25 +184,11 @@ export class MyProductsComponent implements OnInit {
       msgData: true,
     });
     this.router.navigate(['/specification']);
-    // if ( data.specStatus!="Completed") { //!data.has_insights ||
-    //   this.messagingService.sendMessage({
-    //     msgType: MessageTypes.NAVI_CONTAINER_STATE,
-    //     msgData: { naviContainerState: 'EXPAND', product: data },
-    //   });
-    // } else {
-    //   this.messagingService.sendMessage({
-    //     msgType: MessageTypes.PRODUCT_CONTEXT,
-    //     msgData: true,
-    //   });
-    //   this.router.navigate(['/specification']);
-    // }
   }
 
   onClickNew() {
     console.log('onClickNew');
     this.utils.expandNavi$();
-    // this.router.navigate(['/x-pilot']);
-    // this.auditUtil.postAudit('NEW_PRODUCT_CREATE', 1, 'SUCCESS', 'user-audit');
   }
 
   openExternalLink(productUrl: string) {
@@ -236,7 +222,7 @@ export class MyProductsComponent implements OnInit {
   getMetaData() {
     //, fieldsRequired: ['id', 'productId', 'title', 'conversationType', 'content','userId','accountId','status','users']
     this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response: any) => {
-      console.log(response)
+      this.utils.loadSpinner(false);
       if (response?.status === 200 && response.data?.length) {
         let user_audit_body = {
           method: 'GET',
@@ -270,8 +256,6 @@ export class MyProductsComponent implements OnInit {
           ? this.filteredProducts.length + 1
           : 0;
         this.filteredProductsByEmail = this.templateCard;
-        this.utils.loadSpinner(false);
-        // this.getAllConversations();
       } else if (response?.status !== 200) {
         let user_audit_body = {
           method: 'GET',
@@ -294,123 +278,18 @@ export class MyProductsComponent implements OnInit {
         this.utils.loadSpinner(false);
       }
     }).catch((error: any) => {
-      // let user_audit_body = {
-      //   method: 'GET',
-      //   url: error?.request?.responseURL,
-      // };
-      // this.auditUtil.postAudit(
-      //   'GET_METADATA_MY_PRODUCTS',
-      //   1,
-      //   'FAILED',
-      //   'user-audit',
-      //   user_audit_body,
-      //   this.currentUser.email,
-      //   ''
-      // );
-      // this.utils.loadSpinner(false);
-      // this.utils.loadToaster({
-      //   severity: 'error',
-      //   summary: 'Error',
-      //   detail: error,
-      // });
     });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response: any) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_METADATA_MY_PRODUCTS',
-    //         1,
-    //         'SUCCESS',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser.email,
-    //         ''
-    //       );
-    //       this.storageService.saveItem(
-    //         StorageKeys.MetaData,
-    //         response.data.data
-    //       );
-    //       this.templateCard = response.data.data.map((dataItem: any) => {
-    //         dataItem.timeAgo = this.utils.calculateTimeAgo(dataItem.created_on);
-    //         if (this.currentUser.user_id === dataItem?.user_id)
-    //           dataItem.created_by = 'Created by you';
-    //         else dataItem.created_by = 'Created by ' + dataItem?.username;
-    //         return dataItem;
-    //       });
-
-    //       this.filteredProducts = sortBy(this.templateCard, [
-    //         'created_on',
-    //       ]).reverse();
-    //       this.filteredProductsLength = this.filteredProducts.length
-    //         ? this.filteredProducts.length + 1
-    //         : 0;
-    //       this.filteredProductsByEmail = this.templateCard;
-    //       this.utils.loadSpinner(false);
-    //       // this.getAllConversations();
-    //     } else if (response?.status !== 200) {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_METADATA_MY_PRODUCTS',
-    //         1,
-    //         'FAILED',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser.email,
-    //         ''
-    //       );
-    //       this.utils.loadToaster({
-    //         severity: 'error',
-    //         summary: 'ERROR',
-    //         detail: response?.data?.detail,
-    //       });
-    //       this.utils.loadSpinner(false);
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     let user_audit_body = {
-    //       method: 'GET',
-    //       url: error?.request?.responseURL,
-    //     };
-    //     this.auditUtil.postAudit(
-    //       'GET_METADATA_MY_PRODUCTS',
-    //       1,
-    //       'FAILED',
-    //       'user-audit',
-    //       user_audit_body,
-    //       this.currentUser.email,
-    //       ''
-    //     );
-    //     this.utils.loadSpinner(false);
-    //     this.utils.loadToaster({
-    //       severity: 'error',
-    //       summary: 'Error',
-    //       detail: error,
-    //     });
-    //   });
   }
 
   onClickcreatedByYou(): void {
     this.filteredProducts = sortBy(
       this.filteredProducts.filter((obj) => {
-        console.log('obj', obj?.createdBy?.userId);
-        console.log('obj', this.currentUser.user_id);
-
         return obj?.createdBy?.userId === this.currentUser.user_id;
       })
     )
     this.filteredProductsLength = this.filteredProducts.length
       ? this.filteredProducts.length + 1
       : 0;
-
-    // this.filteredProducts = cloneDeep(this.filteredProducts);
     this.end = 3;
     this.isViewLess = true;
   }
@@ -535,7 +414,6 @@ export class MyProductsComponent implements OnInit {
           summary: '',
           detail: error,
         });
-        this.utils.loadSpinner(true);
       });
   }
 
@@ -547,42 +425,6 @@ export class MyProductsComponent implements OnInit {
   onViewLess() {
     this.isViewLess = true;
     this.end = 3;
-  }
-
-  getAllConversations() {
-    this.conversationApiService
-      .getAllConversations()
-      .then((response: any) => {
-        if (response) {
-          this.AllConversations = this.mapProductNameToConversations(
-            response.data
-          );
-          this.filteredConversation = this.AllConversations;
-          this.getMeConversationsByContributers();
-        } else {
-          this.utils.loadSpinner(false);
-        }
-      })
-      .catch((err: any) => {
-        this.utils.loadSpinner(false);
-      });
-  }
-
-  getMeConversationsByContributers(): void {
-    this.conversationApiService
-      .getConversationsByContributor(this.currentUser?.user_id)
-      .then((response: any) => {
-        if (response && response.status == 200 && response.data) {
-          this.mineConversations = this.mapProductNameToConversations(
-            response.data
-          );
-        }
-        this.utils.loadSpinner(false);
-      })
-      .catch((error: any) => {
-        console.log(error);
-        this.utils.loadSpinner(false);
-      });
   }
 
   mapProductNameToConversations(_conversations: any) {

@@ -124,9 +124,9 @@ export class AppComponent implements OnInit {
         this.isSideWindowOpen = false;
       }
     });
-    this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
-      this.showProductStatusPopup = data.popup;
-    });
+    // this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
+    //   this.showProductStatusPopup = data.popup;
+    // });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
@@ -156,6 +156,12 @@ export class AppComponent implements OnInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
         this.isSideWindowOpen = false;
+      }
+      if (msg.msgData === 'CLOSE' && msg.msgType === MessageTypes.CLOSE_NAVI) {
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+        this.isSideWindowOpen = false;
+        this.isNaviExpanded = false;
+        this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
     })
   }
@@ -303,9 +309,9 @@ export class AppComponent implements OnInit {
     //     this.utilsService.disableDockedNavi();
     //   }
     // });
-    this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
-      this.showProductStatusPopup = data.popup;
-    });
+    // this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
+    //   this.showProductStatusPopup = data.popup;
+    // });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
         // this.makeTrustedUrl(data.email);
@@ -367,9 +373,9 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
-    this.utilsService.getMeProductStatus.subscribe((event: any) => {
-      this.showProductStatusPopup = event;
-    });
+    // this.utilsService.getMeProductStatus.subscribe((event: any) => {
+    //   this.showProductStatusPopup = event;
+    // });
     this.utilsService.handleLimitReachedPopup
       .pipe(debounce(() => interval(1000)))
       .subscribe((event: any) => {

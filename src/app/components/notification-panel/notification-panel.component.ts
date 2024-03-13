@@ -11,6 +11,8 @@ import { SpecificationUtilsService } from 'src/app/pages/diff-viewer/specificati
 import { SpecificationsService } from 'src/app/services/specifications.service';
 import { SpecVersion } from 'src/models/spec-versions';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { MessageTypes } from 'src/models/message-types.enum';
+import { MessagingService } from '../services/messaging.service';
 
 @Component({
   selector: 'xnode-notification-panel',
@@ -47,7 +49,8 @@ export class NotificationPanelComponent {
     private naviApiService: NaviApiService,
     private specificationUtils: SpecificationUtilsService,
     private specificationService: SpecificationsService,
-    private conversationService: ConversationHubService
+    private conversationService: ConversationHubService,
+    private messagingService: MessagingService
   ) { }
 
   ngOnInit(): void {
@@ -97,17 +100,6 @@ export class NotificationPanelComponent {
         this.prepareNavigation(obj);
       }
     });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       const product = response.data.data?.filter((item: any) => {
-    //         return item.id === obj.product_id;
-    //       })[0];
-    //       localStorage.setItem('product', JSON.stringify(product));
-    //       this.prepareNavigation(obj);
-    //     }
-    //   });
   }
 
   prepareNavigation(obj: any): void {
@@ -134,13 +126,6 @@ export class NotificationPanelComponent {
         localStorage.setItem('meta_data', JSON.stringify(response.data));
       }
     });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       localStorage.setItem('meta_data', JSON.stringify(response.data.data));
-    //     }
-    //   });
   }
   getMeMetaData() {
     this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
@@ -165,30 +150,6 @@ export class NotificationPanelComponent {
           detail: error,
         });
       });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       localStorage.setItem('meta_data', JSON.stringify(response.data.data));
-    //       this.router.navigate(['/dashboard']);
-    //       this.auditUtil.postAudit('DASHBOARD', 1, 'FAILURE', 'user-audit');
-    //     } else if (response?.status !== 200) {
-    //       this.utils.loadToaster({
-    //         severity: 'error',
-    //         summary: 'ERROR',
-    //         detail: response?.data?.detail,
-    //       });
-    //     }
-    //     this.utils.loadSpinner(false);
-    //   })
-    //   .catch((error) => {
-    //     this.utils.loadSpinner(false);
-    //     this.utils.loadToaster({
-    //       severity: 'error',
-    //       summary: 'Error',
-    //       detail: error,
-    //     });
-    //   });
   }
 
   goToSpec(obj: any) {
@@ -209,6 +170,14 @@ export class NotificationPanelComponent {
         localStorage.setItem('has_insights', product.has_insights);
         if (!window.location.hash.includes('#/specification')) {
           this.closeNotificationPanel.emit(true);
+          this.messagingService.sendMessage({
+            msgType: MessageTypes.CLOSE_NAVI,
+            msgData: 'CLOSE',
+          });
+          this.messagingService.sendMessage({
+            msgType: MessageTypes.PRODUCT_CONTEXT,
+            msgData: true,
+          });
           const queryParams = {
             productId: obj.productId,
             versionId: obj.versionId,
@@ -258,7 +227,7 @@ export class NotificationPanelComponent {
       }
       this.utils.loadSpinner(false);
     })
-      .catch((error) => {
+      .catch((error: any) => {
         this.utils.loadSpinner(false);
         this.utils.loadToaster({
           severity: 'error',
@@ -266,79 +235,7 @@ export class NotificationPanelComponent {
           detail: error,
         });
       });
-    // this.naviApiService
-    //   .getMetaData(this.currentUser?.email)
-    //   .then((response) => {
-    //     if (response?.status === 200 && response.data.data?.length) {
-    //       const metaData: any = response.data.data;
-    //       this.storageService.saveItem(
-    //         StorageKeys.MetaData,
-    //         response.data.data
-    //       );
-    //       let product = metaData.find((x: any) => x.id === obj.productId);
-    //       localStorage.setItem('record_id', product.id);
-    //       this.storageService.saveItem(StorageKeys.Product, product);
-    //       localStorage.setItem('app_name', product.title);
-    //       localStorage.setItem('has_insights', product.has_insights);
-    //       if (!window.location.hash.includes('#/specification')) {
-    //         this.closeNotificationPanel.emit(true);
-    //         const queryParams = {
-    //           productId: obj.productId,
-    //           versionId: obj.versionId,
-    //           template_type: obj.template_type ? obj.template_type : obj.entity,
-    //         };
-    //         this.router.navigate(['/specification'], { queryParams });
-    //       } else {
-    //         this.specificationService.getVersions(
-    //           product?.id,
-    //           (versions: SpecVersion[]) => {
-    //             this.specificationService.getMeSpecInfo(
-    //               {
-    //                 productId: product?.id,
-    //                 versionId: obj.versionId,
-    //               },
-    //               (specList) => {
-    //                 if (specList) {
-    //                   this.storageService.saveItem(
-    //                     StorageKeys.SpecVersion,
-    //                     versions.filter((version: SpecVersion) => {
-    //                       return version.id === obj.versionId;
-    //                     })[0]
-    //                   );
-    //                   if (obj.entity === 'UPDATE_SPEC') {
-    //                     this.specificationService.getMeCrList({
-    //                       productId: product.id,
-    //                     });
-    //                     this.specificationUtils.openConversationPanel({
-    //                       openConversationPanel: true,
-    //                       mainTabIndex: 1,
-    //                       childTabIndex: null,
-    //                     });
-    //                   }
-    //                 }
-    //               }
-    //             );
-    //           }
-    //         );
-    //         this.closeNotificationPanel.emit(true);
-    //       }
-    //     } else if (response?.status !== 200) {
-    //       this.utils.loadToaster({
-    //         severity: 'error',
-    //         summary: 'ERROR',
-    //         detail: response?.data?.detail,
-    //       });
-    //     }
-    //     this.utils.loadSpinner(false);
-    //   })
-    //   .catch((error) => {
-    //     this.utils.loadSpinner(false);
-    //     this.utils.loadToaster({
-    //       severity: 'error',
-    //       summary: 'Error',
-    //       detail: error,
-    //     });
-    //   });
+
   }
 
   getMeLabel(obj: any) {
