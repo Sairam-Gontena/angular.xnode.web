@@ -43,4 +43,4 @@
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
 
 <xnode-view-summary-popup *ngIf="showViewSummaryPopup" [visible]="showViewSummaryPopup" [notifObj]="notifObj"
-    [convSummary]="convSummary" (closePopUp)="showViewSummaryPopup=false"></xnode-view-summary-popup>
+    [convSummary]="convSummary" [label]="'View in Chat'" (closePopUp)="showViewSummaryPopup=false"></xnode-view-summary-popup>
