@@ -12,23 +12,21 @@
                     </div>
                 </div>
                 <div class="col-12 tab-content w-full">
-                    <div class="" *ngIf="activeIndex === 0">
+                    <div class="tooltip" *ngIf="activeIndex === 0">
                         <div class="tabpanel-content">
-                            <div class="mb-3">
-                                <div class="flex justify-content-between align-items-center " >
-                                    <h4 class="m-0 pb-1 font-semibold text-lg line-height-3">
+                            <div class="mb-3  ">
+                                    <h4 class="m-0 pb-1 font-semibold text-lg line-height-3 relative">
+                                        <div class="clip-tooltip">
+                                            <i class="pi pi-copy cursor-pointer mr-2 text-white"  title='Copy to clipboard'
+                                                (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)" *ngIf="!isCopyIconClicked" ></i>
+                                                <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked" ></i>
+                                            <i class="pi pi-envelope cursor-pointer text-white" title='Send on Email'
+                                                (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
+                                        </div>
                                         {{convSummary?.overall_summary?.content?.Title ?
                                         convSummary?.overall_summary?.content?.Title :
                                         convSummary?.overall_summary?.content?.title}}
                                     </h4>
-                                    <div class="flex  px-2  clip-tooltip">
-                                        <i class="pi pi-copy cursor-pointer mr-2 text-white"  title='Copy to clipboard'
-                                            (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)" *ngIf="!isCopyIconClicked" ></i>
-                                            <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked" ></i>
-                                        <i class="pi pi-envelope cursor-pointer text-white" title='Send on Email'
-                                            (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
-                                    </div>
-                                </div>
                                 <p class="m-0 text-base font-normal line-height-2">
                                     {{convSummary?.overall_summary?.content?.Summary ?
                                     convSummary?.overall_summary?.content?.Summary :
@@ -82,22 +80,22 @@
                     <div class="" *ngIf="activeIndex === 1">
                         <div class="tabpanel-content">
                             <p-accordion [activeIndex]="0">
-                                <p-accordionTab *ngFor="let summary of convSummary?.incremental_summary?.reverse()">
+                                <p-accordionTab *ngFor="let summary of convSummary?.incremental_summary?.reverse()" class="tooltip">
                                     <ng-template pTemplate="header">
-                                        <div class="col-12 p-0 flex justify-content-between">
-                                            <div class="ml-2 font-normal text-base line-height-2">
+                                        <div class="col-12 p-0 flex justify-content-between   ">
+                                            <div class="ml-2 font-normal text-base line-height-2 relative">
+                                                <div class="clip-tooltip1">
+                                                    <i class="pi pi-copy cursor-pointer mr-2 text-white"  title='Copy to clipboard'
+                                                        (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)" *ngIf="!isCopyIconClicked" ></i>
+                                                        <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked" ></i>
+                                                    <i class="pi pi-envelope cursor-pointer text-white" title='Send on Email'
+                                                        (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
+                                                </div>
                                                 {{summary?.content?.Title ?
                                                 summary?.content?.Title : summary?.content?.title}}</div>
                                             <div class="flex align-items-center pr-4 " >
                                                     <div class="text-right text-500 text-xs  font-italic font-semibold">
                                                         {{getMeLocalDateAndTime(summary?.timestamp)}}</div>
-                                                    <div class="flex  px-2 ml-2  clip-tooltip">
-                                                        <i class="pi pi-copy cursor-pointer mr-2 text-white"  title='Copy to clipboard'
-                                                            (click)="copyToClipboard(convSummary?.overall_summary?.content,$event)" *ngIf="!isCopyIconClicked" ></i>
-                                                            <i class="pi pi-check text-white mr-2" *ngIf="isCopyIconClicked" ></i>
-                                                        <i class="pi pi-envelope cursor-pointer text-white" title='Send on Email'
-                                                            (click)="sendOnMail(convSummary?.overall_summary?.content,$event)"></i>
-                                                    </div>
                                             </div>
                                             
                                         </div>
