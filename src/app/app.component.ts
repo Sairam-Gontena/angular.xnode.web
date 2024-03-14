@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
   groupConversations: any;
   oneToOneConversations: any;
   conversationID: any;
+  summaryObject:any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -163,6 +164,13 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
+    })
+    this.utilsService.getMeSummaryObject.subscribe((data: any) => {
+      this.summaryObject = data;
+      this.isSideWindowOpen = true;
+      this.isNaviExpanded = true;
+      this.makeTrustedUrl();
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
     })
   }
 
@@ -464,6 +472,14 @@ export class AppComponent implements OnInit {
         if (event.data.message === 'contract-navi') {
           this.isNaviExpanded = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+        }
+        if (event.data.message === 'naviOpened') {
+          // console.log('im in xnode web navi opened')
+          if(this.summaryObject && this.targetUrl){
+            // window.frames[0].postMessage({
+            //   NaviSummaryNotification: this.summaryObject
+            // }, this.targetUrl);
+          }
         }
         if (event.data.message === 'triggerProductPopup') {
           this.content = event.data.data;
