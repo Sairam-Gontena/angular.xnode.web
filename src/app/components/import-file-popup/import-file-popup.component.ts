@@ -7,6 +7,7 @@ import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { UtilsService } from '../services/utils.service';
 import { MessagingService } from '../services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { NaviApiService } from 'src/app/api/navi-api.service';
 
 @Component({
   selector: 'xnode-import-file-popup',
@@ -27,7 +28,7 @@ export class ImportFilePopupComponent implements OnInit {
   checked: boolean = false;
 
   constructor(
-    // private apiService: ApiService,
+    private naviApiService: NaviApiService,
     private utils: UtilsService,
     private userUtilService: UserUtilsService,
     private route: ActivatedRoute,
@@ -175,30 +176,31 @@ export class ImportFilePopupComponent implements OnInit {
   }
   triggerETL(res: any) {
     const id = localStorage.getItem('productContext');
-    const userEmail = localStorage.getItem('productuseremail');
-    const accountId = localStorage.getItem('accountid');
-
+    let currentUser: any = localStorage.getItem('currentUser');
+    if (currentUser) {
+      currentUser = JSON.parse(currentUser);
+    }
     let pr_id;
     if (id !== null && id !== 'undefined') {
       pr_id = id;
       this.productId = pr_id;
     }
-    res['productId'] = [this.productId];
-    res['isConversation'] = true;
-    res['owners'] = [this.user_id];
-    res['contributors'] = [this.user_id];
-    res['fileStoreId'] = res.storageId;
-    res['accountId'] = accountId;
-    res['email'] = userEmail;
-
-
-    // let url = 'bot/process_file';
-    // try {
-    //   this.apiService.post(url, res).then()
-    // } catch (e) {
-    //   console.error(e);
-    // }
-    // return;
+    if (currentUser) {
+      res['productId'] = [this.productId];
+      res['isConversation'] = true;
+      res['owners'] = [currentUser.user_id];
+      res['contributors'] = [currentUser.user_id];
+      res['fileStoreId'] = res.storageId;
+      res['accountId'] = currentUser.account_id;
+      res['email'] = currentUser.email;
+    }
+    let url = 'bot/process_file';
+    try {
+      this.naviApiService.postFile(url, res).then()
+    } catch (e) {
+      console.error(e);
+    }
+    return;
   }
 }
 
