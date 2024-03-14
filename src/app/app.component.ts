@@ -474,10 +474,11 @@ export class AppComponent implements OnInit {
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         }
         if (event.data.message === 'naviOpened') {
+          // console.log('im in xnode web navi opened')
           if(this.summaryObject && this.targetUrl){
-            window.frames[0].postMessage({
-              NaviSummaryNotification: this.summaryObject
-            }, this.targetUrl);
+            // window.frames[0].postMessage({
+            //   NaviSummaryNotification: this.summaryObject
+            // }, this.targetUrl);
           }
         }
         if (event.data.message === 'triggerProductPopup') {
