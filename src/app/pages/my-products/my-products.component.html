@@ -47,7 +47,7 @@
         <div class="grid m-0">
             <div class="col-12">
                 <xnode-product-cards [filteredProducts]="filteredProducts" [end]="end"
-                    (createNewWithNavi)="onClickNew()" (onClickProductCard)="onClickProductCard($event)"
+                    (createNewWithNavi)="onClickNewWithNavi()" (onClickProductCard)="onClickProductCard($event)"
                     (openExternalLink)="openExternalLink($event)"></xnode-product-cards>
             </div>
             <div class="col-12 lg:col-12  flex justify-content-end flex-wrap" *ngIf="filteredProducts.length > 0">
