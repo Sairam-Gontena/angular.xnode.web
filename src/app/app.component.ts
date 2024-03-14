@@ -585,10 +585,14 @@ export class AppComponent implements OnInit {
         false;
       rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=chat');
       // this.iframeUrlLoad(rawUrl);
+    } else if (this.newWithNavi) {
+      rawUrl = rawUrl + '&componentToShow=chat';
     } else {
       rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=tasks')
     }
-    rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded
+
+    rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
+
     this.iframeUrlLoad(rawUrl);
   }
   iframeUrlLoad(rawUrl: any) {
