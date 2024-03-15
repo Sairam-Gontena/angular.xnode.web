@@ -605,8 +605,8 @@ export class AppComponent implements OnInit {
 
       rawUrl = rawUrl + addUrl; //(this.isFileImported && !this.summaryObject ? '&componentToShow=Conversations' : '&componentToShow=tasks')
     }
-    if(this.summaryObject.conversationId){
-      rawUrl = rawUrl + '&componentToShow=chat&conversationId='+this.summaryObject.conversationId+'&type='+this.summaryObject.type;
+    if(this.summaryObject?.conversationId){
+      rawUrl = rawUrl + '&componentToShow=chat&conversationId='+this.summaryObject?.conversationId+'&type='+this.summaryObject?.type;
     }
 
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
