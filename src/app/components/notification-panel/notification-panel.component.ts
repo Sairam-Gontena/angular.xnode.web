@@ -606,22 +606,6 @@ export class NotificationPanelComponent {
   }
 
   viewSummary(notif: any): void {
-    // console.log(notif)
-    // const notify = {
-    //   conversationId:"3ded4052-2ed3-4d54-af85-0bb79700e82b",
-    //   description:"Conversation Summary has been successfully generated in (23.33 sec)",
-    //   email: "arun.ragam@salientminds.com",
-    //   end_time:"2024-03-13 11:22:30",
-    //   entity: "CONVERSATION_SUMMARY",
-    //   execution_time:23.33,
-    //   important:"true",
-    //   pinned:"true",
-    //   read:"false",
-    //   recent:"true",
-    //   start_time:"2024-03-13 11:22:07",
-    //   status: "Completed",
-    //   type:"Navi"
-    //   }
     this.showViewSummaryPopup = true;
     this.viewSummaryPopup.emit(notif)
     }
