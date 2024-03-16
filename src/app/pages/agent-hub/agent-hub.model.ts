@@ -144,22 +144,22 @@ export class AgentHubModel {
             {
                 label: "View",
                 icon: "",
-                command: () => {}
+                command: (event: any) => {console.log(event, "event")}
             },
             {
                 label: "Duplicate",
                 icon: "",
-                command: () => {}
+                command: (event: any) => {console.log(event, "event")}
             },
             {
                 label: "Archieve",
                 icon: "",
-                command: () => {}
+                command: (event: any) => {console.log(event, "event")}
             },
             {
                 label: "Delete",
                 icon: "",
-                command: () => {}
+                command: (event: any) => {console.log(event, "event")}
             }
         ]
 
