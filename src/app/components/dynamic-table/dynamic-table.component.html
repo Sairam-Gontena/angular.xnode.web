@@ -114,7 +114,11 @@
 
                          <ng-container *ngIf="col.icon">
 
-                              <p-splitButton label="" [icon]="col.icon" styleClass="p-0" [model]="tableRowActionOptions"></p-splitButton>
+                              <p-splitButton label="" class="p-0" styleClass="p-0" appendTo="body" [model]="tableRowActionOptions">
+                              <ng-template pTemplate="dropdownicon">
+                                   <p-button [icon]="col.icon"></p-button>
+                              </ng-template>
+                              </p-splitButton>
                               <!-- <i [class]="col.icon"></i> -->
                          </ng-container>
                     </td>

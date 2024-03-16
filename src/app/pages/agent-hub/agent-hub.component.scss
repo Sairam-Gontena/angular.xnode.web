@@ -172,11 +172,10 @@
 }
 
 
-// Dynamic Table style
+// Dynamic Table style Starts
 
 // Column 3 dots action button
-
-
-::ng-deep .p-splitbutton-menubutton{
-  display: none;
+:host ::ng-deep .p-splitbutton-defaultbutton, 
+:host ::ng-deep .p-splitbutton-menubutton{
+  padding: 0
 }
