@@ -28,6 +28,16 @@ body {
   overflow: hidden;
 }
 
+:root {
+  --davy-grey: #535354;
+  --metalBlack:  #2E2D36;
+  --charcoalGrey: #3a3e45;
+}
+
+.menuStyleTable {
+  border: 1px solid var(--davy-grey) !important;
+  background-color: var(--metalBlack) !important;
+}
 .pointer{
   cursor:pointer;
 }
