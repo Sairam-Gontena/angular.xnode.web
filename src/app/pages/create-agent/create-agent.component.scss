@@ -1,3 +1,4 @@
+/*****HEADER SECTION **********/
 .new-agent-status {
   height: 1.5rem;
   width: 1.5rem;
@@ -29,4 +30,17 @@
   border-radius: 0 6px 6px 0;
   height: 100%;
   padding: 0.5rem 3rem;
+}
+
+/*****TAB SECTION **********/
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: #fff !important;
+}
+
+:host ::ng-deep .p-tabview-panels,
+:host ::ng-deep .p-tabview-nav,
+:host ::ng-deep .p-tabview-nav li,
+:host ::ng-deep .p-tabview-nav li a {
+  background: transparent !important;
+  gap: 1.5rem;
 }
