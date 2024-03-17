@@ -11,7 +11,7 @@ import {
 } from './IAgent-hub';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { Constant } from './agent-hub.constant';
+import { Constant, agentName } from './agent-hub.constant';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -45,13 +45,28 @@ export class AgentHubModel {
   statsItem: any;
 
   allAvailableTabItems = [
-    { idx: 0, title: 'Agents', value: 'agents' },
-    { idx: 1, title: 'Capabilities', value: 'capabilities_linked_agents' },
-    { idx: 2, title: 'Topics', value: 'topic' },
-    { idx: 3, title: 'Prompts', value: 'prompt_linked_topic' },
-    { idx: 4, title: 'Knowledge', value: 'knowledge' },
-    { idx: 5, title: 'Models', value: 'model' },
-    { idx: 6, title: 'Tools', value: 'tool' },
+    { idx: 0, title: 'Agents', value: 'agents', identifier: agentName.agent },
+    {
+      idx: 1,
+      title: 'Capabilities',
+      value: 'capabilities_linked_agents',
+      identifier: agentName.capability,
+    },
+    { idx: 2, title: 'Topics', value: 'topic', identifier: agentName.topic },
+    {
+      idx: 3,
+      title: 'Prompts',
+      value: 'prompt_linked_topic',
+      identifier: agentName.prompt,
+    },
+    {
+      idx: 4,
+      title: 'Knowledge',
+      value: 'knowledge',
+      identifier: agentName.knowledge,
+    },
+    { idx: 5, title: 'Models', value: 'model', identifier: agentName.model },
+    { idx: 6, title: 'Tools', value: 'tool', identifier: agentName.tool },
   ];
 
   breadCrumbsAction = {
@@ -100,6 +115,118 @@ export class AgentHubModel {
     optionLabel: 'header',
     styleClass: 'showColumnFilterOption',
     changeHandler: this.onShowDynamicColumnFilter.bind(this),
+  };
+
+  headerActionBtnOption = {
+    agent: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Agent',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Agent',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+
+    capability: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Capability',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Capability',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+    topic: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Topic',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Topic',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+    prompt: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Prompt',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Prompt',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+
+    knowledge: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Knowledge',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Knowledge',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+
+    model: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Model',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Model',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+
+    tool: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Tool',
+          icon: '',
+          command: () => {},
+        },
+        {
+          label: 'Import Tool',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
   };
 
   constructor(

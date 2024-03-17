@@ -19,12 +19,20 @@
       <!-- Left-aligned content -->
       <div class="flex align-items-center">
         <p-button
+          *ngIf="
+            !agentHubModel.breadCrumbsAction.isBreadCrumbActive;
+            else elseBlock
+          "
           label="Create Agent"
           styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
           [outlined]="true"
           icon="pi pi-plus-circle"
           iconPos="right"
         ></p-button>
+
+        <ng-template #elseBlock>
+          <p-splitButton label="Actions"></p-splitButton>
+        </ng-template>
       </div>
 
       <div class="separator"></div>
