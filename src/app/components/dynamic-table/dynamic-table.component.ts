@@ -16,6 +16,11 @@ interface FilterOptions {
   styleClass: string;
   changeHandler?: (event: any) => void;
 }
+
+interface ViewAll {
+  showButton: boolean;
+  clickHandler: (event: any) => void;
+}
 @Component({
   selector: 'xnode-dynamic-table',
   templateUrl: './dynamic-table.component.html',
@@ -29,11 +34,11 @@ export class DynamicTableComponent implements OnInit {
   @Input() Actions: any[] = [];
   @Input() DeleteAction: any[] = [];
   @Input() tableInfo: any;
-  @Input() columnWidth: string = "18rem";
-  @Input() tableHeaderColor: string = ''
-  @Input() altBgColorRow: string='';
-  @Input() verticalScrollHeight = "25rem"
-  @Input() paginatorInfo:any = {}
+  @Input() columnWidth: string = '18rem';
+  @Input() tableHeaderColor: string = '';
+  @Input() altBgColorRow: string = '';
+  @Input() verticalScrollHeight = '25rem';
+  @Input() paginatorInfo: any = {};
 
   @Input() tableRowActionOptions: any[] = [];
 
@@ -43,10 +48,10 @@ export class DynamicTableComponent implements OnInit {
     showToggleAll: false,
     showHeader: false,
     options: [],
-    placeholder: "All",
-    optionLabel: "name",
-    styleClass: "custom-multiselect"
-  }
+    placeholder: 'All',
+    optionLabel: 'name',
+    styleClass: 'custom-multiselect',
+  };
 
   @Input() showColumnFilterOption: FilterOptions = {
     showFilterOption: false,
@@ -54,12 +59,20 @@ export class DynamicTableComponent implements OnInit {
     showToggleAll: false,
     showHeader: false,
     options: [],
-    placeholder: "All",
-    optionLabel: "name",
-    styleClass: "showColumnFilterOption",
-    changeHandler: (event: any): void => {console.log('val')}
-  }
+    placeholder: 'All',
+    optionLabel: 'name',
+    styleClass: 'showColumnFilterOption',
+    changeHandler: (event: any): void => {
+      console.log('val');
+    },
+  };
 
+  @Input() viewAll: ViewAll = {
+    showButton: false,
+    clickHandler: (event: any): void => {
+      console.log('val');
+    },
+  };
 
   headers: any;
   editable: boolean = true;
@@ -153,9 +166,9 @@ export class DynamicTableComponent implements OnInit {
     FileSaver.saveAs(data, this.exportFileName);
   }
 
-   // Function to handle lazy loading (pagination)
-   onPageChangeHandler(event: any) {
-    console.log(event, "event")
+  // Function to handle lazy loading (pagination)
+  onPageChangeHandler(event: any) {
+    console.log(event, 'event');
 
     // Emit event to parent
   }

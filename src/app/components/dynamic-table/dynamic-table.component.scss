@@ -159,3 +159,10 @@
   width: 100%;
   border-width: 0px;
 }
+:host ::ng-deep .view-all-btn {
+  color: var(--cerulean);
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: right;
+  width: 100%;
+}
