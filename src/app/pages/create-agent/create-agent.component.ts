@@ -13,4 +13,12 @@ export class CreateAgentComponent {
   constructor(private storageService: LocalStorageService) {
     this.createAgentModel = new CreateAgentModel(this.storageService);
   }
+
+  onCloseHandler() {}
+
+  isCreateActive: boolean = true;
+
+  toggleActive(isCreate: boolean): void {
+    this.isCreateActive = isCreate;
+  }
 }

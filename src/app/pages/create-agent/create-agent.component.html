@@ -1,1 +1,49 @@
-<p>create-agent works!</p>
+<div class="border-bottom-2 border-gray-700">
+  <div class="flex justify-content-between p-4">
+    <div class="flex gap-3">
+      <div class="new-agent-status"></div>
+      <div>
+        <div class="font-semibold text-xl">New Agent</div>
+        <div class="flex align-items-center gap-2 mt-2">
+          <div class="draft-status"></div>
+          <div class="text-sm font-normal">Draft</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toggle-buttons">
+      <p-button
+        type="button"
+        label="Create"
+        styleClass="header-inactive-toggle-btn"
+        (click)="toggleActive(true)"
+      ></p-button>
+      <p-button
+        type="button"
+        label="Configure"
+        styleClass="header-active-toggle-btn"
+        (click)="toggleActive(false)"
+      ></p-button>
+    </div>
+
+    <div class="flex align-items-center gap-3">
+      <p-button
+        label="Preview"
+        icon="pi pi-external-link"
+        iconPos="right"
+        styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-3 py-2"
+        [outlined]="true"
+      ></p-button>
+
+      <p-button
+        label="Save"
+        styleClass="text-white text-sm line-height-1 font-semibold border-white-alpha-70 border-round-2xl px-3 py-2"
+      ></p-button>
+
+      <i
+        class="pi pi-times text-white cursor-pointer"
+        (click)="onCloseHandler()"
+      ></i>
+    </div>
+  </div>
+</div>
