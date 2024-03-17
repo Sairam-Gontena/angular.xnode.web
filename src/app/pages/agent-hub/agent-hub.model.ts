@@ -262,7 +262,7 @@ export class AgentHubModel {
   //   acitveHeaderActionBtnOption
 
   viewAll = {
-    showButton: true,
+    showButton: !this.breadCrumbsAction.isBreadCrumbActive,
     clickHandler: this.OnbreabCrumbsClickHandler.bind(this),
   };
 
@@ -385,6 +385,10 @@ export class AgentHubModel {
       // Handle the error appropriately
     }
 
+    // Don't show viewAll button
+
+    this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
+
     this.getAllAgentList({ endpoint: item.value });
   }
 
@@ -394,6 +398,9 @@ export class AgentHubModel {
     const indexToDelete = event.item.index + 1;
     newItem.splice(indexToDelete);
     this.breadCrumbsAction.isBreadCrumbActive = false;
+
+    // Show viewALl button
+    this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
 
     this.breadCrumbsAction.breadcrumb = [...newItem];
   }
