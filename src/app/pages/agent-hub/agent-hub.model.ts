@@ -20,12 +20,6 @@ const InitialPaginatorInfo = {
   totalRecords: 0,
 };
 export class AgentHubModel {
-  columns: any; // Define the type of columns based on the actual data structure
-  activeIndex: number;
-  tabItems: { title: string; value: string }[];
-  tableData!: ITableDataEntry[];
-  tableRowActionOptions: any[] = [];
-
   // tableData!: any;
   tableInfo: ITableInfo = {
     delete_action: false,
@@ -33,16 +27,6 @@ export class AgentHubModel {
     name: 'Notification List',
     search_input: true,
   };
-
-  viewAll = {
-    showButton: true,
-    clickHandler: this.OnbreabCrumbsClickHandler.bind(this),
-  };
-
-  paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
-  agentTabItemDropdown: IDropdownItem[];
-  userInfo: any;
-  statsItem: any;
 
   allAvailableTabItems = [
     { idx: 0, title: 'Agents', value: 'agents', identifier: agentName.agent },
@@ -99,7 +83,16 @@ export class AgentHubModel {
     filter: false,
     showToggleAll: false,
     showHeader: false,
-    options: [] as any[],
+    options: [
+      {
+        idx: 0,
+        header: 'All',
+      },
+      {
+        idx: 1,
+        header: 'My Agents',
+      },
+    ],
     placeholder: 'All',
     optionLabel: 'header',
     styleClass: 'custom-multiselect',
@@ -229,6 +222,69 @@ export class AgentHubModel {
     },
   };
 
+  tableRowActionOptions = [
+    {
+      label: 'View',
+      icon: '',
+      command: (event: any) => {
+        console.log(event, 'event');
+      },
+    },
+    {
+      label: 'Duplicate',
+      icon: '',
+      command: (event: any) => {
+        console.log(event, 'event');
+      },
+    },
+    {
+      label: 'Archieve',
+      icon: '',
+      command: (event: any) => {
+        console.log(event, 'event');
+      },
+    },
+    {
+      label: 'Delete',
+      icon: '',
+      command: (event: any) => {
+        console.log(event, 'event');
+      },
+    },
+  ];
+
+  columns: any; // Define the type of columns based on the actual data structure
+  activeIndex: number;
+  tabItems: { title: string; value: string }[];
+  tableData!: ITableDataEntry[];
+  //   acitveHeaderActionBtnOption
+
+  viewAll = {
+    showButton: true,
+    clickHandler: this.OnbreabCrumbsClickHandler.bind(this),
+  };
+
+  paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
+  agentTabItemDropdown: IDropdownItem[] = [
+    {
+      label: 'Update',
+      icon: 'pi pi-refresh',
+      command: () => {
+        // this.update();
+      },
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-times',
+      command: () => {
+        // this.delete();
+      },
+    },
+    // Additional dropdown items...
+  ];
+  userInfo: any;
+  statsItem = Constant.stats;
+
   constructor(
     private storageService: LocalStorageService,
     private agentHubService: AgentHubService
@@ -251,68 +307,6 @@ export class AgentHubModel {
         header: item.header,
       };
     });
-
-    this.searchFilterOptions.options = [
-      {
-        idx: 0,
-        header: 'All',
-      },
-      {
-        idx: 1,
-        header: 'My Agents',
-      },
-    ];
-
-    this.statsItem = Constant.stats;
-
-    this.agentTabItemDropdown = [
-      {
-        label: 'Update',
-        icon: 'pi pi-refresh',
-        command: () => {
-          // this.update();
-        },
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-times',
-        command: () => {
-          // this.delete();
-        },
-      },
-      // Additional dropdown items...
-    ];
-
-    this.tableRowActionOptions = [
-      {
-        label: 'View',
-        icon: '',
-        command: (event: any) => {
-          console.log(event, 'event');
-        },
-      },
-      {
-        label: 'Duplicate',
-        icon: '',
-        command: (event: any) => {
-          console.log(event, 'event');
-        },
-      },
-      {
-        label: 'Archieve',
-        icon: '',
-        command: (event: any) => {
-          console.log(event, 'event');
-        },
-      },
-      {
-        label: 'Delete',
-        icon: '',
-        command: (event: any) => {
-          console.log(event, 'event');
-        },
-      },
-    ];
 
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
