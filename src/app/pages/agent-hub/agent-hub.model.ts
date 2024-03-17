@@ -222,6 +222,8 @@ export class AgentHubModel {
     },
   };
 
+  activeHeaderActionBtnOption!: any[];
+
   tableRowActionOptions = [
     {
       label: 'View',
@@ -255,7 +257,7 @@ export class AgentHubModel {
 
   columns: any; // Define the type of columns based on the actual data structure
   activeIndex: number;
-  tabItems: { title: string; value: string }[];
+  tabItems: { idx: number; title: string; value: string; identifier: string }[];
   tableData!: ITableDataEntry[];
   //   acitveHeaderActionBtnOption
 
@@ -357,7 +359,7 @@ export class AgentHubModel {
     this.getAllAgentList();
   }
 
-  OnbreabCrumbsClickHandler(evnet: any) {
+  OnbreabCrumbsClickHandler(event: any) {
     let item = this.tabItems[this.activeIndex];
     this.breadCrumbsAction.isBreadCrumbActive = true;
     const newPayload = {
@@ -368,6 +370,20 @@ export class AgentHubModel {
       ...this.breadCrumbsAction.breadcrumb,
       newPayload,
     ];
+
+    // if(item.identifier in this.headerActionBtnOption) {
+    //     this.activeHeaderActionBtnOption = this.headerActionBtnOption[item.identifier].options
+    // }
+
+    if (item.identifier in this.headerActionBtnOption) {
+      this.activeHeaderActionBtnOption =
+        this.headerActionBtnOption[
+          item.identifier as keyof typeof this.headerActionBtnOption
+        ].options;
+    } else {
+      console.error('Invalid identifier:', item.identifier);
+      // Handle the error appropriately
+    }
 
     this.getAllAgentList({ endpoint: item.value });
   }

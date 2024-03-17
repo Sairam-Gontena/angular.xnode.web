@@ -1,5 +1,5 @@
 <div class="pr-4 pl-5">
-  <div class="flex justify-content-between pt-5">
+  <div class="flex justify-content-between py-6">
     <div class="flex gap-2 align-items-center">
       <!-- <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'"
         (onClick)="agentHubModel.goBackBreadCrumbsHandler()">Agent Hub</p-button>
@@ -31,7 +31,11 @@
         ></p-button>
 
         <ng-template #elseBlock>
-          <p-splitButton label="Actions"></p-splitButton>
+          <p-splitButton
+            label="Actions"
+            styleClass="agent-playground-headerActionBtn"
+            [model]="agentHubModel.activeHeaderActionBtnOption"
+          ></p-splitButton>
         </ng-template>
       </div>
 
