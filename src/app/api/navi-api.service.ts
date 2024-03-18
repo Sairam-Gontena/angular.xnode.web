@@ -87,4 +87,7 @@ export class NaviApiService extends BaseApiService {
     let url = 'specs/update';
     return this.post(url, body);
   }
+  postFile(url: string, body: unknown) {
+    return this.post(url, body)
+  }
 }

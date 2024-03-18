@@ -57,11 +57,11 @@ export class AppSideMenuComponent implements OnInit {
           icon: './assets/home.svg',
           path: 'my-products',
         },
-        {
-          label: 'Knowledge',
-          icon: './assets/accounts.svg',
-          path: 'admin/user-approval',
-        },
+        // {
+        //   label: 'Knowledge',
+        //   icon: './assets/accounts.svg',
+        //   path: 'admin/user-approval',
+        // },
       ];
       this.activateMenuItem();
     } else {
