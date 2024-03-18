@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
   groupConversations: any;
   oneToOneConversations: any;
   conversationID: any;
+  summaryObject:any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -164,6 +165,13 @@ export class AppComponent implements OnInit {
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
     })
+    this.utilsService.getMeSummaryObject.subscribe((data: any) => {
+      this.summaryObject = data;
+      this.isSideWindowOpen = true;
+      this.isNaviExpanded = true;
+      this.makeTrustedUrl();
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+    })
   }
 
   navigateToHome(): void {
@@ -247,7 +255,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
     if (isNaviExpanded) this.isNaviExpanded = isNaviExpanded;
-    console.log('this.isNaviExpanded', this.isNaviExpanded);
 
     this.isSideWindowOpen = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -585,11 +592,27 @@ export class AppComponent implements OnInit {
         false;
       rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=chat');
       // this.iframeUrlLoad(rawUrl);
+    } else if (this.newWithNavi && !this.summaryObject) {
+      rawUrl = rawUrl + '&componentToShow=chat';
     } else {
-      rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=tasks')
+      let addUrl='';
+      if(this.isFileImported){
+        addUrl = '&componentToShow=Conversations';
+      }else{
+        if(!this.summaryObject)
+          addUrl = '&componentToShow=tasks';
+      }
+
+      rawUrl = rawUrl + addUrl; //(this.isFileImported && !this.summaryObject ? '&componentToShow=Conversations' : '&componentToShow=tasks')
     }
-    rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded
+    if(this.summaryObject?.conversationId){
+      rawUrl = rawUrl + '&componentToShow=chat&conversationId='+this.summaryObject?.conversationId+'&type='+this.summaryObject?.type;
+    }
+
+    rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
+
     this.iframeUrlLoad(rawUrl);
+    this.summaryObject='';
   }
   iframeUrlLoad(rawUrl: any) {
     setTimeout(() => {

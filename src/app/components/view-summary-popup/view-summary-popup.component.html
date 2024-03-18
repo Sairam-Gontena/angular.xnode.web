@@ -150,10 +150,8 @@
                                             *ngIf="summary?.content?.Tags?.length || summary?.content?.tags?.length">
                                             <h4 class="m-0 pb-1 font-medium	text-lg line-height-3 header-text">Tags:
                                             </h4>
-                                            <p class="m-0 text-base font-normal line-height-2 content-text">{{
-                                                summary?.content?.Tags?
-                                                summary?.content?.Tags?.join(', ') : summary?.content?.tags?.join(',
-                                                ') }}
+                                            <p class="m-0 text-base font-normal line-height-2 content-text">
+                                              {{ summary?.content?.Tags? summary?.content?.Tags?.join(', ') : summary?.content?.tags?.join(', ') }}
                                             </p>
                                         </div>
                                     </div>
@@ -162,7 +160,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="flex justify-content-end close-icon">
@@ -171,7 +168,7 @@
     </div>
     <ng-template pTemplate="footer">
         <div class="p-2">
-            <p-button label="View in Chat" class="" (click)="viewChatSummary()" [rounded]="true"
+            <p-button label="{{label}}" class="" (click)="viewChatSummary()" [rounded]="true"
                 severity="info"></p-button>
         </div>
     </ng-template>

@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { MessagingService } from '../services/messaging.service';
 import { UtilsService } from '../services/utils.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { ClipboardService } from 'ngx-clipboard';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 @Component({
   selector: 'xnode-view-summary-popup',
@@ -16,6 +18,7 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   @Input() conversationID: any;
   @Input() visible: any;
   @Input() notifObj: any;
+  @Input() label:any;
   @Input() convSummary?: OverallSummary;
   @Output() closeSummaryPopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -36,11 +39,12 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   ];
 
   constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
-    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService,) {
+    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService,private messagingService:MessagingService) {
 
   }
 
   ngOnInit(): void {
+    this.label == 'View in Chat' ? this.label = 'View in Chat': this.label = 'Close';
   }
 
   onClickTab(index: number) {
@@ -73,11 +77,17 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     }
   }
   viewChatSummary() {
-    if (this.router.url != '/x-pilot') {
-      this.router.navigate(['/x-pilot']);
-      this.utils.updateSummary(this.notifObj);
-    } else {
-      this.utils.updateSummary(this.notifObj);
+    if(this.label=='View in Chat'){
+      if (this.router.url != '/x-pilot') {
+        this.router.navigate(['/my-products']);
+        // this.messagingService.sendMessage({
+        //   msgType: MessageTypes.NAVI_CONTAINER_STATE,
+        //   msgData: { naviContainerState: 'EXPAND', makeTrustedUrl:false},
+        // });
+        this.utils.updateSummary(this.notifObj);
+      } else {
+        this.utils.updateSummary(this.notifObj);
+      }
     }
     this.closePopup();
   }
@@ -145,6 +155,5 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   closePopup(): void {
     this.closePopUp.emit();
     this.activeIndex = 0;
-
   }
 }

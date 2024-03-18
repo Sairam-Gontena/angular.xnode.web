@@ -606,8 +606,7 @@ export class NotificationPanelComponent {
   }
 
   viewSummary(notif: any): void {
-    // console.log(notif)
     this.showViewSummaryPopup = true;
     this.viewSummaryPopup.emit(notif)
-  }
+    }
 }
