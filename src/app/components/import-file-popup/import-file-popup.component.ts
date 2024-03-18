@@ -186,7 +186,9 @@ export class ImportFilePopupComponent implements OnInit {
       this.productId = pr_id;
     }
     if (currentUser) {
-      res['productId'] = [this.productId];
+      if (this.productId) {
+        res['productId'] = this.productId;
+      }
       res['isConversation'] = true;
       res['owners'] = [currentUser.user_id];
       res['contributors'] = [currentUser.user_id];
