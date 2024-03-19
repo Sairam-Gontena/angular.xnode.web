@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { User, UserUtil } from 'src/app/utils/user-util';
 import { MessageService } from 'primeng/api';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
+import { ElementRef } from 'jsplumb';
 @Component({
   selector: 'xnode-template-builder',
   templateUrl: './template-builder.component.html',
@@ -41,6 +42,33 @@ export class TemplateBuilderComponent implements OnInit {
 
   ngOnInit() {
     this.getMeStorageData();
+
+    this.sendHeaderHeightToIframe();
+  }
+
+
+  // @ViewChild('headerElement') headerElement!: ElementRef;
+
+  sendHeaderHeightToIframe(): void {
+    debugger
+    const remainingHeight = this.getHeaderHeight();
+    console.log("remainingHeight", remainingHeight)
+    setTimeout(() => {
+      const iframeWindow = document.getElementById('myIframe') as HTMLIFrameElement;
+    if (iframeWindow) {
+      iframeWindow.contentWindow?.postMessage({ remainingHeight }, '*');
+    }
+    }, 1000);
+  }
+
+  getHeaderHeight() {
+    const headerElement = document.querySelector('.publish-header')
+    let remainingHeight = window.innerHeight
+    if(headerElement) {
+      remainingHeight = remainingHeight - headerElement?.getBoundingClientRect()?.top ?? 0 - headerElement.clientHeight
+    }
+
+    return remainingHeight
   }
 
   getMeStorageData(): void {
