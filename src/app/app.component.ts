@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
   groupConversations: any;
   oneToOneConversations: any;
   conversationID: any;
-  summaryObject:any;
+  summaryObject: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -596,22 +596,22 @@ export class AppComponent implements OnInit {
     } else if (this.newWithNavi && !this.summaryObject) {
       rawUrl = rawUrl + '&componentToShow=chat';
     } else {
-      let addUrl='';
-      if(this.isFileImported){
+      let addUrl = '';
+      if (this.isFileImported) {
         addUrl = '&componentToShow=Conversations';
-      }else{
-        if(!this.summaryObject)
-          addUrl = '&componentToShow=tasks';
+      } else {
+        if (!this.summaryObject)
+          addUrl = '&componentToShow=Tasks';
       }
       rawUrl = rawUrl + addUrl; //(this.isFileImported && !this.summaryObject ? '&componentToShow=Conversations' : '&componentToShow=tasks')
     }
-    if(this.summaryObject?.conversationId){
-      rawUrl = rawUrl + '&componentToShow=chat&conversationId='+this.summaryObject?.conversationId+'&type='+this.summaryObject?.type;
+    if (this.summaryObject?.conversationId) {
+      rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
     }
 
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
-    this.summaryObject='';
+    this.summaryObject = '';
   }
   iframeUrlLoad(rawUrl: any) {
     setTimeout(() => {
