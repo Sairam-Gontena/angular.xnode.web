@@ -123,6 +123,7 @@ export class TemplateBuilderPublishHeaderComponent implements OnInit {
   }
 
   openExternalLink(productUrl: string | undefined) {
+    productUrl+='&openExternal=true';
     window.open(productUrl, '_blank');
   }
 

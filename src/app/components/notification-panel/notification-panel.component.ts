@@ -444,6 +444,7 @@ export class NotificationPanelComponent {
   }
 
   onClickLaunchProduct(url: any): void {
+    url+='&openExternal=true';
     window.open(url, '_blank');
   }
 
