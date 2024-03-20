@@ -34,6 +34,7 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
 import { Product } from 'src/models/product';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 
 @Component({
   selector: 'xnode-bpmn-diagram',
@@ -41,8 +42,7 @@ import { ConversationHubService } from 'src/app/api/conversation-hub.service';
   styleUrls: ['./bpmn-diagram.component.scss'],
 })
 export class BpmnDiagramComponent
-  implements AfterContentInit, OnDestroy, OnInit
-{
+  implements AfterContentInit, OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
     | undefined;
@@ -92,8 +92,9 @@ export class BpmnDiagramComponent
     private router: Router,
     private naviApiService: NaviApiService,
     private workflowApiService: WorkflowApiService,
-    private conversationService:ConversationHubService
-  ) {}
+    private conversationService: ConversationHubService,
+    private specApiService: SpecApiService
+  ) { }
 
   ngOnInit(): void {
     this.getMeStorageData();
@@ -102,15 +103,11 @@ export class BpmnDiagramComponent
   getMeStorageData(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    if (this.product && !this.product?.has_insights) {
-      this.utilsService.showProductStatusPopup(true);
-      return;
-    }
     this.getUseCases(this.product);
   }
 
   getUseCases(data: any) {
-    this.naviApiService
+    this.specApiService
       .getUsecases(data.id)
       .then((response: any) => {
         if (response?.status === 200) {
@@ -184,7 +181,7 @@ export class BpmnDiagramComponent
     this.graph();
   }
   switchWindow() {
-    this.sideBar =false;
+    this.sideBar = false;
     var bpmnWindow = document.getElementById('diagramRef');
     if (bpmnWindow) bpmnWindow.style.display = 'None';
     this.graphRedirection = false;
@@ -444,10 +441,10 @@ export class BpmnDiagramComponent
     if (layout) this.dashboard = this.layoutColumns[layout];
   }
 
-  ngAfterContentInit(): void {}
+  ngAfterContentInit(): void { }
 
   getOverview() {
-    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -485,26 +482,26 @@ export class BpmnDiagramComponent
         });
       }
     })
-    .catch((error: any) => {
-      let user_audit_body = {
-        method: 'GET',
-        url: error?.request?.responseURL,
-      };
-      this.auditUtil.postAudit(
-        'GET_RETRIEVE_OVERVIEW_BPMN',
-        1,
-        'FAILED',
-        'user-audit',
-        user_audit_body,
-        this.currentUser?.email,
-        this.product?.id
-      );
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: 'ERROR',
-        detail: error,
+      .catch((error: any) => {
+        let user_audit_body = {
+          method: 'GET',
+          url: error?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_RETRIEVE_OVERVIEW_BPMN',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser?.email,
+          this.product?.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
       });
-    });
     // this.naviApiService
     //   .getOverview(this.product?.email, this.product?.id)
     //   .then((response) => {
