@@ -6,13 +6,15 @@ import { Product } from 'src/models/product';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
+
 @Component({
   selector: 'xnode-use-cases',
   templateUrl: './use-cases.component.html',
   styleUrls: ['./use-cases.component.scss'],
   providers: [MessageService],
 })
+
 export class UseCasesComponent implements OnInit {
   product?: Product;
   currentUser?: User;
@@ -24,8 +26,8 @@ export class UseCasesComponent implements OnInit {
     private utils: UtilsService,
     private storageService: LocalStorageService,
     private auditUtil: AuditutilsService,
-    private naviApiService: NaviApiService
-  ) {}
+    private specApiService: SpecApiService
+  ) { }
 
   ngOnInit(): void {
     this.getMeStorageData();
@@ -40,22 +42,19 @@ export class UseCasesComponent implements OnInit {
     );
     localStorage.setItem('has_insights', obj.has_insights);
     localStorage.setItem('product', JSON.stringify(obj));
+    this.storageService.saveItem(StorageKeys.Product, obj);
     this.productChanged = true;
     this.getMeStorageData();
   }
 
   getMeStorageData(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
-    if (!this.product?.has_insights) {
-      this.utils.showProductStatusPopup(true);
-      return;
-    }
     this.getMeUsecases();
   }
 
   getMeUsecases(): void {
     if (this.productChanged) {
-      this.naviApiService
+      this.specApiService
         .getUsecases(this.product?.id)
         .then((response: any) => {
           if (response?.status === 200) {
@@ -82,10 +81,6 @@ export class UseCasesComponent implements OnInit {
           this.utils.loadSpinner(false);
         })
         .catch((error) => {
-          let user_audit_body = {
-            method: 'GET',
-            url: error?.request?.responseURL,
-          };
           this.utils.loadToaster({
             severity: 'error',
             summary: 'Error',
