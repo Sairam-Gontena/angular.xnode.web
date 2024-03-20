@@ -19,6 +19,7 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Subscription } from 'rxjs';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 
 @Component({
   selector: 'xnode-data-model-common',
@@ -31,8 +32,8 @@ export class DataModelCommonComponent {
   @Input() dataToExpand: any;
   @Input() specExpanded?: boolean;
   @Input() specData: string = '';
-  @Input() inExpandSpec:any;
-  @Input() inDiffView:any;
+  @Input() inExpandSpec: any;
+  @Input() inDiffView: any;
   @Output() dataFlowEmitter = new EventEmitter<any>();
   data: Data | any;
   bpmnSubUrl: boolean = false;
@@ -59,7 +60,8 @@ export class DataModelCommonComponent {
     private utilsService: UtilsService,
     private auditUtil: AuditutilsService,
     private changeDetectorRef: ChangeDetectorRef,
-    private naviApiService: NaviApiService
+    private naviApiService: NaviApiService,
+    private specApiService: SpecApiService
   ) {
     this.router.events.subscribe((data: any) => {
       this.router.url == '/configuration/data-model/x-bpmn'
@@ -72,10 +74,6 @@ export class DataModelCommonComponent {
     this.currentUrl = this.router.url;
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
-    if (!this.product?.has_insights) {
-      this.utilsService.showProductStatusPopup(true);
-      return;
-    }
     this.utilsService.getProductChangeBPMN().subscribe((data: any) => {
       if (data) {
         this.product = data;
@@ -100,10 +98,11 @@ export class DataModelCommonComponent {
     }, 100);
     this.data = this.dataService.data;
   }
+
   getDataModel() {
     this.dataModel = [];
-    this.naviApiService
-      .getDataModels(this.product.id)
+    this.specApiService
+      .getDataModel(this.product.id)
       .then((response) => {
         if (response?.status === 200) {
           let user_audit_body = {
@@ -120,10 +119,10 @@ export class DataModelCommonComponent {
             this.product?.id
           );
           this.dataModel = response.data;
-          if(this.inDiffView){
-            let diffObj = { inDiffView:true, ids:[this.canvaDataModel.nativeElement] }
+          if (this.inDiffView) {
+            let diffObj = { inDiffView: true, ids: [this.canvaDataModel.nativeElement] }
             this.jsPlumbService.init(diffObj);
-          }else{
+          } else {
             this.jsPlumbService.init();
           }
           this.dataService.loadData(
