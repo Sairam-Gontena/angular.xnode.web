@@ -28,13 +28,17 @@ export class ConversationHubService extends BaseApiService {
         // return this.httpClient.get<any[]>(`${this.rootUrl}conversation`, { params: httpParams });
     }
 
-    getMetaData(params:any){
-      let httpParams = new HttpParams();
-      Object.keys(params).forEach(key => {
-        httpParams = httpParams.append(key, params[key]);
-      });
-      let url = 'product?' + httpParams;
-      return this.get(url);
+    getMetaData(params: any) {
+        let httpParams = new HttpParams();
+        Object.keys(params).forEach(key => {
+            httpParams = httpParams.append(key, params[key]);
+        });
+        let url = 'product?' + httpParams;
+        return this.get(url);
+    }
+
+    updateProductUrl(body: any) {
+        return this.patch('product/update-url', body);
     }
 
 }
