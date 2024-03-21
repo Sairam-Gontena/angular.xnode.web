@@ -195,6 +195,7 @@ export class ImportFilePopupComponent implements OnInit {
       res['fileStoreId'] = res.storageId;
       res['accountId'] = currentUser.account_id;
       res['email'] = currentUser.email;
+      res['users']= [ { "userId": currentUser.user_id, "role": "owner" } ];
     }
     let url = 'bot/process_file';
     try {

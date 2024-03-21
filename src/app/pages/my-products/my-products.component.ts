@@ -192,6 +192,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   openExternalLink(productUrl: string) {
+    productUrl+='&openExternal=true';
     window.open(productUrl, '_blank');
   }
   importNavi() {

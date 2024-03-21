@@ -457,11 +457,11 @@ export class AppComponent implements OnInit {
           // this.isNaviExpanded = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.isSideWindowOpen = false;
-          localStorage.removeItem('product')
+          // localStorage.removeItem('product')
           console.log('MMMMNNNN');
           localStorage.removeItem('has_insights')
           localStorage.removeItem('IS_NAVI_OPENED')
-          localStorage.removeItem('record_id')
+          // localStorage.removeItem('record_id')
           localStorage.removeItem('app_name')
           this.isNaviExpanded = false;
           this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
@@ -606,7 +606,6 @@ export class AppComponent implements OnInit {
         if (!this.summaryObject)
           addUrl = '&componentToShow=Tasks';
       }
-
       rawUrl = rawUrl + addUrl; //(this.isFileImported && !this.summaryObject ? '&componentToShow=Conversations' : '&componentToShow=tasks')
     }
     if (this.summaryObject?.conversationId) {
@@ -614,7 +613,6 @@ export class AppComponent implements OnInit {
     }
 
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
-
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
   }
