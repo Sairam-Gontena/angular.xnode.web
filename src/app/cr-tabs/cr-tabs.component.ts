@@ -767,9 +767,10 @@ export class CrTabsComponent {
   }
 
   publishApp(): void {
+    const product_uuid = this.product.overview.filter((obj: any) => obj.title === 'product_uuid')[0].content
     const body = {
       repoName: this.product.title,
-      productUuid: this.product.product_uuid,
+      productUuid: product_uuid,
       projectName: environment.projectName,
       email: this.currentUser.email,
       crId: this.selectedCr.id,
