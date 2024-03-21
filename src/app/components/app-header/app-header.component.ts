@@ -354,12 +354,14 @@ export class AppHeaderComponent implements OnInit {
 
   publishApp(obj: any): void {
     this.utilsService.loadSpinner(true);
+    const product: any = this.storageService.getItem(StorageKeys.Product);
     const body = {
       repoName: obj.product_name,
       projectName: environment.projectName,
       email: this.email,
       envName: environment.branchName,
       productId: obj.product_id,
+      productUuid: product?.product_uuid,
     };
     this.publishAppApiService
       .publishApp(body)
