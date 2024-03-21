@@ -96,9 +96,9 @@ export class ProductAlertPopupComponent implements OnInit {
         }
       }
       this.product_id = this.contentdata?.product_id;
-      if (typeof(this.contentdata?.conversation)=='string'){
+      if (typeof (this.contentdata?.conversation) == 'string') {
         this.consversationList = JSON.parse(this.contentdata?.conversation);
-      }else{
+      } else {
         this.consversationList = this.contentdata?.conversation
       }
     }
@@ -291,7 +291,7 @@ export class ProductAlertPopupComponent implements OnInit {
     const body = {
       email: this.currentUser?.email,
       conversation_history: this.consversationList,
-      conversation_id:this.conversation_id,
+      conversation_id: this.conversation_id,
       product_id: this.product_id,
       user_id: this.currentUser?.user_id,
     };

@@ -183,7 +183,7 @@ export class AppComponent implements OnInit {
     this.isNaviExpanded = false;
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
-    localStorage.removeItem('product')
+    localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
@@ -540,7 +540,7 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(productEmail?: string): void {
-    this.product = this.storageService.getItem(StorageKeys.Product);
+    this.product = this.storageService.getItem(StorageKeys.Product)
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     let rawUrl: string =
       environment.naviAppUrl +
@@ -570,13 +570,12 @@ export class AppComponent implements OnInit {
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
     if (this.product) {
+
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       rawUrl =
         rawUrl +
         '&product_user_email=' +
         productEmail +
-        +'&has_insights=' +
-        this.product?.has_insights +
         '&product_context=' +
         true +
         '&accountId=' +

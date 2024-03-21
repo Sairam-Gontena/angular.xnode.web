@@ -50,7 +50,8 @@ export class NotificationPanelComponent {
     private specificationUtils: SpecificationUtilsService,
     private specificationService: SpecificationsService,
     private conversationService: ConversationHubService,
-    private messagingService: MessagingService
+    private messagingService: MessagingService,
+    private conversationApi: ConversationHubService
   ) { }
 
   ngOnInit(): void {
@@ -449,9 +450,23 @@ export class NotificationPanelComponent {
     );
   }
 
+
   onClickLaunchProduct(url: any): void {
-    url+='&openExternal=true';
-    window.open(url, '_blank');
+    this.utils.loadSpinner(true);
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    const body = {
+      "id": product?.id,
+      "url": product?.product_url + '/login?product_id=' + product?.product_id,
+    }
+    this.conversationApi.updateProductUrl(body).then((res: any) => {
+      if (res) {
+        url += '&openExternal=true';
+        window.open(url, '_blank');
+      }
+      this.utils.loadSpinner(false);
+    }).catch((err: any) => {
+      this.utils.loadSpinner(false);
+    })
   }
 
   navigateToFeedbackList(val: any) {
@@ -609,5 +624,5 @@ export class NotificationPanelComponent {
   viewSummary(notif: any): void {
     this.showViewSummaryPopup = true;
     this.viewSummaryPopup.emit(notif)
-    }
+  }
 }
