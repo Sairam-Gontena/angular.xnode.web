@@ -129,8 +129,9 @@ export class AppComponent implements OnInit {
     //   this.showProductStatusPopup = data.popup;
     // });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
-      if (data && data?.email) {
+      if (data && data?.createdBy?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
+        this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.getLatestIframeUrl.subscribe((data: any) => {
@@ -427,62 +428,60 @@ export class AppComponent implements OnInit {
         if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
           return;
         }
-        if (event.data?.message) {
-          switch (event.data.message) {
-            case 'triggerCustomEvent':
-              this.isSideWindowOpen = false;
-              // this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-              break;
-            case 'close-docked-navi':
-              this.isSideWindowOpen = false;
-              // this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-              break;
-            case 'close-event':
-              //not there to handle the close option in navi in my-prod so added
-              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-              this.product = undefined;
-              // this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-              this.isSideWindowOpen = false;
-              // localStorage.removeItem('product')
-              localStorage.removeItem('has_insights')
-              localStorage.removeItem('IS_NAVI_OPENED')
-              // localStorage.removeItem('record_id')
-              localStorage.removeItem('app_name')
-              this.isNaviExpanded = false;
-              this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED);
-              this.makeTrustedUrl();
-              break;
-            case 'expand-navi':
-              this.isNaviExpanded = true;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
-              break;
-            case 'contract-navi':
-              this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-              break;
-            case 'triggerProductPopup':
-              this.content = event.data.data;
-              let data = {
-                popup: true,
-                data: this.content,
-              };
-              this.utilsService.toggleProductAlertPopup(data);
-              break;
-            case 'view-summary-popup':
-              this.conversationID = event.data.conversation_id;
-              this.getConversation();
-              this.utilsService.loadSpinner(true);
-              break;
-            case 'change-app':
-              this.storageService.saveItem(StorageKeys.Product, event.data.data);
-              this.utilsService.saveProductId(event.data.id);
-              this.router.navigate(['/overview']);
-              this.utilsService.productContext(true);
-              break;
-          }
+        if (event.data.message === 'triggerCustomEvent') {
+          this.isSideWindowOpen = false;
+          // this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+
+        }
+        if (event.data.message === 'close-docked-navi') {
+          this.isSideWindowOpen = false;
+          // this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+
+        }
+        if (event.data.message === 'close-event') {
+          //not there to handle the close option in navi in my-prod so added
+          this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+          this.product = undefined;
+          // this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+          this.isSideWindowOpen = false;
+          // localStorage.removeItem('product')
+          localStorage.removeItem('has_insights')
+          localStorage.removeItem('IS_NAVI_OPENED')
+          // localStorage.removeItem('record_id')
+          localStorage.removeItem('app_name')
+          this.isNaviExpanded = false;
+          this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
+          this.makeTrustedUrl()
+        }
+        if (event.data.message === 'expand-navi') {
+          this.isNaviExpanded = true;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+        }
+        if (event.data.message === 'contract-navi') {
+          this.isNaviExpanded = false;
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+        }
+        if (event.data.message === 'triggerProductPopup') {
+          this.content = event.data.data;
+          let data = {
+            popup: true,
+            data: this.content,
+          };
+          this.utilsService.toggleProductAlertPopup(data);
+        }
+        if (event.data.message === 'view-summary-popup') {
+          this.conversationID = event.data.conversation_id;
+          this.getConversation();
+          this.utilsService.loadSpinner(true);
+        }
+        if (event.data.message === 'change-app') {
+          this.storageService.saveItem(StorageKeys.Product, event.data.data);
+          this.utilsService.saveProductId(event.data.id);
+          this.router.navigate(['/overview']);
+          this.utilsService.productContext(true);
         }
       });
     }
@@ -540,7 +539,8 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(productEmail?: string): void {
-    this.product = this.storageService.getItem(StorageKeys.Product)
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION)
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     let rawUrl: string =
       environment.naviAppUrl +
@@ -576,7 +576,11 @@ export class AppComponent implements OnInit {
         rawUrl +
         '&product_user_email=' +
         productEmail +
-        '&product_context=' +
+        '&conversationId=' +
+        conversation.id +
+        '&type=' +
+        conversation.conversationType
+        + '&product_context=' +
         true +
         '&accountId=' +
         this.currentUser?.account_id +

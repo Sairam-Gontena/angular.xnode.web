@@ -124,6 +124,7 @@ export class MyProductsComponent implements OnInit {
     this.storageService.removeItem(StorageKeys.SPEC_DATA);
     this.storageService.removeItem(StorageKeys.SpecVersion);
     this.storageService.removeItem(StorageKeys.SelectedSpec);
+    this.storageService.removeItem(StorageKeys.CONVERSATION)
     this.getMetaData();
   }
 
@@ -181,6 +182,15 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('has_insights', data.has_insights);
     this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
     this.router.navigate(['/specification']);
+
+    const product:any = this.storageService.getItem(StorageKeys.Product);
+    this.conversationService.getConversations('?productId='+product.id).then((data:any)=>{
+      if(data.data)
+        this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
+    }).catch((err:any)=>{
+      console.log(err,'err')
+    })
+
   }
 
   onClickNew() {
