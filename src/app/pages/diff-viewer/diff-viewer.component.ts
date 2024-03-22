@@ -236,11 +236,10 @@ export class DiffViewerComponent implements OnInit {
     this.utils.loadSpinner(true);
     if(emitObj){
       let product = this.metaDeta.find((x: any) => x.id === emitObj.id);
-      if (product && product.has_insights) {
+      if (product) {
         localStorage.setItem('record_id', product.id);
         localStorage.setItem('product',JSON.stringify(product))
         localStorage.setItem('app_name', product.title);
-        localStorage.setItem('has_insights', product.has_insights);
         localStorage.setItem(
           'product_url',
           emitObj.url && emitObj.url !== '' ? emitObj.url : ''
