@@ -547,7 +547,8 @@ export class AppComponent implements OnInit {
   }
 
   makeTrustedUrl(productEmail?: string): void {
-    this.product = this.storageService.getItem(StorageKeys.Product)
+    this.product = this.storageService.getItem(StorageKeys.Product);
+    const conversation:any = this.storageService.getItem(StorageKeys.CONVERSATION)
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     let rawUrl: string =
       environment.naviAppUrl +
@@ -583,8 +584,11 @@ export class AppComponent implements OnInit {
         rawUrl +
         '&product_user_email=' +
         productEmail +
-        +
-        '&product_context=' +
+        '&conversationId='+
+        conversation.id+
+        '&type='+
+        conversation.conversationType
+        +'&product_context=' +
         true +
         '&accountId=' +
         this.currentUser?.account_id +
