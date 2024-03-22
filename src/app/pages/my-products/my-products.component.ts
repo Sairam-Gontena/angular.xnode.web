@@ -179,10 +179,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({
-      msgType: MessageTypes.PRODUCT_CONTEXT,
-      msgData: true,
-    });
+    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
     this.router.navigate(['/specification']);
   }
 
@@ -192,7 +189,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   openExternalLink(productUrl: string) {
-    productUrl+='&openExternal=true';
+    productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
   importNavi() {
