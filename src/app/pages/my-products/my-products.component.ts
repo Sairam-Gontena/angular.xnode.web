@@ -192,7 +192,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   openExternalLink(productUrl: string) {
-    productUrl+='&openExternal=true';
+    productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
   importNavi() {
@@ -210,6 +210,10 @@ export class MyProductsComponent implements OnInit {
         this.utils.showLimitReachedPopup(true);
         localStorage.setItem('show-upload-panel', 'false');
       } else {
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.NAVI_CONTAINER_STATE,
+          msgData: { naviContainerState: 'EXPAND', importFilePopup: true },
+        });
         this.showImportFilePopup = true;
         // this.router.navigate(['/x-pilot']);
         // localStorage.setItem('show-upload-panel', 'true');
