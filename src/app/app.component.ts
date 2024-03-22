@@ -129,8 +129,9 @@ export class AppComponent implements OnInit {
     //   this.showProductStatusPopup = data.popup;
     // });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
-      if (data && data?.email) {
+      if (data && data?.createdBy?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
+        this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.getLatestIframeUrl.subscribe((data: any) => {
@@ -458,7 +459,6 @@ export class AppComponent implements OnInit {
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.isSideWindowOpen = false;
           // localStorage.removeItem('product')
-          console.log('MMMMNNNN');
           localStorage.removeItem('has_insights')
           localStorage.removeItem('IS_NAVI_OPENED')
           // localStorage.removeItem('record_id')

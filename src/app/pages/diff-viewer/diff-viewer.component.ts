@@ -15,6 +15,7 @@ declare const SwaggerUIBundle: any;
 import { AuthApiService } from 'src/app/api/auth.service';
 import { delay, of } from 'rxjs';
 import { SearchspecService } from 'src/app/api/searchspec.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 @Component({
   selector: 'xnode-diff-viewer',
   templateUrl: './diff-viewer.component.html',
@@ -83,6 +84,7 @@ export class DiffViewerComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
+    private conversationService:ConversationHubService
   ) {
     this.specificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
@@ -245,7 +247,17 @@ export class DiffViewerComponent implements OnInit {
           emitObj.url && emitObj.url !== '' ? emitObj.url : ''
         );
         this.product = product;
-        this.utils.saveProductDetails(product);
+        this.conversationService.getConversations('?productId='+product.id).then((data:any)=>{
+          if(data.data){
+            this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0]);
+            this.utils.saveProductDetails(product);
+          }else{
+            this.utils.saveProductDetails(product);
+          }
+        }).catch((err:any)=>{
+          console.log(err,'err')
+          this.utils.saveProductDetails(product);
+        })
       }
     }
     if(typeof this.product === 'string'){
