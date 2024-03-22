@@ -180,10 +180,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('record_id', data.id);
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({
-      msgType: MessageTypes.PRODUCT_CONTEXT,
-      msgData: true,
-    });
+    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
     this.router.navigate(['/specification']);
 
     const product:any = this.storageService.getItem(StorageKeys.Product);
@@ -202,7 +199,7 @@ export class MyProductsComponent implements OnInit {
   }
 
   openExternalLink(productUrl: string) {
-    productUrl+='&openExternal=true';
+    productUrl += '&openExternal=true';
     window.open(productUrl, '_blank');
   }
   importNavi() {
@@ -220,6 +217,10 @@ export class MyProductsComponent implements OnInit {
         this.utils.showLimitReachedPopup(true);
         localStorage.setItem('show-upload-panel', 'false');
       } else {
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.NAVI_CONTAINER_STATE,
+          msgData: { naviContainerState: 'EXPAND', importFilePopup: true },
+        });
         this.showImportFilePopup = true;
         // this.router.navigate(['/x-pilot']);
         // localStorage.setItem('show-upload-panel', 'true');

@@ -167,11 +167,13 @@ export class AppComponent implements OnInit {
       }
     })
     this.utilsService.getMeSummaryObject.subscribe((data: any) => {
-      this.summaryObject = data;
-      this.isSideWindowOpen = true;
-      this.isNaviExpanded = true;
-      this.makeTrustedUrl();
-      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+      if (Object.keys(data.summary).length) {
+        this.summaryObject = data;
+        this.isSideWindowOpen = true;
+        this.isNaviExpanded = true;
+        this.makeTrustedUrl();
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
+      }
     })
   }
 
@@ -182,9 +184,7 @@ export class AppComponent implements OnInit {
     this.isNaviExpanded = false;
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
-    localStorage.removeItem('product')
-    console.log('MMMM');
-
+    localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
@@ -257,8 +257,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
-    if (isNaviExpanded) this.isNaviExpanded = isNaviExpanded;
-
+    if (isNaviExpanded) {
+      this.isNaviExpanded = isNaviExpanded
+    };
     this.isSideWindowOpen = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -386,8 +387,7 @@ export class AppComponent implements OnInit {
     // this.utilsService.getMeProductStatus.subscribe((event: any) => {
     //   this.showProductStatusPopup = event;
     // });
-    this.utilsService.handleLimitReachedPopup
-      .pipe(debounce(() => interval(1000)))
+    this.utilsService.handleLimitReachedPopup.pipe(debounce(() => interval(1000)))
       .subscribe((event: any) => {
         this.showLimitReachedPopup = event;
         if (event) {
@@ -395,6 +395,7 @@ export class AppComponent implements OnInit {
         }
       });
   }
+
   handleBotIcon() {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -406,35 +407,23 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
   getMeTotalOnboardedApps(): void {
-    this.naviApiService
-      .getTotalOnboardedApps(this.currentUser?.email)
-      .then((response: any) => {
+    this.naviApiService.getTotalOnboardedApps(this.currentUser?.email).then(
+      (response: any) => {
         if (response?.status === 200) {
-          localStorage.setItem(
-            'total_apps_onboarded',
-            response.data.total_apps_onboarded
-          );
+          localStorage.setItem('total_apps_onboarded', response.data.total_apps_onboarded);
         } else {
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: '',
-            detail: response.data?.detail,
-          });
+          this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.data?.detail });
         }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
+      }).catch((error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error });
         this.utilsService.loadSpinner(true);
       });
   }
 
   loadIframeUrl(): void {
-    if (window?.addEventListener)
+    if (window?.addEventListener) {
       window?.addEventListener('message', (event) => {
         if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
           return;
@@ -495,43 +484,46 @@ export class AppComponent implements OnInit {
           this.utilsService.productContext(true);
         }
       });
+    }
 
     const iframe = document.getElementById('myIframe') as HTMLIFrameElement;
-    if (window?.addEventListener)
-      iframe.addEventListener('load', () => {
+    if (window?.addEventListener) {
+      iframe?.addEventListener('load', () => {
         const contentWindow = iframe.contentWindow;
         if (contentWindow) {
           window.addEventListener('message', (event) => {
             if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
               return;
             }
-            if (event.data.message === 'triggerCustomEvent') {
-              this.isSideWindowOpen = false;
-              // this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-
+            if (event.data?.message) {
+              switch (event.data.message) {
+                case 'triggerCustomEvent':
+                  this.isSideWindowOpen = false;
+                  // this.isNaviExpanded = false;
+                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
+                  break;
+                case 'close-docked-navi':
+                  this.isSideWindowOpen = false;
+                  // this.isNaviExpanded = false;
+                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
+                  break;
+                case 'expand-navi':
+                  this.isNaviExpanded = true;
+                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
+                  break;
+                case 'contract-navi':
+                  // this.isNaviExpanded = false;
+                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
+                  break;
+                case 'import-file-popup':
+                  this.utilsService.showImportFilePopup(true);;
+                  break;
+              }
             }
-            if (event.data.message === 'close-docked-navi') {
-              this.isSideWindowOpen = false;
-              // this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-
-            }
-            if (event.data.message === 'expand-navi') {
-              this.isNaviExpanded = true;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-            }
-            if (event.data.message === 'contract-navi') {
-              // this.isNaviExpanded = false;
-              this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-            }
-            if (event.data.message === 'import-file-popup') {
-              this.utilsService.showImportFilePopup(true);
-            }
-
           });
         }
       });
+    }
   }
 
   refreshCurrentRoute(): void {
@@ -548,7 +540,7 @@ export class AppComponent implements OnInit {
 
   makeTrustedUrl(productEmail?: string): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
-    const conversation:any = this.storageService.getItem(StorageKeys.CONVERSATION)
+    const conversation: any = this.storageService.getItem(StorageKeys.CONVERSATION)
     const restriction_max_value = localStorage.getItem('restriction_max_value');
     let rawUrl: string =
       environment.naviAppUrl +
@@ -584,11 +576,11 @@ export class AppComponent implements OnInit {
         rawUrl +
         '&product_user_email=' +
         productEmail +
-        '&conversationId='+
-        conversation.id+
-        '&type='+
+        '&conversationId=' +
+        conversation.id +
+        '&type=' +
         conversation.conversationType
-        +'&product_context=' +
+        + '&product_context=' +
         true +
         '&accountId=' +
         this.currentUser?.account_id +
