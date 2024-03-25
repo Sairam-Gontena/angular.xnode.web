@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgentHubModel } from './agent-hub.model';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-agent-hub',
@@ -14,8 +15,8 @@ export class AgentHubComponent implements OnInit {
 
   constructor(
     private storageService: LocalStorageService,
-    private agentHubService: AgentHubService) {
-    this.agentHubModel = new AgentHubModel(this.storageService, this.agentHubService)
+    private agentHubService: AgentHubService, private router: Router) {
+    this.agentHubModel = new AgentHubModel(this.storageService, this.agentHubService, this.router)
   }
 
   ngOnInit() { 

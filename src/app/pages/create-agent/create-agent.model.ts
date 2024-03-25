@@ -1,6 +1,9 @@
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { IPaginatorInfo, ITableDataEntry, ITableInfo } from './ICreate-agent';
 import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
+import { AgentHubService } from 'src/app/api/agent-hub.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
+import { Location } from '@angular/common';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -108,8 +111,18 @@ export class CreateAgentModel {
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
 
   activeIndex: number = 0;
+  userInfo: any;
 
-  constructor(private storageService: LocalStorageService) {}
+  constructor(
+    private storageService: LocalStorageService,
+    private agentHubService: AgentHubService, private location: Location
+  ) {
+    this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
+
+  goBackHandler(): void {
+    this.location.back()
+  }
 
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
@@ -125,6 +138,33 @@ export class CreateAgentModel {
           (valItem: { idx: number }) => valItem.idx === item.idx
         )
       );
+    }
+  }
+
+  async getAllAgentList({ endpoint = '' } = {}) {
+    if (this.activeIndex > 1) {
+      this.columns =
+        dynamicTableColumnData?.dynamicTable?.AgentHub[
+          this.activeIndex
+        ]?.columns;
+      endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
+      this.tableData = [];
+      this.paginatorInfo = { ...InitialPaginatorInfo };
+      try {
+        const response = await this.agentHubService.getAllAgent({
+          accountId: this.userInfo.account_id,
+          endpoint: endpoint,
+          page: this.paginatorInfo.page,
+          page_size: this.paginatorInfo.perPage,
+        });
+        this.tableData = response.data.data as ITableDataEntry[];
+        this.paginatorInfo.page = response.data.page;
+        this.paginatorInfo.perPage = response.data.per_page;
+        this.paginatorInfo.totalRecords = response.data.total_items;
+        this.paginatorInfo.totalPages = response.data.total_pages;
+      } catch (error) {
+        console.error('Error fetching agent list:', error);
+      }
     }
   }
 }

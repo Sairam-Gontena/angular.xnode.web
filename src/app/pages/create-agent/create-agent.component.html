@@ -43,7 +43,7 @@
 
         <i
           class="pi pi-times text-white cursor-pointer"
-          (click)="onCloseHandler()"
+          (click)="createAgentModel.goBackHandler()"
         ></i>
       </div>
     </div>
@@ -51,6 +51,7 @@
 
   <p-tabView
     styleClass="pt-3 px-6"
+    (onChange)="createAgentModel.getAllAgentList()"
     [(activeIndex)]="createAgentModel.activeIndex"
   >
     <p-tabPanel
@@ -60,7 +61,7 @@
     </p-tabPanel>
   </p-tabView>
 
-  <div class="w-full table-height" *ngIf="createAgentModel.activeIndex > 1">
+  <div class="w-full table-height px-6" *ngIf="createAgentModel.activeIndex > 1">
     <xnode-dynamic-table
       [inputData]="createAgentModel.tableData"
       [cols]="createAgentModel.columns"

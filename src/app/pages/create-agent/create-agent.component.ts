@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CreateAgentModel } from './create-agent.model';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { AgentHubService } from 'src/app/api/agent-hub.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'xnode-create-agent',
@@ -10,11 +12,19 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 export class CreateAgentComponent {
   createAgentModel: CreateAgentModel;
 
-  constructor(private storageService: LocalStorageService) {
-    this.createAgentModel = new CreateAgentModel(this.storageService);
+  constructor(
+    private storageService: LocalStorageService,
+    private agentHubService: AgentHubService,
+    private location: Location
+  ) {
+    this.createAgentModel = new CreateAgentModel(
+      this.storageService,
+      this.agentHubService,
+      this.location
+    );
   }
 
-  onCloseHandler() {}
+  // onCloseHandler() {}
 
   isCreateActive: boolean = true;
 

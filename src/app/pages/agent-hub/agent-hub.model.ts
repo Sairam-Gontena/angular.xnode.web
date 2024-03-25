@@ -12,6 +12,7 @@ import {
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { Constant, agentName } from './agent-hub.constant';
+import { Router } from '@angular/router';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -289,7 +290,8 @@ export class AgentHubModel {
 
   constructor(
     private storageService: LocalStorageService,
-    private agentHubService: AgentHubService
+    private agentHubService: AgentHubService,
+    private router: Router
   ) {
     this.activeIndex = 0;
     this.columns =
@@ -403,6 +405,10 @@ export class AgentHubModel {
     this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
 
     this.breadCrumbsAction.breadcrumb = [...newItem];
+  }
+
+  createAgentHandler() {
+    this.router.navigate(['/create-agent']);
   }
 
   /**

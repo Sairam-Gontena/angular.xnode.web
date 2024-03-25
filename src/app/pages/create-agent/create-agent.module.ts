@@ -8,17 +8,21 @@ import { TabViewModule } from 'primeng/tabview';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [CreateAgentComponent],
   imports: [
     CommonModule,
+    CreateAgentRoutingModule,
     TabMenuModule,
-    SplitButtonModule,
-    ButtonModule,
 
     TabViewModule,
-    CreateAgentRoutingModule,
+    MultiSelectModule,
+    DropdownModule,
+    SplitButtonModule,
+    ButtonModule,
     SharedModule,
     SharedComponentModule,
   ],
