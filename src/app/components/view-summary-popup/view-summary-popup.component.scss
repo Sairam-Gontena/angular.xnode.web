@@ -141,6 +141,38 @@
 
 }
 
-.tab-text {
-    color: var(--surface-700);
+.header-text {
+    color: #EFEEEE;
+}
+
+.content-text {
+    color: #A2A2A3;
+}
+
+.clip-tooltip {
+    padding: 2px 8px;
+    z-index: 1;
+    border-radius: 6px;
+    top: -20px;
+    background-color: #0A0909;
+    position: absolute;
+    visibility: hidden;
+}
+
+.clip-tooltip1 {
+    padding: 2px 8px;
+    z-index: 1;
+    border-radius: 6px;
+    top: -16px;
+    background-color: #0A0909;
+    position: absolute;
+    visibility: hidden;
+}
+
+.tooltip:hover .clip-tooltip {
+    visibility: visible;
+}
+
+.tooltip:hover .clip-tooltip1 {
+    visibility: visible;
 }

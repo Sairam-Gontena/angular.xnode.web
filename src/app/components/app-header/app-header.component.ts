@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HeaderItems } from '../../constants/AppHeaderItems';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -15,6 +15,11 @@ import { AuthApiService } from 'src/app/api/auth.service';
 import themeing from '../../../themes/customized-themes.json';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { OverallSummary } from 'src/models/view-summary';
+import { MessagingService } from '../services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-app-header',
@@ -23,6 +28,7 @@ import { OverallSummary } from 'src/models/view-summary';
   providers: [MessageService, ConfirmationService],
 })
 export class AppHeaderComponent implements OnInit {
+  @Output() navigateToHome = new EventEmitter<object>();
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -75,7 +81,11 @@ export class AppHeaderComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private naviApiService: NaviApiService,
     private publishAppApiService: PublishAppApiService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private messagingService: MessagingService,
+    private conversationService: ConversationHubService,
+    private storageService: LocalStorageService
+
   ) {
     let currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -88,7 +98,8 @@ export class AppHeaderComponent implements OnInit {
     }
     this.utils.loadViewSummary.subscribe((event: any) => {
       if (event) {
-        this.getSummary({ product_id: event.product_id });
+        this.getConversation({ conversationId: event.conversationId })
+
       }
     })
   }
@@ -140,31 +151,29 @@ export class AppHeaderComponent implements OnInit {
 
   //get calls
   getAllProducts(): void {
-    this.naviApiService
-      .getMetaData(this.currentUser.email)
-      .then((response) => {
-        if (response?.status === 200 && response.data.data?.length) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ALL_PRODUCTS_GET_METADATA',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.email,
-            this.productId
-          );
-          const data = response.data.data.map((obj: any) => ({
-            name: obj.title,
-            value: obj.id,
-            url: obj.product_url !== undefined ? obj.product_url : '',
-          }));
-          this.templates = data;
-        }
-      })
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
+      if (response?.status === 200 && response.data?.length) {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_ALL_PRODUCTS_GET_METADATA',
+          1,
+          'SUCCESS',
+          'user-audit',
+          user_audit_body,
+          this.email,
+          this.productId
+        );
+        const data = response.data.map((obj: any) => ({
+          name: obj.title,
+          value: obj.id,
+          url: obj.product_url !== undefined ? obj.product_url : '',
+        }));
+        this.templates = data;
+      }
+    })
       .catch((error) => {
         let user_audit_body = {
           method: 'GET',
@@ -185,6 +194,51 @@ export class AppHeaderComponent implements OnInit {
           detail: error,
         });
       });
+    // this.naviApiService
+    //   .getMetaData(this.currentUser.email)
+    //   .then((response) => {
+    //     if (response?.status === 200 && response.data.data?.length) {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_ALL_PRODUCTS_GET_METADATA',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.email,
+    //         this.productId
+    //       );
+    //       const data = response.data.data.map((obj: any) => ({
+    //         name: obj.title,
+    //         value: obj.id,
+    //         url: obj.product_url !== undefined ? obj.product_url : '',
+    //       }));
+    //       this.templates = data;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     let user_audit_body = {
+    //       method: 'GET',
+    //       url: error?.request?.responseURL,
+    //     };
+    //     this.auditUtil.postAudit(
+    //       'GET_ALL_PRODUCTS_GET_METADATA',
+    //       1,
+    //       'FAILED',
+    //       'user-audit',
+    //       user_audit_body,
+    //       this.email,
+    //       this.productId
+    //     );
+    //     this.utilsService.loadToaster({
+    //       severity: 'error',
+    //       summary: '',
+    //       detail: error,
+    //     });
+    //   });
   }
 
   toggleFeedbackPopup() {
@@ -219,7 +273,6 @@ export class AppHeaderComponent implements OnInit {
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
-      console.log('notifcation', data);
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length;
@@ -301,12 +354,14 @@ export class AppHeaderComponent implements OnInit {
 
   publishApp(obj: any): void {
     this.utilsService.loadSpinner(true);
+    const product: any = this.storageService.getItem(StorageKeys.Product);
     const body = {
       repoName: obj.product_name,
       projectName: environment.projectName,
       email: this.email,
       envName: environment.branchName,
       productId: obj.product_id,
+      productUuid: product?.product_uuid,
     };
     this.publishAppApiService
       .publishApp(body)
@@ -383,11 +438,12 @@ export class AppHeaderComponent implements OnInit {
   }
 
   onClickLogo(): void {
-    this.utilsService.showLimitReachedPopup(false);
-    this.utilsService.showProductStatusPopup(false);
-    this.utilsService.disableDockedNavi();
-
-    this.router.navigate(['/my-products']);
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.PRODUCT_CONTEXT,
+      msgData: false,
+    });
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    this.navigateToHome.emit();
   }
 
   showMeLimitInfoPopup(event: any): void {
@@ -398,13 +454,14 @@ export class AppHeaderComponent implements OnInit {
   viewSummaryPopup(notif: any): void {
     this.notifObj = notif;
     this.utils.loadSpinner(true);
-    this.getSummary(notif)
+    this.getConversation(notif)
   }
-  getSummary(obj: any): void {
-    this.naviApiService.getSummaryByProductId(obj.product_id).then((res: any) => {
+  getConversation(obj: any): void {
+    this.utilsService.loadSpinner(true);
+    this.conversationService.getConversations('?id=' + obj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
-        this.convSummary = res.data.conv_summary;
+        this.convSummary = res.data[0].content.conversation_summary;
       } else {
         this.utils.loadToaster({
           severity: 'error',
@@ -421,5 +478,8 @@ export class AppHeaderComponent implements OnInit {
         detail: err,
       });
     }))
+    this.utilsService.loadSpinner(false);
+
   }
+
 }

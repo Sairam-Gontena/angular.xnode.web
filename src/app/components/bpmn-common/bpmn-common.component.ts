@@ -34,6 +34,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 
 @Component({
   selector: 'xnode-bpmn-common',
@@ -99,7 +100,8 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     private storageService: LocalStorageService,
     private router: Router,
     private naviApiService: NaviApiService,
-    private workflowApiService: WorkflowApiService
+    private workflowApiService: WorkflowApiService,
+    private conversationService:ConversationHubService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -415,50 +417,27 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getOverview() {
-    this.naviApiService
-      .getOverview(this.product?.email, this.product?.id)
-      .then((response) => {
-        if (response?.status === 200) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_OVERVIEW_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.overview = response.data;
-          this.sideBar = true;
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_RETRIEVE_OVERVIEW_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: response.data?.detail,
-          });
-        }
-      })
-      .catch((error: any) => {
+    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response) => {
+      if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
-          url: error?.request?.responseURL,
+          url: response?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_RETRIEVE_OVERVIEW_BPMN',
+          1,
+          'SUCCESS',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product?.id
+        );
+        this.overview = response.data;
+        this.sideBar = true;
+      } else {
+        let user_audit_body = {
+          method: 'GET',
+          url: response?.request?.responseURL,
         };
         this.auditUtil.postAudit(
           'GET_RETRIEVE_OVERVIEW_BPMN',
@@ -472,9 +451,90 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         this.utilsService.loadToaster({
           severity: 'error',
           summary: 'ERROR',
-          detail: error,
+          detail: response.data?.detail,
         });
+      }
+    })
+    .catch((error: any) => {
+      let user_audit_body = {
+        method: 'GET',
+        url: error?.request?.responseURL,
+      };
+      this.auditUtil.postAudit(
+        'GET_RETRIEVE_OVERVIEW_BPMN',
+        1,
+        'FAILED',
+        'user-audit',
+        user_audit_body,
+        this.currentUser.email,
+        this.product?.id
+      );
+      this.utilsService.loadToaster({
+        severity: 'error',
+        summary: 'ERROR',
+        detail: error,
       });
+    });
+    // this.naviApiService
+    //   .getOverview(this.product?.email, this.product?.id)
+    //   .then((response) => {
+    //     if (response?.status === 200) {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_RETRIEVE_OVERVIEW_BPMN',
+    //         1,
+    //         'SUCCESS',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser.email,
+    //         this.product?.id
+    //       );
+    //       this.overview = response.data;
+    //       this.sideBar = true;
+    //     } else {
+    //       let user_audit_body = {
+    //         method: 'GET',
+    //         url: response?.request?.responseURL,
+    //       };
+    //       this.auditUtil.postAudit(
+    //         'GET_RETRIEVE_OVERVIEW_BPMN',
+    //         1,
+    //         'FAILED',
+    //         'user-audit',
+    //         user_audit_body,
+    //         this.currentUser.email,
+    //         this.product?.id
+    //       );
+    //       this.utilsService.loadToaster({
+    //         severity: 'error',
+    //         summary: 'ERROR',
+    //         detail: response.data?.detail,
+    //       });
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     let user_audit_body = {
+    //       method: 'GET',
+    //       url: error?.request?.responseURL,
+    //     };
+    //     this.auditUtil.postAudit(
+    //       'GET_RETRIEVE_OVERVIEW_BPMN',
+    //       1,
+    //       'FAILED',
+    //       'user-audit',
+    //       user_audit_body,
+    //       this.currentUser.email,
+    //       this.product?.id
+    //     );
+    //     this.utilsService.loadToaster({
+    //       severity: 'error',
+    //       summary: 'ERROR',
+    //       detail: error,
+    //     });
+    //   });
   }
 
   getElement() {

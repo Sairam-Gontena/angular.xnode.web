@@ -26,6 +26,10 @@ export class UtilsService {
   );
   public startSpinner: Observable<boolean> = this.showSpinner.asObservable();
 
+  private expandNavi: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public naviExpand: Observable<boolean> = this.expandNavi.asObservable();
   private showToaster: BehaviorSubject<Object> = new BehaviorSubject<Object>(
     false
   );
@@ -40,6 +44,12 @@ export class UtilsService {
     new BehaviorSubject<boolean>(false);
   public getMeProductStatus: Observable<boolean> =
     this.productStatus.asObservable();
+
+  private activeRoute: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  public isInProductContext: Observable<boolean> =
+    this.activeRoute.asObservable();
 
   private productAlertPopup: BehaviorSubject<Object> =
     new BehaviorSubject<Object>({ popup: false, data: {} });
@@ -57,8 +67,14 @@ export class UtilsService {
   public getMeImportFilePopupStatus: Observable<boolean> =
     this.importFilePopupStatus.asObservable();
 
+  private summaryPopupStatus: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getMeSummaryPopupStatus: Observable<boolean> =
+    this.summaryPopupStatus.asObservable();
+
   private limitReachedPopup: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
+
   public handleLimitReachedPopup: Observable<boolean> =
     this.limitReachedPopup.asObservable();
 
@@ -97,6 +113,11 @@ export class UtilsService {
     new BehaviorSubject<string>('');
   public getMeLatestConversation: Observable<string> =
     this.updateConversation.asObservable();
+
+  private loadIframeUrl: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public getLatestIframeUrl: Observable<boolean> =
+    this.loadIframeUrl.asObservable();
 
   private saveComments: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public getMeUpdatedCommentList: Observable<any> =
@@ -152,6 +173,9 @@ export class UtilsService {
   EnableDockedNavi() {
     this.dockedNavi.next(true);
   }
+  expandNavi$() {
+    this.expandNavi.next(true);
+  }
 
   loadSpinner(event: boolean): void {
     this.showSpinner.next(event);
@@ -180,9 +204,15 @@ export class UtilsService {
   showLimitReachedPopup(event: any): void {
     this.limitReachedPopup.next(event);
   }
+
   showImportFilePopup(event: any): void {
     this.importFilePopupStatus.next(event);
   }
+  showSummaryPopup(event: any): void {
+    this.summaryPopupStatus.next(event);
+  }
+
+
   reloadList(event: any): void {
     this.reload.next(event);
   }
@@ -227,6 +257,11 @@ export class UtilsService {
   changeSelectContentChange(event: boolean): void {
     this.selectedContent.next(event);
   }
+
+  productContext(event: boolean): void {
+    this.activeRoute.next(event);
+  }
+
   sendProductChangeBPMN(data: any) {
     this.productChangeBPMN.next(data);
   }
@@ -240,6 +275,10 @@ export class UtilsService {
 
   updateSummary(event: any): void {
     this.summaryObject.next(event);
+  }
+
+  prepareIframeUrl(data: any) {
+    this.loadIframeUrl.next(data);
   }
 
   calculateTimeAgo(timestamp: string): string {

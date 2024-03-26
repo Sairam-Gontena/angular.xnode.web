@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
 import { InterComponentMessage } from 'src/models/inter-component-message';
+import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessagingService {
-  private messageSubject: Subject<InterComponentMessage<any>> = new Subject<InterComponentMessage<any>>();
+
+  private messageSubject: BehaviorSubject<InterComponentMessage<any>> = new BehaviorSubject<InterComponentMessage<any>>({
+    msgData: undefined,
+    msgType: undefined
+  });
   constructor() { }
+
   sendMessage<T>(message: InterComponentMessage<T>) {
     this.messageSubject.next(message);
   }

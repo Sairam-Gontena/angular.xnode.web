@@ -145,7 +145,8 @@ import { AgentInstructionComponent } from '../components/agent-hub/create-agent/
     BreadcrumbsComponent,
     ImportFilePopupComponent,
     AgentOverviewComponent,
-    AgentInstructionComponent
+    AgentInstructionComponent,
+    ImportFilePopupComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -219,7 +220,8 @@ import { AgentInstructionComponent } from '../components/agent-hub/create-agent/
     BreadcrumbsComponent,
     ImportFilePopupComponent,
     AgentOverviewComponent,
-    AgentInstructionComponent
+    AgentInstructionComponent,
+    ImportFilePopupComponent
   ],
 })
 export class SharedComponentModule { }

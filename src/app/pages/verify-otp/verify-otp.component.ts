@@ -7,6 +7,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 @Component({
   selector: 'xnode-verify-otp',
   templateUrl: './verify-otp.component.html',
@@ -15,7 +16,6 @@ import { NaviApiService } from 'src/app/api/navi-api.service';
 export class VerifyOtpComponent implements OnInit {
   @ViewChild('ngOtpInput') ngOtpInputRef: any;
   otp: any;
-  currentUser: any;
   email: any;
   userEmail!: string;
   resendTimer: number = 60;
@@ -29,7 +29,8 @@ export class VerifyOtpComponent implements OnInit {
     private auditUtil: AuditutilsService,
     private authApiService: AuthApiService,
     private storageService: LocalStorageService,
-    private naviAPiService: NaviApiService
+    private naviAPiService: NaviApiService,
+    private conversationService:ConversationHubService
   ) {}
 
   ngOnInit(): void {
@@ -164,28 +165,48 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.naviAPiService
-      .getMetaData(currentUser?.email)
-      .then((response: any) => {
-        if (response?.status === 200) {
-          this.authApiService.setUser(true);
-          if (response?.data?.data.length > 0) {
-            this.router.navigate(['/my-products']);
-          } else {
-            this.router.navigate(['/x-pilot']);
-            this.getMeCreateAppLimit();
-          }
-          this.utilsService.loadSpinner(false);
+    this.conversationService.getMetaData( { accountId: currentUser.account_id}).then((response: any) => {
+      if (response?.status === 200) {
+        this.authApiService.setUser(true);
+        if (response?.data?.length > 0) {
+          this.router.navigate(['/my-products']);
+        } else {
+          this.router.navigate(['/x-pilot']);
+          this.getMeCreateAppLimit();
         }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: '',
-          detail: error,
-        });
         this.utilsService.loadSpinner(false);
+      }
+    })
+    .catch((error: any) => {
+      this.utilsService.loadToaster({
+        severity: 'error',
+        summary: '',
+        detail: error,
       });
+      this.utilsService.loadSpinner(false);
+    });
+    // this.naviAPiService
+    //   .getMetaData(currentUser?.email)
+    //   .then((response: any) => {
+    //     if (response?.status === 200) {
+    //       this.authApiService.setUser(true);
+    //       if (response?.data?.data.length > 0) {
+    //         this.router.navigate(['/my-products']);
+    //       } else {
+    //         this.router.navigate(['/x-pilot']);
+    //         this.getMeCreateAppLimit();
+    //       }
+    //       this.utilsService.loadSpinner(false);
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     this.utilsService.loadToaster({
+    //       severity: 'error',
+    //       summary: '',
+    //       detail: error,
+    //     });
+    //     this.utilsService.loadSpinner(false);
+    //   });
   }
 
   onClickLogout(): void {

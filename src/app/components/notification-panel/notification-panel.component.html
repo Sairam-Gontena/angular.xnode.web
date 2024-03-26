@@ -1,6 +1,18 @@
 <div class="m-3">
   <div class="flex justify-content-between">
-    <div class="text-2xl font-semibold title-fonts">Notifications</div>
+    <div class="text-2xl font-semibold title-fonts pointer"  (click)="goToSpec({
+      email: 'dilipchandra@salientminds.com',
+     product_id: '1754257b-74c2-44f6-bb0f-11446601672c',
+      product_name: 'Oops Title',
+      component: 'Product Specifications',
+       description: 'Product Specifications generation completed and saved!',
+       spec_status: 'Completed',
+       type: 'Navi',
+       read: 'false',
+     important: 'true',
+       pinned: 'true',
+      recent: 'true'
+     })">Notifications</div>
     <div class="flex align-items-center">
       <img src="./assets/mute-notification.svg" alt="bell" class="w-0.3rem h-0.3rem mr-2" />
       <i class="pi pi-ellipsis-h text-lg"></i>
