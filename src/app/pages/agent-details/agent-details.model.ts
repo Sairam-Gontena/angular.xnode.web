@@ -3,6 +3,7 @@ import { IPaginatorInfo, ITableDataEntry, ITableInfo } from './IAgent-details';
 import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
+import { Router } from '@angular/router';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -34,6 +35,7 @@ export class AgentDetailsModel {
     { idx: 6, title: 'Models', value: 'model' },
     { idx: 7, title: 'Tools', value: 'tool' },
   ];
+  queryparamInfo: any;
 
   tableData!: ITableDataEntry[];
   columns: any; // Define the type of columns based on the actual data structure
@@ -111,6 +113,17 @@ export class AgentDetailsModel {
 
   activeIndex: number = 0;
   userInfo: any;
+  activeHeaderActionBtnOption!: any[];
+  breadCrumbsAction = {
+    isBreadCrumbActive: false,
+    breadcrumb: [
+      {
+        label: 'Agent Hub',
+        index: 0,
+      },
+    ],
+    // activeBreadCrumbsItem: "",
+  };
 
   constructor(
     private storageService: LocalStorageService,
@@ -119,6 +132,19 @@ export class AgentDetailsModel {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
+
+  goBackBreadCrumbsHandler(event: any) {
+    // this.breadCrumbsAction.activeBreadCrumbsItem = ""
+    const newItem = this.breadCrumbsAction.breadcrumb;
+    const indexToDelete = event.item.index + 1;
+    newItem.splice(indexToDelete);
+    this.breadCrumbsAction.isBreadCrumbActive = false;
+
+    // Show viewALl button
+    // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;
+
+    this.breadCrumbsAction.breadcrumb = [...newItem];
+  }
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
       this.columns =

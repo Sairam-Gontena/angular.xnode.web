@@ -246,7 +246,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'agent-playground/:agent',
+    path: 'agent-playground/:agentName/:id',
     loadChildren: () =>
       import('./pages/agent-details/agent-details.module').then(
         (m) => m.AgentDetailsModule

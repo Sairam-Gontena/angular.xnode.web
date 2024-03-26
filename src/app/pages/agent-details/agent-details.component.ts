@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgentDetailsModel } from './agent-details.model';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'xnode-agent-details',
@@ -15,10 +16,21 @@ export class AgentDetailsComponent{
   constructor(
     private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
+    private activeRoute: ActivatedRoute
   ) {
     this.agentDetailsModel = new AgentDetailsModel(
       this.storageService,
-      this.agentHubService,
+      this.agentHubService
     );
+
+    this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params
+
+    const {agentName, Id} = this.activeRoute.snapshot.params
+
+    this.agentDetailsModel.breadCrumbsAction.breadcrumb.push({
+      label: agentName,
+      index: 1
+    })
+
   }
 }
