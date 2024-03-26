@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as FileSaver from 'file-saver';
 
 interface Column {
@@ -39,6 +39,8 @@ export class DynamicTableComponent implements OnInit {
   @Input() altBgColorRow: string = '';
   @Input() verticalScrollHeight = '25rem';
   @Input() paginatorInfo: any = {};
+  @Input() showViewRowData = false;
+  @Output() changeEvent = new EventEmitter<{ event: any }>();
 
   @Input() tableRowActionOptions: any[] = [];
 
@@ -171,5 +173,13 @@ export class DynamicTableComponent implements OnInit {
     console.log(event, 'event');
 
     // Emit event to parent
+  }
+
+  onTableRowHandler(rowData: any) {
+    console.log(rowData, "rowData")
+
+    if(this.showViewRowData){
+      this.changeEvent.emit(rowData)
+    }
   }
 }

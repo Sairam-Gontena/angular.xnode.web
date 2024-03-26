@@ -124,6 +124,8 @@
       [paginatorInfo]="agentHubModel.paginatorInfo"
       [searchFilterOptions]="agentHubModel.searchFilterOptions"
       [viewAll]="agentHubModel.viewAll"
+      [showViewRowData]="true"
+      (changeEvent)="agentHubModel.viewHandler($event)"
       columnWidth="13.8rem"
       altBgColorRow="#2E2D36"
     ></xnode-dynamic-table>

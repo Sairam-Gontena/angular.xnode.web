@@ -148,11 +148,13 @@
       class=""
     >
       <tr
-        class="text-white text-xs"
+        class="text-white text-xs cursor-pointer"
         [style]="{
           'background-color':
             i % 2 === 0 && altBgColorRow ? altBgColorRow : '#3A3942'
         }"
+
+        (click)="onTableRowHandler(rowData)"
       >
         <td
           *ngFor="let col of columns"

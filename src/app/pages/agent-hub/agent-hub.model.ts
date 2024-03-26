@@ -411,6 +411,13 @@ export class AgentHubModel {
     this.router.navigate(['/create-agent']);
   }
 
+  viewHandler(item: any) {
+    // For now let's make view for agent only,
+    if(this.activeIndex == 0) {
+      this.router.navigate(['/agent-playground', item?.id]);
+    }
+  }
+
   /**
    * NOTE: Async Operation
    */
