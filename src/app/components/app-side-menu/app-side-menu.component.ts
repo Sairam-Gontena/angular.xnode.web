@@ -26,8 +26,6 @@ export class AppSideMenuComponent implements OnInit {
   isInProductContext: boolean = false;
   constructor(
     private router: Router,
-    private utils: UtilsService,
-    private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private messagingService: MessagingService
   ) {
