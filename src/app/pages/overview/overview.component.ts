@@ -10,25 +10,9 @@ import * as data from '../../constants/overview.json';
 })
 
 export class OverViewComponent {
-  @Input() currentStep: number = 2;
-  loading: boolean = true;
-  templates: any;
-  appName = localStorage.getItem('app_name');
-  highlightedIndex: string | null = null;
-  iconClicked: any;
-  stepper: any;
-  show = false;
-  counter: any = 1;
-  counter2: any = 1;
   jsondata: any;
-  childData: any;
   currentUser?: any;
-  overview: any;
-  features: any;
-  createOn: any;
-  overviewData: any;
   product: any;
-  username: string = '';
 
   constructor(
     private storageService: LocalStorageService,
