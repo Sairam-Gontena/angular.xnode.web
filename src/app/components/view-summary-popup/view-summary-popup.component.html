@@ -60,12 +60,13 @@
                             <div class="mb-3"
                                 *ngIf="convSummary?.overall_summary?.content?.Participants?.length || convSummary?.overall_summary?.content?.participants?.length">
                                 <h4 class="m-0 pb-1 font-medium	text-lg line-height-3 header-text">Participants:</h4>
-                                <p class="m-0 text-base font-normal line-height-2 content-text">
-                                    {{ convSummary?.overall_summary?.content?.Participants ?
-                                    convSummary?.overall_summary?.content?.Participants?.join(',') :
-                                    convSummary?.overall_summary?.content?.participants?.join(',') }}
+                                <div
+                                    *ngFor="let item of convSummary?.overall_summary?.content?.Participants ? convSummary?.overall_summary?.content?.Participants : convSummary?.overall_summary?.content?.participants; let last = last">
+                                    <p class="m-0 text-base font-normal line-height-2 content-text">{{ item?.Name
+                                        }}</p>
+                                    <ng-container *ngIf="!last">,</ng-container>
 
-                                </p>
+                                </div>
                             </div>
                             <div class="mb-3"
                                 *ngIf="convSummary?.overall_summary?.content?.Tags?.length ||convSummary?.overall_summary?.content?.tags?.length">
@@ -141,17 +142,20 @@
                                             <h4 class="m-0 m-0 pb-1 font-medium	text-lg line-height-3 header-text">
                                                 Participants:
                                             </h4>
-                                            <p class="m-0 text-base font-normal line-height-2 content-text">{{
-                                                summary?.content?.Participants ?
-                                                summary?.content?.Participants?.join(', ') :
-                                                summary?.content?.participants?.join(', ') }}</p>
+                                            <div
+                                                *ngFor="let item of summary?.content?.Participants ? summary?.content?.Participants : summary?.content?.participants; let last = last">
+                                                <p class="m-0 text-base font-normal line-height-2 content-text">{{
+                                                    item?.Name }}</p>
+                                                <ng-container *ngIf="!last">,</ng-container>
+                                            </div>
                                         </div>
                                         <div class="mb-3 ml-4"
                                             *ngIf="summary?.content?.Tags?.length || summary?.content?.tags?.length">
                                             <h4 class="m-0 pb-1 font-medium	text-lg line-height-3 header-text">Tags:
                                             </h4>
                                             <p class="m-0 text-base font-normal line-height-2 content-text">
-                                              {{ summary?.content?.Tags? summary?.content?.Tags?.join(', ') : summary?.content?.tags?.join(', ') }}
+                                                {{ summary?.content?.Tags? summary?.content?.Tags?.join(', ') :
+                                                summary?.content?.tags?.join(', ') }}
                                             </p>
                                         </div>
                                     </div>
