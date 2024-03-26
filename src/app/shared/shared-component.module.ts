@@ -72,6 +72,8 @@ import { ImportFilePopupComponent } from '../components/import-file-popup/import
 
 import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbox/multi-select-checkbox.component';
 import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.component';
+import { AgentOverviewComponent } from '../components/agent-hub/create-agent/agent-overview/agent-overview.component';
+import { AgentInstructionComponent } from '../components/agent-hub/create-agent/agent-instruction/agent-instruction.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -141,7 +143,9 @@ import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.comp
     SpecChildConversationComponent,
     MultiSelectCheckboxComponent,
     BreadcrumbsComponent,
-    ImportFilePopupComponent
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    AgentInstructionComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -213,7 +217,9 @@ import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.comp
     SpecChildConversationComponent,
     MultiSelectCheckboxComponent,
     BreadcrumbsComponent,
-    ImportFilePopupComponent
+    ImportFilePopupComponent,
+    AgentOverviewComponent,
+    AgentInstructionComponent
   ],
 })
 export class SharedComponentModule { }
