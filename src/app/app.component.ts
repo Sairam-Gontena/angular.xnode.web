@@ -30,7 +30,7 @@ import { ConversationHubService } from './api/conversation-hub.service';
 })
 export class AppComponent implements OnInit {
   title = 'xnode';
-  isSideWindowOpen: boolean = true;
+  showDockedNavi: boolean = true;
   showProductStatusPopup: boolean = false;
   isBotIconVisible: boolean = true;
   email: String = '';
@@ -122,7 +122,7 @@ export class AppComponent implements OnInit {
 
     this.specificationUtils._openConversationPanel.subscribe((event: any) => {
       if (event) {
-        this.isSideWindowOpen = false;
+        this.showDockedNavi = false;
       }
     });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
@@ -137,14 +137,14 @@ export class AppComponent implements OnInit {
       }
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
-      this.isSideWindowOpen = data;
+      this.showDockedNavi = data;
       if (!data) {
         this.isNaviExpanded = false;
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
-        this.isSideWindowOpen = true
+        this.showDockedNavi = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
@@ -155,7 +155,7 @@ export class AppComponent implements OnInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData === 'CLOSE' && msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-        this.isSideWindowOpen = false;
+        this.showDockedNavi = false;
         this.isNaviExpanded = false;
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
@@ -163,7 +163,7 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeSummaryObject.subscribe((data: any) => {
       if (Object.keys(data.summary).length) {
         this.summaryObject = data;
-        this.isSideWindowOpen = true;
+        this.showDockedNavi = true;
         this.isNaviExpanded = true;
         this.makeTrustedUrl();
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
   navigateToHome(): void {
     this.utilsService.showLimitReachedPopup(false);
     this.utilsService.showProductStatusPopup(false);
-    this.isSideWindowOpen = false;
+    this.showDockedNavi = false;
     this.isNaviExpanded = false;
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.product = undefined;
@@ -254,7 +254,7 @@ export class AppComponent implements OnInit {
     if (isNaviExpanded) {
       this.isNaviExpanded = isNaviExpanded
     };
-    this.isSideWindowOpen = true;
+    this.showDockedNavi = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
     window.addEventListener('message', this.receiveMessage.bind(this), false);
@@ -397,18 +397,18 @@ export class AppComponent implements OnInit {
           return;
         }
         if (event.data.message === 'triggerCustomEvent') {
-          this.isSideWindowOpen = false;
+          this.showDockedNavi = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         }
         if (event.data.message === 'close-docked-navi') {
-          this.isSideWindowOpen = false;
+          this.showDockedNavi = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         }
         if (event.data.message === 'close-event') {
           this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.product = undefined;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-          this.isSideWindowOpen = false;
+          this.showDockedNavi = false;
           localStorage.removeItem('has_insights')
           localStorage.removeItem('IS_NAVI_OPENED')
           localStorage.removeItem('app_name')
@@ -458,11 +458,11 @@ export class AppComponent implements OnInit {
             if (event.data?.message) {
               switch (event.data.message) {
                 case 'triggerCustomEvent':
-                  this.isSideWindowOpen = false;
+                  this.showDockedNavi = false;
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
                   break;
                 case 'close-docked-navi':
-                  this.isSideWindowOpen = false;
+                  this.showDockedNavi = false;
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
                   break;
                 case 'expand-navi':
@@ -569,11 +569,12 @@ export class AppComponent implements OnInit {
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
   }
+
   iframeUrlLoad(rawUrl: any) {
-    setTimeout(() => {
-      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-      this.loadIframeUrl();
-    }, 2000);
+    this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
+    this.loadIframeUrl();
+    const showDockedNavi: any = this.storageService.getItem(StorageKeys.IS_NAVI_OPENED)
+    this.showDockedNavi = showDockedNavi ? JSON.parse(showDockedNavi) : false
   }
 
   getMeComponent() {
@@ -618,7 +619,6 @@ export class AppComponent implements OnInit {
 
   openNavi(newItem?: any) {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
-    this.isSideWindowOpen = true;
     this.makeTrustedUrl();
   }
 
@@ -641,7 +641,7 @@ export class AppComponent implements OnInit {
   }
 
   toggleSideWindow() {
-    this.isSideWindowOpen = !this.isSideWindowOpen;
+    this.showDockedNavi = !this.showDockedNavi;
     const chatbotContainer = document.getElementById(
       'side-window'
     ) as HTMLElement;
@@ -654,7 +654,7 @@ export class AppComponent implements OnInit {
   }
 
   closeSideWindow() {
-    this.isSideWindowOpen = false;
+    this.showDockedNavi = false;
   }
 
   showSideMenu() {
