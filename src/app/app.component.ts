@@ -125,9 +125,6 @@ export class AppComponent implements OnInit {
         this.isSideWindowOpen = false;
       }
     });
-    // this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
-    //   this.showProductStatusPopup = data.popup;
-    // });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.createdBy?.email) {
         this.product = this.storageService.getItem(StorageKeys.Product);
@@ -156,9 +153,6 @@ export class AppComponent implements OnInit {
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      if (msg.msgData && msg.msgType === MessageTypes.PRODUCT_CONTEXT) {
-        this.isSideWindowOpen = false;
-      }
       if (msg.msgData === 'CLOSE' && msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         this.isSideWindowOpen = false;
@@ -263,11 +257,18 @@ export class AppComponent implements OnInit {
     this.isSideWindowOpen = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-
-    // if (!window.location.hash.includes('#/reset-password?email'))
-    //   this.redirectToPreviousUrl();
+    window.addEventListener('message', this.receiveMessage.bind(this), false);
     this.handleTheme();
     this.makeTrustedUrl();
+  }
+  receiveMessage(event: MessageEvent) {
+    if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
+    if (event?.data?.message === 'change-app' && event.data.product) {
+      const product = event.data.product;
+      this.storageService.saveItem(StorageKeys.Product, product);
+      this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+      this.router.navigate(['/overview']);
+    }
   }
 
   async handleTheme(): Promise<void> {
@@ -298,41 +299,12 @@ export class AppComponent implements OnInit {
     }
     if (!window.location.hash.includes('#/reset-password?email'))
       this.redirectToPreviousUrl();
-    // this.utilsService.sidePanelChanged.subscribe((pnl: SidePanel) => {
-    //   if (window.location.hash.includes('#/my-products')) {
-    //     this.isSideWindowOpen = true;
-    //     this.isNaviExpanded = false;
-    //     this.utilsService.EnableDockedNavi();
-    //     const product: any = this.storageService.getItem(StorageKeys.Product);
-    //     const token: any = this.storageService.getItem(
-    //       StorageKeys.ACCESS_TOKEN
-    //     );
-    //     const newItem = {
-    //       productContext: product?.id,
-    //       cbFlag: true,
-    //       productEmail: product?.email,
-    //       token: token,
-    //     };
-    //     this.openNavi(newItem);
-    //   } else {
-    //     this.isSideWindowOpen = false;
-    //     this.isNaviExpanded = false;
-    //     this.utilsService.disableDockedNavi();
-    //   }
-    // });
-    // this.utilsService.getMeproductAlertPopup.subscribe((data: any) => {
-    //   this.showProductStatusPopup = data.popup;
-    // });
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
-        // this.makeTrustedUrl(data.email);
       }
     });
     this.utilsService.openDockedNavi.subscribe((data: any) => {
       this.isSideWindowOpen = data;
-      // if (!data) {
-      //   this.isNaviExpanded = false;
-      // }
     });
     this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
       if (data) {
@@ -362,10 +334,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // botOnClick() {
-  //   this.isNaviExpanded = false;
-  //   this.subMenuLayoutUtil.EnableDockedNavi();
-  // }
 
   redirectToPreviousUrl(): void {
     this.router.events.subscribe((event: any) => {
@@ -388,9 +356,6 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeToastObject.subscribe((event: any) => {
       this.messageService.add(event);
     });
-    // this.utilsService.getMeProductStatus.subscribe((event: any) => {
-    //   this.showProductStatusPopup = event;
-    // });
     this.utilsService.handleLimitReachedPopup.pipe(debounce(() => interval(1000)))
       .subscribe((event: any) => {
         this.showLimitReachedPopup = event;
@@ -434,27 +399,19 @@ export class AppComponent implements OnInit {
         }
         if (event.data.message === 'triggerCustomEvent') {
           this.isSideWindowOpen = false;
-          // this.isNaviExpanded = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-
         }
         if (event.data.message === 'close-docked-navi') {
           this.isSideWindowOpen = false;
-          // this.isNaviExpanded = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
-
         }
         if (event.data.message === 'close-event') {
-          //not there to handle the close option in navi in my-prod so added
           this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
           this.product = undefined;
-          // this.isNaviExpanded = false;
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.isSideWindowOpen = false;
-          // localStorage.removeItem('product')
           localStorage.removeItem('has_insights')
           localStorage.removeItem('IS_NAVI_OPENED')
-          // localStorage.removeItem('record_id')
           localStorage.removeItem('app_name')
           this.isNaviExpanded = false;
           this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
@@ -481,12 +438,12 @@ export class AppComponent implements OnInit {
           this.getConversation();
           this.utilsService.loadSpinner(true);
         }
-        if (event.data.message === 'change-app') {
-          this.storageService.saveItem(StorageKeys.Product, event.data.data);
-          this.utilsService.saveProductId(event.data.id);
-          this.router.navigate(['/overview']);
-          this.utilsService.productContext(true);
-        }
+        // if (event.data.message === 'change-app') {
+        //   this.storageService.saveItem(StorageKeys.Product, event.data.data);
+        //   this.utilsService.saveProductId(event.data.id);
+        //   this.router.navigate(['/overview']);
+        //   this.utilsService.productContext(true);
+        // }
       });
     }
 
@@ -503,12 +460,10 @@ export class AppComponent implements OnInit {
               switch (event.data.message) {
                 case 'triggerCustomEvent':
                   this.isSideWindowOpen = false;
-                  // this.isNaviExpanded = false;
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
                   break;
                 case 'close-docked-navi':
                   this.isSideWindowOpen = false;
-                  // this.isNaviExpanded = false;
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
                   break;
                 case 'expand-navi':
@@ -516,11 +471,10 @@ export class AppComponent implements OnInit {
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
                   break;
                 case 'contract-navi':
-                  // this.isNaviExpanded = false;
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
                   break;
                 case 'import-file-popup':
-                  this.utilsService.showImportFilePopup(true);;
+                  this.utilsService.showImportFilePopup(true);
                   break;
               }
             }
@@ -581,9 +535,9 @@ export class AppComponent implements OnInit {
         '&product_user_email=' +
         productEmail +
         '&conversationId=' +
-        conversation.id +
+        conversation?.id +
         '&type=' +
-        conversation.conversationType
+        conversation?.conversationType
         + '&product_context=' +
         true +
         '&accountId=' +

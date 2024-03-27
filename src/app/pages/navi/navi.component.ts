@@ -235,10 +235,10 @@ export class NaviComponent implements OnInit {
       this.utils.productContext(false);
       this.router.navigate(['/my-products']);
     }
-    if (event.data.message === 'change-app') {
-      this.storageService.saveItem(StorageKeys.Product, event.data.data);
-      this.utils.productContext(true);
-    }
+    // if (event.data.message === 'change-app') {
+    //   this.storageService.saveItem(StorageKeys.Product, event.data.data);
+    //   this.utils.productContext(true);
+    // }
     if (event.data.message === 'file-uploaded') {
       localStorage.removeItem('show-upload-panel');
     }
