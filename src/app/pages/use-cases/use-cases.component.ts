@@ -28,6 +28,7 @@ export class UseCasesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.utils.loadSpinner(true);
     this.getMeStorageData();
   }
 

@@ -268,6 +268,10 @@ export class AppComponent implements OnInit {
       this.storageService.saveItem(StorageKeys.Product, product);
       this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
       this.router.navigate(['/overview']);
+    } else {
+      this.storageService.removeItem(StorageKeys.Product);
+      this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
+      this.router.navigate(['/my-products']);
     }
   }
 
