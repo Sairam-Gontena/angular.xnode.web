@@ -35,6 +35,15 @@ export class AgentDetailsModel {
     { idx: 6, title: 'Models', value: 'model' },
     { idx: 7, title: 'Tools', value: 'tool' },
   ];
+
+  overviewTabItem = {
+    showTab: false,
+    activeIndex: 0,
+    tabItems: [
+        { idx: 0, title: 'Overview', value: 'overview' },
+        { idx: 1, title: 'Instructions', value: 'instructions' }
+    ]
+  }
   queryparamInfo: any;
 
   tableData!: ITableDataEntry[];
@@ -132,6 +141,14 @@ export class AgentDetailsModel {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
+  viewHandler(item: any) {
+    /**
+     * Hide TabView.
+     * Show New Tab.
+     */
+
+    this.overviewTabItem.showTab = true
+  }
 
   goBackBreadCrumbsHandler(event: any) {
     // this.breadCrumbsAction.activeBreadCrumbsItem = ""

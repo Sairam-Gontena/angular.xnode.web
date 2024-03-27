@@ -24,7 +24,7 @@
             <p-button>
               <img src="../../../assets/agent-hub/hamburger-icon.svg" alt="" />
             </p-button>
-                
+
             <p-button>
               <img src="../../../assets/agent-hub/chart-tree.svg" alt="" />
             </p-button>
@@ -35,6 +35,7 @@
       styleClass="pt-3 px-6"
       (onChange)="agentDetailsModel.getAllAgentList()"
       [(activeIndex)]="agentDetailsModel.activeIndex"
+      *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock"
     >
       <p-tabPanel
         *ngFor="let tab of agentDetailsModel.tabItems; let i = index"
@@ -42,8 +43,21 @@
       >
       </p-tabPanel>
     </p-tabView>
+
+    <ng-template #overviewBlock>
+        <p-tabView
+        styleClass="pt-3 px-6"
+        [(activeIndex)]="agentDetailsModel.overviewTabItem.activeIndex"
+      >
+        <p-tabPanel
+          *ngFor="let tab of agentDetailsModel.overviewTabItem.tabItems; let i = index"
+          [header]="tab.title"
+        >
+        </p-tabPanel>
+      </p-tabView>
+    </ng-template>
   
-    <div class="w-full table-height px-6" *ngIf="agentDetailsModel.activeIndex > 1">
+    <div class="w-full table-height px-6" *ngIf="agentDetailsModel.activeIndex > 1 && !agentDetailsModel.overviewTabItem.showTab">
       <xnode-dynamic-table
         [inputData]="agentDetailsModel.tableData"
         [cols]="agentDetailsModel.columns"
@@ -54,6 +68,8 @@
         [searchFilterOptions]="agentDetailsModel.searchFilterOptions"
         columnWidth="13.8rem"
         altBgColorRow="#2E2D36"
+        [showViewRowData]="true"
+        (changeEvent)="agentDetailsModel.viewHandler($event)"
       ></xnode-dynamic-table>
     </div>
   
