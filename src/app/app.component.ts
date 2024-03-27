@@ -268,11 +268,13 @@ export class AppComponent implements OnInit {
       this.storageService.saveItem(StorageKeys.Product, product);
       this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
       this.router.navigate(['/overview']);
-    } else {
-      this.storageService.removeItem(StorageKeys.Product);
-      this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
-      this.router.navigate(['/my-products']);
-    }
+    } else
+      if (event?.data?.message === 'change-app' && !event.data.product) {
+
+        this.storageService.removeItem(StorageKeys.Product);
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
+        this.router.navigate(['/my-products']);
+      }
   }
 
   async handleTheme(): Promise<void> {
@@ -306,9 +308,6 @@ export class AppComponent implements OnInit {
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
       }
-    });
-    this.utilsService.openDockedNavi.subscribe((data: any) => {
-      this.isSideWindowOpen = data;
     });
     this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
       if (data) {
