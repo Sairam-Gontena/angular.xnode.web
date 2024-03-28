@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
   conversationID: any;
   summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
-  conversatonDetails:any
+  conversatonDetails: any
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -167,17 +167,17 @@ export class AppComponent implements OnInit {
       if (data) {
         this.summaryObject = data;
         let isNaviOpened = localStorage.getItem('IS_NAVI_OPENED');
-        if(isNaviOpened){
+        if (isNaviOpened) {
           window.frames[0].postMessage({
-            type : 'Navi_SUMMARY',
-            data : data,
-            productId : data.productId,
+            type: 'Navi_SUMMARY',
+            data: data,
+            productId: data.productId,
           }, this.targetUrl);
-        }else{
-        this.isNaviExpanded = true;
-        this.openNavi({})
-        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
-        }     
+        } else {
+          this.isNaviExpanded = true;
+          this.openNavi()
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
+        }
       }
     })
   }
@@ -288,6 +288,69 @@ export class AppComponent implements OnInit {
       this.isNaviExpanded = false;
       this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       this.makeTrustedUrl()
+    }
+    if (event.data.message === 'triggerCustomEvent') {
+      this.showDockedNavi = false;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    }
+    if (event.data.message === 'close-docked-navi') {
+      this.showDockedNavi = false;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    }
+    if (event.data.message === 'close-event') {
+      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+      this.product = undefined;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+      this.showDockedNavi = false;
+      localStorage.removeItem('has_insights')
+      localStorage.removeItem('IS_NAVI_OPENED')
+      localStorage.removeItem('app_name')
+      this.isNaviExpanded = false;
+      this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
+      this.makeTrustedUrl()
+    }
+    if (event.data.message === 'expand-navi') {
+      this.isNaviExpanded = true;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+    }
+    if (event.data.message === 'contract-navi') {
+      this.isNaviExpanded = false;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+    }
+    if (event.data.message === 'triggerProductPopup') {
+      this.content = event.data.data;
+      let data = {
+        popup: true,
+        data: this.content,
+      };
+      this.utilsService.toggleProductAlertPopup(data);
+    }
+    if (event.data.message === 'view-summary-popup') {
+      this.conversationID = event.data.conversation_id;
+      this.getConversation();
+      this.utilsService.loadSpinner(true);
+    }
+    if (event.data.message === 'triggerRouteToMyProducts') {
+      const itemId = event.data.id;
+      localStorage.setItem('record_id', itemId);
+      this.utilsService.saveProductId(itemId);
+      const metaData = localStorage.getItem('meta_data');
+      if (metaData) {
+        let templates = JSON.parse(metaData);
+        const product = templates?.filter((obj: any) => {
+          return obj.id === itemId;
+        })[0];
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem(
+          'product_url',
+          product.url && product.url !== '' ? product.url : ''
+        );
+        localStorage.setItem('product', JSON.stringify(product));
+      }
+      const newUrl = this.xnodeAppUrl + '#/dashboard';
+      this.showDockedNavi = false;
+      this.isNaviExpanded = false;
+      window.location.href = newUrl;
     }
     if (event.data.message === 'expand-navi') {
       this.isNaviExpanded = true;
@@ -579,7 +642,7 @@ export class AppComponent implements OnInit {
     if (this.newWithNavi) {
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
-    if(this.conversatonDetails){
+    if (this.conversatonDetails) {
       rawUrl = rawUrl + '&conversatonDetails=' + JSON.stringify(this.conversatonDetails);
     }
     if (this.product) {
