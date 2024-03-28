@@ -142,6 +142,12 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     });
+
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      if (msg.msgType === MessageTypes.PRODUCT_CONTEXT && msg.msgData) {
+        this.makeTrustedUrl()
+      }
+    })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
@@ -180,6 +186,8 @@ export class AppComponent implements OnInit {
     this.product = undefined;
     localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
+    console.log('IS_NAVI_OPENED');
+
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
@@ -250,6 +258,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+
     const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
     if (isNaviExpanded) {
       this.isNaviExpanded = isNaviExpanded
@@ -410,6 +420,8 @@ export class AppComponent implements OnInit {
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.showDockedNavi = false;
           localStorage.removeItem('has_insights')
+          console.log('IS_NAVI_OPENEDIS_NAVI_OPENED');
+
           localStorage.removeItem('IS_NAVI_OPENED')
           localStorage.removeItem('app_name')
           this.isNaviExpanded = false;
