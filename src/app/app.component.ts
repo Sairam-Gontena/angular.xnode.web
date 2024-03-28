@@ -143,11 +143,11 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      if (msg.msgType === MessageTypes.PRODUCT_CONTEXT && msg.msgData) {
-        this.makeTrustedUrl()
-      }
-    })
+    // this.messagingService.getMessage<any>().subscribe((msg: any) => {
+    //   if (msg.msgType === MessageTypes.PRODUCT_CONTEXT && msg.msgData) {
+    //     this.makeTrustedUrl()
+    //   }
+    // })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
@@ -277,7 +277,10 @@ export class AppComponent implements OnInit {
       const product = event.data.product;
       this.storageService.saveItem(StorageKeys.Product, product);
       this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-      this.router.navigate(['/overview']);
+      if (this.router.url === '/overview') {
+        location.reload()
+      } else
+        this.router.navigate(['/overview']);
     } else
       if (event?.data?.message === 'change-app' && !event.data.product) {
 
