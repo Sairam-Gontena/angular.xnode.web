@@ -78,6 +78,7 @@ export class AppComponent implements OnInit {
   oneToOneConversations: any;
   conversationID: any;
   summaryObject: any;
+  xnodeAppUrl: string = environment.xnodeAppUrl;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -390,6 +391,7 @@ export class AppComponent implements OnInit {
   loadIframeUrl(): void {
     if (window?.addEventListener) {
       window?.addEventListener('message', (event) => {
+        console.log(event.data.message, 'message')
         if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
           return;
         }
@@ -440,6 +442,33 @@ export class AppComponent implements OnInit {
         //   this.router.navigate(['/overview']);
         //   this.utilsService.productContext(true);
         // }
+        if (event.data.message === 'triggerRouteToMyProducts') {
+          const itemId = event.data.id;
+          localStorage.setItem('record_id', itemId);
+          console.log(itemId, "ITEMID")
+          this.utilsService.saveProductId(itemId);
+          const metaData = localStorage.getItem('meta_data');
+          if (metaData) {
+            let templates = JSON.parse(metaData);
+            const product = templates?.filter((obj: any) => {
+              return obj.id === itemId;
+            })[0];
+            console.log(product, "product")
+
+            localStorage.setItem('app_name', product.title);
+            localStorage.setItem(
+              'product_url',
+              product.url && product.url !== '' ? product.url : ''
+            );
+            localStorage.setItem('product', JSON.stringify(product));
+          }
+          const newUrl = this.xnodeAppUrl + '#/dashboard';
+          console.log(newUrl, 'URL')
+
+          this.isSideWindowOpen = false;
+          this.isNaviExpanded = false;
+          window.location.href = newUrl;
+        }
       });
     }
 
