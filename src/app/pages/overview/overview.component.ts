@@ -23,7 +23,7 @@ export class OverViewComponent {
   jsondata: any;
   childData: any;
   currentUser?: any;
-  overview: any;
+  overview: any = {};
   features: any;
   createOn: any;
   overviewData: any;
@@ -43,7 +43,6 @@ export class OverViewComponent {
 
   getMeStorageData(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
-    this.overview = {};
     this.populateOverview();
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
   }
