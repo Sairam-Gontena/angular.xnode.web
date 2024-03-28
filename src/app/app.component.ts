@@ -480,7 +480,7 @@ export class AppComponent implements OnInit {
           const newUrl = this.xnodeAppUrl + '#/dashboard';
           console.log(newUrl, 'URL')
 
-          this.isSideWindowOpen = false;
+          this.showDockedNavi = false;
           this.isNaviExpanded = false;
           window.location.href = newUrl;
         }
