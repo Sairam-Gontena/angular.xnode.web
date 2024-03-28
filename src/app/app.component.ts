@@ -79,6 +79,7 @@ export class AppComponent implements OnInit {
   conversationID: any;
   summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
+  conversatonDetails:any
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -168,12 +169,21 @@ export class AppComponent implements OnInit {
       }
     })
     this.utilsService.getMeSummaryObject.subscribe((data: any) => {
-      if (Object.keys(data.summary).length) {
+      this.conversatonDetails = data;
+      if (data) {
         this.summaryObject = data;
-        this.showDockedNavi = true;
+        let isNaviOpened = localStorage.getItem('IS_NAVI_OPENED');
+        if(isNaviOpened){
+          window.frames[0].postMessage({
+            type : 'Navi_SUMMARY',
+            data : data,
+            productId : data.productId,
+          }, this.targetUrl);
+        }else{
         this.isNaviExpanded = true;
-        this.makeTrustedUrl();
+        this.openNavi({})
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
+        }     
       }
     })
   }
@@ -563,6 +573,9 @@ export class AppComponent implements OnInit {
     }
     if (this.newWithNavi) {
       rawUrl = rawUrl + '&new_with_navi=' + true;
+    }
+    if(this.conversatonDetails){
+      rawUrl = rawUrl + '&conversatonDetails=' + JSON.stringify(this.conversatonDetails);
     }
     if (this.product) {
 
