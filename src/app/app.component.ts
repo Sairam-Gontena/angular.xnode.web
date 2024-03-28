@@ -78,6 +78,7 @@ export class AppComponent implements OnInit {
   oneToOneConversations: any;
   conversationID: any;
   summaryObject: any;
+  xnodeAppUrl: string = environment.xnodeAppUrl;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -458,6 +459,28 @@ export class AppComponent implements OnInit {
         //   this.router.navigate(['/overview']);
         //   this.utilsService.productContext(true);
         // }
+        if (event.data.message === 'triggerRouteToMyProducts') {
+          const itemId = event.data.id;
+          localStorage.setItem('record_id', itemId);
+          this.utilsService.saveProductId(itemId);
+          const metaData = localStorage.getItem('meta_data');
+          if (metaData) {
+            let templates = JSON.parse(metaData);
+            const product = templates?.filter((obj: any) => {
+              return obj.id === itemId;
+            })[0];
+            localStorage.setItem('app_name', product.title);
+            localStorage.setItem(
+              'product_url',
+              product.url && product.url !== '' ? product.url : ''
+            );
+            localStorage.setItem('product', JSON.stringify(product));
+          }
+          const newUrl = this.xnodeAppUrl + '#/dashboard';
+          this.showDockedNavi = false;
+          this.isNaviExpanded = false;
+          window.location.href = newUrl;
+        }
       });
     }
 
