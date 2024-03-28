@@ -28,7 +28,7 @@
                                 <div>
                                     <label htmlFor="password" class="font-medium text-xl">Password</label>
                                 </div>
-                                <p-password [toggleMask]="true" formControlName="password" placeholder="Enter password"
+                                <p-password [toggleMask]="true" formControlName="password" placeholder="Enter password" [feedback]="false"
                                     [style]="{'width':'100%', 'height': '42px'}"
                                     class="text-lg text-color border-round-xl mt-1"
                                     [ngClass]="{ 'is-invalid': submitted && login['password'].errors }"></p-password>
