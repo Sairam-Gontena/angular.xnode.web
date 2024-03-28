@@ -43,7 +43,40 @@ export class OverViewComponent {
 
   getMeStorageData(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
+    this.overview = {};
+    this.populateOverview();
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
+
+  populateOverview(){
+    if(this.product.overview.length){
+      this.product.overview.forEach((element:any) => {
+        if(element.title=='Title'){
+          this.overview.title = element;
+        }
+        if(element.title=='Tag'){
+          this.overview.tag = element;
+        }
+        if(element.title=='Description'){
+          this.overview.description = element;
+        }
+        if(element.title=='Features'){
+          this.overview.features = element;
+        }
+        if(element.title=='Stakeholders'){
+          this.overview.stakeholders = element;
+        }
+        if(element.title=='Product_url'){
+          this.overview.productUrl = element;
+        }
+        if(element.title=='product_uuid'){
+          this.overview.productuuid = element;
+        }
+      });
+    }
+    if(this.product.owners){
+      this.overview.owners = this.product.owners
+    }
   }
 
   onChangeProduct(obj: any): void {
