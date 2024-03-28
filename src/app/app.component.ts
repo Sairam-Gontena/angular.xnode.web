@@ -254,7 +254,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
-
     const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
     if (isNaviExpanded) {
       this.isNaviExpanded = isNaviExpanded
@@ -279,6 +278,14 @@ export class AppComponent implements OnInit {
       this.isNaviExpanded = false;
       this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       this.makeTrustedUrl()
+    }
+    if (event.data.message === 'expand-navi') {
+      this.isNaviExpanded = true;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
+    }
+    if (event.data.message === 'contract-navi') {
+      this.isNaviExpanded = false;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
     }
     if (event?.data?.message === 'change-app' && event.data.product) {
       const product = event.data.product;
