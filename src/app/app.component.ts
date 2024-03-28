@@ -404,7 +404,6 @@ export class AppComponent implements OnInit {
   loadIframeUrl(): void {
     if (window?.addEventListener) {
       window?.addEventListener('message', (event) => {
-        console.log(event.data.message, 'message')
         if (event.origin + '/' !== this.targetUrl.split('?')[0]) {
           return;
         }
@@ -460,7 +459,6 @@ export class AppComponent implements OnInit {
         if (event.data.message === 'triggerRouteToMyProducts') {
           const itemId = event.data.id;
           localStorage.setItem('record_id', itemId);
-          console.log(itemId, "ITEMID")
           this.utilsService.saveProductId(itemId);
           const metaData = localStorage.getItem('meta_data');
           if (metaData) {
@@ -468,8 +466,6 @@ export class AppComponent implements OnInit {
             const product = templates?.filter((obj: any) => {
               return obj.id === itemId;
             })[0];
-            console.log(product, "product")
-
             localStorage.setItem('app_name', product.title);
             localStorage.setItem(
               'product_url',
@@ -478,8 +474,6 @@ export class AppComponent implements OnInit {
             localStorage.setItem('product', JSON.stringify(product));
           }
           const newUrl = this.xnodeAppUrl + '#/dashboard';
-          console.log(newUrl, 'URL')
-
           this.showDockedNavi = false;
           this.isNaviExpanded = false;
           window.location.href = newUrl;
