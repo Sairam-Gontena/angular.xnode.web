@@ -8,6 +8,8 @@ import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { MessageTypes } from 'src/models/message-types.enum';
+import { LocalStorageService } from 'src/app/components/services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-view-summary-popup',
@@ -37,14 +39,19 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
       active: false
     }
   ];
+  currentUser : any = ''
 
   constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
-    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService,private messagingService:MessagingService) {
+    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService,private messagingService:MessagingService, private storageService : LocalStorageService) {
 
   }
 
   ngOnInit(): void {
     this.label == 'View in Chat' ? this.label = 'View in Chat': this.label = 'Close';
+    let currentUser = localStorage.getItem('currentUser');
+    if(currentUser){
+      this.currentUser = JSON.parse(currentUser);
+    }
   }
 
   onClickTab(index: number) {
@@ -84,12 +91,47 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
         //   msgType: MessageTypes.NAVI_CONTAINER_STATE,
         //   msgData: { naviContainerState: 'EXPAND', makeTrustedUrl:false},
         // });
-        this.utils.updateSummary(this.notifObj);
+        this.getProductIdByConversationId(this.notifObj.conversationId,this.notifObj);
       } else {
         this.utils.updateSummary(this.notifObj);
       }
     }
     this.closePopup();
+  }
+
+  getProductIdByConversationId(conversationId: string,notifObj:any){
+    let params = {
+      id: conversationId,
+      fieldsRequired: ['id','productId']
+    }
+    this.conversationHubService.getConersationDetailById(params).then((res)=>{
+      if(res.data){
+        let productId = res.data[0].productId;
+        let productDetails = localStorage.getItem('meta_data');
+        if(productDetails){
+          let products = JSON.parse(productDetails);
+          let product = products.find((p : any)=>p.id==productId);
+          this.onClickProductCard(product,notifObj);
+        }
+      }
+    })
+  }
+
+  onClickProductCard(data: any,notifObj:any): void {
+    if (this.currentUser?.email == data.email) {
+      this.utils.hasProductPermission(true);
+    } else {
+      this.utils.hasProductPermission(false);
+    }
+    delete data.created_by;
+    delete data.timeAgo;
+    this.storageService.saveItem(StorageKeys.Product, data);
+    localStorage.setItem('record_id', data.id);
+    localStorage.setItem('app_name', data.title);
+    localStorage.setItem('has_insights', data.has_insights);
+    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+    notifObj.productId = data.id;
+    this.utils.updateSummary(notifObj);
   }
 
   async copyToClipboard(content: any, event: any) {
