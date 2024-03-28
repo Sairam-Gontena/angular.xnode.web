@@ -1,6 +1,6 @@
 <ng-container *ngIf="auth.userLoggedIn; else notLoggedIn">
     <div class="relative">
-        <div class="absolute bottom-0 right-0" [class.hidden]="isSideWindowOpen">
+        <div class="absolute bottom-0 right-0" [class.hidden]="showDockedNavi">
             <xnode-bot (valueChange)="openNavi($event)"></xnode-bot>
         </div>
         <xnode-app-header (navigateToHome)="navigateToHome()"></xnode-app-header>
@@ -9,11 +9,11 @@
                 <div class="app-side-menu-wrapper hidden lg:block">
                     <xnode-app-side-menu></xnode-app-side-menu>
                 </div>
-                <div [class.app-body-wrapper]="!isSideWindowOpen" [class.app-body-wrapper-navi]="isSideWindowOpen">
+                <div [class.app-body-wrapper]="!showDockedNavi" [class.app-body-wrapper-navi]="showDockedNavi">
                     <router-outlet></router-outlet>
                 </div>
-                <div *ngIf="isSideWindowOpen" [class.hidden]="!isSideWindowOpen" [class.navi-ful-frame]="isNaviExpanded"
-                    [class.navi-frame]="!isNaviExpanded && isSideWindowOpen">
+                <div *ngIf="showDockedNavi" [class.hidden]="!showDockedNavi" [class.navi-ful-frame]="isNaviExpanded"
+                    [class.navi-frame]="!isNaviExpanded && showDockedNavi">
                     <iframe id="myIframe" *ngIf="iframeUrl" [src]="iframeUrl" allow="microphone"
                         Cross-Origin-Opener-Policy="*" class="w-full h-full pl-0 pr-0 ifram-navi">
                     </iframe>
