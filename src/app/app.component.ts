@@ -145,6 +145,11 @@ export class AppComponent implements OnInit {
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
+        this.openNavi()
+      }
+    })
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
@@ -646,7 +651,6 @@ export class AppComponent implements OnInit {
       rawUrl = rawUrl + '&conversatonDetails=' + JSON.stringify(this.conversatonDetails);
     }
     if (this.product) {
-
       this.subMenuLayoutUtil.disablePageToolsLayoutSubMenu();
       rawUrl =
         rawUrl +
@@ -665,9 +669,7 @@ export class AppComponent implements OnInit {
         '&product=' +
         JSON.stringify(this.product) +
         '&new_with_navi=' +
-        false;
-      rawUrl = rawUrl + (this.isFileImported ? '&componentToShow=Conversations' : '&componentToShow=chat');
-      // this.iframeUrlLoad(rawUrl);
+        false + '&componentToShow=Conversations';
     } else if (this.newWithNavi && !this.summaryObject) {
       rawUrl = rawUrl + '&componentToShow=chat';
     } else {
