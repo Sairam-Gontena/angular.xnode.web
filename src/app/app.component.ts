@@ -143,12 +143,6 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     });
-
-    // this.messagingService.getMessage<any>().subscribe((msg: any) => {
-    //   if (msg.msgType === MessageTypes.PRODUCT_CONTEXT && msg.msgData) {
-    //     this.makeTrustedUrl()
-    //   }
-    // })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
@@ -156,7 +150,7 @@ export class AppComponent implements OnInit {
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
-        this.makeTrustedUrl();
+        this.openNavi();
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
@@ -274,6 +268,18 @@ export class AppComponent implements OnInit {
   }
   receiveMessage(event: MessageEvent) {
     if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
+    if (event?.data?.message === 'close-event') {
+      this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+      this.product = undefined;
+      this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
+      this.showDockedNavi = false;
+      localStorage.removeItem('has_insights')
+      localStorage.removeItem('IS_NAVI_OPENED')
+      localStorage.removeItem('app_name')
+      this.isNaviExpanded = false;
+      this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
+      this.makeTrustedUrl()
+    }
     if (event?.data?.message === 'change-app' && event.data.product) {
       const product = event.data.product;
       this.storageService.saveItem(StorageKeys.Product, product);
@@ -424,8 +430,6 @@ export class AppComponent implements OnInit {
           this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
           this.showDockedNavi = false;
           localStorage.removeItem('has_insights')
-          console.log('IS_NAVI_OPENEDIS_NAVI_OPENED');
-
           localStorage.removeItem('IS_NAVI_OPENED')
           localStorage.removeItem('app_name')
           this.isNaviExpanded = false;
@@ -453,12 +457,6 @@ export class AppComponent implements OnInit {
           this.getConversation();
           this.utilsService.loadSpinner(true);
         }
-        // if (event.data.message === 'change-app') {
-        //   this.storageService.saveItem(StorageKeys.Product, event.data.data);
-        //   this.utilsService.saveProductId(event.data.id);
-        //   this.router.navigate(['/overview']);
-        //   this.utilsService.productContext(true);
-        // }
         if (event.data.message === 'triggerRouteToMyProducts') {
           const itemId = event.data.id;
           localStorage.setItem('record_id', itemId);
@@ -610,9 +608,8 @@ export class AppComponent implements OnInit {
 
   iframeUrlLoad(rawUrl: any) {
     this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-    this.loadIframeUrl();
-    const showDockedNavi: any = this.storageService.getItem(StorageKeys.IS_NAVI_OPENED)
-    this.showDockedNavi = showDockedNavi ? JSON.parse(showDockedNavi) : false
+    const showDockedNavi: any = this.storageService.getItem(StorageKeys.IS_NAVI_OPENED);
+    this.showDockedNavi = showDockedNavi ? JSON.parse(showDockedNavi) : false;
   }
 
   getMeComponent() {
@@ -655,7 +652,7 @@ export class AppComponent implements OnInit {
     return comp;
   }
 
-  openNavi(newItem?: any) {
+  openNavi() {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
   }
