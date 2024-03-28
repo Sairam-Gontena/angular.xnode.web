@@ -289,6 +289,18 @@ export class AppComponent implements OnInit {
         this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
         this.router.navigate(['/my-products']);
       }
+      else if (event?.data?.message === 'change-product-context') {
+        const conversationDetails = event.data.conversationDetails;
+        let product = localStorage.getItem('meta_data');
+        if (product) {
+          let allProducts = JSON.parse(product);
+          product = allProducts.find((p: any) => p.id == conversationDetails.productId);
+        }
+
+        this.storageService.saveItem(StorageKeys.Product, product);
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+        this.router.navigate(['/dashboard']);
+      }
   }
 
   async handleTheme(): Promise<void> {
@@ -459,7 +471,7 @@ export class AppComponent implements OnInit {
         //   this.router.navigate(['/overview']);
         //   this.utilsService.productContext(true);
         // }
-        if (event.data.message === 'triggerRouteToMyProducts') {
+        if (event.data.message === 'triggerRouteToDashboard') {
           const itemId = event.data.id;
           localStorage.setItem('record_id', itemId);
           this.utilsService.saveProductId(itemId);
