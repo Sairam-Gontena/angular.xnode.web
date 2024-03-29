@@ -169,7 +169,7 @@ export class AppComponent implements OnInit {
     })
     this.utilsService.getMeSummaryObject.subscribe((data: any) => {
       this.conversatonDetails = data;
-      if (data) {
+      if (data?.summary && Object.keys(data?.summary).length > 0) {
         this.summaryObject = data;
         let isNaviOpened = localStorage.getItem('IS_NAVI_OPENED');
         if (isNaviOpened) {
@@ -181,7 +181,7 @@ export class AppComponent implements OnInit {
         } else {
           this.isNaviExpanded = true;
           this.openNavi()
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
+          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
         }
       }
     })
@@ -267,7 +267,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
-    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
     const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
     if (isNaviExpanded) {
       this.isNaviExpanded = isNaviExpanded;
@@ -590,7 +589,7 @@ export class AppComponent implements OnInit {
                   break;
                 case 'expand-navi':
                   this.isNaviExpanded = true;
-                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true);
+                  this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
                   break;
                 case 'contract-navi':
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
