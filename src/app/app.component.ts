@@ -379,6 +379,9 @@ export class AppComponent implements OnInit {
         this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
         this.router.navigate(['/my-products']);
       }
+    if (event.data.message === 'import-file-popup') {
+      this.utilsService.showImportFilePopup(true);
+    }
   }
 
   async handleTheme(): Promise<void> {
