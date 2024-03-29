@@ -294,12 +294,12 @@ export class AppComponent implements OnInit {
         let product = localStorage.getItem('meta_data');
         if (product) {
           let allProducts = JSON.parse(product);
-          product = allProducts.find((p: any) => p.id == conversationDetails.productId);
+          let selectedProduct = allProducts.find((p: any) => p.id == conversationDetails.productId);
+          this.storageService.saveItem(StorageKeys.Product, selectedProduct);
+          this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+          this.router.navigate(['/dashboard']);
         }
 
-        this.storageService.saveItem(StorageKeys.Product, product);
-        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-        this.router.navigate(['/dashboard']);
       }
   }
 
