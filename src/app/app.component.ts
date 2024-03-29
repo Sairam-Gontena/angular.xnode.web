@@ -378,6 +378,19 @@ export class AppComponent implements OnInit {
         this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: false });
         this.router.navigate(['/my-products']);
       }
+      else if (event?.data?.message === 'change-product-context') {
+        const conversationDetails = event.data.conversationDetails;
+        let product = localStorage.getItem('meta_data');
+        if (product) {
+          let allProducts = JSON.parse(product);
+          product = allProducts.find((p: any) => p.id == conversationDetails.productId);
+        }
+        this.storageService.saveItem(StorageKeys.Product, product);
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+        this.router.navigate(['/dashboard']);
+        this.showDockedNavi = false;
+        this.isNaviExpanded = false;
+      }
     if (event.data.message === 'import-file-popup') {
       this.utilsService.showImportFilePopup(true);
     }
@@ -543,7 +556,13 @@ export class AppComponent implements OnInit {
           this.getConversation();
           this.utilsService.loadSpinner(true);
         }
-        if (event.data.message === 'triggerRouteToMyProducts') {
+        // if (event.data.message === 'change-app') {
+        //   this.storageService.saveItem(StorageKeys.Product, event.data.data);
+        //   this.utilsService.saveProductId(event.data.id);
+        //   this.router.navigate(['/overview']);
+        //   this.utilsService.productContext(true);
+        // }
+        if (event.data.message === 'triggerRouteToDashboard') {
           const itemId = event.data.id;
           localStorage.setItem('record_id', itemId);
           this.utilsService.saveProductId(itemId);
