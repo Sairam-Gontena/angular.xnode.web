@@ -384,12 +384,11 @@ export class AppComponent implements OnInit {
         let product = localStorage.getItem('meta_data');
         if (product) {
           let allProducts = JSON.parse(product);
-          let selectedProduct = allProducts.find((p: any) => p.id == conversationDetails.productId);
-          this.storageService.saveItem(StorageKeys.Product, selectedProduct);
-          this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-          this.router.navigate(['/dashboard']);
+          product = allProducts.find((p: any) => p.id == conversationDetails.productId);
         }
-
+        this.storageService.saveItem(StorageKeys.Product, product);
+        this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+        this.router.navigate(['/dashboard']);
       }
     if (event.data.message === 'import-file-popup') {
       this.utilsService.showImportFilePopup(true);
@@ -556,7 +555,13 @@ export class AppComponent implements OnInit {
           this.getConversation();
           this.utilsService.loadSpinner(true);
         }
-        if (event.data.message === 'triggerRouteToMyProducts') {
+        // if (event.data.message === 'change-app') {
+        //   this.storageService.saveItem(StorageKeys.Product, event.data.data);
+        //   this.utilsService.saveProductId(event.data.id);
+        //   this.router.navigate(['/overview']);
+        //   this.utilsService.productContext(true);
+        // }
+        if (event.data.message === 'triggerRouteToDashboard') {
           const itemId = event.data.id;
           localStorage.setItem('record_id', itemId);
           this.utilsService.saveProductId(itemId);
