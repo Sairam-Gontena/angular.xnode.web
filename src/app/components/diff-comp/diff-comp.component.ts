@@ -85,11 +85,12 @@ export class DiffCompComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    console.log(this.product,"this is product ")
     if (this.contentObj?.content_data_type === 'DASHBOARD' && this.currentUser) {
       this.targetUrl =
         environment.designStudioAppUrl +
         '?email=' +
-        this.currentUser?.email +
+        this.product?.createdBy?.email +
         '&id=' +
         this.product?.id +
         '&version_id=' +
