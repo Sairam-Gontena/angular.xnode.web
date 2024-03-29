@@ -181,14 +181,15 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
+    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: true });
     this.router.navigate(['/specification']);
 
-    const product:any = this.storageService.getItem(StorageKeys.Product);
-    this.conversationService.getConversations('?productId='+product.id).then((data:any)=>{
-      if(data.data)
+    const product: any = this.storageService.getItem(StorageKeys.Product);
+    this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
+      if (data.data)
         this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0])
-    }).catch((err:any)=>{
-      console.log(err,'err')
+    }).catch((err: any) => {
+      console.log(err, 'err')
     })
 
   }
