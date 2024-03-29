@@ -196,8 +196,6 @@ export class AppComponent implements OnInit {
     this.product = undefined;
     localStorage.removeItem('product');
     localStorage.removeItem('has_insights')
-    console.log('IS_NAVI_OPENED');
-
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
@@ -269,9 +267,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+    this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
     const isNaviExpanded: any = this.storageService.getItem(StorageKeys.IS_NAVI_EXPANDED);
     if (isNaviExpanded) {
-      this.isNaviExpanded = isNaviExpanded
+      this.isNaviExpanded = isNaviExpanded;
     };
     this.showDockedNavi = true;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -688,7 +687,6 @@ export class AppComponent implements OnInit {
     if (this.summaryObject?.conversationId) {
       rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
     }
-
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
