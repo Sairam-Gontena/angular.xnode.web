@@ -389,6 +389,8 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.Product, product);
         this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
         this.router.navigate(['/dashboard']);
+        this.showDockedNavi = false;
+        this.isNaviExpanded = false;
       }
     if (event.data.message === 'import-file-popup') {
       this.utilsService.showImportFilePopup(true);
