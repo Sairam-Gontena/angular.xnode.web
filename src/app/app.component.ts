@@ -689,9 +689,9 @@ export class AppComponent implements OnInit {
         '&product=' +
         JSON.stringify(this.product) +
         '&new_with_navi=' +
-        false + '&componentToShow=Conversations';
+        false + '&componentToShow=Chat';
     } else if (this.newWithNavi && !this.summaryObject) {
-      rawUrl = rawUrl + '&componentToShow=chat';
+      rawUrl = rawUrl + '&componentToShow=Chat';
     } else {
       let addUrl = '';
       if (this.isFileImported) {
@@ -700,7 +700,7 @@ export class AppComponent implements OnInit {
         if (!this.summaryObject)
           addUrl = '&componentToShow=Tasks';
       }
-      rawUrl = rawUrl + addUrl; //(this.isFileImported && !this.summaryObject ? '&componentToShow=Conversations' : '&componentToShow=tasks')
+      rawUrl = rawUrl + addUrl;
     }
     if (this.summaryObject?.conversationId) {
       rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
