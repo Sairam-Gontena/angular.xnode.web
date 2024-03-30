@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      if (msg.msgData === 'CLOSE' && msg.msgType === MessageTypes.CLOSE_NAVI) {
+      if (msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         this.showDockedNavi = false;
         this.isNaviExpanded = false;
@@ -757,6 +757,10 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.CLOSE_NAVI,
+      msgData: false,
+    });
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
   }

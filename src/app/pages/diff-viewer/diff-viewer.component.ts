@@ -16,6 +16,9 @@ import { AuthApiService } from 'src/app/api/auth.service';
 import { delay, of } from 'rxjs';
 import { SearchspecService } from 'src/app/api/searchspec.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { MessagingService } from '../../components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
+
 @Component({
   selector: 'xnode-diff-viewer',
   templateUrl: './diff-viewer.component.html',
@@ -61,7 +64,7 @@ export class DiffViewerComponent implements OnInit {
   isDiffEnabled: boolean = false;
   specRouteParams: any;
   selectedVersion?: SpecVersion;
-  isSideMenuOpened: boolean = true;
+  isSideMenuOpened: boolean = false;
   isDockedNaviEnabled: boolean = true;
 
   filteredSpecData: any;
@@ -84,8 +87,14 @@ export class DiffViewerComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
-    private conversationService:ConversationHubService
+    private conversationService:ConversationHubService,
+    private messagingService:MessagingService
   ) {
+    this.messagingService.getMessage<any>().subscribe((msg: any) => {
+      if (msg.msgType === MessageTypes.CLOSE_NAVI && msg.msgData == false) {
+        this.isSideMenuOpened = false;
+      }
+    })
     this.specificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
@@ -192,6 +201,10 @@ export class DiffViewerComponent implements OnInit {
 
   isMeneOpened(event: any) {
     this.isSideMenuOpened = event;
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.CLOSE_NAVI,
+      msgData: true,
+    });
   }
 
   changeSpecListFormat(list: any) {
