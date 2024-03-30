@@ -153,10 +153,12 @@ export class AppComponent implements OnInit {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
+        this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, msg.msgData?.naviContainerState === 'EXPAND')
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
-        this.openNavi();
+        this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
+        this.makeTrustedUrl();
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
@@ -757,10 +759,11 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
-    this.messagingService.sendMessage({
-      msgType: MessageTypes.CLOSE_NAVI,
-      msgData: false,
-    });
+    // this.messagingService.sendMessage({
+    //   msgType: MessageTypes.CLOSE_NAVI,
+    //   msgData: false,
+    // });
+    this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
   }
