@@ -1,0 +1,80 @@
+<p-dialog
+  [(visible)]="display"
+  [responsive]="true"
+  [baseZIndex]="10000"
+  (onHide)="onClose()"
+  [dismissableMask]="false"
+  [closeOnEscape]="false"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="ml-4 flex flex-column gap-2">
+        <h2>Add Prompt</h2>
+        <h5>Please enter the details below to add or create prompt</h5>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            [(ngModel)]="name"
+            name="name"
+            placeholder="Create new or add from existing prompt"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            rows="6"
+            class="form-control"
+            id="description"
+            [(ngModel)]="description"
+            name="description"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="instructions">Instructions</label>
+          <textarea
+            rows="6"
+            type="text"
+            class="form-control"
+            id="instructions"
+            [(ngModel)]="instructions"
+            name="instructions"
+            placeholder="Provide detailed Instructions for the agent on how to execute the prompt"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="conversationStarters">Conversation Starters</label>
+          <input
+            type="text"
+            class="form-control"
+            id="conversationStarters"
+            [(ngModel)]="conversationStarters"
+            name="conversationStarters"
+            placeholder="Add starter message"
+          />
+        </div>
+        <div class="form-group">
+          <label for="linkParent">Link Parent</label>
+          <input
+            type="text"
+            class="form-control"
+            id="linkParent"
+            [(ngModel)]="linkParent"
+            name="linkParent"
+            placeholder="Enter ID or search for existing "
+          />
+        </div>
+        <div class="button-container">
+          <button type="submit" class="btn-cancel" (click)="onClose()">Cancel</button>
+          <button type="submit" class="btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>

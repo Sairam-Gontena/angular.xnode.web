@@ -74,7 +74,7 @@ import { MultiSelectCheckboxComponent } from '../components/multi-select-checkbo
 import { BreadcrumbsComponent } from '../components/breadcrumbs/breadcrumbs.component';
 import { AgentOverviewComponent } from '../components/agent-hub/create-agent/agent-overview/agent-overview.component';
 import { AgentInstructionComponent } from '../components/agent-hub/create-agent/agent-instruction/agent-instruction.component';
-import { ModalComponent } from '../components/modal/modal.component';
+import { DynamicFormModalComponent } from '../components/dynamic-form-modal/dynamic-form-modal.component';
 @NgModule({
   declarations: [
     AdditionalInfoComponent,
@@ -148,7 +148,7 @@ import { ModalComponent } from '../components/modal/modal.component';
     AgentOverviewComponent,
     AgentInstructionComponent,
     ImportFilePopupComponent,
-    ModalComponent
+    DynamicFormModalComponent
   ],
   imports: [CommonModule, SharedModule, SharedPipesModule],
   exports: [
@@ -224,7 +224,7 @@ import { ModalComponent } from '../components/modal/modal.component';
     AgentOverviewComponent,
     AgentInstructionComponent,
     ImportFilePopupComponent,
-    ModalComponent
+    DynamicFormModalComponent
   ],
 })
 export class SharedComponentModule { }

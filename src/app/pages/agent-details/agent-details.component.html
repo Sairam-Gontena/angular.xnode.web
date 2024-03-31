@@ -77,7 +77,7 @@
   
     <xnode-agent-overview *ngIf="agentDetailsModel.overviewTabItem.showTab" [bindingKeys]="agentDetailsModel.dynamicFormBindingKeys"></xnode-agent-overview>
 
-    <xnode-modal *ngIf="agentDetailsModel.show" [display]="agentDetailsModel.show"></xnode-modal> 
+    <xnode-dynamic-form-modal *ngIf="agentDetailsModel.show" [(display)]="agentDetailsModel.show"></xnode-dynamic-form-modal> 
   
   </div>
   
