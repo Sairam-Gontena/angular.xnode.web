@@ -48,6 +48,7 @@
         <p-tabView
         styleClass="pt-3 px-6"
         [(activeIndex)]="agentDetailsModel.overviewTabItem.activeIndex"
+        (onChange)="agentDetailsModel.overviewTabItem.tabSwitchHandler()"
       >
         <p-tabPanel
           *ngFor="let tab of agentDetailsModel.overviewTabItem.tabItems; let i = index"
@@ -74,7 +75,9 @@
     </div>
   
   
-    <xnode-agent-overview></xnode-agent-overview>
+    <xnode-agent-overview *ngIf="agentDetailsModel.overviewTabItem.showTab" [bindingKeys]="agentDetailsModel.dynamicFormBindingKeys"></xnode-agent-overview>
+
+    <xnode-modal *ngIf="agentDetailsModel.show" [display]="agentDetailsModel.show"></xnode-modal> 
   
   </div>
   

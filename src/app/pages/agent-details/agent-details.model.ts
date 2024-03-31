@@ -4,6 +4,8 @@ import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { Router } from '@angular/router';
+import { agentName } from '../agent-hub/agent-hub.constant';
+import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 
 const InitialPaginatorInfo = {
   page: 1,
@@ -12,39 +14,39 @@ const InitialPaginatorInfo = {
   totalRecords: 0,
 };
 export class AgentDetailsModel {
-  tabItems: { idx: number; title: string; value: string }[] = [
-    { idx: 0, title: 'Overview', value: 'overview' },
-    { idx: 1, title: 'Agent Instructions', value: 'agen_instructions' },
+  constructor(
+    private storageService: LocalStorageService,
+    private agentHubService: AgentHubService, 
+  ) {
+    this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
+
+  tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
+    { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
+    { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
 
     {
       idx: 2,
       title: 'Capabilities',
       value: 'capabilities_linked_agents',
+      identifier: agentName.capability
     },
-    { idx: 3, title: 'Topics', value: 'topic' },
+    { idx: 3, title: 'Topics', value: 'topic', identifier: agentName.topic },
     {
       idx: 4,
       title: 'Prompts',
       value: 'prompt_linked_topic',
+      identifier: agentName.prompt
     },
     {
       idx: 5,
       title: 'Knowledge',
       value: 'knowledge',
+      identifier: agentName.knowledge,
     },
-    { idx: 6, title: 'Models', value: 'model' },
-    { idx: 7, title: 'Tools', value: 'tool' },
+    { idx: 6, title: 'Models', value: 'model', identifier: agentName.model },
+    { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool },
   ];
-
-  overviewTabItem = {
-    showTab: false,
-    activeIndex: 0,
-    tabItems: [
-        { idx: 0, title: 'Overview', value: 'overview' },
-        { idx: 1, title: 'Instructions', value: 'instructions' }
-    ]
-  }
-  queryparamInfo: any;
 
   tableData!: ITableDataEntry[];
   columns: any; // Define the type of columns based on the actual data structure
@@ -134,19 +136,45 @@ export class AgentDetailsModel {
     // activeBreadCrumbsItem: "",
   };
 
-  constructor(
-    private storageService: LocalStorageService,
-    private agentHubService: AgentHubService, 
-  ) {
-    this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+
+
+
+  /**Overview Property: Using for showing details of the Agent or related property */
+
+
+  overviewTabItem = {
+    showTab: false,
+    activeIndex: 0,
+    tabItems: [
+        { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
+        { idx: 1, title: 'Instructions', value: 'instructions', identifier: 'instruction' }
+    ],
+
+    tabSwitchHandler: () => {
+      this.viewHandler(this.currentActiveRowData)
+    }
   }
+
+  currentActiveRowData: any;
+  queryparamInfo: any; // Active query params property
+  dynamicFormBindingKeys: any // Define form field. 
+
 
   viewHandler(item: any) {
     /**
      * Hide TabView.
      * Show New Tab.
+     * store currentActiveRowData
      */
 
+    //  Let's define the form field.
+
+    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier
+    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier
+    this.dynamicFormBindingKeys = AgentHubFormConstant[activeTabIdentifier][overViewTabIdentifier]
+
+
+    this.currentActiveRowData = item
     this.overviewTabItem.showTab = true
   }
 
@@ -205,4 +233,16 @@ export class AgentDetailsModel {
       }
     }
   }
+
+
+
+
+
+  show = false;
+
+  deleteKarnaHai() {
+    this.show = true
+  }
+
+
 }
