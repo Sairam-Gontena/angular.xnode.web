@@ -42,29 +42,29 @@
   }
 
 /*****TAB SECTION **********/
-:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    color: #fff !important;
-  }
+// :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+//     color: #fff !important;
+//   }
   
-  :host ::ng-deep .p-tabview-panels,
-  :host ::ng-deep .p-tabview-nav,
-  :host ::ng-deep .p-tabview-nav li,
-  :host ::ng-deep .p-tabview-nav li a {
-    background: transparent !important;
-    gap: 1.5rem;
-  }
+//   :host ::ng-deep .p-tabview-panels,
+//   :host ::ng-deep .p-tabview-nav,
+//   :host ::ng-deep .p-tabview-nav li,
+//   :host ::ng-deep .p-tabview-nav li a {
+//     background: transparent !important;
+//     gap: 1.5rem;
+//   }
   
-  //************Agent playground CSS(Remove unncessary CSS from this file).*************  
-  :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-    color: #fff !important;
-  }
+//   //************Agent playground CSS(Remove unncessary CSS from this file).*************  
+//   :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+//     color: #fff !important;
+//   }
   
-  :host ::ng-deep .p-tabview-panels,
-  :host ::ng-deep .p-tabview-nav,
-  :host ::ng-deep .p-tabview-nav li,
-  :host ::ng-deep .p-tabview-nav li a {
-    background: transparent !important;
-  }
+//   :host ::ng-deep .p-tabview-panels,
+//   :host ::ng-deep .p-tabview-nav,
+//   :host ::ng-deep .p-tabview-nav li,
+//   :host ::ng-deep .p-tabview-nav li a {
+//     background: transparent !important;
+//   }
   
   /* Change background color of the dropdown */
   :host ::ng-deep .p-multiselect-panel {

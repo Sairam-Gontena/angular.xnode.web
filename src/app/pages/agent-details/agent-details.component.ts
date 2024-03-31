@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AgentDetailsModel } from './agent-details.model';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './agent-details.component.html',
   styleUrls: ['./agent-details.component.scss']
 })
-export class AgentDetailsComponent{
+export class AgentDetailsComponent {
 
   agentDetailsModel: AgentDetailsModel;
 
@@ -32,5 +32,6 @@ export class AgentDetailsComponent{
       index: 1
     })
 
+    this.agentDetailsModel.updateHeaderOption()
   }
 }

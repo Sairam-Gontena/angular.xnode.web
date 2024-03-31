@@ -33,7 +33,7 @@
       </div>
     <p-tabView
       styleClass="pt-3 px-6"
-      (onChange)="agentDetailsModel.getAllAgentList()"
+      (onChange)="agentDetailsModel.onTabSwitchHandler()"
       [(activeIndex)]="agentDetailsModel.activeIndex"
       *ngIf="!agentDetailsModel.overviewTabItem.showTab; else overviewBlock"
     >

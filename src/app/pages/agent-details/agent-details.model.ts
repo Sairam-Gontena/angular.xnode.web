@@ -124,6 +124,94 @@ export class AgentDetailsModel {
 
   activeIndex: number = 0;
   userInfo: any;
+  headerActionBtnOption = {
+    overview: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Agent',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+    agent_instructions: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Agent',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+
+    capability: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Capability',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+    topic: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Topic',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+    prompt: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Prompt',
+          icon: '',
+          command: () => {
+            this.deleteKarnaHai()
+          },
+        },
+      ],
+    },
+
+    knowledge: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Knowledge',
+          icon: '',
+          command: () => {},
+        },
+      ],
+    },
+
+    model: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Model',
+          icon: '',
+          command: () => {},
+        }
+      ],
+    },
+
+    tool: {
+      buttonText: 'Action',
+      options: [
+        {
+          label: 'Add Tool',
+          icon: '',
+          command: () => {},
+        }
+      ],
+    },
+  };
   activeHeaderActionBtnOption!: any[];
   breadCrumbsAction = {
     isBreadCrumbActive: false,
@@ -235,8 +323,38 @@ export class AgentDetailsModel {
   }
 
 
+  async onTabSwitchHandler(){
+    // NOTE: Update function Name
+    await this.getAllAgentList()
+
+    debugger
 
 
+    /**
+     * Let's update the action button option.
+     */
+
+    this.updateHeaderOption()
+  }
+
+  updateHeaderOption(){
+    let item = this.tabItems[this.activeIndex];
+      if (item.identifier in this.headerActionBtnOption) {
+        this.activeHeaderActionBtnOption =
+          this.headerActionBtnOption[
+            item.identifier as keyof typeof this.headerActionBtnOption
+          ].options;
+      } else {
+        console.error('Invalid identifier:', item.identifier);
+        // Handle the error appropriately
+      }
+  }
+
+
+
+
+
+  
 
   show = false;
 
