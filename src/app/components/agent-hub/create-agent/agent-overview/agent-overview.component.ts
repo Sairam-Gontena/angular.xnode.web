@@ -37,10 +37,12 @@ export class AgentOverviewComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges) {
+    debugger
     if (changes.bindingKeys) {
       this.createForm(this.bindingKeys.controls);
     }
   }
+
   createForm(controls: JsonFormControls[]) {
     this.dynamicForm = this.fb.group({});
     for (const control of controls) {

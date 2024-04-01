@@ -29,3 +29,13 @@ export interface ITableDataEntry {
       agentName: string,
       Id: string    
   }
+
+  export interface CapabilitiesTableData {
+    idx: string;
+    name: string;
+    description: string;
+    model_name: string;
+    status: string;
+    createdBy: string;
+    'action-btn': string;
+  }

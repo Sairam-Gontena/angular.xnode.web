@@ -345,7 +345,6 @@
         }
       ]
     },
-
     "AgentHub": [
       {
         "columns": [
@@ -365,7 +364,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "description",
@@ -390,7 +388,6 @@
             "sortable": true,
             "width": "12rem"
           },
-      
           {
             "idx": 6,
             "field": "",
@@ -403,10 +400,13 @@
         ]
       },
       {
+        "columns": []
+      },
+      {
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
@@ -420,7 +420,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "description",
@@ -428,6 +427,14 @@
             "header": "Description",
             "sortable": true,
             "width": "20rem"
+          },
+          {
+            "idx": 3,
+            "field": "model_name",
+            "filter": false,
+            "header": "Model Linked",
+            "sortable": true,
+            "width": "10rem"
           },
           {
             "idx": 4,
@@ -445,7 +452,6 @@
             "sortable": true,
             "width": "12rem"
           },
-      
           {
             "idx": 6,
             "field": "",
@@ -461,7 +467,7 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
@@ -475,7 +481,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "description",
@@ -508,7 +513,6 @@
             "sortable": true,
             "width": "12rem"
           },
-      
           {
             "idx": 7,
             "field": "",
@@ -524,7 +528,7 @@
         "columns": [
           {
             "idx": 1,
-            "field": "id",
+            "field": "idx",
             "filter": false,
             "header": "ID",
             "sortable": true,
@@ -538,7 +542,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "description",
@@ -571,7 +574,6 @@
             "sortable": true,
             "width": "12rem"
           },
-      
           {
             "idx": 7,
             "field": "",
@@ -601,7 +603,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "source",
@@ -626,7 +627,6 @@
             "sortable": true,
             "width": "8rem"
           },
-
           {
             "idx": 6,
             "field": "tags",
@@ -672,7 +672,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "description",
@@ -697,7 +696,6 @@
             "sortable": true,
             "width": "12rem"
           },
-      
           {
             "idx": 6,
             "field": "",
@@ -727,7 +725,6 @@
             "sortable": true,
             "width": "10rem"
           },
-      
           {
             "idx": 3,
             "field": "description",
@@ -752,7 +749,6 @@
             "sortable": true,
             "width": "12rem"
           },
-      
           {
             "idx": 6,
             "field": "",
@@ -764,7 +760,6 @@
           }
         ]
       }
-      
     ]
   }
 }

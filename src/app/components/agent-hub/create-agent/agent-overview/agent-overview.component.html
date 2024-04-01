@@ -1,38 +1,27 @@
 <div style="max-width: 50rem; height: 60vh;" class="mx-auto overflow-y-auto px-8">
   <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" class="flex flex-column justify-content-center w-full gap-4">
-  <div *ngFor="let control of bindingKeys?.controls" class="m-auto w-full">
-    <div class="flex flex-column gap-3 w-full">
-      <label *ngIf="control.label !== ''" Class="text-xl font-medium">{{ control.label }}</label>
-    <input
-      *ngIf="
+    <div *ngFor="let control of bindingKeys?.controls" class="m-auto w-full">
+      <div class="flex flex-column gap-3 w-full">
+        <label *ngIf="control.label !== ''" Class="text-xl font-medium">{{ control.label }}</label>
+        <input *ngIf="
         [
           'text',
           'number',
           'checkbox'
         ].includes(control.type)
-      "
-      [type]="control.type"
-      [formControlName]="control.name"
-      [value]="control.value"
+      " [type]="control.type" [formControlName]="control.name" [value]="control.value"
+          class="w-full user-input user-input-common">
+        <textarea *ngIf="control.type === 'textarea'" [formControlName]="control.name" [value]="control.value"
+          class="w-full user-input-common" rows="6"></textarea>
+      </div>
 
-      class="w-full user-input user-input-common"
-    >
-    <textarea
-      *ngIf="control.type === 'textarea'"
-      [formControlName]="control.name"
-      [value]="control.value"
-      class="w-full user-input-common"
-      rows="6"
-    ></textarea>
- 
+
+      <div *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">
+        <div *ngIf="dynamicForm.get(control.name)?.errors?.required">{{control.name}} is required.</div>
+        <div *ngIf="dynamicForm.get(control.name)?.errors?.minlength">Minimum length should be {{
+          dynamicForm.get(control.name)?.errors?.minlength.requiredLength }}.</div>
+      </div>
     </div>
-    
-     
-    <div *ngIf="dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched">
-      <div *ngIf="dynamicForm.get(control.name)?.errors?.required">{{control.name}} is required.</div>
-      <div *ngIf="dynamicForm.get(control.name)?.errors?.minlength">Minimum length should be {{ dynamicForm.get(control.name)?.errors?.minlength.requiredLength }}.</div>
-    </div>
-  </div>
-  <button class="w-fit m-auto p-2 " type="submit">Submit</button>
-</form>
+    <button class="w-fit m-auto p-2 " type="submit">Submit</button>
+  </form>
 </div>

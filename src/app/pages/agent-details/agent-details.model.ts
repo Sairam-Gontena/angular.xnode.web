@@ -1,25 +1,21 @@
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
+import { CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
 import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { agentName } from '../agent-hub/agent-hub.constant';
 import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
+import { TabViewChangeEvent } from 'primeng/tabview';
+import { ActivatedRoute } from '@angular/router';
+import { UtilsService } from 'src/app/components/services/utils.service';
 
 const InitialPaginatorInfo = {
-  page: 1,
+  page: 0,
   perPage: 10,
   totalPages: 0,
   totalRecords: 0,
 };
 export class AgentDetailsModel {
-  constructor(
-    private storageService: LocalStorageService,
-    private agentHubService: AgentHubService, 
-  ) {
-    this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
-  }
-
   tabItems: { idx: number; title: string; value: string, identifier: string }[] = [
     { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
     { idx: 1, title: 'Agent Instructions', value: 'agent_instructions', identifier: 'agent_instructions' },
@@ -46,8 +42,7 @@ export class AgentDetailsModel {
     { idx: 6, title: 'Models', value: 'model', identifier: agentName.model },
     { idx: 7, title: 'Tools', value: 'tool', identifier: agentName.tool },
   ];
-
-  tableData!: ITableDataEntry[];
+  tableData!: ITableDataEntry[] | CapabilitiesTableData[];
   columns: any; // Define the type of columns based on the actual data structure
   tableInfo: ITableInfo = {
     delete_action: false,
@@ -55,7 +50,6 @@ export class AgentDetailsModel {
     name: 'Notification List',
     search_input: true,
   };
-
   searchFilterOptions = {
     showFilterOption: true,
     filter: false,
@@ -75,7 +69,6 @@ export class AgentDetailsModel {
     optionLabel: 'header',
     styleClass: 'custom-multiselect',
   };
-
   showColumnFilterOption = {
     showFilterOption: true,
     filter: false,
@@ -87,7 +80,6 @@ export class AgentDetailsModel {
     styleClass: 'showColumnFilterOption',
     changeHandler: this.onShowDynamicColumnFilter.bind(this),
   };
-
   tableRowActionOptions = [
     {
       label: 'View',
@@ -118,9 +110,7 @@ export class AgentDetailsModel {
       },
     },
   ];
-
   paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
-
   activeIndex: number = 0;
   userInfo: any;
   headerActionBtnOption = {
@@ -130,7 +120,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Agent',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -140,7 +130,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Agent',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -151,7 +141,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Capability',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -161,7 +151,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Topic',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -172,7 +162,7 @@ export class AgentDetailsModel {
           label: 'Add Prompt',
           icon: '',
           command: () => {
-            this.deleteKarnaHai()
+            this.addPrompt()
           },
         },
       ],
@@ -184,7 +174,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Knowledge',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -195,7 +185,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Model',
           icon: '',
-          command: () => {},
+          command: () => { },
         }
       ],
     },
@@ -206,7 +196,7 @@ export class AgentDetailsModel {
         {
           label: 'Add Tool',
           icon: '',
-          command: () => {},
+          command: () => { },
         }
       ],
     },
@@ -222,30 +212,31 @@ export class AgentDetailsModel {
     ],
     // activeBreadCrumbsItem: "",
   };
-
-
-
-
   /**Overview Property: Using for showing details of the Agent or related property */
-
-
   overviewTabItem = {
     showTab: false,
     activeIndex: 0,
     tabItems: [
-        { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
-        { idx: 1, title: 'Instructions', value: 'instructions', identifier: 'instruction' }
+      { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
+      { idx: 1, title: 'Instructions', value: 'instructions', identifier: 'instruction' }
     ],
 
     tabSwitchHandler: () => {
       this.viewHandler(this.currentActiveRowData)
     }
   }
-
   currentActiveRowData: any;
   queryparamInfo!: IQueryParams; // Active query params property
   dynamicFormBindingKeys: any // Define form field. 
+  promptRowData: any;
+  promptModalShow = false;
 
+  constructor(private storageService: LocalStorageService,
+    private agentHubService: AgentHubService,
+    private activatedRoute: ActivatedRoute,
+    private utilsService: UtilsService) {
+    this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
+  }
 
   viewHandler(item: any) {
     /**
@@ -255,14 +246,18 @@ export class AgentDetailsModel {
      */
 
     //  Let's define the form field.
-
-    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier
-    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier
-    this.dynamicFormBindingKeys = AgentHubFormConstant[activeTabIdentifier][overViewTabIdentifier]
-
-
-    this.currentActiveRowData = item
-    this.overviewTabItem.showTab = true
+    const activeTabIdentifier = this.tabItems[this.activeIndex].identifier;
+    const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
+    debugger
+    // if (AgentHubFormConstant[activeTabIdentifier]) {
+      this.dynamicFormBindingKeys = AgentHubFormConstant[activeTabIdentifier][overViewTabIdentifier];
+    // }
+    this.currentActiveRowData = item;
+    this.overviewTabItem.showTab = true;
+    // if (this.activeIndex === 4) {
+    //   this.promptModalShow = true;
+    //   this.promptRowData = item;
+    // }
   }
 
   goBackBreadCrumbsHandler(event: any) {
@@ -277,20 +272,13 @@ export class AgentDetailsModel {
 
     this.breadCrumbsAction.breadcrumb = [...newItem];
   }
+
   onShowDynamicColumnFilter(event: any) {
     if (!event?.value?.length) {
-      this.columns =
-        dynamicTableColumnData?.dynamicTable?.AgentHub[
-          this.activeIndex
-        ]?.columns;
+      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex]?.columns;
     } else {
-      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[
-        this.activeIndex
-      ].columns?.filter((item) =>
-        event?.value?.some(
-          (valItem: { idx: number }) => valItem.idx === item.idx
-        )
-      );
+      this.columns = dynamicTableColumnData?.dynamicTable?.AgentHub[this.activeIndex].columns?.filter(
+        (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
 
@@ -321,46 +309,99 @@ export class AgentDetailsModel {
   //   }
   // }
 
-  async getAgentDetails() {
-    
+  //pagination event for table
+  paginatorViewHandler(item: any) {
+    let urlParam = this.makeTableParamObj(item);
+    this.changeURL(this.activeIndex, urlParam);
+    this.getAgentDetailByCategory(urlParam);
   }
 
-
-  async onTabSwitchHandler(){
-    // NOTE: Update function Name, Don't use this function, I have taken this function for development purpose from agent-hub.
-    // await this.getAllAgentList()
-
-
-    /**
-     * Let's update the action button option.
-     */
-
-    this.updateHeaderOption()
+  // get agent detail by category after success
+  getAgentDetailByCategorySuccess(response: any) {
+    if (response.detail) {
+      this.utilsService.loadToaster({ severity: 'error', summary: '', detail: response.detail });
+    } else if (response.data) {
+      this.tableData = response.data as CapabilitiesTableData[];
+      this.columns = dynamicTableColumnData.dynamicTable.AgentHub[this.activeIndex].columns;
+      this.paginatorInfo.page = response.page;
+      this.paginatorInfo.perPage = response.per_page;
+      this.paginatorInfo.totalRecords = response.total_items;
+      this.paginatorInfo.totalPages = response.total_pages;
+    }
   }
 
-  updateHeaderOption(){
-    let item = this.tabItems[this.activeIndex];
-      if (item.identifier in this.headerActionBtnOption) {
-        this.activeHeaderActionBtnOption =
-          this.headerActionBtnOption[
-            item.identifier as keyof typeof this.headerActionBtnOption
-          ].options;
-      } else {
-        console.error('Invalid identifier:', item.identifier);
-        // Handle the error appropriately
+  //making the url param for category
+  makeTableParamObj(paginationObj: any) {
+    let url: string = "agent/agents/{agent_id}/",
+      getID: any = this.activatedRoute.snapshot.paramMap.get('id'),
+      urlParam: any = {
+        url: url.replace("{agent_id}", getID),
+        params: {
+          agent_id: getID,
+          account_id: this.userInfo.account_id,
+          page: paginationObj.page + 1,
+          limit: paginationObj.perPage ? paginationObj.perPage : paginationObj.rows
+        }
+      };
+    return urlParam;
+  }
+
+  //making url for the category
+  changeURL(tabIndex: number, urlParam: any) {
+    switch (tabIndex) {
+      case 2:
+        urlParam.url = urlParam.url + "capabilities/";
+        break;
+      case 3:
+        urlParam.url = urlParam.url + "topics/";
+        break;
+      case 4:
+        urlParam.url = urlParam.url + "prompts/";
+        break;
+      case 5:
+
+        break;
+      case 6:
+        urlParam.url = urlParam.url + "models/";
+        break;
+    }
+  }
+
+  //get the agent details by catgory
+  getAgentDetailByCategory(urlParam: any) {
+    this.agentHubService.getAgentDetail(urlParam).subscribe({
+      next: (response: any) => {
+        this.getAgentDetailByCategorySuccess(response);
+      }, error: (error: any) => {
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.data.detail });
       }
+    })
   }
 
+  // tab event
+  onTabSwitchHandler(event: TabViewChangeEvent) {
+    let paginatorInfo: IPaginatorInfo = { ...InitialPaginatorInfo };
+    let urlParam = this.makeTableParamObj(paginatorInfo);
+    this.changeURL(event.index, urlParam);
+    this.getAgentDetailByCategory(urlParam);
+    this.updateHeaderOption();
+  }
 
+  updateHeaderOption() {
+    let item = this.tabItems[this.activeIndex];
+    if (item.identifier in this.headerActionBtnOption) {
+      this.activeHeaderActionBtnOption =
+        this.headerActionBtnOption[
+          item.identifier as keyof typeof this.headerActionBtnOption
+        ].options;
+    } else {
+      console.error('Invalid identifier:', item.identifier);
+      // Handle the error appropriately
+    }
+  }
 
-
-
-  
-
-  show = false;
-
-  deleteKarnaHai() {
-    this.show = true
+  addPrompt() {
+    this.promptModalShow = true
   }
 
 

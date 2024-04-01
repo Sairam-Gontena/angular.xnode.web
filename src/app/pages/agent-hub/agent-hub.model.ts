@@ -118,12 +118,12 @@ export class AgentHubModel {
         {
           label: 'Add Agent',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Agent',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -134,12 +134,12 @@ export class AgentHubModel {
         {
           label: 'Add Capability',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Capability',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -149,12 +149,12 @@ export class AgentHubModel {
         {
           label: 'Add Topic',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Topic',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -164,12 +164,12 @@ export class AgentHubModel {
         {
           label: 'Add Prompt',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Prompt',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -180,12 +180,12 @@ export class AgentHubModel {
         {
           label: 'Add Knowledge',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Knowledge',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -196,12 +196,12 @@ export class AgentHubModel {
         {
           label: 'Add Model',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Model',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -212,12 +212,12 @@ export class AgentHubModel {
         {
           label: 'Add Tool',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
         {
           label: 'Import Tool',
           icon: '',
-          command: () => {},
+          command: () => { },
         },
       ],
     },
@@ -288,8 +288,7 @@ export class AgentHubModel {
   userInfo: any;
   statsItem = Constant.stats;
 
-  constructor(
-    private storageService: LocalStorageService,
+  constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
     private router: Router
   ) {
@@ -413,7 +412,7 @@ export class AgentHubModel {
 
   viewHandler(item: any) {
     // For now let's make view for agent only,
-    if(this.activeIndex == 0) {
+    if (this.activeIndex == 0) {
       this.router.navigate(['/agent-playground', this.tabItems[this.activeIndex].identifier, item?.id]);
     }
   }
