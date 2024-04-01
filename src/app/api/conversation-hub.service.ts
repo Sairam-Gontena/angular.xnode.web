@@ -27,6 +27,20 @@ export class ConversationHubService extends BaseApiService {
         // Make the GET request with the parameters
         // return this.httpClient.get<any[]>(`${this.rootUrl}conversation`, { params: httpParams });
     }
+    getConersationDetailById(params: any) {
+        let queryParams = new HttpParams();
+        Object.keys(params).forEach(key => {
+            if (Array.isArray(params[key])) {
+              queryParams = queryParams.append(key, params[key].join(','));
+            } else {
+              queryParams = queryParams.append(key, params[key]);
+            }
+          });
+          let url = 'conversation';
+          url += '?' + queryParams.toString();
+      
+        return this.get(url);
+     }
 
     getMetaData(params: any) {
         let httpParams = new HttpParams();

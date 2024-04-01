@@ -196,6 +196,12 @@ export class AddCommentOverlayPanelComponent implements OnInit {
         parentEntity: this.parentEntity,
         parentId: parentId, // It should be spec id at New comment level and parent commment id at reply level
         message: this.comment,
+        users: [
+          {
+            userId: this.currentUser.user_id,
+            role: 'owner'
+          }
+        ],
         referenceContent:
           this.parentEntity === 'SPEC' ? this.selectedContent : {},
         attachments: this.uploadedFiles,
