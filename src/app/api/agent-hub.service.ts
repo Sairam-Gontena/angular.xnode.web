@@ -24,4 +24,10 @@ export class AgentHubService extends BaseApiService{
   
     return this.get(url);
   }
+
+
+  // getAgentDetails({accountId, endpoint, page, page_size}: {accountId: string, endpoint: string, page: number, page_size: number}) {
+  //   let url = `agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
+  //   return this.get(url)
+  // }
 }

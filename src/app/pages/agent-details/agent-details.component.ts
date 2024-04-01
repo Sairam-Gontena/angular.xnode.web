@@ -3,6 +3,7 @@ import { AgentDetailsModel } from './agent-details.model';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IQueryParams } from './IAgent-details';
 
 @Component({
   selector: 'xnode-agent-details',
@@ -23,7 +24,7 @@ export class AgentDetailsComponent {
       this.agentHubService
     );
 
-    this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params
+    this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params as IQueryParams
 
     const {agentName, Id} = this.activeRoute.snapshot.params
 

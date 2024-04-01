@@ -24,3 +24,8 @@ export interface ITableDataEntry {
     perPage: number;
   }
   
+
+  export interface IQueryParams {
+      agentName: string,
+      Id: string    
+  }

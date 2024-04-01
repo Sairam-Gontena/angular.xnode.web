@@ -1,9 +1,8 @@
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { IPaginatorInfo, ITableDataEntry, ITableInfo } from './IAgent-details';
+import { IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
 import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { Router } from '@angular/router';
 import { agentName } from '../agent-hub/agent-hub.constant';
 import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 
@@ -244,7 +243,7 @@ export class AgentDetailsModel {
   }
 
   currentActiveRowData: any;
-  queryparamInfo: any; // Active query params property
+  queryparamInfo!: IQueryParams; // Active query params property
   dynamicFormBindingKeys: any // Define form field. 
 
 
@@ -295,39 +294,41 @@ export class AgentDetailsModel {
     }
   }
 
-  async getAllAgentList({ endpoint = '' } = {}) {
-    if (this.activeIndex > 1) {
-      this.columns =
-        dynamicTableColumnData?.dynamicTable?.AgentHub[
-          this.activeIndex
-        ]?.columns;
-      endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
-      this.tableData = [];
-      this.paginatorInfo = { ...InitialPaginatorInfo };
-      try {
-        const response = await this.agentHubService.getAllAgent({
-          accountId: this.userInfo.account_id,
-          endpoint: endpoint,
-          page: this.paginatorInfo.page,
-          page_size: this.paginatorInfo.perPage,
-        });
-        this.tableData = response.data.data as ITableDataEntry[];
-        this.paginatorInfo.page = response.data.page;
-        this.paginatorInfo.perPage = response.data.per_page;
-        this.paginatorInfo.totalRecords = response.data.total_items;
-        this.paginatorInfo.totalPages = response.data.total_pages;
-      } catch (error) {
-        console.error('Error fetching agent list:', error);
-      }
-    }
+  // async getAllAgentList({ endpoint = '' } = {}) {
+  //   if (this.activeIndex > 1) {
+  //     this.columns =
+  //       dynamicTableColumnData?.dynamicTable?.AgentHub[
+  //         this.activeIndex
+  //       ]?.columns;
+  //     endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
+  //     this.tableData = [];
+  //     this.paginatorInfo = { ...InitialPaginatorInfo };
+  //     try {
+  //       const response = await this.agentHubService.getAllAgent({
+  //         accountId: this.userInfo.account_id,
+  //         endpoint: endpoint,
+  //         page: this.paginatorInfo.page,
+  //         page_size: this.paginatorInfo.perPage,
+  //       });
+  //       this.tableData = response.data.data as ITableDataEntry[];
+  //       this.paginatorInfo.page = response.data.page;
+  //       this.paginatorInfo.perPage = response.data.per_page;
+  //       this.paginatorInfo.totalRecords = response.data.total_items;
+  //       this.paginatorInfo.totalPages = response.data.total_pages;
+  //     } catch (error) {
+  //       console.error('Error fetching agent list:', error);
+  //     }
+  //   }
+  // }
+
+  async getAgentDetails() {
+    
   }
 
 
   async onTabSwitchHandler(){
-    // NOTE: Update function Name
-    await this.getAllAgentList()
-
-    debugger
+    // NOTE: Update function Name, Don't use this function, I have taken this function for development purpose from agent-hub.
+    // await this.getAllAgentList()
 
 
     /**
