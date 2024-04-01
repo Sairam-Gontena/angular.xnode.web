@@ -85,11 +85,11 @@ export class DiffCompComponent implements OnInit {
     this.product = this.storageService.getItem(StorageKeys.Product);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    if (this.contentObj?.content_data_type === 'DASHBOARD') {
+    if (this.contentObj?.content_data_type === 'DASHBOARD' && this.currentUser) {
       this.targetUrl =
         environment.designStudioAppUrl +
         '?email=' +
-        this.product?.email +
+        this.product?.createdBy?.email +
         '&id=' +
         this.product?.id +
         '&version_id=' +
@@ -100,7 +100,11 @@ export class DiffCompComponent implements OnInit {
         true +
         '&isVerified=true' +
         '&userId=' +
-        this.currentUser.id;
+        this.currentUser.user_id;
+        const token = this.storageService.getItem(StorageKeys.ACCESS_TOKEN);
+        if (token) {
+          this.targetUrl = this.targetUrl + '&token=' + token;
+        }
       this.makeTrustedUrl();
     }
     if (this.contentObj?.content_data_type === 'DATA_DICTIONARY') {

@@ -16,9 +16,39 @@
   background: #3A3942;
 }
 
+@media(min-width: 768px) {
 .app-body-wrapper-navi {
-  width: calc(100% - 600px);
+  width: calc(100% - 430px);
   background: #3A3942;
+}
+}
+
+@media(min-width: 1024px) {
+.app-body-wrapper-navi {
+  width: calc(100% - 480px);
+  background: #3A3942;
+}
+}
+
+@media(min-width: 1366px) {
+.app-body-wrapper-navi {
+  width: calc(100% - 480px);
+  background: #3A3942;
+}
+}
+
+@media(min-width: 1440px) {
+.app-body-wrapper-navi {
+  width: calc(100% - 530px);
+  background: #3A3942;
+}
+}
+
+@media(min-width: 1900px) {
+.app-body-wrapper-navi {
+  width: calc(100% - 580px);
+  background: #3A3942;
+}
 }
 
 .app-body-wrapper-full {
@@ -275,11 +305,52 @@
   }
 }
 
+@media (min-width: 768px) {
 .navi-frame {
-  width: 520px;
+  width: 350px;
   border-radius: 10px;
   border: 1px solid #ccc;
-  height:100vh;
+  z-index: 1;
+}
+}
+
+@media (min-width: 1024px) {
+.navi-frame {
+  width: 400px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  z-index: 1;
+}
+}
+
+@media (min-width: 1366px) {
+.navi-frame {
+  width: 420px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  z-index: 1;
+
+}
+}
+
+@media (min-width: 1440px) {
+.navi-frame {
+  width: 450px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  z-index: 1;
+
+}
+}
+
+@media (min-width: 1900px) {
+.navi-frame {
+  width: 500px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  z-index: 1;
+
+}
 }
 
 .navi-ful-frame {
