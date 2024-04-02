@@ -1,14 +1,91 @@
-<p-dialog [(visible)]="display" [responsive]="true" [baseZIndex]="10000" (onHide)="onClose()" [dismissableMask]="false"
-  [closeOnEscape]="false">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="ml-4 flex flex-column gap-2">
-        <h2>Add Prompt</h2>
-        <h5>Please enter the details below to add or create prompt</h5>
-      </div>
+<p-dialog [(visible)]="display" [style]="{width: '40vw', height: 'auto'}" [responsive]="true" [baseZIndex]="10000"
+  (onHide)="onClose()" [dismissableMask]="false" [closeOnEscape]="false">
+  <div class="modal-header">
+    <div class="ml-4 flex flex-column">
+      <h2 class="w-10 mb-2">Add Prompt</h2>
+      <h5>Please enter the details below to add or create prompt</h5>
     </div>
-    <div class="modal-body">
-      <form [formGroup]="promptForm" (ngSubmit)="onSubmit()">
+  </div>
+  <div class="modal-content">
+    <div class="modal-body w-8 mx-auto">
+      <form [formGroup]="createPromptForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="name">Name</label>
+          <div class="w-full">
+            <input pInputText type="text" class="w-full form-control" id="name" formControlName="name"
+              placeholder="Create new or add from existing prompt" />
+          </div>
+        </div>
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="description">Description</label>
+          <div class="w-full">
+            <textarea rows="3" pInputTextarea class="w-full form-control" id="description"
+              formControlName="description"></textarea>
+          </div>
+        </div>
+        <div class="flex flex-column align-items-center mb-3">
+          <div class="w-full flex justify-content-between">
+            <label class="" for="instruction">Instructions</label>
+            <div class="">
+              <a href="javascript:void(0)" class="no-underline" (click)="showHideAdvancedOption()">
+                {{enableAdvancedOtion ? 'Hide Advanced Options' : 'Show Advanced Options'}}</a>
+            </div>
+          </div>
+          <div class="w-full">
+            <textarea rows="3" pInputTextarea class="w-full form-control" id="instruction" formControlName="instruction"
+              placeholder="Provide detailed Instructions for the agent on how to execute the prompt"></textarea>
+          </div>
+        </div>
+        <ng-container *ngIf="enableAdvancedOtion">
+          <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="guideline">Guidelines</label>
+            <div class="w-full">
+              <textarea rows="3" pInputTextarea class="w-full form-control" id="guideline" formControlName="guideline"
+                placeholder="Guidelines"></textarea>
+            </div>
+          </div>
+          <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="responsibility">Responsibilities</label>
+            <div class="w-full">
+              <textarea rows="3" pInputTextarea class="w-full form-control" id="responsibility"
+                formControlName="responsibility" placeholder="Responsibilities"></textarea>
+            </div>
+          </div>
+          <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="context">Context</label>
+            <div class="w-full">
+              <textarea rows="3" pInputTextarea class="w-full form-control" id="context" formControlName="context"
+                placeholder="Context"></textarea>
+            </div>
+          </div>
+          <div class="flex flex-column align-items-center mb-3">
+            <label class="w-full" for="example">Example</label>
+            <div class="w-full">
+              <textarea rows="3" pInputTextarea class="w-full form-control" id="example" formControlName="example"
+                placeholder="Example"></textarea>
+            </div>
+          </div>
+        </ng-container>
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="starter">Conversation Starters</label>
+          <div class="w-full">
+            <input pInputText type="text" class="w-full form-control" id="starter" formControlName="starter"
+              placeholder="Add starter message" />
+          </div>
+        </div>
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="linkParent">link Parent</label>
+          <div class="w-full">
+            <input pInputText type="text" class="w-full form-control" id="linkParent" formControlName="linkParent"
+              placeholder="Enter ID or search for existing" />
+          </div>
+        </div>
+        <div class="button-container">
+          <button type="button" class="btn-cancel" (click)="onClose()">Cancel</button>
+          <button type="submit" class="btn-primary">Add</button>
+        </div>
+      </form>
+      <!-- <form [formGroup]="promptForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" class="form-control" formControlName="name"
@@ -37,7 +114,7 @@
           <button type="submit" class="btn-cancel" (click)="onClose()">Cancel</button>
           <button type="submit" class="btn-primary">Add</button>
         </div>
-      </form>
+      </form> -->
     </div>
   </div>
 </p-dialog>

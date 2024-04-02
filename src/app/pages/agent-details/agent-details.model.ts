@@ -220,15 +220,18 @@ export class AgentDetailsModel {
       { idx: 0, title: 'Overview', value: 'overview', identifier: 'overview' },
       { idx: 1, title: 'Instructions', value: 'instructions', identifier: 'instruction' }
     ],
-
     tabSwitchHandler: () => {
       this.viewHandler(this.currentActiveRowData)
     }
   }
   currentActiveRowData: any;
   queryparamInfo!: IQueryParams; // Active query params property
-  dynamicFormBindingKeys: any // Define form field. 
-  promptRowData: any;
+  dynamicFormBindingKeys: any // Define form field.
+  overviewInstructionForm: any = {
+    enableOverview: false,
+    enableInstruction: false,
+    overviewInstructionData: ""
+  };
   promptModalShow = false;
 
   constructor(private storageService: LocalStorageService,
@@ -239,25 +242,19 @@ export class AgentDetailsModel {
   }
 
   viewHandler(item: any) {
-    /**
-     * Hide TabView.
-     * Show New Tab.
-     * store currentActiveRowData
-     */
-
-    //  Let's define the form field.
     const activeTabIdentifier = this.tabItems[this.activeIndex].identifier;
     const overViewTabIdentifier = this.overviewTabItem.tabItems[this.overviewTabItem.activeIndex].identifier;
-    debugger
-    // if (AgentHubFormConstant[activeTabIdentifier]) {
-      this.dynamicFormBindingKeys = AgentHubFormConstant[activeTabIdentifier][overViewTabIdentifier];
-    // }
+    if (overViewTabIdentifier === "overview") {
+      this.overviewInstructionForm.enableOverview = true;
+      this.overviewInstructionForm.enableInstruction = false;
+    } else if (overViewTabIdentifier === "instruction") {
+      this.overviewInstructionForm.enableInstruction = true;
+      this.overviewInstructionForm.enableOverview = false;
+    }
+    this.overviewInstructionForm.overviewInstructionData = item;
+    // this.overviewInstructionForm.overviewInstructionData = Object.assign({}, this.overviewInstructionForm.overviewInstructionData);
     this.currentActiveRowData = item;
     this.overviewTabItem.showTab = true;
-    // if (this.activeIndex === 4) {
-    //   this.promptModalShow = true;
-    //   this.promptRowData = item;
-    // }
   }
 
   goBackBreadCrumbsHandler(event: any) {

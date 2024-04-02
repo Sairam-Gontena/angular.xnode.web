@@ -53,9 +53,9 @@
 
 
   <xnode-agent-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
-    [bindingKeys]="agentDetailsModel.dynamicFormBindingKeys"></xnode-agent-overview>
+    [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"></xnode-agent-overview>
 
-  <xnode-dynamic-form-modal *ngIf="agentDetailsModel.promptModalShow" [promptData]="agentDetailsModel.promptRowData"
+  <xnode-dynamic-form-modal *ngIf="agentDetailsModel.promptModalShow"
     [(display)]="agentDetailsModel.promptModalShow"></xnode-dynamic-form-modal>
 
 </div>

@@ -119,102 +119,102 @@ export const AgentHubFormConstant: AgentHubFormConstants = {
       ]
     }
   },
-  [agentName.prompt]: {
-    overview: {
-      controls: [
-        {
-          name: "name",
-          label: "Name",
-          placeholder: "Enter Name",
-          value: "",
-          type: "text",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-        {
-          name: "description",
-          label: "Description",
-          placeholder: "Enter Description",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-        {
-          name: "parent_topic",
-          label: "Parent Topic",
-          placeholder: "Enter Parent",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        }
-      ]
-    },
-    instruction: {
-      controls: [
-        {
-          name: "instructions",
-          label: "Instructions",
-          placeholder: "Enter Instructions",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-        {
-          name: "guideline",
-          label: "Guideline",
-          placeholder: "Enter Guideline",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-        {
-          name: "responsibilties",
-          label: "Responsibilities",
-          placeholder: "Enter Responsibilities",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-        {
-          name: "context",
-          label: "Context",
-          placeholder: "Enter context",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-        {
-          name: "example",
-          label: "Example",
-          placeholder: "Enter Example",
-          value: "",
-          type: "textarea",
-          validators: {
-            required: true,
-            minLength: 200
-          }
-        },
-      ]
-    }
-  }
+  // [agentName.prompt]: {
+  //   overview: {
+  //     controls: [
+  //       {
+  //         name: "name",
+  //         label: "Name",
+  //         placeholder: "Enter Name",
+  //         value: "",
+  //         type: "text",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //       {
+  //         name: "description",
+  //         label: "Description",
+  //         placeholder: "Enter Description",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //       {
+  //         name: "parent_topic",
+  //         label: "Parent Topic",
+  //         placeholder: "Enter Parent",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   instruction: {
+  //     controls: [
+  //       {
+  //         name: "instructions",
+  //         label: "Instructions",
+  //         placeholder: "Enter Instructions",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //       {
+  //         name: "guideline",
+  //         label: "Guideline",
+  //         placeholder: "Enter Guideline",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //       {
+  //         name: "responsibilties",
+  //         label: "Responsibilities",
+  //         placeholder: "Enter Responsibilities",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //       {
+  //         name: "context",
+  //         label: "Context",
+  //         placeholder: "Enter context",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //       {
+  //         name: "example",
+  //         label: "Example",
+  //         placeholder: "Enter Example",
+  //         value: "",
+  //         type: "textarea",
+  //         validators: {
+  //           required: true,
+  //           minLength: 200
+  //         }
+  //       },
+  //     ]
+  //   }
+  // }
 }
