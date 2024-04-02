@@ -14,6 +14,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessagingService } from 'src/app/components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -77,6 +79,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     private SpecificationUtils: SpecificationUtilsService,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
+    private messagingService: MessagingService
   ) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
@@ -87,8 +90,8 @@ export class SpecificationsHeaderComponent implements OnInit {
         );
       }
     });
-    this.utils.getMeProductId.subscribe((data)=>{
-      if(data){
+    this.utils.getMeProductId.subscribe((data) => {
+      if (data) {
         this.product = this.storageService.getItem(StorageKeys.Product);
       }
     })
@@ -116,7 +119,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.userList.forEach((element: any) => {
       element.name = element.first_name + ' ' + element.last_name;
     });
-    this.utils.openDockedNavi.subscribe((res:boolean) => {
+    this.utils.openDockedNavi.subscribe((res: boolean) => {
       this.isDockedNaviEnabled = res;
     })
   }
@@ -227,17 +230,19 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   openComments() {
-    this.utils.disableDockedNavi();
-    const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
-    this.SpecificationUtils.openConversationPanel({
-      openConversationPanel: true,
-      parentTabIndex: 0,
-      childTabIndex: 0,
-    });
-    this.specService.getMeAllComments({
-      productId: this.product.id,
-      versionId: version.id,
-    });
+    // this.utils.disableDockedNavi();
+    // const version: any = this.storageService.getItem(StorageKeys.SpecVersion);
+    // this.SpecificationUtils.openConversationPanel({
+    //   openConversationPanel: true,
+    //   parentTabIndex: 0,
+    //   childTabIndex: 0,
+    // });
+    // this.specService.getMeAllComments({
+    //   productId: this.product.id,
+    //   versionId: version.id,
+    // });
+    this.messagingService.sendMessage({ msgType: MessageTypes.OPEN_NAVI, msgData: { purpose: 'show_comments' } });
+
   }
 
   generate() {

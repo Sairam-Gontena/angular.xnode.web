@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AuditutilsService } from './api/auditutils.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
-import { debounce, delay } from 'rxjs/operators';
-import { interval, of } from 'rxjs';
-import { SidePanel } from 'src/models/side-panel.enum';
+import { debounce } from 'rxjs/operators';
+import { interval } from 'rxjs';
 import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json';
 import { SpecUtilsService } from './components/services/spec-utils.service';
@@ -56,6 +54,7 @@ export class AppComponent implements OnInit {
   inXpilotComp: boolean = false;
   product: any;
   newWithNavi: boolean = false;
+  purposeToOpenNavi: any;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -145,7 +144,7 @@ export class AppComponent implements OnInit {
       }
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
-      if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
+      if (msg.msgData && msg.msgType === MessageTypes.OPEN_NAVI) {
         this.openNavi()
       }
     })
@@ -759,10 +758,6 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
-    // this.messagingService.sendMessage({
-    //   msgType: MessageTypes.CLOSE_NAVI,
-    //   msgData: false,
-    // });
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
