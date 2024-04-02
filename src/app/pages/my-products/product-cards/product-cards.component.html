@@ -74,9 +74,9 @@
                 <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" styleClass="mr-2"
                     shape="circle" *ngIf="!currentUser" [style]="{ width:'40px',height:'40px' }"></p-avatar>
                 <div class="ml-1 card-subheading-txt">
-                    <p class="m-0 card-subheading ">Created by {{data.createdBy.displayName|titlecase}} on:
-                        {{data?.createdOn |
-                        date:'medium'}}</p>
+                    <p class="m-0 card-subheading ">Created by {{ data.createdBy.displayName | titlecase }} on:
+                        {{ data?.createdOn | date:'short':'IST' }}
+                    </p>
                     <div class="mt-4">
                         Modified on - NA
                     </div>
