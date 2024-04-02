@@ -45,7 +45,7 @@
 </div>
 <!-- ============================================== -->
 <div class="grid">
-    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4">
+    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 new-product-card" >
         <div class="flex align-items-center justify-content-center product-card font-bold border-round w-full h-full new-card-add pointer"
             (click)="onClickNew()">
             <div class="flex flex-wrap justify-content-center align-items-center card-color card-title">
@@ -58,7 +58,8 @@
             </div>
         </div>
     </div>
-    <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 pointer"
+    <ng-container *ngIf="filteredProducts.length > 0; else noProducts">
+        <div class="col-12 md:col-6 lg:col-3 pl-6 pr-6 pb-4 md:p-4 sm:p-4 pointer"
         *ngFor="let data of filteredProducts | slice:0:end ; let i = index" (click)="onClickProductCard.emit(data)">
         <div class="card-color">
             <img alt="Card" src="./assets/d-card.svg" class="w-full" />
@@ -84,4 +85,11 @@
             </div>
         </div>
     </div>
+      </ng-container>
+      <ng-template #noProducts>
+        <div class="col-12 md:col-6 lg:col-9 flex justify-content-center align-items-center text-disabled text-lg font-semibold ">
+          No products found.
+        </div>
+      </ng-template>
+
 </div>
