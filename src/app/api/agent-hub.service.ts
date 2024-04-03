@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BaseApiService } from './base-api.service';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -41,4 +41,17 @@ export class AgentHubService extends BaseApiService {
   //   let url = `agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
   //   return this.get(url)
   // }
+
+
+
+
+  postData(urlParam: any): Observable<any> {
+    return this.getHttp.post(this.apiUrl + urlParam.url, urlParam.data);
+  }
+
+
+  updateData(urlParam: any): Observable<any> {
+
+    return this.getHttp.put(this.apiUrl + urlParam.url, urlParam.data);
+  }
 }

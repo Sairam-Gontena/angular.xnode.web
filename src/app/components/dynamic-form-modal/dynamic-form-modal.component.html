@@ -69,15 +69,31 @@
         <div class="flex flex-column align-items-center mb-3">
           <label class="w-full" for="starter">Conversation Starters</label>
           <div class="w-full">
-            <input pInputText type="text" class="w-full form-control" id="starter" formControlName="starter"
-              placeholder="Add starter message" />
+            <!-- <input pInputText type="text" class="w-full form-control" id="starter" formControlName="starter"
+              placeholder="Add starter message" /> -->
+              <input pInputText type="text" formControlName="initialConversationStarter" class="w-full form-control" id="starterInput" placeholder="Enter Starter Value" />
+              <p-button type="button" (onClick)="addStarterValue()" label="add more" icon="pi pi-plus" iconPos="left"></p-button>
+              <div *ngIf="createPromptForm.get('starter')?.value?.length > 0">
+                  <div>
+                      <div *ngFor="let item of createPromptForm.get('starter')?.value">{{ item }}</div>
+                  </div>
+              </div>
           </div>
         </div>
         <div class="flex flex-column align-items-center mb-3">
           <label class="w-full" for="linkParent">link Parent</label>
           <div class="w-full">
-            <input pInputText type="text" class="w-full form-control" id="linkParent" formControlName="linkParent"
-              placeholder="Enter ID or search for existing" />
+              <p-dropdown styleClass="w-full"  formControlName="linkParent" (onChange)="onLinkParentChangeHandler($event)"  [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"  [showClear]="true" placeholder="Select a Country">
+                <ng-template pTemplate="header">
+
+                    <p-tabView (onChange)="getAllAgentList()" [(activeIndex)]="activeIndex">
+                        <p-tabPanel *ngFor="let tab of parentLinkTabsItem; let i = index" [header]="tab.title">
+                        </p-tabPanel>
+                    </p-tabView>
+        
+                </ng-template>
+         
+            </p-dropdown>
           </div>
         </div>
         <div class="button-container">

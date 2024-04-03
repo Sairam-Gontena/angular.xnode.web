@@ -234,6 +234,8 @@ export class AgentDetailsModel {
   };
   promptModalShow = false;
 
+  isFormEditable = false;
+
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
     private activatedRoute: ActivatedRoute,
@@ -278,33 +280,6 @@ export class AgentDetailsModel {
         (item) => event?.value?.some((valItem: { idx: number }) => valItem.idx === item.idx));
     }
   }
-
-  // async getAllAgentList({ endpoint = '' } = {}) {
-  //   if (this.activeIndex > 1) {
-  //     this.columns =
-  //       dynamicTableColumnData?.dynamicTable?.AgentHub[
-  //         this.activeIndex
-  //       ]?.columns;
-  //     endpoint = endpoint ? endpoint : this.tabItems[this.activeIndex].value;
-  //     this.tableData = [];
-  //     this.paginatorInfo = { ...InitialPaginatorInfo };
-  //     try {
-  //       const response = await this.agentHubService.getAllAgent({
-  //         accountId: this.userInfo.account_id,
-  //         endpoint: endpoint,
-  //         page: this.paginatorInfo.page,
-  //         page_size: this.paginatorInfo.perPage,
-  //       });
-  //       this.tableData = response.data.data as ITableDataEntry[];
-  //       this.paginatorInfo.page = response.data.page;
-  //       this.paginatorInfo.perPage = response.data.per_page;
-  //       this.paginatorInfo.totalRecords = response.data.total_items;
-  //       this.paginatorInfo.totalPages = response.data.total_pages;
-  //     } catch (error) {
-  //       console.error('Error fetching agent list:', error);
-  //     }
-  //   }
-  // }
 
   //pagination event for table
   paginatorViewHandler(item: any) {
@@ -399,6 +374,41 @@ export class AgentDetailsModel {
 
   addPrompt() {
     this.promptModalShow = true
+  }
+
+
+  onEditSaveHandler(formData: any) {
+    const activeTab = this.tabItems[this.activeIndex].identifier
+
+    if(this.isFormEditable) {
+      let urlParam = {
+        url: '',
+        data: {}
+      }
+  
+      if(activeTab == agentName.prompt) {
+        const id = formData?.id
+        urlParam.url = `agent/update_prompt/${id}`
+        urlParam.data = formData
+      }
+  
+  
+      this.agentHubService.updateData(urlParam).subscribe({
+        next: (response: any) => {
+          console.log("responseData", response)
+        }, error: (error: any) => {
+          console.log("responseData", error)
+        }
+      })
+    }
+
+
+
+
+
+
+    this.isFormEditable = !this.isFormEditable
+
   }
 
 
