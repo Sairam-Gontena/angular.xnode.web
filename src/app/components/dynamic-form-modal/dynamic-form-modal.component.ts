@@ -5,6 +5,11 @@ import { agentName } from 'src/app/pages/agent-hub/agent-hub.constant';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 
+enum ParentType {
+  Capability = 'capability',
+  Topic = 'topic'
+}
+
 @Component({
   selector: 'xnode-dynamic-form-modal',
   templateUrl: './dynamic-form-modal.component.html',
@@ -18,6 +23,7 @@ export class DynamicFormModalComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   public createPromptForm!: FormGroup;
   public enableAdvancedOtion: boolean = false;
+  selectedLinkParentType: ParentType = ParentType.Capability
 
   userInfo: any;
 
@@ -47,9 +53,9 @@ export class DynamicFormModalComponent implements OnInit {
       idx: 1,
       title: 'Capabilities',
       value: 'capabilities_linked_agents',
-      identifier: agentName.capability,
+      identifier: ParentType.Capability,
     },
-    { idx: 2, title: 'Topics', value: 'topic', identifier: agentName.topic },
+    { idx: 2, title: 'Topics', value: 'topic', identifier: ParentType.Topic },
   ]
   activeIndex = 0;
 
@@ -114,6 +120,79 @@ export class DynamicFormModalComponent implements OnInit {
 
   onSubmit() {
     console.log(this.createPromptForm.value);
+    const formData = this.createPromptForm.value
     // this.onClose();
+
+    const starterArray = formData?.starter;
+    const starterArrayString = JSON.stringify(starterArray);
+
+    formData.starter = starterArrayString
+
+
+    const linkParent = formData.linkParent
+
+    delete formData.linkParent
+
+    console.log(linkParent, formData, "linkParent")
+
+    let urlParam = {
+      url : 'agent/create_prompt',
+      data: formData
+    }
+
+    let promptResponse:any;
+
+    /**
+     * Create Prompt Request.
+     */
+    this.agentHubService.postData(urlParam).subscribe({
+      next: (response: any) => {
+        console.log("responseData", response)
+        promptResponse = response
+      }, error: (error: any) => {
+        console.log("responseData", error)
+      }
+    })
+
+
+    /**
+     * Link promot to parent
+     */
+
+    urlParam.data = {
+      account_id: this.userInfo.account_id,
+      prompt_id: promptResponse?.data?.prompt_id // Need to check proper response object.
+    }
+
+    if(this.selectedLinkParentType == ParentType.Capability) {
+      urlParam.url = 'agent/create_capability_prompt'
+
+      urlParam.data.capability_id =  linkParent.id
+    }else {
+      urlParam.url = 'agent/create_prompt_topic'
+
+      urlParam.data.topic_id =  linkParent.id
+    }
+
+
+    this.agentHubService.postData(urlParam).subscribe({
+      next: (response: any) => {
+        console.log("responseData", response)
+        promptResponse = response
+      }, error: (error: any) => {
+        console.log("responseData", error)
+      }
+    })
+
+  }
+
+  onLinkParentChangeHandler(event: any){
+    console.log("he;;", event)
+    if(this.activeIndex == 0) {
+      this.selectedLinkParentType = ParentType.Capability
+    }else {
+      this.selectedLinkParentType = ParentType.Topic
+    }
+
   }
 }

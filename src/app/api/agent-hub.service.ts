@@ -41,4 +41,11 @@ export class AgentHubService extends BaseApiService {
   //   let url = `agent/${endpoint}/${accountId}?page=${page}&page_size=${page_size}`
   //   return this.get(url)
   // }
+
+
+
+
+  postData(urlParam: any): Observable<any> {
+    return this.getHttp.post(this.apiUrl + urlParam.url, urlParam.data);
+  }
 }

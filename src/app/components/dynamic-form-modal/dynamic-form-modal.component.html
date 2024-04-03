@@ -83,7 +83,7 @@
         <div class="flex flex-column align-items-center mb-3">
           <label class="w-full" for="linkParent">link Parent</label>
           <div class="w-full">
-              <p-dropdown styleClass="w-full"  formControlName="linkParent"  [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"  [showClear]="true" placeholder="Select a Country">
+              <p-dropdown styleClass="w-full"  formControlName="linkParent" (onChange)="onLinkParentChangeHandler($event)"  [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"  [showClear]="true" placeholder="Select a Country">
                 <ng-template pTemplate="header">
 
                     <p-tabView (onChange)="getAllAgentList()" [(activeIndex)]="activeIndex">
