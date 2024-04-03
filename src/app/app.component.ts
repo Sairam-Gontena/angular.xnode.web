@@ -394,6 +394,7 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     if (event.data.message === 'import-file-popup') {
+      localStorage.setItem('conversationId', event.data.id)
       this.utilsService.showImportFilePopup(true);
     }
   }
