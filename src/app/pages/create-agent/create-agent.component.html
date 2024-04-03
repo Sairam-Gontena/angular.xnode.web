@@ -1,5 +1,5 @@
 <div>
-  <div class="border-bottom-2 border-gray-700">
+  <div class="border-bottom-2 border-white-alpha-10">
     <div class="flex justify-content-between p-4">
       <div class="flex gap-3">
         <div class="new-agent-status"></div>
@@ -13,69 +13,194 @@
       </div>
 
       <div class="toggle-buttons">
-        <p-button
-          type="button"
-          label="Create"
-          styleClass="header-inactive-toggle-btn"
-          (click)="toggleActive(true)"
-        ></p-button>
-        <p-button
-          type="button"
-          label="Configure"
-          styleClass="header-active-toggle-btn"
-          (click)="toggleActive(false)"
-        ></p-button>
+        <p-button type="button" label="Create" styleClass="header-inactive-toggle-btn"
+          (click)="toggleActive(true)"></p-button>
+        <p-button type="button" label="Configure" styleClass="header-active-toggle-btn"
+          (click)="toggleActive(false)"></p-button>
       </div>
 
       <div class="flex align-items-center gap-3">
-        <p-button
-          label="Preview"
-          icon="pi pi-external-link"
-          iconPos="right"
+        <p-button label="Preview" icon="pi pi-external-link" iconPos="right"
           styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-3 py-2"
-          [outlined]="true"
-        ></p-button>
+          [outlined]="true"></p-button>
 
-        <p-button
-          label="Save"
-          styleClass="text-white text-sm line-height-1 font-semibold border-white-alpha-70 border-round-2xl px-3 py-2"
-        ></p-button>
+        <p-button label="Save"
+          styleClass="text-white text-sm line-height-1 font-semibold border-white-alpha-70 border-round-2xl px-3 py-2"></p-button>
 
-        <i
-          class="pi pi-times text-white cursor-pointer"
-          (click)="createAgentModel.goBackHandler()"
-        ></i>
+        <i class="pi pi-times text-white cursor-pointer" (click)="createAgentModel.goBackHandler()"></i>
       </div>
     </div>
   </div>
 
-  <p-tabView
-    styleClass="pt-3 px-6"
-    (onChange)="createAgentModel.getAllAgentList()"
-    [(activeIndex)]="createAgentModel.activeIndex"
-  >
-    <p-tabPanel
-      *ngFor="let tab of createAgentModel.tabItems; let i = index"
-      [header]="tab.title"
-    >
-    </p-tabPanel>
+  <p-tabView (onChange)="createAgentModel.switchHeaders($event)" [(activeIndex)]="createAgentModel.activeIndex">
+    <ng-container *ngFor="let tabItem of createAgentModel.tabItems">
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <span>{{tabItem.header.title}}</span>
+        </ng-template>
+        <ng-template pTemplate="content" [ngSwitch]="tabItem.tabContent.id">
+          <ng-container *ngSwitchCase="'overview'">
+            <ng-container [ngTemplateOutlet]="overview"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'instructions'">
+            <ng-container [ngTemplateOutlet]="instruction"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'capabilities'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'topic'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'prompts'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'knowledge'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'model'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'tool'">
+            <ng-container [ngTemplateOutlet]="dynamicTable"></ng-container>
+          </ng-container>
+        </ng-template>
+      </p-tabPanel>
+    </ng-container>
   </p-tabView>
-
-  <div class="w-full table-height px-6" *ngIf="createAgentModel.activeIndex > 1">
-    <xnode-dynamic-table
-      [inputData]="createAgentModel.tableData"
-      [cols]="createAgentModel.columns"
-      [tableInfo]="createAgentModel.tableInfo"
-      [showColumnFilterOption]="createAgentModel.showColumnFilterOption"
-      [tableRowActionOptions]="createAgentModel.tableRowActionOptions"
-      [paginatorInfo]="createAgentModel.paginatorInfo"
-      [searchFilterOptions]="createAgentModel.searchFilterOptions"
-      columnWidth="13.8rem"
-      altBgColorRow="#2E2D36"
-    ></xnode-dynamic-table>
-  </div>
-
 
   <xnode-agent-overview></xnode-agent-overview>
 
 </div>
+
+<!-- dynamic Table -->
+<ng-template #dynamicTable>
+  <xnode-dynamic-table [inputData]="createAgentModel.tableData" [cols]="createAgentModel.columns"
+    [tableInfo]="createAgentModel.tableInfo" [showColumnFilterOption]="createAgentModel.showColumnFilterOption"
+    [tableRowActionOptions]="createAgentModel.tableRowActionOptions" [paginatorInfo]="createAgentModel.paginatorInfo"
+    [searchFilterOptions]="createAgentModel.searchFilterOptions" columnWidth="13.8rem" altBgColorRow="#2E2D36"
+    (paginatorChangeEvent)="createAgentModel.paginatorViewHandler($event)"></xnode-dynamic-table>
+</ng-template>
+
+<!-- overview html -->
+<ng-template #overview>
+  <div class="w-12 overflow-auto overviewInstructionBlock">
+    <div class="w-8 mx-auto">
+      <form [formGroup]="createAgentModel.overviewForm" (ngSubmit)="createAgentModel.onOverviewSubmit()">
+        <!-- <div class="flex align-items-center justify-content-end mb-3">
+          <button type="button" class="btn btn-cancel">Save</button>
+        </div> -->
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="description">Description</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="6" id="description" class="text-base p-2 border-1 border-round w-full"
+              formControlName="description" placeholder="Description"></textarea>
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="tags">Tags</label>
+          <div class="w-7">
+            <input pInputText type="text" class="text-base p-2 border-1 border-round w-full" id="tags"
+              formControlName="tags" placeholder="Add Tags" />
+          </div>
+        </div>
+      </form>
+      <div class="w-full my-4">
+        <hr />
+      </div>
+      <div class="w-full">
+        <div class="flex flex-wrap">
+          <ng-container *ngFor="let categoryItem of createAgentModel.categoryNameCountArr">
+            <div class="flex w-4 mb-6">
+              <div class="border-1 p-5 border-round mr-3">
+                <span class="pi pi-search text-4xl"></span>
+              </div>
+              <div class="flex flex-column justify-content-between">
+                <label class="text-400 font-semibold mb-2">{{categoryItem.categoryName}}</label>
+                <div class="text-7xl text-white">{{categoryItem.count}}</div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- instruction html -->
+<ng-template #instruction>
+  <div class="w-12 overflow-auto overviewInstructionBlock">
+    <div class="w-8 mx-auto">
+      <form [formGroup]="createAgentModel.instructionForm" (ngSubmit)="createAgentModel.onInstructionSubmit()">
+        <!-- <div class="flex align-items-center justify-content-end mb-3">
+      <button type="button" class="btn btn-cancel">Save</button>
+    </div> -->
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="name">Name</label>
+          <div class="w-7">
+            <input pInputText type="text" class="text-base p-2 border-1 border-round w-full" id="name"
+              formControlName="name" placeholder="e.g: Dilan" />
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="role">Role</label>
+          <div class="w-7">
+            <input pInputText type="text" class="text-base p-2 border-1 border-round w-full" id="role"
+              formControlName="role" placeholder="e.g: Finance Consultant" />
+          </div>
+        </div>
+        <div class="flex align-items-center mb-3">
+          <label class="w-5" for="description">Description</label>
+          <div class="w-7">
+            <textarea pInputTextarea rows="6" id="description" class="text-base p-2 border-1 border-round w-full"
+              formControlName="description" placeholder="Here is your job description :"></textarea>
+          </div>
+        </div>
+        <div class="w-full">
+          <hr />
+        </div>
+        <div class="flex align-items-center mb-3">
+          <div class="w-5">
+            <p-dropdown [options]="createAgentModel.instructionOption" styleClass="border-round w-full"
+              formControlName="instruction" optionLabel="name"
+              (onChange)="createAgentModel.onChangeInstruction($event)"></p-dropdown>
+          </div>
+        </div>
+        <!-- {{createAgentModel.instructionForm.controls['instruction'].value.value}} -->
+        <ng-container *ngIf="createAgentModel.enableGeneralInstruction">
+          <div class="flex align-items-center mb-3">
+            <label class="w-5" for="general_task">General Task</label>
+            <div class="w-7">
+              <textarea pInputTextarea rows="6" id="general_task" class="text-base p-2 border-1 border-round w-full"
+                formControlName="general_task" placeholder="If No Specific Task is Requested : Mention Task"></textarea>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!createAgentModel.enableGeneralInstruction">
+          <div class="flex align-items-center mb-3">
+            <label class="w-5" for="specific_instruction">Specific Instruction</label>
+            <div class="w-7">
+              <input pInputText type="text" class="text-base p-2 border-1 border-round w-full" id="specific_instruction"
+                formControlName="specific_instruction"
+                placeholder="In particular, your task is to <Specific Task Description>" />
+            </div>
+          </div>
+          <div class="flex align-items-center mb-3">
+            <label class="w-5" for="missing_information">Missing Information</label>
+            <div class="w-7">
+              <textarea pInputTextarea rows="6" id="missing_information"
+                class="text-base p-2 border-1 border-round w-full" formControlName="missing_information"
+                placeholder="If you think you are missing information :"></textarea>
+            </div>
+          </div>
+          <div class="flex align-items-center mb-3">
+            <label class="w-5" for="answer_format">Answer Format</label>
+            <div class="w-7">
+              <textarea pInputTextarea rows="6" id="answer_format" class="text-base p-2 border-1 border-round w-full"
+                formControlName="answer_format" placeholder="You must Format your answer as follows :"></textarea>
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+  </div>
+</ng-template>

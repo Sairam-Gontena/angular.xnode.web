@@ -24,6 +24,7 @@
   height: 100%;
   padding: 0.5rem 3rem;
 }
+
 :host ::ng-deep .header-active-toggle-btn {
   background-color: var(--charcoalGrey);
   border: 1px solid var(--davy-grey);
@@ -111,13 +112,13 @@
   color: white;
 }
 
-:host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-inputtext:enabled:hover {
-  border-radius: 0%;
-  background-color: #343541;
-  border: 2px solid #595959;
-  border-radius: 6px;
-}
+// :host ::ng-deep .p-inputtext,
+// :host ::ng-deep .p-inputtext:enabled:hover {
+//   border-radius: 0%;
+//   background-color: #343541;
+//   border: 2px solid #595959;
+//   border-radius: 6px;
+// }
 
 :host ::ng-deep .showColumnFilterOption,
 .p-multiselect-label-container,
@@ -152,4 +153,11 @@
   margin-left: 0.5rem;
 }
 
+::ng-deep .p-dropdown {
+  border: 1px solid #595959;
+}
+
 // **********************Agent Playground CSS ends here.*******************
+.overviewInstructionBlock {
+  height: calc(100vh - 230px);
+}

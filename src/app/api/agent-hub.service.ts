@@ -33,6 +33,12 @@ export class AgentHubService extends BaseApiService {
     return this.get(url);
   }
 
+  //get agent detail by accountID
+  getAgentDetailByAccountID(urlParam: any): Observable<any> {
+    return this.getHttp.get<any>(this.apiUrl + urlParam.url, { params: urlParam.params });
+  }
+
+  //get agent detail by agentID
   getAgentDetail(urlParam: any): Observable<any> {
     return this.getHttp.get<any>(this.apiUrl + urlParam.url, { params: urlParam.params });
   }

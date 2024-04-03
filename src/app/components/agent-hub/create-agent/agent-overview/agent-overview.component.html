@@ -1,5 +1,5 @@
 <div class="w-6 mx-auto">
-  <ng-container *ngIf="overviewInstructionDetailObj.enableOverview">
+  <ng-container *ngIf="overviewInstructionDetailObj?.enableOverview">
     <form [formGroup]="overviewForm">
       <div class="flex align-items-center mb-3">
         <label class="w-5" for="name">Name</label>
@@ -23,7 +23,7 @@
     </form>
   </ng-container>
 
-  <ng-container *ngIf="overviewInstructionDetailObj.enableInstruction">
+  <ng-container *ngIf="overviewInstructionDetailObj?.enableInstruction">
     <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
       <div class="flex align-items-center justify-content-end mb-3">
         <p-button type="button" [label]="formEditable ? 'Save' : 'Edit'" [icon]="formEditable ? 'pi pi-save' : 'pi pi-pencil'" iconPos="right" [outlined]="formEditable ? false : true" (onClick)="onEditSaveHandler()" class="btn btn-cancel"></p-button>

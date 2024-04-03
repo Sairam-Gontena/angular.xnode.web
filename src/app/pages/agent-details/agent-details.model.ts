@@ -345,9 +345,9 @@ export class AgentDetailsModel {
       next: (response: any) => {
         this.getAgentDetailByCategorySuccess(response);
       }, error: (error: any) => {
-        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.data.detail });
+        this.utilsService.loadToaster({ severity: 'error', summary: '', detail: error?.error.detail });
       }
-    })
+    });
   }
 
   // tab event

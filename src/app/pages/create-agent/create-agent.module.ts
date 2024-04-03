@@ -10,6 +10,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [CreateAgentComponent],
@@ -17,7 +18,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     CommonModule,
     CreateAgentRoutingModule,
     TabMenuModule,
-
+    ReactiveFormsModule,
     TabViewModule,
     MultiSelectModule,
     DropdownModule,
