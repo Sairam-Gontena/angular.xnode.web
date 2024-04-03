@@ -53,7 +53,7 @@
 
 
   <xnode-agent-overview *ngIf="agentDetailsModel.overviewTabItem.showTab"
-    [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm"></xnode-agent-overview>
+    [overviewInstructionDetail]="agentDetailsModel.overviewInstructionForm" [formEditable]="agentDetailsModel.isFormEditable" (onEditSave)="agentDetailsModel.onEditSaveHandler($event)"></xnode-agent-overview>
 
   <xnode-dynamic-form-modal *ngIf="agentDetailsModel.promptModalShow"
     [(display)]="agentDetailsModel.promptModalShow"></xnode-dynamic-form-modal>

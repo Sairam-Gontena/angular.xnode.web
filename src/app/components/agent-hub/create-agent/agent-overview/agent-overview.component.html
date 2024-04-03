@@ -26,7 +26,7 @@
   <ng-container *ngIf="overviewInstructionDetailObj.enableInstruction">
     <form [formGroup]="instructionForm" (ngSubmit)="onInstructionSubmit()">
       <div class="flex align-items-center justify-content-end mb-3">
-        <button type="button" class="btn btn-cancel">Edit</button>
+        <p-button type="button" [label]="formEditable ? 'Save' : 'Edit'" [icon]="formEditable ? 'pi pi-save' : 'pi pi-pencil'" iconPos="right" [outlined]="formEditable ? false : true" (onClick)="onEditSaveHandler()" class="btn btn-cancel"></p-button>
         <!-- <button type="submit" class="btn-primary">Add</button> -->
       </div>
       <div class="flex align-items-center mb-3">

@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, SimpleChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JsonFormControls, JsonFormData } from './IAgentOverview';
 
@@ -32,6 +32,10 @@ export class AgentOverviewComponent {
   @Input() labelClass!: string;
   @Input() inputClass!: string;
 
+  @Input() formEditable!: boolean;
+
+  @Output() onEditSave = new EventEmitter<{ event: any }>(); 
+
   overviewForm!: FormGroup;
   instructionForm!: FormGroup;
   overviewInstructionDetailObj: any;
@@ -50,10 +54,13 @@ export class AgentOverviewComponent {
       example: [''],
       keyValue: this.formBuilder.array([])
     })
+
+
+    this.instructionForm.disable()
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.overviewInstructionDetail.currentValue) {
+    if (changes?.overviewInstructionDetail?.currentValue) {
       this.overviewInstructionDetailObj = changes.overviewInstructionDetail.currentValue;
       this.overviewForm.patchValue({
         name: this.overviewInstructionDetailObj.overviewInstructionData.name,
@@ -67,6 +74,13 @@ export class AgentOverviewComponent {
         context: this.overviewInstructionDetailObj.overviewInstructionData.context,
         example: JSON.stringify(this.overviewInstructionDetailObj.overviewInstructionData.example, undefined, 4)
       });
+    }
+    if(changes.formEditable) {
+      if(this.formEditable) {
+        this.instructionForm.enable();
+      }else {
+        this.instructionForm.disable();
+      }
     }
   }
 
@@ -126,5 +140,10 @@ export class AgentOverviewComponent {
     console.log(this.overviewForm.value);
     // console.log('Form valid: ', this.dynamicForm.valid);
     // console.log('Form values: ', this.dynamicForm.value);
+  }
+
+
+  onEditSaveHandler() {
+    this.onEditSave.emit(this.overviewInstructionDetailObj?.overviewInstructionData)
   }
 }
