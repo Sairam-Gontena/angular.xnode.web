@@ -69,8 +69,15 @@
         <div class="flex flex-column align-items-center mb-3">
           <label class="w-full" for="starter">Conversation Starters</label>
           <div class="w-full">
-            <input pInputText type="text" class="w-full form-control" id="starter" formControlName="starter"
-              placeholder="Add starter message" />
+            <!-- <input pInputText type="text" class="w-full form-control" id="starter" formControlName="starter"
+              placeholder="Add starter message" /> -->
+              <input pInputText type="text" formControlName="initialConversationStarter" class="w-full form-control" id="starterInput" placeholder="Enter Starter Value" />
+              <p-button type="button" (onClick)="addStarterValue()" label="add more" icon="pi pi-plus" iconPos="left"></p-button>
+              <div *ngIf="createPromptForm.get('starter')?.value?.length > 0">
+                  <div>
+                      <div *ngFor="let item of createPromptForm.get('starter')?.value">{{ item }}</div>
+                  </div>
+              </div>
           </div>
         </div>
         <div class="flex flex-column align-items-center mb-3">

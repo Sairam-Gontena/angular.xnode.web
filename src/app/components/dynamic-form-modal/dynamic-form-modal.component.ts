@@ -29,7 +29,8 @@ export class DynamicFormModalComponent implements OnInit {
       name: [""],
       description: [""],
       instruction: [""],
-      starter: [""],
+      initialConversationStarter: [''],
+      starter: [[]],
       linkParent: [""],
       guideline: [''],
       responsibility: [''],
@@ -52,9 +53,7 @@ export class DynamicFormModalComponent implements OnInit {
   ]
   activeIndex = 0;
 
-  // onTabSwitchHandler(event: any) {
-    
-  // }
+  
 
   async getAllAgentList() {
    this.parentLinkOptionList = []
@@ -95,6 +94,18 @@ export class DynamicFormModalComponent implements OnInit {
   //show and hide advanced Option
   showHideAdvancedOption() {
     this.enableAdvancedOtion = !this.enableAdvancedOtion;
+  }
+
+  addStarterValue() {
+    const value = this.createPromptForm.get('initialConversationStarter')?.value?.trim(); // Trim any leading/trailing whitespace
+    if (value) {
+      const starterArray = this.createPromptForm.get('starter')?.value;
+      starterArray.push(value);
+      this.createPromptForm.patchValue({
+        starter: starterArray
+      });
+      this.createPromptForm.get('initialConversationStarter')?.setValue('')// Clear the input field
+    }
   }
 
   onClose() {
