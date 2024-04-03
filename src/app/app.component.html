@@ -40,3 +40,6 @@
     (closePopup)="this.showLimitReachedPopup = false;"></xnode-limit-reached-popup>
 <xnode-import-file-popup [visible]="showImportFilePopup"
     (closeEventEmitter)="this.showImportFilePopup = false;"></xnode-import-file-popup>
+
+<xnode-inactive-timeout-popup *ngIf="showInactiveTimeoutPopup" [visible]="showInactiveTimeoutPopup"
+(closePopup)="this.showInactiveTimeoutPopup = false;"></xnode-inactive-timeout-popup>

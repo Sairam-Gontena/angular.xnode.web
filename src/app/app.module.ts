@@ -15,6 +15,7 @@ import { FormBuilderModule } from './components/form-builder/form-builder.module
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxCaptureModule } from 'ngx-capture';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +29,7 @@ import { JwtModule } from '@auth0/angular-jwt';
     FormsModule,
     SharedModule,
     SharedComponentModule,
+    NgIdleKeepaliveModule.forRoot(),
     SidebarModule,
     FormBuilderModule,
     NgxSpinnerModule,
