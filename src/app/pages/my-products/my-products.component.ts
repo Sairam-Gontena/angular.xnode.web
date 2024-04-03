@@ -265,10 +265,14 @@ export class MyProductsComponent implements OnInit {
         this.filteredProducts = sortBy(this.templateCard, [
           'created_on',
         ]).reverse();
+
         this.filteredProductsLength = this.filteredProducts.length
           ? this.filteredProducts.length + 1
           : 0;
         this.filteredProductsByEmail = this.templateCard;
+        this.activeIndex = 2;
+        this.onClickcreatedByYou();
+
       } else if (response?.status !== 200) {
         let user_audit_body = {
           method: 'GET',
@@ -296,7 +300,7 @@ export class MyProductsComponent implements OnInit {
 
   onClickcreatedByYou(): void {
     this.filteredProducts = sortBy(
-      this.filteredProducts.filter((obj) => {
+      this.templateCard.filter((obj) => {
         return obj?.createdBy?.userId === this.currentUser.user_id;
       })
     )
@@ -305,6 +309,7 @@ export class MyProductsComponent implements OnInit {
       : 0;
     this.end = 3;
     this.isViewLess = true;
+
   }
 
   onClickAllProducts(): void {
