@@ -26,6 +26,7 @@ export class ImportFilePopupComponent implements OnInit {
   activeIndex = 0;
   searchText: any;
   checked: boolean = false;
+  conversationId: any;
 
   constructor(
     private naviApiService: NaviApiService,
@@ -177,6 +178,7 @@ export class ImportFilePopupComponent implements OnInit {
   triggerETL(res: any) {
     const id = localStorage.getItem('productContext');
     let currentUser: any = localStorage.getItem('currentUser');
+    this.conversationId = localStorage.getItem('conversationId');
     if (currentUser) {
       currentUser = JSON.parse(currentUser);
     }
@@ -186,8 +188,8 @@ export class ImportFilePopupComponent implements OnInit {
       this.productId = pr_id;
     }
     if (currentUser) {
-      if (this.productId) {
-        res['productId'] = this.productId;
+      if (this.conversationId) {
+        res['conversationId'] = this.conversationId;
       }
       res['isConversation'] = true;
       res['owners'] = [currentUser.user_id];
@@ -195,7 +197,8 @@ export class ImportFilePopupComponent implements OnInit {
       res['fileStoreId'] = res.storageId;
       res['accountId'] = currentUser.account_id;
       res['email'] = currentUser.email;
-      res['users']= [ { "userId": currentUser.user_id, "role": "owner" } ];
+      res['users'] = [{ "userId": currentUser.user_id, "role": "owner" }];
+
     }
     let url = 'bot/process_file';
     try {
