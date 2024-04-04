@@ -152,6 +152,7 @@ export class AppComponent implements OnInit {
           this.openNavi()
         } else {
           this.isNaviExpanded = msg.msgData.isNaviExpanded;
+          this.openNavi()
         }
       }
     })
