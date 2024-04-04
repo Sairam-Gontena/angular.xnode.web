@@ -24,6 +24,7 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
   activeIndex = 0;
   searchText: any;
   checked: boolean = false;
+  conversationId: any;
 
   constructor(
     private naviApiService: NaviApiService,
@@ -174,8 +175,6 @@ export class ImportFilePopupComponent implements OnInit, OnChanges {
     }
   }
   triggerETL(body: any) {
-    console.log('this.conversation_id', this.conversation_id);
-
     const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
     if (currentUser) {
       body['isConversation'] = true;

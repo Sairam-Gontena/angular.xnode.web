@@ -395,6 +395,7 @@ export class AppComponent implements OnInit {
     if (event.data.message === 'import-file-popup') {
       this.conversation_id = event.data?.conversation_id;
       this.showImportFilePopup = true;
+      localStorage.setItem('conversationId', event.data.id)
     }
   }
 
