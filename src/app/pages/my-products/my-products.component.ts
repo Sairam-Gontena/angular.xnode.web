@@ -181,7 +181,7 @@ export class MyProductsComponent implements OnInit {
     localStorage.setItem('app_name', data.title);
     localStorage.setItem('has_insights', data.has_insights);
     this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: true });
+    this.messagingService.sendMessage({ msgType: MessageTypes.MAKE_TRUST_URL, msgData: { isNaviExpanded: true, showDockedNavi: true } });
     this.router.navigate(['/specification']);
 
     const product: any = this.storageService.getItem(StorageKeys.Product);

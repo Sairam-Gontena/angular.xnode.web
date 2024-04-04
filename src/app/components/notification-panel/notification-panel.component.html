@@ -138,6 +138,13 @@
             <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
           </div>
         </div>
+        <div class="flex mt-2" *ngIf="notification?.entity === 'IMPORT_FILE'">
+          <div (click)="goToResources(notification)"
+            class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">
+            View in Resources
+            <span class="pi pi-arrow-right ml-3 text-xs title-fonts"></span>
+          </div>
+        </div>
         <div class="flex mt-2" *ngIf="notification?.entity === 'CONVERSATION_SUMMARY' && notification.status === 'Completed'">
           <div (click)="viewSummary(notification)"
             class="title-fonts border-round-3xl pl-4 pr-4 pt-1 pb-1 ml-2 accept-btn text-sm font-normal pointer">

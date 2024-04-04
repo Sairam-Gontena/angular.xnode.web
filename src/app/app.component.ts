@@ -79,6 +79,7 @@ export class AppComponent implements OnInit {
   xnodeAppUrl: string = environment.xnodeAppUrl;
   conversatonDetails: any;
   conversationId?: string;
+  resource_id: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -145,7 +146,13 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
-        this.openNavi()
+        if (msg.msgData.isNaviExpanded) {
+          this.isNaviExpanded = msg.msgData.isNaviExpanded;
+          this.resource_id = msg.msgData.resource_id
+          this.openNavi()
+        } else {
+          this.isNaviExpanded = msg.msgData.isNaviExpanded;
+        }
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
@@ -700,6 +707,17 @@ export class AppComponent implements OnInit {
     if (this.summaryObject?.conversationId) {
       rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
     }
+    if (this.resource_id) {
+      rawUrl = rawUrl + '&resource_id=' + this.resource_id;
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Resources");
+      } else {
+        rawUrl += "&componentToShow=Resources";
+      }
+      this.resource_id = undefined
+    }
+
+
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
@@ -752,10 +770,6 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
-    // this.messagingService.sendMessage({
-    //   msgType: MessageTypes.CLOSE_NAVI,
-    //   msgData: false,
-    // });
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
