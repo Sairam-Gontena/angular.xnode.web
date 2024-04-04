@@ -251,6 +251,10 @@ export class AppHeaderComponent implements OnInit {
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.CLOSE_NAVI,
+      msgData: 'CLOSE',
+    });
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
     this.auditUtil.postAudit('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
