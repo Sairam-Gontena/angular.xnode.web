@@ -1,28 +1,26 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { CommonApiService } from 'src/app/api/common-api.service';
-import { UserUtilsService } from 'src/app/api/user-utils.service';
 import { UtilsService } from '../services/utils.service';
-import { MessagingService } from '../services/messaging.service';
-import { MessageTypes } from 'src/models/message-types.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
+import { LocalStorageService } from '../services/local-storage.service';
+import { StorageKeys } from 'src/models/storage-keys.enum';
 
 @Component({
   selector: 'xnode-import-file-popup',
   templateUrl: './import-file-popup.component.html',
   styleUrls: ['./import-file-popup.component.scss']
 })
-export class ImportFilePopupComponent implements OnInit {
+export class ImportFilePopupComponent implements OnInit, OnChanges {
   @ViewChild('fileInput') fileInput?: ElementRef;
   @ViewChild('panelElement', { static: false }) panelElement?: ElementRef;
   @Output() closeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() visible: boolean = true;
   @Input() productId: any;
+  @Input() conversation_id?: string;
   user_id: any;
   files: any[] = [];
-  uploadedFiles: any[] = [];
   activeIndex = 0;
   searchText: any;
   checked: boolean = false;
@@ -31,17 +29,23 @@ export class ImportFilePopupComponent implements OnInit {
   constructor(
     private naviApiService: NaviApiService,
     private utils: UtilsService,
-    private userUtilService: UserUtilsService,
+    private storageService: LocalStorageService,
     private route: ActivatedRoute,
-    private auditUtil: AuditutilsService,
     private messageService: MessageService,
     private commonApi: CommonApiService,
-    private messagingService: MessagingService
   ) { }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       this.user_id = params?.user_id
     })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes', changes);
+
+    if (changes['conversation_id']?.currentValue)
+      console.log('>>', changes['conversation_id']?.currentValue);
 
   }
 
@@ -146,7 +150,6 @@ export class ImportFilePopupComponent implements OnInit {
       });
 
       if (res.statusText === 'Created') {
-        this.uploadedFiles.push(res.data.id);
         this.utils.loadToaster({
           severity: 'success',
           summary: 'SUCCESS',
@@ -154,10 +157,6 @@ export class ImportFilePopupComponent implements OnInit {
         });
         this.triggerETL(res.data);
         this.closeDialog();
-        this.messagingService.sendMessage({
-          msgType: MessageTypes.NAVI_CONTAINER_STATE,
-          msgData: { naviContainerState: 'EXPAND', importFilePopup: true },
-        });
       } else {
         this.utils.loadToaster({
           severity: 'error',
@@ -175,38 +174,33 @@ export class ImportFilePopupComponent implements OnInit {
       this.utils.loadSpinner(false);
     }
   }
-  triggerETL(res: any) {
-    const id = localStorage.getItem('productContext');
-    let currentUser: any = localStorage.getItem('currentUser');
-    this.conversationId = localStorage.getItem('conversationId');
+  triggerETL(body: any) {
+    const currentUser: any = this.storageService.getItem(StorageKeys.CurrentUser);
     if (currentUser) {
-      currentUser = JSON.parse(currentUser);
+      body['isConversation'] = true;
+      body['conversation_id'] = this.conversation_id;
+      body['owners'] = [currentUser.user_id];
+      body['contributors'] = [currentUser.user_id];
+      body['fileStoreId'] = body.storageId;
+      body['accountId'] = currentUser.account_id;
+      body['email'] = currentUser.email;
+      body['users'] = [{ "userId": currentUser.user_id, "role": "owner" }];
     }
-    let pr_id;
-    if (id !== null && id !== 'undefined') {
-      pr_id = id;
-      this.productId = pr_id;
-    }
-    if (currentUser) {
-      if (this.conversationId) {
-        res['conversationId'] = this.conversationId;
-      }
-      res['isConversation'] = true;
-      res['owners'] = [currentUser.user_id];
-      res['contributors'] = [currentUser.user_id];
-      res['fileStoreId'] = res.storageId;
-      res['accountId'] = currentUser.account_id;
-      res['email'] = currentUser.email;
-      res['users'] = [{ "userId": currentUser.user_id, "role": "owner" }];
-
-    }
-    let url = 'bot/process_file';
     try {
-      this.naviApiService.postFile(url, res).then()
+      this.processFile(body);
     } catch (e) {
       console.error(e);
     }
     return;
+  }
+
+  processFile(body: any): void {
+    this.naviApiService.postFile(body).then((res: any) => {
+      console.log('res');
+    }).catch((err: any) => {
+
+    })
+
   }
 }
 

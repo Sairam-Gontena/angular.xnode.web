@@ -153,6 +153,14 @@ export class NotificationPanelComponent {
       });
   }
 
+  goToResources(notif: any): void {
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.MAKE_TRUST_URL,
+      msgData: { isNaviExpanded: true, showDockedNavi: true, resource_id: notif.resource_id },
+    });
+    this.closeNotificationPanel.emit(true)
+  }
+
   goToSpec(obj: any) {
     obj.productId = obj.productId ? obj.productId : obj.product_id;
     obj.versionId = obj.versionId ? obj.versionId : obj.version_id;
