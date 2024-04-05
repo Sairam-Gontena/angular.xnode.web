@@ -7,6 +7,11 @@ import { User } from 'src/models/user';
   providedIn: 'root',
 })
 export class UtilsService {
+  triggerNaviWithDynamicComponent=new Subject();
+  invokeNaviWithDynamicComponent=this.triggerNaviWithDynamicComponent.asObservable();
+  showNaviWithDynamicComponent(componentToShow:string){
+    this.triggerNaviWithDynamicComponent.next(componentToShow)
+  }
   currentUser?: User;
   private showLayoutSubmenu: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(true);

@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
   conversatonDetails: any;
   conversationId?: string;
   resource_id: any;
+  componentToShow:string;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -96,8 +97,13 @@ export class AppComponent implements OnInit {
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
     private messagingService: MessagingService,
-    private conversationHubService: ConversationHubService
+    private conversationHubService: ConversationHubService,
   ) {
+    this.componentToShow = 'Chat';
+    this.utilsService.invokeNaviWithDynamicComponent.subscribe((componentToShow:any)=>{
+      this.componentToShow = componentToShow;
+      this.openNavi()
+    })
     let winUrl = window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -692,7 +698,7 @@ export class AppComponent implements OnInit {
         '&product=' +
         JSON.stringify(this.product) +
         '&new_with_navi=' +
-        false + '&componentToShow=Chat';
+        false + '&componentToShow='+this.componentToShow;
     } else if (this.newWithNavi && !this.summaryObject) {
       rawUrl = rawUrl + '&componentToShow=Chat';
     } else {
