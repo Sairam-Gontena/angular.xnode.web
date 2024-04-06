@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './components/services/utils.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AuditutilsService } from './api/auditutils.service';
 import { NotifyApiService } from './api/notify.service';
 import { AuthApiService } from './api/auth.service';
-import { debounce, delay } from 'rxjs/operators';
-import { interval, of } from 'rxjs';
-import { SidePanel } from 'src/models/side-panel.enum';
+import { debounce } from 'rxjs/operators';
+import { interval } from 'rxjs';
 import { ThemeService } from './theme.service';
 import themeing from '../themes/customized-themes.json';
 import { SpecUtilsService } from './components/services/spec-utils.service';
@@ -76,10 +74,12 @@ export class AppComponent implements OnInit {
   copnversations: any;
   groupConversations: any;
   oneToOneConversations: any;
-  conversationID: any;
+  conversation_id: any;
   summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
-  conversatonDetails: any
+  conversatonDetails: any;
+  conversationId?: string;
+  resource_id: any;
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -146,7 +146,14 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
-        this.openNavi()
+        if (msg.msgData.isNaviExpanded) {
+          this.isNaviExpanded = msg.msgData.isNaviExpanded;
+          this.resource_id = msg.msgData.resource_id;
+          this.openNavi()
+        } else {
+          this.isNaviExpanded = msg.msgData.isNaviExpanded;
+          this.openNavi()
+        }
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
@@ -157,6 +164,8 @@ export class AppComponent implements OnInit {
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
+        this.resource_id = msg.msgData.resource_id
+        this.conversationId = msg.msgData.conversation_id;
         this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
@@ -331,7 +340,7 @@ export class AppComponent implements OnInit {
       this.utilsService.toggleProductAlertPopup(data);
     }
     if (event.data.message === 'view-summary-popup') {
-      this.conversationID = event.data.conversation_id;
+      this.conversation_id = event.data.conversation_id;
       this.getConversation();
       this.utilsService.loadSpinner(true);
     }
@@ -394,7 +403,9 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
       }
     if (event.data.message === 'import-file-popup') {
-      this.utilsService.showImportFilePopup(true);
+      this.conversation_id = event.data?.conversation_id;
+      this.showImportFilePopup = true;
+      localStorage.setItem('conversationId', event.data.id)
     }
   }
 
@@ -428,11 +439,6 @@ export class AppComponent implements OnInit {
       this.redirectToPreviousUrl();
     this.utilsService.getMeProductDetails.subscribe((data: any) => {
       if (data && data?.email) {
-      }
-    });
-    this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
-      if (data) {
-        this.showImportFilePopup = true;
       }
     });
     this.utilsService.getMeSummaryPopupStatus.subscribe((data: any) => {
@@ -554,7 +560,7 @@ export class AppComponent implements OnInit {
           this.utilsService.toggleProductAlertPopup(data);
         }
         if (event.data.message === 'view-summary-popup') {
-          this.conversationID = event.data.conversation_id;
+          this.conversation_id = event.data.conversation_id;
           this.getConversation();
           this.utilsService.loadSpinner(true);
         }
@@ -614,9 +620,6 @@ export class AppComponent implements OnInit {
                   break;
                 case 'contract-navi':
                   this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false);
-                  break;
-                case 'import-file-popup':
-                  this.utilsService.showImportFilePopup(true);
                   break;
               }
             }
@@ -707,6 +710,23 @@ export class AppComponent implements OnInit {
     if (this.summaryObject?.conversationId) {
       rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
     }
+    if (this.resource_id) {
+      rawUrl = rawUrl + '&resource_id=' + this.resource_id;
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=Resources");
+      } else {
+        rawUrl += "&componentToShow=Resources";
+      }
+      this.resource_id = undefined
+    }
+    if (this.conversationId) {
+      if (rawUrl.includes("conversationId")) {
+        rawUrl = rawUrl.replace(/conversationId=[^&]*/, "conversationId=" + this.conversationId);
+      } else {
+        rawUrl += "&conversationId=" + this.conversationId;
+      }
+      this.conversationId = undefined
+    }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
@@ -759,10 +779,6 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
-    // this.messagingService.sendMessage({
-    //   msgType: MessageTypes.CLOSE_NAVI,
-    //   msgData: false,
-    // });
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
@@ -854,7 +870,7 @@ export class AppComponent implements OnInit {
       });
   }
   getConversation(): void {
-    this.conversationHubService.getConversations('?id=' + this.conversationID + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
+    this.conversationHubService.getConversations('?id=' + this.conversation_id + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.convSummary = res.data[0].content.conversation_summary;
         this.showSummaryPopup = true;
