@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
 import { SpecUtilsService } from 'src/app/components/services/spec-utils.service';
 import { UtilsService } from 'src/app/components/services/utils.service';
@@ -14,6 +7,10 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 import { SpecVersion } from 'src/models/spec-versions';
 import { SpecificationUtilsService } from '../../diff-viewer/specificationUtils.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { HttpParams } from '@angular/common/http';
+import { Clipboard } from '@angular/cdk/clipboard'
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -54,10 +51,12 @@ export class SpecificationsHeaderComponent implements OnInit {
     { label: 'Exit', value: null },
   ];
   specData: any;
-  invities = [
-    { name: 'Invite only', code: 'Invite' },
-    { name: 'Anyone with link at App’s Spec', code: 'Anyone' },
-    { name: 'Everyone at FinBuddy workspace', code: 'Everyone' }
+  invities = [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
+  { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
+  { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }
+    // { name: 'Invite only', code: 'Invite' },
+    // { name: 'Anyone with link at App’s Spec', code: 'Anyone' },
+    // { name: 'Everyone at FinBuddy workspace', code: 'Everyone' }
   ];
   selectedInvite: any;
   value: any;
@@ -68,16 +67,19 @@ export class SpecificationsHeaderComponent implements OnInit {
   selectedItem: any;
   addShareForm: FormGroup;
   // reviewersList: string | null;
+  checkDeepLinkCopied: boolean = false;
 
-  constructor(
-    private utils: UtilsService,
+  constructor(private utils: UtilsService,
     private specUtils: SpecUtilsService,
     private storageService: LocalStorageService,
     private specService: SpecificationsService,
     private SpecificationUtils: SpecificationUtilsService,
     private localStorageService: LocalStorageService,
     private fb: FormBuilder,
-  ) {
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private clipboard: Clipboard) {
     this.SpecificationUtils._openConversationPanel.subscribe((data: any) => {
       if (data) {
         this.conversationPanelInfo = data;
@@ -87,8 +89,8 @@ export class SpecificationsHeaderComponent implements OnInit {
         );
       }
     });
-    this.utils.getMeProductId.subscribe((data)=>{
-      if(data){
+    this.utils.getMeProductId.subscribe((data) => {
+      if (data) {
         this.product = this.storageService.getItem(StorageKeys.Product);
       }
     })
@@ -116,7 +118,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.userList.forEach((element: any) => {
       element.name = element.first_name + ' ' + element.last_name;
     });
-    this.utils.openDockedNavi.subscribe((res:boolean) => {
+    this.utils.openDockedNavi.subscribe((res: boolean) => {
       this.isDockedNaviEnabled = res;
     })
   }
@@ -177,8 +179,7 @@ export class SpecificationsHeaderComponent implements OnInit {
         } else {
           console.log('not able to fetch product details');
         }
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.error('Error fetching data from localStorage:', error);
       });
   }
@@ -186,6 +187,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   toggleSideMenu() {
     this.isMeneOpened.emit(true);
   }
+
   filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
     let filtered: any[] = [];
     let query = event.query;
@@ -340,4 +342,26 @@ export class SpecificationsHeaderComponent implements OnInit {
       viewType: this.viewType,
     });
   }
+
+  //invite the user
+  inviteUser() {
+
+  }
+
+  //copy the link
+  copyLink() {
+    let url: string = window.location.href + "?";
+    let params: any = {
+      product_id: this.selectedVersion?.productId,
+      // version_id: this.selectedVersion?.id
+    };
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(key => {
+      httpParams = httpParams.append(key, params[key]);
+    });
+    url = url + httpParams;
+    this.checkDeepLinkCopied = true;
+    this.clipboard.copy(url);
+  }
+
 }

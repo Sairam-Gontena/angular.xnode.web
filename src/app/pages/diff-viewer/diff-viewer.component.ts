@@ -76,8 +76,7 @@ export class DiffViewerComponent implements OnInit {
   specListCopy: any;
   metaDeta: any;
 
-  constructor(
-    private utils: UtilsService,
+  constructor(private utils: UtilsService,
     private specApiService: SpecApiService,
     private storageService: LocalStorageService,
     private router: Router,
@@ -87,9 +86,8 @@ export class DiffViewerComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
-    private conversationService:ConversationHubService,
-    private messagingService:MessagingService
-  ) {
+    private conversationService: ConversationHubService,
+    private messagingService: MessagingService) {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgType === MessageTypes.CLOSE_NAVI && msg.msgData == false) {
         this.isSideMenuOpened = false;
@@ -150,8 +148,12 @@ export class DiffViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let getDeepLinkInfoObj: any = this.storageService.getItem(StorageKeys.DEEP_LINK_INFO);
+    if (getDeepLinkInfoObj && getDeepLinkInfoObj.product_id) {
+      this.utils.saveProductId(getDeepLinkInfoObj.product_id)
+    }
     this.product = this.storageService.getItem(StorageKeys.Product);
-    this.metaDeta= this.storageService.getItem(StorageKeys.MetaData);
+    this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.selectedVersionOne = this.storageService.getItem(
       StorageKeys.SpecVersion
@@ -178,13 +180,10 @@ export class DiffViewerComponent implements OnInit {
           productId: params?.productId ? params?.productId : params?.product_id,
           versionId: params?.versionId ? params.versionId : params.version_id,
         });
-      } else if (
-        params?.template_type === 'WORKFLOW' ||
-        params?.template_type === 'UPDATE_SPEC'
-      ) {
+      } else if (params?.template_type === 'WORKFLOW' || params?.template_type === 'UPDATE_SPEC') {
         this.specificationUtils.openConversationPanel({
           openConversationPanel: true,
-          parentTabIndex: 1,
+          parentTabIndex: 1
         });
         this.specService.getMeCrList({
           productId: params?.productId ? params?.productId : params?.product_id,
@@ -192,9 +191,9 @@ export class DiffViewerComponent implements OnInit {
       }
       this.getUsersData();
     });
-    this.utils.getMeProductId.subscribe((data)=>{
-      if(data && this.isDockedNaviEnabled){
-        this.getVersions({id:data})
+    this.utils.getMeProductId.subscribe((data) => {
+      if (data || this.isDockedNaviEnabled) {
+        this.getVersions({ id: data })
       }
     })
   }
@@ -247,92 +246,75 @@ export class DiffViewerComponent implements OnInit {
     return flattenedData;
   }
 
-  getVersions(emitObj?:any) {
+  getVersions(emitObj?: any) {
     this.utils.loadSpinner(true);
-    if(emitObj){
+    if (emitObj) {
       let product = this.metaDeta.find((x: any) => x.id === emitObj.id);
       if (product) {
         localStorage.setItem('record_id', product.id);
-        localStorage.setItem('product',JSON.stringify(product))
+        localStorage.setItem('product', JSON.stringify(product))
         localStorage.setItem('app_name', product.title);
-        localStorage.setItem(
-          'product_url',
-          emitObj.url && emitObj.url !== '' ? emitObj.url : ''
-        );
+        localStorage.setItem('product_url', emitObj.url && emitObj.url !== '' ? emitObj.url : '');
         this.product = product;
-        this.conversationService.getConversations('?productId='+product.id).then((data:any)=>{
-          if(data.data){
+        this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
+          if (data.data) {
             this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0]);
             this.utils.saveProductDetails(product);
-          }else{
+          } else {
             this.utils.saveProductDetails(product);
           }
-        }).catch((err:any)=>{
-          console.log(err,'err')
+        }).catch((err: any) => {
+          console.log(err, 'err')
           this.utils.saveProductDetails(product);
         })
       }
     }
-    if(typeof this.product === 'string'){
+    if (typeof this.product === 'string') {
       this.product = JSON.parse(this.product)
     }
-    this.specService.getVersions(this.product.id, (data) => {
-      let version = data.filter((obj: any) => {
-        return obj.id === this.specRouteParams.versionId
-          ? this.specRouteParams.versionId
-          : this.specRouteParams.version_id;
-      })[0];
+    if (this.product && this.product.id) {
+      this.specService.getVersions(this.product.id, (data) => {
+        let version = data.filter((obj: any) => {
+          return obj.id === this.specRouteParams.versionId ? this.specRouteParams.versionId : this.specRouteParams.version_id;
+        })[0];
 
-      const uniqueStatuses = [
-        ...new Set(data.map((obj: any) => obj.specStatus)),
-      ];
-      const priorityOrder = uniqueStatuses.sort((a, b) => {
-        if (a === 'LIVE') return -1;
-        if (b === 'LIVE') return 1;
-        return 0;
-      });
-      const firstObjectWithPriority = data.find(
-        (obj: any) => obj.specStatus === priorityOrder[0]
-      );
-      this.specService.getMeSpecInfo({
-        productId: this.product?.id,
-        versionId: version ? version.id : firstObjectWithPriority.id,
-      },
-      (specData) => {
-        if (specData) {
-          if (
-            this.conversationPanelInfo?.openConversationPanel &&
-            this.conversationPanelInfo?.parentTabIndex === 0 &&
-            this.conversationPanelInfo?.childTabIndex === 0
-          ) {
-            this.specService.getMeAllComments({
-              productId: this.product?.id,
-              versionId: firstObjectWithPriority.id,
-            });
-          } else if (
-            this.conversationPanelInfo?.openConversationPanel &&
-            this.conversationPanelInfo?.parentTabIndex === 0 &&
-            this.conversationPanelInfo?.childTabIndex === 1
-          ) {
-            this.specService.getMeAllTasks({
-              productId: this.product?.id,
-              versionId: firstObjectWithPriority.id,
-            });
-          } else if (
-            this.conversationPanelInfo?.openConversationPanel &&
-            this.conversationPanelInfo?.parentTabIndex === 1
-          ) {
-            this.specService.getMeCrList({ productId: this.product?.id });
+        const uniqueStatuses = [...new Set(data.map((obj: any) => obj.specStatus))];
+        const priorityOrder = uniqueStatuses.sort((a, b) => {
+          if (a === 'LIVE') return -1;
+          if (b === 'LIVE') return 1;
+          return 0;
+        });
+        const firstObjectWithPriority = data.find((obj: any) => obj.specStatus === priorityOrder[0]);
+        this.specService.getMeSpecInfo({
+          productId: this.product?.id,
+          versionId: version ? version.id : firstObjectWithPriority.id,
+        }, (specData) => {
+          if (specData) {
+            if (this.conversationPanelInfo?.openConversationPanel &&
+              this.conversationPanelInfo?.parentTabIndex === 0 && this.conversationPanelInfo?.childTabIndex === 0) {
+              this.specService.getMeAllComments({
+                productId: this.product?.id,
+                versionId: firstObjectWithPriority.id,
+              });
+            } else if (this.conversationPanelInfo?.openConversationPanel &&
+              this.conversationPanelInfo?.parentTabIndex === 0 && this.conversationPanelInfo?.childTabIndex === 1) {
+              this.specService.getMeAllTasks({
+                productId: this.product?.id,
+                versionId: firstObjectWithPriority.id,
+              });
+            } else if (this.conversationPanelInfo?.openConversationPanel && this.conversationPanelInfo?.parentTabIndex === 1) {
+              this.specService.getMeCrList({ productId: this.product?.id });
+            }
           }
-        }
+        });
+        this.versions = data;
+        this.selectedVersion = version ? version : firstObjectWithPriority;
+        this.storageService.saveItem(
+          StorageKeys.SpecVersion,
+          version ? version : firstObjectWithPriority
+        );
       });
-      this.versions = data;
-      this.selectedVersion = version ? version : firstObjectWithPriority;
-      this.storageService.saveItem(
-        StorageKeys.SpecVersion,
-        version ? version : firstObjectWithPriority
-      );
-    });
+    }
   }
 
   getDiffObj(fromArray: any, srcObj: any, isOnDiff: boolean = false) {
