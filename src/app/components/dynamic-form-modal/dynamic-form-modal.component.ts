@@ -32,11 +32,18 @@ export class DynamicFormModalComponent implements OnInit {
     
 
     this.createPromptForm = this.formBuilder.group({
+      category: [""],
+      source: [""],
       name: [""],
       description: [""],
       instruction: [""],
       initialConversationStarter: [''],
       starter: [[]],
+      key: [''],
+      value: [''],
+      key_value: [[]],
+      opening_message: [""],
+      concluding_message: [""],
       linkParent: [""],
       guideline: [''],
       responsibility: [''],
@@ -114,6 +121,29 @@ export class DynamicFormModalComponent implements OnInit {
     }
   }
 
+  getObjectKeys(obj: any): string[] {
+    return Object.keys(obj);
+  }
+
+  addKeyValue() {
+    const key = this.createPromptForm.get('key')?.value?.trim();
+    const value = this.createPromptForm.get('value')?.value?.trim();
+    if(key && value) {
+      const keyValueArray = this.createPromptForm.get('key_value')?.value;
+      keyValueArray.push({
+        [key]: value
+      });
+
+      this.createPromptForm.patchValue({
+        key_value: keyValueArray
+      });
+
+      this.createPromptForm.get('key')?.setValue('')// Clear the input field
+      this.createPromptForm.get('value')?.setValue('')// Clear the input field
+
+    }
+  }
+
   onClose() {
     this.displayChange.emit(false);
   }
@@ -128,10 +158,23 @@ export class DynamicFormModalComponent implements OnInit {
 
     formData.starter = starterArrayString
 
+    if(formData.key && formData.value) {
+      formData.key_value.push({
+        [formData.key]: formData.value
+      })  
+    }
+
+    formData.key_value = JSON.stringify(formData.key_value)
+
 
     const linkParent = formData.linkParent
 
     delete formData.linkParent
+
+    // Below field should be handled by Backend.
+    formData["status"]="training"
+
+    formData["account_id"] = this.userInfo.account_id
 
     console.log(linkParent, formData, "linkParent")
 

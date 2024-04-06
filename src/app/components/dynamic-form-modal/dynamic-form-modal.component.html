@@ -10,6 +10,20 @@
     <div class="modal-body w-8 mx-auto">
       <form [formGroup]="createPromptForm" (ngSubmit)="onSubmit()">
         <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="category">Category</label>
+          <div class="w-full">
+            <input pInputText type="text" class="w-full form-control" id="category" formControlName="category"
+              placeholder="Create new or add from existing prompt" />
+          </div>
+        </div>
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="source">Source</label>
+          <div class="w-full">
+            <input pInputText type="text" class="w-full form-control" id="source" formControlName="source"
+              placeholder="Create new or add from existing prompt" />
+          </div>
+        </div>
+        <div class="flex flex-column align-items-center mb-3">
           <label class="w-full" for="name">Name</label>
           <div class="w-full">
             <input pInputText type="text" class="w-full form-control" id="name" formControlName="name"
@@ -80,10 +94,47 @@
               </div>
           </div>
         </div>
+
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="starter">Key Value</label>
+          <div class="w-full">
+            <div class="flex gap-4">
+              <input pInputText type="text" formControlName="key" class="w-full form-control" id="keyInput" placeholder="Enter Key" />
+              <input pInputText type="text" formControlName="value" class="w-full form-control" id="valueInput" placeholder="Enter Value" />
+            </div>
+              <p-button type="button" (onClick)="addKeyValue()" label="add more" icon="pi pi-plus" iconPos="left"></p-button>
+              <div *ngIf="createPromptForm.get('key_value')?.value?.length > 0">
+                  <div>
+                      <div *ngFor="let item of createPromptForm.get('key_value')?.value">
+                        <div *ngFor="let key of getObjectKeys(item)">
+                          {{ key }}: {{ item[key] }}
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="opening_message">opening_message</label>
+          <div class="w-full">
+            <textarea rows="3" pInputTextarea class="w-full form-control" id="opening_message"
+              formControlName="opening_message" placeholder="Enter opening message"></textarea>
+          </div>
+        </div>
+
+        <div class="flex flex-column align-items-center mb-3">
+          <label class="w-full" for="concluding_message">Concluding_message</label>
+          <div class="w-full">
+            <textarea rows="3" pInputTextarea class="w-full form-control" id="concluding_message"
+              formControlName="concluding_message" placeholder="Enter Closing message"></textarea>
+          </div>
+        </div>
+
         <div class="flex flex-column align-items-center mb-3">
           <label class="w-full" for="linkParent">link Parent</label>
           <div class="w-full">
-              <p-dropdown styleClass="w-full"  formControlName="linkParent" (onChange)="onLinkParentChangeHandler($event)"  [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"  [showClear]="true" placeholder="Select a Country">
+              <p-dropdown styleClass="w-full"  formControlName="linkParent" (onChange)="onLinkParentChangeHandler($event)"  [options]="parentLinkOptionList" optionLabel="name" [filter]="true" filterBy="name"  [showClear]="true" placeholder="Please Select">
                 <ng-template pTemplate="header">
 
                     <p-tabView (onChange)="getAllAgentList()" [(activeIndex)]="activeIndex">
