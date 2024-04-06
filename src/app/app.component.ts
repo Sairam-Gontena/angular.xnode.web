@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         if (msg.msgData.isNaviExpanded) {
           this.isNaviExpanded = msg.msgData.isNaviExpanded;
-          this.resource_id = msg.msgData.resource_id
+          this.resource_id = msg.msgData.resource_id;
           this.openNavi()
         } else {
           this.isNaviExpanded = msg.msgData.isNaviExpanded;
@@ -165,6 +165,7 @@ export class AppComponent implements OnInit {
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
         this.resource_id = msg.msgData.resource_id
+        this.conversationId = msg.msgData.conversation_id;
         this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
@@ -718,8 +719,14 @@ export class AppComponent implements OnInit {
       }
       this.resource_id = undefined
     }
-
-
+    if (this.conversationId) {
+      if (rawUrl.includes("conversationId")) {
+        rawUrl = rawUrl.replace(/conversationId=[^&]*/, "conversationId=" + this.conversationId);
+      } else {
+        rawUrl += "&conversationId=" + this.conversationId;
+      }
+      this.conversationId = undefined
+    }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
     this.summaryObject = '';
