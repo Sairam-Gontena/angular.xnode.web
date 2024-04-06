@@ -164,6 +164,7 @@ export class AppComponent implements OnInit {
         this.newWithNavi = !msg.msgData?.product;
         this.product = msg.msgData?.product;
         this.isFileImported = msg.msgData.importFilePopup;
+        this.resource_id = msg.msgData.resource_id
         this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
