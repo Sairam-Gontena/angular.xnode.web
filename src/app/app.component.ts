@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
   inXpilotComp: boolean = false;
   product: any;
   newWithNavi: boolean = false;
+  componentToShow?: any;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -146,6 +147,7 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
+        this.componentToShow = msg.msgData.componentToShow;
         if (msg.msgData.isNaviExpanded) {
           this.isNaviExpanded = msg.msgData.isNaviExpanded;
           this.resource_id = msg.msgData.resource_id;
@@ -726,6 +728,15 @@ export class AppComponent implements OnInit {
         rawUrl += "&conversationId=" + this.conversationId;
       }
       this.conversationId = undefined
+    }
+    if (this.componentToShow) {
+      if (rawUrl.includes("componentToShow")) {
+        rawUrl = rawUrl.replace(/componentToShow=[^&]*/, "componentToShow=" + this.componentToShow);
+        this.componentToShow = undefined;
+      } else {
+        rawUrl += "&componentToShow=" + this.componentToShow;
+        this.componentToShow = undefined;
+      }
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
