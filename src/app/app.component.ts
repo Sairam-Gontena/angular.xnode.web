@@ -448,11 +448,7 @@ export class AppComponent implements OnInit {
         this.showSummaryPopup = true;
       }
     });
-    this.utilsService.getMeImportFilePopupStatus.subscribe((data: any) => {
-      if (data) {
-        this.showImportFilePopup = true;
-      }
-    });
+    this.getAllUsers();
   }
 
   getAllProductsInfo(key: string) {
