@@ -1,12 +1,12 @@
 import { LocalStorageService } from 'src/app/components/services/local-storage.service';
-import { CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
+import { BreadCrumbsAction, CapabilitiesTableData, IPaginatorInfo, IQueryParams, ITableDataEntry, ITableInfo } from './IAgent-details';
 import dynamicTableColumnData from '../../../assets/json/dynamictabledata.json';
 import { AgentHubService } from 'src/app/api/agent-hub.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { agentName } from '../agent-hub/agent-hub.constant';
 import { AgentHubFormConstant } from 'src/assets/json/agenthub_form_constant';
 import { TabViewChangeEvent } from 'primeng/tabview';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UtilsService } from 'src/app/components/services/utils.service';
 
 const InitialPaginatorInfo = {
@@ -202,12 +202,13 @@ export class AgentDetailsModel {
     },
   };
   activeHeaderActionBtnOption!: any[];
-  breadCrumbsAction = {
+  breadCrumbsAction: BreadCrumbsAction = {
     isBreadCrumbActive: false,
     breadcrumb: [
       {
         label: 'Agent Hub',
         index: 0,
+        path: '/agent-playground'
       },
     ],
     // activeBreadCrumbsItem: "",
@@ -239,7 +240,8 @@ export class AgentDetailsModel {
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
     private activatedRoute: ActivatedRoute,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService,
+    private router: Router) {
     this.userInfo = this.storageService.getItem(StorageKeys.CurrentUser);
   }
 
@@ -265,6 +267,10 @@ export class AgentDetailsModel {
     const indexToDelete = event.item.index + 1;
     newItem.splice(indexToDelete);
     this.breadCrumbsAction.isBreadCrumbActive = false;
+
+    if(event?.item?.path) {
+      this.router.navigate([event.item.path]);
+    }
 
     // Show viewALl button
     // this.viewAll.showButton = !this.breadCrumbsAction.isBreadCrumbActive;

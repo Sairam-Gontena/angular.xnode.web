@@ -18,12 +18,14 @@ export class AgentDetailsComponent {
   constructor(private storageService: LocalStorageService,
     private agentHubService: AgentHubService,
     private activeRoute: ActivatedRoute,
-    private utilsService: UtilsService) {
+    private utilsService: UtilsService,
+    private router: Router) {
     this.agentDetailsModel = new AgentDetailsModel(
       this.storageService,
       this.agentHubService,
       this.activeRoute,
-      this.utilsService
+      this.utilsService,
+      this.router
     );
 
     this.agentDetailsModel.queryparamInfo = this.activeRoute.snapshot.params as IQueryParams

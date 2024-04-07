@@ -55,6 +55,11 @@ export class AppSideMenuComponent implements OnInit {
           icon: './assets/home.svg',
           path: 'my-products',
         },
+        {
+          label: 'Agents',
+          icon: './assets/agent-hub/agent-sidebar.svg',
+          path: 'agent-playground/',
+        },
         // {
         //   label: 'Knowledge',
         //   icon: './assets/accounts.svg',
