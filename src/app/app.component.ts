@@ -762,7 +762,10 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
-    this.componentToShow = 'Tasks'
+    this.componentToShow = 'Tasks';
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    if (product)
+      this.componentToShow = 'Chat';
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
@@ -855,8 +858,8 @@ export class AppComponent implements OnInit {
   }
   getConversation(): void {
     this.conversationHubService.getConversations('?id=' + this.conversation_id + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
-      if (res && res.status === 200) {
-        this.convSummary = res.data[0].content.conversation_summary;
+      if (res?.data && res.status === 200) {
+        this.convSummary = res.data?.data[0].content.conversation_summary;
         this.showSummaryPopup = true;
       } else {
         this.utilsService.loadToaster({
