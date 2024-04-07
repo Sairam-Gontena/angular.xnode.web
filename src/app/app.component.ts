@@ -147,16 +147,19 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
-        this.componentToShow = msg.msgData.componentToShow;
-        this.conversationId = msg.msgData?.conversation_id;
-        if (msg.msgData.isNaviExpanded) {
-          this.isNaviExpanded = msg.msgData.isNaviExpanded;
+        this.componentToShow = msg.msgData?.componentToShow;
+        if (msg.msgData?.componentToShow === 'Resources') {
+          this.storageService.removeItem(StorageKeys.Product);
+          this.storageService.removeItem(StorageKeys.CONVERSATION);
           this.resource_id = msg.msgData.resource_id;
-          this.openNavi()
-        } else {
-          this.isNaviExpanded = msg.msgData.isNaviExpanded;
-          this.openNavi()
         }
+        if (msg.msgData?.componentToShow === 'Chat') {
+          this.storageService.removeItem(StorageKeys.Product);
+          this.storageService.removeItem(StorageKeys.CONVERSATION);
+          this.conversationId = msg.msgData?.conversation_id;
+        }
+        this.isNaviExpanded = msg.msgData?.isNaviExpanded;
+        this.openNavi()
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
