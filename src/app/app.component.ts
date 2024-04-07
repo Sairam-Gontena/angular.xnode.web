@@ -148,6 +148,7 @@ export class AppComponent implements OnInit {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
         this.componentToShow = msg.msgData.componentToShow;
+        this.conversationId = msg.msgData?.conversation_id;
         if (msg.msgData.isNaviExpanded) {
           this.isNaviExpanded = msg.msgData.isNaviExpanded;
           this.resource_id = msg.msgData.resource_id;
