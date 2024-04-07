@@ -251,6 +251,10 @@ export class AppHeaderComponent implements OnInit {
 
   onClickHelpCenter() {
     this.router.navigate(['/help-center']);
+    this.messagingService.sendMessage({
+      msgType: MessageTypes.CLOSE_NAVI,
+      msgData: 'CLOSE',
+    });
     this.utilsService.showProductStatusPopup(false);
     this.utilsService.showLimitReachedPopup(false);
     this.auditUtil.postAudit('HELP_CENTER', 1, 'SUCCESS', 'user-audit');
@@ -273,6 +277,8 @@ export class AppHeaderComponent implements OnInit {
   initializeWebsocket() {
     this.webSocketService.emit('join', environment.webSocketNotifier);
     this.webSocketService.onEvent(this.email).subscribe((data: any) => {
+      console.log('notif', data);
+
       this.allNotifications.unshift(data);
       this.notifications = this.allNotifications;
       this.notificationCount = this.notifications.length;

@@ -31,7 +31,7 @@
     <div class="grid" *ngIf="foundObjects.length==0 else elseTemplate">
         <div class="sm:col-12 md:col-4 lg:col-4 xl:col-4">
             <p-accordion class="text-white border-transparent">
-                <p-accordionTab class="accordion-help-menu border-transparent relative z-5"
+                <p-accordionTab class="accordion-help-menu border-transparent relative "
                     header="{{item.accordianTitle}}" *ngFor="let item of json" activeIndex="0"
                     (click)="selectJson($event,item?.objects?.[0]?.title,item.accordianTitle)">
                     <a class="side-menu-item block text-white cursor-pointer no-underline my-1 py-2 px-4 border-round-3xl"
@@ -89,7 +89,7 @@
         <div class="grid">
             <div class="sm:col-12 md:col-4 lg:col-4 xl:col-4">
                 <p-accordion class="text-white border-transparent">
-                    <p-accordionTab class="accordion-help-menu border-transparent relative z-5"
+                    <p-accordionTab class="accordion-help-menu border-transparent relative"
                         header="{{item.accordianTitle}}" *ngFor="let item of filteredAccordion" activeIndex="0"
                         (click)="selectJson($event,item?.objects?.[0]?.title,item?.accordianTitle)">
                         <a class="side-menu-item block text-white cursor-pointer no-underline my-1 py-2 px-4 border-round-3xl"
