@@ -152,13 +152,13 @@ export class AppComponent implements OnInit {
           this.storageService.removeItem(StorageKeys.CONVERSATION);
           this.resource_id = msg.msgData.resource_id;
         }
-        if (msg.msgData?.componentToShow === 'Chat') {
+        if (msg.msgData?.componentToShow === 'Chat' && msg.msgData.component !== 'my-products') {
           this.storageService.removeItem(StorageKeys.Product);
           this.storageService.removeItem(StorageKeys.CONVERSATION);
           this.conversationId = msg.msgData?.conversation_id;
         }
         this.isNaviExpanded = msg.msgData?.isNaviExpanded;
-        this.openNavi()
+        this.makeTrustedUrl();
       }
     })
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
@@ -197,6 +197,7 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
+    this.componentToShow = 'Tasks';
     this.makeTrustedUrl();
     this.router.navigate(['/my-products'])
   }
@@ -657,6 +658,7 @@ export class AppComponent implements OnInit {
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
     }
     if (this.newWithNavi) {
+      this.componentToShow = 'Chat';
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
     if (this.conversatonDetails) {
@@ -682,14 +684,6 @@ export class AppComponent implements OnInit {
         JSON.stringify(this.product) +
         '&new_with_navi=' +
         false + '&componentToShow=Chat';
-    } else if (this.newWithNavi) {
-      rawUrl = rawUrl + '&componentToShow=Chat';
-    } else {
-      let addUrl = '';
-      if (this.isFileImported) {
-        addUrl = '&componentToShow=Conversations';
-      }
-      rawUrl = rawUrl + addUrl;
     }
     if (this.resource_id) {
       rawUrl = rawUrl + '&resource_id=' + this.resource_id;
@@ -768,6 +762,7 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
+    this.componentToShow = 'Tasks'
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
