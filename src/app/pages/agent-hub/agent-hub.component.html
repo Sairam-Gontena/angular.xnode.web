@@ -1,0 +1,102 @@
+<div class="pr-4 pl-5">
+  <div class="flex justify-content-between py-6">
+    <div class="flex gap-2 align-items-center">
+      <!-- <p-button [styleClass]="agentHubModel.breadCrumbsAction.isBreadCrumbActive ? 'cyan-text-color p-0' : 'p-0'"
+        (onClick)="agentHubModel.goBackBreadCrumbsHandler()">Agent Hub</p-button>
+      <div class="flex gap-2 align-items-center" *ngIf="agentHubModel.breadCrumbsAction.isBreadCrumbActive">
+        <p class="m-0 flex"><i class="pi pi-angle-right"></i></p>
+        <p>{{agentHubModel.breadCrumbsAction.activeBreadCrumbsItem}}</p>
+      </div> -->
+
+      <xnode-breadcrumbs [items]="agentHubModel.breadCrumbsAction.breadcrumb"
+        (changeEvent)="agentHubModel.goBackBreadCrumbsHandler($event)"
+        [highLightColor]="'cyan-text-color'"></xnode-breadcrumbs>
+    </div>
+
+    <div class="flex align-items-center justify-content-between">
+      <!-- Left-aligned content -->
+      <div class="flex align-items-center">
+        <p-button *ngIf="
+            !agentHubModel.breadCrumbsAction.isBreadCrumbActive;
+            else elseBlock
+          " label="Create Agent"
+          styleClass="text-white text-sm line-height-1 font-semibold font-family-inter border-white-alpha-70 border-round-2xl px-2 py-2"
+          [outlined]="true" icon="pi pi-plus-circle" iconPos="right"
+          (onClick)="agentHubModel.createAgentHandler()"></p-button>
+
+        <ng-template #elseBlock>
+          <p-splitButton label="Actions" styleClass="agent-playground-headerActionBtn"
+            [model]="agentHubModel.activeHeaderActionBtnOption"></p-splitButton>
+        </ng-template>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="flex align-items-center gap-2">
+        <!-- <p-button icon="pi pi-bars"></p-button> -->
+
+        <p-button>
+          <img src="../../../assets/agent-hub/hamburger-icon.svg" alt="" />
+        </p-button>
+
+        <!-- <p-button icon="pi pi-user"></p-button> -->
+
+        <p-button>
+          <img src="../../../assets/agent-hub/chart-tree.svg" alt="" />
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex agent-summary" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive">
+    <!-- Agents Card -->
+    <div class="flex gap-2" *ngFor="let item of agentHubModel.statsItem">
+      <!-- <p-button
+        styleClass="p-0"
+        (onClick)="agentHubModel.OnbreabCrumbsClickHandler(item)"
+      > -->
+
+      <p-button styleClass="p-0">
+        <img class="agent-icons" [src]="item.imgPath" alt="" />
+      </p-button>
+      <div class="flex flex-column">
+        <div class="font-semibold text-base star-dust">{{ item.label }}</div>
+        <div class="text-4xl font-bold">{{ item.count }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB Section -->
+  <div class="flex" *ngIf="!agentHubModel.breadCrumbsAction.isBreadCrumbActive">
+    <xnode-multi-select-checkbox [filter]="agentHubModel.tabFilterOptions.filter"
+      [showToggleAll]="agentHubModel.tabFilterOptions.showToggleAll"
+      [showHeader]="agentHubModel.tabFilterOptions.showHeader" [options]="agentHubModel.tabFilterOptions.options"
+      [placeholder]="agentHubModel.tabFilterOptions.placeholder"
+      [showIconOnly]="agentHubModel.tabFilterOptions.showIconOnly"
+      [hamburgerIconUrl]="agentHubModel.tabFilterOptions.hamburgerIconUrl"
+      [optionLabel]="agentHubModel.tabFilterOptions.optionLabel"
+      [styleClass]="agentHubModel.tabFilterOptions.styleClass"
+      (changeEvent)="agentHubModel.tabFilterOptions.changeHandler($event)">
+    </xnode-multi-select-checkbox>
+
+    <p-tabView class="relative w-full" (onChange)="agentHubModel.getAllAgentList()"
+      [(activeIndex)]="agentHubModel.activeIndex">
+      <p-tabPanel *ngFor="let tab of agentHubModel.tabItems; let i = index" [header]="tab.title">
+        <!-- For now Comment below code, uncomment once the functionality is decided -->
+        <!-- <p-splitButton label="" styleClass="p-button-text p-button-plain" [style]="{top: '7%', position: 'absolute'}"
+          (onClick)="agentHubModel.agentTabDropDownHandler()"
+          (onDropdownClick)="agentHubModel.agentTabDropDownHandler()"
+          [model]="agentHubModel.agentTabItemDropdown"></p-splitButton> -->
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+
+  <div class="w-full table-height">
+    <xnode-dynamic-table [inputData]="agentHubModel.tableData" [cols]="agentHubModel.columns"
+      [tableInfo]="agentHubModel.tableInfo" [showColumnFilterOption]="agentHubModel.showColumnFilterOption"
+      [tableRowActionOptions]="agentHubModel.tableRowActionOptions" [paginatorInfo]="agentHubModel.paginatorInfo"
+      [searchFilterOptions]="agentHubModel.searchFilterOptions" [viewAll]="agentHubModel.viewAll"
+      [showViewRowData]="true" (changeEvent)="agentHubModel.viewHandler($event)" columnWidth="13.8rem"
+      altBgColorRow="#2E2D36"></xnode-dynamic-table>
+  </div>
+</div>

@@ -1,0 +1,185 @@
+:host ::ng-deep .p-dropdown .p-dropdown-trigger {
+  width: auto !important;
+}
+
+:host ::ng-deep .p-button {
+  background: none;
+  justify-content: center;
+  padding-left: 1rem;
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: #fff !important;
+}
+
+:host ::ng-deep .p-tabview-panels,
+:host ::ng-deep .p-tabview-nav,
+:host ::ng-deep .p-tabview-nav li,
+:host ::ng-deep .p-tabview-nav li a {
+  background: transparent !important;
+}
+
+.separator {
+  border-left: 1px solid #a2a2a3;
+  margin: 0 1rem;
+  height: 1.8rem;
+}
+
+.agent-icons {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.agent-summary {
+  padding: 0rem 13rem 2.5rem 5rem;
+  justify-content: space-between;
+}
+
+:host ::ng-deep.p-tabview-nav {
+  gap: 1.5rem;
+}
+
+/* Change background color of the dropdown */
+:host ::ng-deep .p-multiselect-panel {
+  background-color: var(--multiselect-pannel-background-color);
+}
+
+/* Change background color of the dropdown panel */
+:host ::ng-deep .custom-multiselect .p-multiselect-label-container {
+  background-color: transparent;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+:host ::ng-deep .p-multiselect {
+  border-radius: 0%;
+}
+
+:host ::ng-deep .custom-multiselect .p-multiselect-trigger {
+  display: flex !important;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: auto;
+  padding-right: 0.5rem;
+  color: white;
+}
+
+:host ::ng-deep .custom-multiselect {
+  background-color: #343541;
+  border: 2px solid #595959;
+  border-radius: 6px;
+}
+
+:host ::ng-deep .custom-multiselect:not(.p-disabled).p-focus {
+  outline: inherit;
+  outline-offset: 0;
+  box-shadow: none;
+  border: 2px solid #595959;
+}
+
+:host ::ng-deep .p-placeholder {
+  color: white;
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputtext:enabled:hover {
+  border-radius: 0%;
+  background-color: #343541;
+  border: 2px solid #595959;
+  border-radius: 6px;
+}
+
+:host ::ng-deep .showColumnFilterOption,
+.p-multiselect-label-container,
+.p-multiselect {
+  border-radius: 0%;
+  background-color: transparent !important;
+  border: none;
+}
+
+:host ::ng-deep .showColumnFilterOption .p-multiselect-trigger {
+  display: flex !important;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: auto;
+  padding-right: 0.5rem;
+  color: white;
+}
+
+// Menu Hamburger Style
+:host ::ng-deep .menu-hamburger,
+.p-multiselect-label-container,
+.p-multiselect {
+  border-radius: 0%;
+  background-color: transparent !important;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+:host ::ng-deep .menu-hamburger {
+  .p-multiselect-label {
+    visibility: hidden;
+    overflow: hidden;
+
+    // opacity: 0;
+  }
+}
+
+:host ::ng-deep .menu-hamburger .p-multiselect-label {
+  padding-left: 0;
+  padding-right: 0;
+}
+.menu-hamburger:not(.p-disabled).p-focus {
+  border: none;
+}
+
+// /* Hide the label text */
+// .ui-multiselect-label {
+//   display: none;
+// }
+
+// /* Use a hamburger icon instead of the label text */
+// .ui-multiselect-trigger::after {
+//   content: '';
+//   // background-image: var(--hamburger-icon); /* Use the custom property */
+//   background-repeat:  no-repeat;
+//   background-size: 100%; /* Adjust the size of the icon */
+//   width: 20px; /* Adjust the width of the icon */
+//   height: 20px; /* Adjust the height of the icon */
+//   display: inline-block;
+// }
+
+.menu-hamburger .p-multiselect-trigger {
+  display: none;
+}
+
+:host ::ng-deep .cyan-text-color {
+  color: #02adee !important;
+}
+
+.star-dust {
+  color: #a2a2a3;
+}
+
+:host ::ng-deep .p-breadcrumb {
+  background-color: transparent;
+  border: none;
+}
+
+// Dynamic Table style Starts
+
+// Column 3 dots action button
+:host ::ng-deep .p-splitbutton-defaultbutton,
+:host ::ng-deep .p-splitbutton-menubutton {
+  padding: 0;
+}
+
+:host ::ng-deep .p-splitbutton-menubutton {
+  width: fit-content;
+  margin-left: 0.5rem;
+}
