@@ -93,24 +93,6 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     this.closePopup();
   }
 
-
-  onClickProductCard(data: any, notifObj: any): void {
-    if (this.currentUser?.email == data.email) {
-      this.utils.hasProductPermission(true);
-    } else {
-      this.utils.hasProductPermission(false);
-    }
-    delete data.created_by;
-    delete data.timeAgo;
-    this.storageService.saveItem(StorageKeys.Product, data);
-    localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.title);
-    localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-    notifObj.productId = data.id;
-    this.utils.updateSummary(notifObj);
-  }
-
   async copyToClipboard(content: any, event: any) {
     let formattedContent = ''
     if (typeof content === 'string') {
