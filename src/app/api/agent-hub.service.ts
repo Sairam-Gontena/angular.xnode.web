@@ -58,6 +58,6 @@ export class AgentHubService extends BaseApiService {
 
   updateData(urlParam: any): Observable<any> {
 
-    return this.getHttp.put(this.apiUrl + urlParam.url, urlParam.data);
+    return this.getHttp.put(this.apiUrl + urlParam.url, JSON.stringify(urlParam.data));
   }
 }
