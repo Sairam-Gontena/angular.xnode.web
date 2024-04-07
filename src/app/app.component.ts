@@ -76,7 +76,6 @@ export class AppComponent implements OnInit {
   groupConversations: any;
   oneToOneConversations: any;
   conversation_id: any;
-  summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
   conversatonDetails: any;
   conversationId?: string;
@@ -182,24 +181,6 @@ export class AppComponent implements OnInit {
         this.showDockedNavi = false;
         this.isNaviExpanded = false;
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
-      }
-    })
-    this.utilsService.getMeSummaryObject.subscribe((data: any) => {
-      this.conversatonDetails = data;
-      if (data?.summary && Object.keys(data?.summary).length > 0) {
-        this.summaryObject = data;
-        let isNaviOpened = localStorage.getItem('IS_NAVI_OPENED');
-        if (isNaviOpened) {
-          window.frames[0].postMessage({
-            type: 'Navi_SUMMARY',
-            data: data,
-            productId: data.productId,
-          }, this.targetUrl);
-        } else {
-          this.isNaviExpanded = true;
-          this.openNavi()
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-        }
       }
     })
   }
@@ -701,20 +682,14 @@ export class AppComponent implements OnInit {
         JSON.stringify(this.product) +
         '&new_with_navi=' +
         false + '&componentToShow=Chat';
-    } else if (this.newWithNavi && !this.summaryObject) {
+    } else if (this.newWithNavi) {
       rawUrl = rawUrl + '&componentToShow=Chat';
     } else {
       let addUrl = '';
       if (this.isFileImported) {
         addUrl = '&componentToShow=Conversations';
-      } else {
-        if (!this.summaryObject)
-          addUrl = '&componentToShow=Tasks';
       }
       rawUrl = rawUrl + addUrl;
-    }
-    if (this.summaryObject?.conversationId) {
-      rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
     }
     if (this.resource_id) {
       rawUrl = rawUrl + '&resource_id=' + this.resource_id;
@@ -744,7 +719,6 @@ export class AppComponent implements OnInit {
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
-    this.summaryObject = '';
   }
 
   iframeUrlLoad(rawUrl: any) {
