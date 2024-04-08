@@ -467,7 +467,7 @@ export class AppHeaderComponent implements OnInit {
     this.conversationService.getConversations('?id=' + obj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
-        this.convSummary = res.data[0].content.conversation_summary;
+        this.convSummary = res.data?.data[0].content.conversation_summary;
       } else {
         this.utils.loadToaster({
           severity: 'error',
