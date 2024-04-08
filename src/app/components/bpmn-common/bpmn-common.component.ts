@@ -7,7 +7,6 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  SimpleChanges,
 } from '@angular/core';
 import {
   BpmnPropertiesPanelModule,
@@ -24,7 +23,6 @@ import PropertiesPanel from 'bpmn-js/lib/Modeler';
 import { Observable, delay, of } from 'rxjs';
 import * as workflow from '../../../assets/json/flows_modified.json';
 import { layoutProcess } from 'bpmn-auto-layout';
-import { UserUtil } from '../../utils/user-util';
 import * as d3 from 'd3';
 import { UtilsService } from 'src/app/components/services/utils.service';
 import { MenuItem } from 'primeng/api';
@@ -32,15 +30,16 @@ import { AuditutilsService } from 'src/app/api/auditutils.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../services/local-storage.service';
 import { StorageKeys } from 'src/models/storage-keys.enum';
-import { NaviApiService } from 'src/app/api/navi-api.service';
 import { WorkflowApiService } from 'src/app/api/workflow-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { SpecApiService } from 'src/app/api/spec-api.service';
 
 @Component({
   selector: 'xnode-bpmn-common',
   templateUrl: './bpmn-common.component.html',
   styleUrls: ['./bpmn-common.component.scss'],
 })
+
 export class BpmnCommonComponent implements OnDestroy, OnInit {
   @ViewChild('propertiesRef', { static: true }) private propertiesRef:
     | ElementRef
@@ -99,9 +98,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     private auditUtil: AuditutilsService,
     private storageService: LocalStorageService,
     private router: Router,
-    private naviApiService: NaviApiService,
     private workflowApiService: WorkflowApiService,
-    private conversationService:ConversationHubService
+    private specApi: SpecApiService,
+    private conversationService: ConversationHubService
   ) {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
@@ -233,9 +232,9 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getFlow(flow: String) {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.specApi
+      .getXflows(this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
@@ -325,89 +324,6 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     this.getOverview();
   }
 
-  getOnboardingFlow() {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
-      .then(async (response: any) => {
-        if (response) {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN',
-            1,
-            'SUCCESS',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          let onboardingFlow = response.data.Flows.filter(
-            (f: any) => f.Name.toLowerCase() === 'onboarding'
-          );
-          this.auditUtil.postAudit(
-            'BPMN_ONBOARDING_FLOWS',
-            1,
-            'SUCCESS',
-            'user-audit'
-          );
-        } else {
-          let user_audit_body = {
-            method: 'GET',
-            url: response?.request?.responseURL,
-          };
-          this.auditUtil.postAudit(
-            'GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN',
-            1,
-            'FAILED',
-            'user-audit',
-            user_audit_body,
-            this.currentUser.email,
-            this.product?.id
-          );
-          this.utilsService.loadToaster({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: 'Network Error',
-          });
-          this.auditUtil.postAudit(
-            'BPMN_ONBOARDING_FLOWS',
-            1,
-            'FAILURE',
-            'user-audit'
-          );
-        }
-      })
-      .catch((error) => {
-        let user_audit_body = {
-          method: 'GET',
-          url: error?.request?.responseURL,
-        };
-        this.auditUtil.postAudit(
-          'GET_ONBOARDING_FLOW_RETRIEVE_XFLOWS_BPMN',
-          1,
-          'FAILED',
-          'user-audit',
-          user_audit_body,
-          this.currentUser.email,
-          this.product?.id
-        );
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error,
-        });
-        this.auditUtil.postAudit(
-          'BPMN_ONBOARDING_FLOWS_' + error,
-          1,
-          'FAILURE',
-          'user-audit'
-        );
-      });
-  }
-
   toggleMenu() {
     this.isOpen = !this.isOpen;
   }
@@ -417,7 +333,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   }
 
   getOverview() {
-    this.conversationService.getMetaData( { accountId: this.currentUser.account_id}).then((response) => {
+    this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200) {
         let user_audit_body = {
           method: 'GET',
@@ -455,86 +371,26 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
         });
       }
     })
-    .catch((error: any) => {
-      let user_audit_body = {
-        method: 'GET',
-        url: error?.request?.responseURL,
-      };
-      this.auditUtil.postAudit(
-        'GET_RETRIEVE_OVERVIEW_BPMN',
-        1,
-        'FAILED',
-        'user-audit',
-        user_audit_body,
-        this.currentUser.email,
-        this.product?.id
-      );
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: 'ERROR',
-        detail: error,
+      .catch((error: any) => {
+        let user_audit_body = {
+          method: 'GET',
+          url: error?.request?.responseURL,
+        };
+        this.auditUtil.postAudit(
+          'GET_RETRIEVE_OVERVIEW_BPMN',
+          1,
+          'FAILED',
+          'user-audit',
+          user_audit_body,
+          this.currentUser.email,
+          this.product?.id
+        );
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'ERROR',
+          detail: error,
+        });
       });
-    });
-    // this.naviApiService
-    //   .getOverview(this.product?.email, this.product?.id)
-    //   .then((response) => {
-    //     if (response?.status === 200) {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_RETRIEVE_OVERVIEW_BPMN',
-    //         1,
-    //         'SUCCESS',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser.email,
-    //         this.product?.id
-    //       );
-    //       this.overview = response.data;
-    //       this.sideBar = true;
-    //     } else {
-    //       let user_audit_body = {
-    //         method: 'GET',
-    //         url: response?.request?.responseURL,
-    //       };
-    //       this.auditUtil.postAudit(
-    //         'GET_RETRIEVE_OVERVIEW_BPMN',
-    //         1,
-    //         'FAILED',
-    //         'user-audit',
-    //         user_audit_body,
-    //         this.currentUser.email,
-    //         this.product?.id
-    //       );
-    //       this.utilsService.loadToaster({
-    //         severity: 'error',
-    //         summary: 'ERROR',
-    //         detail: response.data?.detail,
-    //       });
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     let user_audit_body = {
-    //       method: 'GET',
-    //       url: error?.request?.responseURL,
-    //     };
-    //     this.auditUtil.postAudit(
-    //       'GET_RETRIEVE_OVERVIEW_BPMN',
-    //       1,
-    //       'FAILED',
-    //       'user-audit',
-    //       user_audit_body,
-    //       this.currentUser.email,
-    //       this.product?.id
-    //     );
-    //     this.utilsService.loadToaster({
-    //       severity: 'error',
-    //       summary: 'ERROR',
-    //       detail: error,
-    //     });
-    //   });
   }
 
   getElement() {
