@@ -10,7 +10,7 @@
                     <div id="diagramRef" class="diagram-container">
                     </div>
                     <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
-                         styleClass="w-30rem" [modal]="false">
+                         styleClass="w-35rem" [modal]="false">
                          <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
                          <div class="flex">
                               <div class="col-auto">
@@ -113,9 +113,9 @@
                <div id="diagramRef" class="diagram-container" *ngIf="showBpmn">
                </div>
                <p-sidebar *ngIf="sideBar" id="property-panel" [(visible)]="sidebarVisible" position="right"
-                    styleClass="w-30rem" [modal]="false">
+                    styleClass="bpmn-panel" [modal]="false">
                     <ng-template pTemplate="header"><b>{{overview.title}}</b></ng-template>
-                    <div class="flex w-full">
+                    <div class="flex w-full p-2 title-banner">
                          <div class="col-auto">
                               <div class="row">
                                    <p-avatar *ngIf="taskHeader?.label==='Task'" label="T" styleClass="mr-2"
