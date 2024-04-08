@@ -87,8 +87,8 @@ export class DiffViewerComponent implements OnInit {
     private specUtils: SpecUtilsService,
     private route: ActivatedRoute,
     private searchSpec: SearchspecService,
-    private conversationService:ConversationHubService,
-    private messagingService:MessagingService
+    private conversationService: ConversationHubService,
+    private messagingService: MessagingService
   ) {
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgType === MessageTypes.CLOSE_NAVI && msg.msgData == false) {
@@ -151,7 +151,7 @@ export class DiffViewerComponent implements OnInit {
 
   ngOnInit(): void {
     this.product = this.storageService.getItem(StorageKeys.Product);
-    this.metaDeta= this.storageService.getItem(StorageKeys.MetaData);
+    this.metaDeta = this.storageService.getItem(StorageKeys.MetaData);
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.selectedVersionOne = this.storageService.getItem(
       StorageKeys.SpecVersion
@@ -192,9 +192,9 @@ export class DiffViewerComponent implements OnInit {
       }
       this.getUsersData();
     });
-    this.utils.getMeProductId.subscribe((data)=>{
-      if(data && this.isDockedNaviEnabled){
-        this.getVersions({id:data})
+    this.utils.getMeProductId.subscribe((data) => {
+      if (data && this.isDockedNaviEnabled) {
+        this.getVersions({ id: data })
       }
     })
   }
@@ -247,33 +247,33 @@ export class DiffViewerComponent implements OnInit {
     return flattenedData;
   }
 
-  getVersions(emitObj?:any) {
+  getVersions(emitObj?: any) {
     this.utils.loadSpinner(true);
-    if(emitObj){
+    if (emitObj) {
       let product = this.metaDeta.find((x: any) => x.id === emitObj.id);
       if (product) {
         localStorage.setItem('record_id', product.id);
-        localStorage.setItem('product',JSON.stringify(product))
+        localStorage.setItem('product', JSON.stringify(product))
         localStorage.setItem('app_name', product.title);
         localStorage.setItem(
           'product_url',
           emitObj.url && emitObj.url !== '' ? emitObj.url : ''
         );
         this.product = product;
-        this.conversationService.getConversations('?productId='+product.id).then((data:any)=>{
-          if(data.data){
+        this.conversationService.getConversations('?productId=' + product.id).then((data: any) => {
+          if (data.data) {
             this.storageService.saveItem(StorageKeys.CONVERSATION, data.data[0]);
             this.utils.saveProductDetails(product);
-          }else{
+          } else {
             this.utils.saveProductDetails(product);
           }
-        }).catch((err:any)=>{
-          console.log(err,'err')
+        }).catch((err: any) => {
+          console.log(err, 'err')
           this.utils.saveProductDetails(product);
         })
       }
     }
-    if(typeof this.product === 'string'){
+    if (typeof this.product === 'string') {
       this.product = JSON.parse(this.product)
     }
     this.specService.getVersions(this.product.id, (data) => {
@@ -298,34 +298,34 @@ export class DiffViewerComponent implements OnInit {
         productId: this.product?.id,
         versionId: version ? version.id : firstObjectWithPriority.id,
       },
-      (specData) => {
-        if (specData) {
-          if (
-            this.conversationPanelInfo?.openConversationPanel &&
-            this.conversationPanelInfo?.parentTabIndex === 0 &&
-            this.conversationPanelInfo?.childTabIndex === 0
-          ) {
-            this.specService.getMeAllComments({
-              productId: this.product?.id,
-              versionId: firstObjectWithPriority.id,
-            });
-          } else if (
-            this.conversationPanelInfo?.openConversationPanel &&
-            this.conversationPanelInfo?.parentTabIndex === 0 &&
-            this.conversationPanelInfo?.childTabIndex === 1
-          ) {
-            this.specService.getMeAllTasks({
-              productId: this.product?.id,
-              versionId: firstObjectWithPriority.id,
-            });
-          } else if (
-            this.conversationPanelInfo?.openConversationPanel &&
-            this.conversationPanelInfo?.parentTabIndex === 1
-          ) {
-            this.specService.getMeCrList({ productId: this.product?.id });
+        (specData) => {
+          if (specData) {
+            if (
+              this.conversationPanelInfo?.openConversationPanel &&
+              this.conversationPanelInfo?.parentTabIndex === 0 &&
+              this.conversationPanelInfo?.childTabIndex === 0
+            ) {
+              this.specService.getMeAllComments({
+                productId: this.product?.id,
+                versionId: firstObjectWithPriority.id,
+              });
+            } else if (
+              this.conversationPanelInfo?.openConversationPanel &&
+              this.conversationPanelInfo?.parentTabIndex === 0 &&
+              this.conversationPanelInfo?.childTabIndex === 1
+            ) {
+              this.specService.getMeAllTasks({
+                productId: this.product?.id,
+                versionId: firstObjectWithPriority.id,
+              });
+            } else if (
+              this.conversationPanelInfo?.openConversationPanel &&
+              this.conversationPanelInfo?.parentTabIndex === 1
+            ) {
+              this.specService.getMeCrList({ productId: this.product?.id });
+            }
           }
-        }
-      });
+        });
       this.versions = data;
       this.selectedVersion = version ? version : firstObjectWithPriority;
       this.storageService.saveItem(
@@ -420,32 +420,42 @@ export class DiffViewerComponent implements OnInit {
   }
 
   async fetchOpenAPISpec(id: string, versionId: string) {
-    const record_id = localStorage.getItem('record_id');
-    let userData: any;
-    userData = localStorage.getItem('currentUser');
-    let email = JSON.parse(userData).email;
+    const product: any = this.storageService.getItem(StorageKeys.Product)
     let swaggerUrl =
-      environment.uigenApiUrl +
-      'openapi-spec/' +
-      localStorage.getItem('app_name') +
+      environment.commentsApiUrl +
+      'product-spec/openapi-spec/' +
+      product.title +
       '/' +
-      email +
-      '/' +
-      record_id +
+      product?.id +
       '/' +
       versionId;
-    const ui = SwaggerUIBundle({
-      domNode: document.getElementById(id),
-      layout: 'BaseLayout',
-      presets: [
-        SwaggerUIBundle.presets.apis,
-        SwaggerUIBundle.SwaggerUIStandalonePreset,
-      ],
-      url: swaggerUrl,
-      docExpansion: 'none',
-      operationsSorter: 'alpha',
-    });
-    this.utils.loadSpinner(false);
+    const headers = {
+      'Authorization': `Bearer ${this.storageService.getItem(StorageKeys.ACCESS_TOKEN)}`,
+      'Content-Type': 'application/json'
+    };
+    try {
+      const response = await fetch(swaggerUrl, { headers });
+      const spec = await response.json();
+
+      // Do something with the spec, e.g., render it with SwaggerUIBundle
+      const ui = SwaggerUIBundle({
+        domNode: document.getElementById(id),
+        layout: 'BaseLayout',
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset,
+        ],
+        spec,
+        docExpansion: 'none',
+        operationsSorter: 'alpha',
+      });
+
+      this.utils.loadSpinner(false);
+    } catch (error) {
+      this.utils.loadSpinner(false);
+      console.error('Error fetching OpenAPI spec:', error);
+      // Handle error
+    }
   }
 
   onSpecDataChange(data: any): void {
@@ -456,11 +466,6 @@ export class DiffViewerComponent implements OnInit {
   }
 
   onVersionChange(event: any, type: string) {
-    // type === 'one' && event.value.id === this.selectedVersionTwo.id
-    //   ? (this.selectedVersionTwo = undefined)
-    //   : type === 'two' && event.value.id === this.selectedVersionOne.id
-    //   ? (this.selectedVersionOne = undefined)
-    //   : null;
     this.utils.loadSpinner(true);
     this.getMeSpecInfo({ versionId: event.value.id, type: type });
   }
