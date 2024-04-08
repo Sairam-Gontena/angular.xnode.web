@@ -77,7 +77,6 @@ export class AppComponent implements OnInit {
   groupConversations: any;
   oneToOneConversations: any;
   conversation_id: any;
-  summaryObject: any;
   xnodeAppUrl: string = environment.xnodeAppUrl;
   conversatonDetails: any;
   conversationId?: string;
@@ -141,15 +140,19 @@ export class AppComponent implements OnInit {
     });
     this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.MAKE_TRUST_URL) {
-        this.componentToShow = msg.msgData.componentToShow;
-        if (msg.msgData.isNaviExpanded) {
-          this.isNaviExpanded = msg.msgData.isNaviExpanded;
+        this.componentToShow = msg.msgData?.componentToShow;
+        if (msg.msgData?.componentToShow === 'Resources') {
+          this.storageService.removeItem(StorageKeys.Product);
+          this.storageService.removeItem(StorageKeys.CONVERSATION);
           this.resource_id = msg.msgData.resource_id;
-          this.openNavi()
-        } else {
-          this.isNaviExpanded = msg.msgData.isNaviExpanded;
-          this.openNavi()
         }
+        if (msg.msgData?.componentToShow === 'Chat' && msg.msgData.component !== 'my-products') {
+          this.storageService.removeItem(StorageKeys.Product);
+          this.storageService.removeItem(StorageKeys.CONVERSATION);
+          this.conversationId = msg.msgData?.conversation_id;
+        }
+        this.isNaviExpanded = msg.msgData?.isNaviExpanded;
+        this.makeTrustedUrl();
       }
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
@@ -169,24 +172,6 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = false;
         this.storageService.removeItem(StorageKeys.IS_NAVI_EXPANDED)
       }
-    });
-    this.utilsService.getMeSummaryObject.subscribe((data: any) => {
-      this.conversatonDetails = data;
-      if (data?.summary && Object.keys(data?.summary).length > 0) {
-        this.summaryObject = data;
-        let isNaviOpened = localStorage.getItem('IS_NAVI_OPENED');
-        if (isNaviOpened) {
-          window.frames[0].postMessage({
-            type: 'Navi_SUMMARY',
-            data: data,
-            productId: data.productId,
-          }, this.targetUrl);
-        } else {
-          this.isNaviExpanded = true;
-          this.openNavi()
-          this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, true)
-        }
-      }
     })
   }
 
@@ -202,6 +187,7 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('IS_NAVI_OPENED')
     localStorage.removeItem('record_id')
     localStorage.removeItem('app_name')
+    this.componentToShow = 'Tasks';
     this.makeTrustedUrl();
     this.router.navigate(['/my-products'])
   }
@@ -665,6 +651,7 @@ export class AppComponent implements OnInit {
         rawUrl + '&restriction_max_value=' + JSON.parse(restriction_max_value);
     }
     if (this.newWithNavi) {
+      this.componentToShow = 'Chat';
       rawUrl = rawUrl + '&new_with_navi=' + true;
     }
     if (this.conversatonDetails) {
@@ -689,21 +676,7 @@ export class AppComponent implements OnInit {
         '&product=' +
         JSON.stringify(this.product) +
         '&new_with_navi=' +
-        false + '&componentToShow=Conversations';
-    } else if (this.newWithNavi && !this.summaryObject) {
-      rawUrl = rawUrl + '&componentToShow=Chat';
-    } else {
-      let addUrl = '';
-      if (this.isFileImported) {
-        addUrl = '&componentToShow=Conversations';
-      } else {
-        if (!this.summaryObject)
-          addUrl = '&componentToShow=Tasks';
-      }
-      rawUrl = rawUrl + addUrl;
-    }
-    if (this.summaryObject?.conversationId) {
-      rawUrl = rawUrl + '&componentToShow=chat&conversationId=' + this.summaryObject?.conversationId + '&type=' + this.summaryObject?.type;
+        false + '&componentToShow=Chat';
     }
     if (this.resource_id) {
       rawUrl = rawUrl + '&resource_id=' + this.resource_id;
@@ -733,7 +706,6 @@ export class AppComponent implements OnInit {
     }
     rawUrl = rawUrl + '&isNaviExpanded=' + this.isNaviExpanded;
     this.iframeUrlLoad(rawUrl);
-    this.summaryObject = '';
   }
 
   iframeUrlLoad(rawUrl: any) {
@@ -783,6 +755,10 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
+    this.componentToShow = 'Tasks';
+    const product: any = this.storageService.getItem(StorageKeys.Product)
+    if (product)
+      this.componentToShow = 'Chat';
     this.newWithNavi = false;
     this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
     this.makeTrustedUrl();
@@ -875,8 +851,8 @@ export class AppComponent implements OnInit {
   }
   getConversation(): void {
     this.conversationHubService.getConversations('?id=' + this.conversation_id + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
-      if (res && res.status === 200) {
-        this.convSummary = res.data[0].content.conversation_summary;
+      if (res?.data && res.status === 200) {
+        this.convSummary = res.data?.data[0].content.conversation_summary;
         this.showSummaryPopup = true;
       } else {
         this.utilsService.loadToaster({

@@ -20,7 +20,7 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
   @Input() conversationID: any;
   @Input() visible: any;
   @Input() notifObj: any;
-  @Input() label:any;
+  @Input() label: any;
   @Input() convSummary?: OverallSummary;
   @Output() closeSummaryPopup: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closePopUp: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -39,17 +39,17 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
       active: false
     }
   ];
-  currentUser : any = ''
+  currentUser: any = ''
 
   constructor(private datePipe: DatePipe, private utils: UtilsService, private router: Router,
-    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService,private messagingService:MessagingService, private storageService : LocalStorageService) {
+    private conversationHubService: ConversationHubService, private clipboardService: ClipboardService, private messagingService: MessagingService, private storageService: LocalStorageService) {
 
   }
 
   ngOnInit(): void {
-    this.label == 'View in Chat' ? this.label = 'View in Chat': this.label = 'Close';
+    this.label == 'View in Chat' ? this.label = 'View in Chat' : this.label = 'Close';
     let currentUser = localStorage.getItem('currentUser');
-    if(currentUser){
+    if (currentUser) {
       this.currentUser = JSON.parse(currentUser);
     }
   }
@@ -84,54 +84,13 @@ export class ViewSummaryPopupComponent implements OnInit, OnChanges {
     }
   }
   viewChatSummary() {
-    if(this.label=='View in Chat'){
-      if (this.router.url != '/x-pilot') {
-        this.router.navigate(['/my-products']);
-        // this.messagingService.sendMessage({
-        //   msgType: MessageTypes.NAVI_CONTAINER_STATE,
-        //   msgData: { naviContainerState: 'EXPAND', makeTrustedUrl:false},
-        // });
-        this.getProductIdByConversationId(this.notifObj.conversationId,this.notifObj);
-      } else {
-        this.utils.updateSummary(this.notifObj);
-      }
+    if (this.label == 'View in Chat') {
+      this.messagingService.sendMessage({
+        msgType: MessageTypes.MAKE_TRUST_URL,
+        msgData: { isNaviExpanded: true, showDockedNavi: true, conversation_id: this.notifObj.conversationId, componentToShow: 'Chat' },
+      });
     }
     this.closePopup();
-  }
-
-  getProductIdByConversationId(conversationId: string,notifObj:any){
-    let params = {
-      id: conversationId,
-      fieldsRequired: ['id','productId']
-    }
-    this.conversationHubService.getConersationDetailById(params).then((res)=>{
-      if(res.data){
-        let productId = res.data[0].productId;
-        let productDetails = localStorage.getItem('meta_data');
-        if(productDetails){
-          let products = JSON.parse(productDetails);
-          let product = products.find((p : any)=>p.id==productId);
-          this.onClickProductCard(product,notifObj);
-        }
-      }
-    })
-  }
-
-  onClickProductCard(data: any,notifObj:any): void {
-    if (this.currentUser?.email == data.email) {
-      this.utils.hasProductPermission(true);
-    } else {
-      this.utils.hasProductPermission(false);
-    }
-    delete data.created_by;
-    delete data.timeAgo;
-    this.storageService.saveItem(StorageKeys.Product, data);
-    localStorage.setItem('record_id', data.id);
-    localStorage.setItem('app_name', data.title);
-    localStorage.setItem('has_insights', data.has_insights);
-    this.messagingService.sendMessage({ msgType: MessageTypes.PRODUCT_CONTEXT, msgData: true });
-    notifObj.productId = data.id;
-    this.utils.updateSummary(notifObj);
   }
 
   async copyToClipboard(content: any, event: any) {

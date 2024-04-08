@@ -38,6 +38,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InlineDiffComponent } from 'ngx-diff';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { PaginatorModule } from 'primeng/paginator';
 import { JoinPipe } from '../join.pipe';
 
 @NgModule({
@@ -77,6 +78,7 @@ import { JoinPipe } from '../join.pipe';
     InlineDiffComponent,
     InputSwitchModule,
     MultiSelectModule,
+    PaginatorModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -117,6 +119,7 @@ import { JoinPipe } from '../join.pipe';
     InputSwitchModule,
     AutoCompleteModule,
     MultiSelectModule,
+    PaginatorModule,
     JoinPipe
   ],
   providers: [DataService],
