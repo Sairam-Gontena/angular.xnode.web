@@ -39,6 +39,7 @@ import { InlineDiffComponent } from 'ngx-diff';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PaginatorModule } from 'primeng/paginator';
+import { ChipsModule } from 'primeng/chips';
 import { JoinPipe } from '../join.pipe';
 
 @NgModule({
@@ -79,6 +80,7 @@ import { JoinPipe } from '../join.pipe';
     InputSwitchModule,
     MultiSelectModule,
     PaginatorModule,
+    ChipsModule,
     ModalModule.forRoot(),
   ],
   exports: [
@@ -120,6 +122,7 @@ import { JoinPipe } from '../join.pipe';
     AutoCompleteModule,
     MultiSelectModule,
     PaginatorModule,
+    ChipsModule,
     JoinPipe
   ],
   providers: [DataService],

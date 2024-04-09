@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,7 @@ export class SpecApiService extends BaseApiService {
     return environment.commentsApiUrl;
   }
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     super();
   }
 
@@ -38,9 +40,21 @@ export class SpecApiService extends BaseApiService {
     return this.get(url);
   }
 
+<<<<<<< Updated upstream
   getXflows(productId?: string) {
     let url = 'product-spec/xflows/' + productId;
     return this.get(url);
+=======
+  //get user list in spec os shared link
+  getUserListProdSpec(params: any): Observable<any> {
+    return this.httpClient.get<any>(this.apiUrl + 'product-spec', { params: params });
+  }
+
+  //share link to users in spec  
+  createUpdateUserListProdSpec(paramPayload?: any) {
+    let url = 'product-spec';
+    return this.patch(url, paramPayload);
+>>>>>>> Stashed changes
   }
 
 }

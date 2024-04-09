@@ -216,9 +216,10 @@ export class AppComponent implements OnInit {
           template_type: templateType,
           version_id: versionId,
         };
-      } else if (productId) {
+      } else if (productId && versionId) {
         deepLinkInfo = {
-          product_id: productId
+          product_id: productId,
+          version_id: versionId,
         };
       }
       if (crId && entity) {
@@ -238,6 +239,7 @@ export class AppComponent implements OnInit {
         });
       }
       await this.setDeepLinkInStorage(deepLinkInfo);
+      debugger
       this.router.navigateByUrl(path);
     }
   }
