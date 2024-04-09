@@ -147,7 +147,7 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
     };
     setTimeout(() => {
       this.initializeBpmn();
-      this.graph();
+      this.getMeUsecases();
     });
   }
 
@@ -696,25 +696,46 @@ export class BpmnCommonComponent implements OnDestroy, OnInit {
   /**************************************************************************************************** */
   // graph functions and variables
   /*************************************************************************************************** */
-  modifyGraphData(data: any) {
-    data.forEach((d: any) => {
+  getMeUsecases(): void {
+    this.specApi
+      .getUsecases(this.product?.id)
+      .then((response: any) => {
+        if (response?.status === 200) {
+          this.useCases = response.data;
+          this.graph();
+        } else {
+          this.utilsService.loadToaster({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: response?.data?.detail,
+          });
+        }
+        this.utilsService.loadSpinner(false);
+      })
+      .catch((error) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
+        this.utilsService.loadSpinner(false);
+      });
+  }
+
+  graph() {
+    this.useCases.forEach((d: any) => {
       let temp_title;
       d.children = [];
       for (let i = 0; i < d.xflows?.length; i++) {
         temp_title = d.xflows[i].name;
-        // d.xflows[i] = {};
-        // d.xflows[i] =
         d.children.push({
           id: i,
           title: temp_title,
         });
       }
     });
-    return data;
-  }
+    let mod_data = this.useCases;
 
-  graph() {
-    let mod_data = this.modifyGraphData(this.useCases);
     this.showUsecaseGraph = true;
 
     //TBD
