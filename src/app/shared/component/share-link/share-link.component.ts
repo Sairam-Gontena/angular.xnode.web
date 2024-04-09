@@ -34,7 +34,10 @@ export class ShareLinkComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.sharedLinkDetail?.currentValue) {
       this.sharedLinkDetail = changes.sharedLinkDetail.currentValue;
-      this.addShareForm.patchValue({ selectedValues: this.sharedLinkDetail.selectedUserList });
+      this.addShareForm.patchValue({
+        reviewersLOne: [],
+        selectedValues: this.sharedLinkDetail.selectedUserList
+      });
     }
   }
 

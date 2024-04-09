@@ -45,11 +45,6 @@ export class SpecApiService extends BaseApiService {
     return this.get(url);
   }
 
-  //get user list in spec os shared link
-  getUserListProdSpec(params: any): Observable<any> {
-    return this.httpClient.get<any>(this.apiUrl + 'product-spec', { params: params });
-  }
-
   //share link to users in spec  
   createUpdateUserListProdSpec(paramPayload?: any) {
     let url = 'product-spec';

@@ -192,7 +192,7 @@ export class DiffViewerComponent implements OnInit {
       this.getUsersData();
     });
     this.utils.getMeProductId.subscribe((data) => {
-      if (data && this.isDockedNaviEnabled) {
+      if (data || this.isDockedNaviEnabled) {
         this.getVersions({ id: data })
       }
     })
@@ -216,22 +216,14 @@ export class DiffViewerComponent implements OnInit {
         innerItem.sNo = itemIndex + 1 + '.' + (innerItemIndex + 1);
         if (innerItem.content && isArray(innerItem.content)) {
           innerItem.content.forEach((obj: any) => {
-            if (
-              typeof obj !== 'string' &&
-              innerItem.parentId &&
-              innerItem.parentTitle
-            ) {
+            if (typeof obj !== 'string' && innerItem.parentId && innerItem.parentTitle) {
               obj['parentId'] = item.id;
               obj['parentTitle'] = item.title;
               obj['specTitle'] = innerItem.title;
             }
             if (obj.content && isArray(obj.content)) {
               obj.content.forEach((objItem: any) => {
-                if (
-                  typeof objItem !== 'string' &&
-                  obj.parentId &&
-                  obj.parentTitle
-                ) {
+                if (typeof objItem !== 'string' && obj.parentId && obj.parentTitle) {
                   objItem['parentId'] = item.id;
                   objItem['parentTitle'] = item.title;
                   objItem['specTitle'] = obj.title;

@@ -81,7 +81,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getMeStorageData();
     this.route.queryParams.subscribe((params) => {
-      debugger
       const productId = params['product_id'];
       const templateId = params['template_id'];
       const templateType = params['template_type'];
@@ -97,7 +96,6 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
   }
 
   getMetaData(val: any) {
-    debugger
     this.conversationService.getMetaData({ accountId: this.currentUser.account_id }).then((response) => {
       if (response?.status === 200 && response.data?.length) {
         let product = response.data[0];
@@ -108,8 +106,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
         this.specUtils._openCommentsPanel(true);
         this.specUtils._tabToActive(val.template_type);
       }
-    })
-      .catch((error) => { });
+    }).catch((error) => { });
     // this.naviApiService
     //   .getMetaData(this.currentUser?.email, val.product_id)
     //   .then((response) => {

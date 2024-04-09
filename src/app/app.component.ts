@@ -239,7 +239,6 @@ export class AppComponent implements OnInit {
         });
       }
       await this.setDeepLinkInStorage(deepLinkInfo);
-      debugger
       this.router.navigateByUrl(path);
     }
   }

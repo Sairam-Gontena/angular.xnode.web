@@ -90,9 +90,7 @@ export class SpecificationsHeaderComponent implements OnInit {
       if (data) {
         this.conversationPanelInfo = data;
         this.product = this.storageService.getItem(StorageKeys.Product);
-        this.selectedVersion = this.storageService.getItem(
-          StorageKeys.SpecVersion
-        );
+        this.selectedVersion = this.storageService.getItem(StorageKeys.SpecVersion);
       }
     });
     this.utilsService.getMeProductId.subscribe((data) => {
@@ -163,8 +161,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   }
 
   getDeepLinkDetails(val: any) {
-    this.getAllProductsInfo('meta_data')
-      .then((result: any) => {
+    this.getAllProductsInfo('meta_data').then((result: any) => {
         if (result) {
           let products = JSON.parse(result);
           let product = products.find(
@@ -369,8 +366,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.utilsService.loadSpinner(false);
     this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
       if (response && response.status === 200) {
-        this.commonModalDetail.visible = false;
-        this.enableCommonModal = false;
         this.sharedLinkDetail.currentSpecData = response.data;
         this.makeSharedLinkDetail();
       }
@@ -389,12 +384,16 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.sharedLinkDetail.selectedUserList = new Array();
     if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
       this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
-        if (element.userId !== this.currentUser?.user_id && element.active) {
-          let getUser = this.sharedLinkDetail.userList.find((item: any) => item.user_id === element.userId);
-          this.sharedLinkDetail.selectedUserList.push(getUser);
+        if (element.userId !== this.currentUser?.user_id) {
+          if (element.active === undefined || element.active === true) {
+            let getUser = this.sharedLinkDetail.userList.find((item: any) => item.user_id === element.userId);
+            getUser.active = true;
+            this.sharedLinkDetail.selectedUserList.push(getUser);
+          }
         }
       });
     }
+    this.sharedLinkDetail = Object.assign({}, this.sharedLinkDetail);
   }
 
   //share the event
