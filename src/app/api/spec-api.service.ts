@@ -40,11 +40,11 @@ export class SpecApiService extends BaseApiService {
     return this.get(url);
   }
 
-<<<<<<< Updated upstream
   getXflows(productId?: string) {
     let url = 'product-spec/xflows/' + productId;
     return this.get(url);
-=======
+  }
+
   //get user list in spec os shared link
   getUserListProdSpec(params: any): Observable<any> {
     return this.httpClient.get<any>(this.apiUrl + 'product-spec', { params: params });
@@ -54,7 +54,6 @@ export class SpecApiService extends BaseApiService {
   createUpdateUserListProdSpec(paramPayload?: any) {
     let url = 'product-spec';
     return this.patch(url, paramPayload);
->>>>>>> Stashed changes
   }
 
 }
