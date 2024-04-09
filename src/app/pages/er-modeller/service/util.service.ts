@@ -24,24 +24,26 @@ export class UtilService {
 
     Object.keys(inputDataJson).forEach((schemaName: string) => {
       var schemaDetail = inputDataJson[schemaName]
-      var schemaModeler = constructCols(schemaDetail['properties'], nextModelId)
-      var cols: any[] = schemaModeler.cols;
-      var model = {
-        schemas: cols,
-        id: nextModelId++,
-        name: schemaName,
-        display_name: schemaName,
-        comment: schemaName,
-        use_soft_delete: true,
-        is_pivot: false,
-        schema_id_for_relation: schemaModeler.schemaIdForCreation,
-        module: module,
-        pos_x: currentX,
-        pos_y: currentY,
-        _next_schema_id: schemaModeler.nextSchemaId
+      if (schemaDetail['properties']) {
+        var schemaModeler = constructCols(schemaDetail['properties'], nextModelId)
+        var cols: any[] = schemaModeler.cols;
+        var model = {
+          schemas: cols,
+          id: nextModelId++,
+          name: schemaName,
+          display_name: schemaName,
+          comment: schemaName,
+          use_soft_delete: true,
+          is_pivot: false,
+          schema_id_for_relation: schemaModeler.schemaIdForCreation,
+          module: module,
+          pos_x: currentX,
+          pos_y: currentY,
+          _next_schema_id: schemaModeler.nextSchemaId
+        }
+        models.push(model)
+        updateCoordinates();
       }
-      models.push(model)
-      updateCoordinates();
     })
 
     var modelerSchema = {
