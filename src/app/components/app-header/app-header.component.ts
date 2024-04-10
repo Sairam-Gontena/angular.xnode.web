@@ -29,6 +29,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class AppHeaderComponent implements OnInit {
   @Output() navigateToHome = new EventEmitter<object>();
+  @Output() logout = new EventEmitter<any>();
+
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -135,14 +137,7 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
-          this.auditUtil.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
-          this.utilsService.showProductStatusPopup(false);
-          this.utilsService.showLimitReachedPopup(false);
-          setTimeout(() => {
-            localStorage.clear();
-            this.auth.setUser(false);
-            this.router.navigate(['/']);
-          }, 1000);
+          this.logout.emit()
         },
       },
     ];
