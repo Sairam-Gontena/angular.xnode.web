@@ -83,8 +83,7 @@ export class AppComponent implements OnInit {
   conversationId?: string;
   resource_id: any;
 
-  constructor(
-    private domSanitizer: DomSanitizer,
+  constructor(private domSanitizer: DomSanitizer,
     private router: Router,
     private utilsService: UtilsService,
     private messageService: MessageService,
@@ -104,12 +103,8 @@ export class AppComponent implements OnInit {
     let winUrl = window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    if (
-      winUrl.includes('template_id') ||
-      winUrl.includes('template_type') ||
-      winUrl.includes('crId') ||
-      winUrl.includes('versionId')
-    ) {
+    if (winUrl.includes('template_id') || winUrl.includes('template_type') ||
+      winUrl.includes('crId') || winUrl.includes('versionId') || winUrl.includes('version_id') || winUrl.includes('product_id')) {
       this.deepLink = true;
       this.setDeepLinkInfo(winUrl);
     } else {
@@ -124,7 +119,6 @@ export class AppComponent implements OnInit {
         this.spinner.hide();
       }
     });
-
     this.specificationUtils._openConversationPanel.subscribe((event: any) => {
       if (event) {
         this.showDockedNavi = false;
@@ -163,8 +157,6 @@ export class AppComponent implements OnInit {
         this.isNaviExpanded = msg.msgData?.isNaviExpanded;
         this.makeTrustedUrl();
       }
-    })
-    this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgData && msg.msgType === MessageTypes.NAVI_CONTAINER_STATE) {
         this.showDockedNavi = true
         this.isNaviExpanded = msg.msgData?.naviContainerState === 'EXPAND';
@@ -177,8 +169,6 @@ export class AppComponent implements OnInit {
         this.storageService.saveItem(StorageKeys.IS_NAVI_OPENED, true);
         this.makeTrustedUrl();
       }
-    })
-    this.messagingService.getMessage<any>().subscribe((msg: any) => {
       if (msg.msgType === MessageTypes.CLOSE_NAVI) {
         this.storageService.saveItem(StorageKeys.IS_NAVI_EXPANDED, false)
         this.showDockedNavi = false;
@@ -210,24 +200,28 @@ export class AppComponent implements OnInit {
     let hash = urlObj.hash;
     let [path, queryString] = hash.substr(1).split('?');
     let params = new URLSearchParams(queryString);
-    this.navigateByDeepLink(params);
+    this.navigateByDeepLink(path, params);
   }
 
-  async navigateByDeepLink(params: any) {
+  async navigateByDeepLink(path: string, params: any) {
     let templateId = params.get('template_id');
     let templateType = params.get('template_type');
     let productId = params.get('product_id');
     let versionId = params.get('version_id');
-
     let crId = params.get('crId');
     let entity = params.get('entity');
-    if ((templateId && templateType) || (crId && entity)) {
+    if ((templateId && templateType) || (crId && entity) || (productId && versionId)) {
       let deepLinkInfo;
       if (templateId && templateType) {
         deepLinkInfo = {
           product_id: productId,
           template_id: templateId,
           template_type: templateType,
+          version_id: versionId,
+        };
+      } else if (productId && versionId) {
+        deepLinkInfo = {
+          product_id: productId,
           version_id: versionId,
         };
       }
@@ -248,7 +242,7 @@ export class AppComponent implements OnInit {
         });
       }
       await this.setDeepLinkInStorage(deepLinkInfo);
-      this.router.navigateByUrl('specification');
+      this.router.navigateByUrl(path);
     }
   }
 
@@ -465,7 +459,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-
 
   redirectToPreviousUrl(): void {
     this.router.events.subscribe((event: any) => {
@@ -895,7 +888,7 @@ export class AppComponent implements OnInit {
         });
       }
       this.utilsService.loadSpinner(false);
-    }).catch((err => {
+    }).catch(((err: any) => {
       this.utilsService.loadSpinner(false);
       this.utilsService.loadToaster({
         severity: 'error',
