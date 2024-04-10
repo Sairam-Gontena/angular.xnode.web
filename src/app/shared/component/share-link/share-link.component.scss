@@ -21,3 +21,9 @@
         overflow: auto;
     }
 }
+
+::ng-deep .customMessages {
+    .p-message-wrapper {
+        padding: 10px;
+    }
+}

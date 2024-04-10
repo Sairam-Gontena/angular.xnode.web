@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AutoCompleteCompleteEvent, AutoCompleteOnSelectEvent, AutoCompleteUnselectEvent } from 'primeng/autocomplete';
 import { ChipsRemoveEvent } from 'primeng/chips';
-import { DropdownChangeEvent } from 'primeng/dropdown';
 
 @Component({
   selector: 'xnode-share-link',
@@ -13,10 +12,7 @@ export class ShareLinkComponent {
   @Input() sharedLinkDetail: any;
   @Output() sharedLinkEvent: EventEmitter<any> = new EventEmitter<any>();
   addShareForm!: FormGroup;
-  // selectedInvite: any;
-  invities = [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
-  { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
-  { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }];
+  invities = new Array();
 
   constructor(private formBuilder: FormBuilder) {
     this.addShareForm = this.formBuilder.group({
@@ -38,6 +34,7 @@ export class ShareLinkComponent {
         reviewersLOne: [],
         selectedValues: this.sharedLinkDetail.selectedUserList
       });
+      this.invities = this.sharedLinkDetail.inviteList;
     }
   }
 
@@ -49,18 +46,13 @@ export class ShareLinkComponent {
   }
 
   //filter the data in autocomplete
-  filteredReveiwer(event: AutoCompleteCompleteEvent, reviewerType: string) {
-    let filtered: any[] = [];
-    let query = event.query;
-    const selectedReviewers = this.addShareForm.value.reviewersLOne.map(
-      (reviewer: any) => reviewer.name.toLowerCase());
-    filtered = this.sharedLinkDetail.getUserList.filter(
-      (reviewer: any) =>
-        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
-        !selectedReviewers.includes(reviewer.name.toLowerCase())
-    );
-    debugger
-    this.sharedLinkDetail.usersList = filtered && filtered.length ? filtered : '';
+  suggestionsList(event: AutoCompleteCompleteEvent, reviewerType: string) {
+    let eventTypeData: any = {
+      eventType: "autocomplete",
+      query: event?.query,
+      data: this.addShareForm.value.reviewersLOne
+    }
+    this.sharedLinkEvent.emit(eventTypeData);
   }
 
   //on select change event

@@ -69,8 +69,17 @@ export class SpecificationsHeaderComponent implements OnInit {
   sharedLinkDetail: any = {
     getUserList: new Array(),
     selectedUserList: new Array(),
+    removeUserAccess: false,
     iniviteType: "",
-    currentSpecData: ""
+    currentSpecData: "",
+    inviteList: [{ name: 'Owner', code: 'owner', caption: 'Can provide access to others' },
+    { name: 'Contributor', code: 'contributor', caption: 'Can access in edit mode' },
+    { name: 'Reader', code: 'reader', caption: 'Can access in read only mode' }],
+    snackMessage: {
+      enable: false,
+      closable: false,
+      message: new Array()
+    }
   }
 
   constructor(private utilsService: UtilsService,
@@ -349,6 +358,35 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.clipboard.copy(this.getDeeplinkURL());
   }
 
+  //make shared link detail
+  makeSharedLinkDetail() {
+    this.sharedLinkDetail.selectedUserList = new Array();
+    if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
+      this.sharedLinkDetail.getUserList = this.userList;
+      this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
+        if (element.userId !== this.currentUser?.user_id) {
+          let getUser: any = this.userList?.find((item: any) => item.user_id === element.userId);
+          if (element.active === undefined || element.active === true) {
+            getUser.active = true;
+            this.sharedLinkDetail.selectedUserList.push(getUser);
+            this.sharedLinkDetail.getUserList = this.sharedLinkDetail.getUserList?.filter((item: any) => item.user_id !== element.userId);
+          }
+        }
+      });
+    }
+    if (this.sharedLinkDetail.snackMessage.enable && !this.sharedLinkDetail.removeUserAccess) {
+      this.sharedLinkDetail.snackMessage.closable = true;
+      this.sharedLinkDetail.snackMessage.message.push({ severity: 'success', summary: '', detail: "Invited Successfully." });
+      this.sharedLinkDetail.removeUserAccess = false;
+      setTimeout(() => {
+        this.sharedLinkDetail.snackMessage.closable = false;
+        this.sharedLinkDetail.snackMessage.message = new Array();
+        this.sharedLinkDetail.snackMessage.enable = false;
+      }, 2000);
+    }
+    this.sharedLinkDetail = Object.assign({}, this.sharedLinkDetail);
+  }
+
   //invite the user
   inviteRemoveUser() {
     let paramPayload: any = {
@@ -366,6 +404,7 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
       if (response && response.status === 200) {
         this.sharedLinkDetail.currentSpecData = response.data;
+        this.sharedLinkDetail.snackMessage.enable = true;
         this.makeSharedLinkDetail();
       }
       if (response.data?.common?.message) {
@@ -378,25 +417,6 @@ export class SpecificationsHeaderComponent implements OnInit {
     });
   }
 
-  //make shared link detail
-  makeSharedLinkDetail() {
-    this.sharedLinkDetail.selectedUserList = new Array();
-    if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
-      this.sharedLinkDetail.getUserList = this.userList;
-      this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
-        if (element.userId !== this.currentUser?.user_id) {
-          let getUser: any = this.userList?.find((item: any) => item.user_id === element.userId);
-          if (element.active === undefined || element.active === true) {
-            getUser.active = true;
-            this.sharedLinkDetail.selectedUserList.push(getUser);
-            this.sharedLinkDetail.getUserList = this.sharedLinkDetail.getUserList?.filter((item: any) => item.user_id !== element.userId);
-          }
-        }
-      });
-    }
-    this.sharedLinkDetail = Object.assign({}, this.sharedLinkDetail);
-  }
-
   //share the event
   shareEvent() {
     this.enableCommonModal = true;
@@ -407,20 +427,46 @@ export class SpecificationsHeaderComponent implements OnInit {
     this.makeSharedLinkDetail();
   }
 
+  //filtered suggestion list
+  filteredReveiwer(eventData: any) {
+    let filtered: any[] = [];
+    let query = eventData.query;
+    const selectedReviewers = eventData?.data.map((reviewer: any) => reviewer.name.toLowerCase());
+    filtered = this.sharedLinkDetail.getUserList.filter(
+      (reviewer: any) =>
+        reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
+        !selectedReviewers.includes(reviewer.name.toLowerCase()));
+    this.sharedLinkDetail.suggestionList = filtered && filtered.length ? filtered : '';
+  }
+
   //shared link event
   sharedLinkEvent(event: any) {
-    if (event && event.eventType === "select") {
-      let checkUserExist = this.sharedLinkDetail.selectedUserList.find((item: any) => item.user_id === event.data.user_id);
-      if (!checkUserExist) {
-        this.sharedLinkDetail.selectedUserList.push(event.data);
+    if (event && event.eventType) {
+      switch (event.eventType) {
+        case "select":
+          let checkUserExist = this.sharedLinkDetail.selectedUserList.find((item: any) => item.user_id === event.data.user_id);
+          if (!checkUserExist) {
+            this.sharedLinkDetail.selectedUserList.push(event.data);
+          }
+          break;
+        case "unselect":
+          this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
+          break;
+        case "inviteType":
+          this.sharedLinkDetail.iniviteType = event.data;
+          break;
+        case "chipremove":
+          this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
+          this.sharedLinkDetail.removeUserAccess = true;
+          this.inviteRemoveUser();
+          break;
+        case "autocomplete":
+          let data: any = { query: event.query, data: event.data };
+          this.filteredReveiwer(data);
+          break;
+        default:
+          break;
       }
-    } else if (event && event.eventType === "unselect") {
-      this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
-    } else if (event && event.eventType === "inviteType") {
-      this.sharedLinkDetail.iniviteType = event.data;
-    } else if (event && event.eventType === "chipremove") {
-      this.sharedLinkDetail.selectedUserList = this.sharedLinkDetail.selectedUserList.filter((item: any) => item.user_id !== event.data.user_id);
-      this.inviteRemoveUser();
     }
   }
 
