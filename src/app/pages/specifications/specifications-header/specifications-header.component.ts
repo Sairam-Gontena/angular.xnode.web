@@ -52,7 +52,7 @@ export class SpecificationsHeaderComponent implements OnInit {
   specData: any;
   value: any;
   references: any;
-  // userList: any;
+  userList: Array<{}> = new Array();
   suggestions: any;
   selectedItem: any;
   addShareForm: FormGroup;
@@ -64,11 +64,10 @@ export class SpecificationsHeaderComponent implements OnInit {
     modal: true,
     modalClass: "",
     responsive: true,
-    style: { width: '40vw', height: '65vh' },
-    getUserList: new Array()
+    style: { width: '40vw', height: '65vh' }
   }
   sharedLinkDetail: any = {
-    userList: new Array(),
+    getUserList: new Array(),
     selectedUserList: new Array(),
     iniviteType: "",
     currentSpecData: ""
@@ -136,7 +135,7 @@ export class SpecificationsHeaderComponent implements OnInit {
         if (element.user_id !== this.currentUser.user_id) {
           element.active = false;
           element.name = element.first_name + ' ' + element.last_name;
-          this.sharedLinkDetail.userList.push(element);
+          this.userList.push(element);
         }
       });
     }
@@ -162,32 +161,32 @@ export class SpecificationsHeaderComponent implements OnInit {
 
   getDeepLinkDetails(val: any) {
     this.getAllProductsInfo('meta_data').then((result: any) => {
-        if (result) {
-          let products = JSON.parse(result);
-          let product = products.find(
-            (x: any) => x.id === val.product_id || x.id === val.productId
-          );
-          localStorage.setItem('record_id', product.id);
-          localStorage.setItem('product', JSON.stringify(product));
-          localStorage.setItem('app_name', product.title);
-          localStorage.setItem('has_insights', product.has_insights);
-          this.product = product;
-          let deeplinkInfo = localStorage.getItem('deep_link_info');
-          let version_id;
-          if (deeplinkInfo) {
-            let deeplinkdata = JSON.parse(deeplinkInfo);
-            version_id = deeplinkdata.version_id;
-          }
-          this.specUtils._openCommentsPanel(true);
-          this.specUtils._tabToActive(val.template_type);
-          this.specUtils._updatedSelectedProduct(true);
-          localStorage.removeItem('deep_link_info');
-        } else {
-          console.log('not able to fetch product details');
+      if (result) {
+        let products = JSON.parse(result);
+        let product = products.find(
+          (x: any) => x.id === val.product_id || x.id === val.productId
+        );
+        localStorage.setItem('record_id', product.id);
+        localStorage.setItem('product', JSON.stringify(product));
+        localStorage.setItem('app_name', product.title);
+        localStorage.setItem('has_insights', product.has_insights);
+        this.product = product;
+        let deeplinkInfo = localStorage.getItem('deep_link_info');
+        let version_id;
+        if (deeplinkInfo) {
+          let deeplinkdata = JSON.parse(deeplinkInfo);
+          version_id = deeplinkdata.version_id;
         }
-      }).catch((error) => {
-        console.error('Error fetching data from localStorage:', error);
-      });
+        this.specUtils._openCommentsPanel(true);
+        this.specUtils._tabToActive(val.template_type);
+        this.specUtils._updatedSelectedProduct(true);
+        localStorage.removeItem('deep_link_info');
+      } else {
+        console.log('not able to fetch product details');
+      }
+    }).catch((error) => {
+      console.error('Error fetching data from localStorage:', error);
+    });
   }
 
   toggleSideMenu() {
@@ -363,7 +362,7 @@ export class SpecificationsHeaderComponent implements OnInit {
         paramPayload.payload.users.push({ userId: element.user_id, role: this.sharedLinkDetail.iniviteType.code, deepLink: getDeepLink });
       });
     }
-    this.utilsService.loadSpinner(false);
+    this.utilsService.loadSpinner(true);
     this.specApiService.createUpdateUserListProdSpec(paramPayload).then((response) => {
       if (response && response.status === 200) {
         this.sharedLinkDetail.currentSpecData = response.data;
@@ -383,12 +382,14 @@ export class SpecificationsHeaderComponent implements OnInit {
   makeSharedLinkDetail() {
     this.sharedLinkDetail.selectedUserList = new Array();
     if (this.sharedLinkDetail.currentSpecData.users && this.sharedLinkDetail.currentSpecData.users.length) {
+      this.sharedLinkDetail.getUserList = this.userList;
       this.sharedLinkDetail.currentSpecData.users.forEach((element: any) => {
         if (element.userId !== this.currentUser?.user_id) {
+          let getUser: any = this.userList?.find((item: any) => item.user_id === element.userId);
           if (element.active === undefined || element.active === true) {
-            let getUser = this.sharedLinkDetail.userList.find((item: any) => item.user_id === element.userId);
             getUser.active = true;
             this.sharedLinkDetail.selectedUserList.push(getUser);
+            this.sharedLinkDetail.getUserList = this.sharedLinkDetail.getUserList?.filter((item: any) => item.user_id !== element.userId);
           }
         }
       });

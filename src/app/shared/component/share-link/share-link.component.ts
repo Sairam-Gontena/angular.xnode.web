@@ -53,13 +53,13 @@ export class ShareLinkComponent {
     let filtered: any[] = [];
     let query = event.query;
     const selectedReviewers = this.addShareForm.value.reviewersLOne.map(
-      (reviewer: any) => reviewer.name.toLowerCase()
-    );
-    filtered = this.sharedLinkDetail.userList.filter(
+      (reviewer: any) => reviewer.name.toLowerCase());
+    filtered = this.sharedLinkDetail.getUserList.filter(
       (reviewer: any) =>
         reviewer.name.toLowerCase().indexOf(query.toLowerCase()) === 0 &&
         !selectedReviewers.includes(reviewer.name.toLowerCase())
     );
+    debugger
     this.sharedLinkDetail.usersList = filtered && filtered.length ? filtered : '';
   }
 
