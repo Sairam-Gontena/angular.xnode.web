@@ -20,6 +20,7 @@ import { MessagingService } from './components/services/messaging.service';
 import { MessageTypes } from 'src/models/message-types.enum';
 import { OverallSummary } from 'src/models/view-summary';
 import { ConversationHubService } from './api/conversation-hub.service';
+import { AuditutilsService } from './api/auditutils.service';
 @Component({
   selector: 'xnode-root',
   templateUrl: './app.component.html',
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit {
   product: any;
   newWithNavi: boolean = false;
   componentToShow?: any;
+  showNaviSpinner: boolean = true;
   routes: any = [
     '#/dashboard',
     '#/overview',
@@ -96,7 +98,8 @@ export class AppComponent implements OnInit {
     private storageService: LocalStorageService,
     private specificationUtils: SpecificationUtilsService,
     private messagingService: MessagingService,
-    private conversationHubService: ConversationHubService
+    private conversationHubService: ConversationHubService,
+    private auditService: AuditutilsService
   ) {
     let winUrl = window.location.href;
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
@@ -277,6 +280,21 @@ export class AppComponent implements OnInit {
     this.handleTheme();
     this.makeTrustedUrl();
   }
+
+  logout(): void {
+    let rawUrl: string =
+      environment.naviAppUrl + '?logout=true';
+    this.iframeUrlLoad(rawUrl);
+    this.auditService.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
+    this.utilsService.showProductStatusPopup(false);
+    this.utilsService.showLimitReachedPopup(false);
+    setTimeout(() => {
+      localStorage.clear();
+      this.auth.setUser(false);
+      this.router.navigate(['/']);
+    }, 1000);
+  }
+
   receiveMessage(event: MessageEvent) {
     if (event.origin + '/' !== environment.naviAppUrl.split('?')[0]) return
     if (event?.data?.message === 'close-event') {
@@ -414,6 +432,7 @@ export class AppComponent implements OnInit {
       this.preparingData();
       this.handleBotIcon();
       this.openNavi();
+      this.getAllUsers();
     } else {
       if (!window.location.hash.includes('#/reset-password?email')) {
         this.router.navigate(['/']);
@@ -434,7 +453,6 @@ export class AppComponent implements OnInit {
         this.showSummaryPopup = true;
       }
     });
-    this.getAllUsers();
   }
 
   getAllProductsInfo(key: string) {
@@ -762,6 +780,14 @@ export class AppComponent implements OnInit {
   }
 
   openNavi() {
+    this.showNaviSpinner = true;
+    setTimeout(() => {
+      this.showNaviSpinner = false;
+      this.prepareDataOnOpeningNavi()
+    }, 1000);
+  }
+
+  prepareDataOnOpeningNavi(): void {
     this.componentToShow = 'Tasks';
     const product: any = this.storageService.getItem(StorageKeys.Product)
     if (product)
@@ -879,5 +905,4 @@ export class AppComponent implements OnInit {
     }))
     this.utilsService.loadSpinner(false);
   }
-
 }

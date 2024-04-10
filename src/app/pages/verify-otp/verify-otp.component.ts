@@ -8,6 +8,8 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { MessagingService } from 'src/app/components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 @Component({
   selector: 'xnode-verify-otp',
   templateUrl: './verify-otp.component.html',
@@ -30,6 +32,7 @@ export class VerifyOtpComponent implements OnInit {
     private authApiService: AuthApiService,
     private storageService: LocalStorageService,
     private naviAPiService: NaviApiService,
+    private messagingService: MessagingService,
     private conversationService: ConversationHubService
   ) { }
 
@@ -168,6 +171,10 @@ export class VerifyOtpComponent implements OnInit {
     this.conversationService.getMetaData({ accountId: currentUser.account_id }).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.MAKE_TRUST_URL,
+          msgData: { isNaviExpanded: false, showDockedNavi: true, componentToShow: 'Tasks' },
+        });
         this.router.navigate(['/my-products']);
         this.utilsService.loadSpinner(false);
       }
