@@ -32,7 +32,7 @@ export class ShareLinkComponent {
       this.sharedLinkDetail = changes.sharedLinkDetail.currentValue;
       this.addShareForm.patchValue({
         reviewersLOne: [],
-        selectedValues: this.sharedLinkDetail.selectedUserList
+        selectedValues: this.sharedLinkDetail.showSelectedUserChip
       });
       this.invities = this.sharedLinkDetail.inviteList;
     }
