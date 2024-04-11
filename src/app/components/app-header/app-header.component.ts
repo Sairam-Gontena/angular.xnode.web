@@ -29,6 +29,8 @@ import { StorageKeys } from 'src/models/storage-keys.enum';
 })
 export class AppHeaderComponent implements OnInit {
   @Output() navigateToHome = new EventEmitter<object>();
+  @Output() logout = new EventEmitter<any>();
+
   headerItems: any;
   logoutDropdown: any;
   selectedValue: any;
@@ -135,14 +137,7 @@ export class AppHeaderComponent implements OnInit {
       {
         label: 'Logout',
         command: () => {
-          this.auditUtil.postAudit('LOGGED_OUT', 1, 'SUCCESS', 'user-audit');
-          this.utilsService.showProductStatusPopup(false);
-          this.utilsService.showLimitReachedPopup(false);
-          setTimeout(() => {
-            localStorage.clear();
-            this.auth.setUser(false);
-            this.router.navigate(['/']);
-          }, 1000);
+          this.logout.emit()
         },
       },
     ];
@@ -467,7 +462,7 @@ export class AppHeaderComponent implements OnInit {
     this.conversationService.getConversations('?id=' + obj.conversationId + '&fieldsRequired=id,title,conversationType,content').then((res: any) => {
       if (res && res.status === 200) {
         this.showViewSummaryPopup = true;
-        this.convSummary = res.data[0].content.conversation_summary;
+        this.convSummary = res.data?.data[0].content.conversation_summary;
       } else {
         this.utils.loadToaster({
           severity: 'error',

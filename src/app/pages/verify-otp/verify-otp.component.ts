@@ -8,6 +8,8 @@ import { LocalStorageService } from 'src/app/components/services/local-storage.s
 import { StorageKeys } from 'src/models/storage-keys.enum';
 import { NaviApiService } from 'src/app/api/navi-api.service';
 import { ConversationHubService } from 'src/app/api/conversation-hub.service';
+import { MessagingService } from 'src/app/components/services/messaging.service';
+import { MessageTypes } from 'src/models/message-types.enum';
 @Component({
   selector: 'xnode-verify-otp',
   templateUrl: './verify-otp.component.html',
@@ -30,8 +32,9 @@ export class VerifyOtpComponent implements OnInit {
     private authApiService: AuthApiService,
     private storageService: LocalStorageService,
     private naviAPiService: NaviApiService,
-    private conversationService:ConversationHubService
-  ) {}
+    private messagingService: MessagingService,
+    private conversationService: ConversationHubService
+  ) { }
 
   ngOnInit(): void {
     this.userEmail = this.maskEmail(this.route.snapshot.params['email']);
@@ -97,40 +100,40 @@ export class VerifyOtpComponent implements OnInit {
 
   verifyAccount() {
     this.utilsService.loadSpinner(true);
-    if(this.otp?.length==6){
+    if (this.otp?.length == 6) {
       this.authApiService
-      .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
-      .then((response: any) => {
-        if (response?.status === 200 && !response?.data?.detail) {
-          this.handleResponse(response.data);
-        } else {
+        .verifyOtp({ email: this.route.snapshot.params['email'], otp: this.otp })
+        .then((response: any) => {
+          if (response?.status === 200 && !response?.data?.detail) {
+            this.handleResponse(response.data);
+          } else {
+            this.utilsService.loadToaster({
+              severity: 'error',
+              summary: 'ERROR',
+              detail: response.data.detail,
+            });
+            this.utilsService.loadSpinner(false);
+          }
+        })
+        .catch((error: any) => {
+          this.utilsService.loadSpinner(false);
           this.utilsService.loadToaster({
             severity: 'error',
             summary: 'ERROR',
-            detail: response.data.detail,
+            detail: error?.response?.data?.detail,
           });
-          this.utilsService.loadSpinner(false);
-        }
-      })
-      .catch((error: any) => {
-        this.utilsService.loadSpinner(false);
-        this.utilsService.loadToaster({
-          severity: 'error',
-          summary: 'ERROR',
-          detail: error?.response?.data?.detail,
+          this.auditUtil.postAudit(
+            'VERIFY_OTP_' + error?.response?.data?.detail,
+            1,
+            'FAILURE',
+            'user-audit'
+          );
         });
-        this.auditUtil.postAudit(
-          'VERIFY_OTP_' + error?.response?.data?.detail,
-          1,
-          'FAILURE',
-          'user-audit'
-        );
-      });
-    }else{
-      let errMsg='Please enter OTP';
-      if(this.otp?.length>0 && this.otp?.length<6)
+    } else {
+      let errMsg = 'Please enter OTP';
+      if (this.otp?.length > 0 && this.otp?.length < 6)
         errMsg = 'Please enter your 6 digit OTP';
-      this.utilsService.loadToaster({severity: 'error',summary: 'ERROR',detail:errMsg});
+      this.utilsService.loadToaster({ severity: 'error', summary: 'ERROR', detail: errMsg });
       this.utilsService.loadSpinner(false);
     }
   }
@@ -165,26 +168,25 @@ export class VerifyOtpComponent implements OnInit {
     const currentUser: any = this.storageService.getItem(
       StorageKeys.CurrentUser
     );
-    this.conversationService.getMetaData( { accountId: currentUser.account_id}).then((response: any) => {
+    this.conversationService.getMetaData({ accountId: currentUser.account_id }).then((response: any) => {
       if (response?.status === 200) {
         this.authApiService.setUser(true);
-        if (response?.data?.length > 0) {
-          this.router.navigate(['/my-products']);
-        } else {
-          this.router.navigate(['/x-pilot']);
-          this.getMeCreateAppLimit();
-        }
+        this.messagingService.sendMessage({
+          msgType: MessageTypes.MAKE_TRUST_URL,
+          msgData: { isNaviExpanded: false, showDockedNavi: true, componentToShow: 'Tasks' },
+        });
+        this.router.navigate(['/my-products']);
         this.utilsService.loadSpinner(false);
       }
     })
-    .catch((error: any) => {
-      this.utilsService.loadToaster({
-        severity: 'error',
-        summary: '',
-        detail: error,
+      .catch((error: any) => {
+        this.utilsService.loadToaster({
+          severity: 'error',
+          summary: '',
+          detail: error,
+        });
+        this.utilsService.loadSpinner(false);
       });
-      this.utilsService.loadSpinner(false);
-    });
     // this.naviAPiService
     //   .getMetaData(currentUser?.email)
     //   .then((response: any) => {

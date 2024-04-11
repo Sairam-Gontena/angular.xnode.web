@@ -62,8 +62,8 @@ export abstract class BaseApiService {
   patch(url: string, body: any = {}, config: AxiosRequestConfig = {}) {
     return this.axiosInstance.patch(
       this.apiUrl + url,
-      body,
-      this.getConfigJsonHeader(config)
+      body.payload,
+      { ...this.getConfigJsonHeader(config), params: body.param }
     );
   }
 

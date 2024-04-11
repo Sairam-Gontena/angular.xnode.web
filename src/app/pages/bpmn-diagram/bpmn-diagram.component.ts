@@ -103,12 +103,12 @@ export class BpmnDiagramComponent
   getMeStorageData(): void {
     this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser);
     this.product = this.storageService.getItem(StorageKeys.Product);
-    this.getUseCases(this.product);
+    this.getUseCases();
   }
 
-  getUseCases(data: any) {
+  getUseCases() {
     this.specApiService
-      .getUsecases(data.id)
+      .getUsecases(this.product?.id)
       .then((response: any) => {
         if (response?.status === 200) {
           this.useCases = response.data;
@@ -253,9 +253,9 @@ export class BpmnDiagramComponent
   }
 
   getFlow(flow: String) {
-    this.currentUser = UserUtil.getCurrentUser();
-    this.naviApiService
-      .getXflows(this.product?.email, this.product?.id)
+    this.currentUser = this.storageService.getItem(StorageKeys.CurrentUser)
+    this.specApiService
+      .getXflows(this.product?.id)
       .then(async (response: any) => {
         if (response) {
           let user_audit_body = {
