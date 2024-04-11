@@ -65,9 +65,7 @@ export class SpecificationsComponent implements OnInit, OnDestroy {
     private storageService: LocalStorageService,
     private commentsService: CommentsService,
     private naviApiService: NaviApiService,
-    private conversationService: ConversationHubService
-  ) {
-    debugger
+    private conversationService: ConversationHubService) {
     this.product = this.localStorageService.getItem(StorageKeys.Product);
     this.specUtils.subscribeAtivatedTab.subscribe((event: any) => {
       this.activeConversationTab = event;
